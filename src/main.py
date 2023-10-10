@@ -1,6 +1,8 @@
 import logging
 import logging.handlers
 from src.shared.settings import GlobalSettings
+import src.simulation.sim as sim
+import src.city.city as city
 
 
 def initialize_logging():
@@ -18,3 +20,5 @@ def main():
     """run a console menu that has two options, runs in a while loop so multiple options can be selected"""
 
     initialize_logging()
+    simulation = sim.Sim(city=city.City())
+    simulation.start()

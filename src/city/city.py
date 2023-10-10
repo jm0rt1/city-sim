@@ -90,6 +90,11 @@ class City:
             raise ValueError("No Negative Numbers")
         self.electricity_facilities += fac_to_add
 
+    def add_housing_units(self, units_to_add: int):
+        if units_to_add < 0:
+            raise ValueError("No Negative Numbers")
+        self.housing_units += units_to_add
+
 
 class HappinessTracker():
 

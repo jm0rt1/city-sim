@@ -46,6 +46,7 @@ class Sim():
             print("1: Advance Day")
             print("2: Add Electrical Facilities")
             print("3: Add Water Facilities")
+            print("4: Add Housing Units")
 
             print("X: Exit")
 
@@ -54,10 +55,26 @@ class Sim():
             if input_str == "1":
                 self.advance_day()
                 self.display_city_info()  # Display updated city info after advancing a day
-
+            if input_str == "2":
+                self.electrical_facilities_option()
+            if input_str == "3":
+                pass
             elif input_str == "x":
                 break
             else:
+                print("Invalid input")
+                continue
+
+    def electrical_facilities_option(self):
+        data_collected = False
+        fac_to_add = 0
+        while not data_collected:
+            try:
+                fac_to_add = int(
+                    input("Enter number of Electrical Facilities to add: "))
+                self.city.add_electricity_facilities(fac_to_add)
+                data_collected = True
+            except:
                 print("Invalid input")
                 continue
 

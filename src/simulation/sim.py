@@ -1,4 +1,6 @@
+import copy
 import random
+from typing import Callable, Optional
 from src.city.city import City, Pop
 
 
@@ -19,6 +21,7 @@ class Sim():
 
     def advance_day(self):
         self.roll_for_newcomers()
+        self.roll_for_leavers()
         self.city.on_advance_day()
         self.roll_disasters()
 
@@ -29,16 +32,37 @@ class Sim():
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
         newcomers = 0
 
-        if avg_happiness > 70 and random.random() < 0.20:
+        if avg_happiness >= 20 and random.random() < 0.20:
             newcomers = 20
-        elif avg_happiness > 50 and random.random() < 0.10:
+        elif avg_happiness > 10 and random.random() < 0.10:
             newcomers = 10
-
+        elif avg_happiness > 0 and random.random() < 0.05:
+            newcomers = 1
         for _ in range(newcomers):
             self.city.population.append(Pop())
 
         if newcomers:
             print(f"{newcomers} new individuals have moved into the city!")
+
+    def roll_for_leavers(self):
+        avg_happiness = self.city.happiness_tracker.get_average_happiness()
+        pops_that_stay: list[Pop] = []
+
+        if avg_happiness < 0:
+            for i, pop in enumerate(self.city.population):
+                wants_to_leave = False
+                if not pop.has_home:
+                    if random.random() < .5:
+                        wants_to_leave = True
+                if not pop.electricity_received:
+                    if random.random() < .5:
+                        wants_to_leave = True
+                if not pop.water_received:
+                    if random.random() < .5:
+                        wants_to_leave = True
+                if not wants_to_leave:
+                    pops_that_stay.append(pop)
+            self.city.population = pops_that_stay
 
     def start(self):
         while True:
@@ -56,23 +80,26 @@ class Sim():
                 self.advance_day()
                 self.display_city_info()  # Display updated city info after advancing a day
             if input_str == "2":
-                self.electrical_facilities_option()
+                self.add_facilities_to_city(
+                    self.city.add_electricity_facilities)
             if input_str == "3":
-                pass
+                self.add_facilities_to_city(self.city.add_water_facilities)
+            if input_str == "4":
+                self.add_facilities_to_city(self.city.add_housing_units)
             elif input_str == "x":
                 break
             else:
                 print("Invalid input")
                 continue
 
-    def electrical_facilities_option(self):
+    def add_facilities_to_city(self, add_func: Callable[[int], None]):
         data_collected = False
         fac_to_add = 0
         while not data_collected:
             try:
                 fac_to_add = int(
-                    input("Enter number of Electrical Facilities to add: "))
-                self.city.add_electricity_facilities(fac_to_add)
+                    input("Enter number to add: "))
+                add_func(fac_to_add)
                 data_collected = True
             except:
                 print("Invalid input")

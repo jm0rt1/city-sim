@@ -17,6 +17,7 @@ class Pop():
 
     def adjust_happiness(self):
         # Adjust happiness based on basic needs
+        self.overall_happiness = 0
         if self.water_received:
             self.overall_happiness += 10
         else:

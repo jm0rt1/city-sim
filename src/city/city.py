@@ -1,6 +1,6 @@
 
-from src.city.population import HappinessTracker
-from src.city.population import Pop
+from city.population.population import HappinessTracker
+from city.population.population import Pop
 
 
 class City:
@@ -50,5 +50,3 @@ class City:
         if units_to_add < 0:
             raise ValueError("No Negative Numbers")
         self.housing_units += units_to_add
-
-

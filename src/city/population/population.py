@@ -1,6 +1,30 @@
 import random
 
 
+class Population():
+    def __init__(self) -> None:
+        self.pops = []
+
+    def add_pop(self, pop: "Pop"):
+        self.pops.append(pop)
+
+    def remove_pop(self, pop: "Pop"):
+        self.pops.remove(pop)
+
+    def property_tax(self):
+        return sum([1 for pop in self.pops if pop.property])
+
+    @classmethod
+    def from_list(cls, pops_list: list["Pop"]):
+        population = cls()
+        cls.pops = pops_list
+        return population
+
+    def adjust_happiness(self):
+        for pop in self.pops:
+            pop.adjust_happiness()
+
+
 class Pop():
     def __init__(self) -> None:
 

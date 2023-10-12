@@ -1,6 +1,5 @@
-import copy
 import random
-from typing import Callable, Optional
+from typing import Callable
 from src.city.city import City, Pop
 
 
@@ -49,7 +48,7 @@ class Sim():
         pops_that_stay: list[Pop] = []
 
         if avg_happiness < 0:
-            for i, pop in enumerate(self.city.population):
+            for pop in self.city.population:
                 wants_to_leave = False
                 if not pop.has_home:
                     if random.random() < .5:

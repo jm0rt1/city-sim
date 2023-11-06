@@ -1,9 +1,12 @@
 import random
 
+from src.city.population.HappinessTracker import HappinessTracker
+
 
 class Population():
     def __init__(self) -> None:
         self.pops = []
+        self.happiness_tracker = HappinessTracker(self)
 
     def add_pop(self, pop: "Pop"):
         self.pops.append(pop)
@@ -70,19 +73,3 @@ class Pop():
         if random.random() < 0.01:
             self.sick = True
             self.overall_happiness -= 15
-
-
-class HappinessTracker():
-
-    def __init__(self, population: list[Pop]) -> None:
-        self.average_happiness = 0
-        self.update_happiness(population)
-
-    def update_happiness(self, population: list[Pop]):
-        total_happiness = sum(
-            [person.overall_happiness for person in population])
-        self.average_happiness = total_happiness / \
-            len(population) if population else 0
-
-    def get_average_happiness(self):
-        return self.average_happiness

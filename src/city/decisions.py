@@ -1,7 +1,7 @@
 
 import random
 from src.city.city import City
-from population.population import Pop
+from src.city.population.population import Pop
 from abc import ABC
 
 

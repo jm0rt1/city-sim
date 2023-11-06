@@ -1,13 +1,11 @@
 
-from city.population.population import HappinessTracker
-from city.population.population import Pop
+from src.city.population.happiness_tracker import HappinessTracker
+from src.city.population.population import Pop, Population
 
 
 class City:
-    def __init__(self, population: list["Pop"] = [Pop()]):
-
-        self.population: list[Pop] = population
-        self.happiness_tracker = HappinessTracker(population=population)
+    def __init__(self, population: Population = Population.from_list([Pop()])):
+        self.population: Population = population
         # Infrastructure
         self.water_facilities = 2
         self.electricity_facilities = 2

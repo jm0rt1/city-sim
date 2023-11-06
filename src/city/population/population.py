@@ -1,6 +1,6 @@
 import random
 
-from src.city.population.HappinessTracker import HappinessTracker
+from src.city.population.happiness_tracker import HappinessTracker
 
 
 class Population():

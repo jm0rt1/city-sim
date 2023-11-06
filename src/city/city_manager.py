@@ -1,4 +1,7 @@
+from src.city.decisions import DisasterDecision, StayDecision
+from src.city.population.population import Pop
 from src.city.city import City
+
 
 class CityManager:
     def __init__(self, city: City):
@@ -24,7 +27,7 @@ class CityManager:
         return disaster_decision.roll()
 
     def manage_population(self):
-        pops_to_remove = []
+        pops_to_remove: list[Pop] = []
         for pop in self.city.population.pops:
             stay_decision = StayDecision(self.city, pop)
             if not stay_decision.roll():
@@ -40,3 +43,4 @@ class CityManager:
 
         # Display financial report
         # ...
+        pass

@@ -20,3 +20,7 @@ Choose a workstream to get started. Each file contains objectives, inputs/output
 - Population: [src/city/population/population.py](../../src/city/population/population.py), [src/city/population/happiness_tracker.py](../../src/city/population/happiness_tracker.py)
 - Settings: [src/shared/settings.py](../../src/shared/settings.py)
 - Decisions: [src/city/decisions.py](../../src/city/decisions.py)
+
+## Prompt Template
+- Generic template: [docs/design/templates/workstream_prompt.md](../templates/workstream_prompt.md)
+- Each workstream file includes a tailored copy‑paste prompt at the end.

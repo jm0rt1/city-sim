@@ -109,8 +109,8 @@ Models.mdj is the raw file that can be edited using StarUML.
 ## AI Development Documentation
 Design docs and workstreams for future implementation are available:
 
-- Overview: [docs/ai_dev/README.md](docs/ai_dev/README.md)
-- Workstreams Index: [docs/ai_dev/workstreams/00-index.md](docs/ai_dev/workstreams/00-index.md)
+- Design Overview: [docs/design/readme.md](docs/design/readme.md)
+- Workstreams Index: [docs/design/workstreams/00-index.md](docs/design/workstreams/00-index.md)
 - System Architecture: [docs/architecture/overview.md](docs/architecture/overview.md)
 - Module Specs: [docs/specs/](docs/specs)
 - ADRs: [docs/adr/](docs/adr)

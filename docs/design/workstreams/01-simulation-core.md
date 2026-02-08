@@ -36,3 +36,42 @@ python3 run.py
 ## Checkpoints
 - Scenario loader implemented and referenced by `sim.py`.
 - Determinism test covers repeatability (add to Testing workstream).
+
+## Copy‑Paste Prompt
+```
+You are an AI coding agent working on City‑Sim, focusing on the Simulation Core workstream.
+
+Objectives:
+- Ensure deterministic tick loop and reproducible scenarios.
+- Establish scenario runner with seed control and logging.
+- Validate update cycle performance and correctness.
+
+Scope & Files:
+- Primary: src/simulation/sim.py, src/shared/settings.py, src/main.py, run.py
+- Specs: docs/specs/simulation.md, docs/architecture/overview.md
+
+Required Outputs:
+- Code/doc changes to implement/clarify scenario loader, determinism controls, and tick metrics.
+- Logs in output/logs/global/ with tick_duration_ms and KPIs.
+- Tests (if applicable) to verify determinism.
+
+Run Steps:
+1) ./init-venv.sh
+2) pip install -r requirements.txt
+3) python3 run.py
+4) ./test.sh
+
+Acceptance Criteria:
+- Same seed yields identical trajectories/logs.
+- Tick timing recorded; no >10% performance regression.
+- Minimal API changes unless spec requires.
+
+Checkpoints:
+- Scenario loader invoked by sim.py
+- Determinism test updated under tests/
+
+Deliver:
+- Concise plan + exact edits
+- Validation notes (run outputs/tests)
+- Follow-up recommendations
+```

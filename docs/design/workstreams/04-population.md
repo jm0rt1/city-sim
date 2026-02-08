@@ -29,3 +29,35 @@ python3 run.py
 ## Acceptance Criteria
 - Metrics stable and reproducible with seed control.
 - Expected trends under synthetic scenarios confirmed.
+
+## Copy‑Paste Prompt
+```
+You are an AI coding agent working on City‑Sim, focusing on the Population workstream.
+
+Objectives:
+- Implement population growth/decline models.
+- Track happiness and migration dynamics.
+
+Scope & Files:
+- Primary: src/city/population/population.py, src/city/population/happiness_tracker.py
+- Specs: docs/specs/population.md, docs/architecture/overview.md
+
+Required Outputs:
+- Population and happiness metrics logged per tick.
+- Tests validating trends under scenarios.
+
+Run Steps:
+1) ./init-venv.sh
+2) pip install -r requirements.txt
+3) python3 run.py
+4) ./test.sh
+
+Acceptance Criteria:
+- Metrics stable/reproducible with fixed seed.
+- Expected trends confirmed in baseline scenarios.
+
+Deliver:
+- Plan + edits
+- Validation (tests/logs)
+- Follow-up recommendations
+```

@@ -29,3 +29,35 @@ python3 run.py
 ## Acceptance Criteria
 - Budget reconciles correctly each tick.
 - Policies produce predictable changes within tolerated bounds.
+
+## Copy‑Paste Prompt
+```
+You are an AI coding agent working on City‑Sim, focusing on the Finance workstream.
+
+Objectives:
+- Model revenue streams, expenses, and policies.
+- Ensure budget updates integrate with simulation ticks.
+
+Scope & Files:
+- Primary: src/city/finance.py, src/city/city.py
+- Specs: docs/specs/finance.md, docs/architecture/overview.md
+
+Required Outputs:
+- Budget update functions with tests.
+- Metrics in logs for revenues/expenses per tick.
+
+Run Steps:
+1) ./init-venv.sh
+2) pip install -r requirements.txt
+3) python3 run.py
+4) ./test.sh
+
+Acceptance Criteria:
+- Budget reconciles each tick within tolerance.
+- Policies have predictable effects.
+
+Deliver:
+- Plan + edits
+- Validation (tests/logs)
+- Follow-up recommendations
+```

@@ -38,6 +38,15 @@ Objectives:
 - Model revenue streams, expenses, and policies.
 - Ensure budget updates integrate with simulation ticks.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/finance.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Primary: src/city/finance.py, src/city/city.py
 - Specs: docs/specs/finance.md, docs/architecture/overview.md

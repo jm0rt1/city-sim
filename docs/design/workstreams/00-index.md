@@ -25,3 +25,11 @@ Choose a workstream to get started. Each file contains objectives, inputs/output
 ## Prompt Template
 - Generic template: [docs/design/templates/workstream_prompt.md](../templates/workstream_prompt.md)
 - Each workstream file includes a tailored copy‑paste prompt at the end.
+ - All prompts consolidated: [docs/design/prompts.md](../prompts.md)
+
+## Context and Reading Order
+- Architecture: [../architecture/overview.md](../../architecture/overview.md), [../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md), [../architecture/city-sim-architecture.puml](../../architecture/city-sim-architecture.puml)
+- Specs: [../specs](../../specs) including simulation, city, finance, population, logging, traffic, scenarios
+- ADRs: [../adr](../../adr)
+- Guides: [../guides](../../guides)
+- Models: [../models/model.mdj](../../models/model.mdj)

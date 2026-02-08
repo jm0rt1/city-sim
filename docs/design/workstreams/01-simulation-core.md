@@ -46,9 +46,18 @@ Objectives:
 - Establish scenario runner with seed control and logging.
 - Validate update cycle performance and correctness.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/simulation.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Primary: src/simulation/sim.py, src/shared/settings.py, src/main.py, run.py
-- Specs: docs/specs/simulation.md, docs/architecture/overview.md
+- Related: docs/specs/simulation.md, docs/specs/logging.md
 
 Required Outputs:
 - Code/doc changes to implement/clarify scenario loader, determinism controls, and tick metrics.

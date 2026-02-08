@@ -28,6 +28,15 @@ You are an AI coding agent working on City‑Sim, focusing on the Roadmap workst
 Objectives:
 - Plan features and coordinate dependencies across workstreams.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/*, docs/specs/scenarios.md
+- ADRs: docs/adr/*
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - All modules; docs in docs/specs/* and docs/architecture/*
 

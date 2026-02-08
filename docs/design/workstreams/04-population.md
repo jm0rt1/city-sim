@@ -38,6 +38,15 @@ Objectives:
 - Implement population growth/decline models.
 - Track happiness and migration dynamics.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/population.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Primary: src/city/population/population.py, src/city/population/happiness_tracker.py
 - Specs: docs/specs/population.md, docs/architecture/overview.md

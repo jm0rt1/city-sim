@@ -5,12 +5,19 @@ Copy, adapt, and paste this into your AI assistant to run a focused workstream t
 ```
 You are an AI coding agent working on the City‑Sim project. Operate in documentation-first mode: plan precisely, update only the relevant files, and validate via quick runs/tests when applicable.
 
-Context:
-- Repo: city-sim (branch: master)
-- Entry points: run.py, src/main.py
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/*
+- ADRs: docs/adr/*
+- Workstreams Index: docs/design/workstreams/00-index.md
+- Templates: docs/design/templates/*
+- Guides: docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
 - Settings: src/shared/settings.py
-- Logging: output/logs/global/, output/logs/ui/
-- Specs: docs/specs/*, Architecture: docs/architecture/overview.md
+- Logs: output/logs/global/, output/logs/ui/
 
 Workstream: <NAME>
 Objectives:

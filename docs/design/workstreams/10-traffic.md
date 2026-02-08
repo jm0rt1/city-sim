@@ -49,6 +49,15 @@ You are an AI coding agent working on City‑Sim, focusing on the Transport & Tr
 Objectives:
 - Implement a transport network and traffic simulation with A* pathfinding, city/highway controllers, and metrics.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/traffic.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/*
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Integrate with InfrastructureState and CityManager; create Transport subsystem modules.
 - Specs: docs/specs/traffic.md; Architecture: docs/architecture/overview.md

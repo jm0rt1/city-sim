@@ -32,6 +32,15 @@ You are an AI coding agent working on City‑Sim, focusing on the Performance wo
 Objectives:
 - Profile simulation and optimize hotspots.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/simulation.md, docs/specs/city.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Primary: src/simulation/sim.py, city modules as needed
 - Specs: docs/architecture/overview.md

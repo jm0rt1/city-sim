@@ -43,6 +43,15 @@ Objectives:
 - Define decision effects and invariants.
 - Ensure CityManager operations are consistent and testable.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/city.md, docs/specs/logging.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Primary: src/city/city.py, src/city/city_manager.py, src/city/decisions.py
 - Specs: docs/specs/city.md, docs/architecture/overview.md

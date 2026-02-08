@@ -37,6 +37,15 @@ Objectives:
 - Structure logs for reproducibility and analysis.
 - Add metrics for key KPIs.
 
+Global Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Guides: docs/guides/contributing.md, docs/guides/glossary.md
+- Workstreams Index: docs/design/workstreams/00-index.md
+
 Scope & Files:
 - Logs: output/logs/global/, output/logs/ui/
 - Instrumentation: simulation and city modules

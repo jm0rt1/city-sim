@@ -28,6 +28,8 @@ Workstreams are designed to run independently where possible:
 
 See the index at [workstreams/00-index.md](workstreams/00-index.md) for details and links.
 
+For quick copy‑paste, see consolidated prompts: [prompts.md](prompts.md)
+
 ## Quick Run
 Use the following commands to run and test locally on macOS:
 

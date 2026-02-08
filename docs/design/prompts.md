@@ -17,15 +17,38 @@ Copy a prompt below and paste into your AI agent to run a focused task. Each pro
 - Settings: [src/shared/settings.py](../../src/shared/settings.py)
 - Logs: [output/logs/global/](../../output/logs/global/), [output/logs/ui/](../../output/logs/ui/)
 
+## Preflight Checklist
+- [ ] Read Architecture Overview, Class Hierarchy, and PlantUML diagram
+- [ ] Review relevant Specs (module + logging + scenarios) and ADRs
+- [ ] Confirm `settings` (seed, horizon, policies) and entry points
+- [ ] Note required outputs and acceptance criteria for the stream
+- [ ] Plan minimal, style-consistent changes and validation steps
+
 ## 01 – Simulation Core
 ```
 You are an AI coding agent working on the City‑Sim project. Operate in documentation-first mode: plan precisely, update only relevant files, and validate via quick runs/tests.
 
 Focus: Simulation Core
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/specs/simulation.md, docs/specs/logging.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/simulation.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review simulation/logging/scenarios specs and ADR
+- [ ] Confirm settings (seed, horizon, policies) and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Ensure deterministic tick loop and reproducible scenarios.
@@ -68,9 +91,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: City Modeling
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/specs/city.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/city.md, docs/specs/logging.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review city/logging specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Clarify City state, invariants, and transitions.
@@ -110,9 +149,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Finance
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/specs/finance.md, docs/specs/logging.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/finance.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review finance/logging/scenarios specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Model revenue, expenses, and policy effects.
@@ -148,9 +203,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Population
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/specs/population.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/population.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review population/logging/scenarios specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Implement population growth/decline and happiness/migration.
@@ -186,9 +257,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: UI
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/architecture/overview.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review logging/specs as relevant
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Improve CLI output and run summaries.
@@ -221,9 +308,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Data & Logging
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/specs/logging.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review logging/specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Define structured logs and KPIs.
@@ -256,9 +359,26 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Testing & CI
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: tests/, pyrightconfig.json
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/*
+- ADRs: docs/adr/*
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+- Tests & Config: tests/, pyrightconfig.json
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review relevant specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Add unit/integration tests; improve static analysis.
@@ -292,9 +412,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Performance
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: src/simulation/sim.py
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/simulation.md, docs/specs/city.md, docs/specs/logging.md
+- ADRs: docs/adr/001-simulation-determinism.md
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review simulation/city/logging specs and ADR
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Profile and optimize hotspots without breaking determinism.
@@ -325,8 +461,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Roadmap
 
-Context:
-- Use the Global Context Pack above.
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/*, docs/specs/scenarios.md
+- ADRs: docs/adr/*
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review specs, scenarios, and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Plan features and dependencies across workstreams.
@@ -352,9 +505,25 @@ You are an AI coding agent working on City‑Sim.
 
 Focus: Transport & Traffic
 
-Context:
-- Use the Global Context Pack above.
-- Additionally relevant: docs/specs/traffic.md, docs/specs/logging.md
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/traffic.md, docs/specs/logging.md, docs/specs/scenarios.md
+- ADRs: docs/adr/*
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review traffic/logging/scenarios specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 
 Objectives:
 - Implement transport network primitives and A* pathfinding.

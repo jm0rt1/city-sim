@@ -19,6 +19,13 @@ Global Context Pack:
 - Settings: src/shared/settings.py
 - Logs: output/logs/global/, output/logs/ui/
 
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and architecture diagram
+- [ ] Review relevant Specs and ADRs for this workstream
+- [ ] Confirm settings (seed, horizon, policies) and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
+
 Workstream: <NAME>
 Objectives:
 - <bullet points>

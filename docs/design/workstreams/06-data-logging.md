@@ -43,6 +43,12 @@ python3 run.py
 
 ## Copy‑Paste Prompt
 ```
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review logging/specs and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
 You are an AI coding agent working on City‑Sim, focusing on the Data & Logging workstream.
 
 Objectives:

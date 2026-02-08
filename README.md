@@ -105,3 +105,13 @@ The UML Diagrams for this program have been provided in the folder `./docs/UML`.
 The model was developed using StarUML Educational License. 2 output images were produced in .png and .jpg formats.
 
 Models.mdj is the raw file that can be edited using StarUML.
+
+## AI Development Documentation
+Design docs and workstreams for future implementation are available:
+
+- Overview: [docs/ai_dev/README.md](docs/ai_dev/README.md)
+- Workstreams Index: [docs/ai_dev/workstreams/00-index.md](docs/ai_dev/workstreams/00-index.md)
+- System Architecture: [docs/architecture/overview.md](docs/architecture/overview.md)
+- Module Specs: [docs/specs/](docs/specs)
+- ADRs: [docs/adr/](docs/adr)
+- Guides: [docs/guides/](docs/guides)

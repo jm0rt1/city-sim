@@ -67,6 +67,17 @@ This document summarizes the planned class hierarchy and responsibilities across
 - **CLIService**: runs scenarios and prints summaries.
 - **ScenarioReportGenerator**: builds human‑readable reports.
 
+## Transport & Traffic
+- **TransportSubsystem**: advances traffic simulation each tick.
+- **RoadGraph**: intersections and road segments with lanes.
+- **Intersection/RoadSegment/Lane**: network primitives.
+- **RoutePlanner/PathfindingService**: A* planning and re‑routing.
+- **Vehicle/FleetManager**: vehicle state and route assignment.
+- **CityTrafficController/HighwayTrafficController/SignalController**: control logic for signals and highways.
+- **TrafficModel/CongestionModel**: flow and congestion computation.
+- **TrafficSensor/TrafficReading**: measurements for speed, throughput, occupancy.
+- **TrafficDelta**: tick outputs (avg speed, congestion index, throughput).
+
 ## Interfaces
 - **ISubsystem**: subsystems must implement `update(city, ctx)`.
 - **IPolicy**: policy definition.

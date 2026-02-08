@@ -12,6 +12,7 @@ Choose a workstream to get started. Each file contains objectives, inputs/output
 - [07-testing-ci.md](07-testing-ci.md) – Unit/integration tests, static analysis, and CI.
 - [08-performance.md](08-performance.md) – Profiling and optimization plans.
 - [09-roadmap.md](09-roadmap.md) – Planning across releases and cross‑workstream dependencies.
+ - [10-traffic.md](10-traffic.md) – Transport network, pathfinding, and city/highway traffic simulation.
 
 ## Source Pointers
 - Simulation: [src/simulation/sim.py](../../src/simulation/sim.py)

@@ -17,6 +17,9 @@ Define structured logging for reproducibility and analysis.
 - `happiness`: float
 - `policies_applied`: array
 - `tick_duration_ms`: float
+ - `traffic_avg_speed`: float
+ - `traffic_congestion_index`: float
+ - `traffic_throughput`: int
 
 ## Summary (end of run)
 - `final_budget`, `final_population`, `avg_happiness`, `total_ticks`, `run_kpis`

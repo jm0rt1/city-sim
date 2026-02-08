@@ -23,3 +23,22 @@ Define baseline scenarios with fixed seeds and expected qualitative trends.
   - `duration_ticks`: 150
   - `policies`: spending cuts
   - `expected_trends`: budget surplus, slowed population growth, happiness may dip
+
+## Traffic Scenarios
+- `rush-hour-city`:
+  - `seed`: 2026
+  - `duration_ticks`: 120
+  - `policies`: signal timing optimization
+  - `expected_trends`: congestion index rises then stabilizes; throughput increases with optimized signals
+
+- `highway-incident`:
+  - `seed`: 84
+  - `duration_ticks`: 180
+  - `policies`: ramp metering
+  - `expected_trends`: temporary congestion spike; rerouting reduces travel times; throughput recovers
+
+- `network-expansion`:
+  - `seed`: 512
+  - `duration_ticks`: 200
+  - `policies`: infrastructure investment (new road segments)
+  - `expected_trends`: improved avg speed and throughput; lower congestion index

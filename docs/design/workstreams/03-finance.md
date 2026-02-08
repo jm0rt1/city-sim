@@ -1,5 +1,17 @@
 # Workstream: Finance
 
+## Reading Checklist
+- Architecture Overview: [../../architecture/overview.md](../../architecture/overview.md)
+- Class Hierarchy: [../../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md)
+- Architecture Diagram: [../../architecture/city-sim-architecture.puml](../../architecture/city-sim-architecture.puml)
+- Specs: [../../specs/finance.md](../../specs/finance.md), [../../specs/logging.md](../../specs/logging.md), [../../specs/scenarios.md](../../specs/scenarios.md)
+- ADRs: [../../adr/001-simulation-determinism.md](../../adr/001-simulation-determinism.md)
+- Design Guide: [../readme.md](../readme.md)
+- Consolidated Prompts: [../prompts.md](../prompts.md)
+- Templates: [../templates/](../templates/)
+- Guides: [../../guides/](../../guides/)
+- Models: [../../models/model.mdj](../../models/model.mdj)
+
 ## Objectives
 - Model revenue streams, expenses, and policies.
 - Ensure budget updates integrate with simulation ticks.

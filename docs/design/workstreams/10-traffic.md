@@ -1,5 +1,17 @@
 # Workstream: Transport & Traffic
 
+## Reading Checklist
+- Architecture Overview: [../../architecture/overview.md](../../architecture/overview.md)
+- Class Hierarchy: [../../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md)
+- Architecture Diagram: [../../architecture/city-sim-architecture.puml](../../architecture/city-sim-architecture.puml)
+- Specs: [../../specs/traffic.md](../../specs/traffic.md), [../../specs/logging.md](../../specs/logging.md), [../../specs/scenarios.md](../../specs/scenarios.md)
+- ADRs: [../../adr](../../adr)
+- Design Guide: [../readme.md](../readme.md)
+- Consolidated Prompts: [../prompts.md](../prompts.md)
+- Templates: [../templates/](../templates/)
+- Guides: [../../guides/](../../guides/)
+- Models: [../../models/model.mdj](../../models/model.mdj)
+
 ## Objectives
 - Implement transport network with intersections, road segments, lanes.
 - Add pathfinding (A*) for vehicle routing and re-routing.

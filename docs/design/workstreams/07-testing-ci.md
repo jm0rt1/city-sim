@@ -1,5 +1,17 @@
 # Workstream: Testing & CI
 
+## Reading Checklist
+- Architecture Overview: [../../architecture/overview.md](../../architecture/overview.md)
+- Class Hierarchy: [../../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md)
+- Architecture Diagram: [../../architecture/city-sim-architecture.puml](../../architecture/city-sim-architecture.puml)
+- Specs: [../../specs/simulation.md](../../specs/simulation.md), [../../specs/city.md](../../specs/city.md), [../../specs/finance.md](../../specs/finance.md), [../../specs/population.md](../../specs/population.md), [../../specs/traffic.md](../../specs/traffic.md), [../../specs/logging.md](../../specs/logging.md)
+- ADRs: [../../adr/001-simulation-determinism.md](../../adr/001-simulation-determinism.md)
+- Design Guide: [../readme.md](../readme.md)
+- Consolidated Prompts: [../prompts.md](../prompts.md)
+- Templates: [../templates/](../templates/)
+- Guides: [../../guides/](../../guides/)
+- Models: [../../models/model.mdj](../../models/model.mdj)
+
 ## Objectives
 - Add unit/integration tests and static analysis.
 - Ensure stable CI pipeline.

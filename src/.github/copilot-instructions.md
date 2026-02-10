@@ -36,7 +36,15 @@ This directory contains the core implementation of the City-Sim simulation. All 
 - **Purpose**: Budget management, revenue/expense calculation
 - **Principles**:
   - Budget equation must balance: prev_budget + revenue - expenses = new_budget
-  - Use Decimal for financial calculations if precision matters
+  - Use Decimal for financial calculations when precision matters:
+    ```python
+    from decimal import Decimal, ROUND_HALF_UP
+    
+    # For currency calculations
+    tax_amount = Decimal(str(revenue * tax_rate)).quantize(
+        Decimal('0.01'), rounding=ROUND_HALF_UP
+    )
+    ```
   - Document all revenue/expense sources
   - Validate policy effects on budget
 

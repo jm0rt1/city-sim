@@ -2094,16 +2094,48 @@ A compliant Transport & Traffic Subsystem implementation must satisfy:
 ## References
 
 ### Traffic Engineering
-- Highway Capacity Manual (HCM): Defines Level of Service metrics
-- Intelligent Driver Model (IDM): Car-following behavior model
-- TRANSIMS: Agent-based traffic simulation framework
+- **Highway Capacity Manual (HCM)** - Transportation Research Board, 7th Edition (2022)
+  - Defines Level of Service (LOS) classifications A-F based on traffic density
+  - Standard reference for capacity analysis and traffic flow theory
+  - [https://www.trb.org/Main/Blurbs/182501.aspx](https://www.trb.org/Main/Blurbs/182501.aspx)
+
+- **Intelligent Driver Model (IDM)** - Treiber & Kesting (2013)
+  - Realistic car-following behavior model used in traffic simulation
+  - Paper: "Traffic Flow Dynamics: Data, Models and Simulation"
+  - [https://traffic-simulation.de/info/info_IDM.html](https://traffic-simulation.de/info/info_IDM.html)
+
+- **TRANSIMS** - Los Alamos National Laboratory (2002-present)
+  - Transportation Analysis and Simulation System
+  - Agent-based traffic microsimulation framework
+  - [https://transims.github.io/](https://transims.github.io/)
 
 ### Algorithms
-- A* Search Algorithm: Optimal pathfinding with heuristics
-- Dijkstra's Algorithm: Shortest path baseline
-- Floyd-Warshall: All-pairs shortest paths (for preprocessing)
+- **A* Search Algorithm** - Hart, Nilsson & Raphael (1968)
+  - Optimal pathfinding using best-first search with heuristics
+  - Paper: "A Formal Basis for the Heuristic Determination of Minimum Cost Paths"
+  - [https://en.wikipedia.org/wiki/A*_search_algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)
+
+- **Dijkstra's Algorithm** - Dijkstra (1959)
+  - Shortest path algorithm (baseline for A*)
+  - Paper: "A Note on Two Problems in Connexion with Graphs"
+  - [https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+
+- **Floyd-Warshall Algorithm** - Floyd (1962), Warshall (1962)
+  - All-pairs shortest paths (useful for preprocessing)
+  - [https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm)
 
 ### Signal Control
-- Webster's Method: Optimal fixed-time signal timing
-- SCOOT (Split, Cycle, Offset Optimization Technique): Adaptive control
-- SCATS (Sydney Coordinated Adaptive Traffic System): Traffic-responsive system
+- **Webster's Method** - Webster (1958)
+  - "Traffic Signal Settings" - Road Research Technical Paper No. 39
+  - Optimal fixed-time signal timing based on delay minimization
+  - Foundation for modern signal timing practices
+
+- **SCOOT** - Hunt et al. (1981)
+  - Split, Cycle, Offset Optimization Technique
+  - Adaptive traffic control system used in UK and worldwide
+  - [https://www.scootutc.com/](https://www.scootutc.com/)
+
+- **SCATS** - Lowrie (1982)
+  - Sydney Coordinated Adaptive Traffic System
+  - Traffic-responsive signal control used in Australia and internationally
+  - [https://www.scats.com.au/](https://www.scats.com.au/)

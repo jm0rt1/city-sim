@@ -41,11 +41,14 @@ This directory contains the core implementation of the City-Sim simulation. All 
     from decimal import Decimal, ROUND_HALF_UP
     
     # For currency calculations - convert to Decimal before operations
+    # Use when exact penny precision is required for financial reporting
     revenue_decimal = Decimal(str(revenue))
     tax_rate_decimal = Decimal(str(tax_rate))
     tax_amount = (revenue_decimal * tax_rate_decimal).quantize(
         Decimal('0.01'), rounding=ROUND_HALF_UP
     )
+    # Note: For internal calculations where small errors are acceptable,
+    # float arithmetic is fine. Use Decimal for final currency amounts.
     ```
   - Document all revenue/expense sources
   - Validate policy effects on budget

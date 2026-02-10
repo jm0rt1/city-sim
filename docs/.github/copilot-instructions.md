@@ -100,7 +100,7 @@ When changing a module's public API or contract:
    - Acceptance Criteria for new requirements
 5. **Review consistency** between code and spec
 
-**Note**: When documenting changes for review, you may temporarily mark new additions with "NEW -" prefix to help reviewers identify changes. Remove these markers after the change is merged. This is optional and primarily useful for complex spec updates with many changes.
+**Note**: When documenting changes for review, you may temporarily mark new additions with "NEW -" prefix to help reviewers identify changes. The author should remove these markers before merging the PR, as they are review aids only. This is optional and primarily useful for complex spec updates with many changes.
 
 ### Example: Updating finance.md
 ```markdown

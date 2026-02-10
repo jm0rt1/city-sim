@@ -100,7 +100,7 @@ When changing a module's public API or contract:
    - Acceptance Criteria for new requirements
 5. **Review consistency** between code and spec
 
-**Note**: When documenting changes, mark new additions with "NEW" or similar indicator to help reviewers identify what changed. This is a documentation convention, not required in the actual implementation.
+**Note**: When documenting changes for review, you may temporarily mark new additions with "NEW -" prefix to help reviewers identify changes. Remove these markers after the change is merged. This is optional and primarily useful for complex spec updates with many changes.
 
 ### Example: Updating finance.md
 ```markdown

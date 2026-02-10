@@ -40,8 +40,10 @@ This directory contains the core implementation of the City-Sim simulation. All 
     ```python
     from decimal import Decimal, ROUND_HALF_UP
     
-    # For currency calculations
-    tax_amount = Decimal(str(revenue * tax_rate)).quantize(
+    # For currency calculations - convert to Decimal before operations
+    revenue_decimal = Decimal(str(revenue))
+    tax_rate_decimal = Decimal(str(tax_rate))
+    tax_amount = (revenue_decimal * tax_rate_decimal).quantize(
         Decimal('0.01'), rounding=ROUND_HALF_UP
     )
     ```

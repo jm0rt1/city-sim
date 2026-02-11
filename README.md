@@ -35,9 +35,9 @@ Set one of these programs as the integrated terminal in VSCODE
 
 
 
-### Development Enviornment and Interpreter:
-- Visual Studio Code + Extenstions: "Pylance v2022.10.30" and "Python v2022.16.1"
-- Python 3.11.2: https://www.python.org/downloads/release/python-373/
+### Development Environment and Interpreter:
+- Visual Studio Code + Extensions: "Pylance v2022.10.30" and "Python v2022.16.1"
+- Python 3.11.2: https://www.python.org/downloads/release/python-3112/
 
 
 ## **4. Initializing The Virtual Environment**
@@ -100,7 +100,7 @@ Follow the above procedures for initializing the virtual environment, then run:
     ./test.sh
 
 ## **7. UML**
-The UML Diagrams for this program have been provided in the folder `./docs/UML`.
+The UML Diagrams for this program have been provided in the folder `./docs/models`.
 
 The model was developed using StarUML Educational License. 2 output images were produced in .png and .jpg formats.
 

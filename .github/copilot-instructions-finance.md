@@ -369,6 +369,6 @@ Start here:
 1. **docs/specs/finance.md** - Your primary specification
 2. **docs/design/workstreams/03-finance.md** - This workstream's details
 3. **docs/specs/city.md** - City state you interact with
-4. **src/.github/copilot-instructions.md** - Source code guidelines
+4. **.github/copilot-instructions.md** - Source code guidelines
 
 Remember: The budget equation is law. Revenue - Expenses = Budget Change, every single tick.

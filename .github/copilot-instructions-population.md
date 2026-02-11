@@ -425,6 +425,6 @@ Start here:
 1. **docs/specs/population.md** - Your primary specification
 2. **docs/design/workstreams/04-population.md** - This workstream's details
 3. **docs/specs/city.md** - City state you interact with
-4. **src/.github/copilot-instructions.md** - Source code guidelines
+4. **.github/copilot-instructions.md** - Source code guidelines
 
 Remember: Population is the heart of the city. Happy citizens stay and grow; unhappy ones leave.

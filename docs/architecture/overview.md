@@ -116,7 +116,7 @@ Tick N+1: budget = 1,000,000 + 50,000 - 30,000 = 1,020,000
 - Provide re-routing under incidents or congestion
 - Log traffic metrics (avg speed, congestion index, throughput)
 
-**Implementation**: Future development under `src/transport/` (see workstream 10)
+**Implementation**: Future development under `src/city/transport/` (see workstream 10)
 
 **See Also**: [Traffic Specification](../specs/traffic.md)
 

@@ -476,6 +476,6 @@ Start here:
 1. **docs/specs/traffic.md** - Your primary specification
 2. **docs/design/workstreams/10-traffic.md** - This workstream's details
 3. **docs/specs/city.md** - City infrastructure you interact with
-4. **src/.github/copilot-instructions.md** - Source code guidelines
+4. **.github/copilot-instructions.md** - Source code guidelines
 
 Remember: Traffic must flow. Pathfinding must be optimal. Everything must be deterministic.

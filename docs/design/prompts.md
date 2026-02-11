@@ -5,7 +5,6 @@ Copy a prompt below and paste into your AI agent to run a focused task. Each pro
 ## Global Context Pack
 - Architecture Overview: [docs/architecture/overview.md](../architecture/overview.md)
 - Class Hierarchy Summary: [docs/architecture/class-hierarchy.md](../architecture/class-hierarchy.md)
-- Architecture Diagram (PlantUML): [docs/architecture/city-sim-architecture.puml](../architecture/city-sim-architecture.puml)
 - Specs: [docs/specs/simulation.md](../specs/simulation.md), [docs/specs/city.md](../specs/city.md), [docs/specs/finance.md](../specs/finance.md), [docs/specs/population.md](../specs/population.md), [docs/specs/logging.md](../specs/logging.md), [docs/specs/traffic.md](../specs/traffic.md), [docs/specs/scenarios.md](../specs/scenarios.md)
 - ADRs: [docs/adr/000-template.md](../adr/000-template.md), [docs/adr/001-simulation-determinism.md](../adr/001-simulation-determinism.md)
 - Design Guide: [docs/design/readme.md](readme.md)
@@ -18,7 +17,7 @@ Copy a prompt below and paste into your AI agent to run a focused task. Each pro
 - Logs: [output/logs/global/](../../output/logs/global/), [output/logs/ui/](../../output/logs/ui/)
 
 ## Preflight Checklist
-- [ ] Read Architecture Overview, Class Hierarchy, and PlantUML diagram
+- [ ] Read Architecture Overview and Class Hierarchy
 - [ ] Review relevant Specs (module + logging + scenarios) and ADRs
 - [ ] Confirm `settings` (seed, horizon, policies) and entry points
 - [ ] Note required outputs and acceptance criteria for the stream
@@ -33,7 +32,6 @@ Focus: Simulation Core
 Context Pack:
 - Architecture Overview: docs/architecture/overview.md
 - Class Hierarchy: docs/architecture/class-hierarchy.md
-- Architecture Diagram: docs/architecture/city-sim-architecture.puml
 - Specs: docs/specs/simulation.md, docs/specs/logging.md, docs/specs/scenarios.md
 - ADRs: docs/adr/001-simulation-determinism.md
 - Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md

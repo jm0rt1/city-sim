@@ -60,6 +60,9 @@ Before contributing, familiarize yourself with:
 - **[Workstreams](../design/workstreams/00-index.md)**: Organized development tracks
 - **[Glossary](glossary.md)**: Key terms and definitions
 - **[ADRs](../adr/)**: Architecture decisions and rationale
+- **[Testing Documentation](../../tests/_docs/)**: Comprehensive testing strategy and guidelines
+- **[Database/Save System](../../db/)**: Save system architecture and usage guide
+- **[Feature Catalog](../FEATURE_CATALOG.md)**: 200+ planned features across 40+ subsystems
 
 ## Development Workflow
 
@@ -275,6 +278,13 @@ except SubsystemError as e:
 ```
 
 ## Testing Guidelines
+
+**For comprehensive testing documentation, see [Testing Documentation](../../tests/_docs/)** which includes:
+- Integration test strategy
+- System-level test scenarios
+- Test data management guidelines
+- Test automation patterns
+- Coverage metrics and quality standards
 
 ### Test Organization
 

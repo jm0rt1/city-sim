@@ -331,7 +331,7 @@ jobs:
 5. **Parallel Execution**: Run independent integration tests concurrently
 
 ### Free-Threaded Python Considerations
-When Python 3.13+ with free-threaded execution is adopted:
+With Python 3.13+ free-threaded execution support (see [ADR-002](../../docs/adr/002-free-threaded-python.md)):
 1. Add concurrency integration tests
 2. Verify thread-safety of subsystem interactions
 3. Test race conditions and synchronization

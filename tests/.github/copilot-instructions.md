@@ -6,9 +6,10 @@ All tests must be deterministic, isolated, and fast. Follow the patterns establi
 This directory contains comprehensive testing infrastructure for the City-Sim project. For detailed test planning and strategy documentation, see the `_docs/` subdirectory.
 
 ## Python Version and Free-Threaded Support
-- **Current**: Python 3.12.3 (stable)
-- **Target**: Python 3.13+ for free-threaded (no-GIL) execution when stable
-- All tests must be designed to be thread-safe for future free-threaded Python support
+- **Required**: Python 3.13 or later with free-threaded (no-GIL) execution
+  - See [ADR-002](../../docs/adr/002-free-threaded-python.md) for detailed rationale
+  - Installation guide: https://py-free-threading.github.io/installing_cpython/
+- All tests must be designed to be thread-safe for free-threaded Python support
 - Avoid global mutable state; use proper synchronization when necessary
 
 ## Test Organization

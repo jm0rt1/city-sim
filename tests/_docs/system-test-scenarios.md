@@ -485,7 +485,7 @@ python -m unittest discover -s tests/system -v
 1. **Fixed Seeds**: All scenarios use explicit, documented seeds
 2. **Identical Runs**: Multiple runs with same seed produce identical results
 3. **Cross-Platform**: Results consistent across Windows, macOS, Linux
-4. **Version Consistency**: Results consistent across Python 3.11, 3.12, 3.13+
+4. **Version Consistency**: Results consistent across Python 3.13+ versions
 
 ### Determinism Validation Test
 ```python
@@ -593,7 +593,7 @@ This system test scenario documentation integrates with:
 7. **Leaderboards**: Track best scenario completion times/scores
 
 ### Free-Threaded Python Integration
-When Python 3.13+ with free-threaded execution is adopted:
+With Python 3.13+ free-threaded execution support (see [ADR-002](../../docs/adr/002-free-threaded-python.md)):
 1. Add parallel scenario execution tests
 2. Validate determinism in multi-threaded scenarios
 3. Performance comparison tests (single vs. multi-threaded)

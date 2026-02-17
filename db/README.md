@@ -62,8 +62,9 @@ For detailed documentation, see:
 - 🚧 Cloud save sync (future)
 
 ## Python Version
-- **Current**: Python 3.12.3
-- **Target**: Python 3.13+ for free-threaded support
+- **Required**: Python 3.13 or later with free-threaded mode
+  - See [ADR-002](../docs/adr/002-free-threaded-python.md) for detailed rationale
+  - Installation guide: https://py-free-threading.github.io/installing_cpython/
 
 ## Status
 - **Documentation**: ✅ Initial docs complete

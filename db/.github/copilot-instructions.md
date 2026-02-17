@@ -51,8 +51,9 @@ db/
 ## Python Version and Free-Threaded Support
 
 ### Current Environment
-- **Python 3.12.3**: Current stable version in use
-- **Target**: Python 3.13+ for free-threaded (no-GIL) support when stable
+- **Python 3.13+**: Required for free-threaded (no-GIL) support
+  - See [ADR-002](../../docs/adr/002-free-threaded-python.md) for detailed rationale
+  - Installation guide: https://py-free-threading.github.io/installing_cpython/
 
 ### Free-Threaded Considerations
 - **Thread-Safe I/O**: Ensure file operations are thread-safe

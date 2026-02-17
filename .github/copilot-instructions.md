@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-City-Sim is a deterministic city-building simulation written in Python 3.11+. The project simulates city dynamics including population growth/decline, happiness tracking, infrastructure management, finance/budgeting, and traffic systems. The simulation operates on a tick-based system where each tick represents a time unit (e.g., a day) in the city's lifecycle.
+City-Sim is a deterministic city-building simulation written in Python 3.13+. The project simulates city dynamics including population growth/decline, happiness tracking, infrastructure management, finance/budgeting, and traffic systems. The simulation operates on a tick-based system where each tick represents a time unit (e.g., a day) in the city's lifecycle.
 
 ## Core Principles
 
@@ -36,7 +36,8 @@ The architecture follows clear subsystem boundaries:
 ## Tech Stack & Tooling
 
 ### Language & Environment
-- **Python 3.11.2+** (developed on 3.11.2, tested on 3.12+)
+- **Python 3.13+** with free-threaded mode (no Global Interpreter Lock) for optimal performance
+  - See [ADR-002: Free-Threaded Python](docs/adr/002-free-threaded-python.md) for detailed rationale
 - Virtual environment managed via `./init-venv.sh` script
 - Dependencies in `requirements.txt` (currently minimal)
 

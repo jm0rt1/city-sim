@@ -16,7 +16,10 @@ Welcome to the City-Sim project! This guide will help you contribute effectively
 ## Getting Started
 
 ### Prerequisites
-- Python 3.11.2 or higher
+- Python 3.13 or later with free-threaded mode (no Global Interpreter Lock)
+  - Download from: https://www.python.org/downloads/
+  - Free-threading installation guide: https://py-free-threading.github.io/installing_cpython/
+  - See [ADR-002](../adr/002-free-threaded-python.md) for rationale
 - Git
 - Visual Studio Code (recommended) with Python and Pylance extensions
 - Familiarity with the [Architecture Overview](../architecture/overview.md) and [Class Hierarchy](../architecture/class-hierarchy.md)

@@ -28,7 +28,7 @@ Choose a workstream to get started. Each file contains objectives, inputs/output
  - All prompts consolidated: [docs/design/prompts.md](../prompts.md)
 
 ## Context and Reading Order
-- Architecture: [../architecture/overview.md](../../architecture/overview.md), [../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md), [../architecture/city-sim-architecture.puml](../../architecture/city-sim-architecture.puml)
+- Architecture: [../architecture/overview.md](../../architecture/overview.md), [../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md)
 - Specs: [../specs](../../specs) including simulation, city, finance, population, logging, traffic, scenarios
 - ADRs: [../adr](../../adr)
 - Guides: [../guides](../../guides)

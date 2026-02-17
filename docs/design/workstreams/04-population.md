@@ -3,7 +3,6 @@
 ## Reading Checklist
 - Architecture Overview: [../../architecture/overview.md](../../architecture/overview.md)
 - Class Hierarchy: [../../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md)
-- Architecture Diagram: [../../architecture/city-sim-architecture.puml](../../architecture/city-sim-architecture.puml)
 - Specs: [../../specs/population.md](../../specs/population.md), [../../specs/logging.md](../../specs/logging.md), [../../specs/scenarios.md](../../specs/scenarios.md)
 - ADRs: [../../adr/001-simulation-determinism.md](../../adr/001-simulation-determinism.md)
 - Design Guide: [../readme.md](../readme.md)

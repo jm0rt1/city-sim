@@ -15,5 +15,5 @@ Adopt deterministic tick loop behavior: given a fixed seed and configuration, st
 - Slight overhead for seeding and validation.
 
 ## References
-- Workstream: [Simulation Core](../ai_dev/workstreams/01-simulation-core.md)
+- Workstream: [Simulation Core](../design/workstreams/01-simulation-core.md)
 - Spec: [Simulation](../specs/simulation.md)

@@ -395,7 +395,7 @@ pyright src/
 
 Start here:
 1. **docs/design/workstreams/07-testing-ci.md** - This workstream's details
-2. **tests/.github/copilot-instructions.md** - Testing guidelines
+2. **.github/copilot-instructions-testing.md** - Testing guidelines
 3. **docs/specs/** - All specs define what to test
 4. **docs/adr/001-simulation-determinism.md** - Critical for test strategy
 

@@ -8,7 +8,6 @@ You are an AI coding agent working on the City‑Sim project. Operate in documen
 Global Context Pack:
 - Architecture Overview: docs/architecture/overview.md
 - Class Hierarchy: docs/architecture/class-hierarchy.md
-- Architecture Diagram: docs/architecture/city-sim-architecture.puml
 - Specs: docs/specs/*
 - ADRs: docs/adr/*
 - Workstreams Index: docs/design/workstreams/00-index.md
@@ -20,7 +19,7 @@ Global Context Pack:
 - Logs: output/logs/global/, output/logs/ui/
 
 Preflight Checklist:
-- [ ] Read Architecture Overview, Class Hierarchy, and architecture diagram
+- [ ] Read Architecture Overview and Class Hierarchy
 - [ ] Review relevant Specs and ADRs for this workstream
 - [ ] Confirm settings (seed, horizon, policies) and entry points
 - [ ] Identify required outputs and acceptance criteria

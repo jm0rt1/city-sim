@@ -91,9 +91,9 @@ This document summarizes the comprehensive documentation expansion completed for
 ## Technical Specifications
 
 ### Python Version Support
-- **Current**: Python 3.12.3
-- **Target**: Python 3.13+ (free-threaded/no-GIL support)
-- All documentation prepared for future free-threaded Python
+- **Required**: Python 3.13+ with free-threaded mode (no-GIL support)
+  - See [ADR-002](docs/adr/002-free-threaded-python.md) for detailed rationale
+- All documentation prepared for free-threaded Python support
 
 ### Design Principles Applied
 1. **Determinism First**: Emphasized throughout all documentation
@@ -248,8 +248,7 @@ aaee34b - Initial plan
 1. Implement save system
 2. Implement testing infrastructure
 3. Enhance scripts as documented
-4. Migrate to Python 3.13+ when stable
-5. Implement open items (OIs)
+4. Implement open items (OIs)
 
 ## Files and Locations
 

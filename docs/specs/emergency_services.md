@@ -915,4 +915,5 @@ class EmergencyServicesSettings:
 - **EMS Protocols**: National Highway Traffic Safety Administration (NHTSA) guidelines
 - **Police Operations**: International Association of Chiefs of Police (IACP) best practices
 - **Disaster Response**: Federal Emergency Management Agency (FEMA) frameworks
-- **Related Specs**: [Crime](crime.md), [Healthcare](healthcare.md), [Traffic](traffic.md), [Environment](environment.md)
+- **Related Specs**: [Healthcare](healthcare.md), [Traffic](traffic.md), [Environment](environment.md)
+  - *Note: Crime subsystem specification is planned for future development*

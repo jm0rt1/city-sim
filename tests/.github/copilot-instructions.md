@@ -3,12 +3,28 @@
 ## Overview
 All tests must be deterministic, isolated, and fast. Follow the patterns established in existing tests.
 
+This directory contains comprehensive testing infrastructure for the City-Sim project. For detailed test planning and strategy documentation, see the `_docs/` subdirectory.
+
+## Python Version and Free-Threaded Support
+- **Current**: Python 3.12.3 (stable)
+- **Target**: Python 3.13+ for free-threaded (no-GIL) execution when stable
+- All tests must be designed to be thread-safe for future free-threaded Python support
+- Avoid global mutable state; use proper synchronization when necessary
+
 ## Test Organization
 
 ### Directory Structure
+- `tests/_docs/`: High-level test documentation and strategy
+  - `integration-test-strategy.md`: Integration test planning
+  - `system-test-scenarios.md`: System-level test scenarios
+  - `test-data-management.md`: Test data guidelines
+  - `test-automation-patterns.md`: Automation frameworks
+  - `test-coverage-metrics.md`: Coverage standards
 - `tests/core/`: Unit tests for core modules
 - `tests/integration/`: Integration tests (if added)
+- `tests/system/`: System-level end-to-end tests (if added)
 - `tests/fixtures/`: Shared test fixtures and data
+- `tests/data/`: Test data files and configurations
 
 ### Naming Conventions
 - Files: `test_<module>.py` or `Test<Module>.py`
@@ -325,7 +341,79 @@ def test_migration_with_low_happiness(self):
     # Test implementation
 ```
 
+## Advanced Testing Topics
+
+### Property-Based Testing
+Consider using Hypothesis for property-based testing:
+```python
+from hypothesis import given
+import hypothesis.strategies as st
+
+class TestPropertyBased(unittest.TestCase):
+    @given(st.integers(min_value=0, max_value=1000))
+    def test_population_always_non_negative(self, initial_pop):
+        """Population should never go negative regardless of operations."""
+        city = City(initial_population=initial_pop)
+        for _ in range(10):
+            city.advance_day()
+        self.assertGreaterEqual(len(city.population), 0)
+```
+
+### Performance Testing
+```python
+import unittest
+import time
+
+class TestPerformance(unittest.TestCase):
+    def test_tick_execution_time(self):
+        """Single tick should complete within 100ms."""
+        city_manager = CityManager(City())
+        start = time.perf_counter()
+        city_manager.update()
+        elapsed = time.perf_counter() - start
+        self.assertLess(elapsed, 0.1, f"Tick took {elapsed:.3f}s")
+```
+
+### Concurrency Testing (for Free-Threaded Python)
+```python
+import unittest
+from concurrent.futures import ThreadPoolExecutor
+
+class TestConcurrency(unittest.TestCase):
+    def test_concurrent_reads_are_safe(self):
+        """Multiple threads should be able to read city state safely."""
+        city = City()
+        
+        def read_population():
+            return len(city.population)
+        
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = [executor.submit(read_population) for _ in range(100)]
+            results = [f.result() for f in futures]
+        
+        # All reads should return the same value
+        self.assertEqual(len(set(results)), 1)
+```
+
+## Breadcrumbs for Documentation Reconciliation
+
+**ATTENTION - Top-Level Docs Agent**: This testing documentation integrates with:
+1. Main copilot instructions in `.github/copilot-instructions.md`
+2. Testing workstream in `docs/design/workstreams/07-testing-ci.md`
+3. CI/CD configuration (future GitHub Actions workflows)
+4. Quality assurance standards (future ADR on testing policies)
+
+**Open Items (OIs)**:
+- [ ] CI/CD pipeline integration with GitHub Actions
+- [ ] Code coverage reporting setup and enforcement thresholds
+- [ ] Performance benchmarking framework
+- [ ] Mutation testing configuration
+- [ ] Property-based testing adoption strategy
+- [ ] Test parallelization setup
+- [ ] Free-threaded Python (3.13+) compatibility validation
+
 ## References
 - Testing Workstream: docs/design/workstreams/07-testing-ci.md
 - Contributing Guide: docs/guides/contributing.md
 - Main Instructions: ../.github/copilot-instructions.md
+- Test Documentation: _docs/

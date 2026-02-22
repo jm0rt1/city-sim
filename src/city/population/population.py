@@ -15,12 +15,12 @@ class Population():
         self.pops.remove(pop)
 
     def property_tax(self):
-        return sum([1 for pop in self.pops if pop.property])
+        return sum(1 for pop in self.pops if pop.property)
 
     @classmethod
     def from_list(cls, pops_list: list["Pop"]):
         population = cls()
-        cls.pops = pops_list
+        population.pops = pops_list
         return population
 
     def adjust_happiness(self):

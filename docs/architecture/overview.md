@@ -456,6 +456,9 @@ While current implementation focuses on CLI and log-based outputs, the architect
 - **[UML Models](../models/model.mdj)**: Visual class diagrams and relationships
 - **[Contributing Guide](../guides/contributing.md)**: How to contribute to the codebase
 - **[Glossary](../guides/glossary.md)**: Definitions of key terms
+- **[Testing Documentation](../../tests/_docs/)**: Comprehensive testing strategy and guidelines
+- **[Database/Save System](../../db/)**: Save system architecture and usage guide
+- **[Feature Catalog](../FEATURE_CATALOG.md)**: 200+ planned features across 40+ subsystems
 
 ## Validation & Testing Strategy
 
@@ -468,4 +471,4 @@ To ensure the architecture is correctly implemented:
 5. **Schema Validation**: Verify log outputs match defined schemas
 6. **Scenario Suites**: Maintain library of scenarios covering edge cases and typical usage
 
-See [Testing Workstream](../design/workstreams/07-testing-ci.md) for detailed testing approach.
+See [Testing Workstream](../design/workstreams/07-testing-ci.md) and [Testing Documentation](../../tests/_docs/) for detailed testing approach.

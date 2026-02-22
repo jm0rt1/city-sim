@@ -31,7 +31,7 @@ This document serves as a comprehensive guide for the documentation reconciliati
 - **Scope**: Comprehensive, forward-looking documentation
 - **Style**: Consistent with existing copilot instructions
 - **Focus**: Supporting feature expansion and complex system design
-- **Target**: Python 3.12.3 (current), Python 3.13+ (future free-threaded support)
+- **Target**: Python 3.13+ with free-threaded support (see [docs/adr/002-free-threaded-python.md](docs/adr/002-free-threaded-python.md))
 
 ## Directory Structure Overview
 

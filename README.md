@@ -120,3 +120,11 @@ Design docs and workstreams for future implementation are available:
 - Module Specs: [docs/specs/](docs/specs)
 - ADRs: [docs/adr/](docs/adr)
 - Guides: [docs/guides/](docs/guides)
+
+## Additional Documentation
+
+- **Documentation Completion Summary**: [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) - Details of comprehensive documentation expansion
+- **Integration Guide**: [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) - Documentation reconciliation and integration guide
+- **Testing Documentation**: [tests/_docs/](tests/_docs/) - Comprehensive testing strategy and guidelines
+- **Database/Save System**: [db/](db/) and [db/_docs/](db/_docs/) - Save system architecture and usage guide
+- **Feature Catalog**: [docs/FEATURE_CATALOG.md](docs/FEATURE_CATALOG.md) - 200+ planned features across 40+ subsystems

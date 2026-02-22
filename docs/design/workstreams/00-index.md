@@ -13,6 +13,7 @@ Choose a workstream to get started. Each file contains objectives, inputs/output
 - [08-performance.md](08-performance.md) – Profiling and optimization plans.
 - [09-roadmap.md](09-roadmap.md) – Planning across releases and cross‑workstream dependencies.
  - [10-traffic.md](10-traffic.md) – Transport network, pathfinding, and city/highway traffic simulation.
+- [11-graphics.md](11-graphics.md) – Isometric 2D tile renderer, sprite atlas pipeline, and AI-generated game assets.
 
 ## Source Pointers
 - Simulation: [src/simulation/sim.py](../../src/simulation/sim.py)

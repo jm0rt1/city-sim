@@ -447,10 +447,13 @@ While current implementation focuses on CLI and log-based outputs, the architect
 - **Decoupled Rendering**: UI runs in separate process, consuming logs or events
 - **Replay Capability**: UI can replay simulation from logs without re-running simulation
 
+For a full treatment of how to achieve good game graphics under this architecture — including the recommended isometric 2D tile rendering approach, required tools (pygame-ce, Pillow, Tiled), AI image-generation prompts for producing tile assets, and the detailed rendering class design — see the **[Graphics Specification](../specs/graphics.md)** and **[Workstream 11 — Graphics](../design/workstreams/11-graphics.md)**.
+
 ## Related Documentation
 
 - **[Class Hierarchy](class-hierarchy.md)**: Detailed breakdown of classes and their relationships
 - **[Specifications](../specs/)**: Detailed contracts for each subsystem
+- **[Graphics Specification](../specs/graphics.md)**: Achieving good graphics — rendering architecture, tools, and AI asset prompts
 - **[ADRs](../adr/)**: Architecture Decision Records capturing key design choices
 - **[Workstreams](../design/workstreams/00-index.md)**: Parallel development tracks
 - **[UML Models](../models/model.mdj)**: Visual class diagrams and relationships

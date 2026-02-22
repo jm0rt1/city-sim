@@ -820,5 +820,4 @@ class EducationSettings:
 - **School Quality Metrics**: Common Core standards and PISA assessments
 - **University Rankings**: US News, Times Higher Education methodologies
 - **Research Metrics**: Publication impact factors and citation analysis
-- **Related Specs**: [Population](population.md), [Finance](finance.md)
-  - *Note: Employment and Culture subsystem specifications are planned for future development*
+- **Related Specs**: [Population](population.md), [Finance](finance.md), [Employment](employment.md), [Culture](culture.md)

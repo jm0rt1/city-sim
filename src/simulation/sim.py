@@ -108,13 +108,19 @@ class Sim():
         total_population = len(self.city.population)
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
 
-        sick_count = sum([1 for person in self.city.population if person.sick])
-        without_water = sum(
-            [1 for person in self.city.population if not person.water_received])
-        without_electricity = sum(
-            [1 for person in self.city.population if not person.electricity_received])
-        without_home = sum(
-            [1 for person in self.city.population if not person.has_home])
+        sick_count = 0
+        without_water = 0
+        without_electricity = 0
+        without_home = 0
+        for person in self.city.population:
+            if person.sick:
+                sick_count += 1
+            if not person.water_received:
+                without_water += 1
+            if not person.electricity_received:
+                without_electricity += 1
+            if not person.has_home:
+                without_home += 1
 
         print("\n--- City Stats ---")
         print(f"Total Population: {total_population}")

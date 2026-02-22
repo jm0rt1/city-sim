@@ -12,22 +12,14 @@ class City:
         self.housing_units = 30
 
     def on_advance_day(self):
-        # Distribute water
         people_with_water = self.water_facilities * 20
-        for person in self.population[:people_with_water]:
-            person.water_received = True
-
-        # Distribute electricity
         people_with_electricity = self.electricity_facilities * 20
-        for person in self.population[:people_with_electricity]:
-            person.electricity_received = True
 
-        # Assign homes
-        for person in self.population[:self.housing_units]:
-            person.has_home = True
-
-        for person in self.population:
-
+        # Single pass: distribute resources and adjust happiness
+        for i, person in enumerate(self.population):
+            person.water_received = i < people_with_water
+            person.electricity_received = i < people_with_electricity
+            person.has_home = i < self.housing_units
             person.adjust_happiness()
 
         # Update happiness tracker

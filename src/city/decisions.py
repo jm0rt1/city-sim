@@ -6,20 +6,21 @@ from abc import ABC
 
 
 class DecisionBase(ABC):
-    def __init__(self, city: City):
+    def __init__(self, city: City, rng: random.Random | None = None):
         self.city = city
         self.chance_percentage = 0.5
+        self._rng: random.Random = rng if rng is not None else random.Random()
 
     def roll(self) -> bool:
         """
         Returns True if a random float between 0 and 1 is less than the given chance_percentage.
         """
-        return random.random() < self.chance_percentage
+        return self._rng.random() < self.chance_percentage
 
 
 class DisasterDecision(DecisionBase):
-    def __init__(self, city: City):
-        super().__init__(city)
+    def __init__(self, city: City, rng: random.Random | None = None):
+        super().__init__(city, rng)
         self.chance_percentage = 0.01
 
     def roll(self) -> bool:
@@ -28,8 +29,8 @@ class DisasterDecision(DecisionBase):
 
 
 class StayDecision(DecisionBase):
-    def __init__(self, city: City, pop: Pop):
-        super().__init__(city)
+    def __init__(self, city: City, pop: Pop, rng: random.Random | None = None):
+        super().__init__(city, rng)
         self.pop = pop
         self.base_chance = 0.9  # Base chance for a Pop to stay
         self.no_home_penalty = 0.2

@@ -1,6 +1,10 @@
 # Workstream: City Modeling
 
 ## Reading Checklist
+- **Pre-Work WS-00A** (shared interfaces): [00a-shared-interfaces.md](00a-shared-interfaces.md)
+- **Pre-Work WS-00B** (data contracts): [00b-data-contracts.md](00b-data-contracts.md)
+- **Pre-Work WS-00C** (integration protocols): [00c-integration-protocols.md](00c-integration-protocols.md)
+- **Interfaces Spec**: [../../specs/interfaces.md](../../specs/interfaces.md)
 - Architecture Overview: [../../architecture/overview.md](../../architecture/overview.md)
 - Class Hierarchy: [../../architecture/class-hierarchy.md](../../architecture/class-hierarchy.md)
 - Specs: [../../specs/city.md](../../specs/city.md), [../../specs/logging.md](../../specs/logging.md)

@@ -9,7 +9,7 @@ class HappinessTracker():
 
     def update_happiness(self, population: Population):
         total_happiness = sum(
-            [person.overall_happiness for person in population.pops])
+            person.overall_happiness for person in population.pops)
         self.average_happiness = total_happiness / \
             len(population.pops) if population.pops else 0
 

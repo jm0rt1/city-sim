@@ -18,14 +18,11 @@ class CityBudget():
     def calculate_income(self, city: City):
         # Income from taxes
         # For simplicity, those with homes are considered employed
-        employed = sum([1 for person in city.population if person.property])
-        self.income += employed * self.income_tax_rate
-
-        properties = sum([1 for person in city.population if person.property])
-        self.income += properties * self.property_tax_rate
+        with_property = sum(1 for person in city.population if person.property)
+        self.income += with_property * (self.income_tax_rate + self.property_tax_rate)
 
         utility_users = sum(
-            [1 for person in city.population if person.water_received or person.electricity_received])
+            1 for person in city.population if person.water_received or person.electricity_received)
         self.income += utility_users * self.utility_tax_rate
 
     def calculate_expenditure(self, city: City):

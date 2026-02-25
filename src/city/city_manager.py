@@ -27,15 +27,14 @@ class CityManager:
         return disaster_decision.roll()
 
     def manage_population(self):
-        pops_to_remove: list[Pop] = []
+        survivors: list[Pop] = []
         for pop in self.city.population.pops:
             stay_decision = StayDecision(self.city, pop)
-            if not stay_decision.roll():
-                pops_to_remove.append(pop)
+            if stay_decision.roll():
+                survivors.append(pop)
+            else:
                 print("A citizen has left the city.")
-
-        for pop in pops_to_remove:
-            self.city.population.remove_pop(pop)
+        self.city.population.pops = survivors
 
     def display_daily_report(self):
         # Display city stats

@@ -12,7 +12,7 @@ class Sim():
         # For simplicity, we'll roll a 1% chance for a disaster
         if random.random() < 0.01:
             print("A disaster has struck the city!")
-            for person in self.city.population:
+            for person in self.city.population.pops:
                 person.overall_happiness -= 50
 
     def roll_population(self):
@@ -38,7 +38,7 @@ class Sim():
         elif avg_happiness > 0 and random.random() < 0.05:
             newcomers = 1
         for _ in range(newcomers):
-            self.city.population.append(Pop())
+            self.city.population.add_pop(Pop())
 
         if newcomers:
             print(f"{newcomers} new individuals have moved into the city!")
@@ -48,7 +48,7 @@ class Sim():
         pops_that_stay: list[Pop] = []
 
         if avg_happiness < 0:
-            for pop in self.city.population:
+            for pop in self.city.population.pops:
                 wants_to_leave = False
                 if not pop.has_home:
                     if random.random() < .5:
@@ -61,7 +61,7 @@ class Sim():
                         wants_to_leave = True
                 if not wants_to_leave:
                     pops_that_stay.append(pop)
-            self.city.population = pops_that_stay
+            self.city.population.pops = pops_that_stay
 
     def start(self):
         while True:
@@ -105,14 +105,14 @@ class Sim():
                 continue
 
     def display_city_info(self):
-        total_population = len(self.city.population)
+        total_population = len(self.city.population.pops)
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
 
         sick_count = 0
         without_water = 0
         without_electricity = 0
         without_home = 0
-        for person in self.city.population:
+        for person in self.city.population.pops:
             if person.sick:
                 sick_count += 1
             if not person.water_received:

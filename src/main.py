@@ -16,9 +16,45 @@ def initialize_logging():
     logging.info("Global Logging Started")
 
 
-def main():
-    """run a console menu that has two options, runs in a while loop so multiple options can be selected"""
+def main(gui: bool = False):
+    """Initialize logging and start the simulation.
 
+    Args:
+        gui: When ``True``, open the isometric renderer window instead of
+             the headless console loop.
+    """
     initialize_logging()
-    simulation = sim.Sim(city=city.City())
-    simulation.start()
+    the_city = city.City()
+
+    if gui:
+        _run_with_gui(the_city)
+    else:
+        simulation = sim.Sim(city=the_city)
+        simulation.start()
+
+
+def _run_with_gui(the_city: "city.City") -> None:
+    """Start the isometric renderer with a background simulation tick loop."""
+    import threading
+    import time
+
+    from src.shared.graphics_settings import GraphicsSettings
+    from src.simulation.event_bus import EventBus
+    from src.gui.renderer.city_renderer import CityRenderer
+
+    settings = GraphicsSettings()
+    event_bus = EventBus()
+    renderer = CityRenderer(city=the_city, event_bus=event_bus, settings=settings)
+
+    # Auto-advance simulation at 1 tick/second on a daemon thread so it does
+    # not block the pygame render loop on the main thread.
+    def _sim_loop() -> None:
+        simulation = sim.Sim(city=the_city)
+        while True:
+            simulation.advance_day()
+            time.sleep(1.0)
+
+    t = threading.Thread(target=_sim_loop, daemon=True)
+    t.start()
+
+    renderer.run()  # blocking; returns when window is closed

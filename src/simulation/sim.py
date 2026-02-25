@@ -1,6 +1,7 @@
 import random
 from typing import Callable
-from src.city.city import City, Pop
+from src.city.city import City
+from src.city.population.population import Pop
 
 
 class Sim():

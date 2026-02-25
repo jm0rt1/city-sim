@@ -1,5 +1,4 @@
 
-from src.city.population.happiness_tracker import HappinessTracker
 from src.city.population.population import Pop, Population
 
 
@@ -10,20 +9,23 @@ class City:
         self.water_facilities = 2
         self.electricity_facilities = 2
         self.housing_units = 30
+        # Finance
+        self.budget: float = 10000.0
+        self.previous_budget: float | None = None
 
     def on_advance_day(self):
         people_with_water = self.water_facilities * 20
         people_with_electricity = self.electricity_facilities * 20
 
         # Single pass: distribute resources and adjust happiness
-        for i, person in enumerate(self.population):
+        for i, person in enumerate(self.population.pops):
             person.water_received = i < people_with_water
             person.electricity_received = i < people_with_electricity
             person.has_home = i < self.housing_units
             person.adjust_happiness()
 
         # Update happiness tracker
-        self.happiness_tracker.update_happiness(self.population)
+        self.population.happiness_tracker.update_happiness(self.population)
 
     def add_water_facilities(self, fac_to_add: int):
         # check if positive

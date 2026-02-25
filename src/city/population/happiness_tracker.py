@@ -1,4 +1,9 @@
-from src.city.population.population import Population
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.city.population.population import Population
 
 
 class HappinessTracker():

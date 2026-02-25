@@ -1,12 +1,16 @@
+import json
+import logging
 import random
-from typing import Callable
+from typing import Callable, Optional
 from src.city.city import City, Pop
+from src.city.transport.transport_subsystem import TransportSubsystem
 
 
 class Sim():
-    def __init__(self, city: City) -> None:
+    def __init__(self, city: City, transport: Optional[TransportSubsystem] = None) -> None:
         self.city = city
-        pass
+        self.transport = transport
+        self._tick_index: int = 0
 
     def roll_disasters(self):
         # For simplicity, we'll roll a 1% chance for a disaster
@@ -23,6 +27,10 @@ class Sim():
         self.roll_for_leavers()
         self.city.on_advance_day()
         self.roll_disasters()
+        if self.transport is not None:
+            delta = self.transport.update(tick_index=self._tick_index)
+            self._log_traffic_metrics(delta)
+        self._tick_index += 1
 
     def roll_for_newcomers(self):
         # For simplicity, we'll assume:
@@ -62,6 +70,21 @@ class Sim():
                 if not wants_to_leave:
                     pops_that_stay.append(pop)
             self.city.population = pops_that_stay
+
+    def _log_traffic_metrics(self, delta) -> None:
+        """Log traffic metrics as a JSONL entry."""
+        entry = {
+            "tick_index": delta.tick_index,
+            "avg_speed": round(delta.avg_speed, 4),
+            "congestion_index": round(delta.congestion_index, 4),
+            "throughput": delta.total_throughput,
+            "vehicles_active": delta.vehicles_active,
+            "vehicles_entered": delta.vehicles_entered,
+            "vehicles_exited": delta.vehicles_exited,
+            "congested_segments": delta.congested_segments,
+            "incidents_active": delta.incidents_active,
+        }
+        logging.info(json.dumps(entry))
 
     def start(self):
         while True:

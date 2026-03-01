@@ -6,7 +6,7 @@ from src.city.population.population import Pop, Population
 class City:
     def __init__(self, population: Population = Population.from_list([Pop()])):
         self.population: Population = population
-        self.happiness_tracker = population.happiness_tracker
+        self.happiness_tracker = self.population.happiness_tracker
         # Infrastructure
         self.water_facilities = 2
         self.electricity_facilities = 2

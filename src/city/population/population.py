@@ -5,7 +5,7 @@ from src.city.population.happiness_tracker import HappinessTracker
 
 class Population():
     def __init__(self) -> None:
-        self.pops = []
+        self.pops: list[Pop] = []
         self.happiness_tracker = HappinessTracker(self)
 
     def add_pop(self, pop: "Pop"):
@@ -16,6 +16,15 @@ class Population():
 
     def property_tax(self):
         return sum(1 for pop in self.pops if pop.property)
+
+    def __iter__(self):
+        return iter(self.pops)
+
+    def __len__(self):
+        return len(self.pops)
+
+    def append(self, pop: "Pop"):
+        self.add_pop(pop)
 
     @classmethod
     def from_list(cls, pops_list: list["Pop"]):

@@ -17,6 +17,10 @@ class GlobalSettings():
     # Paths ---------
     ##
 
+    # Simulation Parameters
+    SEED: int = 12345
+    TICK_HORIZON: int = 10
+
     class LoggingParams():
         BACKUP_COUNT = 10
         GLOBAL_FILE_NAME = "global.log"

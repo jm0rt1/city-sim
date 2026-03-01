@@ -17,6 +17,12 @@ class Population():
     def property_tax(self):
         return sum(1 for pop in self.pops if pop.property)
 
+    @classmethod
+    def from_list(cls, pops_list: list["Pop"]):
+        population = cls()
+        population.pops = pops_list
+        return population
+
     def __iter__(self):
         return iter(self.pops)
 
@@ -25,12 +31,6 @@ class Population():
 
     def append(self, pop: "Pop"):
         self.add_pop(pop)
-
-    @classmethod
-    def from_list(cls, pops_list: list["Pop"]):
-        population = cls()
-        population.pops = pops_list
-        return population
 
     def adjust_happiness(self):
         for pop in self.pops:

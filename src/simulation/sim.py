@@ -19,6 +19,7 @@ def _make_run_id() -> str:
 class Sim():
     def __init__(self, city: City, seed: int = 0, run_id: str = "run") -> None:
         self.city = city
+        self.day = 0
         self.seed = seed
         self.run_id = run_id
         self._tick_index = 0
@@ -62,7 +63,7 @@ class Sim():
     def roll_disasters(self):
         # For simplicity, we'll roll a 1% chance for a disaster
         if random.random() < 0.01:
-            print("A disaster has struck the city!")
+            print("  ⚠️  A disaster has struck the city!")
             for person in self.city.population.pops:
                 person.overall_happiness -= 50
 
@@ -70,7 +71,9 @@ class Sim():
         pass
 
     def advance_day(self):
+
         tick_start = time.monotonic()
+        self.day += 1
         self.roll_for_newcomers()
         self.roll_for_leavers()
         self.city.on_advance_day()
@@ -205,10 +208,11 @@ class Sim():
             self.city.population.add_pop(Pop())
 
         if newcomers:
-            print(f"{newcomers} new individuals have moved into the city!")
+            print(f"  {newcomers} new individual(s) have moved into the city!")
 
     def roll_for_leavers(self):
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
+        pops_to_remove: list[Pop] = []
 
         if avg_happiness < 0:
             pops_to_remove: list[Pop] = []
@@ -228,38 +232,44 @@ class Sim():
             for pop in pops_to_remove:
                 self.city.population.remove_pop(pop)
 
+        if pops_to_remove:
+            print(f"  {len(pops_to_remove)} citizen(s) have left the city.")
+
     def start(self):
+        print("=" * 45)
+        print("         Welcome to City Simulator!")
+        print("=" * 45)
+        self.display_city_info()
+
         while True:
             print("Options:")
-            print("1: Advance Day")
-            print("2: Add Electrical Facilities")
-            print("3: Add Water Facilities")
-            print("4: Add Housing Units")
-
-            print("X: Exit")
+            print("  1: Advance Day")
+            print("  2: Add Electrical Facilities")
+            print("  3: Add Water Facilities")
+            print("  4: Add Housing Units")
+            print("  X: Exit & Show Run Summary")
 
             input_str = input("Choose an option: ").lower().strip()
 
             if input_str == "1":
                 self.advance_day()
-                self.display_city_info()  # Display updated city info after advancing a day
-            if input_str == "2":
+                self.display_city_info()
+            elif input_str == "2":
                 self.add_facilities_to_city(
                     self.city.add_electricity_facilities)
-            if input_str == "3":
+            elif input_str == "3":
                 self.add_facilities_to_city(self.city.add_water_facilities)
-            if input_str == "4":
+            elif input_str == "4":
                 self.add_facilities_to_city(self.city.add_housing_units)
             elif input_str == "x":
                 self._write_run_summary()
+                self.display_run_summary()
                 break
             else:
-                print("Invalid input")
-                continue
+                print("Invalid input. Please choose 1-4 or X.")
 
     def add_facilities_to_city(self, add_func: Callable[[int], None]):
         data_collected = False
-        fac_to_add = 0
         while not data_collected:
             try:
                 fac_to_add = int(
@@ -288,11 +298,29 @@ class Sim():
             if not person.has_home:
                 without_home += 1
 
-        print("\n--- City Stats ---")
-        print(f"Total Population: {total_population}")
-        print(f"Average Happiness: {avg_happiness:.2f}")
-        print(f"Sick Individuals: {sick_count}")
-        print(f"Without Water: {without_water}")
-        print(f"Without Electricity: {without_electricity}")
-        print(f"Without Home: {without_home}")
-        print("---------------------\n")
+        print(f"\n--- City Report: Day {self.day} ---")
+        print(f"  Population:          {total_population}")
+        print(f"  Avg Happiness:       {avg_happiness:.2f}")
+        print(f"  Sick:                {sick_count}")
+        print(f"  Without Water:       {without_water}")
+        print(f"  Without Electricity: {without_electricity}")
+        print(f"  Without Home:        {without_home}")
+        print(f"  Water Facilities:    {self.city.water_facilities}")
+        print(f"  Elec. Facilities:    {self.city.electricity_facilities}")
+        print(f"  Housing Units:       {self.city.housing_units}")
+        print("-" * 35 + "\n")
+
+    def display_run_summary(self):
+        total_population = len(self.city.population)
+        avg_happiness = self.city.happiness_tracker.get_average_happiness()
+
+        print("\n" + "=" * 45)
+        print("             === Run Summary ===")
+        print("=" * 45)
+        print(f"  Total Days Simulated:  {self.day}")
+        print(f"  Final Population:      {total_population}")
+        print(f"  Final Avg Happiness:   {avg_happiness:.2f}")
+        print(f"  Water Facilities:      {self.city.water_facilities}")
+        print(f"  Elec. Facilities:      {self.city.electricity_facilities}")
+        print(f"  Housing Units:         {self.city.housing_units}")
+        print("=" * 45 + "\n")

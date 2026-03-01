@@ -5,6 +5,7 @@ from src.city.population.population import Pop, Population
 class City:
     def __init__(self, population: Population = Population.from_list([Pop()])):
         self.population: Population = population
+        self.happiness_tracker = population.happiness_tracker
         # Infrastructure
         self.water_facilities = 2
         self.electricity_facilities = 2
@@ -18,14 +19,14 @@ class City:
         people_with_electricity = self.electricity_facilities * 20
 
         # Single pass: distribute resources and adjust happiness
-        for i, person in enumerate(self.population.pops):
+        for i, person in enumerate(self.population):
             person.water_received = i < people_with_water
             person.electricity_received = i < people_with_electricity
             person.has_home = i < self.housing_units
             person.adjust_happiness()
 
         # Update happiness tracker
-        self.population.happiness_tracker.update_happiness(self.population)
+        self.happiness_tracker.update_happiness(self.population)
 
     def add_water_facilities(self, fac_to_add: int):
         # check if positive

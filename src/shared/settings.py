@@ -1,5 +1,4 @@
 
-
 from pathlib import Path
 
 
@@ -16,6 +15,10 @@ class GlobalSettings():
     UI_LOGS_DIR = LOGS_DIR/"ui"
     # Paths ---------
     ##
+
+    # Simulation Parameters
+    SEED: int = 12345
+    TICK_HORIZON: int = 10
 
     class LoggingParams():
         BACKUP_COUNT = 10

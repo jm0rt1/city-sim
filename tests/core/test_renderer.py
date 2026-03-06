@@ -4,12 +4,16 @@ Tests for the pygame-free renderer components.
 Intentionally avoids importing any module that requires pygame so that the
 test suite runs in headless CI environments without a display.
 """
+import inspect
 import unittest
 
 from src.city.building import Building, BuildingType, District
+from src.city.city import City
+from src.city.population.population import Population, Pop
 from src.gui.renderer.building_render_state import BuildingRenderState
-from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
+from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
+from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.shared.graphics_settings import GraphicsSettings
 
 
@@ -174,6 +178,74 @@ class TestGraphicsSettings(unittest.TestCase):
         self.assertEqual(s.tile_width, 32)
         self.assertEqual(s.tile_height, 16)
         self.assertEqual(s.fps_cap, 30)
+
+
+class TestInfrastructureCityGridLayout(unittest.TestCase):
+    """Tests for the OOP grid layout strategy."""
+
+    def _make_city(self, electricity=1, water=1, housing=0):
+        city = City(population=Population.from_list([Pop()]))
+        city.electricity_facilities = electricity
+        city.water_facilities = water
+        city.housing_units = housing
+        return city
+
+    def test_returns_list_of_building_render_states(self):
+        layout = InfrastructureCityGridLayout(cols=4, rows=4)
+        city = self._make_city()
+        states = layout.build_render_states(city)
+        self.assertTrue(all(isinstance(s, BuildingRenderState) for s in states))
+
+    def test_fills_entire_grid(self):
+        layout = InfrastructureCityGridLayout(cols=4, rows=4)
+        city = self._make_city(electricity=1, water=1, housing=0)
+        states = layout.build_render_states(city)
+        self.assertEqual(len(states), 4 * 4)
+
+    def test_positions_are_unique(self):
+        layout = InfrastructureCityGridLayout(cols=4, rows=4)
+        city = self._make_city(electricity=2, water=2, housing=5)
+        states = layout.build_render_states(city)
+        positions = [s.grid_position for s in states]
+        self.assertEqual(len(positions), len(set(positions)))
+
+    def test_electricity_places_power_plants(self):
+        layout = InfrastructureCityGridLayout(cols=4, rows=4)
+        city = self._make_city(electricity=3, water=0, housing=0)
+        states = layout.build_render_states(city)
+        power_plants = [
+            s for s in states
+            if s.building.building_type == BuildingType.CIVIC_POWER_PLANT
+        ]
+        self.assertEqual(len(power_plants), 3)
+
+    def test_housing_places_residential_buildings(self):
+        layout = InfrastructureCityGridLayout(cols=8, rows=8)
+        city = self._make_city(electricity=0, water=0, housing=26)
+        # 26 units = 1 large (20) + 1 medium (5) + 1 small (1)
+        states = layout.build_render_states(city)
+        large = [s for s in states if s.building.building_type == BuildingType.RESIDENTIAL_LARGE]
+        medium = [s for s in states if s.building.building_type == BuildingType.RESIDENTIAL_MEDIUM]
+        small = [s for s in states if s.building.building_type == BuildingType.RESIDENTIAL_SMALL]
+        self.assertEqual(len(large), 1)
+        self.assertEqual(len(medium), 1)
+        self.assertEqual(len(small), 1)
+
+    def test_interface_is_abstract(self):
+        self.assertTrue(inspect.isabstract(ICityGridLayout))
+
+    def test_custom_layout_is_pluggable(self):
+        """A custom ICityGridLayout subclass can be injected into CityRenderer."""
+
+        class FixedLayout(ICityGridLayout):
+            def build_render_states(self, city):
+                return [BuildingRenderState(Building(BuildingType.PARK), (0, 0))]
+
+        layout = FixedLayout()
+        city = self._make_city()
+        states = layout.build_render_states(city)
+        self.assertEqual(len(states), 1)
+        self.assertEqual(states[0].grid_position, (0, 0))
 
 
 if __name__ == "__main__":

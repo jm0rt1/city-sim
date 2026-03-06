@@ -1,68 +1,17 @@
 from __future__ import annotations
 
-from queue import Queue, Empty
+from queue import Queue
 
 import pygame
 
 from src.city.city import City
-from src.city.building import Building, BuildingType
 from src.shared.graphics_settings import GraphicsSettings
 from src.simulation.event_bus import EventBus, Event
+from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.gui.renderer.tile_atlas import TileAtlas
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
-from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.ui_overlay import UIOverlay
-
-_GRID_COLS = 8
-_GRID_ROWS = 8
-
-
-def _build_render_states(city: City) -> list[BuildingRenderState]:
-    """
-    Derive a list of :class:`BuildingRenderState` objects from current City
-    infrastructure state.
-
-    This is a pure renderer-side mapping that bridges the existing ``City``
-    model (which does not yet carry explicit grid coordinates) to the
-    isometric grid.  It does **not** modify any city model class.
-    """
-    occupied: set[tuple[int, int]] = set()
-    states: list[BuildingRenderState] = []
-    col = 0
-
-    def _place(building: Building) -> None:
-        nonlocal col
-        pos = (col % _GRID_COLS, col // _GRID_COLS)
-        states.append(BuildingRenderState(building, pos))
-        occupied.add(pos)
-        col += 1
-
-    # Electricity facilities → power plant tiles
-    for _ in range(city.electricity_facilities):
-        _place(Building(BuildingType.CIVIC_POWER_PLANT))
-
-    # Water facilities → hospital tiles (civic utility stand-in)
-    for _ in range(city.water_facilities):
-        _place(Building(BuildingType.CIVIC_HOSPITAL))
-
-    # Housing units → residential tiles (large=20, medium=5, small=1)
-    units = city.housing_units
-    for _ in range(units // 20):
-        _place(Building(BuildingType.RESIDENTIAL_LARGE, occupancy=20))
-    for _ in range((units % 20) // 5):
-        _place(Building(BuildingType.RESIDENTIAL_MEDIUM, occupancy=5))
-    for _ in range(units % 5):
-        _place(Building(BuildingType.RESIDENTIAL_SMALL, occupancy=1))
-
-    # Fill remaining cells with park / grass
-    for r in range(_GRID_ROWS):
-        for c in range(_GRID_COLS):
-            if (c, r) not in occupied:
-                btype = BuildingType.PARK if (c + r) % 4 == 0 else BuildingType.EMPTY_LOT
-                states.append(BuildingRenderState(Building(btype), (c, r)))
-
-    return states
 
 
 class CityRenderer:
@@ -72,6 +21,10 @@ class CityRenderer:
     Reads ``City`` state and drains the ``EventBus`` queue each frame.
     Never blocks the simulation tick loop — all heavy work (asset loading,
     surface compositing) happens on the calling thread (the pygame main thread).
+
+    The layout strategy (:class:`~src.gui.renderer.city_grid_layout.ICityGridLayout`)
+    is injected at construction time, making it easy to swap placement algorithms
+    without modifying this class.
 
     Usage::
 
@@ -86,11 +39,15 @@ class CityRenderer:
         city: City,
         event_bus: EventBus,
         settings: GraphicsSettings,
+        grid_layout: ICityGridLayout | None = None,
     ) -> None:
         self._city = city
         self._event_bus = event_bus
         self._settings = settings
         self._event_queue: Queue[Event] = event_bus.subscribe()
+        self._grid_layout: ICityGridLayout = (
+            grid_layout if grid_layout is not None else InfrastructureCityGridLayout()
+        )
         self._mapper = IsometricGridMapper(
             settings,
             origin_x=settings.window_width // 2,
@@ -109,7 +66,7 @@ class CityRenderer:
         """Render one frame onto *surface*."""
         surface.fill(self._BG_COLOR)
 
-        render_states = _build_render_states(self._city)
+        render_states = self._grid_layout.build_render_states(self._city)
         # Depth-sort by painter's algorithm (back tiles first)
         render_states.sort(key=lambda brs: brs.grid_position[0] + brs.grid_position[1])
 
@@ -162,3 +119,4 @@ class CityRenderer:
             self._clock.tick(self._settings.fps_cap)
 
         pygame.quit()
+

@@ -1,8 +1,11 @@
 import logging
 import logging.handlers
+import random
+from datetime import datetime, timezone
 from src.shared.settings import GlobalSettings
 import src.simulation.sim as sim
 import src.city.city as city
+from src.city.population.population import Population, Pop
 
 
 def initialize_logging():
@@ -44,7 +47,8 @@ def _run_with_gui(the_city: "city.City") -> None:
 
     settings = GraphicsSettings()
     event_bus = EventBus()
-    renderer = CityRenderer(city=the_city, event_bus=event_bus, settings=settings)
+    renderer = CityRenderer(
+        city=the_city, event_bus=event_bus, settings=settings)
 
     # Auto-advance simulation at 1 tick/second on a daemon thread so it does
     # not block the pygame render loop on the main thread.

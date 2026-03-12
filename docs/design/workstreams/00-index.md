@@ -27,6 +27,7 @@ Primary output: **[docs/specs/interfaces.md](../../specs/interfaces.md)**
 - [09-roadmap.md](09-roadmap.md) – Planning across releases and cross‑workstream dependencies.
 - [10-traffic.md](10-traffic.md) – Transport network, pathfinding, and city/highway traffic simulation.
 - [11-graphics.md](11-graphics.md) – Isometric 2D tile renderer, sprite atlas pipeline, and AI-generated game assets.
+- [12-aaa-city-builder-roadmap.md](12-aaa-city-builder-roadmap.md) – **AAA upgrade roadmap**: 12-phase plan covering real sprite art, building elevation, camera pan/zoom, road networks, animations, rich UI panels, day/night cycle, weather, save/load, sound, tech tree, and performance. Delegation-ready with per-phase deliverables, acceptance criteria, and asset requirements.
 
 ## Source Pointers
 - Simulation: [src/simulation/sim.py](../../src/simulation/sim.py)

@@ -8,6 +8,7 @@ class City:
         if population is None:
             population = Population.from_list([Pop()])
         self.population: Population = population
+        self.happiness_tracker = self.population.happiness_tracker
         # Infrastructure
         self.water_facilities = 2
         self.electricity_facilities = 2

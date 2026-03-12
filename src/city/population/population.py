@@ -25,6 +25,15 @@ class Population():
         population.happiness_tracker.update_happiness(population)
         return population
 
+    def __iter__(self):
+        return iter(self.pops)
+
+    def __len__(self):
+        return len(self.pops)
+
+    def append(self, pop: "Pop"):
+        self.add_pop(pop)
+
     def adjust_happiness(self):
         for pop in self.pops:
             pop.adjust_happiness()

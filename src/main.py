@@ -1,6 +1,7 @@
 import logging
 import logging.handlers
 import random
+import threading
 from datetime import datetime, timezone
 from src.shared.settings import GlobalSettings
 import src.simulation.sim as sim
@@ -17,6 +18,25 @@ def initialize_logging():
     logging.getLogger().addHandler(file_handler)
     file_handler.doRollover()
     logging.info("Global Logging Started")
+
+
+class _PauseController:
+    """Thread-safe pause/resume controller shared between the render loop and
+    the background simulation thread."""
+
+    def __init__(self) -> None:
+        self._paused: bool = False
+        self._lock: threading.Lock = threading.Lock()
+
+    def is_paused(self) -> bool:
+        """Return ``True`` when the simulation is currently paused."""
+        with self._lock:
+            return self._paused
+
+    def toggle(self) -> None:
+        """Flip the paused state."""
+        with self._lock:
+            self._paused = not self._paused
 
 
 def main(gui: bool = False):
@@ -37,8 +57,12 @@ def main(gui: bool = False):
 
 
 def _run_with_gui(the_city: "city.City") -> None:
-    """Start the isometric renderer with a background simulation tick loop."""
-    import threading
+    """Start the isometric renderer with a background simulation tick loop.
+
+    The simulation auto-advances at 1 tick/second on a daemon thread.
+    Interactive controls (buttons and keyboard shortcuts in the rendered
+    window) let the user add infrastructure and pause/resume the sim.
+    """
     import time
 
     from src.shared.graphics_settings import GraphicsSettings
@@ -47,15 +71,21 @@ def _run_with_gui(the_city: "city.City") -> None:
 
     settings = GraphicsSettings()
     event_bus = EventBus()
-    renderer = CityRenderer(
-        city=the_city, event_bus=event_bus, settings=settings)
+    simulation = sim.Sim(city=the_city)
+    pause_ctrl = _PauseController()
 
-    # Auto-advance simulation at 1 tick/second on a daemon thread so it does
-    # not block the pygame render loop on the main thread.
+    renderer = CityRenderer(
+        city=the_city,
+        event_bus=event_bus,
+        settings=settings,
+        toggle_pause=pause_ctrl.toggle,
+        is_paused=pause_ctrl.is_paused,
+    )
+
     def _sim_loop() -> None:
-        simulation = sim.Sim(city=the_city)
         while True:
-            simulation.advance_day()
+            if not pause_ctrl.is_paused():
+                simulation.advance_day()
             time.sleep(1.0)
 
     t = threading.Thread(target=_sim_loop, daemon=True)

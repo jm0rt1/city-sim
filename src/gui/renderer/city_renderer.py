@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from queue import Queue
+from typing import Callable
 
 import pygame
 
 from src.city.city import City
 from src.shared.graphics_settings import GraphicsSettings
 from src.simulation.event_bus import EventBus, Event
+from src.gui.renderer.action_panel import ActionPanel
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.gui.renderer.tile_atlas import TileAtlas
@@ -26,6 +28,14 @@ class CityRenderer:
     is injected at construction time, making it easy to swap placement algorithms
     without modifying this class.
 
+    Keyboard shortcuts (always active):
+
+    * **W** — add 1 water facility
+    * **E** — add 1 electricity facility
+    * **H** — add 10 housing units
+    * **P** — pause / resume auto-advance
+    * **Esc** — close window
+
     Usage::
 
         renderer = CityRenderer(city, event_bus, settings)
@@ -40,6 +50,8 @@ class CityRenderer:
         event_bus: EventBus,
         settings: GraphicsSettings,
         grid_layout: ICityGridLayout | None = None,
+        toggle_pause: Callable[[], None] | None = None,
+        is_paused: Callable[[], bool] | None = None,
     ) -> None:
         self._city = city
         self._event_bus = event_bus
@@ -48,14 +60,28 @@ class CityRenderer:
         self._grid_layout: ICityGridLayout = (
             grid_layout if grid_layout is not None else InfrastructureCityGridLayout()
         )
+        self._toggle_pause: Callable[[], None] = toggle_pause or (lambda: None)
+        self._is_paused: Callable[[], bool] = is_paused or (lambda: False)
+
         self._mapper = IsometricGridMapper(
             settings,
-            origin_x=settings.window_width // 2,
+            origin_x=(settings.window_width - ActionPanel.PANEL_W) // 2,
             origin_y=settings.window_height // 4,
         )
         self._atlas = TileAtlas(settings.tile_width, settings.tile_height)
         self._selector = BuildingSpriteSelector()
         self._overlay = UIOverlay()
+        self._action_panel = ActionPanel(
+            x=settings.window_width - ActionPanel.PANEL_W,
+            y=0,
+            actions={
+                "add_water":    lambda: self._city.add_water_facilities(1),
+                "add_elec":     lambda: self._city.add_electricity_facilities(1),
+                "add_housing":  lambda: self._city.add_housing_units(10),
+                "toggle_pause": self._toggle_pause,
+            },
+            is_paused=self._is_paused,
+        )
         self._clock = pygame.time.Clock()
 
     # ------------------------------------------------------------------
@@ -79,6 +105,7 @@ class CityRenderer:
             surface.blit(tile, (sx - tw_half, sy))
 
         self._overlay.draw(surface, self._city)
+        self._action_panel.draw(surface)
 
     def handle_events(self, events: list) -> bool:
         """
@@ -89,8 +116,12 @@ class CityRenderer:
         for ev in events:
             if ev.type == pygame.QUIT:
                 return False
-            if ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
-                return False
+            if ev.type == pygame.KEYDOWN:
+                if ev.key == pygame.K_ESCAPE:
+                    return False
+                self._action_panel.handle_keydown(ev.key)
+            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
+                self._action_panel.handle_click(ev.pos)
         return True
 
     def run(self) -> None:
@@ -119,4 +150,5 @@ class CityRenderer:
             self._clock.tick(self._settings.fps_cap)
 
         pygame.quit()
+
 

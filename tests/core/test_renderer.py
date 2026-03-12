@@ -7,9 +7,12 @@ test suite runs in headless CI environments without a display.
 import inspect
 import unittest
 
+import pygame
+
 from src.city.building import Building, BuildingType, District
 from src.city.city import City
 from src.city.population.population import Population, Pop
+from src.gui.renderer.action_panel import ActionPanel
 from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
@@ -246,6 +249,130 @@ class TestInfrastructureCityGridLayout(unittest.TestCase):
         states = layout.build_render_states(city)
         self.assertEqual(len(states), 1)
         self.assertEqual(states[0].grid_position, (0, 0))
+
+
+class TestActionPanelCallbacks(unittest.TestCase):
+    """
+    Tests for ActionPanel callback dispatch.
+
+    These tests exercise trigger_action() and handle_keydown() which are
+    pure Python and do not require a pygame display (no draw() called).
+    """
+
+    def _make_panel(self) -> tuple[ActionPanel, dict[str, list[int]]]:
+        """Return a panel and a call-count registry keyed by action_key."""
+        counts: dict[str, list[int]] = {
+            "add_water":    [0],
+            "add_elec":     [0],
+            "add_housing":  [0],
+            "toggle_pause": [0],
+        }
+
+        def _make_counter(key: str):
+            def _increment():
+                counts[key][0] += 1
+            return _increment
+
+        actions = {key: _make_counter(key) for key in counts}
+        panel = ActionPanel(x=0, y=0, actions=actions, is_paused=lambda: False)
+        return panel, counts
+
+    def test_trigger_known_action_returns_true(self):
+        panel, _ = self._make_panel()
+        self.assertTrue(panel.trigger_action("add_water"))
+
+    def test_trigger_unknown_action_returns_false(self):
+        panel, _ = self._make_panel()
+        self.assertFalse(panel.trigger_action("nonexistent"))
+
+    def test_trigger_action_calls_callback(self):
+        panel, counts = self._make_panel()
+        panel.trigger_action("add_water")
+        self.assertEqual(counts["add_water"][0], 1)
+
+    def test_trigger_action_sets_notification(self):
+        panel, _ = self._make_panel()
+        panel.trigger_action("add_water")
+        self.assertIn("Water", panel._last_msg)
+        self.assertGreater(panel._msg_frames, 0)
+
+    def test_handle_keydown_w_fires_add_water(self):
+        panel, counts = self._make_panel()
+        panel.handle_keydown(pygame.K_w)
+        self.assertEqual(counts["add_water"][0], 1)
+
+    def test_handle_keydown_e_fires_add_elec(self):
+        panel, counts = self._make_panel()
+        panel.handle_keydown(pygame.K_e)
+        self.assertEqual(counts["add_elec"][0], 1)
+
+    def test_handle_keydown_h_fires_add_housing(self):
+        panel, counts = self._make_panel()
+        panel.handle_keydown(pygame.K_h)
+        self.assertEqual(counts["add_housing"][0], 1)
+
+    def test_handle_keydown_p_fires_toggle_pause(self):
+        panel, counts = self._make_panel()
+        panel.handle_keydown(pygame.K_p)
+        self.assertEqual(counts["toggle_pause"][0], 1)
+
+    def test_handle_keydown_unknown_key_returns_false(self):
+        panel, _ = self._make_panel()
+        self.assertFalse(panel.handle_keydown(pygame.K_z))
+
+    def test_handle_keydown_returns_true_on_match(self):
+        panel, _ = self._make_panel()
+        self.assertTrue(panel.handle_keydown(pygame.K_w))
+
+    def test_each_button_def_has_a_registered_action(self):
+        panel, counts = self._make_panel()
+        for btn in panel._buttons:
+            with self.subTest(action_key=btn.action_key):
+                self.assertIn(btn.action_key, panel._actions)
+
+
+class TestPauseController(unittest.TestCase):
+    """Tests for the _PauseController class in src/main.py."""
+
+    def _make_controller(self):
+        from src.main import _PauseController
+        return _PauseController()
+
+    def test_initially_not_paused(self):
+        ctrl = self._make_controller()
+        self.assertFalse(ctrl.is_paused())
+
+    def test_toggle_pauses(self):
+        ctrl = self._make_controller()
+        ctrl.toggle()
+        self.assertTrue(ctrl.is_paused())
+
+    def test_toggle_twice_resumes(self):
+        ctrl = self._make_controller()
+        ctrl.toggle()
+        ctrl.toggle()
+        self.assertFalse(ctrl.is_paused())
+
+    def test_is_paused_thread_safe(self):
+        """Multiple threads toggling should not raise exceptions."""
+        import threading
+        ctrl = self._make_controller()
+        errors: list[Exception] = []
+
+        def worker():
+            try:
+                for _ in range(100):
+                    ctrl.toggle()
+                    _ = ctrl.is_paused()
+            except Exception as exc:
+                errors.append(exc)
+
+        threads = [threading.Thread(target=worker) for _ in range(4)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        self.assertEqual(errors, [])
 
 
 if __name__ == "__main__":

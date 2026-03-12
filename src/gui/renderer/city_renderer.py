@@ -178,8 +178,8 @@ class CityRenderer:
         )
         pygame.display.set_caption("City-Sim")
 
-        # Load atlas (generates placeholders automatically if file absent)
-        self._atlas.load_atlas("assets/tiles/terrain_atlas.png")
+        # Load atlas from manifest (falls back to procedural diamonds if absent)
+        self._atlas.load_manifest("assets/tiles/atlas_manifest.json")
 
         running = True
         while running:

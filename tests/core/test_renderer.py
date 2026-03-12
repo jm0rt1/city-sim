@@ -172,6 +172,56 @@ class TestBuildingSpriteSelector(unittest.TestCase):
         sprite_id = self._selector.get_sprite_id(building)
         self.assertIn("damaged", sprite_id)
 
+    # --- Occupancy bucket tests ---
+
+    def test_zero_occupancy_returns_base_sprite(self):
+        building = Building(BuildingType.RESIDENTIAL_SMALL, condition=1.0, occupancy=0)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertEqual(sprite_id, "building_res_small")
+
+    def test_low_occupancy_returns_mid_suffix(self):
+        # 10 / 100 = 10 % → _mid bucket
+        building = Building(BuildingType.RESIDENTIAL_SMALL, condition=1.0, occupancy=10)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertIn("_mid", sprite_id)
+
+    def test_high_occupancy_returns_high_suffix(self):
+        # 60 / 100 = 60 % → _high bucket
+        building = Building(BuildingType.RESIDENTIAL_SMALL, condition=1.0, occupancy=60)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertIn("_high", sprite_id)
+
+    def test_occupancy_boundary_fifty_percent(self):
+        # 50 / 100 = 50 % is NOT > 0.5, so _mid
+        building = Building(BuildingType.COMMERCIAL, condition=1.0, occupancy=50)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertIn("_mid", sprite_id)
+
+    def test_damaged_overrides_occupancy_bucket(self):
+        # condition < 0.3 takes priority over occupancy
+        building = Building(BuildingType.RESIDENTIAL_SMALL, condition=0.1, occupancy=80)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertIn("_damaged", sprite_id)
+        self.assertNotIn("_high", sprite_id)
+        self.assertNotIn("_mid", sprite_id)
+
+    def test_civic_building_ignores_occupancy(self):
+        # Civic buildings have no occupancy variants
+        building = Building(BuildingType.CIVIC_CITY_HALL, condition=1.0, occupancy=99)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertNotIn("_mid", sprite_id)
+        self.assertNotIn("_high", sprite_id)
+
+    def test_park_ignores_occupancy(self):
+        building = Building(BuildingType.PARK, condition=1.0, occupancy=99)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertNotIn("_mid", sprite_id)
+        self.assertNotIn("_high", sprite_id)
+
+    def test_negative_occupancy_treated_as_zero(self):
+        building = Building(BuildingType.RESIDENTIAL_SMALL, condition=1.0, occupancy=-5)
+        sprite_id = self._selector.get_sprite_id(building)
+        self.assertEqual(sprite_id, "building_res_small")
 
 class TestGraphicsSettings(unittest.TestCase):
 

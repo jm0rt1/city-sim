@@ -1,41 +1,146 @@
-import json
-import logging
 import random
+import time
+from datetime import datetime, timezone
 from typing import Callable, Optional
+
 from src.city.city import City, Pop
+from src.city.finance import CityBudget
+from src.shared.settings import GlobalSettings
+from src.simulation.logger import SimLogger, normalize_happiness
 from src.city.transport.transport_subsystem import TransportSubsystem
 
 
+def _make_run_id() -> str:
+    """Generate a human-readable run identifier based on UTC wall-clock time."""
+    return "run_" + datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+
+
 class Sim():
-    def __init__(self, city: City, transport: Optional[TransportSubsystem] = None) -> None:
+    def __init__(
+        self,
+        city: City,
+        seed: int = 0,
+        run_id: str = "run",
+        transport: Optional[TransportSubsystem] = None,
+    ) -> None:
         self.city = city
+        self.day = 0
+        self.seed = seed
+
+        # Use auto-generated run_id only when the sentinel "run" is passed;
+        # explicit run_id values are preserved for reproducibility.
+        self.run_id: str = _make_run_id() if run_id == "run" else run_id
+
+        self._run_start: float = time.monotonic()
+        self.tick_index: int = 0
+
+        # Optional transport subsystem
         self.transport = transport
-        self._tick_index: int = 0
+
+        # Finance tracking
+        self.city_budget = CityBudget()
+
+        # Structured logger
+        log_path = GlobalSettings.GLOBAL_LOGS_DIR / f"{self.run_id}.jsonl"
+        self.logger = SimLogger(run_id=self.run_id, log_path=log_path)
+
+        # Accumulators for run summary KPIs
+        self._happiness_sum: float = 0.0
+        self._revenue_sum: float = 0.0
+        self._expenses_sum: float = 0.0
 
     def roll_disasters(self):
         # For simplicity, we'll roll a 1% chance for a disaster
         if random.random() < 0.01:
-            print("A disaster has struck the city!")
-            for person in self.city.population:
+            print("  ⚠️  A disaster has struck the city!")
+            for person in self.city.population.pops:
                 person.overall_happiness -= 50
 
     def roll_population(self):
         pass
 
     def advance_day(self):
+        tick_start = time.monotonic()
+        self.day += 1
         self.roll_for_newcomers()
         self.roll_for_leavers()
         self.city.on_advance_day()
         self.roll_disasters()
+
+        # Transport subsystem update (optional)
+        traffic_metrics = None
         if self.transport is not None:
-            delta = self.transport.update(tick_index=self._tick_index)
-            self._log_traffic_metrics(delta)
-        self._tick_index += 1
+            delta = self.transport.update(tick_index=self.tick_index)
+            traffic_metrics = {
+                "avg_speed": round(delta.avg_speed, 4),
+                "congestion_index": round(delta.congestion_index, 4),
+                "throughput": delta.total_throughput,
+                "vehicles_active": delta.vehicles_active,
+                "vehicles_entered": delta.vehicles_entered,
+                "vehicles_exited": delta.vehicles_exited,
+                "congested_segments": delta.congested_segments,
+                "incidents_active": delta.incidents_active,
+            }
+
+        tick_duration_ms = (time.monotonic() - tick_start) * 1000.0
+
+        # Compute per-tick financial deltas
+        prev_income = self.city_budget.income
+        prev_expenditure = self.city_budget.expenditure
+        self.city_budget.update_budget(self.city)
+        tick_revenue = self.city_budget.income - prev_income
+        tick_expenses = self.city_budget.expenditure - prev_expenditure
+
+        # Normalise happiness to [0, 100]
+        raw_happiness = self.city.happiness_tracker.get_average_happiness()
+        happiness = normalize_happiness(raw_happiness)
+
+        population = len(self.city.population)
+
+        self.logger.log_tick(
+            tick_index=self.tick_index,
+            budget=self.city_budget.balance,
+            revenue=tick_revenue,
+            expenses=tick_expenses,
+            population=population,
+            happiness=happiness,
+            policies_applied=[],
+            tick_duration_ms=tick_duration_ms,
+            traffic=traffic_metrics,
+        )
+
+        # Update summary accumulators
+        self._happiness_sum += happiness
+        self._revenue_sum += tick_revenue
+        self._expenses_sum += tick_expenses
+
+        self.tick_index += 1
+
+    def run(self, ticks: int) -> None:
+        """Execute a fixed number of ticks (for automated/scenario runs)."""
+        for _ in range(ticks):
+            self.advance_day()
+
+    def _write_run_summary(self) -> None:
+        """Append an end-of-run summary entry to the log file."""
+        if self.tick_index == 0:
+            return
+        run_duration_ms = (time.monotonic() - self._run_start) * 1000.0
+        avg_happiness = self._happiness_sum / self.tick_index
+        self.logger.log_summary(
+            final_budget=self.city_budget.balance,
+            final_population=len(self.city.population),
+            avg_happiness=avg_happiness,
+            total_ticks=self.tick_index,
+            run_duration_ms=run_duration_ms,
+            run_kpis={
+                "avg_revenue": self._revenue_sum / self.tick_index,
+                "avg_expenses": self._expenses_sum / self.tick_index,
+            },
+        )
+        self.logger.close()
 
     def roll_for_newcomers(self):
-        # For simplicity, we'll assume:
-        # - If average happiness is > 50, there's a 10% chance 10 new individuals move in.
-        # - If average happiness is > 70, there's a 20% chance 20 new individuals move in.
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
         newcomers = 0
 
@@ -46,17 +151,17 @@ class Sim():
         elif avg_happiness > 0 and random.random() < 0.05:
             newcomers = 1
         for _ in range(newcomers):
-            self.city.population.append(Pop())
+            self.city.population.add_pop(Pop())
 
         if newcomers:
-            print(f"{newcomers} new individuals have moved into the city!")
+            print(f"  {newcomers} new individual(s) have moved into the city!")
 
     def roll_for_leavers(self):
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
-        pops_that_stay: list[Pop] = []
+        pops_to_remove: list[Pop] = []
 
         if avg_happiness < 0:
-            for pop in self.city.population:
+            for pop in list(self.city.population.pops):
                 wants_to_leave = False
                 if not pop.has_home:
                     if random.random() < .5:
@@ -67,56 +172,49 @@ class Sim():
                 if not pop.water_received:
                     if random.random() < .5:
                         wants_to_leave = True
-                if not wants_to_leave:
-                    pops_that_stay.append(pop)
-            self.city.population = pops_that_stay
+                if wants_to_leave:
+                    pops_to_remove.append(pop)
+            for pop in pops_to_remove:
+                self.city.population.remove_pop(pop)
 
-    def _log_traffic_metrics(self, delta) -> None:
-        """Log traffic metrics as a JSONL entry."""
-        entry = {
-            "tick_index": delta.tick_index,
-            "avg_speed": round(delta.avg_speed, 4),
-            "congestion_index": round(delta.congestion_index, 4),
-            "throughput": delta.total_throughput,
-            "vehicles_active": delta.vehicles_active,
-            "vehicles_entered": delta.vehicles_entered,
-            "vehicles_exited": delta.vehicles_exited,
-            "congested_segments": delta.congested_segments,
-            "incidents_active": delta.incidents_active,
-        }
-        logging.info(json.dumps(entry))
+        if pops_to_remove:
+            print(f"  {len(pops_to_remove)} citizen(s) have left the city.")
 
     def start(self):
+        print("=" * 45)
+        print("         Welcome to City Simulator!")
+        print("=" * 45)
+        self.display_city_info()
+
         while True:
             print("Options:")
-            print("1: Advance Day")
-            print("2: Add Electrical Facilities")
-            print("3: Add Water Facilities")
-            print("4: Add Housing Units")
-
-            print("X: Exit")
+            print("  1: Advance Day")
+            print("  2: Add Electrical Facilities")
+            print("  3: Add Water Facilities")
+            print("  4: Add Housing Units")
+            print("  X: Exit & Show Run Summary")
 
             input_str = input("Choose an option: ").lower().strip()
 
             if input_str == "1":
                 self.advance_day()
-                self.display_city_info()  # Display updated city info after advancing a day
-            if input_str == "2":
+                self.display_city_info()
+            elif input_str == "2":
                 self.add_facilities_to_city(
                     self.city.add_electricity_facilities)
-            if input_str == "3":
+            elif input_str == "3":
                 self.add_facilities_to_city(self.city.add_water_facilities)
-            if input_str == "4":
+            elif input_str == "4":
                 self.add_facilities_to_city(self.city.add_housing_units)
             elif input_str == "x":
+                self._write_run_summary()
+                self.display_run_summary()
                 break
             else:
-                print("Invalid input")
-                continue
+                print("Invalid input. Please choose 1-4 or X.")
 
     def add_facilities_to_city(self, add_func: Callable[[int], None]):
         data_collected = False
-        fac_to_add = 0
         while not data_collected:
             try:
                 fac_to_add = int(
@@ -128,14 +226,14 @@ class Sim():
                 continue
 
     def display_city_info(self):
-        total_population = len(self.city.population)
+        total_population = len(self.city.population.pops)
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
 
         sick_count = 0
         without_water = 0
         without_electricity = 0
         without_home = 0
-        for person in self.city.population:
+        for person in self.city.population.pops:
             if person.sick:
                 sick_count += 1
             if not person.water_received:
@@ -145,11 +243,29 @@ class Sim():
             if not person.has_home:
                 without_home += 1
 
-        print("\n--- City Stats ---")
-        print(f"Total Population: {total_population}")
-        print(f"Average Happiness: {avg_happiness:.2f}")
-        print(f"Sick Individuals: {sick_count}")
-        print(f"Without Water: {without_water}")
-        print(f"Without Electricity: {without_electricity}")
-        print(f"Without Home: {without_home}")
-        print("---------------------\n")
+        print(f"\n--- City Report: Day {self.day} ---")
+        print(f"  Population:          {total_population}")
+        print(f"  Avg Happiness:       {avg_happiness:.2f}")
+        print(f"  Sick:                {sick_count}")
+        print(f"  Without Water:       {without_water}")
+        print(f"  Without Electricity: {without_electricity}")
+        print(f"  Without Home:        {without_home}")
+        print(f"  Water Facilities:    {self.city.water_facilities}")
+        print(f"  Elec. Facilities:    {self.city.electricity_facilities}")
+        print(f"  Housing Units:       {self.city.housing_units}")
+        print("-" * 35 + "\n")
+
+    def display_run_summary(self):
+        total_population = len(self.city.population)
+        avg_happiness = self.city.happiness_tracker.get_average_happiness()
+
+        print("\n" + "=" * 45)
+        print("             === Run Summary ===")
+        print("=" * 45)
+        print(f"  Total Days Simulated:  {self.day}")
+        print(f"  Final Population:      {total_population}")
+        print(f"  Final Avg Happiness:   {avg_happiness:.2f}")
+        print(f"  Water Facilities:      {self.city.water_facilities}")
+        print(f"  Elec. Facilities:      {self.city.electricity_facilities}")
+        print(f"  Housing Units:         {self.city.housing_units}")
+        print("=" * 45 + "\n")

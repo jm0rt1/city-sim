@@ -36,6 +36,8 @@ class Sim():
 
         # Optional transport subsystem
         self.transport = transport
+        # Latest TrafficDelta — updated each advance_day(); readable by the UI
+        self.last_traffic_delta: Optional[object] = None
 
         # Finance tracking
         self.city_budget = CityBudget()
@@ -71,6 +73,7 @@ class Sim():
         traffic_metrics = None
         if self.transport is not None:
             delta = self.transport.update(tick_index=self.tick_index)
+            self.last_traffic_delta = delta
             traffic_metrics = {
                 "avg_speed": round(delta.avg_speed, 4),
                 "congestion_index": round(delta.congestion_index, 4),

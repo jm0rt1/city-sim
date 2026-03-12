@@ -20,6 +20,7 @@ from src.city.city import City
 from src.city.population.population import Population, Pop
 from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
+from src.gui.renderer.camera_controller import CameraController
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
@@ -549,6 +550,195 @@ class TestBuildingPaletteSelection(unittest.TestCase):
         palette = self._make_palette()
         above_pos = (640, palette.bar_y - 10)
         self.assertFalse(palette.contains(above_pos))
+
+
+class TestCameraController(unittest.TestCase):
+    """Tests for camera pan/zoom/reset/frame_city (no pygame needed)."""
+
+    def _make_camera(self, ox: int = 400, oy: int = 200) -> CameraController:
+        return CameraController(origin_x=ox, origin_y=oy)
+
+    def test_initial_zoom_is_one(self):
+        cam = self._make_camera()
+        self.assertAlmostEqual(cam.zoom_level, 1.0)
+
+    def test_initial_origin(self):
+        cam = self._make_camera(100, 50)
+        self.assertAlmostEqual(cam.origin_x, 100.0)
+        self.assertAlmostEqual(cam.origin_y, 50.0)
+
+    def test_pan_moves_origin(self):
+        cam = self._make_camera(0, 0)
+        cam.pan(10, -5)
+        self.assertAlmostEqual(cam.origin_x, 10.0)
+        self.assertAlmostEqual(cam.origin_y, -5.0)
+
+    def test_pan_accumulates(self):
+        cam = self._make_camera(0, 0)
+        cam.pan(10, 10)
+        cam.pan(5, -3)
+        self.assertAlmostEqual(cam.origin_x, 15.0)
+        self.assertAlmostEqual(cam.origin_y, 7.0)
+
+    def test_zoom_scales_level(self):
+        cam = self._make_camera()
+        cam.zoom(1.5)
+        self.assertAlmostEqual(cam.zoom_level, 1.5)
+
+    def test_zoom_clamps_to_max(self):
+        cam = self._make_camera()
+        cam.zoom(10.0)  # would be 10.0 without clamp
+        self.assertAlmostEqual(cam.zoom_level, 2.0)
+
+    def test_zoom_clamps_to_min(self):
+        cam = self._make_camera()
+        cam.zoom(0.1)  # would be 0.1 without clamp
+        self.assertAlmostEqual(cam.zoom_level, 0.5)
+
+    def test_zoom_accumulates_within_bounds(self):
+        cam = self._make_camera()
+        cam.zoom(1.1)
+        cam.zoom(1.1)
+        expected = 1.0 * 1.1 * 1.1
+        self.assertAlmostEqual(cam.zoom_level, expected, places=5)
+
+    def test_reset_restores_defaults(self):
+        cam = self._make_camera(100, 200)
+        cam.pan(50, -50)
+        cam.zoom(1.5)
+        cam.reset()
+        self.assertAlmostEqual(cam.origin_x, 100.0)
+        self.assertAlmostEqual(cam.origin_y, 200.0)
+        self.assertAlmostEqual(cam.zoom_level, 1.0)
+
+    def test_world_to_screen_at_zoom_one(self):
+        cam = self._make_camera(0, 0)
+        # col=1, row=0, tw=64, th=32 → x=32, y=16
+        x, y = cam.world_to_screen(1, 0, 64, 32)
+        self.assertEqual(x, 32)
+        self.assertEqual(y, 16)
+
+    def test_world_to_screen_origin(self):
+        cam = self._make_camera(100, 50)
+        x, y = cam.world_to_screen(0, 0, 64, 32)
+        self.assertEqual(x, 100)
+        self.assertEqual(y, 50)
+
+    def test_screen_to_world_roundtrip(self):
+        cam = self._make_camera(400, 200)
+        for col, row in [(0, 0), (1, 0), (0, 1), (3, 5), (10, 10)]:
+            sx, sy = cam.world_to_screen(col, row, 64, 32)
+            rc, rr = cam.screen_to_world(sx, sy, 64, 32)
+            self.assertEqual((rc, rr), (col, row), f"Roundtrip failed for ({col},{row})")
+
+    def test_frame_city_sets_zoom_within_bounds(self):
+        cam = self._make_camera()
+        cam.frame_city(32, 32, 1280, 720, 64, 32)
+        self.assertGreaterEqual(cam.zoom_level, 0.5)
+        self.assertLessEqual(cam.zoom_level, 2.0)
+
+    def test_frame_city_zero_grid_no_crash(self):
+        cam = self._make_camera()
+        cam.frame_city(0, 0, 1280, 720, 64, 32)
+        # Should not crash; zoom stays at current value
+
+
+class TestBuildingRenderStateHeightTiles(unittest.TestCase):
+    """Tests for the height_tiles field on BuildingRenderState."""
+
+    def test_default_height_tiles_is_one(self):
+        b = Building(BuildingType.COMMERCIAL)
+        brs = BuildingRenderState(building=b, grid_position=(0, 0))
+        self.assertEqual(brs.height_tiles, 1)
+
+    def test_explicit_height_tiles(self):
+        b = Building(BuildingType.RESIDENTIAL_LARGE)
+        brs = BuildingRenderState(building=b, grid_position=(1, 2), height_tiles=3)
+        self.assertEqual(brs.height_tiles, 3)
+
+
+@unittest.skipUnless(_HAS_PYGAME, "pygame-ce not installed")
+class TestElevatedBuildingBlit(unittest.TestCase):
+    """Tests for ElevatedBuildingBlit offset arithmetic."""
+
+    def setUp(self):
+        pygame.display.init()
+        from src.gui.renderer.elevated_building_blit import ElevatedBuildingBlit, FLOOR_H
+        self._blit = ElevatedBuildingBlit()
+        self._FLOOR_H = FLOOR_H
+
+    def tearDown(self):
+        pygame.display.quit()
+
+    def test_height_one_no_offset(self):
+        """height_tiles=1 blits at exact (screen_x, screen_y)."""
+        surface = pygame.Surface((200, 200), pygame.SRCALPHA)
+        tile = pygame.Surface((64, 32), pygame.SRCALPHA)
+        tile.fill((255, 0, 0))
+        self._blit.blit(surface, tile, 50, 100, height_tiles=1)
+        # The pixel at (50, 100) should have the red tile
+        self.assertEqual(surface.get_at((50, 100))[:3], (255, 0, 0))
+
+    def test_height_three_offsets_upward(self):
+        """height_tiles=3 blits 2*FLOOR_H pixels higher."""
+        surface = pygame.Surface((200, 200), pygame.SRCALPHA)
+        tile = pygame.Surface((64, 32), pygame.SRCALPHA)
+        tile.fill((0, 255, 0))
+        self._blit.blit(surface, tile, 50, 100, height_tiles=3)
+        expected_y = 100 - 2 * self._FLOOR_H
+        self.assertEqual(surface.get_at((50, expected_y))[:3], (0, 255, 0))
+
+    def test_offset_formula(self):
+        """Verify offset = (height_tiles - 1) * FLOOR_H for various heights."""
+        for ht in range(1, 9):
+            expected_offset = (ht - 1) * self._FLOOR_H
+            surface = pygame.Surface((200, 400), pygame.SRCALPHA)
+            tile = pygame.Surface((64, 32), pygame.SRCALPHA)
+            tile.fill((0, 0, 255))
+            self._blit.blit(surface, tile, 50, 200, height_tiles=ht)
+            # The tile should start at y = 200 - expected_offset
+            actual_y = 200 - expected_offset
+            self.assertEqual(
+                surface.get_at((50, actual_y))[:3], (0, 0, 255),
+                f"Wrong offset for height_tiles={ht}"
+            )
+
+
+class TestIsometricGridMapperWithCamera(unittest.TestCase):
+    """Tests for IsometricGridMapper with CameraController injection."""
+
+    def test_without_camera_preserves_behavior(self):
+        settings = GraphicsSettings(tile_width=64, tile_height=32)
+        mapper = IsometricGridMapper(settings, origin_x=100, origin_y=50)
+        x, y = mapper.world_to_screen(0, 0)
+        self.assertEqual(x, 100)
+        self.assertEqual(y, 50)
+
+    def test_with_camera_delegates(self):
+        settings = GraphicsSettings(tile_width=64, tile_height=32)
+        cam = CameraController(origin_x=100, origin_y=50)
+        mapper = IsometricGridMapper(settings, camera=cam)
+        x, y = mapper.world_to_screen(0, 0)
+        self.assertEqual(x, 100)
+        self.assertEqual(y, 50)
+
+    def test_camera_pan_affects_world_to_screen(self):
+        settings = GraphicsSettings(tile_width=64, tile_height=32)
+        cam = CameraController(origin_x=0, origin_y=0)
+        mapper = IsometricGridMapper(settings, camera=cam)
+        x1, y1 = mapper.world_to_screen(1, 0)
+        cam.pan(20, 10)
+        x2, y2 = mapper.world_to_screen(1, 0)
+        self.assertEqual(x2 - x1, 20)
+        self.assertEqual(y2 - y1, 10)
+
+    def test_screen_to_world_with_camera(self):
+        settings = GraphicsSettings(tile_width=64, tile_height=32)
+        cam = CameraController(origin_x=400, origin_y=200)
+        mapper = IsometricGridMapper(settings, camera=cam)
+        sx, sy = mapper.world_to_screen(3, 5)
+        col, row = mapper.screen_to_world(sx, sy)
+        self.assertEqual((col, row), (3, 5))
 
 
 if __name__ == "__main__":

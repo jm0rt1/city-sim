@@ -10,7 +10,9 @@ from src.shared.graphics_settings import GraphicsSettings
 from src.simulation.event_bus import EventBus, Event
 from src.gui.renderer.action_panel import ActionPanel
 from src.gui.renderer.building_palette import BuildingPalette
+from src.gui.renderer.camera_controller import CameraController
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
+from src.gui.renderer.elevated_building_blit import ElevatedBuildingBlit, FLOOR_H
 from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.gui.renderer.tile_atlas import TileAtlas
@@ -18,6 +20,7 @@ from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
 from src.gui.renderer.ui_overlay import UIOverlay
 
 _HOVER_COLOR = (255, 255, 100, 120)   # semi-transparent yellow outline
+_SHADOW_ALPHA = 102  # ~40 % of 255
 
 
 class CityRenderer:
@@ -43,6 +46,9 @@ class CityRenderer:
     * **E** — add 1 electricity facility
     * **H** — add 10 housing units
     * **P** — pause / resume auto-advance
+    * **Arrow keys** — pan camera
+    * **0** — reset camera
+    * **F** — frame (fit) entire city on screen
     * **Esc** — close window
 
     Usage::
@@ -67,8 +73,8 @@ class CityRenderer:
         self._settings = settings
         self._event_queue: Queue[Event] = event_bus.subscribe()
 
-        # Use PlaceableCityGridLayout by default so the player can build freely.
-        self._placeable_layout = PlaceableCityGridLayout()
+        # Use PlaceableCityGridLayout with 32×32 grid by default.
+        self._placeable_layout = PlaceableCityGridLayout(cols=32, rows=32)
         self._grid_layout: ICityGridLayout = (
             grid_layout if grid_layout is not None else self._placeable_layout
         )
@@ -76,15 +82,21 @@ class CityRenderer:
         self._toggle_pause: Callable[[], None] = toggle_pause or (lambda: None)
         self._is_paused: Callable[[], bool] = is_paused or (lambda: False)
 
-        # Centre the grid in the area left of the action panel.
+        # Camera controller for pan/zoom
         grid_area_w = settings.window_width - ActionPanel.PANEL_W
+        self._camera = CameraController(
+            origin_x=grid_area_w // 2,
+            origin_y=settings.window_height // 4,
+        )
         self._mapper = IsometricGridMapper(
             settings,
             origin_x=grid_area_w // 2,
             origin_y=settings.window_height // 4,
+            camera=self._camera,
         )
         self._atlas = TileAtlas(settings.tile_width, settings.tile_height)
         self._selector = BuildingSpriteSelector()
+        self._elevated_blit = ElevatedBuildingBlit()
         self._overlay = UIOverlay()
         self._palette = BuildingPalette(
             screen_w=grid_area_w,
@@ -105,6 +117,9 @@ class CityRenderer:
         self._clock = pygame.time.Clock()
         # Hovered tile (col, row) or None
         self._hovered_tile: tuple[int, int] | None = None
+        # Middle-mouse pan tracking
+        self._mid_dragging = False
+        self._mid_last: tuple[int, int] = (0, 0)
 
     # ------------------------------------------------------------------
     # Public API
@@ -114,17 +129,64 @@ class CityRenderer:
         """Render one frame onto *surface*."""
         surface.fill(self._BG_COLOR)
 
-        render_states = self._grid_layout.build_render_states(self._city)
-        # Depth-sort by painter's algorithm (back tiles first)
-        render_states.sort(key=lambda brs: brs.grid_position[0] + brs.grid_position[1])
+        win_w = self._settings.window_width
+        win_h = self._settings.window_height
+        tw = self._settings.tile_width
+        th = self._settings.tile_height
 
-        tw_half = self._settings.tile_width // 2
+        render_states = self._grid_layout.build_render_states(self._city)
+
+        # Assign height_tiles from atlas manifest
+        for brs in render_states:
+            sprite_id = self._selector.get_sprite_id(brs.building)
+            brs.height_tiles = self._atlas.get_height_tiles(sprite_id)
+
+        # Depth-sort by painter's algorithm (back tiles first).
+        # Taller buildings in the same row render after shorter ones.
+        render_states.sort(
+            key=lambda brs: (
+                brs.grid_position[0] + brs.grid_position[1],
+                -brs.height_tiles,
+            )
+        )
+
+        tw_half = tw // 2
+        z = self._camera.zoom_level
+        scaled_tw = int(tw * z)
+        scaled_th = int(th * z)
+
         for brs in render_states:
             col, row = brs.grid_position
             sprite_id = self._selector.get_sprite_id(brs.building)
             tile = self._atlas.get_tile(sprite_id)
             sx, sy = self._mapper.world_to_screen(col, row)
-            surface.blit(tile, (sx - tw_half, sy))
+            blit_x = sx - int(tw_half * z)
+
+            # Off-screen culling
+            elevation_offset = (brs.height_tiles - 1) * FLOOR_H
+            top_y = sy - elevation_offset
+            if (blit_x + scaled_tw < 0 or blit_x > win_w
+                    or top_y + scaled_th < 0 or sy + scaled_th > win_h + scaled_th + elevation_offset):
+                continue
+
+            # Scale tile for zoom
+            if z != 1.0:
+                tile = pygame.transform.smoothscale(tile, (scaled_tw, scaled_th))
+
+            # Soft shadow under elevated buildings
+            if brs.height_tiles > 1:
+                shadow_w = scaled_tw
+                shadow_h = max(1, scaled_th // 2)
+                shadow_surf = pygame.Surface((shadow_w, shadow_h), pygame.SRCALPHA)
+                pygame.draw.ellipse(shadow_surf, (0, 0, 0, _SHADOW_ALPHA),
+                                    (0, 0, shadow_w, shadow_h))
+                surface.blit(shadow_surf, (blit_x, sy + scaled_th // 4))
+
+            # Blit building with elevation offset
+            self._elevated_blit.blit(
+                surface, tile, blit_x, sy,
+                height_tiles=brs.height_tiles,
+            )
 
             # Hover highlight — yellow diamond outline over the hovered tile
             if self._hovered_tile == (col, row):
@@ -147,20 +209,70 @@ class CityRenderer:
             if ev.type == pygame.KEYDOWN:
                 if ev.key == pygame.K_ESCAPE:
                     return False
+                if ev.key == pygame.K_0:
+                    self._camera.reset()
+                    continue
+                if ev.key == pygame.K_f:
+                    cols = rows = 32
+                    if isinstance(self._grid_layout, PlaceableCityGridLayout):
+                        cols = self._grid_layout._cols
+                        rows = self._grid_layout._rows
+                    self._camera.frame_city(
+                        cols, rows,
+                        self._settings.window_width,
+                        self._settings.window_height,
+                        self._settings.tile_width,
+                        self._settings.tile_height,
+                    )
+                    continue
                 self._action_panel.handle_keydown(ev.key)
 
             if ev.type == pygame.MOUSEMOTION:
                 self._update_hover(ev.pos)
+                # Middle-mouse drag panning
+                if self._mid_dragging:
+                    dx = ev.pos[0] - self._mid_last[0]
+                    dy = ev.pos[1] - self._mid_last[1]
+                    self._camera.pan(dx, dy)
+                    self._mid_last = ev.pos
 
             if ev.type == pygame.MOUSEBUTTONDOWN:
-                if ev.button == 1:
+                if ev.button == 2:  # middle mouse
+                    self._mid_dragging = True
+                    self._mid_last = ev.pos
+                elif ev.button == 1:
                     # Panel and palette consume clicks before the grid does
                     if not self._action_panel.handle_click(ev.pos):
                         if not self._palette.handle_click(ev.pos):
                             self._handle_grid_click(ev.pos, erase=False)
-                if ev.button == 3:
+                elif ev.button == 3:
                     # Right-click erases
                     self._handle_grid_click(ev.pos, erase=True)
+                elif ev.button == 4:  # scroll up
+                    self._camera.zoom(1.1)
+                elif ev.button == 5:  # scroll down
+                    self._camera.zoom(0.9)
+
+            if ev.type == pygame.MOUSEBUTTONUP:
+                if ev.button == 2:
+                    self._mid_dragging = False
+
+            if ev.type == pygame.MOUSEWHEEL:
+                if ev.y > 0:
+                    self._camera.zoom(1.1)
+                elif ev.y < 0:
+                    self._camera.zoom(0.9)
+
+        # Arrow key held-down panning
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self._camera.pan(8, 0)
+        if keys[pygame.K_RIGHT]:
+            self._camera.pan(-8, 0)
+        if keys[pygame.K_UP]:
+            self._camera.pan(0, 8)
+        if keys[pygame.K_DOWN]:
+            self._camera.pan(0, -8)
 
         return True
 

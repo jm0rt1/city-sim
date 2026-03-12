@@ -126,6 +126,41 @@ def _load_or_create_tile(
     return _make_diamond_placeholder(color)
 
 
+_HEIGHT_TILES: dict[str, int] = {
+    # Terrain tiles — always 1
+    "terrain_grass_0":   1,
+    "terrain_park_0":    1,
+    "terrain_road_h":    1,
+    "terrain_road_v":    1,
+    "terrain_water_0":   1,
+    # Small buildings — 1
+    "building_res_small":              1,
+    "building_res_small_damaged":      1,
+    # Medium buildings — 2
+    "building_res_medium":             2,
+    "building_res_medium_damaged":     2,
+    "building_commercial":             2,
+    "building_commercial_damaged":     2,
+    # Large buildings — 3
+    "building_res_large":              3,
+    "building_res_large_damaged":      3,
+    "building_industrial":             3,
+    "building_industrial_damaged":     3,
+    "building_city_hall":              3,
+    "building_city_hall_damaged":      3,
+    "building_hospital":               2,
+    "building_hospital_damaged":       2,
+    "building_school":                 2,
+    "building_school_damaged":         2,
+    "building_fire_station":           1,
+    "building_fire_station_damaged":   1,
+    "building_police_station":         2,
+    "building_police_station_damaged": 2,
+    "building_power_plant":            3,
+    "building_power_plant_damaged":    3,
+}
+
+
 def _pack_sprites(
     sprites: dict[str, tuple[int, int, int]],
     source_dir: Path,
@@ -153,6 +188,7 @@ def _pack_sprites(
             "atlas_file": str(atlas_path),
             "col": col,
             "row": row,
+            "height_tiles": _HEIGHT_TILES.get(sprite_id, 1),
         }
 
     atlas_path.parent.mkdir(parents=True, exist_ok=True)

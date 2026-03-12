@@ -166,7 +166,7 @@ class CityRenderer:
             elevation_offset = (brs.height_tiles - 1) * FLOOR_H
             top_y = sy - elevation_offset
             if (blit_x + scaled_tw < 0 or blit_x > win_w
-                    or top_y + scaled_th < 0 or sy + scaled_th > win_h + scaled_th + elevation_offset):
+                    or top_y + scaled_th < 0 or sy > win_h):
                 continue
 
             # Scale tile for zoom
@@ -215,8 +215,8 @@ class CityRenderer:
                 if ev.key == pygame.K_f:
                     cols = rows = 32
                     if isinstance(self._grid_layout, PlaceableCityGridLayout):
-                        cols = self._grid_layout._cols
-                        rows = self._grid_layout._rows
+                        cols = self._grid_layout.cols
+                        rows = self._grid_layout.rows
                     self._camera.frame_city(
                         cols, rows,
                         self._settings.window_width,

@@ -1,0 +1,137 @@
+{
+  "terrain_grass_0": {
+    "atlas_file": "assets/tiles/terrain_atlas.png",
+    "col": 0,
+    "row": 0
+  },
+  "terrain_park_0": {
+    "atlas_file": "assets/tiles/terrain_atlas.png",
+    "col": 1,
+    "row": 0
+  },
+  "terrain_road_h": {
+    "atlas_file": "assets/tiles/terrain_atlas.png",
+    "col": 2,
+    "row": 0
+  },
+  "terrain_road_v": {
+    "atlas_file": "assets/tiles/terrain_atlas.png",
+    "col": 3,
+    "row": 0
+  },
+  "terrain_water_0": {
+    "atlas_file": "assets/tiles/terrain_atlas.png",
+    "col": 4,
+    "row": 0
+  },
+  "building_res_small": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 0,
+    "row": 0
+  },
+  "building_res_medium": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 1,
+    "row": 0
+  },
+  "building_res_large": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 2,
+    "row": 0
+  },
+  "building_commercial": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 3,
+    "row": 0
+  },
+  "building_industrial": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 4,
+    "row": 0
+  },
+  "building_city_hall": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 5,
+    "row": 0
+  },
+  "building_hospital": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 6,
+    "row": 0
+  },
+  "building_school": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 7,
+    "row": 0
+  },
+  "building_fire_station": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 0,
+    "row": 1
+  },
+  "building_police_station": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 1,
+    "row": 1
+  },
+  "building_power_plant": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 2,
+    "row": 1
+  },
+  "building_res_small_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 3,
+    "row": 1
+  },
+  "building_res_medium_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 4,
+    "row": 1
+  },
+  "building_res_large_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 5,
+    "row": 1
+  },
+  "building_commercial_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 6,
+    "row": 1
+  },
+  "building_industrial_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 7,
+    "row": 1
+  },
+  "building_city_hall_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 0,
+    "row": 2
+  },
+  "building_hospital_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 1,
+    "row": 2
+  },
+  "building_school_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 2,
+    "row": 2
+  },
+  "building_fire_station_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 3,
+    "row": 2
+  },
+  "building_police_station_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 4,
+    "row": 2
+  },
+  "building_power_plant_damaged": {
+    "atlas_file": "assets/tiles/buildings_atlas.png",
+    "col": 5,
+    "row": 2
+  }
+}

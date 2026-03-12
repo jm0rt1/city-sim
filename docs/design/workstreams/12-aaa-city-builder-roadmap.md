@@ -743,6 +743,399 @@ For a team of 3 engineers working in parallel after Phase 1:
 
 ---
 
+## Release Milestones & Timeline
+
+The 12 technical phases map onto four release milestones. Estimates assume a **3-engineer
+team** working in parallel after Phase 1 completes; solo timelines are shown in
+parentheses.
+
+| Milestone | Phases included | Team ETA | Solo ETA | Exit condition |
+|---|---|---|---|---|
+| **Alpha** | 1, 2, 3, 6, 9 | Week 10 | Week 14 | All acceptance criteria for included phases met; QA sign-off |
+| **Beta** | 4, 5, 7, 10, 11 | Week 20 | Week 25 | Feature-complete; no P1/P2 bugs; sound and tech-tree integrated |
+| **Release Candidate** | 8, 12 | Week 25 | Week 29 | 60 fps on target hardware; zero crash bugs; save/load round-trip verified |
+| **v1.0** | Polish, localization, store prep | Week 28 | Week 32 | Cert requirements met; all platform targets verified |
+
+### Milestone Definitions
+
+#### Alpha (end of Week 10)
+Goal: *Playable prototype with real art, camera, 3D buildings, basic UI, and save/load.*
+
+Included phases and why:
+- **Phase 1** — art pipeline (unblocks all visual work; zero substitutes)
+- **Phase 2** — building elevation (transforms flat prototype into 3D feel)
+- **Phase 3** — camera pan/zoom (makes map usable beyond a tiny grid)
+- **Phase 6** — rich UI panels (makes finance/population data legible)
+- **Phase 9** — save/load (minimum viable gameplay loop; prerequisite for playtesting)
+
+Alpha Go/No-Go gate: All five phase acceptance criteria met + 15-minute play session
+possible without a crash.
+
+#### Beta (end of Week 20)
+Goal: *Feature-complete world: roads, animations, day/night, sound, tech tree.*
+
+Included phases:
+- **Phase 4** — road tiles (city connectivity visible)
+- **Phase 5** — animated tiles (brings world to life: water, smoke, vehicles)
+- **Phase 7** — day/night cycle (atmosphere; city lighting distinguishes itself)
+- **Phase 10** — sound & music (sensory completeness)
+- **Phase 11** — tech tree (gameplay progression loop)
+
+Beta Go/No-Go gate: Full 30-minute play session, all building types unlockable, music
+cross-fades correctly, no P1 bugs.
+
+#### Release Candidate (end of Week 25)
+Goal: *Weather, particle effects, 60 fps performance on target hardware.*
+
+Included phases:
+- **Phase 8** — weather & particle effects (atmospheric depth)
+- **Phase 12** — performance & scalability (64×64 grid, 60 fps target)
+
+RC Go/No-Go gate: `PerfHUD` shows ≤ 16.7 ms average on reference hardware (Intel i5,
+integrated GPU); all weather effects deterministic.
+
+#### v1.0 (end of Week 28)
+Polish, localisation pass, platform store submission, marketing materials finalised.
+
+---
+
+## Effort Estimates
+
+Estimates are in **person-weeks** for a single engineer. Parallelism opportunities are
+noted.
+
+| Phase | Description | Solo weeks | Parallelisable with |
+|---|---|---|---|
+| 1 | Real sprite art & atlas pipeline | 3 | — (prerequisite for all) |
+| 2 | Building elevation & depth-correct render | 2 | Phase 3 |
+| 3 | Camera pan, zoom & grid scroll | 2 | Phase 2 |
+| 4 | Road network tiles | 2 | Phase 5, 6 |
+| 5 | Animated tiles | 2 | Phase 4, 6 |
+| 6 | Rich UI: Finance, Population, Minimap | 3 | Phase 4, 5 |
+| 7 | Day / night cycle & lighting | 2 | Phase 10 |
+| 8 | Weather & particle effects | 2 | Phase 12 |
+| 9 | Save / load | 2 | Phase 6 |
+| 10 | Sound & music | 2 | Phase 7 |
+| 11 | Tech tree & progression | 3 | Phase 7, 10 |
+| 12 | Performance & scalability | 2 | Phase 8 |
+| **Total sequential** | | **27** | |
+| **Total with 3 engineers** | | **≈ 10** | |
+
+---
+
+## Cross-Workstream Dependency Map
+
+Each AAA phase draws on one or more of the core simulation workstreams (WS-00 through
+WS-11). The table below shows which workstreams must be stable before each AAA phase
+can begin.
+
+| AAA Phase | Depends on WS | Notes |
+|---|---|---|
+| Phase 1 (Art pipeline) | WS-11 (Graphics) | `TileAtlas`, `BuildingSpriteSelector` must exist |
+| Phase 2 (Elevation) | WS-11, Phase 1 | Sprite format extension |
+| Phase 3 (Camera) | WS-11, Phase 1 | `IsometricGridMapper` viewport math |
+| Phase 4 (Roads) | WS-10 (Traffic), WS-02 (City), Phase 1 | Road graph must be in `City` state |
+| Phase 5 (Animations) | WS-11, Phase 1 | `AnimationController` in renderer |
+| Phase 6 (Rich UI) | WS-03 (Finance), WS-04 (Population), Phase 3 | Panel data from simulation subsystems |
+| Phase 7 (Day/Night) | WS-01 (Sim core — tick index), Phase 1–3 | Tick index drives time-of-day |
+| Phase 8 (Weather) | WS-01 (EventBus), Phase 5 | `WeatherChangedEvent` from sim |
+| Phase 9 (Save/Load) | WS-02 (City model), WS-01 (tick state) | `City` and `PlaceableCityGridLayout` serialisable |
+| Phase 10 (Sound) | WS-05 (UI events), Phase 7 | SFX triggers from UI + day/night state |
+| Phase 11 (Tech tree) | WS-03 (Finance), WS-04 (Population), WS-02 | `City` state read per tick |
+| Phase 12 (Performance) | All previous phases | Profiling requires complete feature set |
+
+### Workstream readiness prerequisites
+
+Before starting AAA Phase 1, confirm:
+- **WS-00A/B/C** — shared interfaces, data contracts, and integration protocols complete
+- **WS-01** — simulation tick loop and `EventBus` stable
+- **WS-02** — `City` model, `BuildingType` enum, grid state finalised
+- **WS-11** — baseline renderer (`CityRenderer`, `TileAtlas`, `ICityGridLayout`) in place
+
+---
+
+## Decision Gates
+
+Each gate is a formal go/no-go checkpoint. A phase may not begin until its gate passes.
+
+### Gate 0 — Project Kickoff
+**Trigger**: Before any AAA work begins.
+**Criteria**:
+- [ ] WS-00A/B/C complete and `docs/specs/interfaces.md` finalised
+- [ ] WS-11 baseline renderer ships (`python run.py --gui` shows a working isometric grid)
+- [ ] Simulation headless run stable (no crashes over 500 ticks, seed-reproducible)
+- [ ] Art direction approved (see [Concept Art Direction](#concept-art-direction) below)
+
+### Gate 1 — Alpha Entry (before Phase 2, 3, 6, 9)
+**Trigger**: Phase 1 complete.
+**Criteria**:
+- [ ] Full sprite atlas present; `python run.py --gui` shows real sprites (no colored diamonds)
+- [ ] `tools/pack_atlas.py` runs headlessly and emits valid manifest
+- [ ] All `BuildingType` values mapped to a real sprite
+- [ ] Atlas load time < 100 ms verified by automated test
+
+### Gate 2 — Alpha Exit / Beta Entry (before Phase 4, 5, 7, 10, 11)
+**Trigger**: Phases 1, 2, 3, 6, 9 all complete.
+**Criteria**:
+- [ ] 15-minute play session without crash
+- [ ] Camera pan/zoom functional; large grid navigable
+- [ ] Finance and Population panels correctly reflect simulation state
+- [ ] Quicksave and quickload round-trip verified (identical grid layout on reload)
+- [ ] No open P1 (crash) or P2 (data-loss) bugs
+
+### Gate 3 — Beta Exit / RC Entry (before Phase 8, 12)
+**Trigger**: Phases 4, 5, 7, 10, 11 all complete.
+**Criteria**:
+- [ ] Roads render; at least 3 road tile variants placed successfully
+- [ ] Water/smoke animations play at target frame rate
+- [ ] Day/night cycle transitions visible; building windows lit at night
+- [ ] Tech tree: at least 4 nodes unlock correctly; locked buildings greyed in palette
+- [ ] Sound: build SFX plays within 50 ms; music cross-fades
+- [ ] No P1/P2 bugs
+
+### Gate 4 — RC Exit / v1.0 Entry (before platform submission)
+**Trigger**: Phases 8, 12 complete.
+**Criteria**:
+- [ ] 60 fps on reference hardware (32×32 grid, all Phase 1–11 features active)
+- [ ] `PerfHUD` reports ≤ 16.7 ms average frame time
+- [ ] Weather deterministic: same seed → same particle positions
+- [ ] Save files survive application restart (binary identical re-load)
+- [ ] All targeted platforms pass smoke test
+- [ ] All targeted locales render correctly (text overflow, RTL if applicable)
+
+### Scope Trade-off Rules
+If a gate is missed due to time pressure, apply these rules in order:
+
+1. **Cut Phase 8 (Weather)** before cutting any other phase — weather is atmospheric
+   only and has no simulation gameplay dependency.
+2. **Defer Phase 11 (Tech tree)** scope to v1.1 if unlock conditions need extensive
+   balance tuning.
+3. **Never cut Phase 9 (Save/Load)** — absence of save/load blocks playtesting and is
+   a hard user expectation.
+4. **Never cut Phase 12 (Performance)** optimisations — frame-rate failures block
+   all platform certifications.
+
+---
+
+## Feature Prioritization Matrix
+
+Each feature is rated on a 1–5 scale for **Player Impact** (how much players notice/value
+it) and **Implementation Effort** (relative engineering cost). The resulting quadrant
+drives ordering.
+
+```
+High Impact │ Phase 3 (Camera)    Phase 1 (Art)     Phase 9 (Save/Load) │
+            │ Phase 6 (UI)        Phase 11 (Tech)                        │
+────────────┼───────────────────────────────────────────────────────────┤
+Low Impact  │ Phase 12 (Perf)     Phase 2 (Elev)    Phase 7 (Day/Night) │
+            │ Phase 5 (Anim)      Phase 4 (Roads)   Phase 8 (Weather)   │
+            │ Phase 10 (Sound)                                           │
+            │──────────── Low Effort ────────────── High Effort ─────────
+```
+
+| Phase | Impact (1–5) | Effort (1–5) | Quadrant | Priority |
+|---|---|---|---|---|
+| 1 — Art pipeline | 5 | 3 | 🟢 Quick Win+ | **P0** — prerequisite |
+| 3 — Camera | 5 | 2 | 🟢 Quick Win | **P1** |
+| 9 — Save/Load | 5 | 2 | 🟢 Quick Win | **P1** |
+| 6 — Rich UI | 4 | 3 | 🟢 High Value | **P1** |
+| 11 — Tech tree | 4 | 4 | 🟡 Strategic | **P2** |
+| 2 — Elevation | 4 | 2 | 🟢 Quick Win | **P1** |
+| 4 — Roads | 3 | 3 | 🟡 Strategic | **P2** |
+| 7 — Day/Night | 3 | 2 | 🟢 Quick Win | **P2** |
+| 5 — Animation | 3 | 3 | 🟡 Strategic | **P2** |
+| 10 — Sound | 3 | 2 | 🟢 Quick Win | **P2** |
+| 8 — Weather | 2 | 3 | 🔵 Nice-to-Have | **P3** |
+| 12 — Performance | 2 | 3 | 🔵 Nice-to-Have | **P3 (required for cert)** |
+
+Legend: 🟢 High Impact / Low-Medium Effort · 🟡 High Impact / High Effort · 🔵 Low Impact / Any Effort
+
+---
+
+## Risk Register
+
+### R-01 — AI-generated art quality below bar
+- **Probability**: Medium (3/5)
+- **Impact**: High (4/5) — all visual phases depend on Phase 1 assets
+- **Mitigation**: Use multiple AI generators (DALL-E 3, Midjourney, SDXL) with the
+  prompts in `docs/specs/graphics.md §6`. Maintain a fallback "clean geometric" style
+  that still looks intentional. Commission a human pixel artist for hero tiles if AI
+  output is rejected at Gate 1.
+- **Owner**: Art lead / Phase 1 engineer
+- **Review at**: Gate 1
+
+### R-02 — pygame-ce rendering bottleneck at large grid sizes
+- **Probability**: Medium (3/5)
+- **Impact**: High (4/5) — blocks RC certification on Phase 12
+- **Mitigation**: Phase 12 dirty-tile + atlas pre-baking approach is the primary
+  mitigation. If insufficient, evaluate SDL2 hardware-accelerated blitting or a
+  partial migration to `pygame.sprite.LayeredDirty`. Profile early using `PerfHUD`
+  from Phase 12 deliverable 12D.
+- **Owner**: Performance engineer (Phase 12)
+- **Review at**: Gate 3
+
+### R-03 — Save/Load format instability across phases
+- **Probability**: High (4/5) — each phase may add new serialisable fields
+- **Impact**: Medium (3/5) — breaks save-file compatibility between releases
+- **Mitigation**: Version-stamp every save file (`"version": 1`). Write a
+  `CitySerializer.migrate(v_old, v_new, data)` migration hook from day one. Increment
+  version on every format change and ship migration tests.
+- **Owner**: Phase 9 engineer; all subsequent phase engineers must update version
+- **Review at**: Gate 2, Gate 3, Gate 4
+
+### R-04 — Non-determinism introduced by particle / weather systems
+- **Probability**: Medium (3/5) — weather and particle phases use per-frame randomness
+- **Impact**: High (4/5) — violates ADR-001 determinism contract
+- **Mitigation**: All particle emitters and weather systems must be seeded via
+  `RandomService`. Document in `WeatherSystem` and `AnimationController` that
+  non-`RandomService` randomness is prohibited. Add a determinism regression test:
+  run two identical seeds and assert identical frame output.
+- **Owner**: WS-01 maintainer; Phase 5 and Phase 8 engineers
+- **Review at**: Gate 3
+
+### R-05 — Tech tree balance requires extended playtesting
+- **Probability**: High (4/5) — unlock conditions and building costs are guesses
+- **Impact**: Medium (3/5) — gameplay feel but not a crash
+- **Mitigation**: Expose all unlock thresholds as JSON config (`tech_tree.json`)
+  rather than hard-coded constants. Ship a scenario that exercises the full tree from
+  tick 0. Allocate 2 weeks of balance iteration after Beta gate.
+- **Owner**: Phase 11 engineer + game designer
+- **Review at**: Gate 3
+
+### R-06 — Audio licensing issues with third-party assets
+- **Probability**: Low (2/5)
+- **Impact**: High (4/5) — legal bloat or forced asset replacement at RC
+- **Mitigation**: Use only CC0 sources (freesound.org, opengameart.org, Kenney.nl).
+  Maintain `assets/audio/LICENSES.md` with source URL and licence for every file.
+  Automated CI check: any new file in `assets/audio/` requires a corresponding entry
+  in `LICENSES.md`.
+- **Owner**: Phase 10 engineer; CI (WS-07)
+- **Review at**: Gate 3
+
+### R-07 — Scope creep from optional phases
+- **Probability**: Medium (3/5)
+- **Impact**: Medium (3/5) — delays v1.0 without proportional player value
+- **Mitigation**: Apply the scope trade-off rules in the [Decision Gates](#decision-gates)
+  section. Any feature not in the defined 12 phases requires a written scope-change
+  request reviewed at the next gate.
+- **Owner**: Project lead
+- **Review at**: Every gate
+
+---
+
+## Platform & Localization Targets
+
+### Target Platforms
+
+| Platform | Priority | Notes |
+|---|---|---|
+| **Windows 10/11 (x86-64)** | P0 — primary | pygame-ce wheels available; main dev OS |
+| **macOS 13+ (Apple Silicon + Intel)** | P1 | Universal binary via `pyinstaller`; test both arches |
+| **Linux (Ubuntu 22.04 LTS, x86-64)** | P1 | CI pipeline runs on Linux; SDL2 deps via apt |
+| **Steam Deck (SteamOS, x86-64)** | P2 | Proton compatibility; controller input if Phase 6 adds it |
+| **Web (Pyodide / Emscripten)** | P3 — stretch | Evaluate at RC; pygame-ce Wasm support experimental |
+
+### Distribution Channels
+- **itch.io** (all platforms, v0.x early access) — zero cert requirements, fast turnaround
+- **Steam** (v1.0) — requires Steamworks SDK integration and store page assets
+- **GitHub Releases** (always) — zip bundles with bundled Python runtime via PyInstaller/Nuitka
+
+### Localization Targets
+
+| Locale | Priority | Script | Notes |
+|---|---|---|---|
+| `en-US` | P0 | Latin | Default; all strings coded in English |
+| `de-DE` | P1 | Latin | Large PC gaming market; compound nouns need overflow testing |
+| `fr-FR` | P1 | Latin | |
+| `pt-BR` | P1 | Latin | Large emerging market |
+| `zh-Hans` | P2 | CJK | Requires CJK font bundle; no RTL issues |
+| `ja-JP` | P2 | CJK | |
+| `ko-KR` | P2 | Hangul | |
+| `ar-SA` | P3 | RTL | Requires full RTL layout pass; defer to v1.1 |
+
+### Localization Technical Requirements
+- All user-visible strings must be wrapped in `_()` from the `gettext` module.
+- String extraction via `xgettext`; `.po` files in `locale/<locale>/LC_MESSAGES/`.
+- Font must include full Latin, CJK, and Hangul ranges or be swapped per locale.
+- Minimum font size 12 px to ensure readability at 1080p.
+- German overflow test: UI panels must handle strings up to 40% longer than English.
+
+---
+
+## Concept Art Direction
+
+### Visual Identity
+City-Sim targets a **warm, readable isometric style** positioned between the realism of
+*Cities: Skylines* and the charm of *A-Train* / *Mini Metro*:
+
+- **Colour palette**: Saturated but not garish. Warm amber/terracotta for residential,
+  cool slate/glass for commercial, muted grey/brown for industrial, vivid green for
+  parks. Reference: [Lospec Palette DB — "Endesga 64"](https://lospec.com/palette-list/endesga-64).
+- **Tile silhouette**: Buildings should read clearly at 64×32 px base; rooflines and
+  chimneys act as immediate category signals.
+- **Mood**: Optimistic daytime tone; cozy lamp-lit night scene. Avoid gritty/dystopian
+  aesthetics.
+- **Perspective**: Standard 2:1 isometric (26.565° elevation angle). All tiles share
+  the same projection — do not mix cabinet and isometric projections.
+
+### Art Style Reference Prompts
+See `docs/specs/graphics.md §6` for the full prompt library. Core style descriptor for
+all AI generation:
+
+```
+isometric city-builder game tile, warm colour palette, clean outlines,
+stylised realism, 2:1 isometric perspective, 128x128 px source PNG,
+transparent background, [TILE_DESCRIPTION], game-ready sprite
+```
+
+### UI Visual Language
+- **HUD**: Dark translucent panels (rgba(0,0,0,160)) with white text; accent colour
+  matches the tile category being shown.
+- **Icons**: Kenney.nl "City Kit" icon set as baseline; custom icons for unique
+  building types.
+- **Typography**: [Inter](https://fonts.google.com/specimen/Inter) (OFL licence) for UI
+  text; a display/headline font (e.g., [Oxanium](https://fonts.google.com/specimen/Oxanium)) for
+  title screen and milestones.
+
+---
+
+## Marketing Narrative & Monetization
+
+### Positioning Statement
+> *City-Sim is the open-source city-builder that proves great gameplay doesn't need a
+> AAA budget — just great engineering and great taste.*
+
+Target audience: PC strategy/simulation gamers (25–40), indie game enthusiasts,
+Python/open-source developer community.
+
+### Key Differentiators
+1. **Fully open-source** — every asset prompt, algorithm, and save format is documented
+   and reproducible.
+2. **Deterministic simulation** — share a seed; anyone can replay your city's history
+   exactly.
+3. **Moddable by design** — tech tree, building types, and event rules are JSON-driven
+   from day one.
+4. **Transparent AI asset pipeline** — every generated sprite ships with its source
+   prompt (see `assets/tiles/source/`).
+
+### Monetization Strategy (v1.0 and beyond)
+
+| Revenue stream | When | Notes |
+|---|---|---|
+| **Pay-what-you-want (itch.io)** | Alpha onward | Builds community; zero friction |
+| **Steam paid release (~$9.99)** | v1.0 | Standard city-builder price point for indie |
+| **DLC — Scenario Packs** | v1.1+ | New maps, disasters, and scenario objectives |
+| **DLC — Art Packs** | v1.1+ | Alternative tilesets (e.g., sci-fi, fantasy) |
+| **OSS sponsorship (GitHub Sponsors)** | Any time | Sustains development; targets contributors |
+
+### Minimum Marketing Milestones
+- **Alpha**: Dev-log post on itch.io + Reddit r/gamedev; GIF of camera pan with real art
+- **Beta**: 60-second gameplay trailer (OBS capture + light editing)
+- **RC**: Steam store page live; presskit on presskit.html
+- **v1.0**: Launch week: itch.io launch + Steam launch + Reddit r/games post
+
+---
+
 ## Asset Requirements Summary
 
 | Asset type | Format | Count | Source |

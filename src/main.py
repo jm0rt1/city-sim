@@ -1,6 +1,7 @@
 import logging
 import logging.handlers
 import random
+import threading
 from datetime import datetime, timezone
 from src.shared.settings import GlobalSettings
 import src.simulation.sim as sim
@@ -19,17 +20,75 @@ def initialize_logging():
     logging.info("Global Logging Started")
 
 
-def main():
-    """run a console menu that has two options, runs in a while loop so multiple options can be selected"""
+class _PauseController:
+    """Thread-safe pause/resume controller shared between the render loop and
+    the background simulation thread."""
 
+    def __init__(self) -> None:
+        self._paused: bool = False
+        self._lock: threading.Lock = threading.Lock()
+
+    def is_paused(self) -> bool:
+        """Return ``True`` when the simulation is currently paused."""
+        with self._lock:
+            return self._paused
+
+    def toggle(self) -> None:
+        """Flip the paused state."""
+        with self._lock:
+            self._paused = not self._paused
+
+
+def main(gui: bool = False):
+    """Initialize logging and start the simulation.
+
+    Args:
+        gui: When ``True``, open the isometric renderer window instead of
+             the headless console loop.
+    """
     initialize_logging()
+    the_city = city.City()
 
-    seed = GlobalSettings.SEED
-    random.seed(seed)
+    if gui:
+        _run_with_gui(the_city)
+    else:
+        simulation = sim.Sim(city=the_city)
+        simulation.start()
 
-    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    run_id = f"run_{ts}_seed_{seed}"
 
-    initial_city = city.City(population=Population.from_list([Pop()]))
-    simulation = sim.Sim(city=initial_city, seed=seed, run_id=run_id)
-    simulation.start()
+def _run_with_gui(the_city: "city.City") -> None:
+    """Start the isometric renderer with a background simulation tick loop.
+
+    The simulation auto-advances at 1 tick/second on a daemon thread.
+    Interactive controls (buttons and keyboard shortcuts in the rendered
+    window) let the user add infrastructure and pause/resume the sim.
+    """
+    import time
+
+    from src.shared.graphics_settings import GraphicsSettings
+    from src.simulation.event_bus import EventBus
+    from src.gui.renderer.city_renderer import CityRenderer
+
+    settings = GraphicsSettings()
+    event_bus = EventBus()
+    simulation = sim.Sim(city=the_city)
+    pause_ctrl = _PauseController()
+
+    renderer = CityRenderer(
+        city=the_city,
+        event_bus=event_bus,
+        settings=settings,
+        toggle_pause=pause_ctrl.toggle,
+        is_paused=pause_ctrl.is_paused,
+    )
+
+    def _sim_loop() -> None:
+        while True:
+            if not pause_ctrl.is_paused():
+                simulation.advance_day()
+            time.sleep(1.0)
+
+    t = threading.Thread(target=_sim_loop, daemon=True)
+    t.start()
+
+    renderer.run()  # blocking; returns when window is closed

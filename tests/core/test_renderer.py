@@ -375,5 +375,123 @@ class TestPauseController(unittest.TestCase):
         self.assertEqual(errors, [])
 
 
+class TestPlaceableCityGridLayout(unittest.TestCase):
+    """Tests for the free-placement grid layout strategy."""
+
+    def _make_city(self) -> City:
+        return City(population=Population.from_list([Pop()]))
+
+    def _make_layout(self, cols: int = 4, rows: int = 4) -> "PlaceableCityGridLayout":
+        from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
+        return PlaceableCityGridLayout(cols=cols, rows=rows)
+
+    def test_fills_entire_grid_with_background(self):
+        layout = self._make_layout(cols=4, rows=4)
+        states = layout.build_render_states(self._make_city())
+        self.assertEqual(len(states), 16)
+
+    def test_positions_are_unique(self):
+        layout = self._make_layout(cols=4, rows=4)
+        states = layout.build_render_states(self._make_city())
+        positions = [s.grid_position for s in states]
+        self.assertEqual(len(positions), len(set(positions)))
+
+    def test_place_building_sets_type(self):
+        layout = self._make_layout()
+        layout.place_building(1, 1, BuildingType.COMMERCIAL)
+        b = layout.get_building(1, 1)
+        self.assertIsNotNone(b)
+        assert b is not None
+        self.assertEqual(b.building_type, BuildingType.COMMERCIAL)
+
+    def test_place_building_appears_in_render_states(self):
+        layout = self._make_layout(cols=4, rows=4)
+        layout.place_building(2, 2, BuildingType.PARK)
+        states = layout.build_render_states(self._make_city())
+        placed = next(s for s in states if s.grid_position == (2, 2))
+        self.assertEqual(placed.building.building_type, BuildingType.PARK)
+
+    def test_place_empty_lot_clears_cell(self):
+        layout = self._make_layout()
+        layout.place_building(0, 0, BuildingType.INDUSTRIAL)
+        layout.place_building(0, 0, BuildingType.EMPTY_LOT)
+        self.assertIsNone(layout.get_building(0, 0))
+
+    def test_out_of_bounds_returns_false(self):
+        layout = self._make_layout(cols=4, rows=4)
+        self.assertFalse(layout.place_building(10, 10, BuildingType.PARK))
+
+    def test_in_bounds_returns_correct_values(self):
+        layout = self._make_layout(cols=4, rows=4)
+        self.assertTrue(layout.in_bounds(0, 0))
+        self.assertTrue(layout.in_bounds(3, 3))
+        self.assertFalse(layout.in_bounds(4, 0))
+        self.assertFalse(layout.in_bounds(0, 4))
+        self.assertFalse(layout.in_bounds(-1, 0))
+
+    def test_replace_existing_building(self):
+        layout = self._make_layout()
+        layout.place_building(1, 1, BuildingType.COMMERCIAL)
+        layout.place_building(1, 1, BuildingType.PARK)
+        b = layout.get_building(1, 1)
+        assert b is not None
+        self.assertEqual(b.building_type, BuildingType.PARK)
+
+    def test_multiple_buildings_all_appear(self):
+        layout = self._make_layout(cols=4, rows=4)
+        layout.place_building(0, 0, BuildingType.CIVIC_CITY_HALL)
+        layout.place_building(3, 3, BuildingType.CIVIC_SCHOOL)
+        states = layout.build_render_states(self._make_city())
+        types_at = {
+            s.grid_position: s.building.building_type for s in states
+        }
+        self.assertEqual(types_at[(0, 0)], BuildingType.CIVIC_CITY_HALL)
+        self.assertEqual(types_at[(3, 3)], BuildingType.CIVIC_SCHOOL)
+
+    def test_implements_interface(self):
+        from src.gui.renderer.city_grid_layout import ICityGridLayout
+        from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
+        self.assertIsInstance(PlaceableCityGridLayout(), ICityGridLayout)
+
+
+class TestBuildingPaletteSelection(unittest.TestCase):
+    """Tests for BuildingPalette selection logic (no pygame display needed)."""
+
+    def _make_palette(self):
+        from src.gui.renderer.building_palette import BuildingPalette
+        from src.gui.renderer.tile_atlas import TileAtlas
+        atlas = TileAtlas(64, 32)
+        return BuildingPalette(screen_w=1280, screen_h=720, atlas=atlas)
+
+    def test_default_selection_is_residential_small(self):
+        palette = self._make_palette()
+        self.assertEqual(palette.selected, BuildingType.RESIDENTIAL_SMALL)
+
+    def test_all_placeable_types_are_represented(self):
+        from src.gui.renderer.building_palette import PLACEABLE_TYPES
+        palette = self._make_palette()
+        entry_types = {e.building_type for e in palette._entries}
+        self.assertEqual(entry_types, set(PLACEABLE_TYPES))
+
+    def test_bar_height_is_positive(self):
+        palette = self._make_palette()
+        self.assertGreater(palette.bar_height, 0)
+
+    def test_bar_y_is_near_bottom_of_screen(self):
+        palette = self._make_palette()
+        self.assertLess(palette.bar_y, 720)
+        self.assertGreater(palette.bar_y, 500)
+
+    def test_contains_returns_true_inside_bar(self):
+        palette = self._make_palette()
+        inside_pos = (640, palette.bar_y + 5)
+        self.assertTrue(palette.contains(inside_pos))
+
+    def test_contains_returns_false_above_bar(self):
+        palette = self._make_palette()
+        above_pos = (640, palette.bar_y - 10)
+        self.assertFalse(palette.contains(above_pos))
+
+
 if __name__ == "__main__":
     unittest.main()

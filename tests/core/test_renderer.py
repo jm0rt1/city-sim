@@ -4,20 +4,29 @@ Tests for the pygame-free renderer components.
 Intentionally avoids importing any module that requires pygame so that the
 test suite runs in headless CI environments without a display.
 """
+from __future__ import annotations
+
 import inspect
 import unittest
 
-import pygame
+try:
+    import pygame
+    _HAS_PYGAME = True
+except ImportError:
+    _HAS_PYGAME = False
 
 from src.city.building import Building, BuildingType, District
 from src.city.city import City
 from src.city.population.population import Population, Pop
-from src.gui.renderer.action_panel import ActionPanel
 from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
+from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
 from src.shared.graphics_settings import GraphicsSettings
+
+if _HAS_PYGAME:
+    from src.gui.renderer.action_panel import ActionPanel
 
 
 class TestBuildingType(unittest.TestCase):
@@ -251,6 +260,7 @@ class TestInfrastructureCityGridLayout(unittest.TestCase):
         self.assertEqual(states[0].grid_position, (0, 0))
 
 
+@unittest.skipUnless(_HAS_PYGAME, "pygame-ce not installed")
 class TestActionPanelCallbacks(unittest.TestCase):
     """
     Tests for ActionPanel callback dispatch.
@@ -381,8 +391,7 @@ class TestPlaceableCityGridLayout(unittest.TestCase):
     def _make_city(self) -> City:
         return City(population=Population.from_list([Pop()]))
 
-    def _make_layout(self, cols: int = 4, rows: int = 4) -> "PlaceableCityGridLayout":
-        from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
+    def _make_layout(self, cols: int = 4, rows: int = 4) -> PlaceableCityGridLayout:
         return PlaceableCityGridLayout(cols=cols, rows=rows)
 
     def test_fills_entire_grid_with_background(self):
@@ -449,11 +458,10 @@ class TestPlaceableCityGridLayout(unittest.TestCase):
         self.assertEqual(types_at[(3, 3)], BuildingType.CIVIC_SCHOOL)
 
     def test_implements_interface(self):
-        from src.gui.renderer.city_grid_layout import ICityGridLayout
-        from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
         self.assertIsInstance(PlaceableCityGridLayout(), ICityGridLayout)
 
 
+@unittest.skipUnless(_HAS_PYGAME, "pygame-ce not installed")
 class TestBuildingPaletteSelection(unittest.TestCase):
     """Tests for BuildingPalette selection logic (no pygame display needed)."""
 

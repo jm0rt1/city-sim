@@ -8,22 +8,30 @@ import pygame
 
 from src.city.building import Building, BuildingType
 from src.city.city import City
+from src.city.finance import CityBudget
 from src.shared.graphics_settings import GraphicsSettings
-from src.simulation.event_bus import EventBus, Event, TrafficUpdatedEvent
+from src.simulation.event_bus import (
+    EventBus, Event,
+    BuildingConstructedEvent, BuildingDamagedEvent,
+    TrafficUpdatedEvent, WeatherChangedEvent,
+)
 from src.gui.renderer.action_panel import ActionPanel
 from src.gui.renderer.animation_controller import AnimationController
 from src.gui.renderer.building_palette import BuildingPalette, ROAD_TOOL
 from src.gui.renderer.camera_controller import CameraController
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.elevated_building_blit import ElevatedBuildingBlit, FLOOR_H
+from src.gui.renderer.event_log import EventLog, SEVERITY_WARNING, SEVERITY_NEUTRAL
+from src.gui.renderer.finance_panel import FinancePanel
+from src.gui.renderer.minimap import Minimap
 from src.gui.renderer.particle_system import ParticleSystem
 from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
+from src.gui.renderer.population_panel import PopulationPanel
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
 from src.gui.renderer.road_tile_selector import RoadTileSelector
 from src.gui.renderer.tile_atlas import TileAtlas
 from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
-from src.gui.renderer.ui_overlay import UIOverlay
 
 _HOVER_COLOR = (255, 255, 100, 120)   # semi-transparent yellow outline
 _SHADOW_ALPHA = 102  # ~40 % of 255
@@ -103,6 +111,8 @@ class CityRenderer:
         grid_layout: ICityGridLayout | None = None,
         toggle_pause: Callable[[], None] | None = None,
         is_paused: Callable[[], bool] | None = None,
+        get_city_budget: Callable[[], CityBudget] | None = None,
+        get_budget_history: Callable[[], list] | None = None,
     ) -> None:
         self._city = city
         self._event_bus = event_bus
@@ -117,6 +127,10 @@ class CityRenderer:
 
         self._toggle_pause: Callable[[], None] = toggle_pause or (lambda: None)
         self._is_paused: Callable[[], bool] = is_paused or (lambda: False)
+
+        # Optional budget accessors wired from main.py.
+        self._get_city_budget: Callable[[], CityBudget] | None = get_city_budget
+        self._get_budget_history: Callable[[], list] | None = get_budget_history
 
         # Camera controller for pan/zoom
         grid_area_w = settings.window_width - ActionPanel.PANEL_W
@@ -134,7 +148,6 @@ class CityRenderer:
         self._selector = BuildingSpriteSelector()
         self._road_selector = RoadTileSelector()
         self._elevated_blit = ElevatedBuildingBlit()
-        self._overlay = UIOverlay()
         self._palette = BuildingPalette(
             screen_w=grid_area_w,
             screen_h=settings.window_height,
@@ -174,6 +187,26 @@ class CityRenderer:
         # --- Phase 5D: Vehicle sprites ---
         # list of (col, row, direction, age_ms, progress) for active vehicles
         self._vehicles: list[dict] = []
+
+        # --- Phase 6: Rich UI panels ---
+        self._population_panel = PopulationPanel(x=10, y=10)
+        # FinancePanel sits below the ActionPanel button area (inside the right sidebar).
+        _finance_y = (
+            ActionPanel._TITLE_H
+            + len(ActionPanel._BUTTON_DEFS) * (ActionPanel._BTN_H + ActionPanel._PADDING)
+            + ActionPanel._PADDING * 3
+        )
+        self._finance_panel = FinancePanel(
+            x=settings.window_width - ActionPanel.PANEL_W,
+            y=_finance_y,
+            width=ActionPanel.PANEL_W,
+        )
+        self._minimap = Minimap(
+            grid_area_w=grid_area_w,
+            win_h=settings.window_height,
+        )
+        self._event_log = EventLog()
+        self._event_log_visible: bool = False
 
     # ------------------------------------------------------------------
     # Public API
@@ -303,8 +336,27 @@ class CityRenderer:
         elapsed_ms = float(self._clock.get_time())
         self._update_vehicles(elapsed_ms, surface)
 
-        self._overlay.draw(surface, self._city)
+        # --- Phase 6: Rich UI panels (rendered last, on top of tiles) ---
+        # 1. PopulationPanel — top-left HUD.
+        self._population_panel.draw(surface, self._city)
+        # 2. ActionPanel — right sidebar.
         self._action_panel.draw(surface)
+        # 3. FinancePanel — right sidebar, below buttons.
+        budget = self._get_city_budget() if self._get_city_budget is not None else CityBudget()
+        history = self._get_budget_history() if self._get_budget_history is not None else []
+        self._finance_panel.draw(surface, budget, history)
+        # 4. Minimap — bottom-right of grid area.
+        self._minimap.draw(
+            surface,
+            self._grid_layout,
+            self._city,
+            self._camera,
+            tw=self._settings.tile_width,
+            th=self._settings.tile_height,
+        )
+        # 5. EventLog strip — bottom of screen, toggled by L.
+        self._event_log.draw(surface, visible=self._event_log_visible)
+        # 6. Building palette bar — drawn last so it overlays the minimap area.
         self._palette.draw(surface)
 
     def handle_events(self, events: list) -> bool:
@@ -336,6 +388,9 @@ class CityRenderer:
                         self._settings.tile_height,
                     )
                     continue
+                if ev.key == pygame.K_l:
+                    self._event_log_visible ^= True
+                    continue
                 self._action_panel.handle_keydown(ev.key)
 
             if ev.type == pygame.MOUSEMOTION:
@@ -352,8 +407,18 @@ class CityRenderer:
                     self._mid_dragging = True
                     self._mid_last = ev.pos
                 elif ev.button == 1:
+                    # Minimap click-to-pan (before grid hit-test).
+                    cols = rows = _DEFAULT_GRID_SIZE
+                    if isinstance(self._grid_layout, PlaceableCityGridLayout):
+                        cols = self._grid_layout.cols
+                        rows = self._grid_layout.rows
+                    if self._minimap.handle_click(
+                        ev.pos, self._camera, cols, rows,
+                        self._settings.tile_width, self._settings.tile_height,
+                    ):
+                        pass
                     # Panel and palette consume clicks before the grid does
-                    if not self._action_panel.handle_click(ev.pos):
+                    elif not self._action_panel.handle_click(ev.pos):
                         if not self._palette.handle_click(ev.pos):
                             self._handle_grid_click(ev.pos, erase=False)
                 elif ev.button == 3:
@@ -491,15 +556,36 @@ class CityRenderer:
         Drain all pending simulation events from the subscriber queue.
 
         Handles :class:`~src.simulation.event_bus.TrafficUpdatedEvent` by
-        spawning vehicle sprites on every road tile.
+        spawning vehicle sprites on every road tile.  Also feeds the
+        :class:`~src.gui.renderer.event_log.EventLog` with a human-readable
+        message for each event type.
         """
         while not self._event_queue.empty():
             try:
                 event = self._event_queue.get_nowait()
             except Exception:
                 break
-            if isinstance(event, TrafficUpdatedEvent):
+            tick = getattr(event, "tick", 0)
+            if isinstance(event, BuildingConstructedEvent):
+                self._event_log.append(
+                    tick,
+                    f"Building placed at ({event.col},{event.row})",
+                )
+            elif isinstance(event, BuildingDamagedEvent):
+                self._event_log.append(
+                    tick,
+                    f"Building damaged at ({event.col},{event.row})",
+                    SEVERITY_WARNING,
+                )
+            elif isinstance(event, TrafficUpdatedEvent):
+                self._event_log.append(tick, "Traffic updated", "info")
                 self._spawn_vehicles()
+            elif isinstance(event, WeatherChangedEvent):
+                self._event_log.append(
+                    tick,
+                    f"Weather changed: {event.weather_type}",
+                    SEVERITY_NEUTRAL,
+                )
 
     def _spawn_vehicles(self) -> None:
         """

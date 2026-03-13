@@ -80,6 +80,8 @@ def _run_with_gui(the_city: "city.City") -> None:
         settings=settings,
         toggle_pause=pause_ctrl.toggle,
         is_paused=pause_ctrl.is_paused,
+        get_city_budget=lambda: simulation.city_budget,
+        get_budget_history=lambda: list(simulation.budget_history),
     )
 
     def _sim_loop() -> None:

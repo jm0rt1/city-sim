@@ -5,14 +5,18 @@ from src.gui.renderer.camera_controller import CameraController
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
 from src.gui.renderer.road_tile_selector import RoadTileSelector
+from src.gui.renderer.event_log import EventLog
+from src.gui.renderer.minimap import Minimap
 
 __all__ = [
     "BuildingRenderState",
     "BuildingSpriteSelector",
     "CameraController",
+    "EventLog",
     "ICityGridLayout",
     "InfrastructureCityGridLayout",
     "IsometricGridMapper",
+    "Minimap",
     "PlaceableCityGridLayout",
     "RoadTileSelector",
 ]

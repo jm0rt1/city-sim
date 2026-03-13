@@ -37,6 +37,10 @@ class Sim():
         self._revenue_sum: float = 0.0
         self._expenses_sum: float = 0.0
 
+        # Per-tick budget history ring-buffer: (revenue, expenses, balance).
+        # Stores at most 20 entries; oldest entry is discarded when full.
+        self.budget_history: list[tuple[float, float, float]] = []
+
     def roll_disasters(self):
         # For simplicity, we'll roll a 1% chance for a disaster
         if random.random() < 0.01:
@@ -83,6 +87,17 @@ class Sim():
         self._happiness_sum += happiness
         self._revenue_sum += tick_revenue
         self._expenses_sum += tick_expenses
+
+        # Append to budget_history ring-buffer (max 20 entries).
+        entry: tuple[float, float, float] = (
+            float(tick_revenue),
+            float(tick_expenses),
+            float(self.city_budget.balance),
+        )
+        self.budget_history.append(entry)
+        if len(self.budget_history) > 20:
+            self.budget_history.pop(0)
+
         self.tick_index += 1
 
     def run(self, ticks: int) -> None:

@@ -80,6 +80,7 @@ def _run_with_gui(the_city: "city.City") -> None:
         settings=settings,
         toggle_pause=pause_ctrl.toggle,
         is_paused=pause_ctrl.is_paused,
+        get_tick_index=lambda: simulation.tick_index,
     )
 
     def _sim_loop() -> None:

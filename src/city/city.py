@@ -1,6 +1,7 @@
 
 from src.city.population.happiness_tracker import HappinessTracker
 from src.city.population.population import Pop, Population
+from src.city.road_network import RoadNetwork
 
 
 class City:
@@ -11,6 +12,8 @@ class City:
         self.water_facilities = 2
         self.electricity_facilities = 2
         self.housing_units = 30
+        # Road network (32×32 matches the default renderer grid)
+        self.road_network = RoadNetwork(cols=32, rows=32)
 
     def on_advance_day(self):
         people_with_water = self.water_facilities * 20

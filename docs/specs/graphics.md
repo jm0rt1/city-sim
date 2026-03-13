@@ -79,6 +79,16 @@ screen_y = (col + row) * TILE_H // 2 + origin_y
 
 Where `TILE_W = 64` and `TILE_H = 32`.
 
+When a `CameraController` is active, the mapping applies zoom and pan:
+
+```
+screen_x = int((col - row) * TILE_W // 2 * zoom_level + camera.origin_x)
+screen_y = int((col + row) * TILE_H // 2 * zoom_level + camera.origin_y)
+```
+
+The `CameraController` is injected into `IsometricGridMapper` as an optional parameter.
+When absent, the original fixed-origin formula is used (backward-compatible).
+
 ---
 
 ## 3. Required Tools
@@ -202,18 +212,43 @@ class CityRenderer:
     def handle_events(self, events: List[Event]): ...
 
 class IsometricGridMapper:
-    """Converts world (col, row) to screen (x, y)."""
+    """Converts world (col, row) to screen (x, y).
+    Accepts optional CameraController for pan/zoom support."""
+    def __init__(self, settings, origin_x=0, origin_y=0, camera=None): ...
     def world_to_screen(self, col: int, row: int) -> tuple[int, int]: ...
     def screen_to_world(self, x: int, y: int) -> tuple[int, int]: ...
 
+class CameraController:
+    """Owns viewport offset and zoom level (0.5×–2.0×).
+    Injected into IsometricGridMapper for pan/zoom/reset/frame_city."""
+    def pan(self, dx: float, dy: float): ...
+    def zoom(self, factor: float): ...
+    def reset(self): ...
+    def frame_city(self, cols, rows, win_w, win_h, tw=64, th=32): ...
+    def world_to_screen(self, col, row, tw, th) -> tuple[int, int]: ...
+    def screen_to_world(self, x, y, tw, th) -> tuple[int, int]: ...
+
 class TileAtlas:
-    """Manages sprite sheets and tile lookup."""
+    """Manages sprite sheets, tile lookup, and height_tiles metadata."""
     def get_tile(self, tile_id: str) -> pygame.Surface: ...
+    def get_height_tiles(self, sprite_id: str) -> int: ...
+    def load_manifest(self, manifest_path: str): ...
     def load_atlas(self, path: str): ...
+
+class ElevatedBuildingBlit:
+    """Blits building tiles offset upward by (height_tiles-1) * FLOOR_H."""
+    FLOOR_H: int = 16
+    def blit(self, surface, tile, screen_x, screen_y, height_tiles=1): ...
 
 class BuildingSpriteSelector:
     """Maps BuildingType + condition + occupancy → sprite id."""
     def get_sprite_id(self, building: Building) -> str: ...
+
+class BuildingRenderState:
+    """Associates a Building with grid_position and height_tiles for rendering."""
+    building: Building
+    grid_position: tuple[int, int]
+    height_tiles: int = 1
 
 class UIOverlay:
     """HUD: budget bar, population counter, happiness indicator."""
@@ -461,16 +496,25 @@ suitable for a city simulation game, professional quality game asset sheet
 
 ## 7. Implementation Checklist
 
-- [ ] Add `pygame-ce` and `Pillow` to `requirements.txt`
-- [ ] Add `pytmx` to `requirements.txt` (for Tiled map file loading)
-- [ ] Create `src/gui/renderer/` package with classes from Section 5
-- [ ] Create `BuildingRenderState` wrapper in `src/gui/renderer/` that associates each `Building` with its `grid_position: tuple[int, int]` (do not modify core `Building` class)
-- [ ] Extend `EventBus` with buffered queue support for renderer thread safety
-- [ ] Implement `GraphicsSettings` in `src/shared/settings.py` or as a separate config
+- [x] Add `pygame-ce` and `Pillow` to `requirements.txt`
+- [x] Add `pytmx` to `requirements.txt` (for Tiled map file loading)
+- [x] Create `src/gui/renderer/` package with classes from Section 5
+- [x] Create `BuildingRenderState` wrapper in `src/gui/renderer/` that associates each `Building` with its `grid_position: tuple[int, int]` and `height_tiles: int` (do not modify core `Building` class)
+- [x] Extend `EventBus` with buffered queue support for renderer thread safety
+- [x] Implement `GraphicsSettings` in `src/shared/settings.py` or as a separate config
 - [ ] Generate AI assets using prompts in Section 6 and pack into atlases using Pillow
 - [ ] Author the base map in Tiled and export as `.tmj`
-- [ ] Wire `CityRenderer` into the main loop in `run.py` (optional flag `--gui`)
+- [x] Wire `CityRenderer` into the main loop in `run.py` (optional flag `--gui`)
 - [ ] Add `docs/adr/003-graphics-rendering.md` capturing pygame-ce choice
+- [x] Implement `CameraController` with pan/zoom/reset/frame_city (Phase 3A)
+- [x] Inject `CameraController` into `IsometricGridMapper` (Phase 3B)
+- [x] Wire camera input bindings in `CityRenderer` (Phase 3C)
+- [x] Increase default grid to 32×32 (Phase 3C)
+- [x] Implement off-screen tile culling (Phase 3D)
+- [x] Implement `ElevatedBuildingBlit` with height offset (Phase 2B)
+- [x] Add `height_tiles` to atlas manifest via `pack_atlas.py` (Phase 2A)
+- [x] Update depth sort to `(col+row, -height_tiles)` (Phase 2C)
+- [x] Add soft shadow under elevated buildings (Phase 2D)
 
 ---
 

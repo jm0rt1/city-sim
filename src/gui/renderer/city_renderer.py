@@ -343,7 +343,7 @@ class CityRenderer:
         self._action_panel.draw(surface)
         # 3. FinancePanel — right sidebar, below buttons.
         budget = self._get_city_budget() if self._get_city_budget is not None else CityBudget()
-        history = list(self._get_budget_history()) if self._get_budget_history is not None else []
+        history = self._get_budget_history() if self._get_budget_history is not None else []
         self._finance_panel.draw(surface, budget, history)
         # 4. Minimap — bottom-right of grid area.
         self._minimap.draw(

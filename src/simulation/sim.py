@@ -1,3 +1,4 @@
+import collections
 import random
 import time
 from datetime import datetime, timezone
@@ -7,6 +8,8 @@ from src.city.population.population import Pop
 from src.city.finance import CityBudget
 from src.shared.settings import GlobalSettings
 from src.simulation.logger import SimLogger, normalize_happiness
+
+_BUDGET_HISTORY_MAXLEN: int = 20
 
 
 def _make_run_id() -> str:
@@ -38,8 +41,11 @@ class Sim():
         self._expenses_sum: float = 0.0
 
         # Per-tick budget history ring-buffer: (revenue, expenses, balance).
-        # Stores at most 20 entries; oldest entry is discarded when full.
-        self.budget_history: list[tuple[float, float, float]] = []
+        # Stores at most _BUDGET_HISTORY_MAXLEN entries; oldest entry is discarded
+        # automatically when the deque is full.
+        self.budget_history: collections.deque[tuple[float, float, float]] = (
+            collections.deque(maxlen=_BUDGET_HISTORY_MAXLEN)
+        )
 
     def roll_disasters(self):
         # For simplicity, we'll roll a 1% chance for a disaster
@@ -88,15 +94,12 @@ class Sim():
         self._revenue_sum += tick_revenue
         self._expenses_sum += tick_expenses
 
-        # Append to budget_history ring-buffer (max 20 entries).
-        entry: tuple[float, float, float] = (
+        # Append to budget_history ring-buffer; deque maxlen handles eviction.
+        self.budget_history.append((
             float(tick_revenue),
             float(tick_expenses),
             float(self.city_budget.balance),
-        )
-        self.budget_history.append(entry)
-        if len(self.budget_history) > 20:
-            self.budget_history.pop(0)
+        ))
 
         self.tick_index += 1
 

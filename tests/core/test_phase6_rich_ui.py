@@ -162,14 +162,14 @@ class TestMinimapHandleClick(unittest.TestCase):
 
 class TestSimBudgetHistory(unittest.TestCase):
 
-    def _make_sim(self) -> object:
+    def _make_sim(self) -> "Sim":
         from src.city.city import City
         from src.simulation.sim import Sim
         return Sim(city=City(), seed=0, run_id="test")
 
     def test_initial_budget_history_empty(self) -> None:
         sim = self._make_sim()
-        self.assertEqual(sim.budget_history, [])
+        self.assertEqual(len(sim.budget_history), 0)
 
     def test_advance_day_appends_entry(self) -> None:
         sim = self._make_sim()

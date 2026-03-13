@@ -19,6 +19,9 @@ except ImportError:  # pragma: no cover
 _MAP_W: int = 80
 _MAP_H: int = 80
 
+# Fallback grid size when the layout's cols/rows cannot be determined.
+_DEFAULT_GRID_SIZE: int = 32
+
 # Cell colours by building category.
 _COLORS: dict[BuildingType, tuple[int, int, int]] = {
     BuildingType.PARK:                  (56,  118,  29),
@@ -172,7 +175,7 @@ class Minimap:
             cols = layout.cols
             rows = layout.rows
         else:
-            cols = rows = 32
+            cols = rows = _DEFAULT_GRID_SIZE
 
         cell_w = max(1, _MAP_W // cols) if cols > 0 else 1
         cell_h = max(1, _MAP_H // rows) if rows > 0 else 1

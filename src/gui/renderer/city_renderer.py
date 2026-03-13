@@ -55,6 +55,8 @@ _VEHICLE_FRAME_COUNT = 4
 _VEHICLE_FPS = 8.0
 # Duration (ms) a vehicle sprite is displayed before being removed.
 _VEHICLE_LIFETIME_MS: float = 1000.0
+# Seed for the particle + vehicle RNG (deterministic visual effects).
+_VISUAL_SEED: int = 42
 
 
 class CityRenderer:
@@ -167,7 +169,7 @@ class CityRenderer:
         # --- Phase 5C: ParticleSystem ---
         # Seed the RNG from the city's road_network hash or a fixed seed for
         # determinism; city may not have random_service so use a seeded Random.
-        self._particles = ParticleSystem(rng=random.Random(42))
+        self._particles = ParticleSystem(rng=random.Random(_VISUAL_SEED))
 
         # --- Phase 5D: Vehicle sprites ---
         # list of (col, row, direction, age_ms, progress) for active vehicles
@@ -250,7 +252,7 @@ class CityRenderer:
             else:
                 sprite_id = self._selector.get_sprite_id(brs.building)
                 # 5B: Animate water tiles by swapping to the current frame sprite.
-                if sprite_id == "terrain_water_0" or sprite_id.startswith("terrain_water"):
+                if sprite_id.startswith("terrain_water"):
                     frame = self._anim.get_frame(_WATER_BASE_SPRITE)
                     sprite_id = f"terrain_water_{frame}"
             tile = self._atlas.get_tile(sprite_id)
@@ -518,7 +520,7 @@ class CityRenderer:
         # Clear old vehicles before spawning fresh ones.
         self._vehicles.clear()
 
-        rng = random.Random(42)
+        rng = random.Random(_VISUAL_SEED)
         for r in range(rows):
             for c in range(cols):
                 if not road_network.is_road(c, r):

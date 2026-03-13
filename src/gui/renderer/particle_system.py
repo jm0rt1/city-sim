@@ -65,9 +65,6 @@ class ParticleSystem:
         self._particles: list[Particle] = []
         # tile (col,row) → accumulated ms since last emission
         self._cooldowns: dict[tuple[int, int], float] = {}
-        # pending screen-space origins for emit() called this frame
-        # actual world→screen conversion happens lazily in emit()
-        self._pending_origins: list[tuple[int, int, int, int]] = []  # (col, row, sx, sy)
 
     # ------------------------------------------------------------------
     # Pure-Python API (no pygame)

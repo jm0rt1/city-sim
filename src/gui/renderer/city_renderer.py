@@ -5,22 +5,35 @@ from typing import Callable
 
 import pygame
 
+from src.city.building import Building, BuildingType
 from src.city.city import City
 from src.shared.graphics_settings import GraphicsSettings
 from src.simulation.event_bus import EventBus, Event
 from src.gui.renderer.action_panel import ActionPanel
-from src.gui.renderer.building_palette import BuildingPalette
+from src.gui.renderer.building_palette import BuildingPalette, ROAD_TOOL
 from src.gui.renderer.camera_controller import CameraController
 from src.gui.renderer.city_grid_layout import ICityGridLayout, InfrastructureCityGridLayout
 from src.gui.renderer.elevated_building_blit import ElevatedBuildingBlit, FLOOR_H
 from src.gui.renderer.placeable_city_grid_layout import PlaceableCityGridLayout
 from src.gui.renderer.isometric_grid_mapper import IsometricGridMapper
+from src.gui.renderer.road_tile_selector import RoadTileSelector
 from src.gui.renderer.tile_atlas import TileAtlas
+from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
 from src.gui.renderer.ui_overlay import UIOverlay
 
 _HOVER_COLOR = (255, 255, 100, 120)   # semi-transparent yellow outline
 _SHADOW_ALPHA = 102  # ~40 % of 255
+
+# Building types that represent empty terrain (no visible structure).
+# Used in render_frame to filter terrain tiles covered by road segments.
+_TERRAIN_BUILDING_TYPES: frozenset[BuildingType] = frozenset({
+    BuildingType.PARK,
+    BuildingType.EMPTY_LOT,
+})
+
+# Default grid size matching City.road_network and PlaceableCityGridLayout defaults.
+_DEFAULT_GRID_SIZE: int = 32
 
 
 class CityRenderer:
@@ -96,6 +109,7 @@ class CityRenderer:
         )
         self._atlas = TileAtlas(settings.tile_width, settings.tile_height)
         self._selector = BuildingSpriteSelector()
+        self._road_selector = RoadTileSelector()
         self._elevated_blit = ElevatedBuildingBlit()
         self._overlay = UIOverlay()
         self._palette = BuildingPalette(
@@ -136,16 +150,51 @@ class CityRenderer:
 
         render_states = self._grid_layout.build_render_states(self._city)
 
-        # Assign height_tiles from atlas manifest
+        # Remove terrain tiles that are covered by a road so the road tile
+        # renders in their place.
+        road_network = getattr(self._city, "road_network", None)
+        if road_network is not None:
+            render_states = [
+                brs for brs in render_states
+                if not (
+                    brs.road_sprite_id is None
+                    and brs.building.building_type in _TERRAIN_BUILDING_TYPES
+                    and road_network.is_road(*brs.grid_position)
+                )
+            ]
+            # Add road render states for every road cell in the grid.
+            cols = rows = _DEFAULT_GRID_SIZE
+            if isinstance(self._grid_layout, PlaceableCityGridLayout):
+                cols = self._grid_layout.cols
+                rows = self._grid_layout.rows
+            for r in range(rows):
+                for c in range(cols):
+                    if road_network.is_road(c, r):
+                        nb = road_network.get_neighbours(c, r)
+                        road_sid = self._road_selector.get_sprite_id(
+                            nb["N"], nb["E"], nb["S"], nb["W"]
+                        )
+                        road_brs = BuildingRenderState(
+                            building=Building(BuildingType.EMPTY_LOT),
+                            grid_position=(c, r),
+                            height_tiles=1,
+                            road_sprite_id=road_sid,
+                        )
+                        render_states.append(road_brs)
+
+        # Assign height_tiles from atlas manifest for non-road tiles.
         for brs in render_states:
-            sprite_id = self._selector.get_sprite_id(brs.building)
-            brs.height_tiles = self._atlas.get_height_tiles(sprite_id)
+            if brs.road_sprite_id is None:
+                sprite_id = self._selector.get_sprite_id(brs.building)
+                brs.height_tiles = self._atlas.get_height_tiles(sprite_id)
 
         # Depth-sort by painter's algorithm (back tiles first).
+        # Roads sort at col+row-0.5 (below buildings at same cell).
         # Taller buildings in the same row render after shorter ones.
         render_states.sort(
             key=lambda brs: (
-                brs.grid_position[0] + brs.grid_position[1],
+                brs.grid_position[0] + brs.grid_position[1]
+                + (-0.5 if brs.road_sprite_id else 0.0),
                 -brs.height_tiles,
             )
         )
@@ -157,7 +206,11 @@ class CityRenderer:
 
         for brs in render_states:
             col, row = brs.grid_position
-            sprite_id = self._selector.get_sprite_id(brs.building)
+            # Road tiles use their pre-computed road_sprite_id; others use selector.
+            if brs.road_sprite_id is not None:
+                sprite_id = brs.road_sprite_id
+            else:
+                sprite_id = self._selector.get_sprite_id(brs.building)
             tile = self._atlas.get_tile(sprite_id)
             sx, sy = self._mapper.world_to_screen(col, row)
             blit_x = sx - int(tw_half * z)
@@ -324,7 +377,7 @@ class CityRenderer:
         screen_pos: tuple[int, int],
         erase: bool,
     ) -> None:
-        """Place or erase a building at the grid tile under *screen_pos*."""
+        """Place or erase a building/road at the grid tile under *screen_pos*."""
         if not isinstance(self._grid_layout, PlaceableCityGridLayout):
             return
         if self._palette.contains(screen_pos):
@@ -332,9 +385,23 @@ class CityRenderer:
         col, row = self._mapper.screen_to_world(*screen_pos)
         if not self._grid_layout.in_bounds(col, row):
             return
-        from src.city.building import BuildingType
-        btype = BuildingType.EMPTY_LOT if erase else self._palette.selected
-        self._grid_layout.place_building(col, row, btype)
+
+        selected = self._palette.selected
+        road_network = getattr(self._city, "road_network", None)
+
+        if erase:
+            if selected == ROAD_TOOL and road_network is not None:
+                road_network.remove_road(col, row)
+            else:
+                self._grid_layout.place_building(col, row, BuildingType.EMPTY_LOT)
+        else:
+            if selected == ROAD_TOOL and road_network is not None:
+                road_network.place_road(col, row)
+            else:
+                assert isinstance(selected, BuildingType), (
+                    f"expected BuildingType, got {selected!r}"
+                )
+                self._grid_layout.place_building(col, row, selected)
 
     def _draw_hover(
         self, surface: pygame.Surface, sx: int, sy: int

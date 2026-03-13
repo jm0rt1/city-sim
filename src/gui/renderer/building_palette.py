@@ -11,6 +11,12 @@ from src.gui.renderer.tile_atlas import TileAtlas
 from src.city.building import Building
 
 
+#: Sentinel value for road-placement mode (not a BuildingType).
+ROAD_TOOL: str = "__road__"
+
+#: Union of valid palette selections — building type or road tool sentinel.
+PaletteTool = BuildingType | str
+
 # Building types that can be directly placed by the player.
 PLACEABLE_TYPES: list[BuildingType] = [
     BuildingType.EMPTY_LOT,          # acts as an eraser
@@ -48,7 +54,7 @@ _DISPLAY_NAMES: dict[BuildingType, str] = {
 
 @dataclass
 class _PaletteEntry:
-    building_type: BuildingType
+    building_type: PaletteTool
     rect: pygame.Rect = field(default_factory=lambda: pygame.Rect(0, 0, 0, 0))
 
 
@@ -93,11 +99,13 @@ class BuildingPalette:
         self._entries: list[_PaletteEntry] = [
             _PaletteEntry(bt) for bt in PLACEABLE_TYPES
         ]
-        self._selected: BuildingType = BuildingType.RESIDENTIAL_SMALL
+        # Road tool entry appended after standard building types.
+        self._entries.append(_PaletteEntry(ROAD_TOOL))
+        self._selected: PaletteTool = BuildingType.RESIDENTIAL_SMALL
 
     @property
-    def selected(self) -> BuildingType:
-        """The building type currently active for placement."""
+    def selected(self) -> PaletteTool:
+        """The tool currently active for placement (BuildingType or ROAD_TOOL)."""
         return self._selected
 
     @property
@@ -156,8 +164,17 @@ class BuildingPalette:
                 pygame.draw.rect(surface, self._COLOR_NORMAL, entry.rect, border_radius=4)
 
             # Tile sprite preview centred in the entry
-            dummy_building = Building(entry.building_type)
-            sprite_id = self._selector.get_sprite_id(dummy_building)
+            if entry.building_type == ROAD_TOOL:
+                sprite_id = "road_h"
+                label = "Road"
+            else:
+                btype = entry.building_type
+                assert isinstance(btype, BuildingType), (
+                    f"expected BuildingType, got {btype!r}"
+                )
+                dummy_building = Building(btype)
+                sprite_id = self._selector.get_sprite_id(dummy_building)
+                label = _DISPLAY_NAMES.get(btype, btype.name)
             tile_surf = self._atlas.get_tile(sprite_id)
             tw, th = tile_surf.get_size()
             tile_x = entry.rect.x + (self._ENTRY_W - tw) // 2
@@ -165,7 +182,6 @@ class BuildingPalette:
             surface.blit(tile_surf, (tile_x, tile_y))
 
             # Label below sprite
-            label = _DISPLAY_NAMES.get(entry.building_type, entry.building_type.name)
             lsurf, lrect = self._font.render(label, self._COLOR_TEXT)
             lx = entry.rect.x + (self._ENTRY_W - lrect.width) // 2
             ly = tile_y + th + 2

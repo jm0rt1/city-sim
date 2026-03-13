@@ -50,6 +50,15 @@ class TileAtlas:
         self._tw = tile_width
         self._th = tile_height
         self._tiles: dict[str, pygame.Surface] = {}
+        self._height_tiles: dict[str, int] = {}
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
+    def get_height_tiles(self, sprite_id: str) -> int:
+        """Return the height_tiles value for *sprite_id* (default 1)."""
+        return self._height_tiles.get(sprite_id, 1)
 
     # ------------------------------------------------------------------
     # Public API
@@ -129,6 +138,8 @@ class TileAtlas:
             groups.setdefault(atlas_file, []).append(
                 (sprite_id, int(entry["col"]), int(entry["row"]))  # type: ignore[arg-type]
             )
+            # Store height_tiles from manifest (default 1)
+            self._height_tiles[sprite_id] = int(entry.get("height_tiles", 1))  # type: ignore[arg-type]
 
         for atlas_file, entries in groups.items():
             atlas_path = Path(atlas_file)

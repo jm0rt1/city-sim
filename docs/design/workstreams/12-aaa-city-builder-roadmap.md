@@ -36,10 +36,14 @@ noted.
 | Right-click erase | ✅ |
 | HUD (population, happiness, facilities) | ✅ Text overlay top-left |
 | Action panel (add water/elec/housing, pause) | ✅ Right sidebar |
-| Keyboard shortcuts | ✅ W / E / H / P / Esc |
+| Keyboard shortcuts | ✅ W / E / H / P / Esc / 0 / F / Arrow keys |
 | Building sprites | ⚠️ Procedural colored diamonds — no real art |
-| Building elevation (height stacking) | ❌ All buildings render as flat tiles |
-| Camera pan / zoom | ❌ Fixed position |
+| Atlas manifest `height_tiles` | ✅ Phase 2A — `height_tiles` (1–3) per sprite in manifest |
+| Building elevation (height stacking) | ✅ Phase 2B/C — `ElevatedBuildingBlit` offsets by `(height_tiles-1)*FLOOR_H`; depth sort `(col+row, -height_tiles)` |
+| Shadow projection | ✅ Phase 2D — semi-transparent ellipse under elevated buildings |
+| Camera pan / zoom | ✅ Phase 3A/B — `CameraController` with pan, zoom (0.5×–2.0×), reset, frame_city |
+| 32×32 default grid | ✅ Phase 3C — `PlaceableCityGridLayout(cols=32, rows=32)` |
+| Off-screen tile culling | ✅ Phase 3D — tiles outside viewport skipped |
 | Animated tiles (water, traffic, smoke) | ❌ Static only |
 | Road network rendering | ❌ No road tiles |
 | Day / night cycle | ❌ |
@@ -185,6 +189,17 @@ Add a soft elliptical shadow blit under each elevated building proportional to
 - Building sprites show visible left/right faces giving 3D depth illusion.
 - No visual artefacts (z-fighting) at tile borders.
 
+### Implementation Notes (Completed)
+Phase 2 was implemented with a simplified single-surface approach (no 3-panel roof/left/right split) since real art is not yet available. The implementation is forward-compatible: when real 3-panel sprites are authored in Phase 1, `ElevatedBuildingBlit` can be extended to composite them.
+
+**Delivered files:**
+- `src/gui/renderer/elevated_building_blit.py` — `ElevatedBuildingBlit` with `FLOOR_H = 16 px`; offsets blit position by `(height_tiles - 1) * FLOOR_H` upward.
+- `src/gui/renderer/building_render_state.py` — added `height_tiles: int = 1` field (populated from atlas manifest at render time).
+- `tools/pack_atlas.py` — writes `height_tiles` to manifest (terrain=1, small=1, medium=2, large=3).
+- `src/gui/renderer/tile_atlas.py` — `get_height_tiles(sprite_id)` reads from manifest.
+- `src/gui/renderer/city_renderer.py` — depth sort key changed to `(col+row, -height_tiles)`; soft shadow ellipse (40 % alpha) drawn under buildings with `height_tiles > 1`.
+- `tests/core/test_renderer.py` — unit tests for `ElevatedBuildingBlit` offset arithmetic and `BuildingRenderState.height_tiles`.
+
 ---
 
 ## Phase 3 — Camera Pan, Zoom & Grid Scroll
@@ -234,6 +249,14 @@ outside the window viewport. This is required for performance at 32×32+ maps.
 - Player can pan smoothly across a 32×32 grid at 60 fps.
 - Zoom in/out to 0.5×–2.0× without visual distortion.
 - Off-screen tiles are culled (0 blit calls for invisible tiles).
+
+### Implementation Notes (Completed)
+**Delivered files:**
+- `src/gui/renderer/camera_controller.py` — `CameraController` class with `pan(dx, dy)`, `zoom(factor)` (clamped [0.5, 2.0]), `reset()`, `frame_city(cols, rows, win_w, win_h, tw, th)`, `world_to_screen(col, row, tw, th)`, `screen_to_world(x, y, tw, th)`.
+- `src/gui/renderer/isometric_grid_mapper.py` — added optional `camera: CameraController | None` parameter; when provided, `world_to_screen` and `screen_to_world` delegate to camera. Fully backward-compatible.
+- `src/gui/renderer/city_renderer.py` — wired inputs: middle-mouse drag → pan, arrow keys (held) → pan ±8 px/frame, scroll wheel → zoom ×1.1/0.9, `0` → reset, `F` → frame_city. Off-screen culling skips tiles outside `(0, 0, win_w, win_h)`.
+- `src/gui/renderer/placeable_city_grid_layout.py` — default grid increased to 32×32; added public `cols`/`rows` properties.
+- `tests/core/test_renderer.py` — unit tests for `CameraController` (pan/zoom/reset/frame_city/world↔screen roundtrip) and `IsometricGridMapper` with camera injection.
 
 ---
 

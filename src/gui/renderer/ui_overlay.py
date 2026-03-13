@@ -72,10 +72,10 @@ class UIOverlay:
 
             avg_speed_kph = traffic_delta.avg_speed * 3.6  # m/s → km/h
             traffic_lines = [
-                ("── Traffic ──────────",                       self._TRAFFIC_HEADER_COLOR),
-                (f"Vehicles   : {traffic_delta.vehicles_active}",  self._TEXT_COLOR),
-                (f"Avg speed  : {avg_speed_kph:.1f} km/h",     self._TEXT_COLOR),
-                (f"Congestion : {ci:.2f}",                      ci_color),
+                ("── Traffic ──────────",                         self._TRAFFIC_HEADER_COLOR),
+                (f"Vehicles   : {traffic_delta.vehicles_active}", self._TEXT_COLOR),
+                (f"Avg speed  : {avg_speed_kph:.1f} km/h",       self._TEXT_COLOR),
+                (f"Congestion : {ci:.2f}",                        ci_color),
                 (f"Throughput : {traffic_delta.total_throughput}", self._TEXT_COLOR),
             ]
             if traffic_delta.incidents_active:
@@ -102,4 +102,3 @@ class UIOverlay:
                 line,
                 color,
             )
-

@@ -57,18 +57,16 @@ def _build_sample_transport():
     graph = RoadGraph()
     spacing = 300.0  # metres between intersections
 
-    node_ids = []
     for row in range(3):
         for col in range(3):
             nid = f"n{row}{col}"
             itype = (IntersectionType.SIGNALIZED
                      if (row == 1 and col == 1)
                      else IntersectionType.STOP)
-            node = Intersection(nid, Position(col * spacing, row * spacing), itype)
-            graph.add_intersection(node)
-            node_ids.append(nid)
+            graph.add_intersection(
+                Intersection(nid, Position(col * spacing, row * spacing), itype)
+            )
 
-    # Add bidirectional segments for each horizontal and vertical neighbour pair
     seg_idx = 0
     for row in range(3):
         for col in range(3):
@@ -77,10 +75,10 @@ def _build_sample_transport():
                 nr, nc = row + dr, col + dc
                 if 0 <= nr < 3 and 0 <= nc < 3:
                     dst = f"n{nr}{nc}"
-                    sid_fwd = f"seg{seg_idx}"
-                    sid_rev = f"seg{seg_idx + 1}"
-                    seg_idx += 2
-                    for sid, frm, to in [(sid_fwd, src, dst), (sid_rev, dst, src)]:
+                    for sid, frm, to in [
+                        (f"seg{seg_idx}", src, dst),
+                        (f"seg{seg_idx + 1}", dst, src),
+                    ]:
                         graph.add_segment(RoadSegment(
                             sid, frm, to,
                             length=spacing,
@@ -88,10 +86,9 @@ def _build_sample_transport():
                             capacity=1800,
                             road_type=RoadType.ARTERIAL,
                         ))
+                    seg_idx += 2
 
-    # Attach a signal controller to the centre intersection
-    centre = graph.nodes["n11"]
-    centre.signal_controller = SignalController("n11")
+    graph.nodes["n11"].signal_controller = SignalController("n11")
 
     rng = _random.Random(GlobalSettings.SEED)
     return TransportSubsystem(network=graph, rng=rng)

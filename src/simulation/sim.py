@@ -26,13 +26,11 @@ class Sim():
         self.city = city
         self.day = 0
         self.seed = seed
-
-        # Use auto-generated run_id only when the sentinel "run" is passed;
-        # explicit run_id values are preserved for reproducibility.
-        self.run_id: str = _make_run_id() if run_id == "run" else run_id
-
-        self._run_start: float = time.monotonic()
         self.tick_index: int = 0
+        # Use the provided run_id directly; auto-generate only when the caller
+        # left the sentinel default so every headless run gets a unique log file.
+        self.run_id: str = _make_run_id() if run_id == "run" else run_id
+        self._run_start: float = time.monotonic()
 
         # Optional transport subsystem
         self.transport = transport
@@ -112,11 +110,9 @@ class Sim():
             traffic=traffic_metrics,
         )
 
-        # Update summary accumulators
         self._happiness_sum += happiness
         self._revenue_sum += tick_revenue
         self._expenses_sum += tick_expenses
-
         self.tick_index += 1
 
     def run(self, ticks: int) -> None:
@@ -164,6 +160,7 @@ class Sim():
         pops_to_remove: list[Pop] = []
 
         if avg_happiness < 0:
+            pops_to_remove: list[Pop] = []
             for pop in list(self.city.population.pops):
                 wants_to_leave = False
                 if not pop.has_home:

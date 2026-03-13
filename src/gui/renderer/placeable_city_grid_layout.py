@@ -30,6 +30,16 @@ class PlaceableCityGridLayout(ICityGridLayout):
         # Explicit map of placed buildings.  Key = (col, row).
         self._placed: dict[tuple[int, int], Building] = {}
 
+    @property
+    def cols(self) -> int:
+        """Number of grid columns."""
+        return self._cols
+
+    @property
+    def rows(self) -> int:
+        """Number of grid rows."""
+        return self._rows
+
     # ------------------------------------------------------------------
     # ICityGridLayout
     # ------------------------------------------------------------------

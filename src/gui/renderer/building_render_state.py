@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.city.building import Building
 
@@ -17,3 +17,4 @@ class BuildingRenderState:
 
     building: Building
     grid_position: tuple[int, int]  # (col, row)
+    height_tiles: int = field(default=1)

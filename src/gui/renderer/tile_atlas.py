@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pygame
@@ -49,10 +50,49 @@ class TileAtlas:
         self._tw = tile_width
         self._th = tile_height
         self._tiles: dict[str, pygame.Surface] = {}
+        self._height_tiles: dict[str, int] = {}
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
+
+    def get_height_tiles(self, sprite_id: str) -> int:
+        """Return the height_tiles value for *sprite_id* (default 1)."""
+        return self._height_tiles.get(sprite_id, 1)
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
+    def load_manifest(self, manifest_path: str | Path) -> None:
+        """
+        Load sprites from an atlas manifest JSON file.
+
+        The manifest maps ``sprite_id → {"atlas_file": str, "col": int,
+        "row": int}``, as produced by ``tools/pack_atlas.py``.  Each sprite
+        is cropped from its atlas image and stored in the internal tile cache
+        so that :meth:`get_tile` lookups are O(1) after loading.
+
+        Falls back to procedurally-generated placeholder tiles when the
+        manifest file is absent, when an atlas PNG is missing, or if the JSON
+        cannot be parsed.  This guarantees the renderer always has something
+        to draw, even before real art is available.
+        """
+        path = Path(manifest_path)
+        if not path.exists():
+            self._generate_placeholders()
+            return
+        try:
+            data: dict[str, dict[str, object]] = json.loads(path.read_text())
+            self._load_from_manifest(data)
+        except Exception:
+            self._generate_placeholders()
+            return
+        # If the manifest loaded no tiles (e.g. all atlas files missing),
+        # fall back to placeholders so the renderer is never left with an
+        # empty tile set.
+        if not self._tiles:
+            self._generate_placeholders()
 
     def load_atlas(self, path: str | Path) -> None:
         """
@@ -83,6 +123,37 @@ class TileAtlas:
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _load_from_manifest(self, manifest: dict[str, dict[str, object]]) -> None:
+        """
+        Crop tile surfaces from packed atlas images as described by *manifest*.
+
+        Sprites whose atlas file does not exist on disk are silently skipped;
+        :meth:`get_tile` will return a magenta fallback for those IDs.
+        """
+        # Group sprite IDs by atlas file so each image is opened only once.
+        groups: dict[str, list[tuple[str, int, int]]] = {}
+        for sprite_id, entry in manifest.items():
+            atlas_file = str(entry["atlas_file"])
+            groups.setdefault(atlas_file, []).append(
+                (sprite_id, int(entry["col"]), int(entry["row"]))  # type: ignore[arg-type]
+            )
+            # Store height_tiles from manifest (default 1)
+            self._height_tiles[sprite_id] = int(entry.get("height_tiles", 1))  # type: ignore[arg-type]
+
+        for atlas_file, entries in groups.items():
+            atlas_path = Path(atlas_file)
+            if not atlas_path.exists():
+                continue
+            sheet = pygame.image.load(str(atlas_path)).convert_alpha()
+            sheet_w, sheet_h = sheet.get_size()
+            for sprite_id, col, row in entries:
+                x = col * self._tw
+                y = row * self._th
+                if x + self._tw > sheet_w or y + self._th > sheet_h:
+                    continue  # entry out of bounds; skip gracefully
+                rect = pygame.Rect(x, y, self._tw, self._th)
+                self._tiles[sprite_id] = sheet.subsurface(rect).copy()
 
     def _load_from_image(self, path: Path) -> None:
         """Load tiles from a packed PNG atlas (full implementation placeholder)."""

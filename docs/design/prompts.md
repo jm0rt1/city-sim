@@ -628,3 +628,65 @@ Deliver:
 - Validation notes (renderer screenshot or ASCII art of grid)
 - Follow-up recommendations
 ```
+
+
+## 12 – AAA City-Builder Roadmap
+```
+You are an AI coding agent working on City‑Sim.
+
+Focus: AAA City-Builder Roadmap
+
+Context Pack:
+- Architecture Overview: docs/architecture/overview.md
+- Class Hierarchy: docs/architecture/class-hierarchy.md
+- Architecture Diagram: docs/architecture/city-sim-architecture.puml
+- Specs: docs/specs/*, docs/specs/scenarios.md
+- Graphics Spec: docs/specs/graphics.md
+- ADRs: docs/adr/*
+- Design Guide & Index: docs/design/readme.md, docs/design/workstreams/00-index.md
+- Templates & Guides: docs/design/templates/*, docs/guides/*
+- Models: docs/models/model.mdj
+- Entry: run.py, src/main.py
+- Settings: src/shared/settings.py
+- Logs: output/logs/global/, output/logs/ui/
+
+Preflight Checklist:
+- [ ] Read Architecture Overview, Class Hierarchy, and diagram
+- [ ] Review all specs, graphics spec, scenarios, and ADRs
+- [ ] Confirm settings and entry points
+- [ ] Identify required outputs and acceptance criteria
+- [ ] Plan minimal, style-consistent changes and validation steps
+
+Objectives:
+- Evolve City‑Sim into a full AAA-quality city-builder with rich visuals, deep gameplay, and platform readiness.
+- Define multi-phase roadmap covering rendering, gameplay depth, content, and release milestones.
+- Chart dependencies across workstreams and establish clear go/no-go decision points.
+
+Scope & Files:
+- Documentation only; update design/workstreams and specs as needed
+- Coordinate cross-cutting concerns: rendering, AI, modding, multiplayer, performance
+
+Required Outputs:
+- Phase roadmap (Alpha → Beta → Release) with milestones, timelines, and dependencies.
+- Feature prioritization matrix (impact vs. effort).
+- Risk register and mitigation strategies.
+- Platform & localization targets.
+- Optional: Concept art direction, marketing narrative, monetization strategy.
+
+Run Steps:
+1) ./init-venv.sh
+2) pip install -r requirements.txt
+3) python3 run.py
+4) Review output/logs/ for performance baselines
+
+Acceptance Criteria:
+- Clear, achievable phases with hard dependencies mapped.
+- All workstreams (01–11) integrated into timeline.
+- Decision gates identified for scope/quality trade-offs.
+- Realistic effort estimates for each phase.
+
+Deliver:
+- Phased roadmap + milestone breakdown
+- Dependencies & risk map
+- Follow-up recommendations for kick-off
+```

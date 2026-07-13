@@ -18,4 +18,3 @@ class BuildingRenderState:
     building: Building
     grid_position: tuple[int, int]  # (col, row)
     height_tiles: int = field(default=1)
-    road_sprite_id: str | None = field(default=None)

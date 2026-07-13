@@ -39,6 +39,61 @@ class _PauseController:
             self._paused = not self._paused
 
 
+def _build_sample_transport():
+    """
+    Build a small sample road network for the GUI demo.
+
+    Creates a 3x3 grid of intersections connected by bidirectional segments,
+    with the centre intersection signalised.  Returns a
+    ``TransportSubsystem`` seeded deterministically.
+    """
+    import random as _random
+    from src.city.transport.models import (
+        Intersection, IntersectionType, Position, RoadGraph, RoadSegment, RoadType,
+    )
+    from src.city.transport.signals import SignalController
+    from src.city.transport.transport_subsystem import TransportSubsystem
+
+    graph = RoadGraph()
+    spacing = 300.0  # metres between intersections
+
+    for row in range(3):
+        for col in range(3):
+            nid = f"n{row}{col}"
+            itype = (IntersectionType.SIGNALIZED
+                     if (row == 1 and col == 1)
+                     else IntersectionType.STOP)
+            graph.add_intersection(
+                Intersection(nid, Position(col * spacing, row * spacing), itype)
+            )
+
+    seg_idx = 0
+    for row in range(3):
+        for col in range(3):
+            src = f"n{row}{col}"
+            for dr, dc in [(0, 1), (1, 0)]:
+                nr, nc = row + dr, col + dc
+                if 0 <= nr < 3 and 0 <= nc < 3:
+                    dst = f"n{nr}{nc}"
+                    for sid, frm, to in [
+                        (f"seg{seg_idx}", src, dst),
+                        (f"seg{seg_idx + 1}", dst, src),
+                    ]:
+                        graph.add_segment(RoadSegment(
+                            sid, frm, to,
+                            length=spacing,
+                            speed_limit=13.4,
+                            capacity=1800,
+                            road_type=RoadType.ARTERIAL,
+                        ))
+                    seg_idx += 2
+
+    graph.nodes["n11"].signal_controller = SignalController("n11")
+
+    rng = _random.Random(GlobalSettings.SEED)
+    return TransportSubsystem(network=graph, rng=rng)
+
+
 def main(gui: bool = False):
     """Initialize logging and start the simulation.
 
@@ -47,16 +102,29 @@ def main(gui: bool = False):
              the headless console loop.
     """
     initialize_logging()
-    the_city = city.City()
+
+    seed = GlobalSettings.SEED
+    random.seed(seed)
+
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    run_id = f"run_{ts}_seed_{seed}"
+
+    the_city = city.City(population=Population.from_list([Pop()]))
+    transport = _build_sample_transport()
 
     if gui:
-        _run_with_gui(the_city)
+        _run_with_gui(the_city, transport, run_id, seed)
     else:
-        simulation = sim.Sim(city=the_city)
+        simulation = sim.Sim(city=the_city, seed=seed, run_id=run_id, transport=transport)
         simulation.start()
 
 
-def _run_with_gui(the_city: "city.City") -> None:
+def _run_with_gui(
+    the_city: "city.City",
+    transport,
+    run_id: str,
+    seed: int,
+) -> None:
     """Start the isometric renderer with a background simulation tick loop.
 
     The simulation auto-advances at 1 tick/second on a daemon thread.
@@ -71,7 +139,7 @@ def _run_with_gui(the_city: "city.City") -> None:
 
     settings = GraphicsSettings()
     event_bus = EventBus()
-    simulation = sim.Sim(city=the_city)
+    simulation = sim.Sim(city=the_city, seed=seed, run_id=run_id, transport=transport)
     pause_ctrl = _PauseController()
 
     renderer = CityRenderer(
@@ -80,9 +148,7 @@ def _run_with_gui(the_city: "city.City") -> None:
         settings=settings,
         toggle_pause=pause_ctrl.toggle,
         is_paused=pause_ctrl.is_paused,
-        get_city_budget=lambda: simulation.city_budget,
-        get_budget_history=lambda: list(simulation.budget_history),
-        get_tick_index=lambda: simulation.tick_index,
+        get_traffic_delta=lambda: simulation.last_traffic_delta,
     )
 
     def _sim_loop() -> None:

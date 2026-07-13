@@ -54,8 +54,15 @@ class SimLogger:
         happiness: float,
         policies_applied: list,
         tick_duration_ms: float,
+        traffic: Optional[dict] = None,
     ) -> None:
-        """Append one tick log entry (JSONL line) to the log file."""
+        """Append one tick log entry (JSONL line) to the log file.
+
+        Args:
+            traffic: Optional dict of traffic metrics (avg_speed, congestion_index,
+                     throughput, etc.) from the TransportSubsystem.  When provided
+                     the fields are embedded in the entry under the key ``traffic``.
+        """
         ts = datetime.now(timezone.utc)
         timestamp = ts.strftime("%Y-%m-%dT%H:%M:%S.") + f"{ts.microsecond // 1000:03d}Z"
 
@@ -71,6 +78,8 @@ class SimLogger:
             "policies_applied": list(policies_applied),
             "tick_duration_ms": float(tick_duration_ms),
         }
+        if traffic is not None:
+            entry["traffic"] = traffic
         self._file.write(json.dumps(entry) + "\n")
         self._file.flush()
 

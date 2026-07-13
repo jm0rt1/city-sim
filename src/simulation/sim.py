@@ -1,13 +1,13 @@
-import json
 import random
 import time
 from datetime import datetime, timezone
-from typing import Callable
+from typing import Callable, Optional
 
 from src.city.city import City, Pop
 from src.city.finance import CityBudget
 from src.shared.settings import GlobalSettings
 from src.simulation.logger import SimLogger, normalize_happiness
+from src.city.transport.transport_subsystem import TransportSubsystem
 
 
 def _make_run_id() -> str:
@@ -16,28 +16,26 @@ def _make_run_id() -> str:
 
 
 class Sim():
-    def __init__(self, city: City, seed: int = 42, run_id: str = "run") -> None:
+    def __init__(
+        self,
+        city: City,
+        seed: int = 0,
+        run_id: str = "run",
+        transport: Optional[TransportSubsystem] = None,
+    ) -> None:
         self.city = city
-        self._rng = random.Random(seed)
-        self._tick_index = 0
-        self._run_id = (
-            f"run_{seed}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}"
-        )
-        self._log_path = GlobalSettings.GLOBAL_LOGS_DIR / \
-            f"{self._run_id}.jsonl"
-
-    # ------------------------------------------------------------------
-    # Population dynamics
-    # ------------------------------------------------------------------
         self.day = 0
         self.seed = seed
-        self.run_id = run_id
-        self._tick_index = 0
-        self._log_path = GlobalSettings.GLOBAL_LOGS_DIR / f"{run_id}.jsonl"
-
         self.tick_index: int = 0
-        self.run_id: str = _make_run_id()
+        # Use the provided run_id directly; auto-generate only when the caller
+        # left the sentinel default so every headless run gets a unique log file.
+        self.run_id: str = _make_run_id() if run_id == "run" else run_id
         self._run_start: float = time.monotonic()
+
+        # Optional transport subsystem
+        self.transport = transport
+        # Latest TrafficDelta — updated each advance_day(); readable by the UI
+        self.last_traffic_delta: Optional[object] = None
 
         # Finance tracking
         self.city_budget = CityBudget()
@@ -51,29 +49,10 @@ class Sim():
         self._revenue_sum: float = 0.0
         self._expenses_sum: float = 0.0
 
-    def _write_tick_log(self, tick_duration_ms: float) -> None:
-        population = len(self.city.population.pops)
-        happiness = self.city.happiness_tracker.get_average_happiness()
-        entry = {
-            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.") +
-            f"{datetime.now(timezone.utc).microsecond // 1000:03d}Z",
-            "run_id": self.run_id,
-            "tick_index": self._tick_index,
-            "budget": 0.0,
-            "revenue": 0.0,
-            "expenses": 0.0,
-            "population": population,
-            "happiness": round(happiness, 4),
-            "policies_applied": [],
-            "tick_duration_ms": round(tick_duration_ms, 4),
-        }
-        with open(self._log_path, "a") as f:
-            f.write(json.dumps(entry) + "\n")
-
     def roll_disasters(self):
-        # 1% chance for a disaster
-        if self._rng.random() < 0.01:
-            print(" ⚠️ A disaster has struck the city!")
+        # For simplicity, we'll roll a 1% chance for a disaster
+        if random.random() < 0.01:
+            print("  ⚠️  A disaster has struck the city!")
             for person in self.city.population.pops:
                 person.overall_happiness -= 50
 
@@ -81,106 +60,65 @@ class Sim():
         pass
 
     def advance_day(self):
-
         tick_start = time.monotonic()
         self.day += 1
         self.roll_for_newcomers()
         self.roll_for_leavers()
         self.city.on_advance_day()
         self.roll_disasters()
+
+        # Transport subsystem update (optional)
+        traffic_metrics = None
+        if self.transport is not None:
+            delta = self.transport.update(tick_index=self.tick_index)
+            self.last_traffic_delta = delta
+            traffic_metrics = {
+                "avg_speed": round(delta.avg_speed, 4),
+                "congestion_index": round(delta.congestion_index, 4),
+                "throughput": delta.total_throughput,
+                "vehicles_active": delta.vehicles_active,
+                "vehicles_entered": delta.vehicles_entered,
+                "vehicles_exited": delta.vehicles_exited,
+                "congested_segments": delta.congested_segments,
+                "incidents_active": delta.incidents_active,
+            }
+
         tick_duration_ms = (time.monotonic() - tick_start) * 1000.0
-        self._write_tick_log(tick_duration_ms)
-        self._tick_index += 1
+
+        # Compute per-tick financial deltas
+        prev_income = self.city_budget.income
+        prev_expenditure = self.city_budget.expenditure
+        self.city_budget.update_budget(self.city)
+        tick_revenue = self.city_budget.income - prev_income
+        tick_expenses = self.city_budget.expenditure - prev_expenditure
+
+        # Normalise happiness to [0, 100]
+        raw_happiness = self.city.happiness_tracker.get_average_happiness()
+        happiness = normalize_happiness(raw_happiness)
+
+        population = len(self.city.population)
+
+        self.logger.log_tick(
+            tick_index=self.tick_index,
+            budget=self.city_budget.balance,
+            revenue=tick_revenue,
+            expenses=tick_expenses,
+            population=population,
+            happiness=happiness,
+            policies_applied=[],
+            tick_duration_ms=tick_duration_ms,
+            traffic=traffic_metrics,
+        )
+
+        self._happiness_sum += happiness
+        self._revenue_sum += tick_revenue
+        self._expenses_sum += tick_expenses
+        self.tick_index += 1
 
     def run(self, ticks: int) -> None:
         """Execute a fixed number of ticks (for automated/scenario runs)."""
         for _ in range(ticks):
             self.advance_day()
-
-        tick_duration_ms = (time.monotonic() - tick_start) * 1000.0
-
-        # Compute per-tick financial deltas
-        prev_income = self.city_budget.income
-        prev_expenditure = self.city_budget.expenditure
-        self.city_budget.update_budget(self.city)
-        tick_revenue = self.city_budget.income - prev_income
-        tick_expenses = self.city_budget.expenditure - prev_expenditure
-
-        # Normalise happiness to [0, 100]
-        raw_happiness = self.city.happiness_tracker.get_average_happiness()
-        happiness = normalize_happiness(raw_happiness)
-
-        population = len(self.city.population)
-
-        self.logger.log_tick(
-            tick_index=self.tick_index,
-            budget=self.city_budget.balance,
-            revenue=tick_revenue,
-            expenses=tick_expenses,
-            population=population,
-            happiness=happiness,
-            policies_applied=[],
-            tick_duration_ms=tick_duration_ms,
-        )
-
-        # Update summary accumulators
-        self._happiness_sum += happiness
-        self._revenue_sum += tick_revenue
-        self._expenses_sum += tick_expenses
-
-        self.tick_index += 1
-
-    def _write_run_summary(self) -> None:
-        """Append an end-of-run summary entry to the log file."""
-        if self.tick_index == 0:
-            return
-        run_duration_ms = (time.monotonic() - self._run_start) * 1000.0
-        avg_happiness = self._happiness_sum / self.tick_index
-        self.logger.log_summary(
-            final_budget=self.city_budget.balance,
-            final_population=len(self.city.population),
-            avg_happiness=avg_happiness,
-            total_ticks=self.tick_index,
-            run_duration_ms=run_duration_ms,
-            run_kpis={
-                "avg_revenue": self._revenue_sum / self.tick_index,
-                "avg_expenses": self._expenses_sum / self.tick_index,
-            },
-        )
-        self.logger.close()
-
-        tick_duration_ms = (time.monotonic() - tick_start) * 1000.0
-
-        # Compute per-tick financial deltas
-        prev_income = self.city_budget.income
-        prev_expenditure = self.city_budget.expenditure
-        self.city_budget.update_budget(self.city)
-        tick_revenue = self.city_budget.income - prev_income
-        tick_expenses = self.city_budget.expenditure - prev_expenditure
-
-        # Normalise happiness to [0, 100]
-        raw_happiness = self.city.happiness_tracker.get_average_happiness()
-        happiness = normalize_happiness(raw_happiness)
-
-        population = len(self.city.population)
-
-        self.logger.log_tick(
-            tick_index=self.tick_index,
-            budget=self.city_budget.balance,
-            revenue=tick_revenue,
-            expenses=tick_expenses,
-            population=population,
-            happiness=happiness,
-            policies_applied=[],
-            tick_duration_ms=tick_duration_ms,
-        )
-
-        # Update summary accumulators
-        self._happiness_sum += happiness
-        self._revenue_sum += tick_revenue
-        self._expenses_sum += tick_expenses
-
-        self.tick_index += 1
 
     def _write_run_summary(self) -> None:
         """Append an end-of-run summary entry to the log file."""
@@ -202,20 +140,15 @@ class Sim():
         self.logger.close()
 
     def roll_for_newcomers(self):
-        # Happiness is normalized 0-100; midpoint = 50 (raw = 0).
-        # - >= 75 → high happiness: 20% chance 20 newcomers
-        # - >  62 → moderate happiness: 10% chance 10 newcomers
-        # - >  50 → slight happiness: 5% chance 1 newcomer
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
         newcomers = 0
 
-        if avg_happiness >= 75 and self._rng.random() < 0.20:
+        if avg_happiness >= 20 and random.random() < 0.20:
             newcomers = 20
-        elif avg_happiness > 62 and self._rng.random() < 0.10:
+        elif avg_happiness > 10 and random.random() < 0.10:
             newcomers = 10
-        elif avg_happiness > 50 and self._rng.random() < 0.05:
+        elif avg_happiness > 0 and random.random() < 0.05:
             newcomers = 1
-
         for _ in range(newcomers):
             self.city.population.add_pop(Pop())
 
@@ -226,45 +159,26 @@ class Sim():
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
         pops_to_remove: list[Pop] = []
 
-        if avg_happiness < 50:
-            for pop in self.city.population.pops:
+        if avg_happiness < 0:
+            pops_to_remove: list[Pop] = []
+            for pop in list(self.city.population.pops):
                 wants_to_leave = False
                 if not pop.has_home:
-                    if self._rng.random() < .5:
+                    if random.random() < .5:
                         wants_to_leave = True
                 if not pop.electricity_received:
-                    if self._rng.random() < .5:
+                    if random.random() < .5:
                         wants_to_leave = True
                 if not pop.water_received:
-                    if self._rng.random() < .5:
+                    if random.random() < .5:
                         wants_to_leave = True
-                if not wants_to_leave:
-                    pops_that_stay.append(pop)
-            self.city.population.pops = pops_that_stay
+                if wants_to_leave:
+                    pops_to_remove.append(pop)
+            for pop in pops_to_remove:
+                self.city.population.remove_pop(pop)
 
-    # ------------------------------------------------------------------
-    # Logging
-    # ------------------------------------------------------------------
-
-    def _log_tick(self, tick_duration_ms: float):
-        entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "run_id": self._run_id,
-            "tick_index": self._tick_index,
-            "budget": 0.0,
-            "revenue": 0.0,
-            "expenses": 0.0,
-            "population": len(self.city.population.pops),
-            "happiness": self.city.happiness_tracker.get_average_happiness(),
-            "policies_applied": [],
-            "tick_duration_ms": tick_duration_ms,
-        }
-        with open(self._log_path, "a") as f:
-            f.write(json.dumps(entry) + "\n")
-
-    # ------------------------------------------------------------------
-    # Interactive CLI
-    # ------------------------------------------------------------------
+        if pops_to_remove:
+            print(f"  {len(pops_to_remove)} citizen(s) have left the city.")
 
     def start(self):
         print("=" * 45)
@@ -313,14 +227,12 @@ class Sim():
 
     def display_city_info(self):
         total_population = len(self.city.population.pops)
-        total_population = len(self.city.population.pops)
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
 
         sick_count = 0
         without_water = 0
         without_electricity = 0
         without_home = 0
-        for person in self.city.population.pops:
         for person in self.city.population.pops:
             if person.sick:
                 sick_count += 1

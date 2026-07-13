@@ -81,7 +81,7 @@ class BuildingSpriteSelector:
     building always returns the ``_damaged`` variant regardless of occupancy.
     """
 
-    def get_sprite_id(self, building: Building) -> str:
+    def get_sprite_id(self, building: Building, night_mode: bool = False) -> str:
         """
         Return the atlas tile ID for *building*.
 
@@ -89,11 +89,22 @@ class BuildingSpriteSelector:
         terrain-only types (EMPTY_LOT, PARK) that have no damage state.
         For non-terrain types with positive occupancy the occupancy bucket
         suffix is appended (``_mid`` or ``_high``) when available.
+
+        When *night_mode* is ``True`` and the building type is in
+        ``_OCCUPANCY_TYPES`` (residential + commercial) and occupancy > 0,
+        a ``_lit`` suffix is appended to signal that lit-window sprites
+        should be used.  Damaged condition takes priority over night mode.
+        :class:`TileAtlas` returns a magenta fallback for unknown ``_lit``
+        IDs, making missing sprites visible during development.
         """
         base = _SPRITE_MAP.get(building.building_type, "terrain_grass_0")
         _terrain_types = (BuildingType.EMPTY_LOT, BuildingType.PARK)
         if building.condition < 0.3 and building.building_type not in _terrain_types:
             return f"{base}_damaged"
+        if (night_mode
+                and building.building_type in _OCCUPANCY_TYPES
+                and building.occupancy > 0):
+            return f"{base}_lit"
         occ_suffix = _occupancy_bucket(building.occupancy, building.building_type)
         if occ_suffix:
             return f"{base}{occ_suffix}"

@@ -32,6 +32,8 @@ from src.gui.renderer.road_tile_selector import RoadTileSelector
 from src.gui.renderer.tile_atlas import TileAtlas
 from src.gui.renderer.building_render_state import BuildingRenderState
 from src.gui.renderer.building_sprite_selector import BuildingSpriteSelector
+from src.gui.renderer.day_night_cycle import DayNightCycle
+from src.gui.renderer.ui_overlay import UIOverlay
 
 _HOVER_COLOR = (255, 255, 100, 120)   # semi-transparent yellow outline
 _SHADOW_ALPHA = 102  # ~40 % of 255
@@ -56,6 +58,22 @@ _SMOKE_BUILDING_TYPES: frozenset[BuildingType] = frozenset({
     BuildingType.CIVIC_POWER_PLANT,
     BuildingType.INDUSTRIAL,
 })
+
+# Building types adjacent to which street lamps should glow at night.
+_LAMP_ADJACENT_TYPES: frozenset[BuildingType] = frozenset({
+    BuildingType.PARK,
+    BuildingType.CIVIC_CITY_HALL,
+    BuildingType.CIVIC_HOSPITAL,
+    BuildingType.CIVIC_SCHOOL,
+    BuildingType.CIVIC_FIRE_STATION,
+    BuildingType.CIVIC_POLICE_STATION,
+    BuildingType.CIVIC_POWER_PLANT,
+})
+
+# Warm-amber colour for street-lamp glow (R, G, B).
+_LAMP_COLOR = (255, 200, 80)
+# Radius (pixels, unscaled) of the street-lamp glow circle.
+_LAMP_RADIUS = 6
 
 # Vehicle direction used when no specific direction is known.
 _VEHICLE_DIRECTIONS = ("n", "e", "s", "w")
@@ -113,6 +131,7 @@ class CityRenderer:
         is_paused: Callable[[], bool] | None = None,
         get_city_budget: Callable[[], CityBudget] | None = None,
         get_budget_history: Callable[[], list] | None = None,
+        get_tick_index: Callable[[], int] | None = None,
     ) -> None:
         self._city = city
         self._event_bus = event_bus
@@ -127,6 +146,7 @@ class CityRenderer:
 
         self._toggle_pause: Callable[[], None] = toggle_pause or (lambda: None)
         self._is_paused: Callable[[], bool] = is_paused or (lambda: False)
+        self._get_tick_index: Callable[[], int] | None = get_tick_index
 
         # Optional budget accessors wired from main.py.
         self._get_city_budget: Callable[[], CityBudget] | None = get_city_budget
@@ -178,6 +198,8 @@ class CityRenderer:
         # Register vehicle car animations for each direction
         for _dir in _VEHICLE_DIRECTIONS:
             self._anim.register(f"vehicle_car_{_dir}", _VEHICLE_FRAME_COUNT, _VEHICLE_FPS)
+        # Register street-lamp glow animation (slow flicker, 2 frames at 1 fps)
+        self._anim.register("street_lamp_glow", 2, 1.0)
 
         # --- Phase 5C: ParticleSystem ---
         # Seed the RNG from the city's road_network hash or a fixed seed for
@@ -207,6 +229,8 @@ class CityRenderer:
         )
         self._event_log = EventLog()
         self._event_log_visible: bool = False
+        # --- Phase 7: Day/Night Cycle ---
+        self._day_night = DayNightCycle()
 
     # ------------------------------------------------------------------
     # Public API
@@ -214,7 +238,11 @@ class CityRenderer:
 
     def render_frame(self, surface: pygame.Surface) -> None:
         """Render one frame onto *surface*."""
-        surface.fill(self._BG_COLOR)
+        # --- Phase 7: compute time-of-day for this frame ---
+        tick = self._get_tick_index() if self._get_tick_index is not None else 0
+        _time = self._day_night.get_time(tick)
+        _night_mode = self._day_night.is_night(_time)
+        surface.fill(self._day_night.get_sky_color(_time))
 
         win_w = self._settings.window_width
         win_h = self._settings.window_height
@@ -258,7 +286,7 @@ class CityRenderer:
         # Assign height_tiles from atlas manifest for non-road tiles.
         for brs in render_states:
             if brs.road_sprite_id is None:
-                sprite_id = self._selector.get_sprite_id(brs.building)
+                sprite_id = self._selector.get_sprite_id(brs.building, night_mode=_night_mode)
                 brs.height_tiles = self._atlas.get_height_tiles(sprite_id)
 
         # Depth-sort by painter's algorithm (back tiles first).
@@ -283,7 +311,7 @@ class CityRenderer:
             if brs.road_sprite_id is not None:
                 sprite_id = brs.road_sprite_id
             else:
-                sprite_id = self._selector.get_sprite_id(brs.building)
+                sprite_id = self._selector.get_sprite_id(brs.building, night_mode=_night_mode)
                 # 5B: Animate water tiles by swapping to the current frame sprite.
                 if sprite_id.startswith("terrain_water"):
                     frame = self._anim.get_frame(_WATER_BASE_SPRITE)
@@ -340,6 +368,18 @@ class CityRenderer:
         # 1. PopulationPanel — top-left HUD.
         self._population_panel.draw(surface, self._city)
         # 2. ActionPanel — right sidebar.
+        # 7: Street-lamp glow — draw warm-amber circles at night on road tiles
+        # adjacent to a PARK or civic tile.
+        if _night_mode and road_network is not None:
+            self._draw_street_lamps(surface, road_network, _time)
+
+        # 7: Ambient darkness overlay (tiles → particles → vehicles → overlay → HUD).
+        surface.blit(
+            self._day_night.get_ambient_overlay(_time, win_w, win_h),
+            (0, 0),
+        )
+
+        self._overlay.draw(surface, self._city)
         self._action_panel.draw(surface)
         # 3. FinancePanel — right sidebar, below buttons.
         budget = self._get_city_budget() if self._get_city_budget is not None else CityBudget()
@@ -551,6 +591,65 @@ class CityRenderer:
         pygame.draw.polygon(hover_surf, _HOVER_COLOR, adj)
         surface.blit(hover_surf, (sx - w // 2, sy))
 
+    def _draw_street_lamps(
+        self,
+        surface: pygame.Surface,
+        road_network: object,
+        time: float,
+    ) -> None:
+        """Draw warm-amber glow circles on road tiles adjacent to PARK/civic tiles.
+
+        Only called at night (``is_night(time)`` is True).  Alpha scales with
+        darkness: brighter at midnight, dimmer near dawn/dusk.
+        """
+        # Darkness intensity: 0 at dawn/dusk boundary, 1 at midnight.
+        # time ∈ [0, 0.25) → remap to [1, 0]; time ∈ [0.75, 1.0) → remap to [0, 1]
+        if time < 0.25:
+            intensity = 1.0 - (time / 0.25)
+        else:
+            intensity = (time - 0.75) / 0.25
+        alpha = int(80 + intensity * 120)  # range 80..200
+
+        tw = self._settings.tile_width
+        z = self._camera.zoom_level
+        cols = rows = _DEFAULT_GRID_SIZE
+        if isinstance(self._grid_layout, PlaceableCityGridLayout):
+            cols = self._grid_layout.cols
+            rows = self._grid_layout.rows
+
+        render_states_map: dict[tuple[int, int], BuildingRenderState] = {}
+        for brs in self._grid_layout.build_render_states(self._city):
+            render_states_map[brs.grid_position] = brs
+
+        lamp_surf = pygame.Surface(
+            (self._settings.window_width, self._settings.window_height),
+            pygame.SRCALPHA,
+        )
+        radius = max(1, int(_LAMP_RADIUS * z))
+        for r in range(rows):
+            for c in range(cols):
+                if not road_network.is_road(c, r):  # type: ignore[union-attr]
+                    continue
+                # Check if any of the 4 cardinal neighbours is a lamp-adjacent type
+                emit = False
+                for dc, dr in ((0, -1), (1, 0), (0, 1), (-1, 0)):
+                    nc, nr = c + dc, r + dr
+                    nb_brs = render_states_map.get((nc, nr))
+                    if nb_brs is not None and nb_brs.building.building_type in _LAMP_ADJACENT_TYPES:
+                        emit = True
+                        break
+                if emit:
+                    sx, sy = self._mapper.world_to_screen(c, r)
+                    cx = sx
+                    cy = sy + int(self._settings.tile_height * z) // 2
+                    pygame.draw.circle(
+                        lamp_surf,
+                        (*_LAMP_COLOR, alpha),
+                        (cx, cy),
+                        radius,
+                    )
+        surface.blit(lamp_surf, (0, 0))
+
     def _drain_event_queue(self) -> None:
         """
         Drain all pending simulation events from the subscriber queue.
@@ -665,4 +764,3 @@ class CityRenderer:
             surface.blit(tile, (blit_x, sy))
 
         self._vehicles = alive
-

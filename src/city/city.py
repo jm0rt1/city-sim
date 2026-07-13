@@ -1,25 +1,9 @@
 
+from src.city.population.happiness_tracker import HappinessTracker
 from src.city.population.population import Pop, Population
-from src.city.road_network import RoadNetwork
 
 
 class City:
-    """
-    Aggregate root representing the complete state of a simulated city.
-
-    Attributes:
-        population: The city's population, including happiness tracking.
-        water_facilities: Number of water facilities; each serves 20 people.
-            Invariant: >= 0.
-        electricity_facilities: Number of electricity facilities; each serves 20 people.
-            Invariant: >= 0.
-        housing_units: Total available housing units.
-            Invariant: >= 0.
-
-    All state modifications (except direct attribute access for reads) should be
-    performed via ``CityManager`` to ensure invariants are maintained.
-    """
-
     def __init__(self, population: Population | None = None):
         if population is None:
             population = Population.from_list([Pop()])
@@ -29,15 +13,17 @@ class City:
         self.water_facilities = 2
         self.electricity_facilities = 2
         self.housing_units = 30
-        # Road network (32×32 matches the default renderer grid)
-        self.road_network = RoadNetwork(cols=32, rows=32)
+
+    @property
+    def happiness_tracker(self) -> HappinessTracker:
+        return self.population.happiness_tracker
 
     def on_advance_day(self):
         people_with_water = self.water_facilities * 20
         people_with_electricity = self.electricity_facilities * 20
 
         # Single pass: distribute resources and adjust happiness
-        for i, person in enumerate(self.population):
+        for i, person in enumerate(self.population.pops):
             person.water_received = i < people_with_water
             person.electricity_received = i < people_with_electricity
             person.has_home = i < self.housing_units

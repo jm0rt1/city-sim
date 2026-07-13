@@ -1,41 +1,12 @@
-import json
 import random
-import time
-from datetime import datetime, timezone
 from typing import Callable
 from src.city.city import City, Pop
-from src.city.finance import CityBudget, FinanceDelta
-from src.shared.settings import GlobalSettings
 
 
 class Sim():
-    def __init__(self, city: City, seed: int = 0, run_id: str = "run") -> None:
+    def __init__(self, city: City) -> None:
         self.city = city
-        self.seed = seed
-        self.run_id = run_id
-        self._tick_index = 0
-        self._log_path = GlobalSettings.GLOBAL_LOGS_DIR / f"{run_id}.jsonl"
-        self._budget = CityBudget()
-
-    def _write_tick_log(self, tick_duration_ms: float, delta: FinanceDelta) -> None:
-        population = len(self.city.population.pops)
-        happiness = self.city.happiness_tracker.get_average_happiness()
-        now = datetime.now(timezone.utc)
-        entry = {
-            "timestamp": now.strftime("%Y-%m-%dT%H:%M:%S.") +
-                         f"{now.microsecond // 1000:03d}Z",
-            "run_id": self.run_id,
-            "tick_index": self._tick_index,
-            "budget": round(self.city.budget, 6),
-            "revenue": round(delta.revenue, 6),
-            "expenses": round(delta.expenses, 6),
-            "population": population,
-            "happiness": round(happiness, 4),
-            "policies_applied": [],
-            "tick_duration_ms": round(tick_duration_ms, 4),
-        }
-        with open(self._log_path, "a") as f:
-            f.write(json.dumps(entry) + "\n")
+        pass
 
     def roll_disasters(self):
         # For simplicity, we'll roll a 1% chance for a disaster
@@ -48,20 +19,10 @@ class Sim():
         pass
 
     def advance_day(self):
-        tick_start = time.monotonic()
         self.roll_for_newcomers()
         self.roll_for_leavers()
         self.city.on_advance_day()
         self.roll_disasters()
-        delta = self._budget.update_budget(self.city, self._tick_index)
-        tick_duration_ms = (time.monotonic() - tick_start) * 1000.0
-        self._write_tick_log(tick_duration_ms, delta)
-        self._tick_index += 1
-
-    def run(self, ticks: int) -> None:
-        """Execute a fixed number of ticks (for automated/scenario runs)."""
-        for _ in range(ticks):
-            self.advance_day()
 
     def roll_for_newcomers(self):
         # For simplicity, we'll assume:
@@ -84,9 +45,9 @@ class Sim():
 
     def roll_for_leavers(self):
         avg_happiness = self.city.happiness_tracker.get_average_happiness()
+        pops_that_stay: list[Pop] = []
 
         if avg_happiness < 0:
-            pops_to_remove: list[Pop] = []
             for pop in self.city.population.pops:
                 wants_to_leave = False
                 if not pop.has_home:
@@ -98,10 +59,9 @@ class Sim():
                 if not pop.water_received:
                     if random.random() < .5:
                         wants_to_leave = True
-                if wants_to_leave:
-                    pops_to_remove.append(pop)
-            for pop in pops_to_remove:
-                self.city.population.remove_pop(pop)
+                if not wants_to_leave:
+                    pops_that_stay.append(pop)
+            self.city.population.pops = pops_that_stay
 
     def start(self):
         while True:
@@ -170,4 +130,3 @@ class Sim():
         print(f"Without Electricity: {without_electricity}")
         print(f"Without Home: {without_home}")
         print("---------------------\n")
-

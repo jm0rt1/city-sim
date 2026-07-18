@@ -1,39 +1,24 @@
+from __future__ import annotations
+from dataclasses import dataclass
 from src.city.city import City
 
+@dataclass(frozen=True)
+class FinanceDelta:
+    tick_index: int; revenue: float; expenses: float; budget_change: float; revenue_taxes: float; revenue_fees: float; expenses_infrastructure: float; expenses_debt_service: float
+    def validate(self) -> bool: return abs(self.budget_change - self.revenue + self.expenses) < 1e-9
 
-class CityBudget():
-    def __init__(self):
-        self.income = 0
-        self.expenditure = 0
-        self.balance = 0
-
-        # Set initial values
-        self.income_tax_rate = 0.1  # 10% tax on income
-        self.property_tax_rate = 0.05  # 5% tax on property
-        self.utility_tax_rate = 0.02  # 2% tax on utilities
-
-        self.facility_maintenance_cost = 50  # Cost per facility
-        self.home_maintenance_cost = 5  # Cost per home
-
-    def calculate_income(self, city: City):
-        # Income from taxes — single pass over population
-        with_property = 0
-        utility_users = 0
-        for person in city.population.pops:
-            if person.property:
-                with_property += 1
-            if person.water_received or person.electricity_received:
-                utility_users += 1
-        self.income += with_property * (self.income_tax_rate + self.property_tax_rate)
-        self.income += utility_users * self.utility_tax_rate
-
-    def calculate_expenditure(self, city: City):
-        # Expenditure for maintaining facilities and homes
-        self.expenditure += city.water_facilities * self.facility_maintenance_cost
-        self.expenditure += city.electricity_facilities * self.facility_maintenance_cost
-        self.expenditure += city.housing_units * self.home_maintenance_cost
-
-    def update_budget(self, city: "City"):
-        self.calculate_income(city)
-        self.calculate_expenditure(city)
-        self.balance = self.income - self.expenditure
+class CityBudget:
+    def __init__(self) -> None:
+        self.income_tax_rate = .1; self.property_tax_rate = .05; self.utility_tax_rate = .02; self.facility_maintenance_cost = 50.; self.home_maintenance_cost = 5.
+        self.balance = 0.0
+    def update_budget(self, city: City, tick_index: int = 0) -> FinanceDelta:
+        previous = float(getattr(city, "budget", 0.)); city.previous_budget = previous; self.balance = previous
+        taxes = sum(self.income_tax_rate + self.property_tax_rate for p in city.population.pops if p.property)
+        fees = sum(self.utility_tax_rate for p in city.population.pops if p.water_received or p.electricity_received)
+        infrastructure = (city.water_facilities + city.electricity_facilities) * self.facility_maintenance_cost + city.housing_units * self.home_maintenance_cost
+        debt = max(0., -previous) * .01; revenue = taxes + fees; expenses = infrastructure + debt; change = revenue - expenses; city.budget = previous + change
+        self.balance = city.budget
+        return FinanceDelta(tick_index, revenue, expenses, change, taxes, fees, infrastructure, debt)
+    def calculate_income(self, city: City) -> None:
+        self.income = sum(1 for p in city.population.pops if p.property) * (self.income_tax_rate + self.property_tax_rate) + sum(1 for p in city.population.pops if p.water_received or p.electricity_received) * self.utility_tax_rate
+    def calculate_expenditure(self, city: City) -> None: self.expenditure = (city.water_facilities + city.electricity_facilities) * self.facility_maintenance_cost + city.housing_units * self.home_maintenance_cost

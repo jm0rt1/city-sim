@@ -1,132 +1,61 @@
+from __future__ import annotations
 import random
-from typing import Callable
+import time
 from src.city.city import City, Pop
+from src.city.finance import CityBudget
+from src.simulation.event_bus import EventBus, Event
+from src.simulation.logger import SimLogger, normalize_happiness
+from src.shared.settings import GlobalSettings
 
+class Sim:
+    """Deterministic, tick-driven simulation shared by CLI and GUI."""
+    def __init__(self, city: City, seed: int | None = None, run_id: str = "run") -> None:
+        self.city, self.seed, self.run_id = city, seed if seed is not None else GlobalSettings.SEED, run_id
+        self.rng = random.Random(self.seed); self.day = 0; self.event_bus = EventBus()
+        self.city_budget = CityBudget(); self.budget_history: list[tuple[float, float, float]] = []
+        if not hasattr(city, "budget"): city.budget = 5000.0
+        if not hasattr(city, "previous_budget"): city.previous_budget = None
+        self.logger = SimLogger(run_id, GlobalSettings.GLOBAL_LOGS_DIR / f"{run_id}.jsonl")
 
-class Sim():
-    def __init__(self, city: City) -> None:
-        self.city = city
-        pass
+    def advance_day(self) -> None:
+        started = time.perf_counter(); self.roll_for_newcomers(); self.city.on_advance_day(); self.roll_for_leavers()
+        delta = self.city_budget.update_budget(self.city, tick_index=self.day); self.budget_history.append((delta.revenue, delta.expenses, self.city.budget)); self.budget_history = self.budget_history[-20:]
+        self.day += 1
+        self.logger.log_tick(self.day - 1, self.city.budget, delta.revenue, delta.expenses, len(self.city.population.pops), normalize_happiness(self.city.happiness_tracker.get_average_happiness()), [], (time.perf_counter() - started) * 1000)
+        self.event_bus.publish(Event(tick=self.day))
 
-    def roll_disasters(self):
-        # For simplicity, we'll roll a 1% chance for a disaster
-        if random.random() < 0.01:
-            print("A disaster has struck the city!")
-            for person in self.city.population.pops:
-                person.overall_happiness -= 50
+    def run(self, ticks: int) -> None:
+        for _ in range(ticks): self.advance_day()
 
-    def roll_population(self):
-        pass
+    def roll_for_newcomers(self) -> int:
+        happiness = self.city.happiness_tracker.get_average_happiness(); newcomers = 0
+        if happiness >= 20 and self.rng.random() < .20: newcomers = 20
+        elif happiness > 10 and self.rng.random() < .10: newcomers = 10
+        elif happiness > 0 and self.rng.random() < .05: newcomers = 1
+        for _ in range(newcomers): self.city.population.add_pop(Pop())
+        return newcomers
 
-    def advance_day(self):
-        self.roll_for_newcomers()
-        self.roll_for_leavers()
-        self.city.on_advance_day()
-        self.roll_disasters()
-
-    def roll_for_newcomers(self):
-        # For simplicity, we'll assume:
-        # - If average happiness is > 50, there's a 10% chance 10 new individuals move in.
-        # - If average happiness is > 70, there's a 20% chance 20 new individuals move in.
-        avg_happiness = self.city.happiness_tracker.get_average_happiness()
-        newcomers = 0
-
-        if avg_happiness >= 20 and random.random() < 0.20:
-            newcomers = 20
-        elif avg_happiness > 10 and random.random() < 0.10:
-            newcomers = 10
-        elif avg_happiness > 0 and random.random() < 0.05:
-            newcomers = 1
-        for _ in range(newcomers):
-            self.city.population.add_pop(Pop())
-
-        if newcomers:
-            print(f"{newcomers} new individuals have moved into the city!")
-
-    def roll_for_leavers(self):
-        avg_happiness = self.city.happiness_tracker.get_average_happiness()
-        pops_that_stay: list[Pop] = []
-
-        if avg_happiness < 0:
-            for pop in self.city.population.pops:
-                wants_to_leave = False
-                if not pop.has_home:
-                    if random.random() < .5:
-                        wants_to_leave = True
-                if not pop.electricity_received:
-                    if random.random() < .5:
-                        wants_to_leave = True
-                if not pop.water_received:
-                    if random.random() < .5:
-                        wants_to_leave = True
-                if not wants_to_leave:
-                    pops_that_stay.append(pop)
-            self.city.population.pops = pops_that_stay
-
-    def start(self):
-        while True:
-            print("Options:")
-            print("1: Advance Day")
-            print("2: Add Electrical Facilities")
-            print("3: Add Water Facilities")
-            print("4: Add Housing Units")
-
-            print("X: Exit")
-
-            input_str = input("Choose an option: ").lower().strip()
-
-            if input_str == "1":
-                self.advance_day()
-                self.display_city_info()  # Display updated city info after advancing a day
-            if input_str == "2":
-                self.add_facilities_to_city(
-                    self.city.add_electricity_facilities)
-            if input_str == "3":
-                self.add_facilities_to_city(self.city.add_water_facilities)
-            if input_str == "4":
-                self.add_facilities_to_city(self.city.add_housing_units)
-            elif input_str == "x":
-                break
-            else:
-                print("Invalid input")
-                continue
-
-    def add_facilities_to_city(self, add_func: Callable[[int], None]):
-        data_collected = False
-        fac_to_add = 0
-        while not data_collected:
-            try:
-                fac_to_add = int(
-                    input("Enter number to add: "))
-                add_func(fac_to_add)
-                data_collected = True
-            except:
-                print("Invalid input")
-                continue
-
-    def display_city_info(self):
-        total_population = len(self.city.population.pops)
-        avg_happiness = self.city.happiness_tracker.get_average_happiness()
-
-        sick_count = 0
-        without_water = 0
-        without_electricity = 0
-        without_home = 0
+    def roll_for_leavers(self) -> int:
+        if self.city.happiness_tracker.get_average_happiness() >= 0: return 0
+        staying = []; leaving = 0
         for person in self.city.population.pops:
-            if person.sick:
-                sick_count += 1
-            if not person.water_received:
-                without_water += 1
-            if not person.electricity_received:
-                without_electricity += 1
-            if not person.has_home:
-                without_home += 1
+            wants = ((not person.has_home and self.rng.random() < .5) or (not person.electricity_received and self.rng.random() < .5) or (not person.water_received and self.rng.random() < .5))
+            if wants: leaving += 1
+            else: staying.append(person)
+        self.city.population = type(self.city.population).from_list(staying)
+        return leaving
 
-        print("\n--- City Stats ---")
-        print(f"Total Population: {total_population}")
-        print(f"Average Happiness: {avg_happiness:.2f}")
-        print(f"Sick Individuals: {sick_count}")
-        print(f"Without Water: {without_water}")
-        print(f"Without Electricity: {without_electricity}")
-        print(f"Without Home: {without_home}")
-        print("---------------------\n")
+    def display_city_info(self) -> None:
+        print(f"Day {self.day}\nPopulation: {len(self.city.population.pops)}\nAvg Happiness: {self.city.happiness_tracker.get_average_happiness():.2f}\nWater Facilities: {self.city.water_facilities}\nElec. Facilities: {self.city.electricity_facilities}\nHousing Units: {self.city.housing_units}")
+
+    def display_run_summary(self) -> None:
+        print(f"Run Summary\nTotal Days Simulated:  {self.day}\nFinal Population: {len(self.city.population.pops)}")
+
+    def _write_run_summary(self) -> None:
+        self.logger.log_summary(self.city.budget, len(self.city.population.pops), normalize_happiness(self.city.happiness_tracker.get_average_happiness()), self.day, 0.0)
+
+    def start(self) -> None:
+        while True:
+            choice = input("[1] Advance day  [x] Exit: ").strip().lower()
+            if choice == "1": self.advance_day(); self.display_city_info()
+            elif choice == "x": break

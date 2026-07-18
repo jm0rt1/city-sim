@@ -1,6 +1,7 @@
 import logging
 import logging.handlers
 import random
+import threading
 from datetime import datetime, timezone
 from src.shared.settings import GlobalSettings
 import src.simulation.sim as sim
@@ -19,7 +20,15 @@ def initialize_logging():
     logging.info("Global Logging Started")
 
 
-def main():
+class _PauseController:
+    def __init__(self) -> None:
+        self._paused = False; self._lock = threading.Lock()
+    def toggle(self) -> None:
+        with self._lock: self._paused = not self._paused
+    def is_paused(self) -> bool:
+        with self._lock: return self._paused
+
+def main(gui: bool = False):
     """run a console menu that has two options, runs in a while loop so multiple options can be selected"""
 
     initialize_logging()
@@ -32,4 +41,9 @@ def main():
 
     initial_city = city.City(population=Population.from_list([Pop()]))
     simulation = sim.Sim(city=initial_city, seed=seed, run_id=run_id)
-    simulation.start()
+    if not gui:
+        simulation.start(); return
+    from src.gui.renderer.city_renderer import CityRenderer
+    from src.shared.graphics_settings import GraphicsSettings
+    pause = _PauseController()
+    CityRenderer(initial_city, simulation.event_bus, GraphicsSettings(), toggle_pause=pause.toggle, is_paused=pause.is_paused, advance_simulation=simulation.advance_day).run()

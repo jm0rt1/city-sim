@@ -81,7 +81,7 @@ class BuildingSpriteSelector:
     building always returns the ``_damaged`` variant regardless of occupancy.
     """
 
-    def get_sprite_id(self, building: Building) -> str:
+    def get_sprite_id(self, building: Building, night_mode: bool = False) -> str:
         """
         Return the atlas tile ID for *building*.
 
@@ -96,5 +96,5 @@ class BuildingSpriteSelector:
             return f"{base}_damaged"
         occ_suffix = _occupancy_bucket(building.occupancy, building.building_type)
         if occ_suffix:
-            return f"{base}{occ_suffix}"
+            return f"{base}{occ_suffix}{'_lit' if night_mode else ''}"
         return base

@@ -3,6 +3,26 @@
 ## Summary:
 This project was developed on Apple Silicon (Arm64 based) Macintosh, using Microsoft Visual Studio Code Version: 1.72.0. The intention is to be compatible with any system through Python's multiplatform nature. However, this project will only be tested on Windows 10 amd64 machine and the latest MacOS version on an Arm64 machine.
 
+## Native macOS game
+
+The playable macOS-first CitySim vertical slice lives in [`Native/CitySimNative`](Native/CitySimNative). It uses SwiftUI for the desktop game shell and SpriteKit for the isometric city renderer, with deterministic simulation, construction, economy, demand, services, objectives, actionable data overlays, events, and save/load.
+
+The full native AAA release contract is defined in [`docs/aaa`](docs/aaa/README.md), including the product vision, complete gameplay and content scope, UX and accessibility, visual and audio direction, production architecture, quality gates, 81 traceable requirements, open decisions, and the dependency-ordered release backlog.
+
+![CitySim native key art](Native/CitySimNative/Resources/CitySim-KeyArt.png)
+
+Build and launch the native `.app` from the repository root:
+
+```bash
+./script/build_and_run.sh
+```
+
+Run its deterministic simulation tests with:
+
+```bash
+swift test --package-path Native/CitySimNative
+```
+
 **Important**: This project requires Python 3.13 or later with free-threaded mode (no Global Interpreter Lock) for optimal performance. Free-threaded Python enables true parallel execution across multiple CPU cores, providing significant performance improvements for large-scale city simulations. See [ADR-002: Free-Threaded Python](docs/adr/002-free-threaded-python.md) for detailed rationale. 
 
 This program contains the following directories of interest under src:
@@ -114,6 +134,7 @@ Models.mdj is the raw file that can be edited using StarUML.
 ## AI Development Documentation
 Design docs and workstreams for future implementation are available:
 
+- AAA Release Specification: [docs/aaa/README.md](docs/aaa/README.md)
 - Design Overview: [docs/design/readme.md](docs/design/readme.md)
 - Workstreams Index: [docs/design/workstreams/00-index.md](docs/design/workstreams/00-index.md)
 - System Architecture: [docs/architecture/overview.md](docs/architecture/overview.md)

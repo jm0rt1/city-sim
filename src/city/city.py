@@ -11,6 +11,10 @@ class City:
         self.water_facilities = 2
         self.electricity_facilities = 2
         self.housing_units = 30
+        # Player-facing treasury state.  Kept on City so read-only views can
+        # render it without importing the finance subsystem.
+        self.budget: float = 5000.0
+        self.previous_budget: float | None = None
 
     def on_advance_day(self):
         people_with_water = self.water_facilities * 20

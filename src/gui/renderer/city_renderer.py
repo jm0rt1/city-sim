@@ -71,6 +71,7 @@ class CityRenderer:
         toggle_pause: Callable[[], None] | None = None,
         is_paused: Callable[[], bool] | None = None,
         get_traffic_delta: Callable[[], "Optional[TrafficDelta]"] | None = None,
+        advance_simulation: Callable[[], None] | None = None,
     ) -> None:
         self._city = city
         self._event_bus = event_bus
@@ -78,6 +79,9 @@ class CityRenderer:
         self._event_queue: Queue[Event] = event_bus.subscribe()
 
         self._get_traffic_delta = get_traffic_delta
+        self._advance_simulation = advance_simulation
+        self._sim_accumulator = 0.0
+        self._sim_days_per_second = 1.0
 
         # Use PlaceableCityGridLayout with 32×32 grid by default.
         self._placeable_layout = PlaceableCityGridLayout(cols=32, rows=32)
@@ -232,6 +236,12 @@ class CityRenderer:
                         self._settings.tile_height,
                     )
                     continue
+                if ev.key == pygame.K_SPACE:
+                    self._sim_days_per_second = 0.0 if self._sim_days_per_second else 1.0
+                    continue
+                if ev.key in (pygame.K_1, pygame.K_2, pygame.K_3):
+                    self._sim_days_per_second = float(ev.key - pygame.K_0)
+                    continue
                 self._action_panel.handle_keydown(ev.key)
 
             if ev.type == pygame.MOUSEMOTION:
@@ -304,6 +314,10 @@ class CityRenderer:
         while running:
             events = pygame.event.get()
             running = self.handle_events(events)
+            if self._advance_simulation and not self._is_paused():
+                self._sim_accumulator += self._clock.get_time() / 1000.0 * self._sim_days_per_second
+                while self._sim_accumulator >= 1.0:
+                    self._advance_simulation(); self._sim_accumulator -= 1.0
             self.render_frame(screen)
             pygame.display.flip()
             self._clock.tick(self._settings.fps_cap)
@@ -360,4 +374,3 @@ class CityRenderer:
         adj = [(p[0] - (sx - w // 2), p[1] - sy) for p in points]
         pygame.draw.polygon(hover_surf, _HOVER_COLOR, adj)
         surface.blit(hover_surf, (sx - w // 2, sy))
-

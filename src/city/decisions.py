@@ -42,9 +42,9 @@ class StayDecision(DecisionBase):
         self.chance_percentage = self.base_chance
 
         if not self.pop.has_home:
-            self.chance_percentage += self.no_home_penalty
+            self.chance_percentage -= self.no_home_penalty
 
         if self.pop.overall_happiness < 0:  # If happiness is negative
-            self.chance_percentage += self.low_happiness_penalty
+            self.chance_percentage -= self.low_happiness_penalty
 
         return super().roll()

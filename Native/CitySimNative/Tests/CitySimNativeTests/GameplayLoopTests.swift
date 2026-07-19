@@ -48,7 +48,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.status, .playing)
     }
 
-    func testIndustryFirstAndCommerceTaxStrategiesBothMeetTownCharterStandards() throws {
+    func testTwoStrategiesEarnTheCharterAndSurviveTheTwentyMinuteHorizon() throws {
         var industryFirst = CityGameState.newCity(seed: 42)
         try build(.industrial, at: GridCoordinate(x: 8, y: 11), in: &industryFirst)
         try build(.industrial, at: GridCoordinate(x: 7, y: 11), in: &industryFirst)
@@ -74,6 +74,20 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertLessThan(industryFirst.taxRate, commerceAndTax.taxRate)
         XCTAssertGreaterThanOrEqual(industryFirst.population, 500)
         XCTAssertGreaterThanOrEqual(commerceAndTax.population, 500)
+        XCTAssertTrue(industryFirst.progression?.townCharterAwarded ?? false)
+        XCTAssertTrue(commerceAndTax.progression?.townCharterAwarded ?? false)
+        XCTAssertEqual(industryFirst.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        XCTAssertEqual(commerceAndTax.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+
+        // 700 cycles × 4 pulses × 0.42 seconds is approximately a 19.6-minute 1× session.
+        advance(&industryFirst, cycles: 480)
+        advance(&commerceAndTax, cycles: 480)
+        XCTAssertTrue(industryFirst.progression?.townCharterAwarded ?? false)
+        XCTAssertTrue(commerceAndTax.progression?.townCharterAwarded ?? false)
+        XCTAssertNotEqual(industryFirst.status, .lost)
+        XCTAssertNotEqual(commerceAndTax.status, .lost)
+        XCTAssertGreaterThan(industryFirst.treasury, 0)
+        XCTAssertGreaterThan(commerceAndTax.treasury, 0)
     }
 
     func testTemporaryTaxRecoveryImprovesCashflowButSuppressesDemandAndHappiness() {

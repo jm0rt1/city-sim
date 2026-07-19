@@ -19,7 +19,7 @@ Critical failures reject the candidate. Passing automated tests, producing a scr
 
 ## Versioned journey
 
-The baseline journey is frozen in [critical-journey-v1.md](critical-journey-v1.md). [critical-journey-v2.md](critical-journey-v2.md) adds the accepted `CONTRACT-001` Town Charter rules for candidates after PLAY-010 integration. If a later accepted product contract makes a step obsolete, create another journey version and retain the previous versions. Never rewrite a completed or in-progress journey to make a candidate pass.
+The baseline journey is frozen in [critical-journey-v1.md](critical-journey-v1.md). [critical-journey-v2.md](critical-journey-v2.md) recorded the approved `CONTRACT-001` rules before implementation landed. [critical-journey-v3.md](critical-journey-v3.md) is the execution contract for the accepted PLAY-010 baseline and makes its four-ticks-per-day timing and exact 2,800-tick strategy horizon explicit. If a later accepted product contract makes a step obsolete, create another journey version and retain the previous versions. Never rewrite a completed or in-progress journey to make a candidate pass.
 
 ## Candidate layout
 

@@ -9,14 +9,16 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
     var removedTileCount = 0
     var overlayUpdateCount = 0
     var nodeCount = 0
+    var drawableNodeCount = 0
+    var activeActionCount = 0
+    var updateDurationMilliseconds = 0.0
     var detailLevel: CameraDetailLevel = .neighborhood
     var updatedCoordinates: Set<GridCoordinate> = []
 }
 
 private struct TileRenderSignature: Equatable {
     let kind: BuildingKind
-    let level: Int
-    let constructionStep: Int
+    let lotPresentation: LotConsequencePresentation?
     let roadConnections: RoadConnectionMask
     let gridWidth: Int
     let gridHeight: Int
@@ -291,8 +293,11 @@ final class CityScene: SKScene {
     }
 
     private func updateWorld(state: CityGameState, overlay: DataOverlay) -> RendererDiagnosticsSnapshot {
+        let updateStarted = ProcessInfo.processInfo.systemUptime
         var diagnostics = RendererDiagnosticsSnapshot(
             nodeCount: diagnosticsSnapshot.nodeCount,
+            drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
+            activeActionCount: diagnosticsSnapshot.activeActionCount,
             detailLevel: currentCameraDetailLevel
         )
         let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
@@ -356,7 +361,11 @@ final class CityScene: SKScene {
         if diagnostics.createdTileCount > 0 || diagnostics.updatedTileCount > 0
             || diagnostics.removedTileCount > 0 || diagnostics.overlayUpdateCount > 0 {
             diagnostics.nodeCount = recursiveNodeCount(worldLayer)
+            diagnostics.drawableNodeCount = recursiveDrawableNodeCount(worldLayer)
+            diagnostics.activeActionCount = recursiveActiveActionCount(worldLayer)
         }
+        diagnostics.updateDurationMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - updateStarted) * 1_000
         return diagnostics
     }
 
@@ -421,10 +430,16 @@ final class CityScene: SKScene {
     }
 
     private func tileSignature(for tile: CityTile, state: CityGameState) -> TileRenderSignature {
-        TileRenderSignature(
+        let lotPresentation: LotConsequencePresentation?
+        switch tile.kind {
+        case .empty, .road:
+            lotPresentation = nil
+        default:
+            lotPresentation = LotConsequencePresentation(tile: tile)
+        }
+        return TileRenderSignature(
             kind: tile.kind,
-            level: tile.level,
-            constructionStep: Int((tile.constructionProgress * 100).rounded()),
+            lotPresentation: lotPresentation,
             roadConnections: tile.kind == .road
                 ? RoadConnectionMask.resolving(at: tile.coordinate, in: state)
                 : [],
@@ -479,6 +494,8 @@ final class CityScene: SKScene {
             totalTileCount: tileRecords.count,
             reusedTileCount: tileRecords.count,
             nodeCount: diagnosticsSnapshot.nodeCount,
+            drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
+            activeActionCount: diagnosticsSnapshot.activeActionCount,
             detailLevel: detail
         )
         updateSelection(renderedSelection)
@@ -487,6 +504,16 @@ final class CityScene: SKScene {
 
     private func recursiveNodeCount(_ node: SKNode) -> Int {
         node.children.reduce(node.children.count) { $0 + recursiveNodeCount($1) }
+    }
+
+    private func recursiveDrawableNodeCount(_ node: SKNode) -> Int {
+        let localCount = node is SKShapeNode || node is SKSpriteNode || node is SKLabelNode ? 1 : 0
+        return node.children.reduce(localCount) { $0 + recursiveDrawableNodeCount($1) }
+    }
+
+    private func recursiveActiveActionCount(_ node: SKNode) -> Int {
+        let localCount = node.hasActions() ? 1 : 0
+        return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
     }
 
     private func updateSelection(_ coordinate: GridCoordinate?) {

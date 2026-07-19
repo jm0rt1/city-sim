@@ -288,6 +288,21 @@ Completed-but-uncommitted work is invalid. A green unit test is insufficient for
 
 The integration lane must preserve a recoverable pre-merge commit and never integrate from a dirty main worktree.
 
+### Intelligent commit protocol
+
+All lanes treat commits as continuous durability and review boundaries:
+
+1. Inspect branch and working state before staging.
+2. Stage explicit task-owned paths; never use `git add -A` in a dirty multi-owner checkout.
+3. Review unstaged and staged diffs, run `git diff --cached --check`, and confirm no unrelated or generated files entered the index.
+4. Commit one coherent player, contract, test, evidence, or management outcome at a time using `PLAY-###: Imperative outcome` or `Integration: Imperative outcome`.
+5. Commit after validated checkpoints, before handoff, before task/lane changes, before risky refactors/merges, and before ending a turn with completed work.
+6. Use explicit checkpoint commits only to preserve incomplete worker work; record unrun/failing validation and do not mark the task ready.
+7. Keep completion records tied to exact commit hashes. Finished-but-uncommitted work is never complete.
+8. Workers keep commits local until accepted. Integration audits every worktree's cleanliness, latest commit, divergence, and claim before integration.
+
+If provenance is unclear, freeze and preserve the worktree before cleanup. Never erase or absorb ambiguous work merely to obtain a clean status.
+
 ## 10. Baseline rule
 
 No specialist worktree is created from the current dirty checkout.

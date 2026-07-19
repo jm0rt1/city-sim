@@ -1,0 +1,4 @@
+interface:
+  display_name: "CitySim Gameplay Loop"
+  short_description: "Build consequential playable city loops"
+  default_prompt: "Use $build-citysim-gameplay-loop to implement the claimed CitySim gameplay outcome and prove its player consequences."

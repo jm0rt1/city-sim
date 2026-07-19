@@ -1,0 +1,4 @@
+interface:
+  display_name: "CitySim World Rendering"
+  short_description: "Build a vivid and truthful SpriteKit city"
+  default_prompt: "Use $render-citysim-world to implement the claimed CitySim world-rendering outcome with visual and performance proof."

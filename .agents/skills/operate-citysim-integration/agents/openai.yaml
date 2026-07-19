@@ -1,0 +1,4 @@
+interface:
+  display_name: "CitySim Integration Captain"
+  short_description: "Manage all CitySim lanes and accepted baselines"
+  default_prompt: "Use $operate-citysim-integration to supervise every CitySim lane, enforce intelligent commits, and publish the next accepted playable baseline."

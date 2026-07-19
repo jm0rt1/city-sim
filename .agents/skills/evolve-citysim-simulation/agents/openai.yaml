@@ -1,0 +1,4 @@
+interface:
+  display_name: "CitySim Simulation Platform"
+  short_description: "Evolve deterministic saves and runtime contracts"
+  default_prompt: "Use $evolve-citysim-simulation to implement the claimed deterministic simulation, persistence, or platform outcome."

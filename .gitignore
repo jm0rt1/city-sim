@@ -6,3 +6,4 @@ dist/
 Native/CitySimNative/.build/
 Native/CitySimNative/Resources/AppIcon.iconset/
 .DS_Store
+*.swp

@@ -207,10 +207,10 @@ enum CitySimulation {
 
         rebalanceOccupancy(&state, capacity: residentialCapacity)
         maybeUpgrade(&state)
+        updateTownCharterProgression(&state)
         if state.tick.isMultiple(of: 4) {
             issuePressureWarnings(&state)
             maybeCreateEvent(&state)
-            updateTownCharterProgression(&state)
             checkMilestones(&state, previousPopulation: previousPopulation)
             checkEndState(&state)
         }

@@ -114,9 +114,6 @@ final class GameplayLoopTests: XCTestCase {
         var decoded = try JSONDecoder().decode(CityGameState.self, from: legacyData)
 
         XCTAssertNil(decoded.progression)
-        for _ in 0..<3 { CitySimulation.step(&decoded) }
-        XCTAssertNil(decoded.progression)
-
         CitySimulation.step(&decoded)
         XCTAssertEqual(decoded.progression, CityProgressionState())
     }
@@ -145,12 +142,12 @@ final class GameplayLoopTests: XCTestCase {
         var state = try qualifyingTown()
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 1)
 
-        advance(&state, cycles: 10)
+        advanceDays(&state, days: 10)
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 11)
         XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
         XCTAssertFalse(state.messages.contains { $0.title == "Town Charter Awarded" })
 
-        advance(&state, cycles: 1)
+        advanceDays(&state, days: 1)
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
@@ -164,15 +161,15 @@ final class GameplayLoopTests: XCTestCase {
 
     func testFailedTownCharterCheckResetsBeforeLaterSuccessfulRun() throws {
         var state = try qualifyingTown()
-        advance(&state, cycles: 4)
+        advanceDays(&state, days: 4)
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 5)
 
         state.happiness = 0
-        advance(&state, cycles: 1)
+        advanceDays(&state, days: 1)
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 0)
         XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
 
-        advanceQualifyingTown(&state, cycles: 12)
+        advanceQualifyingTown(&state, days: 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
     }
@@ -232,12 +229,18 @@ final class GameplayLoopTests: XCTestCase {
         }
     }
 
-    private func advanceQualifyingTown(_ state: inout CityGameState, cycles: Int) {
-        for _ in 0..<cycles {
+    private func advanceDays(_ state: inout CityGameState, days: Int) {
+        for _ in 0..<days {
+            CitySimulation.step(&state)
+        }
+    }
+
+    private func advanceQualifyingTown(_ state: inout CityGameState, days: Int) {
+        for _ in 0..<days {
             state.population = 500
             state.treasury = max(state.treasury, 50_000)
             state.happiness = 57
-            advance(&state, cycles: 1)
+            advanceDays(&state, days: 1)
             XCTAssertTrue(
                 CitySimulation.meetsTownCharterStandards(in: state),
                 CityAnalytics(state: state).townCharterStatusText

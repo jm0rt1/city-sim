@@ -15,6 +15,16 @@ enum BuildRejection: Error, Equatable {
 }
 
 enum CitySimulation {
+    static let commercialJobCapacity = 80
+    static let industrialJobCapacity = 110
+    static let powerCapacityPerPlant = 300
+    static let waterCapacityPerTower = 270
+    static let residentRevenueBase = 3.0
+    static let employedResidentRevenueBase = 10.0
+    static let commercialRevenue = 140.0
+    static let industrialRevenue = 190.0
+    static let upkeepMultiplier = 1.8
+
     static func validateBuild(
         _ kind: BuildingKind,
         at coordinate: GridCoordinate,
@@ -53,6 +63,66 @@ enum CitySimulation {
         return true
     }
 
+    static func activeTiles(in state: CityGameState) -> [CityTile] {
+        state.tiles.filter { $0.constructionProgress >= 1 }
+    }
+
+    static func housingCapacity(in state: CityGameState) -> Int {
+        activeTiles(in: state)
+            .filter { $0.kind == .residential }
+            .reduce(0) { $0 + 280 * $1.level }
+    }
+
+    static func jobCapacity(in state: CityGameState) -> Int {
+        activeTiles(in: state).reduce(0) { partial, tile in
+            partial + jobCapacity(for: tile.kind) * max(1, tile.level)
+        }
+    }
+
+    static func jobCapacity(for kind: BuildingKind) -> Int {
+        switch kind {
+        case .commercial: commercialJobCapacity
+        case .industrial: industrialJobCapacity
+        default: 0
+        }
+    }
+
+    static func projectedRevenue(in state: CityGameState) -> Double {
+        let active = activeTiles(in: state)
+        let counts = Dictionary(grouping: active, by: \.kind).mapValues(\.count)
+        return (Double(state.population) * residentRevenueBase
+                + Double(state.jobs) * employedResidentRevenueBase) * state.taxRate
+            + Double(counts[.commercial] ?? 0) * commercialRevenue
+            + Double(counts[.industrial] ?? 0) * industrialRevenue
+    }
+
+    static func projectedUpkeep(in state: CityGameState) -> Double {
+        activeTiles(in: state).reduce(0.0) {
+            $0 + $1.kind.upkeep * Double(max(1, $1.level))
+        } * upkeepMultiplier + max(0, -state.treasury) * 0.006
+    }
+
+    static func projectedBalance(in state: CityGameState) -> Double {
+        projectedRevenue(in: state) - projectedUpkeep(in: state)
+    }
+
+    static func utilityCoverage(in state: CityGameState) -> Double {
+        min(
+            1,
+            min(
+                Double(state.powerCapacity) / Double(max(1, state.powerUsed)),
+                Double(state.waterCapacity) / Double(max(1, state.waterUsed))
+            )
+        )
+    }
+
+    static func utilityReserve(in state: CityGameState) -> Double {
+        min(
+            reserve(capacity: state.powerCapacity, used: state.powerUsed),
+            reserve(capacity: state.waterCapacity, used: state.waterUsed)
+        )
+    }
+
     static func step(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
         let previousPopulation = state.population
@@ -62,57 +132,69 @@ enum CitySimulation {
             state.tiles[index].constructionProgress = min(1, state.tiles[index].constructionProgress + 0.25)
         }
 
-        let active = state.tiles.filter { $0.constructionProgress >= 1 }
+        let active = activeTiles(in: state)
         let counts = Dictionary(grouping: active, by: \.kind).mapValues(\.count)
-        let residentialCapacity = active.filter { $0.kind == .residential }.reduce(0) { $0 + 280 * $1.level }
-        let jobCapacity = active.reduce(0) { partial, tile in
-            partial + (tile.kind == .commercial ? 170 * tile.level : tile.kind == .industrial ? 240 * tile.level : 0)
-        }
-        state.powerCapacity = (counts[.powerPlant] ?? 0) * 2_200
-        state.waterCapacity = (counts[.waterTower] ?? 0) * 2_000
+        let residentialCapacity = housingCapacity(in: state)
+        let jobCapacity = jobCapacity(in: state)
+        state.powerCapacity = (counts[.powerPlant] ?? 0) * powerCapacityPerPlant
+        state.waterCapacity = (counts[.waterTower] ?? 0) * waterCapacityPerTower
         state.powerUsed = Int(Double(state.population) * 0.82)
         state.waterUsed = Int(Double(state.population) * 0.74)
-        state.jobs = min(jobCapacity, Int(Double(state.population) * 0.72))
+        let workforceTarget = max(1, state.population * 7 / 10)
+        state.jobs = min(jobCapacity, workforceTarget)
 
-        let utilityCoverage = min(
-            1,
-            min(Double(state.powerCapacity) / Double(max(1, state.powerUsed)),
-                Double(state.waterCapacity) / Double(max(1, state.waterUsed)))
-        )
-        let employment = min(1, Double(jobCapacity) / Double(max(1, state.population * 7 / 10)))
-        let parkBonus = min(12, Double(counts[.park] ?? 0) * 1.8)
-        let services = min(10, Double((counts[.fireStation] ?? 0) + (counts[.policeStation] ?? 0) + (counts[.school] ?? 0)) * 2.4)
-        let pollution = min(24, Double(counts[.industrial] ?? 0) * 1.6 + Double(counts[.powerPlant] ?? 0) * 4)
-        let targetHappiness = 42 + utilityCoverage * 20 + employment * 12 + parkBonus + services - pollution - max(0, state.taxRate - 0.10) * 120
-        state.happiness += (targetHappiness - state.happiness) * 0.12
+        let utilityCoverage = utilityCoverage(in: state)
+        let utilityReserve = utilityReserve(in: state)
+        let employment = min(1, Double(jobCapacity) / Double(workforceTarget))
+        let parkBonus = min(12, Double(counts[.park] ?? 0) * 3)
+        let services = min(10, Double((counts[.fireStation] ?? 0) + (counts[.policeStation] ?? 0) + (counts[.school] ?? 0)) * 2.5)
+        let pollution = min(26, Double(counts[.industrial] ?? 0) * 3.5 + Double(counts[.powerPlant] ?? 0) * 4)
+        let taxPressure = max(0, state.taxRate - 0.10) * 140
+        let shortagePressure = max(0, 0.98 - utilityCoverage) * 100
+        let targetHappiness = 32 + utilityCoverage * 18 + employment * 16
+            + min(4, utilityReserve * 20) + parkBonus + services
+            - pollution - taxPressure - shortagePressure
+        state.happiness += (targetHappiness - state.happiness) * 0.08
         state.happiness = min(100, max(0, state.happiness))
         state.approval += ((state.happiness - 50) * 0.08 - max(0, -state.treasury / 80_000))
         state.approval = min(100, max(0, state.approval))
 
-        let attractiveCapacity = min(residentialCapacity, max(120, jobCapacity * 2))
-        if state.population < attractiveCapacity && utilityCoverage > 0.8 && state.happiness > 48 {
-            let growth = max(2, Int(Double(state.population) * (0.006 + state.demand.residential * 0.004)))
-            state.population = min(attractiveCapacity, state.population + growth)
-        } else if utilityCoverage < 0.65 || state.happiness < 32 {
-            state.population = max(0, state.population - max(2, state.population / 100))
+        let housingVacancy = max(0, Double(residentialCapacity - state.population) / Double(max(1, residentialCapacity)))
+        let employmentGap = max(0, 1 - employment)
+        state.demand.residential = clamp(
+            0.50 + employment * 0.28 + (state.happiness - 50) / 140
+                + min(0.15, utilityReserve * 0.45) - housingVacancy * 0.35
+                - max(0, state.taxRate - 0.10) * 2.5
+        )
+        state.demand.commercial = clamp(
+            0.38 + Double(state.population) / 1_000 + employmentGap * 0.9
+                - Double(counts[.commercial] ?? 0) * 0.09
+                - max(0, state.taxRate - 0.10) * 2
+        )
+        state.demand.industrial = clamp(
+            0.36 + (1 - housingVacancy) * 0.35 + employmentGap * 0.65
+                - pollution / 140 - max(0, state.taxRate - 0.10)
+        )
+
+        if state.tick.isMultiple(of: 4) {
+            let attractiveCapacity = min(residentialCapacity, max(120, jobCapacity * 2))
+            if state.population < attractiveCapacity && utilityCoverage > 0.88 && state.happiness > 45 {
+                let growth = max(1, Int(Double(state.population) * (0.0015 + state.demand.residential * 0.0015)))
+                state.population = min(attractiveCapacity, state.population + growth)
+            } else if utilityCoverage < 0.82 || state.happiness < 32 {
+                state.population = max(0, state.population - max(1, state.population / 150))
+            }
+            state.treasury += projectedBalance(in: state)
         }
-
-        let revenue = Double(state.population) * 55 * state.taxRate
-            + Double(counts[.commercial] ?? 0) * 240
-            + Double(counts[.industrial] ?? 0) * 310
-        let upkeep = active.reduce(0.0) { $0 + $1.kind.upkeep * Double(max(1, $1.level)) } * 1.8
-        let debtInterest = max(0, -state.treasury) * 0.006
-        state.treasury += revenue - upkeep - debtInterest
-
-        state.demand.residential = clamp(0.35 + employment * 0.45 + (state.happiness - 50) / 120 - Double(residentialCapacity - state.population) / 4_000)
-        state.demand.commercial = clamp(Double(state.population) / Double(max(1, (counts[.commercial] ?? 0) * 550 + 350)))
-        state.demand.industrial = clamp(0.35 + Double(residentialCapacity - jobCapacity) / 4_000)
 
         rebalanceOccupancy(&state, capacity: residentialCapacity)
         maybeUpgrade(&state)
-        maybeCreateEvent(&state)
-        checkMilestones(&state, previousPopulation: previousPopulation)
-        checkEndState(&state)
+        if state.tick.isMultiple(of: 4) {
+            issuePressureWarnings(&state)
+            maybeCreateEvent(&state)
+            checkMilestones(&state, previousPopulation: previousPopulation)
+            checkEndState(&state)
+        }
     }
 
     private static func rebalanceOccupancy(_ state: inout CityGameState, capacity: Int) {
@@ -139,23 +221,81 @@ enum CitySimulation {
     }
 
     private static func maybeCreateEvent(_ state: inout CityGameState) {
-        guard state.tick % 28 == 0 else { return }
+        guard state.population >= 500, state.tick % 160 == 0 else { return }
         state.seed = state.seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
         let roll = Double(state.seed % 10_000) / 10_000
         if roll < 0.22 {
-            state.treasury -= 4_500
-            state.happiness = max(0, state.happiness - 5)
-            state.messages.insert(CityMessage(tick: state.tick, severity: .warning, title: "Severe Storm", detail: "Emergency repairs cost $4,500. Resilient services soften future shocks."), at: 0)
+            state.treasury -= 2_000
+            state.happiness = max(0, state.happiness - 3)
+            state.messages.insert(CityMessage(tick: state.tick, severity: .warning, title: "Severe Storm", detail: "Emergency repairs cost $2,000. Resilient services soften future shocks."), at: 0)
         } else if roll > 0.82 {
-            state.treasury += 7_500
-            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "State Growth Grant", detail: "New Arcadia received $7,500 for responsible growth."), at: 0)
+            state.treasury += 3_000
+            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "State Growth Grant", detail: "New Arcadia received $3,000 for responsible growth."), at: 0)
         }
+    }
+
+    private static func issuePressureWarnings(_ state: inout CityGameState) {
+        let balance = projectedBalance(in: state)
+        let coverage = utilityCoverage(in: state)
+        let reserve = utilityReserve(in: state)
+        let workforceTarget = max(1, state.population * 7 / 10)
+        let employment = min(1, Double(jobCapacity(in: state)) / Double(workforceTarget))
+
+        if balance < 0 {
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Budget Gap",
+                    detail: "Operations are projected to use \((-balance).currencyText) per cycle. Add taxable activity or accept the happiness cost of a temporary tax increase."
+                ),
+                to: &state
+            )
+        }
+        if reserve < 0.12, coverage >= 0.98 {
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Utility Reserve Tight",
+                    detail: "Only \(max(0, state.powerCapacity - state.powerUsed)) power and \(max(0, state.waterCapacity - state.waterUsed)) water remain spare. Expansion now risks a shortfall."
+                ),
+                to: &state
+            )
+        }
+        if coverage < 0.98 {
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .critical,
+                    title: "Utility Shortfall",
+                    detail: "Power or water is below current use. Growth has stalled and livability will keep falling until capacity or demand changes."
+                ),
+                to: &state
+            )
+        }
+        if employment < 0.82 {
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Hiring Bottleneck",
+                    detail: "The town is short \(max(0, workforceTarget - state.jobs)) filled jobs. Commercial growth is cleaner; industry restores the tax base faster but adds pollution."
+                ),
+                to: &state
+            )
+        }
+    }
+
+    private static func postOnce(_ message: CityMessage, to state: inout CityGameState) {
+        guard !state.messages.contains(where: { $0.title == message.title }) else { return }
+        state.messages.insert(message, at: 0)
+        state.messages = Array(state.messages.prefix(12))
     }
 
     private static func checkMilestones(_ state: inout CityGameState, previousPopulation: Int) {
         for milestone in [500, 1_000, 1_500, 2_000] where previousPopulation < milestone && state.population >= milestone {
-            state.treasury += 10_000
-            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "Population Milestone", detail: "\(milestone.formatted()) residents! A $10,000 development grant was awarded."), at: 0)
+            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "Population Milestone", detail: "\(milestone.formatted()) residents. Growth alone is not enough: protect the treasury, jobs, utilities, and livability to earn the Town Charter."), at: 0)
         }
         state.messages = Array(state.messages.prefix(12))
     }
@@ -169,6 +309,11 @@ enum CitySimulation {
     }
 
     private static func clamp(_ value: Double) -> Double { min(1, max(0, value)) }
+
+    private static func reserve(capacity: Int, used: Int) -> Double {
+        guard capacity > 0 else { return 0 }
+        return max(0, Double(capacity - used) / Double(capacity))
+    }
 }
 
 private extension Int {

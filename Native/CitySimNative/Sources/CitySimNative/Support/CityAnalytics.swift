@@ -4,7 +4,7 @@ struct CityAnalytics {
     let state: CityGameState
 
     private var activeTiles: [CityTile] {
-        state.tiles.filter { $0.constructionProgress >= 1 }
+        CitySimulation.activeTiles(in: state)
     }
 
     func count(_ kind: BuildingKind) -> Int {
@@ -12,13 +12,19 @@ struct CityAnalytics {
     }
 
     var housingCapacity: Int {
-        activeTiles.filter { $0.kind == .residential }.reduce(0) { $0 + 280 * $1.level }
+        CitySimulation.housingCapacity(in: state)
     }
 
     var jobCapacity: Int {
-        activeTiles.reduce(0) { result, tile in
-            result + (tile.kind == .commercial ? 170 * tile.level : tile.kind == .industrial ? 240 * tile.level : 0)
-        }
+        CitySimulation.jobCapacity(in: state)
+    }
+
+    var workforceTarget: Int {
+        max(1, state.population * 7 / 10)
+    }
+
+    var jobShortfall: Int {
+        max(0, workforceTarget - state.jobs)
     }
 
     var housingHeadroom: Int {
@@ -46,31 +52,31 @@ struct CityAnalytics {
     }
 
     var employmentRate: Double {
-        min(1, Double(state.jobs) / Double(max(1, state.population * 7 / 10)))
+        min(1, Double(state.jobs) / Double(workforceTarget))
     }
 
     var utilityCoverage: Double {
-        min(
-            1,
-            min(
-                Double(state.powerCapacity) / Double(max(1, state.powerUsed)),
-                Double(state.waterCapacity) / Double(max(1, state.waterUsed))
-            )
-        )
+        CitySimulation.utilityCoverage(in: state)
+    }
+
+    var utilityReserve: Double {
+        CitySimulation.utilityReserve(in: state)
     }
 
     var projectedRevenue: Double {
-        Double(state.population) * 55 * state.taxRate
-            + Double(count(.commercial)) * 240
-            + Double(count(.industrial)) * 310
+        CitySimulation.projectedRevenue(in: state)
     }
 
     var projectedUpkeep: Double {
-        activeTiles.reduce(0.0) { $0 + $1.kind.upkeep * Double(max(1, $1.level)) } * 1.8
-            + max(0, -state.treasury) * 0.006
+        CitySimulation.projectedUpkeep(in: state)
     }
 
-    var projectedBalance: Double { projectedRevenue - projectedUpkeep }
+    var projectedBalance: Double { CitySimulation.projectedBalance(in: state) }
+
+    var operatingRunwayCycles: Double? {
+        guard projectedBalance < 0, state.treasury > 0 else { return nil }
+        return state.treasury / -projectedBalance
+    }
 
     var pollutionPressure: Double {
         min(100, Double(count(.industrial)) * 8 + Double(count(.powerPlant)) * 20)
@@ -78,6 +84,19 @@ struct CityAnalytics {
 
     var serviceBuildings: Int {
         count(.fireStation) + count(.policeStation) + count(.school)
+    }
+
+    var meetsTownCharterStandards: Bool {
+        state.population >= 500
+            && state.treasury >= 10_000
+            && projectedBalance >= 0
+            && employmentRate >= 0.9
+            && utilityCoverage >= 1
+            && utilityReserve >= 0.15
+            && state.happiness >= 52
+            && count(.residential) >= 2
+            && count(.commercial) >= 1
+            && count(.industrial) >= 1
     }
 
     func hasRoadAccess(at coordinate: GridCoordinate) -> Bool {
@@ -93,8 +112,7 @@ struct CityAnalytics {
     func capacity(for tile: CityTile) -> Int {
         switch tile.kind {
         case .residential: 280 * tile.level
-        case .commercial: 170 * tile.level
-        case .industrial: 240 * tile.level
+        case .commercial, .industrial: CitySimulation.jobCapacity(for: tile.kind) * tile.level
         default: 0
         }
     }

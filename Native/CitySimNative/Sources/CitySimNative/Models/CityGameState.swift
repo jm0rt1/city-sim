@@ -1,5 +1,10 @@
 import Foundation
 
+struct CityProgressionState: Codable, Equatable, Sendable {
+    var townCharterQualifyingCycles: Int = 0
+    var townCharterAwarded = false
+}
+
 struct CityGameState: Codable, Equatable, Sendable {
     var cityName: String
     var gridWidth: Int
@@ -18,6 +23,7 @@ struct CityGameState: Codable, Equatable, Sendable {
     var taxRate: Double
     var demand: DemandLevels
     var messages: [CityMessage]
+    var progression: CityProgressionState?
     var status: GameStatus
     var seed: UInt64
 
@@ -49,14 +55,14 @@ struct CityGameState: Codable, Equatable, Sendable {
 
         return CityGameState(
             cityName: "New Arcadia", gridWidth: width, gridHeight: height,
-            tiles: tiles, tick: 0, treasury: 75_000, population: 180, jobs: 140,
-            happiness: 68, approval: 64, powerUsed: 148, powerCapacity: 2_200,
-            waterUsed: 133, waterCapacity: 2_000, taxRate: 0.10,
-            demand: DemandLevels(),
+            tiles: tiles, tick: 0, treasury: 26_000, population: 300, jobs: 190,
+            happiness: 58, approval: 56, powerUsed: 246, powerCapacity: 300,
+            waterUsed: 222, waterCapacity: 270, taxRate: 0.10,
+            demand: DemandLevels(residential: 0.72, commercial: 0.68, industrial: 0.56),
             messages: [CityMessage(tick: 0, severity: .information,
-                                   title: "Welcome, Mayor",
-                                   detail: "Grow New Arcadia to 2,500 residents while keeping the city solvent and livable.")],
-            status: .playing, seed: seed
+                                   title: "A Town at the Crossroads",
+                                   detail: "New Arcadia is running a small deficit with only 54 power and 48 water spare. Add jobs and revenue, or secure utility headroom before growth exposes the shortfall.")],
+            progression: CityProgressionState(), status: .playing, seed: seed
         )
     }
 

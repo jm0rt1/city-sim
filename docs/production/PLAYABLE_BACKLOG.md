@@ -11,7 +11,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Full tests, staged build/launch, live inspection, compact/default proof, and truthful residual risks.
 - **Commits:** `cb30157`, `48bc2b5`.
 
-### [ ] PLAY-010: Create consequential early-game pressure
+### [x] PLAY-010: Create consequential early-game pressure
 
 - **Player outcome:** Within two minutes the player understands a real treasury-demand-utilities-happiness-employment tradeoff; the session contains a warned recoverable squeeze, two viable strategies, and a meaningful Town Charter milestone.
 - **Owning lane:** Gameplay loop.
@@ -21,6 +21,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Renderer art, HUD composition, persistence format, package topology.
 - **Acceptance:** First decision by 02:00; two distinct successful strategies; overextension is warned and recoverable; transient spikes cannot complete milestones; full tests plus a staged 20-minute journey and retained causal evidence.
 - **Stop conditions:** Shared-model/save/store contract change without approval, non-deterministic outcome, or unrelated UI/rendering edits.
+- **Accepted integration:** `6736c67666c1b4854e6a6f65eb7af292d161efb2`; completion record at `docs/production/completed/PLAY-010.gameplay-loop.md`.
 
 ### [ ] PLAY-020: Make consequences readable in the city
 

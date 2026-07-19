@@ -15,6 +15,7 @@ enum BuildRejection: Error, Equatable {
 }
 
 enum CitySimulation {
+    static let townCharterQualificationCycles = 12
     static let commercialJobCapacity = 80
     static let industrialJobCapacity = 110
     static let powerCapacityPerPlant = 300
@@ -123,6 +124,23 @@ enum CitySimulation {
         )
     }
 
+    static func meetsTownCharterStandards(in state: CityGameState) -> Bool {
+        let active = activeTiles(in: state)
+        let counts = Dictionary(grouping: active, by: \.kind).mapValues(\.count)
+        let workforceTarget = max(1, state.population * 7 / 10)
+        let employment = min(1, Double(state.jobs) / Double(workforceTarget))
+        return state.population >= 500
+            && state.treasury >= 10_000
+            && projectedBalance(in: state) >= 0
+            && employment >= 0.9
+            && utilityCoverage(in: state) >= 1
+            && utilityReserve(in: state) >= 0.15
+            && state.happiness >= 52
+            && (counts[.residential] ?? 0) >= 2
+            && (counts[.commercial] ?? 0) >= 1
+            && (counts[.industrial] ?? 0) >= 1
+    }
+
     static func step(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
         let previousPopulation = state.population
@@ -192,6 +210,7 @@ enum CitySimulation {
         if state.tick.isMultiple(of: 4) {
             issuePressureWarnings(&state)
             maybeCreateEvent(&state)
+            updateTownCharterProgression(&state)
             checkMilestones(&state, previousPopulation: previousPopulation)
             checkEndState(&state)
         }
@@ -291,6 +310,41 @@ enum CitySimulation {
         guard !state.messages.contains(where: { $0.title == message.title }) else { return }
         state.messages.insert(message, at: 0)
         state.messages = Array(state.messages.prefix(12))
+    }
+
+    private static func updateTownCharterProgression(_ state: inout CityGameState) {
+        var progression = state.progression ?? CityProgressionState()
+        guard !progression.townCharterAwarded else {
+            state.progression = progression
+            return
+        }
+
+        if meetsTownCharterStandards(in: state) {
+            progression.townCharterQualifyingCycles = min(
+                townCharterQualificationCycles,
+                progression.townCharterQualifyingCycles + 1
+            )
+        } else {
+            progression.townCharterQualifyingCycles = 0
+        }
+
+        let awardedNow = progression.townCharterQualifyingCycles == townCharterQualificationCycles
+        if awardedNow {
+            progression.townCharterAwarded = true
+        }
+        state.progression = progression
+
+        if awardedNow {
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Town Charter Awarded",
+                    detail: "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Town Charter is now permanent."
+                ),
+                to: &state
+            )
+        }
     }
 
     private static func checkMilestones(_ state: inout CityGameState, previousPopulation: Int) {

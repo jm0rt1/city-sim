@@ -1,5 +1,10 @@
 import Foundation
 
+struct CityProgressionState: Codable, Equatable, Sendable {
+    var townCharterQualifyingCycles: Int = 0
+    var townCharterAwarded = false
+}
+
 struct CityGameState: Codable, Equatable, Sendable {
     var cityName: String
     var gridWidth: Int
@@ -18,6 +23,7 @@ struct CityGameState: Codable, Equatable, Sendable {
     var taxRate: Double
     var demand: DemandLevels
     var messages: [CityMessage]
+    var progression: CityProgressionState?
     var status: GameStatus
     var seed: UInt64
 
@@ -56,7 +62,7 @@ struct CityGameState: Codable, Equatable, Sendable {
             messages: [CityMessage(tick: 0, severity: .information,
                                    title: "A Town at the Crossroads",
                                    detail: "New Arcadia is running a small deficit with only 54 power and 48 water spare. Add jobs and revenue, or secure utility headroom before growth exposes the shortfall.")],
-            status: .playing, seed: seed
+            progression: CityProgressionState(), status: .playing, seed: seed
         )
     }
 

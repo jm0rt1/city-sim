@@ -87,16 +87,46 @@ struct CityAnalytics {
     }
 
     var meetsTownCharterStandards: Bool {
-        state.population >= 500
-            && state.treasury >= 10_000
-            && projectedBalance >= 0
-            && employmentRate >= 0.9
-            && utilityCoverage >= 1
-            && utilityReserve >= 0.15
-            && state.happiness >= 52
-            && count(.residential) >= 2
-            && count(.commercial) >= 1
-            && count(.industrial) >= 1
+        CitySimulation.meetsTownCharterStandards(in: state)
+    }
+
+    var townCharterQualifyingCycles: Int {
+        state.progression?.townCharterQualifyingCycles ?? 0
+    }
+
+    var townCharterAwarded: Bool {
+        state.progression?.townCharterAwarded ?? false
+    }
+
+    var townCharterStatusText: String {
+        if townCharterAwarded {
+            return "Town Charter secured permanently"
+        }
+        if state.population < 500 {
+            return "\((500 - state.population).formatted()) residents to charter review"
+        }
+        if state.treasury < 10_000 {
+            return "Restore the treasury to $10,000"
+        }
+        if projectedBalance < 0 {
+            return "Close the \((-projectedBalance).currencyText) operating gap"
+        }
+        if employmentRate < 0.9 {
+            return "Raise employment to 90%"
+        }
+        if utilityCoverage < 1 {
+            return "Restore complete utility coverage"
+        }
+        if utilityReserve < 0.15 {
+            return "Build 15% utility reserve"
+        }
+        if state.happiness < 52 {
+            return "Raise happiness to 52%"
+        }
+        if count(.residential) < 2 || count(.commercial) < 1 || count(.industrial) < 1 {
+            return "Maintain residential, commercial, and industrial activity"
+        }
+        return "\(townCharterQualifyingCycles) of \(CitySimulation.townCharterQualificationCycles) qualifying days complete"
     }
 
     func hasRoadAccess(at coordinate: GridCoordinate) -> Bool {

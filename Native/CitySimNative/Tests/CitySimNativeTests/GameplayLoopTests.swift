@@ -1,3 +1,4 @@
+import Foundation
 import XCTest
 @testable import CitySimNative
 
@@ -91,9 +92,142 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertLessThan(recoveryTax.happiness, standardTax.happiness)
     }
 
+    func testLegacyStateWithoutProgressionNormalizesOnlyOnDailyBoundary() throws {
+        let encoded = try JSONEncoder().encode(CityGameState.newCity(seed: 42))
+        var payload = try XCTUnwrap(JSONSerialization.jsonObject(with: encoded) as? [String: Any])
+        payload.removeValue(forKey: "progression")
+        let legacyData = try JSONSerialization.data(withJSONObject: payload)
+        var decoded = try JSONDecoder().decode(CityGameState.self, from: legacyData)
+
+        XCTAssertNil(decoded.progression)
+        for _ in 0..<3 { CitySimulation.step(&decoded) }
+        XCTAssertNil(decoded.progression)
+
+        CitySimulation.step(&decoded)
+        XCTAssertEqual(decoded.progression, CityProgressionState())
+    }
+
+    func testProgressionRoundTripsNewAndAwardedStateExactly() throws {
+        let newState = CityGameState.newCity(seed: 42)
+        let newRoundTrip = try JSONDecoder().decode(
+            CityGameState.self,
+            from: JSONEncoder().encode(newState)
+        )
+        XCTAssertEqual(newRoundTrip.progression, CityProgressionState())
+
+        var awarded = newState
+        awarded.progression = CityProgressionState(
+            townCharterQualifyingCycles: 12,
+            townCharterAwarded: true
+        )
+        let awardedRoundTrip = try JSONDecoder().decode(
+            CityGameState.self,
+            from: JSONEncoder().encode(awarded)
+        )
+        XCTAssertEqual(awardedRoundTrip.progression, awarded.progression)
+    }
+
+    func testTownCharterRequiresTwelveConsecutiveDailyChecksAndAwardsOnce() throws {
+        var state = try qualifyingTown()
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 1)
+
+        advance(&state, cycles: 10)
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 11)
+        XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
+        XCTAssertFalse(state.messages.contains { $0.title == "Town Charter Awarded" })
+
+        advance(&state, cycles: 1)
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 12)
+        XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
+        XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+
+        state.happiness = 0
+        advance(&state, cycles: 20)
+        XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 12)
+        XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+    }
+
+    func testFailedTownCharterCheckResetsBeforeLaterSuccessfulRun() throws {
+        var state = try qualifyingTown()
+        advance(&state, cycles: 4)
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 5)
+
+        state.happiness = 0
+        advance(&state, cycles: 1)
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 0)
+        XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
+
+        advanceQualifyingTown(&state, cycles: 12)
+        XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
+        XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+    }
+
+    @MainActor
+    func testUndoRestoresExactTownCharterProgression() {
+        var state = CityGameState.newCity(seed: 42)
+        state.progression = CityProgressionState(
+            townCharterQualifyingCycles: 7,
+            townCharterAwarded: false
+        )
+        let store = CityGameStore(state: state)
+        let beforeBuild = store.state
+
+        store.selectTool(.residential)
+        store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+        store.state.progression?.townCharterQualifyingCycles = 9
+        store.undoLastAction()
+
+        XCTAssertEqual(store.state, beforeBuild)
+        XCTAssertEqual(store.state.progression?.townCharterQualifyingCycles, 7)
+    }
+
+    @MainActor
+    func testTownCharterObjectiveAndAwardMessageRouteToExistingContext() throws {
+        var state = try qualifyingTown()
+        let store = CityGameStore(state: state)
+        let charter = try XCTUnwrap(store.objectives.first { $0.id == "town-charter" })
+        let capacity = try XCTUnwrap(store.objectives.first { $0.id == "capacity" })
+
+        XCTAssertEqual(charter.remaining, "1 of 12 qualifying days complete")
+        store.openObjective(capacity)
+        XCTAssertEqual(store.inspectorSection, .utilities)
+        store.openObjective(charter)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .overview)
+
+        state.progression = CityProgressionState(
+            townCharterQualifyingCycles: 12,
+            townCharterAwarded: true
+        )
+        let award = CityMessage(
+            tick: state.tick,
+            severity: .good,
+            title: "Town Charter Awarded",
+            detail: "Sustained achievement"
+        )
+        store.showObjectives = false
+        store.openMessage(award)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .overview)
+    }
+
     private func advance(_ state: inout CityGameState, cycles: Int) {
         for _ in 0..<(cycles * 4) {
             CitySimulation.step(&state)
+        }
+    }
+
+    private func advanceQualifyingTown(_ state: inout CityGameState, cycles: Int) {
+        for _ in 0..<cycles {
+            state.population = 500
+            state.treasury = max(state.treasury, 50_000)
+            state.happiness = 57
+            advance(&state, cycles: 1)
+            XCTAssertTrue(
+                CitySimulation.meetsTownCharterStandards(in: state),
+                CityAnalytics(state: state).townCharterStatusText
+            )
         }
     }
 
@@ -107,6 +241,21 @@ final class GameplayLoopTests: XCTestCase {
             if condition(state) { return }
         }
         XCTFail("Expected scenario condition within \(maximumCycles) cycles")
+    }
+
+    private func qualifyingTown() throws -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 50_000
+        try build(.industrial, at: GridCoordinate(x: 8, y: 11), in: &state)
+        try build(.industrial, at: GridCoordinate(x: 7, y: 11), in: &state)
+        try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &state)
+        try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &state)
+        state.population = 500
+        state.treasury = 50_000
+        state.happiness = 60
+        advance(&state, cycles: 1)
+        XCTAssertTrue(CityAnalytics(state: state).meetsTownCharterStandards)
+        return state
     }
 
     private func build(

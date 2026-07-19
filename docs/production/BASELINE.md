@@ -6,7 +6,7 @@
 
 **Integration branch:** `master`
 
-**Accepted product tip:** `48bc2b5` (`PLAY-001` implementation and proof)
+**Accepted product tip:** `6736c67` (`PLAY-010` gameplay integration, including the accepted `PLAY-001` foundation)
 
 **Baseline ref:** the `master` commit that contains this document, the active backlog, and the five first-wave claims.
 
@@ -14,12 +14,13 @@
 
 - Native SwiftUI/SpriteKit app builds, stages, and launches through `./script/build_and_run.sh --verify`.
 - The programmatic top-down world renderer, map-first shell, command-center HUD, build/inspect/bulldoze modes, overlays, undo, and labeled simulation speeds are present.
-- The complete native suite passes with 35 tests and no failures.
+- New Arcadia opens under readable budget, employment, and utility pressure; ignored growth worsens into a warned but recoverable squeeze.
+- Two deterministic strategies can earn a durable Town Charter after 12 consecutive qualifying days and remain viable through exactly 2,800 ticks / approximately 19.6 minutes at 1× cadence.
+- The complete native suite passes with 45 tests and no failures.
 - Retained default, compact, placement, overlay, diagnostics, and HUD proof is under `docs/visuals/`.
 
 ## Known limitations carried into wave 1
 
-- The opening economy does not yet create a consequential, recoverable planning problem.
 - World consequences need authoritative simulation inputs and stronger authored visual storytelling.
 - Every non-spatial action needs one governed command registry and verified shortcut route; keyboard world navigation remains a separate design problem.
 - Save/replay/determinism, schema recovery, immutable snapshots, and performance evidence remain incomplete.
@@ -27,10 +28,11 @@
 
 ## Baseline gate evidence
 
-- `swift test --package-path Native/CitySimNative`: 35 passed, 0 failed.
+- `swift test --package-path Native/CitySimNative`: 45 passed, 0 failed after PLAY-010 integration.
 - `git diff --check`: passed.
 - `bash -n script/build_and_run.sh`: passed.
 - `./script/build_and_run.sh --verify`: built, staged, and launched `dist/CitySim.app`.
 - Live inspection confirmed the command-center controls and gameplay surfaces. A keyboard sequence was interrupted by an external staged-bundle change, so the fresh soak is assigned to `PLAY-050`.
+- PLAY-010 live inspection confirmed objective blockers, budget/reserve/hiring warnings, 3× selection with `3`, and Space-to-pause with focus intact. Retained evidence is under `docs/production/evidence/`.
 
 Workers must branch from the exact publication commit sent by integration, confirm clean ancestry, read `AGENTS.md` and their lane skill, and keep coherent progress committed continuously.

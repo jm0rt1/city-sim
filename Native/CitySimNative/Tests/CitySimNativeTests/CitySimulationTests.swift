@@ -524,9 +524,9 @@ final class CitySimulationTests: XCTestCase {
         store.dismissMessage(storm.id)
         XCTAssertTrue(store.state.messages.isEmpty)
 
-        let populationObjective = try XCTUnwrap(store.objectives.first { $0.id == "population" })
-        store.openObjective(populationObjective)
-        XCTAssertEqual(store.inspectorSection, .population)
+        let financeObjective = try XCTUnwrap(store.objectives.first { $0.id == "stabilize" })
+        store.openObjective(financeObjective)
+        XCTAssertEqual(store.inspectorSection, .finances)
     }
 
     @MainActor
@@ -625,14 +625,10 @@ final class CitySimulationTests: XCTestCase {
 
     @MainActor
     func testObjectiveSummaryPrioritizesIncompleteMandate() {
-        var state = CityGameState.newCity()
-        state.population = 2_500
-        state.treasury = 100
-        state.happiness = 50
-        let store = CityGameStore(state: state)
+        let store = CityGameStore(state: .newCity())
 
-        XCTAssertEqual(store.completedObjectiveCount, 2)
-        XCTAssertEqual(store.primaryObjective.id, "happiness")
+        XCTAssertEqual(store.completedObjectiveCount, 0)
+        XCTAssertEqual(store.primaryObjective.id, "stabilize")
     }
 
     @MainActor

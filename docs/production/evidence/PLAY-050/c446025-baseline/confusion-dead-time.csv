@@ -1,0 +1,3 @@
+observed_at,variant,category,duration_seconds,blocking,description,disposition,evidence
+2026-07-19T19:04:08-04:00,first-run,invalid-start,not-measured,true,"Blocking onboarding allowed the city to reach Day 19 and continue advancing before player dismissal.",failed,visuals/first-run-day19-onboarding.jpg
+2026-07-19T19:08:10-04:00,compact-keyboard,inaccessible-surface,not-measured,true,"At 900x600 with objectives and details open, command-center content was below the window and the AX collection was empty.",failed,visuals/compact-objectives-details-clipped.jpg

@@ -17,7 +17,8 @@ The objective sequence is now `Balance the Books` → `Prepare for Growth` → `
 1. `d8c20ff6a27d672cf72f089f1f5f1aa04f906201` — `PLAY-010: Create deterministic opening pressure`
 2. `a6e303df09388fd1d470216f26e2f061e145833f` — `PLAY-010: Persist Town Charter progression`
 3. `860078be4061ad9ca6fe1d77e81198ce53e9e5ef` — `PLAY-010: Retain staged session evidence`
-4. `f870160a141e43775afc7d7aeb592e6f0c4da736` — `PLAY-010: Align charter checks with game days`
+4. `f870160a141e43775afc7d7aeb592e6f0c4da736` — `PLAY-010: Align charter checks with game days` (returned by integration; timing superseded below)
+5. `378be2e0cc85514ed25b3b5a2b798a6fb9d0ddfe` — `PLAY-010: Restore daily charter boundaries`
 
 The branch merged accepted `origin/master` at `bba74bead7f522076f5ba9d276b99e4a77dc304d` to acquire CONTRACT-001 without rewriting the pre-contract checkpoint.
 
@@ -37,11 +38,11 @@ Legacy Python, `SaveGameService`, package topology, renderer contracts, view arc
 ## Automated validation
 
 - `env CLANG_MODULE_CACHE_PATH=/tmp/citysim-play010-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/tmp/citysim-play010-swift-cache swift test --package-path Native/CitySimNative --filter GameplayLoopTests`
-  - 10 tests passed, 0 failures in 5.693 seconds.
+  - 10 tests passed, 0 failures in 5.760 seconds.
 - `env CLANG_MODULE_CACHE_PATH=/tmp/citysim-play010-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/tmp/citysim-play010-swift-cache swift test --package-path Native/CitySimNative --skip-build`
-  - 45 tests passed, 0 failures in 29.611 seconds.
-  - The 700-cycle two-strategy horizon passed in 4.851 seconds. Industry-first and commerce-plus-tax both earned the charter, remained non-failed, and kept positive treasuries through approximately 19.6 minutes at the app's 1× cadence.
-  - Renderer diagnostic: 10 pulses averaged 1.948 ms with 5,760 tile-root reuses and 0 updates.
+  - 45 tests passed, 0 failures in 28.505 seconds.
+  - The corrected 700-day two-strategy horizon passed in 4.652 seconds. Both strategies reached exactly tick 2,800 / Day 701, earned the charter, remained non-failed, and kept positive treasuries through approximately 19.6 minutes at the app's 1× cadence.
+  - Renderer diagnostic: 10 pulses averaged 1.921 ms with 5,760 tile-root reuses and 0 updates.
 - `git diff --check`
   - Passed with no output.
 - `bash -n script/build_and_run.sh`
@@ -49,7 +50,7 @@ Legacy Python, `SaveGameService`, package topology, renderer contracts, view arc
 - `./script/build_and_run.sh --verify`
   - Built the staged bundle, launched `dist/CitySim.app`, and verified the `CitySimNative` process remained alive.
 
-Coverage includes opening pressure, ignored-growth failure and recovery, the two distinct strategies, tax-demand-happiness tradeoffs, legacy missing-key compatibility, new/awarded JSON round trips, fewer-than-12 non-award, reset then later award, one-time permanent award/message, exact undo restoration, and objective/message routing.
+Coverage includes opening pressure, ignored-growth failure and recovery, the two distinct strategies, tax-demand-happiness tradeoffs, legacy missing-key compatibility through ticks 1–3 with normalization at tick 4, new/awarded JSON round trips, 11 full qualifying days without an award, award on the 12th full day, full-day-boundary reset then later award, one-time permanent award/message, exact undo restoration, and objective/message routing.
 
 ## Hands-on staged-app flow
 
@@ -80,7 +81,7 @@ HUD values, blockers, and warning copy matched the authoritative simulation/anal
 
 CONTRACT-001 authorized only the optional `CityProgressionState?`, existing objective/open-objective/open-message mappings, and title-routed `CityMessage` award. The implementation adds no general event system, save migration, new public store type, command, view architecture, or renderer contract.
 
-`origin/master` already contains CONTRACT-001. Integration may merge this branch, or cherry-pick `d8c20ff`, `a6e303d`, `860078b`, and `f870160` in that order while skipping the synchronization merge `bba74be`.
+`origin/master` already contains CONTRACT-001. Integration may merge this branch, or cherry-pick `d8c20ff`, `a6e303d`, `860078b`, `f870160`, and `378be2e` in that order while skipping the synchronization merge `bba74be`.
 
 ## Known limitations and deferred work
 

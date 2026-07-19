@@ -45,33 +45,43 @@ final class CityGameStore: ObservableObject {
     var analytics: CityAnalytics { CityAnalytics(state: state) }
 
     var objectives: [CityObjective] {
-        [
+        let metrics = analytics
+        let budgetProgress = min(1, max(0, 1 + metrics.projectedBalance / 250))
+        let capacityProgress = min(
+            1,
+            min(
+                Double(metrics.jobCapacity) / 350,
+                min(Double(state.powerCapacity) / 410, Double(state.waterCapacity) / 370)
+            )
+        )
+        let charterProgress = metrics.townCharterAwarded
+            ? 1
+            : Double(metrics.townCharterQualifyingCycles) / Double(CitySimulation.townCharterQualificationCycles)
+        return [
             CityObjective(
-                id: "population",
-                title: "Metropolis in the Making",
-                detail: "Reach 2,500 residents",
-                progress: min(1, Double(state.population) / 2_500),
-                remaining: state.population >= 2_500
-                    ? "Population goal reached"
-                    : "\((2_500 - state.population).formatted()) residents to goal"
+                id: "stabilize",
+                title: "Balance the Books",
+                detail: "Restore non-negative operating cashflow",
+                progress: budgetProgress,
+                remaining: metrics.projectedBalance >= 0
+                    ? "Operations are self-funding"
+                    : "Close the \((-metrics.projectedBalance).currencyText) operating gap"
             ),
             CityObjective(
-                id: "happiness",
-                title: "A City People Love",
-                detail: "Maintain 65% happiness",
-                progress: min(1, state.happiness / 65),
-                remaining: state.happiness >= 65
-                    ? "Happiness goal reached"
-                    : "\(Int(ceil(65 - state.happiness))) points to goal"
+                id: "capacity",
+                title: "Prepare for Growth",
+                detail: "Create jobs, power, and water for 500 residents",
+                progress: capacityProgress,
+                remaining: capacityProgress >= 1
+                    ? "Growth capacity is ready"
+                    : "Need J \(max(0, 350 - metrics.jobCapacity)) · P \(max(0, 410 - state.powerCapacity)) · W \(max(0, 370 - state.waterCapacity))"
             ),
             CityObjective(
-                id: "solvent",
-                title: "Responsible Stewardship",
-                detail: "Keep the treasury above $0",
-                progress: state.treasury >= 0 ? 1 : 0,
-                remaining: state.treasury >= 0
-                    ? "Treasury is solvent"
-                    : "\((-state.treasury).currencyText) below solvency"
+                id: "town-charter",
+                title: "Earn the Town Charter",
+                detail: "Sustain a balanced town for 12 consecutive days",
+                progress: charterProgress,
+                remaining: metrics.townCharterStatusText
             )
         ]
     }
@@ -247,11 +257,11 @@ final class CityGameStore: ObservableObject {
 
     func openObjective(_ objective: CityObjective) {
         switch objective.id {
-        case "population": openInspector(.population)
-        case "happiness":
-            overlay = .happiness
-            openInspector(.happiness)
-        case "solvent": openInspector(.finances)
+        case "stabilize": openInspector(.finances)
+        case "capacity": openInspector(.utilities)
+        case "town-charter":
+            showObjectives = true
+            openInspector(.overview)
         default: openInspector(.overview)
         }
     }
@@ -278,6 +288,9 @@ final class CityGameStore: ObservableObject {
             openInspector(.demand)
         case "State Growth Grant":
             openInspector(.finances)
+        case "Town Charter Awarded":
+            showObjectives = true
+            openInspector(.overview)
         default:
             openInspector(.journal)
         }

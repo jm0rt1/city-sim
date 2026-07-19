@@ -7,6 +7,6 @@
 - **Base commit:** Baseline publication commit containing this claim
 - **Claimed:** July 19, 2026
 - **Planned surfaces:** gameplay models, simulation rules, causal analytics, deterministic scenario tests
-- **Dependencies:** Approved objective/save/command/snapshot contracts when required
+- **Dependencies:** `CONTRACT-001` approved with adjustments; additional save/command/snapshot contracts still require approval
 - **Validation/proof:** Full native tests, deterministic strategies and recovery, staged 20-minute journey
 - **Status:** active

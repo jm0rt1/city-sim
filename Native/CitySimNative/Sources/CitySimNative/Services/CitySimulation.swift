@@ -48,7 +48,7 @@ enum CitySimulation {
 
     static func demolish(at coordinate: GridCoordinate, in state: inout CityGameState) -> Bool {
         guard let tile = state.tile(at: coordinate), tile.kind != .empty, tile.kind != .cityHall else { return false }
-        state.treasury -= max(50, tile.kind.buildCost * 0.08)
+        state.treasury -= tile.kind.demolitionCost
         state.updateTile(at: coordinate) { $0 = CityTile(coordinate: coordinate, kind: .empty) }
         return true
     }

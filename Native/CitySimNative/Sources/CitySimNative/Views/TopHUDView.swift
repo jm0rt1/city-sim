@@ -2,70 +2,248 @@ import SwiftUI
 
 struct TopHUDView: View {
     @ObservedObject var store: CityGameStore
+    var compact = false
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("reduceGameMotion") private var gameReduceMotion = false
+
+    private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
     var body: some View {
-        HStack(spacing: 14) {
+        if compact {
+            VStack(spacing: 7) {
+                HStack(spacing: 7) {
+                    cityIdentity
+                    Spacer(minLength: 6)
+                    timeAndNotices
+                }
+                .padding(6)
+                .hudSurface()
+
+                metricRibbon
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 5)
+                    .hudSurface()
+            }
+        } else {
+            HStack(spacing: 0) {
+                cityIdentity
+                    .frame(width: 220)
+
+                hudDivider
+                metricRibbon
+                hudDivider
+                timeAndNotices
+            }
+            .padding(6)
+            .hudSurface()
+        }
+    }
+
+    private var cityIdentity: some View {
+        let objective = store.primaryObjective
+        let mandateComplete = store.completedObjectiveCount == store.objectives.count
+
+        return VStack(alignment: .leading, spacing: 4) {
             Button { store.openInspector(.overview) } label: {
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 5) {
+                HStack(spacing: 8) {
+                    VStack(alignment: .leading, spacing: 1) {
                         Text(store.state.cityName)
-                            .font(.system(size: 19, weight: .bold, design: .rounded))
-                        Image(systemName: "pencil").font(.caption2).foregroundStyle(.secondary)
+                            .font(.system(size: compact ? 16 : 17, weight: .bold, design: .rounded))
+                            .lineLimit(1)
+                        Text(store.state.formattedDay)
+                            .font(.caption2.monospacedDigit())
+                            .foregroundStyle(.secondary)
                     }
-                    Text(store.state.formattedDay)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    Spacer(minLength: 2)
+                    Image(systemName: "building.2.crop.circle")
+                        .foregroundStyle(GameTheme.accent)
+                }
+                .frame(minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Open \(store.state.cityName) command center")
+            .accessibilityValue(store.state.formattedDay)
+            .accessibilityIdentifier("hud.city.identity")
+
+            Button {
+                withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
+                    store.showObjectives.toggle()
+                }
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: mandateComplete ? "checkmark.circle.fill" : "flag.checkered")
+                        .foregroundStyle(mandateComplete ? GameTheme.accent : GameTheme.information)
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 5) {
+                            Text(mandateComplete ? "Mandate complete" : objective.title)
+                                .font(.caption2.weight(.semibold))
+                                .lineLimit(1)
+                            Spacer(minLength: 2)
+                            Text("\(store.completedObjectiveCount)/\(store.objectives.count)")
+                                .font(.caption2.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                        }
+                        ProgressView(value: objective.progress)
+                            .tint(mandateComplete ? GameTheme.accent : GameTheme.information)
+                    }
+                }
+                .frame(minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .help(mandateComplete ? "All objectives achieved" : objective.remaining)
+            .accessibilityLabel(store.showObjectives ? "Hide objectives" : "Show objectives")
+            .accessibilityValue(mandateComplete ? "All objectives complete" : objective.remaining)
+            .accessibilityIdentifier("hud.objective.summary")
+        }
+        .padding(.horizontal, 7)
+    }
+
+    private var metricRibbon: some View {
+        HStack(spacing: 1) {
+            MetricCard(
+                identifier: "hud.metric.treasury",
+                title: "Treasury",
+                value: store.state.treasury.currencyText,
+                symbol: "dollarsign.circle.fill",
+                tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger,
+                detail: "\(store.analytics.projectedBalance.signedCurrencyText) / cycle"
+            ) { store.openInspector(.finances) }
+
+            MetricCard(
+                identifier: "hud.metric.population",
+                title: "Residents",
+                value: store.state.population.compactText,
+                symbol: "person.3.fill",
+                tint: .cyan,
+                detail: "\(store.analytics.housingHeadroom.formatted()) homes open",
+                progress: store.analytics.housingUtilization
+            ) { store.openInspector(.population) }
+
+            MetricCard(
+                identifier: "hud.metric.happiness",
+                title: "Happiness",
+                value: store.state.happiness.percentText,
+                symbol: "face.smiling.fill",
+                tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
+                detail: "\(store.state.approval.percentText) mayor approval",
+                progress: store.state.happiness / 100
+            ) { store.openInspector(.happiness) }
+
+            MetricCard(
+                identifier: "hud.metric.employment",
+                title: "Jobs filled",
+                value: store.state.jobs.compactText,
+                symbol: "briefcase.fill",
+                tint: .purple,
+                detail: "\(store.analytics.jobHeadroom.formatted()) openings",
+                progress: store.analytics.jobUtilization
+            ) { store.openInspector(.employment) }
+
+            MetricCard(
+                identifier: "hud.metric.utilities",
+                title: "Utilities",
+                value: (store.analytics.utilityCoverage * 100).percentText,
+                symbol: "bolt.horizontal.fill",
+                tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger,
+                detail: "P \(store.analytics.powerHeadroom.formatted()) · W \(store.analytics.waterHeadroom.formatted()) spare",
+                progress: store.analytics.utilityCoverage
+            ) { store.openInspector(.utilities) }
+        }
+        .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("City status")
+    }
+
+    private var timeAndNotices: some View {
+        HStack(spacing: 5) {
+            ForEach(SimulationSpeed.allCases) { speed in
+                Button { store.speed = speed } label: {
+                    Text(speed.controlLabel)
+                        .font(.caption.weight(.bold))
+                        .frame(minWidth: speed == .paused ? (compact ? 48 : 52) : GameTheme.controlMinimum)
+                        .frame(minHeight: GameTheme.controlMinimum)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(store.speed == speed ? Color.black : Color.primary)
+                .background(
+                    store.speed == speed ? GameTheme.accent : GameTheme.inactiveControl,
+                    in: RoundedRectangle(cornerRadius: 9)
+                )
+                .help(speed == .paused ? "Pause simulation · Space" : "Set simulation to \(speed.controlLabel) · \(speed.rawValue)")
+                .accessibilityLabel(speed == .paused ? "Pause simulation" : "Set simulation speed to \(speed.controlLabel)")
+                .accessibilityValue(store.speed == speed ? "Selected" : "Not selected")
+                .accessibilityIdentifier("hud.speed.\(speed.rawValue)")
+            }
+
+            Divider().frame(height: 28)
+
+            Button { store.openAlertCenter() } label: {
+                if compact {
+                    Label("\(store.alertCount)", systemImage: noticeSymbol)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(noticeColor)
+                        .padding(.horizontal, 8)
+                        .frame(minHeight: GameTheme.controlMinimum)
+                } else {
+                    Label("Notices \(store.alertCount)", systemImage: noticeSymbol)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(noticeColor)
+                        .padding(.horizontal, 8)
+                        .frame(minHeight: GameTheme.controlMinimum)
                 }
             }
             .buttonStyle(.plain)
-            .frame(width: 150, alignment: .leading)
-            .help("Rename city and open overview")
-
-            Divider().frame(height: 38)
-            MetricCard(title: "Treasury", value: store.state.treasury.currencyText,
-                       symbol: "dollarsign.circle.fill",
-                       tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger,
-                       detail: store.analytics.projectedBalance.currencyText + " / cycle") {
-                store.openInspector(.finances)
-            }
-            MetricCard(title: "Population", value: store.state.population.compactText,
-                       symbol: "person.3.fill", tint: .cyan,
-                       detail: "\(store.analytics.housingCapacity.formatted()) capacity") {
-                store.openInspector(.population)
-            }
-            MetricCard(title: "Happiness", value: store.state.happiness.percentText,
-                       symbol: "face.smiling.fill",
-                       tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
-                       detail: store.state.approval.percentText + " approval") {
-                store.openInspector(.happiness)
-            }
-            MetricCard(title: "Employment", value: store.state.jobs.compactText,
-                       symbol: "briefcase.fill", tint: .purple,
-                       detail: (store.analytics.employmentRate * 100).percentText + " filled") {
-                store.openInspector(.employment)
-            }
-
-            Spacer(minLength: 8)
-
-            HStack(spacing: 4) {
-                ForEach(SimulationSpeed.allCases) { speed in
-                    Button {
-                        store.speed = speed
-                    } label: {
-                        Image(systemName: speed.symbol)
-                            .frame(width: 25, height: 25)
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(store.speed == speed ? Color.black : Color.primary)
-                    .background(store.speed == speed ? GameTheme.accent : Color.primary.opacity(0.08), in: RoundedRectangle(cornerRadius: 7))
-                    .help(speed.title)
-                }
-            }
+            .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+            .accessibilityLabel("Open city notices")
+            .accessibilityValue(noticeAccessibilityValue)
+            .accessibilityIdentifier("hud.notices")
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(.white.opacity(0.12)))
-        .shadow(color: .black.opacity(0.26), radius: 18, y: 8)
+        .padding(.horizontal, 4)
+    }
+
+    private var hudDivider: some View {
+        Rectangle()
+            .fill(GameTheme.subtleDivider)
+            .frame(width: 1, height: 48)
+            .padding(.horizontal, 4)
+    }
+
+    private var noticeSymbol: String {
+        switch store.highestAlertSeverity {
+        case .critical: "exclamationmark.octagon.fill"
+        case .warning: "exclamationmark.triangle.fill"
+        case .information: "info.circle.fill"
+        case .good: "sparkles"
+        case nil: "bell"
+        }
+    }
+
+    private var noticeColor: Color {
+        switch store.highestAlertSeverity {
+        case .critical: GameTheme.danger
+        case .warning: GameTheme.warning
+        case .information: GameTheme.information
+        case .good: GameTheme.accent
+        case nil: .secondary
+        }
+    }
+
+    private var noticeAccessibilityValue: String {
+        guard let severity = store.highestAlertSeverity else { return "No active notices" }
+        return "\(store.alertCount) notices, highest severity \(severity.rawValue)"
+    }
+}
+
+private extension View {
+    func hudSurface() -> some View {
+        background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+                    .stroke(GameTheme.strongPanelStroke)
+            )
+            .shadow(color: .black.opacity(0.28), radius: 16, y: 7)
     }
 }

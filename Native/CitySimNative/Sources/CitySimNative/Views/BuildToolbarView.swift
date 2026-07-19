@@ -2,87 +2,460 @@ import SwiftUI
 
 struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
+    var compact = false
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 8) {
-                Label("BUILD", systemImage: "hammer.fill")
-                    .font(.system(size: 10, weight: .heavy, design: .rounded))
-                    .foregroundStyle(.secondary)
-                Divider().frame(height: 28)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(BuildingKind.buildPalette) { kind in
-                            toolButton(kind)
+        VStack(spacing: compact ? 7 : 9) {
+            commandRow
+            if store.showInspector {
+                InspectorView(store: store, compact: compact)
+                    .transition(.opacity)
+            } else {
+                operationalRow
+                cityPulseStrip
+            }
+        }
+        .padding(compact ? 9 : 11)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
+        .shadow(color: .black.opacity(0.3), radius: 20, y: 8)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
+    }
+
+    private var commandRow: some View {
+        HStack(spacing: 6) {
+            modeButton(
+                title: "Inspect",
+                symbol: "cursorarrow.rays",
+                active: store.interactionMode == .inspect,
+                tint: GameTheme.information,
+                action: store.activateInspectMode
+            )
+            modeButton(
+                title: "Build",
+                symbol: "hammer.fill",
+                active: isBuildMode,
+                tint: GameTheme.accent,
+                action: store.activateBuildMode
+            )
+            modeButton(
+                title: "Bulldoze",
+                symbol: "trash.fill",
+                active: store.interactionMode == .bulldoze,
+                tint: GameTheme.danger,
+                action: store.toggleBulldozer
+            )
+
+            Divider().frame(height: 30)
+
+            if compact {
+                buildCatalogMenu
+            } else {
+                ForEach(BuildCategory.allCases) { category in
+                    categoryButton(category)
+                }
+            }
+
+            Spacer(minLength: 6)
+            detailsButton
+            OverlayPickerView(store: store, compact: compact)
+        }
+    }
+
+    @ViewBuilder
+    private var operationalRow: some View {
+        if compact {
+            compactSelectionRow
+        } else {
+            switch store.interactionMode {
+            case .inspect:
+                inspectReadoutRow
+            case .build:
+                catalogRow
+            case .bulldoze:
+                bulldozeReadoutRow
+            }
+        }
+    }
+
+    private var catalogRow: some View {
+        HStack(spacing: 7) {
+            Label(store.selectedBuildCategory.title.uppercased(), systemImage: store.selectedBuildCategory.symbol)
+                .font(.system(size: 9, weight: .heavy, design: .rounded))
+                .foregroundStyle(.secondary)
+                .frame(minWidth: 76, alignment: .leading)
+
+            ForEach(store.selectedBuildCategory.buildingKinds) { kind in
+                toolButton(kind)
+            }
+
+            Spacer(minLength: 10)
+            selectedToolSummary
+        }
+    }
+
+    private var compactSelectionRow: some View {
+        HStack(spacing: 8) {
+            Label(compactModeTitle, systemImage: store.interactionMode.symbol)
+                .font(.callout.weight(.semibold))
+                .lineLimit(1)
+            Spacer(minLength: 6)
+            selectedToolSummary
+        }
+        .frame(minHeight: 30)
+    }
+
+    private var inspectReadoutRow: some View {
+        HStack(spacing: 10) {
+            Label("CITY DESK", systemImage: "cursorarrow.rays")
+                .font(.system(size: 9, weight: .heavy, design: .rounded))
+                .foregroundStyle(GameTheme.information)
+            Divider().frame(height: 26)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(store.primaryObjective.title).font(.caption.weight(.semibold)).lineLimit(1)
+                Text(store.primaryObjective.remaining).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
+            }
+            ProgressView(value: store.primaryObjective.progress)
+                .tint(.cyan)
+                .frame(width: 82)
+            Divider().frame(height: 26)
+            Label("\(store.alertCount) notices", systemImage: "bell.fill")
+                .font(.caption.monospacedDigit())
+            Spacer(minLength: 8)
+            Label("Select a block or a status signal for context", systemImage: "arrow.down.left.circle")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .frame(minHeight: GameTheme.controlMinimum)
+    }
+
+    private var bulldozeReadoutRow: some View {
+        HStack(spacing: 10) {
+            Label("BULLDOZE MODE", systemImage: "exclamationmark.triangle.fill")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(GameTheme.danger)
+            Divider().frame(height: 26)
+            Text("Point at a structure to see demolition cost and protection state on the map.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+            Spacer(minLength: 8)
+            if store.canUndo {
+                Button { store.undoLastAction() } label: {
+                    Label("Undo last action", systemImage: "arrow.uturn.backward")
+                        .frame(minHeight: GameTheme.controlMinimum)
+                }
+                .buttonStyle(.bordered)
+            }
+            Text("Esc cancels")
+                .font(.caption2.monospacedDigit())
+                .foregroundStyle(.secondary)
+        }
+        .frame(minHeight: GameTheme.controlMinimum)
+    }
+
+    private var detailsButton: some View {
+        Button { store.toggleInspector() } label: {
+            Label("Details", systemImage: "rectangle.bottomthird.inset.filled")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 8)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(store.showInspector ? Color.black : Color.primary)
+        .background(store.showInspector ? GameTheme.accent : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .help(store.showInspector ? "Close command-center details" : "Open command-center details")
+        .accessibilityLabel(store.showInspector ? "Close command-center details" : "Open command-center details")
+        .accessibilityValue(store.showInspector ? "Open" : "Closed")
+        .accessibilityIdentifier("hud.command.details")
+    }
+
+    @ViewBuilder
+    private var selectedToolSummary: some View {
+        Group {
+            switch store.interactionMode {
+            case .inspect:
+                Label("Choose a block for details", systemImage: "info.circle")
+                    .accessibilityLabel("Inspect mode. Choose a block for details")
+            case .bulldoze:
+                Label("Cost shown on map · Undo available", systemImage: "arrow.uturn.backward.circle")
+                    .accessibilityLabel("Bulldoze mode. Demolition cost is shown on the map. Undo is available")
+            case .build(let kind):
+                HStack(spacing: 9) {
+                    Label(kind.buildCost.currencyText, systemImage: "banknote")
+                    Label("\(kind.upkeep.currencyText) / cycle", systemImage: "arrow.triangle.2.circlepath")
+                    if kind.requiresRoad {
+                        Label("Road required", systemImage: "road.lanes")
+                    } else {
+                        Label("Flexible access", systemImage: "checkmark.circle")
+                    }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Selected \(kind.title)")
+                .accessibilityValue(
+                    "Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle, "
+                        + (kind.requiresRoad ? "road required" : "no road required")
+                )
+            }
+        }
+        .font(.caption.monospacedDigit())
+        .foregroundStyle(.secondary)
+    }
+
+    private var buildCatalogMenu: some View {
+        Menu {
+            ForEach(BuildCategory.allCases) { category in
+                Section(category.title) {
+                    ForEach(category.buildingKinds) { kind in
+                        Button { store.selectTool(kind) } label: {
+                            Label(
+                                "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                                systemImage: kind.symbol
+                            )
                         }
                     }
                 }
-                Divider().frame(height: 28)
-                Button(role: .destructive) { store.toggleBulldozer() } label: {
-                    Label(store.bulldozeMode ? "Bulldozing" : "Bulldoze", systemImage: "trash.fill")
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(store.bulldozeMode ? GameTheme.danger : .gray)
-                .help("Toggle bulldozer, then click structures on the map")
             }
-            demandStrip
+        } label: {
+            Label("Catalog", systemImage: "square.grid.2x2")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 9)
+                .frame(minHeight: GameTheme.controlMinimum)
         }
-        .padding(10)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(.white.opacity(0.12)))
-        .shadow(color: .black.opacity(0.3), radius: 20, y: 8)
+        .menuStyle(.borderlessButton)
+        .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .accessibilityLabel("Open categorized build catalog")
+        .accessibilityValue("Selected \(store.selectedTool.title)")
     }
 
-    private func toolButton(_ kind: BuildingKind) -> some View {
-        Button {
-            store.selectTool(kind)
-        } label: {
-            VStack(spacing: 3) {
-                Image(systemName: kind.symbol).font(.system(size: 16, weight: .semibold))
-                Text(kind.title).font(.system(size: 9, weight: .medium)).lineLimit(1)
-                Text(kind.buildCost.currencyText).font(.system(size: 8, design: .rounded)).foregroundStyle(.secondary)
+    private func modeButton(
+        title: String,
+        symbol: String,
+        active: Bool,
+        tint: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 5) {
+                Image(systemName: active ? "checkmark.circle.fill" : symbol)
+                Text(title)
             }
-            .frame(width: 68, height: 48)
+            .font(.caption.weight(.semibold))
+            .padding(.horizontal, compact ? 7 : 10)
+            .frame(minHeight: GameTheme.controlMinimum)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .foregroundStyle(store.selectedTool == kind && !store.bulldozeMode ? Color.black : Color.primary)
-        .background(store.selectedTool == kind && !store.bulldozeMode ? GameTheme.accent : Color.primary.opacity(0.07), in: RoundedRectangle(cornerRadius: 9))
-        .help("Build \(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/tick")
+        .foregroundStyle(active ? Color.black : Color.primary)
+        .background(active ? tint : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .accessibilityLabel("\(title) mode")
+        .accessibilityValue(active ? "Selected" : "Not selected")
     }
 
-    private var demandStrip: some View {
-        HStack(spacing: 14) {
-            Text("DEMAND").font(.system(size: 9, weight: .bold, design: .rounded)).foregroundStyle(.secondary)
-            DemandBar(label: "Residential", value: store.state.demand.residential, color: .cyan) { store.openInspector(.demand) }
-            DemandBar(label: "Commercial", value: store.state.demand.commercial, color: .purple) { store.openInspector(.demand) }
-            DemandBar(label: "Industrial", value: store.state.demand.industrial, color: .orange) { store.openInspector(.demand) }
-            Spacer()
-            Label("Click open land to build · Right-click to demolish · Drag to pan · Scroll to zoom", systemImage: "computermouse")
-                .font(.caption2).foregroundStyle(.secondary)
+    private func categoryButton(_ category: BuildCategory) -> some View {
+        let active = store.selectedBuildCategory == category
+        return Button { store.selectBuildCategory(category) } label: {
+            Label(category.title, systemImage: category.symbol)
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 8)
+                .frame(minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(active ? GameTheme.accent : .primary)
+        .background(active ? GameTheme.accent.opacity(0.15) : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .overlay {
+            if active {
+                RoundedRectangle(cornerRadius: 9).stroke(GameTheme.accent.opacity(0.8), lineWidth: 1.5)
+            }
+        }
+        .accessibilityLabel("\(category.title) build category")
+        .accessibilityValue(active ? "Selected" : "Not selected")
+    }
+
+    private func toolButton(_ kind: BuildingKind) -> some View {
+        let active = store.interactionMode == .build(kind)
+        return Button { store.selectTool(kind) } label: {
+            HStack(spacing: 7) {
+                Image(systemName: active ? "checkmark.circle.fill" : kind.symbol)
+                    .font(.system(size: 15, weight: .semibold))
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(kind.title).font(.caption.weight(.semibold)).lineLimit(1)
+                    Text(kind.buildCost.currencyText).font(.caption2.monospacedDigit()).foregroundStyle(.secondary)
+                }
+            }
+            .padding(.horizontal, 9)
+            .frame(minWidth: 92, minHeight: GameTheme.controlMinimum, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(active ? Color.black : Color.primary)
+        .background(active ? GameTheme.accent : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .help("Build \(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) per cycle")
+        .accessibilityLabel("Build \(kind.title)")
+        .accessibilityValue("Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle")
+    }
+
+    private var cityPulseStrip: some View {
+        ViewThatFits(in: .horizontal) {
+            fullCityPulseStrip
+            compactCityPulseStrip
         }
     }
+
+    private var fullCityPulseStrip: some View {
+        HStack(spacing: 6) {
+            Label("CITY PULSE", systemImage: "waveform.path.ecg")
+                .font(.system(size: 9, weight: .heavy, design: .rounded))
+                .foregroundStyle(GameTheme.accent)
+            pulseButton("Cashflow", value: store.analytics.projectedBalance.signedCurrencyText, symbol: "dollarsign.arrow.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
+                store.openInspector(.finances)
+            }
+            pulseButton("Homes open", value: store.analytics.housingHeadroom.formatted(), symbol: "house.fill", tint: .cyan) {
+                store.openInspector(.population)
+            }
+            pulseButton("Jobs open", value: store.analytics.jobHeadroom.formatted(), symbol: "briefcase.fill", tint: .purple) {
+                store.openInspector(.employment)
+            }
+            pulseButton("Power spare", value: store.analytics.powerHeadroom.formatted(), symbol: "bolt.fill", tint: .yellow) {
+                store.openInspector(.utilities)
+            }
+            pulseButton("Water spare", value: store.analytics.waterHeadroom.formatted(), symbol: "drop.fill", tint: .blue) {
+                store.openInspector(.utilities)
+            }
+            Divider().frame(height: 28)
+            DemandBar(label: "R", accessibilityName: "Residential", value: store.state.demand.residential, color: .cyan) {
+                store.openInspector(.demand)
+            }
+            DemandBar(label: "C", accessibilityName: "Commercial", value: store.state.demand.commercial, color: .purple) {
+                store.openInspector(.demand)
+            }
+            DemandBar(label: "I", accessibilityName: "Industrial", value: store.state.demand.industrial, color: .orange) {
+                store.openInspector(.demand)
+            }
+            Spacer(minLength: 4)
+            if store.canUndo {
+                Button { store.undoLastAction() } label: {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
+                        .font(.caption.weight(.semibold))
+                        .frame(minHeight: GameTheme.controlMinimum)
+                }
+                .buttonStyle(.bordered)
+                .accessibilityLabel("Undo last construction action")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var compactCityPulseStrip: some View {
+        HStack(spacing: 5) {
+            pulseButton("Net", value: store.analytics.projectedBalance.signedCurrencyText, symbol: "dollarsign.arrow.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
+                store.openInspector(.finances)
+            }
+            pulseButton("Homes", value: store.analytics.housingHeadroom.formatted(), symbol: "house.fill", tint: .cyan) {
+                store.openInspector(.population)
+            }
+            pulseButton("Power", value: store.analytics.powerHeadroom.formatted(), symbol: "bolt.fill", tint: .yellow) {
+                store.openInspector(.utilities)
+            }
+            pulseButton("Water", value: store.analytics.waterHeadroom.formatted(), symbol: "drop.fill", tint: .blue) {
+                store.openInspector(.utilities)
+            }
+            Button { store.openInspector(.demand) } label: {
+                Label("Demand", systemImage: "chart.bar.fill")
+                    .font(.caption.weight(.semibold))
+                    .frame(minHeight: GameTheme.controlMinimum)
+            }
+            .buttonStyle(.bordered)
+            if store.canUndo {
+                Button { store.undoLastAction() } label: {
+                    Image(systemName: "arrow.uturn.backward")
+                        .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                }
+                .buttonStyle(.bordered)
+                .accessibilityLabel("Undo last construction action")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func pulseButton(
+        _ title: String,
+        value: String,
+        symbol: String,
+        tint: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 5) {
+                Image(systemName: symbol).foregroundStyle(tint)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(title.uppercased())
+                        .font(.system(size: 7, weight: .bold, design: .rounded))
+                        .foregroundStyle(.secondary)
+                    Text(value)
+                        .font(.caption2.weight(.semibold).monospacedDigit())
+                        .lineLimit(1)
+                }
+            }
+            .padding(.horizontal, 6)
+            .frame(minWidth: compact ? 70 : 84, maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(GameTheme.contextCard, in: RoundedRectangle(cornerRadius: 8))
+        .accessibilityLabel(title)
+        .accessibilityValue(value)
+    }
+
+    private var isBuildMode: Bool {
+        if case .build = store.interactionMode { return true }
+        return false
+    }
+
+    private var compactModeTitle: String {
+        switch store.interactionMode {
+        case .inspect: "Inspect mode"
+        case .build(let kind): "Build: \(kind.title)"
+        case .bulldoze: "Bulldoze mode"
+        }
+    }
+
 }
 
 private struct DemandBar: View {
     let label: String
+    let accessibilityName: String
     let value: Double
     let color: Color
     let action: () -> Void
+
+    private var status: String {
+        if value >= 0.67 { return "High" }
+        if value >= 0.34 { return "Steady" }
+        return "Low"
+    }
+
     var body: some View {
         Button(action: action) {
             HStack(spacing: 5) {
-                Text(label).font(.caption2).foregroundStyle(.secondary)
-                GeometryReader { proxy in
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(.primary.opacity(0.1))
-                        Capsule().fill(color.gradient).frame(width: proxy.size.width * value)
-                    }
-                }
-                .frame(width: 62, height: 5)
+                Text(label).font(.caption2.weight(.semibold))
+                ProgressView(value: value)
+                    .tint(color)
+                    .frame(width: 48)
+                Text("\((value * 100).percentText) \(status)")
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.secondary)
             }
+            .frame(minHeight: GameTheme.controlMinimum)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .help("Open demand details")
+        .accessibilityLabel("\(accessibilityName) demand")
+        .accessibilityValue("\((value * 100).percentText), \(status)")
     }
 }

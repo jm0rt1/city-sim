@@ -4,6 +4,8 @@ import SwiftUI
 @MainActor
 struct CitySceneView: NSViewRepresentable {
     @ObservedObject var store: CityGameStore
+    @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
+    @AppStorage("reduceGameMotion") private var reduceGameMotion = false
 
     func makeCoordinator() -> Coordinator { Coordinator(store: store) }
 
@@ -11,27 +13,37 @@ struct CitySceneView: NSViewRepresentable {
         let view = SKView(frame: .zero)
         view.preferredFramesPerSecond = 60
         view.ignoresSiblingOrder = true
-        view.showsFPS = false
-        view.showsNodeCount = false
+        let diagnosticsEnabled = ProcessInfo.processInfo.arguments.contains("--renderer-diagnostics") ||
+            UserDefaults.standard.bool(forKey: "showRendererDiagnostics")
+        view.showsFPS = diagnosticsEnabled
+        view.showsNodeCount = diagnosticsEnabled
+        view.showsDrawCount = diagnosticsEnabled
         let scene = CityScene(size: CGSize(width: 1280, height: 800))
         scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.primaryAction(at: coordinate) }
-        scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.demolish(at: coordinate) }
+        scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.secondaryAction(at: coordinate) }
+        scene.onCancelAction = { [weak coordinator = context.coordinator] in coordinator?.store.cancelInteraction() }
+        scene.onInspectAction = { [weak coordinator = context.coordinator] in coordinator?.store.activateInspectMode() }
+        scene.onBulldozeAction = { [weak coordinator = context.coordinator] in coordinator?.store.toggleBulldozer() }
+        scene.onSpeedAction = { [weak coordinator = context.coordinator] speed in coordinator?.store.speed = speed }
         view.presentScene(scene)
+        DispatchQueue.main.async { [weak view] in
+            view?.window?.acceptsMouseMovedEvents = true
+        }
         context.coordinator.scene = scene
         return view
     }
 
     func updateNSView(_ view: SKView, context: Context) {
         context.coordinator.store = store
+        view.window?.acceptsMouseMovedEvents = true
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
-        scene.reducedMotion = UserDefaults.standard.bool(forKey: "reduceGameMotion")
+        scene.reducedMotion = accessibilityReduceMotion || reduceGameMotion
         scene.render(
             state: store.state,
             overlay: store.overlay,
             selection: store.selectedCoordinate,
-            selectedTool: store.selectedTool,
-            bulldozeMode: store.bulldozeMode
+            interactionMode: store.interactionMode
         )
     }
 

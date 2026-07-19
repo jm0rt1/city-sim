@@ -48,15 +48,20 @@ struct CityGameCommands: Commands {
         }
         CommandMenu("Simulation") {
             Button("Pause") { store.speed = .paused }.keyboardShortcut(.space, modifiers: [])
-            Button("Normal Speed") { store.speed = .normal }.keyboardShortcut("1", modifiers: [])
-            Button("Fast Speed") { store.speed = .fast }.keyboardShortcut("2", modifiers: [])
-            Button("Fastest Speed") { store.speed = .fastest }.keyboardShortcut("3", modifiers: [])
+            Button("1x Speed") { store.speed = .normal }.keyboardShortcut("1", modifiers: [])
+            Button("2x Speed") { store.speed = .fast }.keyboardShortcut("2", modifiers: [])
+            Button("3x Speed") { store.speed = .fastest }.keyboardShortcut("3", modifiers: [])
         }
         CommandMenu("Tools") {
-            Button(store.bulldozeMode ? "Deactivate Bulldozer" : "Activate Bulldozer") {
+            Button("Inspect Mode") { store.activateInspectMode() }
+                .keyboardShortcut("v", modifiers: [])
+            Button("Build Mode") { store.activateBuildMode() }
+            Button(store.bulldozeMode ? "Deactivate Bulldozer" : "Bulldoze Mode") {
                 store.toggleBulldozer()
             }
             .keyboardShortcut("b", modifiers: [])
+            Button("Cancel Current Tool") { store.cancelInteraction() }
+                .keyboardShortcut(.escape, modifiers: [])
             Divider()
             ForEach(BuildingKind.buildPalette) { kind in
                 Button(kind.title) { store.selectTool(kind) }
@@ -68,7 +73,7 @@ struct CityGameCommands: Commands {
             }
             Divider()
             Button("Toggle Objectives") { store.showObjectives.toggle() }.keyboardShortcut("j", modifiers: [.command])
-            Button("Toggle Inspector") { store.showInspector.toggle() }.keyboardShortcut("i", modifiers: [.command, .option])
+            Button("Toggle Command Center") { store.toggleInspector() }.keyboardShortcut("i", modifiers: [.command, .option])
         }
     }
 }

@@ -2,22 +2,28 @@ import SwiftUI
 
 struct OverlayPickerView: View {
     @ObservedObject var store: CityGameStore
+    var compact = false
 
     var body: some View {
-        HStack(spacing: 5) {
+        Menu {
             ForEach(DataOverlay.allCases) { overlay in
-                Button {
-                    store.overlay = overlay
-                } label: {
-                    Image(systemName: overlay.symbol).frame(width: 28, height: 28)
+                Button { store.overlay = overlay } label: {
+                    Label(
+                        overlay.title,
+                        systemImage: store.overlay == overlay ? "checkmark.circle.fill" : overlay.symbol
+                    )
                 }
-                .buttonStyle(.plain)
-                .foregroundStyle(store.overlay == overlay ? Color.black : Color.primary)
-                .background(store.overlay == overlay ? GameTheme.accent : Color.primary.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
-                .help(overlay.title)
             }
+        } label: {
+            Label(compact ? store.overlay.title : "Layer: \(store.overlay.title)", systemImage: store.overlay.symbol)
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 9)
+                .frame(minHeight: GameTheme.controlMinimum)
         }
-        .padding(6)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .menuStyle(.borderlessButton)
+        .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .help("Choose a city data layer. Select City to clear diagnostics.")
+        .accessibilityLabel("Choose city data layer")
+        .accessibilityValue(store.overlay.title)
     }
 }

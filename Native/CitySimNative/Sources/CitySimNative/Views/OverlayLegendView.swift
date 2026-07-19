@@ -8,15 +8,17 @@ struct OverlayLegendView: View {
             Label(overlay.title.uppercased(), systemImage: overlay.symbol)
                 .font(.system(size: 10, weight: .heavy, design: .rounded))
             HStack(spacing: 12) {
-                legendDot(.green, label: positiveLabel)
-                legendDot(.yellow, label: "Watch")
-                legendDot(.red, label: negativeLabel)
+                legendItem("checkmark.circle.fill", color: .green, label: positiveLabel)
+                legendItem("exclamationmark.triangle.fill", color: .yellow, label: "Watch")
+                legendItem("xmark.octagon.fill", color: .red, label: negativeLabel)
             }
         }
         .padding(10)
         .frame(width: 220, alignment: .leading)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 11))
-        .overlay(RoundedRectangle(cornerRadius: 11).stroke(.white.opacity(0.1)))
+        .overlay(RoundedRectangle(cornerRadius: 11).stroke(GameTheme.panelStroke))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(overlay.title) layer legend")
     }
 
     private var positiveLabel: String {
@@ -37,9 +39,9 @@ struct OverlayLegendView: View {
         }
     }
 
-    private func legendDot(_ color: Color, label: String) -> some View {
+    private func legendItem(_ symbol: String, color: Color, label: String) -> some View {
         HStack(spacing: 4) {
-            Circle().fill(color).frame(width: 7, height: 7)
+            Image(systemName: symbol).foregroundStyle(color)
             Text(label).font(.caption2).foregroundStyle(.secondary)
         }
     }

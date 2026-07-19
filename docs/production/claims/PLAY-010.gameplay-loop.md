@@ -1,0 +1,12 @@
+# PLAY-010 Claim
+
+- **Title:** Create consequential early-game pressure
+- **Lane:** Gameplay loop
+- **Branch:** `codex/citysim-gameplay-loop`
+- **Worktree:** `/Users/James/.codex/worktrees/80f0/city-sim`
+- **Base commit:** Baseline publication commit containing this claim
+- **Claimed:** July 19, 2026
+- **Planned surfaces:** gameplay models, simulation rules, causal analytics, deterministic scenario tests
+- **Dependencies:** Approved objective/save/command/snapshot contracts when required
+- **Validation/proof:** Full native tests, deterministic strategies and recovery, staged 20-minute journey
+- **Status:** active

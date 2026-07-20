@@ -25,7 +25,8 @@ This wave must materially change how the staged game feels. The player should en
 
 - Build two deterministic strategy-sensitive arcs on the accepted PLAY-010 loop.
 - Each arc needs advance warning, an opportunity, a recoverable setback, at least two valid responses, and a payoff.
-- Preserve the accepted Town Charter timing and existing recovery path.
+- Repair the sustained-session gate exposed by quality candidate `1a3bf232`: a real 20:19 route remained solvent but stalled at population 409, happiness 39%, zero water spare, and Town Charter 0/12.
+- Preserve consequence and the existing recovery path, but make the binding standard legible and the durable payoff attainable within a real 20-minute session that includes player interaction time; uninterrupted Day 701 automation is evidence, not acceptance.
 - Stop before inventing a general event framework or new UI/render contracts.
 
 ### World — PLAY-020

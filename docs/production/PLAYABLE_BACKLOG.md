@@ -32,6 +32,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **In scope:** Deterministic strategy-sensitive incidents, causal consequences, recovery choices, post-choice pacing, analytics copy inputs, balance fixtures, and staged evidence.
 - **Out of scope:** New UI components, renderer truth, persistence format, input commands, package/build scripts, general event framework.
 - **Acceptance:** Two opening strategies diverge in at least three meaningful dimensions; each receives truthful advance warning, one setback, and at least two legitimate recovery responses; no random unavoidable failure; effects are visible through existing player surfaces; both remain viable but non-identical through the 20-minute horizon.
+- **Live gate:** A fresh no-coaching pointer-and-keyboard route must reach the durable payoff inside 20 minutes including ordinary diagnosis and interaction time. An uninterrupted or coordinate-aware automated Day 701 fixture does not satisfy this gate. The binding utility, treasury, happiness, population, and qualification standards must be understandable early enough to act on.
 - **Stop conditions:** New save/public-store/renderer contract, title-routed messages becoming domain authority, nondeterministic fixtures, or balance changes that invalidate the accepted PLAY-010 recovery path.
 
 ### [ ] PLAY-020: Make consequences readable in the city

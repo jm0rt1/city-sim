@@ -13,6 +13,7 @@ Fresh isolated candidates establish the intended 1,440 x 900 default once, subje
 3. `cd97787b64854d0041dca0636247599c41fcbf65` — `PLAY-031: Contain onboarding focus`
 4. `bacbe6fdba3d85047fca49548191b8dfec29c5c0` — `PLAY-031: Restore gameplay focus after welcome`
 5. `fc61b177a639e768615664a46f7a5e8f81381c30` — `PLAY-031: Tie focus restoration to welcome policy`
+6. `922e892b63671607f658dacfbaeb1e2305e8b057` — `PLAY-031: Defer welcome focus past teardown`
 
 Integration authority `43be4f40f92827c081663ed41fcc93090ce506fc` and product candidate ancestor `c70321b` are both ancestors. No push or integration was performed.
 
@@ -95,3 +96,25 @@ Clean writable-cache validation on candidate `fc61b177a639e768615664a46f7a5e8f81
 - exact staged `./script/build_and_run.sh --verify` passed for bundle `com.jfmortensen.citysim.ui-input.wdbeadac6e0bd`, executable `CitySimNative-wdbeadac6e0bd`, PID 50539, with isolated candidate data and freshly reset candidate preferences.
 
 The Computer Use `get_app_state` call hung without returning accessibility or screenshot state and was aborted after the integration captain intervened. No live D006 pass is claimed from this lane. The previously retained D001 default/compact containment captures remain valid because the repair does not alter modal visibility, hit testing, accessibility hiding, or command policy. PLAY-050 must independently prove both dismissal routes, immediate Space/1-3/B/V operation without a click, Command-/ and Escape precedence, and absence of vanished modal focus before acceptance.
+
+## D006 round-two lifecycle repair
+
+Independent PLAY-050 rejected the first focus repair after testing exact integrated product `1dd89f6`. D001 remained contained through 77 seconds and Return removed Welcome, but the fresh post-dismissal accessibility tree focused the standard window rather than `SKView`. Space remained inert while the city advanced first to Day 6 and then Day 13. This proves the synchronous `updateNSView` transfer ran too early: SwiftUI modal teardown reassigned first responder afterward.
+
+Candidate `922e892b63671607f658dacfbaeb1e2305e8b057` keeps the same typed transition and moves its focus transfer to exactly one next-main-loop action:
+
+- `.blocked(.welcome)` to `.enabled` creates one generation-tagged pending handoff;
+- repeated enabled renders cannot enqueue another handoff;
+- the queued action weakly captures the actual coordinator and `SKView`;
+- it rechecks the pending generation, current store policy, coordinator policy, and window attachment before calling `makeFirstResponder`;
+- reblocking invalidates the pending generation, and a detached/deallocated map discards it;
+- no sleep, timed delay, shortcut duplication, quarantine change, renderer behavior change, or shared contract was introduced.
+
+Validation on the exact product commit:
+
+- focused `CityCommandCatalogTests`: 11/11 in 0.680 seconds;
+- full native suite: 89/89 in 218.580 seconds;
+- exact fresh isolated `./script/build_and_run.sh --verify` passed for bundle `com.jfmortensen.citysim.ui-input.wdbeadac6e0bd`, executable `CitySimNative-wdbeadac6e0bd`, PID 57329;
+- renderer diagnostics remained bounded at 9,004 nodes, 5,760 unchanged tile reuses, 0 updates, and 1.667 ms average over ten pulses; the 4,286-pulse soak averaged 0.8898 ms without node/drawable/action growth.
+
+The deterministic AppKit tests execute the lifecycle boundary through an injected main-loop enqueuer: they prove first responder does not move synchronously, moves only when the queued action runs, remains one-shot across repeated renders, cancels when Welcome reblocks, and refuses a detached `SKView`. A hosted SwiftUI test was not added because it would depend on private view-tree event ordering rather than the owned coordinator/window seam. No worker live pass is claimed; PLAY-050 owns the authoritative Return and pointer retest.

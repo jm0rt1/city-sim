@@ -27,3 +27,16 @@ Welcome releases modal focus before its shared dismissal continuation. During th
 ## Live limitation
 
 The Computer Use runtime hung in `get_app_state` without returning an accessibility tree or screenshot and the attempt was aborted. This record does not claim live D006 acceptance. Independent PLAY-050 must run the keyboard and pointer dismissal matrix on this exact candidate or its integrated descendant.
+
+## Round-two repair after live rejection
+
+- Rejected integrated product: `1dd89f6af439238b192b9b60e666e8be2fbb302b`
+- Live result: D001 contained through 77 seconds; Return dismissed; accessibility focus became the standard window; two immediate Space attempts remained inert while the city advanced to Day 6 and Day 13.
+- Round-two product commit: `922e892b63671607f658dacfbaeb1e2305e8b057`
+- Exact staged PID: `57329`
+
+The synchronous handoff was correct in isolation but ran before SwiftUI finished tearing down Welcome. The round-two coordinator therefore schedules one generation-tagged action on the next main-loop turn. Before focusing, it verifies the request is still pending, both the retained and authoritative current policy are enabled, and the weakly captured map remains attached to a window. Reblocking increments the generation and clears the pending request; ordinary renders cannot reschedule it.
+
+Focused validation passed 11/11. The new tests hold main-loop actions in a deterministic queue and prove delayed execution, one-shot delivery, reblock cancellation, and detached-view refusal. The full native suite passed 89/89 in 218.580 seconds. Exact fresh isolated staged verification passed at `922e892`; rendering and soak diagnostics remained bounded.
+
+No new worker Computer Use attempt was made after the prior runtime hang. PLAY-050 must independently retest Return and pointer dismissal, immediate Space/1-3/B/V without a click, Command-/ and Escape precedence, and post-dismissal accessibility focus.

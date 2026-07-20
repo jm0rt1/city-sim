@@ -19,6 +19,7 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
 private struct TileRenderSignature: Equatable {
     let kind: BuildingKind
     let lotPresentation: LotConsequencePresentation?
+    let spatialConsequences: SpatialConsequenceRenderSignature
     let reducedMotion: Bool
     let roadConnections: RoadConnectionMask
     let gridWidth: Int
@@ -47,17 +48,20 @@ private struct InteractionPreviewSignature: Equatable {
 private final class TileRenderRecord {
     let root: SKNode
     let overlayLayer: SKNode
+    let consequenceLayer: SKNode
     let signature: TileRenderSignature
     var overlaySignature: OverlayRenderSignature
 
     init(
         root: SKNode,
         overlayLayer: SKNode,
+        consequenceLayer: SKNode,
         signature: TileRenderSignature,
         overlaySignature: OverlayRenderSignature
     ) {
         self.root = root
         self.overlayLayer = overlayLayer
+        self.consequenceLayer = consequenceLayer
         self.signature = signature
         self.overlaySignature = overlaySignature
     }
@@ -76,6 +80,7 @@ final class CityScene: SKScene {
     private let roadRenderer: RoadRenderer
     private let lotRenderer: LotRenderer
     private let overlayRenderer: WorldOverlayRenderer
+    private let spatialConsequenceRenderer: SpatialConsequenceRenderer
     private let worldLayer = SKNode()
     private let backdropLayer = SKNode()
     private let tileLayer = SKNode()
@@ -84,6 +89,8 @@ final class CityScene: SKScene {
     private let selectionNode = SKShapeNode()
     private let selectionLabel = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
     private var renderedState: CityGameState?
+    private var renderedSnapshot: CityPresentationSnapshot?
+    private var presentedConsequenceEventTicks: [String: Int] = [:]
     private var renderedOverlay: DataOverlay = .none
     private var renderedSelection: GridCoordinate?
     private var renderedInteractionMode: CityInteractionMode = .inspect
@@ -100,6 +107,7 @@ final class CityScene: SKScene {
     var cameraScaleForTesting: CGFloat { cameraNode.xScale }
     var cameraPositionForTesting: CGPoint { cameraNode.position }
     var cameraScale: CGFloat { cameraNode.xScale }
+    var presentedConsequenceEventCountForTesting: Int { presentedConsequenceEventTicks.count }
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
@@ -108,6 +116,7 @@ final class CityScene: SKScene {
         self.roadRenderer = RoadRenderer(style: style)
         self.lotRenderer = LotRenderer(style: style)
         self.overlayRenderer = WorldOverlayRenderer(style: style)
+        self.spatialConsequenceRenderer = SpatialConsequenceRenderer(style: style)
         self.currentCameraDetailLevel = style.detailLevel(cameraScale: 1)
         super.init(size: size)
         scaleMode = .resizeFill
@@ -140,12 +149,23 @@ final class CityScene: SKScene {
     }
 
     func render(
-        state: CityGameState,
+        snapshot: CityPresentationSnapshot,
         overlay: DataOverlay,
         selection: GridCoordinate?,
         interactionMode: CityInteractionMode
     ) {
-        let isFirstRender = renderedState == nil
+        let isFirstRender = renderedSnapshot == nil
+        let previousSnapshot = renderedSnapshot
+        presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
+            $0.value >= snapshot.authoritativeTick - 128
+        }
+        let consequenceEvents = snapshot.consequenceEvents(since: previousSnapshot)
+            .filter { event in
+                guard presentedConsequenceEventTicks[event.id] == nil else { return false }
+                presentedConsequenceEventTicks[event.id] = event.authoritativeTick
+                return true
+            }
+        let state = snapshot.state
         let resolvedDetail = style.detailLevel(cameraScale: cameraNode.xScale)
         if resolvedDetail != currentCameraDetailLevel {
             currentCameraDetailLevel = resolvedDetail
@@ -155,13 +175,30 @@ final class CityScene: SKScene {
             lastPreviewSignature = nil
         }
         renderedState = state
+        renderedSnapshot = snapshot
         renderedOverlay = overlay
         renderedSelection = selection
         renderedInteractionMode = interactionMode
-        diagnosticsSnapshot = updateWorld(state: state, overlay: overlay)
+        diagnosticsSnapshot = updateWorld(snapshot: snapshot, overlay: overlay)
+        presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
         if isFirstRender { focusDevelopedCore(state) }
+    }
+
+    func render(
+        state: CityGameState,
+        overlay: DataOverlay,
+        selection: GridCoordinate?,
+        interactionMode: CityInteractionMode
+    ) {
+        guard let snapshot = try? CityPresentationSnapshot(state: state) else { return }
+        render(
+            snapshot: snapshot,
+            overlay: overlay,
+            selection: selection,
+            interactionMode: interactionMode
+        )
     }
 
     func render(
@@ -192,6 +229,20 @@ final class CityScene: SKScene {
 
     func tileRootIdentifier(at coordinate: GridCoordinate) -> ObjectIdentifier? {
         tileRecords[coordinate].map { ObjectIdentifier($0.root) }
+    }
+
+    func tileDescendantNamesForTesting(at coordinate: GridCoordinate) -> [String] {
+        guard let root = tileRecords[coordinate]?.root else { return [] }
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: root)
+    }
+
+    func tileConsequenceEventNodeCountForTesting(at coordinate: GridCoordinate) -> Int {
+        tileRecords[coordinate]?.consequenceLayer.children.filter {
+            $0.name?.hasPrefix("spatial.event.") == true
+        }.count ?? 0
     }
 
     func configureProofCamera(detail: CameraDetailLevel, centeredOn coordinate: GridCoordinate? = nil) {
@@ -311,7 +362,11 @@ final class CityScene: SKScene {
         refreshForCameraChange()
     }
 
-    private func updateWorld(state: CityGameState, overlay: DataOverlay) -> RendererDiagnosticsSnapshot {
+    private func updateWorld(
+        snapshot: CityPresentationSnapshot,
+        overlay: DataOverlay
+    ) -> RendererDiagnosticsSnapshot {
+        let state = snapshot.state
         let updateStarted = ProcessInfo.processInfo.systemUptime
         var diagnostics = RendererDiagnosticsSnapshot(
             nodeCount: diagnosticsSnapshot.nodeCount,
@@ -342,14 +397,21 @@ final class CityScene: SKScene {
         }
 
         for tile in sortedTiles {
-            let signature = tileSignature(for: tile, state: state)
-            let overlaySignature = overlaySignature(for: tile, state: state, overlay: overlay)
+            guard let consequence = snapshot.spatialConsequences[tile.coordinate] else { continue }
+            let signature = tileSignature(for: tile, consequence: consequence, state: state)
+            let overlaySignature = overlaySignature(
+                for: tile,
+                consequence: consequence,
+                state: state,
+                overlay: overlay
+            )
             if let existing = tileRecords[tile.coordinate], existing.signature == signature {
                 diagnostics.reusedTileCount += 1
                 if existing.overlaySignature != overlaySignature {
                     updateOverlay(
                         in: existing.overlayLayer,
                         tile: tile,
+                        consequence: consequence,
                         state: state,
                         overlay: overlay
                     )
@@ -361,6 +423,7 @@ final class CityScene: SKScene {
 
             let replacement = makeTileRecord(
                 tile: tile,
+                consequence: consequence,
                 state: state,
                 overlay: overlay,
                 signature: signature,
@@ -390,6 +453,7 @@ final class CityScene: SKScene {
 
     private func makeTileRecord(
         tile: CityTile,
+        consequence: CitySpatialConsequence,
         state: CityGameState,
         overlay: DataOverlay,
         signature: TileRenderSignature,
@@ -417,7 +481,13 @@ final class CityScene: SKScene {
         overlayLayer.name = "overlay.layer"
         overlayLayer.zPosition = 20
         root.addChild(overlayLayer)
-        updateOverlay(in: overlayLayer, tile: tile, state: state, overlay: overlay)
+        updateOverlay(
+            in: overlayLayer,
+            tile: tile,
+            consequence: consequence,
+            state: state,
+            overlay: overlay
+        )
 
         let contentLayer = SKNode()
         contentLayer.name = "content.layer"
@@ -441,15 +511,29 @@ final class CityScene: SKScene {
             ))
         }
         root.addChild(contentLayer)
+
+        let consequenceLayer = SKNode()
+        consequenceLayer.name = "spatial.layer"
+        consequenceLayer.zPosition = 72
+        consequenceLayer.addChild(spatialConsequenceRenderer.makePersistentCues(
+            for: consequence,
+            detail: currentCameraDetailLevel
+        ))
+        root.addChild(consequenceLayer)
         return TileRenderRecord(
             root: root,
             overlayLayer: overlayLayer,
+            consequenceLayer: consequenceLayer,
             signature: signature,
             overlaySignature: overlaySignature
         )
     }
 
-    private func tileSignature(for tile: CityTile, state: CityGameState) -> TileRenderSignature {
+    private func tileSignature(
+        for tile: CityTile,
+        consequence: CitySpatialConsequence,
+        state: CityGameState
+    ) -> TileRenderSignature {
         let lotPresentation: LotConsequencePresentation?
         switch tile.kind {
         case .empty, .road:
@@ -460,6 +544,7 @@ final class CityScene: SKScene {
         return TileRenderSignature(
             kind: tile.kind,
             lotPresentation: lotPresentation,
+            spatialConsequences: SpatialConsequenceRenderSignature(consequence),
             reducedMotion: lotPresentation == nil ? false : reducedMotion,
             roadConnections: tile.kind == .empty
                 ? []
@@ -471,18 +556,25 @@ final class CityScene: SKScene {
 
     private func overlaySignature(
         for tile: CityTile,
+        consequence: CitySpatialConsequence,
         state: CityGameState,
         overlay: DataOverlay
     ) -> OverlayRenderSignature {
         OverlayRenderSignature(
             overlay: overlay,
-            colorToken: overlayRenderer.color(for: tile, state: state, overlay: overlay).map(colorToken) ?? 0
+            colorToken: overlayRenderer.color(
+                for: tile,
+                state: state,
+                consequence: consequence,
+                overlay: overlay
+            ).map(colorToken) ?? 0
         )
     }
 
     private func updateOverlay(
         in layer: SKNode,
         tile: CityTile,
+        consequence: CitySpatialConsequence,
         state: CityGameState,
         overlay: DataOverlay
     ) {
@@ -490,9 +582,47 @@ final class CityScene: SKScene {
         layer.addChild(overlayRenderer.makeOverlay(
             for: tile,
             state: state,
+            consequence: consequence,
             overlay: overlay,
             detail: currentCameraDetailLevel
         ))
+    }
+
+    private func presentConsequenceEvents(_ events: [CitySpatialConsequenceEvent]) {
+        guard let state = renderedState else { return }
+        let visible = events.filter { event in
+            guard let tile = state.tile(at: event.coordinate) else { return false }
+            return tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
+        }
+        let summarized = Dictionary(grouping: visible, by: \.coordinate).compactMap { _, events in
+            events.sorted(by: consequenceEventPriority).first
+        }.sorted { lhs, rhs in
+            if lhs.coordinate.y != rhs.coordinate.y { return lhs.coordinate.y < rhs.coordinate.y }
+            return lhs.coordinate.x < rhs.coordinate.x
+        }
+        for event in summarized {
+            guard let layer = tileRecords[event.coordinate]?.consequenceLayer else { continue }
+            for prior in layer.children where prior.name?.hasPrefix("spatial.event.") == true {
+                prior.removeFromParent()
+            }
+            layer.addChild(spatialConsequenceRenderer.makeEventCue(
+                for: event,
+                reducedMotion: reducedMotion
+            ))
+        }
+    }
+
+    private func consequenceEventPriority(
+        _ lhs: CitySpatialConsequenceEvent,
+        _ rhs: CitySpatialConsequenceEvent
+    ) -> Bool {
+        if lhs.direction != rhs.direction { return lhs.direction == .worsening }
+        let order: [CitySpatialConsequenceDimension: Int] = [
+            .utility: 0,
+            .pollution: 1,
+            .vitality: 2
+        ]
+        return order[lhs.dimension, default: 99] < order[rhs.dimension, default: 99]
     }
 
     private func colorToken(_ color: NSColor) -> UInt32 {

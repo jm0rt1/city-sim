@@ -48,8 +48,9 @@ struct CitySceneView: NSViewRepresentable {
         proofReducedMotion = false
 #endif
         scene.reducedMotion = accessibilityReduceMotion || reduceGameMotion || proofReducedMotion
+        guard let snapshot = try? CityPresentationSnapshot(state: store.state) else { return }
         scene.render(
-            state: store.state,
+            snapshot: snapshot,
             overlay: store.overlay,
             selection: store.selectedCoordinate,
             interactionMode: store.interactionMode

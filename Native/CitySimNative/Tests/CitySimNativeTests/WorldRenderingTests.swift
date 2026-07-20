@@ -5,6 +5,212 @@ import XCTest
 
 final class WorldRenderingTests: XCTestCase {
     @MainActor
+    func testSpatialConsequencesPublishNonColorUtilityPollutionAndVitalityCues() {
+        let renderer = SpatialConsequenceRenderer(style: WorldVisualStyle())
+        let consequence = CitySpatialConsequence(
+            coordinate: GridCoordinate(x: 4, y: 5),
+            utility: CityLocationUtilityService(
+                power: 0.2,
+                water: 0.7,
+                combined: 0.2,
+                powerBand: .severe,
+                waterBand: .strained,
+                combinedBand: .severe
+            ),
+            pollutionExposure: 0.8,
+            pollutionBand: .severe,
+            vitalityScore: 0.3,
+            vitality: .strained
+        )
+
+        let root = renderer.makePersistentCues(for: consequence, detail: .block)
+        let names = descendantNames(in: root)
+        XCTAssertTrue(names.contains("spatial.utility.severe.brackets"))
+        XCTAssertTrue(names.contains("spatial.utility.power.severe.broken-bolt"))
+        XCTAssertTrue(names.contains("spatial.utility.water.strained.dry-drop"))
+        XCTAssertTrue(names.contains("spatial.pollution.severe.particulate"))
+        XCTAssertTrue(names.contains("spatial.vitality.strained.patchwork"))
+        XCTAssertTrue(descendantLabels(in: root).isEmpty)
+    }
+
+    @MainActor
+    func testSpatialTransitionEventsHaveStaticReduceMotionMeaningAndBoundedAnimation() {
+        let renderer = SpatialConsequenceRenderer(style: WorldVisualStyle())
+        let event = CitySpatialConsequenceEvent(
+            id: "stable-event",
+            authoritativeTick: 8,
+            coordinate: GridCoordinate(x: 10, y: 11),
+            dimension: .utility,
+            direction: .recovery,
+            fromBand: .severe,
+            toBand: .healthy
+        )
+        let animated = renderer.makeEventCue(for: event, reducedMotion: false)
+        let reduced = renderer.makeEventCue(for: event, reducedMotion: true)
+
+        XCTAssertTrue(descendantNames(in: reduced).contains("spatial.event.mark.recovery"))
+        XCTAssertEqual(recursiveActiveActionCount(animated), 1)
+        XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
+    }
+
+    @MainActor
+    func testUtilityAndPollutionOverlaysUseApprovedSpatialSampleInsteadOfStateInference() throws {
+        let renderer = WorldOverlayRenderer(style: WorldVisualStyle())
+        let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
+        let consequence = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: CityLocationUtilityService(
+                power: 0.33,
+                water: 0.71,
+                combined: 0.33,
+                powerBand: .severe,
+                waterBand: .strained,
+                combinedBand: .severe
+            ),
+            pollutionExposure: 0.64,
+            pollutionBand: .severe,
+            vitalityScore: 0,
+            vitality: .notApplicable
+        )
+        var contradictoryState = CityGameState.newCity(seed: 42)
+        contradictoryState.powerCapacity = 99_999
+        contradictoryState.waterCapacity = 99_999
+        contradictoryState.tiles = contradictoryState.tiles.map {
+            var value = $0
+            if value.kind == .industrial || value.kind == .powerPlant { value.kind = .empty }
+            return value
+        }
+
+        let utility = renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .utilities
+        )
+        let pollution = renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .pollution
+        )
+        XCTAssertEqual(try XCTUnwrap(utility).value, 0.33, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(pollution).value, 0.36, accuracy: 0.0001)
+        XCTAssertNil(renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: nil,
+            overlay: .utilities
+        ))
+    }
+
+    @MainActor
+    func testCitySceneConsumesStableTransitionIDsOnceAndDoesNotReplayOnUndo() throws {
+        var strained = CityGameState.newCity(seed: 42)
+        strained.tick = 4
+        strained.powerCapacity = 0
+        strained.waterCapacity = 0
+        let strainedSnapshot = try CityPresentationSnapshot(state: strained)
+
+        var recovered = strained
+        recovered.tick = 8
+        recovered.powerCapacity = 300
+        recovered.waterCapacity = 270
+        let recoveredSnapshot = try CityPresentationSnapshot(state: recovered)
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(snapshot: strainedSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        scene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        let firstCount = scene.presentedConsequenceEventCountForTesting
+        XCTAssertGreaterThan(firstCount, 0)
+        XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
+        XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
+
+        scene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.presentedConsequenceEventCountForTesting, firstCount)
+        XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
+        scene.render(snapshot: strainedSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.presentedConsequenceEventCountForTesting, firstCount)
+        XCTAssertEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 0)
+
+        scene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(
+            scene.presentedConsequenceEventCountForTesting,
+            firstCount,
+            "Forward deterministic replay must not re-present stable event IDs"
+        )
+        XCTAssertEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 0)
+
+        var newlyStrained = strained
+        newlyStrained.tick = 12
+        scene.render(
+            snapshot: try CityPresentationSnapshot(state: newlyStrained),
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
+        XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
+    }
+
+    @MainActor
+    func testSpatialConsequenceProofExportsSameCityWorseningRecoveryAndCompact() throws {
+        let strained = spatialProofState(recovered: false)
+        let recovered = spatialProofState(recovered: true)
+        let strainedSnapshot = try CityPresentationSnapshot(state: strained)
+        let recoveredSnapshot = try CityPresentationSnapshot(state: recovered)
+        let focus = GridCoordinate(x: 10, y: 11)
+        let strainedSample = try XCTUnwrap(strainedSnapshot.spatialConsequences[focus])
+        let recoveredSample = try XCTUnwrap(recoveredSnapshot.spatialConsequences[focus])
+        let focusEventIDs = recoveredSnapshot.consequenceEvents(since: strainedSnapshot)
+            .filter { $0.coordinate == focus }
+            .map(\.id)
+        let defaultProof = try spatialTransitionFrame(
+            from: strained,
+            to: recovered,
+            size: CGSize(width: 1_280, height: 800)
+        )
+        let compactProof = try spatialTransitionFrame(
+            from: strained,
+            to: recovered,
+            size: CGSize(width: 900, height: 600)
+        )
+        let strainedProof = try lifecycleFrame(
+            state: strained,
+            size: CGSize(width: 1_280, height: 800),
+            detail: .block,
+            centeredOn: GridCoordinate(x: 12, y: 11)
+        )
+
+        XCTAssertNotEqual(strainedProof.png, defaultProof.png)
+        XCTAssertNotEqual(defaultProof.png, compactProof.png)
+        XCTAssertGreaterThan(defaultProof.png.count, 40_000)
+        XCTAssertGreaterThan(compactProof.png.count, 40_000)
+        XCTAssertGreaterThan(defaultProof.eventCount, 0)
+        XCTAssertEqual(strainedSample.utility.combinedBand, .severe)
+        XCTAssertEqual(strainedSample.vitality, .strained)
+        XCTAssertEqual(recoveredSample.utility.combinedBand, .strained)
+        XCTAssertEqual(recoveredSample.vitality, .prosperous)
+        XCTAssertEqual(focusEventIDs.count, 2)
+        XCTAssertEqual(defaultProof.actions, 0)
+        XCTAssertEqual(compactProof.actions, 0)
+
+        try export(strainedProof.png, environmentKey: "CITYSIM_PLAY022_SPATIAL_STRAINED_PROOF")
+        try export(defaultProof.png, environmentKey: "CITYSIM_PLAY022_SPATIAL_RECOVERY_PROOF")
+        try export(compactProof.png, environmentKey: "CITYSIM_PLAY022_SPATIAL_COMPACT_PROOF")
+        print(
+            "CITYSIM_PLAY022_SPATIAL_PROOF focus=10,11 " +
+            "strained_utility=\(strainedSample.utility.combinedBand) " +
+            "strained_pollution=\(strainedSample.pollutionBand) " +
+            "strained_vitality=\(strainedSample.vitality) " +
+            "recovered_utility=\(recoveredSample.utility.combinedBand) " +
+            "recovered_pollution=\(recoveredSample.pollutionBand) " +
+            "recovered_vitality=\(recoveredSample.vitality) " +
+            "event_ids=\(focusEventIDs.joined(separator: ","))"
+        )
+    }
+
+    @MainActor
     func testGoldenNeighborhoodTerrainAtlasLoadsEveryAuthoredMaterial() {
         let catalog = WorldAssetCatalog()
         let names = (0..<6).map { "terrain_grass_\($0)" } + [
@@ -715,6 +921,60 @@ final class WorldRenderingTests: XCTestCase {
         let representation = NSBitmapImageRep(cgImage: texture.cgImage())
         let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
         return (png, scene.diagnosticsSnapshot)
+    }
+
+    @MainActor
+    private func spatialTransitionFrame(
+        from previousState: CityGameState,
+        to state: CityGameState,
+        size: CGSize
+    ) throws -> (png: Data, eventCount: Int, actions: Int) {
+        let view = SKView(frame: CGRect(origin: .zero, size: size))
+        let scene = CityScene(size: size)
+        scene.reducedMotion = true
+        view.presentScene(scene)
+        scene.render(
+            snapshot: try CityPresentationSnapshot(state: previousState),
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        scene.render(
+            snapshot: try CityPresentationSnapshot(state: state),
+            overlay: .none,
+            selection: GridCoordinate(x: 10, y: 11),
+            interactionMode: .inspect
+        )
+        scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 11))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
+        let texture = try XCTUnwrap(view.texture(from: scene))
+        let representation = NSBitmapImageRep(cgImage: texture.cgImage())
+        let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
+        return (
+            png,
+            scene.presentedConsequenceEventCountForTesting,
+            scene.diagnosticsSnapshot.activeActionCount
+        )
+    }
+
+    private func spatialProofState(recovered: Bool) -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        state.tick = recovered ? 8 : 4
+        state.happiness = recovered ? 82 : 20
+        state.powerCapacity = recovered ? 300 : 0
+        state.waterCapacity = recovered ? 270 : 0
+        state.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.condition = recovered ? 1 : 0.2
+            $0.occupancy = recovered ? 280 : 0
+        }
+        if recovered {
+            state.updateTile(at: GridCoordinate(x: 14, y: 11)) {
+                $0.kind = .park
+                $0.condition = 1
+                $0.occupancy = 0
+            }
+        }
+        return state
     }
 
     private func export(_ data: Data, environmentKey: String) throws {

@@ -283,6 +283,46 @@ final class SessionPlatformTests: XCTestCase {
         )
     }
 
+    func testDenseSessionSimulationAndPersistencePerformance() throws {
+        try withTemporaryRoot { root in
+            var state = densePerformanceFixture()
+            let simulationStart = ProcessInfo.processInfo.systemUptime
+            for _ in 0..<400 { CitySimulation.step(&state) }
+            let simulationMilliseconds = elapsedMilliseconds(since: simulationStart)
+
+            let fingerprintStart = ProcessInfo.processInfo.systemUptime
+            let fingerprint = try CityStateFingerprinter.fingerprint(state)
+            let fingerprintMilliseconds = elapsedMilliseconds(since: fingerprintStart)
+
+            let service = SaveGameService(rootURL: root)
+            let saveStart = ProcessInfo.processInfo.systemUptime
+            let write = try service.save(state)
+            let saveMilliseconds = elapsedMilliseconds(since: saveStart)
+
+            let loadStart = ProcessInfo.processInfo.systemUptime
+            let load = try service.load()
+            let loadMilliseconds = elapsedMilliseconds(since: loadStart)
+
+            XCTAssertEqual(load.state, state)
+            XCTAssertEqual(load.fingerprint, fingerprint)
+            XCTAssertEqual(write.fingerprint, fingerprint)
+            XCTAssertLessThan(simulationMilliseconds, 5_000)
+            XCTAssertLessThan(fingerprintMilliseconds, 500)
+            XCTAssertLessThan(saveMilliseconds, 1_500)
+            XCTAssertLessThan(loadMilliseconds, 1_500)
+            XCTAssertLessThan(write.byteCount, 2_000_000)
+
+            print(
+                "CITYSIM_SESSION_PERFORMANCE fixture=dense-24x24 ticks=400 " +
+                "simulation_ms=\(metric(simulationMilliseconds)) " +
+                "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
+                "save_ms=\(metric(saveMilliseconds)) " +
+                "load_ms=\(metric(loadMilliseconds)) bytes=\(write.byteCount) " +
+                "digest=\(fingerprint.digest)"
+            )
+        }
+    }
+
     private func withTemporaryRoot(_ body: (URL) throws -> Void) throws {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "citysim-play040-\(UUID().uuidString)", directoryHint: .isDirectory)
@@ -304,5 +344,31 @@ final class SessionPlatformTests: XCTestCase {
         for _ in 0..<count {
             apply([.advanceOneDailyBoundary], to: &state)
         }
+    }
+
+    private func densePerformanceFixture() -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        let kinds: [BuildingKind] = [
+            .residential, .commercial, .industrial, .park,
+            .powerPlant, .waterTower, .fireStation, .policeStation, .school
+        ]
+        for index in state.tiles.indices where state.tiles[index].kind == .empty {
+            state.tiles[index].kind = kinds[index % kinds.count]
+            state.tiles[index].level = 4
+            state.tiles[index].occupancy = 180
+            state.tiles[index].condition = 0.92
+            state.tiles[index].constructionProgress = 1
+        }
+        state.population = 50_000
+        state.treasury = 8_000_000
+        return state
+    }
+
+    private func elapsedMilliseconds(since start: TimeInterval) -> Double {
+        (ProcessInfo.processInfo.systemUptime - start) * 1_000
+    }
+
+    private func metric(_ value: Double) -> String {
+        String(format: "%.3f", value)
     }
 }

@@ -45,6 +45,8 @@ struct ContentView: View {
                 .disabled(!store.canPerform(.undo))
             }
         }
+        .onAppear { synchronizeWelcomePolicy() }
+        .onChange(of: hasSeenWelcome) { _, _ in synchronizeWelcomePolicy() }
         .task(id: hasSeenWelcome) {
             guard hasSeenWelcome else { return }
             while !Task.isCancelled {
@@ -161,7 +163,9 @@ struct ContentView: View {
             if !hasSeenWelcome {
                 WelcomeView {
                     withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                        hasSeenWelcome = true
+                        if store.dismissBlockingModal(.welcome) {
+                            hasSeenWelcome = true
+                        }
                     }
                 }
                 .transition(.opacity)
@@ -169,5 +173,13 @@ struct ContentView: View {
         }
         .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showInspector)
         .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showObjectives)
+    }
+
+    private func synchronizeWelcomePolicy() {
+        if hasSeenWelcome {
+            _ = store.dismissBlockingModal(.welcome)
+        } else {
+            store.presentBlockingModal(.welcome)
+        }
     }
 }

@@ -68,6 +68,7 @@ final class CityScene: SKScene {
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
     var onCommandAction: ((CityCommandID) -> Void)?
+    var allowsCommand: ((CityCommandID) -> Bool)?
     var reducedMotion = false
 
     private let style: WorldVisualStyle
@@ -96,6 +97,7 @@ final class CityScene: SKScene {
     private var tileHeight: CGFloat { style.tileHeight }
     private(set) var currentCameraDetailLevel: CameraDetailLevel
     private(set) var diagnosticsSnapshot = RendererDiagnosticsSnapshot()
+    var cameraScale: CGFloat { cameraNode.xScale }
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
@@ -243,6 +245,7 @@ final class CityScene: SKScene {
 
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 53 {
+            guard allowsCommand?(.cancelInteraction) ?? true else { return }
             onCommandAction?(.cancelInteraction)
             return
         }
@@ -260,6 +263,7 @@ final class CityScene: SKScene {
             modifiers: catalogModifiers,
             scope: .gameplay
         ) {
+            guard allowsCommand?(command) ?? true else { return }
             onCommandAction?(command)
             return
         }
@@ -268,6 +272,7 @@ final class CityScene: SKScene {
             modifiers: catalogModifiers,
             scope: .renderer
         ) {
+            guard allowsCommand?(command) ?? true else { return }
             switch command {
             case .cameraZoomIn: zoomCamera(by: 0.82)
             case .cameraZoomOut: zoomCamera(by: 1.22)

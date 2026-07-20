@@ -626,6 +626,7 @@ final class CitySimulationTests: XCTestCase {
         view.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
 
+        XCTAssertEqual(store.commandPolicy, .blocked(.welcome))
         XCTAssertEqual(store.state, authoredStart)
         XCTAssertEqual(store.state.day, authoredStart.day)
         XCTAssertEqual(store.state.messages, authoredStart.messages)
@@ -642,6 +643,7 @@ final class CitySimulationTests: XCTestCase {
         resumedView.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
 
+        XCTAssertEqual(resumedStore.commandPolicy, .enabled)
         XCTAssertGreaterThan(resumedStore.state.tick, authoredStart.tick)
     }
 

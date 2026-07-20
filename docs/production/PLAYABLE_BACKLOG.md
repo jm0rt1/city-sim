@@ -130,8 +130,8 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Dependencies:** Accepted PLAY-021; approved and integrated PLAY-041 truth for factual consequence states.
 - **In scope:** Authored architecture/environment families, density progression, consequence layers, bounded ambient life, LOD/reuse/performance, accessibility, and live default/compact visual proof.
 - **Out of scope:** Inventing simulation facts, gameplay balance, HUD redesign, save schema, and fixture-only visual claims.
-- **Acceptance:** Same live city shows strategy and three-act state changes non-color-only at city/neighborhood/block scales; materially stronger visual direction; stable deterministic identity; no false feedback; budgeted performance; staged before/after evidence accepted independently.
-- **Stop conditions:** Cosmetic recolor-only delivery, off-window-only proof, false simulation implications, unclear asset provenance, or regression in hit testing/reuse/accessibility.
+- **Acceptance:** First pass the independently reviewed golden-block gate in `PLAY-022_VISUAL_RECOVERY_DIRECTIVE.md`; then the same live city shows strategy and three-act state changes non-color-only at city/neighborhood/block scales. Both integration and playtest must score the exact staged candidate at least 17/20 with no category below 3/4. Retain stable deterministic identity, truthful feedback, bounded performance, and uncropped same-seed before/after evidence.
+- **Stop conditions:** A mostly empty developed frame, disconnected road language, inconsistent projection/scale/light, debug-like indicator clutter, cosmetic recolor or asset-count delivery, author self-acceptance, off-window-only proof, false simulation implications, unclear asset provenance, or regression in hit testing/reuse/accessibility.
 
 ### [ ] PLAY-032: Turn diagnosis into direct action
 

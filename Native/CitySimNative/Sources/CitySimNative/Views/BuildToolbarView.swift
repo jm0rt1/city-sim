@@ -4,12 +4,18 @@ struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
+    static let compactDetailsMaxHeight: CGFloat = 190
+
     var body: some View {
         VStack(spacing: compact ? 7 : 9) {
             commandRow
             if store.showInspector {
-                InspectorView(store: store, compact: compact)
-                    .transition(.opacity)
+                if compact {
+                    compactInspector
+                } else {
+                    InspectorView(store: store, compact: false)
+                        .transition(.opacity)
+                }
             } else {
                 operationalRow
                 cityPulseStrip
@@ -23,6 +29,25 @@ struct BuildToolbarView: View {
         .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
     }
 
+    private var compactInspector: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label("Scrollable command-center details", systemImage: "arrow.up.and.down.text.horizontal")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .accessibilityHint("Use the scroll area to reach every diagnostic control")
+            ScrollView(.vertical) {
+                InspectorView(store: store, compact: true)
+                    .padding(.trailing, 6)
+            }
+            .scrollIndicators(.visible)
+            .frame(maxHeight: Self.compactDetailsMaxHeight, alignment: .top)
+            .focusable()
+            .accessibilityLabel("Scrollable command-center details")
+            .accessibilityIdentifier("hud.command.details.scroll")
+        }
+        .transition(.opacity)
+    }
+
     private var commandRow: some View {
         HStack(spacing: 6) {
             modeButton(
@@ -30,21 +55,21 @@ struct BuildToolbarView: View {
                 symbol: "cursorarrow.rays",
                 active: store.interactionMode == .inspect,
                 tint: GameTheme.information,
-                action: store.activateInspectMode
+                action: { store.perform(.inspectMode) }
             )
             modeButton(
                 title: "Build",
                 symbol: "hammer.fill",
                 active: isBuildMode,
                 tint: GameTheme.accent,
-                action: store.activateBuildMode
+                action: { store.perform(.buildMode) }
             )
             modeButton(
                 title: "Bulldoze",
                 symbol: "trash.fill",
                 active: store.interactionMode == .bulldoze,
                 tint: GameTheme.danger,
-                action: store.toggleBulldozer
+                action: { store.perform(.bulldozeMode) }
             )
 
             Divider().frame(height: 30)
@@ -58,6 +83,7 @@ struct BuildToolbarView: View {
             }
 
             Spacer(minLength: 6)
+            commandGuideButton
             detailsButton
             OverlayPickerView(store: store, compact: compact)
         }
@@ -143,7 +169,7 @@ struct BuildToolbarView: View {
                 .lineLimit(1)
             Spacer(minLength: 8)
             if store.canUndo {
-                Button { store.undoLastAction() } label: {
+                Button { store.perform(.undo) } label: {
                     Label("Undo last action", systemImage: "arrow.uturn.backward")
                         .frame(minHeight: GameTheme.controlMinimum)
                 }
@@ -157,7 +183,7 @@ struct BuildToolbarView: View {
     }
 
     private var detailsButton: some View {
-        Button { store.toggleInspector() } label: {
+        Button { store.perform(.toggleCommandCenter) } label: {
             Label("Details", systemImage: "rectangle.bottomthird.inset.filled")
                 .font(.caption.weight(.semibold))
                 .padding(.horizontal, 8)
@@ -171,6 +197,23 @@ struct BuildToolbarView: View {
         .accessibilityLabel(store.showInspector ? "Close command-center details" : "Open command-center details")
         .accessibilityValue(store.showInspector ? "Open" : "Closed")
         .accessibilityIdentifier("hud.command.details")
+    }
+
+    private var commandGuideButton: some View {
+        let descriptor = CityCommandCatalog.descriptor(for: .openCommandGuide)
+        return Button { store.perform(.openCommandGuide) } label: {
+            Label(compact ? "Cmds" : "Commands", systemImage: "command.square")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, compact ? 0 : 8)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")
+        .accessibilityLabel("Open command guide")
+        .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
+        .accessibilityIdentifier("hud.command.guide")
     }
 
     @ViewBuilder
@@ -210,7 +253,7 @@ struct BuildToolbarView: View {
             ForEach(BuildCategory.allCases) { category in
                 Section(category.title) {
                     ForEach(category.buildingKinds) { kind in
-                        Button { store.selectTool(kind) } label: {
+                        Button { store.perform(CityCommandCatalog.id(for: kind)) } label: {
                             Label(
                                 "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
                                 systemImage: kind.symbol
@@ -257,7 +300,7 @@ struct BuildToolbarView: View {
 
     private func categoryButton(_ category: BuildCategory) -> some View {
         let active = store.selectedBuildCategory == category
-        return Button { store.selectBuildCategory(category) } label: {
+        return Button { store.perform(CityCommandCatalog.id(for: category)) } label: {
             Label(category.title, systemImage: category.symbol)
                 .font(.caption.weight(.semibold))
                 .padding(.horizontal, 8)
@@ -278,7 +321,7 @@ struct BuildToolbarView: View {
 
     private func toolButton(_ kind: BuildingKind) -> some View {
         let active = store.interactionMode == .build(kind)
-        return Button { store.selectTool(kind) } label: {
+        return Button { store.perform(CityCommandCatalog.id(for: kind)) } label: {
             HStack(spacing: 7) {
                 Image(systemName: active ? "checkmark.circle.fill" : kind.symbol)
                     .font(.system(size: 15, weight: .semibold))
@@ -312,33 +355,33 @@ struct BuildToolbarView: View {
                 .font(.system(size: 9, weight: .heavy, design: .rounded))
                 .foregroundStyle(GameTheme.accent)
             pulseButton("Cashflow", value: store.analytics.projectedBalance.signedCurrencyText, symbol: "dollarsign.arrow.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
-                store.openInspector(.finances)
+                store.perform(.inspectorFinances)
             }
             pulseButton("Homes open", value: store.analytics.housingHeadroom.formatted(), symbol: "house.fill", tint: .cyan) {
-                store.openInspector(.population)
+                store.perform(.inspectorPopulation)
             }
             pulseButton("Jobs open", value: store.analytics.jobHeadroom.formatted(), symbol: "briefcase.fill", tint: .purple) {
-                store.openInspector(.employment)
+                store.perform(.inspectorEmployment)
             }
             pulseButton("Power spare", value: store.analytics.powerHeadroom.formatted(), symbol: "bolt.fill", tint: .yellow) {
-                store.openInspector(.utilities)
+                store.perform(.inspectorUtilities)
             }
             pulseButton("Water spare", value: store.analytics.waterHeadroom.formatted(), symbol: "drop.fill", tint: .blue) {
-                store.openInspector(.utilities)
+                store.perform(.inspectorUtilities)
             }
             Divider().frame(height: 28)
             DemandBar(label: "R", accessibilityName: "Residential", value: store.state.demand.residential, color: .cyan) {
-                store.openInspector(.demand)
+                store.perform(.inspectorDemand)
             }
             DemandBar(label: "C", accessibilityName: "Commercial", value: store.state.demand.commercial, color: .purple) {
-                store.openInspector(.demand)
+                store.perform(.inspectorDemand)
             }
             DemandBar(label: "I", accessibilityName: "Industrial", value: store.state.demand.industrial, color: .orange) {
-                store.openInspector(.demand)
+                store.perform(.inspectorDemand)
             }
             Spacer(minLength: 4)
             if store.canUndo {
-                Button { store.undoLastAction() } label: {
+                Button { store.perform(.undo) } label: {
                     Label("Undo", systemImage: "arrow.uturn.backward")
                         .font(.caption.weight(.semibold))
                         .frame(minHeight: GameTheme.controlMinimum)
@@ -353,25 +396,25 @@ struct BuildToolbarView: View {
     private var compactCityPulseStrip: some View {
         HStack(spacing: 5) {
             pulseButton("Net", value: store.analytics.projectedBalance.signedCurrencyText, symbol: "dollarsign.arrow.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
-                store.openInspector(.finances)
+                store.perform(.inspectorFinances)
             }
             pulseButton("Homes", value: store.analytics.housingHeadroom.formatted(), symbol: "house.fill", tint: .cyan) {
-                store.openInspector(.population)
+                store.perform(.inspectorPopulation)
             }
             pulseButton("Power", value: store.analytics.powerHeadroom.formatted(), symbol: "bolt.fill", tint: .yellow) {
-                store.openInspector(.utilities)
+                store.perform(.inspectorUtilities)
             }
             pulseButton("Water", value: store.analytics.waterHeadroom.formatted(), symbol: "drop.fill", tint: .blue) {
-                store.openInspector(.utilities)
+                store.perform(.inspectorUtilities)
             }
-            Button { store.openInspector(.demand) } label: {
+            Button { store.perform(.inspectorDemand) } label: {
                 Label("Demand", systemImage: "chart.bar.fill")
                     .font(.caption.weight(.semibold))
                     .frame(minHeight: GameTheme.controlMinimum)
             }
             .buttonStyle(.bordered)
             if store.canUndo {
-                Button { store.undoLastAction() } label: {
+                Button { store.perform(.undo) } label: {
                     Image(systemName: "arrow.uturn.backward")
                         .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
                 }

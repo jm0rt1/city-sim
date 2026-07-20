@@ -9,14 +9,17 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
     var removedTileCount = 0
     var overlayUpdateCount = 0
     var nodeCount = 0
+    var drawableNodeCount = 0
+    var activeActionCount = 0
+    var updateDurationMilliseconds = 0.0
     var detailLevel: CameraDetailLevel = .neighborhood
     var updatedCoordinates: Set<GridCoordinate> = []
 }
 
 private struct TileRenderSignature: Equatable {
     let kind: BuildingKind
-    let level: Int
-    let constructionStep: Int
+    let lotPresentation: LotConsequencePresentation?
+    let reducedMotion: Bool
     let roadConnections: RoadConnectionMask
     let gridWidth: Int
     let gridHeight: Int
@@ -64,10 +67,7 @@ private final class TileRenderRecord {
 final class CityScene: SKScene {
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
-    var onCancelAction: (() -> Void)?
-    var onInspectAction: (() -> Void)?
-    var onBulldozeAction: (() -> Void)?
-    var onSpeedAction: ((SimulationSpeed) -> Void)?
+    var onCommandAction: ((CityCommandID) -> Void)?
     var reducedMotion = false
 
     private let style: WorldVisualStyle
@@ -243,7 +243,7 @@ final class CityScene: SKScene {
 
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 53 {
-            onCancelAction?()
+            onCommandAction?(.cancelInteraction)
             return
         }
         let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
@@ -251,18 +251,32 @@ final class CityScene: SKScene {
             super.keyDown(with: event)
             return
         }
-        switch event.charactersIgnoringModifiers?.lowercased() {
-        case " ": onSpeedAction?(.paused)
-        case "1": onSpeedAction?(.normal)
-        case "2": onSpeedAction?(.fast)
-        case "3": onSpeedAction?(.fastest)
-        case "b": onBulldozeAction?()
-        case "v": onInspectAction?()
-        case "=", "+": zoomCamera(by: 0.82)
-        case "-", "_": zoomCamera(by: 1.22)
-        case "0": frameCity()
-        default: super.keyDown(with: event)
+        var key = event.charactersIgnoringModifiers?.lowercased() ?? ""
+        if key == "+" { key = "=" }
+        if key == "_" { key = "-" }
+        let catalogModifiers: CityCommandModifiers = modifiers.contains(.shift) ? [.shift] : []
+        if let command = CityCommandCatalog.matchingCommand(
+            key: key,
+            modifiers: catalogModifiers,
+            scope: .gameplay
+        ) {
+            onCommandAction?(command)
+            return
         }
+        if let command = CityCommandCatalog.matchingCommand(
+            key: key,
+            modifiers: catalogModifiers,
+            scope: .renderer
+        ) {
+            switch command {
+            case .cameraZoomIn: zoomCamera(by: 0.82)
+            case .cameraZoomOut: zoomCamera(by: 1.22)
+            case .cameraFrameCity: frameCity()
+            default: break
+            }
+            return
+        }
+        super.keyDown(with: event)
     }
 
     override func mouseMoved(with event: NSEvent) {
@@ -291,8 +305,11 @@ final class CityScene: SKScene {
     }
 
     private func updateWorld(state: CityGameState, overlay: DataOverlay) -> RendererDiagnosticsSnapshot {
+        let updateStarted = ProcessInfo.processInfo.systemUptime
         var diagnostics = RendererDiagnosticsSnapshot(
             nodeCount: diagnosticsSnapshot.nodeCount,
+            drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
+            activeActionCount: diagnosticsSnapshot.activeActionCount,
             detailLevel: currentCameraDetailLevel
         )
         let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
@@ -356,7 +373,11 @@ final class CityScene: SKScene {
         if diagnostics.createdTileCount > 0 || diagnostics.updatedTileCount > 0
             || diagnostics.removedTileCount > 0 || diagnostics.overlayUpdateCount > 0 {
             diagnostics.nodeCount = recursiveNodeCount(worldLayer)
+            diagnostics.drawableNodeCount = recursiveDrawableNodeCount(worldLayer)
+            diagnostics.activeActionCount = recursiveActiveActionCount(worldLayer)
         }
+        diagnostics.updateDurationMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - updateStarted) * 1_000
         return diagnostics
     }
 
@@ -421,10 +442,17 @@ final class CityScene: SKScene {
     }
 
     private func tileSignature(for tile: CityTile, state: CityGameState) -> TileRenderSignature {
-        TileRenderSignature(
+        let lotPresentation: LotConsequencePresentation?
+        switch tile.kind {
+        case .empty, .road:
+            lotPresentation = nil
+        default:
+            lotPresentation = LotConsequencePresentation(tile: tile)
+        }
+        return TileRenderSignature(
             kind: tile.kind,
-            level: tile.level,
-            constructionStep: Int((tile.constructionProgress * 100).rounded()),
+            lotPresentation: lotPresentation,
+            reducedMotion: lotPresentation == nil ? false : reducedMotion,
             roadConnections: tile.kind == .road
                 ? RoadConnectionMask.resolving(at: tile.coordinate, in: state)
                 : [],
@@ -479,6 +507,8 @@ final class CityScene: SKScene {
             totalTileCount: tileRecords.count,
             reusedTileCount: tileRecords.count,
             nodeCount: diagnosticsSnapshot.nodeCount,
+            drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
+            activeActionCount: diagnosticsSnapshot.activeActionCount,
             detailLevel: detail
         )
         updateSelection(renderedSelection)
@@ -487,6 +517,16 @@ final class CityScene: SKScene {
 
     private func recursiveNodeCount(_ node: SKNode) -> Int {
         node.children.reduce(node.children.count) { $0 + recursiveNodeCount($1) }
+    }
+
+    private func recursiveDrawableNodeCount(_ node: SKNode) -> Int {
+        let localCount = node is SKShapeNode || node is SKSpriteNode || node is SKLabelNode ? 1 : 0
+        return node.children.reduce(localCount) { $0 + recursiveDrawableNodeCount($1) }
+    }
+
+    private func recursiveActiveActionCount(_ node: SKNode) -> Int {
+        let localCount = node.hasActions() ? 1 : 0
+        return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
     }
 
     private func updateSelection(_ coordinate: GridCoordinate?) {

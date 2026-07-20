@@ -9,4 +9,4 @@
 - **Planned surfaces:** `Rendering/`, renderer tests, telemetry, and world proof
 - **Dependencies:** Approved simulation presentation inputs from PLAY-010/040
 - **Validation/proof:** Deterministic renderer tests, performance measures, default/compact/camera proof
-- **Status:** active
+- **Status:** ready-for-integration

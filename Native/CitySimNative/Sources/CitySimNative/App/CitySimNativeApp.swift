@@ -36,44 +36,62 @@ struct CityGameCommands: Commands {
 
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
-            Button("New Region") { store.newCity() }.keyboardShortcut("n")
-            Divider()
-            Button("Save City") { store.save() }.keyboardShortcut("s")
-            Button("Load City") { store.load() }.keyboardShortcut("o")
+            ForEach(CityCommandCatalog.descriptors(in: .files).filter { $0.id != .undo }) {
+                commandButton($0)
+            }
         }
         CommandGroup(replacing: .undoRedo) {
-            Button("Undo Construction") { store.undoLastAction() }
-                .keyboardShortcut("z")
-                .disabled(!store.canUndo)
+            commandButton(CityCommandCatalog.descriptor(for: .undo))
         }
         CommandMenu("Simulation") {
-            Button("Pause") { store.speed = .paused }.keyboardShortcut(.space, modifiers: [])
-            Button("1x Speed") { store.speed = .normal }.keyboardShortcut("1", modifiers: [])
-            Button("2x Speed") { store.speed = .fast }.keyboardShortcut("2", modifiers: [])
-            Button("3x Speed") { store.speed = .fastest }.keyboardShortcut("3", modifiers: [])
+            ForEach(CityCommandCatalog.descriptors(in: .simulation)) {
+                commandButton($0)
+            }
         }
         CommandMenu("Tools") {
-            Button("Inspect Mode") { store.activateInspectMode() }
-                .keyboardShortcut("v", modifiers: [])
-            Button("Build Mode") { store.activateBuildMode() }
-            Button(store.bulldozeMode ? "Deactivate Bulldozer" : "Bulldoze Mode") {
-                store.toggleBulldozer()
+            ForEach(CityCommandCatalog.descriptors(in: .modes)) {
+                commandButton($0)
             }
-            .keyboardShortcut("b", modifiers: [])
-            Button("Cancel Current Tool") { store.cancelInteraction() }
-                .keyboardShortcut(.escape, modifiers: [])
             Divider()
-            ForEach(BuildingKind.buildPalette) { kind in
-                Button(kind.title) { store.selectTool(kind) }
+            ForEach(CityCommandCatalog.descriptors(in: .buildCategories)) {
+                commandButton($0)
+            }
+            Divider()
+            ForEach(CityCommandCatalog.descriptors(in: .buildTools)) {
+                commandButton($0)
             }
         }
         CommandMenu("City Data") {
-            ForEach(DataOverlay.allCases) { overlay in
-                Button(overlay.title) { store.overlay = overlay }
+            ForEach(CityCommandCatalog.descriptors(in: .overlays)) {
+                commandButton($0)
             }
             Divider()
-            Button("Toggle Objectives") { store.showObjectives.toggle() }.keyboardShortcut("j", modifiers: [.command])
-            Button("Toggle Command Center") { store.toggleInspector() }.keyboardShortcut("i", modifiers: [.command, .option])
+            ForEach(CityCommandCatalog.descriptors(in: .panels).filter {
+                [.toggleObjectives, .toggleCommandCenter, .openNotices].contains($0.id)
+            }) {
+                commandButton($0)
+            }
+            Divider()
+            ForEach(CityCommandCatalog.descriptors(in: .inspectors)) {
+                commandButton($0)
+            }
         }
+        CommandGroup(after: .help) {
+            ForEach(CityCommandCatalog.descriptors(in: .panels).filter {
+                [.openCommandGuide, .dismissFeedback].contains($0.id)
+            }) {
+                commandButton($0)
+            }
+        }
+    }
+
+    private func commandButton(_ descriptor: CityCommandDescriptor) -> some View {
+        let title = descriptor.shortcut?.focusScope == .gameplay && descriptor.shortcut != nil
+            ? "\(descriptor.title) · \(descriptor.shortcut?.display ?? "")"
+            : descriptor.title
+        return Button(title) { store.perform(descriptor.id) }
+            .disabled(!store.canPerform(descriptor.id))
+            .help(store.disabledReason(for: descriptor.id) ?? descriptor.discoverability)
+            .modifier(CityCatalogShortcutModifier(shortcut: descriptor.shortcut))
     }
 }

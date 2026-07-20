@@ -4,9 +4,11 @@ import SpriteKit
 @MainActor
 final class LotRenderer {
     private let style: WorldVisualStyle
+    private let lifecycleRenderer: LotLifecycleRenderer
 
     init(style: WorldVisualStyle) {
         self.style = style
+        self.lifecycleRenderer = LotLifecycleRenderer(style: style)
     }
 
     func makeLot(
@@ -15,6 +17,7 @@ final class LotRenderer {
         reducedMotion: Bool
     ) -> SKNode {
         let variant = WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+        let presentation = LotConsequencePresentation(tile: tile)
         let root = SKNode()
         root.name = "lot.\(tile.kind.rawValue).variant.\(variant)"
 
@@ -25,38 +28,54 @@ final class LotRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        switch tile.kind {
-        case .residential:
-            addResidential(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .commercial:
-            addCommercial(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .industrial:
-            addIndustrial(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .park:
-            addPark(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .cityHall:
-            addCityHall(tile, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .powerPlant:
-            addPowerPlant(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .waterTower:
-            addWaterTower(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .fireStation:
-            addFireStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .policeStation:
-            addPoliceStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .school:
-            addSchool(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-        case .empty, .road:
-            break
+        if presentation.construction == .complete || presentation.construction == .finishing {
+            switch tile.kind {
+            case .residential:
+                addResidential(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .commercial:
+                addCommercial(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .industrial:
+                addIndustrial(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .park:
+                addPark(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .cityHall:
+                addCityHall(tile, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .powerPlant:
+                addPowerPlant(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .waterTower:
+                addWaterTower(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .fireStation:
+                addFireStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .policeStation:
+                addPoliceStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .school:
+                addSchool(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+            case .empty, .road:
+                break
+            }
         }
 
-        if tile.constructionProgress < 1 {
-            addConstruction(progress: tile.constructionProgress, to: root)
+        if presentation.construction == .finishing {
+            cityLayer.alpha = 0.64
+            neighborhoodLayer.alpha = 0.64
+            blockLayer.alpha = 0.64
         }
 
-        // This milestone intentionally uses static ambient props. No decorative
-        // action is started, so Reduce Motion preserves the same readable state.
-        _ = reducedMotion
+        if presentation.construction != .complete {
+            root.addChild(lifecycleRenderer.makeConstruction(
+                for: tile,
+                stage: presentation.construction,
+                detail: detail,
+                reducedMotion: reducedMotion
+            ))
+        } else {
+            root.addChild(lifecycleRenderer.makeCompletedState(
+                for: tile,
+                presentation: presentation,
+                detail: detail,
+                reducedMotion: reducedMotion
+            ))
+        }
         return root
     }
 
@@ -929,40 +948,6 @@ final class LotRenderer {
             brace.zPosition = 10
             node.addChild(brace)
         }
-    }
-
-    private func addConstruction(progress rawProgress: Double, to root: SKNode) {
-        let progress = min(1, max(0, rawProgress))
-        let layer = SKNode()
-        layer.name = "lot.construction"
-        layer.zPosition = 80
-        let frameColor = NSColor(calibratedRed: 0.94, green: 0.61, blue: 0.16, alpha: 0.95)
-        for x in [-23.0, 23.0] {
-            let upright = SKShapeNode(rectOf: CGSize(width: 2, height: 43))
-            upright.fillColor = frameColor
-            upright.strokeColor = .clear
-            upright.position = CGPoint(x: x, y: 19)
-            layer.addChild(upright)
-        }
-        for row in 0..<4 {
-            let rail = SKShapeNode(rectOf: CGSize(width: 48, height: 1.4))
-            rail.fillColor = frameColor.withAlphaComponent(0.78)
-            rail.strokeColor = .clear
-            rail.position = CGPoint(x: 0, y: CGFloat(row) * 12)
-            layer.addChild(rail)
-        }
-        let track = SKShapeNode(rectOf: CGSize(width: 40, height: 4), cornerRadius: 2)
-        track.fillColor = NSColor.black.withAlphaComponent(0.48)
-        track.strokeColor = NSColor.white.withAlphaComponent(0.2)
-        track.position = CGPoint(x: 0, y: -10)
-        layer.addChild(track)
-        let fill = SKShapeNode(rectOf: CGSize(width: max(2, 38 * progress), height: 2.5), cornerRadius: 1.2)
-        fill.fillColor = frameColor
-        fill.strokeColor = .clear
-        fill.position = CGPoint(x: -19 + max(2, 38 * progress) / 2, y: -10)
-        fill.zPosition = 1
-        layer.addChild(fill)
-        root.addChild(layer)
     }
 
     private func levelHeight(_ tile: CityTile, step: CGFloat) -> CGFloat {

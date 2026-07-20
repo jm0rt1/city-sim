@@ -17,8 +17,9 @@ struct GameStatusOverlay: View {
                      : "New Arcadia can no longer meet its obligations. Reconsider the balance between growth, services, and taxation.")
                     .multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 480)
                 HStack {
-                    Button("Start a New Region") { store.newCity() }.buttonStyle(.borderedProminent).tint(GameTheme.accent)
-                    Button("Load Quicksave") { store.load() }.buttonStyle(.bordered)
+                    Button("Start a New Region") { store.perform(.newRegion) }.buttonStyle(.borderedProminent).tint(GameTheme.accent)
+                    Button("Load Quicksave") { store.perform(.loadCity) }.buttonStyle(.bordered)
+                        .disabled(!store.canPerform(.loadCity))
                 }
             }
             .padding(38)

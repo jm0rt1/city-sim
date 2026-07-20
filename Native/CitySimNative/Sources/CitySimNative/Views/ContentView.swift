@@ -1,5 +1,11 @@
 import SwiftUI
 
+enum ObjectiveSurfacePresentation: Equatable {
+    case hidden
+    case expanded
+    case compactSummary
+}
+
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
@@ -19,24 +25,28 @@ struct ContentView: View {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
                     withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                        store.showObjectives.toggle()
+                        _ = store.perform(.toggleObjectives)
                     }
                 } label: {
                     Label("Objectives", systemImage: "flag.checkered")
                 }
-                Button { store.toggleInspector() } label: {
+                Button { store.perform(.toggleCommandCenter) } label: {
                     Label("Command Center", systemImage: "rectangle.bottomthird.inset.filled")
                 }
-                Button { store.save() } label: {
+                Button { store.perform(.openCommandGuide) } label: {
+                    Label("Commands", systemImage: "command.square")
+                }
+                Button { store.perform(.saveCity) } label: {
                     Label("Save", systemImage: "square.and.arrow.down")
                 }
-                Button { store.undoLastAction() } label: {
+                Button { store.perform(.undo) } label: {
                     Label("Undo", systemImage: "arrow.uturn.backward")
                 }
-                .disabled(!store.canUndo)
+                .disabled(!store.canPerform(.undo))
             }
         }
-        .task {
+        .task(id: hasSeenWelcome) {
+            guard hasSeenWelcome else { return }
             while !Task.isCancelled {
                 do {
                     try await Task.sleep(nanoseconds: 420_000_000)
@@ -47,11 +57,23 @@ struct ContentView: View {
                 store.pulse()
             }
         }
-        .onExitCommand { store.cancelInteraction() }
+        .onExitCommand { store.perform(.cancelInteraction) }
+        .sheet(isPresented: $store.showCommandGuide) {
+            CommandGuideView(store: store)
+        }
     }
 
     static func isCompactLayout(_ size: CGSize) -> Bool {
         size.width < 1_100 || size.height < 700
+    }
+
+    static func objectiveSurfacePresentation(
+        compact: Bool,
+        showObjectives: Bool,
+        showInspector: Bool
+    ) -> ObjectiveSurfacePresentation {
+        guard showObjectives else { return .hidden }
+        return compact && showInspector ? .compactSummary : .expanded
     }
 
     private var feedbackSymbol: String {
@@ -79,9 +101,20 @@ struct ContentView: View {
                 TopHUDView(store: store, compact: compact)
 
                 HStack(alignment: .top) {
-                    if store.showObjectives {
+                    switch Self.objectiveSurfacePresentation(
+                        compact: compact,
+                        showObjectives: store.showObjectives,
+                        showInspector: store.showInspector
+                    ) {
+                    case .hidden:
+                        EmptyView()
+                    case .expanded:
                         ObjectivesView(store: store)
                             .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                    case .compactSummary:
+                        ObjectiveSummaryView(store: store)
+                            .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                            .accessibilityHint("Close command-center details to expand all objectives")
                     }
                     Spacer(minLength: 8)
                     EventFeedView(store: store, compact: compact)
@@ -94,7 +127,7 @@ struct ContentView: View {
                         Image(systemName: feedbackSymbol)
                             .foregroundStyle(feedbackColor)
                         Text(feedback).font(.callout.weight(.semibold))
-                        Button { store.clearFeedback() } label: {
+                        Button { store.perform(.dismissFeedback) } label: {
                             Image(systemName: "xmark")
                                 .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
                         }

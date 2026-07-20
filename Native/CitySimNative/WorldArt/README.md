@@ -14,6 +14,15 @@ model-generated pixel is sampled into the atlas.
 - License: original project artwork, copyright JFM Systems; repository use only.
 - Stable identity: asset names plus `WorldVisualSeed`, independent of simulation seed.
 
+Wave 003 adds authored commercial and industrial density sets. Each family has
+three density tiers and three coordinate-stable variants per tier, plus a
+separate parcel treatment. Commercial progression moves from fine-grained
+main-street rows through courtyard blocks to stepped towers. Industrial
+progression moves from fabrication sheds through warehouse/silo logistics to a
+process campus with tanks, stacks, and pipe gantries. These are architectural
+readings of authoritative `kind` and `level`; they do not encode service,
+pollution, prosperity, occupancy, freight, or operating state.
+
 The model-generated `docs/production/evidence/PLAY-021/art-direction-reference.png`
 is a disclosed mood/composition reference only. Its pixels are not used here.
 

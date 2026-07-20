@@ -48,8 +48,9 @@ struct CitySceneView: NSViewRepresentable {
         proofReducedMotion = false
 #endif
         scene.reducedMotion = accessibilityReduceMotion || reduceGameMotion || proofReducedMotion
+        guard let snapshot = context.coordinator.presentationSnapshot(for: store.state) else { return }
         scene.render(
-            state: store.state,
+            snapshot: snapshot,
             overlay: store.overlay,
             selection: store.selectedCoordinate,
             interactionMode: store.interactionMode
@@ -66,6 +67,7 @@ struct CitySceneView: NSViewRepresentable {
         private(set) var previousCommandPolicy: CityCommandPolicy
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
+        private var cachedPresentationSnapshot: CityPresentationSnapshot?
         private let enqueueOnMain: MainLoopEnqueuer
 
         init(
@@ -130,6 +132,15 @@ struct CitySceneView: NSViewRepresentable {
             to commandPolicy: CityCommandPolicy
         ) -> Bool {
             priorPolicy == .blocked(.welcome) && commandPolicy == .enabled
+        }
+
+        func presentationSnapshot(for state: CityGameState) -> CityPresentationSnapshot? {
+            if let cachedPresentationSnapshot, cachedPresentationSnapshot.state == state {
+                return cachedPresentationSnapshot
+            }
+            guard let snapshot = try? CityPresentationSnapshot(state: state) else { return nil }
+            cachedPresentationSnapshot = snapshot
+            return snapshot
         }
     }
 }

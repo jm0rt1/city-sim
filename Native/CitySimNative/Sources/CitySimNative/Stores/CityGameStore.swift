@@ -322,7 +322,8 @@ final class CityGameStore: ObservableObject {
 
     func load() {
         do {
-            state = try saves.load()
+            let result = try saves.load()
+            state = result.state
             speed = .paused
             selectedTool = .road
             selectedBuildCategory = .roads
@@ -333,7 +334,12 @@ final class CityGameStore: ObservableObject {
             showInspector = false
             undoStates.removeAll()
             canUndo = false
-            showFeedback("City loaded · Simulation paused", tone: .positive)
+            showFeedback(
+                result.recoveredFromBackup
+                    ? "Recovered last known-good city · Simulation paused"
+                    : "City loaded · Simulation paused",
+                tone: .positive
+            )
         } catch { showFeedback("No valid save was found", tone: .caution) }
     }
 

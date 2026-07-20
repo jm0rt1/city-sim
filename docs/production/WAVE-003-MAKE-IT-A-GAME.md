@@ -1,6 +1,6 @@
 # Wave 003 — Make It Feel Like a Game
 
-**Status:** Queued; do not dispatch until Wave 002 passes PLAY-050 and the new baseline is published
+**Status:** Dispatched from accepted Wave 002 publication `74b694d` on July 20, 2026
 
 **Date:** July 20, 2026
 
@@ -48,4 +48,14 @@ Run the complete 20-minute pointer and keyboard journeys. Record decision cadenc
 4. PLAY-032 direct diagnosis/action and keyboard spatial navigation.
 5. PLAY-051 independent acceptance.
 
-No Wave 003 lane receives an active claim until Wave 002 is accepted, `master` is pushed, the baseline record is updated, and every worker branch is synchronized to that exact publication commit.
+Wave 002 is accepted, `master` is pushed, the baseline record is updated, and every worker branch was verified clean at publication commit `74b694d` with zero divergence before these claims were activated.
+
+## Dispatch gates
+
+- PLAY-041 begins first and owns any proposed spatial-consequence contract. It must return the smallest additive contract to integration for approval before changing a shared public surface.
+- PLAY-012 may begin immediately on contract-free pacing, authored decisions, balance, fixtures, and causal evidence. It must consume approved spatial truth rather than define it.
+- PLAY-022 may begin authored art-direction studies and renderer-local prototypes, but may not represent service, pollution, prosperity, strain, or recovery as fact until PLAY-041 truth is approved and integrated.
+- PLAY-032 may begin journey mapping, remedy design, and keyboard-spatial-navigation proposals. Shared commands, store surfaces, focus architecture, or snapshot fields require integration approval.
+- PLAY-051 freezes the acceptance rubric and proof harness now, observes workers without coaching them, and performs final acceptance only against the exact integrated candidate.
+
+Every lane must keep coherent work committed, disclose blockers promptly, and stop on ownership conflict, unapproved contracts, false world feedback, or inability to produce live staged evidence.

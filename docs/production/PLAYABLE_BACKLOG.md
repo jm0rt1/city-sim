@@ -101,3 +101,53 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Casual cross-lane product fixes; defects return to owners.
 - **Acceptance:** Decision by 02:00; no blocking confusion over 30 seconds; no false feedback; pressure diagnosed within two minutes; recovery before minute 18; clear outcome and resume comprehension; every critical failure rejects the wave.
 - **Stop conditions:** Missing authoritative fixture/contract, unretained visual proof, coaching required to pass, or contradictory player feedback.
+
+### [ ] PLAY-012: Deliver a three-act playable session
+
+- **Player outcome:** A fresh player reaches an opening fork, a strategy-specific complication, a recovery decision, and an unmistakable durable result within 20 minutes, with no unexplained wait longer than 30 seconds.
+- **Owning lane:** Gameplay loop.
+- **Dependencies:** Accepted Wave 002 baseline `74b694d`; consume PLAY-041 truth after integration approval.
+- **In scope:** Deterministic pacing, authored strategy decisions, incidents, recovery, balance, objectives/messages through approved surfaces, gameplay fixtures, and live causal proof.
+- **Out of scope:** Renderer art, UI composition, input architecture, save schema, and unapproved shared contracts.
+- **Acceptance:** First meaningful decision by 02:00; at least three consequential decisions; feedback within 15 seconds of relevant simulation time; commercial and industrial stories remain viable and mechanically distinct; recovery before minute 18; focused/full tests plus a staged no-coaching session.
+- **Stop conditions:** Passive fixture-only success, nondeterminism, renderer/UI edits, or a shared contract change without approval.
+
+### [ ] PLAY-041: Publish spatial consequence truth
+
+- **Player outcome:** Location-specific service, pollution, prosperity/strain, recovery, and event identity are deterministic, inspectable, persistent where required, and safe for renderer/UI consumption.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** Accepted Wave 002 baseline `74b694d`; integration approval before any public contract change.
+- **In scope:** Smallest presentation contract proposal, deterministic derivation, replay/save/load/undo/fingerprint consequences, diagnostics, performance budgets, and contract tests.
+- **Out of scope:** Gameplay balance, renderer art, HUD layout, and invented player-facing copy.
+- **Acceptance:** One authoritative spatial truth source; stable identity; exact undo/replay/save behavior; frozen fixtures and performance evidence; documented compatibility and migration risk; integration-approved contract before consumers change.
+- **Stop conditions:** Duplicate truth, implicit schema migration, renderer-oriented facts in persistence without need, or unapproved public surface changes.
+
+### [ ] PLAY-022: Make strategy reshape the living city
+
+- **Player outcome:** Commercial and industrial strategies visibly create different cities, and utility trouble, pollution, prosperity, decline, construction, and recovery are legible in the live world without reading the HUD alone.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-021; approved and integrated PLAY-041 truth for factual consequence states.
+- **In scope:** Authored architecture/environment families, density progression, consequence layers, bounded ambient life, LOD/reuse/performance, accessibility, and live default/compact visual proof.
+- **Out of scope:** Inventing simulation facts, gameplay balance, HUD redesign, save schema, and fixture-only visual claims.
+- **Acceptance:** Same live city shows strategy and three-act state changes non-color-only at city/neighborhood/block scales; materially stronger visual direction; stable deterministic identity; no false feedback; budgeted performance; staged before/after evidence accepted independently.
+- **Stop conditions:** Cosmetic recolor-only delivery, off-window-only proof, false simulation implications, unclear asset provenance, or regression in hit testing/reuse/accessibility.
+
+### [ ] PLAY-032: Turn diagnosis into direct action
+
+- **Player outcome:** Important warnings reveal cause, consequence, and legitimate remedies, and keyboard-only players can navigate and act spatially without falling out of the governed command system.
+- **Owning lane:** UI and input.
+- **Dependencies:** Accepted PLAY-031; approved PLAY-041 truth; integration approval for shared commands/store/input contracts.
+- **In scope:** Diagnosis-to-remedy journeys, direct actions, keyboard world navigation, focus/accessibility, compact arbitration, command metadata, tests, and staged proof.
+- **Out of scope:** Simulation rules, renderer truth, save schema, and duplicate command state.
+- **Acceptance:** Every critical warning has truthful cause/consequence/remedy routes; pointer and keyboard dispatch the same intent; spatial focus is visible and stable; no shortcut collisions or modal leakage; default/compact/Full Keyboard Access/VoiceOver journeys pass live.
+- **Stop conditions:** Ad hoc shortcuts, inaccessible critical action, duplicated domain truth, broken map dominance, or unapproved shared-store/input architecture.
+
+### [ ] PLAY-051: Prove fun, comprehension, and replay value
+
+- **Player outcome:** Independent evidence establishes whether the integrated build is understandable, consequential, recoverable, visually expressive, and worth replaying differently.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** Exact integrated PLAY-012/041/022/032 candidate; isolated staged-app identity.
+- **In scope:** Frozen rubric/harness, pointer and keyboard journeys, decision/dead-time/consequence ledgers, strategy comparison, visual storytelling, accessibility, compact, persistence/recovery, defects, and retained proof.
+- **Out of scope:** Casual product fixes, coaching, candidate substitution, and acceptance based on tests alone.
+- **Acceptance:** Complete no-coaching 20-minute routes; first decision by 02:00; no unexplained dead time over 30 seconds; consequence latency at most 15 seconds of relevant simulation time; three meaningful decisions; recovery before minute 18; distinct viable strategies; save/resume trust; explicit replay desire; any critical defect rejects the wave.
+- **Stop conditions:** Missing exact candidate identity, coached success, unretained proof, false feedback, or contradictory evidence.

@@ -60,13 +60,13 @@ Legacy Python, gameplay balance, progression rules, HUD composition, renderer be
 
 - Complete native suite: 59 tests, 0 failures in 31.538 seconds.
 - Session platform suite: 14 tests, 0 failures in 2.076 seconds.
-- Dense deterministic 24x24 fixture at 50,000 residents, 400 ticks:
+- Pre-PLAY-011 `dense-24x24-terminal-v1` generator at 50,000 residents, 400 step attempts, terminal tick 44 / `.lost`:
   - simulation: 40.004 ms;
   - fingerprint: 1.370 ms;
   - schema-1 save: 6.712 ms;
   - validated load: 3.170 ms;
   - envelope size: 135,456 bytes;
-  - final digest: `fe710ac93dcb3d4bc4438157f777a2e2e8557397573b0d39f1d8ac3e5ab86cd5`.
+  - historical pre-PLAY-011 digest: `fe710ac93dcb3d4bc4438157f777a2e2e8557397573b0d39f1d8ac3e5ab86cd5`.
 - Existing renderer diagnostic remained healthy: ten unchanged pulses averaged 1.830 ms, reused 5,760 tile roots, and rebuilt 0.
 - `git diff --check`: passed.
 - `bash -n script/build_and_run.sh`: passed.
@@ -83,8 +83,23 @@ Reconciliation validation:
 
 - `SessionPlatformTests`: 14 tests, 0 failures in 2.351 seconds.
 - Complete integrated suite: 78 tests, 0 failures in 38.561 seconds.
-- Dense 24x24 diagnostic: 400 ticks in 41.035 ms, fingerprint 1.380 ms, save 6.823 ms, load 3.146 ms, 135,456 bytes.
+- Dense 24x24 diagnostic before the frozen-golden repair: 400 step attempts, terminal tick 44 / `.lost`, fingerprint `7b6454ecbe83aeb3bdc88de4fb1d6cb23ef67ce81849123e907d3147c6c52a77`.
 - Nil-versus-zero progression fingerprints, legacy tick-4 normalization, schema-0/schema-1 compatibility, corrupt-primary recovery, interrupted-write safety, exact undo, immutable snapshots, and equivalent speed grouping all remained green.
+
+### Wave 002 dense-fixture contract repair
+
+An independent replay of pre-PLAY-011 commit `822755cbad5431d868547e3d38d41e8df14e715f` reproduced `fe710ac93dcb3d4bc4438157f777a2e2e8557397573b0d39f1d8ac3e5ab86cd5`. Instrumentation also proved the original `ticks=400` label was inaccurate: the 400 loop iterations were step attempts, while the authoritative dense state reached `.lost` at tick 44 and all later calls were no-ops.
+
+The generator itself did not change. PLAY-011 intentionally added commercial/industrial expansion utility load, which changes persisted utility, happiness, approval, demand, and related state before the same tick-44 terminal checkpoint. Canonical fingerprint encoding and fingerprint version 1 did not change. The semantically changed checkpoint is therefore named `dense-24x24-terminal-wave2-v2` and frozen at:
+
+`7b6454ecbe83aeb3bdc88de4fb1d6cb23ef67ce81849123e907d3147c6c52a77`
+
+`SessionPlatformTests.testDenseSessionSimulationAndPersistencePerformance` now publishes the versioned fixture name and asserts final tick 44, `.lost` status, and the exact digest before validating schema-1 save/load equality. Two independent focused repair runs reproduced the digest exactly:
+
+- run 1: simulation 45.635 ms, fingerprint 1.893 ms, save 7.411 ms, load 3.267 ms, 135,456 bytes;
+- run 2: simulation 43.934 ms, fingerprint 1.743 ms, save 7.604 ms, load 3.240 ms, 135,456 bytes.
+
+Repair validation passed 14/14 SessionPlatformTests in 2.679 seconds and the complete 78-test suite in 42.132 seconds. The full run reproduced the same digest a third time. The old `fe710ac9…` value remains valid historical evidence only for pre-PLAY-011 terminal fixture v1; it is not the Wave 002 golden state.
 
 ## Live two-candidate isolation proof
 

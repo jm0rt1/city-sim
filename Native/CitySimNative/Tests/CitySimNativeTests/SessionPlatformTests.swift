@@ -175,10 +175,134 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state), beforeFingerprint)
     }
 
+    func testPresentationSnapshotOwnsAnImmutableAuthoritativeValue() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let originalTreasury = snapshot.state.treasury
+        let originalFingerprint = snapshot.fingerprint
+
+        CitySimulation.step(&state)
+        state.treasury += 10_000
+
+        XCTAssertEqual(snapshot.authoritativeTick, 0)
+        XCTAssertEqual(snapshot.state.treasury, originalTreasury)
+        XCTAssertEqual(snapshot.fingerprint, originalFingerprint)
+        XCTAssertEqual(snapshot.analytics.projectedBalance, CityAnalytics(state: snapshot.state).projectedBalance)
+        XCTAssertNotEqual(try CityStateFingerprinter.fingerprint(state), snapshot.fingerprint)
+    }
+
+    func testFixtureCommandsAreTypedBoundedAndCodable() throws {
+        let commands: [CitySimulationCommand] = [
+            .setTaxRate(0.14),
+            .build(kind: .commercial, coordinate: GridCoordinate(x: 8, y: 11)),
+            .advanceOneDailyBoundary,
+            .demolish(coordinate: GridCoordinate(x: 8, y: 11))
+        ]
+
+        let roundTrip = try JSONDecoder().decode(
+            [CitySimulationCommand].self,
+            from: JSONEncoder().encode(commands)
+        )
+        XCTAssertEqual(roundTrip, commands)
+
+        var state = CityGameState.newCity(seed: 42)
+        for command in commands {
+            XCTAssertEqual(CitySimulationCommandExecutor.apply(command, to: &state), .applied)
+        }
+        XCTAssertEqual(state.tick, 4)
+        XCTAssertEqual(state.taxRate, 0.14)
+        XCTAssertEqual(state.tile(at: GridCoordinate(x: 8, y: 11))?.kind, .empty)
+
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .demolish(coordinate: GridCoordinate(x: 11, y: 11)),
+                to: &state
+            ),
+            .rejected(.demolitionNotAllowed)
+        )
+    }
+
+    func testEquivalentSpeedGroupingsProduceTheSameLogicalOutcome() throws {
+        let startingState = CityGameState.newCity(seed: 42)
+        let states = SimulationSpeed.allCases.filter { $0 != .paused }.map { speed in
+            var state = startingState
+            let totalTicks = 120
+            var remaining = totalTicks
+            while remaining > 0 {
+                for _ in 0..<min(speed.ticksPerPulse, remaining) {
+                    CitySimulation.step(&state)
+                }
+                remaining -= min(speed.ticksPerPulse, remaining)
+            }
+            return state
+        }
+
+        XCTAssertEqual(states[0], states[1])
+        XCTAssertEqual(states[1], states[2])
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(states[0]),
+            try CityStateFingerprinter.fingerprint(states[2])
+        )
+    }
+
+    func testAcceptedStrategyCommandsProduceFrozenCheckpoints() throws {
+        var industry = CityGameState.newCity(seed: 42)
+        apply([
+            .build(kind: .industrial, coordinate: GridCoordinate(x: 8, y: 11)),
+            .build(kind: .industrial, coordinate: GridCoordinate(x: 7, y: 11))
+        ], to: &industry)
+        advanceDailyBoundaries(4, state: &industry)
+        apply([
+            .build(kind: .powerPlant, coordinate: GridCoordinate(x: 6, y: 11)),
+            .build(kind: .waterTower, coordinate: GridCoordinate(x: 5, y: 11))
+        ], to: &industry)
+        advanceDailyBoundaries(220, state: &industry)
+
+        var commerce = CityGameState.newCity(seed: 42)
+        apply([
+            .setTaxRate(0.14),
+            .build(kind: .commercial, coordinate: GridCoordinate(x: 8, y: 11)),
+            .build(kind: .commercial, coordinate: GridCoordinate(x: 7, y: 11))
+        ], to: &commerce)
+        advanceDailyBoundaries(2, state: &commerce)
+        apply([
+            .build(kind: .powerPlant, coordinate: GridCoordinate(x: 6, y: 11)),
+            .build(kind: .waterTower, coordinate: GridCoordinate(x: 5, y: 11))
+        ], to: &commerce)
+        advanceDailyBoundaries(220, state: &commerce)
+
+        XCTAssertEqual(industry.tick, 896)
+        XCTAssertEqual(commerce.tick, 888)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(industry).digest,
+            "556c2426cbc1841787e0611fbf253718ae0a2b528d96e22471c9c6ab12e1d8b4"
+        )
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(commerce).digest,
+            "e2127b28c3c5e3e9684be704f9dd15d4a38457ea5ccf9d5fb1745b00cefae691"
+        )
+    }
+
     private func withTemporaryRoot(_ body: (URL) throws -> Void) throws {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "citysim-play040-\(UUID().uuidString)", directoryHint: .isDirectory)
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
+    }
+
+    private func apply(
+        _ commands: [CitySimulationCommand],
+        to state: inout CityGameState
+    ) {
+        for command in commands {
+            let result = CitySimulationCommandExecutor.apply(command, to: &state)
+            XCTAssertEqual(result, .applied, "Fixture command rejected: \(command) -> \(result)")
+        }
+    }
+
+    private func advanceDailyBoundaries(_ count: Int, state: inout CityGameState) {
+        for _ in 0..<count {
+            apply([.advanceOneDailyBoundary], to: &state)
+        }
     }
 }

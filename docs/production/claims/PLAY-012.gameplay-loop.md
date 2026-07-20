@@ -9,7 +9,7 @@
 - **Planned surfaces:** gameplay-owned deterministic rules, incidents, balance, objectives/messages through existing approved mappings, fixtures, tests, analytics, and live evidence
 - **Dependencies:** accepted PLAY-011; approved and integrated PLAY-041 truth for any spatial consequence consumption
 - **Validation/proof:** two deterministic strategy routes, decision/dead-time/consequence timelines, focused and full suites, staged build, and a no-coaching 20-minute journey
-- **Status:** active; contract-free gameplay work authorized
+- **Status:** blocked; product checkpoint `49764b89dbdcfa46add838114db9a95b4f5ba6ae` is preserved, pending PLAY-041/platform fixture adoption and independent PLAY-051/integration live proof
 
 Deliver the opening fork, strategy-specific complication, recovery decision, and durable payoff described in Wave 003. Keep every meaningful decision legible through existing approved surfaces and preserve both commercial and industrial viability without making them equivalent.
 

@@ -301,7 +301,7 @@ final class CityScene: SKScene {
     }
 
     private func zoomCamera(by factor: CGFloat) {
-        let scale = min(2.4, max(0.42, cameraNode.xScale * factor))
+        let scale = min(2.4, max(0.30, cameraNode.xScale * factor))
         cameraNode.setScale(scale)
         refreshForCameraChange()
     }
@@ -789,7 +789,7 @@ final class CityScene: SKScene {
         // Open on the place the player can act on, while keeping road arms and
         // several buildable blocks as honest expansion context. Compact uses a
         // slightly wider lens so the command deck never crowds the neighborhood.
-        let defaultScale: CGFloat = size.width <= 980 ? 0.54 : 0.42
+        let defaultScale: CGFloat = size.width <= 980 ? 0.46 : 0.35
 #if DEBUG
         let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
             .flatMap(Double.init)

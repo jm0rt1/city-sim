@@ -39,6 +39,7 @@ final class TerrainRenderer {
 
         addLotSurface(for: tile, to: cityLayer)
         addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
+        addVacantGrove(for: tile, to: neighborhoodLayer)
         addCloseTerrainDetail(for: tile, to: blockLayer)
         return root
     }
@@ -281,6 +282,52 @@ final class TerrainRenderer {
             flower.zPosition = 0
             layer.addChild(flower)
         }
+    }
+
+    /// Gives undeveloped land authored rhythm without implying buildings,
+    /// services, traffic, occupancy, or any other simulation state.
+    private func addVacantGrove(for tile: CityTile, to layer: SKNode) {
+        guard tile.kind == .empty,
+              WorldVisualSeed.variant(
+                  count: 8,
+                  for: tile.coordinate,
+                  kind: tile.kind,
+                  salt: 0x6A0E
+              ) == 0 else { return }
+
+        let grove = SKNode()
+        grove.name = "terrain.vacant.grove"
+        let mirror: CGFloat = WorldVisualSeed.variant(
+            count: 2,
+            for: tile.coordinate,
+            kind: tile.kind,
+            salt: 0x6A0F
+        ) == 0 ? -1 : 1
+        grove.position = CGPoint(x: mirror * 11, y: -1)
+        grove.zPosition = -0.8
+
+        for index in 0..<2 {
+            let x = CGFloat(index * 11 - 5) * mirror
+            let trunk = SKShapeNode(rectOf: CGSize(width: 2.2, height: 8), cornerRadius: 0.6)
+            trunk.fillColor = style.palette.mapEarthDark.withAlphaComponent(0.84)
+            trunk.strokeColor = .clear
+            trunk.position = CGPoint(x: x, y: CGFloat(index) * 2)
+            grove.addChild(trunk)
+
+            let canopy = SKShapeNode(ellipseOf: CGSize(
+                width: 12 + CGFloat(index) * 2,
+                height: 9 + CGFloat(index)
+            ))
+            let colorIndex = (tile.coordinate.x + tile.coordinate.y + index)
+                % style.palette.foliage.count
+            canopy.fillColor = style.palette.foliage[colorIndex].withAlphaComponent(0.9)
+            canopy.strokeColor = NSColor.black.withAlphaComponent(0.16)
+            canopy.lineWidth = 0.7
+            canopy.position = CGPoint(x: x - 1.5, y: 7 + CGFloat(index) * 2)
+            grove.addChild(canopy)
+        }
+
+        layer.addChild(grove)
     }
 
     private func edgeStroke(from start: CGPoint, to end: CGPoint) -> SKShapeNode {

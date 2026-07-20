@@ -79,18 +79,54 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testVacantGrovesAreSparseDeterministicAndTruthSafe() {
+        let renderer = TerrainRenderer(style: WorldVisualStyle())
+        var groveCoordinates: [GridCoordinate] = []
+
+        for y in 0..<16 {
+            for x in 0..<16 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                let vacant = renderer.makeGround(
+                    for: CityTile(coordinate: coordinate, kind: .empty),
+                    detail: .block
+                )
+                if descendantNames(in: vacant).contains("terrain.vacant.grove") {
+                    groveCoordinates.append(coordinate)
+                    XCTAssertEqual(recursiveActiveActionCount(vacant), 0)
+                }
+
+                let road = renderer.makeGround(
+                    for: CityTile(coordinate: coordinate, kind: .road),
+                    detail: .block
+                )
+                XCTAssertFalse(descendantNames(in: road).contains("terrain.vacant.grove"))
+            }
+        }
+
+        XCTAssertGreaterThan(groveCoordinates.count, 20)
+        XCTAssertLessThan(groveCoordinates.count, 45)
+        for coordinate in groveCoordinates {
+            let repeatRender = renderer.makeGround(
+                for: CityTile(coordinate: coordinate, kind: .empty),
+                detail: .block
+            )
+            XCTAssertTrue(descendantNames(in: repeatRender).contains("terrain.vacant.grove"))
+        }
+    }
+
+    @MainActor
     func testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactBlockDetail() {
         let state = CityGameState.newCity(seed: 42)
         let defaultScene = CityScene(size: CGSize(width: 1_280, height: 800))
         defaultScene.reducedMotion = true
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.42, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.35, accuracy: 0.001)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
 
         let compactScene = CityScene(size: CGSize(width: 900, height: 600))
         compactScene.reducedMotion = true
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.54, accuracy: 0.001)
+        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.46, accuracy: 0.001)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .block)
 
         let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }

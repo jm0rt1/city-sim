@@ -3,10 +3,17 @@
 ## Candidate
 
 - Commit:
+- Accepted integration base:
+- Branch:
 - Build command:
 - Staged app identity:
-- Journey version: `critical-journey-v1`
+- Bundle identifier / display name / preference domain:
+- Staged bundle / executable SHA-256 / exact process identity:
+- Isolated `CITYSIM_DATA_ROOT`:
+- Launch time:
+- Journey version: `critical-journey-v4`
 - Fixture ID/version/seed/hash:
+- Fingerprint version / expected digest / start digest:
 - Window/input/accessibility variant:
 - Tester allowed knowledge:
 - Started/ended:
@@ -43,6 +50,10 @@
 | Accessibility critical path | | | |
 | Compact 900×600 | | | |
 | Save/resume | | | |
+| Undo digest restoration | | | |
+| Corrupt-primary recovery | | | |
+| Candidate isolation | | | |
+| Command catalog coverage/equivalence | | | |
 | Clear outcome | | | |
 
 ## Defects

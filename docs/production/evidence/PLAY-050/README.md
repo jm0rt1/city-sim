@@ -21,6 +21,8 @@ Critical failures reject the candidate. Passing automated tests, producing a scr
 
 The baseline journey is frozen in [critical-journey-v1.md](critical-journey-v1.md). [critical-journey-v2.md](critical-journey-v2.md) recorded the approved `CONTRACT-001` rules before implementation landed. [critical-journey-v3.md](critical-journey-v3.md) is the execution contract for the accepted PLAY-010 baseline and makes its four-ticks-per-day timing and exact 2,800-tick strategy horizon explicit. If a later accepted product contract makes a step obsolete, create another journey version and retain the previous versions. Never rewrite a completed or in-progress journey to make a candidate pass.
 
+[critical-journey-v4.md](critical-journey-v4.md) is frozen for the future Wave 002 integrated candidate. It consumes the approved command, persistence, and app-isolation contracts through [wave-002-command-inventory.md](wave-002-command-inventory.md), [wave-002-persistence-gate.md](wave-002-persistence-gate.md), [wave-002-candidate-manifest-template.md](wave-002-candidate-manifest-template.md), and [wave-002-defect-retests.md](wave-002-defect-retests.md). D001 and D002 remain open until that exact integrated candidate independently passes the retests.
+
 ## Candidate layout
 
 Each evaluated commit receives a directory named `<short-sha>-<purpose>/` containing:
@@ -35,6 +37,8 @@ logs/
 ```
 
 Binary proof must be directly traceable from `manifest.md`. Generated build products and private user saves do not belong in this directory.
+
+For Wave 002 and later, every run manifest must record the branch, full commit, accepted base, bundle identifier, display name, preference domain, isolated data root, launch time, staged bundle path, executable path and SHA-256, exact process identity, build invocation, journey version, fixture IDs, expected/actual fingerprints, and repository cleanliness. Missing or ambiguous candidate identity blocks the run.
 
 ## Candidate runs
 

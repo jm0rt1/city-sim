@@ -171,6 +171,12 @@ final class WorldRenderingTests: XCTestCase {
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
         XCTAssertNotEqual(scene.tileRootIdentifier(at: construction), constructionRoot)
+        print(
+            "CITYSIM_PLAY020_MOTION_DIAGNOSTICS " +
+            "active_actions=\(initialActions) " +
+            "unchanged_pulses=12 unchanged_updates=0 " +
+            "reduced_motion_actions=\(scene.diagnosticsSnapshot.activeActionCount)"
+        )
     }
 
     @MainActor

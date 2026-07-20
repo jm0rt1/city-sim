@@ -58,22 +58,71 @@ struct CitySceneView: NSViewRepresentable {
 
     @MainActor
     final class Coordinator {
+        typealias MainLoopAction = @MainActor @Sendable () -> Void
+        typealias MainLoopEnqueuer = (@escaping MainLoopAction) -> Void
+
         var store: CityGameStore
         weak var scene: CityScene?
         private(set) var previousCommandPolicy: CityCommandPolicy
+        private(set) var focusHandoffGeneration: UInt = 0
+        private(set) var pendingFocusHandoffGeneration: UInt?
+        private let enqueueOnMain: MainLoopEnqueuer
 
-        init(store: CityGameStore) {
+        init(
+            store: CityGameStore,
+            enqueueOnMain: @escaping MainLoopEnqueuer = { action in
+                DispatchQueue.main.async(execute: action)
+            }
+        ) {
             self.store = store
             previousCommandPolicy = store.commandPolicy
+            self.enqueueOnMain = enqueueOnMain
         }
 
         @discardableResult
         func synchronizeCommandPolicy(_ commandPolicy: CityCommandPolicy, in view: SKView) -> Bool {
             let priorPolicy = previousCommandPolicy
             previousCommandPolicy = commandPolicy
+            guard commandPolicy == .enabled else {
+                invalidatePendingFocusHandoff()
+                return false
+            }
             guard Self.requiresGameplayFocus(from: priorPolicy, to: commandPolicy),
+                  pendingFocusHandoffGeneration == nil else { return false }
+
+            focusHandoffGeneration &+= 1
+            let generation = focusHandoffGeneration
+            pendingFocusHandoffGeneration = generation
+            enqueueOnMain { [weak self, weak view] in
+                guard let self else { return }
+                guard let view else {
+                    self.discardFocusHandoff(generation: generation)
+                    return
+                }
+                self.fulfillFocusHandoff(generation: generation, in: view)
+            }
+            return true
+        }
+
+        @discardableResult
+        func fulfillFocusHandoff(generation: UInt, in view: SKView) -> Bool {
+            guard pendingFocusHandoffGeneration == generation else { return false }
+            pendingFocusHandoffGeneration = nil
+            guard previousCommandPolicy == .enabled,
+                  store.commandPolicy == .enabled,
                   let window = view.window else { return false }
             return window.makeFirstResponder(view)
+        }
+
+        private func discardFocusHandoff(generation: UInt) {
+            guard pendingFocusHandoffGeneration == generation else { return }
+            pendingFocusHandoffGeneration = nil
+        }
+
+        private func invalidatePendingFocusHandoff() {
+            guard pendingFocusHandoffGeneration != nil else { return }
+            focusHandoffGeneration &+= 1
+            pendingFocusHandoffGeneration = nil
         }
 
         static func requiresGameplayFocus(

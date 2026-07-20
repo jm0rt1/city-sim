@@ -4,6 +4,11 @@ import SwiftUI
 import XCTest
 @testable import CitySimNative
 
+@MainActor
+private final class FocusProbeView: NSView {
+    override var acceptsFirstResponder: Bool { true }
+}
+
 final class CityCommandCatalogTests: XCTestCase {
     func testCatalogDeclaresEveryCommandExactlyOnceAndCoversNonSpatialInventory() {
         let descriptors = CityCommandCatalog.descriptors
@@ -149,11 +154,14 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testWelcomePolicyTransitionHandsFirstResponderToMapExactlyOnce() {
+    func testWelcomePolicyTransitionQueuesOneLifecycleSafeMapFocusHandoff() {
         let store = CityGameStore(state: .newCity(seed: 42), commandPolicy: .blocked(.welcome))
-        let coordinator = CitySceneView.Coordinator(store: store)
+        var queuedActions: [CitySceneView.Coordinator.MainLoopAction] = []
+        let coordinator = CitySceneView.Coordinator(store: store) { action in
+            queuedActions.append(action)
+        }
         let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
-        let priorResponder = NSTextField(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
         let contentView = NSView(frame: mapView.frame)
         let window = NSWindow(
             contentRect: mapView.frame,
@@ -169,14 +177,64 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertFalse(coordinator.synchronizeCommandPolicy(.blocked(.welcome), in: mapView))
         XCTAssertTrue(store.dismissBlockingModal(.welcome))
         XCTAssertTrue(coordinator.synchronizeCommandPolicy(store.commandPolicy, in: mapView))
+        XCTAssertTrue(window.firstResponder === priorResponder, "Focus must wait until SwiftUI finishes its lifecycle turn")
+        XCTAssertEqual(queuedActions.count, 1)
+        XCTAssertEqual(coordinator.pendingFocusHandoffGeneration, 1)
+        XCTAssertFalse(
+            coordinator.synchronizeCommandPolicy(.enabled, in: mapView),
+            "Repeated enabled renders must not enqueue another handoff"
+        )
+        XCTAssertEqual(queuedActions.count, 1)
+
+        queuedActions.removeFirst()()
         XCTAssertTrue(window.firstResponder === mapView)
         XCTAssertEqual(coordinator.previousCommandPolicy, .enabled)
+        XCTAssertNil(coordinator.pendingFocusHandoffGeneration)
         XCTAssertFalse(
             coordinator.synchronizeCommandPolicy(.enabled, in: mapView),
             "The completed policy transition must not churn first responder"
         )
         XCTAssertFalse(CitySceneView.Coordinator.requiresGameplayFocus(from: .enabled, to: .blocked(.welcome)))
         XCTAssertFalse(CitySceneView.Coordinator.requiresGameplayFocus(from: .enabled, to: .enabled))
+    }
+
+    @MainActor
+    func testQueuedWelcomeFocusHandoffCancelsWhenModalReblocksOrMapDetaches() throws {
+        let store = CityGameStore(state: .newCity(seed: 42), commandPolicy: .blocked(.welcome))
+        var queuedActions: [CitySceneView.Coordinator.MainLoopAction] = []
+        let coordinator = CitySceneView.Coordinator(store: store) { action in
+            queuedActions.append(action)
+        }
+        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let contentView = NSView(frame: mapView.frame)
+        let window = NSWindow(
+            contentRect: mapView.frame,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        contentView.addSubview(mapView)
+        contentView.addSubview(priorResponder)
+        window.contentView = contentView
+        XCTAssertTrue(window.makeFirstResponder(priorResponder))
+
+        XCTAssertTrue(store.dismissBlockingModal(.welcome))
+        XCTAssertTrue(coordinator.synchronizeCommandPolicy(.enabled, in: mapView))
+        let staleGeneration = try XCTUnwrap(coordinator.pendingFocusHandoffGeneration)
+        store.presentBlockingModal(.welcome)
+        XCTAssertFalse(coordinator.synchronizeCommandPolicy(store.commandPolicy, in: mapView))
+        XCTAssertNil(coordinator.pendingFocusHandoffGeneration)
+        XCTAssertGreaterThan(coordinator.focusHandoffGeneration, staleGeneration)
+        queuedActions.removeFirst()()
+        XCTAssertTrue(window.firstResponder === priorResponder, "A reblocked modal must stale the queued handoff")
+
+        XCTAssertTrue(store.dismissBlockingModal(.welcome))
+        XCTAssertTrue(coordinator.synchronizeCommandPolicy(.enabled, in: mapView))
+        mapView.removeFromSuperview()
+        queuedActions.removeFirst()()
+        XCTAssertTrue(window.firstResponder === priorResponder, "A detached map must not receive focus")
+        XCTAssertNil(coordinator.pendingFocusHandoffGeneration)
     }
 
     @MainActor

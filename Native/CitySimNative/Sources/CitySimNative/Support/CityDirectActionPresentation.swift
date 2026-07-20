@@ -1,5 +1,62 @@
 import Foundation
 
+struct CityMapPrimaryActionPresentation: Equatable, Sendable {
+    let name: String
+    let disclosure: String
+    let isAvailable: Bool
+
+    static func make(
+        interactionMode: CityInteractionMode,
+        tile: CityTile,
+        state: CityGameState
+    ) -> CityMapPrimaryActionPresentation {
+        let block = "block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)"
+        switch interactionMode {
+        case .inspect:
+            return .init(
+                name: "Inspect \(tile.kind.title) at \(block)",
+                disclosure: "Available. Opens details for the selected target.",
+                isAvailable: true
+            )
+        case .build(let kind):
+            switch CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) {
+            case .success:
+                return .init(
+                    name: "Build \(kind.title) at \(block)",
+                    disclosure: "Available. Costs \(kind.buildCost.currencyText) and \(kind.upkeep.currencyText) upkeep per cycle.",
+                    isAvailable: true
+                )
+            case .failure(let rejection):
+                return .init(
+                    name: "Build \(kind.title) at \(block)",
+                    disclosure: "Unavailable. \(rejection.message)",
+                    isAvailable: false
+                )
+            }
+        case .bulldoze:
+            if tile.kind == .cityHall {
+                return .init(
+                    name: "Demolish City Hall at \(block)",
+                    disclosure: "Unavailable. City Hall is a protected landmark.",
+                    isAvailable: false
+                )
+            }
+            if tile.kind == .empty {
+                return .init(
+                    name: "Demolish Open Land at \(block)",
+                    disclosure: "Unavailable. There is nothing to demolish.",
+                    isAvailable: false
+                )
+            }
+            return .init(
+                name: "Demolish \(tile.kind.title) at \(block) for \(tile.kind.demolitionCost.currencyText)",
+                disclosure: "Available. Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation.",
+                isAvailable: true
+            )
+        }
+    }
+}
+
 struct CityDirectResponse: Identifiable, Hashable, Sendable {
     let title: String
     let command: CityCommandID

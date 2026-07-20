@@ -1,6 +1,15 @@
 import AppKit
 import SpriteKit
 
+struct CityMapViewportInsets: Equatable, Sendable {
+    var top: CGFloat
+    var leading: CGFloat
+    var bottom: CGFloat
+    var trailing: CGFloat
+
+    static let zero = CityMapViewportInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+}
+
 struct RendererDiagnosticsSnapshot: Equatable, Sendable {
     var totalTileCount = 0
     var createdTileCount = 0
@@ -100,6 +109,14 @@ final class CityScene: SKScene {
     var cameraScaleForTesting: CGFloat { cameraNode.xScale }
     var cameraPositionForTesting: CGPoint { cameraNode.position }
     var cameraScale: CGFloat { cameraNode.xScale }
+
+    func safeViewportRectForTesting(_ insets: CityMapViewportInsets) -> CGRect {
+        safeViewportRect(insets)
+    }
+
+    func scenePointForTesting(at coordinate: GridCoordinate) -> CGPoint {
+        style.isoPosition(coordinate)
+    }
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
@@ -292,19 +309,34 @@ final class CityScene: SKScene {
         super.keyDown(with: event)
     }
 
-    func revealSelection(_ coordinate: GridCoordinate) {
+    func revealSelection(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets = .zero
+    ) {
         let target = style.isoPosition(coordinate)
-        let horizontalInset = max(tileWidth * 2, size.width * cameraNode.xScale * 0.34)
-        let verticalInset = max(tileHeight * 2, size.height * cameraNode.yScale * 0.30)
-        let dx = target.x - cameraNode.position.x
-        let dy = target.y - cameraNode.position.y
-        if abs(dx) > horizontalInset {
-            cameraNode.position.x = target.x - copysign(horizontalInset, dx)
-        }
-        if abs(dy) > verticalInset {
-            cameraNode.position.y = target.y - copysign(verticalInset, dy)
-        }
+        let safeRect = safeViewportRect(viewportInsets)
+        if target.x < safeRect.minX { cameraNode.position.x -= safeRect.minX - target.x }
+        if target.x > safeRect.maxX { cameraNode.position.x += target.x - safeRect.maxX }
+        if target.y < safeRect.minY { cameraNode.position.y -= safeRect.minY - target.y }
+        if target.y > safeRect.maxY { cameraNode.position.y += target.y - safeRect.maxY }
         refreshForCameraChange()
+    }
+
+    private func safeViewportRect(_ viewportInsets: CityMapViewportInsets) -> CGRect {
+        let scale = cameraNode.xScale
+        let halfWidth = size.width * scale / 2
+        let halfHeight = size.height * scale / 2
+        let tilePaddingX = tileWidth * 1.25
+        let tilePaddingY = tileHeight * 1.75
+        let left = cameraNode.position.x - halfWidth + viewportInsets.leading * scale + tilePaddingX
+        let right = cameraNode.position.x + halfWidth - viewportInsets.trailing * scale - tilePaddingX
+        let bottom = cameraNode.position.y - halfHeight + viewportInsets.bottom * scale + tilePaddingY
+        let top = cameraNode.position.y + halfHeight - viewportInsets.top * scale - tilePaddingY
+
+        // Degenerate measurements must never produce inverted reveal motion.
+        let resolvedRight = max(left, right)
+        let resolvedTop = max(bottom, top)
+        return CGRect(x: left, y: bottom, width: resolvedRight - left, height: resolvedTop - bottom)
     }
 
     private func catalogKey(for event: NSEvent) -> String {

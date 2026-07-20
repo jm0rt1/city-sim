@@ -235,8 +235,17 @@ final class CityGameStore: ObservableObject {
         guard commandPolicy.allows(command), CityCommandCatalog.mapFocusedCommands.contains(command) else {
             return false
         }
-        if CityCommandCatalog.mapActionCommands.contains(command) {
+        if command == .mapSecondaryAction {
             return selectedCoordinate.flatMap { state.tile(at: $0) } != nil
+        }
+        if command == .mapPrimaryAction {
+            guard let coordinate = selectedCoordinate,
+                  let tile = state.tile(at: coordinate) else { return false }
+            return CityMapPrimaryActionPresentation.make(
+                interactionMode: interactionMode,
+                tile: tile,
+                state: state
+            ).isAvailable
         }
         return true
     }

@@ -378,7 +378,61 @@ final class CityCommandCatalogTests: XCTestCase {
         coordinator.configureMapAccessibility(in: mapView)
         XCTAssertEqual(mapView.accessibilityLabel(), "City map")
         XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Selected") == true)
-        XCTAssertEqual(mapView.accessibilityCustomActions()?.map(\.name), ["Use primary map action", "Inspect selected block"])
+        let selected = try XCTUnwrap(store.selectedCoordinate)
+        let selectedKind = try XCTUnwrap(store.selectedTile?.kind)
+        XCTAssertEqual(
+            mapView.accessibilityCustomActions()?.map(\.name),
+            ["Inspect \(selectedKind.title) at block \(selected.x + 1), \(selected.y + 1)"]
+        )
+    }
+
+    @MainActor
+    func testMeasuredHUDChromeKeepsKeyboardSelectionInsideDefaultAndExactCompactMapViewport() throws {
+        let cases: [(size: CGSize, compact: Bool, chrome: CityHUDChromeFrames)] = [
+            (
+                CGSize(width: 1280, height: 800),
+                false,
+                CityHUDChromeFrames(
+                    top: CGRect(x: 18, y: 18, width: 1244, height: 68),
+                    bottom: CGRect(x: 80, y: 642, width: 1120, height: 140)
+                )
+            ),
+            (
+                CGSize(width: 900, height: 600),
+                true,
+                CityHUDChromeFrames(
+                    top: CGRect(x: 12, y: 12, width: 876, height: 116),
+                    bottom: CGRect(x: 12, y: 374, width: 876, height: 214)
+                )
+            )
+        ]
+
+        for scenario in cases {
+            let state = CityGameState.newCity(seed: 42)
+            let scene = CityScene(size: scenario.size)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 12))
+            let insets = ContentView.mapViewportInsets(
+                windowSize: scenario.size,
+                compact: scenario.compact,
+                chromeFrames: scenario.chrome
+            )
+            XCTAssertGreaterThan(insets.bottom, insets.top, "Bottom command chrome must produce asymmetric protection")
+
+            for target in [GridCoordinate(x: 0, y: 0), GridCoordinate(x: 23, y: 23)] {
+                scene.revealSelection(target, viewportInsets: insets)
+                let safeRect = scene.safeViewportRectForTesting(insets)
+                let targetPoint = scene.scenePointForTesting(at: target)
+                XCTAssertGreaterThanOrEqual(targetPoint.x, safeRect.minX - 0.001)
+                XCTAssertLessThanOrEqual(targetPoint.x, safeRect.maxX + 0.001)
+                XCTAssertGreaterThanOrEqual(targetPoint.y, safeRect.minY - 0.001)
+                XCTAssertLessThanOrEqual(
+                    targetPoint.y,
+                    safeRect.maxY + 0.001,
+                    "Keyboard target \(target) is occluded at \(Int(scenario.size.width))x\(Int(scenario.size.height))"
+                )
+            }
+        }
     }
 
     @MainActor
@@ -434,7 +488,55 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testDiagnosisConsumesExactSpatialSnapshotAndNoticeTitlesHaveHonestActions() throws {
+    func testMapPrimaryActionDisclosesTargetCostAndDisablesProtectedOrInvalidTargets() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let demolitionTile = try XCTUnwrap(store.state.tiles.first {
+            $0.kind != .empty && $0.kind != .cityHall
+        })
+        store.interactionMode = .bulldoze
+        store.selectedCoordinate = demolitionTile.coordinate
+        coordinator.configureMapAccessibility(in: mapView)
+
+        let demolitionCost = demolitionTile.kind.demolitionCost.currencyText
+        let expectedName = "Demolish \(demolitionTile.kind.title) at block \(demolitionTile.coordinate.x + 1), \(demolitionTile.coordinate.y + 1) for \(demolitionCost)"
+        XCTAssertEqual(mapView.accessibilityCustomActions()?.first?.name, expectedName)
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains(expectedName) == true)
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Undo is available") == true)
+        XCTAssertTrue(store.canPerformMapCommand(.mapPrimaryAction))
+        let beforeDemolition = store.state
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: demolitionTile.coordinate)?.kind, .empty)
+        XCTAssertTrue(store.perform(.undo))
+        XCTAssertEqual(store.state, beforeDemolition)
+
+        let cityHall = try XCTUnwrap(store.state.tiles.first { $0.kind == .cityHall })
+        store.selectedCoordinate = cityHall.coordinate
+        coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertFalse(store.canPerformMapCommand(.mapPrimaryAction))
+        XCTAssertFalse(mapView.accessibilityCustomActions()?.contains { $0.name.hasPrefix("Demolish") } ?? true)
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("protected landmark") == true)
+
+        let openLand = try XCTUnwrap(store.state.tiles.first { $0.kind == .empty })
+        store.interactionMode = .build(.residential)
+        store.selectedCoordinate = openLand.coordinate
+        coordinator.configureMapAccessibility(in: mapView)
+        let buildPresentation = CityMapPrimaryActionPresentation.make(
+            interactionMode: store.interactionMode,
+            tile: openLand,
+            state: store.state
+        )
+        XCTAssertEqual(store.canPerformMapCommand(.mapPrimaryAction), buildPresentation.isAvailable)
+        XCTAssertEqual(
+            mapView.accessibilityCustomActions()?.contains { $0.name == buildPresentation.name } ?? false,
+            buildPresentation.isAvailable
+        )
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains(buildPresentation.disclosure) == true)
+    }
+
+    @MainActor
+    func testDiagnosisConsumesExactSpatialSnapshotAndAuthoredNoticeInventoryHasHonestActions() throws {
         let state = CityGameState.newCity(seed: 42)
         let snapshot = try CityPresentationSnapshot(state: state)
         let tile = try XCTUnwrap(state.tiles.first {
@@ -451,7 +553,35 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(diagnosis.accessibilitySummary.contains("Consequence:"))
         XCTAssertTrue(diagnosis.responses.allSatisfy { CityCommandCatalog.descriptor(for: $0.command).route == .store })
 
-        for title in CityNoticeActionCatalog.governedTitles {
+        let simulationSource = try String(
+            contentsOf: authoredSimulationSourceURL(),
+            encoding: .utf8
+        )
+        let expression = try NSRegularExpression(
+            pattern: #"severity:\s*\.(?:warning|critical),\s*title:\s*\"([^\"]+)\""#
+        )
+        let sourceRange = NSRange(simulationSource.startIndex..., in: simulationSource)
+        let authoredWarningAndCriticalTitles = Set(expression.matches(
+            in: simulationSource,
+            range: sourceRange
+        ).compactMap { match -> String? in
+            guard let range = Range(match.range(at: 1), in: simulationSource) else { return nil }
+            return String(simulationSource[range])
+        })
+        let expectedPLAY012Titles: Set<String> = [
+            "Budget Gap", "Chain Store Rumor", "Freight Contract Watch",
+            "Freight Load Forecast", "Freight Recovery Delayed", "Hiring Bottleneck",
+            "Industrial Load Surge", "Main Street Crossroads", "Main Street Recovery Delayed",
+            "Severe Storm", "Storefront Slump", "Utility Reserve Tight", "Utility Shortfall"
+        ]
+        XCTAssertEqual(
+            authoredWarningAndCriticalTitles,
+            expectedPLAY012Titles,
+            "Any authored warning/critical addition or rename requires an explicit UI action disposition"
+        )
+        XCTAssertTrue(CityNoticeActionCatalog.governedTitles.isSuperset(of: authoredWarningAndCriticalTitles))
+
+        for title in authoredWarningAndCriticalTitles {
             let actions = CityNoticeActionCatalog.actions(for: title)
             XCTAssertFalse(actions.isEmpty, "\(title) requires an explicit action disposition")
             XCTAssertTrue(actions.allSatisfy { !$0.explanation.isEmpty })
@@ -530,5 +660,13 @@ final class CityCommandCatalogTests: XCTestCase {
             isARepeat: false,
             keyCode: keyCode
         ))
+    }
+
+    private func authoredSimulationSourceURL() -> URL {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Sources/CitySimNative/Services/CitySimulation.swift")
     }
 }

@@ -1,5 +1,26 @@
 import SwiftUI
 
+struct CityHUDChromeFrames: Equatable {
+    var top = CGRect.zero
+    var bottom = CGRect.zero
+}
+
+private enum CityHUDChromeRegion: Hashable {
+    case top
+    case bottom
+}
+
+private struct CityHUDChromeFramePreference: PreferenceKey {
+    static let defaultValue: [CityHUDChromeRegion: CGRect] = [:]
+
+    static func reduce(
+        value: inout [CityHUDChromeRegion: CGRect],
+        nextValue: () -> [CityHUDChromeRegion: CGRect]
+    ) {
+        value.merge(nextValue(), uniquingKeysWith: { _, newest in newest })
+    }
+}
+
 enum ObjectiveSurfacePresentation: Equatable {
     case hidden
     case expanded
@@ -11,6 +32,7 @@ struct ContentView: View {
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @State private var hudChromeFrames = CityHUDChromeFrames()
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -75,6 +97,24 @@ struct ContentView: View {
         commandPolicy != .enabled
     }
 
+    static func mapViewportInsets(
+        windowSize: CGSize,
+        compact: Bool,
+        chromeFrames: CityHUDChromeFrames
+    ) -> CityMapViewportInsets {
+        let edgePadding = compact ? GameTheme.compactPadding : GameTheme.regularPadding
+        let fallbackTop: CGFloat = compact ? 126 : 82
+        let fallbackBottom: CGFloat = compact ? 132 : 126
+        let measuredTop = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY + 10
+        let measuredBottom = chromeFrames.bottom.isEmpty ? 0 : windowSize.height - chromeFrames.bottom.minY + 10
+        return CityMapViewportInsets(
+            top: max(fallbackTop, measuredTop),
+            leading: edgePadding + 10,
+            bottom: max(fallbackBottom, measuredBottom),
+            trailing: edgePadding + 10
+        )
+    }
+
     static func objectiveSurfacePresentation(
         compact: Bool,
         showObjectives: Bool,
@@ -124,11 +164,18 @@ struct ContentView: View {
 
     @ViewBuilder
     private func gameSurface(compact: Bool) -> some View {
-        ZStack {
-            CitySceneView(store: store).ignoresSafeArea()
+        GeometryReader { mapProxy in
+            let viewportInsets = Self.mapViewportInsets(
+                windowSize: mapProxy.size,
+                compact: compact,
+                chromeFrames: hudChromeFrames
+            )
+            ZStack {
+                CitySceneView(store: store, viewportInsets: viewportInsets).ignoresSafeArea()
 
-            VStack(spacing: compact ? 8 : 10) {
-                TopHUDView(store: store, compact: compact)
+                VStack(spacing: compact ? 8 : 10) {
+                    TopHUDView(store: store, compact: compact)
+                        .background(chromeFrameReader(.top))
 
                 HStack(alignment: .top) {
                     switch Self.objectiveSurfacePresentation(
@@ -180,14 +227,33 @@ struct ContentView: View {
                     .transition(.opacity)
                 }
 
-                BuildToolbarView(store: store, compact: compact)
-                    .frame(maxWidth: compact ? .infinity : 1_120)
-            }
-            .padding(compact ? GameTheme.compactPadding : GameTheme.regularPadding)
+                    BuildToolbarView(store: store, compact: compact)
+                        .frame(maxWidth: compact ? .infinity : 1_120)
+                        .background(chromeFrameReader(.bottom))
+                }
+                .padding(compact ? GameTheme.compactPadding : GameTheme.regularPadding)
 
-            if store.state.status != .playing {
-                GameStatusOverlay(store: store)
+                if store.state.status != .playing {
+                    GameStatusOverlay(store: store)
+                }
             }
+            .coordinateSpace(name: "city.game.surface")
+            .onPreferenceChange(CityHUDChromeFramePreference.self) { frames in
+                let updated = CityHUDChromeFrames(
+                    top: frames[.top] ?? .zero,
+                    bottom: frames[.bottom] ?? .zero
+                )
+                if updated != hudChromeFrames { hudChromeFrames = updated }
+            }
+        }
+    }
+
+    private func chromeFrameReader(_ region: CityHUDChromeRegion) -> some View {
+        GeometryReader { proxy in
+            Color.clear.preference(
+                key: CityHUDChromeFramePreference.self,
+                value: [region: proxy.frame(in: .named("city.game.surface"))]
+            )
         }
     }
 

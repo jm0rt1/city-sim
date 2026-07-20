@@ -33,17 +33,85 @@ final class SpatialConsequenceRenderer {
         root.name = "spatial.consequences"
         guard consequence.vitality != .notApplicable else { return root }
 
+        let city = style.makeDetailLayer(.city, visibleAt: detail)
+        let cityContent = SKNode()
+        cityContent.name = "spatial.city"
+        addCityAggregateCue(consequence, to: cityContent)
+        city.addChild(cityContent)
+        root.addChild(city)
+
         let neighborhood = style.makeDetailLayer(.neighborhood, visibleAt: detail)
-        neighborhood.name = "spatial.neighborhood"
-        addUtilityCue(consequence.utility, to: neighborhood)
-        addPollutionCue(consequence.pollutionBand, to: neighborhood)
+        let neighborhoodContent = SKNode()
+        neighborhoodContent.name = "spatial.neighborhood"
+        addUtilityCue(consequence.utility, to: neighborhoodContent)
+        addPollutionCue(consequence.pollutionBand, to: neighborhoodContent)
+        neighborhood.addChild(neighborhoodContent)
         root.addChild(neighborhood)
 
         let block = style.makeDetailLayer(.block, visibleAt: detail)
-        block.name = "spatial.block"
-        addVitalityCue(consequence.vitality, to: block)
+        let blockContent = SKNode()
+        blockContent.name = "spatial.block"
+        addVitalityCue(consequence.vitality, to: blockContent)
+        block.addChild(blockContent)
         root.addChild(block)
         return root
+    }
+
+    private func addCityAggregateCue(_ consequence: CitySpatialConsequence, to root: SKNode) {
+        enum Aggregate {
+            case severe
+            case strained
+            case prosperous
+        }
+        let aggregate: Aggregate?
+        if consequence.utility.combinedBand == .severe
+            || consequence.pollutionBand == .severe
+            || consequence.vitality == .strained {
+            aggregate = .severe
+        } else if consequence.utility.combinedBand == .strained
+            || consequence.pollutionBand == .strained {
+            aggregate = .strained
+        } else if consequence.vitality == .prosperous {
+            aggregate = .prosperous
+        } else {
+            aggregate = nil
+        }
+        guard let aggregate else { return }
+
+        let path = CGMutablePath()
+        let name: String
+        let color: NSColor
+        switch aggregate {
+        case .severe:
+            name = "spatial.city.aggregate.severe.cross"
+            color = .systemRed
+            path.move(to: CGPoint(x: -6, y: -4))
+            path.addLine(to: CGPoint(x: 6, y: 4))
+            path.move(to: CGPoint(x: -6, y: 4))
+            path.addLine(to: CGPoint(x: 6, y: -4))
+        case .strained:
+            name = "spatial.city.aggregate.strained.triangle"
+            color = .systemOrange
+            path.move(to: CGPoint(x: -7, y: -4))
+            path.addLine(to: CGPoint(x: 0, y: 5))
+            path.addLine(to: CGPoint(x: 7, y: -4))
+            path.closeSubpath()
+        case .prosperous:
+            name = "spatial.city.aggregate.prosperous.chevron"
+            color = .systemMint
+            path.move(to: CGPoint(x: -7, y: -3))
+            path.addLine(to: CGPoint(x: 0, y: 5))
+            path.addLine(to: CGPoint(x: 7, y: -3))
+        }
+        let cue = SKShapeNode(path: path)
+        cue.name = name
+        cue.fillColor = .clear
+        cue.strokeColor = color
+        cue.lineWidth = 2.5
+        cue.lineCap = .square
+        cue.lineJoin = .miter
+        cue.position = CGPoint(x: 0, y: 19)
+        root.addChild(cue)
     }
 
     func makeEventCue(

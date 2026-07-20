@@ -11,6 +11,8 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
     var nodeCount = 0
     var drawableNodeCount = 0
     var activeActionCount = 0
+    var consumedConsequenceEventCount = 0
+    var displayedConsequenceCueCount = 0
     var updateDurationMilliseconds = 0.0
     var detailLevel: CameraDetailLevel = .neighborhood
     var updatedCoordinates: Set<GridCoordinate> = []
@@ -91,6 +93,7 @@ final class CityScene: SKScene {
     private var renderedState: CityGameState?
     private var renderedSnapshot: CityPresentationSnapshot?
     private var presentedConsequenceEventTicks: [String: Int] = [:]
+    private var displayedConsequenceEventExpiryTicks: [GridCoordinate: Int] = [:]
     private var renderedOverlay: DataOverlay = .none
     private var renderedSelection: GridCoordinate?
     private var renderedInteractionMode: CityInteractionMode = .inspect
@@ -107,7 +110,7 @@ final class CityScene: SKScene {
     var cameraScaleForTesting: CGFloat { cameraNode.xScale }
     var cameraPositionForTesting: CGPoint { cameraNode.position }
     var cameraScale: CGFloat { cameraNode.xScale }
-    var presentedConsequenceEventCountForTesting: Int { presentedConsequenceEventTicks.count }
+    var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
@@ -154,6 +157,7 @@ final class CityScene: SKScene {
         selection: GridCoordinate?,
         interactionMode: CityInteractionMode
     ) {
+        let renderStarted = ProcessInfo.processInfo.systemUptime
         let isFirstRender = renderedSnapshot == nil
         let previousSnapshot = renderedSnapshot
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -180,10 +184,14 @@ final class CityScene: SKScene {
         renderedSelection = selection
         renderedInteractionMode = interactionMode
         diagnosticsSnapshot = updateWorld(snapshot: snapshot, overlay: overlay)
+        expireConsequenceEvents(at: snapshot.authoritativeTick)
         presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
         if isFirstRender { focusDevelopedCore(state) }
+        refreshRuntimeDiagnostics(consumedEventCount: consequenceEvents.count)
+        diagnosticsSnapshot.updateDurationMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - renderStarted) * 1_000
     }
 
     func render(
@@ -446,12 +454,6 @@ final class CityScene: SKScene {
         }
 
         diagnostics.totalTileCount = tileRecords.count
-        if diagnostics.createdTileCount > 0 || diagnostics.updatedTileCount > 0
-            || diagnostics.removedTileCount > 0 || diagnostics.overlayUpdateCount > 0 {
-            diagnostics.nodeCount = recursiveNodeCount(worldLayer)
-            diagnostics.drawableNodeCount = recursiveDrawableNodeCount(worldLayer)
-            diagnostics.activeActionCount = recursiveActiveActionCount(worldLayer)
-        }
         diagnostics.updateDurationMilliseconds =
             (ProcessInfo.processInfo.systemUptime - updateStarted) * 1_000
         return diagnostics
@@ -615,6 +617,33 @@ final class CityScene: SKScene {
                 for: event,
                 reducedMotion: reducedMotion
             ))
+            displayedConsequenceEventExpiryTicks[event.coordinate] = event.authoritativeTick + 4
+        }
+    }
+
+    private func expireConsequenceEvents(at authoritativeTick: Int) {
+        let expired = displayedConsequenceEventExpiryTicks.filter {
+            authoritativeTick >= $0.value
+        }.map(\.key)
+        for coordinate in expired {
+            if let layer = tileRecords[coordinate]?.consequenceLayer {
+                for child in layer.children where child.name?.hasPrefix("spatial.event.") == true {
+                    child.removeFromParent()
+                }
+            }
+            displayedConsequenceEventExpiryTicks.removeValue(forKey: coordinate)
+        }
+    }
+
+    private func refreshRuntimeDiagnostics(consumedEventCount: Int) {
+        diagnosticsSnapshot.nodeCount = recursiveNodeCount(worldLayer)
+        diagnosticsSnapshot.drawableNodeCount = recursiveDrawableNodeCount(worldLayer)
+        diagnosticsSnapshot.activeActionCount = recursiveActiveActionCount(worldLayer)
+        diagnosticsSnapshot.consumedConsequenceEventCount = consumedEventCount
+        diagnosticsSnapshot.displayedConsequenceCueCount = tileRecords.values.reduce(0) { count, record in
+            count + record.consequenceLayer.children.filter {
+                $0.name?.hasPrefix("spatial.event.") == true
+            }.count
         }
     }
 

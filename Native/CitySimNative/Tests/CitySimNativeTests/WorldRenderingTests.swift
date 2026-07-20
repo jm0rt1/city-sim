@@ -104,7 +104,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testCitySceneConsumesStableTransitionIDsOnceAndDoesNotReplayOnUndo() throws {
+    func testReducedMotionEventsExpireBoundedlyAndSuppressSaveLoadUndoReplayDuplicates() throws {
         var strained = CityGameState.newCity(seed: 42)
         strained.tick = 4
         strained.powerCapacity = 0
@@ -120,26 +120,75 @@ final class WorldRenderingTests: XCTestCase {
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(snapshot: strainedSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        let strainedNodeCount = scene.diagnosticsSnapshot.nodeCount
         scene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
-        let firstCount = scene.presentedConsequenceEventCountForTesting
+        let firstCount = scene.consumedConsequenceEventIDCountForTesting
         XCTAssertGreaterThan(firstCount, 0)
+        XCTAssertGreaterThan(scene.diagnosticsSnapshot.consumedConsequenceEventCount, 0)
+        XCTAssertGreaterThan(scene.diagnosticsSnapshot.displayedConsequenceCueCount, 0)
+        XCTAssertLessThan(
+            scene.diagnosticsSnapshot.displayedConsequenceCueCount,
+            scene.diagnosticsSnapshot.consumedConsequenceEventCount,
+            "Many accepted events are grouped into one developed-place cue per coordinate"
+        )
         XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
         XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
+        XCTAssertGreaterThan(scene.diagnosticsSnapshot.nodeCount, strainedNodeCount)
+        let recoveryNodeCount = scene.diagnosticsSnapshot.nodeCount
+        let recoveryDrawableCount = scene.diagnosticsSnapshot.drawableNodeCount
 
         scene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(scene.presentedConsequenceEventCountForTesting, firstCount)
+        XCTAssertEqual(scene.consumedConsequenceEventIDCountForTesting, firstCount)
+        XCTAssertEqual(scene.diagnosticsSnapshot.consumedConsequenceEventCount, 0)
+        XCTAssertGreaterThan(scene.diagnosticsSnapshot.displayedConsequenceCueCount, 0)
+        XCTAssertEqual(scene.diagnosticsSnapshot.nodeCount, recoveryNodeCount)
+        XCTAssertEqual(scene.diagnosticsSnapshot.drawableNodeCount, recoveryDrawableCount)
         XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
+
         scene.render(snapshot: strainedSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(scene.presentedConsequenceEventCountForTesting, firstCount)
+        XCTAssertEqual(scene.consumedConsequenceEventIDCountForTesting, firstCount)
         XCTAssertEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 0)
 
         scene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(
-            scene.presentedConsequenceEventCountForTesting,
+            scene.consumedConsequenceEventIDCountForTesting,
             firstCount,
             "Forward deterministic replay must not re-present stable event IDs"
         )
         XCTAssertEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 0)
+
+        let expiryScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        expiryScene.reducedMotion = true
+        expiryScene.render(snapshot: strainedSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        expiryScene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        let beforeExpiryNodeCount = expiryScene.diagnosticsSnapshot.nodeCount
+        expiryScene.render(snapshot: recoveredSnapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.nodeCount, beforeExpiryNodeCount)
+        var elapsed = recovered
+        elapsed.tick = 12
+        expiryScene.render(
+            snapshot: try CityPresentationSnapshot(state: elapsed),
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.consumedConsequenceEventCount, 0)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.displayedConsequenceCueCount, 0)
+        XCTAssertLessThan(expiryScene.diagnosticsSnapshot.nodeCount, beforeExpiryNodeCount)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.activeActionCount, 0)
+
+        let loaded = try JSONDecoder().decode(CityGameState.self, from: JSONEncoder().encode(recovered))
+        let loadedScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        loadedScene.reducedMotion = true
+        loadedScene.render(
+            snapshot: try CityPresentationSnapshot(state: loaded),
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(loadedScene.diagnosticsSnapshot.consumedConsequenceEventCount, 0)
+        XCTAssertEqual(loadedScene.diagnosticsSnapshot.displayedConsequenceCueCount, 0)
+        XCTAssertEqual(loadedScene.diagnosticsSnapshot.activeActionCount, 0)
 
         var newlyStrained = strained
         newlyStrained.tick = 12
@@ -151,6 +200,49 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
         XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
+    }
+
+    @MainActor
+    func testCityLODUsesOnePersistentNonColorAggregatePerDevelopedPlace() {
+        let style = WorldVisualStyle()
+        let renderer = SpatialConsequenceRenderer(style: style)
+        let consequence = CitySpatialConsequence(
+            coordinate: GridCoordinate(x: 4, y: 5),
+            utility: CityLocationUtilityService(
+                power: 0.2,
+                water: 0.7,
+                combined: 0.2,
+                powerBand: .severe,
+                waterBand: .strained,
+                combinedBand: .severe
+            ),
+            pollutionExposure: 0.8,
+            pollutionBand: .severe,
+            vitalityScore: 0.3,
+            vitality: .strained
+        )
+        let root = renderer.makePersistentCues(for: consequence, detail: .city)
+        let city = root.childNode(withName: "//detail.city")
+        let neighborhood = root.childNode(withName: "//detail.neighborhood")
+        let block = root.childNode(withName: "//detail.block")
+
+        XCTAssertEqual(city?.isHidden, false)
+        XCTAssertEqual(neighborhood?.isHidden, true)
+        XCTAssertEqual(block?.isHidden, true)
+        XCTAssertEqual(
+            descendantNames(in: root).filter { $0.hasPrefix("spatial.city.aggregate.") },
+            ["spatial.city.aggregate.severe.cross"]
+        )
+        XCTAssertTrue(descendantLabels(in: root).isEmpty)
+
+        style.updateDetailVisibility(in: root, detail: .block)
+        XCTAssertEqual(city?.isHidden, false)
+        XCTAssertEqual(neighborhood?.isHidden, false)
+        XCTAssertEqual(block?.isHidden, false)
+        XCTAssertEqual(
+            descendantNames(in: root).filter { $0.hasPrefix("spatial.city.aggregate.") }.count,
+            1
+        )
     }
 
     @MainActor
@@ -186,7 +278,9 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertNotEqual(defaultProof.png, compactProof.png)
         XCTAssertGreaterThan(defaultProof.png.count, 40_000)
         XCTAssertGreaterThan(compactProof.png.count, 40_000)
-        XCTAssertGreaterThan(defaultProof.eventCount, 0)
+        XCTAssertGreaterThan(defaultProof.consumedEventCount, 0)
+        XCTAssertGreaterThan(defaultProof.displayedCueCount, 0)
+        XCTAssertLessThan(defaultProof.displayedCueCount, defaultProof.consumedEventCount)
         XCTAssertEqual(strainedSample.utility.combinedBand, .severe)
         XCTAssertEqual(strainedSample.vitality, .strained)
         XCTAssertEqual(recoveredSample.utility.combinedBand, .strained)
@@ -928,7 +1022,7 @@ final class WorldRenderingTests: XCTestCase {
         from previousState: CityGameState,
         to state: CityGameState,
         size: CGSize
-    ) throws -> (png: Data, eventCount: Int, actions: Int) {
+    ) throws -> (png: Data, consumedEventCount: Int, displayedCueCount: Int, actions: Int) {
         let view = SKView(frame: CGRect(origin: .zero, size: size))
         let scene = CityScene(size: size)
         scene.reducedMotion = true
@@ -952,7 +1046,8 @@ final class WorldRenderingTests: XCTestCase {
         let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
         return (
             png,
-            scene.presentedConsequenceEventCountForTesting,
+            scene.diagnosticsSnapshot.consumedConsequenceEventCount,
+            scene.diagnosticsSnapshot.displayedConsequenceCueCount,
             scene.diagnosticsSnapshot.activeActionCount
         )
     }

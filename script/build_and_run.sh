@@ -2,11 +2,11 @@
 set -euo pipefail
 
 MODE="${1:-run}"
-APP_EXECUTABLE_NAME="CitySimNative"
+PACKAGE_EXECUTABLE_NAME="CitySimNative"
 PRODUCTION_BUNDLE_ID="com.jfmortensen.citysim"
 MIN_SYSTEM_VERSION="14.0"
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PACKAGE_DIR="$ROOT_DIR/Native/CitySimNative"
 DIST_DIR="$ROOT_DIR/dist"
 BRANCH_NAME="$(git -C "$ROOT_DIR" branch --show-current)"
@@ -34,8 +34,15 @@ lane_display_name() {
   esac
 }
 
+worktree_token() {
+  printf '%s' "$ROOT_DIR" | shasum -a 256 | awk '{ print "w" substr($1, 1, 12) }'
+}
+
 if [[ "$BRANCH_NAME" == "master" ]]; then
   LANE_ID="master"
+  WORKTREE_TOKEN="production"
+  CANDIDATE_ID="master"
+  APP_EXECUTABLE_NAME="$PACKAGE_EXECUTABLE_NAME"
   BUNDLE_ID="$PRODUCTION_BUNDLE_ID"
   DISPLAY_NAME="CitySim"
   APP_BUNDLE="$DIST_DIR/CitySim.app"
@@ -51,10 +58,13 @@ else
     echo "error: branch '$BRANCH_NAME' does not produce a safe lane identifier" >&2
     exit 1
   fi
-  BUNDLE_ID="$PRODUCTION_BUNDLE_ID.$LANE_ID"
-  DISPLAY_NAME="CitySim [$(lane_display_name "$LANE_ID")]"
-  APP_BUNDLE="$DIST_DIR/CitySim-$LANE_ID.app"
-  DATA_ROOT="$DIST_DIR/test-data/$LANE_ID"
+  WORKTREE_TOKEN="$(worktree_token)"
+  CANDIDATE_ID="$LANE_ID-$WORKTREE_TOKEN"
+  APP_EXECUTABLE_NAME="$PACKAGE_EXECUTABLE_NAME-$WORKTREE_TOKEN"
+  BUNDLE_ID="$PRODUCTION_BUNDLE_ID.$LANE_ID.$WORKTREE_TOKEN"
+  DISPLAY_NAME="CitySim [$(lane_display_name "$LANE_ID") $WORKTREE_TOKEN]"
+  APP_BUNDLE="$DIST_DIR/CitySim-$CANDIDATE_ID.app"
+  DATA_ROOT="$DIST_DIR/test-data/$CANDIDATE_ID"
 fi
 
 APP_CONTENTS="$APP_BUNDLE/Contents"
@@ -63,13 +73,17 @@ APP_RESOURCES="$APP_CONTENTS/Resources"
 APP_BINARY="$APP_MACOS/$APP_EXECUTABLE_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
 MANIFEST_DIR="$DIST_DIR/manifests"
-MANIFEST_PATH="$MANIFEST_DIR/$LANE_ID.manifest"
+MANIFEST_PATH="$MANIFEST_DIR/$CANDIDATE_ID.manifest"
 MANIFEST_DATA_ROOT="${DATA_ROOT:-production-default}"
 
 print_identity() {
   printf 'branch=%s\n' "$BRANCH_NAME"
   printf 'commit=%s\n' "$COMMIT_SHA"
+  printf 'worktree_root=%s\n' "$ROOT_DIR"
+  printf 'worktree_token=%s\n' "$WORKTREE_TOKEN"
+  printf 'candidate_id=%s\n' "$CANDIDATE_ID"
   printf 'bundle_identifier=%s\n' "$BUNDLE_ID"
+  printf 'preference_domain=%s\n' "$BUNDLE_ID"
   printf 'display_name=%s\n' "$DISPLAY_NAME"
   printf 'data_root=%s\n' "$MANIFEST_DATA_ROOT"
   printf 'staged_bundle_path=%s\n' "$APP_BUNDLE"
@@ -86,7 +100,11 @@ write_manifest() {
   cat >"$MANIFEST_PATH" <<MANIFEST
 branch=$BRANCH_NAME
 commit=$COMMIT_SHA
+worktree_root=$ROOT_DIR
+worktree_token=$WORKTREE_TOKEN
+candidate_id=$CANDIDATE_ID
 bundle_identifier=$BUNDLE_ID
+preference_domain=$BUNDLE_ID
 display_name=$DISPLAY_NAME
 data_root=$MANIFEST_DATA_ROOT
 launch_time=$launch_time
@@ -165,7 +183,7 @@ BUILD_DIR="$(swift build --package-path "$PACKAGE_DIR" --show-bin-path)"
 
 rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_MACOS" "$APP_RESOURCES"
-cp "$BUILD_DIR/$APP_EXECUTABLE_NAME" "$APP_BINARY"
+cp "$BUILD_DIR/$PACKAGE_EXECUTABLE_NAME" "$APP_BINARY"
 cp "$PACKAGE_DIR/Resources/CitySim-KeyArt.png" "$APP_RESOURCES/CitySim-KeyArt.png"
 chmod +x "$APP_BINARY"
 

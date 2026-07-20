@@ -36,7 +36,8 @@ struct ContentView: View {
                 .disabled(!store.canUndo)
             }
         }
-        .task {
+        .task(id: hasSeenWelcome) {
+            guard hasSeenWelcome else { return }
             while !Task.isCancelled {
                 do {
                     try await Task.sleep(nanoseconds: 420_000_000)

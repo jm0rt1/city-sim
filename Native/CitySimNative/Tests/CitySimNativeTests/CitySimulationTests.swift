@@ -600,6 +600,43 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testBlockingWelcomePreservesExactAuthoredStartUntilDismissed() {
+        let defaults = UserDefaults.standard
+        let priorWelcome = defaults.object(forKey: "hasSeenCitySimWelcome")
+        defaults.set(false, forKey: "hasSeenCitySimWelcome")
+        defer {
+            if let priorWelcome { defaults.set(priorWelcome, forKey: "hasSeenCitySimWelcome") }
+            else { defaults.removeObject(forKey: "hasSeenCitySimWelcome") }
+        }
+
+        let authoredStart = CityGameState.newCity(seed: 42)
+        let store = CityGameStore(state: authoredStart)
+        let size = CGSize(width: 1_278, height: 768)
+        let view = NSHostingView(rootView: ContentView(store: store).frame(width: size.width, height: size.height))
+        view.frame = CGRect(origin: .zero, size: size)
+        view.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
+
+        XCTAssertEqual(store.state, authoredStart)
+        XCTAssertEqual(store.state.day, authoredStart.day)
+        XCTAssertEqual(store.state.messages, authoredStart.messages)
+        XCTAssertEqual(store.state.progression, authoredStart.progression)
+        XCTAssertEqual(store.state.treasury, authoredStart.treasury)
+        XCTAssertEqual(store.state.population, authoredStart.population)
+        XCTAssertEqual(store.state.powerUsed, authoredStart.powerUsed)
+        XCTAssertEqual(store.state.waterUsed, authoredStart.waterUsed)
+
+        defaults.set(true, forKey: "hasSeenCitySimWelcome")
+        let resumedStore = CityGameStore(state: authoredStart)
+        let resumedView = NSHostingView(rootView: ContentView(store: resumedStore).frame(width: size.width, height: size.height))
+        resumedView.frame = CGRect(origin: .zero, size: size)
+        resumedView.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
+
+        XCTAssertGreaterThan(resumedStore.state.tick, authoredStart.tick)
+    }
+
+    @MainActor
     func testMessageSummariesGroupRepeatedEventsAndDismissTogether() throws {
         let newestStorm = CityMessage(tick: 12, severity: .warning, title: "Severe Storm", detail: "Newest storm")
         let earlierStorm = CityMessage(tick: 8, severity: .warning, title: "Severe Storm", detail: "Earlier storm")

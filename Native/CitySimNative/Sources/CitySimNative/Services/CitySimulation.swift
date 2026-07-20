@@ -16,10 +16,11 @@ enum BuildRejection: Error, Equatable {
 
 enum CitySimulation {
     static let townCharterQualificationCycles = 12
-    static let strategyWarningTick = 80
-    static let strategyOpportunityTick = 160
-    static let strategySetbackTick = 320
-    static let strategyPayoffTick = 480
+    static let strategyWarningTick = 32
+    static let strategyOpportunityTick = 96
+    static let strategyComplicationTick = 160
+    static let strategySetbackTick = 224
+    static let strategyPayoffTick = 288
     static let commercialJobCapacity = 80
     static let industrialJobCapacity = 110
     static let powerCapacityPerPlant = 300
@@ -280,7 +281,7 @@ enum CitySimulation {
                         tick: state.tick,
                         severity: .warning,
                         title: "Main Street Crossroads",
-                        detail: "A regional market weekend arrives by Day 41. Local shops can thrive, but the later storefront slump will need either temporary tax relief or a second park to restore foot traffic."
+                        detail: "A regional market weekend arrives by Day 25. Local shops can thrive, but a chain-store complication follows; temporary tax relief or a second park can protect foot traffic."
                     ),
                     to: &state
                 )
@@ -290,7 +291,7 @@ enum CitySimulation {
                         tick: state.tick,
                         severity: .warning,
                         title: "Freight Contract Watch",
-                        detail: "A regional freight contract arrives by Day 41. It will accelerate jobs and cash, then strain the district; reserve power and water or a second park can lead the recovery."
+                        detail: "A regional freight contract arrives by Day 25. It will accelerate jobs and cash, then strain the district; reserve power and water or a second park can absorb the load."
                     ),
                     to: &state
                 )
@@ -298,6 +299,58 @@ enum CitySimulation {
         }
         switch (strategy, state.tick) {
         case (.commercialStewardship, strategyOpportunityTick):
+            resolveCommercialOpportunity(&state)
+        case (.industrialExpansion, strategyOpportunityTick):
+            resolveIndustrialOpportunity(&state)
+        case (.commercialStewardship, strategyComplicationTick):
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Chain Store Rumor",
+                    detail: "A regional chain opens by Day 57. Accept lower tax at 9% or less, or fund a second park, to prevent the storefront slump; waiting preserves cash now but risks a $3,000 shock."
+                ),
+                to: &state
+            )
+        case (.industrialExpansion, strategyComplicationTick):
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Freight Load Forecast",
+                    detail: "The freight surge lands by Day 57. A second power plant and water tower, or a second park, prevents the load shock; waiting preserves capital now but risks $5,500 and livability."
+                ),
+                to: &state
+            )
+        case (.commercialStewardship, strategySetbackTick):
+            resolveCommercialComplication(&state)
+        case (.industrialExpansion, strategySetbackTick):
+            resolveIndustrialComplication(&state)
+        case (.commercialStewardship, strategyPayoffTick):
+            resolveCommercialRecovery(&state)
+        case (.industrialExpansion, strategyPayoffTick):
+            resolveIndustrialRecovery(&state)
+        default:
+            break
+        }
+    }
+
+    private static func resolveCommercialOpportunity(_ state: inout CityGameState) {
+        let commercialCount = activeTiles(in: state).filter { $0.kind == .commercial }.count
+        if commercialCount >= 3 {
+            state.treasury += 2_400
+            state.happiness = min(100, state.happiness + 1)
+            state.approval = min(100, state.approval + 0.5)
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Market Weekend",
+                    detail: "Doubling down on storefronts produced a $2,400 festival return and more jobs. The larger district also has more utility exposure when the chain store arrives."
+                ),
+                to: &state
+            )
+        } else {
             state.treasury += 1_800
             state.happiness = min(100, state.happiness + 2)
             state.approval = min(100, state.approval + 1)
@@ -306,11 +359,29 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .good,
                     title: "Market Weekend",
-                    detail: "Independent shops generated a $1,800 revenue lift and a burst of civic pride. Main Street is prosperous, but its margins remain sensitive to the coming slowdown."
+                    detail: "A measured Main Street generated $1,800 and civic pride. It earns less than a storefront push, but keeps utility exposure lower for the coming chain store."
                 ),
                 to: &state
             )
-        case (.industrialExpansion, strategyOpportunityTick):
+        }
+    }
+
+    private static func resolveIndustrialOpportunity(_ state: inout CityGameState) {
+        let industrialCount = activeTiles(in: state).filter { $0.kind == .industrial }.count
+        if industrialCount >= 3 {
+            state.treasury += 6_500
+            state.happiness = max(0, state.happiness - 2)
+            state.approval = max(0, state.approval - 1)
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Regional Freight Contract",
+                    detail: "Doubling down on factories won a $6,500 freight return and more jobs. The faster payoff brings heavier pollution and utility exposure before the load surge."
+                ),
+                to: &state
+            )
+        } else {
             state.treasury += 5_000
             state.happiness = max(0, state.happiness - 1)
             state.approval = max(0, state.approval - 0.5)
@@ -319,11 +390,28 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .good,
                     title: "Regional Freight Contract",
-                    detail: "Factories landed a $5,000 freight contract and expanded the employment base. The faster return arrives with heavier utility demand and neighborhood pressure."
+                    detail: "Measured industrial growth won $5,000 and more jobs. It earns less than a factory push, but limits pollution and utility exposure before the load surge."
                 ),
                 to: &state
             )
-        case (.commercialStewardship, strategySetbackTick):
+        }
+    }
+
+    private static func resolveCommercialComplication(_ state: inout CityGameState) {
+        let parkCount = activeTiles(in: state).filter { $0.kind == .park }.count
+        if state.taxRate <= 0.09 || parkCount >= 2 {
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Storefront Slump Avoided",
+                    detail: state.taxRate <= 0.09
+                        ? "Early tax relief kept customers local. The city avoided the $3,000 shock, but accepted lower revenue and demand while the policy remains."
+                        : "The second park kept Main Street busy. The city avoided the $3,000 shock after investing capital and upkeep in public space."
+                ),
+                to: &state
+            )
+        } else {
             state.treasury -= 3_000
             state.happiness = max(0, state.happiness - 5)
             state.approval = max(0, state.approval - 3)
@@ -332,11 +420,31 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .critical,
                     title: "Storefront Slump",
-                    detail: "A regional chain drew shoppers away, costing $3,000 and hurting confidence. Lower tax to 9% or less, or build a second park, before the 40-day recovery review."
+                    detail: "The chain drew shoppers away, costing $3,000 and confidence. Lower tax to 9% or less, or build a second park, before the Day 73 recovery review."
                 ),
                 to: &state
             )
-        case (.industrialExpansion, strategySetbackTick):
+        }
+    }
+
+    private static func resolveIndustrialComplication(_ state: inout CityGameState) {
+        let active = activeTiles(in: state)
+        let hasReserveUtilities = active.filter { $0.kind == .powerPlant }.count >= 2
+            && active.filter { $0.kind == .waterTower }.count >= 2
+        let parkCount = active.filter { $0.kind == .park }.count
+        if hasReserveUtilities || parkCount >= 2 {
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Industrial Load Absorbed",
+                    detail: hasReserveUtilities
+                        ? "Early reserve utilities absorbed the surge. The city avoided the $5,500 shock after committing capital and upkeep to capacity."
+                        : "The green buffer protected nearby blocks. The city avoided the $5,500 shock after committing capital and upkeep to public space."
+                ),
+                to: &state
+            )
+        } else {
             state.treasury -= 5_500
             state.happiness = max(0, state.happiness - 8)
             state.approval = max(0, state.approval - 5)
@@ -345,16 +453,10 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .critical,
                     title: "Industrial Load Surge",
-                    detail: "Freight traffic and overtime forced $5,500 in repairs and damaged livability. Add reserve power and water, or build a second park, before the 40-day recovery review."
+                    detail: "Freight traffic forced $5,500 in repairs and damaged livability. Add reserve power and water, or build a second park, before the Day 73 recovery review."
                 ),
                 to: &state
             )
-        case (.commercialStewardship, strategyPayoffTick):
-            resolveCommercialRecovery(&state)
-        case (.industrialExpansion, strategyPayoffTick):
-            resolveIndustrialRecovery(&state)
-        default:
-            break
         }
     }
 
@@ -461,6 +563,16 @@ enum CitySimulation {
         let reserve = utilityReserve(in: state)
         let workforceTarget = max(1, state.population * 7 / 10)
         let employment = min(1, Double(jobCapacity(in: state)) / Double(workforceTarget))
+
+        postOnce(
+            CityMessage(
+                tick: state.tick,
+                severity: .information,
+                title: "Choose a Growth Engine",
+                detail: "Before Day 25, add Commercial for cleaner, flexible growth or Industrial for faster jobs and cash with heavier pollution and utility load. Doubling down increases the opportunity and the exposure."
+            ),
+            to: &state
+        )
 
         postOnce(
             CityMessage(

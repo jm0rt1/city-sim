@@ -82,6 +82,72 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testWelcomePolicyBlocksEveryCatalogAndRendererRouteUntilExplicitDismissal() throws {
+        let authoredStart = CityGameState.newCity(seed: 42)
+        let store = CityGameStore(state: authoredStart, commandPolicy: .blocked(.welcome))
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        var routedCommands: [CityCommandID] = []
+        scene.allowsCommand = { store.commandPolicy.allows($0) }
+        scene.onCommandAction = { command in
+            routedCommands.append(command)
+            store.perform(command)
+        }
+        let cameraScale = scene.cameraScale
+
+        let blockedKeys: [(String, UInt16)] = [
+            (" ", 49), ("1", 18), ("2", 19), ("3", 20),
+            ("b", 11), ("v", 9), ("\u{1b}", 53),
+            ("+", 24), ("-", 27), ("0", 29)
+        ]
+        for key in blockedKeys {
+            scene.keyDown(with: try keyEvent(characters: key.0, keyCode: key.1))
+        }
+
+        let blockedCatalogCommands: [CityCommandID] = [
+            .togglePause, .speedNormal, .speedFast, .speedFastest,
+            .bulldozeMode, .inspectMode, .cancelInteraction, .openCommandGuide,
+            .toggleObjectives, .toggleCommandCenter, .saveCity
+        ]
+        XCTAssertEqual(
+            CityCommandCatalog.matchingCommand(key: "/", modifiers: [.command], scope: .global),
+            .openCommandGuide,
+            "The D005 Command-/ route must resolve through the same blocked catalog intent"
+        )
+        for command in blockedCatalogCommands {
+            XCTAssertFalse(store.perform(command), "\(command.rawValue) must be rejected by Welcome")
+            XCTAssertEqual(
+                store.disabledReason(for: command),
+                "Finish Welcome to New Arcadia to use city commands"
+            )
+        }
+        store.primaryAction(at: GridCoordinate(x: 4, y: 4))
+        store.secondaryAction(at: GridCoordinate(x: 4, y: 4))
+        store.pulse()
+
+        XCTAssertEqual(routedCommands, [])
+        XCTAssertEqual(scene.cameraScale, cameraScale)
+        XCTAssertEqual(store.state, authoredStart)
+        XCTAssertEqual(store.speed, .normal)
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertFalse(store.showObjectives)
+        XCTAssertFalse(store.showInspector)
+        XCTAssertFalse(store.showCommandGuide)
+
+        XCTAssertTrue(store.dismissBlockingModal(.welcome))
+        XCTAssertEqual(store.commandPolicy, .enabled)
+        XCTAssertEqual(store.speed, .normal, "Dismissal must preserve the authored 1x start")
+        XCTAssertFalse(store.dismissBlockingModal(.welcome), "Dismissal is a one-way explicit transition")
+
+        scene.keyDown(with: try keyEvent(characters: "3", keyCode: 20))
+        XCTAssertEqual(store.speed, .fastest)
+        scene.keyDown(with: try keyEvent(characters: "b", keyCode: 11))
+        XCTAssertEqual(store.interactionMode, .bulldoze)
+        XCTAssertTrue(store.perform(.openCommandGuide))
+        XCTAssertTrue(store.showCommandGuide)
+    }
+
+    @MainActor
     func testCatalogRouteMatchesExistingStoreIntentEndState() {
         let direct = CityGameStore(state: .newCity(seed: 42))
         let catalog = CityGameStore(state: .newCity(seed: 42))

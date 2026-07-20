@@ -16,7 +16,14 @@ final class CitySimAppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct CitySimNativeApp: App {
     @NSApplicationDelegateAdaptor(CitySimAppDelegate.self) private var appDelegate
-    @StateObject private var store = CityGameStore()
+    @StateObject private var store: CityGameStore
+
+    init() {
+        let hasSeenWelcome = UserDefaults.standard.bool(forKey: "hasSeenCitySimWelcome")
+        _store = StateObject(wrappedValue: CityGameStore(
+            commandPolicy: hasSeenWelcome ? .enabled : .blocked(.welcome)
+        ))
+    }
 
     var body: some Scene {
         WindowGroup("CitySim", id: "main") {

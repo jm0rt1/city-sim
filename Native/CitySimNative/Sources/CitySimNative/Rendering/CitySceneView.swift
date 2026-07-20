@@ -24,6 +24,9 @@ struct CitySceneView: NSViewRepresentable {
         scene.onCommandAction = { [weak coordinator = context.coordinator] command in
             coordinator?.store.perform(command)
         }
+        scene.allowsCommand = { [weak coordinator = context.coordinator] command in
+            coordinator?.store.commandPolicy.allows(command) ?? false
+        }
         view.presentScene(scene)
         DispatchQueue.main.async { [weak view] in
             view?.window?.acceptsMouseMovedEvents = true

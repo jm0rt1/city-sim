@@ -22,29 +22,33 @@ struct ContentView: View {
         .frame(minWidth: 900, minHeight: 600)
         .background(ProofWindowConfigurator())
         .toolbar {
-            ToolbarItemGroup(placement: .primaryAction) {
-                Button {
-                    withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                        _ = store.perform(.toggleObjectives)
+            if !Self.suppressesGameSurface(for: store.commandPolicy) {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    Button {
+                        withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
+                            _ = store.perform(.toggleObjectives)
+                        }
+                    } label: {
+                        Label("Objectives", systemImage: "flag.checkered")
                     }
-                } label: {
-                    Label("Objectives", systemImage: "flag.checkered")
+                    Button { store.perform(.toggleCommandCenter) } label: {
+                        Label("Command Center", systemImage: "rectangle.bottomthird.inset.filled")
+                    }
+                    Button { store.perform(.openCommandGuide) } label: {
+                        Label("Commands", systemImage: "command.square")
+                    }
+                    Button { store.perform(.saveCity) } label: {
+                        Label("Save", systemImage: "square.and.arrow.down")
+                    }
+                    Button { store.perform(.undo) } label: {
+                        Label("Undo", systemImage: "arrow.uturn.backward")
+                    }
+                    .disabled(!store.canPerform(.undo))
                 }
-                Button { store.perform(.toggleCommandCenter) } label: {
-                    Label("Command Center", systemImage: "rectangle.bottomthird.inset.filled")
-                }
-                Button { store.perform(.openCommandGuide) } label: {
-                    Label("Commands", systemImage: "command.square")
-                }
-                Button { store.perform(.saveCity) } label: {
-                    Label("Save", systemImage: "square.and.arrow.down")
-                }
-                Button { store.perform(.undo) } label: {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                }
-                .disabled(!store.canPerform(.undo))
             }
         }
+        .onAppear { synchronizeWelcomePolicy() }
+        .onChange(of: hasSeenWelcome) { _, _ in synchronizeWelcomePolicy() }
         .task(id: hasSeenWelcome) {
             guard hasSeenWelcome else { return }
             while !Task.isCancelled {
@@ -65,6 +69,10 @@ struct ContentView: View {
 
     static func isCompactLayout(_ size: CGSize) -> Bool {
         size.width < 1_100 || size.height < 700
+    }
+
+    static func suppressesGameSurface(for commandPolicy: CityCommandPolicy) -> Bool {
+        commandPolicy != .enabled
     }
 
     static func objectiveSurfacePresentation(
@@ -94,6 +102,28 @@ struct ContentView: View {
 
     @ViewBuilder
     private func gameContent(compact: Bool) -> some View {
+        ZStack {
+            gameSurface(compact: compact)
+                .allowsHitTesting(!Self.suppressesGameSurface(for: store.commandPolicy))
+                .accessibilityHidden(Self.suppressesGameSurface(for: store.commandPolicy))
+
+            if store.commandPolicy == .blocked(.welcome) {
+                WelcomeView {
+                    withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
+                        if store.dismissBlockingModal(.welcome) {
+                            hasSeenWelcome = true
+                        }
+                    }
+                }
+                .transition(.opacity)
+            }
+        }
+        .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showInspector)
+        .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showObjectives)
+    }
+
+    @ViewBuilder
+    private func gameSurface(compact: Bool) -> some View {
         ZStack {
             CitySceneView(store: store).ignoresSafeArea()
 
@@ -158,16 +188,14 @@ struct ContentView: View {
             if store.state.status != .playing {
                 GameStatusOverlay(store: store)
             }
-            if !hasSeenWelcome {
-                WelcomeView {
-                    withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                        hasSeenWelcome = true
-                    }
-                }
-                .transition(.opacity)
-            }
         }
-        .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showInspector)
-        .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showObjectives)
+    }
+
+    private func synchronizeWelcomePolicy() {
+        if hasSeenWelcome {
+            _ = store.dismissBlockingModal(.welcome)
+        } else {
+            store.presentBlockingModal(.welcome)
+        }
     }
 }

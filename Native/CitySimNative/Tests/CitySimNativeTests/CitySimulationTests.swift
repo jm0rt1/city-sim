@@ -588,6 +588,8 @@ final class CitySimulationTests: XCTestCase {
         let store = CityGameStore(state: .newCity())
         XCTAssertFalse(store.showInspector)
         XCTAssertFalse(store.showObjectives)
+        XCTAssertFalse(ContentView.suppressesGameSurface(for: .enabled))
+        XCTAssertTrue(ContentView.suppressesGameSurface(for: .blocked(.welcome)))
         XCTAssertTrue(ContentView.isCompactLayout(CGSize(width: 900, height: 600)))
         XCTAssertFalse(ContentView.isCompactLayout(CGSize(width: 1_200, height: 760)))
         XCTAssertEqual(
@@ -627,6 +629,7 @@ final class CitySimulationTests: XCTestCase {
         view.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
 
+        XCTAssertEqual(store.commandPolicy, .blocked(.welcome))
         XCTAssertEqual(store.state, authoredStart)
         XCTAssertEqual(store.state.day, authoredStart.day)
         XCTAssertEqual(store.state.messages, authoredStart.messages)
@@ -643,6 +646,7 @@ final class CitySimulationTests: XCTestCase {
         resumedView.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
 
+        XCTAssertEqual(resumedStore.commandPolicy, .enabled)
         XCTAssertGreaterThan(resumedStore.state.tick, authoredStart.tick)
     }
 

@@ -86,3 +86,21 @@ Because the Computer Use skill prohibits substituting `osascript`, System Events
 1. PLAY-041/platform independently reviews and adopts or rejects the candidate checkpoint values and fingerprints.
 2. PLAY-051 or integration runs the exact staged candidate through a real no-coaching pointer-and-keyboard journey, recording first decision, every decision gap, complication diagnosis, recovery, payoff, and strategy distinction.
 3. Integration—not this worker—decides whether the combined candidate satisfies Wave 003.
+
+## Post-PLAY-041 synchronized revalidation
+
+Integration synchronized this lane through accepted master `36774db` in merge `0e39b5b702601da86c91ba3ea9b1424a87a7a452`. Both the PLAY-012 product commit and accepted PLAY-041 spatial contract are ancestors. No gameplay product file changed during synchronization or this revalidation.
+
+- Focused gameplay: 19/19 passed in 10.055 seconds.
+- Accepted spatial consequence contract: 9/9 passed in 0.535 seconds; diagnostics reported six fixtures, 1.175 ms average derivation, 1.265 ms maximum derivation, 0.112 ms diff, 68 events, and 46,080 retained sample bytes.
+- Schema-one save round trip: 1/1 passed in 0.013 seconds.
+- Exact authoritative undo/fingerprint restoration: 1/1 passed in 0.124 seconds.
+- Full native suite: 103 tests executed; 94 passed and the same nine frozen expectations failed in the same two platform-owned tests. All 19 gameplay tests and all nine spatial contract tests passed. The replacement values remain:
+  - industrial treasury `$56,433.20`, warning deadline `Day 25`, digest `f8ecd67582597fc859ddc91c9de8b5b3842f702581161588d671ae06ec839e13`;
+  - commercial treasury `$58,993.26`, warning deadline `Day 25`, digest `65ce47a635ad3305afcc8871bafb0df1ba0cf245cca0548e1873c87224edb223`;
+  - dense v3 digest `ce5d912d97702c5a0a3b84149e432219fe9faca54dcb9b2fa98e0b5ba54f8ef7`.
+- `bash -n script/build_and_run.sh` and the exact synchronized `./script/build_and_run.sh --verify` passed for commit `0e39b5b`; candidate `gameplay-loop-w8f1a46b88376`; bundle `com.jfmortensen.citysim.gameplay-loop.w8f1a46b88376`; isolated data root `dist/test-data/gameplay-loop-w8f1a46b88376`; staged PID `34972`.
+
+After integration terminated four orphaned Computer Use workers and confirmed none remained, the worker made exactly one fresh-session retry against that bundle with a requested 12-second fail-fast tool timeout. The request again returned no app state and remained stuck until the turn was user-aborted after 913.1 seconds (15 minutes 13.1 seconds). No second post-cleanup retry was issued. No live pointer or keyboard action, wall-clock journey timestamp, screenshot, or no-coaching result is claimed.
+
+The accepted spatial contract is compatible with PLAY-012's authoritative rules and save/undo behavior. Platform ownership must still adopt or reject the three replacement canonical fixture digests and the two changed strategy treasury/deadline expectations without delegating those edits to gameplay. Independent PLAY-051/integration live proof remains required.

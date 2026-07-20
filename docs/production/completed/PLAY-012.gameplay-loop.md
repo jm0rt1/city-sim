@@ -5,6 +5,7 @@
 - **Status:** blocked; not ready for integration
 - **Authority/base:** `3e8ffe405b00783121c08a06fadc7e0335d7d7aa`
 - **Product commit:** `49764b89dbdcfa46add838114db9a95b4f5ba6ae`
+- **Post-contract validation merge:** `0e39b5b702601da86c91ba3ea9b1424a87a7a452`
 - **Claim:** `docs/production/claims/PLAY-012.gameplay-loop.md`
 - **Evidence:** `docs/production/evidence/PLAY-012-three-act-checkpoint.md`
 
@@ -37,4 +38,6 @@ The implementation adds no persisted state and changes no schema or public contr
 
 ## Handoff
 
-PLAY-041/platform must independently adopt or reject the new deterministic fixture values. PLAY-051 or integration must execute the exact staged no-coaching journey and retain the missing timestamps and visual proof. No push or integration was performed from this lane.
+The accepted PLAY-041 spatial contract is now in this lane's ancestry and passed 9/9 focused checks alongside gameplay 19/19, schema-one save round trip, and exact undo/fingerprint restoration. The full synchronized suite executed 103 tests: 94 passed, while the same nine assertions in the two platform-owned frozen-fixture tests require platform adoption of industrial `f8ecd67582597fc859ddc91c9de8b5b3842f702581161588d671ae06ec839e13`, commercial `65ce47a635ad3305afcc8871bafb0df1ba0cf245cca0548e1873c87224edb223`, and dense `ce5d912d97702c5a0a3b84149e432219fe9faca54dcb9b2fa98e0b5ba54f8ef7` plus the recorded treasury/deadline expectations.
+
+The exact synchronized staged verify passed for `0e39b5b`, but the one permitted post-cleanup Computer Use retry returned no app state and was user-aborted after 913.1 seconds despite a requested 12-second timeout. No live evidence was invented. PLAY-051 or integration must execute the exact staged no-coaching journey and retain the missing timestamps and visual proof. No push or integration was performed from this lane.

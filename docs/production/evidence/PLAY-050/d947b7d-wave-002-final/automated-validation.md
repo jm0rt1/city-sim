@@ -14,3 +14,7 @@
 - The first sandboxed test attempt is not candidate evidence: SwiftPM encountered a read-only stale `.build` database and the stale xctest binary exited by signal 11. The fresh scratch build above replaced it and passed completely.
 
 Automated success does not override the live D006 focus failure.
+
+## Independent confirmation after disposition
+
+The rejection evidence was independently revalidated from the same product tree after the evidence-only disposition commit. A second full native run passed **87/87 tests with zero failures in 227.872 seconds**. It reported 9,004 renderer nodes, 5,760 unchanged tile reuses, zero updates, a 1.751 ms ten-pulse average, a 0.8703 ms 30-minute-equivalent soak average, and the same dense fixture digest `7b6454ecbe83aeb3bdc88de4fb1d6cb23ef67ce81849123e907d3147c6c52a77`. This confirms that D006 is a live focus-handoff failure not detected by the green automated suite.

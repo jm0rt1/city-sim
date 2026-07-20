@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; approved and integrated PLAY-041 truth before factual consequence rendering
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active for renderer-local art direction; truth-dependent implementation gated
+- **Status:** blocked checkpoint — renderer-local architecture committed; live window proof and integrated PLAY-041 truth remain required
 
 Deliver an unmistakable visual step: authored commercial and industrial identities, density progression, trouble, pollution, prosperity, decline, recovery, and bounded ambient life in the real staged city. Art studies and renderer-local prototypes may start immediately.
 

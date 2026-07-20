@@ -7,6 +7,6 @@
 - **Base commit:** Baseline publication commit containing this claim
 - **Claimed:** July 19, 2026
 - **Planned surfaces:** app commands, views, input/store bridge, UI/input tests and proof
-- **Dependencies:** Approved public command/store contract and PLAY-050 journey inventory
+- **Dependencies:** `CONTRACT-002` and PLAY-050 journey inventory; first repair `PLAY-050-D001` and `PLAY-050-D002`
 - **Validation/proof:** Command inventory parity, full tests, live pointer/keyboard/default/compact evidence
 - **Status:** active

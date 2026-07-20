@@ -11,7 +11,11 @@ enum PlayerFeedbackTone: Sendable {
 @MainActor
 final class CityGameStore: ObservableObject {
     @Published var state: CityGameState
-    @Published var speed: SimulationSpeed = .normal
+    @Published var speed: SimulationSpeed = .normal {
+        didSet {
+            if speed != .paused { lastNonPausedSpeed = speed }
+        }
+    }
     @Published var selectedTool: BuildingKind = .road
     @Published var interactionMode: CityInteractionMode = .inspect
     @Published var selectedBuildCategory: BuildCategory = .roads
@@ -19,6 +23,7 @@ final class CityGameStore: ObservableObject {
     @Published var overlay: DataOverlay = .none
     @Published var showInspector = false
     @Published var showObjectives = false
+    @Published var showCommandGuide = false
     @Published var inspectorSection: InspectorSection = .overview
     @Published var hudContextScope: HUDContextScope = .city
     @Published var lastFeedback: String?
@@ -28,6 +33,7 @@ final class CityGameStore: ObservableObject {
     private let saves = SaveGameService()
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
+    private var lastNonPausedSpeed: SimulationSpeed = .normal
 
     init(state: CityGameState = .newCity()) {
         self.state = state
@@ -115,6 +121,124 @@ final class CityGameStore: ObservableObject {
     func pulse() {
         guard speed != .paused else { return }
         for _ in 0..<speed.ticksPerPulse { CitySimulation.step(&state) }
+    }
+
+    @discardableResult
+    func perform(_ command: CityCommandID) -> Bool {
+        guard canPerform(command) else { return false }
+
+        if let kind = CityCommandCatalog.buildingKind(for: command) {
+            selectTool(kind)
+            return true
+        }
+        if let category = CityCommandCatalog.buildCategory(for: command) {
+            selectBuildCategory(category)
+            return true
+        }
+        if let overlay = CityCommandCatalog.overlay(for: command) {
+            self.overlay = overlay
+            return true
+        }
+        if let section = CityCommandCatalog.inspectorSection(for: command) {
+            openInspector(section)
+            return true
+        }
+
+        switch command {
+        case .newRegion:
+            newCity()
+        case .saveCity:
+            save()
+        case .loadCity:
+            load()
+        case .undo:
+            undoLastAction()
+        case .togglePause:
+            togglePause()
+        case .speedNormal:
+            setSpeed(.normal)
+        case .speedFast:
+            setSpeed(.fast)
+        case .speedFastest:
+            setSpeed(.fastest)
+        case .inspectMode:
+            activateInspectMode()
+        case .buildMode:
+            activateBuildMode()
+        case .bulldozeMode:
+            toggleBulldozer()
+        case .cancelInteraction:
+            dismissTopmostSurfaceOrCancel()
+        case .toggleObjectives:
+            showObjectives.toggle()
+        case .toggleCommandCenter:
+            toggleInspector()
+        case .openNotices:
+            openAlertCenter()
+        case .openCommandGuide:
+            showCommandGuide = true
+        case .dismissFeedback:
+            clearFeedback()
+        default:
+            return false
+        }
+        return true
+    }
+
+    func canPerform(_ command: CityCommandID) -> Bool {
+        let descriptor = CityCommandCatalog.descriptor(for: command)
+        guard descriptor.route == .store, !descriptor.isSpatial else { return false }
+        return switch command {
+        case .undo:
+            canUndo
+        case .loadCity:
+            FileManager.default.fileExists(atPath: saves.saveURL.path)
+        case .dismissFeedback:
+            lastFeedback != nil
+        case .cancelInteraction:
+            showCommandGuide || showInspector || showObjectives || selectedCoordinate != nil || interactionMode != .inspect
+        default:
+            true
+        }
+    }
+
+    func disabledReason(for command: CityCommandID) -> String? {
+        guard !canPerform(command) else { return nil }
+        let descriptor = CityCommandCatalog.descriptor(for: command)
+        switch descriptor.route {
+        case .renderer:
+            return "Available when the city map has focus"
+        case .system:
+            return descriptor.discoverability
+        case .store:
+            switch command {
+            case .undo: return "There is no reversible construction action"
+            case .loadCity: return "No quicksave is available"
+            case .dismissFeedback: return "There is no transient action message"
+            case .cancelInteraction: return "There is no open surface or active tool to cancel"
+            default: return "Unavailable in the current context"
+            }
+        }
+    }
+
+    func setSpeed(_ speed: SimulationSpeed) {
+        self.speed = speed
+    }
+
+    func togglePause() {
+        speed = speed == .paused ? lastNonPausedSpeed : .paused
+    }
+
+    private func dismissTopmostSurfaceOrCancel() {
+        if showCommandGuide {
+            showCommandGuide = false
+        } else if showInspector {
+            dismissInspector()
+        } else if showObjectives {
+            showObjectives = false
+        } else {
+            cancelInteraction()
+        }
     }
 
     func select(_ coordinate: GridCoordinate) {
@@ -303,6 +427,7 @@ final class CityGameStore: ObservableObject {
     func newCity() {
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         speed = .normal
+        lastNonPausedSpeed = .normal
         selectedTool = .road
         selectedBuildCategory = .roads
         interactionMode = .inspect
@@ -310,6 +435,7 @@ final class CityGameStore: ObservableObject {
         inspectorSection = .overview
         hudContextScope = .city
         showInspector = false
+        showCommandGuide = false
         undoStates.removeAll()
         canUndo = false
         showFeedback("A fresh region is ready")
@@ -324,6 +450,7 @@ final class CityGameStore: ObservableObject {
         do {
             state = try saves.load()
             speed = .paused
+            lastNonPausedSpeed = .normal
             selectedTool = .road
             selectedBuildCategory = .roads
             interactionMode = .inspect
@@ -331,6 +458,7 @@ final class CityGameStore: ObservableObject {
             inspectorSection = .overview
             hudContextScope = .city
             showInspector = false
+            showCommandGuide = false
             undoStates.removeAll()
             canUndo = false
             showFeedback("City loaded · Simulation paused", tone: .positive)

@@ -44,7 +44,7 @@ struct TopHUDView: View {
         let mandateComplete = store.completedObjectiveCount == store.objectives.count
 
         return VStack(alignment: .leading, spacing: 4) {
-            Button { store.openInspector(.overview) } label: {
+            Button { store.perform(.inspectorOverview) } label: {
                 HStack(spacing: 8) {
                     VStack(alignment: .leading, spacing: 1) {
                         Text(store.state.cityName)
@@ -68,7 +68,7 @@ struct TopHUDView: View {
 
             Button {
                 withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                    store.showObjectives.toggle()
+                    _ = store.perform(.toggleObjectives)
                 }
             } label: {
                 HStack(spacing: 7) {
@@ -109,7 +109,7 @@ struct TopHUDView: View {
                 symbol: "dollarsign.circle.fill",
                 tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger,
                 detail: "\(store.analytics.projectedBalance.signedCurrencyText) / cycle"
-            ) { store.openInspector(.finances) }
+            ) { store.perform(.inspectorFinances) }
 
             MetricCard(
                 identifier: "hud.metric.population",
@@ -119,7 +119,7 @@ struct TopHUDView: View {
                 tint: .cyan,
                 detail: "\(store.analytics.housingHeadroom.formatted()) homes open",
                 progress: store.analytics.housingUtilization
-            ) { store.openInspector(.population) }
+            ) { store.perform(.inspectorPopulation) }
 
             MetricCard(
                 identifier: "hud.metric.happiness",
@@ -129,7 +129,7 @@ struct TopHUDView: View {
                 tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
                 detail: "\(store.state.approval.percentText) mayor approval",
                 progress: store.state.happiness / 100
-            ) { store.openInspector(.happiness) }
+            ) { store.perform(.inspectorHappiness) }
 
             MetricCard(
                 identifier: "hud.metric.employment",
@@ -139,7 +139,7 @@ struct TopHUDView: View {
                 tint: .purple,
                 detail: "\(store.analytics.jobHeadroom.formatted()) openings",
                 progress: store.analytics.jobUtilization
-            ) { store.openInspector(.employment) }
+            ) { store.perform(.inspectorEmployment) }
 
             MetricCard(
                 identifier: "hud.metric.utilities",
@@ -149,7 +149,7 @@ struct TopHUDView: View {
                 tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger,
                 detail: "P \(store.analytics.powerHeadroom.formatted()) · W \(store.analytics.waterHeadroom.formatted()) spare",
                 progress: store.analytics.utilityCoverage
-            ) { store.openInspector(.utilities) }
+            ) { store.perform(.inspectorUtilities) }
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .contain)
@@ -159,7 +159,7 @@ struct TopHUDView: View {
     private var timeAndNotices: some View {
         HStack(spacing: 5) {
             ForEach(SimulationSpeed.allCases) { speed in
-                Button { store.speed = speed } label: {
+                Button { store.perform(CityCommandCatalog.id(for: speed)) } label: {
                     Text(speed.controlLabel)
                         .font(.caption.weight(.bold))
                         .frame(minWidth: speed == .paused ? (compact ? 48 : 52) : GameTheme.controlMinimum)
@@ -180,7 +180,7 @@ struct TopHUDView: View {
 
             Divider().frame(height: 28)
 
-            Button { store.openAlertCenter() } label: {
+            Button { store.perform(.openNotices) } label: {
                 if compact {
                     Label("\(store.alertCount)", systemImage: noticeSymbol)
                         .font(.caption.weight(.semibold))

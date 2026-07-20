@@ -371,14 +371,8 @@ final class CitySimulationTests: XCTestCase {
     @MainActor
     func testRendererRoutesUnmodifiedKeyboardCommandsToCallbacks() throws {
         let scene = CityScene(size: CGSize(width: 900, height: 600))
-        var speeds: [SimulationSpeed] = []
-        var bulldozeCount = 0
-        var inspectCount = 0
-        var cancelCount = 0
-        scene.onSpeedAction = { speeds.append($0) }
-        scene.onBulldozeAction = { bulldozeCount += 1 }
-        scene.onInspectAction = { inspectCount += 1 }
-        scene.onCancelAction = { cancelCount += 1 }
+        var routedCommands: [CityCommandID] = []
+        scene.onCommandAction = { routedCommands.append($0) }
 
         let commands: [(characters: String, keyCode: UInt16)] = [
             (" ", 49), ("1", 18), ("2", 19), ("3", 20), ("b", 11), ("v", 9)
@@ -388,17 +382,15 @@ final class CitySimulationTests: XCTestCase {
         }
         scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
 
-        XCTAssertEqual(speeds, [.paused, .normal, .fast, .fastest])
-        XCTAssertEqual(bulldozeCount, 1)
-        XCTAssertEqual(inspectCount, 1)
-        XCTAssertEqual(cancelCount, 1)
+        XCTAssertEqual(
+            routedCommands,
+            [.togglePause, .speedNormal, .speedFast, .speedFastest, .bulldozeMode, .inspectMode, .cancelInteraction]
+        )
 
         scene.keyDown(with: try keyEvent(characters: "b", keyCode: 11, modifiers: .command))
         scene.keyDown(with: try keyEvent(characters: "v", keyCode: 9, modifiers: .option))
         scene.keyDown(with: try keyEvent(characters: "1", keyCode: 18, modifiers: .control))
-        XCTAssertEqual(speeds, [.paused, .normal, .fast, .fastest])
-        XCTAssertEqual(bulldozeCount, 1)
-        XCTAssertEqual(inspectCount, 1)
+        XCTAssertEqual(routedCommands.count, 7, "Modified keys must not double-route through the focused map")
 
         let state = rendererNeighborhoodState()
         scene.reducedMotion = true

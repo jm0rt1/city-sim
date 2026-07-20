@@ -9,7 +9,7 @@ struct ObjectivesView: View {
                 Label("MAYOR'S MANDATE", systemImage: "flag.checkered")
                     .font(.system(size: 11, weight: .heavy, design: .rounded))
                 Spacer()
-                Button { store.showObjectives = false } label: {
+                Button { store.perform(.toggleObjectives) } label: {
                     Image(systemName: "xmark")
                         .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
                         .contentShape(Rectangle())
@@ -53,7 +53,7 @@ struct ObjectiveSummaryView: View {
         let objective = store.primaryObjective
         Button {
             withAnimation(GameTheme.animation(reduceMotion: systemReduceMotion || gameReduceMotion)) {
-                store.showObjectives.toggle()
+                _ = store.perform(.toggleObjectives)
             }
         } label: {
             HStack(spacing: 8) {

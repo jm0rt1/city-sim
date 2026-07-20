@@ -25,21 +25,24 @@ struct ContentView: View {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
                     withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                        store.showObjectives.toggle()
+                        _ = store.perform(.toggleObjectives)
                     }
                 } label: {
                     Label("Objectives", systemImage: "flag.checkered")
                 }
-                Button { store.toggleInspector() } label: {
+                Button { store.perform(.toggleCommandCenter) } label: {
                     Label("Command Center", systemImage: "rectangle.bottomthird.inset.filled")
                 }
-                Button { store.save() } label: {
+                Button { store.perform(.openCommandGuide) } label: {
+                    Label("Commands", systemImage: "command.square")
+                }
+                Button { store.perform(.saveCity) } label: {
                     Label("Save", systemImage: "square.and.arrow.down")
                 }
-                Button { store.undoLastAction() } label: {
+                Button { store.perform(.undo) } label: {
                     Label("Undo", systemImage: "arrow.uturn.backward")
                 }
-                .disabled(!store.canUndo)
+                .disabled(!store.canPerform(.undo))
             }
         }
         .task(id: hasSeenWelcome) {
@@ -54,7 +57,10 @@ struct ContentView: View {
                 store.pulse()
             }
         }
-        .onExitCommand { store.cancelInteraction() }
+        .onExitCommand { store.perform(.cancelInteraction) }
+        .sheet(isPresented: $store.showCommandGuide) {
+            CommandGuideView(store: store)
+        }
     }
 
     static func isCompactLayout(_ size: CGSize) -> Bool {
@@ -121,7 +127,7 @@ struct ContentView: View {
                         Image(systemName: feedbackSymbol)
                             .foregroundStyle(feedbackColor)
                         Text(feedback).font(.callout.weight(.semibold))
-                        Button { store.clearFeedback() } label: {
+                        Button { store.perform(.dismissFeedback) } label: {
                             Image(systemName: "xmark")
                                 .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
                         }

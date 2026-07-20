@@ -45,6 +45,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Named world states are visually distinct and non-color-only; default/compact/camera proof retained; stable deterministic variation; unchanged-pulse reuse preserved; performance budget and limitations recorded.
 - **Stop conditions:** Renderer derives gameplay facts absent from snapshot, unapproved asset/license input, or regression beyond accepted render budgets.
 
+### [ ] PLAY-021: Deliver the golden-neighborhood visual breakthrough
+
+- **Player outcome:** The staged game opens on an authored, visually dense miniature neighborhood that feels like a place worth growing, not a sparse procedural diagram on an empty grid.
+- **Owning lane:** World rendering.
+- **Requirement IDs:** `ART`, `UX`, `TEC` graphics vertical-slice rows.
+- **Dependencies:** Integrated PLAY-020 renderer foundations; approved task brief at `docs/production/WORLD_RENDERING_RECOVERY_2026-07-19.md`.
+- **In scope:** Terrain and connected-road art, complete residential/commercial/industrial/park/civic visual families, deterministic seeded variants, lot frontage and props, ambient truth-safe life, starting camera composition, camera LOD, world-only resources, renderer tests/telemetry, and real before/after proof.
+- **Out of scope:** Gameplay balance, invented service/traffic/economy facts, HUD redesign, save schema, external unlicensed assets, broad engine replacement.
+- **Acceptance:** The same real staged starting city is materially more compelling at default and 900 x 600; the primary visual language works without floating lifecycle labels; the golden 8 x 8 neighborhood is intentional at city/neighborhood/block detail; all road masks and five lot families are authored and distinct; empty-land repetition is broken up without implying false development; deterministic identity, accessibility, Reduce Motion, hit testing, incremental reuse, and performance remain sound; integration and PLAY-050 accept the visual delta from retained side-by-side evidence.
+- **Stop conditions:** Improvement exists only in an off-window fixture, depends mainly on labels/recoloring/camera crop, fakes simulation truth, introduces unclear asset provenance, hides interaction state, or misses the live visual-acceptance gate.
+
 ### [ ] PLAY-030: Complete the command and keyboard system
 
 - **Player outcome:** Every non-spatial game action has one discoverable command, menu/shortcut route, contextual availability, accessible label, and consistent focus behavior.

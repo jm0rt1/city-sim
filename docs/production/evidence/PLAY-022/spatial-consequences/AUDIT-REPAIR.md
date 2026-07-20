@@ -52,3 +52,42 @@ retries. The real drawable-window gate remains blocked.
 
 Post-repair full-suite, regenerated harness, and exact staged-app verification
 remain pending serial authorization from integration.
+
+## Telemetry performance repair
+
+Integration's combined run exposed that the first audit repair recursively
+recounted roughly 10,000 nodes on every render, increasing the unchanged soak
+to 9.9693 ms average. The follow-up repair retains exact prior tree totals on
+unchanged renders. It now applies exact subtree-metric deltas for backdrop,
+tile, overlay, event insertion, and event expiry changes; scans only direct
+consequence-layer children for the current displayed-cue count; and performs a
+full recursive recount only on the initial render, after selection or Reduce
+Motion changes, or when it detects an unexplained asynchronous cue removal.
+
+Authorized focused validation used scratch path
+`/private/tmp/citysim-play022-telemetry-focused-20260720-1612` and module cache
+`/private/tmp/citysim-play022-telemetry-clang-20260720-1612`:
+
+- expiry/telemetry plus 4,286-pulse soak: 2/2 passed in 53.134 seconds;
+- soak: 4,894.623 ms total / 1.1420 ms average, 10,289 nodes, 2,505
+  drawables, 5 bounded actions, and unchanged identity;
+- exact ten-pulse invalidation: 1/1 passed in 12.033 seconds, with 5,759 tile
+  reuses and one authoritative spatial update.
+
+The exact subtree-delta focused group used scratch path
+`/private/tmp/citysim-play022-delta-focused-20260720-1625` and module cache
+`/private/tmp/citysim-play022-delta-clang-20260720-1625`. The expiry test proved
+that incremental diagnostics exactly match a test-only recursive recount after
+both insertion and event-only expiry. The unchanged 4,286-pulse soak passed at
+4,929.119 ms total / 1.1501 ms average with 10,289 nodes, 2,505 drawables, and
+5 bounded actions.
+
+An initial ten-pulse measurement of 3.753 ms included platform-owned snapshot
+derivation and was therefore rejected as a renderer metric. Integration
+confirmed that the shipping `CitySceneView` derives and caches presentation
+snapshots before calling the scene renderer. The corrected shipping-boundary
+test measures only `scene.render(snapshot:)`, enforces the established 2.1 ms
+renderer budget, and passed 1/1 in 12.035 seconds: 13.411 ms total / 1.341 ms
+average, 5,759 tile reuses, and one authoritative spatial update. Neither the
+earlier platform-inclusive timings nor their failures are presented as
+renderer performance.

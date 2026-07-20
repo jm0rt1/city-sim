@@ -2,9 +2,9 @@ import XCTest
 @testable import CitySimNative
 
 final class SessionPlatformTests: XCTestCase {
-    private static let waveTwoDenseTerminalFixtureName = "dense-24x24-terminal-wave2-v3"
-    private static let waveTwoDenseTerminalFixtureDigest =
-        "d18afceb9c8ccc09eaf54d7316abc960c6b560baa1bc7d92fa6416c9776556d8"
+    private static let waveThreeDenseTerminalFixtureName = "dense-24x24-terminal-wave3-v4"
+    private static let waveThreeDenseTerminalFixtureDigest =
+        "ce5d912d97702c5a0a3b84149e432219fe9faca54dcb9b2fa98e0b5ba54f8ef7"
 
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
@@ -279,41 +279,46 @@ final class SessionPlatformTests: XCTestCase {
         printCheckpoint("accepted-commercial", state: commerce)
         XCTAssertEqual(industry.tick, 896)
         XCTAssertEqual(commerce.tick, 888)
-        XCTAssertEqual(industry.treasury, 49_433.2, accuracy: 0.001)
-        XCTAssertEqual(commerce.treasury, 58_393.26, accuracy: 0.001)
+        XCTAssertEqual(industry.treasury, 56_433.2, accuracy: 0.001)
+        XCTAssertEqual(commerce.treasury, 58_993.26, accuracy: 0.001)
         XCTAssertEqual(CityAnalytics(state: industry).projectedBalance, 310.25, accuracy: 0.001)
         XCTAssertEqual(CityAnalytics(state: commerce).projectedBalance, 403.49, accuracy: 0.001)
         XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(industry.messages.contains { $0.title == "Town Charter Standards" })
         XCTAssertTrue(commerce.messages.contains { $0.title == "Town Charter Standards" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Industrial Load Absorbed" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Freight Load Forecast" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Choose a Growth Engine" })
         XCTAssertTrue(industry.messages.contains {
-            $0.title == "Freight Contract Watch" && $0.detail.contains("by Day 41")
+            $0.title == "Freight Contract Watch" && $0.detail.contains("by Day 25")
         })
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Chain Store Rumor" })
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Choose a Growth Engine" })
         XCTAssertTrue(commerce.messages.contains {
-            $0.title == "Main Street Crossroads" && $0.detail.contains("by Day 41")
+            $0.title == "Main Street Crossroads" && $0.detail.contains("by Day 25")
         })
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "11adf523ca4af342d3a1126c04d3469bf3e02ddd30c8b77ea22e21c70420c5ff"
+            "f8ecd67582597fc859ddc91c9de8b5b3842f702581161588d671ae06ec839e13"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "65c11403d0876fc9af27782e240a4e98b2806b55b8953aa81490934bb860f68c"
+            "65ce47a635ad3305afcc8871bafb0df1ba0cf245cca0548e1873c87224edb223"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["11adf523ca4af342d3a1126c04d3469bf3e02ddd30c8b77ea22e21c70420c5ff"])
+            Set(["f8ecd67582597fc859ddc91c9de8b5b3842f702581161588d671ae06ec839e13"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["65c11403d0876fc9af27782e240a4e98b2806b55b8953aa81490934bb860f68c"])
+            Set(["65ce47a635ad3305afcc8871bafb0df1ba0cf245cca0548e1873c87224edb223"])
         )
     }
 
     func testDenseSessionSimulationAndPersistencePerformance() throws {
         try withTemporaryRoot { root in
-            var state = waveTwoDenseTerminalFixtureV3()
+            var state = waveThreeDenseTerminalFixtureV4()
             let simulationStart = ProcessInfo.processInfo.systemUptime
             for _ in 0..<400 { CitySimulation.step(&state) }
             let simulationMilliseconds = elapsedMilliseconds(since: simulationStart)
@@ -339,7 +344,7 @@ final class SessionPlatformTests: XCTestCase {
             XCTAssertEqual(state.jobs, 32_739)
             XCTAssertEqual(state.progression, CityProgressionState())
             XCTAssertTrue(state.messages.contains { $0.title == "Town Charter Standards" })
-            XCTAssertEqual(fingerprint.digest, Self.waveTwoDenseTerminalFixtureDigest)
+            XCTAssertEqual(fingerprint.digest, Self.waveThreeDenseTerminalFixtureDigest)
             XCTAssertEqual(load.state, state)
             XCTAssertEqual(load.fingerprint, fingerprint)
             XCTAssertEqual(write.fingerprint, fingerprint)
@@ -350,7 +355,7 @@ final class SessionPlatformTests: XCTestCase {
             XCTAssertLessThan(write.byteCount, 2_000_000)
 
             print(
-                "CITYSIM_SESSION_PERFORMANCE fixture=\(Self.waveTwoDenseTerminalFixtureName) " +
+                "CITYSIM_SESSION_PERFORMANCE fixture=\(Self.waveThreeDenseTerminalFixtureName) " +
                 "step_attempts=400 final_tick=\(state.tick) status=\(state.status.rawValue) " +
                 "simulation_ms=\(metric(simulationMilliseconds)) " +
                 "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
@@ -384,9 +389,9 @@ final class SessionPlatformTests: XCTestCase {
         }
     }
 
-    // V3 runs the unchanged terminal dense generator under accepted PLAY-011
-    // guidance and reserve-utility upkeep semantics, freezing tick 44.
-    private func waveTwoDenseTerminalFixtureV3() -> CityGameState {
+    // V4 runs the unchanged terminal dense generator under accepted PLAY-012
+    // three-act messaging and outcome semantics, freezing tick 44.
+    private func waveThreeDenseTerminalFixtureV4() -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         let kinds: [BuildingKind] = [
             .residential, .commercial, .industrial, .park,

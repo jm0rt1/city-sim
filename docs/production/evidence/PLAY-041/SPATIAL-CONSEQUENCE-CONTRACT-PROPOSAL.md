@@ -1,6 +1,6 @@
 # PLAY-041 Spatial Consequence Contract Proposal
 
-**Status:** Proposed; no shared public contract implementation is authorized
+**Status:** Approved by integration, including PLAY-022 consumer clarifications
 
 **Authority base:** `3e8ffe405b00783121c08a06fadc7e0335d7d7aa`
 
@@ -40,6 +40,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
     let coordinate: GridCoordinate
     let utility: CityLocationUtilityService
     let pollutionExposure: Double // closed 0...1, 0 is clean
+    let pollutionBand: CityConsequenceBand
     let vitalityScore: Double     // closed 0...1
     let vitality: CityLocationVitality
 }
@@ -48,7 +49,9 @@ struct CityLocationUtilityService: Equatable, Sendable {
     let power: Double    // closed 0...1
     let water: Double    // closed 0...1
     let combined: Double // min(power, water)
-    let band: CityConsequenceBand
+    let powerBand: CityConsequenceBand
+    let waterBand: CityConsequenceBand
+    let combinedBand: CityConsequenceBand
 }
 
 enum CityLocationVitality: Int, Equatable, Sendable {
@@ -136,10 +139,12 @@ Recovery is a transition, not another persisted meter. `consequenceEvents(since:
 - unchanged bands emit nothing;
 - `previous == nil`, equal fingerprints, different grid dimensions, or `previous.authoritativeTick >= current.authoritativeTick` emits nothing, preventing cold-load and undo animation replay.
 
+Vitality maps into the generic comparison band as `strained -> severe`, `stable -> strained`, and `prosperous -> healthy`. A transition with `notApplicable` at either endpoint emits no vitality event. Utility events compare `combinedBand`; consumers use the authoritative `powerBand` and `waterBand` to distinguish the causal service. Pollution events compare the authoritative `pollutionBand`.
+
 An event ID is reconstructed exactly as:
 
 ```text
-spatial-v1:<current fingerprint digest>:<x>:<y>:<dimension>:<from raw>:<to raw>
+spatial-v1:<fingerprint version>:<current fingerprint digest>:<x>:<y>:<dimension>:<from raw>:<to raw>
 ```
 
 It is stable across deterministic replay of the same transition, unique across coordinates/dimensions/exact current states, and independent of renderer node identity. Consumers may deduplicate effects by this ID. The event is transient and is intentionally not replayed after a cold load; the durable loaded sample still exposes the current strain or health truth.
@@ -171,7 +176,7 @@ Measurements must cover the accepted start, commercial, industrial, utility-stra
 
 ## Affected lanes and adoption order
 
-1. **Integration** approves or adjusts this shared snapshot contract and field semantics.
+1. **Integration** approved this shared snapshot contract and the renderer-requested explicit power, water, combined, and pollution bands.
 2. **PLAY-041 platform** implements deterministic derivation, snapshot/event tests, save/fingerprint compatibility, and performance evidence.
 3. **PLAY-012 gameplay** may change existing authoritative inputs but consumes the contract; it does not define renderer truth.
 4. **PLAY-022 renderer** replaces utility/pollution inference in `WorldOverlayRenderer` and passes samples to lot/effect presentation. It owns colors, materials, animation, LOD, and accessibility-safe visual treatments only.

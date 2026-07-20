@@ -192,7 +192,13 @@ final class CityScene: SKScene {
         selection: GridCoordinate?,
         interactionMode: CityInteractionMode
     ) {
-        guard let snapshot = try? CityPresentationSnapshot(state: state) else { return }
+        let snapshot: CityPresentationSnapshot
+        if let renderedSnapshot, renderedSnapshot.state == state {
+            snapshot = renderedSnapshot
+        } else {
+            guard let derived = try? CityPresentationSnapshot(state: state) else { return }
+            snapshot = derived
+        }
         render(
             snapshot: snapshot,
             overlay: overlay,

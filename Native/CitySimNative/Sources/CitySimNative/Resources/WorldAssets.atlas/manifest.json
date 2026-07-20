@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "title": "CitySim Golden Neighborhood World Atlas",
+  "authoring": "Original deterministic Pillow geometry and seeded raster texture",
+  "source": "Native/CitySimNative/WorldArt/generate_world_assets.py",
+  "external_sources": [],
+  "concept_reference_sampled": false,
+  "license": "Copyright JFM Systems; original repository artwork",
+  "projection": "2:1 isometric",
+  "scale": "2x",
+  "filtering": "linear",
+  "light_direction": "northwest key, southeast shadow",
+  "palette": {
+    "grass": [
+      "#5c8654",
+      "#5f8956",
+      "#598351",
+      "#618a57",
+      "#5b8450",
+      "#638b59"
+    ],
+    "grass_dark": "#3c6642",
+    "grass_light": "#85a867",
+    "soil": "#74543a",
+    "soil_dark": "#4b382b",
+    "park": "#4f8a55",
+    "park_light": "#7eaa68",
+    "stone": "#a49b86",
+    "stone_light": "#c4bba4",
+    "yard": "#766b58",
+    "line": "#2f5940"
+  },
+  "assets": [
+    {
+      "name": "terrain_grass_0",
+      "file": "terrain_grass_0.png",
+      "sha256": "57f4c87b0ec0ffe319e3c2e84942a5804d1a004f701bc70c915285054daf7cfa",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_1",
+      "file": "terrain_grass_1.png",
+      "sha256": "71ea8ba1ae0939077884719c7092ea2b0b86287ee943a6e62f018560d5d9f3e1",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_2",
+      "file": "terrain_grass_2.png",
+      "sha256": "07e98c9617d5df5079d9a6812fca3f57c6130a283ae2a1fe4002602190bacaf3",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_3",
+      "file": "terrain_grass_3.png",
+      "sha256": "ff92c84b56d270bc658c8ff996973e057f65470db741b9079e45ea57fae7815d",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_4",
+      "file": "terrain_grass_4.png",
+      "sha256": "73a96e1eed9031ea28fd3e61613d2e1044bc66fc72aa195244fb10d84cd5fcc2",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_5",
+      "file": "terrain_grass_5.png",
+      "sha256": "15766b0c4a0fccaf41112f5db5c943b2776fa7dc3afbdc5367a19427d961ef5b",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_lawn",
+      "file": "terrain_lawn.png",
+      "sha256": "2eb53966c293c1bed5c7318d87c180f0df7b6f9c77efa1ed07cf0271ce32b3c0",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_park",
+      "file": "terrain_park.png",
+      "sha256": "27707d02ce87d2e23aafb0b10b3e8003b9501732d4d3c384085d4b719403017a",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_plaza",
+      "file": "terrain_plaza.png",
+      "sha256": "46cb0ddccf18f051d9a79a3f40c83d19c0779c9c4cb72745549fbbc4d02abe01",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_yard",
+      "file": "terrain_yard.png",
+      "sha256": "d5fd9621478619a83cea546fbee580e4e3b6d41bb0fe051ea6ff9b107e9b16ab",
+      "pixels": [
+        144,
+        72
+      ]
+    }
+  ]
+}

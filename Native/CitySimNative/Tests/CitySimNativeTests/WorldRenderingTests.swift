@@ -4,6 +4,23 @@ import XCTest
 @testable import CitySimNative
 
 final class WorldRenderingTests: XCTestCase {
+    @MainActor
+    func testGoldenNeighborhoodTerrainAtlasLoadsEveryAuthoredMaterial() {
+        let catalog = WorldAssetCatalog()
+        let names = (0..<6).map { "terrain_grass_\($0)" } + [
+            "terrain_lawn",
+            "terrain_park",
+            "terrain_plaza",
+            "terrain_yard"
+        ]
+
+        for name in names {
+            let texture = catalog.texture(named: name)
+            XCTAssertNotNil(texture, "Missing world atlas texture \(name)")
+            XCTAssertEqual(texture?.filteringMode, .linear)
+        }
+    }
+
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {
         var tile = CityTile(
             coordinate: GridCoordinate(x: 4, y: 7),

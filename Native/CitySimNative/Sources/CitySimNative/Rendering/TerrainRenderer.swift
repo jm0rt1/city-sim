@@ -4,9 +4,11 @@ import SpriteKit
 @MainActor
 final class TerrainRenderer {
     private let style: WorldVisualStyle
+    private let assets: WorldAssetCatalog
 
-    init(style: WorldVisualStyle) {
+    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
+        self.assets = assets
     }
 
     func makeGround(for tile: CityTile, detail: CameraDetailLevel) -> SKNode {
@@ -20,12 +22,20 @@ final class TerrainRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        let ground = SKShapeNode(path: style.diamondPath())
-        ground.fillColor = groundColor(for: tile)
-        ground.strokeColor = ground.fillColor.blended(withFraction: 0.28, of: .black) ?? .black
-        ground.lineWidth = 0.75
-        ground.zPosition = -4
-        cityLayer.addChild(ground)
+        if let ground = assets.sprite(
+            named: groundAssetName(for: tile),
+            size: CGSize(width: style.tileWidth, height: style.tileHeight)
+        ) {
+            ground.zPosition = -4
+            cityLayer.addChild(ground)
+        } else {
+            let ground = SKShapeNode(path: style.diamondPath())
+            ground.fillColor = groundColor(for: tile)
+            ground.strokeColor = ground.fillColor.blended(withFraction: 0.20, of: .black) ?? .black
+            ground.lineWidth = 0.45
+            ground.zPosition = -4
+            cityLayer.addChild(ground)
+        }
 
         addLotSurface(for: tile, to: cityLayer)
         addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
@@ -155,6 +165,21 @@ final class TerrainRenderer {
                 ?? style.palette.soil
         case .empty, .road:
             return style.palette.grass[variant]
+        }
+    }
+
+    private func groundAssetName(for tile: CityTile) -> String {
+        switch tile.kind {
+        case .park:
+            "terrain_park"
+        case .residential:
+            "terrain_lawn"
+        case .commercial, .cityHall, .fireStation, .policeStation, .school:
+            "terrain_plaza"
+        case .industrial, .powerPlant, .waterTower:
+            "terrain_yard"
+        case .empty, .road:
+            "terrain_grass_\(WorldVisualSeed.variant(count: 6, for: tile.coordinate, kind: tile.kind))"
         }
     }
 

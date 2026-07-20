@@ -102,8 +102,24 @@ struct CityAnalytics {
         if townCharterAwarded {
             return "Town Charter secured permanently"
         }
+        if waterHeadroom == 0 {
+            return "Next: add water capacity · then grow \(max(0, 500 - state.population)) residents"
+        }
+        if powerHeadroom == 0 {
+            return "Next: add power capacity · then grow \(max(0, 500 - state.population)) residents"
+        }
+        if state.happiness < 45 {
+            return "Next: restore utilities or parks to lift happiness \(Int(ceil(52 - state.happiness))) points"
+        }
         if state.population < 500 {
-            return "\((500 - state.population).formatted()) residents to charter review"
+            // The charter's 500-resident review has a 350-person workforce
+            // target; 90% employment therefore requires 315 available jobs.
+            let charterWorkforceTarget = 500 * 7 / 10
+            let charterJobCapacity = Int(ceil(Double(charterWorkforceTarget) * 0.9))
+            if jobCapacity < charterJobCapacity {
+                return "Next: prepare \(charterJobCapacity - jobCapacity) jobs · grow \((500 - state.population).formatted()) residents"
+            }
+            return "Next: grow \((500 - state.population).formatted()) residents with 15% utility reserve"
         }
         if state.treasury < 10_000 {
             return "Restore the treasury to $10,000"

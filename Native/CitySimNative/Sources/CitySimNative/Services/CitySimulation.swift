@@ -29,6 +29,7 @@ enum CitySimulation {
     static let commercialRevenue = 140.0
     static let industrialRevenue = 190.0
     static let upkeepMultiplier = 1.8
+    static let reserveUtilityUpkeepFactor = 0.75
 
     static func validateBuild(
         _ kind: BuildingKind,
@@ -102,9 +103,16 @@ enum CitySimulation {
     }
 
     static func projectedUpkeep(in state: CityGameState) -> Double {
-        activeTiles(in: state).reduce(0.0) {
+        let active = activeTiles(in: state)
+        let grossUpkeep = active.reduce(0.0) {
             $0 + $1.kind.upkeep * Double(max(1, $1.level))
-        } * upkeepMultiplier + max(0, -state.treasury) * 0.006
+        }
+        let reserveUtilityDiscount = [BuildingKind.powerPlant, .waterTower].reduce(0.0) { discount, kind in
+            let reserveUnits = max(0, active.filter { $0.kind == kind }.count - 1)
+            return discount + Double(reserveUnits) * kind.upkeep * (1 - reserveUtilityUpkeepFactor)
+        }
+        return (grossUpkeep - reserveUtilityDiscount) * upkeepMultiplier
+            + max(0, -state.treasury) * 0.006
     }
 
     static func projectedBalance(in state: CityGameState) -> Double {
@@ -264,27 +272,31 @@ enum CitySimulation {
 
     private static func advanceStrategyStory(_ state: inout CityGameState) {
         guard let strategy = leadingStrategy(in: state) else { return }
+        if state.tick >= strategyWarningTick, state.tick < strategyOpportunityTick {
+            switch strategy {
+            case .commercialStewardship:
+                postOnce(
+                    CityMessage(
+                        tick: state.tick,
+                        severity: .warning,
+                        title: "Main Street Crossroads",
+                        detail: "A regional market weekend arrives by Day 41. Local shops can thrive, but the later storefront slump will need either temporary tax relief or a second park to restore foot traffic."
+                    ),
+                    to: &state
+                )
+            case .industrialExpansion:
+                postOnce(
+                    CityMessage(
+                        tick: state.tick,
+                        severity: .warning,
+                        title: "Freight Contract Watch",
+                        detail: "A regional freight contract arrives by Day 41. It will accelerate jobs and cash, then strain the district; reserve power and water or a second park can lead the recovery."
+                    ),
+                    to: &state
+                )
+            }
+        }
         switch (strategy, state.tick) {
-        case (.commercialStewardship, strategyWarningTick):
-            post(
-                CityMessage(
-                    tick: state.tick,
-                    severity: .warning,
-                    title: "Main Street Crossroads",
-                    detail: "A regional market weekend arrives in 20 days. Local shops can thrive, but a later storefront slump will need either temporary tax relief or a second park to restore foot traffic."
-                ),
-                to: &state
-            )
-        case (.industrialExpansion, strategyWarningTick):
-            post(
-                CityMessage(
-                    tick: state.tick,
-                    severity: .warning,
-                    title: "Freight Contract Watch",
-                    detail: "A regional freight contract arrives in 20 days. It will accelerate jobs and cash, then strain the district; reserve power and water or a second park can lead the recovery."
-                ),
-                to: &state
-            )
         case (.commercialStewardship, strategyOpportunityTick):
             state.treasury += 1_800
             state.happiness = min(100, state.happiness + 2)
@@ -438,8 +450,8 @@ enum CitySimulation {
     private static func leadingStrategy(in state: CityGameState) -> StrategyStory? {
         let commercial = state.tiles.filter { $0.kind == .commercial }.count
         let industrial = state.tiles.filter { $0.kind == .industrial }.count
-        if commercial >= industrial + 2 { return .commercialStewardship }
-        if industrial >= commercial + 2 { return .industrialExpansion }
+        if commercial >= industrial + 1 { return .commercialStewardship }
+        if industrial >= commercial + 1 { return .industrialExpansion }
         return nil
     }
 
@@ -449,6 +461,16 @@ enum CitySimulation {
         let reserve = utilityReserve(in: state)
         let workforceTarget = max(1, state.population * 7 / 10)
         let employment = min(1, Double(jobCapacity(in: state)) / Double(workforceTarget))
+
+        postOnce(
+            CityMessage(
+                tick: state.tick,
+                severity: .information,
+                title: "Town Charter Standards",
+                detail: "Reach 500 residents, $10,000 treasury, non-negative cashflow, 90% employment, full utilities with 15% reserve, and 52% happiness; keep every zone active for 12 consecutive days. Growth needs job openings and utility headroom."
+            ),
+            to: &state
+        )
 
         if balance < 0 {
             postOnce(
@@ -462,12 +484,17 @@ enum CitySimulation {
             )
         }
         if reserve < 0.12, coverage >= 0.98 {
+            let powerSpare = max(0, state.powerCapacity - state.powerUsed)
+            let waterSpare = max(0, state.waterCapacity - state.waterUsed)
+            let remedy = waterSpare <= powerSpare
+                ? "Build a Water Tower ($8,500) before adding more homes or jobs."
+                : "Build a Power Plant ($12,000) before adding more homes or jobs."
             postOnce(
                 CityMessage(
                     tick: state.tick,
                     severity: .warning,
                     title: "Utility Reserve Tight",
-                    detail: "Only \(max(0, state.powerCapacity - state.powerUsed)) power and \(max(0, state.waterCapacity - state.waterUsed)) water remain spare. Expansion now risks a shortfall."
+                    detail: "Only \(powerSpare) power and \(waterSpare) water remain spare. \(remedy)"
                 ),
                 to: &state
             )

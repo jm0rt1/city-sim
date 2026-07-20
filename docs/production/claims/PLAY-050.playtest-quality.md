@@ -9,4 +9,4 @@
 - **Planned surfaces:** fixtures, harnesses, `docs/production/evidence/`, journey and defect records
 - **Dependencies:** Consumable outputs from PLAY-010/020/030/040; isolated staged-app contract `CONTRACT-004`
 - **Validation/proof:** Pointer, keyboard, compact, accessibility, save/resume, recovery, and 20-minute gate evidence
-- **Status:** active
+- **Status:** ready-for-integration

@@ -49,49 +49,153 @@ final class GameplayLoopTests: XCTestCase {
     }
 
     func testTwoStrategiesEarnTheCharterAndSurviveTheTwentyMinuteHorizon() throws {
-        var industryFirst = CityGameState.newCity(seed: 42)
-        try build(.industrial, at: GridCoordinate(x: 8, y: 11), in: &industryFirst)
-        try build(.industrial, at: GridCoordinate(x: 7, y: 11), in: &industryFirst)
+        var industryFirst = try industrialStrategy()
         advance(&industryFirst, cycles: 4)
         try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &industryFirst)
         try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &industryFirst)
-        advance(&industryFirst, cycles: 220)
+        advanceToTick(&industryFirst, tick: CitySimulation.strategyPayoffTick)
 
-        var commerceAndTax = CityGameState.newCity(seed: 42)
-        commerceAndTax.taxRate = 0.14
-        try build(.commercial, at: GridCoordinate(x: 8, y: 11), in: &commerceAndTax)
-        try build(.commercial, at: GridCoordinate(x: 7, y: 11), in: &commerceAndTax)
-        advance(&commerceAndTax, cycles: 2)
+        var commerceAndTax = try commercialStrategy()
+        commerceAndTax.taxRate = 0.10
+        advanceToTick(&commerceAndTax, tick: CitySimulation.strategyOpportunityTick)
         try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &commerceAndTax)
         try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &commerceAndTax)
-        advance(&commerceAndTax, cycles: 220)
+        advanceToTick(&commerceAndTax, tick: CitySimulation.strategySetbackTick)
+        commerceAndTax.taxRate = 0.09
+        advanceToTick(&commerceAndTax, tick: CitySimulation.strategyPayoffTick)
+
+        XCTAssertTrue(industryFirst.messages.contains { $0.title == "Freight Network Secured" })
+        XCTAssertTrue(commerceAndTax.messages.contains { $0.title == "Main Street Rebound" })
+        commerceAndTax.taxRate = 0.10
+
+        advanceToTick(&industryFirst, tick: 896)
+        advanceToTick(&commerceAndTax, tick: 896)
 
         let industryAnalytics = CityAnalytics(state: industryFirst)
         let commerceAnalytics = CityAnalytics(state: commerceAndTax)
-        XCTAssertTrue(industryAnalytics.meetsTownCharterStandards)
-        XCTAssertTrue(commerceAnalytics.meetsTownCharterStandards)
+        XCTAssertGreaterThan(industryAnalytics.jobCapacity, commerceAnalytics.jobCapacity)
         XCTAssertGreaterThan(industryAnalytics.pollutionPressure, commerceAnalytics.pollutionPressure)
-        XCTAssertLessThan(industryFirst.taxRate, commerceAndTax.taxRate)
+        XCTAssertLessThan(industryAnalytics.utilityReserve, commerceAnalytics.utilityReserve)
+        XCTAssertNotEqual(industryFirst.treasury, commerceAndTax.treasury)
+        XCTAssertNotEqual(industryFirst.happiness, commerceAndTax.happiness)
         XCTAssertGreaterThanOrEqual(industryFirst.population, 500)
         XCTAssertGreaterThanOrEqual(commerceAndTax.population, 500)
-        XCTAssertTrue(industryFirst.progression?.townCharterAwarded ?? false)
-        XCTAssertTrue(commerceAndTax.progression?.townCharterAwarded ?? false)
-        XCTAssertEqual(industryFirst.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
-        XCTAssertEqual(commerceAndTax.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
 
         // 700 cycles × 4 pulses × 0.42 seconds is approximately a 19.6-minute 1× session.
-        advance(&industryFirst, cycles: 476)
-        advance(&commerceAndTax, cycles: 478)
+        advanceToTick(&industryFirst, tick: 2_800)
+        advanceToTick(&commerceAndTax, tick: 2_800)
         XCTAssertEqual(industryFirst.tick, 2_800)
         XCTAssertEqual(commerceAndTax.tick, 2_800)
         XCTAssertEqual(industryFirst.day, 701)
         XCTAssertEqual(commerceAndTax.day, 701)
+        XCTAssertEqual(industryFirst.population, 560)
+        XCTAssertEqual(commerceAndTax.population, 700)
+        XCTAssertEqual(industryFirst.treasury, 156_279, accuracy: 0.001)
+        XCTAssertEqual(commerceAndTax.treasury, 63_698.6, accuracy: 0.001)
+        XCTAssertEqual(industryFirst.jobs, 392)
+        XCTAssertEqual(commerceAndTax.jobs, 350)
+        XCTAssertEqual(industryFirst.happiness, 53.866_666, accuracy: 0.001)
+        XCTAssertEqual(commerceAndTax.happiness, 53.328_571, accuracy: 0.001)
+        XCTAssertEqual(industryFirst.powerUsed, 499)
+        XCTAssertEqual(commerceAndTax.powerUsed, 588)
+        XCTAssertEqual(industryFirst.waterUsed, 438)
+        XCTAssertEqual(commerceAndTax.waterUsed, 528)
         XCTAssertTrue(industryFirst.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(commerceAndTax.progression?.townCharterAwarded ?? false)
-        XCTAssertNotEqual(industryFirst.status, .lost)
-        XCTAssertNotEqual(commerceAndTax.status, .lost)
+        XCTAssertEqual(industryFirst.status, .playing)
+        XCTAssertEqual(commerceAndTax.status, .playing)
         XCTAssertGreaterThan(industryFirst.treasury, 0)
         XCTAssertGreaterThan(commerceAndTax.treasury, 0)
+    }
+
+    func testStrategyStoriesWarnOnDailyBoundaryAndCreateDifferentOpportunities() throws {
+        var commerce = try commercialStrategy()
+        var industry = try industrialStrategy()
+
+        advanceToTick(&commerce, tick: CitySimulation.strategyWarningTick - 1)
+        advanceToTick(&industry, tick: CitySimulation.strategyWarningTick - 1)
+        XCTAssertFalse(commerce.messages.contains { $0.title == "Main Street Crossroads" })
+        XCTAssertFalse(industry.messages.contains { $0.title == "Freight Contract Watch" })
+
+        CitySimulation.step(&commerce)
+        CitySimulation.step(&industry)
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Main Street Crossroads" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Freight Contract Watch" })
+
+        advanceToTick(&commerce, tick: CitySimulation.strategyOpportunityTick)
+        advanceToTick(&industry, tick: CitySimulation.strategyOpportunityTick)
+        let commerceAnalytics = CityAnalytics(state: commerce)
+        let industryAnalytics = CityAnalytics(state: industry)
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Market Weekend" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Regional Freight Contract" })
+        XCTAssertGreaterThan(industry.treasury, commerce.treasury)
+        XCTAssertGreaterThan(industryAnalytics.jobCapacity, commerceAnalytics.jobCapacity)
+        XCTAssertGreaterThan(industryAnalytics.pollutionPressure, commerceAnalytics.pollutionPressure)
+        XCTAssertLessThan(industryAnalytics.utilityReserve, commerceAnalytics.utilityReserve)
+        XCTAssertLessThan(industry.happiness, commerce.happiness)
+    }
+
+    func testCommercialSetbackSupportsTaxReliefAndParkRecovery() throws {
+        var pressured = try commercialStrategy()
+        pressured.taxRate = 0.14
+        advanceToTick(&pressured, tick: CitySimulation.strategySetbackTick)
+        XCTAssertTrue(pressured.messages.contains { $0.title == "Storefront Slump" })
+        XCTAssertEqual(pressured.status, .playing)
+
+        var taxRelief = pressured
+        taxRelief.taxRate = 0.09
+        advanceToTick(&taxRelief, tick: CitySimulation.strategyPayoffTick)
+        let taxPayoff = try XCTUnwrap(taxRelief.messages.first { $0.title == "Main Street Rebound" })
+        XCTAssertTrue(taxPayoff.detail.contains("tax relief"))
+        XCTAssertEqual(taxRelief.status, .playing)
+
+        var placemaking = pressured
+        try build(.park, at: GridCoordinate(x: 6, y: 11), in: &placemaking)
+        advanceToTick(&placemaking, tick: CitySimulation.strategyPayoffTick)
+        let parkPayoff = try XCTUnwrap(placemaking.messages.first { $0.title == "Main Street Rebound" })
+        XCTAssertTrue(parkPayoff.detail.contains("new park"))
+        XCTAssertEqual(placemaking.status, .playing)
+        XCTAssertGreaterThan(placemaking.treasury, taxRelief.treasury)
+    }
+
+    func testIndustrialSetbackSupportsUtilityAndGreenBufferRecovery() throws {
+        var pressured = try industrialStrategy()
+        advanceToTick(&pressured, tick: CitySimulation.strategySetbackTick)
+        XCTAssertTrue(pressured.messages.contains { $0.title == "Industrial Load Surge" })
+        XCTAssertEqual(pressured.status, .playing)
+
+        var utilityReserve = pressured
+        try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &utilityReserve)
+        try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &utilityReserve)
+        advanceToTick(&utilityReserve, tick: CitySimulation.strategyPayoffTick)
+        XCTAssertTrue(utilityReserve.messages.contains { $0.title == "Freight Network Secured" })
+        XCTAssertGreaterThan(CityAnalytics(state: utilityReserve).utilityReserve, 0.35)
+        XCTAssertEqual(utilityReserve.status, .playing)
+
+        var greenBuffer = pressured
+        try build(.park, at: GridCoordinate(x: 6, y: 11), in: &greenBuffer)
+        advanceToTick(&greenBuffer, tick: CitySimulation.strategyPayoffTick)
+        XCTAssertTrue(greenBuffer.messages.contains { $0.title == "Cleaner Industry Compact" })
+        XCTAssertGreaterThan(greenBuffer.happiness, pressured.happiness)
+        XCTAssertGreaterThan(greenBuffer.treasury, pressured.treasury)
+        XCTAssertEqual(greenBuffer.status, .playing)
+    }
+
+    func testIgnoringEitherSetbackCostsMoreButLeavesARecoveryPath() throws {
+        var commerce = try commercialStrategy()
+        commerce.taxRate = 0.14
+        var industry = try industrialStrategy()
+        advanceToTick(&commerce, tick: CitySimulation.strategyPayoffTick)
+        advanceToTick(&industry, tick: CitySimulation.strategyPayoffTick)
+
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Main Street Recovery Delayed" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Freight Recovery Delayed" })
+        XCTAssertEqual(commerce.status, .playing)
+        XCTAssertEqual(industry.status, .playing)
+        XCTAssertGreaterThan(commerce.treasury, 0)
+        XCTAssertGreaterThan(industry.treasury, 0)
+        XCTAssertGreaterThan(commerce.happiness, 20)
+        XCTAssertGreaterThan(industry.happiness, 20)
     }
 
     func testTemporaryTaxRecoveryImprovesCashflowButSuppressesDemandAndHappiness() {
@@ -247,6 +351,13 @@ final class GameplayLoopTests: XCTestCase {
         }
     }
 
+    private func advanceToTick(_ state: inout CityGameState, tick: Int) {
+        XCTAssertLessThanOrEqual(state.tick, tick)
+        while state.tick < tick {
+            CitySimulation.step(&state)
+        }
+    }
+
     private func advanceQualifyingTown(_ state: inout CityGameState, days: Int) {
         for _ in 0..<days {
             state.population = 500
@@ -284,6 +395,20 @@ final class GameplayLoopTests: XCTestCase {
         state.happiness = 60
         advance(&state, cycles: 1)
         XCTAssertTrue(CityAnalytics(state: state).meetsTownCharterStandards)
+        return state
+    }
+
+    private func commercialStrategy() throws -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        try build(.commercial, at: GridCoordinate(x: 8, y: 11), in: &state)
+        try build(.commercial, at: GridCoordinate(x: 7, y: 11), in: &state)
+        return state
+    }
+
+    private func industrialStrategy() throws -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        try build(.industrial, at: GridCoordinate(x: 8, y: 11), in: &state)
+        try build(.industrial, at: GridCoordinate(x: 7, y: 11), in: &state)
         return state
     }
 

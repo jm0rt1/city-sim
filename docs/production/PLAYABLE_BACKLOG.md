@@ -67,6 +67,18 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** 100% inventory coverage for declared non-spatial actions; no collisions or focus traps; pointer and shortcut routes dispatch identical intents; default and 900 x 600 layouts remain usable; full tests and live keyboard evidence.
 - **Stop conditions:** Duplicate command state, shortcut collision, inaccessible critical action, or shared-store change without approval.
 
+### [ ] PLAY-031: Quarantine onboarding input and restore the intended window
+
+- **Player outcome:** A new player can read and dismiss onboarding without silently changing game state, opening another command surface, or beginning in a previously restored compact window.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** `UX`, `AUD`, `REL`, `TEC` onboarding and keyboard acceptance rows.
+- **Dependencies:** Integrated Wave 002 candidate `c70321b`; PLAY-050 defect `PLAY-050-D005`.
+- **In scope:** One authoritative blocking-modal command policy, onboarding dismissal and focus, command/menu/renderer shortcut availability while blocked, default versus proof-compact window restoration, focused UI/input tests, and real staged evidence.
+- **Out of scope:** Gameplay balance, renderer art, persistence schema, command inventory expansion, general window redesign.
+- **Acceptance:** While onboarding is visible, Space, 1–3, build/mode keys, camera keys, global panels, and Command Guide cannot mutate or stack surfaces; only explicit onboarding dismissal/system-safe behavior works; dismissal restores the authored 1x start and stable focus; a normal fresh launch uses the intended default content size while `CITYSIM_COMPACT_WINDOW=1` alone produces the proof compact size; pointer and keyboard dismissal pass at default and 900 x 600; tests cover menu, store, renderer, focus, and modal leakage routes.
+- **Validation/proof:** Focused command/onboarding/window tests; full native suite; staged fresh-start 0/10/30/60-second sequence; exact D005 shortcut sequence before dismissal; pointer and keyboard dismissal; default and compact captures; accessibility tree; `git diff --check`; script syntax; staged `--verify`.
+- **Stop conditions:** A second modal authority, command-specific ad hoc guards, gameplay/store duplication, inability to prove default/compact separation, or any shortcut changing underlying state while onboarding blocks.
+
 ### [ ] PLAY-040: Establish deterministic simulation and recovery contracts
 
 - **Player outcome:** A city can be saved, resumed, replayed, diagnosed, and recovered without losing or silently changing authoritative state.

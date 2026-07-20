@@ -29,6 +29,7 @@ Worker candidates no longer share the production bundle identifier, preferences,
 - `Native/CitySimNative/Sources/CitySimNative/Stores/CityGameStore.swift`
 - `Native/CitySimNative/Tests/CitySimNativeTests/SessionPlatformTests.swift`
 - `script/build_and_run.sh`
+- `script/verify_candidate_isolation.sh`
 - `docs/production/completed/PLAY-040.simulation-platform.md`
 
 Legacy Python, gameplay balance, progression rules, HUD composition, renderer behavior, and package topology were not changed.
@@ -116,6 +117,21 @@ The preference domains held intentionally opposite values for onboarding, Reduce
 - Quality save: 131,910 bytes, envelope digest `997a0bf59f92eaa0402525d2713886582ad8946cc4ac71431aaeb7b2ccd1b5c9`, file SHA-256 `45f77c988816a87695da8df681bea7bf5a93b070256fbd5a7204b0255dddd2f7`.
 
 The real staged windows were positioned side by side and remained responsive through the exact-menu save actions. macOS denied `screencapture` with `could not create image from display`, so no screenshot artifact is claimed; process, manifest, preference, and real save evidence above came directly from both running bundles.
+
+### CONTRACT-004 same-lane worktree repair
+
+PLAY-050 correctly rejected candidate `f9b54fc77a3d78fd4d8d5c80c8661d8d8852e209` after finding an already-running Quality candidate at PID 59491 with the same `com.jfmortensen.citysim.playtest-quality` preference domain and `CitySim [Quality]` display identity. Lane-only naming isolated different lanes but did not isolate two worktrees on the same lane.
+
+Worker identity now includes a deterministic token derived from the canonical worktree root. That token is part of the candidate ID, bundle identifier/preference domain, visible display name, staged bundle path, executable name, data root, and manifest path. Exact process management still compares the full staged executable path. Master remains unchanged at `com.jfmortensen.citysim`, `CitySim`, `CitySimNative`, `dist/CitySim.app`, and the production-default data root.
+
+`script/verify_candidate_isolation.sh` is the durable collision regression. It builds and launches two copies of the same worker branch and commit from distinct roots, verifies each plist against its manifest, requires every identity/root/path/PID dimension to differ, and proves both exact executable paths remain alive after the second launch.
+
+Repair proof used two disposable Simulation worktrees from integration baseline `b8cb4740b9cf94aa04482539f9909ffb22dbdbea`:
+
+- candidate one: token `w5327352f86b3`, bundle/preference domain `com.jfmortensen.citysim.simulation-platform.w5327352f86b3`, display `CitySim [Simulation w5327352f86b3]`, PID 84122, root `/private/tmp/citysim-play040-isolation.yzYs2g/candidate-one/dist/test-data/simulation-platform-w5327352f86b3`;
+- candidate two: token `w92219c0152a2`, bundle/preference domain `com.jfmortensen.citysim.simulation-platform.w92219c0152a2`, display `CitySim [Simulation w92219c0152a2]`, PID 84191, root `/private/tmp/citysim-play040-isolation.yzYs2g/candidate-two/dist/test-data/simulation-platform-w92219c0152a2`.
+
+Both candidates remained alive simultaneously. Their preference domains retained opposite `PLAY040IsolationProbe` values, and exact-PID **Save City** actions created independent `quicksave.json` files under only their injected roots. Focused validation passed 14/14 SessionPlatformTests; the complete suite passed 78/78 and reproduced dense fixture `dense-24x24-terminal-wave2-v2` at tick 44 / `.lost` with digest `7b6454ecbe83aeb3bdc88de4fb1d6cb23ef67ce81849123e907d3147c6c52a77`. External Quality PID 59491 remained alive at its original executable path before and after the proof and was never targeted. A separate master-branch identity check reproduced the canonical production values above.
 
 ## Compatibility, adoption, and rollback
 

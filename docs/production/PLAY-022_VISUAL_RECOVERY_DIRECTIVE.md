@@ -62,6 +62,17 @@ make it excellent before scaling the system. It must include:
   the available world viewport and the city, not empty terrain or HUD, is the
   visual subject.
 
+Before bulk implementation, commit a one-page style and scale sheet covering
+the three camera levels, projection grid, footprint and height grammar, material
+families, palette/value hierarchy, northwest light/southeast shadow, healthy,
+strained, and recovered states, and prohibited debug-like motifs.
+
+The current atlas is also below the supported camera's physical pixel demand:
+small source PNGs are linearly enlarged on a 2× display. Gate A therefore needs
+a recorded camera pixel budget and source-density check. Shipping art must meet
+the 2× physical output requirement at supported zooms or use deliberate per-LOD
+exports and mipmaps; simply magnifying the existing primitives cannot pass.
+
 The gate is a real staged-app screenshot at default size plus a matching compact
 view. Renderer-harness output is supporting evidence only. Integration and the
 playtest lane must accept Gate A before the lane expands breadth.
@@ -134,11 +145,15 @@ Reject the candidate without averaging the score if any of these remain:
 Retain exact-candidate identity and uncropped staged-app captures for:
 
 - same seed and camera: current accepted baseline versus candidate;
+- commit, bundle, executable and `Info.plist` hashes, data root, PID, save
+  digest, tick, camera, window size, and display scale for every A/B pair;
 - default and 900 x 600 compact windows;
 - city, neighborhood, and block camera levels;
 - normal, selected, valid/invalid placement, overlay, and localized consequence
   states;
 - Reduce Motion;
+- one continuous pan/zoom recording exposing road seams, layer ordering, motion,
+  and LOD transitions rather than relying only on curated stills;
 - a grayscale contact sheet demonstrating non-color hierarchy;
 - before/after renderer timing, node/draw/action counts, reuse, hit testing,
   accessibility, focused tests, full suite, and staged build verification.

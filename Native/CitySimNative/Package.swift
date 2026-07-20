@@ -10,7 +10,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "CitySimNative",
-            path: "Sources/CitySimNative"
+            path: "Sources/CitySimNative",
+            resources: [
+                .copy("Resources/WorldAssets.atlas")
+            ]
         ),
         .testTarget(
             name: "CitySimNativeTests",

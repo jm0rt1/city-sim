@@ -2,6 +2,7 @@ import SwiftUI
 
 struct WelcomeView: View {
     let continueAction: () -> Void
+    @FocusState private var modalHasKeyboardFocus: Bool
 
     var body: some View {
         ZStack {
@@ -31,6 +32,9 @@ struct WelcomeView: View {
                     Spacer()
                     Button("Start Building") { continueAction() }
                         .buttonStyle(.borderedProminent).controlSize(.large).tint(GameTheme.accent)
+                        .keyboardShortcut(.defaultAction)
+                        .accessibilityIdentifier("welcome.start-building")
+                        .accessibilityHint("Dismisses Welcome and enables city commands at normal speed")
                 }
             }
             .padding(34)
@@ -38,7 +42,17 @@ struct WelcomeView: View {
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 26).stroke(.white.opacity(0.15)))
             .shadow(color: .black.opacity(0.45), radius: 36, y: 18)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Welcome to New Arcadia")
         }
+        .focusable()
+        .focused($modalHasKeyboardFocus)
+        .onAppear { modalHasKeyboardFocus = true }
+        .onKeyPress(.return) {
+            continueAction()
+            return .handled
+        }
+        .accessibilityIdentifier("welcome.blocking-modal")
     }
 
     private func tip(_ symbol: String, _ title: String, _ detail: String) -> some View {

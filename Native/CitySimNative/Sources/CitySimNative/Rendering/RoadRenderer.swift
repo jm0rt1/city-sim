@@ -157,9 +157,11 @@ struct RoadTopology: Equatable, Sendable {
 @MainActor
 final class RoadRenderer {
     private let style: WorldVisualStyle
+    private let assets: WorldAssetCatalog
 
-    init(style: WorldVisualStyle) {
+    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
+        self.assets = assets
     }
 
     func makeRoad(
@@ -193,8 +195,18 @@ final class RoadRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        addRoadbed(for: topology, to: cityLayer)
-        addLaneLanguage(for: topology, to: neighborhoodLayer)
+        if let road = assets.sprite(
+            named: String(format: "road_mask_%02d", connections.rawValue),
+            // Slight atlas overlap keeps adjacent road materials continuous
+            // across per-tile depth layers without changing hit geometry.
+            size: CGSize(width: style.tileWidth + 6, height: style.tileHeight + 3)
+        ) {
+            road.zPosition = 2
+            cityLayer.addChild(road)
+        } else {
+            addRoadbed(for: topology, to: cityLayer)
+            addLaneLanguage(for: topology, to: neighborhoodLayer)
+        }
         addStreetFurniture(
             at: coordinate,
             topology: topology,

@@ -87,6 +87,33 @@ enum CityCommandRoute: String, Sendable {
     case system
 }
 
+enum CityBlockingModal: String, Equatable, Sendable {
+    case welcome
+}
+
+enum CityCommandPolicy: Equatable, Sendable {
+    case enabled
+    case blocked(CityBlockingModal)
+
+    func allows(_ command: CityCommandID) -> Bool {
+        switch self {
+        case .enabled:
+            true
+        case .blocked:
+            false
+        }
+    }
+
+    var disabledReason: String? {
+        switch self {
+        case .enabled:
+            nil
+        case .blocked(.welcome):
+            "Finish Welcome to New Arcadia to use city commands"
+        }
+    }
+}
+
 enum CityCommandFocusScope: String, Hashable, Sendable {
     case global
     case gameplay

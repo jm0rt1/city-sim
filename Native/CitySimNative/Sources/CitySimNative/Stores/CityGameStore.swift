@@ -24,6 +24,7 @@ final class CityGameStore: ObservableObject {
     @Published var showInspector = false
     @Published var showObjectives = false
     @Published var showCommandGuide = false
+    @Published private(set) var commandPolicy: CityCommandPolicy
     @Published var inspectorSection: InspectorSection = .overview
     @Published var hudContextScope: HUDContextScope = .city
     @Published var lastFeedback: String?
@@ -35,8 +36,12 @@ final class CityGameStore: ObservableObject {
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
 
-    init(state: CityGameState = .newCity()) {
+    init(
+        state: CityGameState = .newCity(),
+        commandPolicy: CityCommandPolicy = .enabled
+    ) {
         self.state = state
+        self.commandPolicy = commandPolicy
     }
 
     var selectedTile: CityTile? {
@@ -119,6 +124,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func pulse() {
+        guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
         for _ in 0..<speed.ticksPerPulse { CitySimulation.step(&state) }
     }
@@ -186,6 +192,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func canPerform(_ command: CityCommandID) -> Bool {
+        guard commandPolicy.allows(command) else { return false }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         guard descriptor.route == .store, !descriptor.isSpatial else { return false }
         return switch command {
@@ -204,6 +211,7 @@ final class CityGameStore: ObservableObject {
 
     func disabledReason(for command: CityCommandID) -> String? {
         guard !canPerform(command) else { return nil }
+        if let policyReason = commandPolicy.disabledReason { return policyReason }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         switch descriptor.route {
         case .renderer:
@@ -227,6 +235,17 @@ final class CityGameStore: ObservableObject {
 
     func togglePause() {
         speed = speed == .paused ? lastNonPausedSpeed : .paused
+    }
+
+    func presentBlockingModal(_ modal: CityBlockingModal) {
+        commandPolicy = .blocked(modal)
+    }
+
+    @discardableResult
+    func dismissBlockingModal(_ modal: CityBlockingModal) -> Bool {
+        guard commandPolicy == .blocked(modal) else { return false }
+        commandPolicy = .enabled
+        return true
     }
 
     private func dismissTopmostSurfaceOrCancel() {
@@ -322,6 +341,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func primaryAction(at coordinate: GridCoordinate) {
+        guard commandPolicy == .enabled else { return }
         switch interactionMode {
         case .inspect:
             select(coordinate)
@@ -343,6 +363,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func secondaryAction(at coordinate: GridCoordinate) {
+        guard commandPolicy == .enabled else { return }
         interactionMode = .inspect
         selectedCoordinate = coordinate
         if state.tile(at: coordinate)?.kind != .empty {

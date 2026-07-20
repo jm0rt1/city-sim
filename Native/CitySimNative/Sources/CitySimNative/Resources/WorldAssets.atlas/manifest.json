@@ -1,0 +1,455 @@
+{
+  "schema": 1,
+  "title": "CitySim Golden Neighborhood World Atlas",
+  "authoring": "Original deterministic Pillow geometry and seeded raster texture",
+  "source": "Native/CitySimNative/WorldArt/generate_world_assets.py",
+  "external_sources": [],
+  "concept_reference_sampled": false,
+  "license": "Copyright JFM Systems; original repository artwork",
+  "projection": "2:1 isometric",
+  "scale": "2x",
+  "filtering": "linear",
+  "light_direction": "northwest key, southeast shadow",
+  "palette": {
+    "grass": [
+      "#5e8754",
+      "#5f8855",
+      "#5d8653",
+      "#608956",
+      "#5e8652",
+      "#608856"
+    ],
+    "grass_dark": "#3c6642",
+    "grass_light": "#85a867",
+    "soil": "#74543a",
+    "soil_dark": "#4b382b",
+    "park": "#4f8a55",
+    "park_light": "#7eaa68",
+    "stone": "#a49b86",
+    "stone_light": "#c4bba4",
+    "yard": "#766b58",
+    "line": "#2f5940",
+    "asphalt": "#2e3438",
+    "asphalt_light": "#474e50",
+    "curb": "#aaa68f",
+    "sidewalk": "#c4bba4",
+    "lane": "#e9c55f",
+    "crosswalk": "#eee9d6"
+  },
+  "assets": [
+    {
+      "name": "frontage_civic",
+      "file": "frontage_civic.png",
+      "sha256": "28e6fae7ce62a2cb7c49d93f7c9aee2e7fa273905ad8140b06beece837a3410d",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_commercial",
+      "file": "frontage_commercial.png",
+      "sha256": "667c519a709f4edb1c1513c5197fe6482789f312739d7016056e760c3a880f4b",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_industrial",
+      "file": "frontage_industrial.png",
+      "sha256": "95793601326d2a6028ae9cbb3b0e445d978b7fc907e907297a87278e8a8bf857",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_park",
+      "file": "frontage_park.png",
+      "sha256": "1fa723d32f2d3e2cf098c58a57867a637fc8087cb65a0afdbbd71f36668a0e14",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_residential",
+      "file": "frontage_residential.png",
+      "sha256": "71548f708bf2a4592bf6aeb16cc80228621058b2cf16e05f14c0e6730e959701",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "place_civic_0",
+      "file": "place_civic_0.png",
+      "sha256": "d66fe2a46368db0637f3e56c7e8ee1d186cefa34763ff7256f25272eda3d0485",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_civic_1",
+      "file": "place_civic_1.png",
+      "sha256": "db1d781d50a41b0166fd0bd8e3ac6c1e721212c6710be69209f979968b192909",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_civic_2",
+      "file": "place_civic_2.png",
+      "sha256": "e463daed408216f0b64e8df9e76954a2f9361d1810f88ba2df491838d2677e3a",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_commercial_0",
+      "file": "place_commercial_0.png",
+      "sha256": "b5667f4352eb762c93565f28afbe10c33821596ad87c41a0057f2336542ecd67",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_commercial_1",
+      "file": "place_commercial_1.png",
+      "sha256": "4d5bf4b2c49f8c55ebfae0ce8be25ca58cd4bcbb55191f59334f0566e8cae92b",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_commercial_2",
+      "file": "place_commercial_2.png",
+      "sha256": "5883bce77bf6884c1f3c41454f132426686eeacafa377280884cd6f7bae95e97",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_industrial_0",
+      "file": "place_industrial_0.png",
+      "sha256": "7b448f5c7f9304acb6e43df14210a8d9e515c2f36f2520cf361929839c217b40",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_industrial_1",
+      "file": "place_industrial_1.png",
+      "sha256": "0b3a2b473a5730ffceceb7fd927a68f8d93f00a6877ee3948b3cd5bd66700fce",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_industrial_2",
+      "file": "place_industrial_2.png",
+      "sha256": "7fd7498d000c80137c07732352f1b930d73f5888d0f9b8af3d5b7f52be54fd0d",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_park_0",
+      "file": "place_park_0.png",
+      "sha256": "2c13b26840a42c1d914f31f2790826e3b3d229004e3c38e72d4a03393edac959",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_park_1",
+      "file": "place_park_1.png",
+      "sha256": "5883580c77b5a4be2c036d5a40a8fbc87e91635ebda732729d7b38bd4aa36ece",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_park_2",
+      "file": "place_park_2.png",
+      "sha256": "2fd87b8aa510d2762480964b0e5c8655a3f2f345c5bdba8ef7c5ab1a20e2656e",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_residential_0",
+      "file": "place_residential_0.png",
+      "sha256": "5616d7dd7416f6f73e82fb417b8181a1da5c8ab207ab185ddb48345deeb198ee",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_residential_1",
+      "file": "place_residential_1.png",
+      "sha256": "1a15b3a4798c95866393196ba39ae6f03c3262df0f9bd2d66c72025aa763e98c",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "place_residential_2",
+      "file": "place_residential_2.png",
+      "sha256": "35ded7a4746bcef83c0d36ebef0b8ab069fff2636416db55bd678409be2bad1c",
+      "pixels": [
+        160,
+        192
+      ]
+    },
+    {
+      "name": "road_mask_00",
+      "file": "road_mask_00.png",
+      "sha256": "1353a0b7d0764576b5abb2953ed0dfdfad4c2f3d739a457df92d7a67fdd526b8",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_01",
+      "file": "road_mask_01.png",
+      "sha256": "ad8592908bbee11e16540b4f559f4d2cf66875b536d295dce28e4a92e5f4aec9",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_02",
+      "file": "road_mask_02.png",
+      "sha256": "6d4d420143526f944346049903cf56a403f9c3dc424c37d2499101089116248b",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_03",
+      "file": "road_mask_03.png",
+      "sha256": "32782cfbc72b3bfbff2ebd2d3b2f903898dd1f1ab7bdbf1474e3e1329fd30d4a",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_04",
+      "file": "road_mask_04.png",
+      "sha256": "c578e34703c01f0b04b8b5dbaa07e318b6ce1c1fa244191274e9e01ac3778e58",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_05",
+      "file": "road_mask_05.png",
+      "sha256": "238bc39c9e5ebe20b2fb1469494300aeec1afe0abb119109885aeabd0b834c06",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_06",
+      "file": "road_mask_06.png",
+      "sha256": "dc8575a84f2da246ddca307dec16a1f2e52c1d6642dc5a112942a40ccbf21acb",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_07",
+      "file": "road_mask_07.png",
+      "sha256": "fe663d38d2f00244e4cf84c8e25e3c8123255bc735b5972ce6cde9e6d446c3de",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_08",
+      "file": "road_mask_08.png",
+      "sha256": "bfb2b61c3b1ad5bebd2330c4bd1e7c5a15883fb28c2c3dc956480124fd927881",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_09",
+      "file": "road_mask_09.png",
+      "sha256": "86486c90d3a6e27796eff9b78e1abc5e88694ac1db20810e06bb03d45c544f5a",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_10",
+      "file": "road_mask_10.png",
+      "sha256": "3e3b8acd9f24fd4282320498f6f7a07f642c0aea65a95bd36393b7b2de6239b6",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_11",
+      "file": "road_mask_11.png",
+      "sha256": "cbe234e1da7e11bfe2f0607071e7463233213dcc91c59152dc820a68d406ef4f",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_12",
+      "file": "road_mask_12.png",
+      "sha256": "899c4385b99a67adf6e5d51782525c392d76315e63e34a1a41d1944fa86ec0c8",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_13",
+      "file": "road_mask_13.png",
+      "sha256": "9a0d69a495753e5c1fbf69895923fb8021021eb045b7d0442052688297eb2437",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_14",
+      "file": "road_mask_14.png",
+      "sha256": "15a64a33001ba013da92be72b574fb7f128bc33b1b17f0478892dca0a202df62",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_15",
+      "file": "road_mask_15.png",
+      "sha256": "e368ab84410123b7c0a5ce9b79864e17ba65ea289b88482e4d22fbc9d7cd26c0",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_0",
+      "file": "terrain_grass_0.png",
+      "sha256": "b16f1d9667d08411eb18a6be0d4690e897c6add51078d6f4e505a123f251b160",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_1",
+      "file": "terrain_grass_1.png",
+      "sha256": "52b4f6b3b64a8442105d91926ad4b813b942292ff19a1afebecc4e71cc8a0d79",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_2",
+      "file": "terrain_grass_2.png",
+      "sha256": "6f2e020bc50a6191aaba4a45dcf434d2d69ab96ed8b12763bf8a1371621f3247",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_3",
+      "file": "terrain_grass_3.png",
+      "sha256": "7281fb0bf49f592e3098eb2d13edffa1687b6258f373add4174de424b9831a18",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_4",
+      "file": "terrain_grass_4.png",
+      "sha256": "cf44a481121360813e744fcceb663f8979ca1de2e95659a0c17edfe4956fa7a1",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_grass_5",
+      "file": "terrain_grass_5.png",
+      "sha256": "57d99878716b20f944c4f6e2080cab5adb1cbc5a7aeb958ef8d6850dfd03a5d0",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_lawn",
+      "file": "terrain_lawn.png",
+      "sha256": "2eb53966c293c1bed5c7318d87c180f0df7b6f9c77efa1ed07cf0271ce32b3c0",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_park",
+      "file": "terrain_park.png",
+      "sha256": "27707d02ce87d2e23aafb0b10b3e8003b9501732d4d3c384085d4b719403017a",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_plaza",
+      "file": "terrain_plaza.png",
+      "sha256": "46cb0ddccf18f051d9a79a3f40c83d19c0779c9c4cb72745549fbbc4d02abe01",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "terrain_yard",
+      "file": "terrain_yard.png",
+      "sha256": "d5fd9621478619a83cea546fbee580e4e3b6d41bb0fe051ea6ff9b107e9b16ab",
+      "pixels": [
+        144,
+        72
+      ]
+    }
+  ]
+}

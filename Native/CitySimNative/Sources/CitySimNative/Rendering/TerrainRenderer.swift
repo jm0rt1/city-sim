@@ -4,9 +4,11 @@ import SpriteKit
 @MainActor
 final class TerrainRenderer {
     private let style: WorldVisualStyle
+    private let assets: WorldAssetCatalog
 
-    init(style: WorldVisualStyle) {
+    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
+        self.assets = assets
     }
 
     func makeGround(for tile: CityTile, detail: CameraDetailLevel) -> SKNode {
@@ -20,15 +22,24 @@ final class TerrainRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        let ground = SKShapeNode(path: style.diamondPath())
-        ground.fillColor = groundColor(for: tile)
-        ground.strokeColor = ground.fillColor.blended(withFraction: 0.28, of: .black) ?? .black
-        ground.lineWidth = 0.75
-        ground.zPosition = -4
-        cityLayer.addChild(ground)
+        if let ground = assets.sprite(
+            named: groundAssetName(for: tile),
+            size: CGSize(width: style.tileWidth, height: style.tileHeight)
+        ) {
+            ground.zPosition = -4
+            cityLayer.addChild(ground)
+        } else {
+            let ground = SKShapeNode(path: style.diamondPath())
+            ground.fillColor = groundColor(for: tile)
+            ground.strokeColor = ground.fillColor.blended(withFraction: 0.20, of: .black) ?? .black
+            ground.lineWidth = 0.45
+            ground.zPosition = -4
+            cityLayer.addChild(ground)
+        }
 
         addLotSurface(for: tile, to: cityLayer)
         addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
+        addVacantGrove(for: tile, to: neighborhoodLayer)
         addCloseTerrainDetail(for: tile, to: blockLayer)
         return root
     }
@@ -158,6 +169,21 @@ final class TerrainRenderer {
         }
     }
 
+    private func groundAssetName(for tile: CityTile) -> String {
+        switch tile.kind {
+        case .park:
+            "terrain_park"
+        case .residential:
+            "terrain_lawn"
+        case .commercial, .cityHall, .fireStation, .policeStation, .school:
+            "terrain_plaza"
+        case .industrial, .powerPlant, .waterTower:
+            "terrain_yard"
+        case .empty, .road:
+            "terrain_grass_\(WorldVisualSeed.variant(count: 6, for: tile.coordinate, kind: tile.kind))"
+        }
+    }
+
     private func addLotSurface(for tile: CityTile, to layer: SKNode) {
         switch tile.kind {
         case .residential:
@@ -203,7 +229,7 @@ final class TerrainRenderer {
     private func addStableTerrainBreakup(for tile: CityTile, to layer: SKNode) {
         let count: Int
         switch tile.kind {
-        case .empty: count = 3
+        case .empty: count = 2
         case .park: count = 2
         case .industrial, .powerPlant, .waterTower: count = 4
         default: count = 1
@@ -244,8 +270,8 @@ final class TerrainRenderer {
             return
         }
 
-        let flowerVariant = WorldVisualSeed.variant(count: 5, for: tile.coordinate, kind: tile.kind, salt: 0xF10)
-        guard flowerVariant <= 1 else { return }
+        let flowerVariant = WorldVisualSeed.variant(count: 37, for: tile.coordinate, kind: tile.kind, salt: 0xF10)
+        guard flowerVariant == 0 else { return }
         for index in 0..<4 {
             let flower = SKShapeNode(circleOfRadius: 1.1)
             flower.fillColor = index.isMultiple(of: 2)
@@ -256,6 +282,52 @@ final class TerrainRenderer {
             flower.zPosition = 0
             layer.addChild(flower)
         }
+    }
+
+    /// Gives undeveloped land authored rhythm without implying buildings,
+    /// services, traffic, occupancy, or any other simulation state.
+    private func addVacantGrove(for tile: CityTile, to layer: SKNode) {
+        guard tile.kind == .empty,
+              WorldVisualSeed.variant(
+                  count: 8,
+                  for: tile.coordinate,
+                  kind: tile.kind,
+                  salt: 0x6A0E
+              ) == 0 else { return }
+
+        let grove = SKNode()
+        grove.name = "terrain.vacant.grove"
+        let mirror: CGFloat = WorldVisualSeed.variant(
+            count: 2,
+            for: tile.coordinate,
+            kind: tile.kind,
+            salt: 0x6A0F
+        ) == 0 ? -1 : 1
+        grove.position = CGPoint(x: mirror * 11, y: -1)
+        grove.zPosition = -0.8
+
+        for index in 0..<2 {
+            let x = CGFloat(index * 11 - 5) * mirror
+            let trunk = SKShapeNode(rectOf: CGSize(width: 2.2, height: 8), cornerRadius: 0.6)
+            trunk.fillColor = style.palette.mapEarthDark.withAlphaComponent(0.84)
+            trunk.strokeColor = .clear
+            trunk.position = CGPoint(x: x, y: CGFloat(index) * 2)
+            grove.addChild(trunk)
+
+            let canopy = SKShapeNode(ellipseOf: CGSize(
+                width: 12 + CGFloat(index) * 2,
+                height: 9 + CGFloat(index)
+            ))
+            let colorIndex = (tile.coordinate.x + tile.coordinate.y + index)
+                % style.palette.foliage.count
+            canopy.fillColor = style.palette.foliage[colorIndex].withAlphaComponent(0.9)
+            canopy.strokeColor = NSColor.black.withAlphaComponent(0.16)
+            canopy.lineWidth = 0.7
+            canopy.position = CGPoint(x: x - 1.5, y: 7 + CGFloat(index) * 2)
+            grove.addChild(canopy)
+        }
+
+        layer.addChild(grove)
     }
 
     private func edgeStroke(from start: CGPoint, to end: CGPoint) -> SKShapeNode {

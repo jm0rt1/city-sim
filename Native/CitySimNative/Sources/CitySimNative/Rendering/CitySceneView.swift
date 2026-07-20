@@ -24,6 +24,9 @@ struct CitySceneView: NSViewRepresentable {
         scene.onCommandAction = { [weak coordinator = context.coordinator] command in
             coordinator?.store.perform(command)
         }
+        scene.allowsCommand = { [weak coordinator = context.coordinator] command in
+            coordinator?.store.commandPolicy.allows(command) ?? false
+        }
         view.presentScene(scene)
         DispatchQueue.main.async { [weak view] in
             view?.window?.acceptsMouseMovedEvents = true
@@ -37,7 +40,13 @@ struct CitySceneView: NSViewRepresentable {
         view.window?.acceptsMouseMovedEvents = true
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
-        scene.reducedMotion = accessibilityReduceMotion || reduceGameMotion
+        let proofReducedMotion: Bool
+#if DEBUG
+        proofReducedMotion = ProcessInfo.processInfo.environment["CITYSIM_REDUCE_MOTION_PROOF"] == "1"
+#else
+        proofReducedMotion = false
+#endif
+        scene.reducedMotion = accessibilityReduceMotion || reduceGameMotion || proofReducedMotion
         scene.render(
             state: store.state,
             overlay: store.overlay,

@@ -285,11 +285,12 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
-    func testRendererRoadMutationInvalidatesTargetAndConnectedRoadNeighbor() {
+    func testRendererRoadMutationInvalidatesTargetConnectedRoadAndAdjacentFrontage() {
         var state = CityGameState.newCity(seed: 42)
         let target = GridCoordinate(x: 8, y: 11)
         let connectedRoad = GridCoordinate(x: 8, y: 12)
-        let expectedUpdates: Set<GridCoordinate> = [target, connectedRoad]
+        let adjacentFrontage = GridCoordinate(x: 9, y: 11)
+        let expectedUpdates: Set<GridCoordinate> = [target, connectedRoad, adjacentFrontage]
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
@@ -587,6 +588,8 @@ final class CitySimulationTests: XCTestCase {
         let store = CityGameStore(state: .newCity())
         XCTAssertFalse(store.showInspector)
         XCTAssertFalse(store.showObjectives)
+        XCTAssertFalse(ContentView.suppressesGameSurface(for: .enabled))
+        XCTAssertTrue(ContentView.suppressesGameSurface(for: .blocked(.welcome)))
         XCTAssertTrue(ContentView.isCompactLayout(CGSize(width: 900, height: 600)))
         XCTAssertFalse(ContentView.isCompactLayout(CGSize(width: 1_200, height: 760)))
         XCTAssertEqual(
@@ -626,6 +629,7 @@ final class CitySimulationTests: XCTestCase {
         view.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
 
+        XCTAssertEqual(store.commandPolicy, .blocked(.welcome))
         XCTAssertEqual(store.state, authoredStart)
         XCTAssertEqual(store.state.day, authoredStart.day)
         XCTAssertEqual(store.state.messages, authoredStart.messages)
@@ -642,6 +646,7 @@ final class CitySimulationTests: XCTestCase {
         resumedView.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
 
+        XCTAssertEqual(resumedStore.commandPolicy, .enabled)
         XCTAssertGreaterThan(resumedStore.state.tick, authoredStart.tick)
     }
 

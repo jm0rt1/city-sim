@@ -210,7 +210,7 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
-    func testRendererInitialRenderAndUnrelatedPulseReuseEveryTileRoot() {
+    func testRendererInitialRenderAndPulsesInvalidateOnlyChangedSpatialTruth() throws {
         let state = CityGameState.newCity(seed: 42)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -229,30 +229,54 @@ final class CitySimulationTests: XCTestCase {
 
         var pulsedState = state
         var totalReusedTiles = 0
+        var totalUpdatedTiles = 0
+        var changedAcrossPulses: Set<GridCoordinate> = []
         let pulseStart = ProcessInfo.processInfo.systemUptime
         for pulseIndex in 1...10 {
+            let previousSnapshot = try CityPresentationSnapshot(state: pulsedState)
             CitySimulation.step(&pulsedState)
+            let currentSnapshot = try CityPresentationSnapshot(state: pulsedState)
+            let expectedChanges = Set(zip(
+                previousSnapshot.spatialConsequences.samples,
+                currentSnapshot.spatialConsequences.samples
+            ).compactMap { previous, current in
+                SpatialConsequenceRenderSignature(previous) == SpatialConsequenceRenderSignature(current)
+                    ? nil
+                    : current.coordinate
+            })
             scene.render(state: pulsedState, overlay: .none, selection: nil, interactionMode: .inspect)
             let diagnostics = scene.diagnosticsSnapshot
-            XCTAssertEqual(diagnostics.updatedTileCount, 0, "Pulse \(pulseIndex) rebuilt a visual tile")
-            XCTAssertEqual(diagnostics.reusedTileCount, state.tiles.count)
+            XCTAssertEqual(
+                diagnostics.updatedCoordinates,
+                expectedChanges,
+                "Pulse \(pulseIndex) must invalidate exactly the accepted spatial-band changes"
+            )
+            XCTAssertEqual(diagnostics.updatedTileCount, expectedChanges.count)
+            XCTAssertEqual(diagnostics.reusedTileCount, state.tiles.count - expectedChanges.count)
             totalReusedTiles += diagnostics.reusedTileCount
+            totalUpdatedTiles += diagnostics.updatedTileCount
+            changedAcrossPulses.formUnion(expectedChanges)
         }
         let pulseElapsedMilliseconds = (ProcessInfo.processInfo.systemUptime - pulseStart) * 1_000
         let pulse = scene.diagnosticsSnapshot
-        XCTAssertEqual(tileRootIdentifiers(in: scene, state: pulsedState), initialIdentifiers)
+        XCTAssertEqual(
+            changedTileIdentifiers(
+                before: initialIdentifiers,
+                after: tileRootIdentifiers(in: scene, state: pulsedState)
+            ),
+            changedAcrossPulses
+        )
         XCTAssertEqual(pulse.totalTileCount, state.tiles.count)
         XCTAssertEqual(pulse.createdTileCount, 0)
-        XCTAssertEqual(pulse.updatedTileCount, 0)
-        XCTAssertEqual(pulse.reusedTileCount, state.tiles.count)
+        XCTAssertEqual(pulse.updatedTileCount, pulse.updatedCoordinates.count)
+        XCTAssertEqual(pulse.reusedTileCount, state.tiles.count - pulse.updatedTileCount)
         XCTAssertEqual(pulse.removedTileCount, 0)
         XCTAssertEqual(pulse.overlayUpdateCount, 0)
-        XCTAssertEqual(pulse.nodeCount, initial.nodeCount)
-        XCTAssertTrue(pulse.updatedCoordinates.isEmpty)
+        XCTAssertGreaterThanOrEqual(pulse.nodeCount, initial.nodeCount)
         print(
             "CITYSIM_RENDER_DIAGNOSTICS initial_tiles=\(initial.totalTileCount) " +
             "initial_nodes=\(initial.nodeCount) ten_pulses_reused=\(totalReusedTiles) " +
-            "ten_pulses_updated=0 ten_pulses_ms=\(String(format: "%.3f", pulseElapsedMilliseconds)) " +
+            "ten_pulses_updated=\(totalUpdatedTiles) ten_pulses_ms=\(String(format: "%.3f", pulseElapsedMilliseconds)) " +
             "average_ms=\(String(format: "%.3f", pulseElapsedMilliseconds / 10)) " +
             "final_nodes=\(pulse.nodeCount)"
         )

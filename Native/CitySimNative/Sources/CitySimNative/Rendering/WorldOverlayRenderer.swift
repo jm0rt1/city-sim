@@ -27,12 +27,13 @@ final class WorldOverlayRenderer {
     func makeOverlay(
         for tile: CityTile,
         state: CityGameState,
+        consequence: CitySpatialConsequence?,
         overlay: DataOverlay,
         detail: CameraDetailLevel
     ) -> SKNode {
         let root = SKNode()
         root.name = "overlay.\(overlay.rawValue)"
-        guard let sample = sample(for: tile, state: state, overlay: overlay) else { return root }
+        guard let sample = sample(for: tile, state: state, consequence: consequence, overlay: overlay) else { return root }
 
         let wash = SKShapeNode(path: style.diamondPath(width: style.tileWidth - 3, height: style.tileHeight - 1.5))
         let opacity: CGFloat = tile.kind == .road && overlay == .traffic ? 0.36 : 0.22
@@ -56,11 +57,21 @@ final class WorldOverlayRenderer {
         return root
     }
 
-    func color(for tile: CityTile, state: CityGameState, overlay: DataOverlay) -> NSColor? {
-        sample(for: tile, state: state, overlay: overlay)?.color
+    func color(
+        for tile: CityTile,
+        state: CityGameState,
+        consequence: CitySpatialConsequence?,
+        overlay: DataOverlay
+    ) -> NSColor? {
+        sample(for: tile, state: state, consequence: consequence, overlay: overlay)?.color
     }
 
-    func sample(for tile: CityTile, state: CityGameState, overlay: DataOverlay) -> WorldOverlaySample? {
+    func sample(
+        for tile: CityTile,
+        state: CityGameState,
+        consequence: CitySpatialConsequence?,
+        overlay: DataOverlay
+    ) -> WorldOverlaySample? {
         switch overlay {
         case .none:
             return nil
@@ -94,20 +105,8 @@ final class WorldOverlayRenderer {
             )
             return makeSample(1 - congestion, pattern: .chevrons)
         case .utilities:
-            if tile.kind == .powerPlant {
-                return WorldOverlaySample(value: 1, color: .systemYellow, pattern: .utilityGrid)
-            }
-            if tile.kind == .waterTower {
-                return WorldOverlaySample(value: 1, color: .systemBlue, pattern: .utilityGrid)
-            }
-            let powerReach = nearestDistance(from: tile.coordinate, kinds: [.powerPlant], in: state)
-                .map { max(0, 1 - Double($0) / 12) } ?? 0
-            let waterReach = nearestDistance(from: tile.coordinate, kinds: [.waterTower], in: state)
-                .map { max(0, 1 - Double($0) / 12) } ?? 0
-            let capacityFactor = state.powerCapacity >= state.powerUsed && state.waterCapacity >= state.waterUsed
-                ? 1.0
-                : 0.35
-            return makeSample(min(powerReach, waterReach) * capacityFactor, pattern: .utilityGrid)
+            guard let consequence else { return nil }
+            return makeSample(consequence.utility.combined, pattern: .utilityGrid)
         case .happiness:
             let parkBoost = proximityInfluence(from: tile.coordinate, kinds: [.park], radius: 4, in: state) * 0.22
             let serviceBoost = proximityInfluence(
@@ -125,10 +124,8 @@ final class WorldOverlayRenderer {
             return makeSample(state.happiness / 100 + parkBoost + serviceBoost - pollutionPenalty,
                               pattern: .amenityDots)
         case .pollution:
-            let industrial = proximityInfluence(from: tile.coordinate, kinds: [.industrial], radius: 6, in: state) * 0.62
-            let power = proximityInfluence(from: tile.coordinate, kinds: [.powerPlant], radius: 8, in: state) * 0.82
-            let parkRelief = proximityInfluence(from: tile.coordinate, kinds: [.park], radius: 3, in: state) * 0.16
-            return makeSample(1 - industrial - power + parkRelief, pattern: .diagonalHatch)
+            guard let consequence else { return nil }
+            return makeSample(1 - consequence.pollutionExposure, pattern: .diagonalHatch)
         }
     }
 

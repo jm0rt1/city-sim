@@ -2,7 +2,7 @@
 
 - **Lane:** UI/input
 - **Branch:** `codex/citysim-ui-input`
-- **Authority baseline:** synchronized through local `master` `b0f108dd7569714b31bb30786e16dcea5a4b6dba`
+- **Authority baseline:** synchronized through local `master` `b092261f77ad72b1401d4cd7a5d598f3f9fcdd46`
 - **Status:** independent HIGH-finding repairs focused-test green; staged app and live acceptance remain pending
 
 ## Implemented player outcome
@@ -53,6 +53,12 @@ swift test --package-path Native/CitySimNative \
 ```
 
 Result: clean build completed in 12.53 seconds; 18 tests passed, 0 failed, 0 unexpected in 22.270 seconds (22.272 seconds selected-suite wall timing). The first isolated compile identified that the preference key's immutable empty default needed `static let` for Swift 6 concurrency safety; that single declaration was corrected before the successful fresh-scratch run.
+
+## PLAY-022 synchronization gate
+
+The normal merge of `b092261` produced one conflict in `CitySceneView.Coordinator`. The resolution retained both PLAY-032's map-focus request generation and PLAY-022's `CityPresentationSnapshot` cache; the scene continues to render the cached authoritative snapshot while consuming PLAY-032 viewport insets and command/accessibility routes.
+
+The isolated post-merge selection ran all 18 `CityCommandCatalogTests` plus the three renderer integrity/performance tests used for PLAY-022's telemetry repair. Clean build completed in 12.60 seconds. All 21 tests passed with 0 failures in 89.781 seconds: UI 18/18 in 25.156 seconds; ten-pulse renderer integrity 1/1 in 12.359 seconds with 1.327 ms average render time; reduced-motion event expiry/exact telemetry 1/1 in 35.642 seconds; and 4,286-pulse soak 1/1 in 16.624 seconds with 1.1127 ms average render time. Both renderer averages remain below the 2.1 ms ceiling.
 
 `git diff --check` passed with no output.
 

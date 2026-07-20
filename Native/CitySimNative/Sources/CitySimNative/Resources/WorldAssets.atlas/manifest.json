@@ -1,6 +1,6 @@
 {
-  "schema": 1,
-  "title": "CitySim Golden Neighborhood World Atlas",
+  "schema": 2,
+  "title": "CitySim Living Strategy World Atlas",
   "authoring": "Original deterministic Pillow geometry and seeded raster texture",
   "source": "Native/CitySimNative/WorldArt/generate_world_assets.py",
   "external_sources": [],
@@ -137,6 +137,87 @@
       ]
     },
     {
+      "name": "place_commercial_tier_1_0",
+      "file": "place_commercial_tier_1_0.png",
+      "sha256": "375b7e265c71566acaf725008e4b08483bfc22a0b81f3bbb4e64f845a31d0f57",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_1_1",
+      "file": "place_commercial_tier_1_1.png",
+      "sha256": "ca5006aaaeb8cf7111f2b48a820d01e8386f3dd9869be178180f87d63017c7c1",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_1_2",
+      "file": "place_commercial_tier_1_2.png",
+      "sha256": "aa863e05b1728f65cf15fcde12a14a68bb7c344296e51f52691900e83dd5d4e4",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_2_0",
+      "file": "place_commercial_tier_2_0.png",
+      "sha256": "cf02771315c600cfc90c85bbd72e99568e9e7f523b7ae4604ef260cbd8f322cc",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_2_1",
+      "file": "place_commercial_tier_2_1.png",
+      "sha256": "556a0f712b7c5c2673820de8d72af302fb6cbe5ab5172568a981efded7ef02e2",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_2_2",
+      "file": "place_commercial_tier_2_2.png",
+      "sha256": "4e618437b10eacd0d06aadc3d00f16be5e20a214ed83dcd075df134e662f7f55",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_3_0",
+      "file": "place_commercial_tier_3_0.png",
+      "sha256": "42cef70e7ab5fa54ef04983448f0ee64302dbe06168678edc9e88a068ed9618a",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_3_1",
+      "file": "place_commercial_tier_3_1.png",
+      "sha256": "848fbd1405ab34c2f02a582ff92c4c72b123fa550b584fdd715d0e49099ec249",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_commercial_tier_3_2",
+      "file": "place_commercial_tier_3_2.png",
+      "sha256": "a6ac8bf4b748258f7f5007d47190f045902890396f3e95f6e1b53ee4b9407d6c",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
       "name": "place_industrial_0",
       "file": "place_industrial_0.png",
       "sha256": "7b448f5c7f9304acb6e43df14210a8d9e515c2f36f2520cf361929839c217b40",
@@ -161,6 +242,87 @@
       "pixels": [
         160,
         192
+      ]
+    },
+    {
+      "name": "place_industrial_tier_1_0",
+      "file": "place_industrial_tier_1_0.png",
+      "sha256": "b7806020106b93966d1e97ee3c47b7e776d61ea73b04961c107afafd1d88c94c",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_1_1",
+      "file": "place_industrial_tier_1_1.png",
+      "sha256": "1c1dc9960a9fc51f0a0a0144998e2374efd3f5dd0047f80503c3a29a7aa03abb",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_1_2",
+      "file": "place_industrial_tier_1_2.png",
+      "sha256": "8705f0d5ac0b918e0dda3dc27ec081842a10b0e68d6fcbf45f0386b77f96b951",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_2_0",
+      "file": "place_industrial_tier_2_0.png",
+      "sha256": "7e543409f7db91e44f3bfcdfa0425d7eef9b0c420534069ca7b24ef41467697a",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_2_1",
+      "file": "place_industrial_tier_2_1.png",
+      "sha256": "09ab1a95f3acf3355429d40814cfd56ca5feef2982ad660edda150c321d6ab21",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_2_2",
+      "file": "place_industrial_tier_2_2.png",
+      "sha256": "6a96a3b19820fffee49bd096285cd8f143089eba20c37c00579a15339188ef52",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_3_0",
+      "file": "place_industrial_tier_3_0.png",
+      "sha256": "d0909f660d8d34c6831a33813da340bfdad8a32df370eb7649aae8bfe44ce705",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_3_1",
+      "file": "place_industrial_tier_3_1.png",
+      "sha256": "12660c3e44ec327bc0f6c08bf55172297a143eb4ad0e453d0c6d31146a77e696",
+      "pixels": [
+        192,
+        240
+      ]
+    },
+    {
+      "name": "place_industrial_tier_3_2",
+      "file": "place_industrial_tier_3_2.png",
+      "sha256": "420f50ed85d84a59b202b1e9f646cd791ee910c992708b69bf02a1258977e7e8",
+      "pixels": [
+        192,
+        240
       ]
     },
     {
@@ -356,6 +518,60 @@
       "name": "road_mask_15",
       "file": "road_mask_15.png",
       "sha256": "e368ab84410123b7c0a5ce9b79864e17ba65ea289b88482e4d22fbc9d7cd26c0",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "strategy_ground_commercial_tier_1",
+      "file": "strategy_ground_commercial_tier_1.png",
+      "sha256": "e195a37d86957cba61e154fa29b9a5a1968f315d7eb267bfa1261c3eab88ca79",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "strategy_ground_commercial_tier_2",
+      "file": "strategy_ground_commercial_tier_2.png",
+      "sha256": "f7cdcc1970cb9b5a3d76315b8813a3539a07fae597c2c79e7d288a2071a28d29",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "strategy_ground_commercial_tier_3",
+      "file": "strategy_ground_commercial_tier_3.png",
+      "sha256": "a979c05c151b920b099376da6f689d63a2d0a6752317e1c89e20abe7c34665f3",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "strategy_ground_industrial_tier_1",
+      "file": "strategy_ground_industrial_tier_1.png",
+      "sha256": "8874be44a10a75bedc5ea4f0d9de802298afa52e7906786a46e700b262fca3e6",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "strategy_ground_industrial_tier_2",
+      "file": "strategy_ground_industrial_tier_2.png",
+      "sha256": "d11c25ba5cb505bd2641804e3988a81313218810fa6f49c8d87cf387b12158f2",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "strategy_ground_industrial_tier_3",
+      "file": "strategy_ground_industrial_tier_3.png",
+      "sha256": "251675a2b40141cf1fe9d4f1e1041f113b7b6c1d837194272004b6034b275c9c",
       "pixels": [
         144,
         72

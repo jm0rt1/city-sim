@@ -210,7 +210,7 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
-    func testRendererInitialRenderAndUnrelatedPulseReuseEveryTileRoot() {
+    func testRendererInitialRenderAndPulsesInvalidateOnlyChangedSpatialTruth() throws {
         let state = CityGameState.newCity(seed: 42)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -229,31 +229,67 @@ final class CitySimulationTests: XCTestCase {
 
         var pulsedState = state
         var totalReusedTiles = 0
-        let pulseStart = ProcessInfo.processInfo.systemUptime
+        var totalUpdatedTiles = 0
+        var changedAcrossPulses: Set<GridCoordinate> = []
+        var renderMilliseconds = 0.0
         for pulseIndex in 1...10 {
+            let previousSnapshot = try CityPresentationSnapshot(state: pulsedState)
             CitySimulation.step(&pulsedState)
-            scene.render(state: pulsedState, overlay: .none, selection: nil, interactionMode: .inspect)
+            let currentSnapshot = try CityPresentationSnapshot(state: pulsedState)
+            let expectedChanges = Set(zip(
+                previousSnapshot.spatialConsequences.samples,
+                currentSnapshot.spatialConsequences.samples
+            ).compactMap { previous, current in
+                SpatialConsequenceRenderSignature(previous) == SpatialConsequenceRenderSignature(current)
+                    ? nil
+                    : current.coordinate
+            })
+            let renderStarted = ProcessInfo.processInfo.systemUptime
+            scene.render(
+                snapshot: currentSnapshot,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            renderMilliseconds += (ProcessInfo.processInfo.systemUptime - renderStarted) * 1_000
             let diagnostics = scene.diagnosticsSnapshot
-            XCTAssertEqual(diagnostics.updatedTileCount, 0, "Pulse \(pulseIndex) rebuilt a visual tile")
-            XCTAssertEqual(diagnostics.reusedTileCount, state.tiles.count)
+            XCTAssertEqual(
+                diagnostics.updatedCoordinates,
+                expectedChanges,
+                "Pulse \(pulseIndex) must invalidate exactly the accepted spatial-band changes"
+            )
+            XCTAssertEqual(diagnostics.updatedTileCount, expectedChanges.count)
+            XCTAssertEqual(diagnostics.reusedTileCount, state.tiles.count - expectedChanges.count)
             totalReusedTiles += diagnostics.reusedTileCount
+            totalUpdatedTiles += diagnostics.updatedTileCount
+            changedAcrossPulses.formUnion(expectedChanges)
         }
-        let pulseElapsedMilliseconds = (ProcessInfo.processInfo.systemUptime - pulseStart) * 1_000
+        let averageRenderMilliseconds = renderMilliseconds / 10
         let pulse = scene.diagnosticsSnapshot
-        XCTAssertEqual(tileRootIdentifiers(in: scene, state: pulsedState), initialIdentifiers)
+        XCTAssertEqual(
+            changedTileIdentifiers(
+                before: initialIdentifiers,
+                after: tileRootIdentifiers(in: scene, state: pulsedState)
+            ),
+            changedAcrossPulses
+        )
         XCTAssertEqual(pulse.totalTileCount, state.tiles.count)
         XCTAssertEqual(pulse.createdTileCount, 0)
-        XCTAssertEqual(pulse.updatedTileCount, 0)
-        XCTAssertEqual(pulse.reusedTileCount, state.tiles.count)
+        XCTAssertEqual(pulse.updatedTileCount, pulse.updatedCoordinates.count)
+        XCTAssertEqual(pulse.reusedTileCount, state.tiles.count - pulse.updatedTileCount)
         XCTAssertEqual(pulse.removedTileCount, 0)
         XCTAssertEqual(pulse.overlayUpdateCount, 0)
-        XCTAssertEqual(pulse.nodeCount, initial.nodeCount)
-        XCTAssertTrue(pulse.updatedCoordinates.isEmpty)
+        XCTAssertGreaterThanOrEqual(pulse.nodeCount, initial.nodeCount)
+        XCTAssertLessThanOrEqual(
+            averageRenderMilliseconds,
+            2.1,
+            "State-changing render pulses must remain within the established 2.1 ms renderer budget"
+        )
         print(
             "CITYSIM_RENDER_DIAGNOSTICS initial_tiles=\(initial.totalTileCount) " +
             "initial_nodes=\(initial.nodeCount) ten_pulses_reused=\(totalReusedTiles) " +
-            "ten_pulses_updated=0 ten_pulses_ms=\(String(format: "%.3f", pulseElapsedMilliseconds)) " +
-            "average_ms=\(String(format: "%.3f", pulseElapsedMilliseconds / 10)) " +
+            "ten_pulses_updated=\(totalUpdatedTiles) render_ms=\(String(format: "%.3f", renderMilliseconds)) " +
+            "average_render_ms=\(String(format: "%.3f", averageRenderMilliseconds)) " +
             "final_nodes=\(pulse.nodeCount)"
         )
     }

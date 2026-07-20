@@ -21,10 +21,9 @@ struct CitySceneView: NSViewRepresentable {
         let scene = CityScene(size: CGSize(width: 1280, height: 800))
         scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.primaryAction(at: coordinate) }
         scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.secondaryAction(at: coordinate) }
-        scene.onCancelAction = { [weak coordinator = context.coordinator] in coordinator?.store.cancelInteraction() }
-        scene.onInspectAction = { [weak coordinator = context.coordinator] in coordinator?.store.activateInspectMode() }
-        scene.onBulldozeAction = { [weak coordinator = context.coordinator] in coordinator?.store.toggleBulldozer() }
-        scene.onSpeedAction = { [weak coordinator = context.coordinator] speed in coordinator?.store.speed = speed }
+        scene.onCommandAction = { [weak coordinator = context.coordinator] command in
+            coordinator?.store.perform(command)
+        }
         view.presentScene(scene)
         DispatchQueue.main.async { [weak view] in
             view?.window?.acceptsMouseMovedEvents = true

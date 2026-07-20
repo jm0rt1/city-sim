@@ -35,7 +35,7 @@ struct InspectorView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                 if !compact {
-                    Button("City data") { store.openInspector(.overview) }
+                    Button("City data") { store.perform(.inspectorOverview) }
                         .buttonStyle(.borderless)
                         .frame(minHeight: GameTheme.controlMinimum)
                         .accessibilityLabel("Show citywide data and keep block selected")
@@ -55,7 +55,7 @@ struct InspectorView: View {
             Spacer(minLength: 4)
             sectionNavigation
 
-            Button { store.dismissInspector() } label: {
+            Button { store.perform(.toggleCommandCenter) } label: {
                 Label(compact ? "" : "Close", systemImage: "xmark")
                     .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
                     .contentShape(Rectangle())
@@ -74,7 +74,7 @@ struct InspectorView: View {
         if compact {
             Menu {
                 ForEach(InspectorSection.allCases) { section in
-                    Button { store.openInspector(section) } label: {
+                    Button { store.perform(CityCommandCatalog.id(for: section)) } label: {
                         Label(section.deckTitle, systemImage: section.symbol)
                     }
                 }
@@ -99,7 +99,7 @@ struct InspectorView: View {
 
     private func sectionButton(_ section: InspectorSection) -> some View {
         let active = store.hudContextScope == .city && store.inspectorSection == section
-        return Button { store.openInspector(section) } label: {
+        return Button { store.perform(CityCommandCatalog.id(for: section)) } label: {
             Image(systemName: section.symbol)
                 .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
                 .contentShape(Rectangle())
@@ -178,10 +178,10 @@ struct InspectorView: View {
             ContextCard(title: "Next action", symbol: "arrow.turn.down.right", tint: GameTheme.accent) {
                 if tile.kind == .empty {
                     HStack(spacing: 6) {
-                        compactAction("Road", symbol: BuildingKind.road.symbol) { store.selectTool(.road) }
-                        compactAction("Homes", symbol: BuildingKind.residential.symbol) { store.selectTool(.residential) }
+                        compactAction("Road", symbol: BuildingKind.road.symbol) { store.perform(.buildRoad) }
+                        compactAction("Homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
                     }
-                    compactAction("Open build catalog", symbol: "square.grid.2x2") { store.activateBuildMode() }
+                    compactAction("Open build catalog", symbol: "square.grid.2x2") { store.perform(.buildMode) }
                 } else if tile.kind == .cityHall {
                     Label("Protected landmark", systemImage: "shield.lefthalf.filled")
                         .font(.caption.weight(.semibold))
@@ -191,11 +191,11 @@ struct InspectorView: View {
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
-                    compactAction("City data", symbol: "chart.dots.scatter") { store.openInspector(.overview) }
+                    compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
                 } else {
                     ContextValueRow(label: "Demolition", value: tile.kind.demolitionCost.currencyText)
                     HStack(spacing: 6) {
-                        compactAction("City data", symbol: "chart.dots.scatter") { store.openInspector(.overview) }
+                        compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
                         Button(role: .destructive) { store.demolishSelected() } label: {
                             Label("Demolish", systemImage: "trash")
                                 .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
@@ -244,7 +244,7 @@ struct InspectorView: View {
                 ContextValueRow(label: "Net / cycle", value: store.analytics.projectedBalance.signedCurrencyText)
                 ContextValueRow(label: "Housing open", value: store.analytics.housingHeadroom.formatted())
                 ContextValueRow(label: "Notices", value: store.alertCount.formatted())
-                compactAction("Open journal", symbol: "newspaper.fill") { store.openInspector(.journal) }
+                compactAction("Open journal", symbol: "newspaper.fill") { store.perform(.inspectorJournal) }
             }
         }
     }
@@ -285,7 +285,7 @@ struct InspectorView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
-                compactAction("Demand", symbol: "chart.bar.fill") { store.openInspector(.demand) }
+                compactAction("Demand", symbol: "chart.bar.fill") { store.perform(.inspectorDemand) }
             }
         }
     }
@@ -305,12 +305,12 @@ struct InspectorView: View {
             ContextCard(title: "Neighborhoods", symbol: BuildingKind.residential.symbol, tint: .cyan) {
                 ContextValueRow(label: "Buildings", value: store.analytics.count(.residential).formatted())
                 ContextValueRow(label: "Residential demand", value: (store.state.demand.residential * 100).percentText)
-                compactAction("Build homes", symbol: BuildingKind.residential.symbol) { store.selectTool(.residential) }
+                compactAction("Build homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
             }
             ContextCard(title: "Growth balance", symbol: "person.crop.circle.badge.checkmark", tint: GameTheme.information) {
                 ContextValueRow(label: "Job openings", value: store.analytics.jobHeadroom.formatted())
                 ContextValueRow(label: "Employment target", value: (store.analytics.employmentRate * 100).percentText)
-                compactAction("Employment", symbol: "briefcase.fill") { store.openInspector(.employment) }
+                compactAction("Employment", symbol: "briefcase.fill") { store.perform(.inspectorEmployment) }
             }
         }
     }
@@ -333,8 +333,8 @@ struct InspectorView: View {
                 ContextValueRow(label: "Pollution index", value: store.analytics.pollutionPressure.formatted(.number.precision(.fractionLength(0))))
             }
             ContextCard(title: "Diagnose", symbol: "map.fill", tint: GameTheme.information) {
-                compactAction("Happiness map", symbol: DataOverlay.happiness.symbol) { store.overlay = .happiness }
-                compactAction("Pollution map", symbol: DataOverlay.pollution.symbol) { store.overlay = .pollution }
+                compactAction("Happiness map", symbol: DataOverlay.happiness.symbol) { store.perform(.overlayHappiness) }
+                compactAction("Pollution map", symbol: DataOverlay.pollution.symbol) { store.perform(.overlayPollution) }
             }
         }
     }
@@ -354,12 +354,12 @@ struct InspectorView: View {
             ContextCard(title: "Commercial", symbol: BuildingKind.commercial.symbol, tint: .purple) {
                 ContextValueRow(label: "Buildings", value: store.analytics.count(.commercial).formatted())
                 ContextValueRow(label: "Demand", value: (store.state.demand.commercial * 100).percentText)
-                compactAction("Build commercial", symbol: BuildingKind.commercial.symbol) { store.selectTool(.commercial) }
+                compactAction("Build commercial", symbol: BuildingKind.commercial.symbol) { store.perform(.buildCommercial) }
             }
             ContextCard(title: "Industrial", symbol: BuildingKind.industrial.symbol, tint: .orange) {
                 ContextValueRow(label: "Buildings", value: store.analytics.count(.industrial).formatted())
                 ContextValueRow(label: "Demand", value: (store.state.demand.industrial * 100).percentText)
-                compactAction("Build industrial", symbol: BuildingKind.industrial.symbol) { store.selectTool(.industrial) }
+                compactAction("Build industrial", symbol: BuildingKind.industrial.symbol) { store.perform(.buildIndustrial) }
             }
         }
     }
@@ -389,7 +389,7 @@ struct InspectorView: View {
                 headroom: store.analytics.powerHeadroom,
                 tint: .yellow,
                 actionTitle: "Build power",
-                action: { store.selectTool(.powerPlant) }
+                action: { store.perform(.buildPowerPlant) }
             )
             utilityCard(
                 title: "Water",
@@ -399,13 +399,13 @@ struct InspectorView: View {
                 headroom: store.analytics.waterHeadroom,
                 tint: .blue,
                 actionTitle: "Build water",
-                action: { store.selectTool(.waterTower) }
+                action: { store.perform(.buildWaterTower) }
             )
             ContextCard(title: "Combined coverage", symbol: "bolt.horizontal.circle.fill", tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger) {
                 Text((store.analytics.utilityCoverage * 100).percentText).font(.title3.bold().monospacedDigit())
                 Text(store.analytics.utilityCoverage >= 1 ? "Both networks cover current use." : "At least one network is below current use.")
                     .font(.caption2).foregroundStyle(.secondary).lineLimit(3)
-                compactAction("Utility map", symbol: DataOverlay.utilities.symbol) { store.overlay = .utilities }
+                compactAction("Utility map", symbol: DataOverlay.utilities.symbol) { store.perform(.overlayUtilities) }
             }
             ContextCard(title: "Expansion signal", symbol: "chart.line.uptrend.xyaxis", tint: GameTheme.information) {
                 ContextValueRow(label: "Residents", value: store.state.population.formatted())
@@ -474,7 +474,7 @@ struct InspectorView: View {
                 Text(value.demandLabel).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
             }
             ProgressView(value: value).tint(tint)
-            compactAction("Build \(title.lowercased())", symbol: kind.symbol) { store.selectTool(kind) }
+            compactAction("Build \(title.lowercased())", symbol: kind.symbol) { store.perform(CityCommandCatalog.id(for: kind)) }
         }
     }
 

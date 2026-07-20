@@ -67,10 +67,7 @@ private final class TileRenderRecord {
 final class CityScene: SKScene {
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
-    var onCancelAction: (() -> Void)?
-    var onInspectAction: (() -> Void)?
-    var onBulldozeAction: (() -> Void)?
-    var onSpeedAction: ((SimulationSpeed) -> Void)?
+    var onCommandAction: ((CityCommandID) -> Void)?
     var reducedMotion = false
 
     private let style: WorldVisualStyle
@@ -246,7 +243,7 @@ final class CityScene: SKScene {
 
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 53 {
-            onCancelAction?()
+            onCommandAction?(.cancelInteraction)
             return
         }
         let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
@@ -254,18 +251,32 @@ final class CityScene: SKScene {
             super.keyDown(with: event)
             return
         }
-        switch event.charactersIgnoringModifiers?.lowercased() {
-        case " ": onSpeedAction?(.paused)
-        case "1": onSpeedAction?(.normal)
-        case "2": onSpeedAction?(.fast)
-        case "3": onSpeedAction?(.fastest)
-        case "b": onBulldozeAction?()
-        case "v": onInspectAction?()
-        case "=", "+": zoomCamera(by: 0.82)
-        case "-", "_": zoomCamera(by: 1.22)
-        case "0": frameCity()
-        default: super.keyDown(with: event)
+        var key = event.charactersIgnoringModifiers?.lowercased() ?? ""
+        if key == "+" { key = "=" }
+        if key == "_" { key = "-" }
+        let catalogModifiers: CityCommandModifiers = modifiers.contains(.shift) ? [.shift] : []
+        if let command = CityCommandCatalog.matchingCommand(
+            key: key,
+            modifiers: catalogModifiers,
+            scope: .gameplay
+        ) {
+            onCommandAction?(command)
+            return
         }
+        if let command = CityCommandCatalog.matchingCommand(
+            key: key,
+            modifiers: catalogModifiers,
+            scope: .renderer
+        ) {
+            switch command {
+            case .cameraZoomIn: zoomCamera(by: 0.82)
+            case .cameraZoomOut: zoomCamera(by: 1.22)
+            case .cameraFrameCity: frameCity()
+            default: break
+            }
+            return
+        }
+        super.keyDown(with: event)
     }
 
     override func mouseMoved(with event: NSEvent) {

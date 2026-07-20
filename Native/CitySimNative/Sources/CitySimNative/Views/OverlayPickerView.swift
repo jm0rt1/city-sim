@@ -7,7 +7,7 @@ struct OverlayPickerView: View {
     var body: some View {
         Menu {
             ForEach(DataOverlay.allCases) { overlay in
-                Button { store.overlay = overlay } label: {
+                Button { store.perform(CityCommandCatalog.id(for: overlay)) } label: {
                     Label(
                         overlay.title,
                         systemImage: store.overlay == overlay ? "checkmark.circle.fill" : overlay.symbol

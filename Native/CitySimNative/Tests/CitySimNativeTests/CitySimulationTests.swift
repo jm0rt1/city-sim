@@ -371,14 +371,8 @@ final class CitySimulationTests: XCTestCase {
     @MainActor
     func testRendererRoutesUnmodifiedKeyboardCommandsToCallbacks() throws {
         let scene = CityScene(size: CGSize(width: 900, height: 600))
-        var speeds: [SimulationSpeed] = []
-        var bulldozeCount = 0
-        var inspectCount = 0
-        var cancelCount = 0
-        scene.onSpeedAction = { speeds.append($0) }
-        scene.onBulldozeAction = { bulldozeCount += 1 }
-        scene.onInspectAction = { inspectCount += 1 }
-        scene.onCancelAction = { cancelCount += 1 }
+        var routedCommands: [CityCommandID] = []
+        scene.onCommandAction = { routedCommands.append($0) }
 
         let commands: [(characters: String, keyCode: UInt16)] = [
             (" ", 49), ("1", 18), ("2", 19), ("3", 20), ("b", 11), ("v", 9)
@@ -388,17 +382,15 @@ final class CitySimulationTests: XCTestCase {
         }
         scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
 
-        XCTAssertEqual(speeds, [.paused, .normal, .fast, .fastest])
-        XCTAssertEqual(bulldozeCount, 1)
-        XCTAssertEqual(inspectCount, 1)
-        XCTAssertEqual(cancelCount, 1)
+        XCTAssertEqual(
+            routedCommands,
+            [.togglePause, .speedNormal, .speedFast, .speedFastest, .bulldozeMode, .inspectMode, .cancelInteraction]
+        )
 
         scene.keyDown(with: try keyEvent(characters: "b", keyCode: 11, modifiers: .command))
         scene.keyDown(with: try keyEvent(characters: "v", keyCode: 9, modifiers: .option))
         scene.keyDown(with: try keyEvent(characters: "1", keyCode: 18, modifiers: .control))
-        XCTAssertEqual(speeds, [.paused, .normal, .fast, .fastest])
-        XCTAssertEqual(bulldozeCount, 1)
-        XCTAssertEqual(inspectCount, 1)
+        XCTAssertEqual(routedCommands.count, 7, "Modified keys must not double-route through the focused map")
 
         let state = rendererNeighborhoodState()
         scene.reducedMotion = true
@@ -597,6 +589,60 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertFalse(store.showObjectives)
         XCTAssertTrue(ContentView.isCompactLayout(CGSize(width: 900, height: 600)))
         XCTAssertFalse(ContentView.isCompactLayout(CGSize(width: 1_200, height: 760)))
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: false, showInspector: true),
+            .hidden
+        )
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: true, showInspector: false),
+            .expanded
+        )
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: true, showInspector: true),
+            .compactSummary
+        )
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: false, showObjectives: true, showInspector: true),
+            .expanded
+        )
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 190)
+    }
+
+    @MainActor
+    func testBlockingWelcomePreservesExactAuthoredStartUntilDismissed() {
+        let defaults = UserDefaults.standard
+        let priorWelcome = defaults.object(forKey: "hasSeenCitySimWelcome")
+        defaults.set(false, forKey: "hasSeenCitySimWelcome")
+        defer {
+            if let priorWelcome { defaults.set(priorWelcome, forKey: "hasSeenCitySimWelcome") }
+            else { defaults.removeObject(forKey: "hasSeenCitySimWelcome") }
+        }
+
+        let authoredStart = CityGameState.newCity(seed: 42)
+        let store = CityGameStore(state: authoredStart)
+        let size = CGSize(width: 1_278, height: 768)
+        let view = NSHostingView(rootView: ContentView(store: store).frame(width: size.width, height: size.height))
+        view.frame = CGRect(origin: .zero, size: size)
+        view.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
+
+        XCTAssertEqual(store.state, authoredStart)
+        XCTAssertEqual(store.state.day, authoredStart.day)
+        XCTAssertEqual(store.state.messages, authoredStart.messages)
+        XCTAssertEqual(store.state.progression, authoredStart.progression)
+        XCTAssertEqual(store.state.treasury, authoredStart.treasury)
+        XCTAssertEqual(store.state.population, authoredStart.population)
+        XCTAssertEqual(store.state.powerUsed, authoredStart.powerUsed)
+        XCTAssertEqual(store.state.waterUsed, authoredStart.waterUsed)
+
+        defaults.set(true, forKey: "hasSeenCitySimWelcome")
+        let resumedStore = CityGameStore(state: authoredStart)
+        let resumedView = NSHostingView(rootView: ContentView(store: resumedStore).frame(width: size.width, height: size.height))
+        resumedView.frame = CGRect(origin: .zero, size: size)
+        resumedView.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.9))
+
+        XCTAssertGreaterThan(resumedStore.state.tick, authoredStart.tick)
     }
 
     @MainActor
@@ -684,6 +730,24 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertNotNil(compactStore.selectedTile)
         if let path = ProcessInfo.processInfo.environment["CITYSIM_HUD_COMPACT_CONTEXT_PROOF"] {
             let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+
+        let compactArbitratedStore = CityGameStore(state: .newCity(seed: 42))
+        compactArbitratedStore.speed = .paused
+        compactArbitratedStore.showObjectives = true
+        compactArbitratedStore.openInspector(.utilities)
+        let compactArbitrated = try hudBitmap(size: CGSize(width: 900, height: 600), store: compactArbitratedStore)
+        XCTAssertTrue(compactArbitratedStore.showObjectives)
+        XCTAssertTrue(compactArbitratedStore.showInspector)
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: true, showInspector: true),
+            .compactSummary
+        )
+        XCTAssertGreaterThan(compactArbitrated.pixelsWide, 850)
+        XCTAssertGreaterThan(compactArbitrated.pixelsHigh, 550)
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_HUD_COMPACT_ARBITRATED_PROOF"] {
+            let data = try XCTUnwrap(compactArbitrated.representation(using: .png, properties: [:]))
             try data.write(to: URL(fileURLWithPath: path), options: .atomic)
         }
 

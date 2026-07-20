@@ -23,8 +23,13 @@ final class LotRenderer {
     ) -> SKNode {
         let variant = WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
         let presentation = LotConsequencePresentation(tile: tile)
+        let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
         let root = SKNode()
-        root.name = "lot.\(tile.kind.rawValue).variant.\(variant)"
+        root.name = if let strategyIdentity {
+            "lot.\(tile.kind.rawValue).density.\(strategyIdentity.densityTier).variant.\(variant)"
+        } else {
+            "lot.\(tile.kind.rawValue).variant.\(variant)"
+        }
 
         let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
         let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
@@ -34,6 +39,9 @@ final class LotRenderer {
         root.addChild(blockLayer)
 
         addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, to: cityLayer)
+        if let strategyIdentity {
+            addStrategyGround(strategyIdentity, to: cityLayer)
+        }
 
         if presentation.construction == .complete || presentation.construction == .finishing {
             if addAuthoredPlaceFamily(
@@ -89,6 +97,14 @@ final class LotRenderer {
            ) {
             root.addChild(ambient)
         }
+        if presentation.construction == .complete,
+           let strategyAmbient = ambientLifeRenderer.makeStrategyDecoration(
+               for: tile,
+               detail: detail,
+               reducedMotion: reducedMotion
+           ) {
+            root.addChild(strategyAmbient)
+        }
         return root
     }
 
@@ -110,13 +126,22 @@ final class LotRenderer {
         default: return false
         }
 
-        let levelLift = CGFloat(max(0, tile.level - 1)) * (family == "park" ? 0 : 8)
+        let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
+        let assetName = strategyIdentity?.placeAssetName ?? "place_\(family)_\(variant)"
+        let spriteSize = strategyIdentity == nil
+            ? CGSize(width: 80, height: 96)
+            : CGSize(width: 96, height: 120)
+        let anchorY: CGFloat = strategyIdentity == nil ? 28.0 / 192.0 : 36.0 / 240.0
         guard let sprite = assets.sprite(
-            named: "place_\(family)_\(variant)",
-            size: CGSize(width: 80, height: 96 + levelLift),
-            anchorPoint: CGPoint(x: 0.5, y: 28.0 / 192.0)
+            named: assetName,
+            size: spriteSize,
+            anchorPoint: CGPoint(x: 0.5, y: anchorY)
         ) else { return false }
-        sprite.name = "lot.place.\(family).variant.\(variant)"
+        sprite.name = if let strategyIdentity {
+            "lot.place.\(family).density.\(strategyIdentity.densityTier).variant.\(variant).\(strategyIdentity.architecturalCue)"
+        } else {
+            "lot.place.\(family).variant.\(variant)"
+        }
         sprite.zPosition = 5
         city.addChild(sprite)
 
@@ -145,6 +170,19 @@ final class LotRenderer {
             break
         }
         return true
+    }
+
+    private func addStrategyGround(
+        _ identity: StrategyDistrictVisualIdentity,
+        to node: SKNode
+    ) {
+        guard let ground = assets.sprite(
+            named: identity.groundAssetName,
+            size: CGSize(width: style.tileWidth, height: style.tileHeight)
+        ) else { return }
+        ground.name = "lot.strategyGround.\(identity.family.rawValue).density.\(identity.densityTier)"
+        ground.zPosition = -0.5
+        node.addChild(ground)
     }
 
     private func addAuthoredFrontage(

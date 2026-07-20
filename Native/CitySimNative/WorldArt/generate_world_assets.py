@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "Sources" / "CitySimNative" / "Resources" / "WorldAssets.atlas"
 TILE_SIZE = (144, 72)
 BUILDING_SIZE = (160, 192)
+STRATEGY_BUILDING_SIZE = (192, 240)
 DIAMOND = [(72, 1), (143, 36), (72, 71), (1, 36)]
 
 PALETTE = {
@@ -395,6 +396,138 @@ def place_asset(family: str, variant: int) -> Image.Image:
     return image
 
 
+def strategy_ground_asset(family: str, tier: int) -> Image.Image:
+    """Author a district parcel without asserting prosperity or operation."""
+    image = Image.new("RGBA", TILE_SIZE, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image, "RGBA")
+    if family == "commercial":
+        paving = ["#9b927f", "#a79f8d", "#b4ad9a"][tier - 1]
+        draw.polygon(DIAMOND, fill=rgba(paving, 178), outline=rgba("#ddd4bc", 118))
+        draw.line((25, 48, 72, 26, 119, 48), fill=rgba("#d6cfb9", 120), width=2)
+        for x, y in ((24, 37), (116, 37)):
+            draw.ellipse((x - 5, y - 3, x + 5, y + 3), fill=rgba("#4f8051", 220), outline=rgba("#31583a", 170))
+        if tier >= 2:
+            for x in (48, 72, 96):
+                draw.line((x, 30, x - 18, 47), fill=rgba("#efe8d2", 72), width=1)
+        if tier == 3:
+            draw.polygon([(52, 48), (72, 38), (92, 48), (72, 58)], outline=rgba("#6b807e", 150), width=2)
+    else:
+        yard = ["#736956", "#77705f", "#68665f"][tier - 1]
+        draw.polygon(DIAMOND, fill=rgba(yard, 214), outline=rgba("#b39b70", 126))
+        for offset in range(-30, 31, 12):
+            draw.line((72 + offset, 22, 38 + offset, 51), fill=rgba("#d0ad58", 54), width=2)
+        for x in (25, 119):
+            draw.line((x, 30, x + 14, 44), fill=rgba("#e0b64e", 190), width=3)
+            draw.line((x + 7, 29, x + 21, 43), fill=rgba("#252c2d", 180), width=3)
+        if tier >= 2:
+            draw.rectangle((50, 40, 69, 46), fill=rgba("#97643c", 190), outline=rgba("#493929", 170))
+            draw.rectangle((73, 34, 96, 41), fill=rgba("#4f7474", 190), outline=rgba("#293d40", 170))
+        if tier == 3:
+            draw.line((39, 52, 105, 20), fill=rgba("#d8c89e", 120), width=3)
+    image.save(OUTPUT / f"strategy_ground_{family}_tier_{tier}.png", optimize=True)
+    return image
+
+
+def strategy_place_asset(family: str, tier: int, variant: int) -> Image.Image:
+    """Author stable commercial/industrial density progression as architecture."""
+    image = Image.new("RGBA", STRATEGY_BUILDING_SIZE, (0, 0, 0, 0))
+    shadow = Image.new("RGBA", STRATEGY_BUILDING_SIZE, (0, 0, 0, 0))
+    cast_shadow(shadow, 96, 204, 112 + tier * 8, 40, 24 + tier * 5)
+    image = Image.alpha_composite(image, shadow.filter(ImageFilter.GaussianBlur(3.2)))
+    draw = ImageDraw.Draw(image, "RGBA")
+
+    commercial_walls = [
+        ("#b66752", "#d4a653", "#6f8586"),
+        ("#9f664d", "#5f8587", "#c3924c"),
+        ("#76758c", "#527c7f", "#b66f55"),
+    ][variant]
+    industrial_walls = [
+        ("#9a6247", "#777d78", "#bd8a4b"),
+        ("#717c78", "#9a704c", "#596c6d"),
+        ("#af7d45", "#6e7673", "#8b5a43"),
+    ][variant]
+
+    if family == "commercial":
+        if tier == 1:
+            # A fine-grained main-street row: individual roofs, shopfronts and awnings.
+            widths = (48, 52, 44)
+            centers = (47, 96, 143)
+            heights = (49 + variant * 4, 61 - variant * 3, 45 + variant * 5)
+            for index, (center, width, height) in enumerate(zip(centers, widths, heights)):
+                base = commercial_walls[index]
+                iso_prism(draw, center, 204 - index % 2, width, 24, height, base, ["#454b4d", "#6f4539", "#566466"][index])
+                draw.rounded_rectangle((center - width // 2 + 5, 184, center + width // 2 - 5, 202), radius=2, fill=rgba("#4f8587"), outline=rgba("#d8eee4", 145), width=2)
+                awning_y = 179 - index % 2
+                draw.polygon([(center - width // 2 + 2, awning_y), (center + width // 2 - 2, awning_y), (center + width // 2 - 8, awning_y + 10), (center - width // 2 + 8, awning_y + 10)], fill=rgba(["#d6a34e", "#be6756", "#5f8587"][index]), outline=rgba("#493d37", 170))
+            draw.line((25, 208, 166, 208), fill=rgba("#ded4bd", 190), width=5)
+            for x in (28, 166):
+                draw.ellipse((x - 7, 194, x + 7, 207), fill=rgba("#4f824d"), outline=rgba("#31583a"), width=2)
+        elif tier == 2:
+            # A perimeter block with a retail podium and two distinct mid-rise volumes.
+            iso_prism(draw, 96, 205, 142, 42, 52, commercial_walls[0], "#4b5152")
+            iso_prism(draw, 68 + variant * 5, 163, 62, 30, 91 + variant * 5, commercial_walls[1], "#7ea6a2")
+            iso_prism(draw, 128 - variant * 4, 169, 55, 28, 76 + (2 - variant) * 6, commercial_walls[2], "#745044")
+            for y in range(93, 157, 15):
+                draw.rectangle((48, y, 82, y + 6), fill=rgba("#8fc4c3", 205), outline=rgba("#d7f3ea", 82))
+            for y in range(111, 164, 14):
+                draw.rectangle((113, y, 142, y + 5), fill=rgba("#91bbb9", 198), outline=rgba("#d7f3ea", 72))
+            draw.polygon([(28, 177), (165, 177), (155, 190), (38, 190)], fill=rgba("#d3a34c"), outline=rgba("#5d4235"))
+            draw.rounded_rectangle((43, 187, 149, 203), radius=2, fill=rgba("#4d8587"), outline=rgba("#d8eee4", 130), width=2)
+        else:
+            # A stepped skyline: tower pair, podium, roof crowns and a physical skybridge.
+            iso_prism(draw, 96, 205, 148, 44, 48, commercial_walls[2], "#474f51")
+            rear_x = 65 + variant * 5
+            front_x = 123 - variant * 4
+            iso_prism(draw, rear_x, 168, 62, 32, 154 - variant * 8, commercial_walls[1], "#8db9b3")
+            iso_prism(draw, front_x, 177, 68, 34, 126 + variant * 7, commercial_walls[0], "#647d80")
+            for x, top, bottom, width in ((rear_x, 26 + variant * 8, 154, 44), (front_x, 45 - variant * 4, 166, 48)):
+                for y in range(top + 17, bottom, 17):
+                    draw.rectangle((x - width // 2, y, x + width // 2, y + 7), fill=rgba("#8ec7c7", 205), outline=rgba("#d7f3ea", 72))
+            bridge_y = 126 + variant * 4
+            draw.rounded_rectangle((76, bridge_y, 116, bridge_y + 11), radius=2, fill=rgba("#739fa0", 230), outline=rgba("#d5e8df", 140), width=2)
+            draw.polygon([(rear_x - 20, 17 + variant * 8), (rear_x, 5 + variant * 8), (rear_x + 20, 17 + variant * 8)], fill=rgba("#92b9af"), outline=rgba("#35484a"))
+            draw.line((31, 207, 161, 207), fill=rgba("#ded4bd", 190), width=5)
+    else:
+        if tier == 1:
+            # Small fabrication sheds and an open service yard.
+            iso_prism(draw, 86, 205, 126, 42, 54 + variant * 5, industrial_walls[0], "#565d5d")
+            for x in range(31, 142, 25):
+                draw.polygon([(x, 151 - variant * 5), (x + 12, 137 - variant * 5), (x + 25, 151 - variant * 5)], fill=rgba("#a4aaa4"), outline=rgba("#3a4242"))
+            for x in (48, 82, 116):
+                draw.rectangle((x, 180, x + 26, 204), fill=rgba("#394243"), outline=rgba("#c8c2ad", 120), width=2)
+            for x, color in ((154, "#b66d42"), (170, "#52787a")):
+                draw.rectangle((x - 12, 187, x + 8, 205), fill=rgba(color), outline=rgba("#343c3d"), width=2)
+        elif tier == 2:
+            # Logistics form: long warehouse, loading apron, silos and a pipe gantry.
+            iso_prism(draw, 76, 205, 132, 44, 66 + variant * 5, industrial_walls[1], "#aeb1a8")
+            for x in (29, 60, 91, 122):
+                draw.rectangle((x, 179, x + 24, 204), fill=rgba("#384142"), outline=rgba("#c8c2ad", 120), width=2)
+            for x, radius in ((151, 21), (176, 16)):
+                draw.ellipse((x - radius, 156 - radius // 2, x + radius, 156 + radius // 2), fill=rgba("#a9aca4"), outline=rgba("#434b4b"), width=2)
+                draw.rectangle((x - radius, 156, x + radius, 204), fill=rgba("#898e88"), outline=rgba("#434b4b"), width=2)
+                draw.arc((x - radius, 193, x + radius, 213), 180, 360, fill=rgba("#d6c9ad", 120), width=2)
+            draw.line((126, 151, 178, 126), fill=rgba("#d0a34c"), width=5)
+            draw.line((126, 159, 178, 134), fill=rgba("#4a5252"), width=3)
+        else:
+            # A process campus: tall production hall, tanks, stacks and pipe bridge—no smoke claim.
+            iso_prism(draw, 68, 205, 96, 40, 112 + variant * 7, industrial_walls[0], "#4b5253")
+            iso_prism(draw, 128, 205, 64, 34, 78 + (2 - variant) * 6, industrial_walls[1], "#a9ada5")
+            for x, stack_height in ((38, 98), (99, 127), (150, 92)):
+                draw.polygon([(x - 7, 184), (x + 7, 184), (x + 4, 184 - stack_height), (x - 3, 184 - stack_height)], fill=rgba("#765044"), outline=rgba("#30393a"))
+                draw.rectangle((x - 5, 107 - stack_height // 3, x + 6, 114 - stack_height // 3), fill=rgba("#d09b49"))
+            for x, y, radius in ((151, 174, 22), (174, 190, 15)):
+                draw.ellipse((x - radius, y - radius // 2, x + radius, y + radius // 2), fill=rgba("#a8aaa1"), outline=rgba("#444d4d"), width=2)
+                draw.rectangle((x - radius, y, x + radius, 205), fill=rgba("#888d87"), outline=rgba("#444d4d"), width=2)
+            draw.line((93, 151, 169, 151), fill=rgba("#cf9d45"), width=6)
+            draw.line((93, 159, 169, 159), fill=rgba("#465052"), width=3)
+            for x in range(97, 170, 15):
+                draw.line((x, 146, x, 164), fill=rgba("#8c6b43"), width=2)
+
+    name = f"place_{family}_tier_{tier}_{variant}"
+    image.save(OUTPUT / f"{name}.png", optimize=True)
+    return image
+
+
 def write_manifest(files: list[Path]) -> None:
     assets = []
     for path in sorted(files):
@@ -407,8 +540,8 @@ def write_manifest(files: list[Path]) -> None:
             }
         )
     manifest = {
-        "schema": 1,
-        "title": "CitySim Golden Neighborhood World Atlas",
+        "schema": 2,
+        "title": "CitySim Living Strategy World Atlas",
         "authoring": "Original deterministic Pillow geometry and seeded raster texture",
         "source": "Native/CitySimNative/WorldArt/generate_world_assets.py",
         "external_sources": [],
@@ -448,6 +581,13 @@ def main() -> None:
         for variant in range(3):
             place_asset(family, variant)
             generated.append(OUTPUT / f"place_{family}_{variant}.png")
+    for family in ("commercial", "industrial"):
+        for tier in range(1, 4):
+            strategy_ground_asset(family, tier)
+            generated.append(OUTPUT / f"strategy_ground_{family}_tier_{tier}.png")
+            for variant in range(3):
+                strategy_place_asset(family, tier, variant)
+                generated.append(OUTPUT / f"place_{family}_tier_{tier}_{variant}.png")
     write_manifest(generated)
 
 

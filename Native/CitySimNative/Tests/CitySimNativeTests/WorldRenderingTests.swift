@@ -72,10 +72,123 @@ final class WorldRenderingTests: XCTestCase {
             let tile = CityTile(coordinate: coordinate, kind: kind, constructionProgress: 1)
             let first = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
             let second = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
-            let expectedName = "lot.place.\(family).variant.\(expectedVariant)"
+            let expectedName: String
+            if let identity = StrategyDistrictVisualIdentity(tile: tile) {
+                expectedName = "lot.place.\(family).density.\(identity.densityTier).variant.\(expectedVariant).\(identity.architecturalCue)"
+            } else {
+                expectedName = "lot.place.\(family).variant.\(expectedVariant)"
+            }
             XCTAssertTrue(descendantNames(in: first).contains(expectedName))
             XCTAssertTrue(descendantNames(in: second).contains(expectedName))
         }
+    }
+
+    @MainActor
+    func testStrategyDistrictsLoadAuthoredDensityArchitectureAndParcelSets() {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+
+        for (family, kind) in [("commercial", BuildingKind.commercial), ("industrial", .industrial)] {
+            for tier in 1...3 {
+                XCTAssertNotNil(catalog.texture(named: "strategy_ground_\(family)_tier_\(tier)"))
+                for variant in 0..<3 {
+                    XCTAssertNotNil(catalog.texture(named: "place_\(family)_tier_\(tier)_\(variant)"))
+                }
+
+                let tile = CityTile(
+                    coordinate: GridCoordinate(x: tier + family.count, y: tier * 2),
+                    kind: kind,
+                    level: tier,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+                let identity = StrategyDistrictVisualIdentity(tile: tile)
+                XCTAssertEqual(identity?.densityTier, tier)
+                XCTAssertEqual(identity?.family.rawValue, family)
+
+                let root = renderer.makeLot(
+                    for: tile,
+                    adjacentRoads: .south,
+                    detail: .block,
+                    reducedMotion: true
+                )
+                let names = descendantNames(in: root)
+                XCTAssertTrue(names.contains(
+                    "lot.place.\(family).density.\(tier).variant.\(identity!.variant).\(identity!.architecturalCue)"
+                ))
+                XCTAssertTrue(names.contains("lot.strategyGround.\(family).density.\(tier)"))
+                XCTAssertTrue(names.contains { $0.contains(identity!.architecturalCue) })
+                XCTAssertTrue(descendantLabels(in: root).isEmpty)
+            }
+        }
+    }
+
+    func testStrategyDistrictIdentityIsStableClampedAndTruthLimited() {
+        let coordinate = GridCoordinate(x: 14, y: 9)
+        let low = StrategyDistrictVisualIdentity(tile: CityTile(
+            coordinate: coordinate,
+            kind: .commercial,
+            level: 0
+        ))
+        let repeated = StrategyDistrictVisualIdentity(tile: CityTile(
+            coordinate: coordinate,
+            kind: .commercial,
+            level: 1,
+            occupancy: 999,
+            condition: 0.1
+        ))
+        XCTAssertEqual(low, repeated)
+        XCTAssertEqual(low?.densityTier, 1)
+        XCTAssertEqual(low?.architecturalCue, "main-street shop row")
+
+        let high = StrategyDistrictVisualIdentity(tile: CityTile(
+            coordinate: coordinate,
+            kind: .industrial,
+            level: 99
+        ))
+        XCTAssertEqual(high?.densityTier, 3)
+        XCTAssertEqual(high?.architecturalCue, "process campus and pipe gantries")
+        XCTAssertNil(StrategyDistrictVisualIdentity(tile: CityTile(
+            coordinate: coordinate,
+            kind: .residential
+        )))
+    }
+
+    @MainActor
+    func testStrategyAmbientLifeIsBoundedDistinctAndReduceMotionSafe() {
+        let renderer = AmbientLifeRenderer(style: WorldVisualStyle())
+        let commercial = CityTile(
+            coordinate: GridCoordinate(x: 6, y: 7),
+            kind: .commercial,
+            level: 2
+        )
+        let industrial = CityTile(
+            coordinate: GridCoordinate(x: 8, y: 7),
+            kind: .industrial,
+            level: 2
+        )
+
+        let animatedCommercial = renderer.makeStrategyDecoration(
+            for: commercial,
+            detail: .block,
+            reducedMotion: false
+        )!
+        let animatedIndustrial = renderer.makeStrategyDecoration(
+            for: industrial,
+            detail: .block,
+            reducedMotion: false
+        )!
+        let staticIndustrial = renderer.makeStrategyDecoration(
+            for: industrial,
+            detail: .block,
+            reducedMotion: true
+        )!
+
+        XCTAssertTrue(descendantNames(in: animatedCommercial).contains("lot.ambient.commercial.banner"))
+        XCTAssertTrue(descendantNames(in: animatedIndustrial).contains("lot.ambient.industrial.windsock"))
+        XCTAssertEqual(recursiveActiveActionCount(animatedCommercial), 1)
+        XCTAssertEqual(recursiveActiveActionCount(animatedIndustrial), 1)
+        XCTAssertEqual(recursiveActiveActionCount(staticIndustrial), 0)
     }
 
     @MainActor

@@ -228,7 +228,7 @@ final class TerrainRenderer {
     private func addStableTerrainBreakup(for tile: CityTile, to layer: SKNode) {
         let count: Int
         switch tile.kind {
-        case .empty: count = 3
+        case .empty: count = 2
         case .park: count = 2
         case .industrial, .powerPlant, .waterTower: count = 4
         default: count = 1
@@ -269,8 +269,8 @@ final class TerrainRenderer {
             return
         }
 
-        let flowerVariant = WorldVisualSeed.variant(count: 5, for: tile.coordinate, kind: tile.kind, salt: 0xF10)
-        guard flowerVariant <= 1 else { return }
+        let flowerVariant = WorldVisualSeed.variant(count: 37, for: tile.coordinate, kind: tile.kind, salt: 0xF10)
+        guard flowerVariant == 0 else { return }
         for index in 0..<4 {
             let flower = SKShapeNode(circleOfRadius: 1.1)
             flower.fillColor = index.isMultiple(of: 2)

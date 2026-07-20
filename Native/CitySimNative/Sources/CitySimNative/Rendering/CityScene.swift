@@ -96,6 +96,8 @@ final class CityScene: SKScene {
     private var tileHeight: CGFloat { style.tileHeight }
     private(set) var currentCameraDetailLevel: CameraDetailLevel
     private(set) var diagnosticsSnapshot = RendererDiagnosticsSnapshot()
+    var cameraScaleForTesting: CGFloat { cameraNode.xScale }
+    var cameraPositionForTesting: CGPoint { cameraNode.position }
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
@@ -780,7 +782,11 @@ final class CityScene: SKScene {
             y: points.reduce(0) { $0 + $1.y } / CGFloat(points.count) + 30
         )
         cameraNode.position = center
-        cameraNode.setScale(0.72)
+        // Open on the place the player can act on, while keeping road arms and
+        // several buildable blocks as honest expansion context. Compact uses a
+        // slightly wider lens so the command deck never crowds the neighborhood.
+        cameraNode.setScale(size.width <= 980 ? 0.54 : 0.42)
+        refreshForCameraChange()
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {

@@ -12,12 +12,12 @@
   "light_direction": "northwest key, southeast shadow",
   "palette": {
     "grass": [
-      "#5c8654",
-      "#5f8956",
-      "#598351",
-      "#618a57",
-      "#5b8450",
-      "#638b59"
+      "#5e8754",
+      "#5f8855",
+      "#5d8653",
+      "#608956",
+      "#5e8652",
+      "#608856"
     ],
     "grass_dark": "#3c6642",
     "grass_light": "#85a867",
@@ -364,7 +364,7 @@
     {
       "name": "terrain_grass_0",
       "file": "terrain_grass_0.png",
-      "sha256": "57f4c87b0ec0ffe319e3c2e84942a5804d1a004f701bc70c915285054daf7cfa",
+      "sha256": "b16f1d9667d08411eb18a6be0d4690e897c6add51078d6f4e505a123f251b160",
       "pixels": [
         144,
         72
@@ -373,7 +373,7 @@
     {
       "name": "terrain_grass_1",
       "file": "terrain_grass_1.png",
-      "sha256": "71ea8ba1ae0939077884719c7092ea2b0b86287ee943a6e62f018560d5d9f3e1",
+      "sha256": "52b4f6b3b64a8442105d91926ad4b813b942292ff19a1afebecc4e71cc8a0d79",
       "pixels": [
         144,
         72
@@ -382,7 +382,7 @@
     {
       "name": "terrain_grass_2",
       "file": "terrain_grass_2.png",
-      "sha256": "07e98c9617d5df5079d9a6812fca3f57c6130a283ae2a1fe4002602190bacaf3",
+      "sha256": "6f2e020bc50a6191aaba4a45dcf434d2d69ab96ed8b12763bf8a1371621f3247",
       "pixels": [
         144,
         72
@@ -391,7 +391,7 @@
     {
       "name": "terrain_grass_3",
       "file": "terrain_grass_3.png",
-      "sha256": "ff92c84b56d270bc658c8ff996973e057f65470db741b9079e45ea57fae7815d",
+      "sha256": "7281fb0bf49f592e3098eb2d13edffa1687b6258f373add4174de424b9831a18",
       "pixels": [
         144,
         72
@@ -400,7 +400,7 @@
     {
       "name": "terrain_grass_4",
       "file": "terrain_grass_4.png",
-      "sha256": "73a96e1eed9031ea28fd3e61613d2e1044bc66fc72aa195244fb10d84cd5fcc2",
+      "sha256": "cf44a481121360813e744fcceb663f8979ca1de2e95659a0c17edfe4956fa7a1",
       "pixels": [
         144,
         72
@@ -409,7 +409,7 @@
     {
       "name": "terrain_grass_5",
       "file": "terrain_grass_5.png",
-      "sha256": "15766b0c4a0fccaf41112f5db5c943b2776fa7dc3afbdc5367a19427d961ef5b",
+      "sha256": "57d99878716b20f944c4f6e2080cab5adb1cbc5a7aeb958ef8d6850dfd03a5d0",
       "pixels": [
         144,
         72

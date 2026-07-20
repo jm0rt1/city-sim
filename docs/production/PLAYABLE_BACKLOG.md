@@ -23,6 +23,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Shared-model/save/store contract change without approval, non-deterministic outcome, or unrelated UI/rendering edits.
 - **Accepted integration:** `6736c67666c1b4854e6a6f65eb7af292d161efb2`; completion record at `docs/production/completed/PLAY-010.gameplay-loop.md`.
 
+### [ ] PLAY-011: Make the city react to the player's strategy
+
+- **Player outcome:** Commercial stewardship and industrial expansion produce different, readable city stories after the opening decision, including one authored opportunity, one warned setback, a recoverable response, and a clear next-stage payoff rather than a passive march to the Town Charter.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** `SIM`, `ECO`, `POP`, `GOV`, `ENV`, `UX` first-wave rows.
+- **Dependencies:** Accepted PLAY-010; consumes existing `CityMessage`, objective, simulation, and analytics surfaces unless integration separately approves a smaller additive gameplay field.
+- **In scope:** Deterministic strategy-sensitive incidents, causal consequences, recovery choices, post-choice pacing, analytics copy inputs, balance fixtures, and staged evidence.
+- **Out of scope:** New UI components, renderer truth, persistence format, input commands, package/build scripts, general event framework.
+- **Acceptance:** Two opening strategies diverge in at least three meaningful dimensions; each receives truthful advance warning, one setback, and at least two legitimate recovery responses; no random unavoidable failure; effects are visible through existing player surfaces; both remain viable but non-identical through the 20-minute horizon.
+- **Stop conditions:** New save/public-store/renderer contract, title-routed messages becoming domain authority, nondeterministic fixtures, or balance changes that invalidate the accepted PLAY-010 recovery path.
+
 ### [ ] PLAY-020: Make consequences readable in the city
 
 - **Player outcome:** Growth, construction, utility trouble, prosperity, pollution, selection, decline, and recovery are legible in the world without consulting only numbers.
@@ -39,7 +50,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Player outcome:** Every non-spatial game action has one discoverable command, menu/shortcut route, contextual availability, accessible label, and consistent focus behavior.
 - **Owning lane:** UI and input.
 - **Requirement IDs:** `UX`, `AUD`, `TEC` first-wave rows.
-- **Dependencies:** Accepted baseline; integration approval for the public command/store contract; PLAY-050 journey inventory.
+- **Dependencies:** Accepted baseline; approved `CONTRACT-002`; PLAY-050 defect and journey inventory.
 - **In scope:** Typed command registry, menus, shortcuts, command palette/help, focus rules, accessibility semantics, compact layout, UI/input tests and proof.
 - **Out of scope:** Simulation rules, renderer truth, persistence architecture. Spatial grid navigation must be proposed separately if it changes interaction architecture.
 - **Acceptance:** 100% inventory coverage for declared non-spatial actions; no collisions or focus traps; pointer and shortcut routes dispatch identical intents; default and 900 x 600 layouts remain usable; full tests and live keyboard evidence.
@@ -50,7 +61,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Player outcome:** A city can be saved, resumed, replayed, diagnosed, and recovered without losing or silently changing authoritative state.
 - **Owning lane:** Simulation platform.
 - **Requirement IDs:** `SIM`, `TEC`, `REL` first-wave rows.
-- **Dependencies:** Accepted baseline; PLAY-010 fixture/command sequence; integration decisions on command, hash, snapshot, save-v0, and undo scope.
+- **Dependencies:** Accepted baseline; PLAY-010 fixture/command sequence; approved `CONTRACT-003` and `CONTRACT-004`.
 - **In scope:** Typed command boundary, deterministic checkpoints, hashes, atomic versioned saves, migration/recovery, immutable presentation snapshots, diagnostics, and focused performance evidence.
 - **Out of scope:** Balance, renderer art, HUD redesign.
 - **Acceptance:** Equivalent logical outcomes across speed settings; repeated fixture hashes; save/load/undo/recovery invariants; corrupt-write fallback preserving originals; measured vertical-slice budgets; full suite and retained fixtures.

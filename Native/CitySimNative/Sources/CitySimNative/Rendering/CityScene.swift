@@ -96,6 +96,8 @@ final class CityScene: SKScene {
     private var tileHeight: CGFloat { style.tileHeight }
     private(set) var currentCameraDetailLevel: CameraDetailLevel
     private(set) var diagnosticsSnapshot = RendererDiagnosticsSnapshot()
+    var cameraScaleForTesting: CGFloat { cameraNode.xScale }
+    var cameraPositionForTesting: CGPoint { cameraNode.position }
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
@@ -299,7 +301,7 @@ final class CityScene: SKScene {
     }
 
     private func zoomCamera(by factor: CGFloat) {
-        let scale = min(2.4, max(0.42, cameraNode.xScale * factor))
+        let scale = min(2.4, max(0.30, cameraNode.xScale * factor))
         cameraNode.setScale(scale)
         refreshForCameraChange()
     }
@@ -428,6 +430,7 @@ final class CityScene: SKScene {
         default:
             contentLayer.addChild(lotRenderer.makeLot(
                 for: tile,
+                adjacentRoads: RoadConnectionMask.resolving(at: tile.coordinate, in: state),
                 detail: currentCameraDetailLevel,
                 reducedMotion: reducedMotion
             ))
@@ -453,9 +456,9 @@ final class CityScene: SKScene {
             kind: tile.kind,
             lotPresentation: lotPresentation,
             reducedMotion: lotPresentation == nil ? false : reducedMotion,
-            roadConnections: tile.kind == .road
-                ? RoadConnectionMask.resolving(at: tile.coordinate, in: state)
-                : [],
+            roadConnections: tile.kind == .empty
+                ? []
+                : RoadConnectionMask.resolving(at: tile.coordinate, in: state),
             gridWidth: state.gridWidth,
             gridHeight: state.gridHeight
         )
@@ -496,21 +499,25 @@ final class CityScene: SKScene {
         return red << 24 | green << 16 | blue << 8 | alpha
     }
 
-    private func refreshForCameraChange() {
+    private func refreshForCameraChange(preservingUpdateDiagnostics: Bool = false) {
         let detail = style.detailLevel(cameraScale: cameraNode.xScale)
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
         for record in tileRecords.values {
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
-        diagnosticsSnapshot = RendererDiagnosticsSnapshot(
-            totalTileCount: tileRecords.count,
-            reusedTileCount: tileRecords.count,
-            nodeCount: diagnosticsSnapshot.nodeCount,
-            drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
-            activeActionCount: diagnosticsSnapshot.activeActionCount,
-            detailLevel: detail
-        )
+        if preservingUpdateDiagnostics {
+            diagnosticsSnapshot.detailLevel = detail
+        } else {
+            diagnosticsSnapshot = RendererDiagnosticsSnapshot(
+                totalTileCount: tileRecords.count,
+                reusedTileCount: tileRecords.count,
+                nodeCount: diagnosticsSnapshot.nodeCount,
+                drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
+                activeActionCount: diagnosticsSnapshot.activeActionCount,
+                detailLevel: detail
+            )
+        }
         updateSelection(renderedSelection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
     }
@@ -779,7 +786,19 @@ final class CityScene: SKScene {
             y: points.reduce(0) { $0 + $1.y } / CGFloat(points.count) + 30
         )
         cameraNode.position = center
-        cameraNode.setScale(0.72)
+        // Open on the place the player can act on, while keeping road arms and
+        // several buildable blocks as honest expansion context. Compact uses a
+        // slightly wider lens so the command deck never crowds the neighborhood.
+        let defaultScale: CGFloat = size.width <= 980 ? 0.46 : 0.35
+#if DEBUG
+        let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
+            .flatMap(Double.init)
+            .map { CGFloat($0) }
+        cameraNode.setScale(proofScale.map { min(2.2, max(0.35, $0)) } ?? defaultScale)
+#else
+        cameraNode.setScale(defaultScale)
+#endif
+        refreshForCameraChange(preservingUpdateDiagnostics: true)
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {

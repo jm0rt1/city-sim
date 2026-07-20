@@ -53,7 +53,7 @@ final class LotLifecycleRenderer {
         }
 
         if stage != .complete {
-            addConstructionBadge(stage: stage, progress: tile.constructionProgress, to: neighborhood)
+            addConstructionProgress(stage: stage, progress: tile.constructionProgress, to: neighborhood)
             addSafetyCones(to: neighborhood)
             addConstructionMotion(
                 for: tile,
@@ -287,17 +287,13 @@ final class LotLifecycleRenderer {
         node.addChild(crane)
     }
 
-    private func addConstructionBadge(stage: LotConstructionStage, progress rawProgress: Double, to node: SKNode) {
+    private func addConstructionProgress(stage: LotConstructionStage, progress rawProgress: Double, to node: SKNode) {
         let progress = min(1, max(0, rawProgress))
-        let badge = lifecycleBadge(stage.label, color: constructionColor, width: 58)
-        badge.position = CGPoint(x: 0, y: 67)
-        badge.name = "lot.construction.stageBadge"
-        node.addChild(badge)
-
         let track = SKShapeNode(rectOf: CGSize(width: 44, height: 5), cornerRadius: 2.5)
         track.fillColor = NSColor.black.withAlphaComponent(0.64)
         track.strokeColor = NSColor.white.withAlphaComponent(0.28)
         track.position = CGPoint(x: 0, y: -12)
+        track.name = "lot.construction.progressTrack.\(stage.label.lowercased())"
         node.addChild(track)
 
         let width = max(3, 42 * progress)
@@ -406,12 +402,10 @@ final class LotLifecycleRenderer {
             addMaintainedFrontage(to: block)
         case .weathered:
             addStressSilhouette(distressed: false, to: city)
-            addStressBadge(text: "STRESS", color: .systemOrange, to: neighborhood)
             addPatchwork(for: tile, distressed: false, reducedMotion: reducedMotion, to: neighborhood)
             addDryPlanters(to: block)
         case .distressed:
             addStressSilhouette(distressed: true, to: city)
-            addStressBadge(text: "DECLINE", color: .systemRed, to: neighborhood)
             addPatchwork(for: tile, distressed: true, reducedMotion: reducedMotion, to: neighborhood)
             addBoarding(to: neighborhood)
             addRubble(to: block)
@@ -441,12 +435,14 @@ final class LotLifecycleRenderer {
     private func addStressSilhouette(distressed: Bool, to node: SKNode) {
         let layer = SKNode()
         layer.name = "lot.lifecycle.condition.\(distressed ? "distressed" : "weathered")"
-        let color = distressed ? NSColor.systemRed : NSColor.systemOrange
+        let color = distressed
+            ? NSColor(calibratedRed: 0.25, green: 0.18, blue: 0.14, alpha: 1)
+            : NSColor(calibratedRed: 0.48, green: 0.36, blue: 0.23, alpha: 1)
 
         let wash = SKShapeNode(path: style.diamondPath(width: 65, height: 33))
         wash.fillColor = NSColor.black.withAlphaComponent(distressed ? 0.28 : 0.15)
-        wash.strokeColor = color.withAlphaComponent(0.92)
-        wash.lineWidth = distressed ? 2.4 : 1.5
+        wash.strokeColor = NSColor.black.withAlphaComponent(distressed ? 0.42 : 0.24)
+        wash.lineWidth = distressed ? 1.7 : 1.1
         layer.addChild(wash)
 
         let sag = SKShapeNode(path: style.polygonPath([
@@ -475,13 +471,6 @@ final class LotLifecycleRenderer {
             layer.addChild(crackNode)
         }
         node.addChild(layer)
-    }
-
-    private func addStressBadge(text: String, color: NSColor, to node: SKNode) {
-        let badge = lifecycleBadge(text, color: color, width: 58)
-        badge.position = CGPoint(x: 0, y: 69)
-        badge.name = "lot.condition.badge"
-        node.addChild(badge)
     }
 
     private func addPatchwork(
@@ -618,12 +607,25 @@ final class LotLifecycleRenderer {
             )
         }
         growth.addChild(chevrons)
+
         city.addChild(growth)
 
-        let badge = lifecycleBadge("HEALTHY GROWTH", color: .systemTeal, width: 82)
-        badge.position = CGPoint(x: 0, y: 72)
-        badge.name = "lot.growth.badge"
-        neighborhood.addChild(badge)
+        let freshFacade = SKNode()
+        freshFacade.name = "lot.growth.freshFacade"
+        for index in 0..<min(4, tier + 1) {
+            let window = SKShapeNode(rectOf: CGSize(width: 6, height: 8), cornerRadius: 0.8)
+            window.fillColor = style.palette.warmWindow.withAlphaComponent(0.92)
+            window.strokeColor = NSColor.white.withAlphaComponent(0.32)
+            window.lineWidth = 0.7
+            window.position = CGPoint(x: CGFloat(index * 9 - 14), y: 21)
+            freshFacade.addChild(window)
+        }
+        let sill = SKShapeNode(rectOf: CGSize(width: 38, height: 1.5), cornerRadius: 0.5)
+        sill.fillColor = style.palette.concreteLight
+        sill.strokeColor = .clear
+        sill.position = CGPoint(x: 0, y: 15)
+        freshFacade.addChild(sill)
+        neighborhood.addChild(freshFacade)
 
         let pennants = SKNode()
         pennants.name = "lot.growth.pennants"
@@ -643,22 +645,6 @@ final class LotLifecycleRenderer {
             pennants.addChild(flag)
         }
         block.addChild(pennants)
-    }
-
-    private func lifecycleBadge(_ text: String, color: NSColor, width: CGFloat) -> SKNode {
-        let panel = SKShapeNode(rectOf: CGSize(width: width, height: 16), cornerRadius: 5)
-        panel.fillColor = NSColor(calibratedWhite: 0.045, alpha: 0.94)
-        panel.strokeColor = color.withAlphaComponent(0.96)
-        panel.lineWidth = 1.2
-
-        let label = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
-        label.text = text
-        label.fontSize = 7
-        label.fontColor = .white
-        label.verticalAlignmentMode = .center
-        label.position.y = 0.5
-        panel.addChild(label)
-        return panel
     }
 
     private func runDeterministicLoop(

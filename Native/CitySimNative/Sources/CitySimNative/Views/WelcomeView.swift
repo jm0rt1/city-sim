@@ -30,7 +30,7 @@ struct WelcomeView: View {
                     Label("Space pauses · 1–3 set speed · ⌘Z undoes", systemImage: "keyboard")
                         .font(.callout).foregroundStyle(.secondary)
                     Spacer()
-                    Button("Start Building") { continueAction() }
+                    Button("Start Building") { dismissWelcome() }
                         .buttonStyle(.borderedProminent).controlSize(.large).tint(GameTheme.accent)
                         .keyboardShortcut(.defaultAction)
                         .accessibilityIdentifier("welcome.start-building")
@@ -49,10 +49,15 @@ struct WelcomeView: View {
         .focused($modalHasKeyboardFocus)
         .onAppear { modalHasKeyboardFocus = true }
         .onKeyPress(.return) {
-            continueAction()
+            dismissWelcome()
             return .handled
         }
         .accessibilityIdentifier("welcome.blocking-modal")
+    }
+
+    private func dismissWelcome() {
+        modalHasKeyboardFocus = false
+        continueAction()
     }
 
     private func tip(_ symbol: String, _ title: String, _ detail: String) -> some View {

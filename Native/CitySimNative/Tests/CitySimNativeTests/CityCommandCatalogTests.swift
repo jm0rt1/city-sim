@@ -1,4 +1,5 @@
 import AppKit
+import SpriteKit
 import SwiftUI
 import XCTest
 @testable import CitySimNative
@@ -145,6 +146,31 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .bulldoze)
         XCTAssertTrue(store.perform(.openCommandGuide))
         XCTAssertTrue(store.showCommandGuide)
+    }
+
+    @MainActor
+    func testSceneFocusRequestHandsFirstResponderToMapExactlyOnce() {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let request = CitySceneFocusRequest.initial.next()
+        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let priorResponder = NSTextField(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let contentView = NSView(frame: mapView.frame)
+        let window = NSWindow(
+            contentRect: mapView.frame,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        contentView.addSubview(mapView)
+        contentView.addSubview(priorResponder)
+        window.contentView = contentView
+
+        XCTAssertTrue(window.makeFirstResponder(priorResponder))
+        XCTAssertTrue(coordinator.fulfill(request, in: mapView))
+        XCTAssertTrue(window.firstResponder === mapView)
+        XCTAssertEqual(coordinator.fulfilledFocusRequest, request)
+        XCTAssertFalse(coordinator.fulfill(request, in: mapView), "A fulfilled request must not churn first responder")
     }
 
     @MainActor

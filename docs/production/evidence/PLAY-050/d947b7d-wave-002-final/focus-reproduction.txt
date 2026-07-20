@@ -1,0 +1,24 @@
+Candidate: d947b7d660d5778dcf34c165e750db293e060236
+Bundle: com.jfmortensen.citysim.playtest-quality.wf967be0ab5b4
+
+Default, after Return dismissal and Space,2,B,Command-/,Escape:
+  Day 10
+  Pause simulation: Not selected
+  Set simulation speed to 1x: Selected
+  Set simulation speed to 2x: Not selected
+  Inspect mode: Selected
+  Command guide: opened by Command-/ and closed by Escape
+
+Compact, after pointer dismissal and repeated Space without map click:
+  Day 19
+  Pause simulation: Not selected
+  Set simulation speed to 1x: Selected
+  Focus before controlled comparison: standard app window / command-center controls
+
+Controlled comparison after clicking SKView once and pressing Space:
+  Day 19
+  Pause simulation: Selected
+  Set simulation speed to 1x: Not selected
+  Focus: SKView
+
+The scoped unmodified gameplay route works only after manual map focus; Welcome dismissal does not provide that focus.

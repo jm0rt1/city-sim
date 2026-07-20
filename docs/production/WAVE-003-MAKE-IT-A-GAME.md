@@ -1,6 +1,6 @@
 # Wave 003 — Make It Feel Like a Game
 
-**Status:** Dispatched from accepted Wave 002 publication `74b694d` on July 20, 2026
+**Status:** Active; PLAY-041 accepted on `36774db`, downstream adoption in progress
 
 **Date:** July 20, 2026
 
@@ -52,7 +52,7 @@ Wave 002 is accepted, `master` is pushed, the baseline record is updated, and ev
 
 ## Dispatch gates
 
-- PLAY-041 begins first and owns any proposed spatial-consequence contract. It must return the smallest additive contract to integration for approval before changing a shared public surface.
+- PLAY-041 is accepted on `36774db`; its additive derived-only spatial-consequence contract is now the sole truth consumed by renderer and UI adoption.
 - PLAY-012 may begin immediately on contract-free pacing, authored decisions, balance, fixtures, and causal evidence. It must consume approved spatial truth rather than define it.
 - PLAY-022 may begin authored art-direction studies and renderer-local prototypes, but may not represent service, pollution, prosperity, strain, or recovery as fact until PLAY-041 truth is approved and integrated.
 - PLAY-032 may begin journey mapping, remedy design, and keyboard-spatial-navigation proposals. Shared commands, store surfaces, focus architecture, or snapshot fields require integration approval.

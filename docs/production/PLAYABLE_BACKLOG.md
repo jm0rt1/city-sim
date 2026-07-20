@@ -112,7 +112,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** First meaningful decision by 02:00; at least three consequential decisions; feedback within 15 seconds of relevant simulation time; commercial and industrial stories remain viable and mechanically distinct; recovery before minute 18; focused/full tests plus a staged no-coaching session.
 - **Stop conditions:** Passive fixture-only success, nondeterminism, renderer/UI edits, or a shared contract change without approval.
 
-### [ ] PLAY-041: Publish spatial consequence truth
+### [x] PLAY-041: Publish spatial consequence truth
 
 - **Player outcome:** Location-specific service, pollution, prosperity/strain, recovery, and event identity are deterministic, inspectable, persistent where required, and safe for renderer/UI consumption.
 - **Owning lane:** Simulation platform.
@@ -121,6 +121,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Gameplay balance, renderer art, HUD layout, and invented player-facing copy.
 - **Acceptance:** One authoritative spatial truth source; stable identity; exact undo/replay/save behavior; frozen fixtures and performance evidence; documented compatibility and migration risk; integration-approved contract before consumers change.
 - **Stop conditions:** Duplicate truth, implicit schema migration, renderer-oriented facts in persistence without need, or unapproved public surface changes.
+- **Accepted integration:** `36774db97e5dd017f1a4c9ecd0a4c288dd09c387`; completion record at `docs/production/completed/PLAY-041.simulation-platform.md`.
 
 ### [ ] PLAY-022: Make strategy reshape the living city
 

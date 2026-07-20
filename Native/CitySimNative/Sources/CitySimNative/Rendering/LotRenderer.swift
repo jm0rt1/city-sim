@@ -34,29 +34,27 @@ final class LotRenderer {
         addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, to: cityLayer)
 
         if presentation.construction == .complete || presentation.construction == .finishing {
-            switch tile.kind {
-            case .residential:
-                addResidential(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .commercial:
-                addCommercial(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .industrial:
-                addIndustrial(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .park:
-                addPark(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .cityHall:
-                addCityHall(tile, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .powerPlant:
-                addPowerPlant(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .waterTower:
-                addWaterTower(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .fireStation:
-                addFireStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .policeStation:
-                addPoliceStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .school:
-                addSchool(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-            case .empty, .road:
-                break
+            if addAuthoredPlaceFamily(
+                tile,
+                variant: variant,
+                city: cityLayer,
+                neighborhood: neighborhoodLayer,
+                block: blockLayer
+            ) == false {
+                switch tile.kind {
+                case .powerPlant:
+                    addPowerPlant(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+                case .waterTower:
+                    addWaterTower(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+                case .fireStation:
+                    addFireStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+                case .policeStation:
+                    addPoliceStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+                case .school:
+                    addSchool(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
+                case .residential, .commercial, .industrial, .park, .cityHall, .empty, .road:
+                    break
+                }
             }
         }
 
@@ -82,6 +80,61 @@ final class LotRenderer {
             ))
         }
         return root
+    }
+
+    @discardableResult
+    private func addAuthoredPlaceFamily(
+        _ tile: CityTile,
+        variant: Int,
+        city: SKNode,
+        neighborhood: SKNode,
+        block: SKNode
+    ) -> Bool {
+        let family: String
+        switch tile.kind {
+        case .residential: family = "residential"
+        case .commercial: family = "commercial"
+        case .industrial: family = "industrial"
+        case .park: family = "park"
+        case .cityHall: family = "civic"
+        default: return false
+        }
+
+        let levelLift = CGFloat(max(0, tile.level - 1)) * (family == "park" ? 0 : 8)
+        guard let sprite = assets.sprite(
+            named: "place_\(family)_\(variant)",
+            size: CGSize(width: 80, height: 96 + levelLift),
+            anchorPoint: CGPoint(x: 0.5, y: 28.0 / 192.0)
+        ) else { return false }
+        sprite.name = "lot.place.\(family).variant.\(variant)"
+        sprite.zPosition = 5
+        city.addChild(sprite)
+
+        switch tile.kind {
+        case .residential:
+            addTree(at: CGPoint(x: -27, y: -2), scale: 0.72, variant: variant, to: neighborhood)
+            addHedge(at: CGPoint(x: 14, y: -6), count: 3, to: block)
+            addFence(from: CGPoint(x: -28, y: -7), to: CGPoint(x: -10, y: -15), to: block)
+        case .commercial:
+            addPlanters(at: [CGPoint(x: -27, y: -3), CGPoint(x: 26, y: 2)], to: neighborhood)
+            addLamp(at: CGPoint(x: 20, y: -4), to: block)
+            addBench(at: CGPoint(x: -17, y: -7), rotation: -0.18, to: block)
+        case .industrial:
+            addCrates(at: CGPoint(x: -28, y: -7), to: neighborhood)
+            addPipeBrace(at: CGPoint(x: 20, y: -2), to: block)
+            addBollards(at: CGPoint(x: -3, y: -9), count: 4, to: block)
+        case .park:
+            addBench(at: CGPoint(x: 2, y: -7), rotation: -0.18, to: neighborhood)
+            addLamp(at: CGPoint(x: -14, y: -5), to: block)
+            addFlowerBed(at: CGPoint(x: 18, y: -2), to: block)
+        case .cityHall:
+            addSteps(width: 38, at: CGPoint(x: 0, y: -7), to: neighborhood)
+            addFlagpole(at: CGPoint(x: 25, y: 3), to: block)
+            addPlanters(at: [CGPoint(x: -25, y: -3), CGPoint(x: 24, y: 1)], to: block)
+        case .empty, .road, .powerPlant, .waterTower, .fireStation, .policeStation, .school:
+            break
+        }
+        return true
     }
 
     private func addAuthoredFrontage(

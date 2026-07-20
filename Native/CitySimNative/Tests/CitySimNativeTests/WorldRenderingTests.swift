@@ -51,6 +51,33 @@ final class WorldRenderingTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testFiveAuthoredPlaceFamiliesLoadThreeStableSeededVariants() {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let families: [(String, BuildingKind)] = [
+            ("residential", .residential),
+            ("commercial", .commercial),
+            ("industrial", .industrial),
+            ("park", .park),
+            ("civic", .cityHall)
+        ]
+
+        for (family, kind) in families {
+            for variant in 0..<3 {
+                XCTAssertNotNil(catalog.texture(named: "place_\(family)_\(variant)"))
+            }
+            let coordinate = GridCoordinate(x: family.count, y: kind.rawValue.count)
+            let expectedVariant = WorldVisualSeed.variant(count: 3, for: coordinate, kind: kind)
+            let tile = CityTile(coordinate: coordinate, kind: kind, constructionProgress: 1)
+            let first = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
+            let second = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
+            let expectedName = "lot.place.\(family).variant.\(expectedVariant)"
+            XCTAssertTrue(descendantNames(in: first).contains(expectedName))
+            XCTAssertTrue(descendantNames(in: second).contains(expectedName))
+        }
+    }
+
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {
         var tile = CityTile(
             coordinate: GridCoordinate(x: 4, y: 7),

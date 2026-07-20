@@ -197,7 +197,9 @@ final class RoadRenderer {
 
         if let road = assets.sprite(
             named: String(format: "road_mask_%02d", connections.rawValue),
-            size: CGSize(width: style.tileWidth, height: style.tileHeight)
+            // Slight atlas overlap keeps adjacent road materials continuous
+            // across per-tile depth layers without changing hit geometry.
+            size: CGSize(width: style.tileWidth + 6, height: style.tileHeight + 3)
         ) {
             road.zPosition = 2
             cityLayer.addChild(road)

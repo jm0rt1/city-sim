@@ -14,6 +14,7 @@ from PIL import Image, ImageDraw, ImageFilter
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "Sources" / "CitySimNative" / "Resources" / "WorldAssets.atlas"
 TILE_SIZE = (144, 72)
+BUILDING_SIZE = (160, 192)
 DIAMOND = [(72, 1), (143, 36), (72, 71), (1, 36)]
 
 PALETTE = {
@@ -135,18 +136,19 @@ def road_asset(mask_value: int) -> Image.Image:
             draw.ellipse((72 - radius, 36 - radius // 2, 72 + radius, 36 + radius // 2), fill=rgba(color))
     else:
         for bit in edges:
-            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["sidewalk"]), width=50)
+            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["sidewalk"]), width=42)
         for bit in edges:
-            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["curb"]), width=42)
+            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["curb"]), width=36)
         for bit in edges:
-            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["asphalt"]), width=34)
+            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["asphalt"]), width=30)
 
-        for radius, color in [
-            (25, PALETTE["sidewalk"]),
-            (21, PALETTE["curb"]),
-            (17, PALETTE["asphalt"]),
-        ]:
-            draw.ellipse((72 - radius, 36 - radius // 2, 72 + radius, 36 + radius // 2), fill=rgba(color))
+        if len(edges) >= 3:
+            for radius, color in [
+                (21, PALETTE["sidewalk"]),
+                (18, PALETTE["curb"]),
+                (15, PALETTE["asphalt"]),
+            ]:
+                draw.ellipse((72 - radius, 36 - radius // 2, 72 + radius, 36 + radius // 2), fill=rgba(color))
 
         for bit in edges:
             dashed_line(draw, center, ROAD_ENDPOINTS[bit], rgba(PALETTE["lane"], 225), 3)
@@ -213,6 +215,186 @@ def frontage_asset(family: str) -> Image.Image:
     return image
 
 
+def iso_prism(
+    draw: ImageDraw.ImageDraw,
+    center_x: int,
+    ground_y: int,
+    width: int,
+    depth: int,
+    height: int,
+    base: str,
+    roof: str,
+) -> dict[str, tuple[int, int]]:
+    roof_y = ground_y - height
+    n = (center_x, roof_y - depth // 2)
+    e = (center_x + width // 2, roof_y)
+    s = (center_x, roof_y + depth // 2)
+    w = (center_x - width // 2, roof_y)
+    be = (e[0], e[1] + height)
+    bs = (s[0], s[1] + height)
+    bw = (w[0], w[1] + height)
+    base_rgb = rgba(base)
+    left = tuple(max(0, int(channel * 0.82)) for channel in base_rgb[:3]) + (255,)
+    right = tuple(max(0, int(channel * 0.64)) for channel in base_rgb[:3]) + (255,)
+    outline = rgba("#283536", 220)
+    draw.polygon([w, s, bs, bw], fill=left, outline=outline)
+    draw.polygon([s, e, be, bs], fill=right, outline=outline)
+    draw.polygon([n, e, s, w], fill=rgba(roof), outline=outline)
+    draw.line([n, e, s, w, n], fill=rgba("#f4e4bd", 64), width=2)
+    return {"n": n, "e": e, "s": s, "w": w, "be": be, "bs": bs, "bw": bw}
+
+
+def cast_shadow(layer: Image.Image, center_x: int, ground_y: int, width: int, depth: int, reach: int = 18) -> None:
+    draw = ImageDraw.Draw(layer, "RGBA")
+    draw.polygon(
+        [
+            (center_x - width // 2 + 8, ground_y - depth // 2 + 4),
+            (center_x + width // 2 + reach, ground_y + 3),
+            (center_x + reach, ground_y + depth // 2 + 12),
+            (center_x - width // 2, ground_y + 3),
+        ],
+        fill=(19, 30, 29, 96),
+    )
+
+
+def windows(draw: ImageDraw.ImageDraw, x: int, y: int, columns: int, rows: int, spacing_x: int, spacing_y: int, color: str) -> None:
+    for row in range(rows):
+        for column in range(columns):
+            left = x + column * spacing_x
+            top = y + row * spacing_y
+            draw.rounded_rectangle((left, top, left + 7, top + 8), radius=1, fill=rgba(color, 228), outline=rgba("#fff5d6", 90), width=1)
+
+
+def tree(draw: ImageDraw.ImageDraw, x: int, y: int, scale: float, variant: int) -> None:
+    trunk = rgba("#614832")
+    greens = ["#3f774a", "#4f8750", "#67975a"]
+    draw.rounded_rectangle((x - 2, y - int(16 * scale), x + 2, y), radius=1, fill=trunk)
+    radius_x = int(12 * scale)
+    radius_y = int(15 * scale)
+    draw.ellipse((x - radius_x, y - int(27 * scale), x + radius_x, y - int(27 * scale) + radius_y), fill=rgba(greens[variant % 3]), outline=rgba("#284b35", 220), width=2)
+    draw.ellipse((x - radius_x // 2 - 4, y - int(25 * scale), x + 1, y - int(18 * scale)), fill=rgba("#afc977", 78))
+
+
+def place_asset(family: str, variant: int) -> Image.Image:
+    image = Image.new("RGBA", BUILDING_SIZE, (0, 0, 0, 0))
+    shadow = Image.new("RGBA", BUILDING_SIZE, (0, 0, 0, 0))
+    cast_shadow(shadow, 80, 164, 72, 30, 21)
+    shadow = shadow.filter(ImageFilter.GaussianBlur(3.0))
+    image = Image.alpha_composite(image, shadow)
+    draw = ImageDraw.Draw(image, "RGBA")
+
+    if family == "residential":
+        bases = ["#d8a45f", "#d9c28a", "#9db77e"]
+        if variant == 0:
+            iso_prism(draw, 80, 160, 72, 32, 58, bases[0], "#954b36")
+            draw.polygon([(47, 101), (80, 80), (113, 101), (80, 116)], fill=rgba("#a6543d"), outline=rgba("#4c3430"))
+            windows(draw, 54, 116, 3, 2, 20, 17, "#f2d17d")
+            draw.rounded_rectangle((76, 139, 88, 160), radius=2, fill=rgba("#5e4438"))
+            tree(draw, 36, 161, 0.92, variant)
+        elif variant == 1:
+            for index, x in enumerate((58, 83, 108)):
+                iso_prism(draw, x, 161 - index * 2, 36, 22, 54 + index * 5, ["#d4b377", "#c98162", "#e0caa1"][index], "#51494a")
+                windows(draw, x - 13, 121 - index * 5, 2, 2, 13, 17, "#f4d58b")
+            draw.line((43, 164, 125, 164), fill=rgba("#ede2c2", 170), width=4)
+        else:
+            iso_prism(draw, 80, 162, 72, 32, 90, bases[2], "#3c4b4c")
+            windows(draw, 50, 86, 4, 4, 17, 17, "#f0d18a")
+            for y in (112, 132):
+                draw.line((48, y, 108, y), fill=rgba("#efe6d1", 180), width=3)
+            tree(draw, 34, 163, 0.78, variant)
+        draw.ellipse((113, 151, 138, 166), fill=rgba("#4e854c"), outline=rgba("#2b5536"), width=2)
+
+    elif family == "commercial":
+        if variant == 0:
+            iso_prism(draw, 80, 163, 86, 34, 64, "#b5654f", "#454b4d")
+            draw.rounded_rectangle((46, 135, 116, 158), radius=3, fill=rgba("#4d8d91"), outline=rgba("#d7f2e7", 160), width=2)
+            for x in (58, 76, 94):
+                draw.line((x, 137, x, 157), fill=rgba("#253b41", 170), width=2)
+            draw.polygon([(43, 132), (120, 132), (113, 143), (50, 143)], fill=rgba("#d09b4e"), outline=rgba("#604334"))
+            windows(draw, 50, 108, 4, 1, 18, 14, "#9ed4cf")
+        elif variant == 1:
+            iso_prism(draw, 80, 163, 65, 30, 112, "#5b8587", "#8eb9b0")
+            for y in range(66, 145, 16):
+                draw.rectangle((54, y, 110, y + 7), fill=rgba("#8fc8ca", 210), outline=rgba("#d7f3ea", 100), width=1)
+            draw.rectangle((70, 145, 91, 162), fill=rgba("#314a4f"))
+        else:
+            iso_prism(draw, 80, 163, 92, 38, 50, "#d4a44e", "#744738")
+            draw.polygon([(40, 128), (119, 128), (110, 143), (49, 143)], fill=rgba("#e9c968"), outline=rgba("#5a4034"))
+            draw.rounded_rectangle((48, 142, 112, 160), radius=2, fill=rgba("#5d9390"), outline=rgba("#d8eee4", 150), width=2)
+            draw.line((80, 142, 80, 160), fill=rgba("#30464a"), width=2)
+        for x in (32, 128):
+            draw.ellipse((x - 7, 151, x + 7, 164), fill=rgba("#4f824d"), outline=rgba("#31583a"), width=2)
+
+    elif family == "industrial":
+        if variant == 0:
+            iso_prism(draw, 76, 164, 96, 38, 56, "#9c6448", "#53595a")
+            for x in (42, 64, 86, 108):
+                draw.polygon([(x, 108), (x + 10, 96), (x + 20, 108)], fill=rgba("#9da19b"), outline=rgba("#3b4142"))
+            draw.rectangle((51, 139, 73, 163), fill=rgba("#3c4445"), outline=rgba("#c1bba6", 130), width=2)
+            draw.rectangle((84, 139, 106, 163), fill=rgba("#3c4445"), outline=rgba("#c1bba6", 130), width=2)
+            draw.polygon([(119, 122), (132, 122), (128, 64), (122, 64)], fill=rgba("#6f4537"), outline=rgba("#30393a"))
+            draw.rectangle((120, 75, 131, 82), fill=rgba("#d39b49"))
+        elif variant == 1:
+            iso_prism(draw, 72, 164, 94, 38, 48, "#7d827c", "#abb0a7")
+            for x in (43, 70, 97):
+                draw.rectangle((x, 140, x + 20, 163), fill=rgba("#3d4546"), outline=rgba("#c7c1ad", 130), width=2)
+            for x, y, r in ((121, 137, 16), (134, 149, 11)):
+                draw.ellipse((x - r, y - r // 2, x + r, y + r // 2), fill=rgba("#a8aaa1"), outline=rgba("#444d4d"), width=2)
+                draw.rectangle((x - r, y, x + r, y + 14), fill=rgba("#8b8f89"))
+        else:
+            iso_prism(draw, 67, 164, 70, 34, 70, "#b4834d", "#43494a")
+            iso_prism(draw, 116, 164, 44, 26, 38, "#747b76", "#aeb2a8")
+            draw.rectangle((44, 140, 67, 163), fill=rgba("#343d3e"), outline=rgba("#d0c7ac", 125), width=2)
+            draw.polygon([(83, 119), (95, 119), (92, 72), (86, 72)], fill=rgba("#6f4537"), outline=rgba("#313a3b"))
+        draw.rectangle((25, 154, 40, 165), fill=rgba("#8a5e35"), outline=rgba("#493929"), width=2)
+
+    elif family == "park":
+        # Park art is an authored place composition rather than a building icon.
+        draw.ellipse((34, 135, 126, 172), fill=rgba("#4b8451", 190), outline=rgba("#315c3c", 220), width=2)
+        if variant == 0:
+            for index, (x, y) in enumerate(((44, 157), (68, 144), (100, 151), (124, 160))):
+                tree(draw, x, y, 0.88 + (index % 2) * 0.12, index)
+            draw.line((58, 165, 102, 143), fill=rgba("#d2b980", 220), width=7)
+            draw.rectangle((79, 153, 101, 158), fill=rgba("#6f4c32"))
+        elif variant == 1:
+            draw.ellipse((52, 141, 113, 165), fill=rgba("#5c9da0"), outline=rgba("#b8dbd0", 180), width=3)
+            tree(draw, 38, 159, 0.98, 1)
+            tree(draw, 124, 158, 0.84, 2)
+            draw.arc((60, 146, 103, 160), 10, 170, fill=rgba("#e8f2d8", 120), width=2)
+        else:
+            for index, (x, y) in enumerate(((38, 161), (121, 160), (56, 143))):
+                tree(draw, x, y, 0.82, index)
+            draw.polygon([(65, 139), (86, 126), (108, 139), (86, 151)], fill=rgba("#a65b42"), outline=rgba("#493b35"), width=2)
+            for x in (70, 102):
+                draw.rectangle((x, 139, x + 4, 161), fill=rgba("#6c5137"))
+            for x in range(61, 116, 10):
+                draw.ellipse((x, 162, x + 5, 167), fill=rgba(["#e9c656", "#d77a85", "#886da8"][x % 3]))
+
+    else:  # civic
+        stones = ["#c9c1a7", "#b8c5bd", "#d1bfa0"]
+        if variant == 0:
+            iso_prism(draw, 80, 164, 84, 36, 70, stones[0], "#47756e")
+            for x in (53, 66, 94, 107):
+                draw.rectangle((x, 119, x + 5, 160), fill=rgba("#ede4ca"), outline=rgba("#777366", 100), width=1)
+            draw.ellipse((61, 67, 99, 104), fill=rgba("#4f867d"), outline=rgba("#d7e3d4", 130), width=2)
+            draw.polygon([(80, 54), (86, 69), (74, 69)], fill=rgba("#d6b85e"))
+        elif variant == 1:
+            iso_prism(draw, 80, 164, 90, 38, 58, stones[1], "#4f6663")
+            iso_prism(draw, 80, 112, 34, 24, 60, stones[1], "#476f69")
+            draw.ellipse((72, 66, 88, 82), fill=rgba("#f0d27a"), outline=rgba("#505653"), width=2)
+            windows(draw, 48, 126, 4, 1, 18, 14, "#95bdba")
+        else:
+            iso_prism(draw, 80, 164, 94, 40, 62, stones[2], "#765143")
+            draw.polygon([(38, 102), (80, 75), (122, 102)], fill=rgba("#d9c9a8"), outline=rgba("#67594c"), width=2)
+            for x in (50, 65, 90, 105):
+                draw.rectangle((x, 117, x + 5, 160), fill=rgba("#efe3c8"), outline=rgba("#756957", 100), width=1)
+            draw.line((38, 164, 122, 164), fill=rgba("#f4ead1"), width=6)
+        draw.line((47, 167, 113, 167), fill=rgba("#e4d7bc", 190), width=5)
+
+    image.save(OUTPUT / f"place_{family}_{variant}.png", optimize=True)
+    return image
+
+
 def write_manifest(files: list[Path]) -> None:
     assets = []
     for path in sorted(files):
@@ -263,6 +445,9 @@ def main() -> None:
     for family in ("residential", "commercial", "industrial", "park", "civic"):
         frontage_asset(family)
         generated.append(OUTPUT / f"frontage_{family}.png")
+        for variant in range(3):
+            place_asset(family, variant)
+            generated.append(OUTPUT / f"place_{family}_{variant}.png")
     write_manifest(generated)
 
 

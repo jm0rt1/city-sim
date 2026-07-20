@@ -1,6 +1,6 @@
 # Wave 002 — Make CitySim Feel Awesome
 
-**Status:** Dispatched from the wave-two baseline
+**Status:** ACCEPTED — product `f75ab91`, independent PLAY-050 evidence `cc62886`
 
 **Date:** July 19, 2026
 
@@ -80,3 +80,7 @@ Workers must merge the published wave-two `master` baseline into preserved branc
 ## Significant-improvement test
 
 Wave 002 is significant only if a returning player can immediately point to all five improvements: a stable start, richer strategy reactions, a more alive and legible city, a substantially more capable HUD/keyboard command system, and trustworthy session continuity.
+
+## Accepted outcome
+
+All five improvements passed the exact integrated 91-test/staged-build gate and independent real-app acceptance. The final fresh no-coaching journey made its first meaningful placement at 96.784 seconds, completed in 595.966 seconds wall time, earned the permanent Town Charter, and restored the exact paused save fingerprint after a verified relaunch. Evidence is retained at `docs/production/evidence/PLAY-050/f75ab91-sustained-session-accepted/`.

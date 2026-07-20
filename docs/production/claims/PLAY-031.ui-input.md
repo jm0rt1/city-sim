@@ -9,6 +9,6 @@
 - **Planned surfaces:** `App/`, `Views/`, UI/input portions of `Stores/CityGameStore.swift`, command availability/routing tests, proof-window behavior, and candidate-specific evidence
 - **Dependencies:** PLAY-050 D005 reproduction and accepted CONTRACT-002 command catalog
 - **Validation/proof:** Focused routing/modal/window tests, full suite, staged default/compact pointer and keyboard onboarding, accessibility/focus evidence, and exact D005 regression sequence
-- **Status:** active — D006 round-two lifecycle repair is committed at `922e892`; independent live default/compact dismissal proof remains required
+- **Status:** accepted and closed; D006 passed default/compact keyboard and pointer routes without an extra map click
 
 The repair must establish one typed blocking-modal policy consumed by every command route. It may not fix individual leaked shortcuts independently or weaken the frozen PLAY-050 gate.

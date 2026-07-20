@@ -9,4 +9,4 @@
 - **Planned surfaces:** fixtures, harnesses, `docs/production/evidence/`, journey and defect records
 - **Dependencies:** Consumable outputs from PLAY-010/020/030/040; isolated staged-app contract `CONTRACT-004`
 - **Validation/proof:** Pointer, keyboard, compact, accessibility, save/resume, recovery, and 20-minute gate evidence
-- **Status:** ready-for-integration
+- **Status:** accepted and closed; final no-coaching journey completed in 595.966 seconds

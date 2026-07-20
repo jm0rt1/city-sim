@@ -9,5 +9,5 @@
 - **Planned surfaces:** gameplay models, simulation rules, causal analytics, deterministic scenario tests
 - **Dependencies:** `CONTRACT-001` approved with adjustments; additional save/command/snapshot contracts still require approval
 - **Validation/proof:** Full native tests, deterministic strategies and recovery, staged 20-minute journey
-- **Status:** ready-for-integration
+- **Status:** accepted and closed
 - **Integration disposition:** accepted on `master` in `6736c67666c1b4854e6a6f65eb7af292d161efb2`

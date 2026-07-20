@@ -9,7 +9,7 @@
 - **Planned surfaces:** deterministic simulation incidents and balance, existing objective/message analytics, gameplay fixtures and tests, staged gameplay evidence
 - **Dependencies:** accepted PLAY-010 mechanics; accepted PLAY-021 rendering; accepted PLAY-031 command/focus system; PLAY-050 sustained-session evidence on quality candidate `1a3bf232de658212a6f127e31ae59006b3fa2ae3`
 - **Validation/proof:** two deterministic strategies, focused and full native suites, exact staged build, no-coaching pointer/keyboard journey, retained state/timing/decision evidence, independent PLAY-050 rerun
-- **Status:** ready-for-integration; product `dd49ea5f6d5d2ea13d726e4b5083b4b52bbefb2d` and the PLAY-040 fingerprint companion are accepted on integration `f75ab91`
+- **Status:** accepted and closed on product `f75ab91`
 
 ## Rejection being repaired
 

@@ -23,7 +23,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Shared-model/save/store contract change without approval, non-deterministic outcome, or unrelated UI/rendering edits.
 - **Accepted integration:** `6736c67666c1b4854e6a6f65eb7af292d161efb2`; completion record at `docs/production/completed/PLAY-010.gameplay-loop.md`.
 
-### [ ] PLAY-011: Make the city react to the player's strategy
+### [x] PLAY-011: Make the city react to the player's strategy
 
 - **Player outcome:** Commercial stewardship and industrial expansion produce different, readable city stories after the opening decision, including one authored opportunity, one warned setback, a recoverable response, and a clear next-stage payoff rather than a passive march to the Town Charter.
 - **Owning lane:** Gameplay loop.
@@ -35,7 +35,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Live gate:** A fresh no-coaching pointer-and-keyboard route must reach the durable payoff inside 20 minutes including ordinary diagnosis and interaction time. An uninterrupted or coordinate-aware automated Day 701 fixture does not satisfy this gate. The binding utility, treasury, happiness, population, and qualification standards must be understandable early enough to act on.
 - **Stop conditions:** New save/public-store/renderer contract, title-routed messages becoming domain authority, nondeterministic fixtures, or balance changes that invalidate the accepted PLAY-010 recovery path.
 
-### [ ] PLAY-020: Make consequences readable in the city
+### [x] PLAY-020: Make consequences readable in the city
 
 - **Player outcome:** Growth, construction, utility trouble, prosperity, pollution, selection, decline, and recovery are legible in the world without consulting only numbers.
 - **Owning lane:** World rendering.
@@ -46,7 +46,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Named world states are visually distinct and non-color-only; default/compact/camera proof retained; stable deterministic variation; unchanged-pulse reuse preserved; performance budget and limitations recorded.
 - **Stop conditions:** Renderer derives gameplay facts absent from snapshot, unapproved asset/license input, or regression beyond accepted render budgets.
 
-### [ ] PLAY-021: Deliver the golden-neighborhood visual breakthrough
+### [x] PLAY-021: Deliver the golden-neighborhood visual breakthrough
 
 - **Player outcome:** The staged game opens on an authored, visually dense miniature neighborhood that feels like a place worth growing, not a sparse procedural diagram on an empty grid.
 - **Owning lane:** World rendering.
@@ -57,7 +57,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** The same real staged starting city is materially more compelling at default and 900 x 600; the primary visual language works without floating lifecycle labels; the golden 8 x 8 neighborhood is intentional at city/neighborhood/block detail; all road masks and five lot families are authored and distinct; empty-land repetition is broken up without implying false development; deterministic identity, accessibility, Reduce Motion, hit testing, incremental reuse, and performance remain sound; integration and PLAY-050 accept the visual delta from retained side-by-side evidence.
 - **Stop conditions:** Improvement exists only in an off-window fixture, depends mainly on labels/recoloring/camera crop, fakes simulation truth, introduces unclear asset provenance, hides interaction state, or misses the live visual-acceptance gate.
 
-### [ ] PLAY-030: Complete the command and keyboard system
+### [x] PLAY-030: Complete the command and keyboard system
 
 - **Player outcome:** Every non-spatial game action has one discoverable command, menu/shortcut route, contextual availability, accessible label, and consistent focus behavior.
 - **Owning lane:** UI and input.
@@ -68,7 +68,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** 100% inventory coverage for declared non-spatial actions; no collisions or focus traps; pointer and shortcut routes dispatch identical intents; default and 900 x 600 layouts remain usable; full tests and live keyboard evidence.
 - **Stop conditions:** Duplicate command state, shortcut collision, inaccessible critical action, or shared-store change without approval.
 
-### [ ] PLAY-031: Quarantine onboarding input and restore the intended window
+### [x] PLAY-031: Quarantine onboarding input and restore the intended window
 
 - **Player outcome:** A new player can read and dismiss onboarding without silently changing game state, opening another command surface, or beginning in a previously restored compact window.
 - **Owning lane:** UI and input.
@@ -80,7 +80,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Validation/proof:** Focused command/onboarding/window tests; full native suite; staged fresh-start 0/10/30/60-second sequence; exact D005 shortcut sequence before dismissal; pointer and keyboard dismissal; default and compact captures; accessibility tree; `git diff --check`; script syntax; staged `--verify`.
 - **Stop conditions:** A second modal authority, command-specific ad hoc guards, gameplay/store duplication, inability to prove default/compact separation, or any shortcut changing underlying state while onboarding blocks.
 
-### [ ] PLAY-040: Establish deterministic simulation and recovery contracts
+### [x] PLAY-040: Establish deterministic simulation and recovery contracts
 
 - **Player outcome:** A city can be saved, resumed, replayed, diagnosed, and recovered without losing or silently changing authoritative state.
 - **Owning lane:** Simulation platform.
@@ -91,7 +91,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Equivalent logical outcomes across speed settings; repeated fixture hashes; save/load/undo/recovery invariants; corrupt-write fallback preserving originals; measured vertical-slice budgets; full suite and retained fixtures.
 - **Stop conditions:** Silent save incompatibility, gameplay balance invented by platform, shared contract without approval, or mature-city claims from slice-only evidence.
 
-### [ ] PLAY-050: Prove the playable-session gate
+### [x] PLAY-050: Prove the playable-session gate
 
 - **Player outcome:** Independent evidence proves or rejects a coherent 20-minute session across pointer, keyboard, compact, accessibility, save/resume, and recovery paths.
 - **Owning lane:** Playtest quality.

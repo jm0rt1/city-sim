@@ -9,7 +9,7 @@
 - **Planned surfaces:** save/recovery services, deterministic fixtures, hashes, snapshots, diagnostics, platform tests
 - **Dependencies:** Approved `CONTRACT-003`, `CONTRACT-004`, and PLAY-010/050 fixture inputs
 - **Validation/proof:** Repeated hashes, save/load/undo/recovery invariants, measured performance, full tests
-- **Status:** ready-for-integration
+- **Status:** accepted and closed on v3 fixtures
 
 ## July 20 PLAY-011 companion
 

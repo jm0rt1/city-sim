@@ -275,11 +275,11 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerce.tick, 888)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "556c2426cbc1841787e0611fbf253718ae0a2b528d96e22471c9c6ab12e1d8b4"
+            "46a97eaed18277108b4a911a4cb49e2d925f88784b2b6aa75fd37fcf3e6f485c"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "e2127b28c3c5e3e9684be704f9dd15d4a38457ea5ccf9d5fb1745b00cefae691"
+            "906783b2a4332e72bb299d129d7b7deca4491f893a8293c5566358bb2fd41dd1"
         )
     }
 

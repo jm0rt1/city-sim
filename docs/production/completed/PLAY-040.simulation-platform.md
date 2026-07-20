@@ -39,8 +39,8 @@ Legacy Python, gameplay balance, progression rules, HUD composition, renderer be
 - `progression == nil` remains distinct from an explicit zero-value `CityProgressionState`.
 - Seed-42 explicit progression digest: `947b383684145d6d18738f313fec4f648861680165134f33b4f65ad42e5c0e3f`.
 - Seed-42 legacy nil-progression digest: `b7608f0aa748f5b40086d59ffeba746908599780f791b6483d6c613e80dedeb5`.
-- Accepted industry checkpoint at tick 896: `556c2426cbc1841787e0611fbf253718ae0a2b528d96e22471c9c6ab12e1d8b4`.
-- Accepted commerce checkpoint at tick 888: `e2127b28c3c5e3e9684be704f9dd15d4a38457ea5ccf9d5fb1745b00cefae691`.
+- Wave 002 industry checkpoint at tick 896: `46a97eaed18277108b4a911a4cb49e2d925f88784b2b6aa75fd37fcf3e6f485c`.
+- Wave 002 commerce checkpoint at tick 888: `906783b2a4332e72bb299d129d7b7deca4491f893a8293c5566358bb2fd41dd1`.
 - Equivalent 1x, 2x, and 3x tick groupings produce the exact same state and fingerprint after 120 logical ticks.
 - `CityPresentationSnapshot` owns an immutable state value and matching fingerprint plus derived analytics.
 - `CitySimulationCommand` is deliberately limited to build, demolish, tax rate, and one daily boundary for deterministic PLAY-010 fixtures.
@@ -72,6 +72,19 @@ Legacy Python, gameplay balance, progression rules, HUD composition, renderer be
 - `bash -n script/build_and_run.sh`: passed.
 - Master and worker `--print-identity` shell checks passed, including explicit `CITYSIM_TEST_ISOLATION=1` behavior on master.
 - `./script/build_and_run.sh --verify`: built and launched the exact Simulation candidate at full commit `822755cbad5431d868547e3d38d41e8df14e715f`.
+
+### Wave 002 integration reconciliation
+
+After PLAY-011, PLAY-020, and PLAY-030 were combined on integration candidate `f0e73b92a32b6623282d4fb30e188932a2a04cb8`, the two strategy checkpoint digests changed under the accepted PLAY-011 simulation semantics. Both replacement digests above repeated exactly in integration's direct run and two independent platform-lane replays. No fixture command, fingerprint version, save schema, or persisted field changed in the repair.
+
+The authoritative PLAY-011 horizon test passed at exact tick 2,800 for both strategies: industry ended with population 560, treasury $156,279, 392 jobs, 53.867 happiness, 499 power use, and 438 water use; commerce ended with population 700, treasury $63,698.60, 350 jobs, 53.329 happiness, 588 power use, and 528 water use. Both retained permanent Town Charters and `.playing` status.
+
+Reconciliation validation:
+
+- `SessionPlatformTests`: 14 tests, 0 failures in 2.351 seconds.
+- Complete integrated suite: 78 tests, 0 failures in 38.561 seconds.
+- Dense 24x24 diagnostic: 400 ticks in 41.035 ms, fingerprint 1.380 ms, save 6.823 ms, load 3.146 ms, 135,456 bytes.
+- Nil-versus-zero progression fingerprints, legacy tick-4 normalization, schema-0/schema-1 compatibility, corrupt-primary recovery, interrupted-write safety, exact undo, immutable snapshots, and equivalent speed grouping all remained green.
 
 ## Live two-candidate isolation proof
 

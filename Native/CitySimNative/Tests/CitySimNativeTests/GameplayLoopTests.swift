@@ -3,6 +3,85 @@ import XCTest
 @testable import CitySimNative
 
 final class GameplayLoopTests: XCTestCase {
+    func testLiveCommercialRecoveryReachesACharterPathByDay128() throws {
+        var state = CityGameState.newCity(seed: 42)
+        advanceToTick(&state, tick: 148)
+        try build(.commercial, at: GridCoordinate(x: 8, y: 11), in: &state)
+        advance(&state, cycles: 4)
+        try build(.powerPlant, at: GridCoordinate(x: 7, y: 11), in: &state)
+        state.taxRate = 0.14
+        advanceToTick(&state, tick: 509)
+
+        let analytics = CityAnalytics(state: state)
+        XCTAssertTrue(state.messages.contains { $0.title == "Main Street Crossroads" })
+        XCTAssertTrue(state.messages.contains { $0.title == "Main Street Recovery Delayed" })
+        XCTAssertGreaterThan(analytics.projectedBalance, 0)
+        XCTAssertGreaterThanOrEqual(state.treasury, BuildingKind.waterTower.buildCost)
+        XCTAssertEqual(analytics.waterHeadroom, 0)
+        XCTAssertTrue(analytics.townCharterStatusText.contains("add water capacity"))
+        XCTAssertGreaterThanOrEqual(state.population, 390)
+
+        try buildFirstValid(.waterTower, in: &state)
+        advanceUntil(&state, maximumCycles: 40) {
+            $0.treasury >= BuildingKind.commercial.buildCost
+        }
+        try buildFirstValid(.commercial, in: &state)
+        state.taxRate = 0.10
+        advanceUntil(&state, maximumCycles: 240) {
+            $0.progression?.townCharterAwarded == true
+        }
+
+        XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
+        XCTAssertLessThanOrEqual(state.tick, 2_200)
+        XCTAssertEqual(state.status, .playing)
+    }
+
+    func testBothDiscoverableStrategiesReachDurablePayoffWithInteractionMargin() throws {
+        var commerce = CityGameState.newCity(seed: 42)
+        advanceToTick(&commerce, tick: 148)
+        try buildFirstValid(.commercial, in: &commerce)
+        advanceToTick(&commerce, tick: CitySimulation.strategyOpportunityTick)
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Main Street Crossroads" })
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Market Weekend" })
+        advanceToTick(&commerce, tick: CitySimulation.strategySetbackTick)
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Storefront Slump" })
+        try buildFirstValid(.park, in: &commerce)
+        advanceToTick(&commerce, tick: CitySimulation.strategyPayoffTick)
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Main Street Rebound" })
+        try prepareCharterCapacity(in: &commerce, jobs: .commercial)
+        commerce.taxRate = 0.10
+        let commerceAwardTick = advanceUntil(&commerce, maximumCycles: 430) {
+            $0.progression?.townCharterAwarded == true
+        }
+
+        var industry = CityGameState.newCity(seed: 42)
+        advanceToTick(&industry, tick: 148)
+        try buildFirstValid(.industrial, in: &industry)
+        advanceToTick(&industry, tick: CitySimulation.strategyOpportunityTick)
+        XCTAssertTrue(industry.messages.contains { $0.title == "Freight Contract Watch" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Regional Freight Contract" })
+        advanceToTick(&industry, tick: CitySimulation.strategySetbackTick)
+        XCTAssertTrue(industry.messages.contains { $0.title == "Industrial Load Surge" })
+        try prepareReserveUtilities(in: &industry)
+        advanceToTick(&industry, tick: CitySimulation.strategyPayoffTick)
+        XCTAssertTrue(industry.messages.contains { $0.title == "Freight Network Secured" })
+        try prepareCharterCapacity(in: &industry, jobs: .industrial)
+        industry.taxRate = 0.10
+        let industryAwardTick = advanceUntil(&industry, maximumCycles: 430) {
+            $0.progression?.townCharterAwarded == true
+        }
+
+        XCTAssertLessThanOrEqual(commerceAwardTick, 2_200)
+        XCTAssertLessThanOrEqual(industryAwardTick, 2_200)
+        XCTAssertEqual(commerceAwardTick, 900)
+        XCTAssertEqual(industryAwardTick, 848)
+        XCTAssertGreaterThan(commerce.happiness, industry.happiness)
+        XCTAssertGreaterThan(CityAnalytics(state: industry).pollutionPressure, CityAnalytics(state: commerce).pollutionPressure)
+        XCTAssertGreaterThan(CityAnalytics(state: industry).jobCapacity, CityAnalytics(state: commerce).jobCapacity)
+        XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
+        XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
+    }
+
     func testOpeningExposesARealButRecoverableTradeoff() {
         let state = CityGameState.newCity(seed: 42)
         let analytics = CityAnalytics(state: state)
@@ -90,8 +169,8 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(commerceAndTax.day, 701)
         XCTAssertEqual(industryFirst.population, 560)
         XCTAssertEqual(commerceAndTax.population, 700)
-        XCTAssertEqual(industryFirst.treasury, 156_279, accuracy: 0.001)
-        XCTAssertEqual(commerceAndTax.treasury, 63_698.6, accuracy: 0.001)
+        XCTAssertEqual(industryFirst.treasury, 207_957, accuracy: 0.001)
+        XCTAssertEqual(commerceAndTax.treasury, 112_703.6, accuracy: 0.001)
         XCTAssertEqual(industryFirst.jobs, 392)
         XCTAssertEqual(commerceAndTax.jobs, 350)
         XCTAssertEqual(industryFirst.happiness, 53.866_666, accuracy: 0.001)
@@ -371,16 +450,18 @@ final class GameplayLoopTests: XCTestCase {
         }
     }
 
+    @discardableResult
     private func advanceUntil(
         _ state: inout CityGameState,
         maximumCycles: Int,
         condition: (CityGameState) -> Bool
-    ) {
+    ) -> Int {
         for _ in 0..<maximumCycles {
             advance(&state, cycles: 1)
-            if condition(state) { return }
+            if condition(state) { return state.tick }
         }
         XCTFail("Expected scenario condition within \(maximumCycles) cycles")
+        return state.tick
     }
 
     private func qualifyingTown() throws -> CityGameState {
@@ -422,6 +503,35 @@ final class GameplayLoopTests: XCTestCase {
             return
         case .failure(let rejection):
             throw rejection
+        }
+    }
+
+    private func buildFirstValid(_ kind: BuildingKind, in state: inout CityGameState) throws {
+        for tile in state.tiles where tile.kind == .empty {
+            if case .success = CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) {
+                try build(kind, at: tile.coordinate, in: &state)
+                return
+            }
+        }
+        XCTFail("Expected a visible valid placement for \(kind.title)")
+    }
+
+    private func prepareReserveUtilities(in state: inout CityGameState) throws {
+        for kind in [BuildingKind.powerPlant, .waterTower] {
+            while CityAnalytics(state: state).count(kind) < 2 {
+                advanceUntil(&state, maximumCycles: 160) { $0.treasury >= kind.buildCost }
+                try buildFirstValid(kind, in: &state)
+                advance(&state, cycles: 1)
+            }
+        }
+    }
+
+    private func prepareCharterCapacity(in state: inout CityGameState, jobs: BuildingKind) throws {
+        try prepareReserveUtilities(in: &state)
+        while CityAnalytics(state: state).jobCapacity < 350 {
+            advanceUntil(&state, maximumCycles: 160) { $0.treasury >= jobs.buildCost }
+            try buildFirstValid(jobs, in: &state)
+            advance(&state, cycles: 1)
         }
     }
 }

@@ -2,9 +2,9 @@ import XCTest
 @testable import CitySimNative
 
 final class SessionPlatformTests: XCTestCase {
-    private static let waveTwoDenseTerminalFixtureName = "dense-24x24-terminal-wave2-v2"
+    private static let waveTwoDenseTerminalFixtureName = "dense-24x24-terminal-wave2-v3"
     private static let waveTwoDenseTerminalFixtureDigest =
-        "7b6454ecbe83aeb3bdc88de4fb1d6cb23ef67ce81849123e907d3147c6c52a77"
+        "d18afceb9c8ccc09eaf54d7316abc960c6b560baa1bc7d92fa6416c9776556d8"
 
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
@@ -275,21 +275,45 @@ final class SessionPlatformTests: XCTestCase {
         ], to: &commerce)
         advanceDailyBoundaries(220, state: &commerce)
 
+        printCheckpoint("accepted-industrial", state: industry)
+        printCheckpoint("accepted-commercial", state: commerce)
         XCTAssertEqual(industry.tick, 896)
         XCTAssertEqual(commerce.tick, 888)
+        XCTAssertEqual(industry.treasury, 49_433.2, accuracy: 0.001)
+        XCTAssertEqual(commerce.treasury, 58_393.26, accuracy: 0.001)
+        XCTAssertEqual(CityAnalytics(state: industry).projectedBalance, 310.25, accuracy: 0.001)
+        XCTAssertEqual(CityAnalytics(state: commerce).projectedBalance, 403.49, accuracy: 0.001)
+        XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
+        XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
+        XCTAssertTrue(industry.messages.contains { $0.title == "Town Charter Standards" })
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Town Charter Standards" })
+        XCTAssertTrue(industry.messages.contains {
+            $0.title == "Freight Contract Watch" && $0.detail.contains("by Day 41")
+        })
+        XCTAssertTrue(commerce.messages.contains {
+            $0.title == "Main Street Crossroads" && $0.detail.contains("by Day 41")
+        })
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "46a97eaed18277108b4a911a4cb49e2d925f88784b2b6aa75fd37fcf3e6f485c"
+            "11adf523ca4af342d3a1126c04d3469bf3e02ddd30c8b77ea22e21c70420c5ff"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "906783b2a4332e72bb299d129d7b7deca4491f893a8293c5566358bb2fd41dd1"
+            "65c11403d0876fc9af27782e240a4e98b2806b55b8953aa81490934bb860f68c"
+        )
+        XCTAssertEqual(
+            Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
+            Set(["11adf523ca4af342d3a1126c04d3469bf3e02ddd30c8b77ea22e21c70420c5ff"])
+        )
+        XCTAssertEqual(
+            Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
+            Set(["65c11403d0876fc9af27782e240a4e98b2806b55b8953aa81490934bb860f68c"])
         )
     }
 
     func testDenseSessionSimulationAndPersistencePerformance() throws {
         try withTemporaryRoot { root in
-            var state = waveTwoDenseTerminalFixtureV2()
+            var state = waveTwoDenseTerminalFixtureV3()
             let simulationStart = ProcessInfo.processInfo.systemUptime
             for _ in 0..<400 { CitySimulation.step(&state) }
             let simulationMilliseconds = elapsedMilliseconds(since: simulationStart)
@@ -307,8 +331,14 @@ final class SessionPlatformTests: XCTestCase {
             let load = try service.load()
             let loadMilliseconds = elapsedMilliseconds(since: loadStart)
 
+            printCheckpoint("dense-terminal", state: state)
             XCTAssertEqual(state.tick, 44)
             XCTAssertEqual(state.status, .lost)
+            XCTAssertEqual(state.treasury, 6_602_062.55, accuracy: 0.001)
+            XCTAssertEqual(state.population, 46_459)
+            XCTAssertEqual(state.jobs, 32_739)
+            XCTAssertEqual(state.progression, CityProgressionState())
+            XCTAssertTrue(state.messages.contains { $0.title == "Town Charter Standards" })
             XCTAssertEqual(fingerprint.digest, Self.waveTwoDenseTerminalFixtureDigest)
             XCTAssertEqual(load.state, state)
             XCTAssertEqual(load.fingerprint, fingerprint)
@@ -354,9 +384,9 @@ final class SessionPlatformTests: XCTestCase {
         }
     }
 
-    // V2 runs the unchanged terminal dense generator under accepted Wave 002
-    // expansion utility-load semantics and freezes its tick-44 terminal state.
-    private func waveTwoDenseTerminalFixtureV2() -> CityGameState {
+    // V3 runs the unchanged terminal dense generator under accepted PLAY-011
+    // guidance and reserve-utility upkeep semantics, freezing tick 44.
+    private func waveTwoDenseTerminalFixtureV3() -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         let kinds: [BuildingKind] = [
             .residential, .commercial, .industrial, .park,
@@ -376,6 +406,24 @@ final class SessionPlatformTests: XCTestCase {
 
     private func elapsedMilliseconds(since start: TimeInterval) -> Double {
         (ProcessInfo.processInfo.systemUptime - start) * 1_000
+    }
+
+    private func printCheckpoint(_ name: String, state: CityGameState) {
+        let analytics = CityAnalytics(state: state)
+        let active = CitySimulation.activeTiles(in: state)
+        let powerPlants = active.filter { $0.kind == .powerPlant }.count
+        let waterTowers = active.filter { $0.kind == .waterTower }.count
+        let messageTitles = state.messages.map(\.title).joined(separator: "|")
+        print(
+            "CITYSIM_CHECKPOINT name=\(name) tick=\(state.tick) status=\(state.status.rawValue) " +
+            "treasury=\(metric(state.treasury)) population=\(state.population) jobs=\(state.jobs) " +
+            "happiness=\(metric(state.happiness)) approval=\(metric(state.approval)) " +
+            "power=\(state.powerUsed)/\(state.powerCapacity) water=\(state.waterUsed)/\(state.waterCapacity) " +
+            "powerPlants=\(powerPlants) waterTowers=\(waterTowers) " +
+            "balance=\(metric(analytics.projectedBalance)) reserve=\(metric(analytics.utilityReserve)) " +
+            "progression=\(state.progression?.townCharterQualifyingCycles ?? -1)/" +
+            "\(state.progression?.townCharterAwarded ?? false) seed=\(state.seed) messages=\(messageTitles)"
+        )
     }
 
     private func metric(_ value: Double) -> String {

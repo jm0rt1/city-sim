@@ -143,3 +143,37 @@ Both candidates remained alive simultaneously. Their preference domains retained
 - Rollback may discard worker `dist/` state. Production preferences and Application Support saves are not migration targets and were not touched by the worker script.
 
 No shared-contract collision remains. The implementation stays within CONTRACT-003 and CONTRACT-004 and is ready for integration review.
+
+## July 20, 2026 — PLAY-011 fingerprint companion
+
+Integration authorized PLAY-040 to validate gameplay product candidate `dd49ea5f6d5d2ea13d726e4b5083b4b52bbefb2d` against current master `71a113855dd41ab9d6576e3755183994a74c6118`. The clean platform branch first fast-forwarded to master, then merged the exact product candidate without rewriting it. The frozen merged validation baseline is `1d494dbb743d77f4e03bd8ababb9804c0eb6202e`.
+
+Focused platform commit:
+
+- `106bbf4e90968eeef7f9c8663174254dfbaafd7f` — `PLAY-040: Freeze PLAY-011 session fingerprints`
+
+The platform candidate advances only `SessionPlatformTests` and retained PLAY-040 evidence. `CityGameState`, `CityStateFingerprint`, `SaveGameService`, `CitySimulationCommand`, the save schema, fingerprint version, nil-progression encoding, and accepted fixture command arrays were identical at the gameplay boundary.
+
+Authoritative v3 fixtures:
+
+- industrial strategy, two `.industrial` builds, tick 896: `11adf523ca4af342d3a1126c04d3469bf3e02ddd30c8b77ea22e21c70420c5ff`;
+- commercial strategy, tax 0.14 plus two `.commercial` builds, tick 888: `65c11403d0876fc9af27782e240a4e98b2806b55b8953aa81490934bb860f68c`;
+- `dense-24x24-terminal-wave2-v3`, 400 step attempts, tick 44 / `.lost`: `d18afceb9c8ccc09eaf54d7316abc960c6b560baa1bc7d92fa6416c9776556d8`.
+
+The gameplay handoff prose had the first two labels reversed; the command arrays and checkpoint states above are authoritative. Each digest repeated identically in three pre-update runs across two clean scratch builds. The fixture test additionally repeats each strategy fingerprint five times in-process.
+
+Every state delta is explained by approved PLAY-011 behavior. The second power plant and water tower save `$74.25` per settlement, producing an exact `$16,335.00` increase over 220 strategy settlements. The dense fixture's 62 plants and 61 towers save `$4,497.75` per settlement, producing an exact `$49,475.25` increase over 11 settlements. Persisted journals intentionally gain `Town Charter Standards`, and strategy warning detail now uses the discoverable Day 41 deadline. No tick, command, schema, seed, terminal status, nil-progression, or serialization invariant drifted. Full calculations, blob identities, checkpoint metrics, and repeated-run commands are retained at `docs/production/evidence/PLAY-040/PLAY-011-fingerprint-companion.md`.
+
+Validation:
+
+- `SessionPlatformTests`: 14/14 passed in 2.229 seconds after freezing;
+- `GameplayLoopTests`: 16/16 passed in 9.920 seconds;
+- complete native suite: 91/91 passed in 221.707 seconds;
+- dense performance in the full suite: simulation 40.531 ms, fingerprint 1.248 ms, save 6.078 ms, load 2.923 ms, schema-1 envelope 135,864 bytes;
+- `bash -n script/build_and_run.sh`: passed;
+- `git diff --check` and staged-diff check: passed;
+- exact `./script/build_and_run.sh --verify`: passed at `106bbf4e90968eeef7f9c8663174254dfbaafd7f`, staging identity `com.jfmortensen.citysim.simulation-platform.w8bb1822a1e25`, isolated data root `dist/test-data/simulation-platform-w8bb1822a1e25`, exact PID 79219 confirmed alive.
+
+The filesystem sandbox caused the AppKit `NSWindow` focus test to exit with signal 11; the exact focused test passed outside that sandbox, and the complete 91-test suite then passed in the same required host mode. A default `.build` attempt was also discarded because its existing database was read-only and could not compile the candidate. All accepted Swift results use explicit writable scratch and module-cache paths.
+
+No new shared contract, schema version, public type, package surface, or gameplay rebalance was introduced by the platform companion. The candidate is ready for integration after this completion/claim commit; the worker does not push or merge to master.

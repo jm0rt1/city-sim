@@ -36,6 +36,11 @@ logs/
 
 Binary proof must be directly traceable from `manifest.md`. Generated build products and private user saves do not belong in this directory.
 
+## Candidate runs
+
+- `c446025-baseline/`: initial accepted-baseline rejection and the first reproductions of `PLAY-050-D001` and `PLAY-050-D002`.
+- `831cb1c-play010-integrated/`: accepted PLAY-010 rule/horizon verification plus staged-app reproduction of both defects against the integrated candidate.
+
 ## Ownership boundaries
 
 This lane may add fixtures, harnesses, focused reproduction tests, evidence records, and proof. Product defects are returned to the owning lane. Changes to package topology, public store/command contracts, snapshot contracts, save schemas, launch scripts, task authority, or traceability require integration approval before implementation.

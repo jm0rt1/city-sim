@@ -36,3 +36,13 @@
 - PLAY-010 live inspection confirmed objective blockers, budget/reserve/hiring warnings, 3× selection with `3`, and Space-to-pause with focus intact. Retained evidence is under `docs/production/evidence/`.
 
 Workers must branch from the exact publication commit sent by integration, confirm clean ancestry, read `AGENTS.md` and their lane skill, and keep coherent progress committed continuously.
+
+## Wave-two authority
+
+The next production round is defined by `docs/production/WAVE-002-AWESOME.md`. Its shared contracts are:
+
+- `CONTRACT-002`: one command catalog and store intent route for non-spatial actions;
+- `CONTRACT-003`: canonical state fingerprints, backward-compatible versioned saves, recovery, injected roots, snapshots, and narrow fixture commands;
+- `CONTRACT-004`: unique staged bundle/process/data identity for every worktree.
+
+The accepted product tip remains `6736c67` until wave-two candidates pass integration and PLAY-050. The baseline publication commit containing these decisions is management authority, not a claim that the current game has passed the playable-session gate.

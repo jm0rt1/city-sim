@@ -176,7 +176,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(distressedNames.contains("lot.lifecycle.growth.tier.2"))
         XCTAssertTrue(distressedNames.contains("lot.condition.boarding"))
         XCTAssertTrue(distressedNames.contains("lot.condition.rubble"))
-        XCTAssertTrue(descendantLabels(in: distressedRoot).contains("DECLINE"))
+        XCTAssertFalse(descendantNames(in: distressedRoot).contains("lot.condition.badge"))
+        XCTAssertTrue(descendantLabels(in: distressedRoot).isEmpty)
 
         var recovered = distressed
         recovered.condition = 1
@@ -186,7 +187,9 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.distressed"))
         XCTAssertTrue(recoveredNames.contains("lot.lifecycle.condition.maintained"))
         XCTAssertTrue(recoveredNames.contains("lot.lifecycle.growth.tier.2"))
-        XCTAssertTrue(descendantLabels(in: recoveredRoot).contains("HEALTHY GROWTH"))
+        XCTAssertTrue(descendantNames(in: recoveredRoot).contains("lot.growth.freshFacade"))
+        XCTAssertFalse(descendantNames(in: recoveredRoot).contains("lot.growth.badge"))
+        XCTAssertTrue(descendantLabels(in: recoveredRoot).isEmpty)
     }
 
     @MainActor
@@ -231,9 +234,20 @@ final class WorldRenderingTests: XCTestCase {
         var stressed = healthyGrowth
         stressed.condition = 0.58
         let stressedRoot = renderer.makeLot(for: stressed, detail: .block, reducedMotion: false)
-        XCTAssertTrue(descendantLabels(in: stressedRoot).contains("STRESS"))
+        XCTAssertTrue(descendantNames(in: stressedRoot).contains("lot.condition.patchwork"))
         XCTAssertFalse(descendantNames(in: stressedRoot).contains("lot.lifecycle.growth.tier.3"))
         XCTAssertGreaterThan(recursiveActiveActionCount(stressedRoot), 0)
+
+        let park = CityTile(
+            coordinate: GridCoordinate(x: 8, y: 9),
+            kind: .park,
+            constructionProgress: 1
+        )
+        let ambient = renderer.makeLot(for: park, detail: .neighborhood, reducedMotion: false)
+        let staticAmbient = renderer.makeLot(for: park, detail: .neighborhood, reducedMotion: true)
+        XCTAssertTrue(descendantNames(in: ambient).contains("lot.ambient.vegetation"))
+        XCTAssertGreaterThan(recursiveActiveActionCount(ambient), 0)
+        XCTAssertEqual(recursiveActiveActionCount(staticAmbient), 0)
     }
 
     @MainActor
@@ -275,6 +289,40 @@ final class WorldRenderingTests: XCTestCase {
             "active_actions=\(initialActions) " +
             "unchanged_pulses=12 unchanged_updates=0 " +
             "reduced_motion_actions=\(scene.diagnosticsSnapshot.activeActionCount)"
+        )
+    }
+
+    @MainActor
+    func testThirtyMinuteEquivalentUnchangedPulseSoakPreservesWorldIdentity() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = false
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+
+        let developed = GridCoordinate(x: 11, y: 11)
+        let initialRoot = try XCTUnwrap(scene.tileRootIdentifier(at: developed))
+        let initialNodes = scene.diagnosticsSnapshot.nodeCount
+        let initialDrawables = scene.diagnosticsSnapshot.drawableNodeCount
+        let initialActions = scene.diagnosticsSnapshot.activeActionCount
+        let pulseCount = 4_286 // 30 minutes at the shipping 420 ms app pulse.
+        let started = ProcessInfo.processInfo.systemUptime
+
+        for _ in 0..<pulseCount {
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        }
+
+        let elapsedMilliseconds = (ProcessInfo.processInfo.systemUptime - started) * 1_000
+        XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
+        XCTAssertEqual(scene.tileRootIdentifier(at: developed), initialRoot)
+        XCTAssertEqual(scene.diagnosticsSnapshot.nodeCount, initialNodes)
+        XCTAssertEqual(scene.diagnosticsSnapshot.drawableNodeCount, initialDrawables)
+        XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, initialActions)
+        print(
+            "CITYSIM_PLAY021_SOAK_DIAGNOSTICS " +
+            "equivalent_minutes=30 pulses=\(pulseCount) " +
+            "nodes=\(initialNodes) drawables=\(initialDrawables) actions=\(initialActions) " +
+            "total_ms=\(String(format: "%.3f", elapsedMilliseconds)) " +
+            "average_ms=\(String(format: "%.4f", elapsedMilliseconds / Double(pulseCount)))"
         )
     }
 

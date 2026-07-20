@@ -6,11 +6,13 @@ final class LotRenderer {
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
     private let lifecycleRenderer: LotLifecycleRenderer
+    private let ambientLifeRenderer: AmbientLifeRenderer
 
     init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
         self.assets = assets
         self.lifecycleRenderer = LotLifecycleRenderer(style: style)
+        self.ambientLifeRenderer = AmbientLifeRenderer(style: style)
     }
 
     func makeLot(
@@ -78,6 +80,14 @@ final class LotRenderer {
                 detail: detail,
                 reducedMotion: reducedMotion
             ))
+        }
+        if presentation.construction == .complete,
+           let ambient = ambientLifeRenderer.makeAmbientVegetation(
+               for: tile,
+               detail: detail,
+               reducedMotion: reducedMotion
+           ) {
+            root.addChild(ambient)
         }
         return root
     }

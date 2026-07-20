@@ -785,7 +785,15 @@ final class CityScene: SKScene {
         // Open on the place the player can act on, while keeping road arms and
         // several buildable blocks as honest expansion context. Compact uses a
         // slightly wider lens so the command deck never crowds the neighborhood.
-        cameraNode.setScale(size.width <= 980 ? 0.54 : 0.42)
+        let defaultScale: CGFloat = size.width <= 980 ? 0.54 : 0.42
+#if DEBUG
+        let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
+            .flatMap(Double.init)
+            .map { CGFloat($0) }
+        cameraNode.setScale(proofScale.map { min(2.2, max(0.35, $0)) } ?? defaultScale)
+#else
+        cameraNode.setScale(defaultScale)
+#endif
         refreshForCameraChange()
     }
 

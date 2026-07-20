@@ -2,6 +2,19 @@ import SpriteKit
 import SwiftUI
 
 @MainActor
+final class CityMapSKView: SKView {
+    var cityAccessibilityLabel = "City map"
+    var cityAccessibilityValue: String = "No block selected"
+    var cityAccessibilityHelp = "Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the primary action, and Shift-Return to inspect."
+    var cityAccessibilityActions: [NSAccessibilityCustomAction] = []
+
+    override func accessibilityLabel() -> String? { cityAccessibilityLabel }
+    override func accessibilityValue() -> Any? { cityAccessibilityValue }
+    override func accessibilityHelp() -> String? { cityAccessibilityHelp }
+    override func accessibilityCustomActions() -> [NSAccessibilityCustomAction]? { cityAccessibilityActions }
+}
+
+@MainActor
 struct CitySceneView: NSViewRepresentable {
     @ObservedObject var store: CityGameStore
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
@@ -10,7 +23,7 @@ struct CitySceneView: NSViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(store: store) }
 
     func makeNSView(context: Context) -> SKView {
-        let view = SKView(frame: .zero)
+        let view = CityMapSKView(frame: .zero)
         view.preferredFramesPerSecond = 60
         view.ignoresSiblingOrder = true
         let diagnosticsEnabled = ProcessInfo.processInfo.arguments.contains("--renderer-diagnostics") ||
@@ -22,10 +35,22 @@ struct CitySceneView: NSViewRepresentable {
         scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.primaryAction(at: coordinate) }
         scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.secondaryAction(at: coordinate) }
         scene.onCommandAction = { [weak coordinator = context.coordinator] command in
-            coordinator?.store.perform(command)
+            guard let coordinator else { return }
+            if CityCommandCatalog.mapFocusedCommands.contains(command) {
+                if coordinator.store.performMapCommand(command),
+                   CityCommandCatalog.mapSelectionCommands.contains(command),
+                   let coordinate = coordinator.store.selectedCoordinate {
+                    coordinator.scene?.revealSelection(coordinate)
+                }
+            } else {
+                coordinator.store.perform(command)
+            }
         }
         scene.allowsCommand = { [weak coordinator = context.coordinator] command in
-            coordinator?.store.commandPolicy.allows(command) ?? false
+            guard let coordinator else { return false }
+            return CityCommandCatalog.mapFocusedCommands.contains(command)
+                ? coordinator.store.canPerformMapCommand(command)
+                : coordinator.store.commandPolicy.allows(command)
         }
         view.presentScene(scene)
         DispatchQueue.main.async { [weak view] in
@@ -39,6 +64,8 @@ struct CitySceneView: NSViewRepresentable {
         context.coordinator.store = store
         view.window?.acceptsMouseMovedEvents = true
         context.coordinator.synchronizeCommandPolicy(store.commandPolicy, in: view)
+        context.coordinator.synchronizeMapFocusRequest(store.mapFocusRequestGeneration, in: view)
+        context.coordinator.configureMapAccessibility(in: view)
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
         let proofReducedMotion: Bool
@@ -66,6 +93,7 @@ struct CitySceneView: NSViewRepresentable {
         private(set) var previousCommandPolicy: CityCommandPolicy
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
+        private(set) var observedMapFocusRequestGeneration: UInt
         private let enqueueOnMain: MainLoopEnqueuer
 
         init(
@@ -76,6 +104,7 @@ struct CitySceneView: NSViewRepresentable {
         ) {
             self.store = store
             previousCommandPolicy = store.commandPolicy
+            observedMapFocusRequestGeneration = store.mapFocusRequestGeneration
             self.enqueueOnMain = enqueueOnMain
         }
 
@@ -90,6 +119,46 @@ struct CitySceneView: NSViewRepresentable {
             guard Self.requiresGameplayFocus(from: priorPolicy, to: commandPolicy),
                   pendingFocusHandoffGeneration == nil else { return false }
 
+            return enqueueFocusHandoff(in: view)
+        }
+
+        @discardableResult
+        func synchronizeMapFocusRequest(_ generation: UInt, in view: SKView) -> Bool {
+            guard generation != observedMapFocusRequestGeneration else { return false }
+            observedMapFocusRequestGeneration = generation
+            guard store.commandPolicy == .enabled, previousCommandPolicy == .enabled,
+                  pendingFocusHandoffGeneration == nil else { return false }
+            return enqueueFocusHandoff(in: view)
+        }
+
+        func configureMapAccessibility(in view: SKView) {
+            view.setAccessibilityElement(true)
+            let mapView = view as? CityMapSKView
+            guard let coordinate = store.selectedCoordinate,
+                  let tile = store.state.tile(at: coordinate) else {
+                mapView?.cityAccessibilityValue = "No block selected"
+                mapView?.cityAccessibilityActions = []
+                return
+            }
+
+            let baseValue = "Selected \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+            if let snapshot = try? CityPresentationSnapshot(state: store.state),
+               let diagnosis = CitySelectedLocationDiagnosis.make(tile: tile, snapshot: snapshot) {
+                mapView?.cityAccessibilityValue = baseValue + ". " + diagnosis.cause + ". " + diagnosis.consequence
+            } else {
+                mapView?.cityAccessibilityValue = baseValue
+            }
+            mapView?.cityAccessibilityActions = [
+                NSAccessibilityCustomAction(name: "Use primary map action") { [weak self] in
+                    self?.store.performMapCommand(.mapPrimaryAction) ?? false
+                },
+                NSAccessibilityCustomAction(name: "Inspect selected block") { [weak self] in
+                    self?.store.performMapCommand(.mapSecondaryAction) ?? false
+                }
+            ]
+        }
+
+        private func enqueueFocusHandoff(in view: SKView) -> Bool {
             focusHandoffGeneration &+= 1
             let generation = focusHandoffGeneration
             pendingFocusHandoffGeneration = generation

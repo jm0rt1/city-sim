@@ -175,33 +175,52 @@ struct InspectorView: View {
                 }
             }
 
-            ContextCard(title: "Next action", symbol: "arrow.turn.down.right", tint: GameTheme.accent) {
-                if tile.kind == .empty {
-                    HStack(spacing: 6) {
-                        compactAction("Road", symbol: BuildingKind.road.symbol) { store.perform(.buildRoad) }
-                        compactAction("Homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
-                    }
-                    compactAction("Open build catalog", symbol: "square.grid.2x2") { store.perform(.buildMode) }
-                } else if tile.kind == .cityHall {
-                    Label("Protected landmark", systemImage: "shield.lefthalf.filled")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(GameTheme.information)
-                        .accessibilityLabel("City Hall is a protected landmark and cannot be demolished")
-                    Text("City Hall anchors the city and cannot be removed.")
+            if let snapshot = try? CityPresentationSnapshot(state: store.state),
+               let diagnosis = CitySelectedLocationDiagnosis.make(
+                tile: tile,
+                snapshot: snapshot
+            ) {
+                ContextCard(title: "Cause · consequence · response", symbol: "cross.case.fill", tint: GameTheme.warning) {
+                    Text(diagnosis.cause)
+                        .font(.caption2.weight(.semibold))
+                        .lineLimit(compact ? 2 : 3)
+                    Text(diagnosis.consequence)
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
-                    compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
-                } else {
-                    ContextValueRow(label: "Demolition", value: tile.kind.demolitionCost.currencyText)
-                    HStack(spacing: 6) {
-                        compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
-                        Button(role: .destructive) { store.demolishSelected() } label: {
-                            Label("Demolish", systemImage: "trash")
-                                .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+                    diagnosisActions(diagnosis)
+                }
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(diagnosis.accessibilitySummary)
+            } else {
+                ContextCard(title: "Next action", symbol: "arrow.turn.down.right", tint: GameTheme.accent) {
+                    if tile.kind == .empty {
+                        HStack(spacing: 6) {
+                            compactAction("Road", symbol: BuildingKind.road.symbol) { store.perform(.buildRoad) }
+                            compactAction("Homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
                         }
-                        .buttonStyle(.bordered)
-                        .accessibilityLabel("Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)")
+                        compactAction("Open build catalog", symbol: "square.grid.2x2") { store.perform(.buildMode) }
+                    } else if tile.kind == .cityHall {
+                        Label("Protected landmark", systemImage: "shield.lefthalf.filled")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(GameTheme.information)
+                            .accessibilityLabel("City Hall is a protected landmark and cannot be demolished")
+                        Text("City Hall anchors the city and cannot be removed.")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                        compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
+                    } else {
+                        ContextValueRow(label: "Demolition", value: tile.kind.demolitionCost.currencyText)
+                        HStack(spacing: 6) {
+                            compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
+                            Button(role: .destructive) { store.demolishSelected() } label: {
+                                Label("Demolish", systemImage: "trash")
+                                    .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+                            }
+                            .buttonStyle(.bordered)
+                            .accessibilityLabel("Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)")
+                        }
                     }
                 }
             }
@@ -455,6 +474,7 @@ struct InspectorView: View {
                             .lineLimit(3)
                         HStack(spacing: 6) {
                             compactAction("Related data", symbol: "arrow.up.forward.square") { store.openMessage(summary.message) }
+                            noticeActionMenu(summary.message)
                             Button("Dismiss") { store.dismissMessageSummary(summary) }
                                 .buttonStyle(.borderless)
                                 .frame(minHeight: GameTheme.controlMinimum)
@@ -463,6 +483,49 @@ struct InspectorView: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func diagnosisActions(_ diagnosis: CitySelectedLocationDiagnosis) -> some View {
+        if let primary = diagnosis.responses.first {
+            compactAction(primary.title, symbol: primary.focusesMap ? "scope" : "arrow.up.forward.square") {
+                perform(primary)
+            }
+            .accessibilityHint(primary.explanation + (primary.focusesMap ? " Focus returns to the map." : ""))
+        }
+        if diagnosis.responses.count > 1 {
+            Menu("More responses") {
+                ForEach(Array(diagnosis.responses.dropFirst())) { response in
+                    Button(response.title) { perform(response) }
+                        .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
+                }
+            }
+            .frame(minHeight: GameTheme.controlMinimum)
+            .accessibilityLabel("More honest responses for selected block")
+        }
+    }
+
+    @ViewBuilder
+    private func noticeActionMenu(_ message: CityMessage) -> some View {
+        let actions = CityNoticeActionCatalog.actions(for: message.title)
+        if !actions.isEmpty {
+            Menu("Act") {
+                ForEach(actions) { response in
+                    Button(response.title) { perform(response) }
+                        .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
+                }
+            }
+            .frame(minHeight: GameTheme.controlMinimum)
+            .accessibilityLabel("Act on \(message.title)")
+        }
+    }
+
+    private func perform(_ response: CityDirectResponse) {
+        if response.focusesMap {
+            store.performMapFocused(response.command)
+        } else {
+            store.perform(response.command)
         }
     }
 

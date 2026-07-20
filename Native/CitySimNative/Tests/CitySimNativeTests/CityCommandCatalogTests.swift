@@ -13,7 +13,8 @@ final class CityCommandCatalogTests: XCTestCase {
     func testCatalogDeclaresEveryCommandExactlyOnceAndCoversNonSpatialInventory() {
         let descriptors = CityCommandCatalog.descriptors
         let descriptorIDs = descriptors.map(\.id)
-        let spatialIDs: Set<CityCommandID> = [.cameraZoomIn, .cameraZoomOut, .cameraFrameCity]
+        let spatialIDs = Set<CityCommandID>([.cameraZoomIn, .cameraZoomOut, .cameraFrameCity])
+            .union(CityCommandCatalog.mapFocusedCommands)
         let expectedNonSpatial = Set(CityCommandID.allCases).subtracting(spatialIDs)
         let actualNonSpatial = Set(descriptors.filter { !$0.isSpatial }.map(\.id))
 
@@ -52,10 +53,10 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     func testFocusMetadataKeepsUnmodifiedGameplayKeysOutOfGlobalMenus() {
-        let gameplayIDs: Set<CityCommandID> = [
+        let gameplayIDs = Set<CityCommandID>([
             .togglePause, .speedNormal, .speedFast, .speedFastest,
             .inspectMode, .buildMode, .bulldozeMode, .cancelInteraction
-        ]
+        ]).union(CityCommandCatalog.mapFocusedCommands)
 
         for id in gameplayIDs {
             let shortcut = CityCommandCatalog.descriptor(for: id).shortcut
@@ -103,7 +104,8 @@ final class CityCommandCatalogTests: XCTestCase {
         let blockedKeys: [(String, UInt16)] = [
             (" ", 49), ("1", 18), ("2", 19), ("3", 20),
             ("b", 11), ("v", 9), ("\u{1b}", 53),
-            ("+", 24), ("-", 27), ("0", 29)
+            ("+", 24), ("-", 27), ("0", 29),
+            ("", 126), ("\r", 36)
         ]
         for key in blockedKeys {
             scene.keyDown(with: try keyEvent(characters: key.0, keyCode: key.1))
@@ -160,7 +162,7 @@ final class CityCommandCatalogTests: XCTestCase {
         let coordinator = CitySceneView.Coordinator(store: store) { action in
             queuedActions.append(action)
         }
-        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
         let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
         let contentView = NSView(frame: mapView.frame)
         let window = NSWindow(
@@ -332,6 +334,147 @@ final class CityCommandCatalogTests: XCTestCase {
 
         scene.keyDown(with: try keyEvent(characters: "b", keyCode: 11, modifiers: .command))
         XCTAssertEqual(dispatchCount, 5, "Modified input belongs to SwiftUI menus and must not double invoke")
+    }
+
+    @MainActor
+    func testMapNavigationRequiresActualSKViewFirstResponderAndDispatchesOnce() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        mapView.presentScene(scene)
+        let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let contentView = NSView(frame: mapView.frame)
+        contentView.addSubview(mapView)
+        contentView.addSubview(priorResponder)
+        let window = NSWindow(contentRect: mapView.frame, styleMask: [.titled], backing: .buffered, defer: false)
+        window.contentView = contentView
+        var routed: [CityCommandID] = []
+        scene.allowsCommand = { store.canPerformMapCommand($0) }
+        scene.onCommandAction = {
+            routed.append($0)
+            store.performMapCommand($0)
+        }
+
+        XCTAssertTrue(window.makeFirstResponder(priorResponder))
+        scene.keyDown(with: try keyEvent(characters: "", keyCode: 126))
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(routed, [])
+
+        XCTAssertTrue(window.makeFirstResponder(mapView))
+        scene.keyDown(with: try keyEvent(characters: "", keyCode: 124))
+        let first = try XCTUnwrap(store.selectedCoordinate)
+        XCTAssertEqual(routed, [.mapMoveEast])
+
+        scene.keyDown(with: try keyEvent(characters: "", keyCode: 125, modifiers: .shift))
+        XCTAssertEqual(store.selectedCoordinate?.x, first.x)
+        XCTAssertEqual(store.selectedCoordinate?.y, min(store.state.gridHeight - 1, first.y + 5))
+        XCTAssertEqual(routed, [.mapMoveEast, .mapMoveSouthFast])
+
+        scene.keyDown(with: try keyEvent(characters: "\r", keyCode: 36))
+        XCTAssertEqual(routed.last, .mapPrimaryAction)
+        XCTAssertTrue(store.showInspector)
+
+        let coordinator = CitySceneView.Coordinator(store: store)
+        coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertEqual(mapView.accessibilityLabel(), "City map")
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Selected") == true)
+        XCTAssertEqual(mapView.accessibilityCustomActions()?.map(\.name), ["Use primary map action", "Inspect selected block"])
+    }
+
+    @MainActor
+    func testStoreOwnsBoundedSelectionAndKeyboardUsesExactPointerAction() throws {
+        let initial = CityGameState.newCity(seed: 42)
+        let keyboard = CityGameStore(state: initial)
+        let pointer = CityGameStore(state: initial)
+
+        XCTAssertTrue(keyboard.moveMapSelection(dx: -1, dy: -1, distance: 10_000))
+        XCTAssertEqual(keyboard.selectedCoordinate, GridCoordinate(x: 0, y: 0))
+        XCTAssertTrue(keyboard.moveMapSelection(dx: 1, dy: 1, distance: 10_000))
+        XCTAssertEqual(
+            keyboard.selectedCoordinate,
+            GridCoordinate(x: initial.gridWidth - 1, y: initial.gridHeight - 1)
+        )
+
+        let target = try XCTUnwrap(initial.tiles.first { $0.kind != .empty }?.coordinate)
+        keyboard.selectedCoordinate = target
+        pointer.primaryAction(at: target)
+        XCTAssertTrue(keyboard.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(keyboard.selectedCoordinate, pointer.selectedCoordinate)
+        XCTAssertEqual(keyboard.hudContextScope, pointer.hudContextScope)
+        XCTAssertEqual(keyboard.showInspector, pointer.showInspector)
+
+        keyboard.presentBlockingModal(.welcome)
+        XCTAssertFalse(keyboard.performMapCommand(.mapMoveEast))
+        XCTAssertFalse(keyboard.performMapCommand(.mapPrimaryAction))
+    }
+
+    @MainActor
+    func testApprovedRemedyRequestsOneLifecycleSafeMapFocus() {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        var queuedActions: [CitySceneView.Coordinator.MainLoopAction] = []
+        let coordinator = CitySceneView.Coordinator(store: store) { queuedActions.append($0) }
+        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let contentView = NSView(frame: mapView.frame)
+        contentView.addSubview(mapView)
+        contentView.addSubview(priorResponder)
+        let window = NSWindow(contentRect: mapView.frame, styleMask: [.titled], backing: .buffered, defer: false)
+        window.contentView = contentView
+        XCTAssertTrue(window.makeFirstResponder(priorResponder))
+
+        XCTAssertFalse(store.performMapFocused(.inspectorFinances), "Only approved map-entry remedies may request focus")
+        XCTAssertEqual(store.mapFocusRequestGeneration, 0)
+        XCTAssertTrue(store.performMapFocused(.buildPark))
+        XCTAssertEqual(store.mapFocusRequestGeneration, 1)
+        XCTAssertTrue(coordinator.synchronizeMapFocusRequest(store.mapFocusRequestGeneration, in: mapView))
+        XCTAssertFalse(coordinator.synchronizeMapFocusRequest(store.mapFocusRequestGeneration, in: mapView))
+        XCTAssertEqual(queuedActions.count, 1)
+        queuedActions.removeFirst()()
+        XCTAssertTrue(window.firstResponder === mapView)
+    }
+
+    @MainActor
+    func testDiagnosisConsumesExactSpatialSnapshotAndNoticeTitlesHaveHonestActions() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let tile = try XCTUnwrap(state.tiles.first {
+            guard $0.kind != .empty, $0.kind != .road, $0.constructionProgress >= 1,
+                  let sample = snapshot.spatialConsequences[$0.coordinate] else { return false }
+            return sample.vitality != .notApplicable
+        })
+        let sample = try XCTUnwrap(snapshot.spatialConsequences[tile.coordinate])
+        let diagnosis = try XCTUnwrap(CitySelectedLocationDiagnosis.make(tile: tile, snapshot: snapshot))
+
+        XCTAssertEqual(diagnosis.coordinate, tile.coordinate)
+        XCTAssertTrue(diagnosis.consequence.contains((sample.vitalityScore * 100).percentText))
+        XCTAssertTrue(diagnosis.accessibilitySummary.contains("Cause:"))
+        XCTAssertTrue(diagnosis.accessibilitySummary.contains("Consequence:"))
+        XCTAssertTrue(diagnosis.responses.allSatisfy { CityCommandCatalog.descriptor(for: $0.command).route == .store })
+
+        for title in CityNoticeActionCatalog.governedTitles {
+            let actions = CityNoticeActionCatalog.actions(for: title)
+            XCTAssertFalse(actions.isEmpty, "\(title) requires an explicit action disposition")
+            XCTAssertTrue(actions.allSatisfy { !$0.explanation.isEmpty })
+        }
+    }
+
+    @MainActor
+    func testSelectedDiagnosisRendersAtDefaultAndCompactSizes() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let tile = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty && $0.kind != .road })
+        store.select(tile.coordinate)
+        let compact = try bitmap(
+            of: InspectorView(store: store, compact: true).frame(width: 820, height: 220),
+            size: CGSize(width: 820, height: 220)
+        )
+        let regular = try bitmap(
+            of: InspectorView(store: store, compact: false).frame(width: 1120, height: 240),
+            size: CGSize(width: 1120, height: 240)
+        )
+        XCTAssertEqual(compact.size.width, 820, accuracy: 0.5)
+        XCTAssertEqual(compact.size.height, 220, accuracy: 0.5)
+        XCTAssertEqual(regular.size.width, 1120, accuracy: 0.5)
+        XCTAssertEqual(regular.size.height, 240, accuracy: 0.5)
     }
 
     @MainActor

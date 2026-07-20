@@ -62,6 +62,16 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
     case cameraZoomIn = "camera.zoom-in"
     case cameraZoomOut = "camera.zoom-out"
     case cameraFrameCity = "camera.frame-city"
+    case mapMoveNorth = "map.selection.north"
+    case mapMoveEast = "map.selection.east"
+    case mapMoveSouth = "map.selection.south"
+    case mapMoveWest = "map.selection.west"
+    case mapMoveNorthFast = "map.selection.north-fast"
+    case mapMoveEastFast = "map.selection.east-fast"
+    case mapMoveSouthFast = "map.selection.south-fast"
+    case mapMoveWestFast = "map.selection.west-fast"
+    case mapPrimaryAction = "map.action.primary"
+    case mapSecondaryAction = "map.action.secondary"
 
     var id: String { rawValue }
 }
@@ -271,6 +281,16 @@ enum CityCommandCatalog {
         add(.cameraZoomIn, "Zoom Map In", .camera, "Zoom the focused city map in.", shortcut: shortcut("=", [], "+", scope: .renderer), isSpatial: true, route: .renderer)
         add(.cameraZoomOut, "Zoom Map Out", .camera, "Zoom the focused city map out.", shortcut: shortcut("-", [], "−", scope: .renderer), isSpatial: true, route: .renderer)
         add(.cameraFrameCity, "Frame Developed City", .camera, "Return the focused map to the developed city frame.", shortcut: shortcut("0", [], "0", scope: .renderer), isSpatial: true, route: .renderer)
+        add(.mapMoveNorth, "Select Block North", .camera, "Move the focused map selection one block north.", shortcut: shortcut("up", [], "↑", scope: .gameplay), isSpatial: true)
+        add(.mapMoveEast, "Select Block East", .camera, "Move the focused map selection one block east.", shortcut: shortcut("right", [], "→", scope: .gameplay), isSpatial: true)
+        add(.mapMoveSouth, "Select Block South", .camera, "Move the focused map selection one block south.", shortcut: shortcut("down", [], "↓", scope: .gameplay), isSpatial: true)
+        add(.mapMoveWest, "Select Block West", .camera, "Move the focused map selection one block west.", shortcut: shortcut("left", [], "←", scope: .gameplay), isSpatial: true)
+        add(.mapMoveNorthFast, "Jump Selection North", .camera, "Move the focused map selection five blocks north.", shortcut: shortcut("up", [.shift], "⇧↑", scope: .gameplay), isSpatial: true)
+        add(.mapMoveEastFast, "Jump Selection East", .camera, "Move the focused map selection five blocks east.", shortcut: shortcut("right", [.shift], "⇧→", scope: .gameplay), isSpatial: true)
+        add(.mapMoveSouthFast, "Jump Selection South", .camera, "Move the focused map selection five blocks south.", shortcut: shortcut("down", [.shift], "⇧↓", scope: .gameplay), isSpatial: true)
+        add(.mapMoveWestFast, "Jump Selection West", .camera, "Move the focused map selection five blocks west.", shortcut: shortcut("left", [.shift], "⇧←", scope: .gameplay), isSpatial: true)
+        add(.mapPrimaryAction, "Use Primary Map Action", .camera, "Use the active inspect, build, or bulldoze action on the selected block.", shortcut: shortcut("return", [], "Return", scope: .gameplay), isSpatial: true)
+        add(.mapSecondaryAction, "Inspect Selected Block", .camera, "Use the secondary inspect action on the selected block.", shortcut: shortcut("return", [.shift], "⇧Return", scope: .gameplay), isSpatial: true)
 
         return values
     }()
@@ -296,6 +316,17 @@ enum CityCommandCatalog {
                 && $0.shortcut?.modifiers == modifiers
                 && $0.shortcut?.focusScope == scope
         }?.id
+    }
+
+    static let mapSelectionCommands: Set<CityCommandID> = [
+        .mapMoveNorth, .mapMoveEast, .mapMoveSouth, .mapMoveWest,
+        .mapMoveNorthFast, .mapMoveEastFast, .mapMoveSouthFast, .mapMoveWestFast
+    ]
+
+    static let mapActionCommands: Set<CityCommandID> = [.mapPrimaryAction, .mapSecondaryAction]
+
+    static var mapFocusedCommands: Set<CityCommandID> {
+        mapSelectionCommands.union(mapActionCommands)
     }
 
     static func id(for speed: SimulationSpeed) -> CityCommandID {

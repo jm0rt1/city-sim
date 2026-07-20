@@ -1,6 +1,6 @@
 # PLAY-032 Direct Action and Spatial Navigation Contract Proposal
 
-**Status:** Awaiting integration decision
+**Status:** Approved by integration for implementation; bounded to the ten commands, store-owned intent, UI-local presentation, and coordinated selection reveal described here
 
 **Authority base:** `36774db97e5dd017f1a4c9ecd0a4c288dd09c387`
 

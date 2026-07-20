@@ -30,6 +30,7 @@ final class CityGameStore: ObservableObject {
     @Published var lastFeedback: String?
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
     @Published private(set) var canUndo = false
+    @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
     private let saves = SaveGameService()
     private var undoStates: [CityGameState] = []
@@ -213,6 +214,7 @@ final class CityGameStore: ObservableObject {
         guard !canPerform(command) else { return nil }
         if let policyReason = commandPolicy.disabledReason { return policyReason }
         let descriptor = CityCommandCatalog.descriptor(for: command)
+        if descriptor.isSpatial { return "Available when the city map has focus" }
         switch descriptor.route {
         case .renderer:
             return "Available when the city map has focus"
@@ -227,6 +229,100 @@ final class CityGameStore: ObservableObject {
             default: return "Unavailable in the current context"
             }
         }
+    }
+
+    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
+        guard commandPolicy.allows(command), CityCommandCatalog.mapFocusedCommands.contains(command) else {
+            return false
+        }
+        if CityCommandCatalog.mapActionCommands.contains(command) {
+            return selectedCoordinate.flatMap { state.tile(at: $0) } != nil
+        }
+        return true
+    }
+
+    @discardableResult
+    func performMapCommand(_ command: CityCommandID) -> Bool {
+        guard canPerformMapCommand(command) else { return false }
+        switch command {
+        case .mapMoveNorth:
+            return moveMapSelection(dx: 0, dy: -1, distance: 1)
+        case .mapMoveEast:
+            return moveMapSelection(dx: 1, dy: 0, distance: 1)
+        case .mapMoveSouth:
+            return moveMapSelection(dx: 0, dy: 1, distance: 1)
+        case .mapMoveWest:
+            return moveMapSelection(dx: -1, dy: 0, distance: 1)
+        case .mapMoveNorthFast:
+            return moveMapSelection(dx: 0, dy: -1, distance: 5)
+        case .mapMoveEastFast:
+            return moveMapSelection(dx: 1, dy: 0, distance: 5)
+        case .mapMoveSouthFast:
+            return moveMapSelection(dx: 0, dy: 1, distance: 5)
+        case .mapMoveWestFast:
+            return moveMapSelection(dx: -1, dy: 0, distance: 5)
+        case .mapPrimaryAction:
+            return performMapAction(primary: true)
+        case .mapSecondaryAction:
+            return performMapAction(primary: false)
+        default:
+            return false
+        }
+    }
+
+    @discardableResult
+    func moveMapSelection(dx: Int, dy: Int, distance: Int) -> Bool {
+        guard commandPolicy == .enabled, distance > 0, state.gridWidth > 0, state.gridHeight > 0 else {
+            return false
+        }
+        let origin = selectedCoordinate ?? initialMapSelectionCoordinate()
+        let coordinate = GridCoordinate(
+            x: min(state.gridWidth - 1, max(0, origin.x + dx * distance)),
+            y: min(state.gridHeight - 1, max(0, origin.y + dy * distance))
+        )
+        selectedCoordinate = coordinate
+        hudContextScope = .selection
+        return true
+    }
+
+    @discardableResult
+    func performMapAction(primary: Bool) -> Bool {
+        guard commandPolicy == .enabled,
+              let coordinate = selectedCoordinate,
+              state.tile(at: coordinate) != nil else { return false }
+        if primary {
+            primaryAction(at: coordinate)
+        } else {
+            secondaryAction(at: coordinate)
+        }
+        return true
+    }
+
+    @discardableResult
+    func performMapFocused(_ command: CityCommandID) -> Bool {
+        let approved: Set<CityCommandID> = [
+            .buildCommercial, .buildIndustrial, .buildPark, .buildPowerPlant, .buildWaterTower,
+            .overlayUtilities, .overlayPollution, .overlayCity
+        ]
+        guard approved.contains(command), perform(command) else { return false }
+        mapFocusRequestGeneration &+= 1
+        return true
+    }
+
+    private func initialMapSelectionCoordinate() -> GridCoordinate {
+        let active = state.tiles.filter { $0.kind != .empty && $0.constructionProgress >= 1 }
+        guard !active.isEmpty else {
+            return GridCoordinate(x: state.gridWidth / 2, y: state.gridHeight / 2)
+        }
+        let centerX = Double(active.reduce(0) { $0 + $1.coordinate.x }) / Double(active.count)
+        let centerY = Double(active.reduce(0) { $0 + $1.coordinate.y }) / Double(active.count)
+        return active.min {
+            let lhs = abs(Double($0.coordinate.x) - centerX) + abs(Double($0.coordinate.y) - centerY)
+            let rhs = abs(Double($1.coordinate.x) - centerX) + abs(Double($1.coordinate.y) - centerY)
+            if lhs != rhs { return lhs < rhs }
+            if $0.coordinate.y != $1.coordinate.y { return $0.coordinate.y < $1.coordinate.y }
+            return $0.coordinate.x < $1.coordinate.x
+        }!.coordinate
     }
 
     func setSpeed(_ speed: SimulationSpeed) {

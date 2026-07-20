@@ -256,7 +256,7 @@ final class CityScene: SKScene {
             super.keyDown(with: event)
             return
         }
-        var key = event.charactersIgnoringModifiers?.lowercased() ?? ""
+        var key = catalogKey(for: event)
         if key == "+" { key = "=" }
         if key == "_" { key = "-" }
         let catalogModifiers: CityCommandModifiers = modifiers.contains(.shift) ? [.shift] : []
@@ -265,6 +265,12 @@ final class CityScene: SKScene {
             modifiers: catalogModifiers,
             scope: .gameplay
         ) {
+            if CityCommandCatalog.mapFocusedCommands.contains(command) {
+                guard let mapView = view, mapView.window?.firstResponder === mapView else {
+                    super.keyDown(with: event)
+                    return
+                }
+            }
             guard allowsCommand?(command) ?? true else { return }
             onCommandAction?(command)
             return
@@ -284,6 +290,32 @@ final class CityScene: SKScene {
             return
         }
         super.keyDown(with: event)
+    }
+
+    func revealSelection(_ coordinate: GridCoordinate) {
+        let target = style.isoPosition(coordinate)
+        let horizontalInset = max(tileWidth * 2, size.width * cameraNode.xScale * 0.34)
+        let verticalInset = max(tileHeight * 2, size.height * cameraNode.yScale * 0.30)
+        let dx = target.x - cameraNode.position.x
+        let dy = target.y - cameraNode.position.y
+        if abs(dx) > horizontalInset {
+            cameraNode.position.x = target.x - copysign(horizontalInset, dx)
+        }
+        if abs(dy) > verticalInset {
+            cameraNode.position.y = target.y - copysign(verticalInset, dy)
+        }
+        refreshForCameraChange()
+    }
+
+    private func catalogKey(for event: NSEvent) -> String {
+        switch event.keyCode {
+        case 123: "left"
+        case 124: "right"
+        case 125: "down"
+        case 126: "up"
+        case 36, 76: "return"
+        default: event.charactersIgnoringModifiers?.lowercased() ?? ""
+        }
     }
 
     override func mouseMoved(with event: NSEvent) {

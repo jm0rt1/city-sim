@@ -40,6 +40,24 @@ struct EventFeedView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("Open \(summary.message.title)")
                 .accessibilityValue(summary.count > 1 ? "\(summary.count) similar events" : summary.message.detail)
+                let actions = CityNoticeActionCatalog.actions(for: summary.message.title)
+                if !actions.isEmpty {
+                    Menu("Act") {
+                        ForEach(actions) { response in
+                            Button(response.title) {
+                                if response.focusesMap {
+                                    store.performMapFocused(response.command)
+                                } else {
+                                    store.perform(response.command)
+                                }
+                            }
+                            .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
+                        }
+                    }
+                    .menuStyle(.borderlessButton)
+                    .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                    .accessibilityLabel("Act on \(summary.message.title)")
+                }
                 Button { store.dismissMessageSummary(summary) } label: { Image(systemName: "xmark") }
                     .buttonStyle(.plain)
                     .foregroundStyle(.secondary)

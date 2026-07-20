@@ -33,6 +33,12 @@ private struct OverlayRenderSignature: Equatable {
     let colorToken: UInt32
 }
 
+private struct RuntimeTreeMetrics {
+    let nodes: Int
+    let drawables: Int
+    let actions: Int
+}
+
 private enum InteractionPreviewStatus: Equatable {
     case inspect(BuildingKind)
     case validBuild(BuildingKind)
@@ -92,6 +98,7 @@ final class CityScene: SKScene {
     private let selectionLabel = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
     private var renderedState: CityGameState?
     private var renderedSnapshot: CityPresentationSnapshot?
+    private var renderedReducedMotion = false
     private var presentedConsequenceEventTicks: [String: Int] = [:]
     private var displayedConsequenceEventExpiryTicks: [GridCoordinate: Int] = [:]
     private var renderedOverlay: DataOverlay = .none
@@ -160,6 +167,9 @@ final class CityScene: SKScene {
         let renderStarted = ProcessInfo.processInfo.systemUptime
         let isFirstRender = renderedSnapshot == nil
         let previousSnapshot = renderedSnapshot
+        let previousSelection = renderedSelection
+        let motionChanged = renderedReducedMotion != reducedMotion
+        let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
             $0.value >= snapshot.authoritativeTick - 128
         }
@@ -183,13 +193,31 @@ final class CityScene: SKScene {
         renderedOverlay = overlay
         renderedSelection = selection
         renderedInteractionMode = interactionMode
+        renderedReducedMotion = reducedMotion
         diagnosticsSnapshot = updateWorld(snapshot: snapshot, overlay: overlay)
-        expireConsequenceEvents(at: snapshot.authoritativeTick)
-        presentConsequenceEvents(consequenceEvents)
+        let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
+        let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
         if isFirstRender { focusDevelopedCore(state) }
-        refreshRuntimeDiagnostics(consumedEventCount: consequenceEvents.count)
+        let displayedCueCount = currentDisplayedConsequenceCueCount()
+        let worldChanged = diagnosticsSnapshot.createdTileCount > 0
+            || diagnosticsSnapshot.updatedTileCount > 0
+            || diagnosticsSnapshot.removedTileCount > 0
+            || diagnosticsSnapshot.overlayUpdateCount > 0
+        let unexplainedCueRemoval = priorDisplayedCueCount != displayedCueCount
+            && expiredCueCount == 0
+            && insertedCueCount == 0
+            && !worldChanged
+        let requiresTreeRecount = isFirstRender
+            || previousSelection != selection
+            || motionChanged
+            || unexplainedCueRemoval
+        refreshRuntimeDiagnostics(
+            consumedEventCount: consequenceEvents.count,
+            displayedCueCount: displayedCueCount,
+            requiresTreeRecount: requiresTreeRecount
+        )
         diagnosticsSnapshot.updateDurationMilliseconds =
             (ProcessInfo.processInfo.systemUptime - renderStarted) * 1_000
     }
@@ -257,6 +285,11 @@ final class CityScene: SKScene {
         tileRecords[coordinate]?.consequenceLayer.children.filter {
             $0.name?.hasPrefix("spatial.event.") == true
         }.count ?? 0
+    }
+
+    func recountedRuntimeMetricsForTesting() -> (nodes: Int, drawables: Int, actions: Int) {
+        let metrics = runtimeTreeMetrics(worldLayer)
+        return (metrics.nodes - 1, metrics.drawables, metrics.actions)
     }
 
     func configureProofCamera(detail: CameraDetailLevel, centeredOn coordinate: GridCoordinate? = nil) {
@@ -390,15 +423,28 @@ final class CityScene: SKScene {
         )
         let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
         if renderedGridSize != gridSize {
+            let priorBackdropMetrics = runtimeTreeMetrics(backdropLayer)
             renderedGridSize = gridSize
             backdropLayer.removeAllChildren()
             backdropLayer.addChild(terrainRenderer.makeBackdrop(gridWidth: state.gridWidth, gridHeight: state.gridHeight))
+            applyRuntimeDelta(
+                from: priorBackdropMetrics,
+                to: runtimeTreeMetrics(backdropLayer),
+                diagnostics: &diagnostics
+            )
         }
 
         let desiredCoordinates = Set(state.tiles.map(\.coordinate))
         let removed = tileRecords.keys.filter { !desiredCoordinates.contains($0) }
         for coordinate in removed {
-            tileRecords.removeValue(forKey: coordinate)?.root.removeFromParent()
+            if let record = tileRecords.removeValue(forKey: coordinate) {
+                applyRuntimeDelta(
+                    from: runtimeTreeMetrics(record.root),
+                    to: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                    diagnostics: &diagnostics
+                )
+                record.root.removeFromParent()
+            }
         }
         diagnostics.removedTileCount = removed.count
 
@@ -422,12 +468,18 @@ final class CityScene: SKScene {
             if let existing = tileRecords[tile.coordinate], existing.signature == signature {
                 diagnostics.reusedTileCount += 1
                 if existing.overlaySignature != overlaySignature {
+                    let priorOverlayMetrics = runtimeTreeMetrics(existing.overlayLayer)
                     updateOverlay(
                         in: existing.overlayLayer,
                         tile: tile,
                         consequence: consequence,
                         state: state,
                         overlay: overlay
+                    )
+                    applyRuntimeDelta(
+                        from: priorOverlayMetrics,
+                        to: runtimeTreeMetrics(existing.overlayLayer),
+                        diagnostics: &diagnostics
                     )
                     existing.overlaySignature = overlaySignature
                     diagnostics.overlayUpdateCount += 1
@@ -444,10 +496,20 @@ final class CityScene: SKScene {
                 overlaySignature: overlaySignature
             )
             if let existing = tileRecords.updateValue(replacement, forKey: tile.coordinate) {
+                applyRuntimeDelta(
+                    from: runtimeTreeMetrics(existing.root),
+                    to: runtimeTreeMetrics(replacement.root),
+                    diagnostics: &diagnostics
+                )
                 existing.root.removeFromParent()
                 diagnostics.updatedTileCount += 1
                 diagnostics.updatedCoordinates.insert(tile.coordinate)
             } else {
+                applyRuntimeDelta(
+                    from: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                    to: runtimeTreeMetrics(replacement.root),
+                    diagnostics: &diagnostics
+                )
                 diagnostics.createdTileCount += 1
             }
             tileLayer.addChild(replacement.root)
@@ -596,8 +658,8 @@ final class CityScene: SKScene {
         ))
     }
 
-    private func presentConsequenceEvents(_ events: [CitySpatialConsequenceEvent]) {
-        guard let state = renderedState else { return }
+    private func presentConsequenceEvents(_ events: [CitySpatialConsequenceEvent]) -> Int {
+        guard let state = renderedState else { return 0 }
         let visible = events.filter { event in
             guard let tile = state.tile(at: event.coordinate) else { return false }
             return tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
@@ -608,43 +670,100 @@ final class CityScene: SKScene {
             if lhs.coordinate.y != rhs.coordinate.y { return lhs.coordinate.y < rhs.coordinate.y }
             return lhs.coordinate.x < rhs.coordinate.x
         }
+        var insertedCount = 0
         for event in summarized {
             guard let layer = tileRecords[event.coordinate]?.consequenceLayer else { continue }
             for prior in layer.children where prior.name?.hasPrefix("spatial.event.") == true {
+                subtractRuntimeMetrics(runtimeTreeMetrics(prior), from: &diagnosticsSnapshot)
                 prior.removeFromParent()
             }
-            layer.addChild(spatialConsequenceRenderer.makeEventCue(
+            let cue = spatialConsequenceRenderer.makeEventCue(
                 for: event,
                 reducedMotion: reducedMotion
-            ))
+            )
+            layer.addChild(cue)
+            addRuntimeMetrics(runtimeTreeMetrics(cue), to: &diagnosticsSnapshot)
             displayedConsequenceEventExpiryTicks[event.coordinate] = event.authoritativeTick + 4
+            insertedCount += 1
         }
+        return insertedCount
     }
 
-    private func expireConsequenceEvents(at authoritativeTick: Int) {
+    private func expireConsequenceEvents(at authoritativeTick: Int) -> Int {
         let expired = displayedConsequenceEventExpiryTicks.filter {
             authoritativeTick >= $0.value
         }.map(\.key)
+        var removedCount = 0
         for coordinate in expired {
             if let layer = tileRecords[coordinate]?.consequenceLayer {
                 for child in layer.children where child.name?.hasPrefix("spatial.event.") == true {
+                    subtractRuntimeMetrics(runtimeTreeMetrics(child), from: &diagnosticsSnapshot)
                     child.removeFromParent()
+                    removedCount += 1
                 }
             }
             displayedConsequenceEventExpiryTicks.removeValue(forKey: coordinate)
         }
+        return removedCount
     }
 
-    private func refreshRuntimeDiagnostics(consumedEventCount: Int) {
-        diagnosticsSnapshot.nodeCount = recursiveNodeCount(worldLayer)
-        diagnosticsSnapshot.drawableNodeCount = recursiveDrawableNodeCount(worldLayer)
-        diagnosticsSnapshot.activeActionCount = recursiveActiveActionCount(worldLayer)
-        diagnosticsSnapshot.consumedConsequenceEventCount = consumedEventCount
-        diagnosticsSnapshot.displayedConsequenceCueCount = tileRecords.values.reduce(0) { count, record in
+    private func currentDisplayedConsequenceCueCount() -> Int {
+        tileRecords.values.reduce(0) { count, record in
             count + record.consequenceLayer.children.filter {
                 $0.name?.hasPrefix("spatial.event.") == true
             }.count
         }
+    }
+
+    private func refreshRuntimeDiagnostics(
+        consumedEventCount: Int,
+        displayedCueCount: Int,
+        requiresTreeRecount: Bool
+    ) {
+        if requiresTreeRecount {
+            let metrics = runtimeTreeMetrics(worldLayer)
+            diagnosticsSnapshot.nodeCount = metrics.nodes - 1
+            diagnosticsSnapshot.drawableNodeCount = metrics.drawables
+            diagnosticsSnapshot.activeActionCount = metrics.actions
+        }
+        diagnosticsSnapshot.consumedConsequenceEventCount = consumedEventCount
+        diagnosticsSnapshot.displayedConsequenceCueCount = displayedCueCount
+    }
+
+    private func runtimeTreeMetrics(_ node: SKNode) -> RuntimeTreeMetrics {
+        RuntimeTreeMetrics(
+            nodes: 1 + recursiveNodeCount(node),
+            drawables: recursiveDrawableNodeCount(node),
+            actions: recursiveActiveActionCount(node)
+        )
+    }
+
+    private func applyRuntimeDelta(
+        from old: RuntimeTreeMetrics,
+        to new: RuntimeTreeMetrics,
+        diagnostics: inout RendererDiagnosticsSnapshot
+    ) {
+        diagnostics.nodeCount += new.nodes - old.nodes
+        diagnostics.drawableNodeCount += new.drawables - old.drawables
+        diagnostics.activeActionCount += new.actions - old.actions
+    }
+
+    private func addRuntimeMetrics(
+        _ metrics: RuntimeTreeMetrics,
+        to diagnostics: inout RendererDiagnosticsSnapshot
+    ) {
+        diagnostics.nodeCount += metrics.nodes
+        diagnostics.drawableNodeCount += metrics.drawables
+        diagnostics.activeActionCount += metrics.actions
+    }
+
+    private func subtractRuntimeMetrics(
+        _ metrics: RuntimeTreeMetrics,
+        from diagnostics: inout RendererDiagnosticsSnapshot
+    ) {
+        diagnostics.nodeCount -= metrics.nodes
+        diagnostics.drawableNodeCount -= metrics.drawables
+        diagnostics.activeActionCount -= metrics.actions
     }
 
     private func consequenceEventPriority(

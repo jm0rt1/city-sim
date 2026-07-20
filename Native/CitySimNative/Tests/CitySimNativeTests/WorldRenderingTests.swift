@@ -134,6 +134,10 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertLessThanOrEqual(scene.tileConsequenceEventNodeCountForTesting(at: GridCoordinate(x: 10, y: 11)), 1)
         XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
         XCTAssertGreaterThan(scene.diagnosticsSnapshot.nodeCount, strainedNodeCount)
+        let insertedRecount = scene.recountedRuntimeMetricsForTesting()
+        XCTAssertEqual(scene.diagnosticsSnapshot.nodeCount, insertedRecount.nodes)
+        XCTAssertEqual(scene.diagnosticsSnapshot.drawableNodeCount, insertedRecount.drawables)
+        XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, insertedRecount.actions)
         let recoveryNodeCount = scene.diagnosticsSnapshot.nodeCount
         let recoveryDrawableCount = scene.diagnosticsSnapshot.drawableNodeCount
 
@@ -174,8 +178,14 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(expiryScene.diagnosticsSnapshot.consumedConsequenceEventCount, 0)
         XCTAssertEqual(expiryScene.diagnosticsSnapshot.displayedConsequenceCueCount, 0)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.updatedTileCount, 0)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.reusedTileCount, elapsed.tiles.count)
         XCTAssertLessThan(expiryScene.diagnosticsSnapshot.nodeCount, beforeExpiryNodeCount)
         XCTAssertEqual(expiryScene.diagnosticsSnapshot.activeActionCount, 0)
+        let expiredRecount = expiryScene.recountedRuntimeMetricsForTesting()
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.nodeCount, expiredRecount.nodes)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.drawableNodeCount, expiredRecount.drawables)
+        XCTAssertEqual(expiryScene.diagnosticsSnapshot.activeActionCount, expiredRecount.actions)
 
         let loaded = try JSONDecoder().decode(CityGameState.self, from: JSONEncoder().encode(recovered))
         let loadedScene = CityScene(size: CGSize(width: 1_280, height: 800))
@@ -761,17 +771,23 @@ final class WorldRenderingTests: XCTestCase {
         }
 
         let elapsedMilliseconds = (ProcessInfo.processInfo.systemUptime - started) * 1_000
+        let averageMilliseconds = elapsedMilliseconds / Double(pulseCount)
         XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
         XCTAssertEqual(scene.tileRootIdentifier(at: developed), initialRoot)
         XCTAssertEqual(scene.diagnosticsSnapshot.nodeCount, initialNodes)
         XCTAssertEqual(scene.diagnosticsSnapshot.drawableNodeCount, initialDrawables)
         XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, initialActions)
+        XCTAssertLessThanOrEqual(
+            averageMilliseconds,
+            2.1,
+            "Unchanged-pulse renderer telemetry must remain within the established 2.1 ms budget"
+        )
         print(
             "CITYSIM_PLAY021_SOAK_DIAGNOSTICS " +
             "equivalent_minutes=30 pulses=\(pulseCount) " +
             "nodes=\(initialNodes) drawables=\(initialDrawables) actions=\(initialActions) " +
             "total_ms=\(String(format: "%.3f", elapsedMilliseconds)) " +
-            "average_ms=\(String(format: "%.4f", elapsedMilliseconds / Double(pulseCount)))"
+            "average_ms=\(String(format: "%.4f", averageMilliseconds))"
         )
     }
 

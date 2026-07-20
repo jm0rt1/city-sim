@@ -38,6 +38,7 @@ struct CitySceneView: NSViewRepresentable {
     func updateNSView(_ view: SKView, context: Context) {
         context.coordinator.store = store
         view.window?.acceptsMouseMovedEvents = true
+        context.coordinator.synchronizeCommandPolicy(store.commandPolicy, in: view)
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
         let proofReducedMotion: Bool
@@ -55,9 +56,31 @@ struct CitySceneView: NSViewRepresentable {
         )
     }
 
+    @MainActor
     final class Coordinator {
         var store: CityGameStore
         weak var scene: CityScene?
-        init(store: CityGameStore) { self.store = store }
+        private(set) var previousCommandPolicy: CityCommandPolicy
+
+        init(store: CityGameStore) {
+            self.store = store
+            previousCommandPolicy = store.commandPolicy
+        }
+
+        @discardableResult
+        func synchronizeCommandPolicy(_ commandPolicy: CityCommandPolicy, in view: SKView) -> Bool {
+            let priorPolicy = previousCommandPolicy
+            previousCommandPolicy = commandPolicy
+            guard Self.requiresGameplayFocus(from: priorPolicy, to: commandPolicy),
+                  let window = view.window else { return false }
+            return window.makeFirstResponder(view)
+        }
+
+        static func requiresGameplayFocus(
+            from priorPolicy: CityCommandPolicy,
+            to commandPolicy: CityCommandPolicy
+        ) -> Bool {
+            priorPolicy == .blocked(.welcome) && commandPolicy == .enabled
+        }
     }
 }

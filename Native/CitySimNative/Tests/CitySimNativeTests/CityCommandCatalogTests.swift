@@ -1,4 +1,5 @@
 import AppKit
+import SpriteKit
 import SwiftUI
 import XCTest
 @testable import CitySimNative
@@ -145,6 +146,37 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .bulldoze)
         XCTAssertTrue(store.perform(.openCommandGuide))
         XCTAssertTrue(store.showCommandGuide)
+    }
+
+    @MainActor
+    func testWelcomePolicyTransitionHandsFirstResponderToMapExactlyOnce() {
+        let store = CityGameStore(state: .newCity(seed: 42), commandPolicy: .blocked(.welcome))
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let priorResponder = NSTextField(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let contentView = NSView(frame: mapView.frame)
+        let window = NSWindow(
+            contentRect: mapView.frame,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        contentView.addSubview(mapView)
+        contentView.addSubview(priorResponder)
+        window.contentView = contentView
+
+        XCTAssertTrue(window.makeFirstResponder(priorResponder))
+        XCTAssertFalse(coordinator.synchronizeCommandPolicy(.blocked(.welcome), in: mapView))
+        XCTAssertTrue(store.dismissBlockingModal(.welcome))
+        XCTAssertTrue(coordinator.synchronizeCommandPolicy(store.commandPolicy, in: mapView))
+        XCTAssertTrue(window.firstResponder === mapView)
+        XCTAssertEqual(coordinator.previousCommandPolicy, .enabled)
+        XCTAssertFalse(
+            coordinator.synchronizeCommandPolicy(.enabled, in: mapView),
+            "The completed policy transition must not churn first responder"
+        )
+        XCTAssertFalse(CitySceneView.Coordinator.requiresGameplayFocus(from: .enabled, to: .blocked(.welcome)))
+        XCTAssertFalse(CitySceneView.Coordinator.requiresGameplayFocus(from: .enabled, to: .enabled))
     }
 
     @MainActor

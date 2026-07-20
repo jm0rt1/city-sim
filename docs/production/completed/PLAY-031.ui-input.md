@@ -11,6 +11,8 @@ Fresh isolated candidates establish the intended 1,440 x 900 default once, subje
 1. `1a14df2ad8707b781d8bedd668de9472a29f59d5` — `PLAY-031: Quarantine onboarding commands`
 2. `640f7e3d04a714e1b042ee9ae43aa40b4fb81700` — `PLAY-031: Restore fresh candidate window size`
 3. `cd97787b64854d0041dca0636247599c41fcbf65` — `PLAY-031: Contain onboarding focus`
+4. `bacbe6fdba3d85047fca49548191b8dfec29c5c0` — `PLAY-031: Restore gameplay focus after welcome`
+5. `fc61b177a639e768615664a46f7a5e8f81381c30` — `PLAY-031: Tie focus restoration to welcome policy`
 
 Integration authority `43be4f40f92827c081663ed41fcc93090ce506fc` and product candidate ancestor `c70321b` are both ancestors. No push or integration was performed.
 
@@ -73,3 +75,23 @@ The host display constrained the requested 1,440 x 900 default content to a 1,22
 ## Contract review
 
 No shared-contract conflict was found. PLAY-031 extends the accepted CONTRACT-002 catalog/store route with typed modal availability and does not redefine command IDs, gameplay progression truth, persistence, renderer truth, or spatial-grid keyboard design.
+
+## D006 follow-up repair
+
+Independent PLAY-050 testing found that both Return and pointer activation removed Welcome but left first-responder ownership on the vanished SwiftUI modal/window. Bare gameplay shortcuts were therefore inert until the player clicked the `SKView`; global Command-/ still worked through the menu route.
+
+The repair is scoped to the existing focus boundary:
+
+- `WelcomeView` releases its `@FocusState` before either dismissal route invokes the shared continuation.
+- `CitySceneView.Coordinator` retains the previous typed `CityCommandPolicy`.
+- `updateNSView` observes the exact `.blocked(.welcome)` to `.enabled` transition while holding the real `SKView`, then calls `window.makeFirstResponder(view)` once.
+- Enabled-to-enabled updates and enabled-to-blocked presentation do not change first responder. There is no delay, timer, duplicate shortcut route, rendering change, or new shared contract.
+
+Clean writable-cache validation on candidate `fc61b177a639e768615664a46f7a5e8f81381c30`:
+
+- focused `CityCommandCatalogTests`: 10/10 in 0.730 seconds;
+- full native suite: 88/88 in 225.292 seconds;
+- the focused AppKit regression moves first responder from an actual `NSTextField` to an actual `SKView` only for the typed Welcome dismissal transition, then proves the transition cannot churn focus;
+- exact staged `./script/build_and_run.sh --verify` passed for bundle `com.jfmortensen.citysim.ui-input.wdbeadac6e0bd`, executable `CitySimNative-wdbeadac6e0bd`, PID 50539, with isolated candidate data and freshly reset candidate preferences.
+
+The Computer Use `get_app_state` call hung without returning accessibility or screenshot state and was aborted after the integration captain intervened. No live D006 pass is claimed from this lane. The previously retained D001 default/compact containment captures remain valid because the repair does not alter modal visibility, hit testing, accessibility hiding, or command policy. PLAY-050 must independently prove both dismissal routes, immediate Space/1-3/B/V operation without a click, Command-/ and Escape precedence, and absence of vanished modal focus before acceptance.

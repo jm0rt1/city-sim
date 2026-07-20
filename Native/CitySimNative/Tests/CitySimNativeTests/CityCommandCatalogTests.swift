@@ -162,8 +162,20 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .inspect)
         XCTAssertEqual(dispatchCount, 3)
 
+        scene.keyDown(with: try keyEvent(characters: "5", keyCode: 23, modifiers: .shift))
+        XCTAssertEqual(store.selectedBuildCategory, .civic)
+        XCTAssertEqual(store.selectedTool, .park)
+        XCTAssertEqual(store.interactionMode, .build(.park))
+        XCTAssertEqual(dispatchCount, 4)
+
+        scene.keyDown(with: try keyEvent(characters: "h", keyCode: 4))
+        XCTAssertEqual(store.selectedBuildCategory, .zones)
+        XCTAssertEqual(store.selectedTool, .residential)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(dispatchCount, 5)
+
         scene.keyDown(with: try keyEvent(characters: "b", keyCode: 11, modifiers: .command))
-        XCTAssertEqual(dispatchCount, 3, "Modified input belongs to SwiftUI menus and must not double invoke")
+        XCTAssertEqual(dispatchCount, 5, "Modified input belongs to SwiftUI menus and must not double invoke")
     }
 
     @MainActor

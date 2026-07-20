@@ -11,7 +11,6 @@ struct ContentView: View {
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
-    @State private var gameplayFocusRequest = CitySceneFocusRequest.initial
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -113,7 +112,6 @@ struct ContentView: View {
                     withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
                         if store.dismissBlockingModal(.welcome) {
                             hasSeenWelcome = true
-                            gameplayFocusRequest = gameplayFocusRequest.next()
                         }
                     }
                 }
@@ -127,7 +125,7 @@ struct ContentView: View {
     @ViewBuilder
     private func gameSurface(compact: Bool) -> some View {
         ZStack {
-            CitySceneView(store: store, focusRequest: gameplayFocusRequest).ignoresSafeArea()
+            CitySceneView(store: store).ignoresSafeArea()
 
             VStack(spacing: compact ? 8 : 10) {
                 TopHUDView(store: store, compact: compact)

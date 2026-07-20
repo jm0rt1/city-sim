@@ -1,20 +1,9 @@
 import SpriteKit
 import SwiftUI
 
-struct CitySceneFocusRequest: Equatable {
-    static let initial = CitySceneFocusRequest(sequence: 0)
-
-    let sequence: UInt
-
-    func next() -> CitySceneFocusRequest {
-        CitySceneFocusRequest(sequence: sequence &+ 1)
-    }
-}
-
 @MainActor
 struct CitySceneView: NSViewRepresentable {
     @ObservedObject var store: CityGameStore
-    var focusRequest: CitySceneFocusRequest = .initial
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @AppStorage("reduceGameMotion") private var reduceGameMotion = false
 
@@ -49,7 +38,7 @@ struct CitySceneView: NSViewRepresentable {
     func updateNSView(_ view: SKView, context: Context) {
         context.coordinator.store = store
         view.window?.acceptsMouseMovedEvents = true
-        context.coordinator.fulfill(focusRequest, in: view)
+        context.coordinator.synchronizeCommandPolicy(store.commandPolicy, in: view)
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
         let proofReducedMotion: Bool
@@ -71,16 +60,27 @@ struct CitySceneView: NSViewRepresentable {
     final class Coordinator {
         var store: CityGameStore
         weak var scene: CityScene?
-        private(set) var fulfilledFocusRequest = CitySceneFocusRequest.initial
-        init(store: CityGameStore) { self.store = store }
+        private(set) var previousCommandPolicy: CityCommandPolicy
+
+        init(store: CityGameStore) {
+            self.store = store
+            previousCommandPolicy = store.commandPolicy
+        }
 
         @discardableResult
-        func fulfill(_ request: CitySceneFocusRequest, in view: SKView) -> Bool {
-            guard request != fulfilledFocusRequest,
-                  let window = view.window,
-                  window.makeFirstResponder(view) else { return false }
-            fulfilledFocusRequest = request
-            return true
+        func synchronizeCommandPolicy(_ commandPolicy: CityCommandPolicy, in view: SKView) -> Bool {
+            let priorPolicy = previousCommandPolicy
+            previousCommandPolicy = commandPolicy
+            guard Self.requiresGameplayFocus(from: priorPolicy, to: commandPolicy),
+                  let window = view.window else { return false }
+            return window.makeFirstResponder(view)
+        }
+
+        static func requiresGameplayFocus(
+            from priorPolicy: CityCommandPolicy,
+            to commandPolicy: CityCommandPolicy
+        ) -> Bool {
+            priorPolicy == .blocked(.welcome) && commandPolicy == .enabled
         }
     }
 }

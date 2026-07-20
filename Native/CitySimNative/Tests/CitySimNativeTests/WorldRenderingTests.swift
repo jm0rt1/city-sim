@@ -74,7 +74,9 @@ final class WorldRenderingTests: XCTestCase {
         let distressedRoot = renderer.makeLot(for: distressed, detail: .block, reducedMotion: true)
         let distressedNames = descendantNames(in: distressedRoot)
         XCTAssertTrue(distressedNames.contains("lot.lifecycle.condition.distressed"))
-        XCTAssertTrue(distressedNames.contains("lot.lifecycle.growth.tier.2"))
+        XCTAssertFalse(distressedNames.contains("lot.lifecycle.growth.tier.2"))
+        XCTAssertTrue(distressedNames.contains("lot.condition.boarding"))
+        XCTAssertTrue(distressedNames.contains("lot.condition.rubble"))
         XCTAssertTrue(descendantLabels(in: distressedRoot).contains("DECLINE"))
 
         var recovered = distressed
@@ -83,6 +85,92 @@ final class WorldRenderingTests: XCTestCase {
         let recoveredRoot = renderer.makeLot(for: recovered, detail: .block, reducedMotion: true)
         let recoveredNames = descendantNames(in: recoveredRoot)
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.distressed"))
+        XCTAssertTrue(recoveredNames.contains("lot.lifecycle.condition.maintained"))
+        XCTAssertTrue(recoveredNames.contains("lot.lifecycle.growth.tier.2"))
+        XCTAssertTrue(descendantLabels(in: recoveredRoot).contains("HEALTHY GROWTH"))
+    }
+
+    @MainActor
+    func testLifecycleSilhouettesMotionAndReducedMotionFallbacksStayDistinct() {
+        let renderer = LotRenderer(style: WorldVisualStyle())
+        let coordinate = GridCoordinate(x: 6, y: 4)
+        let expectedStageProp: [(Double, String)] = [
+            (0.0, "lot.construction.excavation"),
+            (0.25, "lot.construction.rebar"),
+            (0.50, "lot.construction.crane"),
+            (0.75, "lot.construction.scaffoldSilhouette")
+        ]
+
+        for (progress, expectedName) in expectedStageProp {
+            let tile = CityTile(
+                coordinate: coordinate,
+                kind: .residential,
+                condition: 1,
+                constructionProgress: progress
+            )
+            let animated = renderer.makeLot(for: tile, detail: .block, reducedMotion: false)
+            let staticFallback = renderer.makeLot(for: tile, detail: .block, reducedMotion: true)
+            XCTAssertTrue(descendantNames(in: animated).contains(expectedName))
+            XCTAssertTrue(descendantNames(in: staticFallback).contains(expectedName))
+            XCTAssertGreaterThan(recursiveActiveActionCount(animated), 0)
+            XCTAssertEqual(recursiveActiveActionCount(staticFallback), 0)
+        }
+
+        let healthyGrowth = CityTile(
+            coordinate: coordinate,
+            kind: .commercial,
+            level: 3,
+            occupancy: 0,
+            condition: 1,
+            constructionProgress: 1
+        )
+        let growthRoot = renderer.makeLot(for: healthyGrowth, detail: .block, reducedMotion: false)
+        XCTAssertTrue(descendantNames(in: growthRoot).contains("lot.lifecycle.growth.tier.3"))
+        XCTAssertTrue(descendantNames(in: growthRoot).contains("lot.growth.pennants"))
+        XCTAssertGreaterThan(recursiveActiveActionCount(growthRoot), 0)
+
+        var stressed = healthyGrowth
+        stressed.condition = 0.58
+        let stressedRoot = renderer.makeLot(for: stressed, detail: .block, reducedMotion: false)
+        XCTAssertTrue(descendantLabels(in: stressedRoot).contains("STRESS"))
+        XCTAssertFalse(descendantNames(in: stressedRoot).contains("lot.lifecycle.growth.tier.3"))
+        XCTAssertGreaterThan(recursiveActiveActionCount(stressedRoot), 0)
+    }
+
+    @MainActor
+    func testAnimatedLifecycleNodesReuseAcrossUnchangedPulsesWithoutAccumulation() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let construction = GridCoordinate(x: 10, y: 11)
+        let growth = GridCoordinate(x: 12, y: 15)
+        state.updateTile(at: construction) {
+            $0.kind = .residential
+            $0.constructionProgress = 0.50
+        }
+        state.updateTile(at: growth) {
+            $0.kind = .commercial
+            $0.level = 3
+            $0.condition = 1
+            $0.constructionProgress = 1
+        }
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = false
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        let constructionRoot = try XCTUnwrap(scene.tileRootIdentifier(at: construction))
+        let initialActions = scene.diagnosticsSnapshot.activeActionCount
+        XCTAssertGreaterThan(initialActions, 0)
+
+        for _ in 0..<12 {
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
+            XCTAssertEqual(scene.tileRootIdentifier(at: construction), constructionRoot)
+            XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, initialActions)
+        }
+
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
+        XCTAssertNotEqual(scene.tileRootIdentifier(at: construction), constructionRoot)
     }
 
     @MainActor
@@ -124,17 +212,49 @@ final class WorldRenderingTests: XCTestCase {
 
     @MainActor
     func testLifecycleProofFramesDistinguishConstructionDeclineAndRecovery() throws {
-        let before = try lifecycleFrame(state: lifecycleProofState(recovered: false))
-        let after = try lifecycleFrame(state: lifecycleProofState(recovered: true))
+        let before = try lifecycleFrame(
+            state: lifecycleProofState(recovered: false),
+            size: CGSize(width: 1_280, height: 800),
+            detail: .neighborhood
+        )
+        let after = try lifecycleFrame(
+            state: lifecycleProofState(recovered: true),
+            size: CGSize(width: 1_280, height: 800),
+            detail: .neighborhood
+        )
+        let compact = try lifecycleFrame(
+            state: lifecycleProofState(recovered: false),
+            size: CGSize(width: 900, height: 600),
+            detail: .neighborhood
+        )
+        let city = try lifecycleFrame(
+            state: lifecycleProofState(recovered: false),
+            size: CGSize(width: 1_280, height: 800),
+            detail: .city
+        )
+        let block = try lifecycleFrame(
+            state: lifecycleProofState(recovered: false),
+            size: CGSize(width: 1_280, height: 800),
+            detail: .block
+        )
 
         XCTAssertGreaterThan(before.png.count, 40_000)
         XCTAssertGreaterThan(after.png.count, 40_000)
+        XCTAssertGreaterThan(compact.png.count, 40_000)
+        XCTAssertGreaterThan(city.png.count, 40_000)
+        XCTAssertGreaterThan(block.png.count, 40_000)
         XCTAssertNotEqual(before.png, after.png)
-        XCTAssertEqual(before.diagnostics.totalTileCount, 64)
-        XCTAssertEqual(after.diagnostics.totalTileCount, 64)
+        XCTAssertNotEqual(city.png, block.png)
+        XCTAssertEqual(before.diagnostics.totalTileCount, 80)
+        XCTAssertEqual(after.diagnostics.totalTileCount, 80)
+        XCTAssertEqual(before.diagnostics.activeActionCount, 0)
+        XCTAssertEqual(compact.diagnostics.activeActionCount, 0)
 
         try export(before.png, environmentKey: "CITYSIM_PLAY020_LIFECYCLE_PROOF")
         try export(after.png, environmentKey: "CITYSIM_PLAY020_RECOVERY_PROOF")
+        try export(compact.png, environmentKey: "CITYSIM_PLAY020_COMPACT_PROOF")
+        try export(city.png, environmentKey: "CITYSIM_PLAY020_CITY_PROOF")
+        try export(block.png, environmentKey: "CITYSIM_PLAY020_BLOCK_PROOF")
         print(
             "CITYSIM_PLAY020_DIAGNOSTICS lifecycle_nodes=\(before.diagnostics.nodeCount) " +
             "lifecycle_drawables=\(before.diagnostics.drawableNodeCount) " +
@@ -144,62 +264,68 @@ final class WorldRenderingTests: XCTestCase {
             "recovery_drawables=\(after.diagnostics.drawableNodeCount) " +
             "recovery_actions=\(after.diagnostics.activeActionCount) " +
             "recovery_update_ms=\(String(format: "%.3f", after.diagnostics.updateDurationMilliseconds)) " +
+            "compact_nodes=\(compact.diagnostics.nodeCount) " +
+            "city_nodes=\(city.diagnostics.nodeCount) " +
+            "block_nodes=\(block.diagnostics.nodeCount) " +
             "detail=\(after.diagnostics.detailLevel)"
         )
     }
 
     private func lifecycleProofState(recovered: Bool) -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
-        state.gridWidth = 8
+        state.gridWidth = 10
         state.gridHeight = 8
-        state.tiles = (0..<64).map { index in
+        state.tiles = (0..<80).map { index in
             CityTile(
-                coordinate: GridCoordinate(x: index % 8, y: index / 8),
+                coordinate: GridCoordinate(x: index % 10, y: index / 10),
                 kind: .empty
             )
         }
-        for x in 0..<8 {
+        for x in 0..<10 {
             state.updateTile(at: GridCoordinate(x: x, y: 4)) { $0.kind = .road }
         }
 
-        let construction: [(Int, Double)] = [(1, 0), (2, 0.25), (3, 0.50), (4, 0.75)]
+        let construction: [(Int, Double)] = [(1, 0), (3, 0.25), (5, 0.50), (7, 0.75)]
         for (x, progress) in construction {
             state.updateTile(at: GridCoordinate(x: x, y: 3)) {
                 $0.kind = .residential
                 $0.constructionProgress = progress
             }
         }
-        state.updateTile(at: GridCoordinate(x: 5, y: 3)) {
+        state.updateTile(at: GridCoordinate(x: 6, y: 5)) {
             $0.kind = .commercial
             $0.level = 3
             $0.occupancy = 220
         }
-        state.updateTile(at: GridCoordinate(x: 6, y: 3)) {
+        state.updateTile(at: GridCoordinate(x: 2, y: 5)) {
             $0.kind = .industrial
+            $0.level = 2
             $0.occupancy = recovered ? 180 : 0
             $0.condition = recovered ? 1 : 0.58
         }
-        state.updateTile(at: GridCoordinate(x: 7, y: 3)) {
+        state.updateTile(at: GridCoordinate(x: 4, y: 5)) {
             $0.kind = .residential
+            $0.level = 2
             $0.occupancy = recovered ? 190 : 0
             $0.condition = recovered ? 1 : 0.24
         }
-        state.updateTile(at: GridCoordinate(x: 2, y: 5)) { $0.kind = .park }
-        state.updateTile(at: GridCoordinate(x: 4, y: 5)) { $0.kind = .cityHall }
+        state.updateTile(at: GridCoordinate(x: 8, y: 5)) { $0.kind = .park }
+        state.updateTile(at: GridCoordinate(x: 9, y: 3)) { $0.kind = .cityHall }
         return state
     }
 
     @MainActor
     private func lifecycleFrame(
-        state: CityGameState
+        state: CityGameState,
+        size: CGSize,
+        detail: CameraDetailLevel
     ) throws -> (png: Data, diagnostics: RendererDiagnosticsSnapshot) {
-        let size = CGSize(width: 1_280, height: 800)
         let view = SKView(frame: CGRect(origin: .zero, size: size))
         let scene = CityScene(size: size)
         scene.reducedMotion = true
         view.presentScene(scene)
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        scene.configureProofCamera(detail: .neighborhood, centeredOn: GridCoordinate(x: 4, y: 4))
+        scene.configureProofCamera(detail: detail, centeredOn: GridCoordinate(x: 5, y: 4))
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
 
         let texture = try XCTUnwrap(view.texture(from: scene))
@@ -226,5 +352,11 @@ final class WorldRenderingTests: XCTestCase {
         if let label = node as? SKLabelNode, let text = label.text { result.append(text) }
         for child in node.children { result.append(contentsOf: descendantLabels(in: child)) }
         return result
+    }
+
+    @MainActor
+    private func recursiveActiveActionCount(_ node: SKNode) -> Int {
+        let localCount = node.hasActions() ? 1 : 0
+        return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
     }
 }

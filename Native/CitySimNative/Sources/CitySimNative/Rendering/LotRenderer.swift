@@ -4,9 +4,11 @@ import SpriteKit
 @MainActor
 final class LotRenderer {
     private let style: WorldVisualStyle
+    private let lifecycleRenderer: LotLifecycleRenderer
 
     init(style: WorldVisualStyle) {
         self.style = style
+        self.lifecycleRenderer = LotLifecycleRenderer(style: style)
     }
 
     func makeLot(
@@ -60,20 +62,20 @@ final class LotRenderer {
         }
 
         if presentation.construction != .complete {
-            addConstruction(
-                progress: tile.constructionProgress,
+            root.addChild(lifecycleRenderer.makeConstruction(
+                for: tile,
                 stage: presentation.construction,
                 detail: detail,
-                to: root
-            )
+                reducedMotion: reducedMotion
+            ))
         } else {
-            addConditionTreatment(presentation.condition, detail: detail, to: root)
-            addGrowthTreatment(tier: presentation.growthTier, detail: detail, to: root)
+            root.addChild(lifecycleRenderer.makeCompletedState(
+                for: tile,
+                presentation: presentation,
+                detail: detail,
+                reducedMotion: reducedMotion
+            ))
         }
-
-        // This milestone intentionally uses static ambient props. No decorative
-        // action is started, so Reduce Motion preserves the same readable state.
-        _ = reducedMotion
         return root
     }
 
@@ -946,148 +948,6 @@ final class LotRenderer {
             brace.zPosition = 10
             node.addChild(brace)
         }
-    }
-
-    private func addConditionTreatment(
-        _ condition: LotConditionPresentation,
-        detail: CameraDetailLevel,
-        to root: SKNode
-    ) {
-        guard condition != .maintained else { return }
-        let layer = SKNode()
-        layer.name = "lot.lifecycle.condition.\(condition == .distressed ? "distressed" : "weathered")"
-        layer.zPosition = 72
-
-        let wearColor = condition == .distressed ? NSColor.systemRed : NSColor.systemOrange
-        let wash = SKShapeNode(path: style.diamondPath(width: 63, height: 31))
-        wash.fillColor = NSColor.black.withAlphaComponent(condition == .distressed ? 0.24 : 0.13)
-        wash.strokeColor = wearColor.withAlphaComponent(0.86)
-        wash.lineWidth = condition == .distressed ? 2.2 : 1.3
-        layer.addChild(wash)
-
-        for index in 0..<(condition == .distressed ? 4 : 2) {
-            let x = CGFloat(index * 12 - 18)
-            let crack = CGMutablePath()
-            crack.move(to: CGPoint(x: x - 5, y: -8))
-            crack.addLine(to: CGPoint(x: x, y: -2))
-            crack.addLine(to: CGPoint(x: x - 3, y: 4))
-            crack.addLine(to: CGPoint(x: x + 4, y: 9))
-            let crackNode = SKShapeNode(path: crack)
-            crackNode.strokeColor = wearColor.withAlphaComponent(0.82)
-            crackNode.lineWidth = 1.1
-            crackNode.lineCap = .round
-            layer.addChild(crackNode)
-        }
-
-        if detail.includes(.neighborhood) {
-            let label = lifecycleLabel(
-                condition == .distressed ? "DECLINE" : "WEAR",
-                color: wearColor,
-                position: CGPoint(x: 0, y: 70)
-            )
-            layer.addChild(label)
-        }
-        root.addChild(layer)
-    }
-
-    private func addGrowthTreatment(tier: Int, detail: CameraDetailLevel, to root: SKNode) {
-        guard tier > 1, detail.includes(.block) else { return }
-        let layer = SKNode()
-        layer.name = "lot.lifecycle.growth.tier.\(tier)"
-        layer.zPosition = 74
-        layer.addChild(lifecycleLabel("LEVEL \(tier)", color: .systemTeal, position: CGPoint(x: 0, y: 62)))
-        root.addChild(layer)
-    }
-
-    private func lifecycleLabel(_ text: String, color: NSColor, position: CGPoint) -> SKNode {
-        let panel = SKShapeNode(rectOf: CGSize(width: 48, height: 14), cornerRadius: 4)
-        panel.fillColor = NSColor(calibratedWhite: 0.055, alpha: 0.92)
-        panel.strokeColor = color.withAlphaComponent(0.92)
-        panel.lineWidth = 1
-        panel.position = position
-
-        let label = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
-        label.text = text
-        label.fontSize = 6.8
-        label.fontColor = .white
-        label.verticalAlignmentMode = .center
-        label.position.y = 0.4
-        panel.addChild(label)
-        return panel
-    }
-
-    private func addConstruction(
-        progress rawProgress: Double,
-        stage: LotConstructionStage,
-        detail: CameraDetailLevel,
-        to root: SKNode
-    ) {
-        let progress = min(1, max(0, rawProgress))
-        let layer = SKNode()
-        layer.name = "lot.lifecycle.construction.\(stage.label.lowercased())"
-        layer.zPosition = 80
-        let frameColor = NSColor(calibratedRed: 0.94, green: 0.61, blue: 0.16, alpha: 0.95)
-
-        let preparedSite = SKShapeNode(path: style.diamondPath(width: 60, height: 30))
-        preparedSite.fillColor = style.palette.soil.withAlphaComponent(0.92)
-        preparedSite.strokeColor = frameColor.withAlphaComponent(0.78)
-        preparedSite.lineWidth = 1.5
-        preparedSite.name = "lot.construction.site"
-        layer.addChild(preparedSite)
-
-        if stage.rawValue >= LotConstructionStage.foundation.rawValue {
-            let foundation = SKShapeNode(path: style.diamondPath(width: 47, height: 23))
-            foundation.fillColor = style.palette.concrete.withAlphaComponent(0.96)
-            foundation.strokeColor = NSColor.white.withAlphaComponent(0.44)
-            foundation.lineWidth = 1.2
-            foundation.position.y = 2
-            foundation.name = "lot.construction.foundation"
-            layer.addChild(foundation)
-        }
-
-        if stage.rawValue >= LotConstructionStage.structure.rawValue {
-            for x in [-20.0, 0.0, 20.0] {
-                let upright = SKShapeNode(rectOf: CGSize(width: 2.2, height: 39))
-                upright.fillColor = frameColor
-                upright.strokeColor = .clear
-                upright.position = CGPoint(x: x, y: 21)
-                layer.addChild(upright)
-            }
-            for row in 0..<4 {
-                let rail = SKShapeNode(rectOf: CGSize(width: 44, height: 1.6))
-                rail.fillColor = frameColor.withAlphaComponent(0.88)
-                rail.strokeColor = .clear
-                rail.position = CGPoint(x: 0, y: CGFloat(row) * 11 + 5)
-                layer.addChild(rail)
-            }
-        }
-
-        if stage == .finishing {
-            let wrap = SKShapeNode(rectOf: CGSize(width: 49, height: 36), cornerRadius: 2)
-            wrap.fillColor = NSColor.systemTeal.withAlphaComponent(0.10)
-            wrap.strokeColor = NSColor.systemTeal.withAlphaComponent(0.72)
-            wrap.lineWidth = 1.3
-            wrap.position.y = 20
-            wrap.name = "lot.construction.finishWrap"
-            layer.addChild(wrap)
-        }
-
-        let track = SKShapeNode(rectOf: CGSize(width: 40, height: 4), cornerRadius: 2)
-        track.fillColor = NSColor.black.withAlphaComponent(0.48)
-        track.strokeColor = NSColor.white.withAlphaComponent(0.2)
-        track.position = CGPoint(x: 0, y: -10)
-        layer.addChild(track)
-        let fill = SKShapeNode(rectOf: CGSize(width: max(2, 38 * progress), height: 2.5), cornerRadius: 1.2)
-        fill.fillColor = frameColor
-        fill.strokeColor = .clear
-        fill.position = CGPoint(x: -19 + max(2, 38 * progress) / 2, y: -10)
-        fill.zPosition = 1
-        layer.addChild(fill)
-
-        if detail.includes(.neighborhood) {
-            layer.addChild(lifecycleLabel(stage.label, color: frameColor, position: CGPoint(x: 0, y: 60)))
-        }
-        root.addChild(layer)
     }
 
     private func levelHeight(_ tile: CityTile, step: CGFloat) -> CGFloat {

@@ -19,6 +19,7 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
 private struct TileRenderSignature: Equatable {
     let kind: BuildingKind
     let lotPresentation: LotConsequencePresentation?
+    let reducedMotion: Bool
     let roadConnections: RoadConnectionMask
     let gridWidth: Int
     let gridHeight: Int
@@ -440,6 +441,7 @@ final class CityScene: SKScene {
         return TileRenderSignature(
             kind: tile.kind,
             lotPresentation: lotPresentation,
+            reducedMotion: lotPresentation == nil ? false : reducedMotion,
             roadConnections: tile.kind == .road
                 ? RoadConnectionMask.resolving(at: tile.coordinate, in: state)
                 : [],

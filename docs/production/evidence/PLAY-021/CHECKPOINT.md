@@ -1,17 +1,19 @@
-# PLAY-021 Checkpoint — Golden-Neighborhood Product Candidate
+# PLAY-021 Historical Checkpoint — Golden-Neighborhood Product Candidate
 
 - **Lane:** World rendering
 - **Branch:** `codex/citysim-world-rendering`
-- **Status:** active; product and automated validation complete, live acceptance blocked
+- **Status:** resolved July 20, 2026; retained as the blocked-gate record
 - **Integration authority:** `b8cb4740b9cf94aa04482539f9909ffb22dbdbea`
 - **Tested product HEAD:** `06496584b2d8eb7b69e9d1c04995bd1dace5348a`
 - **Claim:** `docs/production/claims/PLAY-021.world-rendering.md`
 
-PLAY-021 is not ready for integration yet. The exact candidate builds and all
-84 native tests pass, but the current macOS session supplies no drawable app
-window. The required AFTER live evidence and hands-on flows therefore remain
-open. Renderer-generated frames below are evidence for the world component;
-they are not represented as real-app acceptance.
+This file preserves the genuine pre-resume blocked state. The drawable-window
+gate was later completed on the unique staged candidate after synchronization
+and a focused shipping-composition correction. Current acceptance lives in
+`docs/production/completed/PLAY-021.world-rendering.md`; exact AFTER hashes live
+in `docs/production/evidence/PLAY-021/AFTER.md`. Historical statements below
+remain intentionally unchanged rather than being rewritten as if the blocker
+never occurred.
 
 ## Ordered commits
 

@@ -10,7 +10,7 @@
 - **Dependencies:** accepted PLAY-040 and Wave 002 product
 - **Validation/proof:** contract compatibility matrix, repeated hashes, exact replay/save/load/undo, focused/full suites, performance measurements, and consumer examples
 - **Approved contract:** additive derived-only `CityPresentationSnapshot.spatialConsequences`, separate utility/pollution bands, deterministic forward transition events, and stable `spatial-v1` identities; no persisted-model, save-schema, fingerprint-version, renderer, UI, gameplay-balance, or package change
-- **Status:** ready-for-integration
+- **Status:** accepted and closed on integration commit `36774db`
 
 Propose the smallest authoritative contract for per-location utility service, pollution, prosperity/strain, recovery, and stable event identity. Explain what is transient versus durable, how old saves decode, and the exact performance and fingerprint effects.
 

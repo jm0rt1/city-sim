@@ -1,5 +1,11 @@
 import SwiftUI
 
+enum ObjectiveSurfacePresentation: Equatable {
+    case hidden
+    case expanded
+    case compactSummary
+}
+
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
@@ -55,6 +61,15 @@ struct ContentView: View {
         size.width < 1_100 || size.height < 700
     }
 
+    static func objectiveSurfacePresentation(
+        compact: Bool,
+        showObjectives: Bool,
+        showInspector: Bool
+    ) -> ObjectiveSurfacePresentation {
+        guard showObjectives else { return .hidden }
+        return compact && showInspector ? .compactSummary : .expanded
+    }
+
     private var feedbackSymbol: String {
         switch store.lastFeedbackTone {
         case .positive: "checkmark.circle.fill"
@@ -80,9 +95,20 @@ struct ContentView: View {
                 TopHUDView(store: store, compact: compact)
 
                 HStack(alignment: .top) {
-                    if store.showObjectives {
+                    switch Self.objectiveSurfacePresentation(
+                        compact: compact,
+                        showObjectives: store.showObjectives,
+                        showInspector: store.showInspector
+                    ) {
+                    case .hidden:
+                        EmptyView()
+                    case .expanded:
                         ObjectivesView(store: store)
                             .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                    case .compactSummary:
+                        ObjectiveSummaryView(store: store)
+                            .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                            .accessibilityHint("Close command-center details to expand all objectives")
                     }
                     Spacer(minLength: 8)
                     EventFeedView(store: store, compact: compact)

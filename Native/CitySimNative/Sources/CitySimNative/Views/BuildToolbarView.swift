@@ -4,12 +4,18 @@ struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
+    static let compactDetailsMaxHeight: CGFloat = 190
+
     var body: some View {
         VStack(spacing: compact ? 7 : 9) {
             commandRow
             if store.showInspector {
-                InspectorView(store: store, compact: compact)
-                    .transition(.opacity)
+                if compact {
+                    compactInspector
+                } else {
+                    InspectorView(store: store, compact: false)
+                        .transition(.opacity)
+                }
             } else {
                 operationalRow
                 cityPulseStrip
@@ -21,6 +27,25 @@ struct BuildToolbarView: View {
         .shadow(color: .black.opacity(0.3), radius: 20, y: 8)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
+    }
+
+    private var compactInspector: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Label("Scrollable command-center details", systemImage: "arrow.up.and.down.text.horizontal")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .accessibilityHint("Use the scroll area to reach every diagnostic control")
+            ScrollView(.vertical) {
+                InspectorView(store: store, compact: true)
+                    .padding(.trailing, 6)
+            }
+            .scrollIndicators(.visible)
+            .frame(maxHeight: Self.compactDetailsMaxHeight, alignment: .top)
+            .focusable()
+            .accessibilityLabel("Scrollable command-center details")
+            .accessibilityIdentifier("hud.command.details.scroll")
+        }
+        .transition(.opacity)
     }
 
     private var commandRow: some View {

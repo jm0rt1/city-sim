@@ -597,6 +597,23 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertFalse(store.showObjectives)
         XCTAssertTrue(ContentView.isCompactLayout(CGSize(width: 900, height: 600)))
         XCTAssertFalse(ContentView.isCompactLayout(CGSize(width: 1_200, height: 760)))
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: false, showInspector: true),
+            .hidden
+        )
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: true, showInspector: false),
+            .expanded
+        )
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: true, showInspector: true),
+            .compactSummary
+        )
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: false, showObjectives: true, showInspector: true),
+            .expanded
+        )
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 190)
     }
 
     @MainActor
@@ -721,6 +738,24 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertNotNil(compactStore.selectedTile)
         if let path = ProcessInfo.processInfo.environment["CITYSIM_HUD_COMPACT_CONTEXT_PROOF"] {
             let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+
+        let compactArbitratedStore = CityGameStore(state: .newCity(seed: 42))
+        compactArbitratedStore.speed = .paused
+        compactArbitratedStore.showObjectives = true
+        compactArbitratedStore.openInspector(.utilities)
+        let compactArbitrated = try hudBitmap(size: CGSize(width: 900, height: 600), store: compactArbitratedStore)
+        XCTAssertTrue(compactArbitratedStore.showObjectives)
+        XCTAssertTrue(compactArbitratedStore.showInspector)
+        XCTAssertEqual(
+            ContentView.objectiveSurfacePresentation(compact: true, showObjectives: true, showInspector: true),
+            .compactSummary
+        )
+        XCTAssertGreaterThan(compactArbitrated.pixelsWide, 850)
+        XCTAssertGreaterThan(compactArbitrated.pixelsHigh, 550)
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_HUD_COMPACT_ARBITRATED_PROOF"] {
+            let data = try XCTUnwrap(compactArbitrated.representation(using: .png, properties: [:]))
             try data.write(to: URL(fileURLWithPath: path), options: .atomic)
         }
 

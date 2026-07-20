@@ -28,6 +28,19 @@ PALETTE = {
     "stone_light": "#c4bba4",
     "yard": "#766b58",
     "line": "#2f5940",
+    "asphalt": "#2e3438",
+    "asphalt_light": "#474e50",
+    "curb": "#aaa68f",
+    "sidewalk": "#c4bba4",
+    "lane": "#e9c55f",
+    "crosswalk": "#eee9d6",
+}
+
+ROAD_ENDPOINTS = {
+    1: (108, 18),  # north
+    2: (108, 54),  # east
+    4: (36, 54),   # south
+    8: (36, 18),   # west
 }
 
 
@@ -89,6 +102,117 @@ def seeded_ground(name: str, base: str, seed: int, material: str) -> Image.Image
     return image
 
 
+def dashed_line(draw: ImageDraw.ImageDraw, start: tuple[int, int], end: tuple[int, int], color, width: int) -> None:
+    x1, y1 = start
+    x2, y2 = end
+    distance = max(abs(x2 - x1), abs(y2 - y1))
+    if distance == 0:
+        return
+    for step in range(4, distance, 13):
+        next_step = min(distance, step + 6)
+        a = step / distance
+        b = next_step / distance
+        draw.line(
+            (x1 + (x2 - x1) * a, y1 + (y2 - y1) * a,
+             x1 + (x2 - x1) * b, y1 + (y2 - y1) * b),
+            fill=color,
+            width=width,
+        )
+
+
+def road_asset(mask_value: int) -> Image.Image:
+    image = Image.new("RGBA", TILE_SIZE, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image, "RGBA")
+    center = (72, 36)
+    edges = [bit for bit in ROAD_ENDPOINTS if mask_value & bit]
+
+    if not edges:
+        for radius, color in [
+            (26, PALETTE["sidewalk"]),
+            (22, PALETTE["curb"]),
+            (18, PALETTE["asphalt"]),
+        ]:
+            draw.ellipse((72 - radius, 36 - radius // 2, 72 + radius, 36 + radius // 2), fill=rgba(color))
+    else:
+        for bit in edges:
+            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["sidewalk"]), width=50)
+        for bit in edges:
+            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["curb"]), width=42)
+        for bit in edges:
+            draw.line((center, ROAD_ENDPOINTS[bit]), fill=rgba(PALETTE["asphalt"]), width=34)
+
+        for radius, color in [
+            (25, PALETTE["sidewalk"]),
+            (21, PALETTE["curb"]),
+            (17, PALETTE["asphalt"]),
+        ]:
+            draw.ellipse((72 - radius, 36 - radius // 2, 72 + radius, 36 + radius // 2), fill=rgba(color))
+
+        for bit in edges:
+            dashed_line(draw, center, ROAD_ENDPOINTS[bit], rgba(PALETTE["lane"], 225), 3)
+
+        if len(edges) >= 3:
+            for bit in edges:
+                x, y = ROAD_ENDPOINTS[bit]
+                vx, vy = x - 72, y - 36
+                length = max(1.0, (vx * vx + vy * vy) ** 0.5)
+                nx, ny = -vy / length, vx / length
+                cx, cy = 72 + vx * 0.48, 36 + vy * 0.48
+                for offset in (-7, -2, 3, 8):
+                    px, py = cx + vx / length * offset, cy + vy / length * offset
+                    draw.line(
+                        (px - nx * 7, py - ny * 7, px + nx * 7, py + ny * 7),
+                        fill=rgba(PALETTE["crosswalk"], 218),
+                        width=2,
+                    )
+
+    # Surface wear is intentionally decorative and stable; it claims no traffic state.
+    rng = random.Random(3100 + mask_value)
+    for _ in range(10):
+        x = rng.randint(45, 99)
+        y = rng.randint(24, 48)
+        draw.line((x, y, x + rng.randint(2, 7), y + rng.choice([-1, 0, 1])), fill=rgba(PALETTE["asphalt_light"], 45), width=1)
+
+    clipped = Image.new("RGBA", TILE_SIZE, (0, 0, 0, 0))
+    clipped.paste(image, (0, 0), diamond_mask())
+    clipped.save(OUTPUT / f"road_mask_{mask_value:02d}.png", optimize=True)
+    return clipped
+
+
+def frontage_asset(family: str) -> Image.Image:
+    image = Image.new("RGBA", TILE_SIZE, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image, "RGBA")
+    accents = {
+        "residential": ("#d7c493", "#496f48"),
+        "commercial": ("#b8ad99", "#4c7370"),
+        "industrial": ("#8c806b", "#d2a44d"),
+        "park": ("#ceb983", "#5b9258"),
+        "civic": ("#d2c7ae", "#4f7771"),
+    }
+    paving, accent = accents[family]
+    draw.line((36, 54, 54, 45, 72, 40), fill=rgba(paving, 225), width=7)
+    draw.line((37, 54, 55, 45, 72, 40), fill=rgba("#fff8dc", 68), width=2)
+    draw.line(DIAMOND + [DIAMOND[0]], fill=rgba(paving, 96), width=2)
+
+    if family == "residential":
+        draw.ellipse((18, 34, 31, 42), fill=rgba(accent, 220))
+        draw.ellipse((112, 31, 127, 40), fill=rgba(accent, 210))
+    elif family == "commercial":
+        draw.rectangle((20, 31, 38, 36), fill=rgba(accent, 190))
+        draw.rectangle((104, 37, 123, 42), fill=rgba(accent, 180))
+    elif family == "industrial":
+        for x in (22, 31, 111, 120):
+            draw.line((x, 29, x + 8, 39), fill=rgba(accent, 190), width=3)
+    elif family == "park":
+        draw.arc((18, 12, 126, 63), 10, 172, fill=rgba(paving, 180), width=5)
+    else:
+        draw.polygon([(52, 46), (72, 35), (92, 46), (72, 56)], fill=rgba(paving, 155))
+        draw.line((52, 46, 72, 35, 92, 46), fill=rgba(accent, 170), width=2)
+
+    image.save(OUTPUT / f"frontage_{family}.png", optimize=True)
+    return image
+
+
 def write_manifest(files: list[Path]) -> None:
     assets = []
     for path in sorted(files):
@@ -133,6 +257,12 @@ def main() -> None:
     for name, color, seed, material in specifications:
         seeded_ground(name, color, seed, material)
         generated.append(OUTPUT / f"{name}.png")
+    for mask_value in range(16):
+        road_asset(mask_value)
+        generated.append(OUTPUT / f"road_mask_{mask_value:02d}.png")
+    for family in ("residential", "commercial", "industrial", "park", "civic"):
+        frontage_asset(family)
+        generated.append(OUTPUT / f"frontage_{family}.png")
     write_manifest(generated)
 
 

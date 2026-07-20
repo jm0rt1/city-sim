@@ -21,6 +21,36 @@ final class WorldRenderingTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testAuthoredRoadAtlasCoversEveryMaskAndFrontagesFaceConnectedRoads() {
+        let catalog = WorldAssetCatalog()
+        let style = WorldVisualStyle()
+        let roads = RoadRenderer(style: style, assets: catalog)
+
+        for mask in RoadConnectionMask.allMasks {
+            let assetName = String(format: "road_mask_%02d", mask.rawValue)
+            XCTAssertNotNil(catalog.texture(named: assetName))
+            let root = roads.makeRoad(
+                at: GridCoordinate(x: 4, y: 4),
+                connections: mask,
+                detail: .block,
+                reducedMotion: true
+            )
+            XCTAssertTrue(descendantNames(in: root).contains("asset.\(assetName)"))
+        }
+
+        let lot = LotRenderer(style: style, assets: catalog).makeLot(
+            for: CityTile(coordinate: GridCoordinate(x: 5, y: 5), kind: .residential),
+            adjacentRoads: .north,
+            detail: .block,
+            reducedMotion: true
+        )
+        XCTAssertTrue(descendantNames(in: lot).contains("lot.frontage.residential.1"))
+        for family in ["residential", "commercial", "industrial", "park", "civic"] {
+            XCTAssertNotNil(catalog.texture(named: "frontage_\(family)"))
+        }
+    }
+
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {
         var tile = CityTile(
             coordinate: GridCoordinate(x: 4, y: 7),

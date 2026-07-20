@@ -28,9 +28,204 @@
     "stone": "#a49b86",
     "stone_light": "#c4bba4",
     "yard": "#766b58",
-    "line": "#2f5940"
+    "line": "#2f5940",
+    "asphalt": "#2e3438",
+    "asphalt_light": "#474e50",
+    "curb": "#aaa68f",
+    "sidewalk": "#c4bba4",
+    "lane": "#e9c55f",
+    "crosswalk": "#eee9d6"
   },
   "assets": [
+    {
+      "name": "frontage_civic",
+      "file": "frontage_civic.png",
+      "sha256": "28e6fae7ce62a2cb7c49d93f7c9aee2e7fa273905ad8140b06beece837a3410d",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_commercial",
+      "file": "frontage_commercial.png",
+      "sha256": "667c519a709f4edb1c1513c5197fe6482789f312739d7016056e760c3a880f4b",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_industrial",
+      "file": "frontage_industrial.png",
+      "sha256": "95793601326d2a6028ae9cbb3b0e445d978b7fc907e907297a87278e8a8bf857",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_park",
+      "file": "frontage_park.png",
+      "sha256": "1fa723d32f2d3e2cf098c58a57867a637fc8087cb65a0afdbbd71f36668a0e14",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "frontage_residential",
+      "file": "frontage_residential.png",
+      "sha256": "71548f708bf2a4592bf6aeb16cc80228621058b2cf16e05f14c0e6730e959701",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_00",
+      "file": "road_mask_00.png",
+      "sha256": "1353a0b7d0764576b5abb2953ed0dfdfad4c2f3d739a457df92d7a67fdd526b8",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_01",
+      "file": "road_mask_01.png",
+      "sha256": "279e1b491a2de5a3069650ac15a85fa55887751c6f77cbfead2673bc46d461aa",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_02",
+      "file": "road_mask_02.png",
+      "sha256": "5168e7527708f99566066d409fba733784bd2d503df7369d1bd57b168ea49989",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_03",
+      "file": "road_mask_03.png",
+      "sha256": "d3d6ab72c091eee5002d602f6b7545207a9dc3dd4c0f6c06dd5ea6a24c142ab6",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_04",
+      "file": "road_mask_04.png",
+      "sha256": "46812beaac72f6b53334c24de1e67f439cf736a23e6919b0197aaaf4458d4cf0",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_05",
+      "file": "road_mask_05.png",
+      "sha256": "f3f0f5b931a7a5c5c2dad081720bcbe0f50cdeb2fd3fa4d75f86f7be122984e3",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_06",
+      "file": "road_mask_06.png",
+      "sha256": "8eea8000b717900bd14bcf4573340b950a5748044a08595883d305d05fdb3425",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_07",
+      "file": "road_mask_07.png",
+      "sha256": "b924a03b04dbb04f102750806ddf27958bcb43553a2e931c9d7166344179840d",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_08",
+      "file": "road_mask_08.png",
+      "sha256": "c2dbfe052bc1dc759be6992d5d3efddd804823011384951e4ac280dc629c6884",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_09",
+      "file": "road_mask_09.png",
+      "sha256": "bb74d7e2203d840d9e41ad59284ab31715b721333f7bd03c624d94a5e7eea84a",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_10",
+      "file": "road_mask_10.png",
+      "sha256": "9ef7419e125f3c21012af586748a3536b360e0dd04ea71cf5342e022ff60d54e",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_11",
+      "file": "road_mask_11.png",
+      "sha256": "01f3caf7aea96c7ec64500fe386b2a62258c4cb3b83917a9b2b3661415863485",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_12",
+      "file": "road_mask_12.png",
+      "sha256": "d8ffc84ac5b77876cc39fcfde70dcff30352aa94ed78e39fdf0a37ad5d722f93",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_13",
+      "file": "road_mask_13.png",
+      "sha256": "fc5a4f11e4eb2e85e5b90fa9d7bd8f39f4bf8870bde9f3ed23beea01c3191452",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_14",
+      "file": "road_mask_14.png",
+      "sha256": "0451531dbb483b9b46b1e75401b4592c83ae84dfcb907e570734b36ca7bc337c",
+      "pixels": [
+        144,
+        72
+      ]
+    },
+    {
+      "name": "road_mask_15",
+      "file": "road_mask_15.png",
+      "sha256": "8d9638180822478ffa435bd5771834e837c3a5096aa75d9b02710dba81816c4c",
+      "pixels": [
+        144,
+        72
+      ]
+    },
     {
       "name": "terrain_grass_0",
       "file": "terrain_grass_0.png",

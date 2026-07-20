@@ -428,6 +428,7 @@ final class CityScene: SKScene {
         default:
             contentLayer.addChild(lotRenderer.makeLot(
                 for: tile,
+                adjacentRoads: RoadConnectionMask.resolving(at: tile.coordinate, in: state),
                 detail: currentCameraDetailLevel,
                 reducedMotion: reducedMotion
             ))
@@ -453,9 +454,9 @@ final class CityScene: SKScene {
             kind: tile.kind,
             lotPresentation: lotPresentation,
             reducedMotion: lotPresentation == nil ? false : reducedMotion,
-            roadConnections: tile.kind == .road
-                ? RoadConnectionMask.resolving(at: tile.coordinate, in: state)
-                : [],
+            roadConnections: tile.kind == .empty
+                ? []
+                : RoadConnectionMask.resolving(at: tile.coordinate, in: state),
             gridWidth: state.gridWidth,
             gridHeight: state.gridHeight
         )

@@ -4,15 +4,18 @@ import SpriteKit
 @MainActor
 final class LotRenderer {
     private let style: WorldVisualStyle
+    private let assets: WorldAssetCatalog
     private let lifecycleRenderer: LotLifecycleRenderer
 
-    init(style: WorldVisualStyle) {
+    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
+        self.assets = assets
         self.lifecycleRenderer = LotLifecycleRenderer(style: style)
     }
 
     func makeLot(
         for tile: CityTile,
+        adjacentRoads: RoadConnectionMask = [],
         detail: CameraDetailLevel,
         reducedMotion: Bool
     ) -> SKNode {
@@ -27,6 +30,8 @@ final class LotRenderer {
         root.addChild(cityLayer)
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
+
+        addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, to: cityLayer)
 
         if presentation.construction == .complete || presentation.construction == .finishing {
             switch tile.kind {
@@ -77,6 +82,39 @@ final class LotRenderer {
             ))
         }
         return root
+    }
+
+    private func addAuthoredFrontage(
+        for kind: BuildingKind,
+        adjacentRoads: RoadConnectionMask,
+        to node: SKNode
+    ) {
+        let family: String?
+        switch kind {
+        case .residential: family = "residential"
+        case .commercial: family = "commercial"
+        case .industrial, .powerPlant, .waterTower: family = "industrial"
+        case .park: family = "park"
+        case .cityHall, .fireStation, .policeStation, .school: family = "civic"
+        case .empty, .road: family = nil
+        }
+        guard let family,
+              let frontage = assets.sprite(
+                named: "frontage_\(family)",
+                size: CGSize(width: style.tileWidth, height: style.tileHeight)
+              ) else { return }
+
+        let edge = adjacentRoads.edges.first ?? .south
+        frontage.zRotation = switch edge {
+        case .south: 0
+        case .west: .pi / 2
+        case .north: .pi
+        case .east: -.pi / 2
+        default: 0
+        }
+        frontage.name = "lot.frontage.\(family).\(edge.rawValue)"
+        frontage.zPosition = -1
+        node.addChild(frontage)
     }
 
     private func addResidential(

@@ -587,6 +587,8 @@ final class CitySimulationTests: XCTestCase {
         let store = CityGameStore(state: .newCity())
         XCTAssertFalse(store.showInspector)
         XCTAssertFalse(store.showObjectives)
+        XCTAssertFalse(ContentView.suppressesGameSurface(for: .enabled))
+        XCTAssertTrue(ContentView.suppressesGameSurface(for: .blocked(.welcome)))
         XCTAssertTrue(ContentView.isCompactLayout(CGSize(width: 900, height: 600)))
         XCTAssertFalse(ContentView.isCompactLayout(CGSize(width: 1_200, height: 760)))
         XCTAssertEqual(

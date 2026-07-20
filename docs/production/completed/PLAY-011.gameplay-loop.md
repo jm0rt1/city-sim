@@ -2,7 +2,7 @@
 
 - **Lane:** Gameplay loop
 - **Branch:** `codex/citysim-gameplay-loop`
-- **Status:** ready-for-integration
+- **Status:** accepted on integration `f75ab91`
 - **Baseline:** `efe23eeeaf0eec6c975dfead07fd8b8394f840e3`
 - **Claim:** `docs/production/claims/PLAY-011.gameplay-loop.md`
 
@@ -23,6 +23,7 @@ Ignoring either recovery window has a bounded additional cost and leaves the cit
 
 1. `0447e8aea03d6cd83aa9c5a7ff6eac8648ee7edc` — `PLAY-011: Make strategy shape the city`
 2. `88c5a0d76145516d5bd969c53e5ee3e6fbcd1259` — `PLAY-011: Retain strategy arc evidence`
+3. `dd49ea5f6d5d2ea13d726e4b5083b4b52bbefb2d` — `PLAY-011: Bring strategy payoff into play`
 
 ## Exact files changed
 
@@ -102,3 +103,32 @@ The live accessibility tree exposed the exact titles, days, consequence copy, re
 ## Integration notes
 
 The change stays within the active PLAY-011 claim and requires no shared-contract proposal. Integration can merge this branch or cherry-pick the gameplay commit followed by the evidence commit and this completion-record commit. No push or integration was performed from the worker lane.
+
+## Sustained-session repair and final acceptance
+
+PLAY-050 rejected the first candidate after a coached 20:19 process lifetime ended at Day 128 / tick 509 with `$8,746`, `+$123/cycle`, 409 residents, 39% happiness, zero water spare, and Town Charter `0/12`. A gameplay-owned regression reproduced the causal failure: population-first Charter copy concealed the immediate water constraint, one ordinary commercial decision did not activate the authored strategy, a decision made after Day 21 missed the exact-tick warning, and maintaining the second power/water pair erased too much revenue from a valid growth decision.
+
+The accepted repair in `dd49ea5` makes four bounded changes without altering a public contract:
+
+- one additional commercial or industrial zone establishes the corresponding strategy story;
+- a strategy chosen between the warning and opportunity boundaries receives its warning on the next daily check, before the Day 41 opportunity;
+- existing objective and message surfaces state all Charter standards, identify exhausted water or power first, and name the costed utility remedy;
+- only the second and later power/water units receive a 25% reserve-infrastructure upkeep reduction. Opening pressure and first utility costs remain unchanged.
+
+Consequence remains binding. Utility shortage still stalls growth and depresses happiness; the city still needs 500 residents, `$10,000`, non-negative cashflow, 90% employment, complete utilities with 15% reserve, 52% happiness, every zone family, and 12 consecutive daily checks. The 315-job forecast is derived from 90% of the 350-person workforce target at 500 residents, not stored as an independent rule.
+
+Two fixtures select the first visible valid placement rather than relying on hidden map coordinates. Commercial placemaking earns the durable Charter at tick 900; industrial utility investment earns it at tick 848. Both contain explicit warning, opportunity, setback, recovery, capacity, and award checkpoints, remain distinct in happiness, pollution, and job capacity, and retain transient reset, one-time award, undo, legacy decode, and round-trip coverage. The Day 128 regression proves the stalled route can read `add water capacity`, afford the tower, add required jobs, return policy to normal, and earn the durable award before tick 2,200.
+
+### Validation and companion disposition
+
+- Focused gameplay suite on product `dd49ea5`: 16 passed, 0 failed in 9.861 seconds.
+- Pre-companion full suite on the gameplay branch: 88 passed and 3 frozen-fingerprint assertions failed exactly because deterministic balance outcomes changed; all other renderer, UI/input, save/recovery, schema, and repeatability checks passed.
+- Correct replacement fingerprints approved by PLAY-040:
+  - industrial strategy: `11adf523ca4af342d3a1126c04d3469bf3e02ddd30c8b77ea22e21c70420c5ff`;
+  - commercial strategy: `65c11403d0876fc9af27782e240a4e98b2806b55b8953aa81490934bb860f68c`;
+  - dense terminal fixture: `d18afceb9c8ccc09eaf54d7316abc960c6b560baa1bc7d92fa6416c9776556d8`.
+- PLAY-040 accepted its companion with 14/14 platform tests and no schema, fingerprint-version, or shared-contract change.
+- Exact integration `f75ab91`: 91 passed, 0 failed; exact staged verify passed.
+- Independent PLAY-050 final route: accepted without coaching in 9:56 wall time with Town Charter `12/true`.
+
+The retained causal record is `docs/production/evidence/PLAY-011-live-payoff-repair.md`. No worker push or master merge was performed from this lane.

@@ -2,6 +2,10 @@ import XCTest
 @testable import CitySimNative
 
 final class SessionPlatformTests: XCTestCase {
+    private static let waveTwoDenseTerminalFixtureName = "dense-24x24-terminal-wave2-v2"
+    private static let waveTwoDenseTerminalFixtureDigest =
+        "7b6454ecbe83aeb3bdc88de4fb1d6cb23ef67ce81849123e907d3147c6c52a77"
+
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
         var legacyNilProgression = explicitProgression
@@ -285,7 +289,7 @@ final class SessionPlatformTests: XCTestCase {
 
     func testDenseSessionSimulationAndPersistencePerformance() throws {
         try withTemporaryRoot { root in
-            var state = densePerformanceFixture()
+            var state = waveTwoDenseTerminalFixtureV2()
             let simulationStart = ProcessInfo.processInfo.systemUptime
             for _ in 0..<400 { CitySimulation.step(&state) }
             let simulationMilliseconds = elapsedMilliseconds(since: simulationStart)
@@ -303,6 +307,9 @@ final class SessionPlatformTests: XCTestCase {
             let load = try service.load()
             let loadMilliseconds = elapsedMilliseconds(since: loadStart)
 
+            XCTAssertEqual(state.tick, 44)
+            XCTAssertEqual(state.status, .lost)
+            XCTAssertEqual(fingerprint.digest, Self.waveTwoDenseTerminalFixtureDigest)
             XCTAssertEqual(load.state, state)
             XCTAssertEqual(load.fingerprint, fingerprint)
             XCTAssertEqual(write.fingerprint, fingerprint)
@@ -313,7 +320,8 @@ final class SessionPlatformTests: XCTestCase {
             XCTAssertLessThan(write.byteCount, 2_000_000)
 
             print(
-                "CITYSIM_SESSION_PERFORMANCE fixture=dense-24x24 ticks=400 " +
+                "CITYSIM_SESSION_PERFORMANCE fixture=\(Self.waveTwoDenseTerminalFixtureName) " +
+                "step_attempts=400 final_tick=\(state.tick) status=\(state.status.rawValue) " +
                 "simulation_ms=\(metric(simulationMilliseconds)) " +
                 "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
                 "save_ms=\(metric(saveMilliseconds)) " +
@@ -346,7 +354,9 @@ final class SessionPlatformTests: XCTestCase {
         }
     }
 
-    private func densePerformanceFixture() -> CityGameState {
+    // V2 runs the unchanged terminal dense generator under accepted Wave 002
+    // expansion utility-load semantics and freezes its tick-44 terminal state.
+    private func waveTwoDenseTerminalFixtureV2() -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         let kinds: [BuildingKind] = [
             .residential, .commercial, .industrial, .park,

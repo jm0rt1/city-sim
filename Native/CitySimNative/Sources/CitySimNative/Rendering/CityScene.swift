@@ -499,21 +499,25 @@ final class CityScene: SKScene {
         return red << 24 | green << 16 | blue << 8 | alpha
     }
 
-    private func refreshForCameraChange() {
+    private func refreshForCameraChange(preservingUpdateDiagnostics: Bool = false) {
         let detail = style.detailLevel(cameraScale: cameraNode.xScale)
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
         for record in tileRecords.values {
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
-        diagnosticsSnapshot = RendererDiagnosticsSnapshot(
-            totalTileCount: tileRecords.count,
-            reusedTileCount: tileRecords.count,
-            nodeCount: diagnosticsSnapshot.nodeCount,
-            drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
-            activeActionCount: diagnosticsSnapshot.activeActionCount,
-            detailLevel: detail
-        )
+        if preservingUpdateDiagnostics {
+            diagnosticsSnapshot.detailLevel = detail
+        } else {
+            diagnosticsSnapshot = RendererDiagnosticsSnapshot(
+                totalTileCount: tileRecords.count,
+                reusedTileCount: tileRecords.count,
+                nodeCount: diagnosticsSnapshot.nodeCount,
+                drawableNodeCount: diagnosticsSnapshot.drawableNodeCount,
+                activeActionCount: diagnosticsSnapshot.activeActionCount,
+                detailLevel: detail
+            )
+        }
         updateSelection(renderedSelection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
     }
@@ -794,7 +798,7 @@ final class CityScene: SKScene {
 #else
         cameraNode.setScale(defaultScale)
 #endif
-        refreshForCameraChange()
+        refreshForCameraChange(preservingUpdateDiagnostics: true)
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {

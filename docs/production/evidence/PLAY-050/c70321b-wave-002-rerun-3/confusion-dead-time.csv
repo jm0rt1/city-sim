@@ -1,0 +1,2 @@
+event_id,gate,start_state,observation,classification,blocking,duration_seconds,result,evidence
+1,D001-modal,"Welcome visible; Day 1; 1x selected","Prescribed shortcuts changed selection to 3x and opened/focused command guide while welcome remained visible",false_feedback,true,0,rejected,"visuals/d001-modal-leakage.png; visuals/d001-modal-underlying.png"

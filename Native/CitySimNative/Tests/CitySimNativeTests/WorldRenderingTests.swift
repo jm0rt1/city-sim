@@ -549,7 +549,7 @@ final class WorldRenderingTests: XCTestCase {
         let compactScene = CityScene(size: CGSize(width: 900, height: 600))
         compactScene.reducedMotion = true
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.60, accuracy: 0.001)
+        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.72, accuracy: 0.001)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
 
         let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }

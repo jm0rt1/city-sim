@@ -14,7 +14,7 @@
   accepted crossroads. Roads, parcels, sidewalks, driveways, and shadows share
   the same grid and may not end at visible tile seams inside the composition.
 - Developed land must occupy 55–70% of the available world viewport at the
-  default launch. Target camera scales are 0.48 regular and 0.60 compact; final
+  default launch. Target camera scales are 0.48 regular and 0.72 compact; final
   values may move only to meet the retained uncropped live frames.
 - City LOD reads district massing and connected streets; neighborhood LOD adds
   facade rhythm, trees, parked objects, and large props; block LOD adds entries,
@@ -29,7 +29,7 @@ SpriteKit camera scale `s` displays one world point as `1/s` logical pixels or
 |---|---:|---:|---:|---|
 | Closest supported block | 0.30 | 480 x 240 px | 512 x 256 px | block export |
 | Gate A default | 0.48 | 300 x 150 px | 384 x 192 px | block export |
-| Gate A compact | 0.60 | 240 x 120 px | 256 x 128 px | neighborhood export |
+| Gate A compact | 0.72 | 200 x 100 px | 256 x 128 px | neighborhood export |
 | Neighborhood | 0.82 | 176 x 88 px | 192 x 96 px | neighborhood export |
 | City | 1.45 | 99 x 50 px | 128 x 64 px | city export or mip |
 

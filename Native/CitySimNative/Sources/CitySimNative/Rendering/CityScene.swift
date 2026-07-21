@@ -1196,7 +1196,7 @@ final class CityScene: SKScene {
         let isRegularCandidate = environment[SaveGameService.dataRootEnvironmentKey] != nil
             || environment["CITYSIM_REGULAR_WINDOW"] == "1"
         let defaultScale: CGFloat = isExplicitCompactProof || (!isRegularCandidate && size.width <= 980)
-            ? 0.60
+            ? 0.72
             : 0.48
 #if DEBUG
         let proofScale = environment["CITYSIM_PROOF_CAMERA_SCALE"]

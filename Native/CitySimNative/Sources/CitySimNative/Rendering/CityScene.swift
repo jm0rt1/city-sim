@@ -314,8 +314,7 @@ final class CityScene: SKScene {
 
     func frameCity() {
         if let state = renderedState {
-            fitCity(state)
-            refreshForCameraChange()
+            focusDevelopedCore(state)
         }
     }
 

@@ -579,6 +579,13 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(defaultScene.cameraPositionForTesting.x, expectedCenter.x, accuracy: 0.001)
         XCTAssertEqual(defaultScene.cameraPositionForTesting.y, expectedCenter.y, accuracy: 0.001)
+
+        defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
+        defaultScene.frameCity()
+        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.48, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, expectedCenter.x, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, expectedCenter.y, accuracy: 0.001)
     }
 
     @MainActor

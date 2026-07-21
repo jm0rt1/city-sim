@@ -40,28 +40,28 @@
       "lod": "block",
       "file": "generated_v4_water_tower_l01_block.png",
       "pixels": [
-        1536,
-        1024
+        1024,
+        683
       ],
-      "sha256": "8037665cc61cd49645c35b541d8a58ef3c03980e12bdb06009e7892988883fc6"
+      "sha256": "bace2362962239efc54673f401114072fe57aefd0d9ee273d42e3799f046eea7"
     },
     {
       "lod": "neighborhood",
       "file": "generated_v4_water_tower_l01_neighborhood.png",
       "pixels": [
-        768,
-        512
+        512,
+        342
       ],
-      "sha256": "c6cee31321a885f3aaf667f2d675979ecec21014690384789141e1494fe563b5"
+      "sha256": "783bd406431c9b2b91b012ab13ee389e5744999883240b489156f509b77c9fb7"
     },
     {
       "lod": "city",
       "file": "generated_v4_water_tower_l01_city.png",
       "pixels": [
-        384,
-        256
+        256,
+        171
       ],
-      "sha256": "b6803333b3504dfdd259e1cd0c10a68579362a565d024cc28b7dff229aa2268e"
+      "sha256": "a0d482b7d8b0e3eb3a5ba8faabbab4fb876031d0e74ff9c9f10f79b6a0b7a23d"
     }
   ]
 }

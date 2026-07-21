@@ -13,7 +13,10 @@ from PIL import Image
 
 
 CANVAS = (1536, 1024)
-LODS = {"block": (1536, 1024), "neighborhood": (768, 512), "city": (384, 256)}
+# The authoring canvas remains the immutable 1536x1024 registration space.
+# Shipping exports are sized from the closest live 2x footprint (~600 px),
+# with deliberate headroom but without retaining the full source canvas.
+LODS = {"block": (1024, 683), "neighborhood": (512, 342), "city": (256, 171)}
 SURFACE_BOUNDS = {
     "grass_material": (512, 640, 1024, 896),
     "road_material": (512, 640, 1024, 896),

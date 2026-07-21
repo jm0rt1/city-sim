@@ -40,28 +40,28 @@
       "lod": "block",
       "file": "generated_v4_commercial_l01_block.png",
       "pixels": [
-        1536,
-        1024
+        1024,
+        683
       ],
-      "sha256": "76b0936d1896a45e741b865d86daf98d40b84941d01529f0a0715faa2081c3ab"
+      "sha256": "5f8f75a9363d891510d4839976ee71ee72a41b61cce6fd6a088d574713118d40"
     },
     {
       "lod": "neighborhood",
       "file": "generated_v4_commercial_l01_neighborhood.png",
       "pixels": [
-        768,
-        512
+        512,
+        342
       ],
-      "sha256": "644426895594798725abed7cc34320c27381e3d81432e46fb460173e0ffd7ba3"
+      "sha256": "255188495f6c77b92b0c630ebb47ed469a561698b158d77916424411efa92daf"
     },
     {
       "lod": "city",
       "file": "generated_v4_commercial_l01_city.png",
       "pixels": [
-        384,
-        256
+        256,
+        171
       ],
-      "sha256": "dae092b74f3ba1647d9f61f111130250b22c8471f426a3de49a20bb9354e686b"
+      "sha256": "9d992505eccf438fabc39b814cfeb1b001d99ba35065f5ceec42a602fed69f9e"
     }
   ]
 }

@@ -89,7 +89,7 @@ def main() -> None:
             "world_size": [216, 144],
             "padding": 24,
             "filtering": "linear",
-            "mipmap": True,
+            "mipmap": False,
             "decoded_byte_estimate": sum(item["pixels"][0] * item["pixels"][1] * 4 for item in normalization["outputs"]),
             "source_sha256": sha256(raw_path),
             "prompt_sha256": sha256(prompt_path),
@@ -101,7 +101,7 @@ def main() -> None:
     manifest = {
         "schema": 4,
         "pack_id": catalog["pack_id"],
-        "generator_version": "PLAY-022-calibration-1",
+        "generator_version": "PLAY-022-calibration-2",
         "production_selection": True,
         "projection": catalog["projection"],
         "world_tile_points": catalog["world_tile_points"],

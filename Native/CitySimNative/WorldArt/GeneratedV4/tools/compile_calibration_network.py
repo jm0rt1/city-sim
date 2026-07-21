@@ -19,6 +19,8 @@ SOURCE = GENERATED / "normalized" / "calibration" / "road_material" / "generated
 OUTPUT = GENERATED / "compiled" / "calibration-network"
 LODS = {"block": (512, 256), "neighborhood": (256, 128), "city": (128, 64)}
 EDGES = ((384, 64), (384, 192), (128, 192), (128, 64))
+AUTHORING_SIZE = (1536, 1024)
+AUTHORING_MATERIAL_BOUNDS = (512, 640, 1024, 896)
 
 
 def digest(path: Path) -> str:
@@ -69,7 +71,16 @@ def draw_mask(mask_value: int, asphalt: tuple[int, ...], curb: tuple[int, ...], 
 
 
 def main() -> None:
-    material = Image.open(SOURCE).convert("RGBA").crop((512, 640, 1024, 896))
+    source = Image.open(SOURCE).convert("RGBA")
+    scale_x = source.width / AUTHORING_SIZE[0]
+    scale_y = source.height / AUTHORING_SIZE[1]
+    material_bounds = (
+        round(AUTHORING_MATERIAL_BOUNDS[0] * scale_x),
+        round(AUTHORING_MATERIAL_BOUNDS[1] * scale_y),
+        round(AUTHORING_MATERIAL_BOUNDS[2] * scale_x),
+        round(AUTHORING_MATERIAL_BOUNDS[3] * scale_y),
+    )
+    material = source.crop(material_bounds).resize(LODS["block"], Image.Resampling.LANCZOS)
     asphalt = median_rgb(material, (60, 10, 452, 105))
     curb = median_rgb(material, (10, 105, 248, 175))
     walk = median_rgb(material, (264, 105, 502, 175))

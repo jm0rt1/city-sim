@@ -1,133 +1,133 @@
-import AppKit
 import SpriteKit
 
-/// Adds bounded, decorative motion without asserting traffic, employment,
-/// service coverage, or any other simulation fact.
+/// Adds one bounded, truth-safe ambient vignette without asserting traffic,
+/// occupancy, employment, prosperity, or service coverage.
 @MainActor
 final class AmbientLifeRenderer {
     private let style: WorldVisualStyle
+    private let assets: WorldAssetCatalog
 
-    init(style: WorldVisualStyle) {
+    init(style: WorldVisualStyle, assets: WorldAssetCatalog) {
         self.style = style
+        self.assets = assets
     }
 
-    func makeAmbientVegetation(
-        for tile: CityTile,
+    /// Creates one corridor vignette for the whole visible city: exactly one
+    /// pedestrian pair, one parked maintenance object, and one vegetation
+    /// cluster. Each semantic source is descriptor-driven generated-v4 art.
+    /// Normal motion contributes one action; Reduce Motion contributes none.
+    func makeCorridorLife(
+        in state: CityGameState,
         detail: CameraDetailLevel,
         reducedMotion: Bool
-    ) -> SKNode? {
-        guard tile.kind == .park || tile.kind == .residential else { return nil }
-
+    ) -> SKNode {
         let root = SKNode()
-        root.name = "lot.ambient.vegetation"
-        let neighborhood = style.makeDetailLayer(.neighborhood, visibleAt: detail)
-        root.addChild(neighborhood)
+        root.name = "world.ambient.corridor"
 
-        let drift = SKNode()
-        drift.name = "lot.ambient.leafDrift"
-        let side: CGFloat = WorldVisualSeed.variant(
-            count: 2,
-            for: tile.coordinate,
-            kind: tile.kind,
-            salt: 0xA11F
-        ) == 0 ? -1 : 1
-        drift.position = CGPoint(x: side * 22, y: 18)
-
-        for index in 0..<3 {
-            let leaf = SKShapeNode(ellipseOf: CGSize(width: 3.6, height: 1.8))
-            leaf.fillColor = index.isMultiple(of: 2)
-                ? NSColor(calibratedRed: 0.59, green: 0.75, blue: 0.34, alpha: 0.82)
-                : NSColor(calibratedRed: 0.86, green: 0.69, blue: 0.25, alpha: 0.78)
-            leaf.strokeColor = .clear
-            leaf.position = CGPoint(x: CGFloat(index * 6 - 6), y: CGFloat(index % 2) * 4)
-            leaf.zRotation = CGFloat(index - 1) * 0.35
-            drift.addChild(leaf)
+        let completed = state.tiles.filter {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
         }
+        let developedCoordinates = completed.map(\.coordinate)
+        guard !developedCoordinates.isEmpty else { return root }
 
-        if !reducedMotion {
-            let phase = Double(WorldVisualSeed.unit(
-                for: tile.coordinate,
-                kind: tile.kind,
-                salt: 0xA11F
-            )) * 1.2
-            let loop = SKAction.sequence([
-                .group([
-                    .moveBy(x: side * 4, y: 2, duration: 1.8),
-                    .rotate(byAngle: side * 0.12, duration: 1.8)
-                ]),
-                .group([
-                    .moveBy(x: side * -4, y: -2, duration: 1.8),
-                    .rotate(byAngle: side * -0.12, duration: 1.8)
+        let road = state.tiles.filter { tile in
+            tile.kind == .road && state.neighbors(of: tile.coordinate).contains {
+                $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+            }
+        }.min { lhs, rhs in
+            let lhsDistance = developedCoordinates.reduce(0) {
+                $0 + abs($1.x - lhs.coordinate.x) + abs($1.y - lhs.coordinate.y)
+            }
+            let rhsDistance = developedCoordinates.reduce(0) {
+                $0 + abs($1.x - rhs.coordinate.x) + abs($1.y - rhs.coordinate.y)
+            }
+            if lhsDistance == rhsDistance {
+                return (lhs.coordinate.y, lhs.coordinate.x) < (rhs.coordinate.y, rhs.coordinate.x)
+            }
+            return lhsDistance < rhsDistance
+        }
+        guard let road else { return root }
+
+        let roadPosition = style.isoPosition(road.coordinate)
+        if let pair = generatedDecoration(
+            logicalID: "ambient_pedestrian_pair",
+            semanticName: "world.ambient.pedestrian-pair",
+            detail: detail,
+            position: CGPoint(x: roadPosition.x + 4, y: roadPosition.y + 15),
+            zPosition: style.depth(for: road.coordinate) + 58
+        ) {
+            if !reducedMotion {
+                let phase = Double(WorldVisualSeed.unit(
+                    for: road.coordinate,
+                    kind: .road,
+                    salt: 0xC0111D0
+                )) * 0.8
+                let stroll = SKAction.sequence([
+                    .moveBy(x: 4, y: -2, duration: 2.4),
+                    .moveBy(x: -4, y: 2, duration: 2.4),
                 ])
-            ])
-            drift.run(
-                .sequence([.wait(forDuration: phase), .repeatForever(loop)]),
-                withKey: "ambient.vegetation"
-            )
+                pair.run(
+                    .sequence([.wait(forDuration: phase), .repeatForever(stroll)]),
+                    withKey: "ambient.corridor.walk"
+                )
+            }
+            root.addChild(pair)
         }
 
-        neighborhood.addChild(drift)
+        if let service = generatedDecoration(
+            logicalID: "ambient_service_object",
+            semanticName: "world.ambient.parked-service-object",
+            detail: detail,
+            position: CGPoint(x: roadPosition.x - 17, y: roadPosition.y - 2),
+            zPosition: style.depth(for: road.coordinate) + 56
+        ) {
+            root.addChild(service)
+        }
+
+        if let coordinate = vegetationCoordinate(in: state, near: road.coordinate),
+           let cluster = generatedDecoration(
+               logicalID: "ambient_vegetation_cluster",
+               semanticName: "world.ambient.vegetation-cluster",
+               detail: detail,
+               position: style.isoPosition(coordinate),
+               zPosition: style.depth(for: coordinate) + 48
+           ) {
+            root.addChild(cluster)
+        }
         return root
     }
 
-    /// Adds one bounded piece of weather-reactive district dressing. The
-    /// banner and windsock do not claim shoppers, freight, output, employment,
-    /// prosperity, pollution, or service state.
-    func makeStrategyDecoration(
-        for tile: CityTile,
+    private func generatedDecoration(
+        logicalID: String,
+        semanticName: String,
         detail: CameraDetailLevel,
-        reducedMotion: Bool
+        position: CGPoint,
+        zPosition: CGFloat
     ) -> SKNode? {
-        guard let identity = StrategyDistrictVisualIdentity(tile: tile) else { return nil }
-
-        let root = SKNode()
-        root.name = "lot.ambient.strategy.\(identity.family.rawValue)"
-        let block = style.makeDetailLayer(.block, visibleAt: detail)
-        root.addChild(block)
-
-        let pole = SKShapeNode(rectOf: CGSize(width: 1.4, height: identity.family == .commercial ? 24 : 30))
-        pole.fillColor = NSColor(calibratedWhite: 0.25, alpha: 0.94)
-        pole.strokeColor = .clear
-        pole.position = CGPoint(x: identity.family == .commercial ? 27 : -28, y: 12)
-        pole.name = "lot.ambient.strategy.pole"
-        block.addChild(pole)
-
-        let cloth = SKShapeNode(path: style.polygonPath([
-            CGPoint(x: 0, y: 4),
-            CGPoint(x: identity.family == .commercial ? 15 : 18, y: 0),
-            CGPoint(x: identity.family == .commercial ? 12 : 14, y: -6),
-            CGPoint(x: 0, y: -3)
-        ]))
-        cloth.fillColor = identity.family == .commercial
-            ? NSColor(calibratedRed: 0.76, green: 0.40, blue: 0.29, alpha: 0.94)
-            : NSColor(calibratedRed: 0.88, green: 0.64, blue: 0.22, alpha: 0.94)
-        cloth.strokeColor = NSColor.black.withAlphaComponent(0.30)
-        cloth.lineWidth = 0.7
-        cloth.position = CGPoint(
-            x: pole.position.x,
-            y: identity.family == .commercial ? 23 : 29
-        )
-        cloth.name = identity.family == .commercial
-            ? "lot.ambient.commercial.banner"
-            : "lot.ambient.industrial.windsock"
-        block.addChild(cloth)
-
-        if !reducedMotion {
-            let phase = Double(WorldVisualSeed.unit(
-                for: tile.coordinate,
-                kind: tile.kind,
-                salt: 0xD157A1C7
-            )) * 1.1
-            let amplitude: CGFloat = identity.family == .commercial ? 0.055 : 0.085
-            let loop = SKAction.sequence([
-                .rotate(toAngle: amplitude, duration: 1.4, shortestUnitArc: true),
-                .rotate(toAngle: -amplitude, duration: 1.4, shortestUnitArc: true)
-            ])
-            cloth.run(
-                .sequence([.wait(forDuration: phase), .repeatForever(loop)]),
-                withKey: "ambient.strategy.weather"
-            )
+        guard let sprite = assets.generatedSprite(logicalID: logicalID, detail: detail) else {
+            return nil
         }
+        let root = SKNode()
+        root.name = semanticName
+        root.position = position
+        root.zPosition = zPosition
+        sprite.name = "\(semanticName).generated-v4.\(detail.assetSuffix)"
+        root.addChild(sprite)
         return root
+    }
+
+    private func vegetationCoordinate(in state: CityGameState, near road: GridCoordinate) -> GridCoordinate? {
+        state.tiles.filter { tile in
+            guard tile.kind == .empty else { return false }
+            let distance = abs(tile.coordinate.x - road.x) + abs(tile.coordinate.y - road.y)
+            return distance == 1 || distance == 2
+        }.sorted {
+            let lhsDistance = abs($0.coordinate.x - road.x) + abs($0.coordinate.y - road.y)
+            let rhsDistance = abs($1.coordinate.x - road.x) + abs($1.coordinate.y - road.y)
+            if lhsDistance == rhsDistance {
+                return ($0.coordinate.y, $0.coordinate.x) < ($1.coordinate.y, $1.coordinate.x)
+            }
+            return lhsDistance < rhsDistance
+        }.first?.coordinate
     }
 }

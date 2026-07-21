@@ -29,6 +29,9 @@ OBJECT_WIDTHS = {
     "industrial_l01": 710,
     "city_hall_l01": 820,
     "water_tower_l01": 360,
+    "ambient_pedestrian_pair": 220,
+    "ambient_service_object": 320,
+    "ambient_vegetation_cluster": 430,
 }
 GROUND_PIVOT = (768, 896)
 

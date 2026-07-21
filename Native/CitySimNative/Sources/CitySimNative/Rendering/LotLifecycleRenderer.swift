@@ -53,14 +53,7 @@ final class LotLifecycleRenderer {
         }
 
         if stage != .complete {
-            addConstructionProgress(stage: stage, progress: tile.constructionProgress, to: neighborhood)
-            addSafetyCones(to: neighborhood)
-            addConstructionMotion(
-                for: tile,
-                stage: stage,
-                reducedMotion: reducedMotion,
-                to: neighborhood
-            )
+            addSafetyCones(to: block)
         }
         return root
     }
@@ -191,8 +184,8 @@ final class LotLifecycleRenderer {
             scaffold.addChild(platform)
         }
         let wrap = SKShapeNode(rectOf: CGSize(width: 51, height: 39), cornerRadius: 2)
-        wrap.fillColor = NSColor.systemTeal.withAlphaComponent(0.09)
-        wrap.strokeColor = NSColor.systemTeal.withAlphaComponent(0.76)
+        wrap.fillColor = NSColor(calibratedRed: 0.72, green: 0.66, blue: 0.51, alpha: 0.14)
+        wrap.strokeColor = NSColor(calibratedRed: 0.57, green: 0.52, blue: 0.39, alpha: 0.72)
         wrap.lineWidth = 1.4
         wrap.position.y = 22
         wrap.name = "lot.construction.finishWrap"
@@ -381,7 +374,9 @@ final class LotLifecycleRenderer {
         addMaterialPallets(to: node)
         for index in 0..<2 {
             let bucket = SKShapeNode(rectOf: CGSize(width: 5, height: 6), cornerRadius: 1)
-            bucket.fillColor = index == 0 ? .systemTeal : .systemYellow
+            bucket.fillColor = index == 0
+                ? NSColor(calibratedRed: 0.38, green: 0.46, blue: 0.43, alpha: 1)
+                : NSColor(calibratedRed: 0.76, green: 0.63, blue: 0.35, alpha: 1)
             bucket.strokeColor = NSColor.white.withAlphaComponent(0.38)
             bucket.position = CGPoint(x: 19 + CGFloat(index) * 7, y: -2 + CGFloat(index) * 3)
             bucket.name = "lot.construction.finishBucket"
@@ -399,14 +394,12 @@ final class LotLifecycleRenderer {
     ) {
         switch condition {
         case .maintained:
-            addMaintainedFrontage(to: block)
+            break
         case .weathered:
             addStressSilhouette(distressed: false, to: city)
-            addPatchwork(for: tile, distressed: false, reducedMotion: reducedMotion, to: neighborhood)
             addDryPlanters(to: block)
         case .distressed:
             addStressSilhouette(distressed: true, to: city)
-            addPatchwork(for: tile, distressed: true, reducedMotion: reducedMotion, to: neighborhood)
             addBoarding(to: neighborhood)
             addRubble(to: block)
         }
@@ -438,12 +431,6 @@ final class LotLifecycleRenderer {
         let color = distressed
             ? NSColor(calibratedRed: 0.25, green: 0.18, blue: 0.14, alpha: 1)
             : NSColor(calibratedRed: 0.48, green: 0.36, blue: 0.23, alpha: 1)
-
-        let wash = SKShapeNode(path: style.diamondPath(width: 65, height: 33))
-        wash.fillColor = NSColor.black.withAlphaComponent(distressed ? 0.28 : 0.15)
-        wash.strokeColor = NSColor.black.withAlphaComponent(distressed ? 0.42 : 0.24)
-        wash.lineWidth = distressed ? 1.7 : 1.1
-        layer.addChild(wash)
 
         let sag = SKShapeNode(path: style.polygonPath([
             CGPoint(x: -28, y: 33),
@@ -579,35 +566,6 @@ final class LotLifecycleRenderer {
     ) {
         let growth = SKNode()
         growth.name = "lot.lifecycle.growth.tier.\(tier)"
-
-        let chevrons = SKNode()
-        chevrons.name = "lot.lifecycle.motion.growthChevron"
-        chevrons.position = CGPoint(x: 29, y: 17)
-        for index in 0..<min(3, tier) {
-            let path = CGMutablePath()
-            path.move(to: CGPoint(x: -5, y: CGFloat(index) * 8))
-            path.addLine(to: CGPoint(x: 0, y: CGFloat(index) * 8 + 5))
-            path.addLine(to: CGPoint(x: 5, y: CGFloat(index) * 8))
-            let chevron = SKShapeNode(path: path)
-            chevron.strokeColor = NSColor.systemTeal.withAlphaComponent(0.94)
-            chevron.lineWidth = 2.2
-            chevron.lineCap = .round
-            chevrons.addChild(chevron)
-        }
-        if !reducedMotion {
-            runDeterministicLoop(
-                .sequence([
-                    .moveBy(x: 0, y: 3, duration: 0.8),
-                    .moveBy(x: 0, y: -3, duration: 0.8)
-                ]),
-                on: chevrons,
-                for: tile,
-                salt: 0x6A07,
-                key: "lifecycle.growth"
-            )
-        }
-        growth.addChild(chevrons)
-
         city.addChild(growth)
 
         let freshFacade = SKNode()
@@ -627,24 +585,13 @@ final class LotLifecycleRenderer {
         freshFacade.addChild(sill)
         neighborhood.addChild(freshFacade)
 
-        let pennants = SKNode()
-        pennants.name = "lot.growth.pennants"
-        for (index, x) in [-19.0, 19.0].enumerated() {
-            let pole = SKShapeNode(rectOf: CGSize(width: 1.2, height: 21))
-            pole.fillColor = NSColor(calibratedWhite: 0.84, alpha: 0.9)
-            pole.strokeColor = .clear
-            pole.position = CGPoint(x: x, y: 9)
-            pennants.addChild(pole)
-
-            let flag = SKShapeNode(path: style.polygonPath([
-                CGPoint(x: 0, y: 5), CGPoint(x: 10, y: 2), CGPoint(x: 0, y: -1)
-            ]))
-            flag.fillColor = index == 0 ? .systemTeal : .systemYellow
-            flag.strokeColor = NSColor.white.withAlphaComponent(0.28)
-            flag.position = CGPoint(x: x, y: 17)
-            pennants.addChild(flag)
-        }
-        block.addChild(pennants)
+        let entranceCanopy = SKShapeNode(path: style.diamondPath(width: 24, height: 8))
+        entranceCanopy.name = "lot.growth.entrance-canopy"
+        entranceCanopy.fillColor = style.palette.civicRoof.withAlphaComponent(0.92)
+        entranceCanopy.strokeColor = style.palette.concreteLight.withAlphaComponent(0.38)
+        entranceCanopy.lineWidth = 0.7
+        entranceCanopy.position = CGPoint(x: 4, y: 9)
+        block.addChild(entranceCanopy)
     }
 
     private func runDeterministicLoop(
@@ -663,6 +610,6 @@ final class LotLifecycleRenderer {
     }
 
     private var constructionColor: NSColor {
-        NSColor(calibratedRed: 0.96, green: 0.62, blue: 0.14, alpha: 1)
+        NSColor(calibratedRed: 0.61, green: 0.43, blue: 0.22, alpha: 1)
     }
 }

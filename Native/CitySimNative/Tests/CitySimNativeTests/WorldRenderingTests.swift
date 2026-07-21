@@ -334,7 +334,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(manifest?.schema, 4)
         XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
         XCTAssertEqual(manifest?.productionSelection, true)
-        XCTAssertEqual(manifest?.assets.count, 9)
+        XCTAssertEqual(manifest?.assets.count, 12)
         for asset in manifest?.assets ?? [] {
             for detail in CameraDetailLevel.allCases {
                 XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
@@ -348,7 +348,7 @@ final class WorldRenderingTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.generatedManifest)
 
         XCTAssertEqual(catalog.manifestValidationIssues(), [])
-        XCTAssertEqual(manifest.inventory.count, 75)
+        XCTAssertEqual(manifest.inventory.count, 84)
         XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
 
         for asset in manifest.assets {
@@ -408,7 +408,14 @@ final class WorldRenderingTests: XCTestCase {
                 XCTAssertEqual(catalog.residencySnapshot().highWaterDecodedBytes, firstCycleHighWater)
             }
         }
-        XCTAssertGreaterThan(catalog.residencySnapshot().evictions, 0)
+        let final = catalog.residencySnapshot()
+        XCTAssertGreaterThan(final.evictions, 0)
+        print(
+            "PLAY022_M3_RESIDENCY active=\(final.activeDetail?.assetSuffix ?? "none") " +
+            "resident_textures=\(final.residentTextureCount) resident_bytes=\(final.residentDecodedBytes) " +
+            "high_water_bytes=\(final.highWaterDecodedBytes) hits=\(final.cacheHits) " +
+            "misses=\(final.cacheMisses) evictions=\(final.evictions) fallbacks=\(final.fallbackCount)"
+        )
     }
 
     @MainActor
@@ -543,6 +550,9 @@ final class WorldRenderingTests: XCTestCase {
             let occupancy = scene.developedViewportOccupancyForTesting()
             XCTAssertGreaterThanOrEqual(max(occupancy.width, occupancy.height), 0.60)
             XCTAssertLessThanOrEqual(max(occupancy.width, occupancy.height), 0.68)
+            XCTAssertLessThanOrEqual(scene.diagnosticsSnapshot.nodeCount, 4_000)
+            XCTAssertLessThanOrEqual(scene.diagnosticsSnapshot.drawableNodeCount, 1_500)
+            XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
             let texture = try XCTUnwrap(view.texture(from: scene))
             let representation = NSBitmapImageRep(cgImage: texture.cgImage())
             let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
@@ -557,83 +567,69 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testFiveAuthoredPlaceFamiliesLoadThreeStableSeededVariants() {
+    func testCompletedVisibleSetUsesGeneratedV4AcrossKindsAndLevelsWithoutLegacyFallback() {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
-        let families: [(String, BuildingKind)] = [
-            ("residential", .residential),
-            ("commercial", .commercial),
-            ("industrial", .industrial),
-            ("park", .park),
-            ("civic", .cityHall)
+        let visibleSet: [(BuildingKind, String)] = [
+            (.residential, "residential_l01"),
+            (.commercial, "commercial_l01"),
+            (.industrial, "industrial_l01"),
+            (.park, "park_l01"),
+            (.powerPlant, "industrial_l01"),
+            (.waterTower, "water_tower_l01"),
+            (.fireStation, "commercial_l01"),
+            (.policeStation, "city_hall_l01"),
+            (.school, "residential_l01"),
+            (.cityHall, "city_hall_l01"),
         ]
 
-        for (family, kind) in families {
-            for variant in 0..<3 {
-                XCTAssertNotNil(catalog.texture(named: "place_\(family)_\(variant)"))
-            }
-            let coordinate = GridCoordinate(x: family.count, y: kind.rawValue.count)
-            let tile = CityTile(coordinate: coordinate, kind: kind, constructionProgress: 1)
-            let first = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
-            let second = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
-            let generatedID = switch kind {
-            case .residential: "residential_l01"
-            case .commercial: "commercial_l01"
-            case .industrial: "industrial_l01"
-            case .park: "park_l01"
-            case .cityHall: "city_hall_l01"
-            default: ""
-            }
-            let expectedName = "lot.generated-v4.\(generatedID).block"
-            XCTAssertTrue(descendantNames(in: first).contains(expectedName))
-            XCTAssertTrue(descendantNames(in: second).contains(expectedName))
-        }
-    }
-
-    @MainActor
-    func testStrategyDistrictsLoadAuthoredDensityArchitectureAndParcelSets() {
-        let catalog = WorldAssetCatalog()
-        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
-
-        for (family, kind) in [("commercial", BuildingKind.commercial), ("industrial", .industrial)] {
+        for (index, entry) in visibleSet.enumerated() {
+            let (kind, generatedID) = entry
             for tier in 1...3 {
-                XCTAssertNotNil(catalog.texture(named: "strategy_ground_\(family)_tier_\(tier)"))
-                for variant in 0..<3 {
-                    XCTAssertNotNil(catalog.texture(named: "place_\(family)_tier_\(tier)_\(variant)"))
-                }
-
                 let tile = CityTile(
-                    coordinate: GridCoordinate(x: tier + family.count, y: tier * 2),
+                    coordinate: GridCoordinate(x: index + 2, y: tier + 3),
                     kind: kind,
                     level: tier,
                     condition: 1,
                     constructionProgress: 1
                 )
-                let identity = StrategyDistrictVisualIdentity(tile: tile)
-                XCTAssertEqual(identity?.densityTier, tier)
-                XCTAssertEqual(identity?.family.rawValue, family)
-
-                let root = renderer.makeLot(
+                let first = renderer.makeLot(
                     for: tile,
                     adjacentRoads: .south,
                     detail: .block,
                     reducedMotion: true
                 )
-                let names = descendantNames(in: root)
-                if tier == 1 {
-                    XCTAssertTrue(names.contains("lot.generated-v4.\(family)_l01.block"))
-                } else {
-                    XCTAssertTrue(names.contains(
-                        "lot.place.\(family).density.\(tier).variant.\(identity!.variant).\(identity!.architecturalCue)"
-                    ))
+                let second = renderer.makeLot(
+                    for: tile,
+                    adjacentRoads: .south,
+                    detail: .block,
+                    reducedMotion: true
+                )
+                let expectedName = "lot.generated-v4.\(generatedID).block"
+                for root in [first, second] {
+                    let names = descendantNames(in: root)
+                    XCTAssertEqual(names.filter { $0 == expectedName }.count, 1)
+                    XCTAssertFalse(names.contains { $0.hasPrefix("lot.place.") })
+                    XCTAssertFalse(names.contains { $0.hasPrefix("lot.strategyGround.") })
+                    XCTAssertFalse(names.contains { $0.contains(".banner") || $0.contains(".windsock") })
+                    XCTAssertTrue(descendantLabels(in: root).isEmpty)
                 }
-                XCTAssertTrue(names.contains("lot.strategyGround.\(family).density.\(tier)"))
-                if tier > 1 {
-                    XCTAssertTrue(names.contains { $0.contains(identity!.architecturalCue) })
-                }
-                XCTAssertTrue(descendantLabels(in: root).isEmpty)
             }
         }
+
+        let powerPlant = CityTile(
+            coordinate: GridCoordinate(x: 15, y: 9),
+            kind: .powerPlant,
+            constructionProgress: 1
+        )
+        let powerPlantNames = descendantNames(in: renderer.makeLot(
+            for: powerPlant,
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        ))
+        XCTAssertTrue(powerPlantNames.contains("lot.generated-v4.industrial_l01.block"))
+        XCTAssertTrue(powerPlantNames.contains("lot.generated-role.powerPlant"))
     }
 
     func testStrategyDistrictIdentityIsStableClampedAndTruthLimited() {
@@ -668,40 +664,37 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testStrategyAmbientLifeIsBoundedDistinctAndReduceMotionSafe() {
-        let renderer = AmbientLifeRenderer(style: WorldVisualStyle())
-        let commercial = CityTile(
-            coordinate: GridCoordinate(x: 6, y: 7),
-            kind: .commercial,
-            level: 2
-        )
-        let industrial = CityTile(
-            coordinate: GridCoordinate(x: 8, y: 7),
-            kind: .industrial,
-            level: 2
-        )
-
-        let animatedCommercial = renderer.makeStrategyDecoration(
-            for: commercial,
+    func testCorridorAmbientLifeHasOneSemanticSetAndIsReduceMotionSafe() {
+        let renderer = AmbientLifeRenderer(style: WorldVisualStyle(), assets: WorldAssetCatalog())
+        let state = CityGameState.newCity(seed: 42)
+        let animated = renderer.makeCorridorLife(
+            in: state,
             detail: .block,
             reducedMotion: false
-        )!
-        let animatedIndustrial = renderer.makeStrategyDecoration(
-            for: industrial,
-            detail: .block,
-            reducedMotion: false
-        )!
-        let staticIndustrial = renderer.makeStrategyDecoration(
-            for: industrial,
+        )
+        let reduced = renderer.makeCorridorLife(
+            in: state,
             detail: .block,
             reducedMotion: true
-        )!
+        )
 
-        XCTAssertTrue(descendantNames(in: animatedCommercial).contains("lot.ambient.commercial.banner"))
-        XCTAssertTrue(descendantNames(in: animatedIndustrial).contains("lot.ambient.industrial.windsock"))
-        XCTAssertEqual(recursiveActiveActionCount(animatedCommercial), 1)
-        XCTAssertEqual(recursiveActiveActionCount(animatedIndustrial), 1)
-        XCTAssertEqual(recursiveActiveActionCount(staticIndustrial), 0)
+        let semanticSet = [
+            "world.ambient.pedestrian-pair",
+            "world.ambient.parked-service-object",
+            "world.ambient.vegetation-cluster",
+        ]
+        let animatedNames = descendantNames(in: animated)
+        let reducedNames = descendantNames(in: reduced)
+        for name in semanticSet {
+            XCTAssertEqual(animatedNames.filter { $0 == name }.count, 1)
+            XCTAssertEqual(reducedNames.filter { $0 == name }.count, 1)
+        }
+        XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
+        XCTAssertFalse(animatedNames.contains { $0.contains(".banner") || $0.contains(".windsock") })
+        XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 1)
+        XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
+        XCTAssertTrue(descendantLabels(in: animated).isEmpty)
+        XCTAssertTrue(descendantLabels(in: reduced).isEmpty)
     }
 
     @MainActor
@@ -885,10 +878,12 @@ final class WorldRenderingTests: XCTestCase {
         let recoveredRoot = renderer.makeLot(for: recovered, detail: .block, reducedMotion: true)
         let recoveredNames = descendantNames(in: recoveredRoot)
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.distressed"))
-        XCTAssertTrue(recoveredNames.contains("lot.lifecycle.condition.maintained"))
+        XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.maintained"))
         XCTAssertTrue(recoveredNames.contains("lot.lifecycle.growth.tier.2"))
-        XCTAssertTrue(descendantNames(in: recoveredRoot).contains("lot.growth.freshFacade"))
-        XCTAssertFalse(descendantNames(in: recoveredRoot).contains("lot.growth.badge"))
+        XCTAssertTrue(recoveredNames.contains("lot.growth.freshFacade"))
+        XCTAssertTrue(recoveredNames.contains("lot.growth.entrance-canopy"))
+        XCTAssertFalse(recoveredNames.contains("lot.growth.badge"))
+        XCTAssertFalse(recoveredNames.contains { $0.contains("pennant") || $0.contains("chevron") })
         XCTAssertTrue(descendantLabels(in: recoveredRoot).isEmpty)
     }
 
@@ -912,10 +907,17 @@ final class WorldRenderingTests: XCTestCase {
             )
             let animated = renderer.makeLot(for: tile, detail: .block, reducedMotion: false)
             let staticFallback = renderer.makeLot(for: tile, detail: .block, reducedMotion: true)
-            XCTAssertTrue(descendantNames(in: animated).contains(expectedName))
-            XCTAssertTrue(descendantNames(in: staticFallback).contains(expectedName))
-            XCTAssertGreaterThan(recursiveActiveActionCount(animated), 0)
+            let animatedNames = descendantNames(in: animated)
+            let staticNames = descendantNames(in: staticFallback)
+            XCTAssertTrue(animatedNames.contains(expectedName))
+            XCTAssertTrue(staticNames.contains(expectedName))
+            XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.construction.progress") })
+            XCTAssertFalse(staticNames.contains { $0.hasPrefix("lot.construction.progress") })
+            let expectedActions = progress >= 0.50 ? 1 : 0
+            XCTAssertEqual(recursiveActiveActionCount(animated), expectedActions)
             XCTAssertEqual(recursiveActiveActionCount(staticFallback), 0)
+            XCTAssertTrue(descendantLabels(in: animated).isEmpty)
+            XCTAssertTrue(descendantLabels(in: staticFallback).isEmpty)
         }
 
         let healthyGrowth = CityTile(
@@ -927,16 +929,23 @@ final class WorldRenderingTests: XCTestCase {
             constructionProgress: 1
         )
         let growthRoot = renderer.makeLot(for: healthyGrowth, detail: .block, reducedMotion: false)
-        XCTAssertTrue(descendantNames(in: growthRoot).contains("lot.lifecycle.growth.tier.3"))
-        XCTAssertTrue(descendantNames(in: growthRoot).contains("lot.growth.pennants"))
-        XCTAssertGreaterThan(recursiveActiveActionCount(growthRoot), 0)
+        let growthNames = descendantNames(in: growthRoot)
+        XCTAssertTrue(growthNames.contains("lot.lifecycle.growth.tier.3"))
+        XCTAssertTrue(growthNames.contains("lot.growth.entrance-canopy"))
+        XCTAssertFalse(growthNames.contains { $0.contains("pennant") || $0.contains("chevron") })
+        XCTAssertEqual(recursiveActiveActionCount(growthRoot), 0)
+        XCTAssertTrue(descendantLabels(in: growthRoot).isEmpty)
 
         var stressed = healthyGrowth
         stressed.condition = 0.58
         let stressedRoot = renderer.makeLot(for: stressed, detail: .block, reducedMotion: false)
-        XCTAssertTrue(descendantNames(in: stressedRoot).contains("lot.condition.patchwork"))
-        XCTAssertFalse(descendantNames(in: stressedRoot).contains("lot.lifecycle.growth.tier.3"))
-        XCTAssertGreaterThan(recursiveActiveActionCount(stressedRoot), 0)
+        let stressedNames = descendantNames(in: stressedRoot)
+        XCTAssertTrue(stressedNames.contains("lot.lifecycle.condition.weathered"))
+        XCTAssertFalse(stressedNames.contains("lot.condition.patchwork"))
+        XCTAssertFalse(stressedNames.contains("lot.lifecycle.motion.cautionRibbon"))
+        XCTAssertFalse(stressedNames.contains("lot.lifecycle.growth.tier.3"))
+        XCTAssertEqual(recursiveActiveActionCount(stressedRoot), 0)
+        XCTAssertTrue(descendantLabels(in: stressedRoot).isEmpty)
 
         let park = CityTile(
             coordinate: GridCoordinate(x: 8, y: 9),
@@ -945,8 +954,8 @@ final class WorldRenderingTests: XCTestCase {
         )
         let ambient = renderer.makeLot(for: park, detail: .neighborhood, reducedMotion: false)
         let staticAmbient = renderer.makeLot(for: park, detail: .neighborhood, reducedMotion: true)
-        XCTAssertTrue(descendantNames(in: ambient).contains("lot.ambient.vegetation"))
-        XCTAssertGreaterThan(recursiveActiveActionCount(ambient), 0)
+        XCTAssertFalse(descendantNames(in: ambient).contains { $0.hasPrefix("lot.ambient.") })
+        XCTAssertEqual(recursiveActiveActionCount(ambient), 0)
         XCTAssertEqual(recursiveActiveActionCount(staticAmbient), 0)
     }
 

@@ -15,13 +15,6 @@ final class TerrainRenderer {
         let root = SKNode()
         root.name = "terrain.\(tile.kind.rawValue)"
 
-        let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
-        let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
-        let blockLayer = style.makeDetailLayer(.block, visibleAt: detail)
-        root.addChild(cityLayer)
-        root.addChild(neighborhoodLayer)
-        root.addChild(blockLayer)
-
         // The macro terrain bed owns visible undeveloped land. Each tile keeps
         // nearly transparent hit geometry so empty parcels remain directly
         // interactive without reintroducing a 24x24 checkerboard.
@@ -30,7 +23,18 @@ final class TerrainRenderer {
         hitSurface.fillColor = NSColor.white.withAlphaComponent(0.002)
         hitSurface.strokeColor = .clear
         hitSurface.zPosition = -8
-        cityLayer.addChild(hitSurface)
+        root.addChild(hitSurface)
+
+        // Empty and road cells need only their hit surface. Avoid building three
+        // invisible LOD containers on every undeveloped parcel in a 24 x 24 map.
+        guard tile.kind != .empty, tile.kind != .road else { return root }
+
+        let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
+        let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
+        let blockLayer = style.makeDetailLayer(.block, visibleAt: detail)
+        root.addChild(cityLayer)
+        root.addChild(neighborhoodLayer)
+        root.addChild(blockLayer)
 
         addLotSurface(for: tile, to: cityLayer)
         addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
@@ -219,9 +223,9 @@ final class TerrainRenderer {
     }
 
     private func addLotSurface(for tile: CityTile, to layer: SKNode) {
-        if tile.level == 1,
-           tile.constructionProgress >= 1,
-           [.residential, .commercial, .industrial, .park, .cityHall, .waterTower].contains(tile.kind) {
+        if tile.constructionProgress >= 1,
+           tile.kind != .empty,
+           tile.kind != .road {
             return
         }
         switch tile.kind {

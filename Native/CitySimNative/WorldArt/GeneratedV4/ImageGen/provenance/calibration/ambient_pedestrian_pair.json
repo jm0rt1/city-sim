@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "asset_id": "ambient_pedestrian_pair",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: raw master source for a CitySim ambient-life sprite\n\nPrimary request: Generate exactly two adult pedestrian figures walking together as a small ambient pair for an orthographic 2:1 isometric city-builder. They must read as two distinct adults with clear separation between their silhouettes, coordinated as a pair but not touching or overlapping.\n\nInput images:\n- Image 1 is the immutable provisional Gate A appearance reference only. Match its richly detailed, realistic hand-painted city-builder rendering, warm material depth, restrained outlines, value hierarchy, projection, and lighting. Do not copy its streets, parcels, buildings, vegetation, props, or composition.\n- Image 2 is the authoritative 1x1 registration geometry and canvas/pivot template. Obey its canvas proportions, 2:1 projection, footprint diamond, ground pivot, and safe bounds exactly. Do not reproduce any guide lines, guide colors, arrows, boxes, socket marks, or template text.\n\nScene/backdrop: A perfectly flat, uniform solid #ff00ff chroma-key field across the entire canvas, with no gradient, texture, floor plane, environmental lighting variation, horizon, or scenery.\n\nSubject: Exactly two ordinary adult pedestrians, both fully visible head to toe, walking together. Use practical muted civic clothing with understated color variation, believable posture, clear faces at sprite scale, and crisp opaque silhouettes. Keep all body forms and their small southeast contact shadows contained within the authoritative 1x1 footprint and allowed bounds. The figures should normalize to approximately 7-9 CitySim world points tall, so they occupy only a small portion of the template rather than filling the canvas.\n\nStyle/medium: Richly detailed realistic hand-painted isometric game sprite, materially consistent with Image 1; dimensional but readable at small scale; no crude vector shapes, no pixel art, no photographic cutout.\n\nComposition/framing: Orthographic 2:1 isometric view. Place the pair together near the authoritative ground pivot while preserving clear negative space and generous padding on all sides. Their feet must register cleanly to the footprint ground plane. Neither figure may touch the other or any canvas edge.\n\nLighting/mood: Consistent northwest key light and restrained southeast contact shadows, matching Image 1. Shadows must remain tight grounding shadows attached to each figure, not a shared floor or broad cast-shadow patch.\n\nColor palette: Muted civic clothing\u2014charcoal, warm brown, dusty blue, cream, restrained burgundy\u2014while excluding #ff00ff from both figures and shadows.\n\nConstraints: Exactly two adults; one semantic pair only; crisp opaque silhouettes; generous padding; obey Image 2 geometry, pivot, and footprint; preserve Image 1 appearance only; no gameplay or placement decisions.\n\nAvoid: any street, road, sidewalk, curb, parcel, grass, terrain, building, fence, tree, plant, bench, lamp, sign, bag, bicycle, animal, vehicle, service object, construction item, UI, label, text, logo, watermark, guide color, guide line, template mark, extra person, child, crowd, merged silhouettes, neon outline, glow, floating figure, large shared shadow, background variation.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/ambient_pedestrian_pair.md",
+  "prompt_sha256": "9d4ba52851615d6c25af8e8a3091af0442e0c037e9afc5cbe21966fad76ed3e0",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 1x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_pedestrian_pair/source-v01.png",
+  "raw_source_sha256": "335290e1e81bb9a46ab6b059f96ad6e7b6365c48d5e6abae55c281ae8d7ce30b",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id ambient_pedestrian_pair --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_pedestrian_pair/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_pedestrian_pair --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_pedestrian_pair-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      560,
+      240,
+      978,
+      724
+    ],
+    "target_size": [
+      220,
+      255
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      658,
+      641
+    ]
+  },
+  "intended_gameplay_meaning": "truth-safe decorative pedestrian pair; no occupancy, traffic, prosperity, employment, or service implication",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": []
+}

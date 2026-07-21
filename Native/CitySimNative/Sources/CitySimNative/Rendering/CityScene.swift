@@ -71,6 +71,13 @@ private struct InteractionPreviewSignature: Equatable {
     let detail: CameraDetailLevel
 }
 
+private struct AmbientCorridorSignature: Equatable {
+    let developedCoordinates: [GridCoordinate]
+    let roadCoordinates: [GridCoordinate]
+    let detail: CameraDetailLevel
+    let reducedMotion: Bool
+}
+
 private final class TileRenderRecord {
     let root: SKNode
     let overlayLayer: SKNode
@@ -106,11 +113,13 @@ final class CityScene: SKScene {
     private let terrainRenderer: TerrainRenderer
     private let roadRenderer: RoadRenderer
     private let lotRenderer: LotRenderer
+    private let ambientLifeRenderer: AmbientLifeRenderer
     private let overlayRenderer: WorldOverlayRenderer
     private let spatialConsequenceRenderer: SpatialConsequenceRenderer
     private let worldLayer = SKNode()
     private let backdropLayer = SKNode()
     private let tileLayer = SKNode()
+    private let ambientLayer = SKNode()
     private let cameraNode = SKCameraNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
@@ -126,6 +135,7 @@ final class CityScene: SKScene {
     private var hoveredCoordinate: GridCoordinate?
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
+    private var ambientCorridorSignature: AmbientCorridorSignature?
     private var viewportInsets: CityMapViewportInsets = .zero
     private var hasUserAdjustedCamera = false
     private(set) var developedVisualBoundsForTesting: CGRect = .null
@@ -157,6 +167,7 @@ final class CityScene: SKScene {
         self.terrainRenderer = TerrainRenderer(style: style, assets: assets)
         self.roadRenderer = RoadRenderer(style: style, assets: assets)
         self.lotRenderer = LotRenderer(style: style, assets: assets)
+        self.ambientLifeRenderer = AmbientLifeRenderer(style: style, assets: assets)
         self.overlayRenderer = WorldOverlayRenderer(style: style)
         self.spatialConsequenceRenderer = SpatialConsequenceRenderer(style: style)
         self.currentCameraDetailLevel = style.detailLevel(cameraScale: 1)
@@ -167,6 +178,8 @@ final class CityScene: SKScene {
         backdropLayer.zPosition = -20_000
         worldLayer.addChild(backdropLayer)
         worldLayer.addChild(tileLayer)
+        ambientLayer.name = "world.ambient.layer"
+        worldLayer.addChild(ambientLayer)
         addChild(cameraNode)
         camera = cameraNode
         configureHighlight(hoverNode, color: .white, alpha: 0.24, z: 90_000)
@@ -252,6 +265,7 @@ final class CityScene: SKScene {
             previousSnapshot: motionChanged ? nil : previousSnapshot,
             previousOverlay: previousOverlay
         )
+        let ambientChanged = updateAmbientCorridor(in: state)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
@@ -270,6 +284,7 @@ final class CityScene: SKScene {
         let requiresTreeRecount = isFirstRender
             || previousSelection != selection
             || motionChanged
+            || ambientChanged
             || unexplainedCueRemoval
         refreshRuntimeDiagnostics(
             consumedEventCount: consequenceEvents.count,
@@ -542,6 +557,33 @@ final class CityScene: SKScene {
         refreshForCameraChange()
     }
 
+    @discardableResult
+    private func updateAmbientCorridor(in state: CityGameState) -> Bool {
+        let coordinateOrder: (GridCoordinate, GridCoordinate) -> Bool = {
+            ($0.y, $0.x) < ($1.y, $1.x)
+        }
+        let signature = AmbientCorridorSignature(
+            developedCoordinates: state.tiles.compactMap { tile in
+                tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
+                    ? tile.coordinate
+                    : nil
+            }.sorted(by: coordinateOrder),
+            roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil }
+                .sorted(by: coordinateOrder),
+            detail: currentCameraDetailLevel,
+            reducedMotion: reducedMotion
+        )
+        guard signature != ambientCorridorSignature else { return false }
+        ambientCorridorSignature = signature
+        ambientLayer.removeAllChildren()
+        ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
+            in: state,
+            detail: currentCameraDetailLevel,
+            reducedMotion: reducedMotion
+        ))
+        return true
+    }
+
     private func updateWorld(
         snapshot: CityPresentationSnapshot,
         overlay: DataOverlay,
@@ -614,7 +656,9 @@ final class CityScene: SKScene {
             if let existing = tileRecords[tile.coordinate], existing.signature == signature {
                 diagnostics.reusedTileCount += 1
                 if existing.overlaySignature != overlaySignature {
-                    let priorOverlayMetrics = runtimeTreeMetrics(existing.overlayLayer)
+                    let priorOverlayMetrics = existing.overlayLayer.parent == nil
+                        ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                        : runtimeTreeMetrics(existing.overlayLayer)
                     updateOverlay(
                         in: existing.overlayLayer,
                         tile: tile,
@@ -622,9 +666,17 @@ final class CityScene: SKScene {
                         state: state,
                         overlay: overlay
                     )
+                    if existing.overlayLayer.children.isEmpty {
+                        existing.overlayLayer.removeFromParent()
+                    } else if existing.overlayLayer.parent == nil {
+                        existing.root.addChild(existing.overlayLayer)
+                    }
+                    let updatedOverlayMetrics = existing.overlayLayer.parent == nil
+                        ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                        : runtimeTreeMetrics(existing.overlayLayer)
                     applyRuntimeDelta(
                         from: priorOverlayMetrics,
-                        to: runtimeTreeMetrics(existing.overlayLayer),
+                        to: updatedOverlayMetrics,
                         diagnostics: &diagnostics
                     )
                     existing.overlaySignature = overlaySignature
@@ -703,12 +755,13 @@ final class CityScene: SKScene {
         let consequenceLayer = SKNode()
         consequenceLayer.name = "spatial.layer"
         consequenceLayer.zPosition = 72
-        consequenceLayer.addChild(spatialConsequenceRenderer.makePersistentCues(
+        let persistentCues = spatialConsequenceRenderer.makePersistentCues(
             for: consequence,
             detail: currentCameraDetailLevel
-        ))
+        )
+        if !persistentCues.children.isEmpty { consequenceLayer.addChild(persistentCues) }
         updatePersistentConsequenceEmphasis(in: consequenceLayer, overlay: overlay)
-        root.addChild(consequenceLayer)
+        if !consequenceLayer.children.isEmpty { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
             overlayLayer: existing.overlayLayer,
@@ -787,18 +840,21 @@ final class CityScene: SKScene {
         let terrainLayer = SKNode()
         terrainLayer.name = "terrain.layer"
         terrainLayer.addChild(terrainRenderer.makeGround(for: tile, detail: currentCameraDetailLevel))
-        terrainLayer.addChild(terrainRenderer.makeMapEdge(
-            for: tile.coordinate,
-            gridWidth: state.gridWidth,
-            gridHeight: state.gridHeight,
-            detail: currentCameraDetailLevel
-        ))
+        if tile.coordinate.x == 0 || tile.coordinate.y == 0
+            || tile.coordinate.x == state.gridWidth - 1
+            || tile.coordinate.y == state.gridHeight - 1 {
+            terrainLayer.addChild(terrainRenderer.makeMapEdge(
+                for: tile.coordinate,
+                gridWidth: state.gridWidth,
+                gridHeight: state.gridHeight,
+                detail: currentCameraDetailLevel
+            ))
+        }
         root.addChild(terrainLayer)
 
         let overlayLayer = SKNode()
         overlayLayer.name = "overlay.layer"
         overlayLayer.zPosition = 20
-        root.addChild(overlayLayer)
         updateOverlay(
             in: overlayLayer,
             tile: tile,
@@ -806,6 +862,7 @@ final class CityScene: SKScene {
             state: state,
             overlay: overlay
         )
+        if !overlayLayer.children.isEmpty { root.addChild(overlayLayer) }
 
         let contentLayer = SKNode()
         contentLayer.name = "content.layer"
@@ -828,17 +885,18 @@ final class CityScene: SKScene {
                 reducedMotion: reducedMotion
             ))
         }
-        root.addChild(contentLayer)
+        if !contentLayer.children.isEmpty { root.addChild(contentLayer) }
 
         let consequenceLayer = SKNode()
         consequenceLayer.name = "spatial.layer"
         consequenceLayer.zPosition = 72
-        consequenceLayer.addChild(spatialConsequenceRenderer.makePersistentCues(
+        let persistentCues = spatialConsequenceRenderer.makePersistentCues(
             for: consequence,
             detail: currentCameraDetailLevel
-        ))
+        )
+        if !persistentCues.children.isEmpty { consequenceLayer.addChild(persistentCues) }
         updatePersistentConsequenceEmphasis(in: consequenceLayer, overlay: overlay)
-        root.addChild(consequenceLayer)
+        if !consequenceLayer.children.isEmpty { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
             overlayLayer: overlayLayer,
@@ -902,13 +960,15 @@ final class CityScene: SKScene {
         overlay: DataOverlay
     ) {
         layer.removeAllChildren()
-        layer.addChild(overlayRenderer.makeOverlay(
+        guard overlay != .none else { return }
+        let renderedOverlay = overlayRenderer.makeOverlay(
             for: tile,
             state: state,
             consequence: consequence,
             overlay: overlay,
             detail: currentCameraDetailLevel
-        ))
+        )
+        if !renderedOverlay.children.isEmpty { layer.addChild(renderedOverlay) }
     }
 
     private func presentConsequenceEvents(_ events: [CitySpatialConsequenceEvent]) -> Int {
@@ -925,7 +985,12 @@ final class CityScene: SKScene {
         }
         var insertedCount = 0
         for event in summarized {
-            guard let layer = tileRecords[event.coordinate]?.consequenceLayer else { continue }
+            guard let record = tileRecords[event.coordinate] else { continue }
+            let layer = record.consequenceLayer
+            if layer.parent == nil {
+                record.root.addChild(layer)
+                addRuntimeMetrics(RuntimeTreeMetrics(nodes: 1, drawables: 0, actions: 0), to: &diagnosticsSnapshot)
+            }
             for prior in layer.children where prior.name?.hasPrefix("spatial.event.") == true {
                 subtractRuntimeMetrics(runtimeTreeMetrics(prior), from: &diagnosticsSnapshot)
                 prior.removeFromParent()
@@ -1050,6 +1115,7 @@ final class CityScene: SKScene {
             updateGeneratedLOD(in: record.root, detail: detail)
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
+        let ambientChanged = renderedState.map { updateAmbientCorridor(in: $0) } ?? false
         if preservingUpdateDiagnostics {
             diagnosticsSnapshot.detailLevel = detail
         } else {
@@ -1064,6 +1130,12 @@ final class CityScene: SKScene {
         }
         updateSelection(renderedSelection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
+        if ambientChanged {
+            let metrics = runtimeTreeMetrics(worldLayer)
+            diagnosticsSnapshot.nodeCount = metrics.nodes - 1
+            diagnosticsSnapshot.drawableNodeCount = metrics.drawables
+            diagnosticsSnapshot.activeActionCount = metrics.actions
+        }
     }
 
     private func updateGeneratedLOD(in node: SKNode, detail: CameraDetailLevel) {
@@ -1412,8 +1484,7 @@ final class CityScene: SKScene {
         var bounds = CGRect.null
         for tile in developed {
             let position = style.isoPosition(tile.coordinate)
-            if tile.level == 1,
-               let logicalID = generatedLogicalID(for: tile.kind),
+            if let logicalID = generatedLogicalID(for: tile.kind),
                let asset = assets.generatedAsset(logicalID: logicalID),
                asset.opaqueBoundsWorld.count == 4 {
                 let physical = asset.opaqueBoundsWorld
@@ -1452,6 +1523,10 @@ final class CityScene: SKScene {
         case .park: "park_l01"
         case .cityHall: "city_hall_l01"
         case .waterTower: "water_tower_l01"
+        case .powerPlant: "industrial_l01"
+        case .fireStation: "commercial_l01"
+        case .policeStation: "city_hall_l01"
+        case .school: "residential_l01"
         default: nil
         }
     }

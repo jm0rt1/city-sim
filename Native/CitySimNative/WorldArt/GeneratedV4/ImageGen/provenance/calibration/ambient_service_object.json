@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "asset_id": "ambient_service_object",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim game sprite raw master, one semantic source\n\nInput images:\n- Image 1 is APPEARANCE REFERENCE ONLY: inherit its richly detailed realistic hand-painted city-builder rendering, material depth, restrained warm naturalism, fine edge treatment, value hierarchy, and northwest-key/southeast-shadow lighting. Do not copy any district geometry, roads, buildings, vegetation, people, or props from it.\n- Image 2 is the AUTHORITATIVE GEOMETRY/CANVAS/PIVOT TEMPLATE: obey its 2:1 orthographic isometric projection, 1x1 diamond footprint, exact ground-pivot relationship, safe opaque bounds, southeast shadow bounds, generous canvas padding, and viewing orientation. Do not render any guide lines, guide colors, arrows, boxes, sockets, or labels from the template.\n\nPrimary request: Create exactly one small parked neutral municipal maintenance van as an isolated CitySim sprite source. It is a compact cream-and-desaturated-sage utility van, modestly worn but well maintained, with a simple enclosed cab/body, four small wheels, subtle metal trim, realistic painted panels, restrained window reflections, and a tiny roof rack integrated into the vehicle silhouette. It conveys only generic ambient municipal life, never a service status or gameplay condition.\n\nScene/backdrop: perfectly flat, solid #ff00ff chroma-key field for later background removal. The entire background must be one uniform #ff00ff with no gradient, texture, floor plane, horizon, reflections, or lighting variation.\n\nStyle/medium: richly detailed realistic hand-painted isometric city-builder sprite; crisp opaque silhouette; production-quality painted raster; consistent with Image 1 but scaled as one small vehicle.\n\nComposition/framing: one vehicle only, fully contained within the authoritative 1x1 footprint and safe opaque bounds from Image 2; centered on the template ground pivot; correct orthographic 2:1 projection; no perspective-camera distortion; generous transparent-removal padding. Parked orientation must be compatible with the template's projection and not imply a road direction or route.\n\nLighting/mood: fixed northwest key light, subtle southeast-facing form shading, and one compact southeast contact shadow attached to and directly grounding the vehicle. The contact shadow must remain wholly within the template shadow bounds and must not create a floor plane or background gradient.\n\nColor palette: muted desaturated sage and warm cream paint, charcoal tires, restrained neutral metal and glass; do not use #ff00ff anywhere in the object or shadow.\n\nConstraints: exactly one semantic object; crisp closed silhouette; readable at small game scale; preserve the exact template geometry, canvas relationship, pivot, footprint, and bounds; no service status; no route; no occupants or workers; no road; no sidewalk; no parcel or terrain; no cones; no tools lying outside the van; no trailer; no cargo outside the silhouette; no vegetation; no buildings; no labels; no text; no UI; no utility symbols; no emergency markings; no flashing light; no logo; no brand; no watermark; no extra objects; no template guide colors or marks. Image generation determines appearance only, never placement, topology, or gameplay truth.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/ambient_service_object.md",
+  "prompt_sha256": "5fdb7e88e9a5a77cb14eb5055a34a24b1f7a047f9a6ea9323a589623bb8e5237",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 1x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_service_object/source-v01.png",
+  "raw_source_sha256": "bfac1b625f79978a5e598c35e43b35a65238c68d5a950efda27b6be2ada55181",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id ambient_service_object --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_service_object/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_service_object --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_service_object-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      481,
+      283,
+      1010,
+      771
+    ],
+    "target_size": [
+      320,
+      295
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      608,
+      601
+    ]
+  },
+  "intended_gameplay_meaning": "truth-safe parked maintenance object; no traffic, capacity, coverage, employment, or service implication",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": []
+}

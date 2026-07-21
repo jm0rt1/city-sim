@@ -437,8 +437,8 @@ final class RoadRenderer {
         to layer: SKNode
     ) {
         guard topology.classification != .isolated else { return }
-        let variant = WorldVisualSeed.variant(count: 8, for: coordinate, kind: .road, salt: 0x51)
-        guard variant <= 3 else { return }
+        let variant = WorldVisualSeed.variant(count: 12, for: coordinate, kind: .road, salt: 0x51)
+        guard variant == 0 else { return }
 
         let edge = topology.mask.edges[variant % topology.mask.edges.count]
         let endpoint = style.roadSocket(for: edge, overreach: -2)
@@ -462,14 +462,12 @@ final class RoadRenderer {
         post.addChild(lamp)
         layer.addChild(post)
 
-        if variant == 0 || variant == 3 {
-            let hydrant = SKShapeNode(rectOf: CGSize(width: 3.6, height: 4.2), cornerRadius: 1)
-            hydrant.fillColor = NSColor(calibratedRed: 0.78, green: 0.20, blue: 0.13, alpha: 1)
-            hydrant.strokeColor = NSColor.white.withAlphaComponent(0.2)
-            hydrant.position = CGPoint(x: anchor.x + 5, y: anchor.y - 1)
-            hydrant.zPosition = 11
-            layer.addChild(hydrant)
-        }
+        let hydrant = SKShapeNode(rectOf: CGSize(width: 3.6, height: 4.2), cornerRadius: 1)
+        hydrant.fillColor = NSColor(calibratedRed: 0.62, green: 0.25, blue: 0.18, alpha: 1)
+        hydrant.strokeColor = NSColor.white.withAlphaComponent(0.16)
+        hydrant.position = CGPoint(x: anchor.x + 5, y: anchor.y - 1)
+        hydrant.zPosition = 11
+        layer.addChild(hydrant)
 
         // Traffic remains deliberately static in this milestone. Route-informed
         // movement belongs to the later living-city phase; Reduce Motion therefore

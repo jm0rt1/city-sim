@@ -1515,9 +1515,586 @@
           11.0
         ]
       ]
+    },
+    {
+      "logical_id": "ambient_pedestrian_pair",
+      "family": "ambient-pedestrian",
+      "variant": 0,
+      "level": 0,
+      "state": "maintained",
+      "authoring_template": "1x1",
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "supported_orientation": "projection-fixed",
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "frontage_edge": "none",
+      "depth_roles": {
+        "props": 10.0
+      },
+      "residency_id": "generated-v4/ambient-pedestrian/ambient_pedestrian_pair",
+      "padding": 24,
+      "filtering": "linear",
+      "mipmap": false,
+      "decoded_byte_estimate": 3673088,
+      "source_sha256": "335290e1e81bb9a46ab6b059f96ad6e7b6365c48d5e6abae55c281ae8d7ce30b",
+      "prompt_sha256": "9d4ba52851615d6c25af8e8a3091af0442e0c037e9afc5cbe21966fad76ed3e0",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+      ],
+      "provenance_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_pedestrian_pair.json",
+      "lods": {
+        "city": {
+          "file": "generated_v4_ambient_pedestrian_pair_city.png",
+          "pixels": [
+            256,
+            171
+          ],
+          "sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
+          "trim_rect_pixels": [
+            108,
+            106,
+            40,
+            45
+          ],
+          "anchor": [
+            0.5,
+            0.03055556
+          ],
+          "world_size": [
+            8.2344,
+            9.4648
+          ],
+          "decoded_byte_estimate": 175104
+        },
+        "neighborhood": {
+          "file": "generated_v4_ambient_pedestrian_pair_neighborhood.png",
+          "pixels": [
+            512,
+            342
+          ],
+          "sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
+          "trim_rect_pixels": [
+            218,
+            213,
+            76,
+            88
+          ],
+          "anchor": [
+            0.5,
+            0.01988636
+          ],
+          "world_size": [
+            8.2344,
+            9.4648
+          ],
+          "decoded_byte_estimate": 700416
+        },
+        "block": {
+          "file": "generated_v4_ambient_pedestrian_pair_block.png",
+          "pixels": [
+            1024,
+            683
+          ],
+          "sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
+          "trim_rect_pixels": [
+            437,
+            426,
+            150,
+            173
+          ],
+          "anchor": [
+            0.5,
+            0.00794798
+          ],
+          "world_size": [
+            8.2344,
+            9.4648
+          ],
+          "decoded_byte_estimate": 2797568
+        }
+      },
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          3.0
+        ],
+        [
+          6.0,
+          0.0
+        ],
+        [
+          0.0,
+          -3.0
+        ],
+        [
+          -6.0,
+          0.0
+        ]
+      ],
+      "opaque_bounds_world": [
+        -3.8672,
+        -18.0,
+        3.8672,
+        -9.0352
+      ],
+      "shadow_bounds_world": [
+        -3.8672,
+        -18.0,
+        3.8672,
+        -9.0352
+      ],
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "road_setback_points": 4.0,
+      "prop_exclusion_rects_world": [
+        [
+          -8.0,
+          -18.0,
+          16.0,
+          11.0
+        ]
+      ]
+    },
+    {
+      "logical_id": "ambient_service_object",
+      "family": "ambient-service-object",
+      "variant": 0,
+      "level": 0,
+      "state": "maintained",
+      "authoring_template": "1x1",
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "supported_orientation": "projection-fixed",
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "frontage_edge": "none",
+      "depth_roles": {
+        "props": 10.0
+      },
+      "residency_id": "generated-v4/ambient-service-object/ambient_service_object",
+      "padding": 24,
+      "filtering": "linear",
+      "mipmap": false,
+      "decoded_byte_estimate": 3673088,
+      "source_sha256": "bfac1b625f79978a5e598c35e43b35a65238c68d5a950efda27b6be2ada55181",
+      "prompt_sha256": "5fdb7e88e9a5a77cb14eb5055a34a24b1f7a047f9a6ea9323a589623bb8e5237",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+      ],
+      "provenance_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_service_object.json",
+      "lods": {
+        "city": {
+          "file": "generated_v4_ambient_service_object_city.png",
+          "pixels": [
+            256,
+            171
+          ],
+          "sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
+          "trim_rect_pixels": [
+            100,
+            99,
+            56,
+            52
+          ],
+          "anchor": [
+            0.5,
+            0.02644231
+          ],
+          "world_size": [
+            17.6,
+            16.2641
+          ],
+          "decoded_byte_estimate": 175104
+        },
+        "neighborhood": {
+          "file": "generated_v4_ambient_service_object_neighborhood.png",
+          "pixels": [
+            512,
+            342
+          ],
+          "sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
+          "trim_rect_pixels": [
+            201,
+            199,
+            110,
+            102
+          ],
+          "anchor": [
+            0.5,
+            0.01715686
+          ],
+          "world_size": [
+            17.6,
+            16.2641
+          ],
+          "decoded_byte_estimate": 700416
+        },
+        "block": {
+          "file": "generated_v4_ambient_service_object_block.png",
+          "pixels": [
+            1024,
+            683
+          ],
+          "sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
+          "trim_rect_pixels": [
+            404,
+            399,
+            216,
+            200
+          ],
+          "anchor": [
+            0.5,
+            0.006875
+          ],
+          "world_size": [
+            17.6,
+            16.2641
+          ],
+          "decoded_byte_estimate": 2797568
+        }
+      },
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          5.0
+        ],
+        [
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          -5.0
+        ],
+        [
+          -10.0,
+          0.0
+        ]
+      ],
+      "opaque_bounds_world": [
+        -8.55,
+        -18.0,
+        8.55,
+        -2.2359
+      ],
+      "shadow_bounds_world": [
+        -8.55,
+        -18.0,
+        8.55,
+        -2.2359
+      ],
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "road_setback_points": 4.0,
+      "prop_exclusion_rects_world": [
+        [
+          -8.0,
+          -18.0,
+          16.0,
+          11.0
+        ]
+      ]
+    },
+    {
+      "logical_id": "ambient_vegetation_cluster",
+      "family": "ambient-vegetation",
+      "variant": 0,
+      "level": 0,
+      "state": "maintained",
+      "authoring_template": "1x1",
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "supported_orientation": "projection-fixed",
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "frontage_edge": "none",
+      "depth_roles": {
+        "baked-shadow": 4.0,
+        "vegetation": 8.0
+      },
+      "residency_id": "generated-v4/ambient-vegetation/ambient_vegetation_cluster",
+      "padding": 24,
+      "filtering": "linear",
+      "mipmap": false,
+      "decoded_byte_estimate": 3673088,
+      "source_sha256": "99a11b2cdda5b2d471bf041d920d57e70e46dd72ee63c77b62b997de378e16ca",
+      "prompt_sha256": "32f88e26df8d25635e03d7849a61d177a455d10186d5b623727c80d2b08cdf1c",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+      ],
+      "provenance_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_vegetation_cluster.json",
+      "lods": {
+        "city": {
+          "file": "generated_v4_ambient_vegetation_cluster_city.png",
+          "pixels": [
+            256,
+            171
+          ],
+          "sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
+          "trim_rect_pixels": [
+            91,
+            83,
+            74,
+            68
+          ],
+          "anchor": [
+            0.5,
+            0.02022059
+          ],
+          "world_size": [
+            33.7578,
+            30.6641
+          ],
+          "decoded_byte_estimate": 175104
+        },
+        "neighborhood": {
+          "file": "generated_v4_ambient_vegetation_cluster_neighborhood.png",
+          "pixels": [
+            512,
+            342
+          ],
+          "sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
+          "trim_rect_pixels": [
+            183,
+            167,
+            146,
+            134
+          ],
+          "anchor": [
+            0.5,
+            0.0130597
+          ],
+          "world_size": [
+            33.7578,
+            30.6641
+          ],
+          "decoded_byte_estimate": 700416
+        },
+        "block": {
+          "file": "generated_v4_ambient_vegetation_cluster_block.png",
+          "pixels": [
+            1024,
+            683
+          ],
+          "sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
+          "trim_rect_pixels": [
+            367,
+            336,
+            290,
+            263
+          ],
+          "anchor": [
+            0.5,
+            0.00522814
+          ],
+          "world_size": [
+            33.7578,
+            30.6641
+          ],
+          "decoded_byte_estimate": 2797568
+        }
+      },
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          9.0
+        ],
+        [
+          18.0,
+          0.0
+        ],
+        [
+          0.0,
+          -9.0
+        ],
+        [
+          -18.0,
+          0.0
+        ]
+      ],
+      "opaque_bounds_world": [
+        -16.6289,
+        -18.0,
+        16.6289,
+        12.1641
+      ],
+      "shadow_bounds_world": [
+        -16.6289,
+        -18.0,
+        16.6289,
+        12.1641
+      ],
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "road_setback_points": 4.0,
+      "prop_exclusion_rects_world": [
+        [
+          -8.0,
+          -18.0,
+          16.0,
+          11.0
+        ]
+      ]
     }
   ],
   "inventory": [
+    {
+      "file": "generated_v4_ambient_pedestrian_pair_block.png",
+      "sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
+      "pixels": [
+        1024,
+        683
+      ],
+      "decoded_byte_estimate": 2797568
+    },
+    {
+      "file": "generated_v4_ambient_pedestrian_pair_city.png",
+      "sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
+      "pixels": [
+        256,
+        171
+      ],
+      "decoded_byte_estimate": 175104
+    },
+    {
+      "file": "generated_v4_ambient_pedestrian_pair_neighborhood.png",
+      "sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
+      "pixels": [
+        512,
+        342
+      ],
+      "decoded_byte_estimate": 700416
+    },
+    {
+      "file": "generated_v4_ambient_service_object_block.png",
+      "sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
+      "pixels": [
+        1024,
+        683
+      ],
+      "decoded_byte_estimate": 2797568
+    },
+    {
+      "file": "generated_v4_ambient_service_object_city.png",
+      "sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
+      "pixels": [
+        256,
+        171
+      ],
+      "decoded_byte_estimate": 175104
+    },
+    {
+      "file": "generated_v4_ambient_service_object_neighborhood.png",
+      "sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
+      "pixels": [
+        512,
+        342
+      ],
+      "decoded_byte_estimate": 700416
+    },
+    {
+      "file": "generated_v4_ambient_vegetation_cluster_block.png",
+      "sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
+      "pixels": [
+        1024,
+        683
+      ],
+      "decoded_byte_estimate": 2797568
+    },
+    {
+      "file": "generated_v4_ambient_vegetation_cluster_city.png",
+      "sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
+      "pixels": [
+        256,
+        171
+      ],
+      "decoded_byte_estimate": 175104
+    },
+    {
+      "file": "generated_v4_ambient_vegetation_cluster_neighborhood.png",
+      "sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
+      "pixels": [
+        512,
+        342
+      ],
+      "decoded_byte_estimate": 700416
+    },
     {
       "file": "generated_v4_city_hall_l01_block.png",
       "sha256": "9dd2e9c588519f1c113505da543bbf950f787466bf9d93e49ebeb84f3aff6a52",

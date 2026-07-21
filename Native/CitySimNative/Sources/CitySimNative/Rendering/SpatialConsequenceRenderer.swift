@@ -37,23 +37,29 @@ final class SpatialConsequenceRenderer {
         let cityContent = SKNode()
         cityContent.name = "spatial.city"
         addCityAggregateCue(consequence, to: cityContent)
-        city.addChild(cityContent)
-        root.addChild(city)
+        if !cityContent.children.isEmpty {
+            city.addChild(cityContent)
+            root.addChild(city)
+        }
 
         let neighborhood = style.makeDetailLayer(.neighborhood, visibleAt: detail)
         let neighborhoodContent = SKNode()
         neighborhoodContent.name = "spatial.neighborhood"
         addUtilityCue(consequence.utility, to: neighborhoodContent)
         addPollutionCue(consequence.pollutionBand, to: neighborhoodContent)
-        neighborhood.addChild(neighborhoodContent)
-        root.addChild(neighborhood)
+        if !neighborhoodContent.children.isEmpty {
+            neighborhood.addChild(neighborhoodContent)
+            root.addChild(neighborhood)
+        }
 
         let block = style.makeDetailLayer(.block, visibleAt: detail)
         let blockContent = SKNode()
         blockContent.name = "spatial.block"
         addVitalityCue(consequence.vitality, to: blockContent)
-        block.addChild(blockContent)
-        root.addChild(block)
+        if !blockContent.children.isEmpty {
+            block.addChild(blockContent)
+            root.addChild(block)
+        }
         return root
     }
 

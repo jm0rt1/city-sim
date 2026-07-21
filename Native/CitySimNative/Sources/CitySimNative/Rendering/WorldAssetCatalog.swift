@@ -33,6 +33,7 @@ final class WorldAssetCatalog {
     }
 
     private var textures: [String: TextureRecord] = [:]
+    private var generatedCrops: [String: SKTexture] = [:]
     private var activeGeneratedDetail: CameraDetailLevel?
     private var residentGeneratedBytes = 0
     private var highWaterGeneratedBytes = 0
@@ -82,6 +83,7 @@ final class WorldAssetCatalog {
             residentGeneratedBytes = max(0, residentGeneratedBytes - removed.decodedBytes)
             evictionCount += 1
         }
+        generatedCrops = generatedCrops.filter { $0.key.hasSuffix("|\(detail.assetSuffix)") }
     }
 
     func residencySnapshot() -> WorldAssetResidencySnapshot {
@@ -216,9 +218,17 @@ final class WorldAssetCatalog {
             width: trim[2] / pixelWidth,
             height: trim[3] / pixelHeight
         )
-        let croppedTexture = SKTexture(rect: textureRect, in: sourceTexture)
-        croppedTexture.filteringMode = .linear
-        croppedTexture.usesMipmaps = false
+        let cropKey = "\(logicalID)|\(detail.assetSuffix)"
+        let croppedTexture: SKTexture
+        if let cached = generatedCrops[cropKey] {
+            croppedTexture = cached
+        } else {
+            let crop = SKTexture(rect: textureRect, in: sourceTexture)
+            crop.filteringMode = .linear
+            crop.usesMipmaps = false
+            generatedCrops[cropKey] = crop
+            croppedTexture = crop
+        }
         let sprite = SKSpriteNode(
             texture: croppedTexture,
             color: .clear,

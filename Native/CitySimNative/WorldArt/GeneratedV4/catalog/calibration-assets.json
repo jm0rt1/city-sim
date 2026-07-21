@@ -126,6 +126,45 @@
       "depth_roles": ["baked-shadow", "structure"],
       "ground_contact_inset": 10.0,
       "meaning": "completed maintained water tower; no capacity or service implication"
+    },
+    {
+      "logical_id": "ambient_pedestrian_pair",
+      "family": "ambient-pedestrian",
+      "template": "1x1",
+      "source_footprint": [1, 1],
+      "presentation_footprint": [1, 1],
+      "world_scale": 0.25,
+      "orientation": "projection-fixed",
+      "frontage_edge": "none",
+      "depth_roles": ["props"],
+      "ground_contact_inset": 30.0,
+      "meaning": "truth-safe decorative pedestrian pair; no occupancy, traffic, prosperity, employment, or service implication"
+    },
+    {
+      "logical_id": "ambient_service_object",
+      "family": "ambient-service-object",
+      "template": "1x1",
+      "source_footprint": [1, 1],
+      "presentation_footprint": [1, 1],
+      "world_scale": 0.38,
+      "orientation": "projection-fixed",
+      "frontage_edge": "none",
+      "depth_roles": ["props"],
+      "ground_contact_inset": 26.0,
+      "meaning": "truth-safe parked maintenance object; no traffic, capacity, coverage, employment, or service implication"
+    },
+    {
+      "logical_id": "ambient_vegetation_cluster",
+      "family": "ambient-vegetation",
+      "template": "1x1",
+      "source_footprint": [1, 1],
+      "presentation_footprint": [1, 1],
+      "world_scale": 0.55,
+      "orientation": "projection-fixed",
+      "frontage_edge": "none",
+      "depth_roles": ["baked-shadow", "vegetation"],
+      "ground_contact_inset": 18.0,
+      "meaning": "truth-safe decorative vegetation cluster; no park, land-value, prosperity, pollution, or service implication"
     }
   ]
 }

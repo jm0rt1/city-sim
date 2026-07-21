@@ -133,6 +133,46 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** First pass the independently reviewed golden-block gate in `PLAY-022_VISUAL_RECOVERY_DIRECTIVE.md`; then the same live city shows strategy and three-act state changes non-color-only at city/neighborhood/block scales. Both integration and playtest must score the exact staged candidate at least 17/20 with no category below 3/4. Retain stable deterministic identity, truthful feedback, bounded performance, and uncropped same-seed before/after evidence.
 - **Stop conditions:** A mostly empty developed frame, disconnected road language, inconsistent projection/scale/light, debug-like indicator clutter, cosmetic recolor or asset-count delivery, author self-acceptance, off-window-only proof, false simulation implications, unclear asset provenance, or regression in hit testing/reuse/accessibility.
 
+### [ ] PLAY-023: Build the generated-v4 asset pipeline
+
+- **Player outcome:** High-resolution generated art loads crisply and consistently in the exact staged app, with stable anchors and LODs instead of silently missing or blurry resources.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-022 Gate A; CONTRACT-005 and CONTRACT-006.
+- **In scope:** Manifest v4, geometry templates, provenance, normalization, deterministic page packing, descriptor-driven loading, LOD cache/diagnostics, staging digests, rollback, and focused tests using Gate A as the sample.
+- **Out of scope:** Bulk architecture generation, gameplay truth, HUD, save schemas, and production selection of an incomplete pack.
+- **Acceptance:** Two clean builds produce byte-identical pages/manifests; every entry loads from the staged Bundle.module resource; alpha, padding, anchor, seam, digest, LOD cycling, memory, fallback, and rollback gates pass.
+- **Stop conditions:** Absolute development paths, raw tool output in shipping resources, silent fallback, unbounded cache, nondeterministic pack bytes, or shared-package changes without integration approval.
+
+### [ ] PLAY-024: Replace terrain, streets, and environmental structure
+
+- **Player outcome:** The city sits on cohesive terrain and connected streets with curbs, sidewalks, crossings, frontages, vegetation, and props instead of visible tile strips and empty green board space.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-023 and frozen generated-v4 style/family anchors.
+- **In scope:** Program batches 1–3: calibration spine, terrain/material sources, deterministic 16-mask road grammar, oriented frontages, buildable-kind anchors, vegetation base, seam mosaics, default/compact proof, and budgets.
+- **Out of scope:** Full density breadth, lifecycle states, simulation rules, and HUD layout.
+- **Acceptance:** All ten buildable kinds share projection/light/scale; reciprocal roads and 3 x 3 terrain mosaics have no visible seams; golden-row and live default/compact frames pass independent review.
+- **Stop conditions:** Image-generated connectivity, endpoint drift, toy-island framing, mixed projection/light, unreviewed source provenance, or fixture-only proof.
+
+### [ ] PLAY-025: Replace every building and lifecycle family
+
+- **Player outcome:** Every buildable type, density level, construction phase, maintained/weathered/distressed state, and recovery reads as one rich city-building art system without debug graffiti.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-024 and authoritative PLAY-041 spatial truth.
+- **In scope:** Program batches 4–7: all 19 identities, three maintained variants, levels 1–4 for R/C/I, explicit LODs, construction/condition composition, civic/service/utility breadth, contextual life, and truth-driven consequences.
+- **Out of scope:** New gameplay effects, save changes, labels as primary state, and monolithic district plates as final rendering.
+- **Acceptance:** Unlabeled grayscale recognition, same-coordinate healthy/strained/recovered truth, deterministic identity, Reduce Motion, dense-fixture repetition, construction, save/load/undo visual stability, performance, and staged proof all pass.
+- **Stop conditions:** Recolor-only variants, generated false state, retained debug-glyph dominance, missing LODs, memory accumulation, or self-acceptance.
+
+### [ ] PLAY-026: Retire legacy world art and publish the systemic city
+
+- **Player outcome:** Normal play uses only the generated-v4 semantic atlas across opening, growth, build, diagnosis, recovery, compact, and dense cities; no special hero image hides a weak systemic renderer.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-023, PLAY-024, and PLAY-025.
+- **In scope:** Remove the production golden plate and legacy-v2 loading, freeze the production pack ID, preserve rollback sources, run full staged journeys/contact sheets/LOD video, and produce completion evidence.
+- **Out of scope:** Deleting rollback history, simulation rebalance, HUD redesign, or accepting partial asset coverage.
+- **Acceptance:** Zero manifest fallbacks and legacy texture loads; exact staged A/B evidence wins independent review; all interactions, accessibility, Reduce Motion, frame/memory budgets, full tests, and rollback verification pass.
+- **Stop conditions:** Any visible legacy art, special-case starting-state substitution, missing buildable/state coverage, staged/built digest mismatch, user visual rejection, or incomplete proof.
+
 ### [ ] PLAY-032: Turn diagnosis into direct action
 
 - **Player outcome:** Important warnings reveal cause, consequence, and legitimate remedies, and keyboard-only players can navigate and act spatially without falling out of the governed command system.

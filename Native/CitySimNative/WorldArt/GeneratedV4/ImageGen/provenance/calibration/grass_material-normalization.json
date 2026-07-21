@@ -1,0 +1,61 @@
+{
+  "asset_id": "grass_material",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/grass_material/source-v01.png",
+  "source_sha256": "6702e0d1755662f723cd4bcdcbf8f890afe4518d90c9a879f84b142ef195260b",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id grass_material --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/grass_material/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/grass_material --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/grass_material-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "exact-footprint",
+    "source_bbox": [
+      33,
+      51,
+      1506,
+      1001
+    ],
+    "target_bbox": [
+      512,
+      640,
+      1024,
+      896
+    ]
+  },
+  "source_bbox": [
+    512,
+    640,
+    1024,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_grass_material_block.png",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "sha256": "43da4de4e8ad9a58dbef6b3f88d836952af8ed8ac29524cbf0efbbf1dca0d44d"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_grass_material_neighborhood.png",
+      "pixels": [
+        768,
+        512
+      ],
+      "sha256": "1155755990440d1ec1a5eac6b099b88f1dd7c57fad658b182b7b2d540c3c90cb"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_grass_material_city.png",
+      "pixels": [
+        384,
+        256
+      ],
+      "sha256": "0ea4a49177b593c027b0f3fb248337dc9e64c44de829072feec9beab7e8fe2b1"
+    }
+  ]
+}

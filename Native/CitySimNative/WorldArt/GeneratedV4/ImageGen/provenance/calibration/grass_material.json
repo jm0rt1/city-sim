@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "asset_id": "grass_material",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim modular 2:1 isometric atlas source for grass_material\nInput images: Image 1 is the provisional Gate A appearance reference\u2014match only its olive/moss material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district geometry. Image 2 is the authoritative 1x1 registration template\u2014preserve its 2:1 footprint, canvas position, socket coordinates, and ground pivot exactly; guide colors are instructions and must not appear in the art.\nPrimary request: create exactly one seamless-looking maintained grass terrain diamond filling the declared 1x1 footprint, with restrained moss, clover, dry-grass and soil flecks; no object, building, road, curb, path, border, raised slab, or scenery.\nStyle/medium: richly detailed realistic hand-painted city-builder material; orthographic 2:1 isometric; parallel edges; no perspective convergence.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field outside the exact terrain diamond.\nLighting: warm northwest key with subtle southeast value falloff; the terrain remains flat and has no cast shadow.\nConstraints: exact 1536x1024 composition implied by Image 2; one centered 1x1 terrain diamond; crisp registered footprint; generous exterior padding; no text, UI, rings, logos, watermark, or extra objects; do not use #ff00ff in the subject.\nAvoid: concept-art scenery, tile rim, placemat perimeter, bevel, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, exaggerated outlines, cyan/yellow/purple guide marks.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/grass_material.md",
+  "prompt_sha256": "b6c6a22a9b2dd59cfb5ef3e90dd74fa52054d0d0fdacf3677f96f9cac6d32adb",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 1x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/grass_material/source-v01.png",
+  "raw_source_sha256": "6702e0d1755662f723cd4bcdcbf8f890afe4518d90c9a879f84b142ef195260b",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id grass_material --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/grass_material/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/grass_material --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/grass_material-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "exact-footprint",
+    "source_bbox": [
+      33,
+      51,
+      1506,
+      1001
+    ],
+    "target_bbox": [
+      512,
+      640,
+      1024,
+      896
+    ]
+  },
+  "intended_gameplay_meaning": "truth-neutral maintained terrain material",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": []
+}

@@ -1,0 +1,61 @@
+{
+  "asset_id": "road_material",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/road_material/source-v01.png",
+  "source_sha256": "404b0a7dde101c7247764e72292f4f57d3391ff55f66699a49f7b94fb467ff08",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id road_material --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/road_material/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/road_material --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/road_material-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "exact-footprint",
+    "source_bbox": [
+      81,
+      42,
+      1459,
+      992
+    ],
+    "target_bbox": [
+      512,
+      640,
+      1024,
+      896
+    ]
+  },
+  "source_bbox": [
+    512,
+    640,
+    1024,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_road_material_block.png",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "sha256": "3e1cb186cc99fc2fdf6dd235c6e4e19a317ab8302a274dac5eb16c4ce2bd9b2e"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_road_material_neighborhood.png",
+      "pixels": [
+        768,
+        512
+      ],
+      "sha256": "a5a7d994ef47b85ac2d992fd80609cce30eecbc270133920a3c2b7296f18daa7"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_road_material_city.png",
+      "pixels": [
+        384,
+        256
+      ],
+      "sha256": "1bb4bbcd82c74f87a5ad1a7383deb21ee84f923088bdabc0ed0f31b016eccd1e"
+    }
+  ]
+}

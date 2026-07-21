@@ -1,0 +1,67 @@
+{
+  "asset_id": "industrial_l01",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "source_sha256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id industrial_l01 --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01 --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/industrial_l01-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      367,
+      153,
+      1299,
+      862
+    ],
+    "target_size": [
+      710,
+      540
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      413,
+      356
+    ]
+  },
+  "source_bbox": [
+    413,
+    356,
+    1123,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_industrial_l01_block.png",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "sha256": "30d74aa073d1a01dcfae84b44d3e97435b25650cb3ab3ffed787d31b13f0a07b"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_industrial_l01_neighborhood.png",
+      "pixels": [
+        768,
+        512
+      ],
+      "sha256": "67854ea6aa86d39daee27e03045c759c3984d3cd1e1eab7be6047eb8259bc2e3"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_industrial_l01_city.png",
+      "pixels": [
+        384,
+        256
+      ],
+      "sha256": "0e66b07fad138d41503b6a2b3331a766318382a599c8915fb8145a6d809371ed"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "asset_id": "residential_frontage",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim modular 2:1 isometric atlas source for residential_frontage\nInput images: Image 1 is the provisional Gate A appearance reference\u2014match only its residential planting, warm aggregate, material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district geometry. Image 2 is the authoritative 1x1 registration template\u2014preserve its 2:1 footprint, canvas position, socket coordinates, and ground pivot exactly; guide colors are instructions and must not appear in the art.\nPrimary request: create exactly one flat residential frontage surface vocabulary inside the 1x1 footprint: maintained lawn, short pale aggregate entry walk, low hedge and a narrow driveway apron aligned toward the south socket. No house, road, curb, vehicle, person, fence beyond the footprint, or extra scenery.\nStyle/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field outside the exact frontage diamond.\nLighting: warm northwest key; subtle southeast contact shading contained inside the footprint.\nConstraints: exact 1536x1024 composition implied by Image 2; one centered 1x1 frontage; crisp registered footprint; generous exterior padding; no text, UI, rings, logos, watermark; do not use #ff00ff in the subject.\nAvoid: invented road topology, concept-art scenery, placemat perimeter, raised slab, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, exaggerated outlines, cyan/yellow/purple guide marks.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/residential_frontage.md",
+  "prompt_sha256": "4944ced19099f2d29b2c08cb9ac96a7392d52bc5ec755e0a085f0af96d07a38f",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 1x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_frontage/source-v01.png",
+  "raw_source_sha256": "3a1afa7f250299a6c02e09beaed07a4b5cd05278835ec0bc4a29f464b3b97d44",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id residential_frontage --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_frontage/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_frontage --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/residential_frontage-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "exact-footprint",
+    "source_bbox": [
+      183,
+      154,
+      1354,
+      897
+    ],
+    "target_bbox": [
+      512,
+      640,
+      1024,
+      896
+    ]
+  },
+  "intended_gameplay_meaning": "street-facing residential walk, planting and driveway vocabulary",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": []
+}

@@ -1,0 +1,67 @@
+{
+  "asset_id": "water_tower_l01",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/water_tower_l01/source-v01.png",
+  "source_sha256": "825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id water_tower_l01 --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/water_tower_l01/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/water_tower_l01 --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/water_tower_l01-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      574,
+      48,
+      1098,
+      975
+    ],
+    "target_size": [
+      360,
+      637
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      588,
+      259
+    ]
+  },
+  "source_bbox": [
+    588,
+    259,
+    948,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_water_tower_l01_block.png",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "sha256": "8037665cc61cd49645c35b541d8a58ef3c03980e12bdb06009e7892988883fc6"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_water_tower_l01_neighborhood.png",
+      "pixels": [
+        768,
+        512
+      ],
+      "sha256": "c6cee31321a885f3aaf667f2d675979ecec21014690384789141e1494fe563b5"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_water_tower_l01_city.png",
+      "pixels": [
+        384,
+        256
+      ],
+      "sha256": "b6803333b3504dfdd259e1cd0c10a68579362a565d024cc28b7dff229aa2268e"
+    }
+  ]
+}

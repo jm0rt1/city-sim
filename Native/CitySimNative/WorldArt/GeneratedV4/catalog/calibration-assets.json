@@ -1,0 +1,23 @@
+{
+  "pack_id": "generated-v4-calibration",
+  "schema": 4,
+  "production_selection": false,
+  "projection": "orthographic 2:1 isometric",
+  "world_tile_points": [72, 36],
+  "authoring_tile_pixels": [512, 256],
+  "canvas_pixels": [1536, 1024],
+  "ground_pivot": [768, 896],
+  "color_space": "sRGB",
+  "light_direction": "northwest key, southeast shadow",
+  "assets": [
+    {"logical_id": "grass_material", "family": "terrain", "template": "1x1", "footprint": [1, 1], "meaning": "truth-neutral maintained terrain material"},
+    {"logical_id": "road_material", "family": "network-material", "template": "1x1", "footprint": [1, 1], "meaning": "truth-neutral asphalt, curb, sidewalk and marking vocabulary; topology remains deterministic"},
+    {"logical_id": "residential_frontage", "family": "frontage", "template": "1x1", "footprint": [1, 1], "meaning": "street-facing residential walk, planting and driveway vocabulary"},
+    {"logical_id": "residential_l01", "family": "residential", "template": "1x1", "footprint": [1, 1], "meaning": "completed maintained level-one residential building"},
+    {"logical_id": "commercial_l01", "family": "commercial", "template": "1x1", "footprint": [1, 1], "meaning": "completed maintained level-one commercial building"},
+    {"logical_id": "industrial_l01", "family": "industrial", "template": "2x1", "footprint": [2, 1], "meaning": "completed maintained level-one industrial building"},
+    {"logical_id": "park_l01", "family": "park", "template": "2x2", "footprint": [2, 2], "meaning": "completed maintained level-one park"},
+    {"logical_id": "city_hall_l01", "family": "civic", "template": "2x2", "footprint": [2, 2], "meaning": "completed maintained city hall focal building"},
+    {"logical_id": "water_tower_l01", "family": "utility", "template": "1x1", "footprint": [1, 1], "meaning": "completed maintained water tower; no capacity or service implication"}
+  ]
+}

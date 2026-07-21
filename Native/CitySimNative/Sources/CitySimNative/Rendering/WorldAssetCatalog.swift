@@ -8,6 +8,19 @@ final class WorldAssetCatalog {
     static let shared = WorldAssetCatalog()
 
     private var textures: [String: SKTexture] = [:]
+    private(set) lazy var generatedManifest: GeneratedWorldAssetManifest? = loadGeneratedManifest()
+
+    private func loadGeneratedManifest() -> GeneratedWorldAssetManifest? {
+        guard let url = Bundle.module.url(
+            forResource: "generated-v4-manifest",
+            withExtension: "json",
+            subdirectory: "WorldAssets.atlas"
+        ), let data = try? Data(contentsOf: url),
+           let manifest = try? JSONDecoder().decode(GeneratedWorldAssetManifest.self, from: data),
+           manifest.schema == 4,
+           manifest.packID == "generated-v4-calibration" else { return nil }
+        return manifest
+    }
 
     func texture(named name: String) -> SKTexture? {
         if let cached = textures[name] { return cached }

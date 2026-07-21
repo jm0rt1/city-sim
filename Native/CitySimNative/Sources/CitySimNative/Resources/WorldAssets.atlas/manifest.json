@@ -1,9 +1,17 @@
 {
-  "schema": 2,
-  "title": "CitySim Living Strategy World Atlas",
-  "authoring": "Original deterministic Pillow geometry and seeded raster texture",
+  "schema": 3,
+  "title": "CitySim Living Strategy World Atlas with Gate A Golden District",
+  "authoring": "Original deterministic Pillow geometry plus an isolated, art-directed ImageGen district with deterministic LOD exports",
   "source": "Native/CitySimNative/WorldArt/generate_world_assets.py",
-  "external_sources": [],
+  "external_sources": [
+    {
+      "tool": "OpenAI built-in ImageGen",
+      "role": "Gate A golden-district authoring master",
+      "retained_source": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "source_sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+      "shipping": false
+    }
+  ],
   "concept_reference_sampled": false,
   "license": "Copyright JFM Systems; original repository artwork",
   "projection": "2:1 isometric",
@@ -81,6 +89,36 @@
         144,
         72
       ]
+    },
+    {
+      "name": "golden_district_block",
+      "file": "golden_district_block.png",
+      "sha256": "37791fd91ca17d0bb09782ae4556d51874c88fcfb6dd3886d146ff16709fa614",
+      "pixels": [
+        1536,
+        1024
+      ],
+      "source": "WorldArt/GateA/prepare_golden_district.py"
+    },
+    {
+      "name": "golden_district_city",
+      "file": "golden_district_city.png",
+      "sha256": "4b0646d507e10015c67c9b07a7cfd1781eebcbc7cc324fa76eb0ebe7836d60bc",
+      "pixels": [
+        512,
+        341
+      ],
+      "source": "WorldArt/GateA/prepare_golden_district.py"
+    },
+    {
+      "name": "golden_district_neighborhood",
+      "file": "golden_district_neighborhood.png",
+      "sha256": "d256c1271a6b71bce8df0b0e6a7c955714b2082e3aac49717eff7b2cb806a696",
+      "pixels": [
+        1024,
+        683
+      ],
+      "source": "WorldArt/GateA/prepare_golden_district.py"
     },
     {
       "name": "place_civic_0",

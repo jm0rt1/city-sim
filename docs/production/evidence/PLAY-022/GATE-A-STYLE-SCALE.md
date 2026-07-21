@@ -35,9 +35,12 @@ SpriteKit camera scale `s` displays one world point as `1/s` logical pixels or
 
 The rejected 144 x 72 tile source is enlarged 3.33x at the closest camera and
 2.08x at the Gate A default. It is not an acceptable block-detail source.
-Golden-block art is authored as resolution-independent SVG and exported to a
-3072 x 2048 master plus explicit 2048 x 1365 and 1024 x 683 LOD rasters. Raw
-authoring sheets never ship; only cleaned, transparent, hashed exports do.
+Golden-block art is authored through the retained ImageGen master at 1536 x
+1024 pixels, isolated from a chroma field, and displayed no larger than 768 x
+512 logical points on the target 2x display. Explicit 1536 x 1024, 1024 x 683,
+and 512 x 341 LOD exports prevent SpriteKit from relying on the rejected tiny
+tile sources. The raw authoring sheet remains under `WorldArt` and is excluded
+from SwiftPM resources; only cleaned, transparent, hashed exports ship.
 
 ## Physical grammar
 

@@ -20,6 +20,7 @@ final class WorldAssetCatalog {
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
+        texture.usesMipmaps = name.hasPrefix("golden_district_")
         textures[name] = texture
         return texture
     }

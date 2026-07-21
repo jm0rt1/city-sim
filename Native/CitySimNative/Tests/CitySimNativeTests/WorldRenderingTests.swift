@@ -538,19 +538,19 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactBlockDetail() {
+    func testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactLODs() {
         let state = CityGameState.newCity(seed: 42)
         let defaultScene = CityScene(size: CGSize(width: 1_280, height: 800))
         defaultScene.reducedMotion = true
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.35, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.48, accuracy: 0.001)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
 
         let compactScene = CityScene(size: CGSize(width: 900, height: 600))
         compactScene.reducedMotion = true
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.46, accuracy: 0.001)
-        XCTAssertEqual(compactScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.60, accuracy: 0.001)
+        XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
 
         let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
         let style = WorldVisualStyle()
@@ -560,6 +560,45 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(defaultScene.cameraPositionForTesting.x, expectedCenter.x, accuracy: 0.001)
         XCTAssertEqual(defaultScene.cameraPositionForTesting.y, expectedCenter.y, accuracy: 0.001)
+    }
+
+    @MainActor
+    func testGoldenDistrictUsesExplicitLODAssetsAndSuppressesAmbientMotion() throws {
+        let renderer = GoldenDistrictRenderer(style: WorldVisualStyle())
+        XCTAssertTrue(renderer.canPresent(state: CityGameState.newCity(seed: 42)))
+
+        for (detail, expectedAsset) in [
+            (CameraDetailLevel.city, "world.goldenDistrict.asset.city"),
+            (.neighborhood, "world.goldenDistrict.asset.neighborhood"),
+            (.block, "world.goldenDistrict.asset.block")
+        ] {
+            let animated = try XCTUnwrap(renderer.makeDistrict(detail: detail, reducedMotion: false))
+            let reduced = try XCTUnwrap(renderer.makeDistrict(detail: detail, reducedMotion: true))
+            XCTAssertTrue(descendantNames(in: animated).contains(expectedAsset))
+            XCTAssertEqual(recursiveActiveActionCount(animated), 1)
+            XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
+        }
+    }
+
+    @MainActor
+    func testGoldenDistrictWithdrawsInsteadOfLyingAboutChangedTruthOrInteraction() {
+        var changed = CityGameState.newCity(seed: 42)
+        changed.updateTile(at: GridCoordinate(x: 10, y: 11)) { $0.condition = 0.45 }
+        XCTAssertFalse(GoldenDistrictRenderer(style: WorldVisualStyle()).canPresent(state: changed))
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        let start = CityGameState.newCity(seed: 42)
+        scene.render(state: start, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+
+        scene.render(state: start, overlay: .utilities, selection: nil, interactionMode: .inspect)
+        XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+
+        scene.render(state: start, overlay: .none, selection: nil, interactionMode: .build(.residential))
+        XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+
+        scene.render(state: changed, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
     }
 
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {

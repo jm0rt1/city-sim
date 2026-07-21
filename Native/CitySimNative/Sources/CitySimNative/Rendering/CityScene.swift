@@ -182,6 +182,22 @@ final class CityScene: SKScene {
         interactionMode: CityInteractionMode
     ) {
         let renderStarted = ProcessInfo.processInfo.systemUptime
+        if renderedSnapshot == snapshot,
+           renderedOverlay == overlay,
+           renderedSelection == selection,
+           renderedInteractionMode == interactionMode,
+           renderedReducedMotion == reducedMotion {
+            diagnosticsSnapshot.createdTileCount = 0
+            diagnosticsSnapshot.updatedTileCount = 0
+            diagnosticsSnapshot.reusedTileCount = tileRecords.count
+            diagnosticsSnapshot.removedTileCount = 0
+            diagnosticsSnapshot.overlayUpdateCount = 0
+            diagnosticsSnapshot.consumedConsequenceEventCount = 0
+            diagnosticsSnapshot.updatedCoordinates = []
+            diagnosticsSnapshot.updateDurationMilliseconds =
+                (ProcessInfo.processInfo.systemUptime - renderStarted) * 1_000
+            return
+        }
         let isFirstRender = renderedSnapshot == nil
         let previousSnapshot = renderedSnapshot
         let previousSelection = renderedSelection

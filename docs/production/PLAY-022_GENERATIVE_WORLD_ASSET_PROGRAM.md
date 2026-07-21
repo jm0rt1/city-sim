@@ -21,9 +21,12 @@ changes. The final deliverable is a semantic modular atlas.
   `Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png`,
   SHA-256 `b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425`.
 
-Gate A must load in the exact staged app and pass integration plus playtest
-scoring before that branch-only source is integrated or breadth generation uses
-it as the frozen style anchor.
+The exact staged plate candidate was rejected 12/20. Its interior appearance is
+a provisional style reference, not an accepted Gate A or production template.
+`PLAY-022_GATE_A_SYSTEMIC_REPAIR.md` authorizes only a nine-source modular
+calibration spine. That spine must load in the exact staged app and pass
+integration plus playtest scoring before the source is integrated, frozen as
+the global style anchor, or used for breadth generation.
 
 ## Catalog target
 

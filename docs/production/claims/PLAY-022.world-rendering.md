@@ -9,11 +9,12 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active visual recovery — the July 20 candidate was rejected for insufficient visual quality; Gate A in `docs/production/PLAY-022_VISUAL_RECOVERY_DIRECTIVE.md` is now the only authorized next product slice
+- **Status:** active systemic Gate A repair — the exact staged plate candidate was rejected 12/20; `docs/production/PLAY-022_GATE_A_SYSTEMIC_REPAIR.md` is now the only authorized next product slice
 
-Deliver an unmistakable visual step, beginning with one exceptional golden block
-in the real staged city. Stop broad feature work until that block passes the
-independent composition, coherence, depth, life, and interaction scorecard.
+Deliver an unmistakable visual step through one systemic golden block in the
+real staged city. Stop broad feature work until the nine-source calibration
+spine passes the independent composition, coherence, depth, life, and
+interaction scorecard.
 Authored commercial and industrial identities, density progression, trouble,
 pollution, prosperity, decline, recovery, and bounded ambient life remain the
 eventual scope, but they may not hide a weak base world behind more indicators.

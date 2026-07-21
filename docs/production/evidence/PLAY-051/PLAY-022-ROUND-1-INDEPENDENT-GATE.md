@@ -2,7 +2,7 @@
 
 **Status:** frozen preparation; no Round 1 candidate supplied or tested
 
-**Preparation authority:** synchronized quality baseline `313a16b`
+**Preparation authority:** initial quality baseline `313a16b`; resolved integration authority `1ef119d3ef513d5d6d60dbf60a67d00e24564788`
 
 **Rejected comparison only:** product `4887ebad9519fccb08844e2746f9bfbbc93aaa4d`, evidence `8cb45b5848f070c25803213ee48b2523e8057d09`
 
@@ -19,6 +19,16 @@ Integration must supply one exact clean Round 1 product commit and candidate ide
 - a same-save, same-seed, same-camera baseline/candidate A/B where the authorized rollback switch permits it. The rejected `8cb45b5` build is comparison evidence only and may never be operated or scored as the candidate.
 
 Reject admission for an ambiguous identity, dirty or changing candidate, production save/default access, missing packaged-manifest identity, silent fallback, or evidence from a substitute branch, renderer harness, cropped window, or old candidate.
+
+## Resolved integration authority
+
+- Normal settled memory baseline: **205.8 MiB**; ceiling: **333.8 MiB**. Reduce Motion settled baseline: **194.9 MiB**; ceiling: **322.9 MiB**. Measure regular and compact with the same method after repeated traversal/LOD cycling; reject continuing high-water growth. The rejected 609,168 KiB RSS / 475 MiB footprint is not an accepted comparison result.
+- WR-009 embodied consequence/recovery closes in Round 2. Round 1 only proves that consequence presentation remains truthful, secondary, and non-obscuring.
+- Keyboard spatial-action authority is `e30b8cc05e851162295e3aa622cf6cfbb11917a7`; safety/action disclosure is `8723b291915524b5d22677f93e0088bcdf2f6c2d`; renderer-authority synchronization is `a5d1c383677c0c4b0d76f6de1d12ab978600cfa1`. All are ancestors of the integration authority.
+- Appearance-only style anchor: `Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png`, SHA-256 `b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425`. Quality verified this retained non-shipping source in renderer history; it is never production geometry.
+- Occupancy evidence reports developed bounds against HUD-safe unobstructed world bounds for default and exact 900 x 600 at city, neighborhood, and block stops. Target is 55–70%.
+- Collision and residency evidence may be deterministic JSON plus named seam/contact-sheet images. JSON must bind candidate/manifest hashes, per-LOD pivots/opaque bounds/collision counts, named live textures/decoded bytes, and repeated-cycle high-water.
+- Live proof uses the isolated staged bundle/manifest/PID with Computer Use and AX when responsive. An unresponsive required surface rejects missing live proof; harness output never substitutes.
 
 ## Required Round 1 packet
 
@@ -45,8 +55,8 @@ The exact staged app must retain uncropped default and exact 900 x 600 proof for
 | WR-006 | Measure developed content plus truthful expansion corridor against the unobstructed world rectangle at default and compact for all three stops. | Window/inset/camera telemetry and annotated occupancy stills. | Pass at 55–70% developed/opportunity occupancy with useful framing. **AR:** mostly empty city/default frame or over-crowded core that hides choices. |
 | WR-007 | Repeat selection and valid/invalid previews with normal chrome, Details, objectives, and overlay legend at default and compact. | Full-window stills and active-coordinate telemetry. | **AR:** HUD/chrome hides the active parcel, preview, construction, or necessary world context; compact map ceases to dominate. |
 | WR-008 | Exercise hover→selection→valid→invalid→overlay transitions and deliberately attempt the previously stacked state. | Ordered state captures and recording. | Pass with at most one primary world affordance and one secondary confirmation while the parcel remains readable. **AR:** stacked cues obscure the target or duplicate a primary message. |
-| WR-009 | Compare normal and localized authoritative consequence presentation at the same coordinate; inspect with overlay on and off. | Truth-matched color/grayscale pairs and HUD/AX cross-check. | Round 1 must at least preserve the place and keep glyphs secondary; full embodied trouble/recovery closure is subject to the Round 1/Round 2 authority question below. **AR:** annotation is the primary readable signal or contradicts accepted truth. |
-| WR-010 | Measure settled launch, post-interaction, and post-ten-cycle LOD high-water separately at regular and compact. | Timestamped `ps` RSS, physical-footprint samples, named residency log, cycle table. | **AR:** either window exceeds its approved baseline +128 MiB, active decoded bytes exceed 128 MiB, residency grows after warm cycling, or the required metric is missing. |
+| WR-009 | Compare normal and localized authoritative consequence presentation at the same coordinate; inspect with overlay on and off. | Truth-matched color/grayscale pairs and HUD/AX cross-check. | Round 1 preserves accepted truth and keeps consequence presentation secondary and non-obscuring; embodied trouble/recovery closes in Round 2. **AR:** annotation is the primary readable signal, obscures the place, or contradicts accepted truth. |
+| WR-010 | Measure settled launch, post-interaction, and post-ten-cycle LOD high-water separately at regular and compact, normal and Reduce Motion. | Timestamped same-method RSS/physical-footprint samples, named residency log, cycle table. | **AR:** normal exceeds 333.8 MiB, Reduce Motion exceeds 322.9 MiB, either window continues growing, active decoded bytes exceed 128 MiB, or the required metric is missing. |
 | WR-011 | Follow every road mask, intersection, frontage join, and visible terminus in the corridor through continuous pan/zoom. | Road seam mosaic and recording timestamps. | **AR:** unexplained end, seam, overlap, pasted strip, broken curb/sidewalk/crossing, or false opportunity cue. |
 | WR-012 | Select every visible building and verify entrance/frontage orientation against its adjacent supported street at neighborhood/block. | Selected-lot contact sheet and AX coordinate/kind transcript. | Fail for any building that visually faces away, floats, or disagrees with its declared road relationship; **AR** when it misleads placement/opportunity. |
 | WR-013 | Commit one real project and observe prepared, foundation/frame, finishing, and complete stages without source/fixture mutation. | Timestamped staged-app sequence, save/load/undo identity. | **AR:** conspicuous placeholder/mixed-fidelity construction, footprint/road obstruction, false progress, or stage drift across save/load/undo. |
@@ -83,21 +93,13 @@ Acceptance requires at least 17/20, no category below 3, and an explanation for 
 1. Freeze identity, ancestry, manifest, hashes, exact process, isolated root, save, viewport, camera, display, and baseline budgets.
 2. Reconcile automated geometry/manifest/fallback/performance evidence, run the full native/static/staged/isolation gate, and reject before live interaction on identity or budget failure.
 3. Run the fresh default pointer corridor: five-second opportunity discovery, five-site classification, valid/invalid preview, commit, construction stages, selection, overlay, save/load, and exact undo.
-4. Run the fresh exact-900 x 600 keyboard corridor without pointer rescue, then the FKA/VoiceOver focus and accessibility checks authorized by the integrated input candidate.
+4. Run the fresh exact-900 x 600 keyboard corridor without pointer rescue, then the FKA/VoiceOver checks under accepted input commits `e30b8cc`, `8723b29`, and `a5d1c38`.
 5. Capture city/neighborhood/block normal and interaction matrices, continuous pan/zoom, color/grayscale/color-vision derivatives, and Reduce Motion equivalence.
 6. Run repeated LOD/state cycling and settle memory/residency; verify other candidate processes remain untouched.
 7. Classify WR-001…WR-028, automatic rejects, five score categories, limitations, and exact evidence paths. Quality does not repair or coach a rerun.
 
-## Missing proof mechanisms and integration questions
+## Candidate-supplied proof mechanisms
 
-The gate is ready, but the following must be resolved or supplied before candidate operation:
+No contract question remains open. The renderer completion packet must still supply the exact JSON reports, named images, camera/occupancy telemetry, same-method memory samples, continuous recording, and responsive AX/live captures defined above. Absence or ambiguity rejects the candidate rather than weakening the gate.
 
-1. **Memory authority:** publish exact accepted regular and compact baseline values separately for RSS and physical footprint, the sampling command/tool, settle duration, sample statistic, and whether `baseline +128 MiB` applies independently to both metrics. The current authority names an approximate 205.8 MiB baseline but not a complete two-window measurement contract.
-2. **Round boundary for WR-009:** the production recovery plan defers embodied consequence/recovery to Round 2, while the older world-playability directive requires it in Gate A-P. Confirm whether Round 1 closes WR-009 or only proves interaction restraint and truth preservation before Round 2.
-3. **Keyboard spatial authority:** identify the exact accepted PLAY-032/input commit that makes the no-pointer Round 1 placement journey legal and testable. Quality will not invent spatial keyboard routing or accept pointer rescue.
-4. **Style anchor:** identify the exact accepted source/hash that governs Round 1 projection/material/light. CONTRACT-006 calls the Gate A source provisional, and the later Gate A candidate was independently rejected as staged geometry.
-5. **Occupancy telemetry:** require candidate output for unobstructed world rectangle, developed/opportunity bounds, and computed occupancy percentage at each window/LOD so screenshot scoring can independently cross-check the 55–70% claim.
-6. **Overlap and residency formats:** the candidate must supply machine-readable collision and named-residency reports tied to manifest digest and camera/LOD. No repository-wide quality parser currently exists; screenshots alone cannot prove invisible alpha collisions, decoded bytes, fallback count, or eviction.
-7. **Live capture mechanism:** require a reliable, exact-bundle 20-second recording path and responsive Computer Use/AX capture. Harness frames, start/end stills, or source-derived coordinates cannot substitute if live tooling blocks.
-
-Until integration supplies the exact Round 1 candidate and these identities/authorities, PLAY-051 remains prepared and waiting. No product acceptance is implied.
+Until integration supplies the exact Round 1 candidate, PLAY-051 remains prepared and waiting. No product acceptance is implied.

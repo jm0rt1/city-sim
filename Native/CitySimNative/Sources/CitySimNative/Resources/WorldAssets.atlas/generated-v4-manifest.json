@@ -645,6 +645,198 @@
       "sha256": "fcb1ec5c0100c574e6753a77c312321a8e01df1f69f288efcc340b328cf592a7"
     },
     {
+      "file": "generated_v4_road_mask_00_block.png",
+      "sha256": "3d47d624cea469a9c8d7d14c47801628dcd616dddf511e2fe0c0a683132cf9b0"
+    },
+    {
+      "file": "generated_v4_road_mask_00_city.png",
+      "sha256": "2a6a45c623e44b7786ad807c02fa683405b4d9379655a250bea7930635f384e8"
+    },
+    {
+      "file": "generated_v4_road_mask_00_neighborhood.png",
+      "sha256": "7acb416ee7ee7e71e2ca79421a03df9d857a59a9030e233275b164b26a79c897"
+    },
+    {
+      "file": "generated_v4_road_mask_01_block.png",
+      "sha256": "bbbcdf6bf43e0ab6d97b9c8fcc16d78d18b87c28dd2c042e5fbc2c935c9c332f"
+    },
+    {
+      "file": "generated_v4_road_mask_01_city.png",
+      "sha256": "96f7a54d0360d85083fee93d071f56fa3840615578d6f6befe4c2e47bd352c30"
+    },
+    {
+      "file": "generated_v4_road_mask_01_neighborhood.png",
+      "sha256": "65ac186be886fbb382801de89ae59f081d832444e7a8cb9137d6347c76118df4"
+    },
+    {
+      "file": "generated_v4_road_mask_02_block.png",
+      "sha256": "c32ddbb43187534bc1744633ea97f7ff224f43250e5e98d086a2223593ab9cdd"
+    },
+    {
+      "file": "generated_v4_road_mask_02_city.png",
+      "sha256": "8c36ccd9d5a135aad4cb66fe10fa2d4a79b646186ceba23eec5a53fd14a231ad"
+    },
+    {
+      "file": "generated_v4_road_mask_02_neighborhood.png",
+      "sha256": "c3d42d5241f3ff95dcd218a9f893096565374fd670a881d89ab5c879b67b6833"
+    },
+    {
+      "file": "generated_v4_road_mask_03_block.png",
+      "sha256": "1ef6bc1f0d714ebb79c9d2d2195c1e5f8c7e352fd3df2ab5a5a71f175b7c5d2f"
+    },
+    {
+      "file": "generated_v4_road_mask_03_city.png",
+      "sha256": "4c7e469ea8da7314db92d170c534ad98bbf24bbdca3eedba80e902246fbc69cb"
+    },
+    {
+      "file": "generated_v4_road_mask_03_neighborhood.png",
+      "sha256": "72ce04b80636058e9f50548895bfcad439bc49a7fe2ffe6c3559aebcbe1a398c"
+    },
+    {
+      "file": "generated_v4_road_mask_04_block.png",
+      "sha256": "12fdbbfc4ea4565dea795d3903311d999350856e634f21bc4623a4680b002f39"
+    },
+    {
+      "file": "generated_v4_road_mask_04_city.png",
+      "sha256": "1c2e4bfa9e4b5ed3d69336d7ec131d04ee00adcafaea4ff33d6c6847c81d86c3"
+    },
+    {
+      "file": "generated_v4_road_mask_04_neighborhood.png",
+      "sha256": "d2399bf4221310b333c4ddf7fc6320b38c4a687d768564553917aaaa74ed286c"
+    },
+    {
+      "file": "generated_v4_road_mask_05_block.png",
+      "sha256": "d22f58c15439223dfe152bdc25d83b2c8a680c82a586606b2f19985de040dde8"
+    },
+    {
+      "file": "generated_v4_road_mask_05_city.png",
+      "sha256": "5e5863b2438693aa344d52a875f948f742ddc08fb1790d0c4b57b034b784750a"
+    },
+    {
+      "file": "generated_v4_road_mask_05_neighborhood.png",
+      "sha256": "a8af9549134a2d00066ba24ec668ce4d1baf1611b4f918cdf5974ddd855f9eec"
+    },
+    {
+      "file": "generated_v4_road_mask_06_block.png",
+      "sha256": "ba25e3756e61c21bf518bb12c50a03d9a572f1619f6689577eb26884cd43ae22"
+    },
+    {
+      "file": "generated_v4_road_mask_06_city.png",
+      "sha256": "46f2ed6595269e89122bbc974a27eebbeec0ede45bddb075423dc3fcfb71513b"
+    },
+    {
+      "file": "generated_v4_road_mask_06_neighborhood.png",
+      "sha256": "ef3e9df54e418405c5155e457d11481b54d3b76991bdae8934594d4da7b09d39"
+    },
+    {
+      "file": "generated_v4_road_mask_07_block.png",
+      "sha256": "2d6a423352fa7b9084044120dc2be6b4e9631a2edd24811bcbef548071322ea3"
+    },
+    {
+      "file": "generated_v4_road_mask_07_city.png",
+      "sha256": "9b2e180175bfd5f37b87fd504f4a867b1b0190011e468be5a0d76da022c0141d"
+    },
+    {
+      "file": "generated_v4_road_mask_07_neighborhood.png",
+      "sha256": "8c71efebd55b1676db0cdff1c1e6a50aa43d6bef5ca58fc2cffb00cfe27992d9"
+    },
+    {
+      "file": "generated_v4_road_mask_08_block.png",
+      "sha256": "8b9120b148a125fad2d518330b1495546c66a40f112d4bcaded5c56048050318"
+    },
+    {
+      "file": "generated_v4_road_mask_08_city.png",
+      "sha256": "1e26224ee8b8fb358be96dff3d2c1adeaf312e14b0f2d3b7cd68566c43f3e66f"
+    },
+    {
+      "file": "generated_v4_road_mask_08_neighborhood.png",
+      "sha256": "57aed11f4c990c9bcc5350e6aa9436ad95d494a61d373d5d7da654697a86afa2"
+    },
+    {
+      "file": "generated_v4_road_mask_09_block.png",
+      "sha256": "e4f3bb4fae9d2301a8a904fdb660fde6fa2fe2bc1695a514f25ef076cc62aa6a"
+    },
+    {
+      "file": "generated_v4_road_mask_09_city.png",
+      "sha256": "5682435b281f0c23c4f19ea5ffdee8e91c89856b224452ec62b3d511a36f7a54"
+    },
+    {
+      "file": "generated_v4_road_mask_09_neighborhood.png",
+      "sha256": "726d900a37e187d476d410b86c746bec6eaf578d6ca8f07a90213da7fd45c621"
+    },
+    {
+      "file": "generated_v4_road_mask_10_block.png",
+      "sha256": "9aa7eccd45d0a395687638e5a0e62125d51e3207a8b3b7bba9dea1754dfdee18"
+    },
+    {
+      "file": "generated_v4_road_mask_10_city.png",
+      "sha256": "cf4f229dd42ca0383e60d2878b79b594399edd96523d5c9bfd06bb6dcd412d04"
+    },
+    {
+      "file": "generated_v4_road_mask_10_neighborhood.png",
+      "sha256": "aea06c7df3adab5eaa01474e00fb02d25821b79ef4dee699c2d8c08900ad2471"
+    },
+    {
+      "file": "generated_v4_road_mask_11_block.png",
+      "sha256": "616e4d77e15befcf5d55671440561b0f3b7afb4662640a549b067a25175b887d"
+    },
+    {
+      "file": "generated_v4_road_mask_11_city.png",
+      "sha256": "1762abb6760c8b4a581e27dd96915818bae942764728323f139010abb5f8efb7"
+    },
+    {
+      "file": "generated_v4_road_mask_11_neighborhood.png",
+      "sha256": "20f4b72546ce29981a79a84a7d9321a86898ce0fff5885b90b245a8e6c40cb3a"
+    },
+    {
+      "file": "generated_v4_road_mask_12_block.png",
+      "sha256": "76e058cf50ec62d05628806ed5d6dc54dd40338c1d1ba553c487d880d9e5004d"
+    },
+    {
+      "file": "generated_v4_road_mask_12_city.png",
+      "sha256": "251b4e6f7240a22009d326d6f7200d6a28a7e9bd6f19a82d228e47f969de7d10"
+    },
+    {
+      "file": "generated_v4_road_mask_12_neighborhood.png",
+      "sha256": "be5039e65c0cf27948f50c639a567af46d7e5d1d53b0feed21ec4c8d42bf635a"
+    },
+    {
+      "file": "generated_v4_road_mask_13_block.png",
+      "sha256": "ab0b16f6733b2ce33c71b451a381f821c2c2ce541d1eaeee22dcb8535e6a13cd"
+    },
+    {
+      "file": "generated_v4_road_mask_13_city.png",
+      "sha256": "f07bdee359b86200062c16e9fbdf4bd9c350026df0b2937f478e9f1999fefe2b"
+    },
+    {
+      "file": "generated_v4_road_mask_13_neighborhood.png",
+      "sha256": "69dc8301b3683efed1806936da5588ff70dba2dc942ad376f684c783b5951291"
+    },
+    {
+      "file": "generated_v4_road_mask_14_block.png",
+      "sha256": "f3bec9a8e7129c81d92f0bc130008cd1331e94e08febe3d0859c5610359cda09"
+    },
+    {
+      "file": "generated_v4_road_mask_14_city.png",
+      "sha256": "bc344d46a638a773d865df3b32c203dc9175dcfbad1cb1ec73281db4c722d8f2"
+    },
+    {
+      "file": "generated_v4_road_mask_14_neighborhood.png",
+      "sha256": "0d8b8ce24907c096a2e766606f52529eb3f2adc68d354fbb1c5341fa2f2058ce"
+    },
+    {
+      "file": "generated_v4_road_mask_15_block.png",
+      "sha256": "5f7e57d00d368978bda830ef33a75938e9d3fc599e0436f22d465fc68da53e5e"
+    },
+    {
+      "file": "generated_v4_road_mask_15_city.png",
+      "sha256": "36d4c76dae20fabbd1bef5dfadc9e8f44e8c92cef9b759741f1c83768084a9b6"
+    },
+    {
+      "file": "generated_v4_road_mask_15_neighborhood.png",
+      "sha256": "b4b6076c69e6589380b67409f902099a9352109495ea0d623f1abbe638b16a4d"
+    },
+    {
       "file": "generated_v4_road_material_block.png",
       "sha256": "3e1cb186cc99fc2fdf6dd235c6e4e19a317ab8302a274dac5eb16c4ce2bd9b2e"
     },
@@ -668,5 +860,16 @@
       "file": "generated_v4_water_tower_l01_neighborhood.png",
       "sha256": "c6cee31321a885f3aaf667f2d675979ecec21014690384789141e1494fe563b5"
     }
-  ]
+  ],
+  "compiled_network": {
+    "source_logical_id": "road_material",
+    "compiler": "WorldArt/GeneratedV4/tools/compile_calibration_network.py",
+    "connection_masks": 16,
+    "lods": [
+      "block",
+      "neighborhood",
+      "city"
+    ],
+    "topology_authority": "RoadConnectionMask"
+  }
 }

@@ -98,11 +98,9 @@ final class CityScene: SKScene {
     private let lotRenderer: LotRenderer
     private let overlayRenderer: WorldOverlayRenderer
     private let spatialConsequenceRenderer: SpatialConsequenceRenderer
-    private let goldenDistrictRenderer: GoldenDistrictRenderer
     private let worldLayer = SKNode()
     private let backdropLayer = SKNode()
     private let tileLayer = SKNode()
-    private let goldenDistrictLayer = SKNode()
     private let cameraNode = SKCameraNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
@@ -119,7 +117,6 @@ final class CityScene: SKScene {
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
     private var tileRecords: [GridCoordinate: TileRenderRecord] = [:]
-    private var goldenDistrictSignature: GoldenDistrictRenderSignature?
     private var lastDragLocation: CGPoint?
     private var didDrag = false
     private var tileWidth: CGFloat { style.tileWidth }
@@ -147,7 +144,6 @@ final class CityScene: SKScene {
         self.lotRenderer = LotRenderer(style: style)
         self.overlayRenderer = WorldOverlayRenderer(style: style)
         self.spatialConsequenceRenderer = SpatialConsequenceRenderer(style: style)
-        self.goldenDistrictRenderer = GoldenDistrictRenderer(style: style)
         self.currentCameraDetailLevel = style.detailLevel(cameraScale: 1)
         super.init(size: size)
         scaleMode = .resizeFill
@@ -156,9 +152,6 @@ final class CityScene: SKScene {
         backdropLayer.zPosition = -20_000
         worldLayer.addChild(backdropLayer)
         worldLayer.addChild(tileLayer)
-        goldenDistrictLayer.name = "world.goldenDistrict.layer"
-        goldenDistrictLayer.zPosition = 50_000
-        worldLayer.addChild(goldenDistrictLayer)
         addChild(cameraNode)
         camera = cameraNode
         configureHighlight(hoverNode, color: .white, alpha: 0.24, z: 90_000)
@@ -219,7 +212,6 @@ final class CityScene: SKScene {
         renderedInteractionMode = interactionMode
         renderedReducedMotion = reducedMotion
         diagnosticsSnapshot = updateWorld(snapshot: snapshot, overlay: overlay)
-        let goldenDistrictChanged = updateGoldenDistrictPresentation()
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
@@ -237,7 +229,6 @@ final class CityScene: SKScene {
         let requiresTreeRecount = isFirstRender
             || previousSelection != selection
             || motionChanged
-            || goldenDistrictChanged
             || unexplainedCueRemoval
         refreshRuntimeDiagnostics(
             consumedEventCount: consequenceEvents.count,
@@ -559,6 +550,7 @@ final class CityScene: SKScene {
                         diagnostics: &diagnostics
                     )
                     existing.overlaySignature = overlaySignature
+                    updatePersistentConsequenceEmphasis(in: existing.consequenceLayer, overlay: overlay)
                     diagnostics.overlayUpdateCount += 1
                 }
                 continue
@@ -666,6 +658,7 @@ final class CityScene: SKScene {
             for: consequence,
             detail: currentCameraDetailLevel
         ))
+        updatePersistentConsequenceEmphasis(in: consequenceLayer, overlay: overlay)
         root.addChild(consequenceLayer)
         return TileRenderRecord(
             root: root,
@@ -674,6 +667,10 @@ final class CityScene: SKScene {
             signature: signature,
             overlaySignature: overlaySignature
         )
+    }
+
+    private func updatePersistentConsequenceEmphasis(in layer: SKNode, overlay: DataOverlay) {
+        layer.childNode(withName: "spatial.consequences")?.alpha = overlay == .none ? 0.16 : 0.82
     }
 
     private func tileSignature(
@@ -872,7 +869,6 @@ final class CityScene: SKScene {
         for record in tileRecords.values {
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
-        _ = updateGoldenDistrictPresentation()
         if preservingUpdateDiagnostics {
             diagnosticsSnapshot.detailLevel = detail
         } else {
@@ -887,41 +883,6 @@ final class CityScene: SKScene {
         }
         updateSelection(renderedSelection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
-    }
-
-    @discardableResult
-    private func updateGoldenDistrictPresentation() -> Bool {
-        guard let state = renderedState,
-              renderedOverlay == .none,
-              renderedInteractionMode == .inspect,
-              goldenDistrictRenderer.canPresent(state: state) else {
-            setGoldenDistrictBaseLotsHidden(false)
-            guard goldenDistrictSignature != nil || !goldenDistrictLayer.children.isEmpty else { return false }
-            goldenDistrictSignature = nil
-            goldenDistrictLayer.removeAllChildren()
-            return true
-        }
-        let signature = GoldenDistrictRenderSignature(
-            detail: currentCameraDetailLevel,
-            reducedMotion: reducedMotion
-        )
-        setGoldenDistrictBaseLotsHidden(true)
-        guard signature != goldenDistrictSignature else { return false }
-        goldenDistrictLayer.removeAllChildren()
-        if let district = goldenDistrictRenderer.makeDistrict(
-            detail: currentCameraDetailLevel,
-            reducedMotion: reducedMotion
-        ) {
-            goldenDistrictLayer.addChild(district)
-        }
-        goldenDistrictSignature = signature
-        return true
-    }
-
-    private func setGoldenDistrictBaseLotsHidden(_ hidden: Bool) {
-        for coordinate in GoldenDistrictRenderer.coveredBuildingCoordinates {
-            tileRecords[coordinate]?.root.isHidden = hidden
-        }
     }
 
     private func recursiveNodeCount(_ node: SKNode) -> Int {

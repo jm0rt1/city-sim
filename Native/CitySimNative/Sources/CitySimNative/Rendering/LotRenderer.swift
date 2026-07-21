@@ -38,7 +38,7 @@ final class LotRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, to: cityLayer)
+        addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, detail: detail, to: cityLayer)
         if let strategyIdentity {
             addStrategyGround(strategyIdentity, to: cityLayer)
         }
@@ -47,6 +47,7 @@ final class LotRenderer {
             if addAuthoredPlaceFamily(
                 tile,
                 variant: variant,
+                detail: detail,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
                 block: blockLayer
@@ -112,6 +113,7 @@ final class LotRenderer {
     private func addAuthoredPlaceFamily(
         _ tile: CityTile,
         variant: Int,
+        detail: CameraDetailLevel,
         city: SKNode,
         neighborhood: SKNode,
         block: SKNode
@@ -123,10 +125,20 @@ final class LotRenderer {
         case .industrial: family = "industrial"
         case .park: family = "park"
         case .cityHall: family = "civic"
+        case .waterTower: family = "water-tower"
         default: return false
         }
 
         let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
+        if tile.level == 1,
+           let generatedID = generatedLogicalID(for: tile.kind),
+           let sprite = assets.generatedSprite(logicalID: generatedID, detail: detail) {
+            sprite.name = "lot.generated-v4.\(generatedID).\(detail)"
+            sprite.position.y = -style.tileHeight / 2
+            sprite.zPosition = 5
+            city.addChild(sprite)
+            return true
+        }
         let assetName = strategyIdentity?.placeAssetName ?? "place_\(family)_\(variant)"
         let spriteSize = strategyIdentity == nil
             ? CGSize(width: 80, height: 96)
@@ -172,6 +184,18 @@ final class LotRenderer {
         return true
     }
 
+    private func generatedLogicalID(for kind: BuildingKind) -> String? {
+        switch kind {
+        case .residential: "residential_l01"
+        case .commercial: "commercial_l01"
+        case .industrial: "industrial_l01"
+        case .park: "park_l01"
+        case .cityHall: "city_hall_l01"
+        case .waterTower: "water_tower_l01"
+        default: nil
+        }
+    }
+
     private func addStrategyGround(
         _ identity: StrategyDistrictVisualIdentity,
         to node: SKNode
@@ -188,6 +212,7 @@ final class LotRenderer {
     private func addAuthoredFrontage(
         for kind: BuildingKind,
         adjacentRoads: RoadConnectionMask,
+        detail: CameraDetailLevel,
         to node: SKNode
     ) {
         let family: String?
@@ -199,11 +224,19 @@ final class LotRenderer {
         case .cityHall, .fireStation, .policeStation, .school: family = "civic"
         case .empty, .road: family = nil
         }
-        guard let family,
-              let frontage = assets.sprite(
+        guard let family else { return }
+
+        let frontage: SKSpriteNode?
+        if kind == .residential {
+            frontage = assets.generatedSprite(logicalID: "residential_frontage", detail: detail)
+            frontage?.position.y = -style.tileHeight / 2
+        } else {
+            frontage = assets.sprite(
                 named: "frontage_\(family)",
                 size: CGSize(width: style.tileWidth, height: style.tileHeight)
-              ) else { return }
+            )
+        }
+        guard let frontage else { return }
 
         let edge = adjacentRoads.edges.first ?? .south
         frontage.zRotation = switch edge {

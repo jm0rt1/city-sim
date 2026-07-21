@@ -33,7 +33,7 @@ final class WorldAssetCatalog {
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
-        texture.usesMipmaps = name.hasPrefix("golden_district_")
+        texture.usesMipmaps = name.hasPrefix("golden_district_") || name.hasPrefix("generated_v4_")
         textures[name] = texture
         return texture
     }
@@ -48,5 +48,31 @@ final class WorldAssetCatalog {
         sprite.anchorPoint = anchorPoint
         sprite.name = "asset.\(name)"
         return sprite
+    }
+
+    func generatedSprite(
+        logicalID: String,
+        detail: CameraDetailLevel
+    ) -> SKSpriteNode? {
+        guard let asset = generatedManifest?.assets.first(where: { $0.logicalID == logicalID }),
+              let lod = asset.lods[detail.assetSuffix],
+              asset.worldSize.count == 2,
+              asset.anchor.count == 2 else { return nil }
+        let name = (lod.file as NSString).deletingPathExtension
+        return sprite(
+            named: name,
+            size: CGSize(width: asset.worldSize[0], height: asset.worldSize[1]),
+            anchorPoint: CGPoint(x: asset.anchor[0], y: asset.anchor[1])
+        )
+    }
+}
+
+private extension CameraDetailLevel {
+    var assetSuffix: String {
+        switch self {
+        case .city: "city"
+        case .neighborhood: "neighborhood"
+        case .block: "block"
+        }
     }
 }

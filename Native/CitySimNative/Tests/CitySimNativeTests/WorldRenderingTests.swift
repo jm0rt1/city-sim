@@ -329,6 +329,17 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertNotNil(texture, "Missing world atlas texture \(name)")
             XCTAssertEqual(texture?.filteringMode, .linear)
         }
+
+        let manifest = catalog.generatedManifest
+        XCTAssertEqual(manifest?.schema, 4)
+        XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
+        XCTAssertEqual(manifest?.productionSelection, true)
+        XCTAssertEqual(manifest?.assets.count, 9)
+        for asset in manifest?.assets ?? [] {
+            for detail in CameraDetailLevel.allCases {
+                XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
+            }
+        }
     }
 
     @MainActor
@@ -338,7 +349,7 @@ final class WorldRenderingTests: XCTestCase {
         let roads = RoadRenderer(style: style, assets: catalog)
 
         for mask in RoadConnectionMask.allMasks {
-            let assetName = String(format: "road_mask_%02d", mask.rawValue)
+            let assetName = String(format: "generated_v4_road_mask_%02d_block", mask.rawValue)
             XCTAssertNotNil(catalog.texture(named: assetName))
             let root = roads.makeRoad(
                 at: GridCoordinate(x: 4, y: 4),
@@ -346,7 +357,7 @@ final class WorldRenderingTests: XCTestCase {
                 detail: .block,
                 reducedMotion: true
             )
-            XCTAssertTrue(descendantNames(in: root).contains("asset.\(assetName)"))
+            XCTAssertTrue(descendantNames(in: root).contains("road.generated-v4.\(mask.rawValue).block"))
         }
 
         let lot = LotRenderer(style: style, assets: catalog).makeLot(
@@ -378,16 +389,18 @@ final class WorldRenderingTests: XCTestCase {
                 XCTAssertNotNil(catalog.texture(named: "place_\(family)_\(variant)"))
             }
             let coordinate = GridCoordinate(x: family.count, y: kind.rawValue.count)
-            let expectedVariant = WorldVisualSeed.variant(count: 3, for: coordinate, kind: kind)
             let tile = CityTile(coordinate: coordinate, kind: kind, constructionProgress: 1)
             let first = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
             let second = renderer.makeLot(for: tile, adjacentRoads: .south, detail: .block, reducedMotion: true)
-            let expectedName: String
-            if let identity = StrategyDistrictVisualIdentity(tile: tile) {
-                expectedName = "lot.place.\(family).density.\(identity.densityTier).variant.\(expectedVariant).\(identity.architecturalCue)"
-            } else {
-                expectedName = "lot.place.\(family).variant.\(expectedVariant)"
+            let generatedID = switch kind {
+            case .residential: "residential_l01"
+            case .commercial: "commercial_l01"
+            case .industrial: "industrial_l01"
+            case .park: "park_l01"
+            case .cityHall: "city_hall_l01"
+            default: ""
             }
+            let expectedName = "lot.generated-v4.\(generatedID).block"
             XCTAssertTrue(descendantNames(in: first).contains(expectedName))
             XCTAssertTrue(descendantNames(in: second).contains(expectedName))
         }
@@ -423,11 +436,17 @@ final class WorldRenderingTests: XCTestCase {
                     reducedMotion: true
                 )
                 let names = descendantNames(in: root)
-                XCTAssertTrue(names.contains(
-                    "lot.place.\(family).density.\(tier).variant.\(identity!.variant).\(identity!.architecturalCue)"
-                ))
+                if tier == 1 {
+                    XCTAssertTrue(names.contains("lot.generated-v4.\(family)_l01.block"))
+                } else {
+                    XCTAssertTrue(names.contains(
+                        "lot.place.\(family).density.\(tier).variant.\(identity!.variant).\(identity!.architecturalCue)"
+                    ))
+                }
                 XCTAssertTrue(names.contains("lot.strategyGround.\(family).density.\(tier)"))
-                XCTAssertTrue(names.contains { $0.contains(identity!.architecturalCue) })
+                if tier > 1 {
+                    XCTAssertTrue(names.contains { $0.contains(identity!.architecturalCue) })
+                }
                 XCTAssertTrue(descendantLabels(in: root).isEmpty)
             }
         }
@@ -563,7 +582,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testGoldenDistrictUsesExplicitLODAssetsAndSuppressesAmbientMotion() throws {
+    func testRejectedGoldenDistrictReferenceRetainsExplicitLODAssets() throws {
         let renderer = GoldenDistrictRenderer(style: WorldVisualStyle())
         XCTAssertTrue(renderer.canPresent(state: CityGameState.newCity(seed: 42)))
 
@@ -581,7 +600,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testGoldenDistrictWithdrawsInsteadOfLyingAboutChangedTruthOrInteraction() {
+    func testShippingSceneNeverPresentsRejectedGoldenDistrictPlate() {
         var changed = CityGameState.newCity(seed: 42)
         changed.updateTile(at: GridCoordinate(x: 10, y: 11)) { $0.condition = 0.45 }
         XCTAssertFalse(GoldenDistrictRenderer(style: WorldVisualStyle()).canPresent(state: changed))
@@ -589,8 +608,8 @@ final class WorldRenderingTests: XCTestCase {
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         let start = CityGameState.newCity(seed: 42)
         scene.render(state: start, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertTrue(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
-        XCTAssertEqual(scene.tileRootIsHiddenForTesting(at: GridCoordinate(x: 10, y: 11)), true)
+        XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+        XCTAssertEqual(scene.tileRootIsHiddenForTesting(at: GridCoordinate(x: 10, y: 11)), false)
         XCTAssertEqual(scene.tileRootIsHiddenForTesting(at: GridCoordinate(x: 4, y: 12)), false)
 
         scene.render(state: start, overlay: .utilities, selection: nil, interactionMode: .inspect)

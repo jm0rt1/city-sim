@@ -123,21 +123,24 @@ final class SpatialConsequenceRenderer {
         root.zPosition = 78
 
         let color: NSColor = event.direction == .recovery ? .systemMint : .systemOrange
-        let ring = SKShapeNode(ellipseOf: CGSize(width: 46, height: 23))
+        // Transition feedback should read as a grounded site marker, not a
+        // neon selection ring competing with the authored architecture.
+        let ring = SKShapeNode(ellipseOf: CGSize(width: 26, height: 13))
         ring.name = "spatial.event.ring.\(event.direction.rawValue)"
         ring.fillColor = .clear
-        ring.strokeColor = color.withAlphaComponent(0.95)
-        ring.lineWidth = event.direction == .recovery ? 2.2 : 3.4
+        ring.strokeColor = color.withAlphaComponent(reducedMotion ? 0.38 : 0.72)
+        ring.lineWidth = event.direction == .recovery ? 1.0 : 1.3
         root.addChild(ring)
 
         let mark = SKShapeNode(path: eventMarkPath(event.direction))
         mark.name = "spatial.event.mark.\(event.direction.rawValue)"
-        mark.strokeColor = color
-        mark.lineWidth = 2.4
+        mark.strokeColor = color.withAlphaComponent(reducedMotion ? 0.78 : 0.94)
+        mark.lineWidth = 1.5
         mark.lineCap = .round
         mark.lineJoin = .round
         mark.fillColor = .clear
-        mark.position = CGPoint(x: 0, y: 17)
+        mark.setScale(0.72)
+        mark.position = CGPoint(x: 0, y: 10)
         root.addChild(mark)
 
         if !reducedMotion {

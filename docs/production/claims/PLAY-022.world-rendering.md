@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active visual recovery — the July 20 candidate was rejected for insufficient visual quality; Gate A in `docs/production/PLAY-022_VISUAL_RECOVERY_DIRECTIVE.md` is now the only authorized next product slice
+- **Status:** active — Gate A candidate `7c54d2c` is committed with exact staged default, compact, and three-LOD evidence; awaiting independent integration/playtest scoring before acceptance or any PLAY-023 work
 
 Deliver an unmistakable visual step, beginning with one exceptional golden block
 in the real staged city. Stop broad feature work until that block passes the

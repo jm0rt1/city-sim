@@ -69,6 +69,7 @@ private struct InteractionPreviewSignature: Equatable {
     let coordinate: GridCoordinate
     let status: InteractionPreviewStatus
     let detail: CameraDetailLevel
+    let selectedCoordinate: GridCoordinate?
 }
 
 private struct AmbientCorridorSignature: Equatable {
@@ -123,7 +124,6 @@ final class CityScene: SKScene {
     private let cameraNode = SKCameraNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
-    private let selectionLabel = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
     private var renderedState: CityGameState?
     private var renderedSnapshot: CityPresentationSnapshot?
     private var renderedReducedMotion = false
@@ -150,6 +150,14 @@ final class CityScene: SKScene {
     var cameraPositionForTesting: CGPoint { cameraNode.position }
     var cameraScale: CGFloat { cameraNode.xScale }
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
+    var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
+    var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
+    var interactionNamesForTesting: [String] {
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: hoverNode) + names(in: selectionNode)
+    }
 
     func safeViewportRectForTesting(_ insets: CityMapViewportInsets) -> CGRect {
         safeViewportRect(insets)
@@ -184,6 +192,9 @@ final class CityScene: SKScene {
         camera = cameraNode
         configureHighlight(hoverNode, color: .white, alpha: 0.24, z: 90_000)
         configureHighlight(selectionNode, color: NSColor(calibratedRed: 0.25, green: 0.95, blue: 0.78, alpha: 1), alpha: 0.65, z: 90_001)
+        selectionNode.fillColor = .clear
+        selectionNode.strokeColor = style.palette.concreteLight.withAlphaComponent(0.96)
+        selectionNode.lineWidth = 2.2
         hoverNode.name = "interaction.hover"
         selectionNode.name = "interaction.selection"
         configureSelectionAdornment()
@@ -269,7 +280,11 @@ final class CityScene: SKScene {
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
+        refreshPersistentConsequenceEmphasis(at: [previousSelection, selection])
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
+        if previousSelection != selection, let selection {
+            revealSelection(selection, viewportInsets: viewportInsets)
+        }
         let worldChanged = diagnosticsSnapshot.createdTileCount > 0
             || diagnosticsSnapshot.updatedTileCount > 0
             || diagnosticsSnapshot.removedTileCount > 0
@@ -345,6 +360,9 @@ final class CityScene: SKScene {
         if !hasUserAdjustedCamera, let state = renderedState {
             focusDevelopedCore(state)
         }
+        if let selection = renderedSelection {
+            revealSelection(selection, viewportInsets: insets)
+        }
     }
 
     func frameCity() {
@@ -404,16 +422,19 @@ final class CityScene: SKScene {
     }
 
     func configureProofInteraction(at coordinate: GridCoordinate?) {
+        let previous = hoveredCoordinate
         hoveredCoordinate = coordinate
         guard let coordinate else {
             lastPreviewSignature = nil
             hoverNode.removeAllChildren()
             hoverNode.isHidden = true
+            refreshPersistentConsequenceEmphasis(at: [previous])
             return
         }
         hoverNode.position = style.isoPosition(coordinate)
         hoverNode.isHidden = false
         updateBuildPreview(at: coordinate)
+        refreshPersistentConsequenceEmphasis(at: [previous, coordinate])
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -532,17 +553,20 @@ final class CityScene: SKScene {
     }
 
     override func mouseMoved(with event: NSEvent) {
+        let previous = hoveredCoordinate
         guard let coordinate = coordinate(at: event.location(in: self)) else {
             hoveredCoordinate = nil
             lastPreviewSignature = nil
             hoverNode.removeAllChildren()
             hoverNode.isHidden = true
+            refreshPersistentConsequenceEmphasis(at: [previous])
             return
         }
         hoveredCoordinate = coordinate
         hoverNode.position = style.isoPosition(coordinate)
         hoverNode.isHidden = false
         updateBuildPreview(at: coordinate)
+        refreshPersistentConsequenceEmphasis(at: [previous, coordinate])
     }
 
     override func scrollWheel(with event: NSEvent) {
@@ -680,7 +704,11 @@ final class CityScene: SKScene {
                         diagnostics: &diagnostics
                     )
                     existing.overlaySignature = overlaySignature
-                    updatePersistentConsequenceEmphasis(in: existing.consequenceLayer, overlay: overlay)
+                    updatePersistentConsequenceEmphasis(
+                        in: existing.consequenceLayer,
+                        at: tile.coordinate,
+                        overlay: overlay
+                    )
                     diagnostics.overlayUpdateCount += 1
                 }
                 continue
@@ -760,7 +788,7 @@ final class CityScene: SKScene {
             detail: currentCameraDetailLevel
         )
         if !persistentCues.children.isEmpty { consequenceLayer.addChild(persistentCues) }
-        updatePersistentConsequenceEmphasis(in: consequenceLayer, overlay: overlay)
+        updatePersistentConsequenceEmphasis(in: consequenceLayer, at: tile.coordinate, overlay: overlay)
         if !consequenceLayer.children.isEmpty { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
@@ -895,7 +923,7 @@ final class CityScene: SKScene {
             detail: currentCameraDetailLevel
         )
         if !persistentCues.children.isEmpty { consequenceLayer.addChild(persistentCues) }
-        updatePersistentConsequenceEmphasis(in: consequenceLayer, overlay: overlay)
+        updatePersistentConsequenceEmphasis(in: consequenceLayer, at: tile.coordinate, overlay: overlay)
         if !consequenceLayer.children.isEmpty { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
@@ -906,8 +934,22 @@ final class CityScene: SKScene {
         )
     }
 
-    private func updatePersistentConsequenceEmphasis(in layer: SKNode, overlay: DataOverlay) {
-        layer.childNode(withName: "spatial.consequences")?.alpha = overlay == .none ? 0.16 : 0.82
+    private func updatePersistentConsequenceEmphasis(
+        in layer: SKNode,
+        at coordinate: GridCoordinate,
+        overlay: DataOverlay
+    ) {
+        let isTruthOverlay = overlay == .utilities || overlay == .pollution
+        let isActiveCoordinate = coordinate == renderedSelection || coordinate == hoveredCoordinate
+        layer.childNode(withName: "spatial.consequences")?.alpha =
+            isTruthOverlay && !isActiveCoordinate ? 0.52 : 0
+    }
+
+    private func refreshPersistentConsequenceEmphasis(at coordinates: [GridCoordinate?]) {
+        for coordinate in Set(coordinates.compactMap { $0 }) {
+            guard let layer = tileRecords[coordinate]?.consequenceLayer else { continue }
+            updatePersistentConsequenceEmphasis(in: layer, at: coordinate, overlay: renderedOverlay)
+        }
     }
 
     private func tileSignature(
@@ -1173,43 +1215,38 @@ final class CityScene: SKScene {
     }
 
     private func updateSelection(_ coordinate: GridCoordinate?) {
+        selectionNode.removeAction(forKey: "selection.pulse")
+        selectionNode.alpha = 1
+        lastPreviewSignature = nil
         guard let coordinate else {
-            selectionNode.removeAction(forKey: "selection.pulse")
             selectionNode.isHidden = true
-            selectionLabel.text = nil
             return
         }
-        selectionLabel.text = "SELECTED"
         selectionNode.position = style.isoPosition(coordinate)
         selectionNode.isHidden = false
-        if reducedMotion {
-            selectionNode.removeAction(forKey: "selection.pulse")
-            selectionNode.alpha = 1
-        } else if selectionNode.action(forKey: "selection.pulse") == nil {
-            selectionNode.run(.repeatForever(.sequence([
-                .fadeAlpha(to: 0.72, duration: 0.72),
-                .fadeAlpha(to: 1, duration: 0.72)
-            ])), withKey: "selection.pulse")
-        }
     }
 
     private func updateBuildPreview(at coordinate: GridCoordinate) {
         guard let state = renderedState else { return }
         let status = interactionPreviewStatus(at: coordinate, state: state)
+        let isInspecting: Bool
+        if case .inspect = status { isInspecting = true } else { isInspecting = false }
+        hoverNode.isHidden = isInspecting && renderedSelection == coordinate
         let signature = InteractionPreviewSignature(
             coordinate: coordinate,
             status: status,
-            detail: currentCameraDetailLevel
+            detail: currentCameraDetailLevel,
+            selectedCoordinate: renderedSelection
         )
         guard signature != lastPreviewSignature else { return }
         lastPreviewSignature = signature
         hoverNode.removeAllChildren()
 
-        let presentation = previewPresentation(status, coordinate: coordinate)
+        let presentation = previewPresentation(status)
         let color = presentation.color
-        hoverNode.fillColor = color.withAlphaComponent(0.16)
-        hoverNode.strokeColor = color.withAlphaComponent(0.96)
-        hoverNode.lineWidth = presentation.isBlocked ? 4 : 3
+        hoverNode.fillColor = .clear
+        hoverNode.strokeColor = color.withAlphaComponent(isInspecting ? 0.34 : 0.90)
+        hoverNode.lineWidth = presentation.isBlocked ? 2.6 : (isInspecting ? 1.0 : 2.2)
 
         if case .validBuild(let kind) = status {
             addPlacementGhost(kind, at: coordinate, state: state, alpha: 0.54, to: hoverNode)
@@ -1219,14 +1256,6 @@ final class CityScene: SKScene {
         if presentation.isBlocked {
             addInvalidHatch(color: color, to: hoverNode)
         }
-        addStatusMark(presentation.marker, color: color, to: hoverNode)
-        addPreviewLabel(
-            headline: presentation.headline,
-            detail: presentation.detail,
-            color: color,
-            horizontalOffset: coordinate.x >= state.gridWidth / 2 ? -118 : 118,
-            to: hoverNode
-        )
     }
 
     private func interactionPreviewStatus(
@@ -1252,51 +1281,19 @@ final class CityScene: SKScene {
     }
 
     private func previewPresentation(
-        _ status: InteractionPreviewStatus,
-        coordinate: GridCoordinate
-    ) -> (headline: String, detail: String, marker: String, color: NSColor, isBlocked: Bool) {
+        _ status: InteractionPreviewStatus
+    ) -> (color: NSColor, isBlocked: Bool) {
         switch status {
-        case .inspect(let kind):
-            return (
-                "INSPECT · \(kind.title.uppercased())",
-                "Block \(coordinate.x + 1), \(coordinate.y + 1) · Click for details",
-                "i",
-                .white,
-                false
-            )
-        case .validBuild(let kind):
-            return (
-                "VALID · \(kind.title.uppercased())",
-                "Cost \(currency(kind.buildCost)) · Upkeep \(currency(kind.upkeep))/cycle",
-                "OK",
-                .systemGreen,
-                false
-            )
-        case .invalidBuild(let kind, let rejection):
-            return (
-                rejection == .uniqueBuildingExists ? "PROTECTED · \(kind.title.uppercased())" : "BLOCKED · \(kind.title.uppercased())",
-                rejection.message,
-                "X",
-                rejection == .uniqueBuildingExists ? .systemOrange : .systemRed,
-                true
-            )
-        case .validBulldoze(let kind):
-            let cost = kind.demolitionCost
-            return (
-                "BULLDOZE · \(kind.title.uppercased())",
-                "Demolition \(currency(cost)) · Undo available",
-                "X",
-                .systemRed,
-                false
-            )
+        case .inspect:
+            return (.white, false)
+        case .validBuild:
+            return (.systemGreen, false)
+        case .invalidBuild(_, let rejection):
+            return (rejection == .uniqueBuildingExists ? .systemOrange : .systemRed, true)
+        case .validBulldoze:
+            return (.systemRed, false)
         case .invalidBulldoze(let reason):
-            return (
-                reason.contains("protected") ? "PROTECTED" : "BLOCKED",
-                reason,
-                "!",
-                reason.contains("protected") ? .systemOrange : .systemGray,
-                true
-            )
+            return (reason.contains("protected") ? .systemOrange : .systemGray, true)
         }
     }
 
@@ -1339,7 +1336,7 @@ final class CityScene: SKScene {
     }
 
     private func addInvalidHatch(color: NSColor, to node: SKNode) {
-        for index in -2...2 {
+        for index in -1...1 {
             let x = CGFloat(index) * 8
             let hatch = SKShapeNode(path: WorldGeometryCache.line(
                 from: CGPoint(x: x - 9, y: -10),
@@ -1351,58 +1348,6 @@ final class CityScene: SKScene {
             hatch.name = "interaction.invalidHatch"
             node.addChild(hatch)
         }
-    }
-
-    private func addStatusMark(_ text: String, color: NSColor, to node: SKNode) {
-        let marker = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
-        marker.text = text
-        marker.fontSize = text.count > 1 ? 8 : 13
-        marker.fontColor = color
-        marker.verticalAlignmentMode = .center
-        marker.horizontalAlignmentMode = .center
-        marker.position = CGPoint(x: 0, y: 5)
-        marker.zPosition = 14
-        marker.name = "interaction.preview.marker"
-        node.addChild(marker)
-    }
-
-    private func addPreviewLabel(
-        headline: String,
-        detail: String,
-        color: NSColor,
-        horizontalOffset: CGFloat,
-        to node: SKNode
-    ) {
-        let panel = SKShapeNode(rectOf: CGSize(width: 204, height: 34), cornerRadius: 7)
-        panel.fillColor = NSColor(calibratedWhite: 0.055, alpha: 0.92)
-        panel.strokeColor = color.withAlphaComponent(0.86)
-        panel.lineWidth = 1.2
-        panel.position = CGPoint(x: horizontalOffset, y: 50)
-        panel.zPosition = 20
-        panel.name = "interaction.preview.panel"
-
-        let headlineNode = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
-        headlineNode.text = headline
-        headlineNode.fontSize = 8.5
-        headlineNode.fontColor = .white
-        headlineNode.verticalAlignmentMode = .center
-        headlineNode.position.y = 7
-        headlineNode.name = "interaction.preview.headline"
-        panel.addChild(headlineNode)
-
-        let detailNode = SKLabelNode(fontNamed: ".AppleSystemUIFont")
-        detailNode.text = detail
-        detailNode.fontSize = 7
-        detailNode.fontColor = NSColor.white.withAlphaComponent(0.76)
-        detailNode.verticalAlignmentMode = .center
-        detailNode.position.y = -7
-        detailNode.name = "interaction.preview.detail"
-        panel.addChild(detailNode)
-        node.addChild(panel)
-    }
-
-    private func currency(_ amount: Double) -> String {
-        "$\(Int(amount.rounded()).formatted())"
     }
 
     private func fitCity(_ state: CityGameState) {
@@ -1550,56 +1495,18 @@ final class CityScene: SKScene {
     }
 
     private func configureSelectionAdornment() {
-        let raisedOutline = SKShapeNode(path: style.diamondPath(
-            width: tileWidth * 0.88,
-            height: tileHeight * 0.88
-        ))
-        raisedOutline.fillColor = .clear
-        raisedOutline.strokeColor = NSColor.white.withAlphaComponent(0.92)
-        raisedOutline.lineWidth = 1.4
-        raisedOutline.position.y = 5
-        raisedOutline.zPosition = 2
-        selectionNode.addChild(raisedOutline)
-
-        let corners = [
-            CGPoint(x: 0, y: tileHeight / 2),
-            CGPoint(x: tileWidth / 2, y: 0),
-            CGPoint(x: 0, y: -tileHeight / 2),
-            CGPoint(x: -tileWidth / 2, y: 0)
-        ]
-        for point in corners {
-            let bracket = SKShapeNode(rectOf: CGSize(width: 5, height: 5), cornerRadius: 1)
-            bracket.fillColor = .white
-            bracket.strokeColor = style.palette.civicRoof
-            bracket.lineWidth = 1
-            bracket.position = point
-            bracket.zPosition = 4
-            selectionNode.addChild(bracket)
-        }
-
-        let beam = SKShapeNode(path: WorldGeometryCache.line(
-            from: CGPoint(x: 0, y: tileHeight / 2 + 2),
-            to: CGPoint(x: 0, y: 57)
-        ))
-        beam.strokeColor = style.palette.glass.withAlphaComponent(0.72)
-        beam.lineWidth = 2.2
-        beam.zPosition = 3
-        selectionNode.addChild(beam)
-
-        let cap = SKShapeNode(circleOfRadius: 4)
-        cap.fillColor = style.palette.civicRoof
-        cap.strokeColor = .white
-        cap.lineWidth = 1.2
-        cap.position.y = 59
-        cap.zPosition = 4
-        selectionNode.addChild(cap)
-
-        selectionLabel.text = nil
-        selectionLabel.fontSize = 7.5
-        selectionLabel.fontColor = .white
-        selectionLabel.position = CGPoint(x: 0, y: 66)
-        selectionLabel.zPosition = 5
-        selectionNode.addChild(selectionLabel)
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x: -7, y: -tileHeight / 2 + 2))
+        path.addLine(to: CGPoint(x: 0, y: -tileHeight / 2 - 2))
+        path.addLine(to: CGPoint(x: 7, y: -tileHeight / 2 + 2))
+        let anchor = SKShapeNode(path: path)
+        anchor.name = "interaction.selection.frontage-anchor"
+        anchor.strokeColor = style.palette.civicRoof.withAlphaComponent(0.98)
+        anchor.lineWidth = 3
+        anchor.lineCap = .round
+        anchor.lineJoin = .round
+        anchor.zPosition = 3
+        selectionNode.addChild(anchor)
     }
 
     private func configureHighlight(_ node: SKShapeNode, color: NSColor, alpha: CGFloat, z: CGFloat) {

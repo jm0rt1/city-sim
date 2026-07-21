@@ -389,19 +389,30 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
-    func testRendererOnlyPublishesSelectionLabelForAnActiveSelection() {
+    func testRendererPublishesOneGroundedSelectionBoundaryWithoutFloatingCopy() {
         let state = rendererNeighborhoodState()
         let selectedCoordinate = GridCoordinate(x: 3, y: 3)
         let scene = CityScene(size: CGSize(width: 900, height: 600))
         scene.reducedMotion = true
 
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(scene.selectionIsHiddenForTesting)
         XCTAssertFalse(descendantLabelTexts(in: scene).contains("SELECTED"))
 
         scene.render(state: state, overlay: .none, selection: selectedCoordinate, interactionMode: .inspect)
-        XCTAssertTrue(descendantLabelTexts(in: scene).contains("SELECTED"))
+        XCTAssertFalse(scene.selectionIsHiddenForTesting)
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter { $0 == "interaction.selection" }.count,
+            1
+        )
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter { $0 == "interaction.selection.frontage-anchor" }.count,
+            1
+        )
+        XCTAssertFalse(descendantLabelTexts(in: scene).contains("SELECTED"))
 
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(scene.selectionIsHiddenForTesting)
         XCTAssertFalse(descendantLabelTexts(in: scene).contains("SELECTED"))
     }
 

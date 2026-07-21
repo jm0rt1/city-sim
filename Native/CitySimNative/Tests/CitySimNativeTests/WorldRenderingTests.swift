@@ -95,12 +95,118 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(try XCTUnwrap(utility).value, 0.33, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(pollution).value, 0.36, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(utility).pattern.rawValue, "utilityEdge")
+        XCTAssertEqual(try XCTUnwrap(pollution).pattern.rawValue, "pollutionHatch")
         XCTAssertNil(renderer.sample(
             for: tile,
             state: contradictoryState,
             consequence: nil,
             overlay: .utilities
         ))
+        for unsupportedOverlay in [DataOverlay.landValue, .traffic, .happiness] {
+            XCTAssertNil(renderer.sample(
+                for: tile,
+                state: contradictoryState,
+                consequence: consequence,
+                overlay: unsupportedOverlay
+            ))
+        }
+        for undevelopedKind in [BuildingKind.empty, .road] {
+            XCTAssertNil(renderer.sample(
+                for: CityTile(coordinate: tile.coordinate, kind: undevelopedKind),
+                state: contradictoryState,
+                consequence: consequence,
+                overlay: .pollution
+            ))
+        }
+        XCTAssertNil(renderer.sample(
+            for: CityTile(coordinate: GridCoordinate(x: 3, y: 3), kind: .residential),
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .utilities
+        ))
+    }
+
+    @MainActor
+    func testApprovedOverlaysUseSparseNonColorSeverityMarksWithoutTileWashOrLabels() {
+        let style = WorldVisualStyle()
+        let renderer = WorldOverlayRenderer(style: style)
+        let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
+        let severe = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: CityLocationUtilityService(
+                power: 0.20,
+                water: 0.72,
+                combined: 0.20,
+                powerBand: .severe,
+                waterBand: .strained,
+                combinedBand: .severe
+            ),
+            pollutionExposure: 0.80,
+            pollutionBand: .severe,
+            vitalityScore: 0,
+            vitality: .notApplicable
+        )
+        let state = CityGameState.newCity(seed: 42)
+
+        let utility = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .utilities,
+            detail: .block
+        )
+        let pollution = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .pollution,
+            detail: .block
+        )
+
+        let utilityNames = descendantNames(in: utility)
+        let pollutionNames = descendantNames(in: pollution)
+        XCTAssertFalse(utilityNames.contains("overlay.base"))
+        XCTAssertFalse(pollutionNames.contains("overlay.base"))
+        XCTAssertTrue(utilityNames.contains("overlay.utility.status-edge"))
+        XCTAssertEqual(utilityNames.filter { $0 == "overlay.utility.severity-notch" }.count, 3)
+        XCTAssertEqual(pollutionNames.filter { $0 == "overlay.pollution.exposure-hatch" }.count, 3)
+        XCTAssertTrue(descendantLabels(in: utility).isEmpty)
+        XCTAssertTrue(descendantLabels(in: pollution).isEmpty)
+
+        let utilityBounds = utility.calculateAccumulatedFrame()
+        let pollutionBounds = pollution.calculateAccumulatedFrame()
+        XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
+        XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
+        XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.60)
+        XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.50)
+
+        let mild = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: CityLocationUtilityService(
+                power: 0.60,
+                water: 0.92,
+                combined: 0.60,
+                powerBand: .strained,
+                waterBand: .healthy,
+                combinedBand: .strained
+            ),
+            pollutionExposure: 0.40,
+            pollutionBand: .strained,
+            vitalityScore: 0,
+            vitality: .notApplicable
+        )
+        let mildAtCity = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: mild,
+            overlay: .utilities,
+            detail: .city
+        )
+        let neighborhoodLayer = mildAtCity.childNode(withName: "//detail.neighborhood")
+        XCTAssertEqual(neighborhoodLayer?.isHidden, true)
+        style.updateDetailVisibility(in: mildAtCity, detail: .block)
+        XCTAssertEqual(neighborhoodLayer?.isHidden, false)
     }
 
     @MainActor
@@ -794,6 +900,66 @@ final class WorldRenderingTests: XCTestCase {
 
         scene.render(state: changed, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+    }
+
+    @MainActor
+    func testInteractionPriorityUsesGroundedBoundariesWithoutBillboardClutter() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let validCoordinate = try XCTUnwrap(state.tiles.first { tile in
+            if case .success = CitySimulation.validateBuild(.residential, at: tile.coordinate, in: state) {
+                return true
+            }
+            return false
+        }?.coordinate)
+        let invalidCoordinate = GridCoordinate(x: 11, y: 11)
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.residential))
+        scene.configureProofInteraction(at: validCoordinate)
+        var names = scene.interactionNamesForTesting
+        XCTAssertFalse(scene.hoverIsHiddenForTesting)
+        XCTAssertEqual(names.filter { $0 == "interaction.placementGhost" }.count, 1)
+        XCTAssertFalse(names.contains("interaction.invalidHatch"))
+        XCTAssertFalse(names.contains { $0.hasPrefix("interaction.preview.") })
+        XCTAssertTrue(descendantLabels(in: scene).isEmpty)
+
+        scene.configureProofInteraction(at: invalidCoordinate)
+        names = scene.interactionNamesForTesting
+        XCTAssertFalse(scene.hoverIsHiddenForTesting)
+        XCTAssertEqual(names.filter { $0 == "interaction.placementGhost" }.count, 1)
+        XCTAssertEqual(names.filter { $0 == "interaction.invalidHatch" }.count, 3)
+        XCTAssertFalse(names.contains { $0.hasPrefix("interaction.preview.") })
+        XCTAssertTrue(descendantLabels(in: scene).isEmpty)
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: invalidCoordinate,
+            interactionMode: .inspect
+        )
+        scene.configureProofInteraction(at: invalidCoordinate)
+        names = scene.interactionNamesForTesting
+        XCTAssertTrue(scene.hoverIsHiddenForTesting)
+        XCTAssertFalse(scene.selectionIsHiddenForTesting)
+        XCTAssertEqual(names.filter { $0 == "interaction.selection" }.count, 1)
+        XCTAssertEqual(names.filter { $0 == "interaction.selection.frontage-anchor" }.count, 1)
+        XCTAssertFalse(names.contains { $0.hasPrefix("interaction.preview.") })
+        XCTAssertTrue(descendantLabels(in: scene).isEmpty)
+    }
+
+    @MainActor
+    func testExactCompactActiveCoordinateRemainsInsideSafeWorldViewport() {
+        let state = CityGameState.newCity(seed: 42)
+        let active = GridCoordinate(x: 23, y: 23)
+        let insets = CityMapViewportInsets(top: 76, leading: 278, bottom: 64, trailing: 12)
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+        scene.updateViewportInsets(insets)
+        scene.render(state: state, overlay: .none, selection: active, interactionMode: .inspect)
+
+        XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(scene.scenePointForTesting(at: active)))
+        XCTAssertFalse(scene.selectionIsHiddenForTesting)
     }
 
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {

@@ -9,22 +9,28 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active systemic Gate A-R candidate — the rejected 12/20 plate is disabled, the authorized nine-source systemic repair is staged at `4887eba`, and independent integration/playtest scoring is required before acceptance
+- **Status:** active production recovery — the systemic Gate A-R candidate at `8cb45b5` is preserved but rejected; `docs/production/PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md` is the controlling execution plan and Round 1 is the only authorized implementation round
 
 Deliver an unmistakable visual step through one systemic golden block in the
 real staged city. Stop broad feature work until the nine-source calibration
 spine passes the independent composition, coherence, depth, life, and
 interaction scorecard.
+
+Round 1 must first correct the audited footprint/anchor/depth contract, then
+deliver one overlap-safe playable corridor with coherent terrain, streets,
+construction, visible-set fidelity, camera composition, and restrained
+interaction. Do not generate broader asset families until the physical contract
+and corridor pass the plan's staged-app gates.
 Authored commercial and industrial identities, density progression, trouble,
 pollution, prosperity, decline, recovery, and bounded ambient life remain the
 eventual scope, but they may not hide a weak base world behind more indicators.
 Art studies and renderer-local prototypes may start immediately.
 
-Gate A-R now has a committed calibration candidate and proof packet at
-`docs/production/evidence/PLAY-022/gate-a-r/`. PLAY-022 remains active and
-PLAY-023 remains unclaimed. The packet truthfully records a passing compact
-RSS sample and an unresolved regular-window allocator/RSS overage; neither the
-tests nor this lane self-accept the visual or performance gate.
+Gate A-R's rejected calibration candidate and proof packet remain preserved at
+`docs/production/evidence/PLAY-022/gate-a-r/` as the Round 1 comparison
+baseline. PLAY-022 remains active and PLAY-023 remains unclaimed. Its disclosed
+regular-window allocator/RSS overage is a binding production defect, not an
+accepted exception.
 
 PLAY-041 truth is integrated and must remain authoritative. Fixture-only,
 recolor-only, label-driven, indicator-heavy, self-accepted, or off-window

@@ -3,6 +3,7 @@ set -euo pipefail
 
 MODE="${1:-run}"
 PACKAGE_EXECUTABLE_NAME="CitySimNative"
+RESOURCE_BUNDLE_NAME="CitySimNative_CitySimNative.bundle"
 PRODUCTION_BUNDLE_ID="com.jfmortensen.citysim"
 MIN_SYSTEM_VERSION="14.0"
 
@@ -71,6 +72,7 @@ APP_CONTENTS="$APP_BUNDLE/Contents"
 APP_MACOS="$APP_CONTENTS/MacOS"
 APP_RESOURCES="$APP_CONTENTS/Resources"
 APP_BINARY="$APP_MACOS/$APP_EXECUTABLE_NAME"
+STAGED_RESOURCE_BUNDLE="$APP_BUNDLE/$RESOURCE_BUNDLE_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
 MANIFEST_DIR="$DIST_DIR/manifests"
 MANIFEST_PATH="$MANIFEST_DIR/$CANDIDATE_ID.manifest"
@@ -88,6 +90,7 @@ print_identity() {
   printf 'data_root=%s\n' "$MANIFEST_DATA_ROOT"
   printf 'staged_bundle_path=%s\n' "$APP_BUNDLE"
   printf 'executable_path=%s\n' "$APP_BINARY"
+  printf 'resource_bundle_path=%s\n' "$STAGED_RESOURCE_BUNDLE"
   printf 'manifest_path=%s\n' "$MANIFEST_PATH"
 }
 
@@ -110,6 +113,7 @@ data_root=$MANIFEST_DATA_ROOT
 launch_time=$launch_time
 staged_bundle_path=$APP_BUNDLE
 executable_path=$APP_BINARY
+resource_bundle_path=$STAGED_RESOURCE_BUNDLE
 process_id=$process_id
 status=$status
 MANIFEST
@@ -180,12 +184,29 @@ stop_exact_processes
 
 swift build --package-path "$PACKAGE_DIR"
 BUILD_DIR="$(swift build --package-path "$PACKAGE_DIR" --show-bin-path)"
+SOURCE_RESOURCE_BUNDLE="$BUILD_DIR/$RESOURCE_BUNDLE_NAME"
+
+if [[ ! -d "$SOURCE_RESOURCE_BUNDLE" ]]; then
+  echo "error: SwiftPM resource bundle is missing: $SOURCE_RESOURCE_BUNDLE" >&2
+  exit 1
+fi
 
 rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_MACOS" "$APP_RESOURCES"
 cp "$BUILD_DIR/$PACKAGE_EXECUTABLE_NAME" "$APP_BINARY"
 cp "$PACKAGE_DIR/Resources/CitySim-KeyArt.png" "$APP_RESOURCES/CitySim-KeyArt.png"
+cp -R "$SOURCE_RESOURCE_BUNDLE" "$STAGED_RESOURCE_BUNDLE"
 chmod +x "$APP_BINARY"
+
+if [[ ! -f "$STAGED_RESOURCE_BUNDLE/WorldAssets.atlas/manifest.json" ]]; then
+  echo "error: staged world atlas manifest is missing from $STAGED_RESOURCE_BUNDLE" >&2
+  exit 1
+fi
+
+if [[ ! -f "$STAGED_RESOURCE_BUNDLE/WorldAssets.atlas/terrain_grass_0.png" ]]; then
+  echo "error: staged world atlas probe is missing from $STAGED_RESOURCE_BUNDLE" >&2
+  exit 1
+fi
 
 cat >"$INFO_PLIST" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

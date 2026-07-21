@@ -299,6 +299,10 @@ final class CityScene: SKScene {
         tileRecords[coordinate].map { ObjectIdentifier($0.root) }
     }
 
+    func tileRootIsHiddenForTesting(at coordinate: GridCoordinate) -> Bool? {
+        tileRecords[coordinate]?.root.isHidden
+    }
+
     func tileDescendantNamesForTesting(at coordinate: GridCoordinate) -> [String] {
         guard let root = tileRecords[coordinate]?.root else { return [] }
         func names(in node: SKNode) -> [String] {
@@ -891,6 +895,7 @@ final class CityScene: SKScene {
               renderedOverlay == .none,
               renderedInteractionMode == .inspect,
               goldenDistrictRenderer.canPresent(state: state) else {
+            setGoldenDistrictBaseLotsHidden(false)
             guard goldenDistrictSignature != nil || !goldenDistrictLayer.children.isEmpty else { return false }
             goldenDistrictSignature = nil
             goldenDistrictLayer.removeAllChildren()
@@ -900,6 +905,7 @@ final class CityScene: SKScene {
             detail: currentCameraDetailLevel,
             reducedMotion: reducedMotion
         )
+        setGoldenDistrictBaseLotsHidden(true)
         guard signature != goldenDistrictSignature else { return false }
         goldenDistrictLayer.removeAllChildren()
         if let district = goldenDistrictRenderer.makeDistrict(
@@ -910,6 +916,12 @@ final class CityScene: SKScene {
         }
         goldenDistrictSignature = signature
         return true
+    }
+
+    private func setGoldenDistrictBaseLotsHidden(_ hidden: Bool) {
+        for coordinate in GoldenDistrictRenderer.coveredBuildingCoordinates {
+            tileRecords[coordinate]?.root.isHidden = hidden
+        }
     }
 
     private func recursiveNodeCount(_ node: SKNode) -> Int {
@@ -1179,9 +1191,15 @@ final class CityScene: SKScene {
         // Open on the place the player can act on, while keeping road arms and
         // several buildable blocks as honest expansion context. Compact uses a
         // slightly wider lens so the command deck never crowds the neighborhood.
-        let defaultScale: CGFloat = size.width <= 980 ? 0.60 : 0.48
+        let environment = ProcessInfo.processInfo.environment
+        let isExplicitCompactProof = environment["CITYSIM_COMPACT_WINDOW"] == "1"
+        let isRegularCandidate = environment[SaveGameService.dataRootEnvironmentKey] != nil
+            || environment["CITYSIM_REGULAR_WINDOW"] == "1"
+        let defaultScale: CGFloat = isExplicitCompactProof || (!isRegularCandidate && size.width <= 980)
+            ? 0.60
+            : 0.48
 #if DEBUG
-        let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
+        let proofScale = environment["CITYSIM_PROOF_CAMERA_SCALE"]
             .flatMap(Double.init)
             .map { CGFloat($0) }
         cameraNode.setScale(proofScale.map { min(2.2, max(0.35, $0)) } ?? defaultScale)

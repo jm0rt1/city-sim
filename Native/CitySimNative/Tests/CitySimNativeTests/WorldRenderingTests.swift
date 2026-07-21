@@ -590,9 +590,12 @@ final class WorldRenderingTests: XCTestCase {
         let start = CityGameState.newCity(seed: 42)
         scene.render(state: start, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertTrue(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+        XCTAssertEqual(scene.tileRootIsHiddenForTesting(at: GridCoordinate(x: 10, y: 11)), true)
+        XCTAssertEqual(scene.tileRootIsHiddenForTesting(at: GridCoordinate(x: 4, y: 12)), false)
 
         scene.render(state: start, overlay: .utilities, selection: nil, interactionMode: .inspect)
         XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))
+        XCTAssertEqual(scene.tileRootIsHiddenForTesting(at: GridCoordinate(x: 10, y: 11)), false)
 
         scene.render(state: start, overlay: .none, selection: nil, interactionMode: .build(.residential))
         XCTAssertFalse(descendantNames(in: scene).contains("world.goldenDistrict.asset.block"))

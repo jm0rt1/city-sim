@@ -12,6 +12,17 @@ struct GoldenDistrictRenderSignature: Equatable {
 /// renderer rather than allowing a beautiful plate to lie about game state.
 @MainActor
 final class GoldenDistrictRenderer {
+    static let coveredBuildingCoordinates: Set<GridCoordinate> = [
+        GridCoordinate(x: 11, y: 11),
+        GridCoordinate(x: 10, y: 11),
+        GridCoordinate(x: 9, y: 11),
+        GridCoordinate(x: 13, y: 11),
+        GridCoordinate(x: 14, y: 11),
+        GridCoordinate(x: 11, y: 13),
+        GridCoordinate(x: 13, y: 13),
+        GridCoordinate(x: 11, y: 14)
+    ]
+
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
 

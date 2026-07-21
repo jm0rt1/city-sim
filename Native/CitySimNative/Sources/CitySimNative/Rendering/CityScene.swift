@@ -102,6 +102,7 @@ final class CityScene: SKScene {
     var reducedMotion = false
 
     private let style: WorldVisualStyle
+    private let assets: WorldAssetCatalog
     private let terrainRenderer: TerrainRenderer
     private let roadRenderer: RoadRenderer
     private let lotRenderer: LotRenderer
@@ -125,6 +126,9 @@ final class CityScene: SKScene {
     private var hoveredCoordinate: GridCoordinate?
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
+    private var viewportInsets: CityMapViewportInsets = .zero
+    private var hasUserAdjustedCamera = false
+    private(set) var developedVisualBoundsForTesting: CGRect = .null
     private var tileRecords: [GridCoordinate: TileRenderRecord] = [:]
     private var lastDragLocation: CGPoint?
     private var didDrag = false
@@ -147,10 +151,12 @@ final class CityScene: SKScene {
 
     override init(size: CGSize) {
         let style = WorldVisualStyle()
+        let assets = WorldAssetCatalog.shared
         self.style = style
-        self.terrainRenderer = TerrainRenderer(style: style)
-        self.roadRenderer = RoadRenderer(style: style)
-        self.lotRenderer = LotRenderer(style: style)
+        self.assets = assets
+        self.terrainRenderer = TerrainRenderer(style: style, assets: assets)
+        self.roadRenderer = RoadRenderer(style: style, assets: assets)
+        self.lotRenderer = LotRenderer(style: style, assets: assets)
         self.overlayRenderer = WorldOverlayRenderer(style: style)
         self.spatialConsequenceRenderer = SpatialConsequenceRenderer(style: style)
         self.currentCameraDetailLevel = style.detailLevel(cameraScale: 1)
@@ -223,6 +229,9 @@ final class CityScene: SKScene {
                 return true
             }
         let state = snapshot.state
+        if isFirstRender {
+            applyDevelopedCoreCamera(state)
+        }
         let resolvedDetail = style.detailLevel(cameraScale: cameraNode.xScale)
         if resolvedDetail != currentCameraDetailLevel {
             currentCameraDetailLevel = resolvedDetail
@@ -247,7 +256,6 @@ final class CityScene: SKScene {
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
-        if isFirstRender { focusDevelopedCore(state) }
         let worldChanged = diagnosticsSnapshot.createdTileCount > 0
             || diagnosticsSnapshot.updatedTileCount > 0
             || diagnosticsSnapshot.removedTileCount > 0
@@ -309,13 +317,36 @@ final class CityScene: SKScene {
     }
 
     func resize(to newSize: CGSize) {
+        let materiallyChanged = abs(size.width - newSize.width) > 1 || abs(size.height - newSize.height) > 1
         size = newSize
+        if materiallyChanged, !hasUserAdjustedCamera, let state = renderedState {
+            focusDevelopedCore(state)
+        }
+    }
+
+    func updateViewportInsets(_ insets: CityMapViewportInsets) {
+        guard viewportInsets != insets else { return }
+        viewportInsets = insets
+        if !hasUserAdjustedCamera, let state = renderedState {
+            focusDevelopedCore(state)
+        }
     }
 
     func frameCity() {
         if let state = renderedState {
+            hasUserAdjustedCamera = false
             focusDevelopedCore(state)
         }
+    }
+
+    func developedViewportOccupancyForTesting() -> CGSize {
+        guard !developedVisualBoundsForTesting.isNull else { return .zero }
+        let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
+        let safeHeight = max(1, size.height - viewportInsets.top - viewportInsets.bottom)
+        return CGSize(
+            width: developedVisualBoundsForTesting.width / (safeWidth * cameraNode.xScale),
+            height: developedVisualBoundsForTesting.height / (safeHeight * cameraNode.yScale)
+        )
     }
 
     func tileRootIdentifier(at coordinate: GridCoordinate) -> ObjectIdentifier? {
@@ -383,6 +414,7 @@ final class CityScene: SKScene {
         if hypot(dx, dy) > 1 { didDrag = true }
         cameraNode.position.x -= dx * cameraNode.xScale
         cameraNode.position.y -= dy * cameraNode.yScale
+        hasUserAdjustedCamera = true
         lastDragLocation = point
     }
 
@@ -506,6 +538,7 @@ final class CityScene: SKScene {
     private func zoomCamera(by factor: CGFloat) {
         let scale = min(2.4, max(0.30, cameraNode.xScale * factor))
         cameraNode.setScale(scale)
+        hasUserAdjustedCamera = true
         refreshForCameraChange()
     }
 
@@ -1012,7 +1045,9 @@ final class CityScene: SKScene {
         let detail = style.detailLevel(cameraScale: cameraNode.xScale)
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
+        assets.prepareGeneratedResidency(for: detail)
         for record in tileRecords.values {
+            updateGeneratedLOD(in: record.root, detail: detail)
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
         if preservingUpdateDiagnostics {
@@ -1029,6 +1064,26 @@ final class CityScene: SKScene {
         }
         updateSelection(renderedSelection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
+    }
+
+    private func updateGeneratedLOD(in node: SKNode, detail: CameraDetailLevel) {
+        if let sprite = node as? SKSpriteNode,
+           let name = sprite.name,
+           name.hasPrefix("lot.generated-v4.") {
+            let components = name.split(separator: ".")
+            if components.count >= 4 {
+                let logicalID = String(components[2])
+                assets.applyGeneratedLOD(
+                    to: sprite,
+                    logicalID: logicalID,
+                    detail: detail,
+                    semanticName: "lot.generated-v4.\(logicalID).\(detail.assetSuffix)"
+                )
+            }
+        }
+        for child in node.children {
+            updateGeneratedLOD(in: child, detail: detail)
+        }
     }
 
     private func recursiveNodeCount(_ node: SKNode) -> Int {
@@ -1287,33 +1342,118 @@ final class CityScene: SKScene {
     }
 
     private func focusDevelopedCore(_ state: CityGameState) {
-        let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
-        guard !developed.isEmpty else { fitCity(state); return }
-        let points = developed.map { style.isoPosition($0.coordinate) }
-        let center = CGPoint(
-            x: points.reduce(0) { $0 + $1.x } / CGFloat(points.count),
-            y: points.reduce(0) { $0 + $1.y } / CGFloat(points.count) + 30
-        )
-        cameraNode.position = center
-        // Open on the place the player can act on, while keeping road arms and
-        // several buildable blocks as honest expansion context. Compact uses a
-        // slightly wider lens so the command deck never crowds the neighborhood.
-        let environment = ProcessInfo.processInfo.environment
-        let isExplicitCompactProof = environment["CITYSIM_COMPACT_WINDOW"] == "1"
-        let isRegularCandidate = environment[SaveGameService.dataRootEnvironmentKey] != nil
-            || environment["CITYSIM_REGULAR_WINDOW"] == "1"
-        let defaultScale: CGFloat = isExplicitCompactProof || (!isRegularCandidate && size.width <= 980)
-            ? 0.72
-            : 0.48
-#if DEBUG
-        let proofScale = environment["CITYSIM_PROOF_CAMERA_SCALE"]
-            .flatMap(Double.init)
-            .map { CGFloat($0) }
-        cameraNode.setScale(proofScale.map { min(2.2, max(0.35, $0)) } ?? defaultScale)
-#else
-        cameraNode.setScale(defaultScale)
-#endif
+        applyDevelopedCoreCamera(state)
         refreshForCameraChange(preservingUpdateDiagnostics: true)
+    }
+
+    private func applyDevelopedCoreCamera(_ state: CityGameState) {
+        let bounds = developedVisualBounds(in: state)
+        guard !bounds.isNull, !bounds.isEmpty else { fitCity(state); return }
+        developedVisualBoundsForTesting = bounds
+
+        let safeWidth = max(420, size.width - viewportInsets.leading - viewportInsets.trailing)
+        let safeHeight = max(260, size.height - viewportInsets.top - viewportInsets.bottom)
+        let targetOccupancy: CGFloat = 0.64
+        var scale = max(
+            bounds.width / (safeWidth * targetOccupancy),
+            bounds.height / (safeHeight * targetOccupancy)
+        )
+#if DEBUG
+        if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
+            .flatMap(Double.init) {
+            scale = CGFloat(proofScale)
+        }
+#endif
+        scale = min(1.55, max(0.38, scale))
+        cameraNode.setScale(scale)
+
+        let safeCenterOffset = CGPoint(
+            x: (viewportInsets.leading - viewportInsets.trailing) * scale / 2,
+            y: (viewportInsets.bottom - viewportInsets.top) * scale / 2
+        )
+        cameraNode.position = CGPoint(
+            x: bounds.midX - safeCenterOffset.x,
+            y: bounds.midY - safeCenterOffset.y
+        )
+    }
+
+    private func developedVisualBounds(in state: CityGameState) -> CGRect {
+        let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
+        guard !developed.isEmpty else { return .null }
+        let developedCoordinates = Set(developed.map(\.coordinate))
+        let nearbyRoads = state.tiles.filter { tile in
+            guard tile.kind == .road else { return false }
+            return developedCoordinates.contains { coordinate in
+                abs(coordinate.x - tile.coordinate.x) + abs(coordinate.y - tile.coordinate.y) <= 3
+            }
+        }
+        let expansionSockets = state.tiles.filter { tile in
+            guard tile.kind == .empty else { return false }
+            return RoadConnectionMask.cardinalEdges.contains { edge in
+                let delta = edge.coordinateDelta
+                return state.tile(at: GridCoordinate(
+                    x: tile.coordinate.x + delta.x,
+                    y: tile.coordinate.y + delta.y
+                ))?.kind == .road
+            }
+        }.sorted { lhs, rhs in
+            let lhsDistance = developedCoordinates.map {
+                abs($0.x - lhs.coordinate.x) + abs($0.y - lhs.coordinate.y)
+            }.min() ?? .max
+            let rhsDistance = developedCoordinates.map {
+                abs($0.x - rhs.coordinate.x) + abs($0.y - rhs.coordinate.y)
+            }.min() ?? .max
+            if lhsDistance == rhsDistance {
+                return (lhs.coordinate.y, lhs.coordinate.x) < (rhs.coordinate.y, rhs.coordinate.x)
+            }
+            return lhsDistance < rhsDistance
+        }.prefix(3)
+
+        var bounds = CGRect.null
+        for tile in developed {
+            let position = style.isoPosition(tile.coordinate)
+            if tile.level == 1,
+               let logicalID = generatedLogicalID(for: tile.kind),
+               let asset = assets.generatedAsset(logicalID: logicalID),
+               asset.opaqueBoundsWorld.count == 4 {
+                let physical = asset.opaqueBoundsWorld
+                bounds = bounds.union(CGRect(
+                    x: position.x + physical[0],
+                    y: position.y + physical[1],
+                    width: physical[2] - physical[0],
+                    height: physical[3] - physical[1]
+                ))
+            } else {
+                bounds = bounds.union(CGRect(
+                    x: position.x - tileWidth / 2,
+                    y: position.y - tileHeight / 2,
+                    width: tileWidth,
+                    height: tileHeight + 64
+                ))
+            }
+        }
+        for tile in nearbyRoads + Array(expansionSockets) {
+            let position = style.isoPosition(tile.coordinate)
+            bounds = bounds.union(CGRect(
+                x: position.x - tileWidth / 2,
+                y: position.y - tileHeight / 2,
+                width: tileWidth,
+                height: tileHeight
+            ))
+        }
+        return bounds.insetBy(dx: -28, dy: -20)
+    }
+
+    private func generatedLogicalID(for kind: BuildingKind) -> String? {
+        switch kind {
+        case .residential: "residential_l01"
+        case .commercial: "commercial_l01"
+        case .industrial: "industrial_l01"
+        case .park: "park_l01"
+        case .cityHall: "city_hall_l01"
+        case .waterTower: "water_tower_l01"
+        default: nil
+        }
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {

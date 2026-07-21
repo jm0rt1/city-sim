@@ -187,6 +187,10 @@ final class RoadRenderer {
         let topology = RoadTopology(mask: connections)
         let root = SKNode()
         root.name = "road.\(topology.classification.rawValue).\(connections.rawValue)"
+        // Cancel per-tile depth so every corridor material pass sorts as one
+        // network. Otherwise a deeper neighbor's shadow is painted over the
+        // prior tile's asphalt and exposes a dark seam at every socket.
+        root.zPosition = -style.depth(for: coordinate)
 
         let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
         let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
@@ -195,23 +199,12 @@ final class RoadRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        if let road = assets.generatedRoadSprite(
-            connectionMask: connections.rawValue,
-            detail: detail
-        ) {
-            cityLayer.addChild(road)
-        } else if let road = assets.sprite(
-            named: String(format: "road_mask_%02d", connections.rawValue),
-            // Slight atlas overlap keeps adjacent road materials continuous
-            // across per-tile depth layers without changing hit geometry.
-            size: CGSize(width: style.tileWidth + 6, height: style.tileHeight + 3)
-        ) {
-            road.zPosition = 2
-            cityLayer.addChild(road)
-        } else {
-            addRoadbed(for: topology, to: cityLayer)
-            addLaneLanguage(for: topology, to: neighborhoodLayer)
-        }
+        let corridor = SKNode()
+        corridor.name = "road.production-corridor.\(connections.rawValue)"
+        addRoadbed(for: topology, to: corridor)
+        cityLayer.addChild(corridor)
+        addLaneLanguage(for: topology, to: neighborhoodLayer)
+        addMaterialDetail(at: coordinate, topology: topology, to: blockLayer)
         addStreetFurniture(
             at: coordinate,
             topology: topology,
@@ -223,14 +216,24 @@ final class RoadRenderer {
 
     private func addRoadbed(for topology: RoadTopology, to layer: SKNode) {
         if topology.classification == .isolated {
-            let sidewalk = SKShapeNode(path: style.diamondPath(width: 48, height: 24))
+            let shadow = SKShapeNode(path: style.diamondPath(width: 54, height: 27))
+            shadow.name = "road.isolated.ground-shadow"
+            shadow.fillColor = NSColor.black.withAlphaComponent(0.20)
+            shadow.strokeColor = .clear
+            shadow.position = CGPoint(x: 1.5, y: -2)
+            shadow.zPosition = -1
+            layer.addChild(shadow)
+
+            let sidewalk = SKShapeNode(path: style.diamondPath(width: 52, height: 26))
+            sidewalk.name = "road.isolated.sidewalk"
             sidewalk.fillColor = style.palette.sidewalk
             sidewalk.strokeColor = style.palette.curb
             sidewalk.lineWidth = 2
             sidewalk.zPosition = 0
             layer.addChild(sidewalk)
 
-            let asphalt = SKShapeNode(path: style.diamondPath(width: 38, height: 19))
+            let asphalt = SKShapeNode(path: style.diamondPath(width: 39, height: 19.5))
+            asphalt.name = "road.isolated.turnaround"
             asphalt.fillColor = style.palette.asphalt
             asphalt.strokeColor = style.palette.asphaltLight
             asphalt.lineWidth = 1
@@ -240,7 +243,7 @@ final class RoadRenderer {
         }
 
         let segments = topology.mask.edges.map { edge -> CGPath in
-            let endpoint = style.edgePoint(for: edge, inset: 0)
+            let endpoint = style.roadSocket(for: edge, overreach: 1.25)
             let start = topology.classification == .end
                 ? CGPoint(x: -endpoint.x * 0.30, y: -endpoint.y * 0.30)
                 : .zero
@@ -250,13 +253,19 @@ final class RoadRenderer {
         // Draw material passes rather than complete branches. This prevents a
         // later branch's sidewalk from cutting a pale ring through prior asphalt.
         for path in segments {
-            layer.addChild(stroke(path, color: style.palette.sidewalk, width: 25, z: 0, cap: .butt))
+            var shadowTransform = CGAffineTransform(translationX: 1.2, y: -1.5)
+            let shadow = path.copy(using: &shadowTransform) ?? path
+            layer.addChild(stroke(shadow, color: NSColor.black.withAlphaComponent(0.22), width: 29, z: -1, cap: .butt))
         }
         for path in segments {
-            layer.addChild(stroke(path, color: style.palette.curb, width: 20.5, z: 1, cap: .butt))
+            layer.addChild(stroke(path, color: style.palette.sidewalk, width: 27, z: 0, cap: .butt))
         }
         for path in segments {
-            layer.addChild(stroke(path, color: style.palette.asphalt, width: 17, z: 2, cap: .butt))
+            layer.addChild(stroke(path, color: style.palette.curb, width: 22, z: 1, cap: .butt))
+        }
+        for path in segments {
+            layer.addChild(stroke(path, color: style.palette.asphalt, width: 18, z: 2, cap: .butt))
+            layer.addChild(stroke(path, color: style.palette.asphaltLight.withAlphaComponent(0.28), width: 0.8, z: 3, cap: .butt))
         }
 
         addLayeredJunction(to: layer)
@@ -268,7 +277,7 @@ final class RoadRenderer {
 
     private func addLaneLanguage(for topology: RoadTopology, to layer: SKNode) {
         for edge in topology.mask.edges {
-            let endpoint = style.edgePoint(for: edge, inset: 3)
+            let endpoint = style.roadSocket(for: edge, overreach: 0.75)
             let path = WorldGeometryCache.line(
                 from: CGPoint(x: endpoint.x * 0.18, y: endpoint.y * 0.18),
                 to: endpoint
@@ -285,30 +294,68 @@ final class RoadRenderer {
             addStopLine(on: edge.opposite, to: layer)
         }
 
-        if topology.classification == .straight {
-            let seam = SKShapeNode(path: style.diamondPath(width: 12, height: 6))
-            seam.strokeColor = style.palette.asphaltLight.withAlphaComponent(0.65)
-            seam.fillColor = .clear
-            seam.lineWidth = 0.7
-            seam.zPosition = 5
-            layer.addChild(seam)
+    }
+
+    private func addMaterialDetail(
+        at coordinate: GridCoordinate,
+        topology: RoadTopology,
+        to layer: SKNode
+    ) {
+        guard topology.classification != .isolated else { return }
+        for index in 0..<2 {
+            let sample = WorldVisualSeed.unit(
+                for: coordinate,
+                kind: .road,
+                salt: UInt64(0xA510 + index)
+            )
+            let edge = topology.mask.edges[index % topology.mask.edges.count]
+            let endpoint = style.roadSocket(for: edge, overreach: -3)
+            let start = CGPoint(x: endpoint.x * (0.26 + sample * 0.22), y: endpoint.y * (0.26 + sample * 0.22))
+            let crack = SKShapeNode(path: WorldGeometryCache.line(
+                from: start,
+                to: CGPoint(x: start.x + (index == 0 ? 3 : -2), y: start.y - 1.2)
+            ))
+            crack.name = "road.material.seam.\(index)"
+            crack.strokeColor = NSColor.black.withAlphaComponent(0.22)
+            crack.lineWidth = 0.65
+            crack.zPosition = 5
+            layer.addChild(crack)
         }
+
+        guard WorldVisualSeed.variant(count: 4, for: coordinate, kind: .road, salt: 0xD2A1) == 0,
+              let edge = topology.mask.edges.first else { return }
+        let endpoint = style.roadSocket(for: edge, overreach: -2)
+        let drain = SKShapeNode(rectOf: CGSize(width: 5.5, height: 2.2), cornerRadius: 0.4)
+        drain.name = "road.material.drain"
+        drain.fillColor = NSColor(calibratedWhite: 0.12, alpha: 0.92)
+        drain.strokeColor = style.palette.curb.withAlphaComponent(0.55)
+        drain.lineWidth = 0.5
+        drain.position = CGPoint(x: endpoint.x * 0.72, y: endpoint.y * 0.72)
+        drain.zPosition = 7
+        layer.addChild(drain)
     }
 
     private func addLayeredJunction(to layer: SKNode) {
-        let sidewalk = SKShapeNode(circleOfRadius: 12.5)
+        let shadow = SKShapeNode(circleOfRadius: 14.5)
+        shadow.fillColor = NSColor.black.withAlphaComponent(0.22)
+        shadow.strokeColor = .clear
+        shadow.position = CGPoint(x: 1.2, y: -1.5)
+        shadow.zPosition = -1
+        layer.addChild(shadow)
+
+        let sidewalk = SKShapeNode(circleOfRadius: 13.5)
         sidewalk.fillColor = style.palette.sidewalk
         sidewalk.strokeColor = .clear
         sidewalk.zPosition = 0
         layer.addChild(sidewalk)
 
-        let curb = SKShapeNode(circleOfRadius: 10.25)
+        let curb = SKShapeNode(circleOfRadius: 11)
         curb.fillColor = style.palette.curb
         curb.strokeColor = .clear
         curb.zPosition = 1
         layer.addChild(curb)
 
-        let asphalt = SKShapeNode(circleOfRadius: 8.5)
+        let asphalt = SKShapeNode(circleOfRadius: 9)
         asphalt.fillColor = style.palette.asphalt
         asphalt.strokeColor = .clear
         asphalt.zPosition = 2
@@ -316,33 +363,43 @@ final class RoadRenderer {
     }
 
     private func addEndCap(onUnconnectedSideOf connectedEdge: RoadConnectionMask, to layer: SKNode) {
-        let endpoint = style.edgePoint(for: connectedEdge)
+        let endpoint = style.roadSocket(for: connectedEdge)
         let capCenter = CGPoint(x: -endpoint.x * 0.28, y: -endpoint.y * 0.28)
 
-        let sidewalk = SKShapeNode(circleOfRadius: 12.5)
+        let sidewalk = SKShapeNode(circleOfRadius: 13.5)
+        sidewalk.name = "road.terminus.intentional-sidewalk"
         sidewalk.fillColor = style.palette.sidewalk
         sidewalk.strokeColor = .clear
         sidewalk.position = capCenter
         sidewalk.zPosition = 0
         layer.addChild(sidewalk)
 
-        let curb = SKShapeNode(circleOfRadius: 10.25)
+        let curb = SKShapeNode(circleOfRadius: 11)
         curb.fillColor = style.palette.curb
         curb.strokeColor = .clear
         curb.position = capCenter
         curb.zPosition = 1
         layer.addChild(curb)
 
-        let asphalt = SKShapeNode(circleOfRadius: 8.5)
+        let asphalt = SKShapeNode(circleOfRadius: 9)
+        asphalt.name = "road.terminus.turning-bulb"
         asphalt.fillColor = style.palette.asphalt
         asphalt.strokeColor = .clear
         asphalt.position = capCenter
         asphalt.zPosition = 2
         layer.addChild(asphalt)
+
+        let centerMark = SKShapeNode(path: style.diamondPath(width: 5.5, height: 2.8))
+        centerMark.name = "road.terminus.center-mark"
+        centerMark.fillColor = style.palette.laneMark.withAlphaComponent(0.78)
+        centerMark.strokeColor = .clear
+        centerMark.position = capCenter
+        centerMark.zPosition = 4
+        layer.addChild(centerMark)
     }
 
     private func addStopLine(on edge: RoadConnectionMask, to layer: SKNode) {
-        let endpoint = style.edgePoint(for: edge)
+        let endpoint = style.roadSocket(for: edge)
         let center = CGPoint(x: endpoint.x * 0.27, y: endpoint.y * 0.27)
         let vector = normalized(endpoint)
         let perpendicular = CGPoint(x: -vector.y, y: vector.x)
@@ -355,7 +412,7 @@ final class RoadRenderer {
     }
 
     private func addCrosswalk(on edge: RoadConnectionMask, to layer: SKNode) {
-        let endpoint = style.edgePoint(for: edge)
+        let endpoint = style.roadSocket(for: edge)
         let vector = normalized(endpoint)
         let perpendicular = CGPoint(x: -vector.y, y: vector.x)
         for index in -2...2 {
@@ -384,7 +441,7 @@ final class RoadRenderer {
         guard variant <= 3 else { return }
 
         let edge = topology.mask.edges[variant % topology.mask.edges.count]
-        let endpoint = style.edgePoint(for: edge, inset: 8)
+        let endpoint = style.roadSocket(for: edge, overreach: -2)
         let vector = normalized(endpoint)
         let perpendicular = CGPoint(x: -vector.y, y: vector.x)
         let side: CGFloat = variant.isMultiple(of: 2) ? 1 : -1

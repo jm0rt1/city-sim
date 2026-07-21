@@ -426,7 +426,32 @@ final class WorldRenderingTests: XCTestCase {
                 detail: .block,
                 reducedMotion: true
             )
-            XCTAssertTrue(descendantNames(in: root).contains("road.generated-v4.\(mask.rawValue).block"))
+            let names = descendantNames(in: root)
+            XCTAssertTrue(names.contains("road.production-corridor.\(mask.rawValue)"))
+            if mask.connectionCount == 1 {
+                XCTAssertTrue(names.contains("road.terminus.turning-bulb"))
+                XCTAssertTrue(names.contains("road.terminus.center-mark"))
+            }
+        }
+
+        let coordinate = GridCoordinate(x: 4, y: 4)
+        for edge in RoadConnectionMask.cardinalEdges {
+            let delta = edge.coordinateDelta
+            let neighbor = GridCoordinate(x: coordinate.x + delta.x, y: coordinate.y + delta.y)
+            let coordinatePosition = style.isoPosition(coordinate)
+            let neighborPosition = style.isoPosition(neighbor)
+            let outgoingSocket = style.roadSocket(for: edge)
+            let incomingSocket = style.roadSocket(for: edge.opposite)
+            XCTAssertEqual(
+                coordinatePosition.x + outgoingSocket.x,
+                neighborPosition.x + incomingSocket.x,
+                accuracy: 0.001
+            )
+            XCTAssertEqual(
+                coordinatePosition.y + outgoingSocket.y,
+                neighborPosition.y + incomingSocket.y,
+                accuracy: 0.001
+            )
         }
 
         let lot = LotRenderer(style: style, assets: catalog).makeLot(
@@ -438,6 +463,96 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(descendantNames(in: lot).contains("lot.frontage.residential.1"))
         for family in ["residential", "commercial", "industrial", "park", "civic"] {
             XCTAssertNotNil(catalog.texture(named: "frontage_\(family)"))
+        }
+    }
+
+    @MainActor
+    func testProductionCorridorExportsAllTopologySeamMosaicAcrossSemanticLODs() throws {
+        let size = CGSize(width: 1_200, height: 340)
+        let view = SKView(frame: CGRect(origin: .zero, size: size))
+        let scene = SKScene(size: size)
+        scene.scaleMode = .resizeFill
+        scene.backgroundColor = NSColor(calibratedRed: 0.04, green: 0.075, blue: 0.08, alpha: 1)
+        view.presentScene(scene)
+
+        let style = WorldVisualStyle()
+        let renderer = RoadRenderer(style: style)
+        for (detailIndex, detail) in CameraDetailLevel.allCases.enumerated() {
+            let panelX = CGFloat(detailIndex) * 390 + 45
+            let title = SKLabelNode(fontNamed: ".AppleSystemUIFontBold")
+            title.text = detail.assetSuffix.uppercased()
+            title.fontSize = 14
+            title.fontColor = .white
+            title.horizontalAlignmentMode = .left
+            title.position = CGPoint(x: panelX, y: 315)
+            scene.addChild(title)
+
+            for maskValue in 0..<16 {
+                let column = maskValue % 4
+                let row = maskValue / 4
+                let center = CGPoint(
+                    x: panelX + CGFloat(column) * 88 + 38,
+                    y: 265 - CGFloat(row) * 65
+                )
+                let parcel = SKShapeNode(path: style.diamondPath())
+                parcel.fillColor = NSColor(calibratedRed: 0.22, green: 0.39, blue: 0.24, alpha: 1)
+                parcel.strokeColor = .clear
+                parcel.position = center
+                scene.addChild(parcel)
+
+                let coordinate = GridCoordinate(x: column, y: row)
+                let road = renderer.makeRoad(
+                    at: coordinate,
+                    connections: RoadConnectionMask(rawValue: UInt8(maskValue)),
+                    detail: detail,
+                    reducedMotion: true
+                )
+                // CityScene places this node below a tile root whose depth exactly
+                // cancels the renderer's network-level z adjustment. Restore that
+                // parent depth in this isolated topology proof.
+                road.zPosition += style.depth(for: coordinate)
+                road.position = center
+                road.setScale(1.08)
+                scene.addChild(road)
+                let names = descendantNames(in: road)
+                XCTAssertTrue(names.contains("road.production-corridor.\(maskValue)"))
+                XCTAssertFalse(names.contains { $0.hasPrefix("road.generated-v4") })
+            }
+        }
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.08))
+        let texture = try XCTUnwrap(view.texture(from: scene))
+        let representation = NSBitmapImageRep(cgImage: texture.cgImage())
+        let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
+        try export(png, environmentKey: "CITYSIM_PLAY022_ROAD_SEAM_MOSAIC")
+        XCTAssertEqual(recursiveActiveActionCount(scene), 0)
+    }
+
+    @MainActor
+    func testRoundOneShippingStartExportsDevelopedBoundsDefaultAndCompact() throws {
+        let state = CityGameState.newCity(seed: 42)
+        for (size, environmentKey) in [
+            (CGSize(width: 1_280, height: 800), "CITYSIM_PLAY022_M2_DEFAULT"),
+            (CGSize(width: 900, height: 600), "CITYSIM_PLAY022_M2_COMPACT"),
+        ] {
+            let view = SKView(frame: CGRect(origin: .zero, size: size))
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            view.presentScene(scene)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+            let occupancy = scene.developedViewportOccupancyForTesting()
+            XCTAssertGreaterThanOrEqual(max(occupancy.width, occupancy.height), 0.60)
+            XCTAssertLessThanOrEqual(max(occupancy.width, occupancy.height), 0.68)
+            let texture = try XCTUnwrap(view.texture(from: scene))
+            let representation = NSBitmapImageRep(cgImage: texture.cgImage())
+            let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
+            try export(png, environmentKey: environmentKey)
+            print(
+                "PLAY022_M2_FRAME size=\(Int(size.width))x\(Int(size.height)) " +
+                "scale=\(scene.cameraScaleForTesting) detail=\(scene.currentCameraDetailLevel) " +
+                "occupancy=\(occupancy.width),\(occupancy.height) " +
+                "nodes=\(scene.diagnosticsSnapshot.nodeCount) drawables=\(scene.diagnosticsSnapshot.drawableNodeCount)"
+            )
         }
     }
 
@@ -590,39 +705,23 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testVacantGrovesAreSparseDeterministicAndTruthSafe() {
+    func testMacroTerrainReplacesTheRepeatedCellPlateAndKeepsEmptyLotsInteractive() {
         let renderer = TerrainRenderer(style: WorldVisualStyle())
-        var groveCoordinates: [GridCoordinate] = []
+        let vacant = renderer.makeGround(
+            for: CityTile(coordinate: GridCoordinate(x: 4, y: 7), kind: .empty),
+            detail: .block
+        )
+        let names = descendantNames(in: vacant)
+        XCTAssertTrue(names.contains("terrain.hit-surface"))
+        XCTAssertFalse(names.contains { $0.contains("generated-v4.grass") })
+        XCTAssertFalse(names.contains("terrain.vacant.grove"))
+        XCTAssertEqual(recursiveActiveActionCount(vacant), 0)
 
-        for y in 0..<16 {
-            for x in 0..<16 {
-                let coordinate = GridCoordinate(x: x, y: y)
-                let vacant = renderer.makeGround(
-                    for: CityTile(coordinate: coordinate, kind: .empty),
-                    detail: .block
-                )
-                if descendantNames(in: vacant).contains("terrain.vacant.grove") {
-                    groveCoordinates.append(coordinate)
-                    XCTAssertEqual(recursiveActiveActionCount(vacant), 0)
-                }
-
-                let road = renderer.makeGround(
-                    for: CityTile(coordinate: coordinate, kind: .road),
-                    detail: .block
-                )
-                XCTAssertFalse(descendantNames(in: road).contains("terrain.vacant.grove"))
-            }
-        }
-
-        XCTAssertGreaterThan(groveCoordinates.count, 20)
-        XCTAssertLessThan(groveCoordinates.count, 45)
-        for coordinate in groveCoordinates {
-            let repeatRender = renderer.makeGround(
-                for: CityTile(coordinate: coordinate, kind: .empty),
-                detail: .block
-            )
-            XCTAssertTrue(descendantNames(in: repeatRender).contains("terrain.vacant.grove"))
-        }
+        let backdrop = renderer.makeBackdrop(gridWidth: 24, gridHeight: 24)
+        let backdropNames = descendantNames(in: backdrop)
+        XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
+        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.patch.") }.count, 9)
+        XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
     }
 
     @MainActor
@@ -631,30 +730,35 @@ final class WorldRenderingTests: XCTestCase {
         let defaultScene = CityScene(size: CGSize(width: 1_280, height: 800))
         defaultScene.reducedMotion = true
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.48, accuracy: 0.001)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
+        let defaultOccupancy = defaultScene.developedViewportOccupancyForTesting()
+        XCTAssertGreaterThanOrEqual(max(defaultOccupancy.width, defaultOccupancy.height), 0.60)
+        XCTAssertLessThanOrEqual(max(defaultOccupancy.width, defaultOccupancy.height), 0.68)
 
         let compactScene = CityScene(size: CGSize(width: 900, height: 600))
         compactScene.reducedMotion = true
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.cameraScaleForTesting, 0.72, accuracy: 0.001)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
+        let compactOccupancy = compactScene.developedViewportOccupancyForTesting()
+        XCTAssertGreaterThanOrEqual(max(compactOccupancy.width, compactOccupancy.height), 0.60)
+        XCTAssertLessThanOrEqual(max(compactOccupancy.width, compactOccupancy.height), 0.68)
 
-        let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
-        let style = WorldVisualStyle()
-        let expectedCenter = CGPoint(
-            x: developed.map { style.isoPosition($0.coordinate).x }.reduce(0, +) / CGFloat(developed.count),
-            y: developed.map { style.isoPosition($0.coordinate).y }.reduce(0, +) / CGFloat(developed.count) + 30
-        )
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, expectedCenter.x, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, expectedCenter.y, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, defaultScene.developedVisualBoundsForTesting.midX, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, defaultScene.developedVisualBoundsForTesting.midY, accuracy: 0.001)
+        XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: GridCoordinate(x: 11, y: 11))
+            .contains("lot.generated-v4.city_hall_l01.block"))
+
+        defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 11, y: 11))
+        XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: GridCoordinate(x: 11, y: 11))
+            .contains("lot.generated-v4.city_hall_l01.city"))
+        XCTAssertFalse(defaultScene.tileDescendantNamesForTesting(at: GridCoordinate(x: 11, y: 11))
+            .contains("lot.generated-v4.city_hall_l01.block"))
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
         defaultScene.frameCity()
-        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.48, accuracy: 0.001)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, expectedCenter.x, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, expectedCenter.y, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, defaultScene.developedVisualBoundsForTesting.midX, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, defaultScene.developedVisualBoundsForTesting.midY, accuracy: 0.001)
     }
 
     @MainActor

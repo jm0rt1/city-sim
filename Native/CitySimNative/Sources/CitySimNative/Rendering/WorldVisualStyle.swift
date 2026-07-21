@@ -263,6 +263,21 @@ struct WorldVisualStyle {
         }
     }
 
+    /// Reciprocal road/frontage socket at the midpoint between neighboring
+    /// isometric tile centers. A small positive overreach hides antialias seams
+    /// while preserving one authoritative topology connection per edge.
+    func roadSocket(for edge: RoadConnectionMask, overreach: CGFloat = 0) -> CGPoint {
+        let x = tileWidth / 4 + overreach
+        let y = tileHeight / 4 + overreach / 2
+        return switch edge {
+        case .north: CGPoint(x: x, y: y)
+        case .east: CGPoint(x: x, y: -y)
+        case .south: CGPoint(x: -x, y: -y)
+        case .west: CGPoint(x: -x, y: y)
+        default: .zero
+        }
+    }
+
     func makeDetailLayer(_ level: CameraDetailLevel, visibleAt detail: CameraDetailLevel) -> SKNode {
         let node = SKNode()
         node.name = level.layerName

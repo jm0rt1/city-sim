@@ -22,27 +22,18 @@ final class TerrainRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        if let ground = assets.generatedSprite(logicalID: "grass_material", detail: detail) {
-            ground.name = "terrain.generated-v4.grass.\(detail)"
-            cityLayer.addChild(ground)
-        } else if let ground = assets.sprite(
-            named: groundAssetName(for: tile),
-            size: CGSize(width: style.tileWidth, height: style.tileHeight)
-        ) {
-            ground.zPosition = -4
-            cityLayer.addChild(ground)
-        } else {
-            let ground = SKShapeNode(path: style.diamondPath())
-            ground.fillColor = groundColor(for: tile)
-            ground.strokeColor = ground.fillColor.blended(withFraction: 0.20, of: .black) ?? .black
-            ground.lineWidth = 0.45
-            ground.zPosition = -4
-            cityLayer.addChild(ground)
-        }
+        // The macro terrain bed owns visible undeveloped land. Each tile keeps
+        // nearly transparent hit geometry so empty parcels remain directly
+        // interactive without reintroducing a 24x24 checkerboard.
+        let hitSurface = SKShapeNode(path: style.diamondPath(width: 71.5, height: 35.5))
+        hitSurface.name = "terrain.hit-surface"
+        hitSurface.fillColor = NSColor.white.withAlphaComponent(0.002)
+        hitSurface.strokeColor = .clear
+        hitSurface.zPosition = -8
+        cityLayer.addChild(hitSurface)
 
         addLotSurface(for: tile, to: cityLayer)
         addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
-        addVacantGrove(for: tile, to: neighborhoodLayer)
         addCloseTerrainDetail(for: tile, to: blockLayer)
         return root
     }
@@ -58,6 +49,7 @@ final class TerrainRenderer {
         let path = style.polygonPath(corners)
 
         let deepShadow = SKShapeNode(path: path)
+        deepShadow.name = "terrain.macro.deep-shadow"
         deepShadow.fillColor = style.palette.mapEarthDark.withAlphaComponent(0.88)
         deepShadow.strokeColor = .clear
         deepShadow.position = CGPoint(x: 12, y: -24)
@@ -65,6 +57,7 @@ final class TerrainRenderer {
         root.addChild(deepShadow)
 
         let earthPlate = SKShapeNode(path: path)
+        earthPlate.name = "terrain.macro.earth"
         earthPlate.fillColor = style.palette.mapEarth
         earthPlate.strokeColor = style.palette.backdropHalo
         earthPlate.lineWidth = 18
@@ -72,11 +65,49 @@ final class TerrainRenderer {
         earthPlate.zPosition = -102
         root.addChild(earthPlate)
 
+        let field = SKCropNode()
+        field.name = "terrain.macro.field"
+        field.zPosition = -101
+        let fieldMask = SKShapeNode(path: path)
+        fieldMask.fillColor = .white
+        fieldMask.strokeColor = .clear
+        field.maskNode = fieldMask
+
+        let turf = SKShapeNode(path: path)
+        turf.name = "terrain.macro.turf"
+        turf.fillColor = NSColor(calibratedRed: 0.235, green: 0.405, blue: 0.255, alpha: 1)
+        turf.strokeColor = .clear
+        field.addChild(turf)
+
+        let span = CGFloat(gridWidth + gridHeight)
+        let patchColors = [
+            NSColor(calibratedRed: 0.16, green: 0.34, blue: 0.22, alpha: 0.22),
+            NSColor(calibratedRed: 0.36, green: 0.48, blue: 0.25, alpha: 0.16),
+            NSColor(calibratedRed: 0.19, green: 0.31, blue: 0.20, alpha: 0.18),
+        ]
+        for index in 0..<9 {
+            let patch = SKShapeNode(ellipseOf: CGSize(
+                width: span * (17 + CGFloat(index % 3) * 4),
+                height: span * (5.5 + CGFloat(index % 2) * 2.0)
+            ))
+            patch.name = "terrain.macro.patch.\(index)"
+            patch.fillColor = patchColors[index % patchColors.count]
+            patch.strokeColor = .clear
+            patch.position = CGPoint(
+                x: CGFloat((index * 197) % 760) - 380,
+                y: -CGFloat((index * 89) % 390) + 42
+            )
+            patch.zRotation = index.isMultiple(of: 2) ? 0.16 : -0.19
+            field.addChild(patch)
+        }
+        root.addChild(field)
+
         let rim = SKShapeNode(path: path)
-        rim.fillColor = style.palette.mapRim
-        rim.strokeColor = NSColor.white.withAlphaComponent(0.13)
-        rim.lineWidth = 2.2
-        rim.zPosition = -101
+        rim.name = "terrain.macro.rim"
+        rim.fillColor = .clear
+        rim.strokeColor = NSColor(calibratedRed: 0.47, green: 0.60, blue: 0.36, alpha: 0.72)
+        rim.lineWidth = 2.4
+        rim.zPosition = -100
         root.addChild(rim)
 
         let waterShadow = SKShapeNode(ellipseOf: CGSize(
@@ -188,6 +219,11 @@ final class TerrainRenderer {
     }
 
     private func addLotSurface(for tile: CityTile, to layer: SKNode) {
+        if tile.level == 1,
+           tile.constructionProgress >= 1,
+           [.residential, .commercial, .industrial, .park, .cityHall, .waterTower].contains(tile.kind) {
+            return
+        }
         switch tile.kind {
         case .residential:
             let lawn = SKShapeNode(path: style.diamondPath(width: 59, height: 29))
@@ -232,7 +268,7 @@ final class TerrainRenderer {
     private func addStableTerrainBreakup(for tile: CityTile, to layer: SKNode) {
         let count: Int
         switch tile.kind {
-        case .empty: count = 2
+        case .empty, .road: count = 0
         case .park: count = 2
         case .industrial, .powerPlant, .waterTower: count = 4
         default: count = 1

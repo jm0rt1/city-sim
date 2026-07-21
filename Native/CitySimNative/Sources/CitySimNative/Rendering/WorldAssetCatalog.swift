@@ -244,6 +244,25 @@ final class WorldAssetCatalog {
         generatedPresentation(logicalID: logicalID, detail: detail)?.sprite
     }
 
+    @discardableResult
+    func applyGeneratedLOD(
+        to sprite: SKSpriteNode,
+        logicalID: String,
+        detail: CameraDetailLevel,
+        semanticName: String
+    ) -> Bool {
+        guard let presentation = generatedPresentation(logicalID: logicalID, detail: detail) else {
+            return false
+        }
+        sprite.texture = presentation.sprite.texture
+        sprite.size = presentation.sprite.size
+        sprite.anchorPoint = presentation.sprite.anchorPoint
+        sprite.position = presentation.sprite.position
+        sprite.zPosition = presentation.sprite.zPosition
+        sprite.name = semanticName
+        return true
+    }
+
     func generatedRoadSprite(
         connectionMask: UInt8,
         detail: CameraDetailLevel

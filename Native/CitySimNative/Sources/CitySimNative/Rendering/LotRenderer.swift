@@ -210,7 +210,7 @@ final class LotRenderer {
     private func addAuthoredFrontage(
         for kind: BuildingKind,
         adjacentRoads: RoadConnectionMask,
-        detail: CameraDetailLevel,
+        detail _: CameraDetailLevel,
         to node: SKNode
     ) {
         let family: String?
@@ -224,28 +224,69 @@ final class LotRenderer {
         }
         guard let family else { return }
 
-        let frontage: SKSpriteNode?
-        if kind == .residential {
-            frontage = assets.generatedSprite(logicalID: "residential_frontage", detail: detail)
-        } else {
-            frontage = assets.sprite(
-                named: "frontage_\(family)",
-                size: CGSize(width: style.tileWidth, height: style.tileHeight)
+        // Architecture keeps its authored south-facing projection and lighting.
+        // A deterministic site path joins the declared entrance to an actual
+        // road socket; the renderer never rotates a bitmap independently from
+        // its building or invents a different occupied footprint.
+        let edge = adjacentRoads.contains(.south)
+            ? RoadConnectionMask.south
+            : (adjacentRoads.edges.first ?? .south)
+        let endpoint = style.roadSocket(for: edge, overreach: 2.5)
+        let entrance = CGPoint(x: 0, y: -13.5)
+        let path = CGMutablePath()
+        path.move(to: entrance)
+        path.addQuadCurve(
+            to: endpoint,
+            control: CGPoint(
+                x: entrance.x * 0.35 + endpoint.x * 0.65,
+                y: entrance.y * 0.35 + endpoint.y * 0.65
             )
-        }
-        guard let frontage else { return }
+        )
 
-        let edge = adjacentRoads.edges.first ?? .south
-        frontage.zRotation = switch edge {
-        case .south: 0
-        case .west: .pi / 2
-        case .north: .pi
-        case .east: -.pi / 2
-        default: 0
+        let width: CGFloat = switch kind {
+        case .industrial, .powerPlant, .waterTower: 10
+        case .commercial, .cityHall, .fireStation, .policeStation, .school: 8
+        case .park: 7
+        default: 5.5
         }
-        frontage.name = "lot.frontage.\(family).\(edge.rawValue)"
-        frontage.zPosition = -1
-        node.addChild(frontage)
+        let edgeStroke = SKShapeNode(path: path)
+        edgeStroke.name = "lot.frontage.\(family).\(edge.rawValue)"
+        edgeStroke.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.48)
+        edgeStroke.lineWidth = width + 2
+        edgeStroke.lineCap = .round
+        edgeStroke.lineJoin = .round
+        edgeStroke.zPosition = 2.8
+        node.addChild(edgeStroke)
+
+        let apron = SKShapeNode(path: path)
+        apron.name = "lot.frontage.apron.\(family).\(edge.rawValue)"
+        apron.strokeColor = kind == .park
+            ? style.palette.parkPath
+            : style.palette.concreteLight.withAlphaComponent(0.94)
+        apron.lineWidth = width
+        apron.lineCap = .round
+        apron.lineJoin = .round
+        apron.zPosition = 3
+        node.addChild(apron)
+
+        let length = max(0.001, hypot(endpoint.x, endpoint.y))
+        let perpendicular = CGPoint(x: -endpoint.y / length, y: endpoint.x / length)
+        let curbCenter = CGPoint(x: endpoint.x * 0.86, y: endpoint.y * 0.86)
+        let curbBreak = SKShapeNode(path: WorldGeometryCache.line(
+            from: CGPoint(
+                x: curbCenter.x - perpendicular.x * (width / 2 + 1),
+                y: curbCenter.y - perpendicular.y * (width / 2 + 1)
+            ),
+            to: CGPoint(
+                x: curbCenter.x + perpendicular.x * (width / 2 + 1),
+                y: curbCenter.y + perpendicular.y * (width / 2 + 1)
+            )
+        ))
+        curbBreak.name = "lot.frontage.curb-break.\(edge.rawValue)"
+        curbBreak.strokeColor = style.palette.curb
+        curbBreak.lineWidth = 1.4
+        curbBreak.zPosition = 3.2
+        node.addChild(curbBreak)
     }
 
     private func addResidential(

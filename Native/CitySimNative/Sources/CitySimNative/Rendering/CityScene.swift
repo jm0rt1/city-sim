@@ -1381,7 +1381,11 @@ final class CityScene: SKScene {
             scale = CGFloat(proofScale)
         }
 #endif
-        scale = min(1.55, max(0.38, scale))
+        // A compact shipping window keeps the neighborhood export active. This
+        // preserves readable silhouettes without decoding the block atlas into
+        // the tighter drawable/RSS envelope.
+        let minimumScale: CGFloat = size.width <= 900 || size.height <= 600 ? 0.62 : 0.38
+        scale = min(1.55, max(minimumScale, scale))
         cameraNode.setScale(scale)
 
         let safeCenterOffset = CGPoint(
@@ -1401,7 +1405,10 @@ final class CityScene: SKScene {
         let nearbyRoads = state.tiles.filter { tile in
             guard tile.kind == .road else { return false }
             return developedCoordinates.contains { coordinate in
-                abs(coordinate.x - tile.coordinate.x) + abs(coordinate.y - tile.coordinate.y) <= 3
+                // Frame the lived-in frontage, not the full length of future-facing
+                // road stubs. The latter remain available as honest expansion context
+                // once the player pans, but must not shrink the opening architecture.
+                abs(coordinate.x - tile.coordinate.x) + abs(coordinate.y - tile.coordinate.y) <= 1
             }
         }
         let expansionSockets = state.tiles.filter { tile in

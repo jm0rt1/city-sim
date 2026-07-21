@@ -31,6 +31,14 @@ Maintain active awareness of:
 
 Use thread coordination tools to inspect progress, send corrections, request missing evidence, redirect scope, and wait for completion. Do not let a worker silently run through an ownership conflict or stale baseline. Do not substitute status narration for intervention.
 
+## Keep delegation visible without pinning threads
+
+- Delegate lane work through user-visible Codex threads whenever the user expects to observe or enter the work. Use an existing canonical lane thread when one exists; otherwise create a clearly titled project/worktree thread.
+- Never pin an individual Codex thread. Do not call `set_thread_pinned` with `pinned: true` as a dispatch, prominence, reminder, or status mechanism. Pinning is user-owned interface organization.
+- Keep tasks findable through descriptive thread titles, explicit delegation messages, reported thread IDs, and `list_threads`, `read_thread`, `send_message_to_thread`, and `wait_threads` status management.
+- Do not alter pre-existing pin state. If this integration agent pinned a thread during the current operation, undo only that pin and disclose the correction.
+- Internal subagents may support bounded analysis, but they must not substitute for a requested user-visible lane thread or edit the same worktree concurrently with its visible owner.
+
 ## Enforce intelligent commits everywhere
 
 Treat commits as continuous durability and review boundaries, not end-of-project cleanup.

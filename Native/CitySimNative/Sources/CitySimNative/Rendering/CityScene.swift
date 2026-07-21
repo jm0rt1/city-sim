@@ -1,4 +1,5 @@
 import AppKit
+import Darwin
 import SpriteKit
 
 struct CityMapViewportInsets: Equatable, Sendable {
@@ -270,6 +271,15 @@ final class CityScene: SKScene {
         )
         diagnosticsSnapshot.updateDurationMilliseconds =
             (ProcessInfo.processInfo.systemUptime - renderStarted) * 1_000
+        if isFirstRender {
+            // Building the full deterministic scene creates a large amount of
+            // short-lived SpriteKit/CG scaffolding. Return its now-empty malloc
+            // pages after the first event-loop turn instead of carrying them in
+            // the drawable-window RSS for the lifetime of the city.
+            DispatchQueue.main.async {
+                malloc_zone_pressure_relief(malloc_default_zone(), 0)
+            }
+        }
     }
 
     func render(

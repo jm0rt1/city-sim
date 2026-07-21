@@ -33,7 +33,10 @@ final class WorldAssetCatalog {
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
-        texture.usesMipmaps = name.hasPrefix("golden_district_") || name.hasPrefix("generated_v4_")
+        // Generated-v4 ships explicit city, neighborhood, and block exports.
+        // Asking SpriteKit for another mip chain retains duplicate decoded
+        // levels after live LOD traversal and defeats the calibration budget.
+        texture.usesMipmaps = name.hasPrefix("golden_district_")
         textures[name] = texture
         return texture
     }

@@ -35,6 +35,15 @@ private struct TileRenderSignature: Equatable {
     let roadConnections: RoadConnectionMask
     let gridWidth: Int
     let gridHeight: Int
+
+    func matchesNonSpatialFields(of other: TileRenderSignature) -> Bool {
+        kind == other.kind
+            && lotPresentation == other.lotPresentation
+            && reducedMotion == other.reducedMotion
+            && roadConnections == other.roadConnections
+            && gridWidth == other.gridWidth
+            && gridHeight == other.gridHeight
+    }
 }
 
 private struct OverlayRenderSignature: Equatable {
@@ -182,7 +191,7 @@ final class CityScene: SKScene {
         interactionMode: CityInteractionMode
     ) {
         let renderStarted = ProcessInfo.processInfo.systemUptime
-        if renderedSnapshot == snapshot,
+        if renderedSnapshot?.fingerprint == snapshot.fingerprint,
            renderedOverlay == overlay,
            renderedSelection == selection,
            renderedInteractionMode == interactionMode,
@@ -200,6 +209,7 @@ final class CityScene: SKScene {
         }
         let isFirstRender = renderedSnapshot == nil
         let previousSnapshot = renderedSnapshot
+        let previousOverlay = renderedOverlay
         let previousSelection = renderedSelection
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
@@ -227,17 +237,24 @@ final class CityScene: SKScene {
         renderedSelection = selection
         renderedInteractionMode = interactionMode
         renderedReducedMotion = reducedMotion
-        diagnosticsSnapshot = updateWorld(snapshot: snapshot, overlay: overlay)
+        diagnosticsSnapshot = updateWorld(
+            snapshot: snapshot,
+            overlay: overlay,
+            previousSnapshot: motionChanged ? nil : previousSnapshot,
+            previousOverlay: previousOverlay
+        )
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
         if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
         if isFirstRender { focusDevelopedCore(state) }
-        let displayedCueCount = currentDisplayedConsequenceCueCount()
         let worldChanged = diagnosticsSnapshot.createdTileCount > 0
             || diagnosticsSnapshot.updatedTileCount > 0
             || diagnosticsSnapshot.removedTileCount > 0
             || diagnosticsSnapshot.overlayUpdateCount > 0
+        let displayedCueCount = worldChanged
+            ? currentDisplayedConsequenceCueCount()
+            : max(0, priorDisplayedCueCount + insertedCueCount - expiredCueCount)
         let unexplainedCueRemoval = priorDisplayedCueCount != displayedCueCount
             && expiredCueCount == 0
             && insertedCueCount == 0
@@ -495,7 +512,9 @@ final class CityScene: SKScene {
 
     private func updateWorld(
         snapshot: CityPresentationSnapshot,
-        overlay: DataOverlay
+        overlay: DataOverlay,
+        previousSnapshot: CityPresentationSnapshot?,
+        previousOverlay: DataOverlay
     ) -> RendererDiagnosticsSnapshot {
         let state = snapshot.state
         let updateStarted = ProcessInfo.processInfo.systemUptime
@@ -539,9 +558,20 @@ final class CityScene: SKScene {
             if lhs.coordinate.x != rhs.coordinate.x { return lhs.coordinate.x < rhs.coordinate.x }
             return lhs.coordinate.y < rhs.coordinate.y
         }
+        let changedCoordinates = changedRenderCoordinates(
+            from: previousSnapshot,
+            to: snapshot,
+            canReuseOverlay: previousOverlay == overlay && overlay == .none
+        )
 
         for tile in sortedTiles {
             guard let consequence = snapshot.spatialConsequences[tile.coordinate] else { continue }
+            if let changedCoordinates,
+               !changedCoordinates.contains(tile.coordinate),
+               tileRecords[tile.coordinate] != nil {
+                diagnostics.reusedTileCount += 1
+                continue
+            }
             let signature = tileSignature(for: tile, consequence: consequence, state: state)
             let overlaySignature = overlaySignature(
                 for: tile,
@@ -572,17 +602,31 @@ final class CityScene: SKScene {
                 continue
             }
 
-            let replacement = makeTileRecord(
-                tile: tile,
-                consequence: consequence,
-                state: state,
-                overlay: overlay,
-                signature: signature,
-                overlaySignature: overlaySignature
-            )
+            let priorRecordMetrics = tileRecords[tile.coordinate].map { runtimeTreeMetrics($0.root) }
+            let replacement: TileRenderRecord
+            if let existing = tileRecords[tile.coordinate],
+               existing.signature.matchesNonSpatialFields(of: signature),
+               existing.overlaySignature == overlaySignature {
+                replacement = makeSpatiallyUpdatedTileRecord(
+                    reusing: existing,
+                    tile: tile,
+                    consequence: consequence,
+                    overlay: overlay,
+                    signature: signature
+                )
+            } else {
+                replacement = makeTileRecord(
+                    tile: tile,
+                    consequence: consequence,
+                    state: state,
+                    overlay: overlay,
+                    signature: signature,
+                    overlaySignature: overlaySignature
+                )
+            }
             if let existing = tileRecords.updateValue(replacement, forKey: tile.coordinate) {
                 applyRuntimeDelta(
-                    from: runtimeTreeMetrics(existing.root),
+                    from: priorRecordMetrics ?? runtimeTreeMetrics(existing.root),
                     to: runtimeTreeMetrics(replacement.root),
                     diagnostics: &diagnostics
                 )
@@ -604,6 +648,93 @@ final class CityScene: SKScene {
         diagnostics.updateDurationMilliseconds =
             (ProcessInfo.processInfo.systemUptime - updateStarted) * 1_000
         return diagnostics
+    }
+
+    private func makeSpatiallyUpdatedTileRecord(
+        reusing existing: TileRenderRecord,
+        tile: CityTile,
+        consequence: CitySpatialConsequence,
+        overlay: DataOverlay,
+        signature: TileRenderSignature
+    ) -> TileRenderRecord {
+        let root = SKNode()
+        root.position = existing.root.position
+        root.zPosition = existing.root.zPosition
+        root.name = existing.root.name
+        for layerName in ["terrain.layer", "overlay.layer", "content.layer"] {
+            if let layer = existing.root.childNode(withName: layerName) {
+                layer.removeFromParent()
+                root.addChild(layer)
+            }
+        }
+
+        let consequenceLayer = SKNode()
+        consequenceLayer.name = "spatial.layer"
+        consequenceLayer.zPosition = 72
+        consequenceLayer.addChild(spatialConsequenceRenderer.makePersistentCues(
+            for: consequence,
+            detail: currentCameraDetailLevel
+        ))
+        updatePersistentConsequenceEmphasis(in: consequenceLayer, overlay: overlay)
+        root.addChild(consequenceLayer)
+        return TileRenderRecord(
+            root: root,
+            overlayLayer: existing.overlayLayer,
+            consequenceLayer: consequenceLayer,
+            signature: signature,
+            overlaySignature: existing.overlaySignature
+        )
+    }
+
+    private func changedRenderCoordinates(
+        from previous: CityPresentationSnapshot?,
+        to current: CityPresentationSnapshot,
+        canReuseOverlay: Bool
+    ) -> Set<GridCoordinate>? {
+        guard canReuseOverlay,
+              let previous,
+              previous.state.gridWidth == current.state.gridWidth,
+              previous.state.gridHeight == current.state.gridHeight,
+              previous.state.tiles.count == current.state.tiles.count,
+              previous.spatialConsequences.samples.count == current.spatialConsequences.samples.count else {
+            return nil
+        }
+
+        var changed: Set<GridCoordinate> = []
+        for index in current.state.tiles.indices {
+            let oldTile = previous.state.tiles[index]
+            let newTile = current.state.tiles[index]
+            let oldConsequence = previous.spatialConsequences.samples[index]
+            let newConsequence = current.spatialConsequences.samples[index]
+            guard oldTile.coordinate == newTile.coordinate,
+                  oldConsequence.coordinate == newConsequence.coordinate,
+                  newTile.coordinate == newConsequence.coordinate else {
+                return nil
+            }
+            if oldTile != newTile
+                || SpatialConsequenceRenderSignature(oldConsequence)
+                    != SpatialConsequenceRenderSignature(newConsequence) {
+                changed.insert(newTile.coordinate)
+            }
+            if (oldTile.kind == .road) != (newTile.kind == .road) {
+                changed.formUnion(orthogonalCoordinates(around: newTile.coordinate, in: current.state))
+            }
+        }
+        return changed
+    }
+
+    private func orthogonalCoordinates(
+        around coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> [GridCoordinate] {
+        [
+            GridCoordinate(x: coordinate.x, y: coordinate.y - 1),
+            GridCoordinate(x: coordinate.x + 1, y: coordinate.y),
+            GridCoordinate(x: coordinate.x, y: coordinate.y + 1),
+            GridCoordinate(x: coordinate.x - 1, y: coordinate.y),
+        ].filter {
+            $0.x >= 0 && $0.x < state.gridWidth && $0.y >= 0 && $0.y < state.gridHeight
+        }
     }
 
     private func makeTileRecord(

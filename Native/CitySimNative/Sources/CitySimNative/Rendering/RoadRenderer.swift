@@ -195,17 +195,10 @@ final class RoadRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        let generatedRoadName = String(
-            format: "generated_v4_road_mask_%02d_%@",
-            connections.rawValue,
-            detail.assetSuffix
-        )
-        if let road = assets.sprite(
-            named: generatedRoadName,
-            size: CGSize(width: style.tileWidth + 2, height: style.tileHeight + 1)
+        if let road = assets.generatedRoadSprite(
+            connectionMask: connections.rawValue,
+            detail: detail
         ) {
-            road.name = "road.generated-v4.\(connections.rawValue).\(detail.assetSuffix)"
-            road.zPosition = 2
             cityLayer.addChild(road)
         } else if let road = assets.sprite(
             named: String(format: "road_mask_%02d", connections.rawValue),
@@ -447,15 +440,5 @@ final class RoadRenderer {
     private func normalized(_ point: CGPoint) -> CGPoint {
         let length = max(0.001, hypot(point.x, point.y))
         return CGPoint(x: point.x / length, y: point.y / length)
-    }
-}
-
-private extension CameraDetailLevel {
-    var assetSuffix: String {
-        switch self {
-        case .city: "city"
-        case .neighborhood: "neighborhood"
-        case .block: "block"
-        }
     }
 }

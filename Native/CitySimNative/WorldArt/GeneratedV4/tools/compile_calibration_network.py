@@ -95,7 +95,12 @@ def main() -> None:
             image.save(output, optimize=True)
             destination = ATLAS / name
             shutil.copyfile(output, destination)
-            inventory.append({"file": name, "sha256": digest(destination)})
+            inventory.append({
+                "file": name,
+                "sha256": digest(destination),
+                "pixels": list(size),
+                "decoded_byte_estimate": size[0] * size[1] * 4,
+            })
 
     manifest_path = ATLAS / "generated-v4-manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -103,7 +108,14 @@ def main() -> None:
         "source_logical_id": "road_material",
         "compiler": "WorldArt/GeneratedV4/tools/compile_calibration_network.py",
         "connection_masks": 16,
-        "lods": list(LODS),
+        "lods": {
+            lod: {
+                "pixels": list(size),
+                "world_size": [74.0, 37.0],
+                "decoded_bytes_per_texture": size[0] * size[1] * 4,
+            }
+            for lod, size in LODS.items()
+        },
         "topology_authority": "RoadConnectionMask",
     }
     previous = {item["file"]: item for item in manifest["inventory"] if not item["file"].startswith("generated_v4_road_mask_")}

@@ -24,8 +24,6 @@ final class TerrainRenderer {
 
         if let ground = assets.generatedSprite(logicalID: "grass_material", detail: detail) {
             ground.name = "terrain.generated-v4.grass.\(detail)"
-            ground.position.y = -style.tileHeight / 2
-            ground.zPosition = -4
             cityLayer.addChild(ground)
         } else if let ground = assets.sprite(
             named: groundAssetName(for: tile),

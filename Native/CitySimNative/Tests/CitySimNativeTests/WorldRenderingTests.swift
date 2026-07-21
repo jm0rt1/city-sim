@@ -343,6 +343,75 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testGeneratedWorldDescriptorsRegisterPhysicalGeometryWithoutInventingGameplayCells() throws {
+        let catalog = WorldAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+
+        XCTAssertEqual(catalog.manifestValidationIssues(), [])
+        XCTAssertEqual(manifest.inventory.count, 75)
+        XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
+
+        for asset in manifest.assets {
+            XCTAssertEqual(asset.footprintTiles, [1, 1], asset.logicalID)
+            XCTAssertEqual(asset.sourceCanvasPixels, [1_536, 1_024], asset.logicalID)
+            XCTAssertEqual(asset.placementOffsetWorld, [0, -18], asset.logicalID)
+            XCTAssertEqual(asset.groundContactPolygonWorld.count, 4, asset.logicalID)
+            XCTAssertEqual(asset.opaqueBoundsWorld.count, 4, asset.logicalID)
+            XCTAssertEqual(asset.shadowBoundsWorld.count, 4, asset.logicalID)
+            XCTAssertFalse(asset.depthRoles.isEmpty, asset.logicalID)
+
+            let worldSizes = try CameraDetailLevel.allCases.map { detail in
+                let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                let presentation = try XCTUnwrap(
+                    catalog.generatedPresentation(logicalID: asset.logicalID, detail: detail)
+                )
+                XCTAssertEqual(presentation.sprite.position.x, asset.placementOffsetWorld[0], accuracy: 0.001)
+                XCTAssertEqual(presentation.sprite.position.y, asset.placementOffsetWorld[1], accuracy: 0.001)
+                XCTAssertEqual(presentation.sprite.anchorPoint.x, lod.anchor[0], accuracy: 0.000_001)
+                XCTAssertEqual(presentation.sprite.anchorPoint.y, lod.anchor[1], accuracy: 0.000_001)
+                return lod.worldSize
+            }
+            XCTAssertEqual(worldSizes[0], worldSizes[1], "\(asset.logicalID) drifts between city and neighborhood")
+            XCTAssertEqual(worldSizes[1], worldSizes[2], "\(asset.logicalID) drifts between neighborhood and block")
+        }
+
+        let grass = try XCTUnwrap(catalog.generatedAsset(logicalID: "grass_material"))
+        XCTAssertEqual(grass.opaqueBoundsWorld, [-36, -18, 36, 18])
+        XCTAssertLessThanOrEqual(try XCTUnwrap(grass.lods["block"]).worldSize[0], 72.5)
+        XCTAssertLessThanOrEqual(try XCTUnwrap(grass.lods["block"]).worldSize[1], 36.5)
+    }
+
+    @MainActor
+    func testGeneratedWorldResidencyIsBoundedAcrossRepeatedRealLODTransitions() throws {
+        let catalog = WorldAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+        let details: [CameraDetailLevel] = [.block, .neighborhood, .city, .neighborhood, .block]
+        var firstCycleHighWater = 0
+
+        for cycle in 0..<3 {
+            for detail in details {
+                for asset in manifest.assets {
+                    XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
+                }
+                for mask in UInt8(0)..<16 {
+                    XCTAssertNotNil(catalog.generatedRoadSprite(connectionMask: mask, detail: detail))
+                }
+                let snapshot = catalog.residencySnapshot()
+                XCTAssertEqual(snapshot.activeDetail, detail)
+                XCTAssertLessThanOrEqual(snapshot.residentDecodedBytes, 96 * 1_024 * 1_024)
+                XCTAssertLessThanOrEqual(snapshot.highWaterDecodedBytes, 96 * 1_024 * 1_024)
+                XCTAssertEqual(snapshot.fallbackCount, 0)
+            }
+            if cycle == 0 {
+                firstCycleHighWater = catalog.residencySnapshot().highWaterDecodedBytes
+            } else {
+                XCTAssertEqual(catalog.residencySnapshot().highWaterDecodedBytes, firstCycleHighWater)
+            }
+        }
+        XCTAssertGreaterThan(catalog.residencySnapshot().evictions, 0)
+    }
+
+    @MainActor
     func testAuthoredRoadAtlasCoversEveryMaskAndFrontagesFaceConnectedRoads() {
         let catalog = WorldAssetCatalog()
         let style = WorldVisualStyle()

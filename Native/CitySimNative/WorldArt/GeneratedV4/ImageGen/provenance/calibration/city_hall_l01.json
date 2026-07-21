@@ -45,7 +45,7 @@
       143
     ]
   },
-  "intended_gameplay_meaning": "completed maintained city hall focal building",
+  "intended_gameplay_meaning": "completed maintained city hall focal building normalized to one authoritative simulation tile",
   "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
   "reviewer": "world-rendering lane ingestion authority",
   "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",

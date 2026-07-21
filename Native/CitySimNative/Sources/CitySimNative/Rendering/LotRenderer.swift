@@ -134,8 +134,6 @@ final class LotRenderer {
            let generatedID = generatedLogicalID(for: tile.kind),
            let sprite = assets.generatedSprite(logicalID: generatedID, detail: detail) {
             sprite.name = "lot.generated-v4.\(generatedID).\(detail)"
-            sprite.position.y = -style.tileHeight / 2
-            sprite.zPosition = 5
             city.addChild(sprite)
             return true
         }
@@ -229,7 +227,6 @@ final class LotRenderer {
         let frontage: SKSpriteNode?
         if kind == .residential {
             frontage = assets.generatedSprite(logicalID: "residential_frontage", detail: detail)
-            frontage?.position.y = -style.tileHeight / 2
         } else {
             frontage = assets.sprite(
                 named: "frontage_\(family)",

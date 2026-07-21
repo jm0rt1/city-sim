@@ -362,7 +362,11 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(overlayDiagnostics.updatedTileCount, 0)
         XCTAssertEqual(overlayDiagnostics.reusedTileCount, state.tiles.count)
         XCTAssertEqual(overlayDiagnostics.overlayUpdateCount, state.tiles.count)
-        XCTAssertGreaterThan(overlayDiagnostics.nodeCount, initialNodeCount)
+        XCTAssertEqual(
+            overlayDiagnostics.nodeCount,
+            initialNodeCount,
+            "Land value must abstain until coordinate-scoped analytics are approved"
+        )
 
         scene.configureProofCamera(detail: .city, centeredOn: center)
         let cityDiagnostics = scene.diagnosticsSnapshot
@@ -464,7 +468,11 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 
         scene.keyDown(with: try keyEvent(characters: "0", keyCode: 29))
-        XCTAssertEqual(scene.currentCameraDetailLevel, .neighborhood)
+        XCTAssertEqual(
+            scene.currentCameraDetailLevel,
+            .block,
+            "Framing a compact developed neighborhood should retain useful building detail"
+        )
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
         XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
         XCTAssertEqual(scene.diagnosticsSnapshot.reusedTileCount, state.tiles.count)

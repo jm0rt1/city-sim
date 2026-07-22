@@ -1,0 +1,18 @@
+{
+  "fixtureSet" : "PLAY-042 authentic pre-strategy saves",
+  "sourceCommit" : "c3c0f4ad109791fe5a90dd120b98a9812ff685e2",
+  "fixtures" : [
+    {
+      "expectedStateDigest" : "b7608f0aa748f5b40086d59ffeba746908599780f791b6483d6c613e80dedeb5",
+      "file" : "strategy-legacy-schema0-v1.json",
+      "fileSHA256" : "28c41c2a8c44adc0de49110ebb05ba0952f9deb4f9cb59c3f10035e7a925e908",
+      "schemaVersion" : 0
+    },
+    {
+      "expectedStateDigest" : "947b383684145d6d18738f313fec4f648861680165134f33b4f65ad42e5c0e3f",
+      "file" : "strategy-legacy-schema1-envelope-v1.json",
+      "fileSHA256" : "56ea7704735540d2a573aea7d96575d34d363e3583b5c90bb81ceb8b620e01b9",
+      "schemaVersion" : 1
+    }
+  ]
+}

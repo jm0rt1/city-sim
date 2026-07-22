@@ -306,6 +306,27 @@ enum CityCommandCatalog {
         descriptors.filter { $0.category == category }
     }
 
+    static func matchingDescriptors(query: String) -> [CityCommandDescriptor] {
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !needle.isEmpty else { return descriptors }
+        return descriptors.filter { descriptor in
+            let searchableValues = [
+                descriptor.title,
+                descriptor.category.rawValue,
+                descriptor.discoverability,
+                descriptor.shortcut?.display ?? "",
+                searchAliases[descriptor.id, default: []].joined(separator: " ")
+            ]
+            return searchableValues.contains { $0.localizedCaseInsensitiveContains(needle) }
+        }
+    }
+
+    private static let searchAliases: [CityCommandID: [String]] = [
+        .inspectorFinances: [
+            "tax", "tax policy", "budget", "cashflow", "storefront", "storefront slump", "revenue"
+        ]
+    ]
+
     static func matchingCommand(
         key: String,
         modifiers: CityCommandModifiers,
@@ -420,7 +441,7 @@ enum CityCommandCatalog {
     private static func inspectorTitle(_ section: InspectorSection) -> String {
         switch section {
         case .overview: "Overview"
-        case .finances: "Finances"
+        case .finances: "Tax Policy and Finances"
         case .population: "Population"
         case .happiness: "Happiness"
         case .employment: "Employment"

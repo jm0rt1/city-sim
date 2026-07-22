@@ -447,7 +447,7 @@ final class GameplayLoopTests: XCTestCase {
             XCTAssertEqual(state.progression?.strategy?.recoveryResolution, resolution)
             XCTAssertEqual(CityAnalytics(state: state).strategyRecoveryResolution, resolution)
             XCTAssertTrue(state.progression?.townCharterAwarded ?? false, resolution.rawValue)
-            XCTAssertLessThanOrEqual(state.tick, 2_200, resolution.rawValue)
+            XCTAssertEqual(state.tick, 844, resolution.rawValue)
             XCTAssertEqual(state.status, .playing, resolution.rawValue)
             XCTAssertGreaterThan(state.treasury, 0, resolution.rawValue)
         }

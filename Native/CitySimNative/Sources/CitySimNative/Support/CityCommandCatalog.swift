@@ -441,7 +441,7 @@ enum CityCommandCatalog {
     private static func inspectorTitle(_ section: InspectorSection) -> String {
         switch section {
         case .overview: "Overview"
-        case .finances: "Finances"
+        case .finances: "Tax Policy and Finances"
         case .population: "Population"
         case .happiness: "Happiness"
         case .employment: "Employment"

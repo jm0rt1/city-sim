@@ -64,6 +64,7 @@ final class CityCommandCatalogTests: XCTestCase {
             CityCommandCatalog.matchingDescriptors(query: "tax").filter { $0.id == .inspectorFinances }.count,
             1
         )
+        XCTAssertTrue(CityCommandCatalog.descriptor(for: .inspectorFinances).title.contains("Tax Policy"))
     }
 
     @MainActor

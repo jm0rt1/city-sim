@@ -1,0 +1,223 @@
+digraph CitySimNativeArchitecture {
+  graph [
+    rankdir=TB,
+    newrank=true,
+    bgcolor="#F8FAFC",
+    pad="0.38",
+    nodesep="0.5",
+    ranksep="0.62",
+    splines=polyline,
+    compound=true,
+    fontname="Avenir Next",
+    fontcolor="#0F172A",
+    label="CitySim Native Runtime Architecture\nmacOS · SwiftUI + SpriteKit · deterministic simulation · versioned persistence",
+    labelloc=t,
+    labeljust=l,
+    fontsize=26
+  ];
+
+  node [
+    shape=rect,
+    style="rounded,filled",
+    color="#CBD5E1",
+    penwidth=1.2,
+    fontname="Avenir Next",
+    fontcolor="#0F172A",
+    fontsize=12,
+    margin="0.2,0.13"
+  ];
+
+  edge [
+    color="#64748B",
+    fontname="Avenir Next",
+    fontcolor="#475569",
+    fontsize=10,
+    penwidth=1.5,
+    arrowsize=0.72
+  ];
+
+  player [
+    shape=oval,
+    fillcolor="#FFFFFF",
+    color="#64748B",
+    penwidth=1.6,
+    label="PLAYER\nPointer · keyboard · menus · accessibility"
+  ];
+
+  subgraph cluster_interface {
+    label="1 · NATIVE APP & PLAYER INTERFACE";
+    color="#93C5FD";
+    fillcolor="#EFF6FF";
+    style="rounded,filled";
+    penwidth=1.4;
+    fontname="Avenir Next";
+    fontcolor="#1E3A8A";
+    fontsize=13;
+
+    { rank=same;
+      ui [
+        fillcolor="#DBEAFE",
+        label="SwiftUI Workspace\nHUD · build tools · objectives\ninspector · alerts · onboarding"
+      ];
+      commands [
+        fillcolor="#DBEAFE",
+        label="CityCommandCatalog + Policy\nOne command vocabulary\nrouting · availability · shortcuts"
+      ];
+      bridge [
+        fillcolor="#DBEAFE",
+        label="CitySceneView\nSwiftUI ↔ SpriteKit bridge\nfocus · accessibility · viewport"
+      ];
+    }
+  }
+
+  subgraph cluster_coordination {
+    label="2 · SESSION COORDINATION";
+    color="#C4B5FD";
+    fillcolor="#F5F3FF";
+    style="rounded,filled";
+    penwidth=1.4;
+    fontname="Avenir Next";
+    fontcolor="#5B21B6";
+    fontsize=13;
+
+    store [
+      fillcolor="#EDE9FE",
+      color="#8B5CF6",
+      penwidth=1.9,
+      label="CityGameStore  @MainActor\nPLAYER INTENT + SESSION STATE\nspeed · tools · selection · overlays · undo\nderived analytics · objectives · feedback"
+    ];
+  }
+
+  subgraph cluster_core {
+    label="3 · AUTHORITATIVE GAMEPLAY & PERSISTENCE";
+    color="#86EFAC";
+    fillcolor="#F0FDF4";
+    style="rounded,filled";
+    penwidth=1.4;
+    fontname="Avenir Next";
+    fontcolor="#166534";
+    fontsize=13;
+
+    { rank=same;
+      simulation [
+        fillcolor="#DCFCE7",
+        color="#22C55E",
+        penwidth=1.8,
+        label="CitySimulation\nDETERMINISTIC RULES + TICKS\neconomy · growth · utilities\nincidents · progression"
+      ];
+      state [
+        fillcolor="#FEF3C7",
+        color="#F59E0B",
+        penwidth=2.1,
+        label="CityGameState\nONLY DURABLE GAMEPLAY TRUTH\nCodable grid · treasury · population\nservices · messages · progression"
+      ];
+      saves [
+        fillcolor="#FEF3C7",
+        color="#F59E0B",
+        penwidth=1.6,
+        label="SaveGameService\nVERSIONED + FINGERPRINTED\natomic write · backup · recovery\nlegacy schema read"
+      ];
+    }
+  }
+
+  subgraph cluster_snapshot {
+    label="4 · IMMUTABLE PRESENTATION CONTRACT";
+    color="#67E8F9";
+    fillcolor="#ECFEFF";
+    style="rounded,filled";
+    penwidth=1.4;
+    fontname="Avenir Next";
+    fontcolor="#155E75";
+    fontsize=13;
+
+    snapshot [
+      fillcolor="#CFFAFE",
+      color="#06B6D4",
+      penwidth=1.9,
+      label="CityPresentationSnapshot\nSTATE + CANONICAL FINGERPRINT + SPATIAL TRUTH\nauthoritative tick · consequence changes · stable identity"
+    ];
+  }
+
+  subgraph cluster_world {
+    label="5 · DISPOSABLE WORLD PRESENTATION";
+    color="#5EEAD4";
+    fillcolor="#F0FDFA";
+    style="rounded,filled";
+    penwidth=1.4;
+    fontname="Avenir Next";
+    fontcolor="#115E59";
+    fontsize=13;
+
+    { rank=same;
+      assets [
+        fillcolor="#E2E8F0",
+        label="WorldAssetCatalog + Bundle.module\nversioned atlas · manifest · LOD art\ndeterministic visual identity"
+      ];
+      scene [
+        fillcolor="#CCFBF1",
+        color="#14B8A6",
+        penwidth=1.9,
+        label="CityScene  (SpriteKit)\nCAMERA + HIT TESTING + COMPOSITION\nselection · placement · LOD · world updates"
+      ];
+      renderers [
+        fillcolor="#CCFBF1",
+        label="Focused Renderers\nterrain · roads · lots · lifecycle\nconsequences · ambient life · overlays"
+      ];
+    }
+  }
+
+  proof [
+    fillcolor="#FEF3C7",
+    color="#F59E0B",
+    penwidth=1.5,
+    label="6 · DETERMINISTIC PROOF & RELEASE GATES\nfixtures · replay hashes · renderer timing/memory · staged app\npointer + keyboard · accessibility · save/recovery · independent playtest"
+  ];
+
+  law [
+    shape=note,
+    style="rounded,filled",
+    fillcolor="#FFFFFF",
+    color="#64748B",
+    penwidth=1.4,
+    label="ARCHITECTURE LAW\nRules live in simulation · intent lives in the store · durable truth lives in CityGameState\nSwiftUI and SpriteKit are replaceable consumers, never competing gameplay authorities"
+  ];
+
+  replacement [
+    shape=note,
+    style="rounded,filled,dashed",
+    fillcolor="#FFFFFF",
+    color="#94A3B8",
+    fontcolor="#475569",
+    label="Renderer replacement seam\nA future Metal renderer can consume\nthe same snapshot contract"
+  ];
+
+  player -> commands [label="typed intent"];
+  player -> bridge [label="map intent"];
+
+  commands -> store [label="governed commands"];
+  ui -> store [label="actions"];
+  store -> ui [label="observed state + analytics"];
+  bridge -> store [label="coordinates + map actions"];
+  store -> bridge [label="interaction state"];
+
+  store -> simulation [label="commands + ticks"];
+  simulation -> state [label="validated mutation"];
+  state -> store [label="published state", constraint=false];
+  state -> saves [label="save"];
+  saves -> state [label="validated load"];
+
+  state -> snapshot [label="derive"];
+  snapshot -> scene [label="render contract"];
+  snapshot -> replacement [style=dashed, color="#94A3B8", arrowhead=none];
+
+  bridge -> scene [label="viewport + mode", constraint=false];
+  scene -> bridge [label="hit results", constraint=false];
+  assets -> scene [label="textures + descriptors"];
+  scene -> renderers [label="composes"];
+
+  simulation -> proof [style=dashed, label="determinism"];
+  saves -> proof [style=dashed, label="integrity + recovery"];
+  scene -> proof [style=dashed, label="visual + performance"];
+  snapshot -> proof [style=invis, weight=8];
+  proof -> law [style=invis];
+}

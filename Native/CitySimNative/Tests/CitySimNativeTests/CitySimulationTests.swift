@@ -467,10 +467,12 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 
+        let expectedCityScaleLimit = scene.cityScaleLimitForTesting
         for _ in 0..<8 {
             scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
         }
-        XCTAssertEqual(scene.cameraScaleForTesting, 0.74, accuracy: 0.001)
+        XCTAssertEqual(scene.cameraScaleForTesting, expectedCityScaleLimit, accuracy: 0.001)
+        XCTAssertLessThanOrEqual(scene.cameraScaleForTesting, 0.74)
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 

@@ -116,6 +116,10 @@ private final class TileRenderRecord {
 
 @MainActor
 final class CityScene: SKScene {
+    private static let minimumCameraScale: CGFloat = 0.30
+    private static let canonicalCityCameraScale: CGFloat = 0.74
+    private static let cityOccupiedWidthTarget: CGFloat = 0.47
+
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
     var onCommandAction: ((CityCommandID) -> Void)?
@@ -164,6 +168,7 @@ final class CityScene: SKScene {
     var cameraScaleForTesting: CGFloat { cameraNode.xScale }
     var cameraPositionForTesting: CGPoint { cameraNode.position }
     var cameraScale: CGFloat { cameraNode.xScale }
+    var cityScaleLimitForTesting: CGFloat { cityScaleLimit }
     var ambientActionCountForTesting: Int { runtimeTreeMetrics(ambientLayer).actions }
     var ambientMotionEnabledForTesting: Bool { ambientMotionEnabled }
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
@@ -281,7 +286,7 @@ final class CityScene: SKScene {
         if isFirstRender {
             applyDevelopedCoreCamera(state)
         }
-        let resolvedDetail = style.detailLevel(cameraScale: cameraNode.xScale)
+        let resolvedDetail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         if resolvedDetail != currentCameraDetailLevel {
             currentCameraDetailLevel = resolvedDetail
             for record in tileRecords.values {
@@ -457,13 +462,13 @@ final class CityScene: SKScene {
     }
 
     func configureProofCamera(detail: CameraDetailLevel, centeredOn coordinate: GridCoordinate? = nil) {
-        let scale: CGFloat
+        let canonicalScale: CGFloat
         switch detail {
-        case .city: scale = 0.74
-        case .neighborhood: scale = 0.66
-        case .block: scale = 0.50
+        case .city: canonicalScale = Self.canonicalCityCameraScale
+        case .neighborhood: canonicalScale = 0.66
+        case .block: canonicalScale = 0.50
         }
-        cameraNode.setScale(scale)
+        cameraNode.setScale(actualCameraScale(forCanonicalScale: canonicalScale))
         if let coordinate { cameraNode.position = style.isoPosition(coordinate) }
         refreshForCameraChange()
     }
@@ -637,10 +642,47 @@ final class CityScene: SKScene {
         // honest expansion context. Showing the entire 24 x 24 board turns a
         // small starting settlement into an unreadable island and provides no
         // useful additional planning information.
-        let scale = min(0.74, max(0.30, cameraNode.xScale * factor))
+        let scale = min(cityScaleLimit, max(Self.minimumCameraScale, cameraNode.xScale * factor))
         cameraNode.setScale(scale)
         hasUserAdjustedCamera = true
         refreshForCameraChange()
+    }
+
+    /// The strategic stop is window-specific: a larger world aperture must not
+    /// turn the authoritative developed core into a tiny island. LOD selection
+    /// is normalized separately, so the same three semantic texture families
+    /// remain available without changing their shared thresholds.
+    private var cityScaleLimit: CGFloat {
+        guard !occupiedDevelopedVisualBoundsForTesting.isNull,
+              !occupiedDevelopedVisualBoundsForTesting.isEmpty else {
+            return Self.canonicalCityCameraScale
+        }
+        let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
+        let occupiedWidthLimit = occupiedDevelopedVisualBoundsForTesting.width
+            / (safeWidth * Self.cityOccupiedWidthTarget)
+        return min(
+            Self.canonicalCityCameraScale,
+            max(Self.minimumCameraScale + 0.01, occupiedWidthLimit)
+        )
+    }
+
+    private func canonicalCameraScale(for actualScale: CGFloat) -> CGFloat {
+        let actualRange = cityScaleLimit - Self.minimumCameraScale
+        guard actualRange > .ulpOfOne else { return Self.canonicalCityCameraScale }
+        let progress = min(1, max(0, (actualScale - Self.minimumCameraScale) / actualRange))
+        return Self.minimumCameraScale
+            + progress * (Self.canonicalCityCameraScale - Self.minimumCameraScale)
+    }
+
+    private func actualCameraScale(forCanonicalScale canonicalScale: CGFloat) -> CGFloat {
+        let canonicalRange = Self.canonicalCityCameraScale - Self.minimumCameraScale
+        guard canonicalRange > .ulpOfOne else { return cityScaleLimit }
+        let progress = min(1, max(0, (canonicalScale - Self.minimumCameraScale) / canonicalRange))
+        return Self.minimumCameraScale + progress * (cityScaleLimit - Self.minimumCameraScale)
+    }
+
+    private func resolvedCameraDetailLevel(for actualScale: CGFloat) -> CameraDetailLevel {
+        style.detailLevel(cameraScale: canonicalCameraScale(for: actualScale))
     }
 
     @discardableResult
@@ -1342,7 +1384,7 @@ final class CityScene: SKScene {
     }
 
     private func refreshForCameraChange(preservingUpdateDiagnostics: Bool = false) {
-        let detail = style.detailLevel(cameraScale: cameraNode.xScale)
+        let detail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
         assets.prepareGeneratedResidency(for: detail)
@@ -1592,8 +1634,15 @@ final class CityScene: SKScene {
             scale = min(scale, compactWidthScale, 0.62)
             // Compact framing intentionally resolves to neighborhood LOD even
             // for unusually tight fixtures; block textures are reserved for an
-            // explicit player zoom and carry a larger active residency.
-            scale = max(scale, CameraDetailLevel.blockMaximumCameraScale + 0.01)
+            // explicit player zoom and carry a larger active residency. Map the
+            // semantic thresholds into this window's compressed camera range.
+            let compactNeighborhoodMinimum = actualCameraScale(
+                forCanonicalScale: CameraDetailLevel.blockMaximumCameraScale + 0.01
+            )
+            let compactNeighborhoodMaximum = actualCameraScale(
+                forCanonicalScale: CameraDetailLevel.neighborhoodMaximumCameraScale - 0.01
+            )
+            scale = min(compactNeighborhoodMaximum, max(scale, compactNeighborhoodMinimum))
         }
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]

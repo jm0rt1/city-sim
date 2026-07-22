@@ -348,7 +348,7 @@ final class CityCommandCatalogTests: XCTestCase {
         let coordinator = CitySceneView.Coordinator(store: store) { action in
             queuedActions.append(action)
         }
-        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
         let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
         let contentView = NSView(frame: mapView.frame)
         let window = NSWindow(
@@ -416,27 +416,125 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.speed, .fastest)
 
         store.perform(.buildResidential)
+        let selectedCoordinate = GridCoordinate(x: 14, y: 13)
+        store.selectedCoordinate = selectedCoordinate
+        store.hudContextScope = .selection
         store.perform(.toggleObjectives)
         store.perform(.inspectorUtilities)
         store.perform(.openCommandGuide)
+        let focusGeneration = store.mapFocusRequestGeneration
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.showCommandGuide)
         XCTAssertTrue(store.showInspector)
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.showInspector)
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+    }
+
+    @MainActor
+    func testExactCompactRetainsSemanticMapIdentityKeyboardSelectionAndEscapeFocus() throws {
+        let defaults = UserDefaults.standard
+        let priorWelcome = defaults.object(forKey: "hasSeenCitySimWelcome")
+        defaults.set(true, forKey: "hasSeenCitySimWelcome")
+        defer {
+            if let priorWelcome { defaults.set(priorWelcome, forKey: "hasSeenCitySimWelcome") }
+            else { defaults.removeObject(forKey: "hasSeenCitySimWelcome") }
+        }
+
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.speed = .paused
+        let size = CGSize(width: 900, height: 600)
+        let host = NSHostingView(rootView: ContentView(store: store).frame(width: size.width, height: size.height))
+        host.frame = CGRect(origin: .zero, size: size)
+        let window = NSWindow(
+            contentRect: host.frame,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        window.contentView = host
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+        if store.commandPolicy == .blocked(.welcome) {
+            XCTAssertTrue(store.dismissBlockingModal(.welcome))
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+
+        let mapView = try XCTUnwrap(firstDescendant(of: CityMapSKView.self, in: host))
+        XCTAssertEqual(mapView.accessibilityLabel(), "City map")
+        XCTAssertEqual(mapView.accessibilityValue() as? String, "No block selected")
+        XCTAssertEqual(mapView.accessibilityHelp(), CityMapSKView.defaultAccessibilityHelp)
+        XCTAssertTrue(window.makeFirstResponder(mapView))
+
+        let scene = try XCTUnwrap(mapView.scene as? CityScene)
+        scene.keyDown(with: try keyEvent(characters: "", keyCode: 124))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        let firstSelection = try XCTUnwrap(store.selectedCoordinate)
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Selected") == true)
+        XCTAssertFalse(mapView.accessibilityCustomActions()?.isEmpty ?? true)
+
+        store.selectTool(.residential)
+        store.clearFeedback()
+        store.showObjectives = true
+        store.showInspector = true
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.2))
+
+        let recomposedMapView = try XCTUnwrap(firstDescendant(of: CityMapSKView.self, in: host))
+        XCTAssertTrue(recomposedMapView === mapView, "Compact panel arbitration must not replace the semantic map view")
+        XCTAssertEqual(recomposedMapView.accessibilityLabel(), "City map")
+        XCTAssertTrue((recomposedMapView.accessibilityValue() as? String)?.contains("Selected") == true)
+        XCTAssertFalse(recomposedMapView.accessibilityHelp()?.isEmpty ?? true)
+        XCTAssertFalse(recomposedMapView.accessibilityCustomActions()?.isEmpty ?? true)
+
+        scene.keyDown(with: try keyEvent(characters: "", keyCode: 124, modifiers: .shift))
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        XCTAssertEqual(store.selectedCoordinate?.x, min(store.state.gridWidth - 1, firstSelection.x + 5))
+        XCTAssertEqual(store.selectedCoordinate?.y, firstSelection.y)
+        let shiftedSelection = store.selectedCoordinate
+        let stateBeforeEscape = store.state
+        let focusGeneration = store.mapFocusRequestGeneration
+
+        scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        XCTAssertFalse(store.showInspector)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
+        XCTAssertEqual(store.state, stateBeforeEscape)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+        XCTAssertTrue(window.firstResponder === mapView)
+
+        scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        XCTAssertFalse(store.showObjectives)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
+        XCTAssertEqual(store.state, stateBeforeEscape)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+        XCTAssertTrue(window.firstResponder === mapView)
     }
 
     @MainActor
@@ -667,7 +765,7 @@ final class CityCommandCatalogTests: XCTestCase {
         let store = CityGameStore(state: .newCity(seed: 42))
         var queuedActions: [CitySceneView.Coordinator.MainLoopAction] = []
         let coordinator = CitySceneView.Coordinator(store: store) { queuedActions.append($0) }
-        let mapView = SKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
         let priorResponder = FocusProbeView(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
         let contentView = NSView(frame: mapView.frame)
         contentView.addSubview(mapView)
@@ -860,6 +958,18 @@ final class CityCommandCatalogTests: XCTestCase {
             isARepeat: false,
             keyCode: keyCode
         ))
+    }
+
+    @MainActor
+    private func firstDescendant<ViewType: NSView>(
+        of type: ViewType.Type,
+        in root: NSView
+    ) -> ViewType? {
+        if let match = root as? ViewType { return match }
+        for child in root.subviews {
+            if let match = firstDescendant(of: type, in: child) { return match }
+        }
+        return nil
     }
 
     private func authoredSimulationSourceURL() -> URL {

@@ -15,18 +15,11 @@ final class TerrainRenderer {
         let root = SKNode()
         root.name = "terrain.\(tile.kind.rawValue)"
 
-        // The macro terrain bed owns visible undeveloped land. Each tile keeps
-        // nearly transparent hit geometry so empty parcels remain directly
-        // interactive without reintroducing a 24x24 checkerboard.
-        let hitSurface = SKShapeNode(path: style.diamondPath(width: 71.5, height: 35.5))
-        hitSurface.name = "terrain.hit-surface"
-        hitSurface.fillColor = NSColor.white.withAlphaComponent(0.002)
-        hitSurface.strokeColor = .clear
-        hitSurface.zPosition = -8
-        root.addChild(hitSurface)
-
-        // Empty and road cells need only their hit surface. Avoid building three
-        // invisible LOD containers on every undeveloped parcel in a 24 x 24 map.
+        // The macro terrain bed owns visible undeveloped land. Empty and road
+        // coordinates resolve through exact inverse-isometric geometry in the
+        // scene, so they need no invisible SpriteKit hit allocation here.
+        // Avoid building three invisible LOD containers on every undeveloped
+        // parcel in a 24 x 24 map.
         guard tile.kind != .empty, tile.kind != .road else { return root }
 
         let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)

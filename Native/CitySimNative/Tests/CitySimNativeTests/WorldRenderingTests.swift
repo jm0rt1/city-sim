@@ -664,7 +664,7 @@ final class WorldRenderingTests: XCTestCase {
             for: roadTile,
             detail: .block
         )
-        XCTAssertTrue(descendantNames(in: terrain).contains("terrain.hit-surface"))
+        XCTAssertFalse(descendantNames(in: terrain).contains("terrain.hit-surface"))
     }
 
     @MainActor
@@ -915,10 +915,21 @@ final class WorldRenderingTests: XCTestCase {
             detail: .block
         )
         let names = descendantNames(in: vacant)
-        XCTAssertTrue(names.contains("terrain.hit-surface"))
+        XCTAssertFalse(names.contains("terrain.hit-surface"))
         XCTAssertFalse(names.contains { $0.contains("generated-v4.grass") })
         XCTAssertFalse(names.contains("terrain.vacant.grove"))
         XCTAssertEqual(recursiveActiveActionCount(vacant), 0)
+
+        let state = CityGameState.newCity(seed: 42)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        for coordinate in [GridCoordinate(x: 0, y: 0), GridCoordinate(x: 4, y: 12), GridCoordinate(x: 20, y: 20)] {
+            XCTAssertEqual(
+                scene.resolvedCoordinateForTesting(at: scene.scenePointForTesting(at: coordinate)),
+                coordinate
+            )
+        }
 
         let backdrop = renderer.makeBackdrop(gridWidth: 24, gridHeight: 24)
         let backdropNames = descendantNames(in: backdrop)

@@ -181,6 +181,10 @@ final class CityScene: SKScene {
         style.isoPosition(coordinate)
     }
 
+    func resolvedCoordinateForTesting(at scenePoint: CGPoint) -> GridCoordinate? {
+        coordinate(at: scenePoint)
+    }
+
     override init(size: CGSize) {
         let style = WorldVisualStyle()
         let assets = WorldAssetCatalog.shared
@@ -975,20 +979,28 @@ final class CityScene: SKScene {
             + CGFloat(tile.coordinate.y) * 0.0001
         root.name = "tile:\(tile.coordinate.x):\(tile.coordinate.y)"
 
-        let terrainLayer = SKNode()
-        terrainLayer.name = "terrain.layer"
-        terrainLayer.addChild(terrainRenderer.makeGround(for: tile, detail: currentCameraDetailLevel))
-        if tile.coordinate.x == 0 || tile.coordinate.y == 0
+        let isMapEdge = tile.coordinate.x == 0 || tile.coordinate.y == 0
             || tile.coordinate.x == state.gridWidth - 1
-            || tile.coordinate.y == state.gridHeight - 1 {
-            terrainLayer.addChild(terrainRenderer.makeMapEdge(
-                for: tile.coordinate,
-                gridWidth: state.gridWidth,
-                gridHeight: state.gridHeight,
-                detail: currentCameraDetailLevel
-            ))
+            || tile.coordinate.y == state.gridHeight - 1
+        if tile.kind != .empty || isMapEdge {
+            let terrainLayer = SKNode()
+            terrainLayer.name = "terrain.layer"
+            let ground = terrainRenderer.makeGround(for: tile, detail: currentCameraDetailLevel)
+            if !ground.children.isEmpty {
+                terrainLayer.addChild(ground)
+            }
+            if isMapEdge {
+                terrainLayer.addChild(terrainRenderer.makeMapEdge(
+                    for: tile.coordinate,
+                    gridWidth: state.gridWidth,
+                    gridHeight: state.gridHeight,
+                    detail: currentCameraDetailLevel
+                ))
+            }
+            if !terrainLayer.children.isEmpty {
+                root.addChild(terrainLayer)
+            }
         }
-        root.addChild(terrainLayer)
 
         let overlayLayer = SKNode()
         overlayLayer.name = "overlay.layer"
@@ -1002,28 +1014,32 @@ final class CityScene: SKScene {
         )
         if !overlayLayer.children.isEmpty { root.addChild(overlayLayer) }
 
-        let contentLayer = SKNode()
-        contentLayer.name = "content.layer"
-        contentLayer.zPosition = 40
         switch tile.kind {
         case .empty:
             break
         case .road:
+            let contentLayer = SKNode()
+            contentLayer.name = "content.layer"
+            contentLayer.zPosition = 40
             contentLayer.addChild(roadRenderer.makeRoad(
                 at: tile.coordinate,
                 in: state,
                 detail: currentCameraDetailLevel,
                 reducedMotion: reducedMotion
             ))
+            root.addChild(contentLayer)
         default:
+            let contentLayer = SKNode()
+            contentLayer.name = "content.layer"
+            contentLayer.zPosition = 40
             contentLayer.addChild(lotRenderer.makeLot(
                 for: tile,
                 adjacentRoads: RoadConnectionMask.resolving(at: tile.coordinate, in: state),
                 detail: currentCameraDetailLevel,
                 reducedMotion: reducedMotion
             ))
+            root.addChild(contentLayer)
         }
-        if !contentLayer.children.isEmpty { root.addChild(contentLayer) }
 
         let consequenceLayer = SKNode()
         consequenceLayer.name = "spatial.layer"
@@ -1631,7 +1647,13 @@ final class CityScene: SKScene {
             }
             node = current.parent
         }
-        return nil
+        guard let state = renderedState else { return nil }
+        return IsometricGridCoordinateResolver(tileWidth: tileWidth, tileHeight: tileHeight)
+            .coordinate(
+                at: scenePoint,
+                gridWidth: state.gridWidth,
+                gridHeight: state.gridHeight
+            )
     }
 
     private func configureSelectionAdornment() {

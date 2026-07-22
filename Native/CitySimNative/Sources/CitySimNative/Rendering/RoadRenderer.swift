@@ -360,24 +360,29 @@ final class RoadRenderer {
                 : .zero
             return WorldGeometryCache.line(from: start, to: endpoint)
         }
+        let combinedSegments = CGMutablePath()
+        for path in segments {
+            combinedSegments.addPath(path)
+        }
 
         // Draw material passes rather than complete branches. This prevents a
         // later branch's sidewalk from cutting a pale ring through prior asphalt.
-        for path in segments {
-            var shadowTransform = CGAffineTransform(translationX: 1.2, y: -1.5)
-            let shadow = path.copy(using: &shadowTransform) ?? path
-            layer.addChild(stroke(shadow, color: NSColor.black.withAlphaComponent(shadowAlpha), width: 29, z: -1, cap: .butt))
-        }
-        for path in segments {
-            layer.addChild(stroke(path, color: sidewalkColor, width: 27, z: 0, cap: .butt))
-        }
-        for path in segments {
-            layer.addChild(stroke(path, color: curbColor, width: 22, z: 1, cap: .butt))
-        }
-        for path in segments {
-            layer.addChild(stroke(path, color: asphaltColor, width: 18, z: 2, cap: .butt))
-            layer.addChild(stroke(path, color: asphaltLightColor.withAlphaComponent(0.28), width: 0.8, z: 3, cap: .butt))
-        }
+        // A material pass is one drawable even when the topology has several
+        // sockets. The disjoint subpaths retain exact socket geometry while
+        // avoiding five duplicate SpriteKit allocations per extra branch.
+        var shadowTransform = CGAffineTransform(translationX: 1.2, y: -1.5)
+        let shadow = combinedSegments.copy(using: &shadowTransform) ?? combinedSegments
+        layer.addChild(stroke(shadow, color: NSColor.black.withAlphaComponent(shadowAlpha), width: 29, z: -1, cap: .butt))
+        layer.addChild(stroke(combinedSegments, color: sidewalkColor, width: 27, z: 0, cap: .butt))
+        layer.addChild(stroke(combinedSegments, color: curbColor, width: 22, z: 1, cap: .butt))
+        layer.addChild(stroke(combinedSegments, color: asphaltColor, width: 18, z: 2, cap: .butt))
+        layer.addChild(stroke(
+            combinedSegments,
+            color: asphaltLightColor.withAlphaComponent(0.28),
+            width: 0.8,
+            z: 3,
+            cap: .butt
+        ))
 
         addLayeredJunction(
             to: layer,

@@ -954,6 +954,9 @@ final class WorldRenderingTests: XCTestCase {
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.tileRootIsAttachedForTesting(at: GridCoordinate(x: 20, y: 20)), false)
+        XCTAssertEqual(scene.tileRootIsAttachedForTesting(at: GridCoordinate(x: 0, y: 0)), true)
+        XCTAssertEqual(scene.tileRootIsAttachedForTesting(at: GridCoordinate(x: 10, y: 11)), true)
         for coordinate in [GridCoordinate(x: 0, y: 0), GridCoordinate(x: 4, y: 12), GridCoordinate(x: 20, y: 20)] {
             XCTAssertEqual(
                 scene.resolvedCoordinateForTesting(at: scene.scenePointForTesting(at: coordinate)),
@@ -1499,6 +1502,16 @@ final class WorldRenderingTests: XCTestCase {
             cold.totalRenderDurationMilliseconds,
             cold.assetDecodeLoadDurationMilliseconds
         )
+        XCTAssertGreaterThanOrEqual(cold.backdropUpdateDurationMilliseconds, 0)
+        XCTAssertGreaterThanOrEqual(cold.renderPreparationDurationMilliseconds, 0)
+        XCTAssertGreaterThanOrEqual(cold.tileBuildDurationMilliseconds, 0)
+        XCTAssertGreaterThanOrEqual(cold.runtimeTreeMetricsDurationMilliseconds, 0)
+        XCTAssertLessThanOrEqual(
+            cold.backdropUpdateDurationMilliseconds
+                + cold.renderPreparationDurationMilliseconds
+                + cold.tileBuildDurationMilliseconds,
+            cold.worldUpdateDurationMilliseconds
+        )
         scene.render(
             snapshot: snapshot,
             overlay: .none,
@@ -1511,7 +1524,11 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(unchanged.assetDecodeLoadCount, 0)
         XCTAssertEqual(unchanged.assetDecodeLoadDurationMilliseconds, 0, accuracy: 0.000_001)
         print(
-            "PLAY022_ROUND1B_COLD_RENDER " +
+            "PLAY022_ROUND1C_COLD_PROFILE " +
+            "backdrop_ms=\(String(format: "%.3f", cold.backdropUpdateDurationMilliseconds)) " +
+            "preparation_ms=\(String(format: "%.3f", cold.renderPreparationDurationMilliseconds)) " +
+            "tile_build_ms=\(String(format: "%.3f", cold.tileBuildDurationMilliseconds)) " +
+            "tree_metrics_ms=\(String(format: "%.3f", cold.runtimeTreeMetricsDurationMilliseconds)) " +
             "world_update_ms=\(String(format: "%.3f", cold.worldUpdateDurationMilliseconds)) " +
             "asset_decode_loads=\(cold.assetDecodeLoadCount) " +
             "asset_decode_ms=\(String(format: "%.3f", cold.assetDecodeLoadDurationMilliseconds)) " +

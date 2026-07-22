@@ -22,6 +22,10 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
     var activeActionCount = 0
     var consumedConsequenceEventCount = 0
     var displayedConsequenceCueCount = 0
+    var backdropUpdateDurationMilliseconds = 0.0
+    var renderPreparationDurationMilliseconds = 0.0
+    var tileBuildDurationMilliseconds = 0.0
+    var runtimeTreeMetricsDurationMilliseconds = 0.0
     var worldUpdateDurationMilliseconds = 0.0
     var totalRenderDurationMilliseconds = 0.0
     var assetDecodeLoadCount = 0
@@ -336,11 +340,15 @@ final class CityScene: SKScene {
             || motionChanged
             || ambientChanged
             || unexplainedCueRemoval
+        let runtimeMetricsStarted = ProcessInfo.processInfo.systemUptime
         refreshRuntimeDiagnostics(
             consumedEventCount: consequenceEvents.count,
             displayedCueCount: displayedCueCount,
             requiresTreeRecount: requiresTreeRecount
         )
+        diagnosticsSnapshot.runtimeTreeMetricsDurationMilliseconds = requiresTreeRecount
+            ? (ProcessInfo.processInfo.systemUptime - runtimeMetricsStarted) * 1_000
+            : 0
         finishRenderDiagnostics(
             startedAt: renderStarted,
             assetResidencyBefore: assetResidencyBefore
@@ -440,6 +448,10 @@ final class CityScene: SKScene {
 
     func tileRootIsHiddenForTesting(at coordinate: GridCoordinate) -> Bool? {
         tileRecords[coordinate]?.root.isHidden
+    }
+
+    func tileRootIsAttachedForTesting(at coordinate: GridCoordinate) -> Bool? {
+        tileRecords[coordinate]?.root.parent != nil
     }
 
     func tileDescendantNamesForTesting(at coordinate: GridCoordinate) -> [String] {
@@ -687,17 +699,13 @@ final class CityScene: SKScene {
 
     @discardableResult
     private func updateAmbientCorridor(in state: CityGameState) -> Bool {
-        let coordinateOrder: (GridCoordinate, GridCoordinate) -> Bool = {
-            ($0.y, $0.x) < ($1.y, $1.x)
-        }
         let signature = AmbientCorridorSignature(
             developedCoordinates: state.tiles.compactMap { tile in
                 tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
                     ? tile.coordinate
                     : nil
-            }.sorted(by: coordinateOrder),
-            roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil }
-                .sorted(by: coordinateOrder),
+            },
+            roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil },
             detail: currentCameraDetailLevel,
             reducedMotion: reducedMotion,
             motionEnabled: ambientMotionEnabled
@@ -736,6 +744,7 @@ final class CityScene: SKScene {
             activeActionCount: diagnosticsSnapshot.activeActionCount,
             detailLevel: currentCameraDetailLevel
         )
+        let backdropStarted = ProcessInfo.processInfo.systemUptime
         let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
         if renderedGridSize != gridSize {
             let priorBackdropMetrics = defersRuntimeMetricsToFullRecount
@@ -752,13 +761,21 @@ final class CityScene: SKScene {
                 )
             }
         }
+        diagnostics.backdropUpdateDurationMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - backdropStarted) * 1_000
 
-        let desiredCoordinates = Set(state.tiles.map(\.coordinate))
-        let removed = tileRecords.keys.filter { !desiredCoordinates.contains($0) }
+        let preparationStarted = ProcessInfo.processInfo.systemUptime
+        let removed: [GridCoordinate]
+        if tileRecords.isEmpty {
+            removed = []
+        } else {
+            let desiredCoordinates = Set(state.tiles.map(\.coordinate))
+            removed = tileRecords.keys.filter { !desiredCoordinates.contains($0) }
+        }
         for coordinate in removed {
             if let record = tileRecords.removeValue(forKey: coordinate) {
                 applyRuntimeDelta(
-                    from: runtimeTreeMetrics(record.root),
+                    from: attachedRuntimeTreeMetrics(record.root),
                     to: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
                     diagnostics: &diagnostics
                 )
@@ -767,13 +784,6 @@ final class CityScene: SKScene {
         }
         diagnostics.removedTileCount = removed.count
 
-        let sortedTiles = state.tiles.sorted { lhs, rhs in
-            let lhsDepth = lhs.coordinate.x + lhs.coordinate.y
-            let rhsDepth = rhs.coordinate.x + rhs.coordinate.y
-            if lhsDepth != rhsDepth { return lhsDepth < rhsDepth }
-            if lhs.coordinate.x != rhs.coordinate.x { return lhs.coordinate.x < rhs.coordinate.x }
-            return lhs.coordinate.y < rhs.coordinate.y
-        }
         let developedRoadContextCoordinates = state.tiles.compactMap { tile in
             tile.kind != .empty && tile.kind != .road ? tile.coordinate : nil
         }
@@ -782,8 +792,11 @@ final class CityScene: SKScene {
             to: snapshot,
             canReuseOverlay: previousOverlay == overlay && overlay == .none
         )
+        diagnostics.renderPreparationDurationMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - preparationStarted) * 1_000
 
-        for tile in sortedTiles {
+        let tileBuildStarted = ProcessInfo.processInfo.systemUptime
+        for tile in state.tiles {
             guard let consequence = snapshot.spatialConsequences[tile.coordinate] else { continue }
             if let changedCoordinates,
                !changedCoordinates.contains(tile.coordinate),
@@ -801,11 +814,7 @@ final class CityScene: SKScene {
             if let existing = tileRecords[tile.coordinate], existing.signature == signature {
                 diagnostics.reusedTileCount += 1
                 if existing.overlaySignature != overlaySignature {
-                    let priorOverlayMetrics = existing.overlayLayer.map { layer in
-                        layer.parent == nil
-                            ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
-                            : runtimeTreeMetrics(layer)
-                    } ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                    let priorRootMetrics = attachedRuntimeTreeMetrics(existing.root)
                     if overlay == .none {
                         existing.overlayLayer?.removeAllChildren()
                         existing.overlayLayer?.removeFromParent()
@@ -826,14 +835,10 @@ final class CityScene: SKScene {
                             existing.root.addChild(layer)
                         }
                     }
-                    let updatedOverlayMetrics = existing.overlayLayer.map { layer in
-                        layer.parent == nil
-                            ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
-                            : runtimeTreeMetrics(layer)
-                    } ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                    synchronizeTileRootAttachment(existing.root)
                     applyRuntimeDelta(
-                        from: priorOverlayMetrics,
-                        to: updatedOverlayMetrics,
+                        from: priorRootMetrics,
+                        to: attachedRuntimeTreeMetrics(existing.root),
                         diagnostics: &diagnostics
                     )
                     existing.overlaySignature = overlaySignature
@@ -849,7 +854,9 @@ final class CityScene: SKScene {
                 continue
             }
 
-            let priorRecordMetrics = tileRecords[tile.coordinate].map { runtimeTreeMetrics($0.root) }
+            let priorRecordMetrics = tileRecords[tile.coordinate].map {
+                attachedRuntimeTreeMetrics($0.root)
+            }
             let replacement: TileRenderRecord
             if let existing = tileRecords[tile.coordinate],
                existing.signature.matchesNonSpatialFields(of: signature),
@@ -875,8 +882,8 @@ final class CityScene: SKScene {
             if let existing = tileRecords.updateValue(replacement, forKey: tile.coordinate) {
                 if !defersRuntimeMetricsToFullRecount {
                     applyRuntimeDelta(
-                        from: priorRecordMetrics ?? runtimeTreeMetrics(existing.root),
-                        to: runtimeTreeMetrics(replacement.root),
+                        from: priorRecordMetrics ?? attachedRuntimeTreeMetrics(existing.root),
+                        to: visibleRuntimeTreeMetrics(replacement.root),
                         diagnostics: &diagnostics
                     )
                 }
@@ -887,14 +894,16 @@ final class CityScene: SKScene {
                 if !defersRuntimeMetricsToFullRecount {
                     applyRuntimeDelta(
                         from: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
-                        to: runtimeTreeMetrics(replacement.root),
+                        to: visibleRuntimeTreeMetrics(replacement.root),
                         diagnostics: &diagnostics
                     )
                 }
                 diagnostics.createdTileCount += 1
             }
-            tileLayer.addChild(replacement.root)
+            synchronizeTileRootAttachment(replacement.root)
         }
+        diagnostics.tileBuildDurationMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - tileBuildStarted) * 1_000
 
         diagnostics.totalTileCount = tileRecords.count
         diagnostics.worldUpdateDurationMilliseconds =
@@ -921,29 +930,32 @@ final class CityScene: SKScene {
     }
 
     private func generatedLogicalIDsNeeded(for state: CityGameState) -> Set<String> {
-        var logicalIDs = Set(state.tiles.compactMap { tile -> String? in
-            guard tile.kind != .empty, tile.kind != .road, tile.constructionProgress >= 0.75 else {
-                return nil
+        var logicalIDs: Set<String> = []
+        var completedDevelopment: Set<GridCoordinate> = []
+        var roadCoordinates: [GridCoordinate] = []
+        for tile in state.tiles {
+            if tile.kind == .road {
+                roadCoordinates.append(tile.coordinate)
+                continue
             }
-            return switch tile.kind {
-            case .residential, .school: "residential_l01"
-            case .commercial, .fireStation: "commercial_l01"
-            case .industrial, .powerPlant: "industrial_l01"
-            case .park: "park_l01"
-            case .cityHall, .policeStation: "city_hall_l01"
-            case .waterTower: "water_tower_l01"
-            case .empty, .road: nil
+            guard tile.kind != .empty else { continue }
+            if tile.constructionProgress >= 1 {
+                completedDevelopment.insert(tile.coordinate)
             }
-        })
-        let hasCompletedDevelopment = state.tiles.contains {
-            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+            guard tile.constructionProgress >= 0.75,
+                  let logicalID = generatedLogicalID(for: tile.kind) else { continue }
+            logicalIDs.insert(logicalID)
         }
-        let hasDevelopedRoad = state.tiles.contains { tile in
-            tile.kind == .road && state.neighbors(of: tile.coordinate).contains {
-                $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        let hasDevelopedRoad = roadCoordinates.contains { coordinate in
+            RoadConnectionMask.cardinalEdges.contains { edge in
+                let delta = edge.coordinateDelta
+                return completedDevelopment.contains(GridCoordinate(
+                    x: coordinate.x + delta.x,
+                    y: coordinate.y + delta.y
+                ))
             }
         }
-        if hasCompletedDevelopment && hasDevelopedRoad {
+        if !completedDevelopment.isEmpty && hasDevelopedRoad {
             logicalIDs.formUnion([
                 "ambient_pedestrian_pair",
                 "ambient_service_object",
@@ -1326,11 +1338,41 @@ final class CityScene: SKScene {
     }
 
     private func runtimeTreeMetrics(_ node: SKNode) -> RuntimeTreeMetrics {
-        RuntimeTreeMetrics(
-            nodes: 1 + recursiveNodeCount(node),
-            drawables: recursiveDrawableNodeCount(node),
-            actions: recursiveActiveActionCount(node)
-        )
+        var nodes = 1
+        var drawables = node is SKShapeNode || node is SKSpriteNode || node is SKLabelNode ? 1 : 0
+        var actions = node.hasActions() ? 1 : 0
+        for child in node.children {
+            let childMetrics = runtimeTreeMetrics(child)
+            nodes += childMetrics.nodes
+            drawables += childMetrics.drawables
+            actions += childMetrics.actions
+        }
+        return RuntimeTreeMetrics(nodes: nodes, drawables: drawables, actions: actions)
+    }
+
+    private func attachedRuntimeTreeMetrics(_ root: SKNode) -> RuntimeTreeMetrics {
+        guard root.parent != nil else {
+            return RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+        }
+        return runtimeTreeMetrics(root)
+    }
+
+    private func visibleRuntimeTreeMetrics(_ root: SKNode) -> RuntimeTreeMetrics {
+        guard !root.children.isEmpty else {
+            return RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+        }
+        return runtimeTreeMetrics(root)
+    }
+
+    /// Keep logical tile records for deterministic reuse and diagnostics, while
+    /// excluding structurally empty interior parcels from the SpriteKit tree.
+    /// Inverse-isometric hit testing remains authoritative for those parcels.
+    private func synchronizeTileRootAttachment(_ root: SKNode) {
+        if root.children.isEmpty {
+            root.removeFromParent()
+        } else if root.parent == nil {
+            tileLayer.addChild(root)
+        }
     }
 
     private func applyRuntimeDelta(
@@ -1433,20 +1475,6 @@ final class CityScene: SKScene {
         for child in node.children {
             updateGeneratedLOD(in: child, detail: detail)
         }
-    }
-
-    private func recursiveNodeCount(_ node: SKNode) -> Int {
-        node.children.reduce(node.children.count) { $0 + recursiveNodeCount($1) }
-    }
-
-    private func recursiveDrawableNodeCount(_ node: SKNode) -> Int {
-        let localCount = node is SKShapeNode || node is SKSpriteNode || node is SKLabelNode ? 1 : 0
-        return node.children.reduce(localCount) { $0 + recursiveDrawableNodeCount($1) }
-    }
-
-    private func recursiveActiveActionCount(_ node: SKNode) -> Int {
-        let localCount = node.hasActions() ? 1 : 0
-        return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
     }
 
     private func updateSelection(_ coordinate: GridCoordinate?) {
@@ -1671,11 +1699,15 @@ final class CityScene: SKScene {
         let developedCoordinates = Set(developed.map(\.coordinate))
         let nearbyRoads = state.tiles.filter { tile in
             guard tile.kind == .road else { return false }
-            return developedCoordinates.contains { coordinate in
+            return RoadConnectionMask.cardinalEdges.contains { edge in
                 // Frame the lived-in frontage, not the full length of future-facing
                 // road stubs. The latter remain available as honest expansion context
                 // once the player pans, but must not shrink the opening architecture.
-                abs(coordinate.x - tile.coordinate.x) + abs(coordinate.y - tile.coordinate.y) <= 1
+                let delta = edge.coordinateDelta
+                return developedCoordinates.contains(GridCoordinate(
+                    x: tile.coordinate.x + delta.x,
+                    y: tile.coordinate.y + delta.y
+                ))
             }
         }
         let expansionSockets = state.tiles.filter { tile in

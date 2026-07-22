@@ -6,8 +6,9 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-import shutil
 from pathlib import Path
+
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 GENERATED = ROOT / "GeneratedV4"
@@ -30,14 +31,17 @@ DEPTH_ROLE_VALUES = {
     "vegetation": 8.0,
     "props": 10.0,
 }
+SHIPPING_TRANSFORM_COMMAND = (
+    "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py"
+)
 
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def lod_geometry(pixels: list[int], source_bbox: list[int], scale: float) -> dict[str, object]:
-    pixel_width, pixel_height = pixels
+def lod_geometry(source_pixels: list[int], source_bbox: list[int], scale: float) -> dict[str, object]:
+    pixel_width, pixel_height = source_pixels
     x0 = max(0, math.floor(source_bbox[0] * pixel_width / 1536) - 1)
     y0 = max(0, math.floor(source_bbox[1] * pixel_height / 1024) - 1)
     x1 = min(pixel_width, math.ceil(source_bbox[2] * pixel_width / 1536) + 1)
@@ -53,10 +57,13 @@ def lod_geometry(pixels: list[int], source_bbox: list[int], scale: float) -> dic
         (source_bbox[3] - source_bbox[1]) * WORLD_POINTS_PER_AUTHORING_PIXEL * scale + TRIM_PADDING_WORLD,
     ]
     return {
-        "trim_rect_pixels": [x0, y0, width, height],
+        "pixels": [width, height],
+        "trim_rect_pixels": [0, 0, width, height],
+        "source_pixels": list(source_pixels),
+        "source_trim_rect_pixels": [x0, y0, width, height],
         "anchor": [round(anchor_x, 8), round(anchor_y, 8)],
         "world_size": [round(value, 4) for value in world_size],
-        "decoded_byte_estimate": pixel_width * pixel_height * 4,
+        "decoded_byte_estimate": width * height * 4,
     }
 
 
@@ -138,25 +145,65 @@ def main() -> None:
             "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
             "rejection_reasons": []
         }
-        provenance_path.write_text(json.dumps(provenance, indent=2) + "\n", encoding="utf-8")
-
         lods = {}
+        shipping_outputs = []
         decoded_byte_estimate = 0
         for lod in LODS:
             source = GENERATED / "normalized" / "calibration" / asset_id / f"generated_v4_{asset_id}_{lod}.png"
             destination = ATLAS / source.name
-            shutil.copyfile(source, destination)
-            pixels = next(item["pixels"] for item in normalization["outputs"] if item["lod"] == lod)
+            normalization_output = next(item for item in normalization["outputs"] if item["lod"] == lod)
+            source_pixels = normalization_output["pixels"]
+            normalized_digest = sha256(source)
+            if normalized_digest != normalization_output["sha256"]:
+                raise SystemExit(f"registration rejected: normalized hash mismatch for {asset_id}.{lod}")
+            geometry = lod_geometry(source_pixels, normalization["source_bbox"], float(asset["world_scale"]))
+            source_x, source_y, width, height = geometry["source_trim_rect_pixels"]
+            with Image.open(source) as image:
+                if image.mode != "RGBA":
+                    raise SystemExit(f"registration rejected: normalized source is not RGBA for {asset_id}.{lod}")
+                if list(image.size) != source_pixels:
+                    raise SystemExit(
+                        f"registration rejected: normalized pixel mismatch for {asset_id}.{lod}: "
+                        f"{image.size} != {tuple(source_pixels)}"
+                    )
+                payload = image.crop((source_x, source_y, source_x + width, source_y + height))
+                payload.save(destination, format="PNG", compress_level=9, optimize=False)
             digest = sha256(destination)
-            geometry = lod_geometry(pixels, normalization["source_bbox"], float(asset["world_scale"]))
             decoded_byte_estimate += int(geometry["decoded_byte_estimate"])
-            lods[lod] = {"file": destination.name, "pixels": pixels, "sha256": digest, **geometry}
+            lods[lod] = {
+                "file": destination.name,
+                "sha256": digest,
+                "normalized_sha256": normalized_digest,
+                **geometry,
+            }
             inventory.append({
                 "file": destination.name,
                 "sha256": digest,
-                "pixels": pixels,
+                "pixels": geometry["pixels"],
                 "decoded_byte_estimate": geometry["decoded_byte_estimate"],
             })
+            shipping_outputs.append({
+                "lod": lod,
+                "normalized_file": str(source.relative_to(PACKAGE.parent)),
+                "normalized_sha256": normalized_digest,
+                "source_pixels": source_pixels,
+                "source_trim_rect_pixels": geometry["source_trim_rect_pixels"],
+                "shipping_file": str(destination.relative_to(PACKAGE.parent)),
+                "shipping_sha256": digest,
+                "shipping_pixels": geometry["pixels"],
+                "decoded_byte_estimate": geometry["decoded_byte_estimate"],
+            })
+
+        provenance["shipping_transform"] = {
+            "command": SHIPPING_TRANSFORM_COMMAND,
+            "operation": (
+                "deterministic lossless physical crop of the immutable normalized LOD canvas to its "
+                "registered source trim; anchor and world size remain authoritative manifest metadata"
+            ),
+            "raw_and_normalized_sources_mutated": False,
+            "outputs": shipping_outputs,
+        }
+        provenance_path.write_text(json.dumps(provenance, indent=2) + "\n", encoding="utf-8")
 
         geometry = physical_geometry(asset, normalization)
 
@@ -202,7 +249,7 @@ def main() -> None:
     manifest = {
         "schema": 4,
         "pack_id": catalog["pack_id"],
-        "generator_version": "PLAY-022-production-geometry-1",
+        "generator_version": "PLAY-022-production-geometry-2-physical-trim",
         "production_selection": True,
         "projection": catalog["projection"],
         "world_tile_points": catalog["world_tile_points"],

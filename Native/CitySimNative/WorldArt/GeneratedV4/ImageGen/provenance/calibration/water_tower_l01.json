@@ -49,5 +49,78 @@
   "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
   "reviewer": "world-rendering lane ingestion authority",
   "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
-  "rejection_reasons": []
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/water_tower_l01/generated_v4_water_tower_l01_city.png",
+        "normalized_sha256": "a0d482b7d8b0e3eb3a5ba8faabbab4fb876031d0e74ff9c9f10f79b6a0b7a23d",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          97,
+          42,
+          62,
+          109
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_water_tower_l01_city.png",
+        "shipping_sha256": "9db06fa39e2b879e62543db10c51421c71a08c9ad28f49091f564d0492a7ba73",
+        "shipping_pixels": [
+          62,
+          109
+        ],
+        "decoded_byte_estimate": 27032
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/water_tower_l01/generated_v4_water_tower_l01_neighborhood.png",
+        "normalized_sha256": "783bd406431c9b2b91b012ab13ee389e5744999883240b489156f509b77c9fb7",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          195,
+          85,
+          122,
+          216
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_water_tower_l01_neighborhood.png",
+        "shipping_sha256": "b6adfcda9b3885a1f0dc301c07808ac060f60b0d3ecfcdcd1ef2a07a0985a4f5",
+        "shipping_pixels": [
+          122,
+          216
+        ],
+        "decoded_byte_estimate": 105408
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/water_tower_l01/generated_v4_water_tower_l01_block.png",
+        "normalized_sha256": "bace2362962239efc54673f401114072fe57aefd0d9ee273d42e3799f046eea7",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          391,
+          171,
+          242,
+          428
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_water_tower_l01_block.png",
+        "shipping_sha256": "de7568adfa95bfe18439c383b84cdb64c58ae94058ae97c7071030b30eb116ed",
+        "shipping_pixels": [
+          242,
+          428
+        ],
+        "decoded_byte_estimate": 414304
+      }
+    ]
+  }
 }

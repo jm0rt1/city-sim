@@ -1,7 +1,7 @@
 {
   "schema": 4,
   "pack_id": "generated-v4-calibration",
-  "generator_version": "PLAY-022-production-geometry-1",
+  "generator_version": "PLAY-022-production-geometry-2-physical-trim",
   "production_selection": true,
   "projection": "orthographic 2:1 isometric",
   "world_tile_points": [
@@ -50,7 +50,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 317560,
       "source_sha256": "6702e0d1755662f723cd4bcdcbf8f890afe4518d90c9a879f84b142ef195260b",
       "prompt_sha256": "b6c6a22a9b2dd59cfb5ef3e90dd74fa52054d0d0fdacf3677f96f9cac6d32adb",
       "reference_sha256": [
@@ -61,12 +61,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_grass_material_city.png",
+          "sha256": "82bdafd7b9050be24d37f1507689cccc50da120c0ed531ea4eccebb9af938224",
+          "normalized_sha256": "59ab2f48505b7b6e26158f92473fa977a36661ab37ffe38304523b03adc1ec8d",
           "pixels": [
+            88,
+            46
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            88,
+            46
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "59ab2f48505b7b6e26158f92473fa977a36661ab37ffe38304523b03adc1ec8d",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             84,
             105,
             88,
@@ -80,16 +91,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 16192
         },
         "neighborhood": {
           "file": "generated_v4_grass_material_neighborhood.png",
+          "sha256": "f3507eb4f4308f931489dcebc1c3d8e239c6d58e6bb871354d1901800ce475c5",
+          "normalized_sha256": "fcd03ade5abb5cab8256fe96a321aece9f8a4341eee6bf6622763f423a3297ba",
           "pixels": [
+            174,
+            89
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            174,
+            89
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "fcd03ade5abb5cab8256fe96a321aece9f8a4341eee6bf6622763f423a3297ba",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             169,
             212,
             174,
@@ -103,16 +125,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 61944
         },
         "block": {
           "file": "generated_v4_grass_material_block.png",
+          "sha256": "0f0f9b32f27984e48f8d31dfc6a0e65017e03d0c7b2c97436e62aa7cde26ef4c",
+          "normalized_sha256": "34d78ce12f4f78ba110a0555b35d9de45c636a434da7defe5e38bc86bcd2f848",
           "pixels": [
+            344,
+            174
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            344,
+            174
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "34d78ce12f4f78ba110a0555b35d9de45c636a434da7defe5e38bc86bcd2f848",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             340,
             425,
             344,
@@ -126,7 +159,7 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 239424
         }
       },
       "placement_offset_world": [
@@ -215,7 +248,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 317560,
       "source_sha256": "404b0a7dde101c7247764e72292f4f57d3391ff55f66699a49f7b94fb467ff08",
       "prompt_sha256": "f2432894faa36477b7197cf8a6d42d5cdff760a9e61ec2ba3951903fbb2591d1",
       "reference_sha256": [
@@ -226,12 +259,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_road_material_city.png",
+          "sha256": "99571428989d805ffbc18cf7bb1148d548978ee528571720141fb14b73371ec9",
+          "normalized_sha256": "9410bad28c15ea9fc11f18eacec7980668e25c46486f5440d3b6d8f1656ad7a7",
           "pixels": [
+            88,
+            46
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            88,
+            46
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "9410bad28c15ea9fc11f18eacec7980668e25c46486f5440d3b6d8f1656ad7a7",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             84,
             105,
             88,
@@ -245,16 +289,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 16192
         },
         "neighborhood": {
           "file": "generated_v4_road_material_neighborhood.png",
+          "sha256": "708ed47ae7b4758b86dceb224785509247962c979f4a4aa2639ed934025ae1ee",
+          "normalized_sha256": "553a08659efd10efc9166b8b6be2db67eeaf40a3042dc4094a45dc3b4d1be08e",
           "pixels": [
+            174,
+            89
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            174,
+            89
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "553a08659efd10efc9166b8b6be2db67eeaf40a3042dc4094a45dc3b4d1be08e",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             169,
             212,
             174,
@@ -268,16 +323,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 61944
         },
         "block": {
           "file": "generated_v4_road_material_block.png",
+          "sha256": "71ddc5ba11fe9cdfb808840a0371ce969254c9ca0732a7c3b83bd4cbbd6c87c7",
+          "normalized_sha256": "fc43ddfef416abe20d866f5273244ff1c21143740ffa50b599565f22dcf1385a",
           "pixels": [
+            344,
+            174
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            344,
+            174
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "fc43ddfef416abe20d866f5273244ff1c21143740ffa50b599565f22dcf1385a",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             340,
             425,
             344,
@@ -291,7 +357,7 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 239424
         }
       },
       "placement_offset_world": [
@@ -381,7 +447,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 317560,
       "source_sha256": "3a1afa7f250299a6c02e09beaed07a4b5cd05278835ec0bc4a29f464b3b97d44",
       "prompt_sha256": "4944ced19099f2d29b2c08cb9ac96a7392d52bc5ec755e0a085f0af96d07a38f",
       "reference_sha256": [
@@ -392,12 +458,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_residential_frontage_city.png",
+          "sha256": "59648dc1d1465e3ca1567a58fe6ef2bc62e19c28db9618246cbbf62e64314fe8",
+          "normalized_sha256": "23d37fe4212fc16618cdcb51c6167c0172a7a6c6941c211206dbf0bef1e51b0e",
           "pixels": [
+            88,
+            46
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            88,
+            46
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "23d37fe4212fc16618cdcb51c6167c0172a7a6c6941c211206dbf0bef1e51b0e",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             84,
             105,
             88,
@@ -411,16 +488,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 16192
         },
         "neighborhood": {
           "file": "generated_v4_residential_frontage_neighborhood.png",
+          "sha256": "6c32bc02547066e780bbc5df89f811e0ffd8067de464d8d5072d3f41ce2165de",
+          "normalized_sha256": "ce19f9688fc3170c1ae0c68a57dd7a13dee856ad18ae814bdb0cf12bf4f24377",
           "pixels": [
+            174,
+            89
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            174,
+            89
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "ce19f9688fc3170c1ae0c68a57dd7a13dee856ad18ae814bdb0cf12bf4f24377",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             169,
             212,
             174,
@@ -434,16 +522,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 61944
         },
         "block": {
           "file": "generated_v4_residential_frontage_block.png",
+          "sha256": "7c14dcd0a6dcec26251c31cfdecab939707fd7d5a00a0f189c1f49a36b290a02",
+          "normalized_sha256": "c25510524763c209e17b7db4e86adf7b76f94cc6239d00813c8212facc84b5e5",
           "pixels": [
+            344,
+            174
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            344,
+            174
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "c25510524763c209e17b7db4e86adf7b76f94cc6239d00813c8212facc84b5e5",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             340,
             425,
             344,
@@ -457,7 +556,7 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 239424
         }
       },
       "placement_offset_world": [
@@ -548,7 +647,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 415600,
       "source_sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
       "prompt_sha256": "0416535982a82d4eab656a43814b0769caedc6c617b583570d3a9a4692215383",
       "reference_sha256": [
@@ -559,12 +658,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_residential_l01_city.png",
+          "sha256": "aa30fab269cb028efff9e34dd371cb286381485a7072f44f1a436009915f9f80",
+          "normalized_sha256": "fe2b3ce332203f97ced8a282d51e603b7b624a985b8279d179107871d85cff31",
           "pixels": [
+            68,
+            77
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            68,
+            77
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "fe2b3ce332203f97ced8a282d51e603b7b624a985b8279d179107871d85cff31",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             94,
             74,
             68,
@@ -578,16 +688,27 @@
             55.3438,
             63.2188
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 20944
         },
         "neighborhood": {
           "file": "generated_v4_residential_l01_neighborhood.png",
+          "sha256": "be33ac55b5ef7b444a545598ac98938a27da86e85de15eb9decc154356a7d9d8",
+          "normalized_sha256": "022dd4fc7f6fefa57b8dcad9d2a71bc53ffd80db79f4ced49bbcc40c5cc3ed7a",
           "pixels": [
+            132,
+            152
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            132,
+            152
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "022dd4fc7f6fefa57b8dcad9d2a71bc53ffd80db79f4ced49bbcc40c5cc3ed7a",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             190,
             149,
             132,
@@ -601,16 +722,27 @@
             55.3438,
             63.2188
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 80256
         },
         "block": {
           "file": "generated_v4_residential_l01_block.png",
+          "sha256": "ae60cf00ae8b2b7032c7deae1b2b79b89c6813f0655410190454153685a02eab",
+          "normalized_sha256": "9d651f9bc62ec2035227d971358b95488c7b139a73e40e91919aa6e2a1ce780a",
           "pixels": [
+            262,
+            300
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            262,
+            300
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "9d651f9bc62ec2035227d971358b95488c7b139a73e40e91919aa6e2a1ce780a",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             381,
             299,
             262,
@@ -624,7 +756,7 @@
             55.3438,
             63.2188
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 314400
         }
       },
       "placement_offset_world": [
@@ -715,7 +847,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 473440,
       "source_sha256": "90207ec4ed651810df863e0ff21591c85eea444f8606c41c83e85060e4c1de89",
       "prompt_sha256": "3baad117e54ea9c3aab2c885a0cb3ef37a803f52b392c3288f628daa195690cf",
       "reference_sha256": [
@@ -726,12 +858,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_commercial_l01_city.png",
+          "sha256": "11fb59278045a54ed0bedfe21d4b769b4157b27c13e4a14dad9ab118748395a0",
+          "normalized_sha256": "9d992505eccf438fabc39b814cfeb1b001d99ba35065f5ceec42a602fed69f9e",
           "pixels": [
+            72,
+            83
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            72,
+            83
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "9d992505eccf438fabc39b814cfeb1b001d99ba35065f5ceec42a602fed69f9e",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             92,
             68,
             72,
@@ -745,16 +888,27 @@
             53.5438,
             62.8588
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 23904
         },
         "neighborhood": {
           "file": "generated_v4_commercial_l01_neighborhood.png",
+          "sha256": "8f77ddc1434734aaf759f9a5bcb7f779864f46105dfbcd6876bbbba9df5ad9fa",
+          "normalized_sha256": "255188495f6c77b92b0c630ebb47ed469a561698b158d77916424411efa92daf",
           "pixels": [
+            140,
+            164
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            140,
+            164
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "255188495f6c77b92b0c630ebb47ed469a561698b158d77916424411efa92daf",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             186,
             137,
             140,
@@ -768,16 +922,27 @@
             53.5438,
             62.8588
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 91840
         },
         "block": {
           "file": "generated_v4_commercial_l01_block.png",
+          "sha256": "27f35e303ae7c2308790ccdf24241feae5176e224c2c5b7113b26724a11f58d9",
+          "normalized_sha256": "5f8f75a9363d891510d4839976ee71ee72a41b61cce6fd6a088d574713118d40",
           "pixels": [
+            276,
+            324
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            276,
+            324
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "5f8f75a9363d891510d4839976ee71ee72a41b61cce6fd6a088d574713118d40",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             374,
             275,
             276,
@@ -791,7 +956,7 @@
             53.5438,
             62.8588
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 357696
         }
       },
       "placement_offset_world": [
@@ -882,7 +1047,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 913176,
       "source_sha256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
       "prompt_sha256": "85a9e6217e2052e493db838cf9e747d826af369fb7062a9804e2aa961d299058",
       "reference_sha256": [
@@ -893,12 +1058,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_industrial_l01_city.png",
+          "sha256": "4b598224db6a8d4886a5cff1f6adf6afffa5daa698b62ed837981fb556be8a7a",
+          "normalized_sha256": "9810dec8b5d8c1875ff0a253e0182d8a37fbef181e0bfc020657630d7844122a",
           "pixels": [
+            122,
+            93
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            122,
+            93
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "9810dec8b5d8c1875ff0a253e0182d8a37fbef181e0bfc020657630d7844122a",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             67,
             58,
             122,
@@ -912,16 +1088,27 @@
             62.4031,
             47.5812
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 45384
         },
         "neighborhood": {
           "file": "generated_v4_industrial_l01_neighborhood.png",
+          "sha256": "4af0a4b86a7cc40a971f0a3ed839cc077a8c1d53a762eca0c6e4a97805ccf9c6",
+          "normalized_sha256": "c59758b4ba7c039eba6577c6bc688ae8a781d49af0e76ec2e1c6bab57da8c344",
           "pixels": [
+            240,
+            184
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            240,
+            184
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "c59758b4ba7c039eba6577c6bc688ae8a781d49af0e76ec2e1c6bab57da8c344",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             136,
             117,
             240,
@@ -935,16 +1122,27 @@
             62.4031,
             47.5812
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 176640
         },
         "block": {
           "file": "generated_v4_industrial_l01_block.png",
+          "sha256": "ef67da06576291dd234a6636494d80f33791ce11139b234e9aecd9c90eb1c109",
+          "normalized_sha256": "31773d3b78ff36a8da6e8bfed16548b995c1cc6213b8dfd9e28b3a074c73c71e",
           "pixels": [
+            476,
+            363
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            476,
+            363
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "31773d3b78ff36a8da6e8bfed16548b995c1cc6213b8dfd9e28b3a074c73c71e",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             274,
             236,
             476,
@@ -958,7 +1156,7 @@
             62.4031,
             47.5812
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 691152
         }
       },
       "placement_offset_world": [
@@ -1049,7 +1247,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 1244608,
       "source_sha256": "0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc",
       "prompt_sha256": "55b3643c30c5b728651a1997d4e46ba65af81afddc2ae597de8e992e98eb5d60",
       "reference_sha256": [
@@ -1060,12 +1258,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_park_l01_city.png",
+          "sha256": "165dc05080cdec15b8051f8ae1221b46ec0ad3acb61c14080f148aaf342234b5",
+          "normalized_sha256": "061f57829807875d74ebb53e7c840fdb2752da5a83a7272acd705da2581231fd",
           "pixels": [
+            174,
+            88
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            174,
+            88
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "061f57829807875d74ebb53e7c840fdb2752da5a83a7272acd705da2581231fd",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             41,
             63,
             174,
@@ -1079,16 +1288,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 61248
         },
         "neighborhood": {
           "file": "generated_v4_park_l01_neighborhood.png",
+          "sha256": "57e8dfb6dabbd36769f7f9f00bdcf3acd8c148a7ab97ca3f2d9c16483bac255a",
+          "normalized_sha256": "6b851210c9c516769ec46ae8211335929cf2e8333e527e13199c24091f12a00d",
           "pixels": [
+            344,
+            174
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            344,
+            174
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "6b851210c9c516769ec46ae8211335929cf2e8333e527e13199c24091f12a00d",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             84,
             127,
             344,
@@ -1102,16 +1322,27 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 239424
         },
         "block": {
           "file": "generated_v4_park_l01_block.png",
+          "sha256": "c1a1cbbbd6ec7d97e41fead79547ee5a60e04566456f3889bce19fd713c1b6de",
+          "normalized_sha256": "9dac9a615c18479320d94080520479b6e73c6020cd2daff635e1843b0e062cdc",
           "pixels": [
+            686,
+            344
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            686,
+            344
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "9dac9a615c18479320d94080520479b6e73c6020cd2daff635e1843b0e062cdc",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             169,
             255,
             686,
@@ -1125,7 +1356,7 @@
             72.5,
             36.5
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 943936
         }
       },
       "placement_offset_world": [
@@ -1217,7 +1448,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 1464760,
       "source_sha256": "4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a",
       "prompt_sha256": "6f880a092f570da30b9d9b64f1ac004c24d8314cfa3b734d495dfdac19aa4067",
       "reference_sha256": [
@@ -1228,12 +1459,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_city_hall_l01_city.png",
+          "sha256": "c92f267b621bb2b2dd2f33c434597a8d1267bac55cc2f988864e338e9c9eaafa",
+          "normalized_sha256": "43170c48925cce3aab4a1257ae79046dc50ef6552d46fddc238067e047e288e6",
           "pixels": [
+            140,
+            129
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            140,
+            129
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "43170c48925cce3aab4a1257ae79046dc50ef6552d46fddc238067e047e288e6",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             58,
             22,
             140,
@@ -1247,16 +1489,27 @@
             62.7688,
             57.6809
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 72240
         },
         "neighborhood": {
           "file": "generated_v4_city_hall_l01_neighborhood.png",
+          "sha256": "24c744198e325e2b3114dab4183637cdf215095895f180978a1b9a57959aa8a7",
+          "normalized_sha256": "37cfee2f85c2858d7e6f7600ffbd9a80db2a4e0e96c6308bbb060b85c00285a2",
           "pixels": [
+            276,
+            255
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            276,
+            255
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "37cfee2f85c2858d7e6f7600ffbd9a80db2a4e0e96c6308bbb060b85c00285a2",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             118,
             46,
             276,
@@ -1270,16 +1523,27 @@
             62.7688,
             57.6809
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 281520
         },
         "block": {
           "file": "generated_v4_city_hall_l01_block.png",
+          "sha256": "709bcd7c46da62fbb67eb3d0c3f8d5d0696ce18881b16eb6408927b8085433af",
+          "normalized_sha256": "9dd2e9c588519f1c113505da543bbf950f787466bf9d93e49ebeb84f3aff6a52",
           "pixels": [
+            550,
+            505
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            550,
+            505
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "9dd2e9c588519f1c113505da543bbf950f787466bf9d93e49ebeb84f3aff6a52",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             237,
             94,
             550,
@@ -1293,7 +1557,7 @@
             62.7688,
             57.6809
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 1111000
         }
       },
       "placement_offset_world": [
@@ -1383,7 +1647,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 546744,
       "source_sha256": "825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2",
       "prompt_sha256": "9b08cee06ba03bec1d9c8bb5207a1f4a8c8cecb11817407efcf382185d55bc0b",
       "reference_sha256": [
@@ -1394,12 +1658,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_water_tower_l01_city.png",
+          "sha256": "9db06fa39e2b879e62543db10c51421c71a08c9ad28f49091f564d0492a7ba73",
+          "normalized_sha256": "a0d482b7d8b0e3eb3a5ba8faabbab4fb876031d0e74ff9c9f10f79b6a0b7a23d",
           "pixels": [
+            62,
+            109
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            62,
+            109
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "a0d482b7d8b0e3eb3a5ba8faabbab4fb876031d0e74ff9c9f10f79b6a0b7a23d",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             97,
             42,
             62,
@@ -1413,16 +1688,27 @@
             47.075,
             82.9119
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 27032
         },
         "neighborhood": {
           "file": "generated_v4_water_tower_l01_neighborhood.png",
+          "sha256": "b6adfcda9b3885a1f0dc301c07808ac060f60b0d3ecfcdcd1ef2a07a0985a4f5",
+          "normalized_sha256": "783bd406431c9b2b91b012ab13ee389e5744999883240b489156f509b77c9fb7",
           "pixels": [
+            122,
+            216
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            122,
+            216
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "783bd406431c9b2b91b012ab13ee389e5744999883240b489156f509b77c9fb7",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             195,
             85,
             122,
@@ -1436,16 +1722,27 @@
             47.075,
             82.9119
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 105408
         },
         "block": {
           "file": "generated_v4_water_tower_l01_block.png",
+          "sha256": "de7568adfa95bfe18439c383b84cdb64c58ae94058ae97c7071030b30eb116ed",
+          "normalized_sha256": "bace2362962239efc54673f401114072fe57aefd0d9ee273d42e3799f046eea7",
           "pixels": [
+            242,
+            428
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            242,
+            428
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "bace2362962239efc54673f401114072fe57aefd0d9ee273d42e3799f046eea7",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             391,
             171,
             242,
@@ -1459,7 +1756,7 @@
             47.075,
             82.9119
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 414304
         }
       },
       "placement_offset_world": [
@@ -1548,7 +1845,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 137752,
       "source_sha256": "335290e1e81bb9a46ab6b059f96ad6e7b6365c48d5e6abae55c281ae8d7ce30b",
       "prompt_sha256": "9d4ba52851615d6c25af8e8a3091af0442e0c037e9afc5cbe21966fad76ed3e0",
       "reference_sha256": [
@@ -1559,12 +1856,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_ambient_pedestrian_pair_city.png",
+          "sha256": "772748f88fffe824589dec5a2641352bb17fde42a40a0f332c6c839223457c88",
+          "normalized_sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
           "pixels": [
+            40,
+            45
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            40,
+            45
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             108,
             106,
             40,
@@ -1578,16 +1886,27 @@
             8.2344,
             9.4648
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 7200
         },
         "neighborhood": {
           "file": "generated_v4_ambient_pedestrian_pair_neighborhood.png",
+          "sha256": "432d9c385c36a68e45889464b074f9a035b263bcbdcc3fc2a9b0c94bf2678837",
+          "normalized_sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
           "pixels": [
+            76,
+            88
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            76,
+            88
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             218,
             213,
             76,
@@ -1601,16 +1920,27 @@
             8.2344,
             9.4648
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 26752
         },
         "block": {
           "file": "generated_v4_ambient_pedestrian_pair_block.png",
+          "sha256": "81008959a70b7cdc191f91c1d385652faab81f8e5e263b01ab70b0270cd889e8",
+          "normalized_sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
           "pixels": [
+            150,
+            173
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            150,
+            173
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             437,
             426,
             150,
@@ -1624,7 +1954,7 @@
             8.2344,
             9.4648
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 103800
         }
       },
       "placement_offset_world": [
@@ -1713,7 +2043,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 229328,
       "source_sha256": "bfac1b625f79978a5e598c35e43b35a65238c68d5a950efda27b6be2ada55181",
       "prompt_sha256": "5fdb7e88e9a5a77cb14eb5055a34a24b1f7a047f9a6ea9323a589623bb8e5237",
       "reference_sha256": [
@@ -1724,12 +2054,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_ambient_service_object_city.png",
+          "sha256": "c8887cdbb54c8c22340a8ab5b38c8901c200551c18e758a18f9151f17b7b79ed",
+          "normalized_sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
           "pixels": [
+            56,
+            52
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            56,
+            52
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             100,
             99,
             56,
@@ -1743,16 +2084,27 @@
             17.6,
             16.2641
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 11648
         },
         "neighborhood": {
           "file": "generated_v4_ambient_service_object_neighborhood.png",
+          "sha256": "b35956012e509d091a3402ffcae52d62e12d41e19a9fa7df66452294ce305942",
+          "normalized_sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
           "pixels": [
+            110,
+            102
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            110,
+            102
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             201,
             199,
             110,
@@ -1766,16 +2118,27 @@
             17.6,
             16.2641
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 44880
         },
         "block": {
           "file": "generated_v4_ambient_service_object_block.png",
+          "sha256": "2125056e6fe9824aba43369048333700c56663bba8fe1c6c32694a15c1b100a4",
+          "normalized_sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
           "pixels": [
+            216,
+            200
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            216,
+            200
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             404,
             399,
             216,
@@ -1789,7 +2152,7 @@
             17.6,
             16.2641
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 172800
         }
       },
       "placement_offset_world": [
@@ -1879,7 +2242,7 @@
       "padding": 24,
       "filtering": "linear",
       "mipmap": false,
-      "decoded_byte_estimate": 3673088,
+      "decoded_byte_estimate": 403464,
       "source_sha256": "99a11b2cdda5b2d471bf041d920d57e70e46dd72ee63c77b62b997de378e16ca",
       "prompt_sha256": "32f88e26df8d25635e03d7849a61d177a455d10186d5b623727c80d2b08cdf1c",
       "reference_sha256": [
@@ -1890,12 +2253,23 @@
       "lods": {
         "city": {
           "file": "generated_v4_ambient_vegetation_cluster_city.png",
+          "sha256": "fa75075eb4d77923d09e9a775dfbb134b82fdf9c74a563b7b6a1d61cc5065afa",
+          "normalized_sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
           "pixels": [
+            74,
+            68
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            74,
+            68
+          ],
+          "source_pixels": [
             256,
             171
           ],
-          "sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             91,
             83,
             74,
@@ -1909,16 +2283,27 @@
             33.7578,
             30.6641
           ],
-          "decoded_byte_estimate": 175104
+          "decoded_byte_estimate": 20128
         },
         "neighborhood": {
           "file": "generated_v4_ambient_vegetation_cluster_neighborhood.png",
+          "sha256": "76a37d50db8d2260334d60a14bfd60a8604171b4fef6aade7fb3d51f8f2e18d3",
+          "normalized_sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
           "pixels": [
+            146,
+            134
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            146,
+            134
+          ],
+          "source_pixels": [
             512,
             342
           ],
-          "sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             183,
             167,
             146,
@@ -1932,16 +2317,27 @@
             33.7578,
             30.6641
           ],
-          "decoded_byte_estimate": 700416
+          "decoded_byte_estimate": 78256
         },
         "block": {
           "file": "generated_v4_ambient_vegetation_cluster_block.png",
+          "sha256": "d98a7914197039d9ae36f9ec059f4f7089cd2a8992b08762f9d3254320fe2f52",
+          "normalized_sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
           "pixels": [
+            290,
+            263
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            290,
+            263
+          ],
+          "source_pixels": [
             1024,
             683
           ],
-          "sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
-          "trim_rect_pixels": [
+          "source_trim_rect_pixels": [
             367,
             336,
             290,
@@ -1955,7 +2351,7 @@
             33.7578,
             30.6641
           ],
-          "decoded_byte_estimate": 2797568
+          "decoded_byte_estimate": 305080
         }
       },
       "placement_offset_world": [
@@ -2016,273 +2412,273 @@
   "inventory": [
     {
       "file": "generated_v4_ambient_pedestrian_pair_block.png",
-      "sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
+      "sha256": "81008959a70b7cdc191f91c1d385652faab81f8e5e263b01ab70b0270cd889e8",
       "pixels": [
-        1024,
-        683
+        150,
+        173
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 103800
     },
     {
       "file": "generated_v4_ambient_pedestrian_pair_city.png",
-      "sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
+      "sha256": "772748f88fffe824589dec5a2641352bb17fde42a40a0f332c6c839223457c88",
       "pixels": [
-        256,
-        171
+        40,
+        45
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 7200
     },
     {
       "file": "generated_v4_ambient_pedestrian_pair_neighborhood.png",
-      "sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
+      "sha256": "432d9c385c36a68e45889464b074f9a035b263bcbdcc3fc2a9b0c94bf2678837",
       "pixels": [
-        512,
-        342
+        76,
+        88
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 26752
     },
     {
       "file": "generated_v4_ambient_service_object_block.png",
-      "sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
+      "sha256": "2125056e6fe9824aba43369048333700c56663bba8fe1c6c32694a15c1b100a4",
       "pixels": [
-        1024,
-        683
+        216,
+        200
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 172800
     },
     {
       "file": "generated_v4_ambient_service_object_city.png",
-      "sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
+      "sha256": "c8887cdbb54c8c22340a8ab5b38c8901c200551c18e758a18f9151f17b7b79ed",
       "pixels": [
-        256,
-        171
+        56,
+        52
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 11648
     },
     {
       "file": "generated_v4_ambient_service_object_neighborhood.png",
-      "sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
+      "sha256": "b35956012e509d091a3402ffcae52d62e12d41e19a9fa7df66452294ce305942",
       "pixels": [
-        512,
-        342
+        110,
+        102
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 44880
     },
     {
       "file": "generated_v4_ambient_vegetation_cluster_block.png",
-      "sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
+      "sha256": "d98a7914197039d9ae36f9ec059f4f7089cd2a8992b08762f9d3254320fe2f52",
       "pixels": [
-        1024,
-        683
+        290,
+        263
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 305080
     },
     {
       "file": "generated_v4_ambient_vegetation_cluster_city.png",
-      "sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
+      "sha256": "fa75075eb4d77923d09e9a775dfbb134b82fdf9c74a563b7b6a1d61cc5065afa",
       "pixels": [
-        256,
-        171
+        74,
+        68
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 20128
     },
     {
       "file": "generated_v4_ambient_vegetation_cluster_neighborhood.png",
-      "sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
+      "sha256": "76a37d50db8d2260334d60a14bfd60a8604171b4fef6aade7fb3d51f8f2e18d3",
       "pixels": [
-        512,
-        342
+        146,
+        134
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 78256
     },
     {
       "file": "generated_v4_city_hall_l01_block.png",
-      "sha256": "9dd2e9c588519f1c113505da543bbf950f787466bf9d93e49ebeb84f3aff6a52",
+      "sha256": "709bcd7c46da62fbb67eb3d0c3f8d5d0696ce18881b16eb6408927b8085433af",
       "pixels": [
-        1024,
-        683
+        550,
+        505
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 1111000
     },
     {
       "file": "generated_v4_city_hall_l01_city.png",
-      "sha256": "43170c48925cce3aab4a1257ae79046dc50ef6552d46fddc238067e047e288e6",
+      "sha256": "c92f267b621bb2b2dd2f33c434597a8d1267bac55cc2f988864e338e9c9eaafa",
       "pixels": [
-        256,
-        171
+        140,
+        129
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 72240
     },
     {
       "file": "generated_v4_city_hall_l01_neighborhood.png",
-      "sha256": "37cfee2f85c2858d7e6f7600ffbd9a80db2a4e0e96c6308bbb060b85c00285a2",
+      "sha256": "24c744198e325e2b3114dab4183637cdf215095895f180978a1b9a57959aa8a7",
       "pixels": [
-        512,
-        342
+        276,
+        255
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 281520
     },
     {
       "file": "generated_v4_commercial_l01_block.png",
-      "sha256": "5f8f75a9363d891510d4839976ee71ee72a41b61cce6fd6a088d574713118d40",
+      "sha256": "27f35e303ae7c2308790ccdf24241feae5176e224c2c5b7113b26724a11f58d9",
       "pixels": [
-        1024,
-        683
+        276,
+        324
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 357696
     },
     {
       "file": "generated_v4_commercial_l01_city.png",
-      "sha256": "9d992505eccf438fabc39b814cfeb1b001d99ba35065f5ceec42a602fed69f9e",
+      "sha256": "11fb59278045a54ed0bedfe21d4b769b4157b27c13e4a14dad9ab118748395a0",
       "pixels": [
-        256,
-        171
+        72,
+        83
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 23904
     },
     {
       "file": "generated_v4_commercial_l01_neighborhood.png",
-      "sha256": "255188495f6c77b92b0c630ebb47ed469a561698b158d77916424411efa92daf",
+      "sha256": "8f77ddc1434734aaf759f9a5bcb7f779864f46105dfbcd6876bbbba9df5ad9fa",
       "pixels": [
-        512,
-        342
+        140,
+        164
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 91840
     },
     {
       "file": "generated_v4_grass_material_block.png",
-      "sha256": "34d78ce12f4f78ba110a0555b35d9de45c636a434da7defe5e38bc86bcd2f848",
+      "sha256": "0f0f9b32f27984e48f8d31dfc6a0e65017e03d0c7b2c97436e62aa7cde26ef4c",
       "pixels": [
-        1024,
-        683
+        344,
+        174
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 239424
     },
     {
       "file": "generated_v4_grass_material_city.png",
-      "sha256": "59ab2f48505b7b6e26158f92473fa977a36661ab37ffe38304523b03adc1ec8d",
+      "sha256": "82bdafd7b9050be24d37f1507689cccc50da120c0ed531ea4eccebb9af938224",
       "pixels": [
-        256,
-        171
+        88,
+        46
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 16192
     },
     {
       "file": "generated_v4_grass_material_neighborhood.png",
-      "sha256": "fcd03ade5abb5cab8256fe96a321aece9f8a4341eee6bf6622763f423a3297ba",
+      "sha256": "f3507eb4f4308f931489dcebc1c3d8e239c6d58e6bb871354d1901800ce475c5",
       "pixels": [
-        512,
-        342
+        174,
+        89
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 61944
     },
     {
       "file": "generated_v4_industrial_l01_block.png",
-      "sha256": "31773d3b78ff36a8da6e8bfed16548b995c1cc6213b8dfd9e28b3a074c73c71e",
+      "sha256": "ef67da06576291dd234a6636494d80f33791ce11139b234e9aecd9c90eb1c109",
       "pixels": [
-        1024,
-        683
+        476,
+        363
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 691152
     },
     {
       "file": "generated_v4_industrial_l01_city.png",
-      "sha256": "9810dec8b5d8c1875ff0a253e0182d8a37fbef181e0bfc020657630d7844122a",
+      "sha256": "4b598224db6a8d4886a5cff1f6adf6afffa5daa698b62ed837981fb556be8a7a",
       "pixels": [
-        256,
-        171
+        122,
+        93
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 45384
     },
     {
       "file": "generated_v4_industrial_l01_neighborhood.png",
-      "sha256": "c59758b4ba7c039eba6577c6bc688ae8a781d49af0e76ec2e1c6bab57da8c344",
+      "sha256": "4af0a4b86a7cc40a971f0a3ed839cc077a8c1d53a762eca0c6e4a97805ccf9c6",
       "pixels": [
-        512,
-        342
+        240,
+        184
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 176640
     },
     {
       "file": "generated_v4_park_l01_block.png",
-      "sha256": "9dac9a615c18479320d94080520479b6e73c6020cd2daff635e1843b0e062cdc",
+      "sha256": "c1a1cbbbd6ec7d97e41fead79547ee5a60e04566456f3889bce19fd713c1b6de",
       "pixels": [
-        1024,
-        683
+        686,
+        344
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 943936
     },
     {
       "file": "generated_v4_park_l01_city.png",
-      "sha256": "061f57829807875d74ebb53e7c840fdb2752da5a83a7272acd705da2581231fd",
+      "sha256": "165dc05080cdec15b8051f8ae1221b46ec0ad3acb61c14080f148aaf342234b5",
       "pixels": [
-        256,
-        171
+        174,
+        88
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 61248
     },
     {
       "file": "generated_v4_park_l01_neighborhood.png",
-      "sha256": "6b851210c9c516769ec46ae8211335929cf2e8333e527e13199c24091f12a00d",
+      "sha256": "57e8dfb6dabbd36769f7f9f00bdcf3acd8c148a7ab97ca3f2d9c16483bac255a",
       "pixels": [
-        512,
-        342
+        344,
+        174
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 239424
     },
     {
       "file": "generated_v4_residential_frontage_block.png",
-      "sha256": "c25510524763c209e17b7db4e86adf7b76f94cc6239d00813c8212facc84b5e5",
+      "sha256": "7c14dcd0a6dcec26251c31cfdecab939707fd7d5a00a0f189c1f49a36b290a02",
       "pixels": [
-        1024,
-        683
+        344,
+        174
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 239424
     },
     {
       "file": "generated_v4_residential_frontage_city.png",
-      "sha256": "23d37fe4212fc16618cdcb51c6167c0172a7a6c6941c211206dbf0bef1e51b0e",
+      "sha256": "59648dc1d1465e3ca1567a58fe6ef2bc62e19c28db9618246cbbf62e64314fe8",
       "pixels": [
-        256,
-        171
+        88,
+        46
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 16192
     },
     {
       "file": "generated_v4_residential_frontage_neighborhood.png",
-      "sha256": "ce19f9688fc3170c1ae0c68a57dd7a13dee856ad18ae814bdb0cf12bf4f24377",
+      "sha256": "6c32bc02547066e780bbc5df89f811e0ffd8067de464d8d5072d3f41ce2165de",
       "pixels": [
-        512,
-        342
+        174,
+        89
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 61944
     },
     {
       "file": "generated_v4_residential_l01_block.png",
-      "sha256": "9d651f9bc62ec2035227d971358b95488c7b139a73e40e91919aa6e2a1ce780a",
+      "sha256": "ae60cf00ae8b2b7032c7deae1b2b79b89c6813f0655410190454153685a02eab",
       "pixels": [
-        1024,
-        683
+        262,
+        300
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 314400
     },
     {
       "file": "generated_v4_residential_l01_city.png",
-      "sha256": "fe2b3ce332203f97ced8a282d51e603b7b624a985b8279d179107871d85cff31",
+      "sha256": "aa30fab269cb028efff9e34dd371cb286381485a7072f44f1a436009915f9f80",
       "pixels": [
-        256,
-        171
+        68,
+        77
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 20944
     },
     {
       "file": "generated_v4_residential_l01_neighborhood.png",
-      "sha256": "022dd4fc7f6fefa57b8dcad9d2a71bc53ffd80db79f4ced49bbcc40c5cc3ed7a",
+      "sha256": "be33ac55b5ef7b444a545598ac98938a27da86e85de15eb9decc154356a7d9d8",
       "pixels": [
-        512,
-        342
+        132,
+        152
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 80256
     },
     {
       "file": "generated_v4_road_mask_00_block.png",
@@ -2718,57 +3114,57 @@
     },
     {
       "file": "generated_v4_road_material_block.png",
-      "sha256": "fc43ddfef416abe20d866f5273244ff1c21143740ffa50b599565f22dcf1385a",
+      "sha256": "71ddc5ba11fe9cdfb808840a0371ce969254c9ca0732a7c3b83bd4cbbd6c87c7",
       "pixels": [
-        1024,
-        683
+        344,
+        174
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 239424
     },
     {
       "file": "generated_v4_road_material_city.png",
-      "sha256": "9410bad28c15ea9fc11f18eacec7980668e25c46486f5440d3b6d8f1656ad7a7",
+      "sha256": "99571428989d805ffbc18cf7bb1148d548978ee528571720141fb14b73371ec9",
       "pixels": [
-        256,
-        171
+        88,
+        46
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 16192
     },
     {
       "file": "generated_v4_road_material_neighborhood.png",
-      "sha256": "553a08659efd10efc9166b8b6be2db67eeaf40a3042dc4094a45dc3b4d1be08e",
+      "sha256": "708ed47ae7b4758b86dceb224785509247962c979f4a4aa2639ed934025ae1ee",
       "pixels": [
-        512,
-        342
+        174,
+        89
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 61944
     },
     {
       "file": "generated_v4_water_tower_l01_block.png",
-      "sha256": "bace2362962239efc54673f401114072fe57aefd0d9ee273d42e3799f046eea7",
+      "sha256": "de7568adfa95bfe18439c383b84cdb64c58ae94058ae97c7071030b30eb116ed",
       "pixels": [
-        1024,
-        683
+        242,
+        428
       ],
-      "decoded_byte_estimate": 2797568
+      "decoded_byte_estimate": 414304
     },
     {
       "file": "generated_v4_water_tower_l01_city.png",
-      "sha256": "a0d482b7d8b0e3eb3a5ba8faabbab4fb876031d0e74ff9c9f10f79b6a0b7a23d",
+      "sha256": "9db06fa39e2b879e62543db10c51421c71a08c9ad28f49091f564d0492a7ba73",
       "pixels": [
-        256,
-        171
+        62,
+        109
       ],
-      "decoded_byte_estimate": 175104
+      "decoded_byte_estimate": 27032
     },
     {
       "file": "generated_v4_water_tower_l01_neighborhood.png",
-      "sha256": "783bd406431c9b2b91b012ab13ee389e5744999883240b489156f509b77c9fb7",
+      "sha256": "b6adfcda9b3885a1f0dc301c07808ac060f60b0d3ecfcdcd1ef2a07a0985a4f5",
       "pixels": [
-        512,
-        342
+        122,
+        216
       ],
-      "decoded_byte_estimate": 700416
+      "decoded_byte_estimate": 105408
     }
   ],
   "compiled_network": {

@@ -468,9 +468,26 @@ final class WorldRenderingTests: XCTestCase {
 
             let worldSizes = try CameraDetailLevel.allCases.map { detail in
                 let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                XCTAssertEqual(lod.trimRectPixels, [0, 0, lod.pixels[0], lod.pixels[1]], asset.logicalID)
+                XCTAssertEqual(lod.sourceTrimRectPixels[2], lod.pixels[0], asset.logicalID)
+                XCTAssertEqual(lod.sourceTrimRectPixels[3], lod.pixels[1], asset.logicalID)
+                XCTAssertLessThanOrEqual(
+                    lod.sourceTrimRectPixels[0] + lod.sourceTrimRectPixels[2],
+                    lod.sourcePixels[0],
+                    asset.logicalID
+                )
+                XCTAssertLessThanOrEqual(
+                    lod.sourceTrimRectPixels[1] + lod.sourceTrimRectPixels[3],
+                    lod.sourcePixels[1],
+                    asset.logicalID
+                )
+                XCTAssertEqual(lod.decodedByteEstimate, lod.pixels[0] * lod.pixels[1] * 4, asset.logicalID)
+                let textureName = (lod.file as NSString).deletingPathExtension
+                let physicalTexture = try XCTUnwrap(catalog.texture(named: textureName))
                 let presentation = try XCTUnwrap(
                     catalog.generatedPresentation(logicalID: asset.logicalID, detail: detail)
                 )
+                XCTAssertTrue(presentation.sprite.texture === physicalTexture, asset.logicalID)
                 XCTAssertEqual(presentation.sprite.position.x, asset.placementOffsetWorld[0], accuracy: 0.001)
                 XCTAssertEqual(presentation.sprite.position.y, asset.placementOffsetWorld[1], accuracy: 0.001)
                 XCTAssertEqual(presentation.sprite.anchorPoint.x, lod.anchor[0], accuracy: 0.000_001)
@@ -485,6 +502,34 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(grass.opaqueBoundsWorld, [-36, -18, 36, 18])
         XCTAssertLessThanOrEqual(try XCTUnwrap(grass.lods["block"]).worldSize[0], 72.5)
         XCTAssertLessThanOrEqual(try XCTUnwrap(grass.lods["block"]).worldSize[1], 36.5)
+    }
+
+    @MainActor
+    func testGeneratedWorldCatalogMeasuresDecodeLoadWithoutChargingCacheHits() throws {
+        let catalog = WorldAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+        let asset = try XCTUnwrap(manifest.assets.first)
+        let lod = try XCTUnwrap(asset.lods[CameraDetailLevel.block.assetSuffix])
+        let textureName = (lod.file as NSString).deletingPathExtension
+        let before = catalog.residencySnapshot()
+
+        XCTAssertNotNil(catalog.texture(named: textureName))
+        let loaded = catalog.residencySnapshot()
+        XCTAssertEqual(loaded.textureDecodeLoadCount, before.textureDecodeLoadCount + 1)
+        XCTAssertGreaterThan(
+            loaded.textureDecodeLoadDurationMilliseconds,
+            before.textureDecodeLoadDurationMilliseconds
+        )
+
+        XCTAssertNotNil(catalog.texture(named: textureName))
+        let cached = catalog.residencySnapshot()
+        XCTAssertEqual(cached.textureDecodeLoadCount, loaded.textureDecodeLoadCount)
+        XCTAssertEqual(
+            cached.textureDecodeLoadDurationMilliseconds,
+            loaded.textureDecodeLoadDurationMilliseconds,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(cached.cacheHits, loaded.cacheHits + 1)
     }
 
     @MainActor
@@ -1347,6 +1392,46 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode() throws {
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        let snapshot = try CityPresentationSnapshot(state: goldenNeighborhoodState())
+
+        scene.render(
+            snapshot: snapshot,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let cold = scene.diagnosticsSnapshot
+        XCTAssertEqual(cold.updateDurationMilliseconds, cold.worldUpdateDurationMilliseconds)
+        XCTAssertGreaterThan(cold.worldUpdateDurationMilliseconds, 0)
+        XCTAssertGreaterThanOrEqual(cold.totalRenderDurationMilliseconds, cold.worldUpdateDurationMilliseconds)
+        XCTAssertGreaterThanOrEqual(
+            cold.totalRenderDurationMilliseconds,
+            cold.assetDecodeLoadDurationMilliseconds
+        )
+        scene.render(
+            snapshot: snapshot,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let unchanged = scene.diagnosticsSnapshot
+        XCTAssertEqual(unchanged.worldUpdateDurationMilliseconds, 0)
+        XCTAssertGreaterThan(unchanged.totalRenderDurationMilliseconds, 0)
+        XCTAssertEqual(unchanged.assetDecodeLoadCount, 0)
+        XCTAssertEqual(unchanged.assetDecodeLoadDurationMilliseconds, 0, accuracy: 0.000_001)
+        print(
+            "PLAY022_ROUND1B_COLD_RENDER " +
+            "world_update_ms=\(String(format: "%.3f", cold.worldUpdateDurationMilliseconds)) " +
+            "asset_decode_loads=\(cold.assetDecodeLoadCount) " +
+            "asset_decode_ms=\(String(format: "%.3f", cold.assetDecodeLoadDurationMilliseconds)) " +
+            "total_render_ms=\(String(format: "%.3f", cold.totalRenderDurationMilliseconds))"
+        )
+    }
+
+    @MainActor
     func testCitySceneInvalidatesOnlyVisibleLifecycleBandChanges() throws {
         var state = CityGameState.newCity(seed: 42)
         let target = GridCoordinate(x: 10, y: 11)
@@ -1426,7 +1511,10 @@ final class WorldRenderingTests: XCTestCase {
             "CITYSIM_PLAY021_GOLDEN_DIAGNOSTICS " +
             "nodes=\(block.diagnostics.nodeCount) drawables=\(block.diagnostics.drawableNodeCount) " +
             "actions=\(block.diagnostics.activeActionCount) " +
-            "update_ms=\(String(format: "%.3f", block.diagnostics.updateDurationMilliseconds))"
+            "world_update_ms=\(String(format: "%.3f", block.diagnostics.worldUpdateDurationMilliseconds)) " +
+            "asset_decode_loads=\(block.diagnostics.assetDecodeLoadCount) " +
+            "asset_decode_ms=\(String(format: "%.3f", block.diagnostics.assetDecodeLoadDurationMilliseconds)) " +
+            "total_render_ms=\(String(format: "%.3f", block.diagnostics.totalRenderDurationMilliseconds))"
         )
     }
 

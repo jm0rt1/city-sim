@@ -13,11 +13,13 @@ import argparse
 import hashlib
 import json
 import math
+import struct
 from pathlib import Path
 from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[2]
+GENERATED = ROOT / "GeneratedV4"
 PACKAGE = ROOT.parent
 ATLAS = PACKAGE / "Sources" / "CitySimNative" / "Resources" / "WorldAssets.atlas"
 MANIFEST = ATLAS / "generated-v4-manifest.json"
@@ -42,6 +44,14 @@ HARD_ACTIVE_BYTES = 128 * 1024 * 1024
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def png_dimensions(path: Path) -> tuple[int, int]:
+    with path.open("rb") as stream:
+        header = stream.read(24)
+    if len(header) != 24 or header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
+        raise ValueError("not a PNG with a readable IHDR")
+    return struct.unpack(">II", header[16:24])
 
 
 def finite_values(values: Iterable[object], expected_count: int) -> bool:
@@ -214,6 +224,17 @@ def main() -> None:
         expected_bytes = int(pixels[0]) * int(pixels[1]) * 4
         if item.get("decoded_byte_estimate") != expected_bytes:
             failures.append(f"decoded byte mismatch: {name}")
+        if path.exists():
+            try:
+                actual_pixels = png_dimensions(path)
+            except ValueError as error:
+                failures.append(f"invalid PNG payload: {name}: {error}")
+            else:
+                if actual_pixels != (int(pixels[0]), int(pixels[1])):
+                    failures.append(
+                        f"physical PNG dimensions disagree with inventory: {name}: "
+                        f"{actual_pixels} != {(int(pixels[0]), int(pixels[1]))}"
+                    )
 
     logical_ids: set[str] = set()
     residency_ids: set[str] = set()
@@ -394,6 +415,8 @@ def main() -> None:
                 continue
             pixels = lod.get("pixels", [])
             trim = lod.get("trim_rect_pixels", [])
+            normalized_pixels = lod.get("source_pixels", [])
+            normalized_trim = lod.get("source_trim_rect_pixels", [])
             anchor = lod.get("anchor", [])
             world_size = lod.get("world_size", [])
             if not finite_values(pixels, 2) or min(pixels) <= 0:
@@ -401,6 +424,12 @@ def main() -> None:
                 continue
             if not finite_values(trim, 4) or trim[2] <= 0 or trim[3] <= 0:
                 failures.append(f"{logical_id}.{detail} has invalid trim rectangle")
+                continue
+            if not finite_values(normalized_pixels, 2) or min(normalized_pixels) <= 0:
+                failures.append(f"{logical_id}.{detail} has invalid normalized source dimensions")
+                continue
+            if not finite_values(normalized_trim, 4) or normalized_trim[2] <= 0 or normalized_trim[3] <= 0:
+                failures.append(f"{logical_id}.{detail} has invalid normalized source trim")
                 continue
             if not finite_values(anchor, 2) or any(value < 0 or value > 1 for value in anchor):
                 failures.append(f"{logical_id}.{detail} has invalid anchor")
@@ -418,14 +447,45 @@ def main() -> None:
             ):
                 failures.append(f"{logical_id}.{detail} trim leaves its source canvas")
 
+            if (
+                abs(trim_x) > GEOMETRY_TOLERANCE
+                or abs(trim_y) > GEOMETRY_TOLERANCE
+                or abs(trim_width - pixel_width) > GEOMETRY_TOLERANCE
+                or abs(trim_height - pixel_height) > GEOMETRY_TOLERANCE
+            ):
+                failures.append(f"{logical_id}.{detail} shipping trim does not fill its physical PNG payload")
+
+            normalized_width, normalized_height = (float(value) for value in normalized_pixels)
+            normalized_x, normalized_y, normalized_trim_width, normalized_trim_height = (
+                float(value) for value in normalized_trim
+            )
+            if not (
+                0 <= normalized_x < normalized_width
+                and 0 <= normalized_y < normalized_height
+                and normalized_x + normalized_trim_width <= normalized_width
+                and normalized_y + normalized_trim_height <= normalized_height
+            ):
+                failures.append(f"{logical_id}.{detail} normalized trim leaves its immutable source canvas")
+            if (
+                abs(normalized_trim_width - pixel_width) > GEOMETRY_TOLERANCE
+                or abs(normalized_trim_height - pixel_height) > GEOMETRY_TOLERANCE
+            ):
+                failures.append(f"{logical_id}.{detail} physical payload does not match its normalized source trim")
+
             if finite_values(source_canvas, 2) and finite_values(source_pivot, 2):
                 source_width, source_height = (float(value) for value in source_canvas)
                 source_pivot_x, source_pivot_y = (float(value) for value in source_pivot)
-                expected_anchor_x = (source_pivot_x * pixel_width / source_width - trim_x) / trim_width
-                expected_anchor_y = (trim_y + trim_height - source_pivot_y * pixel_height / source_height) / trim_height
+                expected_anchor_x = (
+                    source_pivot_x * normalized_width / source_width - normalized_x
+                ) / normalized_trim_width
+                expected_anchor_y = (
+                    normalized_y
+                    + normalized_trim_height
+                    - source_pivot_y * normalized_height / source_height
+                ) / normalized_trim_height
                 drift_pixels = max(
-                    abs(float(anchor[0]) - expected_anchor_x) * trim_width,
-                    abs(float(anchor[1]) - expected_anchor_y) * trim_height,
+                    abs(float(anchor[0]) - expected_anchor_x) * normalized_trim_width,
+                    abs(float(anchor[1]) - expected_anchor_y) * normalized_trim_height,
                 )
                 pivot_drift[logical_id][detail] = round(drift_pixels, 6)
                 if drift_pixels > PIVOT_TOLERANCE_PIXELS:
@@ -454,6 +514,22 @@ def main() -> None:
                         failures.append(f"{logical_id}.{detail} inventory and LOD hashes disagree")
                     if inventory_item.get("decoded_byte_estimate") != lod.get("decoded_byte_estimate"):
                         failures.append(f"{logical_id}.{detail} inventory and LOD decoded bytes disagree")
+            normalized_file = GENERATED / "normalized" / "calibration" / logical_id / str(file_name)
+            if not normalized_file.exists():
+                failures.append(f"{logical_id}.{detail} normalized source file is missing")
+            else:
+                try:
+                    actual_normalized_pixels = png_dimensions(normalized_file)
+                except ValueError as error:
+                    failures.append(f"{logical_id}.{detail} normalized source is invalid: {error}")
+                else:
+                    if actual_normalized_pixels != (int(normalized_width), int(normalized_height)):
+                        failures.append(
+                            f"{logical_id}.{detail} normalized source dimensions disagree with manifest: "
+                            f"{actual_normalized_pixels} != {(int(normalized_width), int(normalized_height))}"
+                        )
+                if sha256(normalized_file) != lod.get("normalized_sha256"):
+                    failures.append(f"{logical_id}.{detail} normalized source hash mismatch")
             expected_lod_bytes = int(pixel_width) * int(pixel_height) * 4
             if lod.get("decoded_byte_estimate") != expected_lod_bytes:
                 failures.append(f"{logical_id}.{detail} decoded byte estimate is invalid")

@@ -4,15 +4,19 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
     struct LOD: Decodable, Sendable {
         let file: String
         let pixels: [Int]
+        let sourcePixels: [Int]
         let sha256: String
         let trimRectPixels: [Int]
+        let sourceTrimRectPixels: [Int]
         let anchor: [Double]
         let worldSize: [Double]
         let decodedByteEstimate: Int
 
         enum CodingKeys: String, CodingKey {
             case file, pixels, sha256, anchor
+            case sourcePixels = "source_pixels"
             case trimRectPixels = "trim_rect_pixels"
+            case sourceTrimRectPixels = "source_trim_rect_pixels"
             case worldSize = "world_size"
             case decodedByteEstimate = "decoded_byte_estimate"
         }

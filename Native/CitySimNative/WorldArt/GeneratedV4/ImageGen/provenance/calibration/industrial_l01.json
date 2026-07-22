@@ -49,5 +49,78 @@
   "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
   "reviewer": "world-rendering lane ingestion authority",
   "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
-  "rejection_reasons": []
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01/generated_v4_industrial_l01_city.png",
+        "normalized_sha256": "9810dec8b5d8c1875ff0a253e0182d8a37fbef181e0bfc020657630d7844122a",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          67,
+          58,
+          122,
+          93
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_industrial_l01_city.png",
+        "shipping_sha256": "4b598224db6a8d4886a5cff1f6adf6afffa5daa698b62ed837981fb556be8a7a",
+        "shipping_pixels": [
+          122,
+          93
+        ],
+        "decoded_byte_estimate": 45384
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01/generated_v4_industrial_l01_neighborhood.png",
+        "normalized_sha256": "c59758b4ba7c039eba6577c6bc688ae8a781d49af0e76ec2e1c6bab57da8c344",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          136,
+          117,
+          240,
+          184
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_industrial_l01_neighborhood.png",
+        "shipping_sha256": "4af0a4b86a7cc40a971f0a3ed839cc077a8c1d53a762eca0c6e4a97805ccf9c6",
+        "shipping_pixels": [
+          240,
+          184
+        ],
+        "decoded_byte_estimate": 176640
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01/generated_v4_industrial_l01_block.png",
+        "normalized_sha256": "31773d3b78ff36a8da6e8bfed16548b995c1cc6213b8dfd9e28b3a074c73c71e",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          274,
+          236,
+          476,
+          363
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_industrial_l01_block.png",
+        "shipping_sha256": "ef67da06576291dd234a6636494d80f33791ce11139b234e9aecd9c90eb1c109",
+        "shipping_pixels": [
+          476,
+          363
+        ],
+        "decoded_byte_estimate": 691152
+      }
+    ]
+  }
 }

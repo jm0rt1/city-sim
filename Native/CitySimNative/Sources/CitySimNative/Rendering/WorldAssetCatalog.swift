@@ -1,4 +1,5 @@
 import AppKit
+import ImageIO
 import SpriteKit
 
 struct WorldAssetResidencySnapshot: Equatable, Sendable {
@@ -10,6 +11,8 @@ struct WorldAssetResidencySnapshot: Equatable, Sendable {
     let cacheMisses: Int
     let evictions: Int
     let fallbackCount: Int
+    let textureDecodeLoadCount: Int
+    let textureDecodeLoadDurationMilliseconds: Double
 }
 
 @MainActor
@@ -41,6 +44,8 @@ final class WorldAssetCatalog {
     private var cacheMisses = 0
     private var evictionCount = 0
     private var fallbackCount = 0
+    private var textureDecodeLoadCount = 0
+    private var textureDecodeLoadDurationMilliseconds = 0.0
 
     private(set) lazy var generatedManifest: GeneratedWorldAssetManifest? = loadGeneratedManifest()
     private lazy var generatedAssetsByID: [String: GeneratedWorldAssetManifest.Asset] = {
@@ -86,6 +91,24 @@ final class WorldAssetCatalog {
         generatedCrops = generatedCrops.filter { $0.key.hasSuffix("|\(detail.assetSuffix)") }
     }
 
+    /// Resolves the complete active semantic LOD before SpriteKit node creation.
+    /// Decode/load time remains visible through `residencySnapshot`; this only
+    /// keeps that cost out of the historical update-world measurement.
+    func preloadGeneratedResidency(
+        for detail: CameraDetailLevel,
+        logicalIDs: Set<String>
+    ) {
+        prepareGeneratedResidency(for: detail)
+        let semanticNames = (generatedManifest?.assets ?? []).compactMap { asset -> String? in
+            guard logicalIDs.contains(asset.logicalID) else { return nil }
+            guard let file = asset.lods[detail.assetSuffix]?.file else { return nil }
+            return (file as NSString).deletingPathExtension
+        }
+        for name in semanticNames.sorted() {
+            _ = texture(named: name)
+        }
+    }
+
     func residencySnapshot() -> WorldAssetResidencySnapshot {
         WorldAssetResidencySnapshot(
             activeDetail: activeGeneratedDetail,
@@ -95,7 +118,9 @@ final class WorldAssetCatalog {
             cacheHits: cacheHits,
             cacheMisses: cacheMisses,
             evictions: evictionCount,
-            fallbackCount: fallbackCount
+            fallbackCount: fallbackCount,
+            textureDecodeLoadCount: textureDecodeLoadCount,
+            textureDecodeLoadDurationMilliseconds: textureDecodeLoadDurationMilliseconds
         )
     }
 
@@ -124,7 +149,8 @@ final class WorldAssetCatalog {
                     issues.append("\(asset.logicalID) is missing \(detail.assetSuffix) LOD")
                     continue
                 }
-                if lod.pixels.count != 2 || lod.trimRectPixels.count != 4
+                if lod.pixels.count != 2 || lod.sourcePixels.count != 2
+                    || lod.trimRectPixels.count != 4 || lod.sourceTrimRectPixels.count != 4
                     || lod.anchor.count != 2 || lod.worldSize.count != 2 {
                     issues.append("\(asset.logicalID).\(detail.assetSuffix) has incomplete registration")
                 }
@@ -150,14 +176,25 @@ final class WorldAssetCatalog {
             return cached.texture
         }
         cacheMisses += 1
+        let decodeLoadStarted = ProcessInfo.processInfo.systemUptime
+        defer {
+            textureDecodeLoadCount += 1
+            textureDecodeLoadDurationMilliseconds +=
+                (ProcessInfo.processInfo.systemUptime - decodeLoadStarted) * 1_000
+        }
         guard let url = Bundle.module.url(
             forResource: name,
             withExtension: "png",
             subdirectory: "WorldAssets.atlas"
-        ), let image = NSImage(contentsOf: url) else {
+        ), let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
+           let image = CGImageSourceCreateImageAtIndex(
+               imageSource,
+               0,
+               [kCGImageSourceShouldCacheImmediately: true] as CFDictionary
+           ) else {
             return nil
         }
-        let texture = SKTexture(image: image)
+        let texture = SKTexture(cgImage: image)
         texture.filteringMode = .linear
         texture.usesMipmaps = name.hasPrefix("golden_district_")
         let detail = generatedDetail(for: name)
@@ -194,7 +231,9 @@ final class WorldAssetCatalog {
         guard let asset = generatedAssetsByID[logicalID],
               let lod = asset.lods[detail.assetSuffix],
               lod.pixels.count == 2,
+              lod.sourcePixels.count == 2,
               lod.trimRectPixels.count == 4,
+              lod.sourceTrimRectPixels.count == 4,
               lod.worldSize.count == 2,
               lod.anchor.count == 2 else {
             fallbackCount += 1
@@ -212,25 +251,33 @@ final class WorldAssetCatalog {
             fallbackCount += 1
             return nil
         }
-        let textureRect = CGRect(
-            x: trim[0] / pixelWidth,
-            y: (pixelHeight - trim[1] - trim[3]) / pixelHeight,
-            width: trim[2] / pixelWidth,
-            height: trim[3] / pixelHeight
-        )
-        let cropKey = "\(logicalID)|\(detail.assetSuffix)"
-        let croppedTexture: SKTexture
-        if let cached = generatedCrops[cropKey] {
-            croppedTexture = cached
+        let coversFullPhysicalPayload = trim[0] == 0
+            && trim[1] == 0
+            && trim[2] == pixelWidth
+            && trim[3] == pixelHeight
+        let presentationTexture: SKTexture
+        if coversFullPhysicalPayload {
+            presentationTexture = sourceTexture
         } else {
-            let crop = SKTexture(rect: textureRect, in: sourceTexture)
-            crop.filteringMode = .linear
-            crop.usesMipmaps = false
-            generatedCrops[cropKey] = crop
-            croppedTexture = crop
+            let textureRect = CGRect(
+                x: trim[0] / pixelWidth,
+                y: (pixelHeight - trim[1] - trim[3]) / pixelHeight,
+                width: trim[2] / pixelWidth,
+                height: trim[3] / pixelHeight
+            )
+            let cropKey = "\(logicalID)|\(detail.assetSuffix)"
+            if let cached = generatedCrops[cropKey] {
+                presentationTexture = cached
+            } else {
+                let crop = SKTexture(rect: textureRect, in: sourceTexture)
+                crop.filteringMode = .linear
+                crop.usesMipmaps = false
+                generatedCrops[cropKey] = crop
+                presentationTexture = crop
+            }
         }
         let sprite = SKSpriteNode(
-            texture: croppedTexture,
+            texture: presentationTexture,
             color: .clear,
             size: CGSize(width: lod.worldSize[0], height: lod.worldSize[1])
         )

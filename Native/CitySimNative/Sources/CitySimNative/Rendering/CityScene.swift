@@ -84,6 +84,7 @@ private struct AmbientCorridorSignature: Equatable {
     let roadCoordinates: [GridCoordinate]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
+    let motionEnabled: Bool
 }
 
 private struct CityVisualCompositionBounds {
@@ -163,6 +164,8 @@ final class CityScene: SKScene {
     var cameraScaleForTesting: CGFloat { cameraNode.xScale }
     var cameraPositionForTesting: CGPoint { cameraNode.position }
     var cameraScale: CGFloat { cameraNode.xScale }
+    var ambientActionCountForTesting: Int { runtimeTreeMetrics(ambientLayer).actions }
+    var ambientMotionEnabledForTesting: Bool { ambientMotionEnabled }
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
@@ -378,8 +381,11 @@ final class CityScene: SKScene {
     func resize(to newSize: CGSize) {
         let materiallyChanged = abs(size.width - newSize.width) > 1 || abs(size.height - newSize.height) > 1
         size = newSize
-        if materiallyChanged, !hasUserAdjustedCamera, let state = renderedState {
-            focusDevelopedCore(state)
+        if materiallyChanged, let state = renderedState {
+            if !hasUserAdjustedCamera {
+                focusDevelopedCore(state)
+            }
+            _ = updateAmbientCorridor(in: state)
         }
     }
 
@@ -651,7 +657,8 @@ final class CityScene: SKScene {
             roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil }
                 .sorted(by: coordinateOrder),
             detail: currentCameraDetailLevel,
-            reducedMotion: reducedMotion
+            reducedMotion: reducedMotion,
+            motionEnabled: ambientMotionEnabled
         )
         guard signature != ambientCorridorSignature else { return false }
         ambientCorridorSignature = signature
@@ -659,9 +666,17 @@ final class CityScene: SKScene {
         ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
             in: state,
             detail: currentCameraDetailLevel,
-            reducedMotion: reducedMotion
+            reducedMotion: !ambientMotionEnabled
         ))
         return true
+    }
+
+    /// Compact windows retain the complete ambient semantic set but keep it
+    /// static. Exercising even one SpriteKit action while repeatedly cycling
+    /// LODs pinned a compact-only graphics working set above the governed
+    /// physical-footprint ceiling after the required 60-second settle.
+    private var ambientMotionEnabled: Bool {
+        !reducedMotion && size.width >= 1_000
     }
 
     private func updateWorld(

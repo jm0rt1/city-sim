@@ -918,6 +918,26 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactSceneKeepsAmbientMeaningWithoutMotionResidency() {
+        let state = CityGameState.newCity(seed: 42)
+        let regular = CityScene(size: CGSize(width: 1_280, height: 800))
+        regular.reducedMotion = false
+        regular.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(regular.ambientMotionEnabledForTesting)
+        XCTAssertEqual(regular.ambientActionCountForTesting, 1)
+
+        let compact = CityScene(size: CGSize(width: 900, height: 600))
+        compact.reducedMotion = false
+        compact.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertFalse(compact.ambientMotionEnabledForTesting)
+        XCTAssertEqual(compact.ambientActionCountForTesting, 0)
+
+        regular.resize(to: CGSize(width: 900, height: 600))
+        XCTAssertFalse(regular.ambientMotionEnabledForTesting)
+        XCTAssertEqual(regular.ambientActionCountForTesting, 0)
+    }
+
+    @MainActor
     func testMacroTerrainReplacesTheRepeatedCellPlateAndKeepsEmptyLotsInteractive() {
         let renderer = TerrainRenderer(style: WorldVisualStyle())
         let vacant = renderer.makeGround(

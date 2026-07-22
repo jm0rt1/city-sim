@@ -66,8 +66,12 @@ final class AmbientLifeRenderer {
                     .moveBy(x: 4, y: -2, duration: 2.4),
                     .moveBy(x: -4, y: 2, duration: 2.4),
                 ])
+                // Keep the opening vignette visibly alive without pinning the
+                // SpriteKit render graph forever. A perpetual action kept the
+                // graphics working set resident even after the city had been
+                // paused and settled for the governed footprint sample.
                 pair.run(
-                    .sequence([.wait(forDuration: phase), .repeatForever(stroll)]),
+                    .sequence([.wait(forDuration: phase), .repeat(stroll, count: 3)]),
                     withKey: "ambient.corridor.walk"
                 )
             }

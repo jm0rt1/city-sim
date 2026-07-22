@@ -52,6 +52,59 @@ final class CityCommandCatalogTests: XCTestCase {
         }
     }
 
+    func testWarningLanguageFindsTaxPolicyThroughTheCatalog() {
+        for query in ["tax", "budget", "storefront"] {
+            let matches = CityCommandCatalog.matchingDescriptors(query: query)
+            XCTAssertTrue(
+                matches.contains { $0.id == .inspectorFinances },
+                "\(query) must find the existing Tax Policy route"
+            )
+        }
+        XCTAssertEqual(
+            CityCommandCatalog.matchingDescriptors(query: "tax").filter { $0.id == .inspectorFinances }.count,
+            1
+        )
+        XCTAssertTrue(CityCommandCatalog.descriptor(for: .inspectorFinances).title.contains("Tax Policy"))
+    }
+
+    @MainActor
+    func testTaxPolicySearchResultUsesCurrentAvailabilityAndDisabledReason() throws {
+        let enabled = CityGameStore(state: .newCity(seed: 42))
+        let result = try XCTUnwrap(CityCommandCatalog.matchingDescriptors(query: "storefront").first)
+        XCTAssertEqual(result.id, .inspectorFinances)
+        XCTAssertTrue(enabled.canPerform(result.id))
+        XCTAssertNil(enabled.disabledReason(for: result.id))
+
+        let blocked = CityGameStore(state: .newCity(seed: 42), commandPolicy: .blocked(.welcome))
+        XCTAssertFalse(blocked.canPerform(result.id))
+        XCTAssertEqual(
+            blocked.disabledReason(for: result.id),
+            "Finish Welcome to New Arcadia to use city commands"
+        )
+    }
+
+    @MainActor
+    func testRejectedPlacementPreservesToolTargetAndDurableAcceptedReason() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let occupied = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty })
+        store.selectTool(.commercial)
+
+        store.primaryAction(at: occupied.coordinate)
+
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedTool, .commercial)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.hudContextScope, .city)
+        XCTAssertTrue(store.lastFeedback?.contains(BuildRejection.occupied.message) == true)
+        XCTAssertTrue(store.lastFeedback?.contains("Commercial remains selected") == true)
+
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
+        XCTAssertNotNil(store.lastFeedback, "Placement recovery must remain until the player acts or dismisses it")
+        XCTAssertTrue(store.perform(.dismissFeedback))
+        XCTAssertNil(store.lastFeedback)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+    }
+
     func testFocusMetadataKeepsUnmodifiedGameplayKeysOutOfGlobalMenus() {
         let gameplayIDs = Set<CityCommandID>([
             .togglePause, .speedNormal, .speedFast, .speedFastest,

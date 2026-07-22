@@ -1,5 +1,11 @@
 import SwiftUI
 
+struct HUDSimulationStatePresentation: Equatable {
+    let label: String
+    let symbol: String
+    let accessibilityValue: String
+}
+
 struct TopHUDView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
@@ -50,9 +56,17 @@ struct TopHUDView: View {
                         Text(store.state.cityName)
                             .font(.system(size: compact ? 16 : 17, weight: .bold, design: .rounded))
                             .lineLimit(1)
-                        Text(store.state.formattedDay)
-                            .font(.caption2.monospacedDigit())
-                            .foregroundStyle(.secondary)
+                        HStack(spacing: 6) {
+                            Text(store.state.formattedDay)
+                                .foregroundStyle(.secondary)
+                            Label(simulationStatus.label, systemImage: simulationStatus.symbol)
+                                .fontWeight(.heavy)
+                                .foregroundStyle(simulationStatusTint)
+                                .accessibilityLabel("Simulation state")
+                                .accessibilityValue(simulationStatus.accessibilityValue)
+                                .accessibilityIdentifier("hud.simulation.state")
+                        }
+                        .font(.caption2.monospacedDigit())
                     }
                     Spacer(minLength: 2)
                     Image(systemName: "building.2.crop.circle")
@@ -98,6 +112,25 @@ struct TopHUDView: View {
             .accessibilityIdentifier("hud.objective.summary")
         }
         .padding(.horizontal, 7)
+    }
+
+    static func simulationState(for speed: SimulationSpeed) -> HUDSimulationStatePresentation {
+        if speed == .paused {
+            return HUDSimulationStatePresentation(label: "PAUSED", symbol: "pause.fill", accessibilityValue: "Paused")
+        }
+        return HUDSimulationStatePresentation(
+            label: "RUNNING \(speed.controlLabel.uppercased())",
+            symbol: "play.fill",
+            accessibilityValue: "Running at \(speed.controlLabel) speed"
+        )
+    }
+
+    private var simulationStatus: HUDSimulationStatePresentation {
+        Self.simulationState(for: store.speed)
+    }
+
+    private var simulationStatusTint: Color {
+        store.speed == .paused ? GameTheme.warning : GameTheme.accent
     }
 
     private var metricRibbon: some View {

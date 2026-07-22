@@ -559,17 +559,19 @@ final class CityScene: SKScene {
         let target = style.isoPosition(coordinate)
         let safeRect = safeViewportRect(viewportInsets)
         let revealMargin: CGFloat = 0.5
+        let horizontalMargin = safeRect.width >= revealMargin * 2 ? revealMargin : 0
+        let verticalMargin = safeRect.height >= revealMargin * 2 ? revealMargin : 0
         if target.x < safeRect.minX {
-            cameraNode.position.x -= safeRect.minX - target.x + revealMargin
+            cameraNode.position.x -= safeRect.minX - target.x + horizontalMargin
         }
         if target.x > safeRect.maxX {
-            cameraNode.position.x += target.x - safeRect.maxX + revealMargin
+            cameraNode.position.x += target.x - safeRect.maxX + horizontalMargin
         }
         if target.y < safeRect.minY {
-            cameraNode.position.y -= safeRect.minY - target.y + revealMargin
+            cameraNode.position.y -= safeRect.minY - target.y + verticalMargin
         }
         if target.y > safeRect.maxY {
-            cameraNode.position.y += target.y - safeRect.maxY + revealMargin
+            cameraNode.position.y += target.y - safeRect.maxY + verticalMargin
         }
         refreshForCameraChange()
     }
@@ -1573,6 +1575,10 @@ final class CityScene: SKScene {
             // sit beneath translucent chrome when necessary.
             let compactWidthScale = occupiedBounds.width / (safeWidth * 0.54)
             scale = min(scale, compactWidthScale, 0.62)
+            // Compact framing intentionally resolves to neighborhood LOD even
+            // for unusually tight fixtures; block textures are reserved for an
+            // explicit player zoom and carry a larger active residency.
+            scale = max(scale, CameraDetailLevel.blockMaximumCameraScale + 0.01)
         }
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]

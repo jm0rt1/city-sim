@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active corrective recovery — exact Round 1B product candidate `fc8b838` and its evidence packet are durably preserved, but the strict controlled cold set is only 2/3 passing (3/4 including one explicit additional sample), so the round is not ready and has not been sent for independent scoring; Round 2 and PLAY-023 remain unauthorized, and CONTRACT-008 remains unchanged pending its separate PLAY-034 dispatch
+- **Status:** active renderer engineering — exact Round 1B product candidate `fc8b838` remains frozen, but the authority-ordered final five-sample cold window failed with a passing `5.943 ms` median and only 3/5 totals at or below `6.03 ms`; the candidate is not sent to PLAY-052, no further measurement window is authorized, Round 2 and PLAY-023 remain unauthorized, and CONTRACT-008 remains unchanged pending its separate PLAY-034 dispatch
 
 Deliver an unmistakable visual step through one systemic golden block in the
 real staged city. Stop broad feature work until the nine-source calibration

@@ -1,9 +1,10 @@
 # PLAY-022 Round 1B corrective candidate — `fc8b838`
 
 **Disposition:** exact product candidate and proof packet preserved, but PLAY-022
-remains active. The strict cold-timing set is 2/3 passing, so this record does
-not mark the round ready, self-accept the visuals, request independent scoring,
-or authorize Round 2 or PLAY-023.
+remains active and returns to renderer engineering. The authority-ordered final
+five-sample cold window passed its median criterion but failed its 4/5
+criterion, so this record does not mark the round ready, self-accept the
+visuals, request PLAY-052 scoring, or authorize Round 2 or PLAY-023.
 
 ## Exact identity and authority
 
@@ -134,5 +135,25 @@ is supporting context, not substituted for the governed regular sample.
 
 CONTRACT-008 remains unchanged at blob
 `bc519df6974c80ff9b1f2cc9e516882dd62dc407`. Round 2 and PLAY-023 remain
-unauthorized. PLAY-022 stays active until the cold gate, exact comparison
-disposition, and independent PLAY-051 score are resolved.
+unauthorized.
+
+## Final preregistered cold disposition
+
+Authority `52fc2c17643e7987f78bc360196599e3297967da` authorized exactly
+one final five-sample window while freezing this product commit and resources.
+The window used a new build/cache root, one prebuild, the same whole-class
+`--skip-build` command for all five samples, a 30-second idle before every
+prerecord, and no replacement samples or unrelated-process termination.
+
+Ordered cold totals were `5.729, 5.943, 6.579, 6.253, 5.910 ms`. The median
+`5.943 ms` passed, but only 3/5 totals met `6.03 ms`; no total exceeded
+`9.045 ms`. Every prerecord disclosed material unrelated CitySim and/or XCTest
+load. Sample 1 also retained a separate golden-update assertion miss at
+`6.147 ms` even though its governed cold total passed at `5.729 ms`.
+
+The complete ordered logs, environment/process/thermal/memory prerecords,
+method, result JSON, and hashes are under
+`tests-fc8b838/preregistered-five-2026-07-22/`. The final cold window therefore
+fails and returns PLAY-022 to renderer engineering. The candidate is not sent
+to PLAY-052, and no broader product work or additional measurement is
+authorized by this record.

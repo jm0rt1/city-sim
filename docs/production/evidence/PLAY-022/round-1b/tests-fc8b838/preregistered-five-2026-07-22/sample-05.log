@@ -1,0 +1,92 @@
+Test Suite 'Selected tests' started at 2026-07-22 14:39:10.589.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-22 14:39:10.590.
+Test Suite 'WorldRenderingTests' started at 2026-07-22 14:39:10.590.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testAnimatedLifecycleNodesReuseAcrossUnchangedPulsesWithoutAccumulation]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testAnimatedLifecycleNodesReuseAcrossUnchangedPulsesWithoutAccumulation]' passed (0.133 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testApprovedOverlaysUseSparseNonColorSeverityMarksWithoutTileWashOrLabels]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testApprovedOverlaysUseSparseNonColorSeverityMarksWithoutTileWashOrLabels]' passed (0.001 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testAuthoredRoadAtlasCoversEveryMaskAndFrontagesFaceConnectedRoads]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testAuthoredRoadAtlasCoversEveryMaskAndFrontagesFaceConnectedRoads]' passed (0.027 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCityLODUsesOnePersistentNonColorAggregatePerDevelopedPlace]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCityLODUsesOnePersistentNonColorAggregatePerDevelopedPlace]' passed (0.001 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCitySceneInvalidatesOnlyVisibleLifecycleBandChanges]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCitySceneInvalidatesOnlyVisibleLifecycleBandChanges]' passed (0.033 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCompactSceneKeepsAmbientMeaningWithoutMotionResidency]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCompactSceneKeepsAmbientMeaningWithoutMotionResidency]' passed (2.168 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCompletedVisibleSetUsesGeneratedV4AcrossKindsAndLevelsWithoutLegacyFallback]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCompletedVisibleSetUsesGeneratedV4AcrossKindsAndLevelsWithoutLegacyFallback]' passed (0.032 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCorridorAmbientLifeHasOneSemanticSetAndIsReduceMotionSafe]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testCorridorAmbientLifeHasOneSemanticSetAndIsReduceMotionSafe]' passed (0.007 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testDevelopedMassCameraIgnoresRemoteOpportunityAndNumericOccupancy]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testDevelopedMassCameraIgnoresRemoteOpportunityAndNumericOccupancy]' passed (0.088 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testExactCompactActiveCoordinateRemainsInsideSafeWorldViewport]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testExactCompactActiveCoordinateRemainsInsideSafeWorldViewport]' passed (0.026 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGeneratedWorldCatalogMeasuresDecodeLoadWithoutChargingCacheHits]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGeneratedWorldCatalogMeasuresDecodeLoadWithoutChargingCacheHits]' passed (0.003 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGeneratedWorldDescriptorsRegisterPhysicalGeometryWithoutInventingGameplayCells]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGeneratedWorldDescriptorsRegisterPhysicalGeometryWithoutInventingGameplayCells]' passed (0.051 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGeneratedWorldResidencyIsBoundedAcrossRepeatedRealLODTransitions]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGeneratedWorldResidencyIsBoundedAcrossRepeatedRealLODTransitions]' passed (0.321 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGoldenNeighborhoodShippingRendererExportsThreeLODsAndCompact]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGoldenNeighborhoodShippingRendererExportsThreeLODsAndCompact]' passed (1.418 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGoldenNeighborhoodTerrainAtlasLoadsEveryAuthoredMaterial]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testGoldenNeighborhoodTerrainAtlasLoadsEveryAuthoredMaterial]' passed (0.050 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testInteractionPriorityUsesGroundedBoundariesWithoutBillboardClutter]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testInteractionPriorityUsesGroundedBoundariesWithoutBillboardClutter]' passed (0.021 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLifecycleProofFramesDistinguishConstructionDeclineAndRecovery]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLifecycleProofFramesDistinguishConstructionDeclineAndRecovery]' passed (1.770 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLifecycleSilhouettesMotionAndReducedMotionFallbacksStayDistinct]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLifecycleSilhouettesMotionAndReducedMotionFallbacksStayDistinct]' passed (0.003 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLotConsequencePresentationMapsOnlyAuthoritativeTileFields]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLotConsequencePresentationMapsOnlyAuthoritativeTileFields]' passed (0.000 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLotRendererPublishesDistinctConstructionConditionAndRecoveryStates]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLotRendererPublishesDistinctConstructionConditionAndRecoveryStates]' passed (0.006 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testMacroTerrainReplacesTheRepeatedCellPlateAndKeepsEmptyLotsInteractive]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testMacroTerrainReplacesTheRepeatedCellPlateAndKeepsEmptyLotsInteractive]' passed (0.049 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testProductionCorridorExportsAllTopologySeamMosaicAcrossSemanticLODs]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testProductionCorridorExportsAllTopologySeamMosaicAcrossSemanticLODs]' passed (0.204 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testReducedMotionEventsExpireBoundedlyAndSuppressSaveLoadUndoReplayDuplicates]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testReducedMotionEventsExpireBoundedlyAndSuppressSaveLoadUndoReplayDuplicates]' passed (0.147 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRejectedGoldenDistrictReferenceRetainsExplicitLODAssets]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRejectedGoldenDistrictReferenceRetainsExplicitLODAssets]' passed (0.054 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRemoteRoadOpportunityRecedesWithoutChangingTopologyOrHitGeometry]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRemoteRoadOpportunityRecedesWithoutChangingTopologyOrHitGeometry]' passed (0.001 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode]' passed (0.007 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRoundOneShippingStartExportsDevelopedBoundsDefaultAndCompact]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRoundOneShippingStartExportsDevelopedBoundsDefaultAndCompact]' passed (0.499 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testShippingSceneNeverPresentsRejectedGoldenDistrictPlate]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testShippingSceneNeverPresentsRejectedGoldenDistrictPlate]' passed (0.061 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialConsequenceProofExportsSameCityWorseningRecoveryAndCompact]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialConsequenceProofExportsSameCityWorseningRecoveryAndCompact]' passed (2.889 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialConsequencesPublishNonColorUtilityPollutionAndVitalityCues]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialConsequencesPublishNonColorUtilityPollutionAndVitalityCues]' passed (0.000 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialTransitionEventsHaveStaticReduceMotionMeaningAndBoundedAnimation]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialTransitionEventsHaveStaticReduceMotionMeaningAndBoundedAnimation]' passed (0.000 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactLODs]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactLODs]' passed (17.353 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testStrategyDistrictIdentityIsStableClampedAndTruthLimited]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testStrategyDistrictIdentityIsStableClampedAndTruthLimited]' passed (0.000 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testThirtyMinuteEquivalentUnchangedPulseSoakPreservesWorldIdentity]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testThirtyMinuteEquivalentUnchangedPulseSoakPreservesWorldIdentity]' passed (0.030 seconds).
+Test Case '-[CitySimNativeTests.WorldRenderingTests testUtilityAndPollutionOverlaysUseApprovedSpatialSampleInsteadOfStateInference]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testUtilityAndPollutionOverlaysUseApprovedSpatialSampleInsteadOfStateInference]' passed (0.000 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-22 14:39:38.046.
+	 Executed 35 tests, with 0 failures (0 unexpected) in 27.454 (27.456) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-22 14:39:38.046.
+	 Executed 35 tests, with 0 failures (0 unexpected) in 27.454 (27.457) seconds
+Test Suite 'Selected tests' passed at 2026-07-22 14:39:38.046.
+	 Executed 35 tests, with 0 failures (0 unexpected) in 27.454 (27.457) seconds
+CITYSIM_PLAY020_MOTION_DIAGNOSTICS active_actions=2 unchanged_pulses=12 unchanged_updates=0 reduced_motion_actions=0
+PLAY022_M3_RESIDENCY active=block resident_textures=28 resident_bytes=13521048 high_water_bytes=13521048 hits=56 misses=364 evictions=336 fallbacks=0
+CITYSIM_PLAY021_GOLDEN_DIAGNOSTICS nodes=945 drawables=500 actions=0 world_update_ms=4.503 asset_decode_loads=8 asset_decode_ms=24.210 total_render_ms=29.928
+CITYSIM_PLAY020_DIAGNOSTICS lifecycle_nodes=871 lifecycle_drawables=451 lifecycle_actions=0 lifecycle_update_ms=0.000 recovery_nodes=850 recovery_drawables=435 recovery_actions=0 recovery_update_ms=0.000 compact_nodes=871 city_nodes=871 block_nodes=871 detail=neighborhood
+PLAY022_ROUND1B_COLD_RENDER world_update_ms=4.685 asset_decode_loads=0 asset_decode_ms=0.000 total_render_ms=5.910
+PLAY022_M2_FRAME size=1280x800 scale=0.37454596161842346 detail=block occupied=0.6241323034324637,0.850376873653442 network=1.4823142206521012,1.7035551491076388 nodes=1932 drawables=758
+PLAY022_M2_FRAME size=900x600 scale=0.6187161803245544 detail=neighborhood occupied=0.5399999857172374,1.2209037752297547 network=1.2824999660784389,2.44582958132658 nodes=1932 drawables=758
+CITYSIM_PLAY022_SPATIAL_PROOF focus=10,11 strained_utility=severe strained_pollution=strained strained_vitality=strained recovered_utility=strained recovered_pollution=strained recovered_vitality=prosperous event_ids=spatial-v1:1:408bde0e762db5b6f98c37c40bff35b384db7428019515e029357d2799ccc41b:10:11:utility:0:1,spatial-v1:1:408bde0e762db5b6f98c37c40bff35b384db7428019515e029357d2799ccc41b:10:11:vitality:0:2
+CITYSIM_PLAY021_SOAK_DIAGNOSTICS equivalent_minutes=30 pulses=4286 nodes=1932 drawables=758 actions=1 total_ms=11.496 average_ms=0.0027
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

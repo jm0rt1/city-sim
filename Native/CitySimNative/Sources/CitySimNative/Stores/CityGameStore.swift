@@ -192,6 +192,13 @@ final class CityGameStore: ObservableObject {
         return true
     }
 
+    @discardableResult
+    func performFromCommandGuide(_ command: CityCommandID) -> Bool {
+        guard showCommandGuide, perform(command) else { return false }
+        showCommandGuide = false
+        return true
+    }
+
     func canPerform(_ command: CityCommandID) -> Bool {
         guard commandPolicy.allows(command) else { return false }
         let descriptor = CityCommandCatalog.descriptor(for: command)
@@ -231,13 +238,18 @@ final class CityGameStore: ObservableObject {
         }
     }
 
-    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
+    func canRouteMapCommand(_ command: CityCommandID) -> Bool {
         guard commandPolicy.allows(command), CityCommandCatalog.mapFocusedCommands.contains(command) else {
             return false
         }
-        if command == .mapSecondaryAction {
+        if CityCommandCatalog.mapActionCommands.contains(command) {
             return selectedCoordinate.flatMap { state.tile(at: $0) } != nil
         }
+        return true
+    }
+
+    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
+        guard canRouteMapCommand(command) else { return false }
         if command == .mapPrimaryAction {
             guard let coordinate = selectedCoordinate,
                   let tile = state.tile(at: coordinate) else { return false }
@@ -252,7 +264,7 @@ final class CityGameStore: ObservableObject {
 
     @discardableResult
     func performMapCommand(_ command: CityCommandID) -> Bool {
-        guard canPerformMapCommand(command) else { return false }
+        guard canRouteMapCommand(command) else { return false }
         switch command {
         case .mapMoveNorth:
             return moveMapSelection(dx: 0, dy: -1, distance: 1)
@@ -461,7 +473,11 @@ final class CityGameStore: ObservableObject {
                 showFeedback("\(kind.title) construction approved", tone: .positive)
                 playSound(named: "Tink")
             case .failure(let rejection):
-                showFeedback(rejection.message, tone: .caution)
+                showFeedback(
+                    "\(rejection.message) \(kind.title) remains selected — choose another block.",
+                    tone: .caution,
+                    autoDismissAfter: nil
+                )
                 playSound(named: "Basso")
             }
         }
@@ -621,13 +637,21 @@ final class CityGameStore: ObservableObject {
         canUndo = true
     }
 
-    private func showFeedback(_ message: String, tone: PlayerFeedbackTone = .neutral) {
+    private func showFeedback(
+        _ message: String,
+        tone: PlayerFeedbackTone = .neutral,
+        autoDismissAfter delay: TimeInterval? = 3.2
+    ) {
         feedbackDismissal?.cancel()
         lastFeedback = message
         lastFeedbackTone = tone
+        guard let delay else {
+            feedbackDismissal = nil
+            return
+        }
         let work = DispatchWorkItem { [weak self] in self?.lastFeedback = nil }
         feedbackDismissal = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.2, execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
     }
 
     private func playSound(named name: String) {

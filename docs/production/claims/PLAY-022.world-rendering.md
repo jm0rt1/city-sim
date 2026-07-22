@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active production recovery — the systemic Gate A-R candidate at `8cb45b5` is preserved but rejected; `docs/production/PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md` is the controlling execution plan and Round 1 is the only authorized implementation round
+- **Status:** active corrective recovery — Round 1 candidate `3c44905` is preserved but independently rejected at 13/20 by audit `717b286`; `docs/production/PLAY-022_ROUND_1B_CORRECTIVE_DIRECTIVE.md` is the only authorized next implementation slice, while Round 2 and PLAY-023 remain unauthorized
 
 Deliver an unmistakable visual step through one systemic golden block in the
 real staged city. Stop broad feature work until the nine-source calibration
@@ -21,6 +21,13 @@ deliver one overlap-safe playable corridor with coherent terrain, streets,
 construction, visible-set fidelity, camera composition, and restrained
 interaction. Do not generate broader asset families until the physical contract
 and corridor pass the plan's staged-app gates.
+
+The corrective pass must preserve the accepted projection, collision, road,
+LOD, interaction-restraint, and truth boundaries while replacing the sparse
+toy-island/default composition with truthful developed visual mass and closing
+the cold-load, allocator-footprint, isolation, construction-stage, and
+color-vision proof gaps. Road opportunity bounds do not count as developed
+occupancy.
 Authored commercial and industrial identities, density progression, trouble,
 pollution, prosperity, decline, recovery, and bounded ambient life remain the
 eventual scope, but they may not hide a weak base world behind more indicators.

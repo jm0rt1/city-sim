@@ -115,6 +115,15 @@ struct ContentView: View {
         )
     }
 
+    static func interactiveMapHeight(
+        windowHeight: CGFloat,
+        chromeFrames: CityHUDChromeFrames
+    ) -> CGFloat {
+        let topBoundary = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY
+        let bottomBoundary = chromeFrames.bottom.isEmpty ? windowHeight : chromeFrames.bottom.minY
+        return max(0, bottomBoundary - topBoundary)
+    }
+
     static func objectiveSurfacePresentation(
         compact: Bool,
         showObjectives: Bool,
@@ -217,6 +226,9 @@ struct ContentView: View {
                     .background(.thickMaterial, in: Capsule())
                     .shadow(color: .black.opacity(0.3), radius: 12, y: 5)
                     .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(store.lastFeedbackTone == .caution ? "Action blocked" : "Action update")
+                    .accessibilityValue(feedback)
                 }
 
                 if store.overlay != .none {

@@ -13,10 +13,18 @@ enum CityStrategyPhase: String, Codable, Equatable, Sendable {
     case completed
 }
 
+enum CityStrategyRecoveryResolution: String, Codable, Equatable, Sendable {
+    case commercialTaxRelief
+    case commercialPublicRealmInvestment
+    case industrialUtilityExpansion
+    case industrialGreenBuffer
+}
+
 struct CityStrategyProgression: Codable, Equatable, Sendable {
     var committedStrategy: CityStrategy
     var currentPhase: CityStrategyPhase
     var nextScheduledTick: Int?
+    var recoveryResolution: CityStrategyRecoveryResolution? = nil
 }
 
 struct CityProgressionState: Codable, Equatable, Sendable {

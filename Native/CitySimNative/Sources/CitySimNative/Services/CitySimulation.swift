@@ -324,19 +324,31 @@ enum CitySimulation {
             story.currentPhase = .setback
             story.nextScheduledTick = nextTick
         case (.commercialStewardship, .setback):
-            resolveCommercialComplication(&state, recoveryTick: nextTick)
+            captureFirstQualifyingResolution(for: &story, in: state)
+            resolveCommercialComplication(
+                &state,
+                resolution: story.recoveryResolution,
+                recoveryTick: nextTick
+            )
             story.currentPhase = .recovery
             story.nextScheduledTick = nextTick
         case (.industrialExpansion, .setback):
-            resolveIndustrialComplication(&state, recoveryTick: nextTick)
+            captureFirstQualifyingResolution(for: &story, in: state)
+            resolveIndustrialComplication(
+                &state,
+                resolution: story.recoveryResolution,
+                recoveryTick: nextTick
+            )
             story.currentPhase = .recovery
             story.nextScheduledTick = nextTick
         case (.commercialStewardship, .recovery):
-            resolveCommercialRecovery(&state)
+            captureFirstQualifyingResolution(for: &story, in: state)
+            resolveCommercialRecovery(&state, resolution: story.recoveryResolution)
             story.currentPhase = .completed
             story.nextScheduledTick = nil
         case (.industrialExpansion, .recovery):
-            resolveIndustrialRecovery(&state)
+            captureFirstQualifyingResolution(for: &story, in: state)
+            resolveIndustrialRecovery(&state, resolution: story.recoveryResolution)
             story.currentPhase = .completed
             story.nextScheduledTick = nil
         case (_, .completed):
@@ -345,6 +357,34 @@ enum CitySimulation {
 
         progression.strategy = story
         state.progression = progression
+    }
+
+    private static func captureFirstQualifyingResolution(
+        for story: inout CityStrategyProgression,
+        in state: CityGameState
+    ) {
+        guard story.recoveryResolution == nil else { return }
+        story.recoveryResolution = qualifyingResolution(for: story.committedStrategy, in: state)
+    }
+
+    private static func qualifyingResolution(
+        for strategy: CityStrategy,
+        in state: CityGameState
+    ) -> CityStrategyRecoveryResolution? {
+        let active = activeTiles(in: state)
+        let parkCount = active.filter { $0.kind == .park }.count
+
+        switch strategy {
+        case .commercialStewardship:
+            if state.taxRate <= 0.09 { return .commercialTaxRelief }
+            if parkCount >= 2 { return .commercialPublicRealmInvestment }
+        case .industrialExpansion:
+            let hasReserveUtilities = active.filter { $0.kind == .powerPlant }.count >= 2
+                && active.filter { $0.kind == .waterTower }.count >= 2
+            if hasReserveUtilities { return .industrialUtilityExpansion }
+            if parkCount >= 2 { return .industrialGreenBuffer }
+        }
+        return nil
     }
 
     private static func postStrategyCommitment(
@@ -438,15 +478,18 @@ enum CitySimulation {
         }
     }
 
-    private static func resolveCommercialComplication(_ state: inout CityGameState, recoveryTick: Int) {
-        let parkCount = activeTiles(in: state).filter { $0.kind == .park }.count
-        if state.taxRate <= 0.09 || parkCount >= 2 {
+    private static func resolveCommercialComplication(
+        _ state: inout CityGameState,
+        resolution: CityStrategyRecoveryResolution?,
+        recoveryTick: Int
+    ) {
+        if resolution == .commercialTaxRelief || resolution == .commercialPublicRealmInvestment {
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .good,
                     title: "Storefront Slump Avoided",
-                    detail: state.taxRate <= 0.09
+                    detail: resolution == .commercialTaxRelief
                         ? "Early tax relief kept customers local. The city avoided the $3,000 shock, but accepted lower revenue and demand while the policy remains."
                         : "The second park kept Main Street busy. The city avoided the $3,000 shock after investing capital and upkeep in public space."
                 ),
@@ -468,18 +511,18 @@ enum CitySimulation {
         }
     }
 
-    private static func resolveIndustrialComplication(_ state: inout CityGameState, recoveryTick: Int) {
-        let active = activeTiles(in: state)
-        let hasReserveUtilities = active.filter { $0.kind == .powerPlant }.count >= 2
-            && active.filter { $0.kind == .waterTower }.count >= 2
-        let parkCount = active.filter { $0.kind == .park }.count
-        if hasReserveUtilities || parkCount >= 2 {
+    private static func resolveIndustrialComplication(
+        _ state: inout CityGameState,
+        resolution: CityStrategyRecoveryResolution?,
+        recoveryTick: Int
+    ) {
+        if resolution == .industrialUtilityExpansion || resolution == .industrialGreenBuffer {
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .good,
                     title: "Industrial Load Absorbed",
-                    detail: hasReserveUtilities
+                    detail: resolution == .industrialUtilityExpansion
                         ? "Early reserve utilities absorbed the surge. The city avoided the $5,500 shock after committing capital and upkeep to capacity."
                         : "The green buffer protected nearby blocks. The city avoided the $5,500 shock after committing capital and upkeep to public space."
                 ),
@@ -501,9 +544,11 @@ enum CitySimulation {
         }
     }
 
-    private static func resolveCommercialRecovery(_ state: inout CityGameState) {
-        let parkCount = activeTiles(in: state).filter { $0.kind == .park }.count
-        if state.taxRate <= 0.09 {
+    private static func resolveCommercialRecovery(
+        _ state: inout CityGameState,
+        resolution: CityStrategyRecoveryResolution?
+    ) {
+        if resolution == .commercialTaxRelief {
             state.treasury += 1_500
             state.happiness = min(100, state.happiness + 7)
             state.approval = min(100, state.approval + 5)
@@ -516,7 +561,7 @@ enum CitySimulation {
                 ),
                 to: &state
             )
-        } else if parkCount >= 2 {
+        } else if resolution == .commercialPublicRealmInvestment {
             state.treasury += 2_500
             state.happiness = min(100, state.happiness + 6)
             state.approval = min(100, state.approval + 4)
@@ -544,12 +589,11 @@ enum CitySimulation {
         }
     }
 
-    private static func resolveIndustrialRecovery(_ state: inout CityGameState) {
-        let active = activeTiles(in: state)
-        let powerPlants = active.filter { $0.kind == .powerPlant }.count
-        let waterTowers = active.filter { $0.kind == .waterTower }.count
-        let parkCount = active.filter { $0.kind == .park }.count
-        if powerPlants >= 2, waterTowers >= 2 {
+    private static func resolveIndustrialRecovery(
+        _ state: inout CityGameState,
+        resolution: CityStrategyRecoveryResolution?
+    ) {
+        if resolution == .industrialUtilityExpansion {
             state.treasury += 5_500
             state.happiness = min(100, state.happiness + 2)
             state.approval = min(100, state.approval + 2)
@@ -562,7 +606,7 @@ enum CitySimulation {
                 ),
                 to: &state
             )
-        } else if parkCount >= 2 {
+        } else if resolution == .industrialGreenBuffer {
             state.treasury += 3_500
             state.happiness = min(100, state.happiness + 7)
             state.approval = min(100, state.approval + 5)

@@ -338,18 +338,32 @@ final class GameplayLoopTests: XCTestCase {
 
         var taxRelief = pressured
         taxRelief.taxRate = 0.09
+        advanceDays(&taxRelief, days: 1)
+        XCTAssertNil(taxRelief.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&taxRelief, phase: .recovery)
         let taxPayoff = try XCTUnwrap(taxRelief.messages.first { $0.title == "Main Street Rebound" })
         XCTAssertTrue(taxPayoff.detail.contains("tax relief"))
+        XCTAssertEqual(taxRelief.progression?.strategy?.recoveryResolution, .commercialTaxRelief)
+        XCTAssertEqual(CityAnalytics(state: taxRelief).strategyRecoveryResolution, .commercialTaxRelief)
         XCTAssertEqual(taxRelief.status, .playing)
 
         var placemaking = pressured
         try build(.park, at: GridCoordinate(x: 6, y: 11), in: &placemaking)
+        XCTAssertNil(placemaking.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&placemaking, phase: .recovery)
         let parkPayoff = try XCTUnwrap(placemaking.messages.first { $0.title == "Main Street Rebound" })
         XCTAssertTrue(parkPayoff.detail.contains("new park"))
+        XCTAssertEqual(
+            placemaking.progression?.strategy?.recoveryResolution,
+            .commercialPublicRealmInvestment
+        )
+        XCTAssertEqual(
+            CityAnalytics(state: placemaking).strategyRecoveryResolution,
+            .commercialPublicRealmInvestment
+        )
         XCTAssertEqual(placemaking.status, .playing)
         XCTAssertGreaterThan(placemaking.treasury, taxRelief.treasury)
+        XCTAssertNotEqual(placemaking.happiness, taxRelief.happiness)
     }
 
     func testIndustrialSetbackSupportsUtilityAndGreenBufferRecovery() throws {
@@ -364,18 +378,79 @@ final class GameplayLoopTests: XCTestCase {
         var utilityReserve = pressured
         try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &utilityReserve)
         try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &utilityReserve)
+        XCTAssertNil(utilityReserve.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&utilityReserve, phase: .recovery)
         XCTAssertTrue(utilityReserve.messages.contains { $0.title == "Freight Network Secured" })
+        XCTAssertEqual(
+            utilityReserve.progression?.strategy?.recoveryResolution,
+            .industrialUtilityExpansion
+        )
+        XCTAssertEqual(
+            CityAnalytics(state: utilityReserve).strategyRecoveryResolution,
+            .industrialUtilityExpansion
+        )
         XCTAssertGreaterThan(CityAnalytics(state: utilityReserve).utilityReserve, 0.35)
         XCTAssertEqual(utilityReserve.status, .playing)
 
         var greenBuffer = pressured
         try build(.park, at: GridCoordinate(x: 6, y: 11), in: &greenBuffer)
+        XCTAssertNil(greenBuffer.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&greenBuffer, phase: .recovery)
         XCTAssertTrue(greenBuffer.messages.contains { $0.title == "Cleaner Industry Compact" })
+        XCTAssertEqual(greenBuffer.progression?.strategy?.recoveryResolution, .industrialGreenBuffer)
+        XCTAssertEqual(CityAnalytics(state: greenBuffer).strategyRecoveryResolution, .industrialGreenBuffer)
         XCTAssertGreaterThan(greenBuffer.happiness, pressured.happiness)
         XCTAssertGreaterThan(greenBuffer.treasury, pressured.treasury)
         XCTAssertEqual(greenBuffer.status, .playing)
+        XCTAssertNotEqual(greenBuffer.treasury, utilityReserve.treasury)
+        XCTAssertNotEqual(greenBuffer.happiness, utilityReserve.happiness)
+        XCTAssertNotEqual(greenBuffer.approval, utilityReserve.approval)
+    }
+
+    func testFirstQualifyingResolutionIsCapturedOnceAndNeverFlips() throws {
+        var state = try commercialStrategy()
+        advanceToTick(&state, tick: 4)
+        advanceThroughStrategyPhase(&state, phase: .opportunity)
+        advanceThroughStrategyPhase(&state, phase: .complication)
+
+        state.taxRate = 0.09
+        XCTAssertNil(state.progression?.strategy?.recoveryResolution)
+        advanceThroughStrategyPhase(&state, phase: .setback)
+        XCTAssertEqual(state.progression?.strategy?.recoveryResolution, .commercialTaxRelief)
+        XCTAssertTrue(state.messages.contains {
+            $0.title == "Storefront Slump Avoided" && $0.detail.contains("Early tax relief")
+        })
+
+        state.taxRate = 0.10
+        try build(.park, at: GridCoordinate(x: 6, y: 11), in: &state)
+        advanceThroughStrategyPhase(&state, phase: .recovery)
+
+        XCTAssertEqual(state.progression?.strategy?.recoveryResolution, .commercialTaxRelief)
+        XCTAssertTrue(state.messages.contains {
+            $0.title == "Main Street Rebound" && $0.detail.contains("tax relief")
+        })
+        XCTAssertFalse(state.messages.contains {
+            $0.title == "Main Street Rebound" && $0.detail.contains("new park")
+        })
+    }
+
+    func testAllFourDurableResolutionsReachTownCharterInsideTwentyMinutes() throws {
+        let resolutions: [CityStrategyRecoveryResolution] = [
+            .commercialTaxRelief,
+            .commercialPublicRealmInvestment,
+            .industrialUtilityExpansion,
+            .industrialGreenBuffer,
+        ]
+
+        for resolution in resolutions {
+            let state = try charterCity(resolvedBy: resolution)
+            XCTAssertEqual(state.progression?.strategy?.recoveryResolution, resolution)
+            XCTAssertEqual(CityAnalytics(state: state).strategyRecoveryResolution, resolution)
+            XCTAssertTrue(state.progression?.townCharterAwarded ?? false, resolution.rawValue)
+            XCTAssertLessThanOrEqual(state.tick, 2_200, resolution.rawValue)
+            XCTAssertEqual(state.status, .playing, resolution.rawValue)
+            XCTAssertGreaterThan(state.treasury, 0, resolution.rawValue)
+        }
     }
 
     func testIgnoringEitherSetbackCostsMoreButLeavesARecoveryPath() throws {
@@ -525,6 +600,47 @@ final class GameplayLoopTests: XCTestCase {
         }
     }
 
+    func testRecoveryResolutionLegacyDecodeAndAllCasesRoundTrip() throws {
+        let legacyData = try XCTUnwrap(
+            """
+            {
+              "committedStrategy": "commercialStewardship",
+              "currentPhase": "recovery",
+              "nextScheduledTick": 260
+            }
+            """.data(using: .utf8)
+        )
+        let legacy = try JSONDecoder().decode(CityStrategyProgression.self, from: legacyData)
+        XCTAssertEqual(legacy.committedStrategy, .commercialStewardship)
+        XCTAssertEqual(legacy.currentPhase, .recovery)
+        XCTAssertEqual(legacy.nextScheduledTick, 260)
+        XCTAssertNil(legacy.recoveryResolution)
+
+        let resolutions: [CityStrategyRecoveryResolution] = [
+            .commercialTaxRelief,
+            .commercialPublicRealmInvestment,
+            .industrialUtilityExpansion,
+            .industrialGreenBuffer,
+        ]
+        for resolution in resolutions {
+            let strategy: CityStrategy = switch resolution {
+            case .commercialTaxRelief, .commercialPublicRealmInvestment: .commercialStewardship
+            case .industrialUtilityExpansion, .industrialGreenBuffer: .industrialExpansion
+            }
+            let expected = CityStrategyProgression(
+                committedStrategy: strategy,
+                currentPhase: .completed,
+                nextScheduledTick: nil,
+                recoveryResolution: resolution
+            )
+            let roundTrip = try JSONDecoder().decode(
+                CityStrategyProgression.self,
+                from: JSONEncoder().encode(expected)
+            )
+            XCTAssertEqual(roundTrip, expected)
+        }
+    }
+
     func testMissingLegacyStrategyLoadsNilAndCommitsOnlyAtDailyBoundary() throws {
         var state = CityGameState.newCity(seed: 42)
         try buildFirstValid(.industrial, in: &state)
@@ -574,6 +690,33 @@ final class GameplayLoopTests: XCTestCase {
         afterCommit.undoLastAction()
         XCTAssertEqual(afterCommit.state, opening)
         XCTAssertNil(afterCommit.state.progression?.strategy)
+    }
+
+    @MainActor
+    func testUndoRestoresExactPreResolutionState() throws {
+        var state = try commercialStrategy()
+        advanceToTick(&state, tick: 4)
+        advanceThroughStrategyPhase(&state, phase: .opportunity)
+        advanceThroughStrategyPhase(&state, phase: .complication)
+        advanceThroughStrategyPhase(&state, phase: .setback)
+        let beforeInvestment = state
+
+        let store = CityGameStore(state: state)
+        store.selectTool(.park)
+        store.primaryAction(at: GridCoordinate(x: 6, y: 11))
+        XCTAssertTrue(store.canUndo)
+        XCTAssertNil(store.state.progression?.strategy?.recoveryResolution)
+
+        advanceThroughStrategyPhase(&store.state, phase: .recovery)
+        XCTAssertEqual(
+            store.state.progression?.strategy?.recoveryResolution,
+            .commercialPublicRealmInvestment
+        )
+
+        store.undoLastAction()
+        XCTAssertEqual(store.state, beforeInvestment)
+        XCTAssertNil(store.state.progression?.strategy?.recoveryResolution)
+        XCTAssertEqual(store.state.progression?.strategy?.currentPhase, .recovery)
     }
 
     func testTemporaryTaxRecoveryImprovesCashflowButSuppressesDemandAndHappiness() {
@@ -834,6 +977,53 @@ final class GameplayLoopTests: XCTestCase {
         }
         XCTFail("Expected a visible valid placement for \(kind.title)")
         throw BuildRejection.outsideMap
+    }
+
+    private func charterCity(
+        resolvedBy resolution: CityStrategyRecoveryResolution
+    ) throws -> CityGameState {
+        let strategy: CityStrategy
+        let jobs: BuildingKind
+        switch resolution {
+        case .commercialTaxRelief, .commercialPublicRealmInvestment:
+            strategy = .commercialStewardship
+            jobs = .commercial
+        case .industrialUtilityExpansion, .industrialGreenBuffer:
+            strategy = .industrialExpansion
+            jobs = .industrial
+        }
+
+        var state = CityGameState.newCity(seed: 42)
+        advanceToTick(&state, tick: 60)
+        try buildFirstValid(jobs, in: &state)
+        advanceToTick(&state, tick: 64)
+        XCTAssertEqual(state.progression?.strategy?.committedStrategy, strategy)
+        advanceThroughStrategyPhase(&state, phase: .opportunity)
+        advanceThroughStrategyPhase(&state, phase: .complication)
+        advanceThroughStrategyPhase(&state, phase: .setback)
+        XCTAssertNil(state.progression?.strategy?.recoveryResolution)
+
+        switch resolution {
+        case .commercialTaxRelief:
+            state.taxRate = 0.09
+        case .commercialPublicRealmInvestment, .industrialGreenBuffer:
+            try buildFirstValid(.park, in: &state)
+        case .industrialUtilityExpansion:
+            try prepareReserveUtilities(in: &state)
+        }
+
+        advanceThroughStrategyPhase(&state, phase: .recovery)
+        XCTAssertEqual(state.progression?.strategy?.recoveryResolution, resolution)
+
+        if resolution == .commercialTaxRelief {
+            state.taxRate = 0.10
+        }
+        try prepareCharterCapacity(in: &state, jobs: jobs)
+        state.taxRate = 0.10
+        advanceUntil(&state, maximumCycles: 430) {
+            $0.progression?.townCharterAwarded == true
+        }
+        return state
     }
 
     private func prepareReserveUtilities(in state: inout CityGameState) throws {

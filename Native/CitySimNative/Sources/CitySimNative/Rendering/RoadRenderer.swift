@@ -170,12 +170,16 @@ final class RoadRenderer {
         detail: CameraDetailLevel,
         reducedMotion: Bool
     ) -> SKNode {
-        makeRoad(
+        let road = makeRoad(
             at: coordinate,
             connections: RoadConnectionMask.resolving(at: coordinate, in: state),
             detail: detail,
             reducedMotion: reducedMotion
         )
+        let detailAlpha = contextDetailAlpha(at: coordinate, in: state)
+        road.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha = detailAlpha
+        road.childNode(withName: CameraDetailLevel.block.layerName)?.alpha = detailAlpha
+        return road
     }
 
     func makeRoad(
@@ -212,6 +216,22 @@ final class RoadRenderer {
             to: blockLayer
         )
         return root
+    }
+
+    private func contextDetailAlpha(at coordinate: GridCoordinate, in state: CityGameState) -> CGFloat {
+        let distance = state.tiles.compactMap { tile -> Int? in
+            guard tile.kind != .empty && tile.kind != .road else { return nil }
+            return max(
+                abs(tile.coordinate.x - coordinate.x),
+                abs(tile.coordinate.y - coordinate.y)
+            )
+        }.min() ?? .max
+        return switch distance {
+        case ...1: 1
+        case 2: 0.72
+        case 3: 0.52
+        default: 0.30
+        }
     }
 
     private func addRoadbed(for topology: RoadTopology, to layer: SKNode) {

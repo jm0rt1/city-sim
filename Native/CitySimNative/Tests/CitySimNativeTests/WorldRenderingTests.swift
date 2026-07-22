@@ -580,6 +580,49 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testRemoteRoadOpportunityRecedesWithoutChangingTopologyOrHitGeometry() {
+        let state = CityGameState.newCity(seed: 42)
+        let renderer = RoadRenderer(style: WorldVisualStyle())
+        let frontage = renderer.makeRoad(
+            at: GridCoordinate(x: 12, y: 12),
+            in: state,
+            detail: .block,
+            reducedMotion: true
+        )
+        let frontierCoordinate = GridCoordinate(x: 4, y: 12)
+        let frontier = renderer.makeRoad(
+            at: frontierCoordinate,
+            in: state,
+            detail: .block,
+            reducedMotion: true
+        )
+
+        XCTAssertEqual(frontage.alpha, 1, accuracy: 0.001)
+        XCTAssertEqual(frontier.alpha, 1, accuracy: 0.001)
+        XCTAssertEqual(
+            frontage.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
+            1,
+            accuracy: 0.001
+        )
+        XCTAssertEqual(
+            frontier.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
+            0.30,
+            accuracy: 0.001
+        )
+        XCTAssertTrue(descendantNames(in: frontage).contains("road.production-corridor.15"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.2"))
+
+        guard let roadTile = state.tile(at: frontierCoordinate) else {
+            return XCTFail("Expected authoritative frontier road tile")
+        }
+        let terrain = TerrainRenderer(style: WorldVisualStyle()).makeGround(
+            for: roadTile,
+            detail: .block
+        )
+        XCTAssertTrue(descendantNames(in: terrain).contains("terrain.hit-surface"))
+    }
+
+    @MainActor
     func testProductionCorridorExportsAllTopologySeamMosaicAcrossSemanticLODs() throws {
         let size = CGSize(width: 1_200, height: 340)
         let view = SKView(frame: CGRect(origin: .zero, size: size))
@@ -643,19 +686,34 @@ final class WorldRenderingTests: XCTestCase {
     @MainActor
     func testRoundOneShippingStartExportsDevelopedBoundsDefaultAndCompact() throws {
         let state = CityGameState.newCity(seed: 42)
-        for (size, environmentKey) in [
-            (CGSize(width: 1_280, height: 800), "CITYSIM_PLAY022_M2_DEFAULT"),
-            (CGSize(width: 900, height: 600), "CITYSIM_PLAY022_M2_COMPACT"),
+        for (size, insets, environmentKey) in [
+            (
+                CGSize(width: 1_280, height: 800),
+                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
+                "CITYSIM_PLAY022_M2_DEFAULT"
+            ),
+            (
+                CGSize(width: 900, height: 600),
+                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
+                "CITYSIM_PLAY022_M2_COMPACT"
+            ),
         ] {
             let view = SKView(frame: CGRect(origin: .zero, size: size))
             let scene = CityScene(size: size)
             scene.reducedMotion = true
             view.presentScene(scene)
+            scene.updateViewportInsets(insets)
             scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
-            let occupancy = scene.developedViewportOccupancyForTesting()
-            XCTAssertGreaterThanOrEqual(max(occupancy.width, occupancy.height), 0.60)
-            XCTAssertLessThanOrEqual(max(occupancy.width, occupancy.height), 0.68)
+            let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
+            let network = scene.networkOpportunityViewportOccupancyForTesting()
+            XCTAssertGreaterThanOrEqual(max(occupied.width, occupied.height), 0.72)
+            XCTAssertGreaterThanOrEqual(occupied.width, 0.45)
+            XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
+            XCTAssertNotEqual(
+                scene.occupiedDevelopedVisualBoundsForTesting,
+                scene.networkOpportunityVisualBoundsForTesting
+            )
             XCTAssertLessThanOrEqual(scene.diagnosticsSnapshot.nodeCount, 4_000)
             XCTAssertLessThanOrEqual(scene.diagnosticsSnapshot.drawableNodeCount, 1_500)
             XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
@@ -666,7 +724,8 @@ final class WorldRenderingTests: XCTestCase {
             print(
                 "PLAY022_M2_FRAME size=\(Int(size.width))x\(Int(size.height)) " +
                 "scale=\(scene.cameraScaleForTesting) detail=\(scene.currentCameraDetailLevel) " +
-                "occupancy=\(occupancy.width),\(occupancy.height) " +
+                "occupied=\(occupied.width),\(occupied.height) " +
+                "network=\(network.width),\(network.height) " +
                 "nodes=\(scene.diagnosticsSnapshot.nodeCount) drawables=\(scene.diagnosticsSnapshot.drawableNodeCount)"
             )
         }
@@ -826,24 +885,51 @@ final class WorldRenderingTests: XCTestCase {
     @MainActor
     func testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactLODs() {
         let state = CityGameState.newCity(seed: 42)
+        let defaultInsets = CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
         let defaultScene = CityScene(size: CGSize(width: 1_280, height: 800))
         defaultScene.reducedMotion = true
+        defaultScene.updateViewportInsets(defaultInsets)
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
-        let defaultOccupancy = defaultScene.developedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(max(defaultOccupancy.width, defaultOccupancy.height), 0.60)
-        XCTAssertLessThanOrEqual(max(defaultOccupancy.width, defaultOccupancy.height), 0.68)
+        let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
+        XCTAssertGreaterThanOrEqual(max(defaultOccupancy.width, defaultOccupancy.height), 0.72)
+        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.45)
+        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 170.7188, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.height, 342, accuracy: 0.001)
 
+        let compactInsets = CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19)
         let compactScene = CityScene(size: CGSize(width: 900, height: 600))
         compactScene.reducedMotion = true
+        compactScene.updateViewportInsets(compactInsets)
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
-        let compactOccupancy = compactScene.developedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(max(compactOccupancy.width, compactOccupancy.height), 0.60)
-        XCTAssertLessThanOrEqual(max(compactOccupancy.width, compactOccupancy.height), 0.68)
+        let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
+        XCTAssertGreaterThanOrEqual(max(compactOccupancy.width, compactOccupancy.height), 0.72)
+        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.45)
 
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, defaultScene.developedVisualBoundsForTesting.midX, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, defaultScene.developedVisualBoundsForTesting.midY, accuracy: 0.001)
+        let defaultOffset = CGPoint(
+            x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
+            y: (defaultInsets.bottom - defaultInsets.top) * defaultScene.cameraScaleForTesting / 2
+        )
+        XCTAssertEqual(
+            defaultScene.cameraPositionForTesting.x,
+            defaultScene.occupiedDevelopedVisualBoundsForTesting.midX - defaultOffset.x,
+            accuracy: 0.001
+        )
+        XCTAssertEqual(
+            defaultScene.cameraPositionForTesting.y,
+            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
+            accuracy: 0.001
+        )
+        XCTAssertGreaterThan(
+            max(
+                defaultScene.networkOpportunityViewportOccupancyForTesting().width,
+                defaultScene.networkOpportunityViewportOccupancyForTesting().height
+            ),
+            max(defaultOccupancy.width, defaultOccupancy.height)
+        )
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: GridCoordinate(x: 11, y: 11))
             .contains("lot.generated-v4.city_hall_l01.block"))
 
@@ -856,8 +942,61 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
         defaultScene.frameCity()
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.x, defaultScene.developedVisualBoundsForTesting.midX, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.cameraPositionForTesting.y, defaultScene.developedVisualBoundsForTesting.midY, accuracy: 0.001)
+        XCTAssertEqual(
+            defaultScene.cameraPositionForTesting.x,
+            defaultScene.occupiedDevelopedVisualBoundsForTesting.midX - defaultOffset.x,
+            accuracy: 0.001
+        )
+        XCTAssertEqual(
+            defaultScene.cameraPositionForTesting.y,
+            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
+            accuracy: 0.001
+        )
+    }
+
+    @MainActor
+    func testDevelopedMassCameraIgnoresRemoteOpportunityAndNumericOccupancy() {
+        let size = CGSize(width: 1_280, height: 800)
+        let insets = CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
+        func metrics(for state: CityGameState) -> (occupied: CGRect, network: CGRect, scale: CGFloat, position: CGPoint) {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(insets)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            return (
+                scene.occupiedDevelopedVisualBoundsForTesting,
+                scene.networkOpportunityVisualBoundsForTesting,
+                scene.cameraScaleForTesting,
+                scene.cameraPositionForTesting
+            )
+        }
+
+        let start = CityGameState.newCity(seed: 42)
+        let baseline = metrics(for: start)
+
+        var remoteOpportunity = start
+        remoteOpportunity.updateTile(at: GridCoordinate(x: 0, y: 0)) { $0.kind = .road }
+        let opportunity = metrics(for: remoteOpportunity)
+        XCTAssertEqual(opportunity.occupied, baseline.occupied)
+        XCTAssertNotEqual(opportunity.network, baseline.network)
+        XCTAssertEqual(opportunity.scale, baseline.scale, accuracy: 0.001)
+        XCTAssertEqual(opportunity.position.x, baseline.position.x, accuracy: 0.001)
+        XCTAssertEqual(opportunity.position.y, baseline.position.y, accuracy: 0.001)
+
+        var numericOccupancy = start
+        numericOccupancy.updateTile(at: GridCoordinate(x: 10, y: 11)) { $0.occupancy = 9_999 }
+        let numeric = metrics(for: numericOccupancy)
+        XCTAssertEqual(numeric.occupied, baseline.occupied)
+        XCTAssertEqual(numeric.scale, baseline.scale, accuracy: 0.001)
+        XCTAssertEqual(numeric.position.x, baseline.position.x, accuracy: 0.001)
+        XCTAssertEqual(numeric.position.y, baseline.position.y, accuracy: 0.001)
+
+        var realDevelopment = start
+        realDevelopment.updateTile(at: GridCoordinate(x: 8, y: 11)) { $0.kind = .residential }
+        let developed = metrics(for: realDevelopment)
+        XCTAssertNotEqual(developed.occupied, baseline.occupied)
+        XCTAssertNotEqual(developed.scale, baseline.scale)
+        XCTAssertNotEqual(developed.position, baseline.position)
     }
 
     @MainActor

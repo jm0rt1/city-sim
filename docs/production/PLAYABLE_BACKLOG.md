@@ -233,6 +233,16 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Occupied, no-road, and unaffordable Return attempts expose the same accepted reason and durable guidance as pointer attempts; the selected tool and coordinate remain stable; valid Return mutates exactly once; AX availability/disabled reason remains truthful; modal/text quarantine and compact behavior do not regress.
 - **Stop conditions:** Invalid commands become advertised as available, a second validation path is introduced, selection or active target semantics change, the renderer is edited, or CONTRACT-008 is implemented early.
 
+### [ ] PLAY-036: Make searched remedies reliably actionable
+
+- **Player outcome:** Typing the words used by a warning finds the intended remedy, and the visible result actually opens through pointer, keyboard, or accessibility action.
+- **Owning lane:** UI and input.
+- **Dependencies:** Integrated PLAY-033, PLAY-051 live reproduction on exact master `23d2bf9`, and completion of PLAY-035.
+- **In scope:** Command-guide query lifecycle, result action semantics, existing catalog/store dispatch, truthful availability/disabled reasons, focus restoration, focused tests, and staged default/compact proof.
+- **Out of scope:** New commands, warning prose ownership, simulation policy, renderer, persistence, or a parallel view-only action path.
+- **Acceptance:** Fresh `tax`, `budget`, and `storefront` searches each show the one existing Tax Policy result; pointer, Return, Space, and AX activation execute that result exactly once when available; disabled results retain and announce their reason; Escape restores map focus without shortcut leakage.
+- **Stop conditions:** Unit-only matching replaces live proof, a result is visible but inert, action paths diverge by input method, availability is overstated, or view code bypasses the store/catalog.
+
 ### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
 
 - **Player outcome:** The repaired strategy story remains identical across speed grouping, save/load, undo, replay, recovery, and immutable presentation snapshots.

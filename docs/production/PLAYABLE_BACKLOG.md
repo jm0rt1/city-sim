@@ -192,3 +192,33 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Casual product fixes, coaching, candidate substitution, and acceptance based on tests alone.
 - **Acceptance:** Complete no-coaching 20-minute routes; first decision by 02:00; no unexplained dead time over 30 seconds; consequence latency at most 15 seconds of relevant simulation time; three meaningful decisions; recovery before minute 18; distinct viable strategies; save/resume trust; explicit replay desire; any critical defect rejects the wave.
 - **Stop conditions:** Missing exact candidate identity, coached success, unretained proof, false feedback, or contradictory evidence.
+
+### [ ] PLAY-013: Make the strategy story impossible to miss
+
+- **Player outcome:** A fresh player can read, diagnose, make one valid Commercial or Industrial commitment, and receive the complete authored opportunity, warning, setback, recovery, and payoff in order even when the choice lands after the old Day 25 boundary.
+- **Owning lane:** Gameplay loop.
+- **Dependencies:** Integrated PLAY-051 dual audit; approved `CONTRACT-007`; accepted PLAY-012 checkpoint; simulation-platform adoption under PLAY-042.
+- **In scope:** Durable strategy commitment, phase-relative daily scheduling, minimum warning interval, late-choice catch-up, objective/message retirement, derived urgency analytics, deterministic route/recovery balance, and compatibility evidence.
+- **Out of scope:** HUD composition, panel pause policy, renderer/placement presentation, new commands, general event framework, and unrelated economy redesign.
+- **Acceptance:** The retained missed-deadline reproduction can commit after Day 25 and still receives every phase exactly once and in order; a failed placement never commits; strategy never flips from later tile counts; both strategies reach Town Charter or an explicit terminal failure inside 20:00 in deterministic no-coaching runs; save/load/undo/replay/fingerprints remain exact.
+- **Stop conditions:** Exact-tick story gating remains, legacy saves replay/cascade missed phases, new shared state exceeds CONTRACT-007, UI/rendering changes enter the lane, or platform fixture adoption is omitted.
+
+### [ ] PLAY-033: Make the HUD a compact city command center
+
+- **Player outcome:** Urgent decisions stay visible and understandable, every warning leads directly to the relevant action, invalid placement recovery is durable, and exact 900 x 600 play keeps the map dominant.
+- **Owning lane:** UI and input.
+- **Dependencies:** Integrated PLAY-051 dual audit; approved CONTRACT-007 analytics; PLAY-013 publishes authoritative strategy status; PLAY-022 or an integration-approved bridge resolves in-world placement truth.
+- **In scope:** Authoritative urgency/countdown presentation, diagnose-to-act path, explicit pause/running communication, deterministic compact surface precedence, persistent placement-rejection guidance, command search synonyms/context, focus restoration, pointer/keyboard parity, accessibility, and staged proof.
+- **Out of scope:** Gameplay deadlines/balance, local re-derivation of strategy truth, renderer art, save schema, or a second command/state system.
+- **Acceptance:** Exact 900 x 600 retains at least 40% content height for the interactive map with Objectives plus Command Center (or a separately approved equivalent measure); selected context and critical actions remain visible; `tax`, `budget`, and `storefront` locate Tax Policy; rejection reason survives long enough to recover; default/compact pointer, keyboard, Full Keyboard Access, and VoiceOver routes pass against the exact staged candidate.
+- **Stop conditions:** HUD infers countdown from tick/message prose, compact panels displace the map, transient-only critical recovery, shortcut/catalog divergence, focus trap, or UI code claims renderer placement truth.
+
+### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
+
+- **Player outcome:** The repaired strategy story remains identical across speed grouping, save/load, undo, replay, recovery, and immutable presentation snapshots.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** Approved CONTRACT-007 and a gameplay-owned PLAY-013 model/rules checkpoint.
+- **In scope:** Legacy schema-0/schema-1 validation, version-1 fingerprint adoption, deterministic fixtures/digests, save/backup recovery, replay/undo invariants, immutable analytics snapshots, and measured performance/save-size evidence.
+- **Out of scope:** Strategy balance/content, HUD presentation, renderer behavior, commands, or redesigning gameplay progression.
+- **Acceptance:** Frozen legacy nil-strategy bytes/digests remain valid; every nonnil phase has stable repeated fingerprints; grouped-speed, uninterrupted, save/resume, and replay routes match exactly; corrupt-primary recovery preserves progression; dense/save/snapshot budgets remain bounded; full suite passes.
+- **Stop conditions:** Authentic legacy envelope digest failure without version-aware handling, schema bump without integration approval, platform-owned gameplay rules, duplicate snapshot truth, or unexplained golden-digest drift.

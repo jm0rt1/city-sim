@@ -60,3 +60,27 @@ Each shipping LOD uses one stable world envelope and a per-export trim and groun
 3. Grounded building silhouettes carry place identity and lifecycle state.
 4. Vegetation and bounded ambient life support scale at neighborhood/block detail.
 5. Selection, placement, and diagnostic marks yield to architecture and never become a second HUD.
+
+## Round 1B corrective evidence — `fc8b838`
+
+This addendum records measured composition and residency for exact product
+commit `fc8b838d6d33ee8091ce6c54c125ea0cee279f5b` (tree
+`1277422dabd28c67469b11516ba06692f978bc1a`). It does not revise the
+authoritative tile, projection, pivot, lighting, frontage, or LOD vocabulary.
+
+| Fixture | Fitted scale / detail | Occupied visual mass | Network/opportunity context | Gate |
+|---|---|---:|---:|---|
+| 1280 x 800 | `0.374546`, block | `62.41% x 85.04%` | `148.23% x 170.36%` | limiting axis passes 45% |
+| exact 900 x 600 | `0.618716`, neighborhood | `54.00% x 122.09%` | `128.25% x 244.58%` | limiting axis passes 45% |
+
+Occupied mass derives only from authoritative occupied lots and immediately
+adjoining public realm. The larger network/opportunity rectangle is reported
+separately and does not count toward occupied coverage.
+
+Repeated LOD cycling retains 28 generated-v4 textures and 13,521,048 decoded
+bytes with zero fallback. Production geometry validation retains zero
+collisions across 616 checks. After three LOD cycles and a 60-second settle,
+the exact staged compact sample reports 236 MB physical footprint and the
+regular sample reports 300 MB, both below the 333.8 MiB ceiling. Independent
+scoring remains the authority on whether the shipping composition reads as a
+substantial connected neighborhood rather than a toy island.

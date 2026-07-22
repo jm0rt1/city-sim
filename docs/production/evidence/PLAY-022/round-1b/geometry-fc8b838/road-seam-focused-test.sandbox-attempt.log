@@ -1,0 +1,83 @@
+warning: /Users/James/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/James/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/James/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'citysimnative': failed storing manifest for 'citysimnative' in cache: attempt to write a readonly database
+Building for debugging...
+[0/12] /private/tmp/citysim-play022-geometry-fc8b838-build/arm64-apple-macosx/debug/CitySimNativePackageTests.derived/runner.swift
+[0/12] Write sources
+[0/12] Write CitySimNative-entitlement.plist
+[4/12] Write sources
+[5/12] Copying WorldAssets.atlas
+[6/12] Write swift-version--58304C5D6DBC2206.txt
+[8/56] Compiling CitySimNative SpatialConsequenceRenderer.swift
+[9/56] Compiling CitySimNative StrategyDistrictVisualIdentity.swift
+[10/56] Compiling CitySimNative TerrainRenderer.swift
+[11/58] Compiling CitySimNative CitySimNativeApp.swift
+[12/58] Compiling CitySimNative CityGameState.swift
+[13/58] Compiling CitySimNative CityModels.swift
+[14/58] Compiling CitySimNative ContentView.swift
+[15/58] Compiling CitySimNative EventFeedView.swift
+[16/58] Compiling CitySimNative SettingsView.swift
+[17/58] Compiling CitySimNative TopHUDView.swift
+[18/58] Compiling CitySimNative CityCommandCatalog.swift
+[19/58] Compiling CitySimNative CityDirectActionPresentation.swift
+[20/58] Compiling CitySimNative SaveGameService.swift
+[21/58] Compiling CitySimNative CityGameStore.swift
+[22/58] Compiling CitySimNative CityAnalytics.swift
+[23/58] Compiling CitySimNative BuildToolbarView.swift
+[24/58] Compiling CitySimNative CommandGuideView.swift
+[25/58] Compiling CitySimNative LotLifecycleRenderer.swift
+[26/58] Compiling CitySimNative LotRenderer.swift
+[27/58] Compiling CitySimNative RoadRenderer.swift
+[28/58] Compiling CitySimNative CitySimulation.swift
+[29/58] Compiling CitySimNative CitySimulationCommand.swift
+[30/58] Compiling CitySimNative CityStateFingerprint.swift
+[31/58] Compiling CitySimNative OverlayLegendView.swift
+[32/58] Compiling CitySimNative OverlayPickerView.swift
+[33/58] Compiling CitySimNative WorldAssetCatalog.swift
+[34/58] Compiling CitySimNative WorldOverlayRenderer.swift
+[35/58] Compiling CitySimNative WorldVisualStyle.swift
+[36/58] Compiling CitySimNative MetricCard.swift
+[37/58] Compiling CitySimNative ObjectivesView.swift
+[38/58] Compiling CitySimNative GoldenDistrictRenderer.swift
+[39/58] Compiling CitySimNative IsometricGridCoordinateResolver.swift
+[40/58] Compiling CitySimNative LotConsequencePresentation.swift
+[41/58] Compiling CitySimNative GameStatusOverlay.swift
+[42/58] Compiling CitySimNative InspectorView.swift
+[43/58] Compiling CitySimNative CityPresentationSnapshot.swift
+[44/58] Compiling CitySimNative CitySpatialConsequences.swift
+[45/58] Compiling CitySimNative AmbientLifeRenderer.swift
+[46/58] Compiling CitySimNative CityScene.swift
+[47/58] Compiling CitySimNative CitySceneView.swift
+[48/58] Compiling CitySimNative GeneratedWorldAssetManifest.swift
+[49/58] Compiling CitySimNative GameTheme.swift
+[50/58] Compiling CitySimNative ProofWindowConfigurator.swift
+[51/58] Emitting module CitySimNative
+[52/58] Compiling CitySimNative WelcomeView.swift
+[53/58] Compiling CitySimNative resource_bundle_accessor.swift
+[53/58] Write Objects.LinkFileList
+[54/58] Linking CitySimNative
+[55/58] Applying CitySimNative
+[57/67] Compiling CitySimNativeTests IsometricGridCoordinateResolverTests.swift
+[58/67] Compiling CitySimNativeTests WorldRenderingTests.swift
+[59/67] Compiling CitySimNativeTests SpatialConsequenceTests.swift
+[60/67] Compiling CitySimNativeTests CityCommandCatalogTests.swift
+[61/67] Emitting module CitySimNativeTests
+[62/67] Compiling CitySimNativeTests ProofWindowConfiguratorTests.swift
+[63/67] Compiling CitySimNativeTests CitySimulationTests.swift
+[64/67] Compiling CitySimNativeTests SessionPlatformTests.swift
+[65/67] Compiling CitySimNativeTests GameplayLoopTests.swift
+[66/69] Emitting module CitySimNativePackageTests
+[67/69] Compiling CitySimNativePackageTests runner.swift
+[67/69] Write Objects.LinkFileList
+[68/69] Linking CitySimNativePackageTests
+Build complete! (12.82s)
+error: Process '/Applications/Xcode.app/Contents/Developer/usr/bin/xctest -XCTest CitySimNativeTests.WorldRenderingTests/testProductionCorridorExportsAllTopologySeamMosaicAcrossSemanticLODs /private/tmp/citysim-play022-geometry-fc8b838-build/arm64-apple-macosx/debug/CitySimNativePackageTests.xctest' exited with unexpected signal code 11
+Test Suite 'Selected tests' started at 2026-07-22 07:49:08.037.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-22 07:49:08.037.
+Test Suite 'WorldRenderingTests' started at 2026-07-22 07:49:08.037.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testProductionCorridorExportsAllTopologySeamMosaicAcrossSemanticLODs]' started.
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

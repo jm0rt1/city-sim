@@ -1,0 +1,18 @@
+world-rendering-tests.log:Test Suite 'WorldRenderingTests' failed at 2026-07-22 07:50:01.226.
+world-rendering-tests.log: Executed 35 tests, with 1 failure (0 unexpected) in 27.447 (27.449) seconds
+world-rendering-tests.log:real 44.20
+world-rendering-tests-warm-repeat.log:Test Suite 'WorldRenderingTests' passed at 2026-07-22 07:50:39.963.
+world-rendering-tests-warm-repeat.log: Executed 35 tests, with 0 failures (0 unexpected) in 23.889 (23.891) seconds
+world-rendering-tests-warm-repeat.log:real 24.43
+resolver-tests.log:Test Suite 'IsometricGridCoordinateResolverTests' passed at 2026-07-22 07:51:09.490.
+resolver-tests.log: Executed 3 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+resolver-tests.log:real 13.92
+full-native-tests.log:Test Suite 'IsometricGridCoordinateResolverTests' passed at 2026-07-22 07:52:16.083.
+full-native-tests.log: Executed 3 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+full-native-tests.log:Test Suite 'WorldRenderingTests' passed at 2026-07-22 07:52:43.352.
+full-native-tests.log: Executed 35 tests, with 0 failures (0 unexpected) in 24.578 (24.580) seconds
+full-native-tests.log:Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-22 07:52:43.352.
+full-native-tests.log: Executed 135 tests, with 0 failures (0 unexpected) in 69.467 (69.476) seconds
+full-native-tests.log:real 83.22
+world-rendering-tests.sandbox-attempt.log:real 0.84
+resolver-tests.sandbox-attempt.log:real 1.15

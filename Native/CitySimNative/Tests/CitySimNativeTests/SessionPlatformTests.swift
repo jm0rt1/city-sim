@@ -1,3 +1,4 @@
+import CryptoKit
 import XCTest
 @testable import CitySimNative
 
@@ -70,27 +71,52 @@ final class SessionPlatformTests: XCTestCase {
         }
     }
 
-    func testSchemaZeroBareStatePreservesLegacyNilUntilTickFour() throws {
-        try withTemporaryRoot { root in
-            let service = SaveGameService(rootURL: root)
-            try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
-            var legacy = CityGameState.newCity(seed: 42)
-            legacy.progression = nil
-            try JSONEncoder().encode(legacy).write(to: service.saveURL, options: .atomic)
+    func testAuthenticPreStrategySaveBytesAndDigestsRemainFrozen() throws {
+        let fixtures: [(file: String, sha256: String, schema: Int, digest: String)] = [
+            (
+                "strategy-legacy-schema0-v1",
+                "28c41c2a8c44adc0de49110ebb05ba0952f9deb4f9cb59c3f10035e7a925e908",
+                0,
+                "b7608f0aa748f5b40086d59ffeba746908599780f791b6483d6c613e80dedeb5"
+            ),
+            (
+                "strategy-legacy-schema1-envelope-v1",
+                "56ea7704735540d2a573aea7d96575d34d363e3583b5c90bb81ceb8b620e01b9",
+                1,
+                "947b383684145d6d18738f313fec4f648861680165134f33b4f65ad42e5c0e3f"
+            )
+        ]
 
-            let load = try service.load()
-            XCTAssertEqual(load.schemaVersion, 0)
-            XCTAssertNil(load.state.progression)
+        for fixture in fixtures {
+            let bytes = try fixtureData(named: fixture.file)
+            XCTAssertEqual(sha256(bytes), fixture.sha256, fixture.file)
 
-            var resumed = load.state
-            for expectedTick in 1...3 {
-                CitySimulation.step(&resumed)
-                XCTAssertEqual(resumed.tick, expectedTick)
-                XCTAssertNil(resumed.progression)
+            try withTemporaryRoot { root in
+                let service = SaveGameService(rootURL: root)
+                try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+                try bytes.write(to: service.saveURL, options: .atomic)
+
+                let load = try service.load()
+                XCTAssertEqual(load.schemaVersion, fixture.schema, fixture.file)
+                XCTAssertEqual(load.fingerprint.version, 1, fixture.file)
+                XCTAssertEqual(load.fingerprint.digest, fixture.digest, fixture.file)
+                XCTAssertNil(load.state.progression?.strategy, fixture.file)
+
+                if fixture.schema == 0 {
+                    XCTAssertNil(load.state.progression)
+                    var resumed = load.state
+                    for expectedTick in 1...3 {
+                        CitySimulation.step(&resumed)
+                        XCTAssertEqual(resumed.tick, expectedTick)
+                        XCTAssertNil(resumed.progression)
+                    }
+                    CitySimulation.step(&resumed)
+                    XCTAssertEqual(resumed.tick, 4)
+                    XCTAssertEqual(resumed.progression, CityProgressionState())
+                } else {
+                    XCTAssertEqual(load.state.progression, CityProgressionState())
+                }
             }
-            CitySimulation.step(&resumed)
-            XCTAssertEqual(resumed.tick, 4)
-            XCTAssertEqual(resumed.progression, CityProgressionState())
         }
     }
 
@@ -371,6 +397,17 @@ final class SessionPlatformTests: XCTestCase {
             .appending(path: "citysim-play040-\(UUID().uuidString)", directoryHint: .isDirectory)
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
+    }
+
+    private func fixtureData(named name: String) throws -> Data {
+        let url = try XCTUnwrap(
+            Bundle.module.url(forResource: name, withExtension: "json", subdirectory: "Fixtures")
+        )
+        return try Data(contentsOf: url)
+    }
+
+    private func sha256(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
     private func apply(

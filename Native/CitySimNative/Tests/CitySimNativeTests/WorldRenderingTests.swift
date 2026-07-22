@@ -585,7 +585,7 @@ final class WorldRenderingTests: XCTestCase {
                 reducedMotion: true
             )
             let names = descendantNames(in: root)
-            XCTAssertTrue(names.contains("road.production-corridor.\(mask.rawValue)"))
+            XCTAssertTrue(names.contains("road.production-corridor.developed.\(mask.rawValue)"))
             if mask.connectionCount == 1 {
                 XCTAssertTrue(names.contains("road.terminus.turning-bulb"))
                 XCTAssertTrue(names.contains("road.terminus.center-mark"))
@@ -651,11 +651,11 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             frontier.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
-            0.30,
+            0,
             accuracy: 0.001
         )
-        XCTAssertTrue(descendantNames(in: frontage).contains("road.production-corridor.15"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.2"))
+        XCTAssertTrue(descendantNames(in: frontage).contains("road.production-corridor.developed.15"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.opportunity.2"))
 
         guard let roadTile = state.tile(at: frontierCoordinate) else {
             return XCTFail("Expected authoritative frontier road tile")
@@ -716,7 +716,7 @@ final class WorldRenderingTests: XCTestCase {
                 road.setScale(1.08)
                 scene.addChild(road)
                 let names = descendantNames(in: road)
-                XCTAssertTrue(names.contains("road.production-corridor.\(maskValue)"))
+                XCTAssertTrue(names.contains("road.production-corridor.developed.\(maskValue)"))
                 XCTAssertFalse(names.contains { $0.hasPrefix("road.generated-v4") })
             }
         }
@@ -752,8 +752,13 @@ final class WorldRenderingTests: XCTestCase {
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
-            XCTAssertGreaterThanOrEqual(max(occupied.width, occupied.height), 0.72)
-            XCTAssertGreaterThanOrEqual(occupied.width, 0.45)
+            if size.width <= 900 {
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.52)
+                XCTAssertLessThanOrEqual(occupied.width, 0.58)
+            } else {
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
+                XCTAssertLessThanOrEqual(occupied.width, 0.68)
+            }
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
             XCTAssertNotEqual(
                 scene.occupiedDevelopedVisualBoundsForTesting,
@@ -948,8 +953,8 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(max(defaultOccupancy.width, defaultOccupancy.height), 0.72)
-        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.45)
+        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.60)
+        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.68)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 170.7188, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -962,8 +967,8 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(max(compactOccupancy.width, compactOccupancy.height), 0.72)
-        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.45)
+        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.52)
+        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.58)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
@@ -1514,6 +1519,11 @@ final class WorldRenderingTests: XCTestCase {
         }
         XCTAssertNotEqual(city.png, neighborhood.png)
         XCTAssertNotEqual(neighborhood.png, block.png)
+        XCTAssertLessThanOrEqual(
+            block.diagnostics.worldUpdateDurationMilliseconds,
+            6.03,
+            "The exact historical golden-fixture method must remain within the accepted cold-update gate"
+        )
         try export(city.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_CITY_PROOF")
         try export(neighborhood.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_NEIGHBORHOOD_PROOF")
         try export(block.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_BLOCK_PROOF")

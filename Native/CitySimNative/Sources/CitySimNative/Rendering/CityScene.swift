@@ -93,15 +93,15 @@ private struct CityVisualCompositionBounds {
 
 private final class TileRenderRecord {
     let root: SKNode
-    let overlayLayer: SKNode
-    let consequenceLayer: SKNode
+    var overlayLayer: SKNode?
+    var consequenceLayer: SKNode?
     let signature: TileRenderSignature
     var overlaySignature: OverlayRenderSignature
 
     init(
         root: SKNode,
-        overlayLayer: SKNode,
-        consequenceLayer: SKNode,
+        overlayLayer: SKNode?,
+        consequenceLayer: SKNode?,
         signature: TileRenderSignature,
         overlaySignature: OverlayRenderSignature
     ) {
@@ -440,7 +440,7 @@ final class CityScene: SKScene {
     }
 
     func tileConsequenceEventNodeCountForTesting(at coordinate: GridCoordinate) -> Int {
-        tileRecords[coordinate]?.consequenceLayer.children.filter {
+        tileRecords[coordinate]?.consequenceLayer?.children.filter {
             $0.name?.hasPrefix("spatial.event.") == true
         }.count ?? 0
     }
@@ -715,6 +715,9 @@ final class CityScene: SKScene {
             if lhs.coordinate.x != rhs.coordinate.x { return lhs.coordinate.x < rhs.coordinate.x }
             return lhs.coordinate.y < rhs.coordinate.y
         }
+        let developedRoadContextCoordinates = state.tiles.compactMap { tile in
+            tile.kind != .empty && tile.kind != .road ? tile.coordinate : nil
+        }
         let changedCoordinates = changedRenderCoordinates(
             from: previousSnapshot,
             to: snapshot,
@@ -739,35 +742,49 @@ final class CityScene: SKScene {
             if let existing = tileRecords[tile.coordinate], existing.signature == signature {
                 diagnostics.reusedTileCount += 1
                 if existing.overlaySignature != overlaySignature {
-                    let priorOverlayMetrics = existing.overlayLayer.parent == nil
-                        ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
-                        : runtimeTreeMetrics(existing.overlayLayer)
-                    updateOverlay(
-                        in: existing.overlayLayer,
-                        tile: tile,
-                        consequence: consequence,
-                        state: state,
-                        overlay: overlay
-                    )
-                    if existing.overlayLayer.children.isEmpty {
-                        existing.overlayLayer.removeFromParent()
-                    } else if existing.overlayLayer.parent == nil {
-                        existing.root.addChild(existing.overlayLayer)
+                    let priorOverlayMetrics = existing.overlayLayer.map { layer in
+                        layer.parent == nil
+                            ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                            : runtimeTreeMetrics(layer)
+                    } ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                    if overlay == .none {
+                        existing.overlayLayer?.removeAllChildren()
+                        existing.overlayLayer?.removeFromParent()
+                        existing.overlayLayer = nil
+                    } else {
+                        let layer = existing.overlayLayer ?? makeOverlayLayer()
+                        existing.overlayLayer = layer
+                        updateOverlay(
+                            in: layer,
+                            tile: tile,
+                            consequence: consequence,
+                            state: state,
+                            overlay: overlay
+                        )
+                        if layer.children.isEmpty {
+                            layer.removeFromParent()
+                        } else if layer.parent == nil {
+                            existing.root.addChild(layer)
+                        }
                     }
-                    let updatedOverlayMetrics = existing.overlayLayer.parent == nil
-                        ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
-                        : runtimeTreeMetrics(existing.overlayLayer)
+                    let updatedOverlayMetrics = existing.overlayLayer.map { layer in
+                        layer.parent == nil
+                            ? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                            : runtimeTreeMetrics(layer)
+                    } ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
                     applyRuntimeDelta(
                         from: priorOverlayMetrics,
                         to: updatedOverlayMetrics,
                         diagnostics: &diagnostics
                     )
                     existing.overlaySignature = overlaySignature
-                    updatePersistentConsequenceEmphasis(
-                        in: existing.consequenceLayer,
-                        at: tile.coordinate,
-                        overlay: overlay
-                    )
+                    if let consequenceLayer = existing.consequenceLayer {
+                        updatePersistentConsequenceEmphasis(
+                            in: consequenceLayer,
+                            at: tile.coordinate,
+                            overlay: overlay
+                        )
+                    }
                     diagnostics.overlayUpdateCount += 1
                 }
                 continue
@@ -790,6 +807,7 @@ final class CityScene: SKScene {
                     tile: tile,
                     consequence: consequence,
                     state: state,
+                    developedRoadContextCoordinates: developedRoadContextCoordinates,
                     overlay: overlay,
                     signature: signature,
                     overlaySignature: overlaySignature
@@ -894,16 +912,20 @@ final class CityScene: SKScene {
             }
         }
 
-        let consequenceLayer = SKNode()
-        consequenceLayer.name = "spatial.layer"
-        consequenceLayer.zPosition = 72
-        let persistentCues = spatialConsequenceRenderer.makePersistentCues(
-            for: consequence,
-            detail: currentCameraDetailLevel
-        )
-        if !persistentCues.children.isEmpty { consequenceLayer.addChild(persistentCues) }
-        updatePersistentConsequenceEmphasis(in: consequenceLayer, at: tile.coordinate, overlay: overlay)
-        if !consequenceLayer.children.isEmpty { root.addChild(consequenceLayer) }
+        var consequenceLayer: SKNode?
+        if consequence.vitality != .notApplicable {
+            let candidate = makeConsequenceLayer()
+            let persistentCues = spatialConsequenceRenderer.makePersistentCues(
+                for: consequence,
+                detail: currentCameraDetailLevel
+            )
+            if !persistentCues.children.isEmpty { candidate.addChild(persistentCues) }
+            updatePersistentConsequenceEmphasis(in: candidate, at: tile.coordinate, overlay: overlay)
+            if !candidate.children.isEmpty {
+                root.addChild(candidate)
+                consequenceLayer = candidate
+            }
+        }
         return TileRenderRecord(
             root: root,
             overlayLayer: existing.overlayLayer,
@@ -968,6 +990,7 @@ final class CityScene: SKScene {
         tile: CityTile,
         consequence: CitySpatialConsequence,
         state: CityGameState,
+        developedRoadContextCoordinates: [GridCoordinate],
         overlay: DataOverlay,
         signature: TileRenderSignature,
         overlaySignature: OverlayRenderSignature
@@ -1002,17 +1025,21 @@ final class CityScene: SKScene {
             }
         }
 
-        let overlayLayer = SKNode()
-        overlayLayer.name = "overlay.layer"
-        overlayLayer.zPosition = 20
-        updateOverlay(
-            in: overlayLayer,
-            tile: tile,
-            consequence: consequence,
-            state: state,
-            overlay: overlay
-        )
-        if !overlayLayer.children.isEmpty { root.addChild(overlayLayer) }
+        var overlayLayer: SKNode?
+        if overlay != .none {
+            let candidate = makeOverlayLayer()
+            updateOverlay(
+                in: candidate,
+                tile: tile,
+                consequence: consequence,
+                state: state,
+                overlay: overlay
+            )
+            if !candidate.children.isEmpty {
+                root.addChild(candidate)
+                overlayLayer = candidate
+            }
+        }
 
         switch tile.kind {
         case .empty:
@@ -1023,9 +1050,10 @@ final class CityScene: SKScene {
             contentLayer.zPosition = 40
             contentLayer.addChild(roadRenderer.makeRoad(
                 at: tile.coordinate,
-                in: state,
+                connections: signature.roadConnections,
                 detail: currentCameraDetailLevel,
-                reducedMotion: reducedMotion
+                reducedMotion: reducedMotion,
+                developedCoordinates: developedRoadContextCoordinates
             ))
             root.addChild(contentLayer)
         default:
@@ -1034,23 +1062,27 @@ final class CityScene: SKScene {
             contentLayer.zPosition = 40
             contentLayer.addChild(lotRenderer.makeLot(
                 for: tile,
-                adjacentRoads: RoadConnectionMask.resolving(at: tile.coordinate, in: state),
+                adjacentRoads: signature.roadConnections,
                 detail: currentCameraDetailLevel,
                 reducedMotion: reducedMotion
             ))
             root.addChild(contentLayer)
         }
 
-        let consequenceLayer = SKNode()
-        consequenceLayer.name = "spatial.layer"
-        consequenceLayer.zPosition = 72
-        let persistentCues = spatialConsequenceRenderer.makePersistentCues(
-            for: consequence,
-            detail: currentCameraDetailLevel
-        )
-        if !persistentCues.children.isEmpty { consequenceLayer.addChild(persistentCues) }
-        updatePersistentConsequenceEmphasis(in: consequenceLayer, at: tile.coordinate, overlay: overlay)
-        if !consequenceLayer.children.isEmpty { root.addChild(consequenceLayer) }
+        var consequenceLayer: SKNode?
+        if consequence.vitality != .notApplicable {
+            let candidate = makeConsequenceLayer()
+            let persistentCues = spatialConsequenceRenderer.makePersistentCues(
+                for: consequence,
+                detail: currentCameraDetailLevel
+            )
+            if !persistentCues.children.isEmpty { candidate.addChild(persistentCues) }
+            updatePersistentConsequenceEmphasis(in: candidate, at: tile.coordinate, overlay: overlay)
+            if !candidate.children.isEmpty {
+                root.addChild(candidate)
+                consequenceLayer = candidate
+            }
+        }
         return TileRenderRecord(
             root: root,
             overlayLayer: overlayLayer,
@@ -1069,6 +1101,20 @@ final class CityScene: SKScene {
         let isActiveCoordinate = coordinate == renderedSelection || coordinate == hoveredCoordinate
         layer.childNode(withName: "spatial.consequences")?.alpha =
             isTruthOverlay && !isActiveCoordinate ? 0.52 : 0
+    }
+
+    private func makeOverlayLayer() -> SKNode {
+        let layer = SKNode()
+        layer.name = "overlay.layer"
+        layer.zPosition = 20
+        return layer
+    }
+
+    private func makeConsequenceLayer() -> SKNode {
+        let layer = SKNode()
+        layer.name = "spatial.layer"
+        layer.zPosition = 72
+        return layer
     }
 
     private func refreshPersistentConsequenceEmphasis(at coordinates: [GridCoordinate?]) {
@@ -1109,7 +1155,10 @@ final class CityScene: SKScene {
         state: CityGameState,
         overlay: DataOverlay
     ) -> OverlayRenderSignature {
-        OverlayRenderSignature(
+        guard overlay != .none else {
+            return OverlayRenderSignature(overlay: .none, colorToken: 0)
+        }
+        return OverlayRenderSignature(
             overlay: overlay,
             colorToken: overlayRenderer.color(
                 for: tile,
@@ -1154,7 +1203,8 @@ final class CityScene: SKScene {
         var insertedCount = 0
         for event in summarized {
             guard let record = tileRecords[event.coordinate] else { continue }
-            let layer = record.consequenceLayer
+            let layer = record.consequenceLayer ?? makeConsequenceLayer()
+            record.consequenceLayer = layer
             if layer.parent == nil {
                 record.root.addChild(layer)
                 addRuntimeMetrics(RuntimeTreeMetrics(nodes: 1, drawables: 0, actions: 0), to: &diagnosticsSnapshot)
@@ -1195,9 +1245,9 @@ final class CityScene: SKScene {
 
     private func currentDisplayedConsequenceCueCount() -> Int {
         tileRecords.values.reduce(0) { count, record in
-            count + record.consequenceLayer.children.filter {
+            count + (record.consequenceLayer?.children.filter {
                 $0.name?.hasPrefix("spatial.event.") == true
-            }.count
+            }.count ?? 0)
         }
     }
 
@@ -1511,7 +1561,7 @@ final class CityScene: SKScene {
         // The compact HUD leaves a shallow world aperture. Let the lived-in core
         // use that aperture instead of shrinking it into a diorama surrounded by
         // road opportunity and undeveloped acreage.
-        let targetOccupancy: CGFloat = size.width <= 900 || size.height <= 600 ? 0.90 : 0.84
+        let targetOccupancy: CGFloat = size.width <= 900 || size.height <= 600 ? 0.90 : 0.95
         var scale = max(
             cameraBounds.width / (safeWidth * targetOccupancy),
             cameraBounds.height / (safeHeight * targetOccupancy)
@@ -1521,8 +1571,8 @@ final class CityScene: SKScene {
             // the compact HUD's unusually shallow opening. Preserve the entire
             // authoritative lot row horizontally and let peripheral public realm
             // sit beneath translucent chrome when necessary.
-            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.46)
-            scale = min(scale, compactWidthScale, 0.695)
+            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.54)
+            scale = min(scale, compactWidthScale, 0.62)
         }
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]

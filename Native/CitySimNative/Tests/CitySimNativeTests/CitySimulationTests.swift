@@ -644,7 +644,27 @@ final class CitySimulationTests: XCTestCase {
             ContentView.objectiveSurfacePresentation(compact: false, showObjectives: true, showInspector: true),
             .expanded
         )
-        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 190)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 104)
+        let compactChrome = CityHUDChromeFrames(
+            top: CGRect(x: 12, y: 12, width: 876, height: 116),
+            bottom: CGRect(x: 12, y: 368, width: 876, height: 220)
+        )
+        XCTAssertGreaterThanOrEqual(
+            ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactChrome) / 600,
+            0.4
+        )
+        XCTAssertEqual(
+            TopHUDView.simulationState(for: .paused),
+            HUDSimulationStatePresentation(label: "PAUSED", symbol: "pause.fill", accessibilityValue: "Paused")
+        )
+        XCTAssertEqual(
+            TopHUDView.simulationState(for: .fast),
+            HUDSimulationStatePresentation(
+                label: "RUNNING 2X",
+                symbol: "play.fill",
+                accessibilityValue: "Running at 2x speed"
+            )
+        )
     }
 
     @MainActor

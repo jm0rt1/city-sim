@@ -4,7 +4,9 @@ struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
-    static let compactDetailsMaxHeight: CGFloat = 190
+    // The command row, padding, and this capped scroll region keep more than 40%
+    // of a 900 x 600 window available to the interactive map.
+    static let compactDetailsMaxHeight: CGFloat = 104
 
     var body: some View {
         VStack(spacing: compact ? 7 : 9) {

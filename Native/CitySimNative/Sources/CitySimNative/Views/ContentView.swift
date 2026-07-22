@@ -115,6 +115,15 @@ struct ContentView: View {
         )
     }
 
+    static func interactiveMapHeight(
+        windowHeight: CGFloat,
+        chromeFrames: CityHUDChromeFrames
+    ) -> CGFloat {
+        let topBoundary = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY
+        let bottomBoundary = chromeFrames.bottom.isEmpty ? windowHeight : chromeFrames.bottom.minY
+        return max(0, bottomBoundary - topBoundary)
+    }
+
     static func objectiveSurfacePresentation(
         compact: Bool,
         showObjectives: Bool,

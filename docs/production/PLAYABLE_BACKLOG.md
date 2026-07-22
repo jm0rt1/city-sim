@@ -203,6 +203,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** The retained missed-deadline reproduction can commit after Day 25 and still receives every phase exactly once and in order; a failed placement never commits; strategy never flips from later tile counts; both strategies reach Town Charter or an explicit terminal failure inside 20:00 in deterministic no-coaching runs; save/load/undo/replay/fingerprints remain exact.
 - **Stop conditions:** Exact-tick story gating remains, legacy saves replay/cascade missed phases, new shared state exceeds CONTRACT-007, UI/rendering changes enter the lane, or platform fixture adoption is omitted.
 
+### [ ] PLAY-014: Make recovery choice a durable strategic identity
+
+- **Player outcome:** Each strategy offers two viable recoveries whose cost, payoff, and retained identity make the city and replay meaningfully different.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** GOV-004, GOV-005, GOV-006, ECO-002, ECO-003, SIM-004.
+- **Dependencies:** Approved CONTRACT-009; platform adoption follows under PLAY-044.
+- **In scope:** Four typed resolution paths, first-qualifying daily capture, non-flipping identity, distinct consequences/messages/analytics, balance and deterministic story proof.
+- **Out of scope:** New UI commands, renderer inference, save-schema identifiers, platform fingerprints/fixtures, or unrelated economy redesign.
+- **Acceptance:** Two Commercial and two Industrial recovery routes remain viable; each captures once, never flips, produces distinct numerical/payoff evidence, survives model round trip and undo, and reaches the authored finish inside 20:00.
+- **Stop conditions:** Resolution is inferred from prose or current city counts after capture, one path dominates, legacy nil fails, UI/rendering changes enter the lane, or platform adoption is omitted.
+
 ### [ ] PLAY-033: Make the HUD a compact city command center
 
 - **Player outcome:** Urgent decisions stay visible and understandable, every warning leads directly to the relevant action, invalid placement recovery is durable, and exact 900 x 600 play keeps the map dominant.
@@ -243,6 +254,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Fresh `tax`, `budget`, and `storefront` searches each show the one existing Tax Policy result; pointer, Return, Space, and AX activation execute that result exactly once when available; disabled results retain and announce their reason; Escape restores map focus without shortcut leakage.
 - **Stop conditions:** Unit-only matching replaces live proof, a result is visible but inert, action paths diverge by input method, availability is overstated, or view code bypasses the store/catalog.
 
+### [ ] PLAY-037: Restore compact spatial keyboard and Escape parity
+
+- **Player outcome:** Exact compact mode exposes the same operable City map as default and closes layered surfaces in a predictable topmost-first order.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** UX-003, UX-004, UX-009, UX-010, REL-005.
+- **Dependencies:** Accepted PLAY-035/036 integration; independent of PLAY-022 and PLAY-034.
+- **In scope:** Compact map view identity/lifecycle, keyboard selection, AX semantics/actions, selected-action reachability, and Escape arbitration.
+- **Out of scope:** Active-target unification, renderer art/validation, simulation rules, or new commands.
+- **Acceptance:** Exact 900 x 600 exposes `City map`, moves selection with arrows, retains selected actions, and closes Command Center then Objectives on successive Escape presses; default, pointer, focus, modal/text quarantine, and compact map occupancy remain sound.
+- **Stop conditions:** Generic SKView remains, pointer-only recovery is required, Escape cancels underlying intent, focus leaks to text/modal surfaces, or CONTRACT-008 is implemented early.
+
 ### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
 
 - **Player outcome:** The repaired strategy story remains identical across speed grouping, save/load, undo, replay, recovery, and immutable presentation snapshots.
@@ -252,3 +274,36 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Strategy balance/content, HUD presentation, renderer behavior, commands, or redesigning gameplay progression.
 - **Acceptance:** Frozen legacy nil-strategy bytes/digests remain valid; every nonnil phase has stable repeated fingerprints; grouped-speed, uninterrupted, save/resume, and replay routes match exactly; corrupt-primary recovery preserves progression; dense/save/snapshot budgets remain bounded; full suite passes.
 - **Stop conditions:** Authentic legacy envelope digest failure without version-aware handling, schema bump without integration approval, platform-owned gameplay rules, duplicate snapshot truth, or unexplained golden-digest drift.
+
+### [ ] PLAY-043: Restore exact save, relaunch, and load trust
+
+- **Player outcome:** A city saved by the staged app reliably reloads after process termination and compact relaunch with its strategy intact and simulation paused.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** UX-007, TEC-004, REL-004, REL-009, SIM-001.
+- **Dependencies:** Wave 005 baseline.
+- **In scope:** Exact rejection diagnosis, SaveGameService validation/recovery, persistence diagnostics/tests, isolated data roots, and staged same-bundle proof.
+- **Out of scope:** Weakening corruption checks, gameplay rebalance, HUD redesign, or worker-local build-script changes.
+- **Acceptance:** Exact save/relaunch/load preserves fingerprint, strategy phase, next action, and paused state; valid primary is accepted; corrupt primary still recovers backup; legacy fixtures and full suite pass.
+- **Stop conditions:** Root cause is integration-controlled without proposal, valid corruption evidence is discarded, schema changes silently, or exact bytes/identity are not retained.
+
+### [ ] PLAY-044: Adopt durable recovery resolution into runtime trust
+
+- **Player outcome:** The selected recovery identity remains exact through every supported session boundary.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-006, TEC-004, REL-002, REL-004.
+- **Dependencies:** PLAY-043 complete and integration-supplied PLAY-014 candidate implementing CONTRACT-009.
+- **In scope:** Legacy compatibility, fingerprints, four fixtures, replay, undo, recovery, snapshots, and measured persistence budgets.
+- **Out of scope:** Gameplay rules, balance, UI, renderer, or authentic-fixture rewriting.
+- **Acceptance:** Missing legacy field stays valid; four resolution fingerprints are stable; speed grouping, save/resume, recovery, replay, undo, and snapshots agree exactly within budgets.
+- **Stop conditions:** Gameplay rules enter the lane, authentic legacy data is regenerated, schema bump appears, or unexplained digest drift remains.
+
+### [ ] PLAY-052: Gate Wave 005 trust, choice, and world quality
+
+- **Player outcome:** Independent evidence proves or rejects both the production world and the complete saveable, keyboard-operable, replayable strategy journey.
+- **Owning lane:** Playtest quality.
+- **Requirement IDs:** REL-001, REL-002, REL-003, REL-004, REL-005, ART-001, UX-007, UX-009.
+- **Dependencies:** Separate frozen handoffs from PLAY-022 and the integrated PLAY-043/037/014/044 candidate.
+- **In scope:** Exact-candidate identity, no-coaching journeys, default/compact pointer/keyboard/AX, save/relaunch/load, four recovery routes, visual rubric, performance disclosure, and retained proof.
+- **Out of scope:** Product repair, coaching, candidate substitution, or combining renderer and integrated dispositions.
+- **Acceptance:** Renderer independently earns at least 17/20 with no category below 3 or automatic reject; integrated candidate completes the governed journey, preserves save state, exposes semantic compact operation, and proves distinct viable recovery paths.
+- **Stop conditions:** Any P1 contradiction, hidden coaching, stale bundle, missing hashes/PID cleanup, save failure, pointer-only compact operation, nondurable choice, or misleading visual evidence.

@@ -231,13 +231,18 @@ final class CityGameStore: ObservableObject {
         }
     }
 
-    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
+    func canRouteMapCommand(_ command: CityCommandID) -> Bool {
         guard commandPolicy.allows(command), CityCommandCatalog.mapFocusedCommands.contains(command) else {
             return false
         }
-        if command == .mapSecondaryAction {
+        if CityCommandCatalog.mapActionCommands.contains(command) {
             return selectedCoordinate.flatMap { state.tile(at: $0) } != nil
         }
+        return true
+    }
+
+    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
+        guard canRouteMapCommand(command) else { return false }
         if command == .mapPrimaryAction {
             guard let coordinate = selectedCoordinate,
                   let tile = state.tile(at: coordinate) else { return false }
@@ -252,7 +257,7 @@ final class CityGameStore: ObservableObject {
 
     @discardableResult
     func performMapCommand(_ command: CityCommandID) -> Bool {
-        guard canPerformMapCommand(command) else { return false }
+        guard canRouteMapCommand(command) else { return false }
         switch command {
         case .mapMoveNorth:
             return moveMapSelection(dx: 0, dy: -1, distance: 1)

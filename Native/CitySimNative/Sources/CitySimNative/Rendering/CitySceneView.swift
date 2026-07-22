@@ -55,7 +55,7 @@ struct CitySceneView: NSViewRepresentable {
         scene.allowsCommand = { [weak coordinator = context.coordinator] command in
             guard let coordinator else { return false }
             return CityCommandCatalog.mapFocusedCommands.contains(command)
-                ? coordinator.store.canPerformMapCommand(command)
+                ? coordinator.store.canRouteMapCommand(command)
                 : coordinator.store.commandPolicy.allows(command)
         }
         view.presentScene(scene)

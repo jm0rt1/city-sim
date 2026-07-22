@@ -105,6 +105,69 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .build(.commercial))
     }
 
+    @MainActor
+    func testRejectedReturnRoutesOccupiedRoadlessAndUnaffordableTargetsWithoutAdvertisingAvailability() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let occupied = try XCTUnwrap(authored.tiles.first { $0.kind != .empty })
+        let roadless = try XCTUnwrap(authored.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                .commercial,
+                at: tile.coordinate,
+                in: authored
+            ) {
+                return true
+            }
+            return false
+        })
+        var unaffordableState = authored
+        unaffordableState.treasury = 0
+        let unaffordable = try XCTUnwrap(unaffordableState.tiles.first { $0.kind == .empty })
+        let cases: [(state: CityGameState, coordinate: GridCoordinate, rejection: BuildRejection)] = [
+            (authored, occupied.coordinate, .occupied),
+            (authored, roadless.coordinate, .roadAccessRequired),
+            (unaffordableState, unaffordable.coordinate, .insufficientFunds)
+        ]
+        var routedStores: [CityGameStore] = []
+
+        for scenario in cases {
+            let pointer = CityGameStore(state: scenario.state)
+            let keyboard = CityGameStore(state: scenario.state)
+            pointer.selectTool(.commercial)
+            keyboard.selectTool(.commercial)
+            keyboard.selectedCoordinate = scenario.coordinate
+            keyboard.hudContextScope = .selection
+            let before = keyboard.state
+
+            pointer.primaryAction(at: scenario.coordinate)
+
+            XCTAssertTrue(keyboard.canRouteMapCommand(.mapPrimaryAction))
+            XCTAssertFalse(keyboard.canPerformMapCommand(.mapPrimaryAction))
+            XCTAssertTrue(keyboard.performMapCommand(.mapPrimaryAction))
+            XCTAssertEqual(keyboard.state, before)
+            XCTAssertFalse(keyboard.canUndo)
+            XCTAssertEqual(keyboard.selectedCoordinate, scenario.coordinate)
+            XCTAssertEqual(keyboard.hudContextScope, .selection)
+            XCTAssertEqual(keyboard.selectedTool, .commercial)
+            XCTAssertEqual(keyboard.interactionMode, .build(.commercial))
+            XCTAssertEqual(
+                keyboard.lastFeedback,
+                "\(scenario.rejection.message) Commercial remains selected — choose another block."
+            )
+            XCTAssertEqual(keyboard.lastFeedback, pointer.lastFeedback)
+            routedStores.append(keyboard)
+        }
+
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
+        for (store, scenario) in zip(routedStores, cases) {
+            XCTAssertNotNil(store.lastFeedback)
+            XCTAssertTrue(store.perform(.dismissFeedback))
+            XCTAssertNil(store.lastFeedback)
+            XCTAssertEqual(store.selectedCoordinate, scenario.coordinate)
+            XCTAssertEqual(store.interactionMode, .build(.commercial))
+        }
+    }
+
     func testFocusMetadataKeepsUnmodifiedGameplayKeysOutOfGlobalMenus() {
         let gameplayIDs = Set<CityCommandID>([
             .togglePause, .speedNormal, .speedFast, .speedFastest,
@@ -402,7 +465,7 @@ final class CityCommandCatalogTests: XCTestCase {
         let window = NSWindow(contentRect: mapView.frame, styleMask: [.titled], backing: .buffered, defer: false)
         window.contentView = contentView
         var routed: [CityCommandID] = []
-        scene.allowsCommand = { store.canPerformMapCommand($0) }
+        scene.allowsCommand = { store.canRouteMapCommand($0) }
         scene.onCommandAction = {
             routed.append($0)
             store.performMapCommand($0)
@@ -437,6 +500,65 @@ final class CityCommandCatalogTests: XCTestCase {
             mapView.accessibilityCustomActions()?.map(\.name),
             ["Inspect \(selectedKind.title) at block \(selected.x + 1), \(selected.y + 1)"]
         )
+    }
+
+    @MainActor
+    func testFocusedReturnRoutesOneRejectedAttemptButTextAndWelcomeRemainQuarantined() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let occupied = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty })
+        let valid = try XCTUnwrap(store.state.tiles.first { tile in
+            if case .success = CitySimulation.validateBuild(.commercial, at: tile.coordinate, in: store.state) {
+                return true
+            }
+            return false
+        })
+        store.selectTool(.commercial)
+        store.selectedCoordinate = occupied.coordinate
+        store.clearFeedback()
+
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        mapView.presentScene(scene)
+        let textField = NSTextField(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let contentView = NSView(frame: mapView.frame)
+        contentView.addSubview(mapView)
+        contentView.addSubview(textField)
+        let window = NSWindow(contentRect: mapView.frame, styleMask: [.titled], backing: .buffered, defer: false)
+        window.contentView = contentView
+        var routed: [CityCommandID] = []
+        scene.allowsCommand = { store.canRouteMapCommand($0) }
+        scene.onCommandAction = {
+            routed.append($0)
+            store.performMapCommand($0)
+        }
+
+        XCTAssertTrue(window.makeFirstResponder(textField))
+        scene.keyDown(with: try keyEvent(characters: "\r", keyCode: 36))
+        XCTAssertEqual(routed, [])
+        XCTAssertNil(store.lastFeedback)
+
+        XCTAssertTrue(window.makeFirstResponder(mapView))
+        store.presentBlockingModal(.welcome)
+        scene.keyDown(with: try keyEvent(characters: "\r", keyCode: 36))
+        XCTAssertEqual(routed, [])
+        XCTAssertNil(store.lastFeedback)
+
+        XCTAssertTrue(store.dismissBlockingModal(.welcome))
+        let rejectedState = store.state
+        scene.keyDown(with: try keyEvent(characters: "\r", keyCode: 36))
+        XCTAssertEqual(routed, [.mapPrimaryAction])
+        XCTAssertEqual(store.state, rejectedState)
+        XCTAssertEqual(store.selectedCoordinate, occupied.coordinate)
+        XCTAssertEqual(store.lastFeedback, "\(BuildRejection.occupied.message) Commercial remains selected — choose another block.")
+
+        store.clearFeedback()
+        store.selectedCoordinate = valid.coordinate
+        let treasuryBeforeValidBuild = store.state.treasury
+        scene.keyDown(with: try keyEvent(characters: "\r", keyCode: 36))
+        XCTAssertEqual(routed, [.mapPrimaryAction, .mapPrimaryAction])
+        XCTAssertEqual(store.state.tile(at: valid.coordinate)?.kind, .commercial)
+        XCTAssertEqual(store.state.treasury, treasuryBeforeValidBuild - BuildingKind.commercial.buildCost)
+        XCTAssertTrue(store.canUndo)
     }
 
     @MainActor

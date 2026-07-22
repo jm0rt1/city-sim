@@ -125,13 +125,13 @@ final class CitySimulationTests: XCTestCase {
 
     func testCameraDetailThresholdsRespectRenderQuality() {
         XCTAssertEqual(CameraDetailLevel.blockMaximumCameraScale, 0.60)
-        XCTAssertEqual(CameraDetailLevel.neighborhoodMaximumCameraScale, 1.15)
+        XCTAssertEqual(CameraDetailLevel.neighborhoodMaximumCameraScale, 0.90)
 
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.60), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.601), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 1.15), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 1.151), .city)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.90), .neighborhood)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.901), .city)
 
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20, quality: .medium), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20, quality: .low), .neighborhood)
@@ -461,7 +461,7 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
         XCTAssertEqual(scene.diagnosticsSnapshot.reusedTileCount, state.tiles.count)
 
-        for _ in 0..<4 {
+        for _ in 0..<5 {
             scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
         }
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
@@ -470,7 +470,7 @@ final class CitySimulationTests: XCTestCase {
         for _ in 0..<8 {
             scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
         }
-        XCTAssertEqual(scene.cameraScaleForTesting, 1.45, accuracy: 0.001)
+        XCTAssertEqual(scene.cameraScaleForTesting, 0.95, accuracy: 0.001)
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 

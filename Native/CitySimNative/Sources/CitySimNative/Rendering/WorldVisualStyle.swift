@@ -21,7 +21,7 @@ enum CameraDetailLevel: Int, CaseIterable, Comparable, Sendable {
 
     /// SpriteKit camera scales grow as the camera zooms out.
     static let blockMaximumCameraScale: CGFloat = 0.60
-    static let neighborhoodMaximumCameraScale: CGFloat = 1.15
+    static let neighborhoodMaximumCameraScale: CGFloat = 0.90
 
     static func resolve(
         cameraScale: CGFloat,

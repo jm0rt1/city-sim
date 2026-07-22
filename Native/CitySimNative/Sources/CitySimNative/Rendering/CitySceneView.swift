@@ -14,6 +14,23 @@ final class CityMapSKView: SKView {
     override func accessibilityValue() -> Any? { cityAccessibilityValue }
     override func accessibilityHelp() -> String? { cityAccessibilityHelp }
     override func accessibilityCustomActions() -> [NSAccessibilityCustomAction]? { cityAccessibilityActions }
+
+    override func keyDown(with event: NSEvent) {
+        let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+        guard event.keyCode == 48,
+              !modifiers.contains(.command),
+              !modifiers.contains(.control),
+              !modifiers.contains(.option) else {
+            super.keyDown(with: event)
+            return
+        }
+
+        if modifiers.contains(.shift) {
+            window?.selectPreviousKeyView(self)
+        } else {
+            window?.selectNextKeyView(self)
+        }
+    }
 }
 
 @MainActor

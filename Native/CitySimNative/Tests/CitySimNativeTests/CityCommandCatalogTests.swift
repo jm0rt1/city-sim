@@ -538,6 +538,33 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testSemanticMapHandsTabAndShiftTabToFullKeyboardAccessLoop() throws {
+        let content = NSView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let mapView = CityMapSKView(frame: content.bounds)
+        let focusProbe = FocusProbeView(frame: .zero)
+        content.addSubview(mapView)
+        content.addSubview(focusProbe)
+        mapView.nextKeyView = focusProbe
+        focusProbe.nextKeyView = mapView
+
+        let window = NSWindow(
+            contentRect: content.bounds,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        window.contentView = content
+
+        XCTAssertTrue(window.makeFirstResponder(mapView))
+        mapView.keyDown(with: try keyEvent(characters: "\t", keyCode: 48))
+        XCTAssertTrue(window.firstResponder === focusProbe)
+
+        XCTAssertTrue(window.makeFirstResponder(mapView))
+        mapView.keyDown(with: try keyEvent(characters: "\t", keyCode: 48, modifiers: .shift))
+        XCTAssertTrue(window.firstResponder === focusProbe)
+    }
+
+    @MainActor
     func testFocusedMapShortcutDispatchesTheSameStoreIntentExactlyOnce() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         let scene = CityScene(size: CGSize(width: 900, height: 600))

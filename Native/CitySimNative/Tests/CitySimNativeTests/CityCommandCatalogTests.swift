@@ -92,15 +92,10 @@ final class CityCommandCatalogTests: XCTestCase {
 
         XCTAssertEqual(store.interactionMode, .build(.commercial))
         XCTAssertEqual(store.selectedTool, .commercial)
-        XCTAssertEqual(store.selectedCoordinate, occupied.coordinate)
-        XCTAssertEqual(store.hudContextScope, .selection)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.hudContextScope, .city)
         XCTAssertTrue(store.lastFeedback?.contains(BuildRejection.occupied.message) == true)
         XCTAssertTrue(store.lastFeedback?.contains("Commercial remains selected") == true)
-
-        let coordinator = CitySceneView.Coordinator(store: store)
-        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
-        coordinator.configureMapAccessibility(in: mapView)
-        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains(BuildRejection.occupied.message) == true)
 
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
         XCTAssertNotNil(store.lastFeedback, "Placement recovery must remain until the player acts or dismisses it")

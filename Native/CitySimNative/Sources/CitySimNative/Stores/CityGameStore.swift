@@ -461,8 +461,6 @@ final class CityGameStore: ObservableObject {
                 showFeedback("\(kind.title) construction approved", tone: .positive)
                 playSound(named: "Tink")
             case .failure(let rejection):
-                selectedCoordinate = coordinate
-                hudContextScope = .selection
                 showFeedback(
                     "\(rejection.message) \(kind.title) remains selected — choose another block.",
                     tone: .caution,

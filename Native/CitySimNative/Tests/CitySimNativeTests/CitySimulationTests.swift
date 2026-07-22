@@ -467,6 +467,13 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 
+        for _ in 0..<8 {
+            scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
+        }
+        XCTAssertEqual(scene.cameraScaleForTesting, 1.45, accuracy: 0.001)
+        XCTAssertEqual(scene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
+
         scene.keyDown(with: try keyEvent(characters: "0", keyCode: 29))
         XCTAssertEqual(
             scene.currentCameraDetailLevel,

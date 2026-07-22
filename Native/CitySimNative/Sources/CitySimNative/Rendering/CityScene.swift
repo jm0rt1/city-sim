@@ -575,7 +575,11 @@ final class CityScene: SKScene {
     }
 
     private func zoomCamera(by factor: CGFloat) {
-        let scale = min(2.4, max(0.30, cameraNode.xScale * factor))
+        // Keep the strategic city stop focused on the lived-in corridor plus
+        // honest expansion context. Showing the entire 24 x 24 board turns a
+        // small starting settlement into an unreadable island and provides no
+        // useful additional planning information.
+        let scale = min(1.45, max(0.30, cameraNode.xScale * factor))
         cameraNode.setScale(scale)
         hasUserAdjustedCamera = true
         refreshForCameraChange()

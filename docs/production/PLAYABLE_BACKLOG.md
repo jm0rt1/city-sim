@@ -223,6 +223,16 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Occupied, road-required, unaffordable, valid, and newly connected tiles report one identical coordinate/outcome across grounded preview, AX, click, and Return at default and exact 900 x 600; alternating pointer and keyboard movement cannot expose stale hover truth; mutations occur iff the visible/accessible presentation is valid.
 - **Stop conditions:** Two action targets remain live, renderer revalidates different coordinates, pointer hover changes inspect selection, store/player-intent ownership is duplicated, or implementation begins on an unaccepted incompatible renderer base.
 
+### [ ] PLAY-035: Make rejected keyboard actions explain themselves
+
+- **Player outcome:** Pressing Return on a selected invalid build target explains the exact problem and recovery just as clearly as clicking it, while valid actions still happen once.
+- **Owning lane:** UI and input.
+- **Dependencies:** Integrated PLAY-033 and the PLAY-051 reproduction on exact master `23d2bf9`; independent of the blocked PLAY-034 target-unification contract.
+- **In scope:** Separate map-command route eligibility from primary-action availability, route focused Return attempts to the existing store rejection path, preserve truthful catalog/AX disabled state, focused tests, and staged default/compact proof.
+- **Out of scope:** Changing the active target coordinate, pointer-hover selection, renderer validation/art, simulation build rules, save state, or CONTRACT-008 implementation.
+- **Acceptance:** Occupied, no-road, and unaffordable Return attempts expose the same accepted reason and durable guidance as pointer attempts; the selected tool and coordinate remain stable; valid Return mutates exactly once; AX availability/disabled reason remains truthful; modal/text quarantine and compact behavior do not regress.
+- **Stop conditions:** Invalid commands become advertised as available, a second validation path is introduced, selection or active target semantics change, the renderer is edited, or CONTRACT-008 is implemented early.
+
 ### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
 
 - **Player outcome:** The repaired strategy story remains identical across speed grouping, save/load, undo, replay, recovery, and immutable presentation snapshots.

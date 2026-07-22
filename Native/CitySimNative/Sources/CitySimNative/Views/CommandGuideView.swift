@@ -6,14 +6,7 @@ struct CommandGuideView: View {
     @FocusState private var searchFocused: Bool
 
     private var matchingDescriptors: [CityCommandDescriptor] {
-        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !needle.isEmpty else { return CityCommandCatalog.descriptors }
-        return CityCommandCatalog.descriptors.filter {
-            $0.title.localizedCaseInsensitiveContains(needle)
-                || $0.category.rawValue.localizedCaseInsensitiveContains(needle)
-                || $0.discoverability.localizedCaseInsensitiveContains(needle)
-                || ($0.shortcut?.display.localizedCaseInsensitiveContains(needle) ?? false)
-        }
+        CityCommandCatalog.matchingDescriptors(query: query)
     }
 
     var body: some View {

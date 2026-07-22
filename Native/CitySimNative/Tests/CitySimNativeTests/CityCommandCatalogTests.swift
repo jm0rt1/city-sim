@@ -52,6 +52,36 @@ final class CityCommandCatalogTests: XCTestCase {
         }
     }
 
+    func testWarningLanguageFindsTaxPolicyThroughTheCatalog() {
+        for query in ["tax", "budget", "storefront"] {
+            let matches = CityCommandCatalog.matchingDescriptors(query: query)
+            XCTAssertTrue(
+                matches.contains { $0.id == .inspectorFinances },
+                "\(query) must find the existing Tax Policy route"
+            )
+        }
+        XCTAssertEqual(
+            CityCommandCatalog.matchingDescriptors(query: "tax").filter { $0.id == .inspectorFinances }.count,
+            1
+        )
+    }
+
+    @MainActor
+    func testTaxPolicySearchResultUsesCurrentAvailabilityAndDisabledReason() throws {
+        let enabled = CityGameStore(state: .newCity(seed: 42))
+        let result = try XCTUnwrap(CityCommandCatalog.matchingDescriptors(query: "storefront").first)
+        XCTAssertEqual(result.id, .inspectorFinances)
+        XCTAssertTrue(enabled.canPerform(result.id))
+        XCTAssertNil(enabled.disabledReason(for: result.id))
+
+        let blocked = CityGameStore(state: .newCity(seed: 42), commandPolicy: .blocked(.welcome))
+        XCTAssertFalse(blocked.canPerform(result.id))
+        XCTAssertEqual(
+            blocked.disabledReason(for: result.id),
+            "Finish Welcome to New Arcadia to use city commands"
+        )
+    }
+
     func testFocusMetadataKeepsUnmodifiedGameplayKeysOutOfGlobalMenus() {
         let gameplayIDs = Set<CityCommandID>([
             .togglePause, .speedNormal, .speedFast, .speedFastest,

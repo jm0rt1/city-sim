@@ -1,8 +1,28 @@
 import Foundation
 
+enum CityStrategy: String, Codable, Equatable, Sendable {
+    case commercialStewardship
+    case industrialExpansion
+}
+
+enum CityStrategyPhase: String, Codable, Equatable, Sendable {
+    case opportunity
+    case complication
+    case setback
+    case recovery
+    case completed
+}
+
+struct CityStrategyProgression: Codable, Equatable, Sendable {
+    var committedStrategy: CityStrategy
+    var currentPhase: CityStrategyPhase
+    var nextScheduledTick: Int?
+}
+
 struct CityProgressionState: Codable, Equatable, Sendable {
     var townCharterQualifyingCycles: Int = 0
     var townCharterAwarded = false
+    var strategy: CityStrategyProgression?
 }
 
 struct CityGameState: Codable, Equatable, Sendable {

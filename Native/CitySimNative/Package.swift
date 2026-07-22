@@ -18,7 +18,10 @@ let package = Package(
         .testTarget(
             name: "CitySimNativeTests",
             dependencies: ["CitySimNative"],
-            path: "Tests/CitySimNativeTests"
+            path: "Tests/CitySimNativeTests",
+            resources: [
+                .copy("Fixtures")
+            ]
         )
     ]
 )

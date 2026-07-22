@@ -16,11 +16,8 @@ enum BuildRejection: Error, Equatable {
 
 enum CitySimulation {
     static let townCharterQualificationCycles = 12
-    static let strategyWarningTick = 32
-    static let strategyOpportunityTick = 96
-    static let strategyComplicationTick = 160
-    static let strategySetbackTick = 224
-    static let strategyPayoffTick = 288
+    static let strategyPhaseIntervalTicks = 64
+    static let strategyMinimumWarningTicks = strategyPhaseIntervalTicks
     static let commercialJobCapacity = 80
     static let industrialJobCapacity = 110
     static let powerCapacityPerPlant = 300
@@ -272,66 +269,110 @@ enum CitySimulation {
     }
 
     private static func advanceStrategyStory(_ state: inout CityGameState) {
-        guard let strategy = leadingStrategy(in: state) else { return }
-        if state.tick >= strategyWarningTick, state.tick < strategyOpportunityTick {
-            switch strategy {
-            case .commercialStewardship:
-                postOnce(
-                    CityMessage(
-                        tick: state.tick,
-                        severity: .warning,
-                        title: "Main Street Crossroads",
-                        detail: "A regional market weekend arrives by Day 25. Local shops can thrive, but a chain-store complication follows; temporary tax relief or a second park can protect foot traffic."
-                    ),
-                    to: &state
-                )
-            case .industrialExpansion:
-                postOnce(
-                    CityMessage(
-                        tick: state.tick,
-                        severity: .warning,
-                        title: "Freight Contract Watch",
-                        detail: "A regional freight contract arrives by Day 25. It will accelerate jobs and cash, then strain the district; reserve power and water or a second park can absorb the load."
-                    ),
-                    to: &state
-                )
-            }
+        var progression = state.progression ?? CityProgressionState()
+
+        guard var story = progression.strategy else {
+            guard let strategy = leadingStrategy(in: state) else { return }
+            let opportunityTick = state.tick + strategyPhaseIntervalTicks
+            progression.strategy = CityStrategyProgression(
+                committedStrategy: strategy,
+                currentPhase: .opportunity,
+                nextScheduledTick: opportunityTick
+            )
+            state.progression = progression
+            retireOpeningStrategyGuidance(in: &state)
+            postStrategyCommitment(strategy, opportunityTick: opportunityTick, to: &state)
+            return
         }
-        switch (strategy, state.tick) {
-        case (.commercialStewardship, strategyOpportunityTick):
+
+        guard story.currentPhase != .completed,
+              let scheduledTick = story.nextScheduledTick,
+              state.tick >= scheduledTick else { return }
+
+        let nextTick = state.tick + strategyPhaseIntervalTicks
+        switch (story.committedStrategy, story.currentPhase) {
+        case (.commercialStewardship, .opportunity):
             resolveCommercialOpportunity(&state)
-        case (.industrialExpansion, strategyOpportunityTick):
+            story.currentPhase = .complication
+            story.nextScheduledTick = nextTick
+        case (.industrialExpansion, .opportunity):
             resolveIndustrialOpportunity(&state)
-        case (.commercialStewardship, strategyComplicationTick):
+            story.currentPhase = .complication
+            story.nextScheduledTick = nextTick
+        case (.commercialStewardship, .complication):
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .warning,
                     title: "Chain Store Rumor",
-                    detail: "A regional chain opens by Day 57. Accept lower tax at 9% or less, or fund a second park, to prevent the storefront slump; waiting preserves cash now but risks a $3,000 shock."
+                    detail: "A regional chain opens by \(formattedDay(for: nextTick)). Accept lower tax at 9% or less, or fund a second park, to prevent the storefront slump; waiting preserves cash now but risks a $3,000 shock."
                 ),
                 to: &state
             )
-        case (.industrialExpansion, strategyComplicationTick):
+            story.currentPhase = .setback
+            story.nextScheduledTick = nextTick
+        case (.industrialExpansion, .complication):
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .warning,
                     title: "Freight Load Forecast",
-                    detail: "The freight surge lands by Day 57. A second power plant and water tower, or a second park, prevents the load shock; waiting preserves capital now but risks $5,500 and livability."
+                    detail: "The freight surge lands by \(formattedDay(for: nextTick)). A second power plant and water tower, or a second park, prevents the load shock; waiting preserves capital now but risks $5,500 and livability."
                 ),
                 to: &state
             )
-        case (.commercialStewardship, strategySetbackTick):
-            resolveCommercialComplication(&state)
-        case (.industrialExpansion, strategySetbackTick):
-            resolveIndustrialComplication(&state)
-        case (.commercialStewardship, strategyPayoffTick):
+            story.currentPhase = .setback
+            story.nextScheduledTick = nextTick
+        case (.commercialStewardship, .setback):
+            resolveCommercialComplication(&state, recoveryTick: nextTick)
+            story.currentPhase = .recovery
+            story.nextScheduledTick = nextTick
+        case (.industrialExpansion, .setback):
+            resolveIndustrialComplication(&state, recoveryTick: nextTick)
+            story.currentPhase = .recovery
+            story.nextScheduledTick = nextTick
+        case (.commercialStewardship, .recovery):
             resolveCommercialRecovery(&state)
-        case (.industrialExpansion, strategyPayoffTick):
+            story.currentPhase = .completed
+            story.nextScheduledTick = nil
+        case (.industrialExpansion, .recovery):
             resolveIndustrialRecovery(&state)
-        default:
-            break
+            story.currentPhase = .completed
+            story.nextScheduledTick = nil
+        case (_, .completed):
+            story.nextScheduledTick = nil
+        }
+
+        progression.strategy = story
+        state.progression = progression
+    }
+
+    private static func postStrategyCommitment(
+        _ strategy: CityStrategy,
+        opportunityTick: Int,
+        to state: inout CityGameState
+    ) {
+        switch strategy {
+        case .commercialStewardship:
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Main Street Crossroads",
+                    detail: "Commercial stewardship is committed. A regional market weekend arrives by \(formattedDay(for: opportunityTick)); temporary tax relief or a second park can protect foot traffic from the chain-store complication that follows."
+                ),
+                to: &state
+            )
+        case .industrialExpansion:
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Freight Contract Watch",
+                    detail: "Industrial expansion is committed. A regional freight contract arrives by \(formattedDay(for: opportunityTick)); reserve power and water or a second park can absorb the load complication that follows."
+                ),
+                to: &state
+            )
         }
     }
 
@@ -397,7 +438,7 @@ enum CitySimulation {
         }
     }
 
-    private static func resolveCommercialComplication(_ state: inout CityGameState) {
+    private static func resolveCommercialComplication(_ state: inout CityGameState, recoveryTick: Int) {
         let parkCount = activeTiles(in: state).filter { $0.kind == .park }.count
         if state.taxRate <= 0.09 || parkCount >= 2 {
             post(
@@ -420,14 +461,14 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .critical,
                     title: "Storefront Slump",
-                    detail: "The chain drew shoppers away, costing $3,000 and confidence. Lower tax to 9% or less, or build a second park, before the Day 73 recovery review."
+                    detail: "The chain drew shoppers away, costing $3,000 and confidence. Lower tax to 9% or less, or build a second park, before the \(formattedDay(for: recoveryTick)) recovery review."
                 ),
                 to: &state
             )
         }
     }
 
-    private static func resolveIndustrialComplication(_ state: inout CityGameState) {
+    private static func resolveIndustrialComplication(_ state: inout CityGameState, recoveryTick: Int) {
         let active = activeTiles(in: state)
         let hasReserveUtilities = active.filter { $0.kind == .powerPlant }.count >= 2
             && active.filter { $0.kind == .waterTower }.count >= 2
@@ -453,7 +494,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .critical,
                     title: "Industrial Load Surge",
-                    detail: "Freight traffic forced $5,500 in repairs and damaged livability. Add reserve power and water, or build a second park, before the Day 73 recovery review."
+                    detail: "Freight traffic forced $5,500 in repairs and damaged livability. Add reserve power and water, or build a second park, before the \(formattedDay(for: recoveryTick)) recovery review."
                 ),
                 to: &state
             )
@@ -549,7 +590,7 @@ enum CitySimulation {
         }
     }
 
-    private static func leadingStrategy(in state: CityGameState) -> StrategyStory? {
+    private static func leadingStrategy(in state: CityGameState) -> CityStrategy? {
         let commercial = state.tiles.filter { $0.kind == .commercial }.count
         let industrial = state.tiles.filter { $0.kind == .industrial }.count
         if commercial >= industrial + 1 { return .commercialStewardship }
@@ -564,15 +605,17 @@ enum CitySimulation {
         let workforceTarget = max(1, state.population * 7 / 10)
         let employment = min(1, Double(jobCapacity(in: state)) / Double(workforceTarget))
 
-        postOnce(
-            CityMessage(
-                tick: state.tick,
-                severity: .information,
-                title: "Choose a Growth Engine",
-                detail: "Before Day 25, add Commercial for cleaner, flexible growth or Industrial for faster jobs and cash with heavier pollution and utility load. Doubling down increases the opportunity and the exposure."
-            ),
-            to: &state
-        )
+        if state.progression?.strategy == nil {
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .information,
+                    title: "Choose a Growth Engine",
+                    detail: "Add Commercial for cleaner, flexible growth or Industrial for faster jobs and cash with heavier pollution and utility load. The first successful route commits at the next daily review."
+                ),
+                to: &state
+            )
+        }
 
         postOnce(
             CityMessage(
@@ -645,6 +688,14 @@ enum CitySimulation {
         state.messages = Array(state.messages.prefix(12))
     }
 
+    private static func retireOpeningStrategyGuidance(in state: inout CityGameState) {
+        state.messages.removeAll { $0.title == "Choose a Growth Engine" }
+    }
+
+    private static func formattedDay(for tick: Int) -> String {
+        "Day \(tick / 4 + 1)"
+    }
+
     private static func updateTownCharterProgression(_ state: inout CityGameState) {
         var progression = state.progression ?? CityProgressionState()
         guard !progression.townCharterAwarded else {
@@ -701,11 +752,6 @@ enum CitySimulation {
         guard capacity > 0 else { return 0 }
         return max(0, Double(capacity - used) / Double(capacity))
     }
-}
-
-private enum StrategyStory {
-    case commercialStewardship
-    case industrialExpansion
 }
 
 private extension Int {

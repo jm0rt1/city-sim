@@ -11,12 +11,17 @@ Simulation ownership: one `CityTile` per visible place; presentation never reser
 |---|---:|---:|
 | World tile | 72 x 36 pt | exact |
 | Default/compact developed-bounds occupancy | 64% on limiting axis | 55-70% |
-| City LOD | camera scale above 1.15 | network, mass, landmark hierarchy |
-| Neighborhood LOD | camera scale 0.61-1.15 | frontage, crossings, family identity |
+| City LOD | camera scale above 0.70, proof stop 0.74 | network, mass, landmark hierarchy |
+| Neighborhood LOD | camera scale 0.61-0.70, proof stop 0.66 | frontage, crossings, family identity |
 | Block LOD | camera scale at or below 0.60 | material, entrance, props, bounded life |
 | Shipping output | native 2x backing scale | no source enlarged beyond its declared LOD budget |
 
 The camera fits descriptor-derived developed visual bounds, nearby connected road arms, and three geometry-only expansion sockets. It does not imply build validity for those empty sockets.
+
+Milestone 2 and 3 JSON records preserve the camera thresholds that were active
+when those historical harness frames were exported. The final Round 1 staged
+candidate uses the thresholds and proof stops above; final live evidence is
+indexed under `docs/production/evidence/PLAY-022/round-1/live-3c44905/`.
 
 ## Physical vocabulary
 

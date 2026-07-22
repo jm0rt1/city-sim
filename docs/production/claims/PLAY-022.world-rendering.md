@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active production recovery — the systemic Gate A-R candidate at `8cb45b5` is preserved but rejected; `docs/production/PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md` is the controlling execution plan and Round 1 is the only authorized implementation round
+- **Status:** active — Round 1 visual product candidate `3c44905467de4a6629098f6be51d0ac90f56f5f0` and its exact live evidence are retained, but independent scoring is deferred pending integration resolution of the PLAY-051 shared active-placement-target conflict. Round 1 is not self-accepted, and no Round 2 or PLAY-023 authority exists.
 
 Deliver an unmistakable visual step through one systemic golden block in the
 real staged city. Stop broad feature work until the nine-source calibration

@@ -192,6 +192,13 @@ final class CityGameStore: ObservableObject {
         return true
     }
 
+    @discardableResult
+    func performFromCommandGuide(_ command: CityCommandID) -> Bool {
+        guard showCommandGuide, perform(command) else { return false }
+        showCommandGuide = false
+        return true
+    }
+
     func canPerform(_ command: CityCommandID) -> Bool {
         guard commandPolicy.allows(command) else { return false }
         let descriptor = CityCommandCatalog.descriptor(for: command)

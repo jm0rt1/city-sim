@@ -84,6 +84,31 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCommandGuideActivationUsesExistingStoreIntentAndKeepsDisabledReason() {
+        let available = CityGameStore(state: .newCity(seed: 42))
+        available.showCommandGuide = true
+
+        XCTAssertTrue(available.performFromCommandGuide(.inspectorFinances))
+        XCTAssertFalse(available.showCommandGuide)
+        XCTAssertTrue(available.showInspector)
+        XCTAssertEqual(available.inspectorSection, .finances)
+
+        let blocked = CityGameStore(
+            state: .newCity(seed: 42),
+            commandPolicy: .blocked(.welcome)
+        )
+        blocked.showCommandGuide = true
+
+        XCTAssertFalse(blocked.performFromCommandGuide(.inspectorFinances))
+        XCTAssertTrue(blocked.showCommandGuide)
+        XCTAssertFalse(blocked.showInspector)
+        XCTAssertEqual(
+            blocked.disabledReason(for: .inspectorFinances),
+            "Finish Welcome to New Arcadia to use city commands"
+        )
+    }
+
+    @MainActor
     func testRejectedPlacementPreservesToolTargetAndDurableAcceptedReason() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         let occupied = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty })

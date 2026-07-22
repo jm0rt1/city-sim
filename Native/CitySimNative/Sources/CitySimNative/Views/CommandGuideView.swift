@@ -34,7 +34,10 @@ struct CommandGuideView: View {
         }
         .frame(minWidth: 620, idealWidth: 760, maxWidth: 860, minHeight: 480, idealHeight: 560, maxHeight: 680)
         .background(.regularMaterial)
-        .onAppear { searchFocused = true }
+        .onAppear {
+            query = ""
+            DispatchQueue.main.async { searchFocused = true }
+        }
         .onExitCommand { store.perform(.cancelInteraction) }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("CitySim command guide")
@@ -77,7 +80,11 @@ struct CommandGuideView: View {
                 .tracking(0.7)
                 .foregroundStyle(.secondary)
             ForEach(commands) { descriptor in
-                CommandGuideRow(store: store, descriptor: descriptor)
+                CommandGuideRow(
+                    store: store,
+                    descriptor: descriptor,
+                    isSoleSearchResult: !query.isEmpty && matchingDescriptors.count == 1
+                )
             }
         }
     }
@@ -86,30 +93,29 @@ struct CommandGuideView: View {
 private struct CommandGuideRow: View {
     @ObservedObject var store: CityGameStore
     let descriptor: CityCommandDescriptor
+    let isSoleSearchResult: Bool
 
+    @ViewBuilder
     var body: some View {
-        Group {
-            if descriptor.route == .store && !descriptor.isSpatial {
-                Button { store.perform(descriptor.id) } label: {
-                    rowContent
-                }
-                .buttonStyle(.plain)
-                .disabled(!store.canPerform(descriptor.id))
-            } else {
+        if descriptor.route == .store && !descriptor.isSpatial {
+            Button { store.performFromCommandGuide(descriptor.id) } label: {
                 rowContent
             }
+            .buttonStyle(.plain)
+            .disabled(!store.canPerform(descriptor.id))
+            .keyboardShortcut(isSoleSearchResult ? .defaultAction : nil)
+            .modifier(CommandGuideRowChrome(isAvailable: store.canPerform(descriptor.id)))
+            .accessibilityLabel(descriptor.title)
+            .accessibilityValue(accessibilityValue)
+            .accessibilityHint(descriptor.discoverability)
+        } else {
+            rowContent
+                .modifier(CommandGuideRowChrome(isAvailable: false))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(descriptor.title)
+                .accessibilityValue(accessibilityValue)
+                .accessibilityHint(descriptor.discoverability)
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 9)
-        .background(GameTheme.contextCard, in: RoundedRectangle(cornerRadius: 10))
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(store.canPerform(descriptor.id) ? GameTheme.panelStroke : GameTheme.subtleDivider)
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(descriptor.title)
-        .accessibilityValue(accessibilityValue)
-        .accessibilityHint(descriptor.discoverability)
     }
 
     private var rowContent: some View {
@@ -150,5 +156,20 @@ private struct CommandGuideRow: View {
         if let reason = store.disabledReason(for: descriptor.id) { values.append("Unavailable: \(reason)") }
         else if descriptor.route == .store && !descriptor.isSpatial { values.append("Available") }
         return values.joined(separator: ". ")
+    }
+}
+
+private struct CommandGuideRowChrome: ViewModifier {
+    let isAvailable: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.horizontal, 12)
+            .padding(.vertical, 9)
+            .background(GameTheme.contextCard, in: RoundedRectangle(cornerRadius: 10))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(isAvailable ? GameTheme.panelStroke : GameTheme.subtleDivider)
+            )
     }
 }

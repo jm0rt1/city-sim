@@ -226,6 +226,9 @@ struct ContentView: View {
                     .background(.thickMaterial, in: Capsule())
                     .shadow(color: .black.opacity(0.3), radius: 12, y: 5)
                     .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(store.lastFeedbackTone == .caution ? "Action blocked" : "Action update")
+                    .accessibilityValue(feedback)
                 }
 
                 if store.overlay != .none {

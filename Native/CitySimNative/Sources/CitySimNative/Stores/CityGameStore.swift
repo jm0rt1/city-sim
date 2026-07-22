@@ -461,7 +461,13 @@ final class CityGameStore: ObservableObject {
                 showFeedback("\(kind.title) construction approved", tone: .positive)
                 playSound(named: "Tink")
             case .failure(let rejection):
-                showFeedback(rejection.message, tone: .caution)
+                selectedCoordinate = coordinate
+                hudContextScope = .selection
+                showFeedback(
+                    "\(rejection.message) \(kind.title) remains selected — choose another block.",
+                    tone: .caution,
+                    autoDismissAfter: nil
+                )
                 playSound(named: "Basso")
             }
         }
@@ -621,13 +627,21 @@ final class CityGameStore: ObservableObject {
         canUndo = true
     }
 
-    private func showFeedback(_ message: String, tone: PlayerFeedbackTone = .neutral) {
+    private func showFeedback(
+        _ message: String,
+        tone: PlayerFeedbackTone = .neutral,
+        autoDismissAfter delay: TimeInterval? = 3.2
+    ) {
         feedbackDismissal?.cancel()
         lastFeedback = message
         lastFeedbackTone = tone
+        guard let delay else {
+            feedbackDismissal = nil
+            return
+        }
         let work = DispatchWorkItem { [weak self] in self?.lastFeedback = nil }
         feedbackDismissal = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.2, execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
     }
 
     private func playSound(named name: String) {

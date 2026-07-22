@@ -207,11 +207,21 @@ This is the authoritative first-wave task source. The shared target is one coher
 
 - **Player outcome:** Urgent decisions stay visible and understandable, every warning leads directly to the relevant action, invalid placement recovery is durable, and exact 900 x 600 play keeps the map dominant.
 - **Owning lane:** UI and input.
-- **Dependencies:** Integrated PLAY-051 dual audit; approved CONTRACT-007 analytics; PLAY-013 publishes authoritative strategy status; PLAY-022 or an integration-approved bridge resolves in-world placement truth.
+- **Dependencies:** Integrated PLAY-051 dual audit; approved CONTRACT-007 analytics; PLAY-013 publishes authoritative strategy status; PLAY-034 resolves in-world placement truth under CONTRACT-008.
 - **In scope:** Authoritative urgency/countdown presentation, diagnose-to-act path, explicit pause/running communication, deterministic compact surface precedence, persistent placement-rejection guidance, command search synonyms/context, focus restoration, pointer/keyboard parity, accessibility, and staged proof.
 - **Out of scope:** Gameplay deadlines/balance, local re-derivation of strategy truth, renderer art, save schema, or a second command/state system.
 - **Acceptance:** Exact 900 x 600 retains at least 40% content height for the interactive map with Objectives plus Command Center (or a separately approved equivalent measure); selected context and critical actions remain visible; `tax`, `budget`, and `storefront` locate Tax Policy; rejection reason survives long enough to recover; default/compact pointer, keyboard, Full Keyboard Access, and VoiceOver routes pass against the exact staged candidate.
 - **Stop conditions:** HUD infers countdown from tick/message prose, compact panels displace the map, transient-only critical recovery, shortcut/catalog divergence, focus trap, or UI code claims renderer placement truth.
+
+### [ ] PLAY-034: Unify the active map-action target
+
+- **Player outcome:** The grounded world preview, accessibility description, pointer click, and Return key always describe and act on the same coordinate with the same availability and disabled reason.
+- **Owning lane:** UI and input.
+- **Dependencies:** Approved `CONTRACT-008`; accepted/integrated PLAY-022 renderer base or an integration-approved compatible adapter checkpoint.
+- **In scope:** Store-owned active action target, narrow SpriteKit candidate callback, scene-view wiring, one authoritative action presentation, modality transition rules, pointer/keyboard parity, focused tests, accessibility, and staged default/compact proof.
+- **Out of scope:** Build validation rules, simulation balance, renderer art, hover-only inspect behavior, save state, snapshots, camera behavior, or general input-mode architecture.
+- **Acceptance:** Occupied, road-required, unaffordable, valid, and newly connected tiles report one identical coordinate/outcome across grounded preview, AX, click, and Return at default and exact 900 x 600; alternating pointer and keyboard movement cannot expose stale hover truth; mutations occur iff the visible/accessible presentation is valid.
+- **Stop conditions:** Two action targets remain live, renderer revalidates different coordinates, pointer hover changes inspect selection, store/player-intent ownership is duplicated, or implementation begins on an unaccepted incompatible renderer base.
 
 ### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
 

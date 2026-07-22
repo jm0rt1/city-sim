@@ -412,8 +412,8 @@ final class CityScene: SKScene {
     func configureProofCamera(detail: CameraDetailLevel, centeredOn coordinate: GridCoordinate? = nil) {
         let scale: CGFloat
         switch detail {
-        case .city: scale = 0.95
-        case .neighborhood: scale = 0.82
+        case .city: scale = 0.74
+        case .neighborhood: scale = 0.66
         case .block: scale = 0.50
         }
         cameraNode.setScale(scale)
@@ -579,7 +579,7 @@ final class CityScene: SKScene {
         // honest expansion context. Showing the entire 24 x 24 board turns a
         // small starting settlement into an unreadable island and provides no
         // useful additional planning information.
-        let scale = min(0.95, max(0.30, cameraNode.xScale * factor))
+        let scale = min(0.74, max(0.30, cameraNode.xScale * factor))
         cameraNode.setScale(scale)
         hasUserAdjustedCamera = true
         refreshForCameraChange()

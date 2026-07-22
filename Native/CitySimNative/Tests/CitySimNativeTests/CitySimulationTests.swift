@@ -125,17 +125,17 @@ final class CitySimulationTests: XCTestCase {
 
     func testCameraDetailThresholdsRespectRenderQuality() {
         XCTAssertEqual(CameraDetailLevel.blockMaximumCameraScale, 0.60)
-        XCTAssertEqual(CameraDetailLevel.neighborhoodMaximumCameraScale, 0.90)
+        XCTAssertEqual(CameraDetailLevel.neighborhoodMaximumCameraScale, 0.70)
 
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.60), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.601), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.90), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.901), .city)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.70), .neighborhood)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.701), .city)
 
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20, quality: .medium), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20, quality: .low), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.90, quality: .low), .neighborhood)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.70, quality: .low), .neighborhood)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 1.40, quality: .low), .city)
     }
 
@@ -470,7 +470,7 @@ final class CitySimulationTests: XCTestCase {
         for _ in 0..<8 {
             scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
         }
-        XCTAssertEqual(scene.cameraScaleForTesting, 0.95, accuracy: 0.001)
+        XCTAssertEqual(scene.cameraScaleForTesting, 0.74, accuracy: 0.001)
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 

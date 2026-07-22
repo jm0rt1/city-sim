@@ -965,6 +965,7 @@ final class WorldRenderingTests: XCTestCase {
         let backdropNames = descendantNames(in: backdrop)
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
         XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.patch.") }.count, 9)
+        XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })
         XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
     }
 

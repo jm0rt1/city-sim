@@ -30,6 +30,12 @@ struct CitySceneView: NSViewRepresentable {
         let view = CityMapSKView(frame: .zero)
         view.preferredFramesPerSecond = 60
         view.ignoresSiblingOrder = true
+        // This scene is strictly 2D. Aligning with Core Animation and omitting
+        // depth/stencil prevents redundant backing-scale render targets while
+        // preserving the requested display cadence.
+        view.isAsynchronous = false
+        view.shouldCullNonVisibleNodes = true
+        view.disableDepthStencilBuffer = true
         let diagnosticsEnabled = ProcessInfo.processInfo.arguments.contains("--renderer-diagnostics") ||
             UserDefaults.standard.bool(forKey: "showRendererDiagnostics")
         view.showsFPS = diagnosticsEnabled

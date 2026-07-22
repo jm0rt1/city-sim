@@ -62,13 +62,13 @@ final class TerrainRenderer {
         earthPlate.zPosition = -102
         root.addChild(earthPlate)
 
-        let field = SKCropNode()
+        // Keep every macro patch inside the convex map diamond instead of
+        // masking a full-window texture. SKCropNode forces SpriteKit to retain
+        // another backing-scale render target, which is disproportionate for
+        // nine quiet terrain accents on a 2D map.
+        let field = SKNode()
         field.name = "terrain.macro.field"
         field.zPosition = -101
-        let fieldMask = SKShapeNode(path: path)
-        fieldMask.fillColor = .white
-        fieldMask.strokeColor = .clear
-        field.maskNode = fieldMask
 
         let turf = SKShapeNode(path: path)
         turf.name = "terrain.macro.turf"
@@ -82,17 +82,28 @@ final class TerrainRenderer {
             NSColor(calibratedRed: 0.36, green: 0.48, blue: 0.25, alpha: 0.16),
             NSColor(calibratedRed: 0.19, green: 0.31, blue: 0.20, alpha: 0.18),
         ]
-        for index in 0..<9 {
+        let patchLayout: [(center: CGPoint, size: CGSize)] = [
+            (CGPoint(x: -6.2, y: 0.0), CGSize(width: 8.5, height: 2.4)),
+            (CGPoint(x: -3.4, y: 2.1), CGSize(width: 7.2, height: 1.8)),
+            (CGPoint(x: 0.0, y: 3.25), CGSize(width: 8.0, height: 1.6)),
+            (CGPoint(x: 3.6, y: 1.75), CGSize(width: 8.8, height: 2.1)),
+            (CGPoint(x: 6.3, y: 0.0), CGSize(width: 7.0, height: 2.4)),
+            (CGPoint(x: 3.7, y: -2.0), CGSize(width: 7.8, height: 1.8)),
+            (CGPoint(x: 0.0, y: -3.0), CGSize(width: 8.4, height: 1.6)),
+            (CGPoint(x: -3.8, y: -2.1), CGSize(width: 7.4, height: 2.0)),
+            (CGPoint(x: 0.0, y: 0.0), CGSize(width: 10.5, height: 2.9)),
+        ]
+        for (index, layout) in patchLayout.enumerated() {
             let patch = SKShapeNode(ellipseOf: CGSize(
-                width: span * (17 + CGFloat(index % 3) * 4),
-                height: span * (5.5 + CGFloat(index % 2) * 2.0)
+                width: span * layout.size.width,
+                height: span * layout.size.height
             ))
             patch.name = "terrain.macro.patch.\(index)"
             patch.fillColor = patchColors[index % patchColors.count]
             patch.strokeColor = .clear
             patch.position = CGPoint(
-                x: CGFloat((index * 197) % 760) - 380,
-                y: -CGFloat((index * 89) % 390) + 42
+                x: span * layout.center.x,
+                y: span * layout.center.y
             )
             patch.zRotation = index.isMultiple(of: 2) ? 0.16 : -0.19
             field.addChild(patch)

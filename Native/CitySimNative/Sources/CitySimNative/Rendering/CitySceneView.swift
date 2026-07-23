@@ -10,6 +10,7 @@ final class CityMapSKView: SKView {
     var cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
     var cityAccessibilityActions: [NSAccessibilityCustomAction] = []
 
+    override func accessibilityRole() -> NSAccessibility.Role? { .group }
     override func accessibilityLabel() -> String? { cityAccessibilityLabel }
     override func accessibilityValue() -> Any? { cityAccessibilityValue }
     override func accessibilityHelp() -> String? { cityAccessibilityHelp }
@@ -48,6 +49,12 @@ struct CitySceneView: NSViewRepresentable {
         let view = CityMapSKView(frame: .zero)
         view.preferredFramesPerSecond = 60
         view.ignoresSiblingOrder = true
+        // This scene is strictly 2D. Aligning with Core Animation and omitting
+        // depth/stencil prevents redundant backing-scale render targets while
+        // preserving the requested display cadence.
+        view.isAsynchronous = false
+        view.shouldCullNonVisibleNodes = true
+        view.disableDepthStencilBuffer = true
         let diagnosticsEnabled = ProcessInfo.processInfo.arguments.contains("--renderer-diagnostics") ||
             UserDefaults.standard.bool(forKey: "showRendererDiagnostics")
         view.showsFPS = diagnosticsEnabled
@@ -94,6 +101,7 @@ struct CitySceneView: NSViewRepresentable {
         context.coordinator.configureMapAccessibility(in: view)
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
+        scene.updateViewportInsets(viewportInsets)
         let proofReducedMotion: Bool
 #if DEBUG
         proofReducedMotion = ProcessInfo.processInfo.environment["CITYSIM_REDUCE_MOTION_PROOF"] == "1"
@@ -170,13 +178,40 @@ struct CitySceneView: NSViewRepresentable {
                 return
             }
 
-            let baseValue = "Selected \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+            let activeCoordinate: String
+            switch store.interactionMode {
+            case .inspect:
+                activeCoordinate = "Selected \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+            case .build(let kind):
+                activeCoordinate = "Pending \(kind.title) placement at block \(coordinate.x + 1), \(coordinate.y + 1)"
+            case .bulldoze:
+                activeCoordinate = "Pending bulldoze at \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+            }
             let primary = CityMapPrimaryActionPresentation.make(
                 interactionMode: store.interactionMode,
                 tile: tile,
                 state: store.state
             )
-            var valueParts = [baseValue]
+            var valueParts = [activeCoordinate]
+            if tile.kind != .empty && tile.kind != .road {
+                let presentation = LotConsequencePresentation(tile: tile)
+                if presentation.construction != .complete {
+                    valueParts.append(
+                        "Construction \(presentation.construction.label.lowercased()), " +
+                        "\(Int((tile.constructionProgress * 100).rounded())) percent"
+                    )
+                } else {
+                    let condition = switch presentation.condition {
+                    case .maintained: "maintained"
+                    case .weathered: "weathered"
+                    case .distressed: "distressed"
+                    }
+                    valueParts.append("Completed, \(condition) condition")
+                }
+            }
+            if store.overlay != .none {
+                valueParts.append("\(store.overlay.title) overlay active")
+            }
             if let snapshot = try? CityPresentationSnapshot(state: store.state),
                let diagnosis = CitySelectedLocationDiagnosis.make(tile: tile, snapshot: snapshot) {
                 valueParts.append(diagnosis.cause)

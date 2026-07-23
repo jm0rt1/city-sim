@@ -1,0 +1,146 @@
+Command:
+bash script/verify_candidate_isolation.sh /private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one /private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two
+
+Building for debugging...
+[0/7] Write sources
+[1/7] Write CitySimNative-entitlement.plist
+[2/7] Copying WorldAssets.atlas
+[3/7] Write swift-version--58304C5D6DBC2206.txt
+[5/51] Compiling CitySimNative CityPresentationSnapshot.swift
+[6/51] Compiling CitySimNative CitySpatialConsequences.swift
+[7/51] Compiling CitySimNative AmbientLifeRenderer.swift
+[8/53] Compiling CitySimNative CitySimNativeApp.swift
+[9/53] Compiling CitySimNative CityGameState.swift
+[10/53] Compiling CitySimNative CityModels.swift
+[11/53] Compiling CitySimNative LotLifecycleRenderer.swift
+[12/53] Compiling CitySimNative LotRenderer.swift
+[13/53] Compiling CitySimNative RoadRenderer.swift
+[14/53] Compiling CitySimNative WorldAssetCatalog.swift
+[15/53] Compiling CitySimNative WorldOverlayRenderer.swift
+[16/53] Compiling CitySimNative WorldVisualStyle.swift
+[17/53] Compiling CitySimNative CitySimulation.swift
+[18/53] Compiling CitySimNative CitySimulationCommand.swift
+[19/53] Compiling CitySimNative CityStateFingerprint.swift
+[20/53] Emitting module CitySimNative
+[21/53] Compiling CitySimNative MetricCard.swift
+[22/53] Compiling CitySimNative ObjectivesView.swift
+[23/53] Compiling CitySimNative GoldenDistrictRenderer.swift
+[24/53] Compiling CitySimNative IsometricGridCoordinateResolver.swift
+[25/53] Compiling CitySimNative LotConsequencePresentation.swift
+[26/53] Compiling CitySimNative SaveGameService.swift
+[27/53] Compiling CitySimNative CityGameStore.swift
+[28/53] Compiling CitySimNative CityAnalytics.swift
+[29/53] Compiling CitySimNative SpatialConsequenceRenderer.swift
+[30/53] Compiling CitySimNative StrategyDistrictVisualIdentity.swift
+[31/53] Compiling CitySimNative TerrainRenderer.swift
+[32/53] Compiling CitySimNative GameStatusOverlay.swift
+[33/53] Compiling CitySimNative InspectorView.swift
+[34/53] Compiling CitySimNative SettingsView.swift
+[35/53] Compiling CitySimNative TopHUDView.swift
+[36/53] Compiling CitySimNative OverlayLegendView.swift
+[37/53] Compiling CitySimNative OverlayPickerView.swift
+[38/53] Compiling CitySimNative CityCommandCatalog.swift
+[39/53] Compiling CitySimNative CityDirectActionPresentation.swift
+[40/53] Compiling CitySimNative ContentView.swift
+[41/53] Compiling CitySimNative EventFeedView.swift
+[42/53] Compiling CitySimNative GameTheme.swift
+[43/53] Compiling CitySimNative ProofWindowConfigurator.swift
+[44/53] Compiling CitySimNative BuildToolbarView.swift
+[45/53] Compiling CitySimNative CommandGuideView.swift
+[46/53] Compiling CitySimNative CityScene.swift
+[47/53] Compiling CitySimNative CitySceneView.swift
+[48/53] Compiling CitySimNative GeneratedWorldAssetManifest.swift
+[49/53] Compiling CitySimNative WelcomeView.swift
+[50/53] Compiling CitySimNative resource_bundle_accessor.swift
+[50/53] Write Objects.LinkFileList
+[51/53] Linking CitySimNative
+[52/53] Applying CitySimNative
+Build complete! (9.24s)
+branch=codex/citysim-world-rendering
+commit=fc8b838d6d33ee8091ce6c54c125ea0cee279f5b
+worktree_root=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one
+worktree_token=w8b84324591c2
+candidate_id=world-rendering-w8b84324591c2
+bundle_identifier=com.jfmortensen.citysim.world-rendering.w8b84324591c2
+preference_domain=com.jfmortensen.citysim.world-rendering.w8b84324591c2
+display_name=CitySim [World w8b84324591c2]
+data_root=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/test-data/world-rendering-w8b84324591c2
+staged_bundle_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/CitySim-world-rendering-w8b84324591c2.app
+executable_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/CitySim-world-rendering-w8b84324591c2.app/Contents/MacOS/CitySimNative-w8b84324591c2
+resource_bundle_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/CitySim-world-rendering-w8b84324591c2.app/CitySimNative_CitySimNative.bundle
+manifest_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/manifests/world-rendering-w8b84324591c2.manifest
+process_id=39309
+Building for debugging...
+[0/7] Write sources
+[0/7] Write CitySimNative-entitlement.plist
+[2/7] Copying WorldAssets.atlas
+[3/7] Write swift-version--58304C5D6DBC2206.txt
+[5/51] Compiling CitySimNative LotLifecycleRenderer.swift
+[6/51] Compiling CitySimNative LotRenderer.swift
+[7/51] Compiling CitySimNative RoadRenderer.swift
+[8/53] Compiling CitySimNative CityScene.swift
+[9/53] Compiling CitySimNative CitySceneView.swift
+[10/53] Compiling CitySimNative GeneratedWorldAssetManifest.swift
+[11/53] Compiling CitySimNative BuildToolbarView.swift
+[12/53] Compiling CitySimNative CommandGuideView.swift
+[13/53] Compiling CitySimNative ContentView.swift
+[14/53] Compiling CitySimNative EventFeedView.swift
+[15/53] Compiling CitySimNative WorldAssetCatalog.swift
+[16/53] Compiling CitySimNative WorldOverlayRenderer.swift
+[17/53] Compiling CitySimNative WorldVisualStyle.swift
+[18/53] Compiling CitySimNative GoldenDistrictRenderer.swift
+[19/53] Compiling CitySimNative IsometricGridCoordinateResolver.swift
+[20/53] Compiling CitySimNative LotConsequencePresentation.swift
+[21/53] Compiling CitySimNative SettingsView.swift
+[22/53] Compiling CitySimNative TopHUDView.swift
+[23/53] Compiling CitySimNative SpatialConsequenceRenderer.swift
+[24/53] Compiling CitySimNative StrategyDistrictVisualIdentity.swift
+[25/53] Compiling CitySimNative TerrainRenderer.swift
+[26/53] Compiling CitySimNative CitySimulation.swift
+[27/53] Compiling CitySimNative CitySimulationCommand.swift
+[28/53] Compiling CitySimNative CityStateFingerprint.swift
+[29/53] Compiling CitySimNative SaveGameService.swift
+[30/53] Compiling CitySimNative CityGameStore.swift
+[31/53] Compiling CitySimNative CityAnalytics.swift
+[32/53] Compiling CitySimNative MetricCard.swift
+[33/53] Compiling CitySimNative ObjectivesView.swift
+[34/53] Compiling CitySimNative OverlayLegendView.swift
+[35/53] Compiling CitySimNative OverlayPickerView.swift
+[36/53] Compiling CitySimNative CityPresentationSnapshot.swift
+[37/53] Compiling CitySimNative CitySpatialConsequences.swift
+[38/53] Compiling CitySimNative AmbientLifeRenderer.swift
+[39/53] Compiling CitySimNative CityCommandCatalog.swift
+[40/53] Compiling CitySimNative CityDirectActionPresentation.swift
+[41/53] Compiling CitySimNative GameStatusOverlay.swift
+[42/53] Compiling CitySimNative InspectorView.swift
+[43/53] Compiling CitySimNative CitySimNativeApp.swift
+[44/53] Compiling CitySimNative CityGameState.swift
+[45/53] Compiling CitySimNative CityModels.swift
+[46/53] Compiling CitySimNative GameTheme.swift
+[47/53] Compiling CitySimNative ProofWindowConfigurator.swift
+[48/53] Emitting module CitySimNative
+[49/53] Compiling CitySimNative WelcomeView.swift
+[50/53] Compiling CitySimNative resource_bundle_accessor.swift
+[50/53] Write Objects.LinkFileList
+[51/53] Linking CitySimNative
+[52/53] Applying CitySimNative
+Build complete! (8.60s)
+branch=codex/citysim-world-rendering
+commit=fc8b838d6d33ee8091ce6c54c125ea0cee279f5b
+worktree_root=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two
+worktree_token=w0f3bd27829df
+candidate_id=world-rendering-w0f3bd27829df
+bundle_identifier=com.jfmortensen.citysim.world-rendering.w0f3bd27829df
+preference_domain=com.jfmortensen.citysim.world-rendering.w0f3bd27829df
+display_name=CitySim [World w0f3bd27829df]
+data_root=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/test-data/world-rendering-w0f3bd27829df
+staged_bundle_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/CitySim-world-rendering-w0f3bd27829df.app
+executable_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/CitySim-world-rendering-w0f3bd27829df.app/Contents/MacOS/CitySimNative-w0f3bd27829df
+resource_bundle_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/CitySim-world-rendering-w0f3bd27829df.app/CitySimNative_CitySimNative.bundle
+manifest_path=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/manifests/world-rendering-w0f3bd27829df.manifest
+process_id=39658
+CITYSIM_CANDIDATE_ISOLATION status=PASS
+candidate_one=world-rendering-w8b84324591c2 pid=39309 manifest=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/manifests/world-rendering-w8b84324591c2.manifest
+candidate_two=world-rendering-w0f3bd27829df pid=39658 manifest=/private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/manifests/world-rendering-w0f3bd27829df.manifest
+
+exit_code=0

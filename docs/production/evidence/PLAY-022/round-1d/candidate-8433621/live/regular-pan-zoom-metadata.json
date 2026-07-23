@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "product_commit": "8433621760ba169995aa1a5dc81cac27c380d746",
+  "source": "exact staged real app operated through pointer and keyboard input",
+  "capture_method": "25 direct Computer Use screenshots captured across zoom-in, four pointer pans, zoom-out, and frame-developed-city",
+  "source_frames": 25,
+  "encoded_fps": 7,
+  "duration_seconds": 3.571429,
+  "dimensions": "1278x768",
+  "generated_intermediate_frames": false,
+  "audio": false
+}

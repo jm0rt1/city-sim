@@ -1,0 +1,67 @@
+{
+  "asset_id": "ambient_pedestrian_pair",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_pedestrian_pair/source-v01.png",
+  "source_sha256": "335290e1e81bb9a46ab6b059f96ad6e7b6365c48d5e6abae55c281ae8d7ce30b",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id ambient_pedestrian_pair --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_pedestrian_pair/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_pedestrian_pair --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_pedestrian_pair-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      560,
+      240,
+      978,
+      724
+    ],
+    "target_size": [
+      220,
+      255
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      658,
+      641
+    ]
+  },
+  "source_bbox": [
+    658,
+    641,
+    878,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_ambient_pedestrian_pair_block.png",
+      "pixels": [
+        1024,
+        683
+      ],
+      "sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_ambient_pedestrian_pair_neighborhood.png",
+      "pixels": [
+        512,
+        342
+      ],
+      "sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_ambient_pedestrian_pair_city.png",
+      "pixels": [
+        256,
+        171
+      ],
+      "sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0"
+    }
+  ]
+}

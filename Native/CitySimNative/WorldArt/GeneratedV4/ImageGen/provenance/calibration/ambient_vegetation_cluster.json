@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "asset_id": "ambient_vegetation_cluster",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim generated-v4 raw master sprite source for one deterministic vegetation semantic object\nPrimary request: Generate exactly one compact cluster containing three varied deciduous street trees with low shrubs. This is a single isolated vegetation sprite source, not a scene.\nInput images: Image 1 is the immutable provisional Gate A appearance reference only\u2014match its richly detailed, realistic hand-painted city-builder rendering, material depth, value hierarchy, olive/moss vegetation palette, and restrained warmth, but do not copy or include its district, roads, buildings, props, or composition. Image 2 is the authoritative 1x1 registration template\u2014follow its exact 3:2 canvas, orthographic 2:1 projection, cyan ground-footprint diamond, south entry-exclusion region, magenta ground pivot, northwest key-light arrow, allowed bounds, and registration scale as geometry constraints only; do not render any template guides or guide colors.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field across the entire background, with no gradient, texture, lighting variation, horizon, floor plane, terrain, or scenery.\nSubject: exactly three distinct but harmonious deciduous street trees\u2014varied crown silhouettes and heights\u2014with a small amount of low olive/moss shrubs gathered as one compact cluster. Crisp opaque foliage masses and finely painted leaf detail; no translucent wisps. Trunks and shrub bases must visibly contact the authoritative ground footprint.\nStyle/medium: richly detailed realistic hand-painted isometric city-builder sprite matching Image 1; grounded architectural visualization quality, not cartoon, icon, flat vector, programmer art, or photoreal cutout.\nComposition/framing: exact orthographic 2:1 isometric projection. Keep the entire cluster, every branch, all foliage, shrubs, and its southeast contact shadow wholly within the Image 2 allowed bounds and within the 1x1 footprint's permitted overhang. Keep the south entry-exclusion area completely clear. Align the cluster's ground contact to the Image 2 ground pivot. Use generous clean padding on all canvas edges.\nLighting/mood: northwest key light with restrained warm highlights; coherent southeast contact shadows that remain attached to the tree bases and stay inside allowed shadow bounds; readable depth at game scale.\nColor palette: restrained olive, moss, muted forest green, warm bark, subdued golden-green highlights. Do not use #ff00ff or template guide colors anywhere in the subject or shadow.\nConstraints: exactly one semantic vegetation cluster; exactly three deciduous trees plus low shrubs; deterministic-looking single source; opaque crisp silhouette; no invented placement or gameplay meaning; no text; no labels; no logo; no watermark.\nAvoid: paths, roads, curbs, sidewalks, driveways, benches, lamps, signs, people, animals, vehicles, buildings, fences, flowers as focal props, extra scenery, terrain plate, ground tile, guide lines, guide arrows, colored registration marks, UI, neon outlines, duplicate clusters, cut-off foliage, translucent wisps, floating roots, detached shadows.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/ambient_vegetation_cluster.md",
+  "prompt_sha256": "32f88e26df8d25635e03d7849a61d177a455d10186d5b623727c80d2b08cdf1c",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 1x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_vegetation_cluster/source-v01.png",
+  "raw_source_sha256": "99a11b2cdda5b2d471bf041d920d57e70e46dd72ee63c77b62b997de378e16ca",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id ambient_vegetation_cluster --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_vegetation_cluster/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_vegetation_cluster --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_vegetation_cluster-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      322,
+      80,
+      1248,
+      919
+    ],
+    "target_size": [
+      430,
+      390
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      553,
+      506
+    ]
+  },
+  "intended_gameplay_meaning": "truth-safe decorative vegetation cluster; no park, land-value, prosperity, pollution, or service implication",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_vegetation_cluster/generated_v4_ambient_vegetation_cluster_city.png",
+        "normalized_sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          91,
+          83,
+          74,
+          68
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_ambient_vegetation_cluster_city.png",
+        "shipping_sha256": "fa75075eb4d77923d09e9a775dfbb134b82fdf9c74a563b7b6a1d61cc5065afa",
+        "shipping_pixels": [
+          74,
+          68
+        ],
+        "decoded_byte_estimate": 20128
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_vegetation_cluster/generated_v4_ambient_vegetation_cluster_neighborhood.png",
+        "normalized_sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          183,
+          167,
+          146,
+          134
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_ambient_vegetation_cluster_neighborhood.png",
+        "shipping_sha256": "76a37d50db8d2260334d60a14bfd60a8604171b4fef6aade7fb3d51f8f2e18d3",
+        "shipping_pixels": [
+          146,
+          134
+        ],
+        "decoded_byte_estimate": 78256
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_vegetation_cluster/generated_v4_ambient_vegetation_cluster_block.png",
+        "normalized_sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          367,
+          336,
+          290,
+          263
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_ambient_vegetation_cluster_block.png",
+        "shipping_sha256": "d98a7914197039d9ae36f9ec059f4f7089cd2a8992b08762f9d3254320fe2f52",
+        "shipping_pixels": [
+          290,
+          263
+        ],
+        "decoded_byte_estimate": 305080
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+data_root=/Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25
+file=/Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25/quicksave.backup.json
+  131197 /Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25/quicksave.backup.json
+e79dc93eb6e5a806711599de39134aaf8acdbbb8eb28fadeee1ce172f3095186  /Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25/quicksave.backup.json

@@ -57,10 +57,12 @@ final class GameStatusOverlayTests: XCTestCase {
         XCTAssertFalse(store.perform(.openCommandGuide))
         XCTAssertEqual(try? CityStateFingerprinter.fingerprint(store.state), wonFingerprint)
 
+        let focusGeneration = store.mapFocusRequestGeneration
         XCTAssertTrue(store.perform(.newRegion))
         XCTAssertEqual(store.state.status, .playing)
         XCTAssertEqual(store.state.population, 300)
         XCTAssertEqual(store.speed, .normal)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
         XCTAssertEqual(store.lastFeedback, "A fresh region is ready")
     }
 

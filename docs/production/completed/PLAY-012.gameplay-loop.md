@@ -1,43 +1,82 @@
-# PLAY-012 Checkpoint — Three-Act Playable Session
+# PLAY-012 Completion — Three-Act Playable Session
 
 - **Lane:** gameplay loop
 - **Branch:** `codex/citysim-gameplay-loop`
-- **Status:** blocked; not ready for integration
-- **Authority/base:** `3e8ffe405b00783121c08a06fadc7e0335d7d7aa`
-- **Product commit:** `49764b89dbdcfa46add838114db9a95b4f5ba6ae`
-- **Post-contract validation merge:** `0e39b5b702601da86c91ba3ea9b1424a87a7a452`
+- **Status:** Ready for integration as closure-by-integrated-successors
+- **Original product commit:** `49764b89dbdcfa46add838114db9a95b4f5ba6ae`
+- **Preserved PLAY-015 lane HEAD:** `c808ac1f83520c8525bad7e7a99de0430b8c027f`
+- **Integrated authority:** local master `39980d753a566a2a4ea68e320f059d8046d051b7`
+- **Authority merge:** `df289420698af776fa13dccbde7f6f123b9ded86`
+- **Integrated closure evidence:** `3f78397358e202a117856dd10b802fc7ba5698f2`
 - **Claim:** `docs/production/claims/PLAY-012.gameplay-loop.md`
-- **Evidence:** `docs/production/evidence/PLAY-012-three-act-checkpoint.md`
+- **Evidence:** `docs/production/evidence/PLAY-012/INTEGRATED-CLOSURE.md`
 
-## Player-visible outcome
+## Closure outcome
 
-The deterministic city story now prompts an opening commerce/industry fork, rewards either measured growth or an explicit double-down, forecasts a strategy-specific complication, recognizes costly prevention, applies a recoverable setback when ignored, and resolves the response with an unmistakable authored payoff. The opening-to-payoff beats are no more than 26.88 seconds of 1x simulation apart. Both strategy fixtures reach the durable Town Charter at tick 844 while retaining distinct happiness, pollution, job-capacity, treasury, and utility consequences.
+The current integrated stack genuinely fulfills the original PLAY-012
+three-act promise without another gameplay change. A fresh player can choose
+Commercial or Industrial inside two minutes, read a route-specific
+opportunity and complication, make a durable recovery choice, and reach the
+Town Charter victory well inside 20 minutes. Both routes contain at least
+three consequential decisions, produce timely numerical and message feedback,
+avoid unexplained waits over 30 seconds, and remain strategically distinct.
 
-## Exact files changed
+The accepted successor stack provides the missing durable behavior:
 
-- `Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift`
-- `Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift`
-- `docs/production/claims/PLAY-012.gameplay-loop.md`
-- `docs/production/evidence/PLAY-012-three-act-checkpoint.md`
-- `docs/production/completed/PLAY-012.gameplay-loop.md`
+- PLAY-013 protects the opening decision window, commits the first eligible
+  strategy once, and schedules exact-once relative story phases.
+- PLAY-014 captures four distinct recovery identities without flipping and
+  preserves every route to the Charter.
+- PLAY-015 enters `.won` on the exact Charter boundary and preserves legacy,
+  undo, loss, and terminal immutability behavior.
+- PLAY-038, PLAY-045, and PLAY-046 provide the integrated terminal
+  presentation and platform/save guarantees exercised in the staged journeys.
 
-No UI, renderer, input, save, package, public-store, snapshot, asset, build-script, or legacy-Python surface changed.
+This closes the promise against the integrated terminal stack; it does not
+retroactively claim that the original blocked checkpoint was sufficient by
+itself.
 
-## Validation disposition
+## Exact staged outcomes
 
-- Focused gameplay: 19/19 passed.
-- Exact staged build/process verify: passed on `49764b8`.
-- Full native suite: 85/94 passed; nine expected-value assertions in two frozen platform fixture tests require independent PLAY-041 review. Every other suite passed.
-- Live no-coaching pointer/keyboard journey: blocked because two mandated Computer Use app-state calls did not return and were user-aborted after 2,275.1 and 5,922.0 seconds respectively.
+- Candidate: `gameplay-loop-w8f1a46b88376`
+- Exact pre-evidence HEAD: `df289420698af776fa13dccbde7f6f123b9ded86`
+- Commercial:
+  - opening choice at 00:44;
+  - visible temporary-tax-relief recovery;
+  - Town Charter on Day 212 at 06:42;
+  - 511 residents, `$11,796`, `+$104/cycle`, 61% happiness.
+- Industrial:
+  - opening choice at 00:30;
+  - visible utility-expansion recovery;
+  - Town Charter on Day 212 at 05:22;
+  - 511 residents, `$37,445`, `+$254/cycle`, 55% happiness.
+- Immediate consequence observations ranged from 1.38s to 14.41s.
+- Authored story waits were at most 11.29s; passive growth chunks were under
+  25s.
+- The one 34.60s Industrial interval was continuous visible diagnosis and
+  construction, not unexplained dead time.
 
-The detailed causal timeline, exact platform drift, candidate identity, and live limitation are retained in the evidence record. Tests and a live process do not substitute for the missing hands-on journey, so this checkpoint is deliberately not marked ready.
+Both routes used ordinary pointer and keyboard interaction through existing
+approved HUD, message, map, build, pause, and speed controls. No coaching
+fixture, hidden state mutation, or alternate automation path was used.
 
-## Compatibility and ownership
+## Validation
 
-The implementation adds no persisted state and changes no schema or public contract. Fixed daily ticks and authoritative city state drive all outcomes; messages remain presentation, not domain authority. The gameplay lane did not modify platform fingerprints and did not consume or define spatial truth while PLAY-041 remains pending.
+- Focused gameplay suite: **31/31 passed**, 0 failures, 10.730s.
+- Complete native suite: **159/159 passed**, 0 failures, 410.496s.
+- Exact four-route pre-victory tick 840 and terminal tick 844 behavior passed.
+- Renderer diagnostic average: **1.398 ms**.
+- Build-script syntax, `git diff --check`, staged resource verification, and
+  candidate process verification passed.
+- Full causal, dead-time, strategy, identity, and environment evidence is
+  retained in `docs/production/evidence/PLAY-012/INTEGRATED-CLOSURE.md`.
 
-## Handoff
+## Scope and compatibility
 
-The accepted PLAY-041 spatial contract is now in this lane's ancestry and passed 9/9 focused checks alongside gameplay 19/19, schema-one save round trip, and exact undo/fingerprint restoration. The full synchronized suite executed 103 tests: 94 passed, while the same nine assertions in the two platform-owned frozen-fixture tests require platform adoption of industrial `f8ecd67582597fc859ddc91c9de8b5b3842f702581161588d671ae06ec839e13`, commercial `65ce47a635ad3305afcc8871bafb0df1ba0cf245cca0548e1873c87224edb223`, and dense `ce5d912d97702c5a0a3b84149e432219fe9faca54dcb9b2fa98e0b5ba54f8ef7` plus the recorded treasury/deadline expectations.
+The closure commits change only evidence, claim, and completion records. No
+gameplay model/service/test, UI/input, renderer, save schema or identifier,
+platform fixture, package/build, shared contract, or legacy-Python file
+changed. The original PLAY-012 product commit and all PLAY-013/014/015 history
+remain preserved without rewrite.
 
-The exact synchronized staged verify passed for `0e39b5b`, but the one permitted post-cleanup Computer Use retry returned no app state and was user-aborted after 913.1 seconds despite a requested 12-second timeout. No live evidence was invented. PLAY-051 or integration must execute the exact staged no-coaching journey and retain the missing timestamps and visual proof. No push or integration was performed from this lane.
+No push or integration was performed from the gameplay lane.

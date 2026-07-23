@@ -1,0 +1,40 @@
+PLAY-038 compact AX snapshot
+candidate commit: edc98d762decebab3c8c43a79a93bc47f26ca74a
+host frame: 900 x 652
+content: 900 x 600
+
+container
+  Description: Town Charter victory
+  ID: game-status.blocking-modal
+  Details: Town Charter Secured. New Arcadia Earned Its Town Charter.
+           Your 612 residents sustained a solvent, fully served town.
+           Residents: 612. Treasury: $18,750. Cashflow: $282. Happiness: 67%.
+           Industrial Expansion. Recovery - Green Buffer.
+  scroll area
+    complete summary, metrics, strategy, and recovery
+  button
+    Description: Start a New Region
+    Help: Starts one fresh authored city and closes this result
+    ID: victory.start-new-region
+  button
+    Description: Load Quicksave
+    Help: Loads the quicksave and pauses the city
+    ID: victory.load-quicksave
+
+Initial focused UI element:
+  Start a New Region (victory.start-new-region)
+
+Full Keyboard Access:
+  AppleKeyboardUIMode: 2
+  Tab: visible focus ring moved to Load Quicksave.
+  Space: invoked Load Quicksave; won result remained.
+  Shift-Tab: visible focus ring returned to Start a New Region.
+  Space: invoked one fresh region; Day 1; semantic map focused.
+
+Suppression checks:
+  HUD, map, speed controls, command guide, build controls, and toolbar actions:
+  absent from the terminal game-surface AX tree.
+
+Activation results:
+  Pointer, Return, Space, AXPress:
+  one fresh-region update each; Day 1; semantic map focused.

@@ -9,7 +9,7 @@
 - **Planned surfaces:** existing victory SwiftUI surface, existing store/catalog action routing, focused UI/input tests, default/compact accessibility proof, and completion record
 - **Dependencies:** existing `.won` contract; PLAY-015 supplies the reachable authoritative transition
 - **Validation/proof:** Charter-accurate copy, retained strategy/recovery explanation, pointer/Return/Space/AX Start a New Region exactly once, deterministic focus, exact 900 x 600, won-state save/relaunch truth, full suite, and staged evidence
-- **Status:** active; implementation may use deterministic won fixtures immediately, but final live proof waits for the frozen PLAY-015 checkpoint
+- **Status:** integrated on master through `38c925c`; exact PLAY-015 victory is integrated
 
 Replace the inaccurate metropolis victory language with Town Charter truth and
 make the existing replay action fully operable. Consume existing authoritative

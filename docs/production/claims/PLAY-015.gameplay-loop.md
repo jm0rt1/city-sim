@@ -9,7 +9,7 @@
 - **Planned surfaces:** `CitySimulation.swift`, gameplay analytics only if required, focused `GameplayLoopTests.swift`, staged gameplay evidence, and completion record
 - **Dependencies:** accepted PLAY-014/044; existing `.won` state; UI companion PLAY-038; later simulation-platform candidate adoption
 - **Validation/proof:** four exact tick-844 terminal routes, legacy awarded-playing next-boundary normalization, one-time award/message, no premature win, terminal immutability, undo/loss compatibility, full suite, and no-coaching Commercial plus Industrial staged victories
-- **Status:** active
+- **Status:** integrated on master through `7e6badc`; platform adoption complete through `6d7df1e`
 
 Transition to the existing `.won` state on the same governed daily boundary
 that newly awards the Town Charter. Never mutate on decode or load. A legacy

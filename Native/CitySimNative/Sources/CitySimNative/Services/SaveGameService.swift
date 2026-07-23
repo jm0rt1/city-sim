@@ -81,6 +81,12 @@ struct SaveGameService {
     var backupURL: URL { rootURL.appending(path: "quicksave.backup.json") }
     private var candidateURL: URL { rootURL.appending(path: ".quicksave.candidate.json") }
 
+    var hasLoadCandidate: Bool {
+        let primaryExists = fileManager.fileExists(atPath: saveURL.path)
+        let backupExists = fileManager.fileExists(atPath: backupURL.path)
+        return primaryExists || backupExists
+    }
+
     @discardableResult
     func save(_ state: CityGameState) throws -> SaveGameWriteResult {
         try fileManager.createDirectory(at: rootURL, withIntermediateDirectories: true)

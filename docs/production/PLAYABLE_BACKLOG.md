@@ -216,7 +216,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Resolution is inferred from prose or current city counts after capture, one path dominates, legacy nil fails, UI/rendering changes enter the lane, or platform adoption is omitted.
 - **Accepted integration:** Gameplay `10023e5` and `e02d2c0`; platform adoption `705fc51`; evidence/completion through `7be0e6b` and `71bb3bd`.
 
-### [ ] PLAY-015: Make the Town Charter an unmistakable session victory
+### [x] PLAY-015: Make the Town Charter an unmistakable session victory
 
 - **Player outcome:** Earning the Town Charter conclusively ends the mayoral mandate, preserves the earned strategy and recovery identity, and immediately offers a trustworthy route into a new region instead of leaving the player to coast after every objective is complete.
 - **Owning lane:** Gameplay loop.
@@ -227,6 +227,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** All four durable recovery routes award the Charter and enter `.won` exactly once at tick 844; no route wins before payoff or without 12 qualifying checks; the recovery identity and one-time message remain exact; subsequent ticks cannot mutate the won state; failed checks, ignored recovery, undo, loss, and legacy missing fields remain valid; legacy awarded-playing state normalizes only at the next daily boundary; save/load/replay/fingerprint equality requires no schema bump.
 - **Live gate:** A no-coaching Commercial and Industrial staged route each reaches a clearly explained victory inside 20 minutes; the player can explain why they won and deliberately start a new region through PLAY-038.
 - **Stop conditions:** The change requires load-time mutation, a schema/fingerprint-version bump, premature victory, gameplay-owned UI edits, a new command/state authority, or any recovery route losing viability.
+- **Accepted integration:** Product/evidence/completion `836453d`, `5f3d720`, and `7e6badc`; terminal runtime adoption follows under PLAY-046.
 
 ### [ ] PLAY-033: Make the HUD a compact city command center
 
@@ -280,7 +281,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Generic SKView remains, pointer-only recovery is required, Escape cancels underlying intent, focus leaks to text/modal surfaces, or CONTRACT-008 is implemented early.
 - **Accepted integration:** `c196373`, `d75120c`, and `6d58857`; retained proof at `docs/production/evidence/PLAY-037/5016740/`.
 
-### [ ] PLAY-038: Make Charter victory truthful and replayable
+### [x] PLAY-038: Make Charter victory truthful and replayable
 
 - **Player outcome:** The victory surface accurately celebrates a Town Charter city, preserves the earned strategy/recovery story, and lets pointer, keyboard, and accessibility users start a different region without ambiguity.
 - **Owning lane:** UI and input.
@@ -290,6 +291,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Victory rules, gameplay balance, new commands, save schema, renderer art, active map-target work, or a second source of strategy/recovery truth.
 - **Acceptance:** The victory surface never says “thriving metropolis” for the roughly 500–700 resident Charter result; it explains the earned Charter and retained recovery identity; Start a New Region executes exactly once through pointer, Return/Space, and AX action; focus is deterministic; exact 900 x 600 remains operable; save/relaunch of a won city remains truthful and paused; existing command-guide, map, modal, and Escape behavior does not regress.
 - **Stop conditions:** UI infers gameplay truth from prose or tile counts, bypasses the store/catalog, adds a public contract without approval, hides the map before victory, or cannot prove keyboard/AX replay initiation.
+- **Accepted integration:** Product `a8e88ee`, `4683fff`, `af4b821`, and `a10cc9b`; evidence/completion `38c925c`.
 
 ### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
 
@@ -325,7 +327,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Gameplay rules enter the lane, authentic legacy data is regenerated, schema bump appears, or unexplained digest drift remains.
 - **Accepted integration:** `705fc51`, `75398a3`, and `7be0e6b`; completion record at `docs/production/completed/PLAY-044.simulation-platform.md`.
 
-### [ ] PLAY-045: Make last-known-good backup recovery reachable
+### [x] PLAY-045: Make last-known-good backup recovery reachable
 
 - **Player outcome:** If the primary quicksave disappears but its valid backup survives, Load remains available and restores the exact city paused with truthful recovery feedback.
 - **Owning lane:** Simulation platform.
@@ -336,6 +338,30 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Empty roots remain disabled; primary-only behavior is unchanged; valid backup-only saves enable Load and restore exact paused state through menu, shortcut, toolbar, and command guide; invalid backup-only attempts reject without mutation or false success; all four recovery identities, legacy bytes, fingerprints, snapshots, continuation, and frozen budgets remain exact.
 - **Budgets:** Availability is exactly two bounded existence probes with no scan or decode; 1,000 checks complete within 100 ms on the declared machine; existing save/load, snapshot, envelope, and memory ceilings remain unchanged.
 - **Stop conditions:** Availability performs validation/repair, a persisted contract changes, backup files are promoted or deleted, process-global roots replace injection, the shared store surface expands beyond the approved service dependency, or unrelated product work enters the lane.
+- **Accepted integration:** Product/evidence/completion `854f4ef`, `9034645`, and `ebfbcdf`.
+
+### [x] PLAY-046: Adopt terminal Charter victory into runtime trust
+
+- **Player outcome:** The decisive Charter ending remains exact across deterministic checkpoints, save/load, replay, undo, immutable snapshots, and legacy awarded-playing normalization instead of leaving stale post-victory platform expectations.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-004, SIM-006, TEC-004, REL-002, REL-004.
+- **Dependencies:** Frozen PLAY-015 product `0e3e68e`; accepted PLAY-044 runtime trust; PLAY-045 may remain an independent earlier integration commit.
+- **In scope:** Adopt the existing `.won` terminal boundary into platform-owned command/checkpoint fixtures and digests; stop accepted command sequences at victory; prove rejected post-terminal commands, schema-0/schema-1 behavior, awarded-playing next-boundary normalization, save/resume, replay, undo, backup recovery, fingerprints, analytics, and immutable snapshots.
+- **Out of scope:** Gameplay rule changes, victory timing/balance, UI copy, renderer, schema/fingerprint-version changes, authentic legacy fixture rewriting, or general replay redesign.
+- **Acceptance:** The frozen platform checkpoint suite and complete native suite pass against `0e3e68e`; all four recovery identities enter the exact terminal state once; post-terminal commands reject without mutation; won-state save/load/replay/backup/snapshot/fingerprint equality is exact; legacy decode/load never mutates and next-boundary normalization is deterministic; authentic fixture bytes and pre-victory digests remain unchanged.
+- **Stop conditions:** Platform changes gameplay rules, rewrites authentic legacy inputs, bumps a version, masks an unexpected digest change, permits post-terminal mutation, or expands beyond the smallest adoption required for a green integrated candidate.
+- **Accepted integration:** Product/evidence/completion `e636724`, `64a360c`, and `6d7df1e`; integrated suite 159/159.
+
+### [ ] PLAY-047: Freeze production story-state fixtures
+
+- **Player outcome:** The real app, renderer, HUD, and independent playtest can all open the same trustworthy Commercial and Industrial story moments—opening, complication, recovery, and Charter victory—without synthetic visual truth, manual save surgery, or harness-only substitution.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-006, TEC-004, REL-002, REL-004, ART-001.
+- **Dependencies:** Integrated PLAY-015/045/046 and existing schema-1/fingerprint-v1 contracts; consumes existing strategy, recovery, spatial snapshot, and terminal truth without changing them.
+- **In scope:** Test-owned deterministic story-state builders and frozen schema-1 save fixtures for both strategies at four named phases; exact fingerprints, immutable presentation/spatial snapshots, primary/backup load, replay, undo boundaries, repeated-build byte identity, compact fixture manifest, size/timing budgets, and documented consumption paths for renderer/UI/quality.
+- **Out of scope:** Gameplay balance, new events or outcomes, schema/fingerprint-version changes, production save mutation, renderer/HUD composition, build scripts, app-only debug menus, or replacing no-coaching journeys with fixtures.
+- **Acceptance:** Eight named states are generated twice with byte-identical fixture bytes and stable v1 digests; each loads paused through the production save service, preserves authoritative strategy/recovery/terminal identity and spatial truth, remains compatible with legacy fixtures, and stays within existing persistence/snapshot budgets; full suite passes and consumers can bind evidence to exact hashes.
+- **Stop conditions:** A fixture invents facts unavailable in authoritative state, authentic legacy bytes are rewritten, a version changes, production behavior depends on test support, random or wall-clock data enters generation, or fixtures are represented as substitutes for the PLAY-052 player journey.
 
 ### [ ] PLAY-052: Gate Wave 005 trust, choice, and world quality
 

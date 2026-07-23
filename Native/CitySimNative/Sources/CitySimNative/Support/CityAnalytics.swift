@@ -98,6 +98,10 @@ struct CityAnalytics {
         state.progression?.strategy?.currentPhase
     }
 
+    var strategyRecoveryResolution: CityStrategyRecoveryResolution? {
+        state.progression?.strategy?.recoveryResolution
+    }
+
     var strategyDaysUntilConsequence: Int? {
         guard let nextTick = state.progression?.strategy?.nextScheduledTick else { return nil }
         let remainingTicks = max(0, nextTick - state.tick)

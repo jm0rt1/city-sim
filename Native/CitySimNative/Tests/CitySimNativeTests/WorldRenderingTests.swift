@@ -1248,8 +1248,22 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertLessThanOrEqual(scene.hoverVisualBoundsForTesting.height, 8)
         XCTAssertLessThan(scene.hoverVisualBoundsForTesting.maxY, 0)
 
-        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.residential))
-        scene.configureProofInteraction(at: validCoordinate)
+        let validTile = try XCTUnwrap(state.tile(at: validCoordinate))
+        let validTarget = CityMapActionTargetPresentation(
+            coordinate: validCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: validTile,
+                state: state
+            )
+        )
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: validCoordinate,
+            interactionMode: .build(.residential),
+            activeActionTarget: validTarget
+        )
         names = scene.interactionNamesForTesting
         XCTAssertFalse(scene.hoverIsHiddenForTesting)
         XCTAssertEqual(names.filter { $0 == "interaction.placementGhost" }.count, 1)
@@ -1258,7 +1272,22 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(names.contains { $0.hasPrefix("interaction.preview.") })
         XCTAssertTrue(descendantLabels(in: scene).isEmpty)
 
-        scene.configureProofInteraction(at: invalidCoordinate)
+        let invalidTile = try XCTUnwrap(state.tile(at: invalidCoordinate))
+        let invalidTarget = CityMapActionTargetPresentation(
+            coordinate: invalidCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: invalidTile,
+                state: state
+            )
+        )
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: invalidCoordinate,
+            interactionMode: .build(.residential),
+            activeActionTarget: invalidTarget
+        )
         names = scene.interactionNamesForTesting
         XCTAssertFalse(scene.hoverIsHiddenForTesting)
         XCTAssertEqual(names.filter { $0 == "interaction.placementGhost" }.count, 1)

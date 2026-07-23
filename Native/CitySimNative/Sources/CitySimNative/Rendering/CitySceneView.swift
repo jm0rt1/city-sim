@@ -61,7 +61,19 @@ struct CitySceneView: NSViewRepresentable {
         view.showsNodeCount = diagnosticsEnabled
         view.showsDrawCount = diagnosticsEnabled
         let scene = CityScene(size: CGSize(width: 1280, height: 800))
-        scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.primaryAction(at: coordinate) }
+        scene.onActiveActionTargetCandidate = { [weak coordinator = context.coordinator, weak view] coordinate in
+            guard let coordinator, let view,
+                  coordinator.allowsPointerMapActionCandidate(in: view) else { return nil }
+            return coordinator.store.acceptPointerMapActionCandidate(coordinate)
+        }
+        scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in
+            guard let coordinator else { return }
+            if coordinator.store.interactionMode == .inspect {
+                coordinator.store.primaryAction(at: coordinate)
+            } else if coordinator.store.selectedCoordinate == coordinate {
+                coordinator.store.performMapCommand(.mapPrimaryAction)
+            }
+        }
         scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.secondaryAction(at: coordinate) }
         scene.onCommandAction = { [weak coordinator = context.coordinator] command in
             guard let coordinator else { return }
@@ -114,7 +126,8 @@ struct CitySceneView: NSViewRepresentable {
             snapshot: snapshot,
             overlay: store.overlay,
             selection: store.selectedCoordinate,
-            interactionMode: store.interactionMode
+            interactionMode: store.interactionMode,
+            activeActionTarget: store.activeMapActionTargetPresentation
         )
     }
 
@@ -183,15 +196,14 @@ struct CitySceneView: NSViewRepresentable {
             case .inspect:
                 activeCoordinate = "Selected \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
             case .build(let kind):
-                activeCoordinate = "Pending \(kind.title) placement at block \(coordinate.x + 1), \(coordinate.y + 1)"
+                activeCoordinate = "Selected target, pending \(kind.title) placement at block \(coordinate.x + 1), \(coordinate.y + 1)"
             case .bulldoze:
-                activeCoordinate = "Pending bulldoze at \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+                activeCoordinate = "Selected target, pending bulldoze at \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
             }
-            let primary = CityMapPrimaryActionPresentation.make(
-                interactionMode: store.interactionMode,
-                tile: tile,
-                state: store.state
-            )
+            guard let primary = store.activeMapActionTargetPresentation?.primaryAction else {
+                view.cityAccessibilityActions = []
+                return
+            }
             var valueParts = [activeCoordinate]
             if tile.kind != .empty && tile.kind != .road {
                 let presentation = LotConsequencePresentation(tile: tile)
@@ -233,6 +245,12 @@ struct CitySceneView: NSViewRepresentable {
                 })
             }
             view.cityAccessibilityActions = actions
+        }
+
+        func allowsPointerMapActionCandidate(in view: CityMapSKView) -> Bool {
+            guard store.commandPolicy == .enabled else { return false }
+            let responder = view.window?.firstResponder
+            return !(responder is NSTextView) && !(responder is NSTextField)
         }
 
         private func enqueueFocusHandoff(in view: CityMapSKView) -> Bool {

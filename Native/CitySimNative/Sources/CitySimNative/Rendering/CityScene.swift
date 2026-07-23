@@ -71,7 +71,7 @@ private struct RuntimeTreeMetrics {
 private enum InteractionPreviewStatus: Equatable {
     case inspect(BuildingKind)
     case validBuild(BuildingKind)
-    case invalidBuild(BuildingKind, BuildRejection)
+    case invalidBuild(BuildingKind, String)
     case validBulldoze(BuildingKind)
     case invalidBulldoze(String)
 }
@@ -126,6 +126,7 @@ final class CityScene: SKScene {
 
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
+    var onActiveActionTargetCandidate: ((GridCoordinate) -> CityMapActionTargetPresentation?)?
     var onCommandAction: ((CityCommandID) -> Void)?
     var allowsCommand: ((CityCommandID) -> Bool)?
     var reducedMotion = false
@@ -153,6 +154,7 @@ final class CityScene: SKScene {
     private var renderedOverlay: DataOverlay = .none
     private var renderedSelection: GridCoordinate?
     private var renderedInteractionMode: CityInteractionMode = .inspect
+    private var renderedActiveActionTarget: CityMapActionTargetPresentation?
     private var hoveredCoordinate: GridCoordinate?
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
@@ -179,6 +181,7 @@ final class CityScene: SKScene {
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
     var hoverVisualBoundsForTesting: CGRect { hoverNode.calculateAccumulatedFrame() }
+    var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
     var interactionNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
@@ -249,7 +252,8 @@ final class CityScene: SKScene {
         snapshot: CityPresentationSnapshot,
         overlay: DataOverlay,
         selection: GridCoordinate?,
-        interactionMode: CityInteractionMode
+        interactionMode: CityInteractionMode,
+        activeActionTarget: CityMapActionTargetPresentation? = nil
     ) {
         let renderStarted = ProcessInfo.processInfo.systemUptime
         let assetResidencyBefore = assets.residencySnapshot()
@@ -257,6 +261,7 @@ final class CityScene: SKScene {
            renderedOverlay == overlay,
            renderedSelection == selection,
            renderedInteractionMode == interactionMode,
+           renderedActiveActionTarget == activeActionTarget,
            renderedReducedMotion == reducedMotion {
             diagnosticsSnapshot.createdTileCount = 0
             diagnosticsSnapshot.updatedTileCount = 0
@@ -309,6 +314,7 @@ final class CityScene: SKScene {
         renderedOverlay = overlay
         renderedSelection = selection
         renderedInteractionMode = interactionMode
+        renderedActiveActionTarget = activeActionTarget
         renderedReducedMotion = reducedMotion
         diagnosticsSnapshot = updateWorld(
             snapshot: snapshot,
@@ -322,7 +328,7 @@ final class CityScene: SKScene {
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
         refreshPersistentConsequenceEmphasis(at: [previousSelection, selection])
-        if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
+        refreshInteractionPreview()
         if previousSelection != selection, let selection {
             revealSelection(selection, viewportInsets: viewportInsets)
         }
@@ -361,7 +367,8 @@ final class CityScene: SKScene {
         state: CityGameState,
         overlay: DataOverlay,
         selection: GridCoordinate?,
-        interactionMode: CityInteractionMode
+        interactionMode: CityInteractionMode,
+        activeActionTarget: CityMapActionTargetPresentation? = nil
     ) {
         let snapshot: CityPresentationSnapshot
         if let renderedSnapshot, renderedSnapshot.state == state {
@@ -374,7 +381,8 @@ final class CityScene: SKScene {
             snapshot: snapshot,
             overlay: overlay,
             selection: selection,
-            interactionMode: interactionMode
+            interactionMode: interactionMode,
+            activeActionTarget: activeActionTarget
         )
     }
 
@@ -500,14 +508,22 @@ final class CityScene: SKScene {
 
     func configureProofInteraction(at coordinate: GridCoordinate?) {
         let previous = hoveredCoordinate
-        hoveredCoordinate = coordinate
         guard let coordinate else {
-            lastPreviewSignature = nil
-            hoverNode.removeAllChildren()
-            hoverNode.isHidden = true
-            refreshPersistentConsequenceEmphasis(at: [previous])
+            if renderedInteractionMode == .inspect {
+                hoveredCoordinate = nil
+                clearInteractionPreview()
+                refreshPersistentConsequenceEmphasis(at: [previous])
+            }
             return
         }
+        if renderedInteractionMode != .inspect {
+            guard let target = onActiveActionTargetCandidate?(coordinate)
+                    ?? renderedActiveActionTarget.flatMap({ $0.coordinate == coordinate ? $0 : nil })
+            else { return }
+            applyActiveActionTarget(target)
+            return
+        }
+        hoveredCoordinate = coordinate
         hoverNode.position = style.isoPosition(coordinate)
         hoverNode.isHidden = false
         updateBuildPreview(at: coordinate)
@@ -534,7 +550,21 @@ final class CityScene: SKScene {
     override func mouseUp(with event: NSEvent) {
         defer { lastDragLocation = nil }
         guard !didDrag, let coordinate = coordinate(at: event.location(in: self)) else { return }
-        onPrimaryAction?(coordinate)
+        activatePrimaryAction(at: coordinate)
+    }
+
+    func activatePrimaryActionForTesting(at coordinate: GridCoordinate) {
+        activatePrimaryAction(at: coordinate)
+    }
+
+    private func activatePrimaryAction(at coordinate: GridCoordinate) {
+        if renderedInteractionMode == .inspect {
+            onPrimaryAction?(coordinate)
+            return
+        }
+        guard let target = onActiveActionTargetCandidate?(coordinate) else { return }
+        applyActiveActionTarget(target)
+        onPrimaryAction?(target.coordinate)
     }
 
     override func rightMouseDown(with event: NSEvent) {
@@ -643,11 +673,17 @@ final class CityScene: SKScene {
     override func mouseMoved(with event: NSEvent) {
         let previous = hoveredCoordinate
         guard let coordinate = coordinate(at: event.location(in: self)) else {
-            hoveredCoordinate = nil
-            lastPreviewSignature = nil
-            hoverNode.removeAllChildren()
-            hoverNode.isHidden = true
-            refreshPersistentConsequenceEmphasis(at: [previous])
+            if renderedInteractionMode == .inspect {
+                hoveredCoordinate = nil
+                clearInteractionPreview()
+                refreshPersistentConsequenceEmphasis(at: [previous])
+            }
+            return
+        }
+        if renderedInteractionMode != .inspect {
+            guard renderedActiveActionTarget?.coordinate != coordinate,
+                  let target = onActiveActionTargetCandidate?(coordinate) else { return }
+            applyActiveActionTarget(target)
             return
         }
         hoveredCoordinate = coordinate
@@ -1479,7 +1515,7 @@ final class CityScene: SKScene {
             )
         }
         updateSelection(renderedSelection)
-        if let hoveredCoordinate { updateBuildPreview(at: hoveredCoordinate) }
+        refreshInteractionPreview()
         if ambientChanged {
             let metrics = runtimeTreeMetrics(worldLayer)
             diagnosticsSnapshot.nodeCount = metrics.nodes - 1
@@ -1534,9 +1570,60 @@ final class CityScene: SKScene {
         selectionNode.isHidden = false
     }
 
+    private func applyActiveActionTarget(_ target: CityMapActionTargetPresentation) {
+        let previousSelection = renderedSelection
+        hoveredCoordinate = nil
+        renderedActiveActionTarget = target
+        renderedSelection = target.coordinate
+        updateSelection(target.coordinate)
+        refreshPersistentConsequenceEmphasis(at: [previousSelection, target.coordinate])
+        hoverNode.position = style.isoPosition(target.coordinate)
+        hoverNode.isHidden = false
+        updateBuildPreview(at: target.coordinate)
+    }
+
+    private func refreshInteractionPreview() {
+        switch renderedInteractionMode {
+        case .inspect:
+            guard let hoveredCoordinate else {
+                clearInteractionPreview()
+                return
+            }
+            hoverNode.position = style.isoPosition(hoveredCoordinate)
+            hoverNode.isHidden = false
+            updateBuildPreview(at: hoveredCoordinate)
+        case .build, .bulldoze:
+            hoveredCoordinate = nil
+            guard let target = renderedActiveActionTarget,
+                  target.coordinate == renderedSelection else {
+                clearInteractionPreview()
+                return
+            }
+            hoverNode.position = style.isoPosition(target.coordinate)
+            hoverNode.isHidden = false
+            updateBuildPreview(at: target.coordinate)
+        }
+    }
+
+    private func clearInteractionPreview() {
+        lastPreviewSignature = nil
+        hoverNode.removeAllChildren()
+        hoverNode.isHidden = true
+    }
+
     private func updateBuildPreview(at coordinate: GridCoordinate) {
         guard let state = renderedState else { return }
-        let status = interactionPreviewStatus(at: coordinate, state: state)
+        let primaryAction = renderedActiveActionTarget.flatMap {
+            $0.coordinate == coordinate ? $0.primaryAction : nil
+        }
+        guard let status = interactionPreviewStatus(
+            at: coordinate,
+            state: state,
+            primaryAction: primaryAction
+        ) else {
+            clearInteractionPreview()
+            return
+        }
         let isInspecting: Bool
         if case .inspect = status { isInspecting = true } else { isInspecting = false }
         hoverNode.isHidden = isInspecting && renderedSelection == coordinate
@@ -1600,23 +1687,23 @@ final class CityScene: SKScene {
 
     private func interactionPreviewStatus(
         at coordinate: GridCoordinate,
-        state: CityGameState
-    ) -> InteractionPreviewStatus {
+        state: CityGameState,
+        primaryAction: CityMapPrimaryActionPresentation?
+    ) -> InteractionPreviewStatus? {
         switch renderedInteractionMode {
         case .inspect:
             return .inspect(state.tile(at: coordinate)?.kind ?? .empty)
         case .build(let kind):
-            switch CitySimulation.validateBuild(kind, at: coordinate, in: state) {
-            case .success: return .validBuild(kind)
-            case .failure(let rejection): return .invalidBuild(kind, rejection)
-            }
+            guard let primaryAction else { return nil }
+            return primaryAction.isAvailable
+                ? .validBuild(kind)
+                : .invalidBuild(kind, primaryAction.disclosure)
         case .bulldoze:
-            guard let tile = state.tile(at: coordinate) else {
-                return .invalidBulldoze("Outside the city boundary")
-            }
-            if tile.kind == .cityHall { return .invalidBulldoze("City Hall is a protected landmark") }
-            if tile.kind == .empty { return .invalidBulldoze("There is nothing to demolish") }
-            return .validBulldoze(tile.kind)
+            guard let primaryAction,
+                  let tile = state.tile(at: coordinate) else { return nil }
+            return primaryAction.isAvailable
+                ? .validBulldoze(tile.kind)
+                : .invalidBulldoze(primaryAction.disclosure)
         }
     }
 
@@ -1628,8 +1715,8 @@ final class CityScene: SKScene {
             return (.white, false)
         case .validBuild:
             return (.systemGreen, false)
-        case .invalidBuild(_, let rejection):
-            return (rejection == .uniqueBuildingExists ? .systemOrange : .systemRed, true)
+        case .invalidBuild(_, let reason):
+            return (reason.contains("Only one City Hall") ? .systemOrange : .systemRed, true)
         case .validBulldoze:
             return (.systemRed, false)
         case .invalidBulldoze(let reason):

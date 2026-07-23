@@ -353,7 +353,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Platform changes gameplay rules, rewrites authentic legacy inputs, bumps a version, masks an unexpected digest change, permits post-terminal mutation, or expands beyond the smallest adoption required for a green integrated candidate.
 - **Accepted integration:** Product/evidence/completion `e636724`, `64a360c`, and `6d7df1e`; integrated suite 159/159.
 
-### [ ] PLAY-047: Freeze production story-state fixtures
+### [x] PLAY-047: Freeze production story-state fixtures
 
 - **Player outcome:** The real app, renderer, HUD, and independent playtest can all open the same trustworthy Commercial and Industrial story moments—opening, complication, recovery, and Charter victory—without synthetic visual truth, manual save surgery, or harness-only substitution.
 - **Owning lane:** Simulation platform.
@@ -363,6 +363,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Gameplay balance, new events or outcomes, schema/fingerprint-version changes, production save mutation, renderer/HUD composition, build scripts, app-only debug menus, or replacing no-coaching journeys with fixtures.
 - **Acceptance:** Eight named states are generated twice with byte-identical fixture bytes and stable v1 digests; each loads paused through the production save service, preserves authoritative strategy/recovery/terminal identity and spatial truth, remains compatible with legacy fixtures, and stays within existing persistence/snapshot budgets; full suite passes and consumers can bind evidence to exact hashes.
 - **Stop conditions:** A fixture invents facts unavailable in authoritative state, authentic legacy bytes are rewritten, a version changes, production behavior depends on test support, random or wall-clock data enters generation, or fixtures are represented as substitutes for the PLAY-052 player journey.
+- **Accepted integration:** Fixtures/evidence/completion `0706dbe`, `ce450a3`, and `57c75b7`; eight schema-1 story states are byte-identical across repeated generation, and the complete native suite passed 164/164 in the owning lane.
 
 ### [ ] PLAY-052: Gate Wave 005 trust, choice, and world quality
 

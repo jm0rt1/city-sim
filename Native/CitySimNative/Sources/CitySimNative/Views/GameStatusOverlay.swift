@@ -23,11 +23,14 @@ struct CityVictoryPresentation: Equatable {
     let recovery: CityVictoryStory?
 
     var accessibilitySummary: String {
-        ([eyebrow, title, summary] + metrics.map { "\($0.label): \($0.value)" } +
-         [strategy, recovery].compactMap { story in
-             story.map { "\($0.title). \($0.detail)" }
-         })
+        let terminalPunctuation = CharacterSet(charactersIn: ".!?")
+        return ([eyebrow, title, summary] + metrics.map { "\($0.label): \($0.value)" } +
+                [strategy, recovery].compactMap { story in
+                    story.map { "\($0.title). \($0.detail)" }
+                })
+        .map { $0.trimmingCharacters(in: terminalPunctuation) }
         .joined(separator: ". ")
+        + "."
     }
 
     static func make(state: CityGameState, analytics: CityAnalytics) -> CityVictoryPresentation {

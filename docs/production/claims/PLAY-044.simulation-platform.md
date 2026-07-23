@@ -9,6 +9,6 @@
 - **Planned surfaces:** version-aware fingerprinting, authentic legacy fixtures, four resolution fixtures, replay/undo/recovery/snapshot tests, measured save/performance evidence
 - **Dependencies:** PLAY-043 complete; frozen PLAY-014 implementation of CONTRACT-009 supplied by integration
 - **Validation/proof:** legacy missing-field bytes, all four stable fingerprints, grouped-speed equivalence, save/resume, corrupt-primary recovery, undo/replay equality, immutable snapshots, size/performance budgets, full suite
-- **Status:** claimed but blocked pending PLAY-043 and PLAY-014
+- **Status:** ready for integration; PLAY-043 passed and the frozen PLAY-014 checkpoint is adopted with exact platform evidence
 
 Do not invent recovery rules or rewrite authentic legacy fixtures. Adopt only the accepted typed gameplay value after integration supplies the exact candidate.

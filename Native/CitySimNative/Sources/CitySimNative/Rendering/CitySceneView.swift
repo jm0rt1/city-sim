@@ -14,10 +14,29 @@ final class CityMapSKView: SKView {
     override func accessibilityValue() -> Any? { cityAccessibilityValue }
     override func accessibilityHelp() -> String? { cityAccessibilityHelp }
     override func accessibilityCustomActions() -> [NSAccessibilityCustomAction]? { cityAccessibilityActions }
+
+    override func keyDown(with event: NSEvent) {
+        let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+        guard event.keyCode == 48,
+              !modifiers.contains(.command),
+              !modifiers.contains(.control),
+              !modifiers.contains(.option) else {
+            super.keyDown(with: event)
+            return
+        }
+
+        if modifiers.contains(.shift) {
+            window?.selectPreviousKeyView(self)
+        } else {
+            window?.selectNextKeyView(self)
+        }
+    }
 }
 
 @MainActor
 struct CitySceneView: NSViewRepresentable {
+    typealias NSViewType = CityMapSKView
+
     @ObservedObject var store: CityGameStore
     var viewportInsets: CityMapViewportInsets = .zero
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
@@ -25,7 +44,7 @@ struct CitySceneView: NSViewRepresentable {
 
     func makeCoordinator() -> Coordinator { Coordinator(store: store) }
 
-    func makeNSView(context: Context) -> SKView {
+    func makeNSView(context: Context) -> CityMapSKView {
         let view = CityMapSKView(frame: .zero)
         view.preferredFramesPerSecond = 60
         view.ignoresSiblingOrder = true
@@ -66,7 +85,7 @@ struct CitySceneView: NSViewRepresentable {
         return view
     }
 
-    func updateNSView(_ view: SKView, context: Context) {
+    func updateNSView(_ view: CityMapSKView, context: Context) {
         context.coordinator.store = store
         context.coordinator.viewportInsets = viewportInsets
         view.window?.acceptsMouseMovedEvents = true
@@ -119,7 +138,7 @@ struct CitySceneView: NSViewRepresentable {
         }
 
         @discardableResult
-        func synchronizeCommandPolicy(_ commandPolicy: CityCommandPolicy, in view: SKView) -> Bool {
+        func synchronizeCommandPolicy(_ commandPolicy: CityCommandPolicy, in view: CityMapSKView) -> Bool {
             let priorPolicy = previousCommandPolicy
             previousCommandPolicy = commandPolicy
             guard commandPolicy == .enabled else {
@@ -133,7 +152,7 @@ struct CitySceneView: NSViewRepresentable {
         }
 
         @discardableResult
-        func synchronizeMapFocusRequest(_ generation: UInt, in view: SKView) -> Bool {
+        func synchronizeMapFocusRequest(_ generation: UInt, in view: CityMapSKView) -> Bool {
             guard generation != observedMapFocusRequestGeneration else { return false }
             observedMapFocusRequestGeneration = generation
             guard store.commandPolicy == .enabled, previousCommandPolicy == .enabled,
@@ -141,14 +160,13 @@ struct CitySceneView: NSViewRepresentable {
             return enqueueFocusHandoff(in: view)
         }
 
-        func configureMapAccessibility(in view: SKView) {
+        func configureMapAccessibility(in view: CityMapSKView) {
             view.setAccessibilityElement(true)
-            let mapView = view as? CityMapSKView
             guard let coordinate = store.selectedCoordinate,
                   let tile = store.state.tile(at: coordinate) else {
-                mapView?.cityAccessibilityValue = "No block selected"
-                mapView?.cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
-                mapView?.cityAccessibilityActions = []
+                view.cityAccessibilityValue = "No block selected"
+                view.cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
+                view.cityAccessibilityActions = []
                 return
             }
 
@@ -165,8 +183,8 @@ struct CitySceneView: NSViewRepresentable {
                 valueParts.append(diagnosis.consequence)
             }
             valueParts.append("Primary action: \(primary.name). \(primary.disclosure)")
-            mapView?.cityAccessibilityValue = valueParts.joined(separator: ". ")
-            mapView?.cityAccessibilityHelp = primary.disclosure
+            view.cityAccessibilityValue = valueParts.joined(separator: ". ")
+            view.cityAccessibilityHelp = primary.disclosure
 
             var actions: [NSAccessibilityCustomAction] = []
             if primary.isAvailable {
@@ -179,10 +197,10 @@ struct CitySceneView: NSViewRepresentable {
                     self?.store.performMapCommand(.mapSecondaryAction) ?? false
                 })
             }
-            mapView?.cityAccessibilityActions = actions
+            view.cityAccessibilityActions = actions
         }
 
-        private func enqueueFocusHandoff(in view: SKView) -> Bool {
+        private func enqueueFocusHandoff(in view: CityMapSKView) -> Bool {
             focusHandoffGeneration &+= 1
             let generation = focusHandoffGeneration
             pendingFocusHandoffGeneration = generation
@@ -198,7 +216,7 @@ struct CitySceneView: NSViewRepresentable {
         }
 
         @discardableResult
-        func fulfillFocusHandoff(generation: UInt, in view: SKView) -> Bool {
+        func fulfillFocusHandoff(generation: UInt, in view: CityMapSKView) -> Bool {
             guard pendingFocusHandoffGeneration == generation else { return false }
             pendingFocusHandoffGeneration = nil
             guard previousCommandPolicy == .enabled,

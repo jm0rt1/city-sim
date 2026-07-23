@@ -25,6 +25,8 @@ final class GameStatusOverlayTests: XCTestCase {
             XCTAssertTrue(presentation.summary.contains("612 residents"))
             XCTAssertTrue(presentation.summary.contains("Charter"))
             XCTAssertFalse(presentation.accessibilitySummary.localizedCaseInsensitiveContains("metropolis"))
+            XCTAssertFalse(presentation.accessibilitySummary.contains(".."))
+            XCTAssertTrue(presentation.accessibilitySummary.hasSuffix("."))
             XCTAssertEqual(presentation.strategy?.title, strategyTitle)
             XCTAssertTrue(presentation.recovery?.title.contains(recoveryTitle) == true)
             XCTAssertEqual(presentation.metrics.first?.value, "612")

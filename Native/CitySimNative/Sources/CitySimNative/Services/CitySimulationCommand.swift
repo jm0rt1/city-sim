@@ -27,6 +27,10 @@ enum CitySimulationCommandExecutor {
         _ command: CitySimulationCommand,
         to state: inout CityGameState
     ) -> CitySimulationCommandResult {
+        guard state.status == .playing else {
+            return .rejected(.simulationNotPlaying)
+        }
+
         switch command {
         case .build(let kind, let coordinate):
             switch CitySimulation.build(kind, at: coordinate, in: &state) {
@@ -43,7 +47,6 @@ enum CitySimulationCommandExecutor {
             state.taxRate = min(0.18, max(0.04, value))
             return .applied
         case .advanceOneDailyBoundary:
-            guard state.status == .playing else { return .rejected(.simulationNotPlaying) }
             let ticksToBoundary = 4 - state.tick % 4
             for _ in 0..<ticksToBoundary { CitySimulation.step(&state) }
             return .applied

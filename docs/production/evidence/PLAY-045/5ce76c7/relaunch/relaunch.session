@@ -1,0 +1,8 @@
+manifest_path=/Users/James/.codex/worktrees/e909/city-sim/dist/manifests/simulation-platform-w8bb1822a1e25.manifest
+candidate_id=simulation-platform-w8bb1822a1e25
+candidate_commit=5ce76c783ce96fbfb958bb4388f34c5cefce2ebc
+staged_bundle_path=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app
+executable_path=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app/Contents/MacOS/CitySimNative-w8bb1822a1e25
+resolved_data_root=/Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25
+proof_pid=26850
+evidence_dir=/Users/James/.codex/worktrees/e909/city-sim/docs/production/evidence/PLAY-045/5ce76c7/relaunch

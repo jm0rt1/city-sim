@@ -32,17 +32,19 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
-    private let saves = SaveGameService()
+    private let saves: SaveGameService
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
 
     init(
         state: CityGameState = .newCity(),
-        commandPolicy: CityCommandPolicy = .enabled
+        commandPolicy: CityCommandPolicy = .enabled,
+        saveService: SaveGameService = SaveGameService()
     ) {
         self.state = state
         self.commandPolicy = commandPolicy
+        self.saves = saveService
         if state.status != .playing {
             speed = .paused
         }
@@ -220,7 +222,7 @@ final class CityGameStore: ObservableObject {
         case .undo:
             canUndo
         case .loadCity:
-            FileManager.default.fileExists(atPath: saves.saveURL.path)
+            saves.hasLoadCandidate
         case .dismissFeedback:
             lastFeedback != nil
         case .cancelInteraction:

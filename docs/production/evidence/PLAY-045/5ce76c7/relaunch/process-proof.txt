@@ -1,0 +1,4 @@
+process_id=26850
+process_command=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app/Contents/MacOS/CitySimNative-w8bb1822a1e25
+CITYSIM_DATA_ROOT=/Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25
+CITYSIM_COMPACT_WINDOW=1

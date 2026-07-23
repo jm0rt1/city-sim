@@ -604,6 +604,7 @@ final class CityGameStore: ObservableObject {
         showCommandGuide = false
         undoStates.removeAll()
         canUndo = false
+        requestMapFocus()
         showFeedback("A fresh region is ready")
     }
 

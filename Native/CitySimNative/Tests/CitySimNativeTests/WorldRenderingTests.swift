@@ -754,8 +754,8 @@ final class WorldRenderingTests: XCTestCase {
                 XCTAssertGreaterThanOrEqual(occupied.width, 0.54)
                 XCTAssertLessThanOrEqual(occupied.width, 0.58)
             } else {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.66)
-                XCTAssertLessThanOrEqual(occupied.width, 0.72)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.73)
+                XCTAssertLessThanOrEqual(occupied.width, 0.78)
             }
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
             XCTAssertNotEqual(
@@ -980,8 +980,8 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.66)
-        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.72)
+        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.73)
+        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.78)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 170.7188, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)

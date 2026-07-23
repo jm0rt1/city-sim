@@ -1694,7 +1694,7 @@ final class CityScene: SKScene {
         // shadows may extend beneath translucent chrome instead of forcing the
         // settlement back into the rejected toy-island scale.
         let isCompact = size.width <= 900 || size.height <= 600
-        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.74
+        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.82
         let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.28
         var scale = max(
             cameraBounds.width / (safeWidth * targetWidthOccupancy),

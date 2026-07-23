@@ -107,8 +107,13 @@ private extension CityVictoryStory {
 }
 
 struct GameStatusOverlay: View {
+    private enum ReplayFocus: Hashable {
+        case newRegion
+        case loadQuicksave
+    }
+
     @ObservedObject var store: CityGameStore
-    @FocusState private var replayFocused: Bool
+    @FocusState private var replayFocus: ReplayFocus?
     @State private var replayTransitionStarted = false
 
     var body: some View {
@@ -149,14 +154,14 @@ struct GameStatusOverlay: View {
         }
         .onAppear {
             replayTransitionStarted = false
-            replayFocused = true
+            replayFocus = .newRegion
         }
         .onChange(of: store.state.status) { _, _ in
             replayTransitionStarted = false
-            replayFocused = true
+            replayFocus = .newRegion
         }
         .onExitCommand {
-            replayFocused = true
+            replayFocus = .newRegion
         }
         .accessibilityIdentifier("game-status.blocking-modal")
     }
@@ -274,7 +279,7 @@ struct GameStatusOverlay: View {
                 .controlSize(.large)
                 .tint(GameTheme.accent)
                 .keyboardShortcut(.defaultAction)
-                .focused($replayFocused)
+                .focused($replayFocus, equals: .newRegion)
                 .disabled(replayTransitionStarted)
                 .accessibilityIdentifier("victory.start-new-region")
                 .accessibilityHint("Starts one fresh authored city and closes this result")
@@ -282,6 +287,7 @@ struct GameStatusOverlay: View {
             Button("Load Quicksave") { store.perform(.loadCity) }
                 .buttonStyle(.bordered)
                 .controlSize(.large)
+                .focused($replayFocus, equals: .loadQuicksave)
                 .disabled(!store.canPerform(.loadCity))
                 .accessibilityIdentifier("victory.load-quicksave")
                 .accessibilityHint(

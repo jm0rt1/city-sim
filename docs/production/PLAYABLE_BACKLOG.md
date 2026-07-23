@@ -131,6 +131,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **In scope:** The production recovery sequence in `PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md`: calibration footprint/anchor/depth descriptors and validation, one overlap-safe coherent street corridor, authored architecture/environment families, construction, restrained interaction, density/consequence presentation, bounded ambient life, LOD/reuse/performance, accessibility, and live default/compact visual proof.
 - **Out of scope:** Inventing simulation facts, gameplay balance, HUD redesign, save schema, and fixture-only visual claims.
 - **Acceptance:** Resolve the 28 findings in `WORLD_RENDERING_ISSUE_REPORT_2026-07-21.md` through the ordered production gates in `PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md`; first pass its overlap-safe playable-corridor Round 1, then the same live city shows strategy and three-act state changes non-color-only at city/neighborhood/block scales. Both integration and playtest must score the exact staged candidate at least 17/20 with no category below 3/4. Retain stable deterministic identity, truthful feedback, bounded performance, and uncropped same-seed before/after evidence.
+- **Current disposition:** Exact Round 1C product `2cf18b0` / evidence `f35d6ef` was independently rejected at 13/20 in accepted quality evidence `4bbe72b`. The authorized correction is limited to developed-frame occupancy, connected road/ground coherence, and three materially useful LODs while preserving the passing interaction, construction, identity, accessibility, resource, and performance properties.
 - **Stop conditions:** A mostly empty developed frame, disconnected road language, inconsistent projection/scale/light, debug-like indicator clutter, cosmetic recolor or asset-count delivery, author self-acceptance, off-window-only proof, false simulation implications, unclear asset provenance, or regression in hit testing/reuse/accessibility.
 
 ### [ ] PLAY-023: Build the generated-v4 asset pipeline
@@ -203,6 +204,30 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** The retained missed-deadline reproduction can commit after Day 25 and still receives every phase exactly once and in order; a failed placement never commits; strategy never flips from later tile counts; both strategies reach Town Charter or an explicit terminal failure inside 20:00 in deterministic no-coaching runs; save/load/undo/replay/fingerprints remain exact.
 - **Stop conditions:** Exact-tick story gating remains, legacy saves replay/cascade missed phases, new shared state exceeds CONTRACT-007, UI/rendering changes enter the lane, or platform fixture adoption is omitted.
 
+### [x] PLAY-014: Make recovery choice a durable strategic identity
+
+- **Player outcome:** Each strategy offers two viable recoveries whose cost, payoff, and retained identity make the city and replay meaningfully different.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** GOV-004, GOV-005, GOV-006, ECO-002, ECO-003, SIM-004.
+- **Dependencies:** Approved CONTRACT-009; platform adoption follows under PLAY-044.
+- **In scope:** Four typed resolution paths, first-qualifying daily capture, non-flipping identity, distinct consequences/messages/analytics, balance and deterministic story proof.
+- **Out of scope:** New UI commands, renderer inference, save-schema identifiers, platform fingerprints/fixtures, or unrelated economy redesign.
+- **Acceptance:** Two Commercial and two Industrial recovery routes remain viable; each captures once, never flips, produces distinct numerical/payoff evidence, survives model round trip and undo, and reaches the authored finish inside 20:00.
+- **Stop conditions:** Resolution is inferred from prose or current city counts after capture, one path dominates, legacy nil fails, UI/rendering changes enter the lane, or platform adoption is omitted.
+- **Accepted integration:** Gameplay `10023e5` and `e02d2c0`; platform adoption `705fc51`; evidence/completion through `7be0e6b` and `71bb3bd`.
+
+### [ ] PLAY-015: Make the Town Charter an unmistakable session victory
+
+- **Player outcome:** Earning the Town Charter conclusively ends the mayoral mandate, preserves the earned strategy and recovery identity, and immediately offers a trustworthy route into a new region instead of leaving the player to coast after every objective is complete.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** GOV-004, GOV-005, GOV-006, SIM-004, UX-001, UX-007, REL-004.
+- **Dependencies:** Accepted PLAY-014/044; UI companion PLAY-038 consumes the existing won state; simulation platform must verify the final candidate across save/replay boundaries.
+- **In scope:** Transition to the existing `.won` state on the governed daily boundary that newly awards the Charter; deterministic normalization of legacy `townCharterAwarded == true` and `.playing` saves on their next daily boundary without load-time mutation or duplicate award; terminal immutability; four-route gameplay tests; truthful typed result analytics only if required.
+- **Out of scope:** New progression systems, commands, public store types, save-schema identifiers, renderer work, SwiftUI victory composition, or unrelated economy tuning.
+- **Acceptance:** All four durable recovery routes award the Charter and enter `.won` exactly once at tick 844; no route wins before payoff or without 12 qualifying checks; the recovery identity and one-time message remain exact; subsequent ticks cannot mutate the won state; failed checks, ignored recovery, undo, loss, and legacy missing fields remain valid; legacy awarded-playing state normalizes only at the next daily boundary; save/load/replay/fingerprint equality requires no schema bump.
+- **Live gate:** A no-coaching Commercial and Industrial staged route each reaches a clearly explained victory inside 20 minutes; the player can explain why they won and deliberately start a new region through PLAY-038.
+- **Stop conditions:** The change requires load-time mutation, a schema/fingerprint-version bump, premature victory, gameplay-owned UI edits, a new command/state authority, or any recovery route losing viability.
+
 ### [ ] PLAY-033: Make the HUD a compact city command center
 
 - **Player outcome:** Urgent decisions stay visible and understandable, every warning leads directly to the relevant action, invalid placement recovery is durable, and exact 900 x 600 play keeps the map dominant.
@@ -223,6 +248,49 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Occupied, road-required, unaffordable, valid, and newly connected tiles report one identical coordinate/outcome across grounded preview, AX, click, and Return at default and exact 900 x 600; alternating pointer and keyboard movement cannot expose stale hover truth; mutations occur iff the visible/accessible presentation is valid.
 - **Stop conditions:** Two action targets remain live, renderer revalidates different coordinates, pointer hover changes inspect selection, store/player-intent ownership is duplicated, or implementation begins on an unaccepted incompatible renderer base.
 
+### [ ] PLAY-035: Make rejected keyboard actions explain themselves
+
+- **Player outcome:** Pressing Return on a selected invalid build target explains the exact problem and recovery just as clearly as clicking it, while valid actions still happen once.
+- **Owning lane:** UI and input.
+- **Dependencies:** Integrated PLAY-033 and the PLAY-051 reproduction on exact master `23d2bf9`; independent of the blocked PLAY-034 target-unification contract.
+- **In scope:** Separate map-command route eligibility from primary-action availability, route focused Return attempts to the existing store rejection path, preserve truthful catalog/AX disabled state, focused tests, and staged default/compact proof.
+- **Out of scope:** Changing the active target coordinate, pointer-hover selection, renderer validation/art, simulation build rules, save state, or CONTRACT-008 implementation.
+- **Acceptance:** Occupied, no-road, and unaffordable Return attempts expose the same accepted reason and durable guidance as pointer attempts; the selected tool and coordinate remain stable; valid Return mutates exactly once; AX availability/disabled reason remains truthful; modal/text quarantine and compact behavior do not regress.
+- **Stop conditions:** Invalid commands become advertised as available, a second validation path is introduced, selection or active target semantics change, the renderer is edited, or CONTRACT-008 is implemented early.
+
+### [ ] PLAY-036: Make searched remedies reliably actionable
+
+- **Player outcome:** Typing the words used by a warning finds the intended remedy, and the visible result actually opens through pointer, keyboard, or accessibility action.
+- **Owning lane:** UI and input.
+- **Dependencies:** Integrated PLAY-033, PLAY-051 live reproduction on exact master `23d2bf9`, and completion of PLAY-035.
+- **In scope:** Command-guide query lifecycle, result action semantics, existing catalog/store dispatch, truthful availability/disabled reasons, focus restoration, focused tests, and staged default/compact proof.
+- **Out of scope:** New commands, warning prose ownership, simulation policy, renderer, persistence, or a parallel view-only action path.
+- **Acceptance:** Fresh `tax`, `budget`, and `storefront` searches each show the one existing Tax Policy result; pointer, Return, Space, and AX activation execute that result exactly once when available; disabled results retain and announce their reason; Escape restores map focus without shortcut leakage.
+- **Stop conditions:** Unit-only matching replaces live proof, a result is visible but inert, action paths diverge by input method, availability is overstated, or view code bypasses the store/catalog.
+
+### [x] PLAY-037: Restore compact spatial keyboard and Escape parity
+
+- **Player outcome:** Exact compact mode exposes the same operable City map as default and closes layered surfaces in a predictable topmost-first order.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** UX-003, UX-004, UX-009, UX-010, REL-005.
+- **Dependencies:** Accepted PLAY-035/036 integration; independent of PLAY-022 and PLAY-034.
+- **In scope:** Compact map view identity/lifecycle, keyboard selection, AX semantics/actions, selected-action reachability, and Escape arbitration.
+- **Out of scope:** Active-target unification, renderer art/validation, simulation rules, or new commands.
+- **Acceptance:** Exact 900 x 600 exposes `City map`, moves selection with arrows, retains selected actions, and closes Command Center then Objectives on successive Escape presses; default, pointer, focus, modal/text quarantine, and compact map occupancy remain sound.
+- **Stop conditions:** Generic SKView remains, pointer-only recovery is required, Escape cancels underlying intent, focus leaks to text/modal surfaces, or CONTRACT-008 is implemented early.
+- **Accepted integration:** `c196373`, `d75120c`, and `6d58857`; retained proof at `docs/production/evidence/PLAY-037/5016740/`.
+
+### [ ] PLAY-038: Make Charter victory truthful and replayable
+
+- **Player outcome:** The victory surface accurately celebrates a Town Charter city, preserves the earned strategy/recovery story, and lets pointer, keyboard, and accessibility users start a different region without ambiguity.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** UX-001, UX-004, UX-007, UX-009, AUD-001, REL-005.
+- **Dependencies:** Existing `.won` surface and command routes; PLAY-015 supplies the reachable authoritative victory transition. No new public store or command contract is authorized.
+- **In scope:** Charter-accurate victory copy, existing earned analytics presentation, Start a New Region action routing, initial focus, Escape/cancellation policy, default/compact layout, Full Keyboard Access, accessibility semantics, focused tests, and exact staged proof.
+- **Out of scope:** Victory rules, gameplay balance, new commands, save schema, renderer art, active map-target work, or a second source of strategy/recovery truth.
+- **Acceptance:** The victory surface never says “thriving metropolis” for the roughly 500–700 resident Charter result; it explains the earned Charter and retained recovery identity; Start a New Region executes exactly once through pointer, Return/Space, and AX action; focus is deterministic; exact 900 x 600 remains operable; save/relaunch of a won city remains truthful and paused; existing command-guide, map, modal, and Escape behavior does not regress.
+- **Stop conditions:** UI infers gameplay truth from prose or tile counts, bypasses the store/catalog, adds a public contract without approval, hides the map before victory, or cannot prove keyboard/AX replay initiation.
+
 ### [ ] PLAY-042: Adopt durable strategy progression into runtime trust
 
 - **Player outcome:** The repaired strategy story remains identical across speed grouping, save/load, undo, replay, recovery, and immutable presentation snapshots.
@@ -232,3 +300,51 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Strategy balance/content, HUD presentation, renderer behavior, commands, or redesigning gameplay progression.
 - **Acceptance:** Frozen legacy nil-strategy bytes/digests remain valid; every nonnil phase has stable repeated fingerprints; grouped-speed, uninterrupted, save/resume, and replay routes match exactly; corrupt-primary recovery preserves progression; dense/save/snapshot budgets remain bounded; full suite passes.
 - **Stop conditions:** Authentic legacy envelope digest failure without version-aware handling, schema bump without integration approval, platform-owned gameplay rules, duplicate snapshot truth, or unexplained golden-digest drift.
+
+### [x] PLAY-043: Restore exact save, relaunch, and load trust
+
+- **Player outcome:** A city saved by the staged app reliably reloads after process termination and compact relaunch with its strategy intact and simulation paused.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** UX-007, TEC-004, REL-004, REL-009, SIM-001.
+- **Dependencies:** Wave 005 baseline.
+- **In scope:** Exact rejection diagnosis, SaveGameService validation/recovery, persistence diagnostics/tests, isolated data roots, and staged same-bundle proof.
+- **Out of scope:** Weakening corruption checks, gameplay rebalance, HUD redesign, or worker-local build-script changes.
+- **Acceptance:** Exact save/relaunch/load preserves fingerprint, strategy phase, next action, and paused state; valid primary is accepted; corrupt primary still recovers backup; legacy fixtures and full suite pass.
+- **Stop conditions:** Root cause is integration-controlled without proposal, valid corruption evidence is discarded, schema changes silently, or exact bytes/identity are not retained.
+- **Accepted integration:** `e19ec8a` and `c0ce926`; exact relaunch evidence at `docs/production/evidence/PLAY-043/`.
+
+### [x] PLAY-044: Adopt durable recovery resolution into runtime trust
+
+- **Player outcome:** The selected recovery identity remains exact through every supported session boundary.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-006, TEC-004, REL-002, REL-004.
+- **Dependencies:** PLAY-043 complete and integration-supplied PLAY-014 candidate implementing CONTRACT-009.
+- **In scope:** Legacy compatibility, fingerprints, four fixtures, replay, undo, recovery, snapshots, and measured persistence budgets.
+- **Out of scope:** Gameplay rules, balance, UI, renderer, or authentic-fixture rewriting.
+- **Acceptance:** Missing legacy field stays valid; four resolution fingerprints are stable; speed grouping, save/resume, recovery, replay, undo, and snapshots agree exactly within budgets.
+- **Stop conditions:** Gameplay rules enter the lane, authentic legacy data is regenerated, schema bump appears, or unexplained digest drift remains.
+- **Accepted integration:** `705fc51`, `75398a3`, and `7be0e6b`; completion record at `docs/production/completed/PLAY-044.simulation-platform.md`.
+
+### [ ] PLAY-045: Make last-known-good backup recovery reachable
+
+- **Player outcome:** If the primary quicksave disappears but its valid backup survives, Load remains available and restores the exact city paused with truthful recovery feedback.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, TEC-004, UX-007, REL-004, REL-009.
+- **Dependencies:** Accepted PLAY-043/044; integration approves only the narrow default-preserving `SaveGameService` adoption in `CityGameStore`.
+- **In scope:** Read-only primary-or-backup candidate availability, default-preserving service injection for isolated store tests, existing load-source feedback, backup-only schema-0/schema-1 and four-resolution fixtures, deterministic continuation, budgets, and staged isolated-root proof.
+- **Out of scope:** Save-byte changes, schema/fingerprint bumps, backup promotion, primary fabrication, corrupt-file deletion, durable undo, general replay persistence, UI redesign, gameplay, or renderer work.
+- **Acceptance:** Empty roots remain disabled; primary-only behavior is unchanged; valid backup-only saves enable Load and restore exact paused state through menu, shortcut, toolbar, and command guide; invalid backup-only attempts reject without mutation or false success; all four recovery identities, legacy bytes, fingerprints, snapshots, continuation, and frozen budgets remain exact.
+- **Budgets:** Availability is exactly two bounded existence probes with no scan or decode; 1,000 checks complete within 100 ms on the declared machine; existing save/load, snapshot, envelope, and memory ceilings remain unchanged.
+- **Stop conditions:** Availability performs validation/repair, a persisted contract changes, backup files are promoted or deleted, process-global roots replace injection, the shared store surface expands beyond the approved service dependency, or unrelated product work enters the lane.
+
+### [ ] PLAY-052: Gate Wave 005 trust, choice, and world quality
+
+- **Player outcome:** Independent evidence proves or rejects both the production world and the complete saveable, keyboard-operable, replayable strategy journey.
+- **Owning lane:** Playtest quality.
+- **Requirement IDs:** REL-001, REL-002, REL-003, REL-004, REL-005, ART-001, UX-007, UX-009.
+- **Dependencies:** Separate frozen handoffs from PLAY-022 and the integrated PLAY-043/037/014/044 candidate.
+- **In scope:** Exact-candidate identity, no-coaching journeys, default/compact pointer/keyboard/AX, save/relaunch/load, four recovery routes, visual rubric, performance disclosure, and retained proof.
+- **Out of scope:** Product repair, coaching, candidate substitution, or combining renderer and integrated dispositions.
+- **Acceptance:** Renderer independently earns at least 17/20 with no category below 3 or automatic reject; integrated candidate completes the governed journey, preserves save state, exposes semantic compact operation, and proves distinct viable recovery paths.
+- **Current disposition:** Renderer `2cf18b0` was rejected 13/20 with three automatic rejects in `4bbe72b`; UI candidate `b4fb061` remains infrastructure-blocked by an exact-app Computer Use timeout recorded in `643fd1a`. PLAY-052 remains open for corrected renderer and integrated-wave resubmission.
+- **Stop conditions:** Any P1 contradiction, hidden coaching, stale bundle, missing hashes/PID cleanup, save failure, pointer-only compact operation, nondurable choice, or misleading visual evidence.

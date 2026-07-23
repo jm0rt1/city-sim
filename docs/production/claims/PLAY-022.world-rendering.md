@@ -9,7 +9,27 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active pending independent disposition — rejected Round 1B product fc8b838 and evidence 701bb0a remain frozen; new Round 1C product candidate 2cf18b0 passes its stricter five-process renderer gate at 4.431 ms median and 5/5 totals at or below both 4.8 ms and 6.03 ms, plus full/staged/geometry/input/isolation/memory gates recorded under docs/production/evidence/PLAY-022/round-1c/candidate-2cf18b0/; this is not a visual self-score, Round 2 and PLAY-023 remain unauthorized, and CONTRACT-008 remains unchanged pending its separate PLAY-034 dispatch
+- **Status:** active corrective recovery — exact Round 1C product `2cf18b0` / evidence `f35d6ef` is preserved and independently rejected at 13/20 by accepted quality commit `4bbe72b`; only the three corrections below are authorized, while PLAY-023 and broader asset-family work remain unauthorized
+
+## Authorized Round 1D correction
+
+1. Replace the isolated four-stub crossroads with a visibly connected district
+   context that fills the governed developed frame at default and exact compact
+   sizes without requiring player reframing.
+2. Resolve the road/ground mismatch, ladder-like junction markings, and
+   unexplained endings so terrain, shoulders, junctions, and generated
+   structures read as one physical system.
+3. Make city, neighborhood, and block camera stops materially different:
+   network/density, blocks/frontage, and construction/material detail.
+
+Preserve the already passing pointer, keyboard, AX, construction truth,
+selection/overlay, compact, Reduce Motion, exact resource identity, zero
+fallback, deterministic collision, cold-load, memory, and render-performance
+properties. Resubmission requires a new exact product/evidence pair and an
+independent score of at least 17/20 with no category below 3 and no automatic
+reject. The quality disposition at
+`docs/production/evidence/PLAY-052/renderer-2cf18b0/RENDERER_GATE_DISPOSITION.md`
+is the binding defect source.
 
 Deliver an unmistakable visual step through one systemic golden block in the
 real staged city. Stop broad feature work until the nine-source calibration

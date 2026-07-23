@@ -205,6 +205,76 @@ final class StrategyResolutionPlatformTests: XCTestCase {
     }
 
     @MainActor
+    func testBackupOnlyResolvedOutcomesLoadPausedClearUndoAndContinueExactly() throws {
+        for resolution in resolutions {
+            var saved = try preparedSetback(for: resolution)
+            advanceTicks(64, state: &saved)
+            XCTAssertEqual(saved.progression?.strategy?.currentPhase, .recovery)
+            XCTAssertEqual(saved.progression?.strategy?.recoveryResolution, resolution)
+            let savedFingerprint = try CityStateFingerprinter.fingerprint(saved)
+
+            var uninterrupted = saved
+            advanceTicks(64, state: &uninterrupted)
+
+            try withTemporaryRoot { root in
+                let service = SaveGameService(rootURL: root)
+                let write = try service.save(saved)
+                let backupBytes = try Data(contentsOf: service.saveURL)
+                try FileManager.default.moveItem(at: service.saveURL, to: service.backupURL)
+
+                let store = CityGameStore(state: .newCity(seed: 42), saveService: service)
+                store.selectTool(.commercial)
+                store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+                XCTAssertTrue(store.canUndo, resolution.rawValue)
+                store.speed = .fastest
+
+                XCTAssertTrue(store.canPerform(.loadCity), resolution.rawValue)
+                XCTAssertTrue(store.perform(.loadCity), resolution.rawValue)
+                XCTAssertEqual(store.state, saved, resolution.rawValue)
+                XCTAssertEqual(store.speed, .paused, resolution.rawValue)
+                XCTAssertFalse(store.canUndo, resolution.rawValue)
+                XCTAssertEqual(
+                    store.lastFeedback,
+                    "Recovered last known-good city · Simulation paused",
+                    resolution.rawValue
+                )
+                XCTAssertEqual(write.schemaVersion, 1, resolution.rawValue)
+                XCTAssertEqual(write.fingerprint, savedFingerprint, resolution.rawValue)
+                XCTAssertEqual(
+                    try CityStateFingerprinter.fingerprint(store.state),
+                    savedFingerprint,
+                    resolution.rawValue
+                )
+                XCTAssertEqual(
+                    CityAnalytics(state: store.state).strategyRecoveryResolution,
+                    resolution,
+                    resolution.rawValue
+                )
+
+                let snapshot = try CityPresentationSnapshot(state: store.state)
+                XCTAssertEqual(snapshot.state, saved, resolution.rawValue)
+                XCTAssertEqual(snapshot.fingerprint, savedFingerprint, resolution.rawValue)
+                XCTAssertEqual(
+                    snapshot.analytics.strategyRecoveryResolution,
+                    resolution,
+                    resolution.rawValue
+                )
+
+                var continued = store.state
+                advanceTicks(64, state: &continued)
+                XCTAssertEqual(continued, uninterrupted, resolution.rawValue)
+                XCTAssertEqual(
+                    try CityStateFingerprinter.fingerprint(continued),
+                    try CityStateFingerprinter.fingerprint(uninterrupted),
+                    resolution.rawValue
+                )
+                XCTAssertFalse(FileManager.default.fileExists(atPath: service.saveURL.path))
+                XCTAssertEqual(try Data(contentsOf: service.backupURL), backupBytes)
+            }
+        }
+    }
+
+    @MainActor
     func testResolutionUndoAndPresentationSnapshotRemainExact() throws {
         let setback = try strategyAtSetback(.commercialStewardship)
         let beforeInvestment = setback

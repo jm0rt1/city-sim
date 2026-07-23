@@ -32,17 +32,22 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
-    private let saves = SaveGameService()
+    private let saves: SaveGameService
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
 
     init(
         state: CityGameState = .newCity(),
-        commandPolicy: CityCommandPolicy = .enabled
+        commandPolicy: CityCommandPolicy = .enabled,
+        saveService: SaveGameService = SaveGameService()
     ) {
         self.state = state
         self.commandPolicy = commandPolicy
+        self.saves = saveService
+        if state.status != .playing {
+            speed = .paused
+        }
     }
 
     var selectedTile: CityTile? {
@@ -127,7 +132,13 @@ final class CityGameStore: ObservableObject {
     func pulse() {
         guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
-        for _ in 0..<speed.ticksPerPulse { CitySimulation.step(&state) }
+        for _ in 0..<speed.ticksPerPulse {
+            CitySimulation.step(&state)
+            if state.status != .playing {
+                speed = .paused
+                break
+            }
+        }
     }
 
     @discardableResult
@@ -203,11 +214,15 @@ final class CityGameStore: ObservableObject {
         guard commandPolicy.allows(command) else { return false }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         guard descriptor.route == .store, !descriptor.isSpatial else { return false }
+        if state.status != .playing,
+           ![CityCommandID.newRegion, .saveCity, .loadCity].contains(command) {
+            return false
+        }
         return switch command {
         case .undo:
             canUndo
         case .loadCity:
-            FileManager.default.fileExists(atPath: saves.saveURL.path)
+            saves.hasLoadCandidate
         case .dismissFeedback:
             lastFeedback != nil
         case .cancelInteraction:
@@ -233,13 +248,18 @@ final class CityGameStore: ObservableObject {
             case .loadCity: return "No quicksave is available"
             case .dismissFeedback: return "There is no transient action message"
             case .cancelInteraction: return "There is no open surface or active tool to cancel"
-            default: return "Unavailable in the current context"
+            default:
+                return state.status == .playing
+                    ? "Unavailable in the current context"
+                    : "The mayoral mandate is complete; start a new region or load a city"
             }
         }
     }
 
     func canRouteMapCommand(_ command: CityCommandID) -> Bool {
-        guard commandPolicy.allows(command), CityCommandCatalog.mapFocusedCommands.contains(command) else {
+        guard state.status == .playing,
+              commandPolicy.allows(command),
+              CityCommandCatalog.mapFocusedCommands.contains(command) else {
             return false
         }
         if CityCommandCatalog.mapActionCommands.contains(command) {
@@ -586,6 +606,7 @@ final class CityGameStore: ObservableObject {
         showCommandGuide = false
         undoStates.removeAll()
         canUndo = false
+        requestMapFocus()
         showFeedback("A fresh region is ready")
     }
 

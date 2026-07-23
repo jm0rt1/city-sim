@@ -139,7 +139,7 @@ final class GameplayLoopTests: XCTestCase {
 
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertLessThanOrEqual(state.tick, 2_200)
-        XCTAssertEqual(state.status, .playing)
+        XCTAssertEqual(state.status, .won)
     }
 
     func testBothDiscoverableStrategiesReachDurablePayoffWithInteractionMargin() throws {
@@ -190,6 +190,8 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertGreaterThan(CityAnalytics(state: industry).jobCapacity, CityAnalytics(state: commerce).jobCapacity)
         XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
+        XCTAssertEqual(commerce.status, .won)
+        XCTAssertEqual(industry.status, .won)
     }
 
     func testOpeningExposesARealButRecoverableTradeoff() {
@@ -237,7 +239,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.status, .playing)
     }
 
-    func testTwoStrategiesEarnTheCharterAndSurviveTheTwentyMinuteHorizon() throws {
+    func testTwoStrategiesReachVictoryAndRemainTerminalThroughTheTwentyMinuteHorizon() throws {
         var industryFirst = try industrialStrategy()
         advance(&industryFirst, cycles: 4)
         try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &industryFirst)
@@ -259,8 +261,12 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertTrue(commerceAndTax.messages.contains { $0.title == "Main Street Rebound" })
         commerceAndTax.taxRate = 0.10
 
-        advanceToTick(&industryFirst, tick: 896)
-        advanceToTick(&commerceAndTax, tick: 896)
+        let industryVictoryTick = advanceUntil(&industryFirst, maximumCycles: 430) {
+            $0.status == .won
+        }
+        let commerceVictoryTick = advanceUntil(&commerceAndTax, maximumCycles: 430) {
+            $0.status == .won
+        }
 
         let industryAnalytics = CityAnalytics(state: industryFirst)
         let commerceAnalytics = CityAnalytics(state: commerceAndTax)
@@ -271,32 +277,23 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertNotEqual(industryFirst.happiness, commerceAndTax.happiness)
         XCTAssertGreaterThanOrEqual(industryFirst.population, 500)
         XCTAssertGreaterThanOrEqual(commerceAndTax.population, 500)
-
-        // 700 cycles × 4 pulses × 0.42 seconds is approximately a 19.6-minute 1× session.
-        advanceToTick(&industryFirst, tick: 2_800)
-        advanceToTick(&commerceAndTax, tick: 2_800)
-        XCTAssertEqual(industryFirst.tick, 2_800)
-        XCTAssertEqual(commerceAndTax.tick, 2_800)
-        XCTAssertEqual(industryFirst.day, 701)
-        XCTAssertEqual(commerceAndTax.day, 701)
-        XCTAssertEqual(industryFirst.population, 560)
-        XCTAssertEqual(commerceAndTax.population, 700)
-        XCTAssertEqual(industryFirst.treasury, 214_957, accuracy: 0.001)
-        XCTAssertEqual(commerceAndTax.treasury, 109_207.55, accuracy: 0.001)
-        XCTAssertEqual(industryFirst.jobs, 392)
-        XCTAssertEqual(commerceAndTax.jobs, 350)
-        XCTAssertEqual(industryFirst.happiness, 53.866_666, accuracy: 0.001)
-        XCTAssertEqual(commerceAndTax.happiness, 53.328_571, accuracy: 0.001)
-        XCTAssertEqual(industryFirst.powerUsed, 499)
-        XCTAssertEqual(commerceAndTax.powerUsed, 588)
-        XCTAssertEqual(industryFirst.waterUsed, 438)
-        XCTAssertEqual(commerceAndTax.waterUsed, 528)
+        XCTAssertLessThanOrEqual(industryVictoryTick, 2_800)
+        XCTAssertLessThanOrEqual(commerceVictoryTick, 2_800)
         XCTAssertTrue(industryFirst.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(commerceAndTax.progression?.townCharterAwarded ?? false)
-        XCTAssertEqual(industryFirst.status, .playing)
-        XCTAssertEqual(commerceAndTax.status, .playing)
+        XCTAssertEqual(industryFirst.status, .won)
+        XCTAssertEqual(commerceAndTax.status, .won)
         XCTAssertGreaterThan(industryFirst.treasury, 0)
         XCTAssertGreaterThan(commerceAndTax.treasury, 0)
+
+        let industryVictory = industryFirst
+        let commerceVictory = commerceAndTax
+        for _ in 0..<2_800 {
+            CitySimulation.step(&industryFirst)
+            CitySimulation.step(&commerceAndTax)
+        }
+        XCTAssertEqual(industryFirst, industryVictory)
+        XCTAssertEqual(commerceAndTax, commerceVictory)
     }
 
     func testStrategyStoriesWarnOnDailyBoundaryAndCreateDifferentOpportunities() throws {
@@ -448,8 +445,14 @@ final class GameplayLoopTests: XCTestCase {
             XCTAssertEqual(CityAnalytics(state: state).strategyRecoveryResolution, resolution)
             XCTAssertTrue(state.progression?.townCharterAwarded ?? false, resolution.rawValue)
             XCTAssertEqual(state.tick, 844, resolution.rawValue)
-            XCTAssertEqual(state.status, .playing, resolution.rawValue)
+            XCTAssertEqual(state.status, .won, resolution.rawValue)
             XCTAssertGreaterThan(state.treasury, 0, resolution.rawValue)
+
+            var terminal = state
+            for _ in 0..<128 {
+                CitySimulation.step(&terminal)
+            }
+            XCTAssertEqual(terminal, state, resolution.rawValue)
         }
     }
 
@@ -781,17 +784,17 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 11)
         XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
         XCTAssertFalse(state.messages.contains { $0.title == "Town Charter Awarded" })
+        XCTAssertEqual(state.status, .playing)
 
         advanceDays(&state, days: 1)
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        XCTAssertEqual(state.status, .won)
 
-        state.happiness = 0
+        let victory = state
         advance(&state, cycles: 20)
-        XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
-        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 12)
-        XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        XCTAssertEqual(state, victory)
     }
 
     func testFailedTownCharterCheckResetsBeforeLaterSuccessfulRun() throws {
@@ -805,10 +808,68 @@ final class GameplayLoopTests: XCTestCase {
         CitySimulation.step(&state)
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 0)
         XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
+        XCTAssertEqual(state.status, .playing)
 
         advanceQualifyingTown(&state, days: 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        XCTAssertEqual(state.status, .won)
+    }
+
+    func testLegacyAwardedPlayingStateNormalizesOnlyAtNextDailyBoundary() throws {
+        var legacy = CityGameState.newCity(seed: 42)
+        legacy.progression = CityProgressionState(
+            townCharterQualifyingCycles: 12,
+            townCharterAwarded: true
+        )
+        legacy.messages.insert(
+            CityMessage(
+                tick: legacy.tick,
+                severity: .good,
+                title: "Town Charter Awarded",
+                detail: "Existing legacy award"
+            ),
+            at: 0
+        )
+
+        var decoded = try JSONDecoder().decode(
+            CityGameState.self,
+            from: JSONEncoder().encode(legacy)
+        )
+        XCTAssertEqual(decoded, legacy)
+        XCTAssertEqual(decoded.status, .playing)
+        XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+
+        for expectedTick in 1...3 {
+            CitySimulation.step(&decoded)
+            XCTAssertEqual(decoded.tick, expectedTick)
+            XCTAssertEqual(decoded.status, .playing)
+            XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        }
+
+        CitySimulation.step(&decoded)
+        XCTAssertEqual(decoded.tick, 4)
+        XCTAssertEqual(decoded.status, .won)
+        XCTAssertEqual(decoded.progression?.townCharterQualifyingCycles, 12)
+        XCTAssertTrue(decoded.progression?.townCharterAwarded ?? false)
+        XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+
+        let normalized = decoded
+        CitySimulation.step(&decoded)
+        XCTAssertEqual(decoded, normalized)
+    }
+
+    func testFailedCharterCheckCanStillReachExistingTerminalLoss() throws {
+        var state = try qualifyingTown()
+        state.progression?.townCharterQualifyingCycles = 11
+        state.treasury = -80_000
+
+        advanceDays(&state, days: 1)
+
+        XCTAssertEqual(state.status, .lost)
+        XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
+        XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 0)
+        XCTAssertFalse(state.messages.contains { $0.title == "Town Charter Awarded" })
     }
 
     @MainActor

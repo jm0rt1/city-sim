@@ -385,12 +385,16 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(industry.progression?.strategy?.committedStrategy, .industrialExpansion)
         XCTAssertEqual(industry.progression?.strategy?.currentPhase, .completed)
         XCTAssertNil(industry.progression?.strategy?.nextScheduledTick)
+        XCTAssertEqual(industry.progression?.strategy?.recoveryResolution, .industrialUtilityExpansion)
+        XCTAssertEqual(CityAnalytics(state: industry).strategyRecoveryResolution, .industrialUtilityExpansion)
         XCTAssertEqual(commerce.progression?.strategy?.committedStrategy, .commercialStewardship)
         XCTAssertEqual(commerce.progression?.strategy?.currentPhase, .completed)
         XCTAssertNil(commerce.progression?.strategy?.nextScheduledTick)
+        XCTAssertNil(commerce.progression?.strategy?.recoveryResolution)
+        XCTAssertNil(CityAnalytics(state: commerce).strategyRecoveryResolution)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "825a7c39fa1d656a6ec1a273f8b9a89ca0dc7a053d71e81eb00e281553782a7c"
+            "9640c2d5b481e6c257657b3f0a2b7eaf121cb9a44eaba1888b5728a7b83a53be"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
@@ -398,7 +402,7 @@ final class SessionPlatformTests: XCTestCase {
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["825a7c39fa1d656a6ec1a273f8b9a89ca0dc7a053d71e81eb00e281553782a7c"])
+            Set(["9640c2d5b481e6c257657b3f0a2b7eaf121cb9a44eaba1888b5728a7b83a53be"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),

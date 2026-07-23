@@ -370,11 +370,17 @@ final class CityGameStore: ObservableObject {
             showCommandGuide = false
         } else if showInspector {
             dismissInspector()
+            requestMapFocus()
         } else if showObjectives {
             showObjectives = false
+            requestMapFocus()
         } else {
             cancelInteraction()
         }
+    }
+
+    private func requestMapFocus() {
+        mapFocusRequestGeneration &+= 1
     }
 
     func select(_ coordinate: GridCoordinate) {

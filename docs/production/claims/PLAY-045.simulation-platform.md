@@ -9,7 +9,7 @@
 - **Planned surfaces:** `SaveGameService` availability, narrow default-preserving `CityGameStore` service adoption, isolated persistence/store tests and fixtures, staged recovery evidence, and completion record
 - **Dependencies:** accepted PLAY-043/044
 - **Validation/proof:** empty/primary-only/backup-only/invalid-backup cases; schema-0/schema-1; four recovery identities; exact paused state/fingerprint/analytics/snapshot/continuation; two-probe and 1,000-call budgets; full suite; isolated Cmd-O or command-guide proof
-- **Status:** ready-for-integration
+- **Status:** integrated on master through `ebfbcdf`
 
 Make Load availability reflect a surviving primary or backup without decoding,
 repairing, promoting, deleting, or fabricating files. Keep `load()` authoritative

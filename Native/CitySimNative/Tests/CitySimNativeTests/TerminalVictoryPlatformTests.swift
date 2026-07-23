@@ -67,6 +67,11 @@ final class TerminalVictoryPlatformTests: XCTestCase {
                 Set([try XCTUnwrap(expectedDigests[resolution])]),
                 resolution.rawValue
             )
+            try exportTerminalSaveIfRequested(
+                terminal,
+                fingerprint: fingerprint,
+                resolution: resolution
+            )
 
             let terminalCommands: [CitySimulationCommand] = [
                 .advanceOneDailyBoundary,
@@ -394,6 +399,37 @@ final class TerminalVictoryPlatformTests: XCTestCase {
             .appending(path: "citysim-play046-\(UUID().uuidString)", directoryHint: .isDirectory)
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
+    }
+
+    private func exportTerminalSaveIfRequested(
+        _ state: CityGameState,
+        fingerprint: CityStateFingerprint,
+        resolution: CityStrategyRecoveryResolution
+    ) throws {
+        guard resolution == .commercialTaxRelief,
+              let rootPath = ProcessInfo.processInfo.environment[
+                  "CITYSIM_PLAY046_EXPORT_ROOT"
+              ],
+              !rootPath.isEmpty else {
+            return
+        }
+
+        let service = SaveGameService(
+            rootURL: URL(filePath: rootPath, directoryHint: .isDirectory)
+        )
+        let firstWrite = try service.save(state)
+        let secondWrite = try service.save(state)
+        XCTAssertEqual(firstWrite.fingerprint, fingerprint)
+        XCTAssertEqual(secondWrite.fingerprint, fingerprint)
+        XCTAssertEqual(
+            try Data(contentsOf: service.saveURL),
+            try Data(contentsOf: service.backupURL)
+        )
+        print(
+            "PLAY046_STAGED_EXPORT root=\(rootPath) " +
+            "resolution=\(resolution.rawValue) digest=\(fingerprint.digest) " +
+            "bytes=\(secondWrite.byteCount)"
+        )
     }
 
     private func elapsedMilliseconds(since start: TimeInterval) -> Double {

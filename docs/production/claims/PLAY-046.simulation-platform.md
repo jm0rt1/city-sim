@@ -10,7 +10,7 @@
 - **Planned surfaces:** platform-owned deterministic command/checkpoint fixtures and digests, won-state persistence/replay/undo/backup/snapshot tests, focused evidence, and completion record
 - **Dependencies:** PLAY-015 frozen product; accepted PLAY-044; preserve completed PLAY-045 commits
 - **Validation/proof:** exact four-route terminal fingerprints, rejected post-terminal commands, authentic legacy schema-0/schema-1 compatibility, awarded-playing next-boundary normalization, save/resume/replay/undo/backup/snapshot equality, frozen pre-victory digests, focused/full suite, budgets, and exact staged won-state relaunch where practical
-- **Status:** active
+- **Status:** ready for integration
 
 Adopt the accepted PLAY-015 terminal semantics without changing gameplay rules.
 Update only platform-owned expectations and add the smallest missing runtime

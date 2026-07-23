@@ -86,6 +86,28 @@ struct CityAnalytics {
         count(.fireStation) + count(.policeStation) + count(.school)
     }
 
+    var awaitingStrategyChoice: Bool {
+        state.progression?.strategy == nil
+    }
+
+    var committedStrategy: CityStrategy? {
+        state.progression?.strategy?.committedStrategy
+    }
+
+    var strategyPhase: CityStrategyPhase? {
+        state.progression?.strategy?.currentPhase
+    }
+
+    var strategyRecoveryResolution: CityStrategyRecoveryResolution? {
+        state.progression?.strategy?.recoveryResolution
+    }
+
+    var strategyDaysUntilConsequence: Int? {
+        guard let nextTick = state.progression?.strategy?.nextScheduledTick else { return nil }
+        let remainingTicks = max(0, nextTick - state.tick)
+        return (remainingTicks + 3) / 4
+    }
+
     var meetsTownCharterStandards: Bool {
         CitySimulation.meetsTownCharterStandards(in: state)
     }

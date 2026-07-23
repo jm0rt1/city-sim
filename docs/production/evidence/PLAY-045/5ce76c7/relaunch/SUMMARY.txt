@@ -1,0 +1,16 @@
+started_utc=2026-07-23T11:31:30Z
+manifest_path=/Users/James/.codex/worktrees/e909/city-sim/dist/manifests/simulation-platform-w8bb1822a1e25.manifest
+manifest_sha256=9d1bb1eb600d88eb4d7ca33296e97cf6f3839b6c761c0979e0d35ef0d18fae91
+candidate_id=simulation-platform-w8bb1822a1e25
+candidate_commit=5ce76c783ce96fbfb958bb4388f34c5cefce2ebc
+staged_bundle_path=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app
+executable_path=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app/Contents/MacOS/CitySimNative-w8bb1822a1e25
+executable_sha256=18a9f1bc1d5618236d1571794b577a18b7236cbfe517ac00e50a9d22865b4fe3
+manifest_data_root=/Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25
+resolved_data_root=/Users/James/.codex/worktrees/e909/city-sim/dist/test-data/simulation-platform-w8bb1822a1e25
+prior_manifest_pid=25790
+finished_utc=2026-07-23T11:33:01Z
+proof_pid=26850
+process_command=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app/Contents/MacOS/CitySimNative-w8bb1822a1e25
+cleanup=exact-proof-pid-terminated
+status=complete

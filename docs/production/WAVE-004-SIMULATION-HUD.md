@@ -17,7 +17,9 @@ Wave 004 converts the audited city from a recoverable but missable sequence into
 3. **PLAY-033 UI/input:** begin contract-free compact arbitration, command search, and persistent placement-rejection work immediately; consume PLAY-013 analytics after integration supplies the checkpoint.
 4. **PLAY-022 world rendering:** receive independent visual scoring for the frozen Round 1 candidate; do not redefine player intent locally.
 5. **PLAY-034 UI/input:** after the renderer base is accepted, implement CONTRACT-008's one active map-action target through the store and narrow SpriteKit bridge.
-6. **PLAY-051 quality:** rerun the retained failed opening, both strategies, persistence, default, exact 900 x 600, Full Keyboard Access, VoiceOver, and Reduce Motion gates against one exact integrated candidate.
+6. **PLAY-035 UI/input:** immediately repair the independently reproduced silent Return rejection without waiting for PLAY-034; preserve truthful AX availability and do not change target ownership.
+7. **PLAY-036 UI/input:** reproduce and repair live command-guide synonym and activation failures through the existing catalog/store route after PLAY-035.
+8. **PLAY-051 quality:** rerun the retained failed opening, both strategies, persistence, default, exact 900 x 600, Full Keyboard Access, VoiceOver, and Reduce Motion gates against one exact integrated candidate.
 
 ## Binding player gates
 

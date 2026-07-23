@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active Round 1D candidate submitted — exact product `8433621760ba169995aa1a5dc81cac27c380d746` / evidence `326def7dcf63f70b8dc6d54dab9a1f7e6bbbff7a` is frozen and awaiting independent PLAY-052 scoring; PLAY-023, Round 2, CONTRACT-008, push, and integration remain unauthorized
+- **Status:** active corrective recovery — exact Round 1C product `2cf18b0` / evidence `f35d6ef` is preserved and independently rejected at 13/20 by accepted quality commit `4bbe72b`; only the three corrections below are authorized, while PLAY-023 and broader asset-family work remain unauthorized
 
 ## Authorized Round 1D correction
 

@@ -337,6 +337,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Budgets:** Availability is exactly two bounded existence probes with no scan or decode; 1,000 checks complete within 100 ms on the declared machine; existing save/load, snapshot, envelope, and memory ceilings remain unchanged.
 - **Stop conditions:** Availability performs validation/repair, a persisted contract changes, backup files are promoted or deleted, process-global roots replace injection, the shared store surface expands beyond the approved service dependency, or unrelated product work enters the lane.
 
+### [ ] PLAY-046: Adopt terminal Charter victory into runtime trust
+
+- **Player outcome:** The decisive Charter ending remains exact across deterministic checkpoints, save/load, replay, undo, immutable snapshots, and legacy awarded-playing normalization instead of leaving stale post-victory platform expectations.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-004, SIM-006, TEC-004, REL-002, REL-004.
+- **Dependencies:** Frozen PLAY-015 product `0e3e68e`; accepted PLAY-044 runtime trust; PLAY-045 may remain an independent earlier integration commit.
+- **In scope:** Adopt the existing `.won` terminal boundary into platform-owned command/checkpoint fixtures and digests; stop accepted command sequences at victory; prove rejected post-terminal commands, schema-0/schema-1 behavior, awarded-playing next-boundary normalization, save/resume, replay, undo, backup recovery, fingerprints, analytics, and immutable snapshots.
+- **Out of scope:** Gameplay rule changes, victory timing/balance, UI copy, renderer, schema/fingerprint-version changes, authentic legacy fixture rewriting, or general replay redesign.
+- **Acceptance:** The frozen platform checkpoint suite and complete native suite pass against `0e3e68e`; all four recovery identities enter the exact terminal state once; post-terminal commands reject without mutation; won-state save/load/replay/backup/snapshot/fingerprint equality is exact; legacy decode/load never mutates and next-boundary normalization is deterministic; authentic fixture bytes and pre-victory digests remain unchanged.
+- **Stop conditions:** Platform changes gameplay rules, rewrites authentic legacy inputs, bumps a version, masks an unexpected digest change, permits post-terminal mutation, or expands beyond the smallest adoption required for a green integrated candidate.
+
 ### [ ] PLAY-052: Gate Wave 005 trust, choice, and world quality
 
 - **Player outcome:** Independent evidence proves or rejects both the production world and the complete saveable, keyboard-operable, replayable strategy journey.

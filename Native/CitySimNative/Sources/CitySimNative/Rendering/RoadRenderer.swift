@@ -271,9 +271,10 @@ final class RoadRenderer {
         let topology = RoadTopology(mask: connections)
         let root = SKNode()
         root.name = "road.\(topology.classification.rawValue).\(connections.rawValue)"
-        // Cancel per-tile depth so every corridor material pass sorts as one
-        // network. Otherwise a deeper neighbor's shadow is painted over the
-        // prior tile's asphalt and exposes a dark seam at every socket.
+        // Every road tile must resolve onto one global material plane. Leaving
+        // coordinate depth on these overlapping socket sprites lets a later
+        // tile's sidewalk paint across an earlier tile's asphalt, exposing the
+        // individual atlas plates instead of one continuous corridor.
         root.zPosition = -style.depth(for: coordinate)
 
         let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
@@ -285,11 +286,25 @@ final class RoadRenderer {
 
         let corridor = SKNode()
         corridor.name = "road.production-corridor.\(emphasis.rawValue).\(connections.rawValue)"
-        addRoadbed(for: topology, emphasis: emphasis, to: corridor)
+        if let authoredRoad = assets.generatedRoadSprite(
+            connectionMask: connections.rawValue,
+            detail: detail
+        ) {
+            authoredRoad.name = "road.generated-v4.\(connections.rawValue).\(detail.assetSuffix)"
+            if emphasis == .opportunity {
+                authoredRoad.color = NSColor(
+                    calibratedRed: 0.22,
+                    green: 0.38,
+                    blue: 0.25,
+                    alpha: 1
+                )
+                authoredRoad.colorBlendFactor = 0.34
+                authoredRoad.alpha = 0.56
+            }
+            corridor.addChild(authoredRoad)
+        }
         cityLayer.addChild(corridor)
-        if detailAlpha > 0 {
-            addLaneLanguage(for: topology, to: neighborhoodLayer)
-            addMaterialDetail(at: coordinate, topology: topology, to: blockLayer)
+        if detailAlpha > 0, detail == .block {
             addStreetFurniture(
                 at: coordinate,
                 topology: topology,

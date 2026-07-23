@@ -586,10 +586,8 @@ final class WorldRenderingTests: XCTestCase {
             )
             let names = descendantNames(in: root)
             XCTAssertTrue(names.contains("road.production-corridor.developed.\(mask.rawValue)"))
-            if mask.connectionCount == 1 {
-                XCTAssertTrue(names.contains("road.terminus.turning-bulb"))
-                XCTAssertTrue(names.contains("road.terminus.center-mark"))
-            }
+            XCTAssertTrue(names.contains("road.generated-v4.\(mask.rawValue).block"))
+            XCTAssertFalse(names.contains { $0.hasPrefix("road.terminus.") })
         }
 
         let coordinate = GridCoordinate(x: 4, y: 4)
@@ -708,16 +706,16 @@ final class WorldRenderingTests: XCTestCase {
                     detail: detail,
                     reducedMotion: true
                 )
-                // CityScene places this node below a tile root whose depth exactly
-                // cancels the renderer's network-level z adjustment. Restore that
-                // parent depth in this isolated topology proof.
+                // CityScene cancels the renderer's coordinate depth at the tile
+                // root so all reciprocal material sockets share one road plane.
+                // Recreate that parent transform in this isolated atlas proof.
                 road.zPosition += style.depth(for: coordinate)
                 road.position = center
                 road.setScale(1.08)
                 scene.addChild(road)
                 let names = descendantNames(in: road)
                 XCTAssertTrue(names.contains("road.production-corridor.developed.\(maskValue)"))
-                XCTAssertFalse(names.contains { $0.hasPrefix("road.generated-v4") })
+                XCTAssertTrue(names.contains("road.generated-v4.\(maskValue).\(detail.assetSuffix)"))
             }
         }
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.08))
@@ -753,11 +751,11 @@ final class WorldRenderingTests: XCTestCase {
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
             if size.width <= 900 {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.52)
-                XCTAssertLessThanOrEqual(occupied.width, 0.58)
-            } else {
                 XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
-                XCTAssertLessThanOrEqual(occupied.width, 0.68)
+                XCTAssertLessThanOrEqual(occupied.width, 0.66)
+            } else {
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.66)
+                XCTAssertLessThanOrEqual(occupied.width, 0.72)
             }
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
             XCTAssertNotEqual(
@@ -982,8 +980,8 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.60)
-        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.68)
+        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.66)
+        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.72)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 170.7188, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -996,8 +994,8 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.52)
-        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.58)
+        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.60)
+        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.66)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
@@ -1033,6 +1031,13 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.city"))
         XCTAssertFalse(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.block"))
+        let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
+        XCTAssertTrue(cityVisible.contains("lot.lod.city.mass.cityHall"))
+        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
+        XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
+            at: GridCoordinate(x: 12, y: 12)
+        ).contains("road.generated-v4.15.city"))
         XCTAssertEqual(defaultScene.resolvedCoordinateForTesting(at: defaultScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(defaultScene.tileRootIdentifier(at: cityHall), defaultCityHallRoot)
 
@@ -1042,6 +1047,12 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertLessThan(defaultNeighborhoodScale, defaultCityScale)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.neighborhood"))
+        let neighborhoodVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
+        XCTAssertTrue(neighborhoodVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.city_hall_l01.neighborhood"))
+        XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
+            at: GridCoordinate(x: 12, y: 12)
+        ).contains("road.generated-v4.15.neighborhood"))
         XCTAssertEqual(defaultScene.resolvedCoordinateForTesting(at: defaultScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(defaultScene.tileRootIdentifier(at: cityHall), defaultCityHallRoot)
 
@@ -1050,6 +1061,12 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertLessThan(defaultScene.cameraScaleForTesting, defaultNeighborhoodScale)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.block"))
+        let blockVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
+        XCTAssertTrue(blockVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(blockVisible.contains("lot.generated-v4.city_hall_l01.block"))
+        XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
+            at: GridCoordinate(x: 12, y: 12)
+        ).contains("road.generated-v4.15.block"))
         XCTAssertEqual(defaultScene.resolvedCoordinateForTesting(at: defaultScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(defaultScene.tileRootIdentifier(at: cityHall), defaultCityHallRoot)
 
@@ -1544,7 +1561,7 @@ final class WorldRenderingTests: XCTestCase {
         scene.reducedMotion = true
         scene.render(state: state, overlay: .none, selection: target, interactionMode: .inspect)
         let originalRoot = try XCTUnwrap(scene.tileRootIdentifier(at: target))
-        XCTAssertGreaterThan(scene.diagnosticsSnapshot.drawableNodeCount, state.tiles.count)
+        XCTAssertGreaterThan(scene.diagnosticsSnapshot.drawableNodeCount, 300)
         XCTAssertEqual(scene.diagnosticsSnapshot.activeActionCount, 0)
         XCTAssertGreaterThanOrEqual(scene.diagnosticsSnapshot.updateDurationMilliseconds, 0)
 

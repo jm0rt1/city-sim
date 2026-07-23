@@ -96,14 +96,18 @@ final class WorldAssetCatalog {
     /// keeps that cost out of the historical update-world measurement.
     func preloadGeneratedResidency(
         for detail: CameraDetailLevel,
-        logicalIDs: Set<String>
+        logicalIDs: Set<String>,
+        roadMasks: Set<UInt8> = []
     ) {
         prepareGeneratedResidency(for: detail)
-        let semanticNames = (generatedManifest?.assets ?? []).compactMap { asset -> String? in
+        var semanticNames = (generatedManifest?.assets ?? []).compactMap { asset -> String? in
             guard logicalIDs.contains(asset.logicalID) else { return nil }
             guard let file = asset.lods[detail.assetSuffix]?.file else { return nil }
             return (file as NSString).deletingPathExtension
         }
+        semanticNames.append(contentsOf: roadMasks.sorted().map {
+            String(format: "generated_v4_road_mask_%02d_%@", $0, detail.assetSuffix)
+        })
         for name in semanticNames.sorted() {
             _ = texture(named: name)
         }
@@ -346,6 +350,28 @@ final class WorldAssetCatalog {
         sprite.name = "road.generated-v4.\(connectionMask).\(detail.assetSuffix)"
         sprite.zPosition = generatedAssetsByID["road_material"]?.depthRoles["network"] ?? 2
         return sprite
+    }
+
+    @discardableResult
+    func applyGeneratedRoadLOD(
+        to sprite: SKSpriteNode,
+        connectionMask: UInt8,
+        detail: CameraDetailLevel,
+        semanticName: String
+    ) -> Bool {
+        guard let presentation = generatedRoadSprite(
+            connectionMask: connectionMask,
+            detail: detail
+        ) else {
+            return false
+        }
+        sprite.texture = presentation.texture
+        sprite.size = presentation.size
+        sprite.anchorPoint = presentation.anchorPoint
+        sprite.position = presentation.position
+        sprite.zPosition = presentation.zPosition
+        sprite.name = semanticName
+        return true
     }
 
     private func generatedDetail(for name: String) -> CameraDetailLevel? {

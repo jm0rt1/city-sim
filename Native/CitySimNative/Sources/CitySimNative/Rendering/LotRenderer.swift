@@ -36,7 +36,13 @@ final class LotRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, detail: detail, to: cityLayer)
+        addCityDensityFoundation(for: tile.kind, to: cityLayer)
+        addAuthoredFrontage(
+            for: tile.kind,
+            adjacentRoads: adjacentRoads,
+            detail: detail,
+            to: neighborhoodLayer
+        )
         if presentation.construction == .complete || presentation.construction == .finishing {
             _ = addAuthoredPlaceFamily(
                 tile,
@@ -128,6 +134,37 @@ final class LotRenderer {
         if !identity.children.isEmpty { node.addChild(identity) }
     }
 
+    private func addCityDensityFoundation(for kind: BuildingKind, to node: SKNode) {
+        let fill: NSColor
+        let size: CGSize
+        switch kind {
+        case .residential:
+            fill = style.palette.lotGrass
+            size = CGSize(width: 61, height: 30.5)
+        case .commercial, .cityHall, .fireStation, .policeStation, .school:
+            fill = style.palette.concrete
+            size = CGSize(width: 65, height: 32.5)
+        case .industrial, .powerPlant, .waterTower:
+            fill = style.palette.soil
+            size = CGSize(width: 67, height: 33.5)
+        case .park:
+            fill = style.palette.parkGrass
+            size = CGSize(width: 68, height: 34)
+        case .empty, .road:
+            return
+        }
+        let foundation = SKShapeNode(path: style.diamondPath(
+            width: size.width,
+            height: size.height
+        ))
+        foundation.name = "lot.lod.city.mass.\(kind.rawValue)"
+        foundation.fillColor = fill.withAlphaComponent(0.88)
+        foundation.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.42)
+        foundation.lineWidth = 0.9
+        foundation.zPosition = -3.4
+        node.addChild(foundation)
+    }
+
     private func addStrategyGround(
         _ identity: StrategyDistrictVisualIdentity,
         to node: SKNode
@@ -165,7 +202,7 @@ final class LotRenderer {
         let edge = adjacentRoads.contains(.south)
             ? RoadConnectionMask.south
             : (adjacentRoads.edges.first ?? .south)
-        let endpoint = style.roadSocket(for: edge, overreach: 2.5)
+        let endpoint = style.roadSocket(for: edge, overreach: 0.75)
         let entrance = CGPoint(x: 0, y: -13.5)
         let path = CGMutablePath()
         path.move(to: entrance)
@@ -178,16 +215,16 @@ final class LotRenderer {
         )
 
         let width: CGFloat = switch kind {
-        case .industrial, .powerPlant, .waterTower: 10
-        case .commercial, .cityHall, .fireStation, .policeStation, .school: 8
-        case .park: 7
-        default: 5.5
+        case .industrial, .powerPlant, .waterTower: 8
+        case .commercial, .cityHall, .fireStation, .policeStation, .school: 6
+        case .park: 5
+        default: 4
         }
         let edgeStroke = SKShapeNode(path: path)
         edgeStroke.name = "lot.frontage.\(family).\(edge.rawValue)"
         edgeStroke.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.48)
         edgeStroke.lineWidth = width + 2
-        edgeStroke.lineCap = .round
+        edgeStroke.lineCap = .butt
         edgeStroke.lineJoin = .round
         edgeStroke.zPosition = 2.8
         node.addChild(edgeStroke)
@@ -198,7 +235,7 @@ final class LotRenderer {
             ? style.palette.parkPath
             : style.palette.concreteLight.withAlphaComponent(0.94)
         apron.lineWidth = width
-        apron.lineCap = .round
+        apron.lineCap = .butt
         apron.lineJoin = .round
         apron.zPosition = 3
         node.addChild(apron)

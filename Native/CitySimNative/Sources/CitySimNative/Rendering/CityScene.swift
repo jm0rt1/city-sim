@@ -122,7 +122,7 @@ private final class TileRenderRecord {
 final class CityScene: SKScene {
     private static let minimumCameraScale: CGFloat = 0.30
     private static let canonicalCityCameraScale: CGFloat = 0.74
-    private static let cityOccupiedWidthTarget: CGFloat = 0.47
+    private static let cityOccupiedWidthTarget: CGFloat = 0.52
 
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
@@ -300,7 +300,8 @@ final class CityScene: SKScene {
         }
         assets.preloadGeneratedResidency(
             for: resolvedDetail,
-            logicalIDs: generatedLogicalIDsNeeded(for: state)
+            logicalIDs: generatedLogicalIDsNeeded(for: state),
+            roadMasks: generatedRoadMasksNeeded(for: state)
         )
         renderedState = state
         renderedSnapshot = snapshot
@@ -460,6 +461,17 @@ final class CityScene: SKScene {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
         }
         return names(in: root)
+    }
+
+    func tileVisibleDescendantNamesForTesting(at coordinate: GridCoordinate) -> [String] {
+        guard let root = tileRecords[coordinate]?.root else { return [] }
+        func names(in node: SKNode, ancestorHidden: Bool) -> [String] {
+            let hidden = ancestorHidden || node.isHidden || node.alpha <= 0.001
+            guard !hidden else { return [] }
+            return (node.name.map { [$0] } ?? [])
+                + node.children.flatMap { names(in: $0, ancestorHidden: hidden) }
+        }
+        return names(in: root, ancestorHidden: false)
     }
 
     func tileConsequenceEventNodeCountForTesting(at coordinate: GridCoordinate) -> Int {
@@ -965,6 +977,16 @@ final class CityScene: SKScene {
         return logicalIDs
     }
 
+    private func generatedRoadMasksNeeded(for state: CityGameState) -> Set<UInt8> {
+        Set(state.tiles.compactMap { tile in
+            guard tile.kind == .road else { return nil }
+            return RoadConnectionMask.resolving(
+                at: tile.coordinate,
+                in: state
+            ).rawValue
+        })
+    }
+
     private func makeSpatiallyUpdatedTileRecord(
         reusing existing: TileRenderRecord,
         tile: CityTile,
@@ -1429,7 +1451,15 @@ final class CityScene: SKScene {
         let detail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
-        assets.prepareGeneratedResidency(for: detail)
+        if let renderedState {
+            assets.preloadGeneratedResidency(
+                for: detail,
+                logicalIDs: generatedLogicalIDsNeeded(for: renderedState),
+                roadMasks: generatedRoadMasksNeeded(for: renderedState)
+            )
+        } else {
+            assets.prepareGeneratedResidency(for: detail)
+        }
         for record in tileRecords.values {
             updateGeneratedLOD(in: record.root, detail: detail)
             style.updateDetailVisibility(in: record.root, detail: detail)
@@ -1460,15 +1490,29 @@ final class CityScene: SKScene {
     private func updateGeneratedLOD(in node: SKNode, detail: CameraDetailLevel) {
         if let sprite = node as? SKSpriteNode,
            let name = sprite.name,
-           name.hasPrefix("lot.generated-v4.") {
+           name.hasPrefix("road.generated-v4.") {
+            let components = name.split(separator: ".")
+            if components.count >= 4, let connectionMask = UInt8(components[2]) {
+                assets.applyGeneratedRoadLOD(
+                    to: sprite,
+                    connectionMask: connectionMask,
+                    detail: detail,
+                    semanticName: "road.generated-v4.\(connectionMask).\(detail.assetSuffix)"
+                )
+            }
+        } else if let sprite = node as? SKSpriteNode,
+                  let name = sprite.name,
+                  name.hasPrefix("lot.generated-v4.")
+                    || name.hasPrefix("terrain.generated-v4.") {
             let components = name.split(separator: ".")
             if components.count >= 4 {
+                let semanticPrefix = String(components[0])
                 let logicalID = String(components[2])
                 assets.applyGeneratedLOD(
                     to: sprite,
                     logicalID: logicalID,
                     detail: detail,
-                    semanticName: "lot.generated-v4.\(logicalID).\(detail.assetSuffix)"
+                    semanticName: "\(semanticPrefix).generated-v4.\(logicalID).\(detail.assetSuffix)"
                 )
             }
         }
@@ -1645,20 +1689,23 @@ final class CityScene: SKScene {
 
         let safeWidth = max(420, size.width - viewportInsets.leading - viewportInsets.trailing)
         let safeHeight = max(260, size.height - viewportInsets.top - viewportInsets.bottom)
-        // The compact HUD leaves a shallow world aperture. Let the lived-in core
-        // use that aperture instead of shrinking it into a diorama surrounded by
-        // road opportunity and undeveloped acreage.
-        let targetOccupancy: CGFloat = size.width <= 900 || size.height <= 600 ? 0.90 : 0.95
+        // The staged HUD creates a deliberately shallow aperture. Width is the
+        // primary composition axis for the 2:1 district; authored roofs and
+        // shadows may extend beneath translucent chrome instead of forcing the
+        // settlement back into the rejected toy-island scale.
+        let isCompact = size.width <= 900 || size.height <= 600
+        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.74
+        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.28
         var scale = max(
-            cameraBounds.width / (safeWidth * targetOccupancy),
-            cameraBounds.height / (safeHeight * targetOccupancy)
+            cameraBounds.width / (safeWidth * targetWidthOccupancy),
+            cameraBounds.height / (safeHeight * allowedHeightOccupancy)
         )
-        if size.width <= 900 || size.height <= 600 {
+        if isCompact {
             // A fit-to-height camera still produces the rejected tiny island in
             // the compact HUD's unusually shallow opening. Preserve the entire
             // authoritative lot row horizontally and let peripheral public realm
             // sit beneath translucent chrome when necessary.
-            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.54)
+            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.62)
             scale = min(scale, compactWidthScale, 0.62)
             // Compact framing intentionally resolves to neighborhood LOD even
             // for unusually tight fixtures; block textures are reserved for an

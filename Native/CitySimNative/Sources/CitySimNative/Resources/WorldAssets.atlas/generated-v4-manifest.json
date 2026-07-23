@@ -2682,7 +2682,7 @@
     },
     {
       "file": "generated_v4_road_mask_00_block.png",
-      "sha256": "46460054a7230686bc003a43918f34512f42779d5e6ef83a0d7845552714d61e",
+      "sha256": "f8bae2081977d152f0c405e3223fad77a4e482c1b785f92f106820456101322c",
       "pixels": [
         512,
         256
@@ -2691,7 +2691,7 @@
     },
     {
       "file": "generated_v4_road_mask_00_city.png",
-      "sha256": "8803a818b9d0ca2411c520e552740f9dfb80e700817ed09e85303f6b6e07ac34",
+      "sha256": "3f5989c085ac0d26cf3c48091fbeb55dbd378cea2e8303e720c7643a8eb0d25d",
       "pixels": [
         128,
         64
@@ -2700,7 +2700,7 @@
     },
     {
       "file": "generated_v4_road_mask_00_neighborhood.png",
-      "sha256": "f3b3564c48919c7bb674d22fbcb785ecd13c2dc4fd0d38a7a5799bc92c880e58",
+      "sha256": "45c7886253abf22b967f56dcf4e6eeae6a707d43fd611df4e573a163e2eb3784",
       "pixels": [
         256,
         128
@@ -2709,7 +2709,7 @@
     },
     {
       "file": "generated_v4_road_mask_01_block.png",
-      "sha256": "b0dc0c39d448f0fc308bff7c718222f9571bd4c43b5b23fc95999522235ebe6d",
+      "sha256": "24de1b6afa36516ea17cd6bd4add42ea8b63eb52233fa6b87ee01e6972c40bc0",
       "pixels": [
         512,
         256
@@ -2718,7 +2718,7 @@
     },
     {
       "file": "generated_v4_road_mask_01_city.png",
-      "sha256": "6fc5236f5b5df987de19e3aeec24582aa14a6ace6aeb10abc01bd5f1330de14f",
+      "sha256": "785dfed3651f76ff864a4e22f07ecd0e0b9417edc9a031e7c990563aa5b5ebbf",
       "pixels": [
         128,
         64
@@ -2727,7 +2727,7 @@
     },
     {
       "file": "generated_v4_road_mask_01_neighborhood.png",
-      "sha256": "18af5dd615265041a9a95fdbf7a56eed31d1d8c6c33f4a8030dd7a0d7dd89e1b",
+      "sha256": "7b31153915b3436f0a03b90fc860f09c064bf36499a7f4bc02ebab2028627568",
       "pixels": [
         256,
         128
@@ -2736,7 +2736,7 @@
     },
     {
       "file": "generated_v4_road_mask_02_block.png",
-      "sha256": "f89a17ee50bde77e17424182c10f196d3f2798aeafaa4dc95bbc2cd86dfa1e58",
+      "sha256": "fafb6d968b0d67c0b88b3a228bd175997b5e4076a9a982a3dbed323030a069d6",
       "pixels": [
         512,
         256
@@ -2745,7 +2745,7 @@
     },
     {
       "file": "generated_v4_road_mask_02_city.png",
-      "sha256": "33966d9f383cb1f08a95a6eaa1b6aea0030c5396968641e554ccc131c1eebf6c",
+      "sha256": "d171fd4d68cf1de77a3581efc80b981801d9c7093cb6fba7ac9d27873e7d2eca",
       "pixels": [
         128,
         64
@@ -2754,7 +2754,7 @@
     },
     {
       "file": "generated_v4_road_mask_02_neighborhood.png",
-      "sha256": "e47254124a98cad6018ace43a0012556d330df17d0140d506bbdc784fda95d69",
+      "sha256": "2d3adaa1ed3ad3be613b5f72b83941fae88a811ab4ee5b035e94970d47b08060",
       "pixels": [
         256,
         128
@@ -2763,7 +2763,7 @@
     },
     {
       "file": "generated_v4_road_mask_03_block.png",
-      "sha256": "9f1dd78c3200b690970b5cd08743ead5357cb2cb92932c4efc3a4c11c6dba22f",
+      "sha256": "7601bf8a617600b883f722ea222d93f75a9121957f0ad0c79fd53744c6d0e960",
       "pixels": [
         512,
         256
@@ -2772,7 +2772,7 @@
     },
     {
       "file": "generated_v4_road_mask_03_city.png",
-      "sha256": "908683f4f2f47e8f3d1a41833020fc2a449af7b05f6091da469f86c05f71c517",
+      "sha256": "3545c5fd942a6367d72c80928cdf78ec0fa45d7a09dd136ee62ffe9d81048f7f",
       "pixels": [
         128,
         64
@@ -2781,7 +2781,7 @@
     },
     {
       "file": "generated_v4_road_mask_03_neighborhood.png",
-      "sha256": "705656b22f0b12d1d4a26846f017a3e4790acdbf310ec4c979f2ca11b008b24d",
+      "sha256": "d1b45c72983404f90a9d0bc10338a8bf312a8930635bc33bc08421379d08fa35",
       "pixels": [
         256,
         128
@@ -2790,7 +2790,7 @@
     },
     {
       "file": "generated_v4_road_mask_04_block.png",
-      "sha256": "e0a6a5d5729fb11a48d7ced6dea9d8ee70c95b98a01fbcf8c6db5f98e94a8c9b",
+      "sha256": "0ab45633f41e8cef3dea36efd287210b6a7f5a4a05230751278de462863839d7",
       "pixels": [
         512,
         256
@@ -2799,7 +2799,7 @@
     },
     {
       "file": "generated_v4_road_mask_04_city.png",
-      "sha256": "63ab411e66d3e2c1922730474ebfb9acff875856a6a6319bfbb3adc492ffa986",
+      "sha256": "a1ed1327cf2e38c56601312cd04de9ebdc4c44903b0b298d58104feda2dd843c",
       "pixels": [
         128,
         64
@@ -2808,7 +2808,7 @@
     },
     {
       "file": "generated_v4_road_mask_04_neighborhood.png",
-      "sha256": "68afbe4a64654c695db5b25b4d98d6c712e8774e963408e469790ab767ac6876",
+      "sha256": "da311a3db837d13527393d9d95bd03331fe27fd98b45fb709389e3cca763cd26",
       "pixels": [
         256,
         128
@@ -2817,7 +2817,7 @@
     },
     {
       "file": "generated_v4_road_mask_05_block.png",
-      "sha256": "bd67b247c51dacdb9d5bdf0c155df7ccbf631ed6da5a8a6ccef60922d10097cf",
+      "sha256": "7cca2cd404c56da2fc65d68bfbecc50b78f97a7b5cc72586401509e285f96795",
       "pixels": [
         512,
         256
@@ -2826,7 +2826,7 @@
     },
     {
       "file": "generated_v4_road_mask_05_city.png",
-      "sha256": "4640a8c9c8e326034198e76662815cb0f1902660caea6eafd7197616cad9617c",
+      "sha256": "26554f641faef4306035b95568d9659a71f70ae45aa101c83b9bfedec86792d8",
       "pixels": [
         128,
         64
@@ -2835,7 +2835,7 @@
     },
     {
       "file": "generated_v4_road_mask_05_neighborhood.png",
-      "sha256": "67eeda494d8cc809cfd607ea6c0d643a4a32e8583c0e5c4fdef0ad70895bbc7b",
+      "sha256": "3aa21d15c494d6d7c2f9c60b6889cf8099f4cc002dc293929410b842b5a29f9a",
       "pixels": [
         256,
         128
@@ -2844,7 +2844,7 @@
     },
     {
       "file": "generated_v4_road_mask_06_block.png",
-      "sha256": "d12f5fa5ac04ad5af1f332337843dc17dc6dd078ca573da04da13dcee3540b41",
+      "sha256": "143d90e50bf096ef3c6e1bf771526b59203648b989ff77eced853c40d4c244fd",
       "pixels": [
         512,
         256
@@ -2853,7 +2853,7 @@
     },
     {
       "file": "generated_v4_road_mask_06_city.png",
-      "sha256": "036f2e4500b0166b3b399932a8a6dcf965d407721f85d9941dfe230639af57ed",
+      "sha256": "422a0ba6f3b41aeb5ac749e6ea097578644cf505487d3042a200cb3edb5118c9",
       "pixels": [
         128,
         64
@@ -2862,7 +2862,7 @@
     },
     {
       "file": "generated_v4_road_mask_06_neighborhood.png",
-      "sha256": "d4cf47fadf0ac4dd944b2a5fc262a493e58d676556d0d52c6803a2781302dceb",
+      "sha256": "2092a6be3c2615ec93cbc378e3556e473ae72fa3479971580b06c362cf62551b",
       "pixels": [
         256,
         128
@@ -2871,7 +2871,7 @@
     },
     {
       "file": "generated_v4_road_mask_07_block.png",
-      "sha256": "52236ff9ce6c0baaa1f57b78f73749e14a7db202e88cdc61887adbbdc6e162d0",
+      "sha256": "0ffc5314ea11978c252442d48397ed03df6a23ca29799a9db30ec3d60d7be3bd",
       "pixels": [
         512,
         256
@@ -2880,7 +2880,7 @@
     },
     {
       "file": "generated_v4_road_mask_07_city.png",
-      "sha256": "11fcbfbb98c7f5ef6ffd563d2336f924884aa3b4520fd046bd67417f6d761a20",
+      "sha256": "f566a8110f440e207c91ee4b9b1cc8afdf0d25e1b73f53c644f1fd67fb7a1502",
       "pixels": [
         128,
         64
@@ -2889,7 +2889,7 @@
     },
     {
       "file": "generated_v4_road_mask_07_neighborhood.png",
-      "sha256": "b98c76078be43879e7f003645211caf7f330ede407e5bacb21dc07459d2d449b",
+      "sha256": "887f547dc7c5f34482828742a586c8109d86d98e42ea40868e5a6222b9c5f161",
       "pixels": [
         256,
         128
@@ -2898,7 +2898,7 @@
     },
     {
       "file": "generated_v4_road_mask_08_block.png",
-      "sha256": "15761e614e9bb154d7acdb5afb52abe574700fbc7f29d67fae6abbf12ab6afca",
+      "sha256": "f88cfd2195e3c68241958baa5e2f6a8b70d83c3b21304e72c9d893bcba7f5476",
       "pixels": [
         512,
         256
@@ -2907,7 +2907,7 @@
     },
     {
       "file": "generated_v4_road_mask_08_city.png",
-      "sha256": "990820a75f066900250084af313f9551d82f82091b97a0e111577c252c3e0731",
+      "sha256": "1f2eb771a674c84d4e8e4be6043e1e8761f38b337a73462b8b91f8ba78bfed6f",
       "pixels": [
         128,
         64
@@ -2916,7 +2916,7 @@
     },
     {
       "file": "generated_v4_road_mask_08_neighborhood.png",
-      "sha256": "0f913b130b61a036ed9b8a9612b31b1b3d69de72f6a4fed9bddeb651d100b017",
+      "sha256": "d64d6b07e3a083cd939ed7eacfcc66b8e533d1f4a3c3a7afcfe53110675ed97d",
       "pixels": [
         256,
         128
@@ -2925,7 +2925,7 @@
     },
     {
       "file": "generated_v4_road_mask_09_block.png",
-      "sha256": "eeaa41a5e88159c8f4aa77c9b733a49bda206593a0d2cf8a8dc1f1bd310e7ac9",
+      "sha256": "65babe90fc0cc41da4780fbb0536e02358701be19a9ddda21c1df206ef448b51",
       "pixels": [
         512,
         256
@@ -2934,7 +2934,7 @@
     },
     {
       "file": "generated_v4_road_mask_09_city.png",
-      "sha256": "249ad80b50d3f0fe5773d7076a3d4f718f9e8cb1e8001414e4de73180f0a8870",
+      "sha256": "0a40a9f93e8d26879117774fc778c15f8af71ec5ee704823185b1fe9402d7d3e",
       "pixels": [
         128,
         64
@@ -2943,7 +2943,7 @@
     },
     {
       "file": "generated_v4_road_mask_09_neighborhood.png",
-      "sha256": "3c7b6cf561f0e9acbdf57de0ee4d4ca650e64c416ccc7a8631ef605c3d795878",
+      "sha256": "65710341a87718678ba47cb2b27350549b1b2a0213ad5ba63f1ec0029a9fa7b4",
       "pixels": [
         256,
         128
@@ -2952,7 +2952,7 @@
     },
     {
       "file": "generated_v4_road_mask_10_block.png",
-      "sha256": "6f8990982f5296b021532821643cecd5d8df317b2b2a50c2b363904b88780fc2",
+      "sha256": "43bb8ba38a725b5a447bc933296b9f0b0bf420c6512f94969ae7cdcb76db332d",
       "pixels": [
         512,
         256
@@ -2961,7 +2961,7 @@
     },
     {
       "file": "generated_v4_road_mask_10_city.png",
-      "sha256": "7092de4cf623edd1f5bd28b08c9b2cd8dbed9434234711d3e1976b17620d7d6a",
+      "sha256": "38c943cafe3842d6ff1e8f942ae9c7f8d154c2f802c436dd4952496d9b541ce7",
       "pixels": [
         128,
         64
@@ -2970,7 +2970,7 @@
     },
     {
       "file": "generated_v4_road_mask_10_neighborhood.png",
-      "sha256": "80e8fd1a21756827769cbbb06eed4236968e7e0ee4975c6fefe063c91f8512a2",
+      "sha256": "2a492193021134c0839ee6a6a76e32cdc0645db2718004d62d7bd8aa12635949",
       "pixels": [
         256,
         128
@@ -2979,7 +2979,7 @@
     },
     {
       "file": "generated_v4_road_mask_11_block.png",
-      "sha256": "bc44de6573d0ab664828bce39b7e75f8ac4324a219d195af32fd163f386a5ae7",
+      "sha256": "d4d28e57bafb45949aac9d14a027e4add6ec2606b6bd3b1c66e6d20e8aa79e11",
       "pixels": [
         512,
         256
@@ -2988,7 +2988,7 @@
     },
     {
       "file": "generated_v4_road_mask_11_city.png",
-      "sha256": "db27c5c79d3692da4c678e6566b670d92887e56862b78466e8d4b70d94850ab8",
+      "sha256": "26528b92d5ba95b646f3fd3e843ab5a3d468aa847b1df1ccc69d828695716c90",
       "pixels": [
         128,
         64
@@ -2997,7 +2997,7 @@
     },
     {
       "file": "generated_v4_road_mask_11_neighborhood.png",
-      "sha256": "408892c7c2e6af8cb6b9e14322bcfe65a505bafa6bdb57922e4566e0d94b1fc4",
+      "sha256": "bbc30734ba68414030757233719264bd3449016c5ca24ff5a725b40fe2ee7b63",
       "pixels": [
         256,
         128
@@ -3006,7 +3006,7 @@
     },
     {
       "file": "generated_v4_road_mask_12_block.png",
-      "sha256": "ceb1f6ff840f2089a049df07bf1388efd2f8aff01dce652dcfbc58d1ce734da1",
+      "sha256": "f33ba9f9f16cb90cb41e5443c0e87f36eed0588728691918382c1f1379a3d820",
       "pixels": [
         512,
         256
@@ -3015,7 +3015,7 @@
     },
     {
       "file": "generated_v4_road_mask_12_city.png",
-      "sha256": "74ee128749e3057dd5b34c96233623b81b44cfe3cee4c39a82d4df3ad5333fd5",
+      "sha256": "210176cb689beeb17c74fa0b433ccb9cac68f62f7017dcb861d1412c731f4d6e",
       "pixels": [
         128,
         64
@@ -3024,7 +3024,7 @@
     },
     {
       "file": "generated_v4_road_mask_12_neighborhood.png",
-      "sha256": "b4ba43911b36fd94fbc437725568401021972e3f442fc923c3ca49fba3583cc5",
+      "sha256": "b815197f52758f333afbbe45140f9107f291adbe9db79e2ffffadbc98241bcdf",
       "pixels": [
         256,
         128
@@ -3033,7 +3033,7 @@
     },
     {
       "file": "generated_v4_road_mask_13_block.png",
-      "sha256": "847e5030d1acfd7793a1d3ca06e342bedd0fa249a3cff1ee421329a797dad0cc",
+      "sha256": "69365acc5a53f035438b45ec22e1685a97da9abeb72ac29489678717636db0ea",
       "pixels": [
         512,
         256
@@ -3042,7 +3042,7 @@
     },
     {
       "file": "generated_v4_road_mask_13_city.png",
-      "sha256": "32c913623dbe759b0c91c9c8f641e0c285c9cc68751e3b35dea01c5d5462352c",
+      "sha256": "7d12363820802f65c0596b82e717d79f2ae73e96cd33b76647e183e3b19fc11d",
       "pixels": [
         128,
         64
@@ -3051,7 +3051,7 @@
     },
     {
       "file": "generated_v4_road_mask_13_neighborhood.png",
-      "sha256": "e28f2a1f1323cc23b9ed322113c1e4a9a7ca317a1eb4d2dcf5badda18cb2c4d2",
+      "sha256": "b00dd131ee06665f985604c06c9ccf606e3df12022a9dd4f983e2e29213c3e01",
       "pixels": [
         256,
         128
@@ -3060,7 +3060,7 @@
     },
     {
       "file": "generated_v4_road_mask_14_block.png",
-      "sha256": "a08f5c5d2e4c344ac96c15fb293252fe85786ee938a8f3d32d41dff1f0e778f1",
+      "sha256": "340bc555546de2d7710efe695e2cf976c917a8e4184bf68f26cf99489080f9ca",
       "pixels": [
         512,
         256
@@ -3069,7 +3069,7 @@
     },
     {
       "file": "generated_v4_road_mask_14_city.png",
-      "sha256": "312d1f65306cde1116f787d10767168455fa154b75c22245561b55259aa807eb",
+      "sha256": "e7c5ae13bbff1905e94638fec5aad7f303437db35aa137f297c20c9ea4e0c359",
       "pixels": [
         128,
         64
@@ -3078,7 +3078,7 @@
     },
     {
       "file": "generated_v4_road_mask_14_neighborhood.png",
-      "sha256": "d220b6bfe04628046db3329804100018ff7d66d4b0a0710d6f8e91c71ed1a204",
+      "sha256": "cae26d39c8e60c8a0b1f2f1907c37957be189db1fc090f78f25c57504f510960",
       "pixels": [
         256,
         128
@@ -3087,7 +3087,7 @@
     },
     {
       "file": "generated_v4_road_mask_15_block.png",
-      "sha256": "d1f917082be7c8f78fca62af3110c7cf2e824c33a4ec7f70b2e22d8cc5709d00",
+      "sha256": "02f5d9c3a11b89a64ba7c42de5de3c1fc0b50ada5512e2f54996966d9d879953",
       "pixels": [
         512,
         256
@@ -3096,7 +3096,7 @@
     },
     {
       "file": "generated_v4_road_mask_15_city.png",
-      "sha256": "50ff46b12369ca4a06e2efab8186107bde2705184e8304d3e10a322720c02bf5",
+      "sha256": "599de24f5c37fd5db1a903e955074ddfe6eaef0f83605a8c6507ea5f322ec285",
       "pixels": [
         128,
         64
@@ -3105,7 +3105,7 @@
     },
     {
       "file": "generated_v4_road_mask_15_neighborhood.png",
-      "sha256": "231c5556d17b1b707663144cf12dbd97325e42e2bc57a123ff4205662a0aeb01",
+      "sha256": "d4a985dae5a41afe8ab885ad16c1293b6e2ad6cc14607f800afa92de1f3c138b",
       "pixels": [
         256,
         128

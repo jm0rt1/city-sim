@@ -1705,8 +1705,8 @@ final class CityScene: SKScene {
             // the compact HUD's unusually shallow opening. Preserve the entire
             // authoritative lot row horizontally and let peripheral public realm
             // sit beneath translucent chrome when necessary.
-            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.62)
-            scale = min(scale, compactWidthScale, 0.62)
+            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.56)
+            scale = max(scale, min(compactWidthScale, 0.62))
             // Compact framing intentionally resolves to neighborhood LOD even
             // for unusually tight fixtures; block textures are reserved for an
             // explicit player zoom and carry a larger active residency. Map the

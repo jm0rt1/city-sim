@@ -751,8 +751,8 @@ final class WorldRenderingTests: XCTestCase {
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
             if size.width <= 900 {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
-                XCTAssertLessThanOrEqual(occupied.width, 0.66)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.54)
+                XCTAssertLessThanOrEqual(occupied.width, 0.58)
             } else {
                 XCTAssertGreaterThanOrEqual(occupied.width, 0.66)
                 XCTAssertLessThanOrEqual(occupied.width, 0.72)
@@ -994,8 +994,8 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.60)
-        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.66)
+        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.54)
+        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.58)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,

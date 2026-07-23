@@ -1,0 +1,38 @@
+PLAY-034 exact compact AX-critical observations
+Candidate: ui-input-wdbeadac6e0bd
+Product: 704784b21294562fba5f145455c44e2de2a64e76
+Host: 900 x 652, exact 900 x 600 content
+
+Fresh blocking tree:
+- Welcome to New Arcadia
+- Start Building
+- No underlying game-surface action exposed
+
+Keyboard target before pointer:
+- Focus: City map
+- Selected target: block 14,11
+- Primary action: Build Residential at block 14,11
+- Availability: Available
+- Cost: $1,800
+
+Pointer target after clicking occupied visual Commercial:
+- Focus: City map
+- Selected target: block 14,12
+- Secondary action: Inspect Commercial at block 14,12
+- Primary action: Build Residential at block 14,12
+- Availability: Unavailable
+- Reason: Demolish the existing structure before building here.
+- Treasury: $26,000
+- Undo: disabled
+
+Panel and focus:
+- Command Center details remained scrollable and retained block 14,11
+- Escape closed details, retained Residential and block 14,11, and focused map
+- Tab left the map for the native key-view loop
+- Space on focused New Arcadia opened details once without changing target
+
+Return valid result:
+- Built Residential at block 14,11
+- Changed treasury $26,000 -> $24,200
+- Created one construction site
+- Enabled Undo

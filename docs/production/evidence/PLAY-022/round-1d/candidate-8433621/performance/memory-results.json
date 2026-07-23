@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "product_commit": "8433621760ba169995aa1a5dc81cac27c380d746",
+  "method": "exact staged app, three keyboard-driven city/neighborhood/block LOD cycles, frame developed city, pause, settle 60 seconds",
+  "ceiling_mib": 333.8,
+  "regular": {
+    "content_size": "1278x768",
+    "physical_footprint_mb": 218,
+    "rss_kib": 252944,
+    "physical_footprint_peak_mb": 325,
+    "result": "pass"
+  },
+  "compact": {
+    "content_size": "900x600",
+    "physical_footprint_mb": 179,
+    "rss_kib": 242752,
+    "physical_footprint_peak_mb": 311,
+    "result": "pass"
+  }
+}

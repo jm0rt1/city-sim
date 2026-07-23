@@ -1,0 +1,827 @@
+{
+  "schema": 2,
+  "manifest_sha256": "eab12ce0838be9dca6ae00927accac60b15eb41617b39c0e33dd1e727e759692",
+  "asset_count": 12,
+  "inventory_count": 84,
+  "authoritative_footprint": [
+    1,
+    1
+  ],
+  "world_tile_points": [
+    72.0,
+    36.0
+  ],
+  "light_direction": "northwest key, southeast shadow",
+  "pivot_drift_pixels": {
+    "grass_material": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "road_material": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "residential_frontage": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "residential_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "commercial_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "industrial_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "park_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "city_hall_l01": {
+      "city": 1e-06,
+      "neighborhood": 1e-06,
+      "block": 1e-06
+    },
+    "water_tower_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "ambient_pedestrian_pair": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "ambient_service_object": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "ambient_vegetation_cluster": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    }
+  },
+  "lod_opaque_bounds_registration_error_world": {
+    "grass_material": {
+      "city": 1.091032,
+      "neighborhood": 0.717697,
+      "block": 0.288434
+    },
+    "road_material": {
+      "city": 1.091032,
+      "neighborhood": 0.717697,
+      "block": 0.288434
+    },
+    "residential_frontage": {
+      "city": 1.091032,
+      "neighborhood": 0.717697,
+      "block": 0.288434
+    },
+    "residential_l01": {
+      "city": 1.128907,
+      "neighborhood": 0.727848,
+      "block": 0.289753
+    },
+    "commercial_l01": {
+      "city": 1.041336,
+      "neighborhood": 0.670749,
+      "block": 0.266762
+    },
+    "industrial_l01": {
+      "city": 0.703486,
+      "neighborhood": 0.452539,
+      "block": 0.319768
+    },
+    "park_l01": {
+      "city": 0.570312,
+      "neighborhood": 0.367098,
+      "block": 0.354106
+    },
+    "city_hall_l01": {
+      "city": 0.614816,
+      "neighborhood": 0.39585,
+      "block": 0.342948
+    },
+    "water_tower_l01": {
+      "city": 1.045907,
+      "neighborhood": 0.67174,
+      "block": 0.266364
+    },
+    "ambient_pedestrian_pair": {
+      "city": 0.289202,
+      "neighborhood": 0.31178,
+      "block": 0.424774
+    },
+    "ambient_service_object": {
+      "city": 0.43006,
+      "neighborhood": 0.279041,
+      "block": 0.388184
+    },
+    "ambient_vegetation_cluster": {
+      "city": 0.620046,
+      "neighborhood": 0.400464,
+      "block": 0.339684
+    }
+  },
+  "opaque_shadow_overhang_checks": [
+    {
+      "logical_id": "grass_material",
+      "opaque_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "shadow_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "road_material",
+      "opaque_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "shadow_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "residential_frontage",
+      "opaque_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "shadow_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "residential_l01",
+      "opaque_bounds_world": [
+        -27.4219,
+        -18.0,
+        27.4219,
+        44.7188
+      ],
+      "shadow_bounds_world": [
+        -27.4219,
+        -18.0,
+        27.4219,
+        44.7188
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        26.7188
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        26.7188
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "commercial_l01",
+      "opaque_bounds_world": [
+        -26.5219,
+        -18.0,
+        26.5219,
+        44.3588
+      ],
+      "shadow_bounds_world": [
+        -26.5219,
+        -18.0,
+        26.5219,
+        44.3588
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        26.3588
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        26.3588
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "industrial_l01",
+      "opaque_bounds_world": [
+        -30.9516,
+        -18.0,
+        30.9516,
+        29.0812
+      ],
+      "shadow_bounds_world": [
+        -30.9516,
+        -18.0,
+        30.9516,
+        29.0812
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        11.0812
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        11.0812
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "park_l01",
+      "opaque_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "shadow_bounds_world": [
+        -36.0,
+        -18.0,
+        36.0,
+        18.0
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "city_hall_l01",
+      "opaque_bounds_world": [
+        -31.1344,
+        -18.0,
+        31.1344,
+        39.1809
+      ],
+      "shadow_bounds_world": [
+        -31.1344,
+        -18.0,
+        31.1344,
+        39.1809
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        21.1809
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        21.1809
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "water_tower_l01",
+      "opaque_bounds_world": [
+        -23.2875,
+        -18.0,
+        23.2875,
+        64.4119
+      ],
+      "shadow_bounds_world": [
+        -23.2875,
+        -18.0,
+        23.2875,
+        64.4119
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        46.4119
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        46.4119
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "ambient_pedestrian_pair",
+      "opaque_bounds_world": [
+        -3.8672,
+        -18.0,
+        3.8672,
+        -9.0352
+      ],
+      "shadow_bounds_world": [
+        -3.8672,
+        -18.0,
+        3.8672,
+        -9.0352
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "ambient_service_object",
+      "opaque_bounds_world": [
+        -8.55,
+        -18.0,
+        8.55,
+        -2.2359
+      ],
+      "shadow_bounds_world": [
+        -8.55,
+        -18.0,
+        8.55,
+        -2.2359
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    },
+    {
+      "logical_id": "ambient_vegetation_cluster",
+      "opaque_bounds_world": [
+        -16.6289,
+        -18.0,
+        16.6289,
+        12.1641
+      ],
+      "shadow_bounds_world": [
+        -16.6289,
+        -18.0,
+        16.6289,
+        12.1641
+      ],
+      "declared_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_overhang_world": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "overhang_error_world": 0.0
+    }
+  ],
+  "frontage_socket_checks": [
+    {
+      "logical_id": "road_material",
+      "frontage_edge": "all-road-sockets",
+      "orientation": "topology-compiled",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "residential_frontage",
+      "frontage_edge": "nearest-road",
+      "orientation": "road-socket-selected",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "residential_l01",
+      "frontage_edge": "south",
+      "orientation": "south-facing-fixed",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "commercial_l01",
+      "frontage_edge": "south",
+      "orientation": "south-facing-fixed",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "industrial_l01",
+      "frontage_edge": "south",
+      "orientation": "south-facing-fixed",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "park_l01",
+      "frontage_edge": "nearest-road",
+      "orientation": "projection-fixed",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "city_hall_l01",
+      "frontage_edge": "south",
+      "orientation": "south-facing-fixed",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    },
+    {
+      "logical_id": "water_tower_l01",
+      "frontage_edge": "south",
+      "orientation": "south-facing-fixed",
+      "entrance_socket_world": [
+        0.0,
+        -14.0
+      ],
+      "declared_road_setback_points": 4.0,
+      "measured_road_setback_points": 4.0,
+      "protected_by_prop_exclusion": true,
+      "issues": []
+    }
+  ],
+  "active_decoded_bytes": {
+    "city": 862592,
+    "neighborhood": 3407960,
+    "block": 13521048
+  },
+  "active_detail_residency": {
+    "city": {
+      "asset_texture_count": 12,
+      "network_texture_count": 16,
+      "texture_count": 28,
+      "asset_decoded_bytes": 338304,
+      "network_decoded_bytes": 524288,
+      "total_decoded_bytes": 862592,
+      "target_bytes": 100663296,
+      "hard_high_water_bytes": 134217728,
+      "within_target": true,
+      "named_assets": [
+        {
+          "residency_id": "generated-v4/ambient-pedestrian/ambient_pedestrian_pair",
+          "file": "generated_v4_ambient_pedestrian_pair_city.png",
+          "decoded_bytes": 7200
+        },
+        {
+          "residency_id": "generated-v4/ambient-service-object/ambient_service_object",
+          "file": "generated_v4_ambient_service_object_city.png",
+          "decoded_bytes": 11648
+        },
+        {
+          "residency_id": "generated-v4/ambient-vegetation/ambient_vegetation_cluster",
+          "file": "generated_v4_ambient_vegetation_cluster_city.png",
+          "decoded_bytes": 20128
+        },
+        {
+          "residency_id": "generated-v4/civic/city_hall_l01",
+          "file": "generated_v4_city_hall_l01_city.png",
+          "decoded_bytes": 72240
+        },
+        {
+          "residency_id": "generated-v4/commercial/commercial_l01",
+          "file": "generated_v4_commercial_l01_city.png",
+          "decoded_bytes": 23904
+        },
+        {
+          "residency_id": "generated-v4/frontage/residential_frontage",
+          "file": "generated_v4_residential_frontage_city.png",
+          "decoded_bytes": 16192
+        },
+        {
+          "residency_id": "generated-v4/industrial/industrial_l01",
+          "file": "generated_v4_industrial_l01_city.png",
+          "decoded_bytes": 45384
+        },
+        {
+          "residency_id": "generated-v4/network-material/road_material",
+          "file": "generated_v4_road_material_city.png",
+          "decoded_bytes": 16192
+        },
+        {
+          "residency_id": "generated-v4/park/park_l01",
+          "file": "generated_v4_park_l01_city.png",
+          "decoded_bytes": 61248
+        },
+        {
+          "residency_id": "generated-v4/residential/residential_l01",
+          "file": "generated_v4_residential_l01_city.png",
+          "decoded_bytes": 20944
+        },
+        {
+          "residency_id": "generated-v4/terrain/grass_material",
+          "file": "generated_v4_grass_material_city.png",
+          "decoded_bytes": 16192
+        },
+        {
+          "residency_id": "generated-v4/utility/water_tower_l01",
+          "file": "generated_v4_water_tower_l01_city.png",
+          "decoded_bytes": 27032
+        }
+      ]
+    },
+    "neighborhood": {
+      "asset_texture_count": 12,
+      "network_texture_count": 16,
+      "texture_count": 28,
+      "asset_decoded_bytes": 1310808,
+      "network_decoded_bytes": 2097152,
+      "total_decoded_bytes": 3407960,
+      "target_bytes": 100663296,
+      "hard_high_water_bytes": 134217728,
+      "within_target": true,
+      "named_assets": [
+        {
+          "residency_id": "generated-v4/ambient-pedestrian/ambient_pedestrian_pair",
+          "file": "generated_v4_ambient_pedestrian_pair_neighborhood.png",
+          "decoded_bytes": 26752
+        },
+        {
+          "residency_id": "generated-v4/ambient-service-object/ambient_service_object",
+          "file": "generated_v4_ambient_service_object_neighborhood.png",
+          "decoded_bytes": 44880
+        },
+        {
+          "residency_id": "generated-v4/ambient-vegetation/ambient_vegetation_cluster",
+          "file": "generated_v4_ambient_vegetation_cluster_neighborhood.png",
+          "decoded_bytes": 78256
+        },
+        {
+          "residency_id": "generated-v4/civic/city_hall_l01",
+          "file": "generated_v4_city_hall_l01_neighborhood.png",
+          "decoded_bytes": 281520
+        },
+        {
+          "residency_id": "generated-v4/commercial/commercial_l01",
+          "file": "generated_v4_commercial_l01_neighborhood.png",
+          "decoded_bytes": 91840
+        },
+        {
+          "residency_id": "generated-v4/frontage/residential_frontage",
+          "file": "generated_v4_residential_frontage_neighborhood.png",
+          "decoded_bytes": 61944
+        },
+        {
+          "residency_id": "generated-v4/industrial/industrial_l01",
+          "file": "generated_v4_industrial_l01_neighborhood.png",
+          "decoded_bytes": 176640
+        },
+        {
+          "residency_id": "generated-v4/network-material/road_material",
+          "file": "generated_v4_road_material_neighborhood.png",
+          "decoded_bytes": 61944
+        },
+        {
+          "residency_id": "generated-v4/park/park_l01",
+          "file": "generated_v4_park_l01_neighborhood.png",
+          "decoded_bytes": 239424
+        },
+        {
+          "residency_id": "generated-v4/residential/residential_l01",
+          "file": "generated_v4_residential_l01_neighborhood.png",
+          "decoded_bytes": 80256
+        },
+        {
+          "residency_id": "generated-v4/terrain/grass_material",
+          "file": "generated_v4_grass_material_neighborhood.png",
+          "decoded_bytes": 61944
+        },
+        {
+          "residency_id": "generated-v4/utility/water_tower_l01",
+          "file": "generated_v4_water_tower_l01_neighborhood.png",
+          "decoded_bytes": 105408
+        }
+      ]
+    },
+    "block": {
+      "asset_texture_count": 12,
+      "network_texture_count": 16,
+      "texture_count": 28,
+      "asset_decoded_bytes": 5132440,
+      "network_decoded_bytes": 8388608,
+      "total_decoded_bytes": 13521048,
+      "target_bytes": 100663296,
+      "hard_high_water_bytes": 134217728,
+      "within_target": true,
+      "named_assets": [
+        {
+          "residency_id": "generated-v4/ambient-pedestrian/ambient_pedestrian_pair",
+          "file": "generated_v4_ambient_pedestrian_pair_block.png",
+          "decoded_bytes": 103800
+        },
+        {
+          "residency_id": "generated-v4/ambient-service-object/ambient_service_object",
+          "file": "generated_v4_ambient_service_object_block.png",
+          "decoded_bytes": 172800
+        },
+        {
+          "residency_id": "generated-v4/ambient-vegetation/ambient_vegetation_cluster",
+          "file": "generated_v4_ambient_vegetation_cluster_block.png",
+          "decoded_bytes": 305080
+        },
+        {
+          "residency_id": "generated-v4/civic/city_hall_l01",
+          "file": "generated_v4_city_hall_l01_block.png",
+          "decoded_bytes": 1111000
+        },
+        {
+          "residency_id": "generated-v4/commercial/commercial_l01",
+          "file": "generated_v4_commercial_l01_block.png",
+          "decoded_bytes": 357696
+        },
+        {
+          "residency_id": "generated-v4/frontage/residential_frontage",
+          "file": "generated_v4_residential_frontage_block.png",
+          "decoded_bytes": 239424
+        },
+        {
+          "residency_id": "generated-v4/industrial/industrial_l01",
+          "file": "generated_v4_industrial_l01_block.png",
+          "decoded_bytes": 691152
+        },
+        {
+          "residency_id": "generated-v4/network-material/road_material",
+          "file": "generated_v4_road_material_block.png",
+          "decoded_bytes": 239424
+        },
+        {
+          "residency_id": "generated-v4/park/park_l01",
+          "file": "generated_v4_park_l01_block.png",
+          "decoded_bytes": 943936
+        },
+        {
+          "residency_id": "generated-v4/residential/residential_l01",
+          "file": "generated_v4_residential_l01_block.png",
+          "decoded_bytes": 314400
+        },
+        {
+          "residency_id": "generated-v4/terrain/grass_material",
+          "file": "generated_v4_grass_material_block.png",
+          "decoded_bytes": 239424
+        },
+        {
+          "residency_id": "generated-v4/utility/water_tower_l01",
+          "file": "generated_v4_water_tower_l01_block.png",
+          "decoded_bytes": 414304
+        }
+      ]
+    }
+  },
+  "repeated_lod_cycle": [
+    "city",
+    "neighborhood",
+    "block",
+    "neighborhood",
+    "city"
+  ],
+  "repeated_lod_cycle_high_water_decoded_bytes": 13521048,
+  "reciprocal_ground_collision_checks": 324,
+  "reciprocal_ground_collisions": [],
+  "building_road_setback_checks": 36,
+  "building_road_collisions": [],
+  "entrance_prop_exclusion_neighbor_checks": 256,
+  "entrance_prop_exclusion_collisions": [],
+  "orphan_inventory_entries": [],
+  "missing_inventory_references": [],
+  "failures": [],
+  "result": "pass"
+}

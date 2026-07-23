@@ -1346,6 +1346,42 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testConstructionProofExportsSameCoordinateAcrossFiveStages() throws {
+        let coordinate = GridCoordinate(x: 1, y: 2)
+        let stages: [(progress: Double, environmentKey: String)] = [
+            (0.00, "CITYSIM_PLAY022_CONSTRUCTION_00_PROOF"),
+            (0.25, "CITYSIM_PLAY022_CONSTRUCTION_25_PROOF"),
+            (0.50, "CITYSIM_PLAY022_CONSTRUCTION_50_PROOF"),
+            (0.75, "CITYSIM_PLAY022_CONSTRUCTION_75_PROOF"),
+            (1.00, "CITYSIM_PLAY022_CONSTRUCTION_100_PROOF")
+        ]
+        var frames: [Data] = []
+
+        for stage in stages {
+            var state = goldenNeighborhoodState()
+            state.updateTile(at: coordinate) {
+                $0.kind = .residential
+                $0.level = 1
+                $0.occupancy = stage.progress >= 1 ? 40 : 0
+                $0.condition = 1
+                $0.constructionProgress = stage.progress
+            }
+            let frame = try lifecycleFrame(
+                state: state,
+                size: CGSize(width: 1_280, height: 800),
+                detail: .block,
+                centeredOn: coordinate
+            )
+            XCTAssertGreaterThan(frame.png.count, 40_000)
+            XCTAssertEqual(frame.diagnostics.activeActionCount, 0)
+            frames.append(frame.png)
+            try export(frame.png, environmentKey: stage.environmentKey)
+        }
+
+        XCTAssertEqual(Set(frames).count, stages.count)
+    }
+
+    @MainActor
     func testLifecycleSilhouettesMotionAndReducedMotionFallbacksStayDistinct() {
         let renderer = LotRenderer(style: WorldVisualStyle())
         let coordinate = GridCoordinate(x: 6, y: 4)

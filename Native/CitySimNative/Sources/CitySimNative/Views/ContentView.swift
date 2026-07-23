@@ -44,7 +44,7 @@ struct ContentView: View {
         .frame(minWidth: 900, minHeight: 600)
         .background(ProofWindowConfigurator())
         .toolbar {
-            if !Self.suppressesGameSurface(for: store.commandPolicy) {
+            if !Self.suppressesGameSurface(for: store.commandPolicy, status: store.state.status) {
                 ToolbarItemGroup(placement: .primaryAction) {
                     Button {
                         withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
@@ -93,8 +93,11 @@ struct ContentView: View {
         size.width < 1_100 || size.height < 700
     }
 
-    static func suppressesGameSurface(for commandPolicy: CityCommandPolicy) -> Bool {
-        commandPolicy != .enabled
+    static func suppressesGameSurface(
+        for commandPolicy: CityCommandPolicy,
+        status: GameStatus = .playing
+    ) -> Bool {
+        commandPolicy != .enabled || status != .playing
     }
 
     static func mapViewportInsets(
@@ -153,8 +156,14 @@ struct ContentView: View {
     private func gameContent(compact: Bool) -> some View {
         ZStack {
             gameSurface(compact: compact)
-                .allowsHitTesting(!Self.suppressesGameSurface(for: store.commandPolicy))
-                .accessibilityHidden(Self.suppressesGameSurface(for: store.commandPolicy))
+                .allowsHitTesting(!Self.suppressesGameSurface(
+                    for: store.commandPolicy,
+                    status: store.state.status
+                ))
+                .accessibilityHidden(Self.suppressesGameSurface(
+                    for: store.commandPolicy,
+                    status: store.state.status
+                ))
 
             if store.commandPolicy == .blocked(.welcome) {
                 WelcomeView {
@@ -165,6 +174,9 @@ struct ContentView: View {
                     }
                 }
                 .transition(.opacity)
+            } else if store.state.status != .playing {
+                GameStatusOverlay(store: store)
+                    .transition(.opacity)
             }
         }
         .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showInspector)
@@ -245,9 +257,6 @@ struct ContentView: View {
                 }
                 .padding(compact ? GameTheme.compactPadding : GameTheme.regularPadding)
 
-                if store.state.status != .playing {
-                    GameStatusOverlay(store: store)
-                }
             }
             .coordinateSpace(name: "city.game.surface")
             .onPreferenceChange(CityHUDChromeFramePreference.self) { frames in

@@ -102,7 +102,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Decision by 02:00; no blocking confusion over 30 seconds; no false feedback; pressure diagnosed within two minutes; recovery before minute 18; clear outcome and resume comprehension; every critical failure rejects the wave.
 - **Stop conditions:** Missing authoritative fixture/contract, unretained visual proof, coaching required to pass, or contradictory player feedback.
 
-### [ ] PLAY-012: Deliver a three-act playable session
+### [x] PLAY-012: Deliver a three-act playable session
 
 - **Player outcome:** A fresh player reaches an opening fork, a strategy-specific complication, a recovery decision, and an unmistakable durable result within 20 minutes, with no unexplained wait longer than 30 seconds.
 - **Owning lane:** Gameplay loop.
@@ -111,6 +111,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Renderer art, UI composition, input architecture, save schema, and unapproved shared contracts.
 - **Acceptance:** First meaningful decision by 02:00; at least three consequential decisions; feedback within 15 seconds of relevant simulation time; commercial and industrial stories remain viable and mechanically distinct; recovery before minute 18; focused/full tests plus a staged no-coaching session.
 - **Stop conditions:** Passive fixture-only success, nondeterminism, renderer/UI edits, or a shared contract change without approval.
+- **Accepted integration:** Closure evidence `67b5822` and claim/completion `1c65bb4`; Commercial won in 06:42 and Industrial in 05:22 on the integrated candidate with 159/159 tests.
 
 ### [x] PLAY-041: Publish spatial consequence truth
 

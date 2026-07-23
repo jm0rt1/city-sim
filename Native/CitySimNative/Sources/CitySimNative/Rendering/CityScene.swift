@@ -178,6 +178,7 @@ final class CityScene: SKScene {
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
+    var hoverVisualBoundsForTesting: CGRect { hoverNode.calculateAccumulatedFrame() }
     var interactionNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
@@ -220,7 +221,7 @@ final class CityScene: SKScene {
         worldLayer.addChild(ambientLayer)
         addChild(cameraNode)
         camera = cameraNode
-        configureHighlight(hoverNode, color: .white, alpha: 0.24, z: 90_000)
+        hoverNode.zPosition = 90_000
         configureHighlight(selectionNode, color: NSColor(calibratedRed: 0.25, green: 0.95, blue: 0.78, alpha: 1), alpha: 0.65, z: 90_001)
         selectionNode.fillColor = .clear
         selectionNode.strokeColor = style.palette.concreteLight.withAlphaComponent(0.96)
@@ -1551,9 +1552,17 @@ final class CityScene: SKScene {
 
         let presentation = previewPresentation(status)
         let color = presentation.color
-        hoverNode.fillColor = .clear
-        hoverNode.strokeColor = color.withAlphaComponent(isInspecting ? 0.34 : 0.90)
-        hoverNode.lineWidth = presentation.isBlocked ? 2.6 : (isInspecting ? 1.0 : 2.2)
+        if isInspecting {
+            hoverNode.path = nil
+            hoverNode.fillColor = .clear
+            hoverNode.strokeColor = .clear
+            addInspectHoverAdornment(to: hoverNode)
+        } else {
+            hoverNode.path = style.diamondPath(width: tileWidth, height: tileHeight)
+            hoverNode.fillColor = color.withAlphaComponent(0.035)
+            hoverNode.strokeColor = color.withAlphaComponent(0.90)
+            hoverNode.lineWidth = presentation.isBlocked ? 2.6 : 2.2
+        }
 
         if case .validBuild(let kind) = status {
             addPlacementGhost(kind, at: coordinate, state: state, alpha: 0.54, to: hoverNode)
@@ -1563,6 +1572,30 @@ final class CityScene: SKScene {
         if presentation.isBlocked {
             addInvalidHatch(color: color, to: hoverNode)
         }
+    }
+
+    private func addInspectHoverAdornment(to node: SKNode) {
+        // Inspect hover is a quiet frontage bracket below the authored facade,
+        // not a second selection ring. Selection retains the complete grounded
+        // boundary and cyan frontage anchor; build modes retain the full
+        // valid/invalid parcel footprint.
+        let y = -tileHeight / 2 + 2
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x: -12, y: y + 3.5))
+        path.addLine(to: CGPoint(x: -8, y: y))
+        path.addLine(to: CGPoint(x: -4, y: y))
+        path.move(to: CGPoint(x: 12, y: y + 3.5))
+        path.addLine(to: CGPoint(x: 8, y: y))
+        path.addLine(to: CGPoint(x: 4, y: y))
+        let bracket = SKShapeNode(path: path)
+        bracket.name = "interaction.hover.frontage-brackets"
+        bracket.fillColor = .clear
+        bracket.strokeColor = NSColor.white.withAlphaComponent(0.68)
+        bracket.lineWidth = 1
+        bracket.lineCap = .round
+        bracket.lineJoin = .round
+        bracket.zPosition = 2
+        node.addChild(bracket)
     }
 
     private func interactionPreviewStatus(

@@ -48,7 +48,14 @@ final class WorldRenderingTests: XCTestCase {
         let animated = renderer.makeEventCue(for: event, reducedMotion: false)
         let reduced = renderer.makeEventCue(for: event, reducedMotion: true)
 
-        XCTAssertTrue(descendantNames(in: reduced).contains("spatial.event.mark.recovery"))
+        let reducedNames = descendantNames(in: reduced)
+        XCTAssertTrue(reducedNames.contains("spatial.event.mark.recovery"))
+        XCTAssertTrue(reducedNames.contains("spatial.event.frontage-bracket.recovery"))
+        XCTAssertFalse(reducedNames.contains { $0.hasPrefix("spatial.event.ring.") })
+        let reducedBounds = reduced.calculateAccumulatedFrame()
+        XCTAssertLessThanOrEqual(reducedBounds.width, 20)
+        XCTAssertLessThanOrEqual(reducedBounds.height, 12)
+        XCTAssertLessThan(reducedBounds.maxY, 0)
         XCTAssertEqual(recursiveActiveActionCount(animated), 1)
         XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
     }
@@ -587,7 +594,12 @@ final class WorldRenderingTests: XCTestCase {
             let names = descendantNames(in: root)
             XCTAssertTrue(names.contains("road.production-corridor.developed.\(mask.rawValue)"))
             XCTAssertTrue(names.contains("road.generated-v4.\(mask.rawValue).block"))
-            XCTAssertFalse(names.contains { $0.hasPrefix("road.terminus.") })
+            if mask.edges.count == 1 {
+                XCTAssertTrue(names.contains("road.terminus.landscaped-island"))
+                XCTAssertTrue(names.contains("road.terminus.reflective-chevron"))
+            } else {
+                XCTAssertFalse(names.contains { $0.hasPrefix("road.terminus.") })
+            }
         }
 
         let coordinate = GridCoordinate(x: 4, y: 4)
@@ -623,7 +635,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testRemoteRoadOpportunityRecedesWithoutChangingTopologyOrHitGeometry() {
+    func testEntireAuthoritativeRoadNetworkStaysPhysicalWithoutChangingHitGeometry() {
         let state = CityGameState.newCity(seed: 42)
         let renderer = RoadRenderer(style: WorldVisualStyle())
         let frontage = renderer.makeRoad(
@@ -649,11 +661,18 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             frontier.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
-            0,
+            1,
             accuracy: 0.001
         )
         XCTAssertTrue(descendantNames(in: frontage).contains("road.production-corridor.developed.15"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.opportunity.2"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.network.2"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.landscaped-island"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.reflective-chevron"))
+        let frontierSprite = frontier.childNode(
+            withName: "//road.generated-v4.2.block"
+        ) as? SKSpriteNode
+        XCTAssertEqual(frontierSprite?.alpha ?? -1, 1, accuracy: 0.001)
+        XCTAssertEqual(frontierSprite?.colorBlendFactor ?? -1, 0, accuracy: 0.001)
 
         guard let roadTile = state.tile(at: frontierCoordinate) else {
             return XCTFail("Expected authoritative frontier road tile")
@@ -877,7 +896,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testCorridorAmbientLifeHasOneSemanticSetAndIsReduceMotionSafe() {
+    func testCorridorAmbientLifeHasBoundedConnectedContextAndIsReduceMotionSafe() {
         let renderer = AmbientLifeRenderer(style: WorldVisualStyle(), assets: WorldAssetCatalog())
         let state = CityGameState.newCity(seed: 42)
         let animated = renderer.makeCorridorLife(
@@ -891,21 +910,33 @@ final class WorldRenderingTests: XCTestCase {
             reducedMotion: true
         )
 
-        let semanticSet = [
-            "world.ambient.pedestrian-pair",
-            "world.ambient.parked-service-object",
-            "world.ambient.vegetation-cluster",
-        ]
         let animatedNames = descendantNames(in: animated)
         let reducedNames = descendantNames(in: reduced)
-        for name in semanticSet {
-            XCTAssertEqual(animatedNames.filter { $0 == name }.count, 1)
-            XCTAssertEqual(reducedNames.filter { $0 == name }.count, 1)
+        for names in [animatedNames, reducedNames] {
+            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 5)
+            XCTAssertEqual(
+                names.filter {
+                    $0 == "world.ambient.pedestrian-pair.0"
+                        || $0 == "world.ambient.pedestrian-pair.1"
+                }.count,
+                2
+            )
+            XCTAssertEqual(names.filter { $0 == "world.ambient.parked-service-object" }.count, 1)
+            XCTAssertEqual(
+                names.filter {
+                    $0 == "world.ambient.vegetation-cluster.0"
+                        || $0 == "world.ambient.vegetation-cluster.1"
+                        || $0 == "world.ambient.vegetation-cluster.2"
+                        || $0 == "world.ambient.vegetation-cluster.3"
+                        || $0 == "world.ambient.vegetation-cluster.4"
+                }.count,
+                5
+            )
         }
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
         XCTAssertFalse(animatedNames.contains { $0.contains(".banner") || $0.contains(".windsock") })
-        XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 1)
-        let pedestrian = animated.childNode(withName: "//world.ambient.pedestrian-pair")
+        XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 2)
+        let pedestrian = animated.childNode(withName: "//world.ambient.pedestrian-pair.0")
         let stroll = pedestrian?.action(forKey: "ambient.corridor.walk")
         XCTAssertNotNil(stroll)
         XCTAssertGreaterThanOrEqual(stroll?.duration ?? 0, 14.4)
@@ -922,7 +953,7 @@ final class WorldRenderingTests: XCTestCase {
         regular.reducedMotion = false
         regular.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertTrue(regular.ambientMotionEnabledForTesting)
-        XCTAssertEqual(regular.ambientActionCountForTesting, 1)
+        XCTAssertEqual(regular.ambientActionCountForTesting, 2)
 
         let compact = CityScene(size: CGSize(width: 900, height: 600))
         compact.reducedMotion = false
@@ -1207,12 +1238,23 @@ final class WorldRenderingTests: XCTestCase {
         let scene = CityScene(size: CGSize(width: 900, height: 600))
         scene.reducedMotion = true
 
-        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.residential))
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         scene.configureProofInteraction(at: validCoordinate)
         var names = scene.interactionNamesForTesting
         XCTAssertFalse(scene.hoverIsHiddenForTesting)
+        XCTAssertTrue(names.contains("interaction.hover.frontage-brackets"))
+        XCTAssertTrue(scene.selectionIsHiddenForTesting)
+        XCTAssertLessThanOrEqual(scene.hoverVisualBoundsForTesting.width, 32)
+        XCTAssertLessThanOrEqual(scene.hoverVisualBoundsForTesting.height, 8)
+        XCTAssertLessThan(scene.hoverVisualBoundsForTesting.maxY, 0)
+
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.residential))
+        scene.configureProofInteraction(at: validCoordinate)
+        names = scene.interactionNamesForTesting
+        XCTAssertFalse(scene.hoverIsHiddenForTesting)
         XCTAssertEqual(names.filter { $0 == "interaction.placementGhost" }.count, 1)
         XCTAssertFalse(names.contains("interaction.invalidHatch"))
+        XCTAssertFalse(names.contains("interaction.hover.frontage-brackets"))
         XCTAssertFalse(names.contains { $0.hasPrefix("interaction.preview.") })
         XCTAssertTrue(descendantLabels(in: scene).isEmpty)
 

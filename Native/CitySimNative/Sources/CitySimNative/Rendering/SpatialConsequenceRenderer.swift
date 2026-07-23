@@ -129,32 +129,41 @@ final class SpatialConsequenceRenderer {
         root.zPosition = 78
 
         let color: NSColor = event.direction == .recovery ? .systemMint : .systemOrange
-        // Transition feedback should read as a grounded site marker, not a
-        // neon selection ring competing with the authored architecture.
-        let ring = SKShapeNode(ellipseOf: CGSize(width: 26, height: 13))
-        ring.name = "spatial.event.ring.\(event.direction.rawValue)"
-        ring.fillColor = .clear
-        ring.strokeColor = color.withAlphaComponent(reducedMotion ? 0.38 : 0.72)
-        ring.lineWidth = event.direction == .recovery ? 1.0 : 1.3
-        root.addChild(ring)
+        // Transition feedback stays on the frontage below the facade. At the
+        // strategic camera stop a world-space ellipse grows into an obscuring
+        // screen-space targeting ring, so use a compact grounded bracket.
+        let frontageY = -style.tileHeight / 2 + 2
+        let bracketPath = CGMutablePath()
+        bracketPath.move(to: CGPoint(x: -8, y: frontageY + 3))
+        bracketPath.addLine(to: CGPoint(x: -5, y: frontageY))
+        bracketPath.addLine(to: CGPoint(x: 5, y: frontageY))
+        bracketPath.addLine(to: CGPoint(x: 8, y: frontageY + 3))
+        let bracket = SKShapeNode(path: bracketPath)
+        bracket.name = "spatial.event.frontage-bracket.\(event.direction.rawValue)"
+        bracket.fillColor = .clear
+        bracket.strokeColor = color.withAlphaComponent(reducedMotion ? 0.48 : 0.78)
+        bracket.lineWidth = event.direction == .recovery ? 0.9 : 1.1
+        bracket.lineCap = .round
+        bracket.lineJoin = .round
+        root.addChild(bracket)
 
         let mark = SKShapeNode(path: eventMarkPath(event.direction))
         mark.name = "spatial.event.mark.\(event.direction.rawValue)"
         mark.strokeColor = color.withAlphaComponent(reducedMotion ? 0.78 : 0.94)
-        mark.lineWidth = 1.5
+        mark.lineWidth = 1.15
         mark.lineCap = .round
         mark.lineJoin = .round
         mark.fillColor = .clear
-        mark.setScale(0.72)
-        mark.position = CGPoint(x: 0, y: 10)
+        mark.setScale(0.38)
+        mark.position = CGPoint(x: 0, y: frontageY + 6)
         root.addChild(mark)
 
         if !reducedMotion {
-            root.setScale(0.72)
+            root.setScale(0.86)
             root.alpha = 0.92
             root.run(.sequence([
                 .group([
-                    .scale(to: 1.18, duration: 0.22),
+                    .scale(to: 1.03, duration: 0.22),
                     .fadeAlpha(to: 1, duration: 0.22)
                 ]),
                 .wait(forDuration: 0.55),

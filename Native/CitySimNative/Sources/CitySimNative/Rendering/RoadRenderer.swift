@@ -158,7 +158,7 @@ struct RoadTopology: Equatable, Sendable {
 final class RoadRenderer {
     private enum ContextEmphasis: String {
         case developed
-        case opportunity
+        case network
     }
 
     private struct RoadbedPalette {
@@ -172,7 +172,6 @@ final class RoadRenderer {
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
     private let developedRoadbed: RoadbedPalette
-    private let opportunityRoadbed: RoadbedPalette
 
     init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
@@ -183,18 +182,6 @@ final class RoadRenderer {
             asphalt: style.palette.asphalt,
             asphaltLight: style.palette.asphaltLight,
             shadowAlpha: 0.22
-        )
-        let turf = NSColor(calibratedRed: 0.235, green: 0.405, blue: 0.255, alpha: 1)
-        self.opportunityRoadbed = RoadbedPalette(
-            sidewalk: style.palette.sidewalk.blended(withFraction: 0.62, of: turf)
-                ?? style.palette.sidewalk,
-            curb: style.palette.curb.blended(withFraction: 0.68, of: turf)
-                ?? style.palette.curb,
-            asphalt: style.palette.asphalt.blended(withFraction: 0.48, of: turf)
-                ?? style.palette.asphalt,
-            asphaltLight: style.palette.asphaltLight.blended(withFraction: 0.52, of: turf)
-                ?? style.palette.asphaltLight,
-            shadowAlpha: 0.10
         )
     }
 
@@ -225,12 +212,11 @@ final class RoadRenderer {
         developedCoordinates: [GridCoordinate]
     ) -> SKNode {
         let distance = contextDistance(at: coordinate, developedCoordinates: developedCoordinates)
-        let emphasis: ContextEmphasis = distance <= 1 ? .developed : .opportunity
-        let detailAlpha: CGFloat = switch distance {
-        case ...1: 1
-        case 2: 0.25
-        default: 0
-        }
+        let emphasis: ContextEmphasis = distance <= 1 ? .developed : .network
+        // Every authoritative road is physical infrastructure. Distance may
+        // control sparse furniture, but never turns pavement into a translucent
+        // green placement-preview language.
+        let detailAlpha: CGFloat = 1
         let road = makeRoadNode(
             at: coordinate,
             connections: connections,
@@ -291,17 +277,13 @@ final class RoadRenderer {
             detail: detail
         ) {
             authoredRoad.name = "road.generated-v4.\(connections.rawValue).\(detail.assetSuffix)"
-            if emphasis == .opportunity {
-                authoredRoad.color = NSColor(
-                    calibratedRed: 0.22,
-                    green: 0.38,
-                    blue: 0.25,
-                    alpha: 1
-                )
-                authoredRoad.colorBlendFactor = 0.34
-                authoredRoad.alpha = 0.56
-            }
             corridor.addChild(authoredRoad)
+        }
+        if topology.classification == .end, let connectedEdge = topology.mask.edges.first {
+            addAuthoredTerminus(
+                onUnconnectedSideOf: connectedEdge,
+                to: corridor
+            )
         }
         cityLayer.addChild(corridor)
         if detailAlpha > 0, detail == .block {
@@ -332,10 +314,10 @@ final class RoadRenderer {
         emphasis: ContextEmphasis,
         to layer: SKNode
     ) {
-        // Opportunity roads stay opaque and connected for truthful planning
-        // and hit testing, but recede toward the macro terrain value. Avoid
-        // per-tile alpha, which double-darkens overlapping sockets.
-        let palette = emphasis == .developed ? developedRoadbed : opportunityRoadbed
+        // Authoritative roads stay opaque and connected for truthful planning
+        // and hit testing. Avoid per-tile alpha, which double-darkens
+        // overlapping sockets.
+        let palette = developedRoadbed
         let sidewalkColor = palette.sidewalk
         let curbColor = palette.curb
         let asphaltColor = palette.asphalt
@@ -535,6 +517,51 @@ final class RoadRenderer {
         centerMark.position = capCenter
         centerMark.zPosition = 4
         layer.addChild(centerMark)
+    }
+
+    private func addAuthoredTerminus(
+        onUnconnectedSideOf connectedEdge: RoadConnectionMask,
+        to layer: SKNode
+    ) {
+        // A single connected edge is a real landscaped turning head, never an
+        // unexplained rounded texture cap or a promise of an unbuilt road.
+        let connectedSocket = style.roadSocket(for: connectedEdge)
+        let center = CGPoint(
+            x: -connectedSocket.x * 0.30,
+            y: -connectedSocket.y * 0.30
+        )
+
+        let shadow = SKShapeNode(path: style.diamondPath(width: 19, height: 9.5))
+        shadow.name = "road.terminus.landscaped-shadow"
+        shadow.fillColor = NSColor.black.withAlphaComponent(0.20)
+        shadow.strokeColor = .clear
+        shadow.position = CGPoint(x: center.x + 1.2, y: center.y - 1.2)
+        shadow.zPosition = 4
+        layer.addChild(shadow)
+
+        let island = SKShapeNode(path: style.diamondPath(width: 16, height: 8))
+        island.name = "road.terminus.landscaped-island"
+        island.fillColor = style.palette.parkGrass
+        island.strokeColor = style.palette.curb.withAlphaComponent(0.95)
+        island.lineWidth = 1.1
+        island.position = center
+        island.zPosition = 5
+        layer.addChild(island)
+
+        let reflectorPath = CGMutablePath()
+        reflectorPath.move(to: CGPoint(x: -4, y: 0))
+        reflectorPath.addLine(to: CGPoint(x: 0, y: -2))
+        reflectorPath.addLine(to: CGPoint(x: 4, y: 0))
+        let reflector = SKShapeNode(path: reflectorPath)
+        reflector.name = "road.terminus.reflective-chevron"
+        reflector.fillColor = .clear
+        reflector.strokeColor = style.palette.laneMark.withAlphaComponent(0.94)
+        reflector.lineWidth = 1.1
+        reflector.lineCap = .round
+        reflector.lineJoin = .round
+        reflector.position = CGPoint(x: center.x, y: center.y - 1)
+        reflector.zPosition = 6
+        layer.addChild(reflector)
     }
 
     private func addStopLine(on edge: RoadConnectionMask, to layer: SKNode) {

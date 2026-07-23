@@ -744,6 +744,7 @@ enum CitySimulation {
         var progression = state.progression ?? CityProgressionState()
         guard !progression.townCharterAwarded else {
             state.progression = progression
+            state.status = .won
             return
         }
 
@@ -759,6 +760,7 @@ enum CitySimulation {
         let awardedNow = progression.townCharterQualifyingCycles == townCharterQualificationCycles
         if awardedNow {
             progression.townCharterAwarded = true
+            state.status = .won
         }
         state.progression = progression
 
@@ -783,6 +785,7 @@ enum CitySimulation {
     }
 
     private static func checkEndState(_ state: inout CityGameState) {
+        guard state.status == .playing else { return }
         if state.population >= 2_500 && state.happiness >= 65 && state.treasury >= 0 {
             state.status = .won
         } else if state.treasury < -75_000 || (state.tick > 40 && state.happiness < 10) {

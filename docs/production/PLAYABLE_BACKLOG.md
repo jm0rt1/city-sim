@@ -196,7 +196,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Complete no-coaching 20-minute routes; first decision by 02:00; no unexplained dead time over 30 seconds; consequence latency at most 15 seconds of relevant simulation time; three meaningful decisions; recovery before minute 18; distinct viable strategies; save/resume trust; explicit replay desire; any critical defect rejects the wave.
 - **Stop conditions:** Missing exact candidate identity, coached success, unretained proof, false feedback, or contradictory evidence.
 
-### [ ] PLAY-013: Make the strategy story impossible to miss
+### [x] PLAY-013: Make the strategy story impossible to miss
 
 - **Player outcome:** A fresh player can read, diagnose, make one valid Commercial or Industrial commitment, and receive the complete authored opportunity, warning, setback, recovery, and payoff in order even when the choice lands after the old Day 25 boundary.
 - **Owning lane:** Gameplay loop.
@@ -205,6 +205,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** HUD composition, panel pause policy, renderer/placement presentation, new commands, general event framework, and unrelated economy redesign.
 - **Acceptance:** The retained missed-deadline reproduction can commit after Day 25 and still receives every phase exactly once and in order; a failed placement never commits; strategy never flips from later tile counts; both strategies reach Town Charter or an explicit terminal failure inside 20:00 in deterministic no-coaching runs; save/load/undo/replay/fingerprints remain exact.
 - **Stop conditions:** Exact-tick story gating remains, legacy saves replay/cascade missed phases, new shared state exceeds CONTRACT-007, UI/rendering changes enter the lane, or platform fixture adoption is omitted.
+- **Accepted integration:** Durable product `6d5df6b`; final live evidence/completion `eee7bca` and `9eb7c9a`. Commercial and Industrial staged routes reached the Charter in 7:47 and at most 7:10 respectively; the synchronized full suite passed 185/185 with no additional gameplay repair.
 
 ### [x] PLAY-014: Make recovery choice a durable strategic identity
 

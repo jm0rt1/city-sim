@@ -1038,6 +1038,33 @@ final class WorldRenderingTests: XCTestCase {
                 }.count,
                 5
             )
+            let vacantGroves = names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 5
+                    && components[0] == "world"
+                    && components[1] == "environment"
+                    && components[2] == "vacant-grove"
+            }
+            XCTAssertEqual(vacantGroves.count, 16)
+            XCTAssertEqual(
+                names.filter { $0.hasSuffix(".ground-contact") }.count,
+                vacantGroves.count
+            )
+            XCTAssertEqual(
+                names.filter { $0.hasSuffix(".undeveloped-meadow") }.count,
+                vacantGroves.count
+            )
+            for name in vacantGroves {
+                let components = name.split(separator: ".")
+                let x = Int(components[components.count - 2])
+                let y = Int(components[components.count - 1])
+                let coordinate = GridCoordinate(x: try! XCTUnwrap(x), y: try! XCTUnwrap(y))
+                XCTAssertEqual(state.tile(at: coordinate)?.kind, .empty)
+                let roadDistance = state.tiles.filter { $0.kind == .road }.map {
+                    abs($0.coordinate.x - coordinate.x) + abs($0.coordinate.y - coordinate.y)
+                }.min()
+                XCTAssertGreaterThanOrEqual(roadDistance ?? 0, 2)
+            }
         }
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
         XCTAssertFalse(animatedNames.contains { $0.contains(".banner") || $0.contains(".windsock") })

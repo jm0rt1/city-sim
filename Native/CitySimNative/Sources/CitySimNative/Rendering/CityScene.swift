@@ -86,6 +86,7 @@ private struct InteractionPreviewSignature: Equatable {
 private struct AmbientCorridorSignature: Equatable {
     let developedCoordinates: [GridCoordinate]
     let roadCoordinates: [GridCoordinate]
+    let vacantCoordinates: [GridCoordinate]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
     let motionEnabled: Bool
@@ -755,6 +756,7 @@ final class CityScene: SKScene {
                     : nil
             },
             roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil },
+            vacantCoordinates: state.tiles.compactMap { $0.kind == .empty ? $0.coordinate : nil },
             detail: currentCameraDetailLevel,
             reducedMotion: reducedMotion,
             motionEnabled: ambientMotionEnabled

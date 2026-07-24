@@ -290,6 +290,7 @@ final class RoadRenderer {
             addStreetFurniture(
                 at: coordinate,
                 topology: topology,
+                emphasis: emphasis,
                 reducedMotion: reducedMotion,
                 to: blockLayer
             )
@@ -624,11 +625,17 @@ final class RoadRenderer {
     private func addStreetFurniture(
         at coordinate: GridCoordinate,
         topology: RoadTopology,
+        emphasis: ContextEmphasis,
         reducedMotion: Bool,
         to layer: SKNode
     ) {
         guard topology.classification != .isolated else { return }
-        let variant = WorldVisualSeed.variant(count: 12, for: coordinate, kind: .road, salt: 0x51)
+        let variant = WorldVisualSeed.variant(
+            count: emphasis == .developed ? 4 : 10,
+            for: coordinate,
+            kind: .road,
+            salt: 0x51
+        )
         guard variant == 0 else { return }
 
         let edge = topology.mask.edges[variant % topology.mask.edges.count]
@@ -642,6 +649,7 @@ final class RoadRenderer {
         )
 
         let post = SKShapeNode(rectOf: CGSize(width: 1.4, height: 8), cornerRadius: 0.5)
+        post.name = "road.public-realm.lamp"
         post.fillColor = NSColor(calibratedWhite: 0.23, alpha: 1)
         post.strokeColor = .clear
         post.position = CGPoint(x: anchor.x, y: anchor.y + 4)
@@ -654,6 +662,7 @@ final class RoadRenderer {
         layer.addChild(post)
 
         let hydrant = SKShapeNode(rectOf: CGSize(width: 3.6, height: 4.2), cornerRadius: 1)
+        hydrant.name = "road.public-realm.hydrant"
         hydrant.fillColor = NSColor(calibratedRed: 0.62, green: 0.25, blue: 0.18, alpha: 1)
         hydrant.strokeColor = NSColor.white.withAlphaComponent(0.16)
         hydrant.position = CGPoint(x: anchor.x + 5, y: anchor.y - 1)

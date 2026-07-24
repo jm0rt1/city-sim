@@ -1,0 +1,115 @@
+# Wave 006 — Make the City the Hero
+
+## Integration disposition
+
+The combined PLAY-023 generated-v4 pipeline and PLAY-033 command-center HUD are
+technically sound: the integrated native suite passes 194/194, the exact staged
+bundle launches in default and compact layouts, keyboard map navigation exposes
+authoritative selection truth, and the command guide makes the action inventory
+discoverable.
+
+That is not the visual finish line. A hands-on review of exact integrated
+candidate `7943b9031f2ad00759dc5aa7ce234b8b152e5fc2` rejects the current world as
+the target quality level.
+
+## What the player sees today
+
+1. The world reads as a small crossroads diorama, not a growing city.
+2. Long roads end abruptly inside the frame and make the network feel like
+   isolated strips rather than purposeful streets.
+3. Large undifferentiated green fields surround a tiny high-detail core.
+4. Buildings carry more detail than terrain, edges, vegetation, and public
+   realm, producing a mixed-fidelity collage.
+5. Repeated house and utility silhouettes weaken district identity and make
+   growth feel like duplication.
+6. Curbs, sidewalks, crossings, frontage transitions, trees, and props do not
+   yet create a continuous civic fabric.
+7. The upper status wall, floating priority card, and lower command wall
+   compete with the city. The HUD is operable but visually louder than the
+   world it is meant to explain.
+8. Selection is semantically excellent but visually too quiet against the
+   detailed center and too detached from the vast empty field.
+
+These are product defects for Wave 006. Asset count, pixel fidelity, green
+tests, or a single hero screenshot cannot close them.
+
+## Work order
+
+### PLAY-024 — Environment and street-system excellence
+
+World rendering owns the visible systemic repair:
+
+- replace flat board space with cohesive, deterministic terrain composition;
+- make the 16-mask road grammar read as a connected street network with
+  credible continuations, intersections, curbs, sidewalks, crossings, and
+  frontage transitions;
+- establish shared projection, scale, light direction, material response, and
+  ground contact across every visible kind;
+- add deterministic vegetation and public-realm props that fill space without
+  obscuring hit targets or inventing simulation facts;
+- ensure city, neighborhood, and block LODs each add useful meaning rather than
+  simply changing texture size;
+- prove the opening, a built-out route, construction, strain, recovery, and
+  exact compact mode in the real staged app.
+
+The lane may use image generation for authored source art, but connectivity,
+anchors, masks, geometry, provenance, normalization, packing, and acceptance
+remain deterministic and tool-verified.
+
+### PLAY-039 — World-first HUD hierarchy
+
+UI/input owns the visual balance around the world:
+
+- materially increase the visible map aperture in default and exact compact
+  layouts;
+- remove the impression of two opaque control walls and a floating modal card;
+- keep one calm priority, one obvious action, one unambiguous paused/running
+  state, and one persistent selected-target explanation;
+- preserve the single command catalog/store route, every keyboard shortcut,
+  Full Keyboard Access, accessibility actions, rejection recovery, and compact
+  operation.
+
+No renderer art or geometry may move into SwiftUI.
+
+### PLAY-053 — Independent excellence gate
+
+Quality preregisters the comparison before seeing the final candidate, freezes
+the exact baseline frames, and independently scores the integrated result.
+PLAY-024 and PLAY-039 authors do not score themselves.
+
+## Automatic rejection conditions
+
+Any one of the following rejects the wave:
+
+- toy-island or demo-diorama framing;
+- non-edge road ends that look accidental or disconnected;
+- large featureless green areas dominating the playable aperture;
+- visible sprite overlap, floating foundations, broken ground contact, seams,
+  or mixed projection/light direction;
+- high-resolution buildings pasted onto visibly lower-fidelity terrain;
+- debug labels, glyphs, or color washes carrying primary world truth;
+- HUD chrome obscuring the active target or reading more strongly than the
+  city;
+- a default-only hero shot without exact compact, LOD, construction,
+  consequence, Reduce Motion, and hands-on interaction evidence;
+- regression in pointer, keyboard, accessibility, hit testing, deterministic
+  identity, memory, or frame budgets.
+
+## Acceptance bar
+
+The exact integrated candidate must:
+
+- score at least 19/20 independently;
+- earn 4/4 for composition/map occupancy;
+- earn 4/4 for projection/material/light/street coherence;
+- score no category below 3/4;
+- trigger no automatic reject;
+- win an explicit same-state side-by-side comparison against the frozen Wave
+  005 baseline;
+- pass the full native suite, exact staged build, default and 900 x 600 play,
+  keyboard and pointer routes, Full Keyboard Access/AX inspection, Reduce
+  Motion, LOD cycling, overlap/seam diagnostics, and declared memory/frame
+  budgets.
+
+The old 17/20 result proved a recoverable production baseline. It is not
+evidence of excellence and is not sufficient for this wave.

@@ -1,0 +1,70 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 65, ID: hud.city.identity
+		3 progress indicator Description: Show objectives, Help: Need J 80 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+		4 container City status
+			5 unknown Description: Treasury, Details: $28,144, +$71 / cycle, ID: hud.metric.treasury
+			6 unknown Description: Residents, Details: 364, 1,876 homes open, ID: hud.metric.population
+			7 unknown Description: Happiness, Details: 61%, 100% mayor approval, ID: hud.metric.happiness
+			8 unknown Description: Jobs filled, Details: 254, 16 openings, ID: hud.metric.employment
+			9 unknown Description: Utilities, Details: 99%, P 0 · W 0 spare, ID: hud.metric.utilities
+		10 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		11 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		12 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		13 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		14 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+		15 container Description: City priority: Tax relief locked in, ID: hud.strategy.priority, Details: REVIEW · 16 DAYS. The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+			16 text MAIN STREET RECOVERY REVIEW · 16 DAYS Tax relief locked in The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+			17 button Description: Tax policy & cashflow, Help: Review current tax policy, revenue, and upkeep through the existing Command Center.
+		18 button (selected) Description: Action update, Value: City loaded · Simulation paused, Secondary Actions: Dismiss action message
+		19 container City command deck
+			20 button (selected) Description: Inspect mode, Value: Selected
+			21 button Description: Build mode, Value: Not selected
+			22 button Description: Bulldoze mode, Value: Not selected
+			23 button Description: Roads build category, Value: Selected
+			24 button Description: Zones build category, Value: Not selected
+			25 button Description: Utilities build category, Value: Not selected
+			26 button Description: Services build category, Value: Not selected
+			27 button Description: Civic build category, Value: Not selected
+			28 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			29 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			30 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			31 text CITY DESK
+			32 text Prepare for Growth
+			33 text Need J 80 · P 110 · W 100
+			34 progress indicator 0.7297297297297297
+			35 text 12 notices
+			36 text Select a block or a status signal for context
+			37 text CITY PULSE
+			38 button Description: Cashflow, Value: +$71
+			39 button Description: Homes open, Value: 1,876
+			40 button Description: Jobs open, Value: 16
+			41 button Description: Power spare, Value: 0
+			42 button Description: Water spare, Value: 0
+			43 progress indicator Description: Residential demand, Help: Open demand details, Value: 0.5680042541646175, Details: 57%, Steady
+			44 progress indicator Description: Commercial demand, Help: Open demand details, Value: 0.5629999999999999, Details: 56%, Steady
+			45 progress indicator Description: Industrial demand, Help: Open demand details, Value: 0.3631473214285714, Details: 36%, Steady
+		46 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	47 toolbar
+		48 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		49 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		50 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		51 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		52 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	53 close button
+	54 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	55 minimize button
+	56 text CitySim
+57 menu bar
+	58 CitySim [UI wdbeadac6e0bd]
+	59 File
+	60 Edit
+	61 View
+	62 Simulation
+	63 Tools
+	64 City Data
+	65 Window
+	66 Help
+
+The focused UI element is 46 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

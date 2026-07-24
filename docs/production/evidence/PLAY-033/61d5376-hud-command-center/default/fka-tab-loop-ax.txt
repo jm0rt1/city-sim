@@ -1,0 +1,224 @@
+AFTER ESCAPE
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 33, ID: hud.city.identity
+		3 progress indicator Description: Show objectives, Help: Need J 50 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+		4 container City status
+			5 unknown Description: Treasury, Details: $28,958, +$122 / cycle, ID: hud.metric.treasury
+			6 unknown Description: Residents, Details: 332, 1,908 homes open, ID: hud.metric.population
+			7 unknown Description: Happiness, Details: 58%, 100% mayor approval, ID: hud.metric.happiness
+			8 unknown Description: Jobs filled, Details: 231, 69 openings, ID: hud.metric.employment
+			9 unknown Description: Utilities, Details: 100%, P 9 · W 14 spare, ID: hud.metric.utilities
+		10 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		11 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		12 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		13 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		14 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+		15 container Description: City priority: Prepare for the load surge, Details: DECISION · 16 DAYS. Diagnose utilities, then add capacity or a park before the consequence., ID: hud.strategy.priority
+			16 text FREIGHT STRATEGY
+			17 text DECISION · 16 DAYS
+			18 text Prepare for the load surge
+			19 text Diagnose utilities, then add capacity or a park before the consequence.
+			20 button Description: Utility capacity, Help: Review current power, water, coverage, and reserve through the existing Command Center.
+			21 menu button Act, Description: Act on Prepare for the load surge, Value: 3 available routes, ID: arrow.turn.down.right
+		22 container City command deck
+			23 button (selected) Description: Inspect mode, Value: Selected
+			24 button Description: Build mode, Value: Not selected
+			25 button Description: Bulldoze mode, Value: Not selected
+			26 button Description: Roads build category, Value: Selected
+			27 button Description: Zones build category, Value: Not selected
+			28 button Description: Utilities build category, Value: Not selected
+			29 button Description: Services build category, Value: Not selected
+			30 button Description: Civic build category, Value: Not selected
+			31 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			32 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			33 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			34 text CITY DESK
+			35 text Prepare for Growth
+			36 text Need J 50 · P 110 · W 100
+			37 progress indicator 0.7297297297297297
+			38 text 12 notices
+			39 text Select a block or a status signal for context
+			40 text CITY PULSE
+			41 button Description: Cashflow, Value: +$122
+			42 button Description: Homes open, Value: 1,908
+			43 button Description: Jobs open, Value: 69
+			44 button Description: Power spare, Value: 9
+			45 button Description: Water spare, Value: 14
+			46 progress indicator Description: Residential demand, Help: Open demand details, Value: 0.5577824619308509, Details: 56%, Steady
+			47 progress indicator Description: Commercial demand, Help: Open demand details, Value: 0.6210000000000001, Details: 62%, Steady
+			48 progress indicator Description: Industrial demand, Help: Open demand details, Value: 0.3331473214285714, Details: 33%, Low
+		49 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	50 toolbar
+		51 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		52 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		53 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		54 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		55 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	56 close button
+	57 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	58 minimize button
+	59 text CitySim
+60 menu bar
+	61 CitySim [UI wdbeadac6e0bd]
+	62 File
+	63 Edit
+	64 View
+	65 Simulation
+	66 Tools
+	67 City Data
+	68 Window
+	69 Help
+
+The focused UI element is 49 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+
+AFTER TAB
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 33, ID: hud.city.identity
+		3 progress indicator Description: Show objectives, Help: Need J 50 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+		4 container City status
+			5 unknown Description: Treasury, Details: $28,958, +$122 / cycle, ID: hud.metric.treasury
+			6 unknown Description: Residents, Details: 332, 1,908 homes open, ID: hud.metric.population
+			7 unknown Description: Happiness, Details: 58%, 100% mayor approval, ID: hud.metric.happiness
+			8 unknown Description: Jobs filled, Details: 231, 69 openings, ID: hud.metric.employment
+			9 unknown Description: Utilities, Details: 100%, P 9 · W 14 spare, ID: hud.metric.utilities
+		10 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		11 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		12 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		13 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		14 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+		15 container Description: City priority: Prepare for the load surge, Details: DECISION · 16 DAYS. Diagnose utilities, then add capacity or a park before the consequence., ID: hud.strategy.priority
+			16 text FREIGHT STRATEGY
+			17 text DECISION · 16 DAYS
+			18 text Prepare for the load surge
+			19 text Diagnose utilities, then add capacity or a park before the consequence.
+			20 button Description: Utility capacity, Help: Review current power, water, coverage, and reserve through the existing Command Center.
+			21 menu button Act, Description: Act on Prepare for the load surge, Value: 3 available routes, ID: arrow.turn.down.right
+		22 container City command deck
+			23 button (selected) Description: Inspect mode, Value: Selected
+			24 button Description: Build mode, Value: Not selected
+			25 button Description: Bulldoze mode, Value: Not selected
+			26 button Description: Roads build category, Value: Selected
+			27 button Description: Zones build category, Value: Not selected
+			28 button Description: Utilities build category, Value: Not selected
+			29 button Description: Services build category, Value: Not selected
+			30 button Description: Civic build category, Value: Not selected
+			31 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			32 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			33 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			34 text CITY DESK
+			35 text Prepare for Growth
+			36 text Need J 50 · P 110 · W 100
+			37 progress indicator 0.7297297297297297
+			38 text 12 notices
+			39 text Select a block or a status signal for context
+			40 text CITY PULSE
+			41 button Description: Cashflow, Value: +$122
+			42 button Description: Homes open, Value: 1,908
+			43 button Description: Jobs open, Value: 69
+			44 button Description: Power spare, Value: 9
+			45 button Description: Water spare, Value: 14
+			46 progress indicator Description: Residential demand, Help: Open demand details, Value: 0.5577824619308509, Details: 56%, Steady
+			47 progress indicator Description: Commercial demand, Help: Open demand details, Value: 0.6210000000000001, Details: 62%, Steady
+			48 progress indicator Description: Industrial demand, Help: Open demand details, Value: 0.3331473214285714, Details: 33%, Low
+		49 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	50 toolbar
+		51 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		52 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		53 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		54 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		55 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	56 close button
+	57 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	58 minimize button
+	59 text CitySim
+60 menu bar
+	61 CitySim [UI wdbeadac6e0bd]
+	62 File
+	63 Edit
+	64 View
+	65 Simulation
+	66 Tools
+	67 City Data
+	68 Window
+	69 Help
+
+The focused UI element is 2 button Description: Open New Arcadia command center, Value: Day 33, ID: hud.city.identity
+
+AFTER SHIFT-TAB
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 33, ID: hud.city.identity
+		3 progress indicator Description: Show objectives, Help: Need J 50 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+		4 container City status
+			5 unknown Description: Treasury, Details: $28,958, +$122 / cycle, ID: hud.metric.treasury
+			6 unknown Description: Residents, Details: 332, 1,908 homes open, ID: hud.metric.population
+			7 unknown Description: Happiness, Details: 58%, 100% mayor approval, ID: hud.metric.happiness
+			8 unknown Description: Jobs filled, Details: 231, 69 openings, ID: hud.metric.employment
+			9 unknown Description: Utilities, Details: 100%, P 9 · W 14 spare, ID: hud.metric.utilities
+		10 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		11 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		12 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		13 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		14 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+		15 container Description: City priority: Prepare for the load surge, Details: DECISION · 16 DAYS. Diagnose utilities, then add capacity or a park before the consequence., ID: hud.strategy.priority
+			16 text FREIGHT STRATEGY
+			17 text DECISION · 16 DAYS
+			18 text Prepare for the load surge
+			19 text Diagnose utilities, then add capacity or a park before the consequence.
+			20 button Description: Utility capacity, Help: Review current power, water, coverage, and reserve through the existing Command Center.
+			21 menu button Act, Description: Act on Prepare for the load surge, Value: 3 available routes, ID: arrow.turn.down.right
+		22 container City command deck
+			23 button (selected) Description: Inspect mode, Value: Selected
+			24 button Description: Build mode, Value: Not selected
+			25 button Description: Bulldoze mode, Value: Not selected
+			26 button Description: Roads build category, Value: Selected
+			27 button Description: Zones build category, Value: Not selected
+			28 button Description: Utilities build category, Value: Not selected
+			29 button Description: Services build category, Value: Not selected
+			30 button Description: Civic build category, Value: Not selected
+			31 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			32 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			33 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			34 text CITY DESK
+			35 text Prepare for Growth
+			36 text Need J 50 · P 110 · W 100
+			37 progress indicator 0.7297297297297297
+			38 text 12 notices
+			39 text Select a block or a status signal for context
+			40 text CITY PULSE
+			41 button Description: Cashflow, Value: +$122
+			42 button Description: Homes open, Value: 1,908
+			43 button Description: Jobs open, Value: 69
+			44 button Description: Power spare, Value: 9
+			45 button Description: Water spare, Value: 14
+			46 progress indicator Description: Residential demand, Help: Open demand details, Value: 0.5577824619308509, Details: 56%, Steady
+			47 progress indicator Description: Commercial demand, Help: Open demand details, Value: 0.6210000000000001, Details: 62%, Steady
+			48 progress indicator Description: Industrial demand, Help: Open demand details, Value: 0.3331473214285714, Details: 33%, Low
+		49 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	50 toolbar
+		51 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		52 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		53 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		54 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		55 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	56 close button
+	57 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	58 minimize button
+	59 text CitySim
+60 menu bar
+	61 CitySim [UI wdbeadac6e0bd]
+	62 File
+	63 Edit
+	64 View
+	65 Simulation
+	66 Tools
+	67 City Data
+	68 Window
+	69 Help
+
+The focused UI element is 49 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

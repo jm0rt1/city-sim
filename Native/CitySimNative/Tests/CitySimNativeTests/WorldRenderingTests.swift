@@ -697,8 +697,12 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertTrue(names.contains("road.production-corridor.developed.\(mask.rawValue)"))
             XCTAssertTrue(names.contains("road.generated-v4.\(mask.rawValue).block"))
             if mask.edges.count == 1 {
-                XCTAssertTrue(names.contains("road.terminus.landscaped-island"))
-                XCTAssertTrue(names.contains("road.terminus.reflective-chevron"))
+                XCTAssertTrue(names.contains("road.terminus.paved-apron"))
+                XCTAssertTrue(names.contains("road.terminus.authenticated-barrier"))
+                XCTAssertEqual(
+                    names.filter { $0 == "road.terminus.authenticated-bollard" }.count,
+                    2
+                )
             } else {
                 XCTAssertFalse(names.contains { $0.hasPrefix("road.terminus.") })
             }
@@ -768,8 +772,8 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertTrue(descendantNames(in: frontage).contains("road.production-corridor.developed.15"))
         XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.network.2"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.landscaped-island"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.reflective-chevron"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.paved-apron"))
+        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.authenticated-barrier"))
         let frontierSprite = frontier.childNode(
             withName: "//road.generated-v4.2.block"
         ) as? SKSpriteNode
@@ -1098,7 +1102,10 @@ final class WorldRenderingTests: XCTestCase {
         let backdrop = renderer.makeBackdrop(gridWidth: 24, gridHeight: 24)
         let backdropNames = descendantNames(in: backdrop)
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.patch.") }.count, 9)
+        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.parcel.") }.count, 36)
+        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.boundary.") }.count, 36)
+        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count, 18)
+        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.patch.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })
         XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
     }

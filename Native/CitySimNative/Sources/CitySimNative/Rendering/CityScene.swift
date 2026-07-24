@@ -801,7 +801,11 @@ final class CityScene: SKScene {
                 : runtimeTreeMetrics(backdropLayer)
             renderedGridSize = gridSize
             backdropLayer.removeAllChildren()
-            backdropLayer.addChild(terrainRenderer.makeBackdrop(gridWidth: state.gridWidth, gridHeight: state.gridHeight))
+            backdropLayer.addChild(terrainRenderer.makeBackdrop(
+                gridWidth: state.gridWidth,
+                gridHeight: state.gridHeight,
+                detail: currentCameraDetailLevel
+            ))
             if let priorBackdropMetrics {
                 applyRuntimeDelta(
                     from: priorBackdropMetrics,
@@ -1501,6 +1505,7 @@ final class CityScene: SKScene {
             updateGeneratedLOD(in: record.root, detail: detail)
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
+        style.updateDetailVisibility(in: backdropLayer, detail: detail)
         let ambientChanged = renderedState.map { updateAmbientCorridor(in: $0) } ?? false
         if preservingUpdateDiagnostics {
             diagnosticsSnapshot.detailLevel = detail

@@ -37,7 +37,11 @@ final class TerrainRenderer {
 
     /// Creates the environmental plate behind the grid. Its geometry is already
     /// in world coordinates, so callers add it at `.zero` below tile nodes.
-    func makeBackdrop(gridWidth: Int, gridHeight: Int) -> SKNode {
+    func makeBackdrop(
+        gridWidth: Int,
+        gridHeight: Int,
+        detail: CameraDetailLevel = .block
+    ) -> SKNode {
         let root = SKNode()
         root.name = "world.backdrop"
         guard gridWidth > 0, gridHeight > 0 else { return root }
@@ -62,10 +66,11 @@ final class TerrainRenderer {
         earthPlate.zPosition = -102
         root.addChild(earthPlate)
 
-        // Keep every macro patch inside the convex map diamond instead of
+        // Keep every macro material inside the convex map diamond instead of
         // masking a full-window texture. SKCropNode forces SpriteKit to retain
-        // another backing-scale render target, which is disproportionate for
-        // nine quiet terrain accents on a 2D map.
+        // another backing-scale render target. The authored 2:1 field parcels
+        // align with the simulation grid, but remain strictly ground material:
+        // they never assert a road, frontage, plaza, occupancy, or hit target.
         let field = SKNode()
         field.name = "terrain.macro.field"
         field.zPosition = -101
@@ -76,37 +81,54 @@ final class TerrainRenderer {
         turf.strokeColor = .clear
         field.addChild(turf)
 
-        let span = CGFloat(gridWidth + gridHeight)
-        let patchColors = [
-            NSColor(calibratedRed: 0.16, green: 0.34, blue: 0.22, alpha: 0.22),
-            NSColor(calibratedRed: 0.36, green: 0.48, blue: 0.25, alpha: 0.16),
-            NSColor(calibratedRed: 0.19, green: 0.31, blue: 0.20, alpha: 0.18),
-        ]
-        let patchLayout: [(center: CGPoint, size: CGSize)] = [
-            (CGPoint(x: -6.2, y: 0.0), CGSize(width: 8.5, height: 2.4)),
-            (CGPoint(x: -3.4, y: 2.1), CGSize(width: 7.2, height: 1.8)),
-            (CGPoint(x: 0.0, y: 3.25), CGSize(width: 8.0, height: 1.6)),
-            (CGPoint(x: 3.6, y: 1.75), CGSize(width: 8.8, height: 2.1)),
-            (CGPoint(x: 6.3, y: 0.0), CGSize(width: 7.0, height: 2.4)),
-            (CGPoint(x: 3.7, y: -2.0), CGSize(width: 7.8, height: 1.8)),
-            (CGPoint(x: 0.0, y: -3.0), CGSize(width: 8.4, height: 1.6)),
-            (CGPoint(x: -3.8, y: -2.1), CGSize(width: 7.4, height: 2.0)),
-            (CGPoint(x: 0.0, y: 0.0), CGSize(width: 10.5, height: 2.9)),
-        ]
-        for (index, layout) in patchLayout.enumerated() {
-            let patch = SKShapeNode(ellipseOf: CGSize(
-                width: span * layout.size.width,
-                height: span * layout.size.height
-            ))
-            patch.name = "terrain.macro.patch.\(index)"
-            patch.fillColor = patchColors[index % patchColors.count]
-            patch.strokeColor = .clear
-            patch.position = CGPoint(
-                x: span * layout.center.x,
-                y: span * layout.center.y
-            )
-            patch.zRotation = index.isMultiple(of: 2) ? 0.16 : -0.19
-            field.addChild(patch)
+        let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
+        let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
+        let blockLayer = style.makeDetailLayer(.block, visibleAt: detail)
+        field.addChild(cityLayer)
+        field.addChild(neighborhoodLayer)
+        field.addChild(blockLayer)
+
+        let parcelSpan = 4
+        var parcelIndex = 0
+        for y in stride(from: 0, to: gridHeight, by: parcelSpan) {
+            for x in stride(from: 0, to: gridWidth, by: parcelSpan) {
+                let maximumX = min(gridWidth - 1, x + parcelSpan - 1)
+                let maximumY = min(gridHeight - 1, y + parcelSpan - 1)
+                let parcelPath = style.polygonPath(fieldCorners(
+                    minimumX: x,
+                    minimumY: y,
+                    maximumX: maximumX,
+                    maximumY: maximumY
+                ))
+                let variant = (x / parcelSpan + (y / parcelSpan) * 2) % 4
+                let parcel = SKShapeNode(path: parcelPath)
+                parcel.name = "terrain.macro.parcel.\(parcelIndex)"
+                parcel.fillColor = macroFieldColor(variant: variant)
+                parcel.strokeColor = .clear
+                cityLayer.addChild(parcel)
+
+                let boundary = SKShapeNode(path: parcelPath)
+                boundary.name = "terrain.macro.boundary.\(parcelIndex)"
+                boundary.fillColor = .clear
+                boundary.strokeColor = variant.isMultiple(of: 2)
+                    ? style.palette.mapEarthDark.withAlphaComponent(0.30)
+                    : NSColor(calibratedRed: 0.51, green: 0.61, blue: 0.35, alpha: 0.20)
+                boundary.lineWidth = 1.15
+                neighborhoodLayer.addChild(boundary)
+
+                if parcelIndex.isMultiple(of: 2) {
+                    addFieldFurrows(
+                        minimumX: x,
+                        minimumY: y,
+                        maximumX: maximumX,
+                        maximumY: maximumY,
+                        variant: variant,
+                        parcelIndex: parcelIndex,
+                        to: blockLayer
+                    )
+                }
+                parcelIndex += 1
+            }
         }
         root.addChild(field)
 
@@ -128,6 +150,75 @@ final class TerrainRenderer {
         waterShadow.zPosition = -104
         root.addChild(waterShadow)
         return root
+    }
+
+    private func macroFieldColor(variant: Int) -> NSColor {
+        switch variant {
+        case 0:
+            NSColor(calibratedRed: 0.17, green: 0.36, blue: 0.22, alpha: 0.44)
+        case 1:
+            NSColor(calibratedRed: 0.34, green: 0.44, blue: 0.22, alpha: 0.30)
+        case 2:
+            NSColor(calibratedRed: 0.20, green: 0.31, blue: 0.18, alpha: 0.37)
+        default:
+            NSColor(calibratedRed: 0.30, green: 0.42, blue: 0.24, alpha: 0.34)
+        }
+    }
+
+    private func fieldCorners(
+        minimumX: Int,
+        minimumY: Int,
+        maximumX: Int,
+        maximumY: Int
+    ) -> [CGPoint] {
+        let north = style.isoPosition(GridCoordinate(x: minimumX, y: minimumY))
+        let east = style.isoPosition(GridCoordinate(x: maximumX, y: minimumY))
+        let south = style.isoPosition(GridCoordinate(x: maximumX, y: maximumY))
+        let west = style.isoPosition(GridCoordinate(x: minimumX, y: maximumY))
+        return [
+            CGPoint(x: north.x, y: north.y + style.tileHeight / 2),
+            CGPoint(x: east.x + style.tileWidth / 2, y: east.y),
+            CGPoint(x: south.x, y: south.y - style.tileHeight / 2),
+            CGPoint(x: west.x - style.tileWidth / 2, y: west.y),
+        ]
+    }
+
+    private func addFieldFurrows(
+        minimumX: Int,
+        minimumY: Int,
+        maximumX: Int,
+        maximumY: Int,
+        variant: Int,
+        parcelIndex: Int,
+        to layer: SKNode
+    ) {
+        let combined = CGMutablePath()
+        let runsAlongX = variant.isMultiple(of: 2)
+        for offset in 1...3 {
+            let progress = CGFloat(offset) / 4
+            let startCoordinate: GridCoordinate
+            let endCoordinate: GridCoordinate
+            if runsAlongX {
+                let y = minimumY + Int((CGFloat(maximumY - minimumY) * progress).rounded())
+                startCoordinate = GridCoordinate(x: minimumX, y: y)
+                endCoordinate = GridCoordinate(x: maximumX, y: y)
+            } else {
+                let x = minimumX + Int((CGFloat(maximumX - minimumX) * progress).rounded())
+                startCoordinate = GridCoordinate(x: x, y: minimumY)
+                endCoordinate = GridCoordinate(x: x, y: maximumY)
+            }
+            combined.addPath(WorldGeometryCache.line(
+                from: style.isoPosition(startCoordinate),
+                to: style.isoPosition(endCoordinate)
+            ))
+        }
+        let furrows = SKShapeNode(path: combined)
+        furrows.name = "terrain.macro.furrows.\(parcelIndex)"
+        furrows.fillColor = .clear
+        furrows.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.17)
+        furrows.lineWidth = 0.75
+        furrows.lineCap = .round
+        layer.addChild(furrows)
     }
 
     /// Adds a thin soil skirt and crisp rim only on actual grid boundaries.

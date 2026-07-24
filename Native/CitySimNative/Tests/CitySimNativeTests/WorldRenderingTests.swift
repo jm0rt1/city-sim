@@ -1,4 +1,5 @@
 import AppKit
+import Foundation
 import SpriteKit
 import XCTest
 @testable import CitySimNative
@@ -461,8 +462,10 @@ final class WorldRenderingTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.generatedManifest)
 
         XCTAssertEqual(catalog.manifestValidationIssues(), [])
-        XCTAssertEqual(manifest.inventory.count, 84)
+        XCTAssertEqual(manifest.pages.count, 4)
+        XCTAssertEqual(manifest.inventory.count, 4)
         XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
+        XCTAssertEqual(Set(manifest.pages.map(\.file)), Set(manifest.inventory.map(\.file)))
 
         for asset in manifest.assets {
             XCTAssertEqual(asset.footprintTiles, [1, 1], asset.logicalID)
@@ -489,12 +492,27 @@ final class WorldRenderingTests: XCTestCase {
                     asset.logicalID
                 )
                 XCTAssertEqual(lod.decodedByteEstimate, lod.pixels[0] * lod.pixels[1] * 4, asset.logicalID)
-                let textureName = (lod.file as NSString).deletingPathExtension
-                let physicalTexture = try XCTUnwrap(catalog.texture(named: textureName))
+                XCTAssertEqual(lod.textureRectPixels[2], lod.pixels[0], asset.logicalID)
+                XCTAssertEqual(lod.textureRectPixels[3], lod.pixels[1], asset.logicalID)
+                XCTAssertGreaterThanOrEqual(lod.paddingPixels, 4, asset.logicalID)
+                XCTAssertGreaterThanOrEqual(lod.extrusionPixels, 2, asset.logicalID)
+                XCTAssertTrue(manifest.pages.contains { $0.id == lod.page && $0.lod == detail.assetSuffix })
                 let presentation = try XCTUnwrap(
                     catalog.generatedPresentation(logicalID: asset.logicalID, detail: detail)
                 )
-                XCTAssertTrue(presentation.sprite.texture === physicalTexture, asset.logicalID)
+                let presentationTexture = try XCTUnwrap(presentation.sprite.texture)
+                XCTAssertEqual(
+                    presentationTexture.size().width,
+                    CGFloat(lod.pixels[0]),
+                    accuracy: 0.001,
+                    asset.logicalID
+                )
+                XCTAssertEqual(
+                    presentationTexture.size().height,
+                    CGFloat(lod.pixels[1]),
+                    accuracy: 0.001,
+                    asset.logicalID
+                )
                 XCTAssertEqual(presentation.sprite.position.x, asset.placementOffsetWorld[0], accuracy: 0.001)
                 XCTAssertEqual(presentation.sprite.position.y, asset.placementOffsetWorld[1], accuracy: 0.001)
                 XCTAssertEqual(presentation.sprite.anchorPoint.x, lod.anchor[0], accuracy: 0.000_001)
@@ -516,11 +534,9 @@ final class WorldRenderingTests: XCTestCase {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)
         let asset = try XCTUnwrap(manifest.assets.first)
-        let lod = try XCTUnwrap(asset.lods[CameraDetailLevel.block.assetSuffix])
-        let textureName = (lod.file as NSString).deletingPathExtension
         let before = catalog.residencySnapshot()
 
-        XCTAssertNotNil(catalog.texture(named: textureName))
+        XCTAssertNotNil(catalog.generatedPresentation(logicalID: asset.logicalID, detail: .block))
         let loaded = catalog.residencySnapshot()
         XCTAssertEqual(loaded.textureDecodeLoadCount, before.textureDecodeLoadCount + 1)
         XCTAssertGreaterThan(
@@ -528,7 +544,7 @@ final class WorldRenderingTests: XCTestCase {
             before.textureDecodeLoadDurationMilliseconds
         )
 
-        XCTAssertNotNil(catalog.texture(named: textureName))
+        XCTAssertNotNil(catalog.generatedPresentation(logicalID: asset.logicalID, detail: .block))
         let cached = catalog.residencySnapshot()
         XCTAssertEqual(cached.textureDecodeLoadCount, loaded.textureDecodeLoadCount)
         XCTAssertEqual(
@@ -577,14 +593,100 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testGeneratedWorldPreloadsOneAdjacentLODWithinPageBudget() throws {
+        let catalog = WorldAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+        let logicalIDs = Set(manifest.assets.map(\.logicalID))
+        let roadMasks = Set(UInt8(0)..<UInt8(16))
+
+        catalog.preloadGeneratedResidency(
+            for: .block,
+            logicalIDs: logicalIDs,
+            roadMasks: roadMasks
+        )
+
+        let snapshot = catalog.residencySnapshot()
+        let expectedPages = manifest.pages.filter {
+            $0.lod == CameraDetailLevel.block.assetSuffix
+                || $0.lod == CameraDetailLevel.neighborhood.assetSuffix
+        }
+        XCTAssertEqual(snapshot.packID, "generated-v4-calibration")
+        XCTAssertNotNil(snapshot.manifestSHA256)
+        XCTAssertEqual(snapshot.activeDetail, .block)
+        XCTAssertEqual(snapshot.prefetchedDetail, .neighborhood)
+        XCTAssertEqual(snapshot.residentTextureCount, expectedPages.count)
+        XCTAssertEqual(
+            snapshot.residentDecodedBytes,
+            expectedPages.reduce(0) { $0 + $1.decodedByteEstimate }
+        )
+        XCTAssertLessThanOrEqual(snapshot.residentTextureCount, 4)
+        XCTAssertLessThanOrEqual(snapshot.highWaterDecodedBytes, 128 * 1_024 * 1_024)
+        XCTAssertEqual(snapshot.fallbackCount, 0)
+        XCTAssertEqual(snapshot.fallbackDiagnostics, [])
+    }
+
+    @MainActor
+    func testGeneratedWorldMissingLogicalAssetEmitsBoundedExplicitDiagnostic() {
+        let catalog = WorldAssetCatalog()
+
+        XCTAssertNil(catalog.generatedSprite(logicalID: "missing-production-asset", detail: .block))
+        XCTAssertNil(catalog.generatedSprite(logicalID: "missing-production-asset", detail: .block))
+
+        let snapshot = catalog.residencySnapshot()
+        XCTAssertEqual(snapshot.fallbackCount, 2)
+        XCTAssertEqual(snapshot.fallbackDiagnostics, ["unknown logical asset missing-production-asset"])
+        XCTAssertLessThanOrEqual(snapshot.fallbackDiagnostics.count, 32)
+    }
+
+    @MainActor
+    func testGeneratedWorldLegacyRollbackIsExplicitAndDoesNotChangeStateContracts() {
+        let catalog = WorldAssetCatalog(
+            packOverride: "legacy-v2",
+            environment: [:]
+        )
+
+        XCTAssertEqual(catalog.selectedPackID, "legacy-v2")
+        XCTAssertNil(catalog.generatedManifest)
+        XCTAssertNil(catalog.generatedSprite(logicalID: "residential_l01", detail: .block))
+        XCTAssertNotNil(catalog.texture(named: "terrain_grass_0"))
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+    }
+
+    @MainActor
+    func testGeneratedWorldUnknownPackOverrideFailsExplicitly() {
+        let catalog = WorldAssetCatalog(
+            packOverride: "unknown-pack",
+            environment: [:]
+        )
+
+        XCTAssertNil(catalog.generatedManifest)
+        let snapshot = catalog.residencySnapshot()
+        XCTAssertEqual(snapshot.packID, "generated-v4-calibration")
+        XCTAssertEqual(snapshot.fallbackCount, 1)
+        XCTAssertEqual(snapshot.fallbackDiagnostics, ["unknown pack override unknown-pack"])
+    }
+
+    @MainActor
+    func testGeneratedWorldProductionBundleLoadsPagesInsteadOfUnpackedPayloads() throws {
+        let catalog = WorldAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+        XCTAssertEqual(manifest.pages.count, 4)
+        XCTAssertNil(catalog.texture(named: "generated_v4_residential_l01_block"))
+        XCTAssertNotNil(catalog.generatedPresentation(logicalID: "residential_l01", detail: .block))
+        let snapshot = catalog.residencySnapshot()
+        XCTAssertEqual(snapshot.residentTextureCount, 1)
+        XCTAssertEqual(snapshot.textureDecodeLoadCount, 2)
+        XCTAssertEqual(snapshot.fallbackCount, 0)
+    }
+
+    @MainActor
     func testAuthoredRoadAtlasCoversEveryMaskAndFrontagesFaceConnectedRoads() {
         let catalog = WorldAssetCatalog()
         let style = WorldVisualStyle()
         let roads = RoadRenderer(style: style, assets: catalog)
 
         for mask in RoadConnectionMask.allMasks {
-            let assetName = String(format: "generated_v4_road_mask_%02d_block", mask.rawValue)
-            XCTAssertNotNil(catalog.texture(named: assetName))
+            XCTAssertNotNil(catalog.generatedRoadSprite(connectionMask: mask.rawValue, detail: .block))
             let root = roads.makeRoad(
                 at: GridCoordinate(x: 4, y: 4),
                 connections: mask,

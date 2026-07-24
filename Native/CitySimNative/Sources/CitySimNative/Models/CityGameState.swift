@@ -70,8 +70,16 @@ struct CityGameState: Codable, Equatable, Sendable {
         func set(_ x: Int, _ y: Int, _ kind: BuildingKind) {
             tiles[y * width + x].kind = kind
         }
-        for x in 4..<20 { set(x, 12, .road) }
-        for y in 8..<17 { set(12, y, .road) }
+        for x in 4..<17 {
+            set(x, 9, .road)
+            set(x, 12, .road)
+        }
+        for y in 9...12 {
+            set(4, y, .road)
+            set(12, y, .road)
+            set(16, y, .road)
+        }
+
         set(11, 11, .cityHall)
         set(10, 11, .residential)
         set(9, 11, .residential)
@@ -79,17 +87,17 @@ struct CityGameState: Codable, Equatable, Sendable {
         set(14, 11, .industrial)
         set(11, 13, .park)
         set(13, 13, .powerPlant)
-        set(11, 14, .waterTower)
+        set(15, 13, .waterTower)
 
         return CityGameState(
             cityName: "New Arcadia", gridWidth: width, gridHeight: height,
-            tiles: tiles, tick: 0, treasury: 26_000, population: 300, jobs: 190,
+            tiles: tiles, tick: 0, treasury: 32_000, population: 300, jobs: 190,
             happiness: 58, approval: 56, powerUsed: 246, powerCapacity: 300,
             waterUsed: 222, waterCapacity: 270, taxRate: 0.10,
             demand: DemandLevels(residential: 0.72, commercial: 0.68, industrial: 0.56),
             messages: [CityMessage(tick: 0, severity: .information,
                                    title: "A Town at the Crossroads",
-                                   detail: "New Arcadia is running a small deficit with only 54 power and 48 water spare. Add jobs and revenue, or secure utility headroom before growth exposes the shortfall.")],
+                                   detail: "New Arcadia's two-block starter district runs a $90 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.")],
             progression: CityProgressionState(), status: .playing, seed: seed
         )
     }

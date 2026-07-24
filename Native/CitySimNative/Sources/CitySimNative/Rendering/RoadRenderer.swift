@@ -290,6 +290,7 @@ final class RoadRenderer {
             addStreetFurniture(
                 at: coordinate,
                 topology: topology,
+                emphasis: emphasis,
                 reducedMotion: reducedMotion,
                 to: blockLayer
             )
@@ -523,45 +524,70 @@ final class RoadRenderer {
         onUnconnectedSideOf connectedEdge: RoadConnectionMask,
         to layer: SKNode
     ) {
-        // A single connected edge is a real landscaped turning head, never an
-        // unexplained rounded texture cap or a promise of an unbuilt road.
+        // A single connected edge is a real paved turning head wholly contained
+        // by the authoritative road cell. It never paints a continuation,
+        // frontage, plaza, or occupancy cue onto the neighboring empty cell.
         let connectedSocket = style.roadSocket(for: connectedEdge)
         let center = CGPoint(
             x: -connectedSocket.x * 0.30,
             y: -connectedSocket.y * 0.30
         )
 
-        let shadow = SKShapeNode(path: style.diamondPath(width: 19, height: 9.5))
-        shadow.name = "road.terminus.landscaped-shadow"
+        let shadow = SKShapeNode(path: style.diamondPath(width: 21, height: 10.5))
+        shadow.name = "road.terminus.paved-shadow"
         shadow.fillColor = NSColor.black.withAlphaComponent(0.20)
         shadow.strokeColor = .clear
         shadow.position = CGPoint(x: center.x + 1.2, y: center.y - 1.2)
         shadow.zPosition = 4
         layer.addChild(shadow)
 
-        let island = SKShapeNode(path: style.diamondPath(width: 16, height: 8))
-        island.name = "road.terminus.landscaped-island"
-        island.fillColor = style.palette.parkGrass
-        island.strokeColor = style.palette.curb.withAlphaComponent(0.95)
-        island.lineWidth = 1.1
-        island.position = center
-        island.zPosition = 5
-        layer.addChild(island)
+        let apron = SKShapeNode(path: style.diamondPath(width: 19, height: 9.5))
+        apron.name = "road.terminus.paved-apron"
+        apron.fillColor = style.palette.asphalt
+        apron.strokeColor = style.palette.curb.withAlphaComponent(0.95)
+        apron.lineWidth = 1.2
+        apron.position = center
+        apron.zPosition = 5
+        layer.addChild(apron)
 
-        let reflectorPath = CGMutablePath()
-        reflectorPath.move(to: CGPoint(x: -4, y: 0))
-        reflectorPath.addLine(to: CGPoint(x: 0, y: -2))
-        reflectorPath.addLine(to: CGPoint(x: 4, y: 0))
-        let reflector = SKShapeNode(path: reflectorPath)
-        reflector.name = "road.terminus.reflective-chevron"
-        reflector.fillColor = .clear
-        reflector.strokeColor = style.palette.laneMark.withAlphaComponent(0.94)
-        reflector.lineWidth = 1.1
-        reflector.lineCap = .round
-        reflector.lineJoin = .round
-        reflector.position = CGPoint(x: center.x, y: center.y - 1)
-        reflector.zPosition = 6
-        layer.addChild(reflector)
+        let socketVector = normalized(connectedSocket)
+        let perpendicular = CGPoint(x: -socketVector.y, y: socketVector.x)
+        let barrierPath = WorldGeometryCache.line(
+            from: CGPoint(
+                x: center.x - perpendicular.x * 6,
+                y: center.y - perpendicular.y * 3
+            ),
+            to: CGPoint(
+                x: center.x + perpendicular.x * 6,
+                y: center.y + perpendicular.y * 3
+            )
+        )
+        let barrier = SKShapeNode(path: barrierPath)
+        barrier.name = "road.terminus.authenticated-barrier"
+        barrier.fillColor = .clear
+        barrier.strokeColor = style.palette.crosswalk.withAlphaComponent(0.90)
+        barrier.lineWidth = 1.6
+        barrier.lineCap = .butt
+        barrier.position = CGPoint(
+            x: -socketVector.x * 1.4,
+            y: -socketVector.y * 0.7
+        )
+        barrier.zPosition = 6
+        layer.addChild(barrier)
+
+        for side: CGFloat in [-1, 1] {
+            let bollard = SKShapeNode(rectOf: CGSize(width: 1.8, height: 5.2), cornerRadius: 0.4)
+            bollard.name = "road.terminus.authenticated-bollard"
+            bollard.fillColor = style.palette.curb
+            bollard.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.55)
+            bollard.lineWidth = 0.4
+            bollard.position = CGPoint(
+                x: center.x + perpendicular.x * 7 * side,
+                y: center.y + perpendicular.y * 3.5 * side + 2
+            )
+            bollard.zPosition = 7
+            layer.addChild(bollard)
+        }
     }
 
     private func addStopLine(on edge: RoadConnectionMask, to layer: SKNode) {
@@ -599,11 +625,17 @@ final class RoadRenderer {
     private func addStreetFurniture(
         at coordinate: GridCoordinate,
         topology: RoadTopology,
+        emphasis: ContextEmphasis,
         reducedMotion: Bool,
         to layer: SKNode
     ) {
         guard topology.classification != .isolated else { return }
-        let variant = WorldVisualSeed.variant(count: 12, for: coordinate, kind: .road, salt: 0x51)
+        let variant = WorldVisualSeed.variant(
+            count: emphasis == .developed ? 4 : 10,
+            for: coordinate,
+            kind: .road,
+            salt: 0x51
+        )
         guard variant == 0 else { return }
 
         let edge = topology.mask.edges[variant % topology.mask.edges.count]
@@ -617,6 +649,7 @@ final class RoadRenderer {
         )
 
         let post = SKShapeNode(rectOf: CGSize(width: 1.4, height: 8), cornerRadius: 0.5)
+        post.name = "road.public-realm.lamp"
         post.fillColor = NSColor(calibratedWhite: 0.23, alpha: 1)
         post.strokeColor = .clear
         post.position = CGPoint(x: anchor.x, y: anchor.y + 4)
@@ -629,6 +662,7 @@ final class RoadRenderer {
         layer.addChild(post)
 
         let hydrant = SKShapeNode(rectOf: CGSize(width: 3.6, height: 4.2), cornerRadius: 1)
+        hydrant.name = "road.public-realm.hydrant"
         hydrant.fillColor = NSColor(calibratedRed: 0.62, green: 0.25, blue: 0.18, alpha: 1)
         hydrant.strokeColor = NSColor.white.withAlphaComponent(0.16)
         hydrant.position = CGPoint(x: anchor.x + 5, y: anchor.y - 1)

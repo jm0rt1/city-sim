@@ -9,7 +9,7 @@
 - **Planned surfaces:** platform-owned current fingerprints, deterministic story fixture generation and resources, save/recovery/replay/undo/snapshot tests, diagnostics, and evidence
 - **Dependencies:** exact frozen PLAY-016 gameplay checkpoint supplied by integration; accepted PLAY-047 fixture system
 - **Validation/proof:** authentic legacy preservation, repeatable current fingerprints, byte-identical eight-state corpus generation, save/backup/replay/undo/snapshot/grouped-speed agreement, budgets, and full native suite
-- **Status:** authorized to synchronize and inspect; implementation waits for the frozen PLAY-016 checkpoint
+- **Status:** ready for integration at the completion candidate reported by the simulation-platform handoff
 
 Adopt—do not redesign—the richer gameplay-owned opening into deterministic
 runtime trust. Explain every current-state digest change while preserving

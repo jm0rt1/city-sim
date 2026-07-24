@@ -12,11 +12,12 @@ final class AmbientLifeRenderer {
         self.assets = assets
     }
 
-    /// Creates a bounded five-anchor corridor vignette for the visible city:
-    /// two pedestrian pairs, one parked maintenance object, and five
-    /// vegetation clusters. Each semantic source is descriptor-driven
-    /// generated-v4 art. Normal motion contributes at most two actions;
-    /// Reduce Motion contributes none.
+    /// Creates a bounded corridor vignette plus a truth-safe vacant-land
+    /// vegetation base. Every vegetation coordinate remains authoritative
+    /// `.empty` state and is kept away from roads, so the landscape cannot read
+    /// as an invented street, frontage, plaza, service, or occupied parcel.
+    /// Each semantic source is descriptor-driven generated-v4 art. Normal
+    /// motion contributes at most two actions; Reduce Motion contributes none.
     func makeCorridorLife(
         in state: CityGameState,
         detail: CameraDetailLevel,
@@ -30,6 +31,9 @@ final class AmbientLifeRenderer {
         }
         let developedCoordinates = completed.map(\.coordinate)
         guard !developedCoordinates.isEmpty else { return root }
+        let roadCoordinates = Set(state.tiles.compactMap {
+            $0.kind == .road ? $0.coordinate : nil
+        })
 
         let candidateRoads = state.tiles.filter { tile in
             guard tile.kind == .road else { return false }
@@ -113,7 +117,129 @@ final class AmbientLifeRenderer {
                 root.addChild(vignette)
             }
         }
+        addVacantLandscape(
+            in: state,
+            developedCoordinates: developedCoordinates,
+            roadCoordinates: roadCoordinates,
+            detail: detail,
+            excluding: occupiedVegetationCoordinates,
+            to: root
+        )
         return root
+    }
+
+    private func addVacantLandscape(
+        in state: CityGameState,
+        developedCoordinates: [GridCoordinate],
+        roadCoordinates: Set<GridCoordinate>,
+        detail: CameraDetailLevel,
+        excluding occupied: Set<GridCoordinate>,
+        to root: SKNode
+    ) {
+        // Keep one semantic set across camera changes. Generated-v4 source
+        // detail and the terrain material layers provide LOD meaning; changing
+        // entity quantity would defeat incremental reuse and residency.
+        let limit = 16
+        let candidates = state.tiles.compactMap { tile -> GridCoordinate? in
+            guard tile.kind == .empty, !occupied.contains(tile.coordinate) else { return nil }
+            let roadDistance = roadCoordinates.map {
+                abs($0.x - tile.coordinate.x) + abs($0.y - tile.coordinate.y)
+            }.min() ?? .max
+            let developedDistance = developedCoordinates.map {
+                abs($0.x - tile.coordinate.x) + abs($0.y - tile.coordinate.y)
+            }.min() ?? .max
+            // Field groves are visibly undeveloped landscape, not street trees
+            // or implied frontages. Keep them within the developed camera's
+            // honest expansion context but outside the road edge.
+            guard roadDistance >= 2, developedDistance >= 3, developedDistance <= 8 else {
+                return nil
+            }
+            return tile.coordinate
+        }
+        let anchors = distributedVacantAnchors(
+            from: candidates,
+            developedCoordinates: developedCoordinates,
+            limit: limit
+        )
+        guard !anchors.isEmpty else { return }
+
+        let landscape = SKNode()
+        landscape.name = "world.environment.vacant-landscape"
+        for coordinate in anchors {
+            let semanticName = "world.environment.vacant-grove.\(coordinate.x).\(coordinate.y)"
+            guard let grove = generatedDecoration(
+                logicalID: "ambient_vegetation_cluster",
+                semanticName: semanticName,
+                detail: detail,
+                position: style.isoPosition(coordinate),
+                zPosition: style.depth(for: coordinate) + 46
+            ) else { continue }
+            let meadow = SKShapeNode(path: style.diamondPath(width: 48, height: 24))
+            meadow.name = "\(semanticName).undeveloped-meadow"
+            meadow.fillColor = NSColor(
+                calibratedRed: 0.28,
+                green: 0.43,
+                blue: 0.22,
+                alpha: 0.34
+            )
+            meadow.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.16)
+            meadow.lineWidth = 0.7
+            meadow.position = CGPoint(x: -1, y: -3)
+            meadow.zPosition = -2
+            grove.addChild(meadow)
+            let contact = SKShapeNode(ellipseOf: CGSize(width: 31, height: 9))
+            contact.name = "\(semanticName).ground-contact"
+            contact.fillColor = NSColor.black.withAlphaComponent(0.16)
+            contact.strokeColor = .clear
+            contact.position = CGPoint(x: 2, y: -5)
+            contact.zPosition = -1
+            grove.addChild(contact)
+            let scale = 0.62 + 0.16 * WorldVisualSeed.unit(
+                for: coordinate,
+                kind: .empty,
+                salt: 0x6A24
+            )
+            grove.setScale(scale)
+            landscape.addChild(grove)
+        }
+        if !landscape.children.isEmpty {
+            root.addChild(landscape)
+        }
+    }
+
+    private func distributedVacantAnchors(
+        from candidates: [GridCoordinate],
+        developedCoordinates: [GridCoordinate],
+        limit: Int
+    ) -> [GridCoordinate] {
+        guard limit > 0, !candidates.isEmpty else { return [] }
+        let ordered = candidates.sorted { lhs, rhs in
+            let lhsDistance = developedCoordinates.map { developed in
+                abs(developed.x - lhs.x) + abs(developed.y - lhs.y)
+            }.min() ?? .max
+            let rhsDistance = developedCoordinates.map { developed in
+                abs(developed.x - rhs.x) + abs(developed.y - rhs.y)
+            }.min() ?? .max
+            if lhsDistance != rhsDistance { return lhsDistance < rhsDistance }
+            let lhsSeed = WorldVisualSeed.value(for: lhs, kind: .empty, salt: 0x6A25)
+            let rhsSeed = WorldVisualSeed.value(for: rhs, kind: .empty, salt: 0x6A25)
+            if lhsSeed == rhsSeed { return (lhs.y, lhs.x) < (rhs.y, rhs.x) }
+            return lhsSeed < rhsSeed
+        }
+        var selected: [GridCoordinate] = []
+        for candidate in ordered where selected.count < min(limit, ordered.count) {
+            guard selected.allSatisfy({
+                abs($0.x - candidate.x) + abs($0.y - candidate.y) >= 2
+            }) else { continue }
+            selected.append(candidate)
+        }
+        if selected.count < min(limit, ordered.count) {
+            for candidate in ordered where selected.count < min(limit, ordered.count) {
+                guard !selected.contains(candidate) else { continue }
+                selected.append(candidate)
+            }
+        }
+        return selected
     }
 
     private func corridorAnchors(

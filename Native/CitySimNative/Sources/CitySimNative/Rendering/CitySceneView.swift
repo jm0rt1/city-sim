@@ -129,6 +129,16 @@ struct CitySceneView: NSViewRepresentable {
             interactionMode: store.interactionMode,
             activeActionTarget: store.activeMapActionTargetPresentation
         )
+        // The representable's first update can render before AppKit has
+        // delivered its final map aperture. Reapply the same authoritative
+        // developed-bounds camera once after that initial render so a cold
+        // staged launch cannot remain at the toy-island city scale. This is
+        // identical to the existing player-invoked Frame Developed City route
+        // and never changes topology or simulation truth.
+        if !context.coordinator.hasFramedInitialState {
+            context.coordinator.hasFramedInitialState = true
+            scene.frameCity()
+        }
     }
 
     @MainActor
@@ -140,6 +150,7 @@ struct CitySceneView: NSViewRepresentable {
         var viewportInsets: CityMapViewportInsets = .zero
         weak var scene: CityScene?
         private(set) var previousCommandPolicy: CityCommandPolicy
+        var hasFramedInitialState = false
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
         private(set) var observedMapFocusRequestGeneration: UInt

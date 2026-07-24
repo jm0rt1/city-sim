@@ -106,8 +106,8 @@ struct ContentView: View {
         chromeFrames: CityHUDChromeFrames
     ) -> CityMapViewportInsets {
         let edgePadding = compact ? GameTheme.compactPadding : GameTheme.regularPadding
-        let fallbackTop: CGFloat = compact ? 126 : 82
-        let fallbackBottom: CGFloat = compact ? 132 : 126
+        let fallbackTop: CGFloat = compact ? 136 : 136
+        let fallbackBottom: CGFloat = compact ? 116 : 116
         let measuredTop = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY + 10
         let measuredBottom = chromeFrames.bottom.isEmpty ? 0 : windowSize.height - chromeFrames.bottom.minY + 10
         return CityMapViewportInsets(

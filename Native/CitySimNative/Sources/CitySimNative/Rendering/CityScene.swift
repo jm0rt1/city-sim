@@ -86,6 +86,7 @@ private struct InteractionPreviewSignature: Equatable {
 private struct AmbientCorridorSignature: Equatable {
     let developedCoordinates: [GridCoordinate]
     let roadCoordinates: [GridCoordinate]
+    let vacantCoordinates: [GridCoordinate]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
     let motionEnabled: Bool
@@ -755,6 +756,7 @@ final class CityScene: SKScene {
                     : nil
             },
             roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil },
+            vacantCoordinates: state.tiles.compactMap { $0.kind == .empty ? $0.coordinate : nil },
             detail: currentCameraDetailLevel,
             reducedMotion: reducedMotion,
             motionEnabled: ambientMotionEnabled
@@ -801,7 +803,11 @@ final class CityScene: SKScene {
                 : runtimeTreeMetrics(backdropLayer)
             renderedGridSize = gridSize
             backdropLayer.removeAllChildren()
-            backdropLayer.addChild(terrainRenderer.makeBackdrop(gridWidth: state.gridWidth, gridHeight: state.gridHeight))
+            backdropLayer.addChild(terrainRenderer.makeBackdrop(
+                gridWidth: state.gridWidth,
+                gridHeight: state.gridHeight,
+                detail: currentCameraDetailLevel
+            ))
             if let priorBackdropMetrics {
                 applyRuntimeDelta(
                     from: priorBackdropMetrics,
@@ -1501,6 +1507,7 @@ final class CityScene: SKScene {
             updateGeneratedLOD(in: record.root, detail: detail)
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
+        style.updateDetailVisibility(in: backdropLayer, detail: detail)
         let ambientChanged = renderedState.map { updateAmbientCorridor(in: $0) } ?? false
         if preservingUpdateDiagnostics {
             diagnosticsSnapshot.detailLevel = detail
@@ -1815,7 +1822,11 @@ final class CityScene: SKScene {
         // settlement back into the rejected toy-island scale.
         let isCompact = size.width <= 900 || size.height <= 600
         let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.82
-        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.28
+        // The authoritative two-block opening is taller than the retired
+        // one-cross fixture. Give that real vertical mass the same under-chrome
+        // breathing room as its horizontal frontage so the new district does
+        // not regress to a smaller default composition.
+        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.36
         var scale = max(
             cameraBounds.width / (safeWidth * targetWidthOccupancy),
             cameraBounds.height / (safeHeight * allowedHeightOccupancy)

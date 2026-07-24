@@ -1,5 +1,5 @@
 {
-  "digest" : "37c1cf4e620c8af5741fd9f4b4acfa9b7976d49f6149ec88475ac2b260f1529e",
+  "digest" : "a43611573cd888edba5292b9740b8a4e15f05e9cfd50edf73648427eaf775c5a",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
@@ -79,7 +79,7 @@
         "title" : "Neighborhood Upgraded"
       },
       {
-        "detail" : "Operations are projected to use $61 per cycle. Add taxable activity or accept the happiness cost of a temporary tax increase.",
+        "detail" : "Operations are projected to use $90 per cycle. Add taxable activity or accept the happiness cost of a temporary tax increase.",
         "id" : "4-Budget Gap",
         "severity" : "warning",
         "tick" : 4,
@@ -93,7 +93,7 @@
         "title" : "Town Charter Standards"
       },
       {
-        "detail" : "New Arcadia is running a small deficit with only 54 power and 48 water spare. Add jobs and revenue, or secure utility headroom before growth exposes the shortfall.",
+        "detail" : "New Arcadia's two-block starter district runs a $90 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.",
         "id" : "0-A Town at the Crossroads",
         "severity" : "information",
         "tick" : 0,
@@ -2104,6 +2104,182 @@
           "x" : 12,
           "y" : 7
         },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 13,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 14,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 15,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 16,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 17,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 18,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 19,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 20,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 21,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 22,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 23,
+          "y" : 7
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 0,
+          "y" : 8
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 1,
+          "y" : 8
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 2,
+          "y" : 8
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 3,
+          "y" : 8
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 4,
+          "y" : 8
+        },
         "kind" : "industrial",
         "level" : 1,
         "occupancy" : 77
@@ -2112,182 +2288,6 @@
         "condition" : 1,
         "constructionProgress" : 1,
         "coordinate" : {
-          "x" : 13,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 14,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 15,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 16,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 17,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 18,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 19,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 20,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 21,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 22,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 23,
-          "y" : 7
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 0,
-          "y" : 8
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 1,
-          "y" : 8
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 2,
-          "y" : 8
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 3,
-          "y" : 8
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 4,
-          "y" : 8
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
           "x" : 5,
           "y" : 8
         },
@@ -2368,7 +2368,7 @@
           "x" : 12,
           "y" : 8
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2544,7 +2544,7 @@
           "x" : 4,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2555,7 +2555,7 @@
           "x" : 5,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2566,7 +2566,7 @@
           "x" : 6,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2577,7 +2577,7 @@
           "x" : 7,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2588,7 +2588,7 @@
           "x" : 8,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2599,7 +2599,7 @@
           "x" : 9,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2610,7 +2610,7 @@
           "x" : 10,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2621,7 +2621,7 @@
           "x" : 11,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2643,7 +2643,7 @@
           "x" : 13,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2654,7 +2654,7 @@
           "x" : 14,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2665,7 +2665,7 @@
           "x" : 15,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2676,7 +2676,7 @@
           "x" : 16,
           "y" : 9
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2808,7 +2808,7 @@
           "x" : 4,
           "y" : 10
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -2940,7 +2940,7 @@
           "x" : 16,
           "y" : 10
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3072,7 +3072,7 @@
           "x" : 4,
           "y" : 11
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3204,7 +3204,7 @@
           "x" : 16,
           "y" : 11
         },
-        "kind" : "empty",
+        "kind" : "road",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3479,7 +3479,7 @@
           "x" : 17,
           "y" : 12
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3490,7 +3490,7 @@
           "x" : 18,
           "y" : 12
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3501,7 +3501,7 @@
           "x" : 19,
           "y" : 12
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3688,7 +3688,7 @@
           "x" : 12,
           "y" : 13
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -3721,226 +3721,6 @@
           "x" : 15,
           "y" : 13
         },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 16,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 17,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 18,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 19,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 20,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 21,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 22,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 23,
-          "y" : 13
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 0,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 1,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 2,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 3,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 4,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 5,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 6,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 7,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 8,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 9,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 10,
-          "y" : 14
-        },
-        "kind" : "empty",
-        "level" : 1,
-        "occupancy" : 0
-      },
-      {
-        "condition" : 1,
-        "constructionProgress" : 1,
-        "coordinate" : {
-          "x" : 11,
-          "y" : 14
-        },
         "kind" : "waterTower",
         "level" : 1,
         "occupancy" : 0
@@ -3949,10 +3729,230 @@
         "condition" : 1,
         "constructionProgress" : 1,
         "coordinate" : {
+          "x" : 16,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 17,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 18,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 19,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 20,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 21,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 22,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 23,
+          "y" : 13
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 0,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 1,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 2,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 3,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 4,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 5,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 6,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 7,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 8,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 9,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 10,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
+          "x" : 11,
+          "y" : 14
+        },
+        "kind" : "empty",
+        "level" : 1,
+        "occupancy" : 0
+      },
+      {
+        "condition" : 1,
+        "constructionProgress" : 1,
+        "coordinate" : {
           "x" : 12,
           "y" : 14
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -4216,7 +4216,7 @@
           "x" : 12,
           "y" : 15
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -4480,7 +4480,7 @@
           "x" : 12,
           "y" : 16
         },
-        "kind" : "road",
+        "kind" : "empty",
         "level" : 1,
         "occupancy" : 0
       },
@@ -6454,7 +6454,7 @@
         "occupancy" : 0
       }
     ],
-    "treasury" : 28958.399999999998,
+    "treasury" : 34036.8,
     "waterCapacity" : 270,
     "waterUsed" : 256
   }

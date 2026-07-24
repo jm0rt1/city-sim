@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "task": "PLAY-022",
+  "scope": "round-1b-production-geometry-and-road-seams",
+  "candidate": {
+    "branch": "codex/citysim-world-rendering",
+    "commit": "fc8b838d6d33ee8091ce6c54c125ea0cee279f5b",
+    "tree": "1277422dabd28c67469b11516ba06692f978bc1a",
+    "subject": "PLAY-022: Bound SpriteKit render surfaces"
+  },
+  "collision_report": {
+    "result": "pass",
+    "exit_code": 0,
+    "schema": 2,
+    "asset_count": 12,
+    "inventory_count": 84,
+    "manifest_sha256": "900287027256d7f5ea960b7b17c9208f3ff990de532feb87448eb01328076e78",
+    "reciprocal_ground_checks": 324,
+    "reciprocal_ground_collisions": 0,
+    "building_road_setback_checks": 36,
+    "building_road_collisions": 0,
+    "entrance_prop_exclusion_neighbor_checks": 256,
+    "entrance_prop_exclusion_collisions": 0,
+    "orphan_inventory_entries": 0,
+    "missing_inventory_references": 0,
+    "failures": 0,
+    "repeated_lod_cycle_high_water_decoded_bytes": 13521048
+  },
+  "road_seam_test": {
+    "result": "pass",
+    "exit_code": 0,
+    "tests_executed": 1,
+    "failures": 0,
+    "duration_seconds": 0.289,
+    "semantic_lods": [
+      "city",
+      "neighborhood",
+      "block"
+    ],
+    "connection_masks_per_lod": 16,
+    "rendered_cells": 48,
+    "generated_v4_road_fallbacks": 0,
+    "active_actions": 0,
+    "restricted_host_attempt": {
+      "result": "environment_failure",
+      "exit_code": 1,
+      "xctest_signal": 11,
+      "artifact_exported": false,
+      "log": "road-seam-focused-test.sandbox-attempt.log"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "production-geometry-report.json",
+      "mime": "application/json",
+      "bytes": 20213,
+      "sha256": "29621f9f053000a12d11f4131aeea09a3a04ecd142f14d2de9b8d3764a5bca12"
+    },
+    {
+      "path": "production-geometry-validator.log",
+      "mime": "application/json",
+      "bytes": 20213,
+      "sha256": "29621f9f053000a12d11f4131aeea09a3a04ecd142f14d2de9b8d3764a5bca12"
+    },
+    {
+      "path": "road-topology-seam-mosaic.png",
+      "mime": "image/png",
+      "pixel_width": 2400,
+      "pixel_height": 680,
+      "pixel_format": "8-bit RGBA non-interlaced",
+      "bytes": 131089,
+      "sha256": "8931b8a7d02cecddc3cc60f03bc0100352f754bc1a9671f65e289a5f77f87af4"
+    },
+    {
+      "path": "road-seam-focused-test.log",
+      "mime": "text/plain",
+      "bytes": 1216,
+      "sha256": "1bada2a344f2438cf6b098c9f794d7ca8aeb1f94be69f2dff6519bed2c5bfe55"
+    },
+    {
+      "path": "road-seam-focused-test.sandbox-attempt.log",
+      "mime": "text/plain",
+      "bytes": 5136,
+      "sha256": "ed505b5168da96eefb5301d87c66f4e14f78642064239b5bd48aff6d666d8f49"
+    }
+  ],
+  "boundary": "Renderer-harness geometry evidence only; no product, contract, claim, staged-app, canonical GUI, interaction, memory, or independent visual-acceptance claim."
+}

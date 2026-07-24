@@ -1,0 +1,69 @@
+Window: "CitySim", App: CitySim [World w5f893ad1da1b].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 16, ID: hud.city.identity
+		3 progress indicator Description: Show objectives, Help: Close the $50 operating gap, Value: 0.8011999999999998, ID: hud.objective.summary
+		4 container City status
+			5 unknown Description: Treasury, Details: $25,007, -$50 / cycle, ID: hud.metric.treasury
+			6 unknown Description: Residents, Details: 315, 0 homes open, ID: hud.metric.population
+			7 unknown Description: Happiness, Details: 62%, 100% mayor approval, ID: hud.metric.happiness
+			8 unknown Description: Jobs filled, Details: 190, 0 openings, ID: hud.metric.employment
+			9 unknown Description: Utilities, Details: 100%, P 43 · W 38 spare, ID: hud.metric.utilities
+		10 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		11 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		12 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		13 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		14 button Description: Open city notices, Value: 7 notices, highest severity warning, ID: hud.notices
+		15 text (selected) Utilities layer legend
+		16 container City command deck with details open
+			17 button (selected) Description: Inspect mode, Value: Selected
+			18 button Description: Build mode, Value: Not selected
+			19 button Description: Bulldoze mode, Value: Not selected
+			20 button Description: Roads build category, Value: Selected
+			21 button Description: Zones build category, Value: Not selected
+			22 button Description: Utilities build category, Value: Not selected
+			23 button Description: Services build category, Value: Not selected
+			24 button Description: Civic build category, Value: Not selected
+			25 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			26 button Description: Close command-center details, Value: Open, ID: hud.command.details
+			27 menu button Layer: Utilities, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: Utilities, ID: bolt.horizontal
+			28 container Selected block command center, Road, block 14, 13
+				29 text Road
+				30 text Block 14, 13
+				31 button Show citywide data and keep block selected
+				32 button Description: Show Overview, Help: Overview, Value: Not selected, ID: hud.context.section.overview
+				33 button Description: Show Finances, Help: Finances, Value: Not selected, ID: hud.context.section.finances
+				34 button Description: Show Population, Help: Population, Value: Not selected, ID: hud.context.section.population
+				35 button Description: Show Happiness, Help: Happiness, Value: Not selected, ID: hud.context.section.happiness
+				36 button Description: Show Employment, Help: Employment, Value: Not selected, ID: hud.context.section.employment
+				37 button Description: Show Demand, Help: Demand, Value: Not selected, ID: hud.context.section.demand
+				38 button Description: Show Utilities, Help: Utilities, Value: Not selected, ID: hud.context.section.utilities
+				39 button Description: Show Journal, Help: Journal, Value: Not selected, ID: hud.context.section.journal
+				40 button Description: Close command-center details, ID: hud.context.close
+				41 collection Secondary Actions: AXScrollToTop, AXScrollToBottom
+					42 text IDENTITY Type, Road Level, 1 Operational STATUS Condition, 100% Connected street segment supporting nearby development. OPERATIONS Upkeep, $2 / cycle Road, Not required NEXT ACTION Demolition, $50
+					43 button City data
+					44 button Description: Demolish Road for $50, Help: Demolition costs $50. Undo is available after activation.
+		45 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Road at block 14, 13, Value: Selected Road, block 14, 13. Utilities overlay active. Primary action: Inspect Road at block 14, 13. Available. Opens details for the selected target.
+	46 toolbar
+		47 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		48 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		49 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		50 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		51 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	52 close button
+	53 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	54 minimize button
+	55 text CitySim
+56 menu bar
+	57 CitySim [World w5f893ad1da1b]
+	58 File
+	59 Edit
+	60 View
+	61 Simulation
+	62 Tools
+	63 City Data
+	64 Window
+	65 Help
+
+The focused UI element is 45 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Road at block 14, 13, Value: Selected Road, block 14, 13. Utilities overlay active. Primary action: Inspect Road at block 14, 13. Available. Opens details for the selected target.

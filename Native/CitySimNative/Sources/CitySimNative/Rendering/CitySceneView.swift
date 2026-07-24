@@ -10,6 +10,7 @@ final class CityMapSKView: SKView {
     var cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
     var cityAccessibilityActions: [NSAccessibilityCustomAction] = []
 
+    override func accessibilityRole() -> NSAccessibility.Role? { .group }
     override func accessibilityLabel() -> String? { cityAccessibilityLabel }
     override func accessibilityValue() -> Any? { cityAccessibilityValue }
     override func accessibilityHelp() -> String? { cityAccessibilityHelp }
@@ -48,13 +49,31 @@ struct CitySceneView: NSViewRepresentable {
         let view = CityMapSKView(frame: .zero)
         view.preferredFramesPerSecond = 60
         view.ignoresSiblingOrder = true
+        // This scene is strictly 2D. Aligning with Core Animation and omitting
+        // depth/stencil prevents redundant backing-scale render targets while
+        // preserving the requested display cadence.
+        view.isAsynchronous = false
+        view.shouldCullNonVisibleNodes = true
+        view.disableDepthStencilBuffer = true
         let diagnosticsEnabled = ProcessInfo.processInfo.arguments.contains("--renderer-diagnostics") ||
             UserDefaults.standard.bool(forKey: "showRendererDiagnostics")
         view.showsFPS = diagnosticsEnabled
         view.showsNodeCount = diagnosticsEnabled
         view.showsDrawCount = diagnosticsEnabled
         let scene = CityScene(size: CGSize(width: 1280, height: 800))
-        scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.primaryAction(at: coordinate) }
+        scene.onActiveActionTargetCandidate = { [weak coordinator = context.coordinator, weak view] coordinate in
+            guard let coordinator, let view,
+                  coordinator.allowsPointerMapActionCandidate(in: view) else { return nil }
+            return coordinator.store.acceptPointerMapActionCandidate(coordinate)
+        }
+        scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in
+            guard let coordinator else { return }
+            if coordinator.store.interactionMode == .inspect {
+                coordinator.store.primaryAction(at: coordinate)
+            } else if coordinator.store.selectedCoordinate == coordinate {
+                coordinator.store.performMapCommand(.mapPrimaryAction)
+            }
+        }
         scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.secondaryAction(at: coordinate) }
         scene.onCommandAction = { [weak coordinator = context.coordinator] command in
             guard let coordinator else { return }
@@ -94,6 +113,7 @@ struct CitySceneView: NSViewRepresentable {
         context.coordinator.configureMapAccessibility(in: view)
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
+        scene.updateViewportInsets(viewportInsets)
         let proofReducedMotion: Bool
 #if DEBUG
         proofReducedMotion = ProcessInfo.processInfo.environment["CITYSIM_REDUCE_MOTION_PROOF"] == "1"
@@ -106,7 +126,8 @@ struct CitySceneView: NSViewRepresentable {
             snapshot: snapshot,
             overlay: store.overlay,
             selection: store.selectedCoordinate,
-            interactionMode: store.interactionMode
+            interactionMode: store.interactionMode,
+            activeActionTarget: store.activeMapActionTargetPresentation
         )
     }
 
@@ -170,13 +191,39 @@ struct CitySceneView: NSViewRepresentable {
                 return
             }
 
-            let baseValue = "Selected \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
-            let primary = CityMapPrimaryActionPresentation.make(
-                interactionMode: store.interactionMode,
-                tile: tile,
-                state: store.state
-            )
-            var valueParts = [baseValue]
+            let activeCoordinate: String
+            switch store.interactionMode {
+            case .inspect:
+                activeCoordinate = "Selected \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+            case .build(let kind):
+                activeCoordinate = "Selected target, pending \(kind.title) placement at block \(coordinate.x + 1), \(coordinate.y + 1)"
+            case .bulldoze:
+                activeCoordinate = "Selected target, pending bulldoze at \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
+            }
+            guard let primary = store.activeMapActionTargetPresentation?.primaryAction else {
+                view.cityAccessibilityActions = []
+                return
+            }
+            var valueParts = [activeCoordinate]
+            if tile.kind != .empty && tile.kind != .road {
+                let presentation = LotConsequencePresentation(tile: tile)
+                if presentation.construction != .complete {
+                    valueParts.append(
+                        "Construction \(presentation.construction.label.lowercased()), " +
+                        "\(Int((tile.constructionProgress * 100).rounded())) percent"
+                    )
+                } else {
+                    let condition = switch presentation.condition {
+                    case .maintained: "maintained"
+                    case .weathered: "weathered"
+                    case .distressed: "distressed"
+                    }
+                    valueParts.append("Completed, \(condition) condition")
+                }
+            }
+            if store.overlay != .none {
+                valueParts.append("\(store.overlay.title) overlay active")
+            }
             if let snapshot = try? CityPresentationSnapshot(state: store.state),
                let diagnosis = CitySelectedLocationDiagnosis.make(tile: tile, snapshot: snapshot) {
                 valueParts.append(diagnosis.cause)
@@ -198,6 +245,12 @@ struct CitySceneView: NSViewRepresentable {
                 })
             }
             view.cityAccessibilityActions = actions
+        }
+
+        func allowsPointerMapActionCandidate(in view: CityMapSKView) -> Bool {
+            guard store.commandPolicy == .enabled else { return false }
+            let responder = view.window?.firstResponder
+            return !(responder is NSTextView) && !(responder is NSTextField)
         }
 
         private func enqueueFocusHandoff(in view: CityMapSKView) -> Bool {

@@ -1,0 +1,58 @@
+PLAY-052 combined 704784b compact AX observations
+
+Fresh Welcome quarantine:
+- Window: CitySim [UI wdbeadac6e0bd]
+- Only `Welcome to CitySim` and `Start Building` were exposed as gameplay
+  content.
+- Space, 1, 2, 3, B, V, Escape, Command+/ and a pointer attempt did not expose
+  or mutate gameplay state.
+
+Unified target reproduction:
+- Keyboard valid A: selected target, pending Residential placement at block
+  14,11.
+- Primary action: Build Residential at block 14,11.
+- Availability: available; costs $1,800 and $4 upkeep per cycle.
+- Pointer occupied B: selected target, pending Residential placement at block
+  14,12.
+- Primary action: Build Residential at block 14,12.
+- Availability: unavailable; demolish the existing structure before building
+  here.
+- Undo remained disabled and treasury remained $25,878 after the occupied
+  click.
+
+Valid activations:
+- Pointer built Residential at block 14,11 once and charged exactly $1,800.
+- Return built Residential at block 14,11 once and charged exactly $1,800.
+- AX custom action `Build Residential at block 14,11` built once and charged
+  exactly $1,800.
+- Space on the map retained its catalog meaning of pause/resume and performed
+  no spatial mutation.
+- With Full Keyboard Access enabled, Tab moved to the New Arcadia button and
+  Space opened Command Center once without changing the active block.
+
+Rejection and transition matrix:
+- Occupied Road at block 14,13: unavailable; demolish the existing structure
+  before building here.
+- Commercial at block 14,8: unavailable; this building needs direct road
+  access.
+- Road at block 14,9: available; costs $120 and $2 upkeep per cycle.
+- After the road was built once, the retained Commercial target at block 14,8
+  became available immediately and built once for $2,400.
+- Power Plant at block 15,9 with $11,044 treasury: unavailable; the city
+  treasury cannot fund this project.
+
+Surface and focus precedence:
+- Command Center and Objectives could coexist while retaining the selected
+  map target.
+- First Escape closed Command Center and retained Objectives.
+- Second Escape closed Objectives and restored map focus.
+- Command Guide search focused the semantic text field. Typing `taxb1`
+  remained text, produced `No Results`, and did not invoke tax, build, speed,
+  or map commands.
+
+Explicit compact Reduce Motion:
+- Window content: exact 900 x 600; capture including chrome: 900 x 652.
+- City map selected Road at block 14,13.
+- Primary action: Inspect Road at block 14,13; available.
+- Utilities overlay active.
+- Pause selected.

@@ -9,7 +9,7 @@
 - **Planned surfaces:** test-owned deterministic story builders, frozen schema-1 fixtures and manifest, persistence/fingerprint/snapshot contracts, focused tests, budgets, and consumer documentation
 - **Dependencies:** integrated PLAY-015/045/046; existing schema-1, fingerprint-v1, strategy, recovery, spatial snapshot, and terminal contracts
 - **Validation/proof:** two-build byte identity; eight named state digests; primary/backup load; replay/undo boundaries; immutable presentation/spatial snapshots; legacy fixtures; focused/full suites; size and timing budgets
-- **Status:** ready for integration
+- **Status:** accepted and integrated on `master` as `0706dbe`, `ce450a3`, and `57c75b7`
 
 Freeze exact Commercial and Industrial opening, complication, recovery, and
 Charter-victory states so renderer, UI, and quality can consume the same

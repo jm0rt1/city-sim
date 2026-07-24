@@ -788,6 +788,220 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testOneActiveMapActionTargetAlternatesPointerKeyboardAndAccessibilityTruth() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let occupied = try XCTUnwrap(authored.tiles.first { $0.kind != .empty })
+        let roadless = try XCTUnwrap(authored.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                .commercial,
+                at: tile.coordinate,
+                in: authored
+            ) {
+                return true
+            }
+            return false
+        })
+        let valid = try XCTUnwrap(authored.tiles.first { tile in
+            if case .success = CitySimulation.validateBuild(.commercial, at: tile.coordinate, in: authored) {
+                return true
+            }
+            return false
+        })
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.clearFeedback()
+        store.selectedCoordinate = valid.coordinate
+
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.onActiveActionTargetCandidate = { store.acceptPointerMapActionCandidate($0) }
+        scene.render(
+            state: store.state,
+            overlay: .none,
+            selection: store.selectedCoordinate,
+            interactionMode: store.interactionMode,
+            activeActionTarget: store.activeMapActionTargetPresentation
+        )
+
+        scene.configureProofInteraction(at: occupied.coordinate)
+        XCTAssertEqual(store.selectedCoordinate, occupied.coordinate)
+        XCTAssertEqual(scene.activeActionTargetForTesting?.coordinate, occupied.coordinate)
+        XCTAssertEqual(
+            scene.activeActionTargetForTesting?.primaryAction,
+            store.activeMapActionTargetPresentation?.primaryAction
+        )
+        XCTAssertTrue(
+            scene.activeActionTargetForTesting?.primaryAction.disclosure.contains(
+                BuildRejection.occupied.message
+            ) == true
+        )
+        XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.invalidHatch"))
+
+        store.selectedCoordinate = valid.coordinate
+        scene.render(
+            state: store.state,
+            overlay: .none,
+            selection: store.selectedCoordinate,
+            interactionMode: store.interactionMode,
+            activeActionTarget: store.activeMapActionTargetPresentation
+        )
+        XCTAssertEqual(scene.activeActionTargetForTesting?.coordinate, valid.coordinate)
+        XCTAssertTrue(scene.activeActionTargetForTesting?.primaryAction.isAvailable == true)
+        XCTAssertFalse(scene.interactionNamesForTesting.contains("interaction.invalidHatch"))
+
+        scene.configureProofInteraction(at: roadless.coordinate)
+        XCTAssertEqual(store.selectedCoordinate, roadless.coordinate)
+        XCTAssertEqual(scene.activeActionTargetForTesting?.coordinate, roadless.coordinate)
+        XCTAssertTrue(
+            scene.activeActionTargetForTesting?.primaryAction.disclosure.contains(
+                BuildRejection.roadAccessRequired.message
+            ) == true
+        )
+
+        var unaffordableState = authored
+        unaffordableState.treasury = 0
+        let unaffordableStore = CityGameStore(state: unaffordableState)
+        unaffordableStore.selectTool(.commercial)
+        unaffordableStore.clearFeedback()
+        let unaffordable = try XCTUnwrap(
+            unaffordableStore.acceptPointerMapActionCandidate(valid.coordinate)
+        )
+        XCTAssertFalse(unaffordable.primaryAction.isAvailable)
+        XCTAssertTrue(
+            unaffordable.primaryAction.disclosure.contains(
+                BuildRejection.insufficientFunds.message
+            )
+        )
+
+        let pointerSelection = store.selectedCoordinate
+        store.presentBlockingModal(.welcome)
+        XCTAssertNil(store.acceptPointerMapActionCandidate(valid.coordinate))
+        XCTAssertEqual(store.selectedCoordinate, pointerSelection)
+        XCTAssertTrue(store.dismissBlockingModal(.welcome))
+        store.activateInspectMode()
+        store.clearFeedback()
+        XCTAssertNil(store.acceptPointerMapActionCandidate(valid.coordinate))
+        XCTAssertEqual(store.selectedCoordinate, pointerSelection, "Inspect hover must remain non-selecting")
+    }
+
+    @MainActor
+    func testPointerClickAndAXUseOneStoreCommandAndMutateValidTargetExactlyOnce() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let valid = try XCTUnwrap(authored.tiles.first { tile in
+            if case .success = CitySimulation.validateBuild(.commercial, at: tile.coordinate, in: authored) {
+                return true
+            }
+            return false
+        })
+        let pointerStore = CityGameStore(state: authored)
+        pointerStore.selectTool(.commercial)
+        pointerStore.clearFeedback()
+        let pointerScene = CityScene(size: CGSize(width: 900, height: 600))
+        var pointerDispatchCount = 0
+        pointerScene.onActiveActionTargetCandidate = {
+            pointerStore.acceptPointerMapActionCandidate($0)
+        }
+        pointerScene.onPrimaryAction = { coordinate in
+            guard pointerStore.selectedCoordinate == coordinate else { return }
+            pointerDispatchCount += 1
+            pointerStore.performMapCommand(.mapPrimaryAction)
+        }
+        pointerScene.render(
+            state: pointerStore.state,
+            overlay: .none,
+            selection: pointerStore.selectedCoordinate,
+            interactionMode: pointerStore.interactionMode,
+            activeActionTarget: pointerStore.activeMapActionTargetPresentation
+        )
+        let pointerTreasury = pointerStore.state.treasury
+
+        pointerScene.activatePrimaryActionForTesting(at: valid.coordinate)
+
+        XCTAssertEqual(pointerDispatchCount, 1)
+        XCTAssertEqual(pointerStore.selectedCoordinate, valid.coordinate)
+        XCTAssertEqual(pointerStore.state.tile(at: valid.coordinate)?.kind, .commercial)
+        XCTAssertEqual(pointerStore.state.treasury, pointerTreasury - BuildingKind.commercial.buildCost)
+
+        let accessibilityStore = CityGameStore(state: authored)
+        accessibilityStore.selectTool(.commercial)
+        accessibilityStore.clearFeedback()
+        accessibilityStore.selectedCoordinate = valid.coordinate
+        let coordinator = CitySceneView.Coordinator(store: accessibilityStore)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        coordinator.configureMapAccessibility(in: mapView)
+        let action = try XCTUnwrap(mapView.accessibilityCustomActions()?.first)
+        let accessibilityTreasury = accessibilityStore.state.treasury
+
+        XCTAssertTrue(action.handler?() == true)
+        XCTAssertEqual(accessibilityStore.state.tile(at: valid.coordinate)?.kind, .commercial)
+        XCTAssertEqual(
+            accessibilityStore.state.treasury,
+            accessibilityTreasury - BuildingKind.commercial.buildCost
+        )
+    }
+
+    @MainActor
+    func testBlockedTargetBecomesAvailableAfterOneAuthoritativeRoadChange() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let pair = try XCTUnwrap(state.tiles.lazy.compactMap { target -> (CityTile, CityTile)? in
+            guard target.kind == .empty,
+                  case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                    .commercial,
+                    at: target.coordinate,
+                    in: state
+                  ),
+                  let road = state.neighbors(of: target.coordinate).first(where: { $0.kind == .empty })
+            else { return nil }
+            return (target, road)
+        }.first)
+        let store = CityGameStore(state: state)
+        store.selectTool(.commercial)
+        store.clearFeedback()
+
+        let blocked = try XCTUnwrap(store.acceptPointerMapActionCandidate(pair.0.coordinate))
+        XCTAssertFalse(blocked.primaryAction.isAvailable)
+        XCTAssertTrue(blocked.primaryAction.disclosure.contains(BuildRejection.roadAccessRequired.message))
+
+        guard case .success = CitySimulation.build(.road, at: pair.1.coordinate, in: &state) else {
+            XCTFail("The adjacent road fixture must be buildable")
+            return
+        }
+        store.state = state
+        let connected = try XCTUnwrap(store.activeMapActionTargetPresentation)
+        XCTAssertEqual(connected.coordinate, pair.0.coordinate)
+        XCTAssertTrue(connected.primaryAction.isAvailable)
+        let treasuryBefore = store.state.treasury
+
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: pair.0.coordinate)?.kind, .commercial)
+        XCTAssertEqual(store.state.treasury, treasuryBefore - BuildingKind.commercial.buildCost)
+    }
+
+    @MainActor
+    func testPointerCandidateBridgeQuarantinesTextFocus() {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.selectTool(.commercial)
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let textField = NSTextField(frame: CGRect(x: 10, y: 10, width: 180, height: 24))
+        let content = NSView(frame: mapView.frame)
+        content.addSubview(mapView)
+        content.addSubview(textField)
+        let window = NSWindow(
+            contentRect: mapView.frame,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        window.contentView = content
+
+        XCTAssertTrue(window.makeFirstResponder(textField))
+        XCTAssertFalse(coordinator.allowsPointerMapActionCandidate(in: mapView))
+        XCTAssertTrue(window.makeFirstResponder(mapView))
+        XCTAssertTrue(coordinator.allowsPointerMapActionCandidate(in: mapView))
+    }
+
+    @MainActor
     func testApprovedRemedyRequestsOneLifecycleSafeMapFocus() {
         let store = CityGameStore(state: .newCity(seed: 42))
         var queuedActions: [CitySceneView.Coordinator.MainLoopAction] = []

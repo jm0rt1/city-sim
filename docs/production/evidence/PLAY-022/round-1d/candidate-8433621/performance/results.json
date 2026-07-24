@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "product_commit": "8433621760ba169995aa1a5dc81cac27c380d746",
+  "product_tree": "c02c6811f8a4e257f0297a189514ff9875a004a1",
+  "rejected_predecessor_product": "2cf18b0f0d9a0aee9f3708e72593eb6e7cd99ae0",
+  "metric": "PLAY022_ROUND1C_COLD_PROFILE total_render_ms",
+  "thresholds_ms": {
+    "median": 4.8,
+    "each_sample": 6.03
+  },
+  "samples": [
+    {
+      "ordinal": 1,
+      "backdrop": 0.072,
+      "preparation": 0.009,
+      "tile_build": 3.326,
+      "tree_metrics": 0.152,
+      "world_update": 3.408,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 3.913
+    },
+    {
+      "ordinal": 2,
+      "backdrop": 0.073,
+      "preparation": 0.009,
+      "tile_build": 3.143,
+      "tree_metrics": 0.159,
+      "world_update": 3.225,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 3.766
+    },
+    {
+      "ordinal": 3,
+      "backdrop": 0.073,
+      "preparation": 0.009,
+      "tile_build": 3.076,
+      "tree_metrics": 0.151,
+      "world_update": 3.158,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 3.658
+    },
+    {
+      "ordinal": 4,
+      "backdrop": 0.075,
+      "preparation": 0.009,
+      "tile_build": 3.201,
+      "tree_metrics": 0.153,
+      "world_update": 3.285,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 3.800
+    },
+    {
+      "ordinal": 5,
+      "backdrop": 0.068,
+      "preparation": 0.008,
+      "tile_build": 3.141,
+      "tree_metrics": 0.173,
+      "world_update": 3.218,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 3.743
+    }
+  ],
+  "median_total_render_ms": 3.766,
+  "maximum_total_render_ms": 3.913,
+  "samples_at_or_below_4_8_ms": 5,
+  "samples_at_or_below_6_03_ms": 5,
+  "result": "pass"
+}

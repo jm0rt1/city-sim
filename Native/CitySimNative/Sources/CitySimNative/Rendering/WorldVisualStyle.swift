@@ -21,7 +21,7 @@ enum CameraDetailLevel: Int, CaseIterable, Comparable, Sendable {
 
     /// SpriteKit camera scales grow as the camera zooms out.
     static let blockMaximumCameraScale: CGFloat = 0.60
-    static let neighborhoodMaximumCameraScale: CGFloat = 1.15
+    static let neighborhoodMaximumCameraScale: CGFloat = 0.70
 
     static func resolve(
         cameraScale: CGFloat,
@@ -254,6 +254,21 @@ struct WorldVisualStyle {
     func edgePoint(for edge: RoadConnectionMask, inset: CGFloat = 0) -> CGPoint {
         let x = max(0, tileWidth / 2 - inset)
         let y = max(0, tileHeight / 2 - inset / 2)
+        return switch edge {
+        case .north: CGPoint(x: x, y: y)
+        case .east: CGPoint(x: x, y: -y)
+        case .south: CGPoint(x: -x, y: -y)
+        case .west: CGPoint(x: -x, y: y)
+        default: .zero
+        }
+    }
+
+    /// Reciprocal road/frontage socket at the midpoint between neighboring
+    /// isometric tile centers. A small positive overreach hides antialias seams
+    /// while preserving one authoritative topology connection per edge.
+    func roadSocket(for edge: RoadConnectionMask, overreach: CGFloat = 0) -> CGPoint {
+        let x = tileWidth / 4 + overreach
+        let y = tileHeight / 4 + overreach / 2
         return switch edge {
         case .north: CGPoint(x: x, y: y)
         case .east: CGPoint(x: x, y: -y)

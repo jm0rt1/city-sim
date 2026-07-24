@@ -1,0 +1,23 @@
+Candidate: 2cf18b0f0d9a0aee9f3708e72593eb6e7cd99ae0
+Bundle: com.jfmortensen.citysim.world-rendering.w5f893ad1da1b
+
+Regular staged map after Arrow, Arrow, Return:
+
+City map. Available. Opens details for the selected target.
+Selected Power Plant, block 14, 14. Completed, maintained condition.
+Water service is strained at 75%; Pollution exposure is severe at 100%.
+This block is prosperous at 76% vitality.
+Primary action: Inspect Power Plant at block 14, 14. Available.
+Opens details for the selected target.
+
+Exact compact content:
+
+City map. No block selected. Use Arrow keys to select blocks,
+Shift-Arrow to jump five blocks, Return for the announced primary action,
+and Shift-Return to inspect.
+
+The compact accessibility tree also exposed Inspect, Build, Bulldoze, Catalog,
+Commands, Details, City data, Pause, 1x, 2x, 3x, objectives, notices, status
+metrics, Save, and the map as reachable controls. The retained compact JPEG is
+900 x 652 including 52 pixels of macOS window chrome; the app content is the
+requested exact 900 x 600.

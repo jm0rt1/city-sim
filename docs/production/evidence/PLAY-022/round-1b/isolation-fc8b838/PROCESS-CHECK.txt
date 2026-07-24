@@ -1,0 +1,14 @@
+Temporary candidate process commands verified before cleanup:
+39309 /private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-one/dist/CitySim-world-rendering-w8b84324591c2.app/Contents/MacOS/CitySimNative-w8b84324591c2
+39658 /private/tmp/citysim-play022-isolation-fc8b838.r0Hf1M/candidate-two/dist/CitySim-world-rendering-w0f3bd27829df.app/Contents/MacOS/CitySimNative-w0f3bd27829df
+
+Cleanup:
+- PID 39309 received SIGTERM only after its exact command was verified.
+- PID 39658 received SIGTERM only after its exact command was verified.
+- Post-cleanup process search found neither temporary executable name.
+
+Canonical boundary:
+- Canonical candidate identity is world-rendering-w5f893ad1da1b.
+- Canonical staged manifest records PID 35962.
+- This audit did not inspect, launch, terminate, or otherwise act on that PID or
+  any non-verifier process.

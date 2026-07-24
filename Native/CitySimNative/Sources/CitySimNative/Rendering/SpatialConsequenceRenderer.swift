@@ -37,23 +37,29 @@ final class SpatialConsequenceRenderer {
         let cityContent = SKNode()
         cityContent.name = "spatial.city"
         addCityAggregateCue(consequence, to: cityContent)
-        city.addChild(cityContent)
-        root.addChild(city)
+        if !cityContent.children.isEmpty {
+            city.addChild(cityContent)
+            root.addChild(city)
+        }
 
         let neighborhood = style.makeDetailLayer(.neighborhood, visibleAt: detail)
         let neighborhoodContent = SKNode()
         neighborhoodContent.name = "spatial.neighborhood"
         addUtilityCue(consequence.utility, to: neighborhoodContent)
         addPollutionCue(consequence.pollutionBand, to: neighborhoodContent)
-        neighborhood.addChild(neighborhoodContent)
-        root.addChild(neighborhood)
+        if !neighborhoodContent.children.isEmpty {
+            neighborhood.addChild(neighborhoodContent)
+            root.addChild(neighborhood)
+        }
 
         let block = style.makeDetailLayer(.block, visibleAt: detail)
         let blockContent = SKNode()
         blockContent.name = "spatial.block"
         addVitalityCue(consequence.vitality, to: blockContent)
-        block.addChild(blockContent)
-        root.addChild(block)
+        if !blockContent.children.isEmpty {
+            block.addChild(blockContent)
+            root.addChild(block)
+        }
         return root
     }
 
@@ -123,29 +129,41 @@ final class SpatialConsequenceRenderer {
         root.zPosition = 78
 
         let color: NSColor = event.direction == .recovery ? .systemMint : .systemOrange
-        let ring = SKShapeNode(ellipseOf: CGSize(width: 46, height: 23))
-        ring.name = "spatial.event.ring.\(event.direction.rawValue)"
-        ring.fillColor = .clear
-        ring.strokeColor = color.withAlphaComponent(0.95)
-        ring.lineWidth = event.direction == .recovery ? 2.2 : 3.4
-        root.addChild(ring)
+        // Transition feedback stays on the frontage below the facade. At the
+        // strategic camera stop a world-space ellipse grows into an obscuring
+        // screen-space targeting ring, so use a compact grounded bracket.
+        let frontageY = -style.tileHeight / 2 + 2
+        let bracketPath = CGMutablePath()
+        bracketPath.move(to: CGPoint(x: -8, y: frontageY + 3))
+        bracketPath.addLine(to: CGPoint(x: -5, y: frontageY))
+        bracketPath.addLine(to: CGPoint(x: 5, y: frontageY))
+        bracketPath.addLine(to: CGPoint(x: 8, y: frontageY + 3))
+        let bracket = SKShapeNode(path: bracketPath)
+        bracket.name = "spatial.event.frontage-bracket.\(event.direction.rawValue)"
+        bracket.fillColor = .clear
+        bracket.strokeColor = color.withAlphaComponent(reducedMotion ? 0.48 : 0.78)
+        bracket.lineWidth = event.direction == .recovery ? 0.9 : 1.1
+        bracket.lineCap = .round
+        bracket.lineJoin = .round
+        root.addChild(bracket)
 
         let mark = SKShapeNode(path: eventMarkPath(event.direction))
         mark.name = "spatial.event.mark.\(event.direction.rawValue)"
-        mark.strokeColor = color
-        mark.lineWidth = 2.4
+        mark.strokeColor = color.withAlphaComponent(reducedMotion ? 0.78 : 0.94)
+        mark.lineWidth = 1.15
         mark.lineCap = .round
         mark.lineJoin = .round
         mark.fillColor = .clear
-        mark.position = CGPoint(x: 0, y: 17)
+        mark.setScale(0.38)
+        mark.position = CGPoint(x: 0, y: frontageY + 6)
         root.addChild(mark)
 
         if !reducedMotion {
-            root.setScale(0.72)
+            root.setScale(0.86)
             root.alpha = 0.92
             root.run(.sequence([
                 .group([
-                    .scale(to: 1.18, duration: 0.22),
+                    .scale(to: 1.03, duration: 0.22),
                     .fadeAlpha(to: 1, duration: 0.22)
                 ]),
                 .wait(forDuration: 0.55),

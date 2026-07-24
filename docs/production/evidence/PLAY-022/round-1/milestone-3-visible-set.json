@@ -1,0 +1,71 @@
+{
+  "task": "PLAY-022",
+  "milestone": 3,
+  "captured_at": "2026-07-21T19:30:38-04:00",
+  "candidate_parent": "78a6aa385a86a47c2b4b90bc42c298002b276c71",
+  "generated_pack": {
+    "schema": 4,
+    "asset_count": 12,
+    "inventory_count": 84,
+    "new_semantic_sources": [
+      {
+        "logical_id": "ambient_pedestrian_pair",
+        "raw_sha256": "335290e1e81bb9a46ab6b059f96ad6e7b6365c48d5e6abae55c281ae8d7ce30b",
+        "prompt_sha256": "9d4ba52851615d6c25af8e8a3091af0442e0c037e9afc5cbe21966fad76ed3e0"
+      },
+      {
+        "logical_id": "ambient_service_object",
+        "raw_sha256": "bfac1b625f79978a5e598c35e43b35a65238c68d5a950efda27b6be2ada55181",
+        "prompt_sha256": "5fdb7e88e9a5a77cb14eb5055a34a24b1f7a047f9a6ea9323a589623bb8e5237"
+      },
+      {
+        "logical_id": "ambient_vegetation_cluster",
+        "raw_sha256": "99a11b2cdda5b2d471bf041d920d57e70e46dd72ee63c77b62b997de378e16ca",
+        "prompt_sha256": "32f88e26df8d25635e03d7849a61d177a455d10186d5b623727c80d2b08cdf1c"
+      }
+    ],
+    "active_residency_after_three_lod_cycles": {
+      "detail": "block",
+      "resident_texture_count": 28,
+      "resident_decoded_bytes": 41959424,
+      "high_water_decoded_bytes": 41959424,
+      "cache_hits": 56,
+      "cache_misses": 364,
+      "evictions": 336,
+      "fallbacks": 0,
+      "budget_bytes": 100663296
+    }
+  },
+  "shipping_frames": [
+    {
+      "size": [1280, 800],
+      "camera_scale": 0.5517578125,
+      "lod": "block",
+      "developed_occupancy": [0.64, 0.5589381663716814],
+      "nodes": 3623,
+      "drawables": 1405,
+      "reduce_motion_actions": 0
+    },
+    {
+      "size": [900, 600],
+      "camera_scale": 0.7847222089767456,
+      "lod": "neighborhood",
+      "developed_occupancy": [0.6400000108026827, 0.5240045398182243],
+      "nodes": 3623,
+      "drawables": 1405,
+      "reduce_motion_actions": 0
+    }
+  ],
+  "focused_validation": {
+    "command": "swift test --package-path Native/CitySimNative --filter CitySimNativeTests.WorldRenderingTests/(testGoldenNeighborhoodTerrainAtlasLoadsEveryAuthoredMaterial|testGeneratedWorldDescriptorsRegisterPhysicalGeometryWithoutInventingGameplayCells|testGeneratedWorldResidencyIsBoundedAcrossRepeatedRealLODTransitions|testCompletedVisibleSetUsesGeneratedV4AcrossKindsAndLevelsWithoutLegacyFallback|testCorridorAmbientLifeHasOneSemanticSetAndIsReduceMotionSafe|testRoundOneShippingStartExportsDevelopedBoundsDefaultAndCompact|testLifecycleSilhouettesMotionAndReducedMotionFallbacksStayDistinct)",
+    "tests": 7,
+    "failures": 0,
+    "duration_seconds": 1.327
+  },
+  "truth_boundaries": [
+    "the pedestrian pair is decorative and does not assert occupancy, traffic, prosperity, or employment",
+    "the parked maintenance object does not assert service coverage, capacity, traffic, or employment",
+    "the vegetation cluster does not assert park access, land value, prosperity, pollution, or service state",
+    "all topology, placement, construction, condition, selection, and overlay truth remains deterministic renderer input"
+  ]
+}

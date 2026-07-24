@@ -1,0 +1,20 @@
+[0/1] Planning build
+Test Suite 'Selected tests' started at 2026-07-22 08:21:57.836.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-22 08:21:57.838.
+Test Suite 'WorldRenderingTests' started at 2026-07-22 08:21:57.838.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode]' passed (0.112 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-22 08:21:57.951.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.112 (0.113) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-22 08:21:57.951.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.112 (0.113) seconds
+Test Suite 'Selected tests' passed at 2026-07-22 08:21:57.951.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.112 (0.114) seconds
+PLAY022_ROUND1B_COLD_RENDER world_update_ms=18.962 asset_decode_loads=8 asset_decode_ms=83.233 total_render_ms=105.687
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+real 1.17
+user 0.32
+sys 0.28

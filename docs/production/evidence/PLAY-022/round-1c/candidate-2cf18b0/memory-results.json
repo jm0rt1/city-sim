@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "candidate": "2cf18b0f0d9a0aee9f3708e72593eb6e7cd99ae0",
+  "method": "exact staged app, three LOD cycles, frame city, pause, settle",
+  "ceiling_mib": 333.8,
+  "regular": {
+    "content_size": "1278x768",
+    "physical_footprint_mb": 198,
+    "rss_kib": 162240,
+    "physical_footprint_peak_mb": 298,
+    "result": "pass"
+  },
+  "compact": {
+    "content_size": "900x600",
+    "physical_footprint_mb": 148,
+    "rss_kib": 117392,
+    "physical_footprint_peak_mb": 290,
+    "result": "pass"
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "schema": "citysim.play022.round1d.supporting-evidence.v1",
+  "product_commit": "8433621760ba169995aa1a5dc81cac27c380d746",
+  "generation": "deterministic; no timestamps or random inputs",
+  "generator": {
+    "path": "generate_contact_sheets.py",
+    "sha256": "c68d090d5e119bd4235fc4d6313cf21e38b0f92f2c94a2dc932462b696404f6d",
+    "ffmpeg": "ffmpeg version 6.1.1 Copyright (c) 2000-2023 the FFmpeg developers"
+  },
+  "sources": [
+    {
+      "label": "DEFAULT",
+      "path": "live/default-city.jpeg",
+      "sha256": "eacdb91623a1968017740ce712c820059de11f69edcb4b1b1f89a3d89f008830",
+      "dimensions": [
+        1277,
+        768
+      ]
+    },
+    {
+      "label": "CITY LOD",
+      "path": "live/regular-city-lod.jpeg",
+      "sha256": "40332eba0a14ec557af38fb6f41aac1f0ceac125034efd7cf98e4358f31b9a67",
+      "dimensions": [
+        1278,
+        768
+      ]
+    },
+    {
+      "label": "NEIGHBORHOOD LOD",
+      "path": "live/regular-neighborhood-lod.jpeg",
+      "sha256": "a66ce210dfacfd2e13d8b4cd8c432e00302294849f89e79aa9baeddf928addaa",
+      "dimensions": [
+        1278,
+        768
+      ]
+    },
+    {
+      "label": "BLOCK LOD",
+      "path": "live/regular-block-lod.jpeg",
+      "sha256": "edc85d2e574fa72b554eb50ffd2f949816b54b38fb0f5f21384b9e7c89d2cae1",
+      "dimensions": [
+        1278,
+        768
+      ]
+    },
+    {
+      "label": "COMPACT",
+      "path": "live/compact-900x600.jpeg",
+      "sha256": "e519cc0338f7432ca9bb894d5af6d267fba88c53ad75da78a570ac0dace0346b",
+      "dimensions": [
+        900,
+        652
+      ]
+    },
+    {
+      "label": "KEYBOARD SELECTION",
+      "path": "live/compact-keyboard-selection.jpeg",
+      "sha256": "8cdad30c0f12daa9d875fc0e1254ee57afc37632dd0412a6f60b999639e9624e",
+      "dimensions": [
+        900,
+        652
+      ]
+    },
+    {
+      "label": "INVALID",
+      "path": "live/compact-invalid-placement.jpeg",
+      "sha256": "cfbc09307c75f9d9e995bcc21ba0f438eabdf493a7ddc308fec8ad220e194819",
+      "dimensions": [
+        900,
+        652
+      ]
+    },
+    {
+      "label": "VALID",
+      "path": "live/compact-valid-placement.jpeg",
+      "sha256": "c6297b7aaf089169d5dabe368d224e2c7d9459cdf23732f7695f58079dae9531",
+      "dimensions": [
+        900,
+        652
+      ]
+    },
+    {
+      "label": "UTILITY OVERLAY",
+      "path": "live/compact-utility-overlay.jpeg",
+      "sha256": "eed10168f380e326540a4e5923cec25777bef42d6814ba69a21dd6be55dce351",
+      "dimensions": [
+        900,
+        652
+      ]
+    },
+    {
+      "label": "POINTER SELECTION",
+      "path": "live/regular-pointer-selection.jpeg",
+      "sha256": "d5a529fe6b8a402b5e732be83d98327d7ce2c1d1167f6f3dc407db5e6c26f71c",
+      "dimensions": [
+        1278,
+        768
+      ]
+    },
+    {
+      "label": "CONSTRUCTION 0",
+      "path": "harness/construction-00.png",
+      "sha256": "1e495a5fd8f63fc9ad582aa0fe1ce2fe290182dd5cb840a938286ecf965aeab7",
+      "dimensions": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "label": "CONSTRUCTION 25",
+      "path": "harness/construction-25.png",
+      "sha256": "b795cc717000434420660029b396003178c16ac48a2622e4aefd04921630a129",
+      "dimensions": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "label": "CONSTRUCTION 50",
+      "path": "harness/construction-50.png",
+      "sha256": "24f2b5b7275644787e8695aac08a52769d7932093e2d127aba39db770b7172d6",
+      "dimensions": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "label": "CONSTRUCTION 75",
+      "path": "harness/construction-75.png",
+      "sha256": "2183932b5f76f5f0ac9047c34ea3d268d58157092efa225b8c210f4f3063f957",
+      "dimensions": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "label": "CONSTRUCTION 100",
+      "path": "harness/construction-100.png",
+      "sha256": "deca848619b527d8685aab1cd02c9fa0b8d9cd61f0969c2ba8011bc7b6aec5cb",
+      "dimensions": [
+        2560,
+        1600
+      ]
+    },
+    {
+      "label": "REDUCE MOTION",
+      "path": "live/compact-reduce-motion-a.jpeg",
+      "sha256": "46555b0dc653574662f0e59307e651d34f56187ce3f924b703cfffcf28a5330d",
+      "dimensions": [
+        900,
+        652
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "mode": "grayscale",
+      "path": "grayscale-contact-sheet.png",
+      "sha256": "f705b0a2a703fd5c4d0b72f9b143139ea596f17a4554837953b9b4ffb0ac383f",
+      "width": 1200,
+      "height": 840
+    },
+    {
+      "mode": "protanopia",
+      "path": "protanopia-contact-sheet.png",
+      "sha256": "bdee5c240c6fdd0374943d0de1435dbdcc33824c42c0d0774dbe189f07dc865f",
+      "width": 1200,
+      "height": 840
+    },
+    {
+      "mode": "deuteranopia",
+      "path": "deuteranopia-contact-sheet.png",
+      "sha256": "1aa61b3ea533c6005741531bb4ce91d5d28fb5adeae03b7bcacd46845a240505",
+      "width": 1200,
+      "height": 840
+    },
+    {
+      "mode": "tritanopia",
+      "path": "tritanopia-contact-sheet.png",
+      "sha256": "6e09029feca62abc4e7c8ffb47aacb9cfb86e914c543f228240748853abb1307",
+      "width": 1200,
+      "height": 840
+    }
+  ],
+  "transforms": {
+    "grayscale": [
+      [
+        0.2126,
+        0.7152,
+        0.0722
+      ],
+      [
+        0.2126,
+        0.7152,
+        0.0722
+      ],
+      [
+        0.2126,
+        0.7152,
+        0.0722
+      ]
+    ],
+    "protanopia": [
+      [
+        0.152286,
+        1.052583,
+        -0.204868
+      ],
+      [
+        0.114503,
+        0.786281,
+        0.099216
+      ],
+      [
+        -0.003882,
+        -0.048116,
+        1.051998
+      ]
+    ],
+    "deuteranopia": [
+      [
+        0.367322,
+        0.860646,
+        -0.227968
+      ],
+      [
+        0.280085,
+        0.672501,
+        0.047413
+      ],
+      [
+        -0.01182,
+        0.04294,
+        0.968881
+      ]
+    ],
+    "tritanopia": [
+      [
+        1.255528,
+        -0.076749,
+        -0.178779
+      ],
+      [
+        -0.078411,
+        0.930809,
+        0.147602
+      ],
+      [
+        0.004733,
+        0.691367,
+        0.3039
+      ]
+    ]
+  }
+}

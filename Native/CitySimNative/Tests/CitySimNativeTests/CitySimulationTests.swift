@@ -125,17 +125,17 @@ final class CitySimulationTests: XCTestCase {
 
     func testCameraDetailThresholdsRespectRenderQuality() {
         XCTAssertEqual(CameraDetailLevel.blockMaximumCameraScale, 0.60)
-        XCTAssertEqual(CameraDetailLevel.neighborhoodMaximumCameraScale, 1.15)
+        XCTAssertEqual(CameraDetailLevel.neighborhoodMaximumCameraScale, 0.70)
 
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.60), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.601), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 1.15), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 1.151), .city)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.70), .neighborhood)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.701), .city)
 
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20, quality: .medium), .block)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.20, quality: .low), .neighborhood)
-        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.90, quality: .low), .neighborhood)
+        XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 0.70, quality: .low), .neighborhood)
         XCTAssertEqual(CameraDetailLevel.resolve(cameraScale: 1.40, quality: .low), .city)
     }
 
@@ -362,7 +362,11 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(overlayDiagnostics.updatedTileCount, 0)
         XCTAssertEqual(overlayDiagnostics.reusedTileCount, state.tiles.count)
         XCTAssertEqual(overlayDiagnostics.overlayUpdateCount, state.tiles.count)
-        XCTAssertGreaterThan(overlayDiagnostics.nodeCount, initialNodeCount)
+        XCTAssertEqual(
+            overlayDiagnostics.nodeCount,
+            initialNodeCount,
+            "Land value must abstain until coordinate-scoped analytics are approved"
+        )
 
         scene.configureProofCamera(detail: .city, centeredOn: center)
         let cityDiagnostics = scene.diagnosticsSnapshot
@@ -389,19 +393,30 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
-    func testRendererOnlyPublishesSelectionLabelForAnActiveSelection() {
+    func testRendererPublishesOneGroundedSelectionBoundaryWithoutFloatingCopy() {
         let state = rendererNeighborhoodState()
         let selectedCoordinate = GridCoordinate(x: 3, y: 3)
         let scene = CityScene(size: CGSize(width: 900, height: 600))
         scene.reducedMotion = true
 
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(scene.selectionIsHiddenForTesting)
         XCTAssertFalse(descendantLabelTexts(in: scene).contains("SELECTED"))
 
         scene.render(state: state, overlay: .none, selection: selectedCoordinate, interactionMode: .inspect)
-        XCTAssertTrue(descendantLabelTexts(in: scene).contains("SELECTED"))
+        XCTAssertFalse(scene.selectionIsHiddenForTesting)
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter { $0 == "interaction.selection" }.count,
+            1
+        )
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter { $0 == "interaction.selection.frontage-anchor" }.count,
+            1
+        )
+        XCTAssertFalse(descendantLabelTexts(in: scene).contains("SELECTED"))
 
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(scene.selectionIsHiddenForTesting)
         XCTAssertFalse(descendantLabelTexts(in: scene).contains("SELECTED"))
     }
 
@@ -446,14 +461,27 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
         XCTAssertEqual(scene.diagnosticsSnapshot.reusedTileCount, state.tiles.count)
 
-        for _ in 0..<4 {
+        for _ in 0..<5 {
             scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
         }
         XCTAssertEqual(scene.currentCameraDetailLevel, .city)
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
 
+        let expectedCityScaleLimit = scene.cityScaleLimitForTesting
+        for _ in 0..<8 {
+            scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
+        }
+        XCTAssertEqual(scene.cameraScaleForTesting, expectedCityScaleLimit, accuracy: 0.001)
+        XCTAssertLessThanOrEqual(scene.cameraScaleForTesting, 0.74)
+        XCTAssertEqual(scene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
+
         scene.keyDown(with: try keyEvent(characters: "0", keyCode: 29))
-        XCTAssertEqual(scene.currentCameraDetailLevel, .neighborhood)
+        XCTAssertEqual(
+            scene.currentCameraDetailLevel,
+            .neighborhood,
+            "Framing a compact city should preserve the neighborhood LOD and its tighter texture budget"
+        )
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
         XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
         XCTAssertEqual(scene.diagnosticsSnapshot.reusedTileCount, state.tiles.count)

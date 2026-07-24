@@ -136,11 +136,10 @@ final class AmbientLifeRenderer {
         excluding occupied: Set<GridCoordinate>,
         to root: SKNode
     ) {
-        let limit = switch detail {
-        case .city: 8
-        case .neighborhood: 12
-        case .block: 16
-        }
+        // Keep one semantic set across camera changes. Generated-v4 source
+        // detail and the terrain material layers provide LOD meaning; changing
+        // entity quantity would defeat incremental reuse and residency.
+        let limit = 16
         let candidates = state.tiles.compactMap { tile -> GridCoordinate? in
             guard tile.kind == .empty, !occupied.contains(tile.coordinate) else { return nil }
             let roadDistance = roadCoordinates.map {

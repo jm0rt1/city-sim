@@ -4,14 +4,21 @@
 - **Lane:** Gameplay loop
 - **Branch:** `codex/citysim-gameplay-loop`
 - **Authority baseline:** `c3c0f4ad109791fe5a90dd120b98a9812ff685e2`
+- **Accepted beauty baseline:** `9f38efec4877ab7c3f0d77bf3bd4e36b56e3c034`
+- **Synchronization merge:** `68bc49342e87eb670310d1d2000c1c59a1a17f98`
 - **Product commit:** `6d5df6b37cecfb35604f205cc12bf94b8e69f564`
-- **Status:** Ready for integration; product commit already adopted by PLAY-042 on local master `224def8`
+- **Final evidence commit:** `5af2aa58def26db77b9856ee3e156e81a6fab2d6`
+- **Status:** Complete; ready for evidence-only integration
 
 ## Player-visible outcome
 
 Reading time and one failed placement can no longer erase the authored strategy route. The first successful eligible placement commits Commercial or Industrial once at the next daily boundary. Opportunity, warning, setback, and recovery then advance once, in order, with a deterministic 16-day actionable interval. Late legacy choices schedule forward, route identity cannot flip, current urgency is derived from authoritative state, and stale opening guidance retires when the route commits.
 
-Both reference strategies preserve distinct economy, employment, happiness, pollution, utility, and recovery tradeoffs. Both earn the Town Charter at tick 844 and remain playable through the 19.6-minute tick-2,800 horizon.
+Both reference strategies preserve distinct economy, employment, happiness,
+pollution, utility, and recovery tradeoffs. Both earn the Town Charter at tick
+844 in the frozen corpus and remained viable in fresh staged routes. The
+Commercial live route reached Charter in 7:47; the Industrial live route did
+so in at most 7:10.
 
 ## Files changed
 
@@ -20,17 +27,28 @@ Both reference strategies preserve distinct economy, employment, happiness, poll
 - `Native/CitySimNative/Sources/CitySimNative/Support/CityAnalytics.swift`
 - `Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift`
 - `docs/production/evidence/PLAY-013/IMPLEMENTATION-CHECKPOINT.md`
+- `docs/production/evidence/PLAY-013/FINAL-CLOSURE.md`
+- `docs/production/evidence/PLAY-013/final-closure-commercial-charter.jpeg`
+- `docs/production/evidence/PLAY-013/final-closure-industrial-charter.jpeg`
 - `docs/production/completed/PLAY-013.gameplay-loop.md`
 
 ## Validation and proof
 
-- Focused gameplay: **25/25 passed**.
-- Full worker suite: **123 passing test cases; 2 expected PLAY-042 fixture-adoption cases failed with 10 exact assertions**. No other test case failed.
-- Integration handoff reports downstream PLAY-042/master `224def8`: **127/127 plus staged verification**.
+- Final focused gameplay/platform/fixture matrix: **60/60 passed**.
+- Final full native suite: **185/185 passed**.
 - Build-script syntax: passed.
+- Persistence-gate script syntax: passed.
 - Exact staged bundle verification: passed.
-- Hands-on staged late-choice journey: occupied placement rejected, valid Commercial placement accepted, Day-71 route committed, stale opening prompt retired, and exactly one Day-87 Market Weekend observed.
-- Evidence and exact disposition: `docs/production/evidence/PLAY-013/IMPLEMENTATION-CHECKPOINT.md`.
+- Fresh Commercial journey: late Day-27 choice, rejected then accepted
+  placement, Day-28 commitment, exact undo/load restoration, ignored setback,
+  Temporary Tax Relief, and Day-212 Charter victory.
+- Fresh Industrial journey: rejected then accepted placement, Day-4
+  commitment, Day-20/36/52/68 ordered story, proactive Utility Expansion, and
+  Charter victory by Day 212/213.
+- All eight PLAY-047 story fixtures matched their frozen digests, replay
+  boundaries, and terminal identities.
+- Final evidence and exact disposition:
+  `docs/production/evidence/PLAY-013/FINAL-CLOSURE.md`.
 
 ## Compatibility and boundaries
 
@@ -40,6 +58,8 @@ Both reference strategies preserve distinct economy, employment, happiness, poll
 - Town Charter timing, reset, permanent award, and existing recovery routes remain intact.
 - No UI, renderer, command, build, or general-event surface changed.
 
-## Known limitation
+## Final disposition
 
-The gameplay lane proved the causal route in the exact staged package, but did not claim final combined no-coaching acceptance. PLAY-051 must rerun pointer, keyboard, compact, accessibility, save/resume, and both complete strategies after PLAY-033 urgency presentation is integrated.
+The integrated beauty candidate required no gameplay repair. This final
+closure changes evidence and completion records only; the accepted durable
+progression product remains exactly `6d5df6b37cecfb35604f205cc12bf94b8e69f564`.

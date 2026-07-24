@@ -185,17 +185,29 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(classificationCounts[.crossing], 1)
     }
 
-    func testRoadConnectionsResolveCrossingsEndsEdgesAndMutations() {
+    func testRoadConnectionsResolveStarterDistrictJunctionsEdgesAndMutations() {
         var state = CityGameState.newCity(seed: 42)
-        XCTAssertEqual(RoadConnectionMask.resolving(at: GridCoordinate(x: 12, y: 12), in: state), .all)
-        XCTAssertEqual(RoadConnectionMask.resolving(at: GridCoordinate(x: 4, y: 12), in: state), .east)
-        XCTAssertEqual(RoadConnectionMask.resolving(at: GridCoordinate(x: 12, y: 8), in: state), .south)
+        XCTAssertEqual(
+            RoadConnectionMask.resolving(at: GridCoordinate(x: 12, y: 12), in: state),
+            [.north, .east, .west]
+        )
+        XCTAssertEqual(
+            RoadConnectionMask.resolving(at: GridCoordinate(x: 4, y: 12), in: state),
+            [.north, .east]
+        )
+        XCTAssertEqual(
+            RoadConnectionMask.resolving(at: GridCoordinate(x: 12, y: 9), in: state),
+            [.east, .south, .west]
+        )
 
-        let horizontalEnd = GridCoordinate(x: 4, y: 12)
-        state.updateTile(at: GridCoordinate(x: 4, y: 11)) { $0.kind = .road }
-        XCTAssertEqual(RoadConnectionMask.resolving(at: horizontalEnd, in: state), [.north, .east])
+        let southwestCorner = GridCoordinate(x: 4, y: 12)
+        state.updateTile(at: GridCoordinate(x: 4, y: 13)) { $0.kind = .road }
+        XCTAssertEqual(
+            RoadConnectionMask.resolving(at: southwestCorner, in: state),
+            [.north, .east, .south]
+        )
         state.updateTile(at: GridCoordinate(x: 5, y: 12)) { $0.kind = .empty }
-        XCTAssertEqual(RoadConnectionMask.resolving(at: horizontalEnd, in: state), .north)
+        XCTAssertEqual(RoadConnectionMask.resolving(at: southwestCorner, in: state), [.north, .south])
 
         var edgeState = CityGameState.newCity(seed: 42)
         edgeState.tiles = edgeState.tiles.map { CityTile(coordinate: $0.coordinate, kind: .empty) }

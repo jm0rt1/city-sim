@@ -83,7 +83,7 @@ final class CityCommandCatalogTests: XCTestCase {
                 XCTAssertFalse(presentation.actions.isEmpty, fixture.definition.id)
             case .complication:
                 XCTAssertEqual(presentation.tone, .active, fixture.definition.id)
-                XCTAssertEqual(presentation.status, "DECISION WINDOW · 16 DAYS", fixture.definition.id)
+                XCTAssertEqual(presentation.status, "DECISION · 16 DAYS", fixture.definition.id)
                 XCTAssertFalse(presentation.actions.isEmpty, fixture.definition.id)
             case .recovery:
                 XCTAssertEqual(presentation.tone, .recovery, fixture.definition.id)

@@ -47,6 +47,9 @@ materials, environmental placement, road termini, and camera presentation.
 - `bash -n script/build_and_run.sh`: passed.
 - `./script/build_and_run.sh --verify`: passed at exact product `20edac8`.
 - Exact staged Bundle.module generated-v4 pack loaded successfully.
+- The two repository validators were reproduced with the exact bundled Python
+  interpreter and Pillow 12.2.0; their reports were byte-for-byte identical to
+  the retained JSON. See `validation/BUNDLED-PYTHON-VALIDATION.md`.
 - Pack validation: 84 payload checks, 84 extrusion checks, 974 packed-overlap
   checks, 133 retained source records, all 16 road masks at all three LODs,
   zero failures, and source/staged manifest identity.

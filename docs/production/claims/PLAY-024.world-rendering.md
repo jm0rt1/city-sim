@@ -9,7 +9,7 @@
 - **Planned surfaces:** generated-v4 authored terrain/street/environment sources and descriptors, deterministic road/terrain grammar, SpriteKit world presentation, renderer tests, performance diagnostics, and exact staged evidence
 - **Dependencies:** accepted PLAY-023; existing CONTRACT-005/006 geometry and asset contracts; immutable PLAY-041 spatial truth
 - **Validation/proof:** deterministic pack builds, 16-mask reciprocal roads, 3 x 3 seam mosaics, overlap/ground-contact checks, same-seed before/after, city/neighborhood/block LOD, default/compact, construction/strain/recovery, Reduce Motion, pointer/keyboard/AX hit truth, full suite, and independent PLAY-053 handoff
-- **Status:** authorized; begin only after merging the published Wave 006 baseline normally
+- **Status:** active — same-state truth-safe product `20edac8` and author evidence are complete; fresh-start composition awaits the accepted PLAY-016/PLAY-048 starter-city baseline and independent PLAY-053 scoring
 
 Make the playable world itself excellent. Replace the current crossroads
 diorama, abrupt road stubs, empty green board, and mixed-fidelity surroundings
@@ -22,3 +22,12 @@ Do not let generated pixels define connectivity, geometry, anchors, truth, or
 acceptance. Do not change gameplay, save, commands, SwiftUI HUD composition, or
 public contracts. Commit product, evidence, and completion separately; do not
 push, self-integrate, or self-score.
+
+The current renderer checkpoint improves terrain/material hierarchy, ground
+contact, all 16 existing-road masks, authenticated termini, truthful vacant
+land, public-realm density, LOD coherence, overlap prevention, and cold-launch
+framing without inventing any road or occupied parcel outside `CityGameState`.
+Its exact product and validation are recorded under
+`docs/production/evidence/PLAY-024/candidate-20edac8/`. Do not create the
+completion record until the accepted PLAY-016/PLAY-048 state has been exercised
+in the exact staged app and independently reviewed.

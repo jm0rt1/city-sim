@@ -1,0 +1,8 @@
+The following is a diff from the previous accessibility tree for Window: "CitySim" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 74-76
+~			5 unknown Description: Treasury, Details: $25,564, -$66 / cycle, ID: hud.metric.treasury
++		74 button (selected) Description: Action update, Value: Last construction action undone, Secondary Actions: Dismiss action message
++			75 text Description: Selected Commercial, Value: Cost $2,400, upkeep $6 per cycle, road required, ID: hud.selected.context
+~		48 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+~		54 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+The focused UI element is 48 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

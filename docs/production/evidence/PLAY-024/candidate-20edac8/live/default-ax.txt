@@ -1,0 +1,3 @@
+The following is a diff from the previous accessibility tree for Window: "CitySim" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		48 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Road at block 14, 13, Value: Selected Road, block 14, 13. Primary action: Inspect Road at block 14, 13. Available. Opens details for the selected target.
+The focused UI element is 48 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Road at block 14, 13, Value: Selected Road, block 14, 13. Primary action: Inspect Road at block 14, 13. Available. Opens details for the selected target.

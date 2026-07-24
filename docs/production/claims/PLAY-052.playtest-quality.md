@@ -9,6 +9,6 @@
 - **Planned surfaces:** exact-candidate harness/evidence only; separate renderer score and integrated player-journey disposition
 - **Dependencies:** renderer gate requires PLAY-022 cold pass; integrated gate requires accepted PLAY-043/037/014/044 integration
 - **Validation/proof:** exact hashes/manifests/PIDs, default and compact pointer/keyboard/AX, save/relaunch/load, four recovery routes, 20-minute/no-coaching ledger, visual 20-point rubric, performance disclosure, exact PID cleanup
-- **Status:** active — renderer `2cf18b0` rejected at 13/20 in accepted quality commit `4bbe72b`; UI `b4fb061` corrected retry remains infrastructure-blocked in `643fd1a`; await exact corrected handoffs without repairing product
+- **Status:** active final journey — exact corrected world/UI product `704784b` is independently approved in `52ea60b` at 17/20 with focused 66/66 and full candidate 180/180; final published-master no-coaching, save/relaunch, and four-recovery gate remains
 
 Never repair product code. Score PLAY-022 independently from the integrated Wave 005 journey. Reject either candidate on contradiction, coaching, substituted identity, invalid persistence, generic compact map semantics, Escape failure, non-durable resolution, visual score below 17/20, a category below 3, or an automatic visual reject.

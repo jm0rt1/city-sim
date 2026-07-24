@@ -6,8 +6,13 @@ struct EventFeedView: View {
     @State private var visibleSummaryID: String?
 
     var body: some View {
-        Group {
-            if let summary = store.messageSummaries.first, visibleSummaryID == summary.id {
+        VStack(alignment: .trailing, spacing: 7) {
+            StrategyCommandCenterView(store: store, compact: compact)
+
+            if !compact,
+               let summary = store.messageSummaries.first,
+               visibleSummaryID == summary.id,
+               summary.message.severity == .critical {
                 HStack(alignment: .top, spacing: 9) {
                 Button { store.openMessage(summary.message) } label: {
                     HStack(alignment: .top, spacing: 9) {
@@ -67,7 +72,7 @@ struct EventFeedView: View {
                     .accessibilityLabel("Dismiss \(summary.message.title) notifications")
             }
             .padding(10)
-            .frame(width: compact ? 260 : 292, alignment: .leading)
+            .frame(width: 430, alignment: .leading)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 11))
             .overlay(RoundedRectangle(cornerRadius: 11).stroke(color(summary.message.severity).opacity(0.55), lineWidth: 1.5))
                 .help("Open the related city information")

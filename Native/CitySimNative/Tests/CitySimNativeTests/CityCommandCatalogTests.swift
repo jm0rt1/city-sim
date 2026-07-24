@@ -67,6 +67,127 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(CityCommandCatalog.descriptor(for: .inspectorFinances).title.contains("Tax Policy"))
     }
 
+    func testStrategyHUDConsumesEveryFrozenStoryMomentFromAuthoritativeAnalytics() throws {
+        let fixtures = try ProductionStoryStateBuilder().buildAll()
+        XCTAssertEqual(fixtures.count, 8)
+
+        for fixture in fixtures {
+            let presentation = CityStrategyHUDPresentation.make(
+                analytics: CityAnalytics(state: fixture.state)
+            )
+
+            switch fixture.definition.moment {
+            case .opening:
+                XCTAssertEqual(presentation.tone, .active, fixture.definition.id)
+                XCTAssertEqual(presentation.status, "OPPORTUNITY · 16 DAYS", fixture.definition.id)
+                XCTAssertFalse(presentation.actions.isEmpty, fixture.definition.id)
+            case .complication:
+                XCTAssertEqual(presentation.tone, .active, fixture.definition.id)
+                XCTAssertEqual(presentation.status, "DECISION WINDOW · 16 DAYS", fixture.definition.id)
+                XCTAssertFalse(presentation.actions.isEmpty, fixture.definition.id)
+            case .recovery:
+                XCTAssertEqual(presentation.tone, .recovery, fixture.definition.id)
+                XCTAssertEqual(presentation.status, "REVIEW · 16 DAYS", fixture.definition.id)
+                XCTAssertTrue(presentation.title.contains("locked in"), fixture.definition.id)
+                XCTAssertTrue(presentation.actions.isEmpty, fixture.definition.id)
+            case .charterVictory:
+                XCTAssertEqual(presentation.tone, .resolved, fixture.definition.id)
+                XCTAssertEqual(presentation.status, "STORY COMPLETE", fixture.definition.id)
+                XCTAssertTrue(presentation.actions.isEmpty, fixture.definition.id)
+            }
+
+            switch fixture.definition.strategy {
+            case .commercialStewardship:
+                XCTAssertTrue(presentation.eyebrow.contains("MAIN STREET"), fixture.definition.id)
+                XCTAssertEqual(presentation.diagnostic?.command, .inspectorFinances, fixture.definition.id)
+            case .industrialExpansion:
+                XCTAssertTrue(presentation.eyebrow.contains("FREIGHT"), fixture.definition.id)
+                XCTAssertEqual(presentation.diagnostic?.command, .inspectorUtilities, fixture.definition.id)
+            }
+        }
+    }
+
+    func testStrategyHUDCountdownIgnoresMessageProseAndUrgentRoutesUseCatalogCommands() throws {
+        var commercial = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.moment == .complication
+            }?.state
+        )
+        commercial.progression?.strategy?.currentPhase = .setback
+        commercial.progression?.strategy?.nextScheduledTick = commercial.tick + 20
+        let original = CityStrategyHUDPresentation.make(analytics: CityAnalytics(state: commercial))
+
+        XCTAssertEqual(original.tone, .urgent)
+        XCTAssertEqual(original.status, "ACT NOW · 5 DAYS")
+        XCTAssertEqual(original.diagnostic?.command, .inspectorFinances)
+        XCTAssertEqual(Set(original.actions.map(\.command)), Set([.inspectorFinances, .buildPark]))
+
+        commercial.messages = [
+            CityMessage(
+                tick: 999_999,
+                severity: .good,
+                title: "Unrelated prose",
+                detail: "This text claims a different deadline and must not affect typed HUD truth."
+            )
+        ]
+        XCTAssertEqual(
+            CityStrategyHUDPresentation.make(analytics: CityAnalytics(state: commercial)),
+            original
+        )
+
+        var industrial = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.moment == .complication
+            }?.state
+        )
+        industrial.progression?.strategy?.currentPhase = .setback
+        industrial.progression?.strategy?.nextScheduledTick = industrial.tick
+        let industrialPresentation = CityStrategyHUDPresentation.make(
+            analytics: CityAnalytics(state: industrial)
+        )
+        XCTAssertEqual(industrialPresentation.status, "ACT NOW · TODAY")
+        XCTAssertEqual(industrialPresentation.diagnostic?.command, .inspectorUtilities)
+        XCTAssertEqual(
+            Set(industrialPresentation.actions.map(\.command)),
+            Set([.buildPowerPlant, .buildWaterTower, .buildPark])
+        )
+    }
+
+    @MainActor
+    func testStrategyHUDDiagnosisAndMapRemediesUseOneStoreIntentAndFocusHandoff() throws {
+        let fixtures = try ProductionStoryStateBuilder().buildAll()
+        let commercialState = try XCTUnwrap(fixtures.first {
+            $0.definition.strategy == .commercialStewardship
+                && $0.definition.moment == .complication
+        }?.state)
+        let commercialStore = CityGameStore(state: commercialState)
+        let commercial = CityStrategyHUDPresentation.make(analytics: commercialStore.analytics)
+        let diagnostic = try XCTUnwrap(commercial.diagnostic)
+        let park = try XCTUnwrap(commercial.actions.first { $0.command == .buildPark })
+
+        XCTAssertTrue(commercialStore.perform(diagnostic.command))
+        XCTAssertTrue(commercialStore.showInspector)
+        XCTAssertEqual(commercialStore.inspectorSection, .finances)
+        let focusBeforePark = commercialStore.mapFocusRequestGeneration
+        XCTAssertTrue(commercialStore.performMapFocused(park.command))
+        XCTAssertEqual(commercialStore.interactionMode, .build(.park))
+        XCTAssertEqual(commercialStore.mapFocusRequestGeneration, focusBeforePark + 1)
+
+        let industrialState = try XCTUnwrap(fixtures.first {
+            $0.definition.strategy == .industrialExpansion
+                && $0.definition.moment == .complication
+        }?.state)
+        let industrialStore = CityGameStore(state: industrialState)
+        let industrial = CityStrategyHUDPresentation.make(analytics: industrialStore.analytics)
+        let power = try XCTUnwrap(industrial.actions.first { $0.command == .buildPowerPlant })
+        let focusBeforePower = industrialStore.mapFocusRequestGeneration
+        XCTAssertTrue(industrialStore.performMapFocused(power.command))
+        XCTAssertEqual(industrialStore.interactionMode, .build(.powerPlant))
+        XCTAssertEqual(industrialStore.mapFocusRequestGeneration, focusBeforePower + 1)
+    }
+
     @MainActor
     func testTaxPolicySearchResultUsesCurrentAvailabilityAndDisabledReason() throws {
         let enabled = CityGameStore(state: .newCity(seed: 42))
@@ -1166,6 +1287,39 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(compact.pixelsHigh, 480)
 
         if let path = ProcessInfo.processInfo.environment["CITYSIM_COMMAND_GUIDE_PROOF"] {
+            let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+    }
+
+    @MainActor
+    func testStrategyCommandCenterRendersAtDefaultAndExactCompactSizes() throws {
+        let state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.moment == .complication
+            }?.state
+        )
+        let store = CityGameStore(state: state)
+        let compactSize = CGSize(width: 390, height: StrategyCommandCenterView.compactMaximumHeight)
+        let compact = try bitmap(
+            of: StrategyCommandCenterView(store: store, compact: true)
+                .frame(width: compactSize.width, height: compactSize.height),
+            size: compactSize
+        )
+        let regularSize = CGSize(width: 430, height: 124)
+        let regular = try bitmap(
+            of: StrategyCommandCenterView(store: store, compact: false)
+                .frame(width: regularSize.width, height: regularSize.height),
+            size: regularSize
+        )
+
+        XCTAssertEqual(compact.size.width, compactSize.width, accuracy: 0.5)
+        XCTAssertEqual(compact.size.height, compactSize.height, accuracy: 0.5)
+        XCTAssertEqual(regular.size.width, regularSize.width, accuracy: 0.5)
+        XCTAssertEqual(regular.size.height, regularSize.height, accuracy: 0.5)
+
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_STRATEGY_HUD_PROOF"] {
             let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
             try data.write(to: URL(fileURLWithPath: path), options: .atomic)
         }

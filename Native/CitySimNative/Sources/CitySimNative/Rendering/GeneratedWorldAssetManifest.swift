@@ -3,21 +3,32 @@ import Foundation
 struct GeneratedWorldAssetManifest: Decodable, Sendable {
     struct LOD: Decodable, Sendable {
         let file: String
+        let page: String
+        let pageFile: String
         let pixels: [Int]
         let sourcePixels: [Int]
         let sha256: String
         let trimRectPixels: [Int]
         let sourceTrimRectPixels: [Int]
+        let textureRectPixels: [Int]
+        let packedRectPixels: [Int]
         let anchor: [Double]
         let worldSize: [Double]
+        let paddingPixels: Int
+        let extrusionPixels: Int
         let decodedByteEstimate: Int
 
         enum CodingKeys: String, CodingKey {
-            case file, pixels, sha256, anchor
+            case file, page, pixels, sha256, anchor
+            case pageFile = "page_file"
             case sourcePixels = "source_pixels"
             case trimRectPixels = "trim_rect_pixels"
             case sourceTrimRectPixels = "source_trim_rect_pixels"
+            case textureRectPixels = "texture_rect_pixels"
+            case packedRectPixels = "packed_rect_pixels"
             case worldSize = "world_size"
+            case paddingPixels = "padding_pixels"
+            case extrusionPixels = "extrusion_pixels"
             case decodedByteEstimate = "decoded_byte_estimate"
         }
     }
@@ -84,6 +95,27 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
         }
     }
 
+    struct Page: Decodable, Sendable {
+        let id: String
+        let lod: String
+        let file: String
+        let sha256: String
+        let pixels: [Int]
+        let decodedByteEstimate: Int
+        let entryCount: Int
+        let paddingPixels: Int
+        let extrusionPixels: Int
+        let rotation: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case id, lod, file, sha256, pixels, rotation
+            case decodedByteEstimate = "decoded_byte_estimate"
+            case entryCount = "entry_count"
+            case paddingPixels = "padding_pixels"
+            case extrusionPixels = "extrusion_pixels"
+        }
+    }
+
     struct CompiledNetwork: Decodable, Sendable {
         let sourceLogicalID: String
         let connectionMasks: Int
@@ -94,9 +126,30 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
             let pixels: [Int]
             let worldSize: [Double]
             let decodedBytesPerTexture: Int
+            let textures: [String: Texture]
+
+            struct Texture: Decodable, Sendable {
+                let page: String
+                let pageFile: String
+                let textureRectPixels: [Int]
+                let packedRectPixels: [Int]
+                let payloadSHA256: String
+                let paddingPixels: Int
+                let extrusionPixels: Int
+
+                enum CodingKeys: String, CodingKey {
+                    case page
+                    case pageFile = "page_file"
+                    case textureRectPixels = "texture_rect_pixels"
+                    case packedRectPixels = "packed_rect_pixels"
+                    case payloadSHA256 = "payload_sha256"
+                    case paddingPixels = "padding_pixels"
+                    case extrusionPixels = "extrusion_pixels"
+                }
+            }
 
             enum CodingKeys: String, CodingKey {
-                case pixels
+                case pixels, textures
                 case worldSize = "world_size"
                 case decodedBytesPerTexture = "decoded_bytes_per_texture"
             }
@@ -114,6 +167,7 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
     let packID: String
     let productionSelection: Bool
     let assets: [Asset]
+    let pages: [Page]
     let inventory: [InventoryItem]
     let compiledNetwork: CompiledNetwork
 
@@ -121,7 +175,7 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
         case schema
         case packID = "pack_id"
         case productionSelection = "production_selection"
-        case assets, inventory
+        case assets, pages, inventory
         case compiledNetwork = "compiled_network"
     }
 }

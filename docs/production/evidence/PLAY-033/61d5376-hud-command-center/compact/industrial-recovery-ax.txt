@@ -1,0 +1,56 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 65, ID: hud.city.identity
+		3 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		4 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		5 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		6 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		7 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+		8 progress indicator Description: Show objectives, Help: Close the $69 operating gap, Value: 0.7258000000000002, ID: hud.objective.summary
+		9 container City status
+			10 unknown Description: Treasury, Details: $9,734, -$69 / cycle, ID: hud.metric.treasury
+			11 unknown Description: Residents, Details: 364, 1,876 homes open, ID: hud.metric.population
+			12 unknown Description: Happiness, Details: 58%, 100% mayor approval, ID: hud.metric.happiness
+			13 unknown Description: Jobs filled, Details: 254, 46 openings, ID: hud.metric.employment
+			14 unknown Description: Utilities, Details: 100%, P 283 · W 260 spare, ID: hud.metric.utilities
+		15 container Description: City priority: Utility expansion locked in, ID: hud.strategy.priority, Details: REVIEW · 16 DAYS. The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+			16 text FREIGHT RECOVERY REVIEW · 16 DAYS Utility expansion locked in The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+			17 button Description: Utility capacity, Help: Review current power, water, coverage, and reserve through the existing Command Center.
+		18 button (selected) Description: Action update, Value: City loaded · Simulation paused, Secondary Actions: Dismiss action message
+		19 container City command deck
+			20 button (selected) Description: Inspect mode, Value: Selected
+			21 button Description: Build mode, Value: Not selected
+			22 button Description: Bulldoze mode, Value: Not selected
+			23 menu button Catalog, Description: Open categorized build catalog, Value: Selected Road, ID: square.grid.2x2
+			24 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			25 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			26 menu button City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., ID: building.2
+			27 text Inspect mode
+			28 text Value: Inspect mode. Choose a block for details, ID: hud.selected.context
+			29 button Description: Net, Value: -$69
+			30 button Description: Homes, Value: 1,876
+			31 button Description: Power, Value: 283
+			32 button Description: Water, Value: 260
+			33 button Demand
+		34 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	35 toolbar
+		36 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		37 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		38 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		39 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		40 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	41 close button
+	42 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	43 minimize button
+	44 text CitySim
+45 menu bar
+	46 CitySim [UI wdbeadac6e0bd]
+	47 File
+	48 Edit
+	49 View
+	50 Simulation
+	51 Tools
+	52 City Data
+	53 Window
+	54 Help

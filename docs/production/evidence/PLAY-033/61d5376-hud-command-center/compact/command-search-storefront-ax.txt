@@ -1,0 +1,23 @@
+Window: "", App: CitySim [UI wdbeadac6e0bd].
+0 sheet Secondary Actions: Raise
+	1 container CitySim command guide
+		2 text COMMAND GUIDE
+		3 text Search the entire command deck, see focus rules, and execute available non-spatial actions.
+		4 button Close command guide
+		5 text field (settable, string) Description: Search CitySim commands, Value: storefront, Placeholder: Search commands, shortcuts, and outcomes
+		6 scroll area Searchable CitySim command catalog
+			7 list Secondary Actions: AXScrollToTop, AXScrollToBottom
+				8 text COMMAND CENTER
+				9 button Description: Open Tax Policy and Finances, Help: Open tax policy and finances in the Command Center., Value: Shortcut ⌥2. Available
+10 menu bar
+	11 CitySim [UI wdbeadac6e0bd]
+	12 File
+	13 Edit
+	14 View
+	15 Simulation
+	16 Tools
+	17 City Data
+	18 Window
+	19 Help
+
+The focused UI element is 5 text field (settable, string) Description: Search CitySim commands, Value: storefront, Placeholder: Search commands, shortcuts, and outcomes

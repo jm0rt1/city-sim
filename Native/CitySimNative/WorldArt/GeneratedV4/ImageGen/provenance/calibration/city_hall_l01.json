@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "asset_id": "city_hall_l01",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim modular 2:1 isometric atlas source for city_hall_l01\nInput images: Image 1 is the provisional Gate A appearance reference\u2014match only its civic focal hierarchy, warm limestone/copper material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district layout. Image 2 is the authoritative 2x2 registration template\u2014preserve its footprint, canvas position, south ground pivot, height box, and shadow box exactly; guide colors are instructions and must not appear in the art.\nPrimary request: create exactly one maintained city hall focal building on a 2x2 parcel: dignified warm limestone and brick civic architecture, articulated central tower or cupola with weathered copper roof, broad south-facing steps and clear entrance, rhythmic windows, restrained foundation planting, and coherent contact/cast shadow. Building mass occupies 58\u201374 percent of the parcel. No flags with symbols, road, crowd, or surrounding district.\nStyle/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field.\nLighting: warm northwest key; cooler darker southeast wall; coherent southeast contact and cast shadow contained in the declared shadow box.\nConstraints: exact 1536x1024 composition implied by Image 2; one centered civic building; exact 2x2 registration and pivot; generous padding; no text, UI, rings, logos, watermark, extra buildings, roads, or extra objects; do not use #ff00ff in the subject.\nAvoid: monumental fantasy, concept-art scenery, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, impossible architecture, exaggerated outlines, cyan/yellow/purple guide marks.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/city_hall_l01.md",
+  "prompt_sha256": "6f880a092f570da30b9d9b64f1ac004c24d8314cfa3b734d495dfdac19aa4067",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 2x2 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-2x2.png",
+      "sha256": "2b20d49406124718a1a5b8e88125fa09500d17b52a2f95a7dc222ce7abdf32f6"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/city_hall_l01/source-v01.png",
+  "raw_source_sha256": "4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id city_hall_l01 --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/city_hall_l01/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/city_hall_l01 --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/city_hall_l01-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      333,
+      95,
+      1254,
+      941
+    ],
+    "target_size": [
+      820,
+      753
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      358,
+      143
+    ]
+  },
+  "intended_gameplay_meaning": "completed maintained city hall focal building normalized to one authoritative simulation tile",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/city_hall_l01/generated_v4_city_hall_l01_city.png",
+        "normalized_sha256": "43170c48925cce3aab4a1257ae79046dc50ef6552d46fddc238067e047e288e6",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          58,
+          22,
+          140,
+          129
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_city_hall_l01_city.png",
+        "shipping_sha256": "c92f267b621bb2b2dd2f33c434597a8d1267bac55cc2f988864e338e9c9eaafa",
+        "shipping_pixels": [
+          140,
+          129
+        ],
+        "decoded_byte_estimate": 72240
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/city_hall_l01/generated_v4_city_hall_l01_neighborhood.png",
+        "normalized_sha256": "37cfee2f85c2858d7e6f7600ffbd9a80db2a4e0e96c6308bbb060b85c00285a2",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          118,
+          46,
+          276,
+          255
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_city_hall_l01_neighborhood.png",
+        "shipping_sha256": "24c744198e325e2b3114dab4183637cdf215095895f180978a1b9a57959aa8a7",
+        "shipping_pixels": [
+          276,
+          255
+        ],
+        "decoded_byte_estimate": 281520
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/city_hall_l01/generated_v4_city_hall_l01_block.png",
+        "normalized_sha256": "9dd2e9c588519f1c113505da543bbf950f787466bf9d93e49ebeb84f3aff6a52",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          237,
+          94,
+          550,
+          505
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_city_hall_l01_block.png",
+        "shipping_sha256": "709bcd7c46da62fbb67eb3d0c3f8d5d0696ce18881b16eb6408927b8085433af",
+        "shipping_pixels": [
+          550,
+          505
+        ],
+        "decoded_byte_estimate": 1111000
+      }
+    ]
+  }
+}

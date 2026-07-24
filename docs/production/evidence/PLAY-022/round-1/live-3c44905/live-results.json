@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "task": "PLAY-022",
+  "round": 1,
+  "disposition": "visual_checkpoint_retained_pending_play_051_shared_target_contract",
+  "self_accepted": false,
+  "authority_commit": "313a16b35765748c5ed3451177352f6c4440ddc6",
+  "authority_merge": "a69e927df62735c3c4324f82b968fbd6db278034",
+  "rejected_comparison_baseline": "8cb45b5848f070c25803213ee48b2523e8057d09",
+  "product_candidate": "3c44905467de4a6629098f6be51d0ac90f56f5f0",
+  "branch": "codex/citysim-world-rendering",
+  "staged_identity": {
+    "worktree_root": "/Users/James/.codex/worktrees/cac1/city-sim",
+    "worktree_token": "w5f893ad1da1b",
+    "candidate_id": "world-rendering-w5f893ad1da1b",
+    "bundle_identifier": "com.jfmortensen.citysim.world-rendering.w5f893ad1da1b",
+    "preference_domain": "com.jfmortensen.citysim.world-rendering.w5f893ad1da1b",
+    "display_name": "CitySim [World w5f893ad1da1b]",
+    "bundle_path": "/Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app",
+    "executable_path": "/Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app/Contents/MacOS/CitySimNative-w5f893ad1da1b",
+    "resource_bundle_path": "/Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app/CitySimNative_CitySimNative.bundle",
+    "candidate_manifest_path": "/Users/James/.codex/worktrees/cac1/city-sim/dist/manifests/world-rendering-w5f893ad1da1b.manifest",
+    "data_root": "/Users/James/.codex/worktrees/cac1/city-sim/dist/test-data/world-rendering-w5f893ad1da1b",
+    "executable_sha256": "3a834dee98eddbf7d03536611a9918474372fa19212b4815f1df9d39075b1b02",
+    "generated_v4_manifest_sha256": "afedf49fc0df87fa67733dd1b6a990aabcf22e77051425c78da222153353c93a",
+    "source_and_staged_manifest_match": true,
+    "final_verification_pid": 8173,
+    "final_verification_process_stopped": true
+  },
+  "window_and_camera": {
+    "display_scale": 2.0,
+    "regular_outer_pixels": [1278, 768],
+    "compact_outer_pixels": [900, 652],
+    "compact_content_points": [900, 600],
+    "proof_camera_scales": {
+      "block": 0.50,
+      "neighborhood": 0.66,
+      "city": 0.74
+    },
+    "default_developed_occupancy_target": 0.64,
+    "shipping_harness_default": {
+      "viewport_points": [1280, 800],
+      "camera_scale": 0.419921875,
+      "detail": "block",
+      "developed_occupancy": [0.64, 0.6272559627906976]
+    },
+    "shipping_harness_compact": {
+      "viewport_points": [900, 600],
+      "camera_scale": 0.6200000047683716,
+      "detail": "neighborhood",
+      "developed_occupancy": [0.6164874504557758, 0.5664483827402639]
+    }
+  },
+  "live_sessions": [
+    {
+      "pid": 52697,
+      "purpose": "exact compact 900 by 600 content, three LOD cycles, selection, and Reduce Motion",
+      "stopped_after_capture": true
+    },
+    {
+      "pid": 64411,
+      "purpose": "regular three-LOD cycle and comparable RSS",
+      "stopped_after_capture": true
+    },
+    {
+      "pid": 69597,
+      "purpose": "final aligned valid, invalid, construction, and undo correction proof",
+      "stopped_after_capture": true
+    }
+  ],
+  "pointer_and_keyboard_journey": {
+    "pointer_hit": "Commercial at block 14,12 remained stable and announced authoritative condition, utility, pollution, and vitality details.",
+    "keyboard_selection": "Road at block 14,13 remained stable through map focus and camera changes.",
+    "invalid_preview": "Residential placement on occupied Industrial block 15,12 showed the grounded invalid hatch and the one store-owned reason: Demolish the existing structure before building here.",
+    "valid_preview": "Keyboard navigation to open block 16,14 showed the grounded white parcel boundary and compact cyan frontage anchor; accessibility announced the Residential cost and upkeep.",
+    "commit": "Residential at 16,14 committed and remained visibly distinct at prepared foundation, 50 percent frame, and 75 percent finishing stages.",
+    "undo": "Undo removed the construction and restored treasury from 19,930 to 21,730 while preserving cashflow at -89 per cycle.",
+    "save_load": "Save then File > Load City restored the paused tick-38 city at treasury 25,432.1, cashflow -66, population 309, and jobs 190.",
+    "overlays": "Utilities and pollution remained sparse, non-color-coded by notches or hatches, and did not obscure the selected place."
+  },
+  "save_identity": {
+    "path": "/Users/James/.codex/worktrees/cac1/city-sim/dist/test-data/world-rendering-w5f893ad1da1b/quicksave.json",
+    "file_sha256": "935df087123ff0468eb36a0de77b9178e23f71166ca55a3e60f99ca4c51bdab7",
+    "state_digest": "4d78ec5b9ef24043c41cefe50c41bf98d71027fb3725b616ce24ccde8d028b81",
+    "tick": 38,
+    "status": "playing"
+  },
+  "reduce_motion": {
+    "proof_mode": "CITYSIM_REDUCE_MOTION_PROOF=1",
+    "paused_pair_interval_seconds": 3,
+    "ssim": 0.999762,
+    "psnr_average_decibels": 50.819494,
+    "normal_actions": 2,
+    "reduced_motion_actions": 0,
+    "static_meaning_preserved": true
+  },
+  "accessibility": {
+    "map_role": "group",
+    "selected_coordinate_kind_and_condition_announced": true,
+    "pending_placement_cost_and_validity_announced": true,
+    "construction_stage_announced": true,
+    "invalid_reason_announced_once": true,
+    "custom_actions_preserved": true,
+    "duplicate_unknown_labels": 0
+  },
+  "validation": {
+    "world_rendering_tests": {"tests": 30, "failures": 0},
+    "final_camera_keyboard_tests": {"tests": 3, "failures": 0},
+    "full_native_suite": {"tests": 127, "failures": 0},
+    "bash_syntax": "pass",
+    "staged_verification": "pass",
+    "candidate_isolation": "deferred pending PLAY-051 shared target contract"
+  },
+  "review": {
+    "integration": "deferred_pending_play_051_shared_target_contract",
+    "playtest": "deferred_pending_play_051_shared_target_contract",
+    "required_score": "each reviewer at least 17 of 20 with no category below 3"
+  }
+}

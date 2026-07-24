@@ -1,0 +1,9 @@
+Use case: stylized-concept
+Asset type: CitySim modular 2:1 isometric atlas source for water_tower_l01
+Input images: Image 1 is the provisional Gate A appearance reference—match only its utility silhouette, painted steel and masonry material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district layout. Image 2 is the authoritative 1x1 registration template—preserve its 2:1 footprint, canvas position, south ground pivot, height box, and shadow box exactly; guide colors are instructions and must not appear in the art.
+Primary request: create exactly one maintained level-one municipal water tower: a narrow riveted painted-steel tank on four braced legs over a compact masonry pump base, with access ladder and small safety rail, strong readable silhouette, and coherent contact/cast shadow. It indicates only building identity, not water capacity or service state. No pipes leaving the parcel, road, vehicle, person, or surrounding district.
+Style/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.
+Scene/backdrop: perfectly flat solid #ff00ff chroma-key field.
+Lighting: warm northwest key; cooler darker southeast surfaces; coherent southeast contact and cast shadow contained in the declared shadow box.
+Constraints: exact 1536x1024 composition implied by Image 2; one centered tower; exact 1x1 registration and pivot; generous padding; no text, UI, rings, logos, watermark, extra buildings, roads, or extra objects; do not use #ff00ff in the subject.
+Avoid: implied service status, water spray, concept-art scenery, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, impossible structure, exaggerated outlines, cyan/yellow/purple guide marks.

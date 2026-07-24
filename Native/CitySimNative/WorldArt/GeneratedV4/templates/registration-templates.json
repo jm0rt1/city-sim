@@ -1,0 +1,239 @@
+{
+  "schema": 1,
+  "projection": "orthographic 2:1 isometric",
+  "world_tile_points": [
+    72,
+    36
+  ],
+  "authoring_tile_pixels": [
+    512,
+    256
+  ],
+  "ground_pivot": [
+    768,
+    896
+  ],
+  "light_direction": "northwest key",
+  "shadow_direction": "southeast at 2:1",
+  "templates": [
+    {
+      "footprint": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "sockets": {
+        "north": [
+          896,
+          704
+        ],
+        "east": [
+          896,
+          832
+        ],
+        "south": [
+          640,
+          832
+        ],
+        "west": [
+          640,
+          704
+        ]
+      },
+      "ground_pivot": [
+        768,
+        896
+      ],
+      "height_bounds": [
+        256,
+        96,
+        1280,
+        896
+      ],
+      "shadow_bounds": [
+        768,
+        512,
+        1456,
+        976
+      ],
+      "northwest_light_origin": [
+        176,
+        128
+      ],
+      "id": "1x1",
+      "canvas_pixels": [
+        1536,
+        1024
+      ],
+      "tile_source_pixels": [
+        512,
+        256
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "transparent_background": true,
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    },
+    {
+      "footprint": [
+        [
+          640,
+          512
+        ],
+        [
+          1152,
+          768
+        ],
+        [
+          896,
+          896
+        ],
+        [
+          384,
+          640
+        ]
+      ],
+      "sockets": {
+        "north": [
+          896,
+          640
+        ],
+        "east": [
+          1024,
+          832
+        ],
+        "south": [
+          640,
+          768
+        ],
+        "west": [
+          512,
+          576
+        ]
+      },
+      "ground_pivot": [
+        768,
+        896
+      ],
+      "height_bounds": [
+        256,
+        96,
+        1280,
+        896
+      ],
+      "shadow_bounds": [
+        768,
+        512,
+        1456,
+        976
+      ],
+      "northwest_light_origin": [
+        176,
+        128
+      ],
+      "id": "2x1",
+      "canvas_pixels": [
+        1536,
+        1024
+      ],
+      "tile_source_pixels": [
+        512,
+        256
+      ],
+      "footprint_tiles": [
+        2,
+        1
+      ],
+      "transparent_background": true,
+      "sha256": "4b1cc96c3a8ddc0cece7fc8bb30bd9fe03ad611fa855ecf429e5c8c8719388d1"
+    },
+    {
+      "footprint": [
+        [
+          768,
+          384
+        ],
+        [
+          1280,
+          640
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          256,
+          640
+        ]
+      ],
+      "sockets": {
+        "north": [
+          1024,
+          512
+        ],
+        "east": [
+          1024,
+          768
+        ],
+        "south": [
+          512,
+          768
+        ],
+        "west": [
+          512,
+          512
+        ]
+      },
+      "ground_pivot": [
+        768,
+        896
+      ],
+      "height_bounds": [
+        256,
+        96,
+        1280,
+        896
+      ],
+      "shadow_bounds": [
+        768,
+        512,
+        1456,
+        976
+      ],
+      "northwest_light_origin": [
+        176,
+        128
+      ],
+      "id": "2x2",
+      "canvas_pixels": [
+        1536,
+        1024
+      ],
+      "tile_source_pixels": [
+        512,
+        256
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "transparent_background": true,
+      "sha256": "2b20d49406124718a1a5b8e88125fa09500d17b52a2f95a7dc222ce7abdf32f6"
+    }
+  ]
+}

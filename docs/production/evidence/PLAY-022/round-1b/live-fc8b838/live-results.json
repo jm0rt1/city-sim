@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "task": "PLAY-022",
+  "round": "1B",
+  "disposition": "preserved-active-candidate-cold-gate-blocked",
+  "product_commit": "fc8b838d6d33ee8091ce6c54c125ea0cee279f5b",
+  "product_tree": "1277422dabd28c67469b11516ba06692f978bc1a",
+  "candidate_id": "world-rendering-w5f893ad1da1b",
+  "bundle_identifier": "com.jfmortensen.citysim.world-rendering.w5f893ad1da1b",
+  "proof_data_root": "dist/test-data/world-rendering-w5f893ad1da1b-round1b-fc8b838",
+  "save": {
+    "quicksave_and_backup_sha256": "1e1410070a19e2291ceee35aa8523bb49bf1b1a3d8ab7473c936b91330082693",
+    "state_digest": "9e2f234316b9332c90fde2295acfff305386b67a84ad26e0ab5e0a703006f7cd",
+    "tick": 60,
+    "day": 16,
+    "treasury": 25007,
+    "population": 315,
+    "jobs": 190,
+    "paused": true
+  },
+  "windows": {
+    "default_uncropped_capture_pixels": "1229x768",
+    "compact_content_size": "900x600",
+    "compact_uncropped_capture_pixels_including_chrome": "900x652",
+    "distinct_lods_each": ["city", "neighborhood", "block"]
+  },
+  "interaction": {
+    "default_pointer": "City Hall 12,12",
+    "default_keyboard": "Road 14,13",
+    "compact_pointer": "City Hall 12,12",
+    "compact_keyboard": "Road 14,13",
+    "compact_invalid": "Residential 15,15 no road",
+    "compact_valid": "Residential 16,14 available",
+    "compact_commit_undo_save_load": true,
+    "utilities_overlay_retained": true,
+    "contract_008_implemented": false
+  },
+  "construction": {
+    "coordinate": [16, 14],
+    "stages_percent": [0, 25, 50, 75, 100],
+    "undo": true,
+    "accessibility_text_for_each_stage": true
+  },
+  "reduce_motion": {
+    "compact_ab_frames": true,
+    "normal_actions": 2,
+    "reduced_motion_actions": 0
+  },
+  "pan_zoom": {
+    "video": "default-pan-zoom-live-7fps.mov",
+    "source_frames": 42,
+    "source_elapsed_ms": 21117,
+    "encoded_fps": 7,
+    "generated_intermediate_frames": false
+  },
+  "memory": {
+    "ceiling_mib": 333.8,
+    "compact": {
+      "content_size": "900x600",
+      "settled_footprint_mb": 236,
+      "peak_footprint_mb": 363,
+      "rss_kib": 102896,
+      "result": "pass"
+    },
+    "regular": {
+      "content_size": "1278x768",
+      "settled_footprint_mb": 300,
+      "peak_footprint_mb": 396,
+      "rss_kib": 274768,
+      "result": "pass"
+    }
+  },
+  "boundaries": {
+    "contract_008_blob": "bc519df6974c80ff9b1f2cc9e516882dd62dc407",
+    "round_2_authorized": false,
+    "play_023_authorized": false,
+    "self_accepted": false,
+    "independent_score_requested": false
+  }
+}

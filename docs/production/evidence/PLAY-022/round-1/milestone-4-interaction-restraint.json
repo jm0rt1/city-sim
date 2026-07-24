@@ -1,0 +1,56 @@
+{
+  "task": "PLAY-022",
+  "milestone": 4,
+  "captured_at": "2026-07-21T19:42:01-04:00",
+  "candidate_parent": "57910210ac7e1e783ae041b62da994bad1457525",
+  "interaction_priority": [
+    "active placement boundary and ghost",
+    "grounded selection boundary and frontage anchor",
+    "subtle pointer hover boundary",
+    "sparse approved overlay marks",
+    "persistent consequence cues suppressed on the active coordinate"
+  ],
+  "selection": {
+    "boundaries": 1,
+    "frontage_anchors": 1,
+    "labels": 0,
+    "actions_normal": 0,
+    "actions_reduce_motion": 0
+  },
+  "placement": {
+    "valid": ["grounded boundary", "semantic generated-v4 ghost"],
+    "invalid": ["grounded boundary", "low-alpha semantic ghost", "three non-color hatch marks"],
+    "floating_panels": 0,
+    "status_labels": 0,
+    "reason_authority": "store validation disclosure and accessibility action; renderer does not duplicate rejection prose"
+  },
+  "overlays": {
+    "approved_coordinate_truth": ["utilities", "pollution"],
+    "abstained_without_coordinate_truth": ["landValue", "traffic", "happiness"],
+    "full_tile_washes": 0,
+    "labels": 0,
+    "non_color_encoding": "utility severity notch count and pollution exposure hatch count",
+    "lod_policy": "severe at city; moderate at neighborhood; mild at block"
+  },
+  "active_coordinate": {
+    "default": "selection reveal uses measured safe world viewport",
+    "exact_900x600": "passed with top=76 leading=278 bottom=64 trailing=12",
+    "keyboard_and_pointer_share_coordinate_action": true
+  },
+  "accessibility": {
+    "map_role": "group",
+    "announced_modes": ["selected coordinate", "pending placement", "pending bulldoze"],
+    "construction_stage_and_condition_announced": true,
+    "primary_action_and_invalid_reason_announced": true,
+    "custom_actions_preserved": true
+  },
+  "shipping_frames": {
+    "default": {"size": [1280, 800], "nodes": 3616, "drawables": 1398, "reduce_motion_actions": 0},
+    "compact": {"size": [900, 600], "nodes": 3616, "drawables": 1398, "reduce_motion_actions": 0}
+  },
+  "focused_validation": [
+    {"suite": "interaction-overlay-selection", "tests": 5, "failures": 0, "duration_seconds": 0.199},
+    {"suite": "keyboard-viewport-accessibility", "tests": 3, "failures": 0, "duration_seconds": 4.620},
+    {"suite": "shipping-default-compact", "tests": 1, "failures": 0, "duration_seconds": 0.617}
+  ]
+}

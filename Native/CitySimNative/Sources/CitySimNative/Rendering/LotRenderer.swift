@@ -6,13 +6,11 @@ final class LotRenderer {
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
     private let lifecycleRenderer: LotLifecycleRenderer
-    private let ambientLifeRenderer: AmbientLifeRenderer
 
     init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
         self.assets = assets
         self.lifecycleRenderer = LotLifecycleRenderer(style: style)
-        self.ambientLifeRenderer = AmbientLifeRenderer(style: style)
     }
 
     func makeLot(
@@ -38,34 +36,22 @@ final class LotRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        addAuthoredFrontage(for: tile.kind, adjacentRoads: adjacentRoads, to: cityLayer)
-        if let strategyIdentity {
-            addStrategyGround(strategyIdentity, to: cityLayer)
-        }
-
+        addCityDensityFoundation(for: tile.kind, to: cityLayer)
+        addAuthoredFrontage(
+            for: tile.kind,
+            adjacentRoads: adjacentRoads,
+            detail: detail,
+            to: neighborhoodLayer
+        )
         if presentation.construction == .complete || presentation.construction == .finishing {
-            if addAuthoredPlaceFamily(
+            _ = addAuthoredPlaceFamily(
                 tile,
                 variant: variant,
+                detail: detail,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
                 block: blockLayer
-            ) == false {
-                switch tile.kind {
-                case .powerPlant:
-                    addPowerPlant(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-                case .waterTower:
-                    addWaterTower(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-                case .fireStation:
-                    addFireStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-                case .policeStation:
-                    addPoliceStation(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-                case .school:
-                    addSchool(tile, variant: variant, city: cityLayer, neighborhood: neighborhoodLayer, block: blockLayer)
-                case .residential, .commercial, .industrial, .park, .cityHall, .empty, .road:
-                    break
-                }
-            }
+            )
         }
 
         if presentation.construction == .finishing {
@@ -89,87 +75,94 @@ final class LotRenderer {
                 reducedMotion: reducedMotion
             ))
         }
-        if presentation.construction == .complete,
-           let ambient = ambientLifeRenderer.makeAmbientVegetation(
-               for: tile,
-               detail: detail,
-               reducedMotion: reducedMotion
-           ) {
-            root.addChild(ambient)
-        }
-        if presentation.construction == .complete,
-           let strategyAmbient = ambientLifeRenderer.makeStrategyDecoration(
-               for: tile,
-               detail: detail,
-               reducedMotion: reducedMotion
-           ) {
-            root.addChild(strategyAmbient)
-        }
         return root
     }
 
     @discardableResult
     private func addAuthoredPlaceFamily(
         _ tile: CityTile,
-        variant: Int,
+        variant _: Int,
+        detail: CameraDetailLevel,
         city: SKNode,
-        neighborhood: SKNode,
+        neighborhood _: SKNode,
         block: SKNode
     ) -> Bool {
-        let family: String
-        switch tile.kind {
-        case .residential: family = "residential"
-        case .commercial: family = "commercial"
-        case .industrial: family = "industrial"
-        case .park: family = "park"
-        case .cityHall: family = "civic"
-        default: return false
+        if let generatedID = generatedLogicalID(for: tile.kind),
+           let sprite = assets.generatedSprite(logicalID: generatedID, detail: detail) {
+            sprite.name = "lot.generated-v4.\(generatedID).\(detail)"
+            city.addChild(sprite)
+            addGeneratedRoleIdentity(for: tile.kind, to: block)
+            return true
         }
+        // Production never silently drops back to the legacy atlas or shape
+        // buildings. A missing generated source is counted by the catalog and
+        // leaves an explicit semantic hole for staged verification to reject.
+        return false
+    }
 
-        let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
-        let assetName = strategyIdentity?.placeAssetName ?? "place_\(family)_\(variant)"
-        let spriteSize = strategyIdentity == nil
-            ? CGSize(width: 80, height: 96)
-            : CGSize(width: 96, height: 120)
-        let anchorY: CGFloat = strategyIdentity == nil ? 28.0 / 192.0 : 36.0 / 240.0
-        guard let sprite = assets.sprite(
-            named: assetName,
-            size: spriteSize,
-            anchorPoint: CGPoint(x: 0.5, y: anchorY)
-        ) else { return false }
-        sprite.name = if let strategyIdentity {
-            "lot.place.\(family).density.\(strategyIdentity.densityTier).variant.\(variant).\(strategyIdentity.architecturalCue)"
-        } else {
-            "lot.place.\(family).variant.\(variant)"
+    private func generatedLogicalID(for kind: BuildingKind) -> String? {
+        switch kind {
+        case .residential: "residential_l01"
+        case .commercial: "commercial_l01"
+        case .industrial: "industrial_l01"
+        case .park: "park_l01"
+        case .cityHall: "city_hall_l01"
+        case .waterTower: "water_tower_l01"
+        case .powerPlant: "industrial_l01"
+        case .fireStation: "commercial_l01"
+        case .policeStation: "city_hall_l01"
+        case .school: "residential_l01"
+        default: nil
         }
-        sprite.zPosition = 5
-        city.addChild(sprite)
+    }
 
-        switch tile.kind {
-        case .residential:
-            addTree(at: CGPoint(x: -27, y: -2), scale: 0.72, variant: variant, to: neighborhood)
-            addHedge(at: CGPoint(x: 14, y: -6), count: 3, to: block)
-            addFence(from: CGPoint(x: -28, y: -7), to: CGPoint(x: -10, y: -15), to: block)
-        case .commercial:
-            addPlanters(at: [CGPoint(x: -27, y: -3), CGPoint(x: 26, y: 2)], to: neighborhood)
-            addLamp(at: CGPoint(x: 20, y: -4), to: block)
-            addBench(at: CGPoint(x: -17, y: -7), rotation: -0.18, to: block)
-        case .industrial:
-            addCrates(at: CGPoint(x: -28, y: -7), to: neighborhood)
-            addPipeBrace(at: CGPoint(x: 20, y: -2), to: block)
-            addBollards(at: CGPoint(x: -3, y: -9), count: 4, to: block)
-        case .park:
-            addBench(at: CGPoint(x: 2, y: -7), rotation: -0.18, to: neighborhood)
-            addLamp(at: CGPoint(x: -14, y: -5), to: block)
-            addFlowerBed(at: CGPoint(x: 18, y: -2), to: block)
-        case .cityHall:
-            addSteps(width: 38, at: CGPoint(x: 0, y: -7), to: neighborhood)
-            addFlagpole(at: CGPoint(x: 25, y: 3), to: block)
-            addPlanters(at: [CGPoint(x: -25, y: -3), CGPoint(x: 24, y: 1)], to: block)
-        case .empty, .road, .powerPlant, .waterTower, .fireStation, .policeStation, .school:
+    private func addGeneratedRoleIdentity(for kind: BuildingKind, to node: SKNode) {
+        let identity = SKNode()
+        identity.name = "lot.generated-role.\(kind.rawValue)"
+        switch kind {
+        case .powerPlant:
+            addTransformerBank(at: CGPoint(x: -24, y: -7), to: identity)
+        case .fireStation:
+            addHydrant(at: CGPoint(x: 24, y: -6), to: identity)
+        case .policeStation:
+            addBollards(at: CGPoint(x: -22, y: -7), count: 2, to: identity)
+        case .school:
+            addFlagpole(at: CGPoint(x: 22, y: 6), to: identity)
+        case .empty, .road, .residential, .commercial, .industrial, .park, .waterTower, .cityHall:
             break
         }
-        return true
+        if !identity.children.isEmpty { node.addChild(identity) }
+    }
+
+    private func addCityDensityFoundation(for kind: BuildingKind, to node: SKNode) {
+        let fill: NSColor
+        let size: CGSize
+        switch kind {
+        case .residential:
+            fill = style.palette.lotGrass
+            size = CGSize(width: 61, height: 30.5)
+        case .commercial, .cityHall, .fireStation, .policeStation, .school:
+            fill = style.palette.concrete
+            size = CGSize(width: 65, height: 32.5)
+        case .industrial, .powerPlant, .waterTower:
+            fill = style.palette.soil
+            size = CGSize(width: 67, height: 33.5)
+        case .park:
+            fill = style.palette.parkGrass
+            size = CGSize(width: 68, height: 34)
+        case .empty, .road:
+            return
+        }
+        let foundation = SKShapeNode(path: style.diamondPath(
+            width: size.width,
+            height: size.height
+        ))
+        foundation.name = "lot.lod.city.mass.\(kind.rawValue)"
+        foundation.fillColor = fill.withAlphaComponent(0.88)
+        foundation.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.42)
+        foundation.lineWidth = 0.9
+        foundation.zPosition = -3.4
+        node.addChild(foundation)
     }
 
     private func addStrategyGround(
@@ -188,6 +181,7 @@ final class LotRenderer {
     private func addAuthoredFrontage(
         for kind: BuildingKind,
         adjacentRoads: RoadConnectionMask,
+        detail _: CameraDetailLevel,
         to node: SKNode
     ) {
         let family: String?
@@ -199,23 +193,71 @@ final class LotRenderer {
         case .cityHall, .fireStation, .policeStation, .school: family = "civic"
         case .empty, .road: family = nil
         }
-        guard let family,
-              let frontage = assets.sprite(
-                named: "frontage_\(family)",
-                size: CGSize(width: style.tileWidth, height: style.tileHeight)
-              ) else { return }
+        guard let family else { return }
 
-        let edge = adjacentRoads.edges.first ?? .south
-        frontage.zRotation = switch edge {
-        case .south: 0
-        case .west: .pi / 2
-        case .north: .pi
-        case .east: -.pi / 2
-        default: 0
+        // Architecture keeps its authored south-facing projection and lighting.
+        // A deterministic site path joins the declared entrance to an actual
+        // road socket; the renderer never rotates a bitmap independently from
+        // its building or invents a different occupied footprint.
+        let edge = adjacentRoads.contains(.south)
+            ? RoadConnectionMask.south
+            : (adjacentRoads.edges.first ?? .south)
+        let endpoint = style.roadSocket(for: edge, overreach: 0.75)
+        let entrance = CGPoint(x: 0, y: -13.5)
+        let path = CGMutablePath()
+        path.move(to: entrance)
+        path.addQuadCurve(
+            to: endpoint,
+            control: CGPoint(
+                x: entrance.x * 0.35 + endpoint.x * 0.65,
+                y: entrance.y * 0.35 + endpoint.y * 0.65
+            )
+        )
+
+        let width: CGFloat = switch kind {
+        case .industrial, .powerPlant, .waterTower: 8
+        case .commercial, .cityHall, .fireStation, .policeStation, .school: 6
+        case .park: 5
+        default: 4
         }
-        frontage.name = "lot.frontage.\(family).\(edge.rawValue)"
-        frontage.zPosition = -1
-        node.addChild(frontage)
+        let edgeStroke = SKShapeNode(path: path)
+        edgeStroke.name = "lot.frontage.\(family).\(edge.rawValue)"
+        edgeStroke.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.48)
+        edgeStroke.lineWidth = width + 2
+        edgeStroke.lineCap = .butt
+        edgeStroke.lineJoin = .round
+        edgeStroke.zPosition = 2.8
+        node.addChild(edgeStroke)
+
+        let apron = SKShapeNode(path: path)
+        apron.name = "lot.frontage.apron.\(family).\(edge.rawValue)"
+        apron.strokeColor = kind == .park
+            ? style.palette.parkPath
+            : style.palette.concreteLight.withAlphaComponent(0.94)
+        apron.lineWidth = width
+        apron.lineCap = .butt
+        apron.lineJoin = .round
+        apron.zPosition = 3
+        node.addChild(apron)
+
+        let length = max(0.001, hypot(endpoint.x, endpoint.y))
+        let perpendicular = CGPoint(x: -endpoint.y / length, y: endpoint.x / length)
+        let curbCenter = CGPoint(x: endpoint.x * 0.86, y: endpoint.y * 0.86)
+        let curbBreak = SKShapeNode(path: WorldGeometryCache.line(
+            from: CGPoint(
+                x: curbCenter.x - perpendicular.x * (width / 2 + 1),
+                y: curbCenter.y - perpendicular.y * (width / 2 + 1)
+            ),
+            to: CGPoint(
+                x: curbCenter.x + perpendicular.x * (width / 2 + 1),
+                y: curbCenter.y + perpendicular.y * (width / 2 + 1)
+            )
+        ))
+        curbBreak.name = "lot.frontage.curb-break.\(edge.rawValue)"
+        curbBreak.strokeColor = style.palette.curb
+        curbBreak.lineWidth = 1.4
+        curbBreak.zPosition = 3.2
+        node.addChild(curbBreak)
     }
 
     private func addResidential(

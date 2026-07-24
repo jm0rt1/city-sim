@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "task": "PLAY-022",
+  "round": "1B",
+  "product_commit": "fc8b838d6d33ee8091ce6c54c125ea0cee279f5b",
+  "cold_ceiling_ms": 6.03,
+  "controlled_whole_class_samples": [
+    {
+      "ordinal": 1,
+      "golden_update_ms": 4.860,
+      "decode_loads": 8,
+      "decode_ms": 23.178,
+      "golden_total_ms": 29.237,
+      "separate_cold_total_ms": 5.544,
+      "result": "pass"
+    },
+    {
+      "ordinal": 2,
+      "golden_update_ms": 4.390,
+      "decode_loads": 8,
+      "decode_ms": 22.065,
+      "golden_total_ms": 27.636,
+      "separate_cold_total_ms": 5.392,
+      "result": "pass"
+    },
+    {
+      "ordinal": 3,
+      "golden_update_ms": 5.335,
+      "decode_loads": 8,
+      "decode_ms": 26.003,
+      "golden_total_ms": 32.762,
+      "separate_cold_total_ms": 8.781,
+      "result": "fail",
+      "environment": "unrelated Playwright Chrome renderer captured at 93.8 percent CPU"
+    },
+    {
+      "ordinal": 4,
+      "golden_update_ms": 5.587,
+      "decode_loads": 8,
+      "decode_ms": 23.334,
+      "golden_total_ms": 30.121,
+      "separate_cold_total_ms": 5.277,
+      "result": "pass",
+      "note": "explicit additional sample"
+    }
+  ],
+  "cold_disposition": {
+    "strict_original_set": "2/3 pass",
+    "expanded_retained_set": "3/4 pass",
+    "golden_update_portion": "4/4 pass",
+    "gate": "blocked"
+  },
+  "renderer": {
+    "initial_nodes": 1932,
+    "final_nodes_after_ten_pulses": 1935,
+    "tile_reuses": 5759,
+    "tile_updates": 1,
+    "changed_pulse_average_ms": 1.582,
+    "unchanged_soak_nodes": 1932,
+    "unchanged_soak_drawables": 758,
+    "unchanged_soak_actions": 1,
+    "unchanged_soak_average_ms": 0.0025
+  },
+  "assets": {
+    "resident_textures": 28,
+    "resident_decoded_bytes": 13521048,
+    "high_water_decoded_bytes": 13521048,
+    "fallbacks": 0
+  },
+  "memory": {
+    "ceiling_mib": 333.8,
+    "compact_settled_mb": 236,
+    "regular_settled_mb": 300,
+    "compact_result": "pass",
+    "regular_result": "pass"
+  }
+}

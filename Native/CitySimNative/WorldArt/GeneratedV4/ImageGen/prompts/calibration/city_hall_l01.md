@@ -1,0 +1,9 @@
+Use case: stylized-concept
+Asset type: CitySim modular 2:1 isometric atlas source for city_hall_l01
+Input images: Image 1 is the provisional Gate A appearance reference—match only its civic focal hierarchy, warm limestone/copper material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district layout. Image 2 is the authoritative 2x2 registration template—preserve its footprint, canvas position, south ground pivot, height box, and shadow box exactly; guide colors are instructions and must not appear in the art.
+Primary request: create exactly one maintained city hall focal building on a 2x2 parcel: dignified warm limestone and brick civic architecture, articulated central tower or cupola with weathered copper roof, broad south-facing steps and clear entrance, rhythmic windows, restrained foundation planting, and coherent contact/cast shadow. Building mass occupies 58–74 percent of the parcel. No flags with symbols, road, crowd, or surrounding district.
+Style/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.
+Scene/backdrop: perfectly flat solid #ff00ff chroma-key field.
+Lighting: warm northwest key; cooler darker southeast wall; coherent southeast contact and cast shadow contained in the declared shadow box.
+Constraints: exact 1536x1024 composition implied by Image 2; one centered civic building; exact 2x2 registration and pivot; generous padding; no text, UI, rings, logos, watermark, extra buildings, roads, or extra objects; do not use #ff00ff in the subject.
+Avoid: monumental fantasy, concept-art scenery, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, impossible architecture, exaggerated outlines, cyan/yellow/purple guide marks.

@@ -1,0 +1,61 @@
+{
+  "asset_id": "residential_frontage",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_frontage/source-v01.png",
+  "source_sha256": "3a1afa7f250299a6c02e09beaed07a4b5cd05278835ec0bc4a29f464b3b97d44",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id residential_frontage --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_frontage/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_frontage --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/residential_frontage-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "exact-footprint",
+    "source_bbox": [
+      183,
+      154,
+      1354,
+      897
+    ],
+    "target_bbox": [
+      512,
+      640,
+      1024,
+      896
+    ]
+  },
+  "source_bbox": [
+    512,
+    640,
+    1024,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_residential_frontage_block.png",
+      "pixels": [
+        1024,
+        683
+      ],
+      "sha256": "c25510524763c209e17b7db4e86adf7b76f94cc6239d00813c8212facc84b5e5"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_residential_frontage_neighborhood.png",
+      "pixels": [
+        512,
+        342
+      ],
+      "sha256": "ce19f9688fc3170c1ae0c68a57dd7a13dee856ad18ae814bdb0cf12bf4f24377"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_residential_frontage_city.png",
+      "pixels": [
+        256,
+        171
+      ],
+      "sha256": "23d37fe4212fc16618cdcb51c6167c0172a7a6c6941c211206dbf0bef1e51b0e"
+    }
+  ]
+}

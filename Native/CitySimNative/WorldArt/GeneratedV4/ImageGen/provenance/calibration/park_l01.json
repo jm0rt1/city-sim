@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "asset_id": "park_l01",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim modular 2:1 isometric atlas source for park_l01\nInput images: Image 1 is the provisional Gate A appearance reference\u2014match only its planted park interior, foliage treatment, warm aggregate, material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district geometry. Image 2 is the authoritative 2x2 registration template\u2014preserve its footprint, canvas position, south ground pivot, height box, and shadow box exactly; guide colors are instructions and must not appear in the art.\nPrimary request: create exactly one maintained 2x2 neighborhood park with a low open silhouette: crossing curved pale-aggregate walks, varied deciduous canopy kept clear of the south entry, planted beds, a small stone fountain or pavilion focal point, two benches and restrained lamps. No people, road, curb, building, playground, event, or surrounding district.\nStyle/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field.\nLighting: warm northwest key; coherent southeast contact and cast shadows contained in the declared shadow box.\nConstraints: exact 1536x1024 composition implied by Image 2; one centered park; exact 2x2 registration and pivot; generous padding; no text, UI, rings, logos, watermark, extra scenery; do not use #ff00ff in the subject.\nAvoid: placemat perimeter, raised slab, concept-art scenery, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, exaggerated outlines, cyan/yellow/purple guide marks.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/park_l01.md",
+  "prompt_sha256": "55b3643c30c5b728651a1997d4e46ba65af81afddc2ae597de8e992e98eb5d60",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 2x2 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-2x2.png",
+      "sha256": "2b20d49406124718a1a5b8e88125fa09500d17b52a2f95a7dc222ce7abdf32f6"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/park_l01/source-v01.png",
+  "raw_source_sha256": "0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id park_l01 --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/park_l01/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/park_l01 --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/park_l01-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "exact-footprint",
+    "source_bbox": [
+      150,
+      159,
+      1394,
+      910
+    ],
+    "target_bbox": [
+      256,
+      384,
+      1280,
+      896
+    ]
+  },
+  "intended_gameplay_meaning": "completed maintained level-one park normalized to one authoritative simulation tile",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/park_l01/generated_v4_park_l01_city.png",
+        "normalized_sha256": "061f57829807875d74ebb53e7c840fdb2752da5a83a7272acd705da2581231fd",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          41,
+          63,
+          174,
+          88
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_park_l01_city.png",
+        "shipping_sha256": "165dc05080cdec15b8051f8ae1221b46ec0ad3acb61c14080f148aaf342234b5",
+        "shipping_pixels": [
+          174,
+          88
+        ],
+        "decoded_byte_estimate": 61248
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/park_l01/generated_v4_park_l01_neighborhood.png",
+        "normalized_sha256": "6b851210c9c516769ec46ae8211335929cf2e8333e527e13199c24091f12a00d",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          84,
+          127,
+          344,
+          174
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_park_l01_neighborhood.png",
+        "shipping_sha256": "57e8dfb6dabbd36769f7f9f00bdcf3acd8c148a7ab97ca3f2d9c16483bac255a",
+        "shipping_pixels": [
+          344,
+          174
+        ],
+        "decoded_byte_estimate": 239424
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/park_l01/generated_v4_park_l01_block.png",
+        "normalized_sha256": "9dac9a615c18479320d94080520479b6e73c6020cd2daff635e1843b0e062cdc",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          169,
+          255,
+          686,
+          344
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_park_l01_block.png",
+        "shipping_sha256": "c1a1cbbbd6ec7d97e41fead79547ee5a60e04566456f3889bce19fd713c1b6de",
+        "shipping_pixels": [
+          686,
+          344
+        ],
+        "decoded_byte_estimate": 943936
+      }
+    ]
+  }
+}

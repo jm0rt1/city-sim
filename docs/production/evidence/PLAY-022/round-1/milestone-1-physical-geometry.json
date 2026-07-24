@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "manifest_sha256": "9828c5357bcdf874212bf386afe94e5a1d984963a8d281f41fcfd5c095bbf005",
+  "asset_count": 9,
+  "inventory_count": 75,
+  "authoritative_footprint": [
+    1,
+    1
+  ],
+  "pivot_drift_pixels": {
+    "grass_material": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "road_material": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "residential_frontage": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "residential_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "commercial_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "industrial_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 0.0
+    },
+    "park_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    },
+    "city_hall_l01": {
+      "city": 1e-06,
+      "neighborhood": 1e-06,
+      "block": 1e-06
+    },
+    "water_tower_l01": {
+      "city": 0.0,
+      "neighborhood": 0.0,
+      "block": 1e-06
+    }
+  },
+  "active_decoded_bytes": {
+    "city": 2100224,
+    "neighborhood": 8400896,
+    "block": 33566720
+  },
+  "reciprocal_ground_collision_checks": 144,
+  "reciprocal_ground_collisions": [],
+  "failures": [],
+  "result": "pass"
+}

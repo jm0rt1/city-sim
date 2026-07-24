@@ -1,0 +1,63 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 33, ID: hud.city.identity
+		3 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		4 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		5 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		6 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		7 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+		8 progress indicator Description: Show objectives, Help: Need J 80 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+		9 container City status
+			10 unknown Description: Treasury, Details: $24,870, +$75 / cycle, ID: hud.metric.treasury
+			11 unknown Description: Residents, Details: 332, 1,908 homes open, ID: hud.metric.population
+			12 unknown Description: Happiness, Details: 65%, 100% mayor approval, ID: hud.metric.happiness
+			13 unknown Description: Jobs filled, Details: 231, 39 openings, ID: hud.metric.employment
+			14 unknown Description: Utilities, Details: 100%, P 22 · W 21 spare, ID: hud.metric.utilities
+		15 container Description: City priority: Protect local storefronts, Details: DECISION · 16 DAYS. Diagnose cashflow, then choose tax relief or a park before the consequence., ID: hud.strategy.priority
+			16 text MAIN STREET STRATEGY
+			17 text DECISION · 16 DAYS
+			18 text Protect local storefronts
+			19 text Diagnose cashflow, then choose tax relief or a park before the consequence.
+			20 button Description: Tax policy & cashflow, Help: Review current tax policy, revenue, and upkeep through the existing Command Center.
+			21 menu button Act, Description: Act on Protect local storefronts, Value: 2 available routes, ID: arrow.turn.down.right
+		22 button (selected) Description: Action update, Value: Park construction approved, Secondary Actions: Dismiss action message
+		23 container City command deck
+			24 button Description: Inspect mode, Value: Not selected
+			25 button (selected) Description: Build mode, Value: Selected
+			26 button Description: Bulldoze mode, Value: Not selected
+			27 menu button Catalog, Description: Open categorized build catalog, Value: Selected Park, ID: square.grid.2x2
+			28 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			29 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			30 menu button City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., ID: building.2
+			31 text Build: Park
+			32 unknown Description: Build Park at block 15, 14, Details: Unavailable. Demolish the existing structure before building here., ID: hud.selected.context
+			33 button Description: Net, Value: +$75
+			34 button Description: Homes, Value: 1,908
+			35 button Description: Power, Value: 22
+			36 button Description: Water, Value: 21
+			37 button Demand
+			38 button Description: Undo last construction action, ID: arrow.uturn.backward
+		39 container Description: City map, Help: Unavailable. Demolish the existing structure before building here., Secondary Actions: Inspect Park at block 15, 14, Value: Selected target, pending Park placement at block 15, 14. Construction site, 0 percent. Primary action: Build Park at block 15, 14. Unavailable. Demolish the existing structure before building here.
+	40 toolbar
+		41 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		42 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		43 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		44 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		45 button Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	46 close button
+	47 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	48 minimize button
+	49 text CitySim
+50 menu bar
+	51 CitySim [UI wdbeadac6e0bd]
+	52 File
+	53 Edit
+	54 View
+	55 Simulation
+	56 Tools
+	57 City Data
+	58 Window
+	59 Help
+
+The focused UI element is 39 container Description: City map, Help: Unavailable. Demolish the existing structure before building here., Secondary Actions: Inspect Park at block 15, 14, Value: Selected target, pending Park placement at block 15, 14. Construction site, 0 percent. Primary action: Build Park at block 15, 14. Unavailable. Demolish the existing structure before building here.

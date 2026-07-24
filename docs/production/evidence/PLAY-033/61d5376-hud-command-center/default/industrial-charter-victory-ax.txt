@@ -1,0 +1,28 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container Description: Town Charter victory, ID: game-status.blocking-modal, Details: Town Charter Secured. New Arcadia Earned Its Town Charter. Your 511 residents sustained a solvent, fully served town. The Charter records how you grew and how you recovered. Residents: 511. Treasury: $35,611. Cashflow: $254. Happiness: 55%. Industrial Expansion. Freight and industry led the city’s growth, creating jobs while demanding deliberate utility and livability choices. Recovery · Utility Expansion. Power and water reserves absorbed the freight surge, protecting reliable factories and the regional co
+		2 text TOWN CHARTER SECURED New Arcadia Earned Its Town Charter
+		3 scroll area
+			4 text Your 511 residents sustained a solvent, fully served town. The Charter records how you grew and how you recovered.
+			5 collection Secondary Actions: AXScrollToTop, AXScrollToBottom
+				6 text Residents, 511 Treasury, $35,611 Cashflow, $254 Happiness, 55%
+			7 text Your Charter Story Industrial Expansion, Freight and industry led the city’s growth, creating jobs while demanding deliberate utility and livability choices. Recovery · Utility Expansion, Power and water reserves absorbed the freight surge, protecting reliable factories and the regional contract.
+		8 button Description: Start a New Region, Help: Starts one fresh authored city and closes this result, ID: victory.start-new-region
+		9 button Description: Load Quicksave, Help: Loads the quicksave and pauses the city, ID: victory.load-quicksave
+		10 text Return or Space starts a new region
+	11 close button
+	12 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	13 minimize button
+	14 text CitySim
+15 menu bar
+	16 CitySim [UI wdbeadac6e0bd]
+	17 File
+	18 Edit
+	19 View
+	20 Simulation
+	21 Tools
+	22 City Data
+	23 Window
+	24 Help
+
+The focused UI element is 8 button Description: Start a New Region, Help: Starts one fresh authored city and closes this result, ID: victory.start-new-region

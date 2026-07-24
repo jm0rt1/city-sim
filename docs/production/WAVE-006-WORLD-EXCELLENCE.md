@@ -35,6 +35,20 @@ tests, or a single hero screenshot cannot close them.
 
 ## Work order
 
+### PLAY-016 + PLAY-048 — Authoritative starter-city truth
+
+The accepted opening state itself currently contains one horizontal and one
+vertical road plus eight occupied lots. Rendering may improve the material,
+termini, ground, public realm, and readability of that truth, but it may not
+turn empty cells into apparent streets or developed parcels.
+
+Gameplay therefore owns a richer deterministic starter district under
+PLAY-016: a connected multi-block road/building arrangement with legitimate
+growth choices and the same viable strategic pressure. Simulation platform
+adopts the frozen checkpoint under PLAY-048 so saves, story fixtures,
+fingerprints, replay, undo, and snapshots remain exact. This is not permission
+to fake density or weaken the game loop for a screenshot.
+
 ### PLAY-024 — Environment and street-system excellence
 
 World rendering owns the visible systemic repair:
@@ -54,7 +68,9 @@ World rendering owns the visible systemic repair:
 
 The lane may use image generation for authored source art, but connectivity,
 anchors, masks, geometry, provenance, normalization, packing, and acceptance
-remain deterministic and tool-verified.
+remain deterministic and tool-verified. Every visible road and occupied parcel
+must originate in authoritative `CityGameState`; PLAY-024 must automatically
+consume PLAY-016 topology and must never prefigure it with decorative roads.
 
 ### PLAY-039 — World-first HUD hierarchy
 
@@ -76,6 +92,11 @@ No renderer art or geometry may move into SwiftUI.
 Quality preregisters the comparison before seeing the final candidate, freezes
 the exact baseline frames, and independently scores the integrated result.
 PLAY-024 and PLAY-039 authors do not score themselves.
+
+Quality must retain two comparisons: the frozen Wave 005 state rendered by the
+new world/HUD for isolated presentation proof, and the old versus new authored
+fresh-start experience for composition and player-choice proof. A changed
+starter topology may not be mislabeled as a same-state art comparison.
 
 ## Automatic rejection conditions
 

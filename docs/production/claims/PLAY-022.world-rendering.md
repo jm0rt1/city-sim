@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Rendering/`, world resources, renderer tests/telemetry, and staged world evidence
 - **Dependencies:** accepted PLAY-021; PLAY-041 truth integrated at `36774db` and merged into this lane at `7dfd329`
 - **Validation/proof:** live same-city strategy/state comparisons at default and compact sizes, deterministic identity, LOD/reuse/hit-testing/accessibility tests, full suite, staged build, and measured frame/RSS evidence
-- **Status:** active corrective recovery — exact Round 1C product `2cf18b0` / evidence `f35d6ef` is preserved and independently rejected at 13/20 by accepted quality commit `4bbe72b`; only the three corrections below are authorized, while PLAY-023 and broader asset-family work remain unauthorized
+- **Status:** accepted and integrated — Round 1E product `45dd181221701f7cb73be39b558b7440d86e13b5` and evidence `013bdd37c706f2c7326bda870259feb7379570e4` are ancestors of integration merge `37894a6`; independent quality approval `52ea60b` preserved the 17/20 renderer score with no automatic reject after CONTRACT-008 closure
 
 ## Authorized Round 1D correction
 
@@ -56,3 +56,24 @@ Art studies and renderer-local prototypes may start immediately.
 PLAY-041 truth is integrated and must remain authoritative. Fixture-only,
 recolor-only, label-driven, indicator-heavy, self-accepted, or off-window
 improvement will be rejected.
+
+## Round 1E live-gate disposition
+
+The renderer-owned correction at `45dd181221701f7cb73be39b558b7440d86e13b5`
+replaces the large event ring with a compact frontage cue, removes translucent
+remote-road styling, gives authoritative road ends deterministic physical
+turning heads, and adds bounded generated-v4 ambient context without inventing
+development.
+
+Exact staged default and 900 x 600 hands-on proof found that one-active-target
+placement truth is not yet available. Pointer hover can display an invalid
+coordinate while keyboard selection and the map accessibility value announce a
+different valid coordinate; both treatments remain visible at once. At compact
+size, clicking the visibly occupied pointer coordinate committed construction
+at the previously keyboard-selected valid coordinate, and Undo restored the
+state. That is the shared player-intent boundary governed by CONTRACT-008, not a
+renderer-owned rule. This claim remains active and blocked from independent
+quality resubmission until integration publishes and accepts that dependency.
+
+The candidate-bound record and screenshots are retained under
+`docs/production/evidence/PLAY-022/round-1e/renderer-45dd181/`.

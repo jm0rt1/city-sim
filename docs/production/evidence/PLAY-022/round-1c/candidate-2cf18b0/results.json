@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "product_commit": "2cf18b0f0d9a0aee9f3708e72593eb6e7cd99ae0",
+  "product_tree": "171f03c1945d42b07f042246a504f689d1e7d351",
+  "predecessor_product_commit": "fc8b838d6d33ee8091ce6c54c125ea0cee279f5b",
+  "predecessor_evidence_commit": "701bb0aa7de3ee2f80932065bf7167aada7fbe3f",
+  "metric": "PLAY022_ROUND1C_COLD_PROFILE total_render_ms",
+  "thresholds_ms": {
+    "median": 4.8,
+    "each_sample": 6.03
+  },
+  "samples": [
+    {
+      "ordinal": 1,
+      "backdrop": 0.078,
+      "preparation": 0.014,
+      "tile_build": 3.825,
+      "tree_metrics": 0.183,
+      "world_update": 3.917,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 4.431
+    },
+    {
+      "ordinal": 2,
+      "backdrop": 0.067,
+      "preparation": 0.009,
+      "tile_build": 3.631,
+      "tree_metrics": 0.185,
+      "world_update": 3.707,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 4.196
+    },
+    {
+      "ordinal": 3,
+      "backdrop": 0.068,
+      "preparation": 0.009,
+      "tile_build": 3.885,
+      "tree_metrics": 0.19,
+      "world_update": 3.963,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 4.476
+    },
+    {
+      "ordinal": 4,
+      "backdrop": 0.073,
+      "preparation": 0.009,
+      "tile_build": 3.93,
+      "tree_metrics": 0.192,
+      "world_update": 4.012,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 4.527
+    },
+    {
+      "ordinal": 5,
+      "backdrop": 0.073,
+      "preparation": 0.009,
+      "tile_build": 3.754,
+      "tree_metrics": 0.182,
+      "world_update": 3.836,
+      "asset_decode_loads": 0,
+      "asset_decode": 0.0,
+      "total_render": 4.341
+    }
+  ],
+  "median_total_render_ms": 4.431,
+  "maximum_total_render_ms": 4.527,
+  "samples_at_or_below_4_8_ms": 5,
+  "samples_at_or_below_6_03_ms": 5,
+  "result": "pass"
+}

@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "asset_id": "industrial_l01",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim modular 2:1 isometric atlas source for industrial_l01\nInput images: Image 1 is the provisional Gate A appearance reference\u2014match only its soot-muted brick, corrugated steel, roof equipment, material depth, value hierarchy, detail scale, and northwest-key/southeast-shadow language, never its district layout. Image 2 is the authoritative 2x1 registration template\u2014preserve its footprint, canvas position, south ground pivot, height box, and shadow box exactly; guide colors are instructions and must not appear in the art.\nPrimary request: create exactly one maintained level-one light-industrial workshop: a wide low 2x1 brick-and-corrugated-steel building with sawtooth or stepped roof rhythm, south-facing loading bay and personnel door, restrained vents and rooftop equipment, and coherent contact/cast shadow. Building mass occupies 60\u201376 percent of the 2x1 parcel. No smoke, pollution, road, vehicle, or surrounding district.\nStyle/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field.\nLighting: warm northwest key; cooler darker southeast wall; coherent southeast contact and cast shadow contained in the declared shadow box.\nConstraints: exact 1536x1024 composition implied by Image 2; one centered building; exact 2x1 registration and pivot; generous padding; no text, UI, rings, logos, watermark, extra buildings, roads, or extra objects; do not use #ff00ff in the subject.\nAvoid: implied pollution or activity, concept-art scenery, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, impossible architecture, exaggerated outlines, cyan/yellow/purple guide marks.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/industrial_l01.md",
+  "prompt_sha256": "85a9e6217e2052e493db838cf9e747d826af369fb7062a9804e2aa961d299058",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 2x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-2x1.png",
+      "sha256": "4b1cc96c3a8ddc0cece7fc8bb30bd9fe03ad611fa855ecf429e5c8c8719388d1"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "raw_source_sha256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id industrial_l01 --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01 --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/industrial_l01-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      367,
+      153,
+      1299,
+      862
+    ],
+    "target_size": [
+      710,
+      540
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      413,
+      356
+    ]
+  },
+  "intended_gameplay_meaning": "completed maintained level-one industrial building normalized to one authoritative simulation tile",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01/generated_v4_industrial_l01_city.png",
+        "normalized_sha256": "9810dec8b5d8c1875ff0a253e0182d8a37fbef181e0bfc020657630d7844122a",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          67,
+          58,
+          122,
+          93
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_industrial_l01_city.png",
+        "shipping_sha256": "4b598224db6a8d4886a5cff1f6adf6afffa5daa698b62ed837981fb556be8a7a",
+        "shipping_pixels": [
+          122,
+          93
+        ],
+        "decoded_byte_estimate": 45384
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01/generated_v4_industrial_l01_neighborhood.png",
+        "normalized_sha256": "c59758b4ba7c039eba6577c6bc688ae8a781d49af0e76ec2e1c6bab57da8c344",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          136,
+          117,
+          240,
+          184
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_industrial_l01_neighborhood.png",
+        "shipping_sha256": "4af0a4b86a7cc40a971f0a3ed839cc077a8c1d53a762eca0c6e4a97805ccf9c6",
+        "shipping_pixels": [
+          240,
+          184
+        ],
+        "decoded_byte_estimate": 176640
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/industrial_l01/generated_v4_industrial_l01_block.png",
+        "normalized_sha256": "31773d3b78ff36a8da6e8bfed16548b995c1cc6213b8dfd9e28b3a074c73c71e",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          274,
+          236,
+          476,
+          363
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_industrial_l01_block.png",
+        "shipping_sha256": "ef67da06576291dd234a6636494d80f33791ce11139b234e9aecd9c90eb1c109",
+        "shipping_pixels": [
+          476,
+          363
+        ],
+        "decoded_byte_estimate": 691152
+      }
+    ]
+  }
+}

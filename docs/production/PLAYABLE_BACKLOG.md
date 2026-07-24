@@ -102,7 +102,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Decision by 02:00; no blocking confusion over 30 seconds; no false feedback; pressure diagnosed within two minutes; recovery before minute 18; clear outcome and resume comprehension; every critical failure rejects the wave.
 - **Stop conditions:** Missing authoritative fixture/contract, unretained visual proof, coaching required to pass, or contradictory player feedback.
 
-### [ ] PLAY-012: Deliver a three-act playable session
+### [x] PLAY-012: Deliver a three-act playable session
 
 - **Player outcome:** A fresh player reaches an opening fork, a strategy-specific complication, a recovery decision, and an unmistakable durable result within 20 minutes, with no unexplained wait longer than 30 seconds.
 - **Owning lane:** Gameplay loop.
@@ -111,6 +111,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Renderer art, UI composition, input architecture, save schema, and unapproved shared contracts.
 - **Acceptance:** First meaningful decision by 02:00; at least three consequential decisions; feedback within 15 seconds of relevant simulation time; commercial and industrial stories remain viable and mechanically distinct; recovery before minute 18; focused/full tests plus a staged no-coaching session.
 - **Stop conditions:** Passive fixture-only success, nondeterminism, renderer/UI edits, or a shared contract change without approval.
+- **Accepted integration:** Closure evidence `67b5822` and claim/completion `1c65bb4`; Commercial won in 06:42 and Industrial in 05:22 on the integrated candidate with 159/159 tests.
 
 ### [x] PLAY-041: Publish spatial consequence truth
 
@@ -123,7 +124,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Duplicate truth, implicit schema migration, renderer-oriented facts in persistence without need, or unapproved public surface changes.
 - **Accepted integration:** `36774db97e5dd017f1a4c9ecd0a4c288dd09c387`; completion record at `docs/production/completed/PLAY-041.simulation-platform.md`.
 
-### [ ] PLAY-022: Make strategy reshape the living city
+### [x] PLAY-022: Make strategy reshape the living city
 
 - **Player outcome:** Commercial and industrial strategies visibly create different cities, and utility trouble, pollution, prosperity, decline, construction, and recovery are legible in the live world without reading the HUD alone.
 - **Owning lane:** World rendering.
@@ -131,7 +132,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **In scope:** The production recovery sequence in `PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md`: calibration footprint/anchor/depth descriptors and validation, one overlap-safe coherent street corridor, authored architecture/environment families, construction, restrained interaction, density/consequence presentation, bounded ambient life, LOD/reuse/performance, accessibility, and live default/compact visual proof.
 - **Out of scope:** Inventing simulation facts, gameplay balance, HUD redesign, save schema, and fixture-only visual claims.
 - **Acceptance:** Resolve the 28 findings in `WORLD_RENDERING_ISSUE_REPORT_2026-07-21.md` through the ordered production gates in `PLAY-022_PRODUCTION_WORLD_RECOVERY_PLAN.md`; first pass its overlap-safe playable-corridor Round 1, then the same live city shows strategy and three-act state changes non-color-only at city/neighborhood/block scales. Both integration and playtest must score the exact staged candidate at least 17/20 with no category below 3/4. Retain stable deterministic identity, truthful feedback, bounded performance, and uncropped same-seed before/after evidence.
-- **Current disposition:** Exact Round 1C product `2cf18b0` / evidence `f35d6ef` was independently rejected at 13/20 in accepted quality evidence `4bbe72b`. The authorized correction is limited to developed-frame occupancy, connected road/ground coherence, and three materially useful LODs while preserving the passing interaction, construction, identity, accessibility, resource, and performance properties.
+- **Accepted integration:** Round 1E product `45dd181` and world evidence `013bdd3`, integrated through UI/world merge `37894a6`; independent quality preserved a 17/20 score with no category below 3 and no automatic reject in `52ea60b`. The same exact candidate passed default, compact, Reduce Motion, overlays, construction, accessibility, and unified-target play in the retained combined evidence.
 - **Stop conditions:** A mostly empty developed frame, disconnected road language, inconsistent projection/scale/light, debug-like indicator clutter, cosmetic recolor or asset-count delivery, author self-acceptance, off-window-only proof, false simulation implications, unclear asset provenance, or regression in hit testing/reuse/accessibility.
 
 ### [ ] PLAY-023: Build the generated-v4 asset pipeline
@@ -143,6 +144,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Bulk architecture generation, gameplay truth, HUD, save schemas, and production selection of an incomplete pack.
 - **Acceptance:** Two clean builds produce byte-identical pages/manifests; every entry loads from the staged Bundle.module resource; alpha, padding, anchor, seam, digest, LOD cycling, memory, fallback, and rollback gates pass.
 - **Stop conditions:** Absolute development paths, raw tool output in shipping resources, silent fallback, unbounded cache, nondeterministic pack bytes, or shared-package changes without integration approval.
+- **Current status:** Authorized by `docs/production/claims/PLAY-023.world-rendering.md` after the accepted PLAY-022/034 combined beauty baseline; work begins only after the world lane normally merges published `master`.
 
 ### [ ] PLAY-024: Replace terrain, streets, and environmental structure
 
@@ -239,7 +241,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Exact 900 x 600 retains at least 40% content height for the interactive map with Objectives plus Command Center (or a separately approved equivalent measure); selected context and critical actions remain visible; `tax`, `budget`, and `storefront` locate Tax Policy; rejection reason survives long enough to recover; default/compact pointer, keyboard, Full Keyboard Access, and VoiceOver routes pass against the exact staged candidate.
 - **Stop conditions:** HUD infers countdown from tick/message prose, compact panels displace the map, transient-only critical recovery, shortcut/catalog divergence, focus trap, or UI code claims renderer placement truth.
 
-### [ ] PLAY-034: Unify the active map-action target
+### [x] PLAY-034: Unify the active map-action target
 
 - **Player outcome:** The grounded world preview, accessibility description, pointer click, and Return key always describe and act on the same coordinate with the same availability and disabled reason.
 - **Owning lane:** UI and input.
@@ -248,6 +250,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Build validation rules, simulation balance, renderer art, hover-only inspect behavior, save state, snapshots, camera behavior, or general input-mode architecture.
 - **Acceptance:** Occupied, road-required, unaffordable, valid, and newly connected tiles report one identical coordinate/outcome across grounded preview, AX, click, and Return at default and exact 900 x 600; alternating pointer and keyboard movement cannot expose stale hover truth; mutations occur iff the visible/accessible presentation is valid.
 - **Stop conditions:** Two action targets remain live, renderer revalidates different coordinates, pointer hover changes inspect selection, store/player-intent ownership is duplicated, or implementation begins on an unaccepted incompatible renderer base.
+- **Accepted integration:** Product/evidence/completion `704784b`, `88cebf4`, and `7de4412`, integrated through `37894a6`; independent combined quality approval `52ea60b` proved the five-state matrix, pointer/Return/AX exactly-once mutation, focus/Escape, default, and exact compact operation.
 
 ### [ ] PLAY-035: Make rejected keyboard actions explain themselves
 
@@ -352,7 +355,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Platform changes gameplay rules, rewrites authentic legacy inputs, bumps a version, masks an unexpected digest change, permits post-terminal mutation, or expands beyond the smallest adoption required for a green integrated candidate.
 - **Accepted integration:** Product/evidence/completion `e636724`, `64a360c`, and `6d7df1e`; integrated suite 159/159.
 
-### [ ] PLAY-047: Freeze production story-state fixtures
+### [x] PLAY-047: Freeze production story-state fixtures
 
 - **Player outcome:** The real app, renderer, HUD, and independent playtest can all open the same trustworthy Commercial and Industrial story moments—opening, complication, recovery, and Charter victory—without synthetic visual truth, manual save surgery, or harness-only substitution.
 - **Owning lane:** Simulation platform.
@@ -362,6 +365,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Gameplay balance, new events or outcomes, schema/fingerprint-version changes, production save mutation, renderer/HUD composition, build scripts, app-only debug menus, or replacing no-coaching journeys with fixtures.
 - **Acceptance:** Eight named states are generated twice with byte-identical fixture bytes and stable v1 digests; each loads paused through the production save service, preserves authoritative strategy/recovery/terminal identity and spatial truth, remains compatible with legacy fixtures, and stays within existing persistence/snapshot budgets; full suite passes and consumers can bind evidence to exact hashes.
 - **Stop conditions:** A fixture invents facts unavailable in authoritative state, authentic legacy bytes are rewritten, a version changes, production behavior depends on test support, random or wall-clock data enters generation, or fixtures are represented as substitutes for the PLAY-052 player journey.
+- **Accepted integration:** Fixtures/evidence/completion `0706dbe`, `ce450a3`, and `57c75b7`; eight schema-1 story states are byte-identical across repeated generation, and the complete native suite passed 164/164 in the owning lane.
 
 ### [ ] PLAY-052: Gate Wave 005 trust, choice, and world quality
 
@@ -372,5 +376,5 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **In scope:** Exact-candidate identity, no-coaching journeys, default/compact pointer/keyboard/AX, save/relaunch/load, four recovery routes, visual rubric, performance disclosure, and retained proof.
 - **Out of scope:** Product repair, coaching, candidate substitution, or combining renderer and integrated dispositions.
 - **Acceptance:** Renderer independently earns at least 17/20 with no category below 3 or automatic reject; integrated candidate completes the governed journey, preserves save state, exposes semantic compact operation, and proves distinct viable recovery paths.
-- **Current disposition:** Renderer `2cf18b0` was rejected 13/20 with three automatic rejects in `4bbe72b`; UI candidate `b4fb061` remains infrastructure-blocked by an exact-app Computer Use timeout recorded in `643fd1a`. PLAY-052 remains open for corrected renderer and integrated-wave resubmission.
+- **Current disposition:** Exact corrected world/UI product `704784b` is approved in `52ea60b`: renderer 17/20 with no automatic reject, focused 66/66, full candidate 180/180, and retained exact-process default/compact/Reduce Motion evidence. PLAY-052 remains open only for the full integrated no-coaching, save/relaunch, and four-recovery journey on published `master`.
 - **Stop conditions:** Any P1 contradiction, hidden coaching, stale bundle, missing hashes/PID cleanup, save failure, pointer-only compact operation, nondurable choice, or misleading visual evidence.

@@ -268,16 +268,40 @@ final class CityGameStore: ObservableObject {
         return true
     }
 
-    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
-        guard canRouteMapCommand(command) else { return false }
-        if command == .mapPrimaryAction {
-            guard let coordinate = selectedCoordinate,
-                  let tile = state.tile(at: coordinate) else { return false }
-            return CityMapPrimaryActionPresentation.make(
+    var activeMapActionTargetPresentation: CityMapActionTargetPresentation? {
+        guard let coordinate = selectedCoordinate,
+              let tile = state.tile(at: coordinate) else { return nil }
+        return CityMapActionTargetPresentation(
+            coordinate: coordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
                 interactionMode: interactionMode,
                 tile: tile,
                 state: state
-            ).isAvailable
+            )
+        )
+    }
+
+    @discardableResult
+    func acceptPointerMapActionCandidate(
+        _ coordinate: GridCoordinate
+    ) -> CityMapActionTargetPresentation? {
+        guard commandPolicy == .enabled,
+              state.status == .playing,
+              state.tile(at: coordinate) != nil else { return nil }
+        switch interactionMode {
+        case .inspect:
+            return nil
+        case .build, .bulldoze:
+            selectedCoordinate = coordinate
+            hudContextScope = .selection
+            return activeMapActionTargetPresentation
+        }
+    }
+
+    func canPerformMapCommand(_ command: CityCommandID) -> Bool {
+        guard canRouteMapCommand(command) else { return false }
+        if command == .mapPrimaryAction {
+            return activeMapActionTargetPresentation?.primaryAction.isAvailable == true
         }
         return true
     }

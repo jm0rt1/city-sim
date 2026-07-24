@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "asset_id": "residential_l01",
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generated_date": "2026-07-21",
+  "complete_prompt": "Use case: stylized-concept\nAsset type: CitySim modular 2:1 isometric atlas source for residential_l01\nInput images: Image 1 is the provisional Gate A appearance reference\u2014match only its architecture quality, stucco/wood/brick material depth, value hierarchy, detail scale, foliage restraint, and northwest-key/southeast-shadow language, never its district layout. Image 2 is the authoritative 1x1 registration template\u2014preserve its 2:1 footprint, canvas position, south ground pivot, height box, and shadow box exactly; guide colors are instructions and must not appear in the art.\nPrimary request: create exactly one maintained level-one residential building: a compact two-story townhouse or small detached urban home with a strong roof silhouette, visible south-facing entry and stoop, warm windows, modest foundation planting, and coherent contact/cast shadow. Building mass occupies 55\u201372 percent of the parcel. No surrounding road or district.\nStyle/medium: richly detailed realistic hand-painted city-builder sprite; orthographic 2:1 isometric; parallel edges; no perspective convergence.\nScene/backdrop: perfectly flat solid #ff00ff chroma-key field.\nLighting: warm northwest key; cooler darker southeast wall; coherent southeast contact and cast shadow contained in the declared shadow box.\nConstraints: exact 1536x1024 composition implied by Image 2; one centered building; exact 1x1 ground registration and pivot; generous padding; no text, UI, rings, logos, watermark, extra buildings, roads, or extra objects; do not use #ff00ff in the subject.\nAvoid: concept-art scenery, toy plastic, voxel/pixel art, floating geometry, mixed camera angles, impossible architecture, exaggerated outlines, cyan/yellow/purple guide marks.\n",
+  "prompt_file": "CitySimNative/WorldArt/GeneratedV4/ImageGen/prompts/calibration/residential_l01.md",
+  "prompt_sha256": "0416535982a82d4eab656a43814b0769caedc6c617b583570d3a9a4692215383",
+  "references": [
+    {
+      "role": "provisional appearance reference only",
+      "file": "CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative 1x1 geometry and registration",
+      "file": "CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "raw_source": "CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+  "raw_source_sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+  "chroma_key": "#ff00ff",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id residential_l01 --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_l01 --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/residential_l01-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      455,
+      159,
+      1085,
+      880
+    ],
+    "target_size": [
+      390,
+      446
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      573,
+      450
+    ]
+  },
+  "intended_gameplay_meaning": "completed maintained level-one residential building",
+  "geometry_authority": "deterministic repository template and renderer; generated pixels are appearance only",
+  "reviewer": "world-rendering lane ingestion authority",
+  "disposition": "accepted for PLAY-022 calibration candidate after deterministic normalization and registration",
+  "rejection_reasons": [],
+  "shipping_transform": {
+    "command": "python3 Native/CitySimNative/WorldArt/GeneratedV4/tools/build_calibration_pack.py",
+    "operation": "deterministic lossless physical crop of the immutable normalized LOD canvas to its registered source trim; anchor and world size remain authoritative manifest metadata",
+    "raw_and_normalized_sources_mutated": false,
+    "outputs": [
+      {
+        "lod": "city",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_l01/generated_v4_residential_l01_city.png",
+        "normalized_sha256": "fe2b3ce332203f97ced8a282d51e603b7b624a985b8279d179107871d85cff31",
+        "source_pixels": [
+          256,
+          171
+        ],
+        "source_trim_rect_pixels": [
+          94,
+          74,
+          68,
+          77
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_residential_l01_city.png",
+        "shipping_sha256": "aa30fab269cb028efff9e34dd371cb286381485a7072f44f1a436009915f9f80",
+        "shipping_pixels": [
+          68,
+          77
+        ],
+        "decoded_byte_estimate": 20944
+      },
+      {
+        "lod": "neighborhood",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_l01/generated_v4_residential_l01_neighborhood.png",
+        "normalized_sha256": "022dd4fc7f6fefa57b8dcad9d2a71bc53ffd80db79f4ced49bbcc40c5cc3ed7a",
+        "source_pixels": [
+          512,
+          342
+        ],
+        "source_trim_rect_pixels": [
+          190,
+          149,
+          132,
+          152
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_residential_l01_neighborhood.png",
+        "shipping_sha256": "be33ac55b5ef7b444a545598ac98938a27da86e85de15eb9decc154356a7d9d8",
+        "shipping_pixels": [
+          132,
+          152
+        ],
+        "decoded_byte_estimate": 80256
+      },
+      {
+        "lod": "block",
+        "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_l01/generated_v4_residential_l01_block.png",
+        "normalized_sha256": "9d651f9bc62ec2035227d971358b95488c7b139a73e40e91919aa6e2a1ce780a",
+        "source_pixels": [
+          1024,
+          683
+        ],
+        "source_trim_rect_pixels": [
+          381,
+          299,
+          262,
+          300
+        ],
+        "shipping_file": "CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated_v4_residential_l01_block.png",
+        "shipping_sha256": "ae60cf00ae8b2b7032c7deae1b2b79b89c6813f0655410190454153685a02eab",
+        "shipping_pixels": [
+          262,
+          300
+        ],
+        "decoded_byte_estimate": 314400
+      }
+    ]
+  }
+}

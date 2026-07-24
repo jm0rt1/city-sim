@@ -1,0 +1,66 @@
+Window: "CitySim", App: CitySim [World w5f893ad1da1b].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 button Description: Open New Arcadia command center, Value: Day 16, ID: hud.city.identity
+		3 progress indicator Description: Show objectives, Help: Close the $78 operating gap, Value: 0.6859999999999999, ID: hud.objective.summary
+		4 container City status
+			5 unknown Description: Treasury, Details: $23,207, -$78 / cycle, ID: hud.metric.treasury
+			6 unknown Description: Residents, Details: 315, 1,085 homes open, ID: hud.metric.population
+			7 unknown Description: Happiness, Details: 62%, 100% mayor approval, ID: hud.metric.happiness
+			8 unknown Description: Jobs filled, Details: 190, 0 openings, ID: hud.metric.employment
+			9 unknown Description: Utilities, Details: 100%, P 42 · W 37 spare, ID: hud.metric.utilities
+		10 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+		11 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+		12 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+		13 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+		14 button Description: Open city notices, Value: 7 notices, highest severity warning, ID: hud.notices
+		15 container City command deck
+			16 button Description: Inspect mode, Value: Not selected
+			17 button (selected) Description: Build mode, Value: Selected
+			18 button Description: Bulldoze mode, Value: Not selected
+			19 button Description: Roads build category, Value: Not selected
+			20 button Description: Zones build category, Value: Selected
+			21 button Description: Utilities build category, Value: Not selected
+			22 button Description: Services build category, Value: Not selected
+			23 button Description: Civic build category, Value: Not selected
+			24 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			25 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			26 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			27 text ZONES
+			28 button (selected) Description: Build Residential, Help: Build Residential · $1,800 · $4 per cycle, Value: Cost $1,800, upkeep $4 per cycle
+			29 button Description: Build Commercial, Help: Build Commercial · $2,400 · $6 per cycle, Value: Cost $2,400, upkeep $6 per cycle
+			30 button Description: Build Industrial, Help: Build Industrial · $3,200 · $8 per cycle, Value: Cost $3,200, upkeep $8 per cycle
+			31 text Description: Selected Residential, Value: Cost $1,800, upkeep $4 per cycle, road required
+			32 text CITY PULSE
+			33 button Description: Cashflow, Value: -$78
+			34 button Description: Homes open, Value: 1,085
+			35 button Description: Jobs open, Value: 0
+			36 button Description: Power spare, Value: 42
+			37 button Description: Water spare, Value: 37
+			38 progress indicator Description: Residential demand, Help: Open demand details, Value: 0.6202607744361465, Details: 62%, Steady
+			39 progress indicator Description: Commercial demand, Help: Open demand details, Value: 0.7277272727272728, Details: 73%, High
+			40 progress indicator Description: Industrial demand, Help: Open demand details, Value: 0.473814935064935, Details: 47%, Steady
+			41 button Undo last construction action
+		42 container Description: City map, Help: Unavailable. Demolish the existing structure before building here., Secondary Actions: Inspect Residential at block 16, 14, Value: Pending Residential placement at block 16, 14. Construction finishing, 75 percent. Primary action: Build Residential at block 16, 14. Unavailable. Demolish the existing structure before building here.
+	43 toolbar
+		44 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		45 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		46 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		47 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		48 button Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	49 close button
+	50 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	51 minimize button
+	52 text CitySim
+53 menu bar
+	54 CitySim [World w5f893ad1da1b]
+	55 File
+	56 Edit
+	57 View
+	58 Simulation
+	59 Tools
+	60 City Data
+	61 Window
+	62 Help
+
+The focused UI element is 42 container Description: City map, Help: Unavailable. Demolish the existing structure before building here., Secondary Actions: Inspect Residential at block 16, 14, Value: Pending Residential placement at block 16, 14. Construction finishing, 75 percent. Primary action: Build Residential at block 16, 14. Unavailable. Demolish the existing structure before building here.

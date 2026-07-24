@@ -1,0 +1,67 @@
+{
+  "asset_id": "ambient_vegetation_cluster",
+  "source_file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_vegetation_cluster/source-v01.png",
+  "source_sha256": "99a11b2cdda5b2d471bf041d920d57e70e46dd72ee63c77b62b997de378e16ca",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id ambient_vegetation_cluster --input Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/ambient_vegetation_cluster/source-v01.png --output-dir Native/CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_vegetation_cluster --record Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/provenance/calibration/ambient_vegetation_cluster-normalization.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      322,
+      80,
+      1248,
+      919
+    ],
+    "target_size": [
+      430,
+      390
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      553,
+      506
+    ]
+  },
+  "source_bbox": [
+    553,
+    506,
+    983,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_ambient_vegetation_cluster_block.png",
+      "pixels": [
+        1024,
+        683
+      ],
+      "sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_ambient_vegetation_cluster_neighborhood.png",
+      "pixels": [
+        512,
+        342
+      ],
+      "sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_ambient_vegetation_cluster_city.png",
+      "pixels": [
+        256,
+        171
+      ],
+      "sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257"
+    }
+  ]
+}

@@ -57,6 +57,11 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
     }
 }
 
+struct CityMapActionTargetPresentation: Equatable, Sendable {
+    let coordinate: GridCoordinate
+    let primaryAction: CityMapPrimaryActionPresentation
+}
+
 struct CityDirectResponse: Identifiable, Hashable, Sendable {
     let title: String
     let command: CityCommandID

@@ -2,12 +2,8 @@ import AppKit
 import SpriteKit
 
 enum WorldOverlayPattern: String, Sendable {
-    case none
-    case contours
-    case chevrons
-    case utilityGrid
-    case amenityDots
-    case diagonalHatch
+    case utilityEdge
+    case pollutionHatch
 }
 
 struct WorldOverlaySample {
@@ -33,27 +29,28 @@ final class WorldOverlayRenderer {
     ) -> SKNode {
         let root = SKNode()
         root.name = "overlay.\(overlay.rawValue)"
-        guard let sample = sample(for: tile, state: state, consequence: consequence, overlay: overlay) else { return root }
+        guard let sample = sample(
+            for: tile,
+            state: state,
+            consequence: consequence,
+            overlay: overlay
+        ) else { return root }
 
-        let wash = SKShapeNode(path: style.diamondPath(width: style.tileWidth - 3, height: style.tileHeight - 1.5))
-        let opacity: CGFloat = tile.kind == .road && overlay == .traffic ? 0.36 : 0.22
-        wash.fillColor = sample.color.withAlphaComponent(opacity)
-        wash.strokeColor = sample.color.blended(withFraction: 0.22, of: .white)?.withAlphaComponent(0.24)
-            ?? sample.color.withAlphaComponent(0.24)
-        wash.lineWidth = 0.7
-        wash.zPosition = 30
-        wash.name = "overlay.base"
-        root.addChild(wash)
+        let severity = 1 - sample.value
+        guard let minimumDetail = minimumDetail(for: severity) else { return root }
 
-        if shouldDrawPattern(for: tile, overlay: overlay) {
-            let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
-            let intensity = overlay == .pollution ? 1 - sample.value : sample.value
-            let pattern = makePattern(sample.pattern, intensity: intensity)
-            pattern.name = "overlay.pattern.\(sample.pattern.rawValue)"
-            pattern.zPosition = 31
-            neighborhoodLayer.addChild(pattern)
-            root.addChild(neighborhoodLayer)
+        let emphasis: SKNode
+        switch sample.pattern {
+        case .utilityEdge:
+            emphasis = makeUtilityEdge(color: sample.color, severity: severity, detail: minimumDetail)
+        case .pollutionHatch:
+            emphasis = makePollutionHatch(color: sample.color, severity: severity, detail: minimumDetail)
         }
+        emphasis.name = "overlay.pattern.\(sample.pattern.rawValue)"
+        emphasis.zPosition = 30
+        let detailLayer = style.makeDetailLayer(minimumDetail, visibleAt: detail)
+        detailLayer.addChild(emphasis)
+        root.addChild(detailLayer)
         return root
     }
 
@@ -68,64 +65,25 @@ final class WorldOverlayRenderer {
 
     func sample(
         for tile: CityTile,
-        state: CityGameState,
+        state _: CityGameState,
         consequence: CitySpatialConsequence?,
         overlay: DataOverlay
     ) -> WorldOverlaySample? {
-        switch overlay {
-        case .none:
+        guard isDeveloped(tile),
+              let consequence,
+              consequence.coordinate == tile.coordinate else {
             return nil
-        case .landValue:
-            let parkBoost = proximityInfluence(from: tile.coordinate, kinds: [.park], radius: 5, in: state) * 0.38
-            let civicBoost = proximityInfluence(
-                from: tile.coordinate,
-                kinds: [.cityHall, .school],
-                radius: 7,
-                in: state
-            ) * 0.22
-            let roadBoost = state.neighbors(of: tile.coordinate).contains(where: { $0.kind == .road }) ? 0.14 : 0
-            let industryPenalty = proximityInfluence(
-                from: tile.coordinate,
-                kinds: [.industrial, .powerPlant],
-                radius: 5,
-                in: state
-            ) * 0.42
-            return makeSample(0.40 + parkBoost + civicBoost + roadBoost - industryPenalty, pattern: .contours)
-        case .traffic:
-            guard tile.kind == .road else { return nil }
-            let nearbyDevelopment = state.tiles.lazy.filter {
-                $0.kind != .empty && $0.kind != .road && self.manhattan($0.coordinate, tile.coordinate) <= 2
-            }.count
-            let junctionLoad = max(0, state.neighbors(of: tile.coordinate).filter { $0.kind == .road }.count - 2)
-            let congestion = min(
-                1,
-                Double(nearbyDevelopment) * 0.13
-                    + Double(junctionLoad) * 0.14
-                    + Double(state.population) / 6_000
-            )
-            return makeSample(1 - congestion, pattern: .chevrons)
+        }
+
+        switch overlay {
         case .utilities:
-            guard let consequence else { return nil }
-            return makeSample(consequence.utility.combined, pattern: .utilityGrid)
-        case .happiness:
-            let parkBoost = proximityInfluence(from: tile.coordinate, kinds: [.park], radius: 4, in: state) * 0.22
-            let serviceBoost = proximityInfluence(
-                from: tile.coordinate,
-                kinds: [.fireStation, .policeStation, .school],
-                radius: 6,
-                in: state
-            ) * 0.16
-            let pollutionPenalty = proximityInfluence(
-                from: tile.coordinate,
-                kinds: [.industrial, .powerPlant],
-                radius: 5,
-                in: state
-            ) * 0.28
-            return makeSample(state.happiness / 100 + parkBoost + serviceBoost - pollutionPenalty,
-                              pattern: .amenityDots)
+            return makeSample(consequence.utility.combined, pattern: .utilityEdge)
         case .pollution:
-            guard let consequence else { return nil }
-            return makeSample(1 - consequence.pollutionExposure, pattern: .diagonalHatch)
+            return makeSample(1 - consequence.pollutionExposure, pattern: .pollutionHatch)
+        case .none, .landValue, .traffic, .happiness:
+            // These modes do not yet have approved coordinate-scoped analytics. Rendering
+            // an inferred value here would turn presentation code into gameplay authority.
+            return nil
         }
     }
 
@@ -141,116 +99,98 @@ final class WorldOverlayRenderer {
         return NSColor.systemYellow.blended(withFraction: (value - 0.5) * 2, of: .systemGreen) ?? .systemGreen
     }
 
-    private func makePattern(_ pattern: WorldOverlayPattern, intensity: Double) -> SKNode {
+    private func makeUtilityEdge(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
         let root = SKNode()
-        let ink = NSColor.white.withAlphaComponent(0.30)
-        let count = max(1, min(2, Int((intensity * 2).rounded(.up))))
-        switch pattern {
-        case .none:
-            break
-        case .contours:
-            for index in 0..<count {
-                let inset = CGFloat(index) * 5
-                let contour = SKShapeNode(path: style.diamondPath(
-                    width: max(12, style.tileWidth * 0.46 - inset),
-                    height: max(6, style.tileHeight * 0.46 - inset / 2)
-                ))
-                contour.fillColor = .clear
-                contour.strokeColor = ink
-                contour.lineWidth = 0.75
-                root.addChild(contour)
-            }
-        case .chevrons:
-            for index in 0..<count {
-                let y = CGFloat(index - 1) * 4
-                let path = CGMutablePath()
-                path.move(to: CGPoint(x: -5, y: y + 2))
-                path.addLine(to: CGPoint(x: 0, y: y - 1))
-                path.addLine(to: CGPoint(x: 5, y: y + 2))
-                let chevron = SKShapeNode(path: path)
-                chevron.fillColor = .clear
-                chevron.strokeColor = ink
-                chevron.lineWidth = 1.1
-                chevron.lineCap = .round
-                root.addChild(chevron)
-            }
-        case .utilityGrid:
-            let horizontal = SKShapeNode(path: WorldGeometryCache.line(
-                from: CGPoint(x: -17, y: 0), to: CGPoint(x: 17, y: 0)
+        let ink = color.withAlphaComponent(detail == .city ? 0.78 : 0.68)
+        let halfWidth = style.tileWidth * 0.25
+        let upperY = -style.tileHeight / 12
+        let lowerY = -style.tileHeight * 0.30
+        let edgePath = CGMutablePath()
+        edgePath.move(to: CGPoint(x: -halfWidth, y: upperY))
+        edgePath.addLine(to: CGPoint(x: 0, y: lowerY))
+        edgePath.addLine(to: CGPoint(x: halfWidth, y: upperY))
+
+        let edge = SKShapeNode(path: edgePath)
+        edge.name = "overlay.utility.status-edge"
+        edge.fillColor = .clear
+        edge.strokeColor = ink
+        edge.lineWidth = detail == .city ? 1.5 : 1.15
+        edge.lineCap = .round
+        edge.lineJoin = .round
+        root.addChild(edge)
+
+        let notchCount = severityMarkCount(severity)
+        for index in 0..<notchCount {
+            let x = CGFloat(index - (notchCount - 1) / 2) * 6
+            let notch = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: x, y: lowerY + 1),
+                to: CGPoint(x: x, y: lowerY + 6)
             ))
-            horizontal.strokeColor = ink
-            horizontal.lineWidth = 0.9
-            root.addChild(horizontal)
-            for x in stride(from: CGFloat(-12), through: 12, by: 8) {
-                let tick = SKShapeNode(path: WorldGeometryCache.line(
-                    from: CGPoint(x: x, y: -4), to: CGPoint(x: x, y: 4)
-                ))
-                tick.strokeColor = ink
-                tick.lineWidth = 0.8
-                root.addChild(tick)
-            }
-        case .amenityDots:
-            for index in 0..<count {
-                let ring = SKShapeNode(circleOfRadius: 2.5 + CGFloat(index) * 3.4)
-                ring.fillColor = .clear
-                ring.strokeColor = ink
-                ring.lineWidth = 0.8
-                root.addChild(ring)
-            }
-        case .diagonalHatch:
-            for index in -2...2 {
-                let x = CGFloat(index) * 7
-                let hatch = SKShapeNode(path: WorldGeometryCache.line(
-                    from: CGPoint(x: x - 8, y: -7), to: CGPoint(x: x + 8, y: 7)
-                ))
-                hatch.strokeColor = ink
-                hatch.lineWidth = 0.75
-                root.addChild(hatch)
-            }
+            notch.name = "overlay.utility.severity-notch"
+            notch.fillColor = .clear
+            notch.strokeColor = ink
+            notch.lineWidth = 1.25
+            notch.lineCap = .round
+            root.addChild(notch)
         }
         return root
     }
 
-    private func shouldDrawPattern(for tile: CityTile, overlay: DataOverlay) -> Bool {
-        if overlay == .traffic { return tile.kind == .road }
-        if overlay == .utilities && (tile.kind == .powerPlant || tile.kind == .waterTower) { return true }
-        let salt: UInt64
-        switch overlay {
-        case .none: return false
-        case .landValue: salt = 0x4c41_4e44
-        case .traffic: salt = 0x5452_4146
-        case .utilities: salt = 0x5554_494c
-        case .happiness: salt = 0x4841_5050
-        case .pollution: salt = 0x504f_4c4c
+    private func makePollutionHatch(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
+        let root = SKNode()
+        let ink = color.withAlphaComponent(detail == .city ? 0.76 : 0.64)
+        let hatchCount = severityMarkCount(severity)
+        let verticalOffset = style.tileHeight / 18
+        for index in 0..<hatchCount {
+            let x = CGFloat(index - (hatchCount - 1) / 2) * 8
+            let hatch = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: x - 5, y: verticalOffset),
+                to: CGPoint(x: x + 3, y: verticalOffset + 6)
+            ))
+            hatch.name = "overlay.pollution.exposure-hatch"
+            hatch.fillColor = .clear
+            hatch.strokeColor = ink
+            hatch.lineWidth = detail == .city ? 1.5 : 1.1
+            hatch.lineCap = .round
+            root.addChild(hatch)
         }
-        return WorldVisualSeed.variant(count: 5, for: tile.coordinate, kind: tile.kind, salt: salt) == 0
+        return root
     }
 
-    private func proximityInfluence(
-        from coordinate: GridCoordinate,
-        kinds: Set<BuildingKind>,
-        radius: Int,
-        in state: CityGameState
-    ) -> Double {
-        guard let distance = nearestDistance(from: coordinate, kinds: kinds, in: state), distance <= radius else {
-            return 0
+    private func minimumDetail(for severity: Double) -> CameraDetailLevel? {
+        switch severity {
+        case 0.50...:
+            .city
+        case 0.25...:
+            .neighborhood
+        case 0.08...:
+            .block
+        default:
+            nil
         }
-        return 1 - Double(distance) / Double(max(1, radius))
     }
 
-    private func nearestDistance(
-        from coordinate: GridCoordinate,
-        kinds: Set<BuildingKind>,
-        in state: CityGameState
-    ) -> Int? {
-        state.tiles.lazy
-            .filter { kinds.contains($0.kind) }
-            .map { self.manhattan($0.coordinate, coordinate) }
-            .min()
+    private func severityMarkCount(_ severity: Double) -> Int {
+        switch severity {
+        case 0.66...:
+            3
+        case 0.33...:
+            2
+        default:
+            1
+        }
     }
 
-    private func manhattan(_ lhs: GridCoordinate, _ rhs: GridCoordinate) -> Int {
-        abs(lhs.x - rhs.x) + abs(lhs.y - rhs.y)
+    private func isDeveloped(_ tile: CityTile) -> Bool {
+        tile.kind != .empty && tile.kind != .road
     }
 }
 

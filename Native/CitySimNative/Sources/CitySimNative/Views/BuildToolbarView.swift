@@ -223,31 +223,76 @@ struct BuildToolbarView: View {
         Group {
             switch store.interactionMode {
             case .inspect:
-                Label("Choose a block for details", systemImage: "info.circle")
-                    .accessibilityLabel("Inspect mode. Choose a block for details")
-            case .bulldoze:
-                Label("Cost shown on map · Undo available", systemImage: "arrow.uturn.backward.circle")
-                    .accessibilityLabel("Bulldoze mode. Demolition cost is shown on the map. Undo is available")
-            case .build(let kind):
-                HStack(spacing: 9) {
-                    Label(kind.buildCost.currencyText, systemImage: "banknote")
-                    Label("\(kind.upkeep.currencyText) / cycle", systemImage: "arrow.triangle.2.circlepath")
-                    if kind.requiresRoad {
-                        Label("Road required", systemImage: "road.lanes")
-                    } else {
-                        Label("Flexible access", systemImage: "checkmark.circle")
-                    }
+                if let tile = store.selectedTile {
+                    Label(
+                        "\(tile.kind.title) · Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)",
+                        systemImage: "mappin.and.ellipse"
+                    )
+                    .accessibilityLabel(
+                        "Inspecting \(tile.kind.title) at block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)"
+                    )
+                } else {
+                    Label("Choose a block for details", systemImage: "info.circle")
+                        .accessibilityLabel("Inspect mode. Choose a block for details")
                 }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Selected \(kind.title)")
-                .accessibilityValue(
-                    "Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle, "
-                        + (kind.requiresRoad ? "road required" : "no road required")
-                )
+            case .bulldoze:
+                if let target = store.activeMapActionTargetPresentation {
+                    Label(
+                        "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1) · "
+                            + (target.primaryAction.isAvailable ? "Ready" : "Blocked"),
+                        systemImage: target.primaryAction.isAvailable
+                            ? "checkmark.circle.fill"
+                            : "exclamationmark.triangle.fill"
+                    )
+                    .accessibilityLabel(target.primaryAction.name)
+                    .accessibilityValue(target.primaryAction.disclosure)
+                } else {
+                    Label("Cost shown on map · Undo available", systemImage: "arrow.uturn.backward.circle")
+                        .accessibilityLabel("Bulldoze mode. Demolition cost is shown on the map. Undo is available")
+                }
+            case .build(let kind):
+                if let target = store.activeMapActionTargetPresentation {
+                    HStack(spacing: 8) {
+                        Label(
+                            "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1)",
+                            systemImage: "mappin.and.ellipse"
+                        )
+                        Label(
+                            target.primaryAction.isAvailable ? "Ready" : "Blocked",
+                            systemImage: target.primaryAction.isAvailable
+                                ? "checkmark.circle.fill"
+                                : "exclamationmark.triangle.fill"
+                        )
+                        .foregroundStyle(
+                            target.primaryAction.isAvailable ? GameTheme.accent : GameTheme.warning
+                        )
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(target.primaryAction.name)
+                    .accessibilityValue(target.primaryAction.disclosure)
+                } else {
+                    HStack(spacing: 9) {
+                        Label(kind.buildCost.currencyText, systemImage: "banknote")
+                        Label("\(kind.upkeep.currencyText) / cycle", systemImage: "arrow.triangle.2.circlepath")
+                        if kind.requiresRoad {
+                            Label("Road required", systemImage: "road.lanes")
+                        } else {
+                            Label("Flexible access", systemImage: "checkmark.circle")
+                        }
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Selected \(kind.title)")
+                    .accessibilityValue(
+                        "Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle, "
+                            + (kind.requiresRoad ? "road required" : "no road required")
+                    )
+                }
             }
         }
         .font(.caption.monospacedDigit())
         .foregroundStyle(.secondary)
+        .lineLimit(1)
+        .accessibilityIdentifier("hud.selected.context")
     }
 
     private var buildCatalogMenu: some View {

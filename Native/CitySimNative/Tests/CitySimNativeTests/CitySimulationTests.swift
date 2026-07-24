@@ -673,6 +673,7 @@ final class CitySimulationTests: XCTestCase {
             .expanded
         )
         XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 72)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 112)
         let compactChrome = CityHUDChromeFrames(
             top: CGRect(x: 8, y: 9, width: 884, height: 178),
             bottom: CGRect(x: 8, y: 433, width: 884, height: 155)

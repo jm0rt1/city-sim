@@ -1,85 +1,93 @@
-# PLAY-033 Completion — Make the HUD a Compact City Command Center
+# PLAY-033 Completion — HUD Command Center on the Beautiful World
 
 - **Lane:** UI and input
 - **Branch:** `codex/citysim-ui-input`
 - **Status:** ready-for-integration
-- **Base authority:** `c3c0f4ad109791fe5a90dd120b98a9812ff685e2`
-- **Exact staged product candidate:** `dd878b232be003fffa653185d69872ac4d4a27a4`
+- **Accepted baseline:** `9f38efec4877ab7c3f0d77bf3bd4e36b56e3c034`
+- **Exact staged product candidate:** `61d5376c86b2c88399b4b24884818dc680cf2c08`
+- **Evidence checkpoint:** `03b4cc663b47ea3a342a30210b39fad60d04af54`
+- **Evidence root:** `docs/production/evidence/PLAY-033/61d5376-hud-command-center/`
 
 ## Player-visible outcome
 
-At exact 900 x 600 content, simultaneous Objectives and Command Center details now follow one deterministic precedence rule: Objectives becomes its compact summary and Command Center details are capped at 72 points with visible scrolling. The measured live HUD leaves 246 / 600 points (41%) for the interactive map, keeps the selected tile visible, and retains diagnostic and destructive actions.
+CitySim's map-first HUD now carries one persistent, calm city priority driven exclusively by existing authoritative analytics. Both Main Street and Freight strategies clearly expose their opening opportunity, complication decision, accepted recovery, and completed story. The HUD shows the authoritative consequence window, gives one short diagnosis route, and offers only legitimate existing remedies.
 
-The command guide now translates warning vocabulary directly into the existing policy surface. Searches for `tax`, `budget`, and `storefront` find the visibly named `Open Tax Policy and Finances` command and preserve its current catalog availability or disabled reason. Search remains on the one catalog/store intent path.
+The paused/running state is unmistakable. Selected build context names the existing active coordinate, availability, and accepted reason. Rejected placement keeps the selected tool and target actionable. Existing `tax`, `budget`, and `storefront` search vocabulary reaches Tax Policy and Finances through the one catalog/store route.
 
-Rejected placement feedback now persists until the player acts or dismisses it, includes the accepted `BuildRejection` reason, states that the selected tool remains active, and exposes the message as an accessible `Action blocked` status. The rejected coordinate does not become a selected inspector target. The existing speed truth now produces an unmistakable textual/icon `PAUSED` or `RUNNING Nx` HUD state with a labeled accessibility value.
+At exact 900 x 600 content, Objectives collapses to summary while Command Center details remain capped and scrollable. The measured interactive map aperture is 246 / 600 points, or 41%. The selected tile, critical action, and map remain visible without overlap or cropping.
 
-## Ordered product commits
+## Ordered current-wave commits
 
-1. `3d964e246bb266a98ab46ba77e3f7a3b1a0fa7dc` — `PLAY-033: Preserve compact map dominance`
-2. `64b9c995bdcd75584cfc2eb4190594d599936d53` — `PLAY-033: Find tax remedies from warning language`
-3. `4fc596809d1156769ba009a919c6453676d70683` — `PLAY-033: Keep placement recovery actionable`
-4. `7f9344ddc652cc7670e40594e294d6bd7a5a791c` — `PLAY-033: Preserve rejected-build selection semantics`
-5. `5672d2b6175231644155a4ad64c3b658ad5371ee` — `PLAY-033: Name the searchable tax policy remedy`
-6. `dd878b232be003fffa653185d69872ac4d4a27a4` — `PLAY-033: Meet the compact map occupancy gate`
+1. `49e54c51f603f68f2ec469bab45ebe993823b267` — `PLAY-033: Surface authoritative city priorities`
+2. `61d5376c86b2c88399b4b24884818dc680cf2c08` — `PLAY-033: Keep compact urgency immediately legible`
+3. `03b4cc663b47ea3a342a30210b39fad60d04af54` — `PLAY-033: Retain command-center proof`
 
-The fourth commit is an explicit correction checkpoint: the first full-suite run exposed that selecting a rejected coordinate violated the existing interaction invariant. The correction retained the active tool and durable reason without changing selection or HUD scope. History was preserved; no commit was rewritten.
+The accepted baseline already contains the earlier PLAY-033 compact arbitration, search, and rejection work. The second current-wave commit is a focused compact legibility correction discovered in the exact staged journey; no history was rewritten.
 
-## Exact product and test files changed
+## Product and test surfaces
 
-- `Native/CitySimNative/Sources/CitySimNative/Stores/CityGameStore.swift`
-- `Native/CitySimNative/Sources/CitySimNative/Support/CityCommandCatalog.swift`
-- `Native/CitySimNative/Sources/CitySimNative/Views/BuildToolbarView.swift`
-- `Native/CitySimNative/Sources/CitySimNative/Views/CommandGuideView.swift`
-- `Native/CitySimNative/Sources/CitySimNative/Views/ContentView.swift`
+- `Native/CitySimNative/Sources/CitySimNative/Views/StrategyCommandCenterView.swift`
+- `Native/CitySimNative/Sources/CitySimNative/Views/EventFeedView.swift`
 - `Native/CitySimNative/Sources/CitySimNative/Views/TopHUDView.swift`
+- `Native/CitySimNative/Sources/CitySimNative/Views/BuildToolbarView.swift`
 - `Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift`
 - `Native/CitySimNative/Tests/CitySimNativeTests/CitySimulationTests.swift`
 
-The `CitySimulationTests.swift` edit remains limited to its existing ownership of ContentView compact arbitration and presentation measurement. It adds no simulation-rule assertion.
+No simulation, gameplay, save, renderer, resource, build-script, or shared-contract source changed.
+
+## Authoritative presentation and routing
+
+- `CityStrategyHUDPresentation` consumes only `CityAnalytics.awaitingStrategyChoice`, `committedStrategy`, `strategyPhase`, `strategyDaysUntilConsequence`, and `strategyRecoveryResolution`.
+- Message prose, tile counts, and inferred ticks do not determine strategy, urgency, or countdown.
+- Diagnostic actions use the existing `CityCommandID` and `CityGameStore.perform` route.
+- Map remedies use the existing `performMapFocused` route and focus generation.
+- Selected context consumes the existing `activeMapActionTargetPresentation`; it does not create a second target.
+- Pause/running presentation reads the existing speed truth.
 
 ## Automated validation
 
-- Focused `CityCommandCatalogTests`: 21 tests passed with 0 failures after the search and placement checkpoints.
-- `CityCommandCatalogTests.testWarningLanguageFindsTaxPolicyThroughTheCatalog` covers `tax`, `budget`, and `storefront` plus exact catalog inventory uniqueness.
-- `CityCommandCatalogTests.testTaxPolicySearchResultUsesCurrentAvailabilityAndDisabledReason` proves enabled and Welcome-blocked availability use the existing store policy.
-- `CityCommandCatalogTests.testRejectedPlacementPreservesToolTargetAndDurableAcceptedReason` proves the active Commercial tool, accepted reason, persistence beyond 3.2 seconds, catalog dismissal, and unchanged selection scope.
-- `CitySimulationTests.testMapFirstChromeDefaultsClosed` proves compact Objectives arbitration, the 72-point details cap, the 41% measured map ratio, and exact paused/running presentation values.
-- `CityCommandCatalogTests.testMeasuredHUDChromeKeepsKeyboardSelectionInsideDefaultAndExactCompactMapViewport` retains measured HUD-safe insets for default and compact selection.
-- First full native suite: 122 tests with 1 failure in the pre-correction rejected-selection invariant. The focused correction then passed.
-- Final full native suite on `dd878b2`: 122 tests passed, 0 failures in 378.793 seconds.
-- Final renderer diagnostics from that unchanged renderer: 5,759 reused tiles, 1 updated tile, 1.778 ms average; 4,286-pulse soak averaged 1.2034 ms.
+- `testStrategyHUDConsumesEveryFrozenStoryMomentFromAuthoritativeAnalytics` covers all eight PLAY-047 frozen fixtures.
+- `testStrategyHUDCountdownIgnoresMessageProseAndUrgentRoutesUseCatalogCommands` proves typed countdown and existing catalog remedies.
+- `testStrategyHUDDiagnosisAndMapRemediesUseOneStoreIntentAndFocusHandoff` proves one store intent and deterministic map focus generation.
+- `testStrategyCommandCenterRendersAtDefaultAndExactCompactSizes` covers both presentation sizes.
+- `testMapFirstChromeDefaultsClosed` retains the compact 72-point details cap, adds the 112-point priority cap, and proves at least 40% map height plus exact PAUSED/RUNNING values.
+- Existing catalog collision/equivalence, tax synonyms, command-guide availability, durable rejection, map-action coordinate, topmost Escape, modal/text quarantine, save/session, and renderer tests remain green.
+- Focused strategy/routing tests: 4 passed, 0 failed.
+- Focused command catalog suite: 34 passed, 0 failed.
+- Final native suite: 189 passed, 0 failed.
 - `git diff --check` passed.
 - `bash -n script/build_and_run.sh` passed.
-- Exact staged `./script/build_and_run.sh --verify` passed for candidate `ui-input-wdbeadac6e0bd` at `dd878b2`.
 
-## Staged default and compact journeys
+## Exact staged proof
 
-The exact product candidate and retained evidence are documented in `docs/production/evidence/PLAY-033/dd878b2/README.md`.
+`./script/build_and_run.sh --verify` staged:
 
-- Default, pointer and keyboard: visible/AX `PAUSED`; Commands opened with search focus; `tax`, `budget`, and `storefront` each found the available Tax Policy route; Escape restored map focus without shortcut leakage.
-- Default placement: keyboard selected Commercial and pointer chose an occupied structure. Build/Commercial stayed selected, the exact accepted reason appeared in both durable HUD feedback and the tested map overlay, and the accessible message remained present after four seconds.
-- Exact compact: `CITYSIM_COMPACT_WINDOW=1` produced 900 x 600 content. Objectives collapsed to summary when details opened. The selected Road block 14,13 remained visible; the details scroll region, City data menu, close action, and `Demolish Road $50` remained reachable. Measured live map occupancy was 41%.
-- Focus/accessibility: search focus, safe Escape, map focus, selected state, feedback value, scroll-region label, menu/action labels, and keyboard Tab reachability were inspected in the live AX tree. Full Keyboard Access-critical semantics were exercised; spoken VoiceOver was not claimed.
+- Candidate `ui-input-wdbeadac6e0bd`
+- Bundle identifier `com.jfmortensen.citysim.ui-input.wdbeadac6e0bd`
+- Executable SHA-256 `45390208819d389cd9e1ee47124c6f7f7a465a94f2d148e72fef806f9659cc22`
+- Product commit `61d5376c86b2c88399b4b24884818dc680cf2c08`
 
-Retained captures:
+The candidate domain was cleared before the final default run so a preceding compact proof could not leak its persisted window frame into default evidence.
 
-- `docs/production/evidence/PLAY-033/dd878b2/default-paused.jpeg`
-- `docs/production/evidence/PLAY-033/dd878b2/default-tax-policy-search.jpeg`
-- `docs/production/evidence/PLAY-033/dd878b2/default-placement-rejection-after-4s.jpeg`
-- `docs/production/evidence/PLAY-033/dd878b2/compact-objectives-command-center.jpeg`
+Retained evidence includes:
 
-## Compatibility and quality consequences
+- Fresh default and exact compact before/after frames.
+- Both strategies at opening, complication, recovery, and Charter victory in both layouts.
+- Default Utility warning-to-diagnosis and compact Finance warning-to-diagnosis.
+- Live `tax` and `storefront` search plus Return activation.
+- Pointer Act-menu route to Park with map focus restoration.
+- Default and compact occupied-target rejections still present after 4.5 seconds.
+- Topmost Escape and map focus restoration.
+- Default and compact FKA Tab/Shift-Tab traces.
+- Compact AX Park action with exactly one $900 treasury mutation.
 
-- **Command/store:** no new `CityCommandID` or public command contract was added. Catalog-owned matching and aliases feed the existing descriptor, `canPerform`, disabled-reason, and `perform` route.
-- **Gameplay/urgency:** no PLAY-013 analytics were consumed. No countdown, deadline, or simulation pacing was inferred or implemented; authoritative urgency remains a separate integration-supplied checkpoint.
-- **Renderer:** no renderer or world-presentation file changed. The single occupied-placement proof does not claim general renderer truth.
-- **Save/session:** no model, save schema, persistence service, state mutation contract, or session behavior changed. Save was not invoked in this presentation-only live journey; the complete native suite remained green.
-- **Focus/cancellation:** command-guide Escape returns to the map. Existing topmost-first Escape and speed-restoration routes remain authoritative; no shortcut-specific path was added.
-- **Accessibility:** status is conveyed through text, icon, color, value, and selection rather than color alone. The persistent error is dismissible through the existing command catalog.
-- **Reduce Motion:** existing opacity-only feedback behavior remains in force when Reduce Motion is enabled; no new animation dependency was introduced.
-- **Performance:** search filters immutable command metadata and compact layout only changes SwiftUI presentation. Simulation observation and renderer invalidation boundaries are unchanged.
+Full Keyboard Access-critical behavior and VoiceOver-critical label/value/help/action semantics were inspected in the live accessibility tree. Spoken VoiceOver audio was not recorded.
 
-## Shared-contract and merge notes
+## Compatibility
 
-No shared-contract proposal is required. Integration should apply the six ordered product commits, followed by the evidence/completion commit containing this record. CONTRACT-007 urgency analytics remain deliberately unconsumed until the PLAY-013 checkpoint is supplied. No push or integration was performed by this lane.
+- **Analytics/story:** existing PLAY-013 and PLAY-047 truth is consumed without duplication.
+- **Map action:** existing PLAY-034 coordinate/presentation is consumed without creating another target.
+- **Commands:** no command or public command/store/focus contract was added.
+- **Renderer/gameplay/platform:** no owned rule, validation, art, overlay, save, or session behavior changed.
+- **Input:** pointer, keyboard, FKA, and AX actions converge on existing store/catalog/map-action paths.
+- **Integration:** no push, merge, rebase, cherry-pick, force operation, or self-integration was performed.

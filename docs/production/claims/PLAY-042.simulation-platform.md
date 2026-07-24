@@ -9,7 +9,7 @@
 - **Planned surfaces:** fingerprint/save/recovery/replay/undo/snapshot fixtures, deterministic diagnostics, compatibility tests, and measured platform evidence
 - **Dependencies:** approved CONTRACT-007 and a gameplay-owned PLAY-013 model/rules checkpoint
 - **Validation/proof:** frozen schema-0/schema-1 compatibility, repeated phase fingerprints, grouped-speed/replay/save/undo equivalence, backup recovery, immutable analytics, dense/save-size/memory budgets, and full native suite
-- **Status:** ready for integration; PLAY-013 checkpoint adopted with frozen compatibility and runtime-trust evidence
+- **Status:** final platform closure verified on accepted beauty baseline `9f38efec`; no product delta remains
 
 Adopt—not redesign—the approved gameplay state into the established runtime-trust boundary. Preserve legacy bytes/digests and schema 1, explain every changed active-state digest, and return any authentic envelope incompatibility to integration before proceeding.
 

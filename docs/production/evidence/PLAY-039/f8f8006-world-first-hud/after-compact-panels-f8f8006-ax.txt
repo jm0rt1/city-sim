@@ -1,0 +1,85 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container City command status
+			3 button Description: Open New Arcadia command center, Value: Day 33. Paused, ID: hud.city.identity
+			4 progress indicator Description: Hide objectives, Help: Need J 80 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+			5 container City status
+				6 unknown Description: Treasury, Details: $25,770, +$75 / cycle, ID: hud.metric.treasury
+				7 unknown Description: Residents, Details: 332, 1,908 homes open, ID: hud.metric.population
+				8 unknown Description: Happiness, Details: 65%, 100% mayor approval, ID: hud.metric.happiness
+				9 unknown Description: Jobs filled, Details: 231, 39 openings, ID: hud.metric.employment
+				10 unknown Description: Utilities, Details: 100%, P 22 · W 21, ID: hud.metric.utilities
+			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+			13 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+			14 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+			15 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+			16 container Description: City priority: Protect local storefronts, Details: DECISION · 16 DAYS. Diagnose cashflow, then choose tax relief or a park before the consequence., ID: hud.strategy.priority
+				17 text Help: Diagnose cashflow, then choose tax relief or a park before the consequence., Value: MAIN STREET STRATEGY
+				18 text Help: Diagnose cashflow, then choose tax relief or a park before the consequence., Value: DECISION · 16 DAYS
+				19 text Help: Diagnose cashflow, then choose tax relief or a park before the consequence., Value: Protect local storefronts
+				20 text Diagnose cashflow, then choose tax relief or a park before the consequence.
+				21 button Description: Tax policy & cashflow, Help: Diagnose cashflow, then choose tax relief or a park before the consequence.
+				22 menu button Act, Description: Act on Protect local storefronts, Help: Diagnose cashflow, then choose tax relief or a park before the consequence., Value: 2 available routes, ID: arrow.turn.down.right
+		23 progress indicator Description: Hide objectives, Help: Close command-center details to expand all objectives, Value: 0.7297297297297297, Details: 1 of 3 complete. Prepare for Growth, Need J 80 · P 110 · W 100
+		24 container City command deck with details open
+			25 button (selected) Description: Inspect mode, Value: Selected
+			26 button Description: Build mode, Value: Not selected
+			27 button Description: Bulldoze mode, Value: Not selected
+			28 menu button Catalog, Description: Open categorized build catalog, Value: Selected Road, ID: square.grid.2x2
+			29 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			30 button Description: Close command-center details, Value: Open, ID: hud.command.details
+			31 menu button City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., ID: building.2
+			32 text Help: Use the scroll area to reach every diagnostic control, Value: Scrollable command-center details
+			33 scroll area Description: Scrollable command-center details, ID: hud.command.details.scroll, Secondary Actions: Scroll Up, Scroll Down
+				34 container City command center, Overview
+					35 text Overview
+					36 menu button City data, Description: Choose city data, Value: Overview, ID: chart.dots.scatter
+					37 button Description: Close command-center details, ID: hud.context.close
+					38 collection Secondary Actions: AXScrollToTop, AXScrollToBottom
+						39 text CITY IDENTITY
+						40 text field (settable, string) Value: New Arcadia, Placeholder: City name
+						41 text Today, Day 33
+						42 text CITY HEALTH
+						43 text Residents, 332
+						44 text Happiness, 65%
+						45 text Mayor approval, 100%
+						46 text CURRENT OBJECTIVE
+						47 text Prepare for Growth
+						48 text Need J 80 · P 110 · W 100
+						49 progress indicator 0.7297297297297297
+						50 text OPERATING POSITION
+						51 text Net / cycle, +$75
+						52 text Housing open, 1,908
+						53 text Notices, 12
+						54 button Open journal
+				55 scroll bar (settable, float) 0
+					56 value indicator (settable, float) 0
+					57 increment arrow button
+					58 decrement arrow button
+					59 increment page button
+					60 decrement page button
+		61 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	62 toolbar
+		63 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		64 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		65 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		66 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		67 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	68 close button
+	69 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	70 minimize button
+	71 text CitySim
+72 menu bar
+	73 CitySim [UI wdbeadac6e0bd]
+	74 File
+	75 Edit
+	76 View
+	77 Simulation
+	78 Tools
+	79 City Data
+	80 Window
+	81 Help
+
+The focused UI element is 61 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

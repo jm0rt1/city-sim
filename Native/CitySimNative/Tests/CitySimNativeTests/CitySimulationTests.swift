@@ -684,16 +684,38 @@ final class CitySimulationTests: XCTestCase {
             ContentView.objectiveSurfacePresentation(compact: false, showObjectives: true, showInspector: true),
             .expanded
         )
-        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 72)
-        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 112)
-        let compactChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 9, width: 884, height: 178),
-            bottom: CGRect(x: 8, y: 433, width: 884, height: 155)
+        XCTAssertLessThanOrEqual(TopHUDView.compactMaximumHeight, 126)
+        XCTAssertLessThanOrEqual(TopHUDView.regularMaximumHeight, 126)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactClosedMaximumHeight, 108)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularClosedMaximumHeight, 108)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 66)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 96)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 58)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 58)
+        let compactClosedChrome = CityHUDChromeFrames(
+            top: CGRect(x: 8, y: 8, width: 884, height: 126),
+            bottom: CGRect(x: 8, y: 484, width: 884, height: 108)
         )
         XCTAssertGreaterThanOrEqual(
-            ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactChrome) / 600,
-            0.4
+            ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactClosedChrome) / 600,
+            0.58
         )
+        let compactDetailsChrome = CityHUDChromeFrames(
+            top: CGRect(x: 8, y: 8, width: 884, height: 126),
+            bottom: CGRect(x: 8, y: 419, width: 884, height: 173)
+        )
+        XCTAssertGreaterThanOrEqual(
+            ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactDetailsChrome) / 600,
+            0.47
+        )
+        let compactInsets = ContentView.mapViewportInsets(
+            windowSize: CGSize(width: 900, height: 600),
+            compact: true,
+            chromeFrames: compactClosedChrome
+        )
+        XCTAssertEqual(compactInsets.top, 144)
+        XCTAssertEqual(compactInsets.bottom, 126)
+        XCTAssertNil(GameTheme.animation(reduceMotion: true))
         XCTAssertEqual(
             TopHUDView.simulationState(for: .paused),
             HUDSimulationStatePresentation(label: "PAUSED", symbol: "pause.fill", accessibilityValue: "Paused")

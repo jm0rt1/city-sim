@@ -7,8 +7,6 @@ struct EventFeedView: View {
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 7) {
-            StrategyCommandCenterView(store: store, compact: compact)
-
             if !compact,
                let summary = store.messageSummaries.first,
                visibleSummaryID == summary.id,

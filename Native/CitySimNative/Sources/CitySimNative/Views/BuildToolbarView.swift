@@ -4,45 +4,50 @@ struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
-    // The command row, padding, and this capped scroll region keep more than 40%
-    // of a 900 x 600 window available to the interactive map.
-    static let compactDetailsMaxHeight: CGFloat = 72
+    // The low command rail preserves the world aperture; details remain
+    // reachable in a visibly scrolling region instead of growing over the map.
+    static let compactClosedMaximumHeight: CGFloat = 108
+    static let regularClosedMaximumHeight: CGFloat = 108
+    static let compactDetailsMaxHeight: CGFloat = 66
+    static let regularDetailsMaxHeight: CGFloat = 96
 
     var body: some View {
-        VStack(spacing: compact ? 7 : 9) {
+        VStack(spacing: compact ? 5 : 6) {
             commandRow
             if store.showInspector {
-                if compact {
-                    compactInspector
-                } else {
-                    InspectorView(store: store, compact: false)
-                        .transition(.opacity)
-                }
+                inspectorDetails
             } else {
                 operationalRow
-                cityPulseStrip
             }
         }
-        .padding(compact ? 9 : 11)
+        .padding(compact ? 7 : 8)
+        .frame(
+            maxHeight: store.showInspector
+                ? nil
+                : (compact ? Self.compactClosedMaximumHeight : Self.regularClosedMaximumHeight)
+        )
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
-        .shadow(color: .black.opacity(0.3), radius: 20, y: 8)
+        .shadow(color: .black.opacity(0.2), radius: 12, y: 5)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
     }
 
-    private var compactInspector: some View {
+    private var inspectorDetails: some View {
         VStack(alignment: .leading, spacing: 4) {
             Label("Scrollable command-center details", systemImage: "arrow.up.and.down.text.horizontal")
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
                 .accessibilityHint("Use the scroll area to reach every diagnostic control")
             ScrollView(.vertical) {
-                InspectorView(store: store, compact: true)
+                InspectorView(store: store, compact: compact)
                     .padding(.trailing, 6)
             }
             .scrollIndicators(.visible)
-            .frame(maxHeight: Self.compactDetailsMaxHeight, alignment: .top)
+            .frame(
+                maxHeight: compact ? Self.compactDetailsMaxHeight : Self.regularDetailsMaxHeight,
+                alignment: .top
+            )
             .focusable()
             .accessibilityLabel("Scrollable command-center details")
             .accessibilityIdentifier("hud.command.details.scroll")
@@ -135,26 +140,15 @@ struct BuildToolbarView: View {
     }
 
     private var inspectReadoutRow: some View {
-        HStack(spacing: 10) {
-            Label("CITY DESK", systemImage: "cursorarrow.rays")
-                .font(.system(size: 9, weight: .heavy, design: .rounded))
+        HStack(spacing: 8) {
+            Label("INSPECT", systemImage: "cursorarrow.rays")
+                .font(.caption.weight(.bold))
                 .foregroundStyle(GameTheme.information)
-            Divider().frame(height: 26)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(store.primaryObjective.title).font(.caption.weight(.semibold)).lineLimit(1)
-                Text(store.primaryObjective.remaining).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
-            }
-            ProgressView(value: store.primaryObjective.progress)
-                .tint(.cyan)
-                .frame(width: 82)
-            Divider().frame(height: 26)
-            Label("\(store.alertCount) notices", systemImage: "bell.fill")
-                .font(.caption.monospacedDigit())
-            Spacer(minLength: 8)
-            Label("Select a block or a status signal for context", systemImage: "arrow.down.left.circle")
-                .font(.caption)
+            Spacer(minLength: 6)
+            selectedToolSummary
+            Text("Arrows move · Shift-Return opens details")
+                .font(.caption2.monospacedDigit())
                 .foregroundStyle(.secondary)
-                .lineLimit(1)
         }
         .frame(minHeight: GameTheme.controlMinimum)
     }
@@ -389,118 +383,6 @@ struct BuildToolbarView: View {
         .accessibilityValue("Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle")
     }
 
-    private var cityPulseStrip: some View {
-        ViewThatFits(in: .horizontal) {
-            fullCityPulseStrip
-            compactCityPulseStrip
-        }
-    }
-
-    private var fullCityPulseStrip: some View {
-        HStack(spacing: 6) {
-            Label("CITY PULSE", systemImage: "waveform.path.ecg")
-                .font(.system(size: 9, weight: .heavy, design: .rounded))
-                .foregroundStyle(GameTheme.accent)
-            pulseButton("Cashflow", value: store.analytics.projectedBalance.signedCurrencyText, symbol: "dollarsign.arrow.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
-                store.perform(.inspectorFinances)
-            }
-            pulseButton("Homes open", value: store.analytics.housingHeadroom.formatted(), symbol: "house.fill", tint: .cyan) {
-                store.perform(.inspectorPopulation)
-            }
-            pulseButton("Jobs open", value: store.analytics.jobHeadroom.formatted(), symbol: "briefcase.fill", tint: .purple) {
-                store.perform(.inspectorEmployment)
-            }
-            pulseButton("Power spare", value: store.analytics.powerHeadroom.formatted(), symbol: "bolt.fill", tint: .yellow) {
-                store.perform(.inspectorUtilities)
-            }
-            pulseButton("Water spare", value: store.analytics.waterHeadroom.formatted(), symbol: "drop.fill", tint: .blue) {
-                store.perform(.inspectorUtilities)
-            }
-            Divider().frame(height: 28)
-            DemandBar(label: "R", accessibilityName: "Residential", value: store.state.demand.residential, color: .cyan) {
-                store.perform(.inspectorDemand)
-            }
-            DemandBar(label: "C", accessibilityName: "Commercial", value: store.state.demand.commercial, color: .purple) {
-                store.perform(.inspectorDemand)
-            }
-            DemandBar(label: "I", accessibilityName: "Industrial", value: store.state.demand.industrial, color: .orange) {
-                store.perform(.inspectorDemand)
-            }
-            Spacer(minLength: 4)
-            if store.canUndo {
-                Button { store.perform(.undo) } label: {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                        .font(.caption.weight(.semibold))
-                        .frame(minHeight: GameTheme.controlMinimum)
-                }
-                .buttonStyle(.bordered)
-                .accessibilityLabel("Undo last construction action")
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var compactCityPulseStrip: some View {
-        HStack(spacing: 5) {
-            pulseButton("Net", value: store.analytics.projectedBalance.signedCurrencyText, symbol: "dollarsign.arrow.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
-                store.perform(.inspectorFinances)
-            }
-            pulseButton("Homes", value: store.analytics.housingHeadroom.formatted(), symbol: "house.fill", tint: .cyan) {
-                store.perform(.inspectorPopulation)
-            }
-            pulseButton("Power", value: store.analytics.powerHeadroom.formatted(), symbol: "bolt.fill", tint: .yellow) {
-                store.perform(.inspectorUtilities)
-            }
-            pulseButton("Water", value: store.analytics.waterHeadroom.formatted(), symbol: "drop.fill", tint: .blue) {
-                store.perform(.inspectorUtilities)
-            }
-            Button { store.perform(.inspectorDemand) } label: {
-                Label("Demand", systemImage: "chart.bar.fill")
-                    .font(.caption.weight(.semibold))
-                    .frame(minHeight: GameTheme.controlMinimum)
-            }
-            .buttonStyle(.bordered)
-            if store.canUndo {
-                Button { store.perform(.undo) } label: {
-                    Image(systemName: "arrow.uturn.backward")
-                        .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
-                }
-                .buttonStyle(.bordered)
-                .accessibilityLabel("Undo last construction action")
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private func pulseButton(
-        _ title: String,
-        value: String,
-        symbol: String,
-        tint: Color,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            HStack(spacing: 5) {
-                Image(systemName: symbol).foregroundStyle(tint)
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(title.uppercased())
-                        .font(.system(size: 7, weight: .bold, design: .rounded))
-                        .foregroundStyle(.secondary)
-                    Text(value)
-                        .font(.caption2.weight(.semibold).monospacedDigit())
-                        .lineLimit(1)
-                }
-            }
-            .padding(.horizontal, 6)
-            .frame(minWidth: compact ? 70 : 84, maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .background(GameTheme.contextCard, in: RoundedRectangle(cornerRadius: 8))
-        .accessibilityLabel(title)
-        .accessibilityValue(value)
-    }
-
     private var isBuildMode: Bool {
         if case .build = store.interactionMode { return true }
         return false
@@ -514,38 +396,4 @@ struct BuildToolbarView: View {
         }
     }
 
-}
-
-private struct DemandBar: View {
-    let label: String
-    let accessibilityName: String
-    let value: Double
-    let color: Color
-    let action: () -> Void
-
-    private var status: String {
-        if value >= 0.67 { return "High" }
-        if value >= 0.34 { return "Steady" }
-        return "Low"
-    }
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 5) {
-                Text(label).font(.caption2.weight(.semibold))
-                ProgressView(value: value)
-                    .tint(color)
-                    .frame(width: 48)
-                Text("\((value * 100).percentText) \(status)")
-                    .font(.caption2.monospacedDigit())
-                    .foregroundStyle(.secondary)
-            }
-            .frame(minHeight: GameTheme.controlMinimum)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .help("Open demand details")
-        .accessibilityLabel("\(accessibilityName) demand")
-        .accessibilityValue("\((value * 100).percentText), \(status)")
-    }
 }

@@ -1301,13 +1301,13 @@ final class CityCommandCatalogTests: XCTestCase {
             }?.state
         )
         let store = CityGameStore(state: state)
-        let compactSize = CGSize(width: 390, height: StrategyCommandCenterView.compactMaximumHeight)
+        let compactSize = CGSize(width: 884, height: StrategyCommandCenterView.compactMaximumHeight)
         let compact = try bitmap(
             of: StrategyCommandCenterView(store: store, compact: true)
                 .frame(width: compactSize.width, height: compactSize.height),
             size: compactSize
         )
-        let regularSize = CGSize(width: 430, height: 124)
+        let regularSize = CGSize(width: 1_240, height: StrategyCommandCenterView.regularMaximumHeight)
         let regular = try bitmap(
             of: StrategyCommandCenterView(store: store, compact: false)
                 .frame(width: regularSize.width, height: regularSize.height),

@@ -9,7 +9,9 @@
 - **Planned surfaces:** SwiftUI HUD hierarchy and composition, existing command/store/focus routing, compact/default map aperture, accessibility, and exact staged evidence
 - **Dependencies:** accepted PLAY-033; current active-map-target and catalog/store contracts
 - **Validation/proof:** same-state default/compact before/after, measured interactive map aperture, priority/action/selection visibility, pointer/keyboard/FKA/AX routes, rejection recovery, command search, focus/Escape, Reduce Motion, full suite, and independent PLAY-053 handoff
-- **Status:** authorized; begin only after merging the published Wave 006 baseline normally
+- **Status:** implementation and lane proof complete at product `f8f8006` and
+  evidence `a895568`; clean and ready for integration/independent PLAY-053
+  review
 
 Make the city—not the chrome—the dominant visual surface. Preserve the
 authoritative priority and every operable route while materially reducing the

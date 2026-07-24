@@ -144,6 +144,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Bulk architecture generation, gameplay truth, HUD, save schemas, and production selection of an incomplete pack.
 - **Acceptance:** Two clean builds produce byte-identical pages/manifests; every entry loads from the staged Bundle.module resource; alpha, padding, anchor, seam, digest, LOD cycling, memory, fallback, and rollback gates pass.
 - **Stop conditions:** Absolute development paths, raw tool output in shipping resources, silent fallback, unbounded cache, nondeterministic pack bytes, or shared-package changes without integration approval.
+- **Current status:** Authorized by `docs/production/claims/PLAY-023.world-rendering.md` after the accepted PLAY-022/034 combined beauty baseline; work begins only after the world lane normally merges published `master`.
 
 ### [ ] PLAY-024: Replace terrain, streets, and environmental structure
 

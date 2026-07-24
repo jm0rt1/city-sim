@@ -233,6 +233,18 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** The change requires load-time mutation, a schema/fingerprint-version bump, premature victory, gameplay-owned UI edits, a new command/state authority, or any recovery route losing viability.
 - **Accepted integration:** Product/evidence/completion `836453d`, `5f3d720`, and `7e6badc`; terminal runtime adoption follows under PLAY-046.
 
+### [ ] PLAY-016: Author a believable starter district
+
+- **Player outcome:** New Arcadia opens as a connected, inhabited district with purposeful blocks, several legitimate growth directions, and the same understandable strategic pressure instead of eight buildings stranded around one long cross.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** GOV-004, ECO-002, SIM-004, ART-001, UX-001.
+- **Dependencies:** Accepted PLAY-015 and published Wave 006 authority; PLAY-024 consumes only the resulting authoritative topology and may not anticipate it with invented renderer state.
+- **In scope:** `CityGameState.newCity` authored road/building arrangement, opening economy and capacity rebalance required by that arrangement, deterministic scenario tests, four-route viability, and an exact gameplay checkpoint for platform adoption.
+- **Out of scope:** SpriteKit presentation, HUD composition, new building kinds, public store/command contracts, persisted schema identifiers, story-fixture rewrites, or renderer-authored roads.
+- **Acceptance:** The authoritative opening contains a legible multi-block connected street structure with no accidental interior dead ends, distributes occupied lots across more than one block, preserves multiple valid road-adjacent build choices, exposes the Commercial/Industrial decision inside two minutes, retains visible utility/treasury tradeoffs, and keeps all four durable recovery routes viable through Town Charter inside 20 minutes. The state remains seed-deterministic and round-trips without schema or fingerprint-version changes.
+- **Stop conditions:** The layout is cosmetic-only, roads are added solely to make a screenshot, one strategy becomes dominant or blocked, initial facts contradict tile consequences, renderer/UI files change, legacy saves are rewritten, or platform adoption is omitted.
+- **Current status:** Authorized by `docs/production/claims/PLAY-016.gameplay-loop.md`. Begin only after merging the published authority commit containing this claim; return a frozen product checkpoint before PLAY-048 adoption.
+
 ### [x] PLAY-033: Make the HUD a compact city command center
 
 - **Player outcome:** Urgent decisions stay visible and understandable, every warning leads directly to the relevant action, invalid placement recovery is durable, and exact 900 x 600 play keeps the map dominant.
@@ -381,6 +393,18 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Eight named states are generated twice with byte-identical fixture bytes and stable v1 digests; each loads paused through the production save service, preserves authoritative strategy/recovery/terminal identity and spatial truth, remains compatible with legacy fixtures, and stays within existing persistence/snapshot budgets; full suite passes and consumers can bind evidence to exact hashes.
 - **Stop conditions:** A fixture invents facts unavailable in authoritative state, authentic legacy bytes are rewritten, a version changes, production behavior depends on test support, random or wall-clock data enters generation, or fixtures are represented as substitutes for the PLAY-052 player journey.
 - **Accepted integration:** Fixtures/evidence/completion `0706dbe`, `ce450a3`, and `57c75b7`; eight schema-1 story states are byte-identical across repeated generation, and the complete native suite passed 164/164 in the owning lane.
+
+### [ ] PLAY-048: Adopt the believable starter district into runtime trust
+
+- **Player outcome:** The richer opening remains exact through save/load, replay, undo, immutable snapshots, frozen story moments, and performance budgets rather than becoming a visually attractive but nondeterministic exception.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-006, TEC-004, REL-002, REL-004, ART-001.
+- **Dependencies:** Frozen gameplay-owned PLAY-016 product checkpoint; accepted PLAY-047 fixture system.
+- **In scope:** Current-state fingerprints and scenario expectations affected by PLAY-016, production story fixture regeneration through the existing deterministic builder, save/backup/replay/undo/snapshot equivalence, legacy-byte preservation, diagnostics, and measured budgets.
+- **Out of scope:** Changing the starter layout, gameplay balance, renderer/HUD composition, schema/fingerprint-version bumps, authentic legacy fixture rewriting, or product behavior depending on test resources.
+- **Acceptance:** Authentic schema-0/schema-1 bytes and legacy digests remain unchanged; the new opening and all eight strategy story states build twice byte-identically; save/resume, backup recovery, replay, undo, snapshots, and grouped-speed continuation agree exactly; full suite and existing persistence/performance ceilings pass without a migration.
+- **Stop conditions:** Platform changes authored layout or balance, authentic legacy data is regenerated, a version bump appears, current digest drift is unexplained, renderer/UI changes enter the lane, or fixtures substitute for final PLAY-053 real-app proof.
+- **Current status:** Authorized to prepare only by `docs/production/claims/PLAY-048.simulation-platform.md`; implementation waits for integration to hand off the exact frozen PLAY-016 checkpoint.
 
 ### [x] PLAY-052: Gate Wave 005 trust, choice, and world quality
 

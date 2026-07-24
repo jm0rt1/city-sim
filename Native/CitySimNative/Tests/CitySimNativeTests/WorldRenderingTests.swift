@@ -375,12 +375,12 @@ final class WorldRenderingTests: XCTestCase {
         let recovered = spatialProofState(recovered: true)
         let strainedSnapshot = try CityPresentationSnapshot(state: strained)
         let recoveredSnapshot = try CityPresentationSnapshot(state: recovered)
-        let focus = GridCoordinate(x: 10, y: 11)
+        let focus = GridCoordinate(x: 13, y: 11)
         let strainedSample = try XCTUnwrap(strainedSnapshot.spatialConsequences[focus])
         let recoveredSample = try XCTUnwrap(recoveredSnapshot.spatialConsequences[focus])
-        let focusEventIDs = recoveredSnapshot.consequenceEvents(since: strainedSnapshot)
+        let focusEvents = recoveredSnapshot.consequenceEvents(since: strainedSnapshot)
             .filter { $0.coordinate == focus }
-            .map(\.id)
+        let focusEventIDs = focusEvents.map(\.id)
         let defaultProof = try spatialTransitionFrame(
             from: strained,
             to: recovered,
@@ -409,7 +409,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(strainedSample.vitality, .strained)
         XCTAssertEqual(recoveredSample.utility.combinedBand, .strained)
         XCTAssertEqual(recoveredSample.vitality, .prosperous)
-        XCTAssertEqual(focusEventIDs.count, 2)
+        XCTAssertEqual(focusEvents.map(\.dimension), [.utility, .pollution, .vitality])
+        XCTAssertTrue(focusEvents.allSatisfy { $0.direction == .recovery })
         XCTAssertEqual(defaultProof.actions, 0)
         XCTAssertEqual(compactProof.actions, 0)
 
@@ -417,7 +418,7 @@ final class WorldRenderingTests: XCTestCase {
         try export(defaultProof.png, environmentKey: "CITYSIM_PLAY022_SPATIAL_RECOVERY_PROOF")
         try export(compactProof.png, environmentKey: "CITYSIM_PLAY022_SPATIAL_COMPACT_PROOF")
         print(
-            "CITYSIM_PLAY022_SPATIAL_PROOF focus=10,11 " +
+            "CITYSIM_PLAY022_SPATIAL_PROOF focus=\(focus.x),\(focus.y) " +
             "strained_utility=\(strainedSample.utility.combinedBand) " +
             "strained_pollution=\(strainedSample.pollutionBand) " +
             "strained_vitality=\(strainedSample.vitality) " +
@@ -744,50 +745,68 @@ final class WorldRenderingTests: XCTestCase {
     func testEntireAuthoritativeRoadNetworkStaysPhysicalWithoutChangingHitGeometry() {
         let state = CityGameState.newCity(seed: 42)
         let renderer = RoadRenderer(style: WorldVisualStyle())
-        let frontage = renderer.makeRoad(
-            at: GridCoordinate(x: 12, y: 12),
-            in: state,
-            detail: .block,
-            reducedMotion: true
-        )
-        let frontierCoordinate = GridCoordinate(x: 4, y: 12)
-        let frontier = renderer.makeRoad(
-            at: frontierCoordinate,
-            in: state,
-            detail: .block,
-            reducedMotion: true
-        )
-
-        XCTAssertEqual(frontage.alpha, 1, accuracy: 0.001)
-        XCTAssertEqual(frontier.alpha, 1, accuracy: 0.001)
-        XCTAssertEqual(
-            frontage.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
-            1,
-            accuracy: 0.001
-        )
-        XCTAssertEqual(
-            frontier.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
-            1,
-            accuracy: 0.001
-        )
-        XCTAssertTrue(descendantNames(in: frontage).contains("road.production-corridor.developed.15"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.production-corridor.network.2"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.paved-apron"))
-        XCTAssertTrue(descendantNames(in: frontier).contains("road.terminus.authenticated-barrier"))
-        let frontierSprite = frontier.childNode(
-            withName: "//road.generated-v4.2.block"
-        ) as? SKSpriteNode
-        XCTAssertEqual(frontierSprite?.alpha ?? -1, 1, accuracy: 0.001)
-        XCTAssertEqual(frontierSprite?.colorBlendFactor ?? -1, 0, accuracy: 0.001)
-
-        guard let roadTile = state.tile(at: frontierCoordinate) else {
-            return XCTFail("Expected authoritative frontier road tile")
+        let roads = state.tiles.filter { $0.kind == .road }
+        let developedCoordinates = state.tiles.compactMap { tile in
+            ![.empty, .road].contains(tile.kind) ? tile.coordinate : nil
         }
-        let terrain = TerrainRenderer(style: WorldVisualStyle()).makeGround(
-            for: roadTile,
-            detail: .block
+        var observedMasks: Set<UInt8> = []
+
+        XCTAssertEqual(roads.count, 32)
+        for roadTile in roads {
+            let coordinate = roadTile.coordinate
+            let mask = RoadConnectionMask.resolving(at: coordinate, in: state)
+            let road = renderer.makeRoad(
+                at: coordinate,
+                in: state,
+                detail: .block,
+                reducedMotion: true
+            )
+            observedMasks.insert(mask.rawValue)
+
+            XCTAssertGreaterThanOrEqual(
+                mask.connectionCount,
+                2,
+                "Authoritative starter roads must not expose a dead end at \(coordinate)"
+            )
+            XCTAssertEqual(road.alpha, 1, accuracy: 0.001)
+            XCTAssertEqual(
+                road.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha ?? -1,
+                1,
+                accuracy: 0.001
+            )
+
+            let isDevelopedContext = developedCoordinates.contains { developed in
+                max(
+                    abs(developed.x - coordinate.x),
+                    abs(developed.y - coordinate.y)
+                ) <= 1
+            }
+            let emphasis = isDevelopedContext ? "developed" : "network"
+            let names = descendantNames(in: road)
+            XCTAssertTrue(names.contains(
+                "road.production-corridor.\(emphasis).\(mask.rawValue)"
+            ))
+            XCTAssertTrue(names.contains(
+                "road.generated-v4.\(mask.rawValue).block"
+            ))
+            XCTAssertFalse(names.contains { $0.hasPrefix("road.terminus.") })
+
+            let sprite = road.childNode(
+                withName: "//road.generated-v4.\(mask.rawValue).block"
+            ) as? SKSpriteNode
+            XCTAssertEqual(sprite?.alpha ?? -1, 1, accuracy: 0.001)
+            XCTAssertEqual(sprite?.colorBlendFactor ?? -1, 0, accuracy: 0.001)
+
+            let terrain = TerrainRenderer(style: WorldVisualStyle()).makeGround(
+                for: roadTile,
+                detail: .block
+            )
+            XCTAssertFalse(descendantNames(in: terrain).contains("terrain.hit-surface"))
+        }
+        XCTAssertEqual(
+            observedMasks,
+            Set([UInt8(3), 5, 6, 9, 10, 11, 12, 14])
         )
-        XCTAssertFalse(descendantNames(in: terrain).contains("terrain.hit-surface"))
     }
 
     @MainActor
@@ -1150,7 +1169,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.73)
         XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.78)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 170.7188, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 206.7188, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.height, 342, accuracy: 0.001)
 
@@ -1186,6 +1205,9 @@ final class WorldRenderingTests: XCTestCase {
             max(defaultOccupancy.width, defaultOccupancy.height)
         )
         let cityHall = GridCoordinate(x: 11, y: 11)
+        let cityHallRoad = GridCoordinate(x: 12, y: 12)
+        let cityHallRoadMask = RoadConnectionMask.resolving(at: cityHallRoad, in: state).rawValue
+        XCTAssertEqual(cityHallRoadMask, 11)
         let defaultCityHallRoot = defaultScene.tileRootIdentifier(at: cityHall)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.block"))
@@ -1203,8 +1225,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
-            at: GridCoordinate(x: 12, y: 12)
-        ).contains("road.generated-v4.15.city"))
+            at: cityHallRoad
+        ).contains("road.generated-v4.\(cityHallRoadMask).city"))
         XCTAssertEqual(defaultScene.resolvedCoordinateForTesting(at: defaultScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(defaultScene.tileRootIdentifier(at: cityHall), defaultCityHallRoot)
 
@@ -1218,8 +1240,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(neighborhoodVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.city_hall_l01.neighborhood"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
-            at: GridCoordinate(x: 12, y: 12)
-        ).contains("road.generated-v4.15.neighborhood"))
+            at: cityHallRoad
+        ).contains("road.generated-v4.\(cityHallRoadMask).neighborhood"))
         XCTAssertEqual(defaultScene.resolvedCoordinateForTesting(at: defaultScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(defaultScene.tileRootIdentifier(at: cityHall), defaultCityHallRoot)
 
@@ -1232,8 +1254,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(blockVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertTrue(blockVisible.contains("lot.generated-v4.city_hall_l01.block"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
-            at: GridCoordinate(x: 12, y: 12)
-        ).contains("road.generated-v4.15.block"))
+            at: cityHallRoad
+        ).contains("road.generated-v4.\(cityHallRoadMask).block"))
         XCTAssertEqual(defaultScene.resolvedCoordinateForTesting(at: defaultScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(defaultScene.tileRootIdentifier(at: cityHall), defaultCityHallRoot)
 
@@ -1320,9 +1342,10 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testRejectedGoldenDistrictReferenceRetainsExplicitLODAssets() throws {
+    func testRejectedGoldenDistrictReferenceStaysIneligibleAndRetainsExplicitLODAssets() throws {
         let renderer = GoldenDistrictRenderer(style: WorldVisualStyle())
-        XCTAssertTrue(renderer.canPresent(state: CityGameState.newCity(seed: 42)))
+        XCTAssertFalse(renderer.canPresent(state: CityGameState.newCity(seed: 42)))
+        XCTAssertTrue(renderer.canPresent(state: retiredGoldenDistrictReferenceState()))
 
         for (detail, expectedAsset) in [
             (CameraDetailLevel.city, "world.goldenDistrict.asset.city"),
@@ -2087,7 +2110,7 @@ final class WorldRenderingTests: XCTestCase {
         state.happiness = recovered ? 82 : 20
         state.powerCapacity = recovered ? 300 : 0
         state.waterCapacity = recovered ? 270 : 0
-        state.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+        state.updateTile(at: GridCoordinate(x: 13, y: 11)) {
             $0.condition = recovered ? 1 : 0.2
             $0.occupancy = recovered ? 280 : 0
         }
@@ -2098,6 +2121,22 @@ final class WorldRenderingTests: XCTestCase {
                 $0.occupancy = 0
             }
         }
+        return state
+    }
+
+    private func retiredGoldenDistrictReferenceState() -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        for tile in state.tiles where tile.kind == .road {
+            state.updateTile(at: tile.coordinate) { $0.kind = .empty }
+        }
+        for x in 4..<20 {
+            state.updateTile(at: GridCoordinate(x: x, y: 12)) { $0.kind = .road }
+        }
+        for y in 8..<17 {
+            state.updateTile(at: GridCoordinate(x: 12, y: y)) { $0.kind = .road }
+        }
+        state.updateTile(at: GridCoordinate(x: 15, y: 13)) { $0.kind = .empty }
+        state.updateTile(at: GridCoordinate(x: 11, y: 14)) { $0.kind = .waterTower }
         return state
     }
 

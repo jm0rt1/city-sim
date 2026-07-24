@@ -1822,7 +1822,11 @@ final class CityScene: SKScene {
         // settlement back into the rejected toy-island scale.
         let isCompact = size.width <= 900 || size.height <= 600
         let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.82
-        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.28
+        // The authoritative two-block opening is taller than the retired
+        // one-cross fixture. Give that real vertical mass the same under-chrome
+        // breathing room as its horizontal frontage so the new district does
+        // not regress to a smaller default composition.
+        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.36
         var scale = max(
             cameraBounds.width / (safeWidth * targetWidthOccupancy),
             cameraBounds.height / (safeHeight * allowedHeightOccupancy)

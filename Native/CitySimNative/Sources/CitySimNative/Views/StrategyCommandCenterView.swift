@@ -29,7 +29,7 @@ struct CityStrategyHUDPresentation: Equatable {
                 eyebrow: "CITY PRIORITY",
                 title: "Choose a growth engine",
                 status: "DECISION READY",
-                summary: "Commit Commercial for steadier growth or Industrial for a faster, higher-pressure return.",
+                summary: "Commercial is steadier; Industrial pays faster with heavier utility and pollution pressure.",
                 tone: .decision,
                 diagnostic: nil,
                 actions: [
@@ -106,8 +106,8 @@ struct CityStrategyHUDPresentation: Equatable {
             return .init(
                 eyebrow: "MAIN STREET STRATEGY",
                 title: "Protect local storefronts",
-                status: timedStatus("DECISION WINDOW", days: days),
-                summary: "Diagnose cashflow, then choose tax relief or a park before the chain-store consequence.",
+                status: timedStatus("DECISION", days: days),
+                summary: "Diagnose cashflow, then choose tax relief or a park before the consequence.",
                 tone: .active,
                 diagnostic: diagnostic,
                 actions: actions
@@ -195,8 +195,8 @@ struct CityStrategyHUDPresentation: Equatable {
             return .init(
                 eyebrow: "FREIGHT STRATEGY",
                 title: "Prepare for the load surge",
-                status: timedStatus("DECISION WINDOW", days: days),
-                summary: "Diagnose utilities, then add reserve capacity or a park before the freight consequence.",
+                status: timedStatus("DECISION", days: days),
+                summary: "Diagnose utilities, then add capacity or a park before the consequence.",
                 tone: .active,
                 diagnostic: diagnostic,
                 actions: actions
@@ -281,6 +281,8 @@ struct StrategyCommandCenterView: View {
                         .foregroundStyle(tint)
                     Text(presentation.status)
                         .font(.system(size: 8, weight: .heavy, design: .rounded).monospacedDigit())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 3)
                         .background(tint.opacity(0.16), in: Capsule())
@@ -323,7 +325,7 @@ struct StrategyCommandCenterView: View {
 
     private func responseButton(_ response: CityDirectResponse) -> some View {
         Button { perform(response) } label: {
-            Label(response.title, systemImage: "waveform.path.ecg.rectangle")
+            Label(responseButtonTitle(response), systemImage: "waveform.path.ecg.rectangle")
                 .font(.caption2.weight(.semibold))
                 .lineLimit(1)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
@@ -331,7 +333,13 @@ struct StrategyCommandCenterView: View {
         .buttonStyle(.bordered)
         .disabled(!store.canPerform(response.command))
         .help(store.disabledReason(for: response.command) ?? response.explanation)
+        .accessibilityLabel(response.title)
         .accessibilityHint(response.explanation)
+    }
+
+    private func responseButtonTitle(_ response: CityDirectResponse) -> String {
+        if compact, response.command == .inspectorFinances { return "Tax & cashflow" }
+        return response.title
     }
 
     private var responseMenu: some View {

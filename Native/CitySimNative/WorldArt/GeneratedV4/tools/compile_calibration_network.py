@@ -3,9 +3,6 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
-import shutil
 from pathlib import Path
 
 from PIL import Image, ImageChops, ImageDraw, ImageEnhance
@@ -13,19 +10,12 @@ from PIL import Image, ImageChops, ImageDraw, ImageEnhance
 
 ROOT = Path(__file__).resolve().parents[2]
 GENERATED = ROOT / "GeneratedV4"
-PACKAGE = ROOT.parent
-ATLAS = PACKAGE / "Sources" / "CitySimNative" / "Resources" / "WorldAssets.atlas"
 SOURCE = GENERATED / "normalized" / "calibration" / "road_material" / "generated_v4_road_material_block.png"
 OUTPUT = GENERATED / "compiled" / "calibration-network"
 LODS = {"block": (512, 256), "neighborhood": (256, 128), "city": (128, 64)}
 EDGES = ((384, 64), (384, 192), (128, 192), (128, 64))
 AUTHORING_SIZE = (1536, 1024)
 AUTHORING_MATERIAL_BOUNDS = (512, 640, 1024, 896)
-
-
-def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
 
 def material_texture(
     material: Image.Image,
@@ -238,7 +228,6 @@ def main() -> None:
     )
     material = source.crop(material_bounds).resize(LODS["block"], Image.Resampling.LANCZOS)
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    inventory = []
     for mask_value in range(16):
         for lod, size in LODS.items():
             authored = draw_mask(mask_value, material, lod)
@@ -246,35 +235,6 @@ def main() -> None:
             name = f"generated_v4_road_mask_{mask_value:02d}_{lod}.png"
             output = OUTPUT / name
             image.save(output, optimize=True)
-            destination = ATLAS / name
-            shutil.copyfile(output, destination)
-            inventory.append({
-                "file": name,
-                "sha256": digest(destination),
-                "pixels": list(size),
-                "decoded_byte_estimate": size[0] * size[1] * 4,
-            })
-
-    manifest_path = ATLAS / "generated-v4-manifest.json"
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    manifest["compiled_network"] = {
-        "source_logical_id": "road_material",
-        "compiler": "WorldArt/GeneratedV4/tools/compile_calibration_network.py",
-        "connection_masks": 16,
-        "lods": {
-            lod: {
-                "pixels": list(size),
-                "world_size": [74.0, 37.0],
-                "decoded_bytes_per_texture": size[0] * size[1] * 4,
-            }
-            for lod, size in LODS.items()
-        },
-        "topology_authority": "RoadConnectionMask",
-    }
-    previous = {item["file"]: item for item in manifest["inventory"] if not item["file"].startswith("generated_v4_road_mask_")}
-    previous.update({item["file"]: item for item in inventory})
-    manifest["inventory"] = [previous[name] for name in sorted(previous)]
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

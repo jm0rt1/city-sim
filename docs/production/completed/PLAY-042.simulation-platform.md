@@ -2,7 +2,9 @@
 
 - **Lane:** Simulation platform
 - **Branch:** `codex/citysim-simulation-platform`
-- **Status:** ready for integration
+- **Status:** final platform closure verified on accepted beauty baseline
+- **Accepted beauty baseline:** `9f38efec4877ab7c3f0d77bf3bd4e36b56e3c034`
+- **Platform closure merge:** `970d0f8a3ad24144906760abcf1dbe184f0c3904`
 - **Authority base:** `32bfafbc6d4b27f306bcfef9141488f1334235f9`
 - **Gameplay source checkpoint:** `6d5df6b37cecfb35604f205cc12bf94b8e69f564`
 - **Local gameplay cherry-pick:** `f9ec89a2206fcc2f11fcc3cbe9ece6e54ec3bf5b`
@@ -114,3 +116,35 @@ The staged candidate used identity `simulation-platform-w8bb1822a1e25`, bundle a
 Integration should adopt the exact gameplay checkpoint and both PLAY-042 commits together. UI/input may consume only the existing derived analytics. Renderer continues to consume immutable snapshots and must not infer strategy rules. Gameplay remains sole owner of phase semantics, balance, message copy, and commands.
 
 Rollback removes the two packaged fixture files, their manifest, the test-target resource entry, and the PLAY-042 platform assertions. The additive gameplay checkpoint can be rolled back independently only by integration. No migration, save repair, schema bump, fingerprint-version bump, or player-data rewrite is required.
+
+## Final beauty-baseline closure
+
+The integrated product was re-proved without product or test changes on
+accepted baseline `9f38efec4877ab7c3f0d77bf3bd4e36b56e3c034`.
+Normal merge `970d0f8a3ad24144906760abcf1dbe184f0c3904`
+preserves the lane history and has the accepted baseline as its second parent.
+The sole PLAY-047 claim conflict was resolved verbatim to `origin/master`; the
+post-merge tracked tree is exactly equal to `origin/master`.
+
+The focused platform matrix passed 42/42 in 24.930 seconds. The complete
+integrated inventory passed 185/185 in 83.506 seconds. Authentic schema-0 and
+schema-1 bytes, every active strategy phase fingerprint, grouped-speed,
+uninterrupted/save-resume/replay/undo equivalence, corrupt-primary backup
+recovery, immutable analytics and spatial snapshots, all eight production
+story fixtures, four terminal routes, and dense/persistence budgets remain
+exact.
+
+The dense diagnostic retained digest
+`149e0da1d33ed30c1077b99d55be875782c14914c21b20cbe50145f9b9473246`,
+136,367 envelope bytes, 46,080 retained spatial bytes, 41.768 ms simulation,
+1.366 ms fingerprint, 2.449 ms snapshot, 6.002 ms save, and 3.018 ms load.
+
+`./script/build_and_run.sh --verify` passed for exact merge `970d0f8`. The
+isolated staged candidate PID was verified and terminated after proof. Full
+commands, fingerprints, fixture identities, measurements, accepted ancestry,
+and the no-new-test rationale are retained at
+`docs/production/evidence/PLAY-042/970d0f8/BEAUTY-BASELINE-CLOSURE.md`.
+
+There is no current contract risk or migration requirement. Future persisted
+authoritative fields still require explicit schema/fingerprint golden review;
+gameplay retains strategy rules and UI/renderer remain immutable consumers.

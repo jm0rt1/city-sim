@@ -117,11 +117,14 @@ final class TerrainRenderer {
         return root
     }
 
-    /// A state-bound ground plane for the real developed fabric. It unions only
-    /// completed occupied parcels and authoritative roads within one cell of
-    /// them, so transparent margins between building, frontage, sidewalk, and
-    /// curb read as one district without painting a new road or occupied lot.
-    func makeDevelopedDistrictGround(in state: CityGameState) -> SKNode {
+    /// A state-bound ground plane for the real developed fabric. It joins
+    /// completed occupied parcels, their connected authoritative road network,
+    /// and road-enclosed vacant commons without painting a new road or occupied
+    /// lot. Empty coordinates remain exact inverse-isometric build targets.
+    func makeDevelopedDistrictGround(
+        in state: CityGameState,
+        detail: CameraDetailLevel = .block
+    ) -> SKNode {
         let root = SKNode()
         root.name = "world.environment.developed-district-ground"
         root.zPosition = -10_000
@@ -130,16 +133,18 @@ final class TerrainRenderer {
             $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
         }
         guard !completed.isEmpty else { return root }
-        let developedCoordinates = completed.map(\.coordinate)
-        let developedRoads = state.tiles.filter { tile in
-            guard tile.kind == .road else { return false }
-            return developedCoordinates.contains { developed in
-                max(
-                    abs(developed.x - tile.coordinate.x),
-                    abs(developed.y - tile.coordinate.y)
-                ) <= 1
-            }
-        }
+        let developedRoads = connectedFrontageRoads(
+            in: state,
+            completed: completed
+        )
+        let enclosedBlocks = enclosedDistrictBlocks(in: state)
+
+        let cityLayer = style.makeDetailLayer(.city, visibleAt: detail)
+        let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: detail)
+        let blockLayer = style.makeDetailLayer(.block, visibleAt: detail)
+        root.addChild(cityLayer)
+        root.addChild(neighborhoodLayer)
+        root.addChild(blockLayer)
 
         let sharedCoordinates = completed.map(\.coordinate) + developedRoads.map(\.coordinate)
         let shadowPath = combinedDiamondPath(
@@ -182,7 +187,210 @@ final class TerrainRenderer {
             parcel.zPosition = 2
             root.addChild(parcel)
         }
+        for (index, block) in enclosedBlocks.enumerated() {
+            addEnclosedCommons(
+                block,
+                index: index,
+                detail: detail,
+                city: cityLayer,
+                neighborhood: neighborhoodLayer,
+                block: blockLayer
+            )
+        }
         return root
+    }
+
+    func connectedFrontageRoadCoordinatesForTesting(
+        in state: CityGameState
+    ) -> Set<GridCoordinate> {
+        let completed = state.tiles.filter {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        }
+        return Set(connectedFrontageRoads(in: state, completed: completed).map(\.coordinate))
+    }
+
+    func enclosedVacantCoordinatesForTesting(
+        in state: CityGameState
+    ) -> Set<GridCoordinate> {
+        Set(enclosedDistrictBlocks(in: state).flatMap(\.vacantCoordinates))
+    }
+
+    private struct EnclosedDistrictBlock {
+        let componentCoordinates: [GridCoordinate]
+        let vacantCoordinates: [GridCoordinate]
+    }
+
+    private func connectedFrontageRoads(
+        in state: CityGameState,
+        completed: [CityTile]
+    ) -> [CityTile] {
+        let roadsByCoordinate = Dictionary(
+            uniqueKeysWithValues: state.tiles.filter { $0.kind == .road }.map {
+                ($0.coordinate, $0)
+            }
+        )
+        let completedCoordinates = Set(completed.map(\.coordinate))
+        var pending = roadsByCoordinate.keys.filter { coordinate in
+            cardinalNeighbors(of: coordinate).contains {
+                completedCoordinates.contains($0)
+            }
+        }.sorted(by: coordinateComesBefore)
+        var connected = Set<GridCoordinate>()
+        while !pending.isEmpty {
+            let coordinate = pending.removeFirst()
+            guard connected.insert(coordinate).inserted else { continue }
+            for neighbor in cardinalNeighbors(of: coordinate)
+                where roadsByCoordinate[neighbor] != nil && !connected.contains(neighbor) {
+                pending.append(neighbor)
+            }
+        }
+        return connected.sorted(by: coordinateComesBefore).compactMap {
+            roadsByCoordinate[$0]
+        }
+    }
+
+    /// Finds non-road regions that cannot reach the map edge, then retains
+    /// their authoritative empty coordinates. Occupied coordinates may divide
+    /// the visual surface, but never become part of the commons geometry.
+    private func enclosedDistrictBlocks(in state: CityGameState) -> [EnclosedDistrictBlock] {
+        guard state.gridWidth > 2, state.gridHeight > 2 else { return [] }
+        let nonRoad = Set(state.tiles.filter { $0.kind != .road }.map(\.coordinate))
+        var exterior = Set<GridCoordinate>()
+        var pending = nonRoad.filter {
+            $0.x == 0 || $0.y == 0
+                || $0.x == state.gridWidth - 1
+                || $0.y == state.gridHeight - 1
+        }.sorted(by: coordinateComesBefore)
+        while !pending.isEmpty {
+            let coordinate = pending.removeFirst()
+            guard exterior.insert(coordinate).inserted else { continue }
+            for neighbor in cardinalNeighbors(of: coordinate)
+                where nonRoad.contains(neighbor) && !exterior.contains(neighbor) {
+                pending.append(neighbor)
+            }
+        }
+
+        let enclosed = nonRoad.subtracting(exterior)
+        var remaining = enclosed
+        var components: [[GridCoordinate]] = []
+        while let origin = remaining.min(by: coordinateComesBefore) {
+            remaining.remove(origin)
+            var component = [origin]
+            var frontier = [origin]
+            while !frontier.isEmpty {
+                let coordinate = frontier.removeFirst()
+                for neighbor in cardinalNeighbors(of: coordinate)
+                    where remaining.remove(neighbor) != nil {
+                    component.append(neighbor)
+                    frontier.append(neighbor)
+                }
+            }
+            components.append(component.sorted(by: coordinateComesBefore))
+        }
+
+        return components.compactMap { component in
+            let vacant = component.filter { state.tile(at: $0)?.kind == .empty }
+            guard vacant.count >= 2 else { return nil }
+            return EnclosedDistrictBlock(
+                componentCoordinates: component,
+                vacantCoordinates: vacant
+            )
+        }.sorted {
+            guard let lhs = $0.vacantCoordinates.first,
+                  let rhs = $1.vacantCoordinates.first else { return false }
+            return coordinateComesBefore(lhs, rhs)
+        }
+    }
+
+    private func addEnclosedCommons(
+        _ commons: EnclosedDistrictBlock,
+        index: Int,
+        detail: CameraDetailLevel,
+        city: SKNode,
+        neighborhood: SKNode,
+        block _: SKNode
+    ) {
+        let bounds = commons.componentCoordinates.reduce(
+            into: (
+                minimumX: Int.max,
+                minimumY: Int.max,
+                maximumX: Int.min,
+                maximumY: Int.min
+            )
+        ) { result, coordinate in
+            result.minimumX = min(result.minimumX, coordinate.x)
+            result.minimumY = min(result.minimumY, coordinate.y)
+            result.maximumX = max(result.maximumX, coordinate.x)
+            result.maximumY = max(result.maximumY, coordinate.y)
+        }
+        let field = fieldCorners(
+            minimumX: bounds.minimumX,
+            minimumY: bounds.minimumY,
+            maximumX: bounds.maximumX,
+            maximumY: bounds.maximumY
+        )
+        let meadow = SKShapeNode(path: style.polygonPath(field))
+        meadow.name = "district.commons.natural-meadow.\(index)"
+        meadow.fillColor = style.palette.lotGrass.blended(
+            withFraction: 0.10,
+            of: style.palette.soil
+        ) ?? style.palette.lotGrass
+        meadow.strokeColor = .clear
+        meadow.isAntialiased = false
+        meadow.zPosition = 3
+        city.addChild(meadow)
+
+        guard commons.vacantCoordinates.count >= 8 else { return }
+        let textureCoordinate = commons.vacantCoordinates[
+            commons.vacantCoordinates.count / 2
+        ]
+        let textureCenter = style.isoPosition(textureCoordinate)
+        let texture = SKShapeNode(path: terrainTexturePath(
+            center: CGPoint(
+                x: textureCenter.x + style.tileWidth * 0.18,
+                y: textureCenter.y - style.tileHeight * 0.02
+            ),
+            anchor: textureCoordinate,
+            radiusX: style.tileWidth * 0.66,
+            radiusY: style.tileHeight * 0.30,
+            saltOffset: 0xC073
+        ))
+        texture.name = "district.commons.natural-texture.\(index)"
+        texture.fillColor = style.palette.parkGrass.blended(
+            withFraction: 0.48,
+            of: style.palette.lotGrass
+        )?.withAlphaComponent(0.18) ?? style.palette.parkGrass.withAlphaComponent(0.18)
+        texture.strokeColor = .clear
+        texture.zPosition = 4
+        neighborhood.addChild(texture)
+
+        guard let foliageCoordinate = commons.vacantCoordinates.first,
+              let grove = assets.generatedSprite(
+                  logicalID: "ambient_vegetation_cluster",
+                  detail: detail
+              ) else { return }
+        let position = style.isoPosition(foliageCoordinate)
+        grove.name = "district.commons.existing-foliage.\(index)"
+        grove.position = CGPoint(
+            x: position.x + grove.position.x + style.tileWidth * 0.16,
+            y: position.y + grove.position.y - style.tileHeight * 0.06
+        )
+        grove.setScale(0.64)
+        grove.zPosition = 6
+        neighborhood.addChild(grove)
+    }
+
+    private func cardinalNeighbors(of coordinate: GridCoordinate) -> [GridCoordinate] {
+        [
+            GridCoordinate(x: coordinate.x + 1, y: coordinate.y),
+            GridCoordinate(x: coordinate.x - 1, y: coordinate.y),
+            GridCoordinate(x: coordinate.x, y: coordinate.y + 1),
+            GridCoordinate(x: coordinate.x, y: coordinate.y - 1),
+        ]
+    }
+
+    private func coordinateComesBefore(_ lhs: GridCoordinate, _ rhs: GridCoordinate) -> Bool {
+        (lhs.y, lhs.x) < (rhs.y, rhs.x)
     }
 
     private func combinedDiamondPath(
@@ -227,15 +435,15 @@ final class TerrainRenderer {
     private func macroFieldColor(variant: Int) -> NSColor {
         switch variant {
         case 0:
-            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.075)
+            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.105)
         case 1:
-            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.060)
+            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.085)
         case 2:
-            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.070)
+            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.098)
         case 3:
-            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.065)
+            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.090)
         default:
-            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.055)
+            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.080)
         }
     }
 
@@ -266,18 +474,18 @@ final class TerrainRenderer {
                     ) * style.tileHeight * 1.10
                 )
                 let radiusX = style.tileWidth * (
-                    0.38 + WorldVisualSeed.unit(
+                    0.60 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E22
-                    ) * 0.16
+                    ) * 0.20
                 )
                 let radiusY = style.tileHeight * (
-                    0.30 + WorldVisualSeed.unit(
+                    0.42 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E23
-                    ) * 0.12
+                    ) * 0.15
                 )
                 let variant = WorldVisualSeed.variant(
                     count: 5,

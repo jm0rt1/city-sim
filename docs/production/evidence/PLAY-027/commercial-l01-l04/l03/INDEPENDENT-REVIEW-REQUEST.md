@@ -18,9 +18,9 @@ Binding review inputs:
   uniqueness, twelve normalized repeat reports, and 12/12 normalized
   uniqueness.
 
-Integration has visually passed the uncommitted packet pending durable
-technical handoff. Independent disposition must bind to the reported commit
-and should confirm or reject:
+Integration visually passed the pre-commit-identical packet, and the durable
+technical handoff is now the clean commit reported with this request.
+Independent disposition must bind to that commit and should confirm or reject:
 
 1. five-floor Commercial L3 density progression relative to accepted L2;
 2. complete and separately authored N/E/S/W volumes and frontage cues;

@@ -650,6 +650,51 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
             )
         }
+        if bay.floor == 1 {
+            let outward: [Double]
+            switch facade {
+            case "north": outward = [0, 0, -1]
+            case "east": outward = [1, 0, 0]
+            case "south": outward = [0, 0, 1]
+            case "west": outward = [-1, 0, 0]
+            default:
+                throw OfflineRendererError.invalid(
+                    "invalid window facade"
+                )
+            }
+            let flowerBoxCenter = [
+                x + outward[0] * 0.8,
+                y - bay.height / 2 - 1.0,
+                z + outward[2] * 0.8,
+            ]
+            let flowerBoxDimensions = isHorizontal
+                ? [bay.width + 2.4, 1.5, 1.8]
+                : [1.8, 1.5, bay.width + 2.4]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: bay.id + "-flower-box",
+                    dimensions: flowerBoxDimensions,
+                    position: flowerBoxCenter,
+                    materialID: "limestone-warm"
+                )
+            )
+            let flowersCenter = [
+                flowerBoxCenter[0] + outward[0] * 0.1,
+                flowerBoxCenter[1] + 1.0,
+                flowerBoxCenter[2] + outward[2] * 0.1,
+            ]
+            let flowersDimensions = isHorizontal
+                ? [bay.width + 1.2, 1.0, 1.2]
+                : [1.2, 1.0, bay.width + 1.2]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: bay.id + "-flowers",
+                    dimensions: flowersDimensions,
+                    position: flowersCenter,
+                    materialID: "planting-evergreen"
+                )
+            )
+        }
     }
 
     private func addEntrance(
@@ -674,13 +719,120 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             throw OfflineRendererError.invalid("invalid facade direction")
         }
         let base = entrance.baseWorld
+        let horizontal = facade.direction == "north"
+            || facade.direction == "south"
+        let pavilionCenter = [
+            base[0]
+                - outward[0] * (entrance.pavilionDepth / 2 - 0.2),
+            entrance.pavilionHeight / 2,
+            base[2]
+                - outward[2] * (entrance.pavilionDepth / 2 - 0.2),
+        ]
+        let pavilionDimensions = horizontal
+            ? [
+                entrance.pavilionWidth,
+                entrance.pavilionHeight,
+                entrance.pavilionDepth,
+            ]
+            : [
+                entrance.pavilionDepth,
+                entrance.pavilionHeight,
+                entrance.pavilionWidth,
+            ]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-entry-pavilion",
+                dimensions: pavilionDimensions,
+                position: pavilionCenter,
+                materialID: entrance.pavilionMaterialID
+            )
+        )
+        let pavilionRoof = SCNPyramid(
+            width: horizontal
+                ? entrance.pavilionWidth + 3
+                : entrance.pavilionDepth + 3,
+            height: entrance.pavilionRoofHeight,
+            length: horizontal
+                ? entrance.pavilionDepth + 3
+                : entrance.pavilionWidth + 3
+        )
+        pavilionRoof.firstMaterial = try materials.material(
+            descriptor.building.roofMaterialID
+        )
+        let pavilionRoofNode = SCNNode(geometry: pavilionRoof)
+        pavilionRoofNode.name = facade.direction + "-entry-pavilion-roof"
+        pavilionRoofNode.position = SCNVector3(
+            pavilionCenter[0],
+            entrance.pavilionHeight
+                + entrance.pavilionRoofHeight / 2,
+            pavilionCenter[2]
+        )
+        pavilionRoofNode.castsShadow = true
+        scene.rootNode.addChildNode(pavilionRoofNode)
+
+        let lanternY = entrance.pavilionHeight - 7
+        let lanternWidth = min(6.5, entrance.pavilionWidth * 0.46)
+        let lanternHeight = 7.5
+        let lanternDepth = 0.7
+        for (suffix, dimensions, position) in [
+            (
+                "north",
+                [lanternWidth, lanternHeight, lanternDepth],
+                [
+                    pavilionCenter[0],
+                    lanternY,
+                    pavilionCenter[2]
+                        - pavilionDimensions[2] / 2 - 0.15,
+                ]
+            ),
+            (
+                "south",
+                [lanternWidth, lanternHeight, lanternDepth],
+                [
+                    pavilionCenter[0],
+                    lanternY,
+                    pavilionCenter[2]
+                        + pavilionDimensions[2] / 2 + 0.15,
+                ]
+            ),
+            (
+                "east",
+                [lanternDepth, lanternHeight, lanternWidth],
+                [
+                    pavilionCenter[0]
+                        + pavilionDimensions[0] / 2 + 0.15,
+                    lanternY,
+                    pavilionCenter[2],
+                ]
+            ),
+            (
+                "west",
+                [lanternDepth, lanternHeight, lanternWidth],
+                [
+                    pavilionCenter[0]
+                        - pavilionDimensions[0] / 2 - 0.15,
+                    lanternY,
+                    pavilionCenter[2],
+                ]
+            ),
+        ] {
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-entry-lantern-\(suffix)",
+                    dimensions: dimensions,
+                    position: position,
+                    materialID: "window-warm"
+                )
+            )
+        }
+
         let center = [
             base[0] + outward[0] * entrance.depth / 2,
             base[1] + entrance.height / 2,
             base[2] + outward[2] * entrance.depth / 2,
         ]
-        let horizontal = facade.direction == "north"
-            || facade.direction == "south"
         let doorDimensions = horizontal
             ? [entrance.width, entrance.height, entrance.depth]
             : [entrance.depth, entrance.height, entrance.width]
@@ -803,17 +955,86 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             base[1] + entrance.height + 2.0,
             base[2] + outward[2] * entrance.canopyDepth / 2,
         ]
-        let canopyDimensions = horizontal
-            ? [entrance.width + 5, 0.8, entrance.canopyDepth]
-            : [entrance.canopyDepth, 0.8, entrance.width + 5]
+        let porchDeckCenter = [
+            base[0] + outward[0] * entrance.canopyDepth / 2,
+            descriptor.building.foundationHeight - 0.35,
+            base[2] + outward[2] * entrance.canopyDepth / 2,
+        ]
+        let porchDeckDimensions = horizontal
+            ? [
+                entrance.porchWidth,
+                0.7,
+                entrance.canopyDepth,
+            ]
+            : [
+                entrance.canopyDepth,
+                0.7,
+                entrance.porchWidth,
+            ]
         scene.rootNode.addChildNode(
             try boxNode(
-                name: facade.direction + "-canopy",
-                dimensions: canopyDimensions,
-                position: canopyCenter,
-                materialID: descriptor.building.roofMaterialID
+                name: facade.direction + "-porch-deck",
+                dimensions: porchDeckDimensions,
+                position: porchDeckCenter,
+                materialID: entrance.surroundMaterialID
             )
         )
+        let porchRoof = SCNPyramid(
+            width: horizontal
+                ? entrance.porchWidth
+                : entrance.canopyDepth,
+            height: 5.2,
+            length: horizontal
+                ? entrance.canopyDepth
+                : entrance.porchWidth
+        )
+        porchRoof.firstMaterial = try materials.material(
+            descriptor.building.roofMaterialID
+        )
+        let porchRoofNode = SCNNode(geometry: porchRoof)
+        porchRoofNode.name = facade.direction + "-porch-roof"
+        porchRoofNode.position = SCNVector3(
+            canopyCenter[0],
+            canopyCenter[1] + 2.6,
+            canopyCenter[2]
+        )
+        porchRoofNode.castsShadow = true
+        scene.rootNode.addChildNode(porchRoofNode)
+
+        let tangent = horizontal
+            ? [1.0, 0.0, 0.0]
+            : [0.0, 0.0, 1.0]
+        for side in [-1.0, 1.0] {
+            let tangentOffset =
+                side
+                * (entrance.porchWidth / 2
+                    - entrance.porchColumnWidth)
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-porch-column-\(side)",
+                    dimensions: [
+                        entrance.porchColumnWidth,
+                        entrance.height + 3.5,
+                        entrance.porchColumnWidth,
+                    ],
+                    position: [
+                        base[0]
+                            + outward[0]
+                                * (entrance.canopyDepth - 1.0)
+                            + tangent[0] * tangentOffset,
+                        descriptor.building.foundationHeight
+                            + (entrance.height + 3.5) / 2,
+                        base[2]
+                            + outward[2]
+                                * (entrance.canopyDepth - 1.0)
+                            + tangent[2] * tangentOffset,
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+        }
     }
 
     private func addProp(

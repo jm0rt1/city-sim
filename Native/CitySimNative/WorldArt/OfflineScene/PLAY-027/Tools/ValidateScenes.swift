@@ -266,6 +266,21 @@ enum ValidateScenesMain {
             ) {
                 itemFailures.append("entrance base is not facade midpoint")
             }
+            if descriptor.entrance.pavilionWidth
+                < descriptor.entrance.width + 6
+                || descriptor.entrance.pavilionDepth
+                    < descriptor.entrance.depth + 4
+                || descriptor.entrance.pavilionHeight
+                    <= descriptor.building.wallHeight
+                || descriptor.entrance.pavilionRoofHeight <= 0
+                || descriptor.entrance.porchWidth
+                    < descriptor.entrance.width + 6
+                || descriptor.entrance.porchColumnWidth <= 0
+            {
+                itemFailures.append(
+                    "entrance pavilion/porch hierarchy is not readable"
+                )
+            }
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")
             }

@@ -106,6 +106,13 @@ struct EntranceDescriptor: Codable, Equatable {
     let stepRun: Double
     let canopyDepth: Double
     let hingeSide: String
+    let pavilionWidth: Double
+    let pavilionDepth: Double
+    let pavilionHeight: Double
+    let pavilionRoofHeight: Double
+    let pavilionMaterialID: String
+    let porchWidth: Double
+    let porchColumnWidth: Double
 }
 
 struct PropDescriptor: Codable, Equatable {

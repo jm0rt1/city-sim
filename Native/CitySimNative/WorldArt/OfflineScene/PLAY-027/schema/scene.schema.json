@@ -245,7 +245,14 @@
         "stepCount",
         "stepRun",
         "canopyDepth",
-        "hingeSide"
+        "hingeSide",
+        "pavilionWidth",
+        "pavilionDepth",
+        "pavilionHeight",
+        "pavilionRoofHeight",
+        "pavilionMaterialID",
+        "porchWidth",
+        "porchColumnWidth"
       ]
     },
     "prop": {

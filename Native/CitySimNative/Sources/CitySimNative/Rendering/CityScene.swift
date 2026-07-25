@@ -141,7 +141,7 @@ private final class TileRenderRecord {
 final class CityScene: SKScene {
     private static let minimumCameraScale: CGFloat = 0.30
     private static let canonicalCityCameraScale: CGFloat = 0.74
-    private static let cityOccupiedWidthTarget: CGFloat = 0.52
+    private static let cityOccupiedWidthTarget: CGFloat = 0.68
 
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
@@ -875,6 +875,10 @@ final class CityScene: SKScene {
         guard signature != ambientCorridorSignature else { return false }
         ambientRebuildCountForTesting += 1
         ambientLayer.removeAllChildren()
+        ambientLayer.addChild(terrainRenderer.makeDevelopedDistrictGround(
+            in: snapshot.state,
+            detail: currentCameraDetailLevel
+        ))
         ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
             in: snapshot.state,
             consequences: snapshot.spatialConsequences,
@@ -2108,7 +2112,7 @@ final class CityScene: SKScene {
                 ))
             }
         }
-        let cameraPriorityRoads = nearbyRoads.filter { tile in
+        let cameraPriorityFrontageRoads = nearbyRoads.filter { tile in
             RoadConnectionMask.cardinalEdges.contains { edge in
                 let delta = edge.coordinateDelta
                 return cameraPriorityCoordinates.contains(GridCoordinate(
@@ -2117,6 +2121,10 @@ final class CityScene: SKScene {
                 ))
             }
         }
+        let cameraPriorityRoads = connectedAuthoritativeRoads(
+            from: Set(cameraPriorityFrontageRoads.map(\.coordinate)),
+            in: state
+        )
         let expansionSockets = state.tiles.filter { tile in
             guard tile.kind == .empty else { return false }
             return RoadConnectionMask.cardinalEdges.contains { edge in
@@ -2150,6 +2158,41 @@ final class CityScene: SKScene {
             networkOpportunity: networkBounds,
             cameraPriorityCoordinates: cameraPriorityCoordinates
         )
+    }
+
+    /// Returns only real road cells in the component that serves the dominant
+    /// developed frontages. The camera can therefore frame one continuous
+    /// lived district—including its road-enclosed commons—without allowing
+    /// disconnected opportunity stubs or remote empty acreage to shrink it.
+    private func connectedAuthoritativeRoads(
+        from origins: Set<GridCoordinate>,
+        in state: CityGameState
+    ) -> [CityTile] {
+        let roadsByCoordinate = Dictionary(
+            uniqueKeysWithValues: state.tiles.filter { $0.kind == .road }.map {
+                ($0.coordinate, $0)
+            }
+        )
+        var pending = origins.filter { roadsByCoordinate[$0] != nil }
+            .sorted(by: coordinateComesBefore)
+        var connected = Set<GridCoordinate>()
+        while !pending.isEmpty {
+            let coordinate = pending.removeFirst()
+            guard connected.insert(coordinate).inserted else { continue }
+            for edge in RoadConnectionMask.cardinalEdges {
+                let delta = edge.coordinateDelta
+                let neighbor = GridCoordinate(
+                    x: coordinate.x + delta.x,
+                    y: coordinate.y + delta.y
+                )
+                if roadsByCoordinate[neighbor] != nil && !connected.contains(neighbor) {
+                    pending.append(neighbor)
+                }
+            }
+        }
+        return connected.sorted(by: coordinateComesBefore).compactMap {
+            roadsByCoordinate[$0]
+        }
     }
 
     /// Selects the largest spatially coherent developed district without using

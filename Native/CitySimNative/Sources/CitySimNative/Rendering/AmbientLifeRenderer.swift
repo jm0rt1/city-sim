@@ -4,6 +4,14 @@ import SpriteKit
 /// occupancy, employment, prosperity, or service coverage.
 @MainActor
 final class AmbientLifeRenderer {
+    static func presentationBand(for value: Double?) -> UInt8? {
+        guard let value else { return nil }
+        if value <= 0 { return 0 }
+        if value < 1.0 / 3.0 { return 1 }
+        if value < 2.0 / 3.0 { return 2 }
+        return 3
+    }
+
     enum ActivityDomain: String, Sendable {
         case street
         case place
@@ -36,6 +44,7 @@ final class AmbientLifeRenderer {
 
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
+    private(set) var lastActivityPlacements: [ActivityPlacement] = []
 
     init(style: WorldVisualStyle, assets: WorldAssetCatalog) {
         self.style = style
@@ -54,6 +63,7 @@ final class AmbientLifeRenderer {
         detail: CameraDetailLevel,
         reducedMotion: Bool
     ) -> SKNode {
+        lastActivityPlacements = []
         let root = SKNode()
         root.name = "world.ambient.corridor"
 
@@ -189,9 +199,11 @@ final class AmbientLifeRenderer {
         let streets = state.tiles.compactMap { tile -> (CityTile, Double)? in
             guard tile.kind == .road,
                   !excludedRoads.contains(tile.coordinate),
-                  let value = streetActivityIndex(tile.coordinate),
-                  value > 0 else { return nil }
-            return (tile, min(1, max(0, value)))
+                  let band = Self.presentationBand(
+                    for: streetActivityIndex(tile.coordinate)
+                  ),
+                  band > 0 else { return nil }
+            return (tile, Double(band) / 3)
         }.sorted(by: activityOrder)
 
         for (tile, intensity) in streets {
@@ -217,9 +229,11 @@ final class AmbientLifeRenderer {
             guard tile.kind != .empty,
                   tile.kind != .road,
                   tile.constructionProgress >= 1,
-                  let value = placeActivityIndex(tile.coordinate),
-                  value > 0 else { return nil }
-            return (tile, min(1, max(0, value)))
+                  let band = Self.presentationBand(
+                    for: placeActivityIndex(tile.coordinate)
+                  ),
+                  band > 0 else { return nil }
+            return (tile, Double(band) / 3)
         }.sorted(by: activityOrder)
 
         for (tile, intensity) in places {
@@ -270,6 +284,7 @@ final class AmbientLifeRenderer {
             detail: detail,
             excluding: excludedRoads
         )
+        lastActivityPlacements = placements
         guard !placements.isEmpty else { return }
 
         let activity = SKNode()

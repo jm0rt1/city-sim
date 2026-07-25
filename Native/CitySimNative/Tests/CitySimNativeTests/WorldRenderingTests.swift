@@ -2456,6 +2456,26 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testTypedLocalActivityReusesAmbientTreeUntilItsVisibleBandChanges() {
+        var state = CityGameState.newCity(seed: 42)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        let initialRebuildCount = scene.ambientRebuildCountForTesting
+
+        for _ in 0..<10 {
+            CitySimulation.step(&state)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        }
+
+        XCTAssertLessThanOrEqual(
+            scene.ambientRebuildCountForTesting - initialRebuildCount,
+            1,
+            "Raw activity-index drift must not rebuild the bounded ambient tree"
+        )
+    }
+
+    @MainActor
     func testLotContextIsDeterministicTruthBoundedAndProtectsFrontage() {
         let style = WorldVisualStyle()
         let renderer = LotContextRenderer(style: style)

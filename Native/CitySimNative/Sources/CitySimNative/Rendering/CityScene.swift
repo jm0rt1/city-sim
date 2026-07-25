@@ -83,20 +83,25 @@ private struct InteractionPreviewSignature: Equatable {
     let selectedCoordinate: GridCoordinate?
 }
 
-private struct AmbientCorridorSignature: Equatable {
+private struct AmbientContextSignature: Equatable {
     let developedCoordinates: [GridCoordinate]
     let roadCoordinates: [GridCoordinate]
     let vacantCoordinates: [GridCoordinate]
-    let activitySamples: [AmbientActivitySignature]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
     let motionEnabled: Bool
 }
 
 private struct AmbientActivitySignature: Equatable {
-    let coordinate: GridCoordinate
-    let streetActivityIndex: Double?
-    let placeActivityIndex: Double?
+    let domain: AmbientLifeRenderer.ActivityDomain
+    let sourceCoordinate: GridCoordinate
+    let surfaceCoordinate: GridCoordinate
+    let presentationBand: UInt8
+}
+
+private struct AmbientCorridorSignature: Equatable {
+    let context: AmbientContextSignature
+    let activitySamples: [AmbientActivitySignature]
 }
 
 private struct CityVisualCompositionBounds {
@@ -189,6 +194,7 @@ final class CityScene: SKScene {
     var cityScaleLimitForTesting: CGFloat { cityScaleLimit }
     var ambientActionCountForTesting: Int { runtimeTreeMetrics(ambientLayer).actions }
     var ambientMotionEnabledForTesting: Bool { ambientMotionEnabled }
+    private(set) var ambientRebuildCountForTesting = 0
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
@@ -773,30 +779,62 @@ final class CityScene: SKScene {
     @discardableResult
     private func updateAmbientCorridor(snapshot: CityPresentationSnapshot) -> Bool {
         let state = snapshot.state
-        let signature = AmbientCorridorSignature(
-            developedCoordinates: state.tiles.compactMap { tile in
-                tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
-                    ? tile.coordinate
-                    : nil
-            },
-            roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil },
-            vacantCoordinates: state.tiles.compactMap { $0.kind == .empty ? $0.coordinate : nil },
-            activitySamples: snapshot.spatialConsequences.samples.compactMap { sample in
-                guard sample.streetActivityIndex != nil || sample.placeActivityIndex != nil else {
-                    return nil
-                }
-                return AmbientActivitySignature(
-                    coordinate: sample.coordinate,
-                    streetActivityIndex: sample.streetActivityIndex,
-                    placeActivityIndex: sample.placeActivityIndex
-                )
-            },
+        let developedCoordinates = state.tiles.compactMap { tile in
+            tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
+                ? tile.coordinate
+                : nil
+        }
+        let roadCoordinates = state.tiles.compactMap {
+            $0.kind == .road ? $0.coordinate : nil
+        }
+        let vacantCoordinates = state.tiles.compactMap {
+            $0.kind == .empty ? $0.coordinate : nil
+        }
+        let context = AmbientContextSignature(
+            developedCoordinates: developedCoordinates,
+            roadCoordinates: roadCoordinates,
+            vacantCoordinates: vacantCoordinates,
             detail: currentCameraDetailLevel,
             reducedMotion: reducedMotion,
             motionEnabled: ambientMotionEnabled
         )
+        let activitySamples: [AmbientActivitySignature]
+        if let previous = ambientCorridorSignature, previous.context == context {
+            if previous.activitySamples.isEmpty {
+                activitySamples = activitySignature(
+                    ambientLifeRenderer.activityPlacements(
+                        in: state,
+                        consequences: snapshot.spatialConsequences,
+                        detail: currentCameraDetailLevel
+                    )
+                )
+            } else {
+                activitySamples = previous.activitySamples.compactMap { sample in
+                    let value = switch sample.domain {
+                    case .street:
+                        snapshot.spatialConsequences[sample.sourceCoordinate]?.streetActivityIndex
+                    case .place:
+                        snapshot.spatialConsequences[sample.sourceCoordinate]?.placeActivityIndex
+                    }
+                    guard let band = AmbientLifeRenderer.presentationBand(for: value),
+                          band > 0 else { return nil }
+                    return AmbientActivitySignature(
+                        domain: sample.domain,
+                        sourceCoordinate: sample.sourceCoordinate,
+                        surfaceCoordinate: sample.surfaceCoordinate,
+                        presentationBand: band
+                    )
+                }
+            }
+        } else {
+            activitySamples = []
+        }
+        let signature = AmbientCorridorSignature(
+            context: context,
+            activitySamples: activitySamples
+        )
         guard signature != ambientCorridorSignature else { return false }
-        ambientCorridorSignature = signature
+        ambientRebuildCountForTesting += 1
         ambientLayer.removeAllChildren()
         ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
             in: state,
@@ -804,7 +842,24 @@ final class CityScene: SKScene {
             detail: currentCameraDetailLevel,
             reducedMotion: !ambientMotionEnabled
         ))
+        ambientCorridorSignature = AmbientCorridorSignature(
+            context: context,
+            activitySamples: activitySignature(ambientLifeRenderer.lastActivityPlacements)
+        )
         return true
+    }
+
+    private func activitySignature(
+        _ placements: [AmbientLifeRenderer.ActivityPlacement]
+    ) -> [AmbientActivitySignature] {
+        placements.map { placement in
+            AmbientActivitySignature(
+                domain: placement.domain,
+                sourceCoordinate: placement.sourceCoordinate,
+                surfaceCoordinate: placement.surfaceCoordinate,
+                presentationBand: UInt8((placement.intensity * 3).rounded())
+            )
+        }
     }
 
     /// Compact windows retain the complete ambient semantic set but keep it

@@ -1561,6 +1561,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         // direction-specific dock-house massing in the scene descriptor.
         if
             descriptor.sourceRevision != "source-v03",
+            descriptor.sourceRevision != "source-v04",
             abs(entrance.porchLateralOffset) >= 10
         {
             let returnNormal: [Double]

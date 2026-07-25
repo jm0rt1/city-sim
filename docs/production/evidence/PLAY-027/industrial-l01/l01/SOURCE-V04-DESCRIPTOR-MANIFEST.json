@@ -1,0 +1,54 @@
+{
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+  "descriptorCount" : 4,
+  "logicalBuildingID" : "industrial_l01",
+  "productionSelected" : false,
+  "repair" : "authored split-hall sightlines expose centered far-edge loading bays; common exhaust envelope restores raw bounds",
+  "samples" : [
+    {
+      "archivedSourceV03File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v03-rejected/descriptors/north/scene.json",
+      "archivedSourceV03SHA256" : "195609a623a74036ca50100df141bfd3d60dcebb36dcf2ce1cd2ce938e24ccb0",
+      "direction" : "north",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-north-loading-works-geometry-v4",
+      "sourceV04DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/north/scene.json",
+      "sourceV04DescriptorSHA256" : "91c1e55d47a54117225d5b0e430e1949282a4240a4a5d613b3c290cfcfadd42b"
+    },
+    {
+      "archivedSourceV03File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v03-rejected/descriptors/east/scene.json",
+      "archivedSourceV03SHA256" : "a0c949d4c00d655408e5909552118198724bd1499d5ff816e83872a5c11a099d",
+      "direction" : "east",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v4",
+      "sourceV04DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/east/scene.json",
+      "sourceV04DescriptorSHA256" : "8ddba5fe2db39abf8ab64dc13cb4530c8e560d63d1a44209faebea09894fef98"
+    },
+    {
+      "archivedSourceV03File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v03-rejected/descriptors/south/scene.json",
+      "archivedSourceV03SHA256" : "018cb3e92a7b2274aa2a0182f259ee10cac95670879aa992a232be98371a4a55",
+      "direction" : "south",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-south-loading-works-geometry-v4",
+      "sourceV04DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/south/scene.json",
+      "sourceV04DescriptorSHA256" : "79820e1aeaef602bab1d17ee2564bb4273750b77d948800a3e8ef0fd2358db19"
+    },
+    {
+      "archivedSourceV03File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v03-rejected/descriptors/west/scene.json",
+      "archivedSourceV03SHA256" : "2c5b3c93caf278d5cd09e9e05dc261a921b08f54a81aebe5da347ae921b53e89",
+      "direction" : "west",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v4",
+      "sourceV04DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/west/scene.json",
+      "sourceV04DescriptorSHA256" : "a6aa805871bec218444ec1bf351d8077921d161ae28d1d21e3afd811490ce2f4"
+    }
+  ],
+  "schema" : 1,
+  "sourceRevision" : "source-v04",
+  "task" : "PLAY-027",
+  "uniqueDescriptorHashCount" : 4,
+  "uniqueSceneGeometryIDCount" : 4
+}

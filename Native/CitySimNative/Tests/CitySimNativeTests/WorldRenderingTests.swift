@@ -2379,6 +2379,159 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testLotContextIsDeterministicTruthBoundedAndProtectsFrontage() {
+        let style = WorldVisualStyle()
+        let renderer = LotContextRenderer(style: style)
+        let cases: [(BuildingKind, RoadConnectionMask, Set<LotContextRenderer.PlacementRole>)] = [
+            (.residential, .north, [.plantingBed, .lamp]),
+            (.commercial, .east, [.parkingBay, .wayfinding]),
+            (.industrial, .south, [.serviceYard, .serviceProp, .lamp]),
+            (.cityHall, .west, [.civicForecourt, .lamp, .wayfinding]),
+            (.park, .south, [.parkTerrace, .bench, .wayfinding]),
+        ]
+
+        for (index, entry) in cases.enumerated() {
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: 8 + index, y: 10 + index),
+                kind: entry.0,
+                level: 1
+            )
+            let first = renderer.placementLedger(
+                for: tile,
+                adjacentRoads: entry.1,
+                selectedFrontage: entry.1
+            )
+            let repeated = renderer.placementLedger(
+                for: tile,
+                adjacentRoads: entry.1,
+                selectedFrontage: entry.1
+            )
+            XCTAssertEqual(first, repeated)
+            XCTAssertEqual(Set(first.map(\.role)), entry.2)
+
+            let socket = style.roadSocket(for: entry.1)
+            let entrance = CGPoint(x: 0, y: -13.5)
+            for placement in first {
+                XCTAssertLessThanOrEqual(
+                    abs(placement.center.x) / (style.tileWidth / 2)
+                        + abs(placement.center.y) / (style.tileHeight / 2),
+                    0.93,
+                    "\(entry.0) \(placement.role) must remain inside the authoritative lot"
+                )
+                XCTAssertLessThanOrEqual(placement.size.width, 29)
+                XCTAssertLessThanOrEqual(placement.size.height, 9)
+                if !placement.groundOnly {
+                    XCTAssertGreaterThanOrEqual(
+                        pointSegmentDistanceForTesting(
+                            CGPoint(
+                                x: placement.center.x - entrance.x,
+                                y: placement.center.y - entrance.y
+                            ),
+                            end: CGPoint(
+                                x: socket.x - entrance.x,
+                                y: socket.y - entrance.y
+                            )
+                        ),
+                        4.5,
+                        "\(entry.0) \(placement.role) must not obstruct the entrance/frontage path"
+                    )
+                }
+            }
+
+            let roadless = renderer.placementLedger(
+                for: tile,
+                adjacentRoads: [],
+                selectedFrontage: nil
+            )
+            XCTAssertTrue(
+                roadless.isEmpty,
+                "Road-facing parking, yards, lamps, and signage must not invent a frontage"
+            )
+        }
+    }
+
+    @MainActor
+    func testCompletedLotsExposeDistinctCityNeighborhoodAndBlockContextWithoutLabelsOrActions() {
+        let style = WorldVisualStyle()
+        let renderer = LotRenderer(style: style, assets: WorldAssetCatalog())
+        let cases: [(BuildingKind, String, String)] = [
+            (.residential, "residential", "planting-bed"),
+            (.commercial, "commercial", "parking-bay"),
+            (.industrial, "industrial", "service-yard"),
+            (.cityHall, "civic", "civic-forecourt"),
+            (.park, "park", "park-terrace"),
+        ]
+
+        for (index, entry) in cases.enumerated() {
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: 6 + index, y: 8),
+                kind: entry.0,
+                level: 1,
+                constructionProgress: 1
+            )
+            let block = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let repeated = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let city = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .city,
+                reducedMotion: true
+            )
+            let blockNames = descendantNames(in: block)
+            XCTAssertEqual(blockNames, descendantNames(in: repeated))
+            XCTAssertTrue(
+                blockNames.contains {
+                    $0.hasPrefix("lot.context.city.\(entry.1).material.")
+                }
+            )
+            XCTAssertTrue(
+                blockNames.contains {
+                    $0 == "lot.lod.neighborhood.public-realm.\(entry.1)"
+                }
+            )
+            XCTAssertTrue(
+                blockNames.contains {
+                    $0.contains("lot.context.\(entry.1).\(entry.2)")
+                }
+            )
+            XCTAssertTrue(
+                descendantNames(in: city).contains {
+                    $0.hasPrefix("lot.context.city.\(entry.1).material.")
+                }
+            )
+            XCTAssertTrue(descendantLabels(in: block).isEmpty)
+            XCTAssertEqual(recursiveActiveActionCount(block), 0)
+        }
+
+        let underConstruction = renderer.makeLot(
+            for: CityTile(
+                coordinate: GridCoordinate(x: 4, y: 5),
+                kind: .industrial,
+                constructionProgress: 0.5
+            ),
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        )
+        XCTAssertFalse(
+            descendantNames(in: underConstruction).contains {
+                $0.hasPrefix("lot.context.")
+            },
+            "Completed-lot parking and service context must not appear during active construction"
+        )
+    }
+
+    @MainActor
     func testCompactSceneKeepsAmbientMeaningWithoutMotionResidency() {
         let state = CityGameState.newCity(seed: 42)
         let regular = CityScene(size: CGSize(width: 1_280, height: 800))

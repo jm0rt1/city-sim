@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha>"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -34,6 +34,47 @@ func rendererArgument(_ name: String, in arguments: [String]) throws -> String {
         throw OfflineRendererError.arguments
     }
     return arguments[index + 1]
+}
+
+func rendererOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
+}
+
+enum DiagnosticAntialiasing: String {
+    case current
+    case none
+
+    var sceneKitMode: SCNAntialiasingMode {
+        switch self {
+        case .current:
+            return .multisampling4X
+        case .none:
+            return .none
+        }
+    }
+}
+
+enum DiagnosticSceneShadows: String {
+    case current
+    case disabled
+}
+
+struct RendererDiagnosticConfiguration {
+    let antialiasing: DiagnosticAntialiasing
+    let sceneShadows: DiagnosticSceneShadows
+
+    var isBaseline: Bool {
+        antialiasing == .current && sceneShadows == .current
+    }
 }
 
 func rendererSHA256(_ url: URL) throws -> String {
@@ -2018,6 +2059,12 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 }
 
 final class NativeSourceRenderer: OfflineSourceRendering {
+    private let antialiasingMode: SCNAntialiasingMode
+
+    init(antialiasingMode: SCNAntialiasingMode = .multisampling4X) {
+        self.antialiasingMode = antialiasingMode
+    }
+
     func renderSource(
         scene: SCNScene,
         descriptor: SceneDescriptor
@@ -2060,17 +2107,17 @@ final class NativeSourceRenderer: OfflineSourceRendering {
         _ = renderer.snapshot(
             atTime: 0,
             with: size,
-            antialiasingMode: .multisampling4X
+            antialiasingMode: antialiasingMode
         )
         _ = renderer.snapshot(
             atTime: 0,
             with: size,
-            antialiasingMode: .multisampling4X
+            antialiasingMode: antialiasingMode
         )
         let snapshot = renderer.snapshot(
             atTime: 0,
             with: size,
-            antialiasingMode: .multisampling4X
+            antialiasingMode: antialiasingMode
         )
         if let cgImage = snapshot.cgImage(
             forProposedRect: nil,
@@ -2515,6 +2562,36 @@ enum OfflineSceneRendererMain {
             "--renderer-source-commit",
             in: arguments
         )
+        guard
+            let diagnosticAntialiasing = DiagnosticAntialiasing(
+                rawValue: rendererOptionalArgument(
+                    "--diagnostic-antialiasing",
+                    in: arguments
+                ) ?? "current"
+            ),
+            let diagnosticSceneShadows = DiagnosticSceneShadows(
+                rawValue: rendererOptionalArgument(
+                    "--diagnostic-scene-shadows",
+                    in: arguments
+                ) ?? "current"
+            )
+        else {
+            throw OfflineRendererError.arguments
+        }
+        let diagnosticConfiguration = RendererDiagnosticConfiguration(
+            antialiasing: diagnosticAntialiasing,
+            sceneShadows: diagnosticSceneShadows
+        )
+        if !diagnosticConfiguration.isBaseline {
+            guard
+                outputURL.path.contains("/diagnostics/"),
+                recordURL.path.contains("/diagnostics/")
+            else {
+                throw OfflineRendererError.invalid(
+                    "non-baseline diagnostic output must remain under a diagnostics path"
+                )
+            }
+        }
         let decoder = JSONDecoder()
         let descriptor = try decoder.decode(
             SceneDescriptor.self,
@@ -2542,14 +2619,19 @@ enum OfflineSceneRendererMain {
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
+        if diagnosticConfiguration.sceneShadows == .disabled {
+            scene.rootNode.enumerateChildNodes { node, _ in
+                node.light?.castsShadow = false
+            }
+        }
         let renderedNodeBounds = try validatedRenderedNodeBounds(
             scene,
             descriptor: descriptor
         )
-        let oversampled = try NativeSourceRenderer().renderSource(
-            scene: scene,
-            descriptor: descriptor
-        )
+        let oversampled = try NativeSourceRenderer(
+            antialiasingMode:
+                diagnosticConfiguration.antialiasing.sceneKitMode
+        ).renderSource(scene: scene, descriptor: descriptor)
         let source = try NativeSourceCompositor().compositeRegisteredSource(
             renderedImage: oversampled,
             descriptor: descriptor
@@ -2589,6 +2671,14 @@ enum OfflineSceneRendererMain {
                 "CoreGraphics",
             ],
             "rendererSourceCommit": sourceCommit,
+            "diagnosticConfiguration": [
+                "antialiasing":
+                    diagnosticConfiguration.antialiasing.rawValue,
+                "sceneShadows":
+                    diagnosticConfiguration.sceneShadows.rawValue,
+                "descriptorGeometryChanged": false,
+                "sourceAuthority": false,
+            ],
             "rendererSources": sourceHashes,
             "sceneDescriptorFile": rendererRelativePath(
                 sceneURL,

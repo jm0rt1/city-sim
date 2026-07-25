@@ -67,6 +67,22 @@ The camera is identical across directions. Direction changes are expressed by
 independently authored facade and entrance geometry in world space, never by
 rotating a camera, a scene, or a sibling raster.
 
+## Renderer diagnostic isolation
+
+Rejected retained raws may be investigated with two non-authority controls:
+
+```text
+--diagnostic-antialiasing current|none
+--diagnostic-scene-shadows current|disabled
+```
+
+The defaults preserve the existing 4x SceneKit MSAA and scene-shadow settings.
+Any non-default diagnostic is rejected unless both its PNG and provenance
+record are written under a `diagnostics/` path. Diagnostic records explicitly
+state that descriptor geometry is unchanged and the output is not source-art
+authority. The deterministic registered southeast footprint shadow remains
+fixed when SceneKit self/cast shadows are isolated.
+
 ## Standalone compilation
 
 Tools compile outside the product package:

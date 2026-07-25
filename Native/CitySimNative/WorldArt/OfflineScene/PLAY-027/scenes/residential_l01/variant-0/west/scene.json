@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "residential-l01-v0-west-geometry-v1",
+  "sceneGeometryID": "residential-l01-v0-west-geometry-v2",
   "logicalBuildingID": "residential_l01",
   "family": "residential",
   "level": 1,
   "variantID": "variant-0",
   "viewDirection": "west",
-  "sourceRevision": "source-v02",
+  "sourceRevision": "source-v03",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {
@@ -121,10 +121,10 @@
       "materialID": "brick-warm-red",
       "hasEntrance": false,
       "windowBays": [
-        {"id": "s-f1-left", "centerWorld": [-14, 11.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "s-f1-right", "centerWorld": [14, 11.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "s-f2-left", "centerWorld": [-14, 24.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
-        {"id": "s-f2-right", "centerWorld": [14, 24.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
+        {"id": "s-f1-left", "centerWorld": [-18, 11.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "s-f1-right", "centerWorld": [10, 11.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "s-f2-left", "centerWorld": [-18, 24.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
+        {"id": "s-f2-right", "centerWorld": [10, 24.25, 28.2], "width": 4.8, "height": 7.5, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
       ]
     },
     {
@@ -156,7 +156,7 @@
     "hingeSide": "right"
   },
   "props": [
-    {"id": "west-south-flowers", "kind": "flower-bed", "positionWorld": [-31, 1, 18], "dimensions": [3, 2, 7], "materialID": "planting-evergreen"},
+    {"id": "west-south-flowers", "kind": "flower-bed", "positionWorld": [-31, 1, 27], "dimensions": [3, 2, 7], "materialID": "planting-evergreen"},
     {"id": "west-north-shrub", "kind": "shrub-cluster", "positionWorld": [-31, 2, -19], "dimensions": [4, 4, 5], "materialID": "planting-evergreen"}
   ],
   "occlusionExclusions": [

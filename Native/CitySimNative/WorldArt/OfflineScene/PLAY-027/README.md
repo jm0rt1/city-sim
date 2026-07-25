@@ -100,7 +100,7 @@ SceneKit `multisampling4X`, and downsample by Lanczos scale `0.5`.
 block. Its frozen contract is:
 
 ```text
-contractID: play027-deterministic-4x-no-msaa-lanczos-v1
+contractID: play027-deterministic-4x-no-msaa-lanczos-v1 or -v2
 sceneKitAntialiasing: none
 linearOversamplingFactor: 4
 downsample: CILanczosScaleTransform, scale 0.25, aspect 1
@@ -108,6 +108,15 @@ CI context: software, no intermediate cache, extended-sRGB -> sRGB
 quantizer: step32-midpoint-offset8-v1, exact-magenta bypass
 canonicalizer: ImageIO -> /usr/bin/sips PNG
 ```
+
+Contract v1 preserves the first retained regression and does not apply a
+post-quantization repair. Contract v2 adds exactly one RGB-only canonicalizer
+over an immutable copy of the quantized buffer. A center channel is replaced
+only when all nine 3x3 pixels are fully opaque, none is exact `#ff00ff`, at
+least seven channel samples share one value, and the center differs from that
+majority by exactly the 32-value quantization quantum. The rule never writes
+alpha, never reads a prior mutation, never applies a broad median, and never
+changes schema-1 output.
 
 Normal production invocation contains no sampling CLI choice: the descriptor
 resolves the sampling path. The existing antialiasing and scene-shadow CLI

@@ -2148,6 +2148,8 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
     private let sampling: EffectiveSamplingContract
     private let ciContext: CIContext
     private(set) var prequantizedImage: CGImage?
+    private(set) var postQuantizationMutations:
+        [PixelCanonicalizationMutation] = []
 
     init(sampling: EffectiveSamplingContract) {
         self.sampling = sampling
@@ -2244,7 +2246,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
         let height = image.height
         var bytes = [UInt8](repeating: 0, count: width * height * 4)
         let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
-        return try bytes.withUnsafeMutableBytes { storage in
+        try bytes.withUnsafeMutableBytes { storage in
             guard let context = CGContext(
                 data: storage.baseAddress,
                 width: width,
@@ -2291,7 +2293,30 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                     storage[pixel + channel] = UInt8(quantized)
                 }
             }
-            guard let output = context.makeImage() else {
+        }
+        if let repair = sampling.postQuantizationCanonicalizer {
+            let result = try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: bytes,
+                width: width,
+                height: height,
+                contract: repair
+            )
+            bytes = result.rgba
+            postQuantizationMutations = result.mutations
+        }
+        return try bytes.withUnsafeMutableBytes { storage in
+            guard let context = CGContext(
+                data: storage.baseAddress,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: colorSpace,
+                bitmapInfo:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ), let output = context.makeImage()
+            else {
                 throw OfflineRendererError.rendering(
                     "could not create deterministic source"
                 )
@@ -2710,6 +2735,7 @@ enum OfflineSceneRendererMain {
         let sourceFiles = [
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -2792,6 +2818,46 @@ enum OfflineSceneRendererMain {
                     descriptorSampling.canonicalizerPostEncoder,
                 "canonicalizerFormat":
                     descriptorSampling.canonicalizerFormat,
+                "postQuantizationCanonicalizer":
+                    descriptorSampling.postQuantizationCanonicalizer.map {
+                        [
+                            "algorithm": $0.algorithm,
+                            "version": $0.version,
+                            "quantizationQuantum":
+                                $0.quantizationQuantum,
+                            "neighborhoodSize":
+                                $0.neighborhoodSize,
+                            "majorityThreshold":
+                                $0.majorityThreshold,
+                            "requiresFullyOpaqueNeighborhood":
+                                $0.requiresFullyOpaqueNeighborhood,
+                            "immutableSourceBuffer":
+                                $0.immutableSourceBuffer,
+                            "requiresChromaFreeNeighborhood":
+                                $0.requiresChromaFreeNeighborhood,
+                            "channels": $0.channels,
+                            "preservesAlpha": $0.preservesAlpha,
+                            "preservesChroma": $0.preservesChroma,
+                        ] as [String: Any]
+                    } ?? [
+                        "algorithm": "none",
+                    ],
+                "postQuantizationMutationCount":
+                    compositor.postQuantizationMutations.count,
+                "postQuantizationMutationCountsByChannel": [
+                    "red":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 0
+                        }.count,
+                    "green":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 1
+                        }.count,
+                    "blue":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 2
+                        }.count,
+                ],
             ],
             "rendererSources": sourceHashes,
             "sceneDescriptorFile": rendererRelativePath(

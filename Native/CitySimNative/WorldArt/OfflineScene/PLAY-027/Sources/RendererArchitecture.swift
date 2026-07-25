@@ -59,6 +59,8 @@ struct EffectiveSamplingContract: Equatable {
     let canonicalizerEncoder: String
     let canonicalizerPostEncoder: String
     let canonicalizerFormat: String
+    let postQuantizationCanonicalizer:
+        SamplingPostQuantizationCanonicalizerDescriptor?
     let purpose: String
 }
 
@@ -83,11 +85,14 @@ enum DescriptorSamplingResolver {
         canonicalizerEncoder: "ImageIO",
         canonicalizerPostEncoder: "/usr/bin/sips",
         canonicalizerFormat: "png",
+        postQuantizationCanonicalizer: nil,
         purpose: "accepted-legacy-reproduction"
     )
 
-    static let schema2ContractID =
+    static let schema2ContractV1ID =
         "play027-deterministic-4x-no-msaa-lanczos-v1"
+    static let schema2ContractV2ID =
+        "play027-deterministic-4x-no-msaa-lanczos-v2"
 
     static func resolve(
         descriptor: SceneDescriptor
@@ -109,8 +114,10 @@ enum DescriptorSamplingResolver {
                 "only schema 1 legacy or schema 2 explicit sampling is supported"
             )
         }
+        let isV1 = sampling.contractID == schema2ContractV1ID
+        let isV2 = sampling.contractID == schema2ContractV2ID
         guard
-            sampling.contractID == schema2ContractID,
+            isV1 || isV2,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
             ["diagnostic-regression", "source-authority"].contains(
                 sampling.purpose
@@ -137,6 +144,33 @@ enum DescriptorSamplingResolver {
             throw SamplingContractError.invalid(
                 "schema 2 sampling block does not match the frozen deterministic contract"
             )
+        }
+        if isV1, sampling.postQuantizationCanonicalizer != nil {
+            throw SamplingContractError.invalid(
+                "schema-2 contract v1 must omit post-quantization canonicalization"
+            )
+        }
+        if isV2 {
+            guard
+                let repair =
+                    sampling.postQuantizationCanonicalizer,
+                repair.algorithm
+                    == "opaque-isolated-one-quantum-majority-3x3",
+                repair.version == 2,
+                repair.quantizationQuantum == 32,
+                repair.neighborhoodSize == 3,
+                repair.majorityThreshold == 7,
+                repair.requiresFullyOpaqueNeighborhood,
+                repair.immutableSourceBuffer,
+                repair.requiresChromaFreeNeighborhood,
+                repair.channels == "rgb-only",
+                repair.preservesAlpha,
+                repair.preservesChroma
+            else {
+                throw SamplingContractError.invalid(
+                    "schema-2 contract v2 post-quantization canonicalizer mismatch"
+                )
+            }
         }
         return EffectiveSamplingContract(
             contractID: sampling.contractID,
@@ -165,6 +199,8 @@ enum DescriptorSamplingResolver {
             canonicalizerPostEncoder:
                 sampling.canonicalizer.postEncoder,
             canonicalizerFormat: sampling.canonicalizer.format,
+            postQuantizationCanonicalizer:
+                sampling.postQuantizationCanonicalizer,
             purpose: sampling.purpose
         )
     }

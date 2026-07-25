@@ -135,7 +135,8 @@ enum SummarizeSamplingRegressionMain {
             let manifest = try JSONSerialization.jsonObject(
                 with: Data(contentsOf: manifestURL)
             ) as? [String: Any],
-            let samples = manifest["samples"] as? [[String: Any]]
+            let samples = manifest["samples"] as? [[String: Any]],
+            let contractID = manifest["contractID"] as? String
         else {
             throw SamplingRegressionSummaryError.invalid(
                 "invalid diagnostic regression inputs"
@@ -198,8 +199,7 @@ enum SummarizeSamplingRegressionMain {
                     itemFailures.append("run-\(runID) provenance invalid")
                     continue
                 }
-                if sampling["contractID"] as? String
-                    != "play027-deterministic-4x-no-msaa-lanczos-v1"
+                if sampling["contractID"] as? String != contractID
                     || sampling["descriptorSchema"] as? Int != 2
                     || sampling["sceneKitAntialiasing"] as? String
                         != "none"
@@ -220,6 +220,12 @@ enum SummarizeSamplingRegressionMain {
                     recordURL,
                     repositoryRoot: repositoryRoot
                 )
+                run["postQuantizationMutationCount"] =
+                    sampling["postQuantizationMutationCount"] as? Int ?? 0
+                run["postQuantizationMutationCountsByChannel"] =
+                    sampling[
+                        "postQuantizationMutationCountsByChannel"
+                    ] as? [String: Any] ?? [:]
                 runReports.append(run)
                 runFileHashes.append(run["fileSHA256"] as! String)
                 runPixelHashes.append(
@@ -323,7 +329,7 @@ enum SummarizeSamplingRegressionMain {
             "schema": 1,
             "task": "PLAY-027",
             "contractID":
-                "play027-deterministic-4x-no-msaa-lanczos-v1",
+                contractID,
             "expectedSchema2Samples": samples.count,
             "completedSchema2Primaries": completedPrimaryCount,
             "uniqueCompletedPrimaryHashes": primaryHashes.count,

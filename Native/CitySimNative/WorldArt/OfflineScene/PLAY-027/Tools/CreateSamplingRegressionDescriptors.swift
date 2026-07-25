@@ -8,11 +8,24 @@ enum SamplingDescriptorToolError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: create-sampling-regression-descriptors --repository-root <path> --output-root <diagnostics-path> --manifest <json>"
+            return "usage: create-sampling-regression-descriptors --repository-root <path> --output-root <diagnostics-path> --manifest <json> [--contract-revision v1|v2]"
         case let .invalid(message):
             return message
         }
     }
+}
+
+func samplingToolOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
 }
 
 func samplingToolArgument(
@@ -67,9 +80,18 @@ func samplingToolImmutablePayload(
     return try samplingToolCanonicalData(payload)
 }
 
-func samplingBlock(sourceRevision: String) -> [String: Any] {
-    [
-        "contractID": "play027-deterministic-4x-no-msaa-lanczos-v1",
+func samplingBlock(
+    sourceRevision: String,
+    contractRevision: String
+) throws -> [String: Any] {
+    guard ["v1", "v2"].contains(contractRevision) else {
+        throw SamplingDescriptorToolError.invalid(
+            "contract revision must be v1 or v2"
+        )
+    }
+    var block: [String: Any] = [
+        "contractID":
+            "play027-deterministic-4x-no-msaa-lanczos-\(contractRevision)",
         "sourceRevisionBinding": sourceRevision,
         "purpose": "diagnostic-regression",
         "sceneKitAntialiasing": "none",
@@ -98,6 +120,22 @@ func samplingBlock(sourceRevision: String) -> [String: Any] {
             "format": "png",
         ],
     ]
+    if contractRevision == "v2" {
+        block["postQuantizationCanonicalizer"] = [
+            "algorithm": "opaque-isolated-one-quantum-majority-3x3",
+            "version": 2,
+            "quantizationQuantum": 32,
+            "neighborhoodSize": 3,
+            "majorityThreshold": 7,
+            "requiresFullyOpaqueNeighborhood": true,
+            "immutableSourceBuffer": true,
+            "requiresChromaFreeNeighborhood": true,
+            "channels": "rgb-only",
+            "preservesAlpha": true,
+            "preservesChroma": true,
+        ]
+    }
+    return block
 }
 
 @main
@@ -122,6 +160,16 @@ enum CreateSamplingRegressionDescriptorsMain {
                 in: arguments
             )
         ).standardizedFileURL
+        let contractRevision =
+            samplingToolOptionalArgument(
+                "--contract-revision",
+                in: arguments
+            ) ?? "v1"
+        guard ["v1", "v2"].contains(contractRevision) else {
+            throw SamplingDescriptorToolError.invalid(
+                "contract revision must be v1 or v2"
+            )
+        }
         guard
             outputRoot.path.contains("/diagnostics/"),
             manifestURL.path.contains("/diagnostics/")
@@ -183,8 +231,9 @@ enum CreateSamplingRegressionDescriptorsMain {
             var schema2Camera = camera
             schema2Camera["oversamplingFactor"] = 4
             object["camera"] = schema2Camera
-            object["sampling"] = samplingBlock(
-                sourceRevision: sourceRevision
+            object["sampling"] = try samplingBlock(
+                sourceRevision: sourceRevision,
+                contractRevision: contractRevision
             )
             let outputImmutable = try samplingToolImmutablePayload(object)
             guard acceptedImmutable == outputImmutable else {
@@ -242,7 +291,8 @@ enum CreateSamplingRegressionDescriptorsMain {
             "schema": 1,
             "task": "PLAY-027",
             "contractID":
-                "play027-deterministic-4x-no-msaa-lanczos-v1",
+                "play027-deterministic-4x-no-msaa-lanczos-\(contractRevision)",
+            "contractRevision": contractRevision,
             "purpose": "diagnostic-regression",
             "samplePolicy": [
                 "commercial": "L1-L3 all N/E/S/W",

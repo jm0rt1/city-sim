@@ -12,7 +12,7 @@ enum FingerprintError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: toolchain-fingerprint --source-authority <sha> --output <json>"
+            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2]"
         case let .command(command, status, error):
             return "\(command) failed with status \(status): \(error)"
         case let .framework(name):
@@ -84,6 +84,18 @@ enum ToolchainFingerprintMain {
 
         let authority = arguments[authorityIndex + 1]
         let outputPath = URL(fileURLWithPath: arguments[outputIndex + 1])
+        let samplingContract: String? = {
+            guard
+                let index = arguments.firstIndex(of: "--sampling-contract"),
+                index + 1 < arguments.count
+            else {
+                return nil
+            }
+            return arguments[index + 1]
+        }()
+        guard samplingContract == nil || samplingContract == "v2" else {
+            throw FingerprintError.arguments
+        }
         let frameworkNames = [
             "SceneKit",
             "ModelIO",
@@ -99,7 +111,7 @@ enum ToolchainFingerprintMain {
             "/usr/bin/xcodebuild",
             ["-version"]
         ).components(separatedBy: .newlines)
-        let object: [String: Any] = [
+        var object: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
             "sourceAuthority": authority,
@@ -157,6 +169,50 @@ enum ToolchainFingerprintMain {
             "packageManifestChanged": false,
             "productionSelected": false,
         ]
+        if samplingContract == "v2" {
+            object["descriptorSamplingContract"] = [
+                "contractID":
+                    "play027-deterministic-4x-no-msaa-lanczos-v2",
+                "sceneKitAntialiasing": "none",
+                "linearOversamplingFactor": 4,
+                "downsample": [
+                    "filter": "CILanczosScaleTransform",
+                    "scale": 0.25,
+                    "aspectRatio": 1,
+                ],
+                "ciContext": [
+                    "useSoftwareRenderer": true,
+                    "cacheIntermediates": false,
+                    "workingColorSpace": "extended-srgb",
+                    "outputColorSpace": "srgb",
+                ],
+                "quantizer": [
+                    "id": "step32-midpoint-offset8-v1",
+                    "quantizationQuantum": 32,
+                    "midpointOffset": 8,
+                ],
+                "postQuantizationCanonicalizer": [
+                    "algorithm":
+                        "opaque-isolated-one-quantum-majority-3x3",
+                    "version": 2,
+                    "quantizationQuantum": 32,
+                    "neighborhoodSize": 3,
+                    "majorityThreshold": 7,
+                    "requiresFullyOpaqueNeighborhood": true,
+                    "immutableSourceBuffer": true,
+                    "requiresChromaFreeNeighborhood": true,
+                    "channels": "rgb-only",
+                    "preservesAlpha": true,
+                    "preservesChroma": true,
+                ],
+                "canonicalizer": [
+                    "id": "imageio-sips-png-v1",
+                    "encoder": "ImageIO",
+                    "postEncoder": "/usr/bin/sips",
+                    "format": "png",
+                ],
+            ]
+        }
         let data = try JSONSerialization.data(
             withJSONObject: object,
             options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]

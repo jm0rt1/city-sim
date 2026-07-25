@@ -83,10 +83,16 @@ enum ValidateSamplingContractsMain {
             let manifest = try JSONSerialization.jsonObject(
                 with: Data(contentsOf: manifestURL)
             ) as? [String: Any],
-            let samples = manifest["samples"] as? [[String: Any]]
+            let samples = manifest["samples"] as? [[String: Any]],
+            let contractID = manifest["contractID"] as? String,
+            [
+                "play027-deterministic-4x-no-msaa-lanczos-v1",
+                "play027-deterministic-4x-no-msaa-lanczos-v2",
+            ].contains(contractID)
         else {
             throw SamplingValidationError.invalid("invalid manifest")
         }
+        let expectsPostQuantizationRepair = contractID.hasSuffix("-v2")
         var failures: [String] = []
         var records: [[String: Any]] = []
         for sample in samples {
@@ -150,8 +156,7 @@ enum ValidateSamplingContractsMain {
                 || samplingValidationNumber(
                     diagnosticCamera["oversamplingFactor"]
                 ) != 4
-                || sampling["contractID"] as? String
-                    != "play027-deterministic-4x-no-msaa-lanczos-v1"
+                || sampling["contractID"] as? String != contractID
                 || sampling["sourceRevisionBinding"] as? String
                     != sourceRevision
                 || sampling["purpose"] as? String
@@ -188,6 +193,40 @@ enum ValidateSamplingContractsMain {
             {
                 itemFailures.append("schema-2 sampling contract mismatch")
             }
+            let repair = sampling[
+                "postQuantizationCanonicalizer"
+            ] as? [String: Any]
+            if expectsPostQuantizationRepair {
+                if repair?["algorithm"] as? String
+                    != "opaque-isolated-one-quantum-majority-3x3"
+                    || samplingValidationNumber(repair?["version"]) != 2
+                    || samplingValidationNumber(
+                        repair?["quantizationQuantum"]
+                    ) != 32
+                    || samplingValidationNumber(
+                        repair?["neighborhoodSize"]
+                    ) != 3
+                    || samplingValidationNumber(
+                        repair?["majorityThreshold"]
+                    ) != 7
+                    || repair?["requiresFullyOpaqueNeighborhood"] as? Bool
+                        != true
+                    || repair?["immutableSourceBuffer"] as? Bool != true
+                    || repair?["requiresChromaFreeNeighborhood"] as? Bool
+                        != true
+                    || repair?["channels"] as? String != "rgb-only"
+                    || repair?["preservesAlpha"] as? Bool != true
+                    || repair?["preservesChroma"] as? Bool != true
+                {
+                    itemFailures.append(
+                        "schema-2 post-quantization canonicalizer mismatch"
+                    )
+                }
+            } else if repair != nil {
+                itemFailures.append(
+                    "schema-2 contract v1 must omit post-quantization canonicalizer"
+                )
+            }
             let acceptedImmutable =
                 try samplingValidationImmutablePayload(accepted)
             let diagnosticImmutable =
@@ -216,7 +255,7 @@ enum ValidateSamplingContractsMain {
             "schema": 1,
             "task": "PLAY-027",
             "contractID":
-                "play027-deterministic-4x-no-msaa-lanczos-v1",
+                contractID,
             "legacySchema1Contract":
                 "factor-2 + SceneKit multisampling4X",
             "schema2Contract":

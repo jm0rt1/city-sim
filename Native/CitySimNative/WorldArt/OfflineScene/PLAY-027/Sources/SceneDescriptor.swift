@@ -68,6 +68,22 @@ struct SamplingCanonicalizerDescriptor: Codable, Equatable {
     let format: String
 }
 
+struct SamplingPostQuantizationCanonicalizerDescriptor:
+    Codable, Equatable
+{
+    let algorithm: String
+    let version: Int
+    let quantizationQuantum: Int
+    let neighborhoodSize: Int
+    let majorityThreshold: Int
+    let requiresFullyOpaqueNeighborhood: Bool
+    let immutableSourceBuffer: Bool
+    let requiresChromaFreeNeighborhood: Bool
+    let channels: String
+    let preservesAlpha: Bool
+    let preservesChroma: Bool
+}
+
 struct SamplingDescriptor: Codable, Equatable {
     let contractID: String
     let sourceRevisionBinding: String
@@ -78,6 +94,8 @@ struct SamplingDescriptor: Codable, Equatable {
     let ciContext: SamplingCIContextDescriptor
     let quantizer: SamplingQuantizerDescriptor
     let canonicalizer: SamplingCanonicalizerDescriptor
+    let postQuantizationCanonicalizer:
+        SamplingPostQuantizationCanonicalizerDescriptor?
 }
 
 struct LightDescriptor: Codable, Equatable {

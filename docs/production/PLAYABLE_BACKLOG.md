@@ -711,3 +711,18 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, candidate substitution, rubric changes, fixture-only acceptance, or author scoring.
 - **Acceptance:** 20/20 with every category 4/4, zero P0/P1 and zero automatic rejects, plus material preference over `87e1e68` at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-075.playtest-quality.md`.
+
+### [ ] PLAY-076: Grow the opening into a believable starter town
+
+- **Player outcome:** A fresh city opens as a populated three-block town with enough truthful building fabric to support a compelling composition while preserving the player’s first consequential Commercial-versus-Industrial choice.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** PRD-001, PRD-003, PRD-004, ECO-003, ECO-004, POP-003, ART-002, UX-003, REL-001.
+- **Dependencies:** Accepted PLAY-071 gameplay product; the exact current starter-state and PLAY-073 real-app finding that renderer-owned composition cannot honestly turn seven visible buildings into a populated town; next published clean integration baseline.
+- **In scope:** Fresh-city road/lot topology, starting demand and opening message, deterministic opening/strategy/recovery/progression tests, task evidence, and additive downstream fixture handoff.
+- **Out of scope:** Renderer decoration or camera changes, new building kinds, preselected Commercial/Industrial/park/utility recovery choices, global economy redesign, public/store/save/schema changes, fixture rewrites, UI/input changes, art selection, packages, build scripts, or legacy Python.
+- **Work checklist:** Implement the audited 34-road/12-place three-block topology with four additional differently fronted Residential lots; freeze exact Day 1/11 balance for no-choice and both strategies; preserve warning, recovery, Charter, Regional Capital, PLAY-071 upgrades, replay, undo, and save behavior; retain regular/compact pointer and keyboard proof; publish additive fixture adoption notes.
+- **Acceptance:** The fresh state has exactly 34 connected non-dead-end roads, 12 road-adjacent occupied places, 40 valid empty growth frontages, and three developed blocks with at least two useful internal parcels each. Commercial and Industrial remain distinct, viable, recoverable, non-dominant choices; the opening remains treasury-negative with 54 power and 48 water spare; all recovery identities and both progression routes remain exact inside tick 2,800. Staged Day 1 and Day 11 evidence at regular and exact 900 x 600 must show at least 60% developed-town safe-width occupancy without hiding buildable context or producing adjacent source-alias reads.
+- **Validation:** Focused starter/gameplay suites; deterministic Day 1/11/pressure/recovery/Charter/Regional fixtures; replay/Codable/legacy/save/load/backup/undo checks; full native suite; exact lane-staged verification; real pointer and keyboard strategy journeys at regular and compact widths.
+- **Proof:** Exact topology/frontage ledger, balance ledger, strategy/recovery/progression matrix, regular/compact color and grayscale frames, staged identity, performance observation, additive fixture-adoption packet, and independent combined renderer disposition under `docs/production/evidence/PLAY-076/`.
+- **Stop conditions:** A second starting Commercial/Industrial/park/utility becomes necessary; either strategy or recovery path becomes nonviable; a public/save/schema/global-economy change is required; fixture history must be rewritten; the town remains visually sparse after truthful expansion; or any renderer/UI/art surface would need gameplay-local mutation.
+- **Claim:** `docs/production/claims/PLAY-076.gameplay-loop.md`.

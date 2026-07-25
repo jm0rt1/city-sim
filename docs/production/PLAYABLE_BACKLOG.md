@@ -510,3 +510,13 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, fixture substitution, author scoring, candidate substitution, or accepting one hero frame.
 - **Acceptance:** At least 19/20; public-realm coherence and world/HUD composition both 4/4; no category below 3; zero P0/P1 and automatic rejects; explicit material preference at both viewports.
 - **Claim:** `docs/production/claims/PLAY-058.playtest-quality.md`.
+
+### [ ] PLAY-059: Give every diagnostic layer authoritative local truth
+
+- **Player outcome:** Land Value, Traffic, and Happiness produce localized, deterministic, actionable world truth instead of a legend-only mode or renderer-authored guess.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** Existing accepted spatial consequence platform; CONTRACT-013; published PLAY-059 claim.
+- **In scope:** Optional transient developed-tile Land Value and Local Happiness indices; road-tile Traffic Pressure; deterministic derivation, applicability, monotonicity, compatibility, and performance proof.
+- **Out of scope:** Traffic simulation/routing, land-price gameplay, happiness rebalance, persistence/fingerprint changes, renderer/UI implementation, package changes, or legacy fixture regeneration.
+- **Acceptance:** All three channels are typed, clamped, deterministic, nil off-domain, responsive to authoritative local inputs, snapshot-bounded, and leave save/fingerprint/replay/undo/gameplay truth exact.
+- **Claim:** `docs/production/claims/PLAY-059.simulation-platform.md`.

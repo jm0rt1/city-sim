@@ -1,0 +1,83 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/review/PIXEL-LOCALITY-north.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l02-source-v05-explicit-none-current-north",
+  "differenceBoundsSource" : [
+    756,
+    728,
+    757,
+    729
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        756,
+        728
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/north-run-a.png",
+    "fileSHA256" : "0b435d44cd053c335f48c09739ba1d1366dc03110ed4e3a04b60eb7cee4546ab"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 1,
+    "differingPixelCount" : 1
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2984,
+    "differingPixelCount" : 1328
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/north-run-b.png",
+    "fileSHA256" : "c390c96ce4519151244b7b00e9a793c2db10e829ed5d06c19fe9b0476f1dee93"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2983,
+    "differingPixelCount" : 1327
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/north-run-c.png",
+    "fileSHA256" : "1741ccf0a9f64c6d0fc96563fcfa91f5fbc833b6b3c6c53a912ec67e25589fc9"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

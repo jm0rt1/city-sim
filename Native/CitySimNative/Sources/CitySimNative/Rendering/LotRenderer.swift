@@ -1,6 +1,35 @@
 import AppKit
 import SpriteKit
 
+struct ResidentialGeneratedAssetIdentity: Equatable, Sendable {
+    static let authoritativeFrontagePriority: [RoadConnectionMask] = [
+        .south, .north, .east, .west,
+    ]
+
+    let level: Int
+    let frontage: RoadConnectionMask
+    let direction: String
+    let logicalID: String
+
+    init?(level: Int, adjacentRoads: RoadConnectionMask) {
+        guard let frontage = Self.authoritativeFrontagePriority.first(
+            where: adjacentRoads.contains
+        ) else {
+            return nil
+        }
+        self.level = min(4, max(1, level))
+        self.frontage = frontage
+        direction = switch frontage {
+        case .north: "north"
+        case .east: "east"
+        case .south: "south"
+        case .west: "west"
+        default: preconditionFailure("frontage priority contains only cardinal edges")
+        }
+        logicalID = "residential_l\(String(format: "%02d", self.level))_v0_\(direction)"
+    }
+}
+
 @MainActor
 final class LotRenderer {
     private let style: WorldVisualStyle
@@ -22,6 +51,9 @@ final class LotRenderer {
         let variant = WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
         let presentation = LotConsequencePresentation(tile: tile)
         let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
+        let residentialIdentity = tile.kind == .residential
+            ? ResidentialGeneratedAssetIdentity(level: tile.level, adjacentRoads: adjacentRoads)
+            : nil
         let root = SKNode()
         root.name = if let strategyIdentity {
             "lot.\(tile.kind.rawValue).density.\(strategyIdentity.densityTier).variant.\(variant)"
@@ -40,6 +72,7 @@ final class LotRenderer {
         addAuthoredFrontage(
             for: tile.kind,
             adjacentRoads: adjacentRoads,
+            selectedEdge: residentialIdentity?.frontage,
             detail: detail,
             to: neighborhoodLayer
         )
@@ -57,6 +90,8 @@ final class LotRenderer {
             _ = addAuthoredPlaceFamily(
                 tile,
                 variant: variant,
+                residentialIdentity: residentialIdentity,
+                adjacentRoads: adjacentRoads,
                 detail: detail,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
@@ -92,14 +127,30 @@ final class LotRenderer {
     private func addAuthoredPlaceFamily(
         _ tile: CityTile,
         variant _: Int,
+        residentialIdentity: ResidentialGeneratedAssetIdentity?,
+        adjacentRoads: RoadConnectionMask,
         detail: CameraDetailLevel,
         city: SKNode,
         neighborhood _: SKNode,
         block: SKNode
     ) -> Bool {
+        if tile.kind == .residential {
+            guard let result = assets.generatedResidentialPresentation(
+                level: tile.level,
+                adjacentRoads: adjacentRoads,
+                detail: detail
+            ) else {
+                return false
+            }
+            guard residentialIdentity == result.identity else { return false }
+            let sprite = result.presentation.sprite
+            sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
+            city.addChild(sprite)
+            return true
+        }
         if let generatedID = generatedLogicalID(for: tile.kind),
            let sprite = assets.generatedSprite(logicalID: generatedID, detail: detail) {
-            sprite.name = "lot.generated-v4.\(generatedID).\(detail)"
+            sprite.name = "lot.generated-v4.\(generatedID).\(detail.assetSuffix)"
             city.addChild(sprite)
             addGeneratedRoleIdentity(for: tile.kind, to: block)
             return true
@@ -112,7 +163,7 @@ final class LotRenderer {
 
     private func generatedLogicalID(for kind: BuildingKind) -> String? {
         switch kind {
-        case .residential: "residential_l01"
+        case .residential: nil
         case .commercial: "commercial_l01"
         case .industrial: "industrial_l01"
         case .park: "park_l01"
@@ -191,6 +242,7 @@ final class LotRenderer {
     private func addAuthoredFrontage(
         for kind: BuildingKind,
         adjacentRoads: RoadConnectionMask,
+        selectedEdge: RoadConnectionMask?,
         detail _: CameraDetailLevel,
         to node: SKNode
     ) {
@@ -209,9 +261,12 @@ final class LotRenderer {
         // A deterministic site path joins the declared entrance to an actual
         // road socket; the renderer never rotates a bitmap independently from
         // its building or invents a different occupied footprint.
-        let edge = adjacentRoads.contains(.south)
-            ? RoadConnectionMask.south
-            : (adjacentRoads.edges.first ?? .south)
+        guard let edge = selectedEdge
+            ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
+                where: adjacentRoads.contains
+            ) else {
+            return
+        }
         let endpoint = style.roadSocket(for: edge, overreach: 0.75)
         let entrance = CGPoint(x: 0, y: -13.5)
         let path = CGMutablePath()

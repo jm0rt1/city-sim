@@ -1,0 +1,17 @@
+level,frontage,expected_identity,independent_result,proof
+L1,N,residential_l01_v0_north,PASS distinct grounded north frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L1,E,residential_l01_v0_east,PASS distinct grounded east frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L1,S,residential_l01_v0_south,PASS distinct grounded south frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L1,W,residential_l01_v0_west,PASS distinct grounded west frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L2,N,residential_l02_v0_north,PASS distinct L2 cross-gable north frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L2,E,residential_l02_v0_east,PASS distinct L2 cross-gable east frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L2,S,residential_l02_v0_south,PASS distinct L2 cross-gable south frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L2,W,residential_l02_v0_west,PASS distinct L2 cross-gable west frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L3,N,residential_l03_v0_north,PASS distinct L3 stepped north frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L3,E,residential_l03_v0_east,PASS distinct L3 stepped east frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L3,S,residential_l03_v0_south,PASS distinct L3 stepped south frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L3,W,residential_l03_v0_west,PASS distinct L3 stepped west frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L4,N,residential_l04_v0_north,PASS distinct L4 podium/tower north frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L4,E,residential_l04_v0_east,PASS distinct L4 podium/tower east frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L4,S,residential_l04_v0_south,PASS distinct L4 podium/tower south frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json
+L4,W,residential_l04_v0_west,PASS distinct L4 podium/tower west frontage,matrix/candidate-runtime-matrix.png and validation/world-asset-pack.json

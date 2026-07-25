@@ -1,0 +1,114 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container City command status
+			3 button Description: Open New Arcadia command center, Value: Day 33. Paused, ID: hud.city.identity
+			4 progress indicator Description: Show objectives, Help: Need J 50 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+			5 container City status
+				6 unknown Description: Treasury, Details: $34,037, +$93 / cycle, ID: hud.metric.treasury
+				7 unknown Description: Residents, Details: 332, 1,908 homes open, ID: hud.metric.population
+				8 unknown Description: Happiness, Details: 58%, 100% mayor approval, ID: hud.metric.happiness
+				9 unknown Description: Jobs filled, Details: 231, 69 openings, ID: hud.metric.employment
+				10 unknown Description: Utilities, Details: 100%, P 9 · W 14, ID: hud.metric.utilities
+			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+			13 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+			14 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+			15 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+			16 container Description: City priority: Prepare for the load surge, Details: DECISION · 16 DAYS. Diagnose utilities, then add capacity or a park before the consequence., ID: hud.strategy.priority
+				17 text Help: Diagnose utilities, then add capacity or a park before the consequence., Value: FREIGHT STRATEGY
+				18 text Help: Diagnose utilities, then add capacity or a park before the consequence., Value: DECISION · 16 DAYS
+				19 text Help: Diagnose utilities, then add capacity or a park before the consequence., Value: Prepare for the load surge
+				20 text Diagnose utilities, then add capacity or a park before the consequence.
+				21 button Description: Utility capacity, Help: Diagnose utilities, then add capacity or a park before the consequence.
+				22 menu button Act, Description: Act on Prepare for the load surge, Help: Diagnose utilities, then add capacity or a park before the consequence., Value: 3 available routes, ID: arrow.turn.down.right
+		23 container City command deck with details open
+			24 button (selected) Description: Inspect mode, Value: Selected
+			25 button Description: Build mode, Value: Not selected
+			26 button Description: Bulldoze mode, Value: Not selected
+			27 menu button Catalog, Description: Open categorized build catalog, Value: Selected Road, ID: square.grid.2x2
+			28 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			29 button Description: Close command-center details, Value: Open, ID: hud.command.details
+			30 menu button City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., ID: building.2
+			31 text Help: Use the scroll area to reach every diagnostic control, Value: Scrollable command-center details
+			32 scroll area Description: Scrollable command-center details, ID: hud.command.details.scroll, Secondary Actions: Scroll Up, Scroll Down
+				33 container City command center, Journal
+					34 text Journal
+					35 menu button City data, Description: Choose city data, Value: Journal, ID: chart.dots.scatter
+					36 button Description: Close command-center details, ID: hud.context.close
+					37 scroll area Description: City notice journal, Secondary Actions: Scroll Up, Scroll Down
+						38 collection Secondary Actions: AXScrollToTop, AXScrollToBottom
+							39 text REGIONAL FREIGHT CONTRACT
+							40 text Day 33
+							41 text Measured industrial growth won $5,000 and more jobs. It earns less than a factory push, but limits pollution and utility exposure before the load surge.
+							42 button Related data
+							43 button Dismiss Regional Freight Contract notices
+							44 text NEIGHBORHOOD UPGRADED
+							45 text Day 31
+							46 text ×6
+							47 text Strong demand has attracted denser development.
+							48 button Related data
+							49 button Dismiss Neighborhood Upgraded notices
+							50 text FREIGHT CONTRACT WATCH
+							51 text Day 17
+							52 text Industrial expansion is committed. A regional freight contract arrives by Day 33; reserve power and water or a second park can absorb the load complication that follows.
+							53 button Related data
+							54 menu button Act on Freight Contract Watch
+							55 button Dismiss Freight Contract Watch notices
+							56 text UTILITY RESERVE TIGHT
+							57 text Day 17
+							58 text Only 22 power and 25 water remain spare. Build a Power Plant ($12,000) before adding more homes or jobs.
+							59 button Related data
+							60 menu button Act on Utility Reserve Tight
+							61 button Dismiss Utility Reserve Tight notices
+							62 text BUDGET GAP
+							63 text Day 2
+							64 text Operations are projected to use $90 per cycle. Add taxable activity or accept the happiness cost of a temporary tax increase.
+							65 button Related data
+							66 menu button Act on Budget Gap
+							67 button Dismiss Budget Gap notices
+							68 text TOWN CHARTER STANDARDS
+							69 text Day 2
+							70 text Reach 500 residents, $10,000 treasury, non-negative cashflow, 90% employment, full utilities with 15% reserve, and 52% happiness; keep every zone active for 12 consecutive days. Growth needs job openings and utility headroom.
+							71 button Related data
+							72 button Dismiss Town Charter Standards notices
+							73 text A TOWN AT THE CROSSROADS
+							74 text Day 1
+							75 text New Arcadia's two-block starter district runs a $90 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.
+							76 button Related data
+							77 button Dismiss A Town at the Crossroads notices
+						78 scroll bar (settable, float) 0
+							79 value indicator (settable, float) 0
+							80 increment arrow button
+							81 decrement arrow button
+							82 increment page button
+							83 decrement page button
+				84 scroll bar (settable, float) 0.3742331288343558
+					85 value indicator (settable, float) 0.3742331288343558
+					86 increment arrow button
+					87 decrement arrow button
+					88 increment page button
+					89 decrement page button
+		90 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	91 toolbar
+		92 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		93 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		94 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		95 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		96 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	97 close button
+	98 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	99 minimize button
+	100 text CitySim
+101 menu bar
+	102 CitySim [UI wdbeadac6e0bd]
+	103 File
+	104 Edit
+	105 View
+	106 Simulation
+	107 Tools
+	108 City Data
+	109 Window
+	110 Help
+
+The focused UI element is 90 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

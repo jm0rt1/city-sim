@@ -684,16 +684,24 @@ final class CitySimulationTests: XCTestCase {
             ContentView.objectiveSurfacePresentation(compact: false, showObjectives: true, showInspector: true),
             .expanded
         )
-        XCTAssertLessThanOrEqual(TopHUDView.compactMaximumHeight, 126)
-        XCTAssertLessThanOrEqual(TopHUDView.regularMaximumHeight, 126)
+        XCTAssertLessThanOrEqual(TopHUDView.compactMaximumHeight, 116)
+        XCTAssertLessThanOrEqual(TopHUDView.regularMaximumHeight, 136)
         XCTAssertLessThanOrEqual(BuildToolbarView.compactClosedMaximumHeight, 108)
         XCTAssertLessThanOrEqual(BuildToolbarView.regularClosedMaximumHeight, 108)
-        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 66)
-        XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 96)
-        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 58)
-        XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 58)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactOpenMaximumHeight, 198)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularOpenMaximumHeight, 238)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 132)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 168)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 54)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 64)
+        XCTAssertGreaterThanOrEqual(GameTheme.hudCriticalTextSize, 11)
+        XCTAssertGreaterThanOrEqual(GameTheme.hudSupportTextSize, 10)
+        XCTAssertGreaterThanOrEqual(MetricCard.criticalTextSize, 11)
+        XCTAssertGreaterThanOrEqual(MetricCard.supportTextSize, 10)
+        XCTAssertEqual(InspectorView.compactColumnCount, 2)
+        XCTAssertGreaterThanOrEqual(InspectorView.compactMinimumVisibleNoticeCount, 2)
         let compactClosedChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 126),
+            top: CGRect(x: 8, y: 8, width: 884, height: 116),
             bottom: CGRect(x: 8, y: 484, width: 884, height: 108)
         )
         XCTAssertGreaterThanOrEqual(
@@ -701,19 +709,19 @@ final class CitySimulationTests: XCTestCase {
             0.58
         )
         let compactDetailsChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 126),
-            bottom: CGRect(x: 8, y: 419, width: 884, height: 173)
+            top: CGRect(x: 8, y: 8, width: 884, height: 116),
+            bottom: CGRect(x: 8, y: 394, width: 884, height: 198)
         )
         XCTAssertGreaterThanOrEqual(
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactDetailsChrome) / 600,
-            0.47
+            0.45
         )
         let compactInsets = ContentView.mapViewportInsets(
             windowSize: CGSize(width: 900, height: 600),
             compact: true,
             chromeFrames: compactClosedChrome
         )
-        XCTAssertEqual(compactInsets.top, 144)
+        XCTAssertEqual(compactInsets.top, 136)
         XCTAssertEqual(compactInsets.bottom, 126)
         XCTAssertNil(GameTheme.animation(reduceMotion: true))
         XCTAssertEqual(

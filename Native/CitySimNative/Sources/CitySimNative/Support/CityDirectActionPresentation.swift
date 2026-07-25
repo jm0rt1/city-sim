@@ -161,7 +161,8 @@ enum CityNoticeActionCatalog {
         "Industrial Load Absorbed", "Main Street Crossroads", "Storefront Slump",
         "Main Street Recovery Delayed", "Freight Contract Watch", "Industrial Load Surge",
         "Freight Recovery Delayed", "Budget Gap", "Utility Reserve Tight", "Utility Shortfall",
-        "Hiring Bottleneck", "Severe Storm"
+        "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
+        "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload"
     ]
 
     static func actions(for title: String) -> [CityDirectResponse] {
@@ -171,12 +172,16 @@ enum CityNoticeActionCatalog {
                 .init(title: "Build commercial", command: .buildCommercial, explanation: "Add cleaner taxable activity and jobs with a slower payoff.", focusesMap: true),
                 .init(title: "Build industrial", command: .buildIndustrial, explanation: "Add jobs and revenue faster while accepting more pollution and utility load.", focusesMap: true)
             ]
-        case "Chain Store Rumor", "Main Street Crossroads", "Storefront Slump", "Main Street Recovery Delayed":
+        case "Chain Store Rumor", "Main Street Crossroads", "Storefront Slump",
+             "Main Street Recovery Delayed", "Regional Retail Challenge",
+             "Regional Retail Pressure":
             return [
                 .init(title: "Review tax policy", command: .inspectorFinances, explanation: "Tax relief may support demand but reduces revenue.", focusesMap: false),
                 .init(title: "Build a park", command: .buildPark, explanation: "Placemaking costs capital and upkeep; it does not guarantee recovery.", focusesMap: true)
             ]
-        case "Freight Load Forecast", "Freight Contract Watch", "Industrial Load Surge", "Freight Recovery Delayed":
+        case "Freight Load Forecast", "Freight Contract Watch", "Industrial Load Surge",
+             "Freight Recovery Delayed", "Regional Grid Mandate",
+             "Regional Freight Overload":
             return [
                 .init(title: "Add power", command: .buildPowerPlant, explanation: "Add power capacity and upkeep where service can reach demand.", focusesMap: true),
                 .init(title: "Add water", command: .buildWaterTower, explanation: "Add water capacity and upkeep where service can reach demand.", focusesMap: true),

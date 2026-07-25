@@ -23,8 +23,7 @@ struct CityStrategyHUDPresentation: Equatable {
 
     static func make(analytics: CityAnalytics) -> CityStrategyHUDPresentation {
         guard !analytics.awaitingStrategyChoice,
-              let strategy = analytics.committedStrategy,
-              let phase = analytics.strategyPhase else {
+              let strategy = analytics.committedStrategy else {
             return CityStrategyHUDPresentation(
                 eyebrow: "CITY PRIORITY",
                 title: "Choose a growth engine",
@@ -49,6 +48,27 @@ struct CityStrategyHUDPresentation: Equatable {
             )
         }
 
+        if let secondActPhase = analytics.secondActPhase {
+            return regional(
+                strategy: strategy,
+                phase: secondActPhase,
+                days: analytics.secondActDaysUntilConsequence,
+                statusText: analytics.regionalCapitalStatusText
+            )
+        }
+
+        guard let phase = analytics.strategyPhase else {
+            return CityStrategyHUDPresentation(
+                eyebrow: "CITY PRIORITY",
+                title: "Review the current objective",
+                status: "CITY ACTIVE",
+                summary: analytics.townCharterStatusText,
+                tone: .active,
+                diagnostic: nil,
+                actions: []
+            )
+        }
+
         return switch strategy {
         case .commercialStewardship:
             commercial(
@@ -61,6 +81,112 @@ struct CityStrategyHUDPresentation: Equatable {
                 phase: phase,
                 days: analytics.strategyDaysUntilConsequence,
                 resolution: analytics.strategyRecoveryResolution
+            )
+        }
+    }
+
+    private static func regional(
+        strategy: CityStrategy,
+        phase: CitySecondActPhase,
+        days: Int?,
+        statusText: String
+    ) -> CityStrategyHUDPresentation {
+        let commercial = strategy == .commercialStewardship
+        let diagnostic = CityDirectResponse(
+            title: commercial ? "Tax policy & cashflow" : "Utility capacity",
+            command: commercial ? .inspectorFinances : .inspectorUtilities,
+            explanation: commercial
+                ? "Review current tax policy, revenue, and upkeep through the existing Command Center."
+                : "Review current power, water, coverage, and reserve through the existing Command Center.",
+            focusesMap: false
+        )
+        let actions: [CityDirectResponse] = commercial
+            ? [
+                CityDirectResponse(
+                    title: "Review tax policy",
+                    command: .inspectorFinances,
+                    explanation: "Tax relief may support demand but reduces revenue.",
+                    focusesMap: false
+                ),
+                CityDirectResponse(
+                    title: "Build a park",
+                    command: .buildPark,
+                    explanation: "Select Park and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+            ]
+            : [
+                CityDirectResponse(
+                    title: "Add power",
+                    command: .buildPowerPlant,
+                    explanation: "Select Power Plant and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+                CityDirectResponse(
+                    title: "Add water",
+                    command: .buildWaterTower,
+                    explanation: "Select Water Tower and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+                CityDirectResponse(
+                    title: "Add green buffer",
+                    command: .buildPark,
+                    explanation: "Select Park and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+            ]
+        let eyebrow = commercial ? "REGIONAL MAIN STREET" : "REGIONAL FREIGHT"
+
+        return switch phase {
+        case .mandate:
+            .init(
+                eyebrow: eyebrow,
+                title: "Regional Capital mandate",
+                status: timedStatus("MANDATE", days: days),
+                summary: statusText,
+                tone: .active,
+                diagnostic: diagnostic,
+                actions: actions
+            )
+        case .warnedPressure:
+            .init(
+                eyebrow: eyebrow,
+                title: commercial ? "Protect regional retail" : "Protect the regional grid",
+                status: timedStatus("PRESSURE", days: days),
+                summary: statusText,
+                tone: .urgent,
+                diagnostic: diagnostic,
+                actions: actions
+            )
+        case .recovery:
+            .init(
+                eyebrow: eyebrow,
+                title: commercial ? "Restore regional retail" : "Recover regional freight",
+                status: "RECOVERY",
+                summary: statusText,
+                tone: .recovery,
+                diagnostic: diagnostic,
+                actions: actions
+            )
+        case .qualification:
+            .init(
+                eyebrow: eyebrow,
+                title: "Sustain Regional Capital standards",
+                status: "QUALIFYING",
+                summary: statusText,
+                tone: .active,
+                diagnostic: diagnostic,
+                actions: []
+            )
+        case .completed:
+            .init(
+                eyebrow: commercial ? "REGIONAL MAIN STREET CAPITAL" : "REGIONAL FREIGHT CAPITAL",
+                title: "Regional Capital secured",
+                status: "RECOGNIZED",
+                summary: statusText,
+                tone: .resolved,
+                diagnostic: diagnostic,
+                actions: []
             )
         }
     }

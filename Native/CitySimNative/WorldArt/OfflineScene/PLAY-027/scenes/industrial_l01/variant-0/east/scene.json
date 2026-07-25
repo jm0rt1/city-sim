@@ -47,9 +47,51 @@
           13.199999999999999,
           0
         ]
+      },
+      {
+        "dimensions" : [
+          2.7999999999999998,
+          55,
+          2.7999999999999998
+        ],
+        "id" : "i01-east-frontage-north-gantry-post-v5",
+        "materialID" : "chimney-metal",
+        "positionWorld" : [
+          25,
+          28.5,
+          -13
+        ]
+      },
+      {
+        "dimensions" : [
+          2.7999999999999998,
+          55,
+          2.7999999999999998
+        ],
+        "id" : "i01-east-frontage-south-gantry-post-v5",
+        "materialID" : "chimney-metal",
+        "positionWorld" : [
+          25,
+          28.5,
+          13
+        ]
+      },
+      {
+        "dimensions" : [
+          18,
+          0.80000000000000004,
+          26
+        ],
+        "id" : "i01-east-frontage-service-apron-v5",
+        "materialID" : "concrete-industrial-warm",
+        "positionWorld" : [
+          23,
+          2.6499999999999999,
+          0
+        ]
       }
     ],
-    "massingProfile" : "directional-loading-works-sightline-v4",
+    "massingProfile" : "directional-loading-throat-gantry-v5",
     "roofHeight" : 10,
     "roofMaterialID" : "roof-industrial-charcoal",
     "roofOverhang" : 1,
@@ -145,6 +187,48 @@
         "positionWorld" : [
           22,
           23.100000000000001,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          4,
+          4,
+          30
+        ],
+        "id" : "i01-east-frontage-gantry-header-v5",
+        "materialID" : "concrete-industrial-warm",
+        "positionWorld" : [
+          25,
+          56,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          4.5999999999999996,
+          1.6000000000000001,
+          26
+        ],
+        "id" : "i01-east-frontage-hazard-crown-v5",
+        "materialID" : "hazard-yellow",
+        "positionWorld" : [
+          25,
+          59,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          3,
+          0.34999999999999998,
+          18
+        ],
+        "id" : "i01-east-frontage-apron-stripe-v5",
+        "materialID" : "hazard-yellow",
+        "positionWorld" : [
+          29,
+          3,
           0
         ]
       }
@@ -658,11 +742,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v04"
+    "sourceRevisionBinding" : "source-v05"
   },
-  "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v4",
+  "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v5",
   "schema" : 2,
-  "sourceRevision" : "source-v04",
+  "sourceRevision" : "source-v05",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",

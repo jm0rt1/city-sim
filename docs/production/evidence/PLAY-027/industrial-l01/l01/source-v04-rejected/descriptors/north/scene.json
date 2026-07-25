@@ -9,9 +9,9 @@
       ],
       "materialID" : "chimney-metal",
       "positionWorld" : [
-        19,
+        -19,
         42.5,
-        -14
+        14
       ]
     },
     "depth" : 56,
@@ -22,140 +22,128 @@
     "massBlocks" : [
       {
         "dimensions" : [
-          52,
+          17,
           26,
           42
         ],
-        "id" : "i01-south-setback-hall",
+        "id" : "i01-north-west-hall-wing-v4",
         "materialID" : "corrugated-steel-sage",
         "positionWorld" : [
-          0,
+          -18.5,
           15,
-          -5
+          5
         ]
       },
       {
         "dimensions" : [
-          32,
+          17,
+          26,
+          42
+        ],
+        "id" : "i01-north-east-hall-wing-v4",
+        "materialID" : "corrugated-steel-sage",
+        "positionWorld" : [
+          18.5,
+          15,
+          5
+        ]
+      },
+      {
+        "dimensions" : [
+          20,
           22,
           12
         ],
-        "id" : "i01-south-dock-house",
+        "id" : "i01-north-recessed-dock-house-v4",
         "materialID" : "brick-industrial-umber",
         "positionWorld" : [
           0,
           13.199999999999999,
-          22
-        ]
-      },
-      {
-        "dimensions" : [
-          2.7999999999999998,
-          55,
-          2.7999999999999998
-        ],
-        "id" : "i01-south-frontage-east-gantry-post-v5",
-        "materialID" : "chimney-metal",
-        "positionWorld" : [
-          13,
-          28.5,
-          25
-        ]
-      },
-      {
-        "dimensions" : [
-          2.7999999999999998,
-          55,
-          2.7999999999999998
-        ],
-        "id" : "i01-south-frontage-west-gantry-post-v5",
-        "materialID" : "chimney-metal",
-        "positionWorld" : [
-          -13,
-          28.5,
-          25
-        ]
-      },
-      {
-        "dimensions" : [
-          26,
-          0.80000000000000004,
-          18
-        ],
-        "id" : "i01-south-frontage-service-apron-v5",
-        "materialID" : "concrete-industrial-warm",
-        "positionWorld" : [
-          0,
-          2.6499999999999999,
-          23
+          -22
         ]
       }
     ],
-    "massingProfile" : "directional-loading-throat-gantry-v5",
+    "massingProfile" : "directional-loading-works-sightline-v4",
     "roofHeight" : 10,
     "roofMaterialID" : "roof-industrial-charcoal",
     "roofOverhang" : 1,
     "roofVolumes" : [
       {
         "dimensions" : [
-          17,
+          8,
           9,
           42
         ],
-        "id" : "i01-south-roof-west",
+        "id" : "i01-north-roof-far-west-v4",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
-          -17.5,
+          -23,
           32.799999999999997,
-          -5
+          5
         ],
         "shape" : "hip",
         "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
-          17,
+          8,
           9,
           42
         ],
-        "id" : "i01-south-roof-center",
+        "id" : "i01-north-roof-inner-west-v4",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
-          0,
+          -14,
           33,
-          -5
+          5
         ],
         "shape" : "hip",
         "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
-          17,
+          8,
           9,
           42
         ],
-        "id" : "i01-south-roof-east",
+        "id" : "i01-north-roof-inner-east-v4",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
-          17.5,
-          33.200000000000003,
-          -5
+          14,
+          33,
+          5
         ],
         "shape" : "hip",
         "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
-          32,
+          8,
+          9,
+          42
+        ],
+        "id" : "i01-north-roof-far-east-v4",
+        "materialID" : "roof-industrial-charcoal",
+        "positionWorld" : [
+          23,
+          33.200000000000003,
+          5
+        ],
+        "shape" : "hip",
+        "trimMaterialID" : "concrete-industrial-warm"
+      },
+      {
+        "dimensions" : [
+          20,
           5,
           12
         ],
-        "id" : "i01-south-dock-roof",
+        "id" : "i01-north-dock-roof-v4",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           0,
           27,
-          22
+          -22
         ],
         "shape" : "flat-parapet",
         "trimMaterialID" : "hazard-yellow"
@@ -164,72 +152,44 @@
     "trimBands" : [
       {
         "dimensions" : [
-          53,
+          18,
           1.3999999999999999,
           43
         ],
-        "id" : "i01-south-main-datum",
+        "id" : "i01-north-west-datum-v4",
         "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
-          0,
+          -18.5,
           9.3000000000000007,
-          -5
-        ]
-      },
-      {
-        "dimensions" : [
-          33,
-          1.2,
-          12.5
-        ],
-        "id" : "i01-south-dock-header",
-        "materialID" : "hazard-yellow",
-        "positionWorld" : [
-          0,
-          23.100000000000001,
-          22
-        ]
-      },
-      {
-        "dimensions" : [
-          30,
-          4,
-          4
-        ],
-        "id" : "i01-south-frontage-gantry-header-v5",
-        "materialID" : "concrete-industrial-warm",
-        "positionWorld" : [
-          0,
-          56,
-          25
-        ]
-      },
-      {
-        "dimensions" : [
-          26,
-          1.6000000000000001,
-          4.5999999999999996
-        ],
-        "id" : "i01-south-frontage-hazard-crown-v5",
-        "materialID" : "hazard-yellow",
-        "positionWorld" : [
-          0,
-          59,
-          25
+          5
         ]
       },
       {
         "dimensions" : [
           18,
-          0.34999999999999998,
-          3
+          1.3999999999999999,
+          43
         ],
-        "id" : "i01-south-frontage-apron-stripe-v5",
+        "id" : "i01-north-east-datum-v4",
+        "materialID" : "concrete-industrial-warm",
+        "positionWorld" : [
+          18.5,
+          9.3000000000000007,
+          5
+        ]
+      },
+      {
+        "dimensions" : [
+          21,
+          1.2,
+          12.5
+        ],
+        "id" : "i01-north-dock-header-v4",
         "materialID" : "hazard-yellow",
         "positionWorld" : [
           0,
-          3,
-          29
+          23.100000000000001,
+          -22
         ]
       }
     ],
@@ -279,21 +239,21 @@
     "baseWorld" : [
       0,
       2,
-      28
+      -28
     ],
     "canopyDepth" : 18,
     "depth" : 2,
     "doorMaterialID" : "loading-door-steel",
-    "facadeID" : "south-facade",
+    "facadeID" : "north-facade",
     "height" : 18,
-    "hingeSide" : "left",
+    "hingeSide" : "right",
     "pavilionDepth" : 7,
     "pavilionHeight" : 24,
     "pavilionMaterialID" : "hazard-yellow",
     "pavilionRoofHeight" : 3,
     "pavilionWidth" : 28,
     "porchColumnWidth" : 1.8,
-    "porchLateralOffset" : 0,
+    "porchLateralOffset" : 10,
     "porchWidth" : 32,
     "stepCount" : 1,
     "stepRun" : 2,
@@ -314,7 +274,7 @@
           -28
         ]
       ],
-      "hasEntrance" : false,
+      "hasEntrance" : true,
       "id" : "north-facade",
       "materialID" : "corrugated-steel-sage",
       "windowBays" : [
@@ -324,29 +284,19 @@
         {
           "centersWorld" : [
             [
-              -18,
-              23.5,
-              -25.699999999999999
+              -5.5,
+              20.5,
+              -27.199999999999999
             ],
             [
-              -5,
-              23.5,
-              -25.699999999999999
-            ],
-            [
-              9,
-              23.5,
-              -25.699999999999999
-            ],
-            [
-              20,
-              23.5,
-              -25.699999999999999
+              5.5,
+              20.5,
+              -27.199999999999999
             ]
           ],
           "floor" : 1,
           "height" : 5.5,
-          "id" : "s-north-clerestory",
+          "id" : "north-dockhouse-clerestory-v4",
           "materialID" : "industrial-glass",
           "sillHeight" : 18,
           "width" : 7
@@ -377,22 +327,22 @@
             [
               25.699999999999999,
               23.5,
-              -15
+              -16
             ],
             [
               25.699999999999999,
               23.5,
-              1
+              0
             ],
             [
               25.699999999999999,
               23.5,
-              18
+              16
             ]
           ],
           "floor" : 1,
           "height" : 5.5,
-          "id" : "s-east-clerestory",
+          "id" : "n-east-clerestory",
           "materialID" : "industrial-glass",
           "sillHeight" : 18,
           "width" : 7
@@ -411,7 +361,7 @@
           28
         ]
       ],
-      "hasEntrance" : true,
+      "hasEntrance" : false,
       "id" : "south-facade",
       "materialID" : "corrugated-steel-sage",
       "windowBays" : [
@@ -421,19 +371,29 @@
         {
           "centersWorld" : [
             [
-              10,
-              20.5,
-              27.199999999999999
+              18,
+              23.5,
+              25.699999999999999
             ],
             [
-              -10,
-              20.5,
-              27.199999999999999
+              5,
+              23.5,
+              25.699999999999999
+            ],
+            [
+              -9,
+              23.5,
+              25.699999999999999
+            ],
+            [
+              -20,
+              23.5,
+              25.699999999999999
             ]
           ],
           "floor" : 1,
           "height" : 5.5,
-          "id" : "south-dockhouse-clerestory-v3",
+          "id" : "n-south-clerestory",
           "materialID" : "industrial-glass",
           "sillHeight" : 18,
           "width" : 7
@@ -464,7 +424,7 @@
             [
               -25.699999999999999,
               23.5,
-              17
+              15
             ],
             [
               -25.699999999999999,
@@ -474,12 +434,12 @@
             [
               -25.699999999999999,
               23.5,
-              -16
+              -17
             ]
           ],
           "floor" : 1,
           "height" : 5.5,
-          "id" : "s-west-clerestory",
+          "id" : "n-west-clerestory",
           "materialID" : "industrial-glass",
           "sillHeight" : 18,
           "width" : 7
@@ -525,23 +485,23 @@
   },
   "occlusionExclusions" : [
     {
-      "id" : "south-loading-frontage-clearance",
+      "id" : "north-loading-frontage-clearance",
       "polygonWorld" : [
         [
-          24,
-          20
+          -24,
+          -50
+        ],
+        [
+          26,
+          -50
+        ],
+        [
+          26,
+          -20
         ],
         [
           -24,
-          20
-        ],
-        [
-          -24,
-          50
-        ],
-        [
-          24,
-          50
+          -20
         ]
       ],
       "purpose" : "protect the declared industrial loading-bay socket, dock apron, and visible service-yard return"
@@ -551,17 +511,17 @@
   "props" : [
     {
       "dimensions" : [
-        9,
+        10,
         7,
-        11
+        9
       ],
-      "id" : "south-rooftop-hvac",
+      "id" : "north-rooftop-hvac",
       "kind" : "rooftop-hvac",
       "materialID" : "rooftop-metal",
       "positionWorld" : [
-        -10,
-        42.5,
-        -8
+        11,
+        42.200000000000003,
+        9
       ]
     },
     {
@@ -570,13 +530,13 @@
         17,
         4.5
       ],
-      "id" : "south-exhaust-stack",
+      "id" : "north-exhaust-stack",
       "kind" : "exhaust-stack",
       "materialID" : "exhaust-dark",
       "positionWorld" : [
-        13,
+        -12,
         44.100000000000001,
-        -9
+        10
       ]
     },
     {
@@ -585,13 +545,13 @@
         12,
         8
       ],
-      "id" : "south-service-tank",
+      "id" : "north-service-tank",
       "kind" : "service-tank",
       "materialID" : "tank-oxide",
       "positionWorld" : [
-        -21,
+        21,
         6.2000000000000002,
-        -18
+        18
       ]
     }
   ],
@@ -616,12 +576,12 @@
     ],
     "doorBaseSource" : [
       [
-        678,
-        851
+        858,
+        685
       ],
       [
-        602,
-        813
+        934,
+        723
       ]
     ],
     "footprintPolygonSource" : [
@@ -645,16 +605,16 @@
     "frontageEdgeSource" : [
       [
         768,
-        896
+        640
       ],
       [
-        512,
+        1024,
         768
       ]
     ],
     "frontageSocketSource" : [
-      640,
-      832
+      896,
+      704
     ],
     "groundPivotSource" : [
       768,
@@ -742,11 +702,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v05"
+    "sourceRevisionBinding" : "source-v04"
   },
-  "sceneGeometryID" : "industrial-l01-v0-south-loading-works-geometry-v5",
+  "sceneGeometryID" : "industrial-l01-v0-north-loading-works-geometry-v4",
   "schema" : 2,
-  "sourceRevision" : "source-v05",
+  "sourceRevision" : "source-v04",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",
@@ -759,5 +719,5 @@
     "sha256" : "201ef1a1bdc54fb048f7bb00708e97c1605c0ca48814ba28c8dc6fdc65d3fccd"
   },
   "variantID" : "variant-0",
-  "viewDirection" : "south"
+  "viewDirection" : "north"
 }

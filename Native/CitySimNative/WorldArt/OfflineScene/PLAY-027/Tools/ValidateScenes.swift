@@ -348,16 +348,42 @@ enum ValidateScenesMain {
                     "entrance pavilion/porch hierarchy is not readable"
                 )
             }
-            if
-                (direction == "north" || direction == "west"),
-                (
-                    descriptor.entrance.canopyDepth < 18
-                        || abs(descriptor.entrance.porchLateralOffset) < 10
-                )
-            {
-                itemFailures.append(
-                    "far frontage lacks a grounded visible porch return"
-                )
+            if direction == "north" || direction == "west" {
+                if family == "industrial"
+                    && descriptor.sourceRevision == "source-v05"
+                {
+                    let prefix = "i01-\(direction)-frontage"
+                    let masses = descriptor.building.massBlocks ?? []
+                    let trims = descriptor.building.trimBands ?? []
+                    let gantryPosts = masses.filter {
+                        $0.id.hasPrefix(prefix)
+                            && $0.id.contains("gantry-post")
+                    }
+                    let hasApron = masses.contains {
+                        $0.id == "\(prefix)-service-apron-v5"
+                    }
+                    let hasHeader = trims.contains {
+                        $0.id == "\(prefix)-gantry-header-v5"
+                    }
+                    let hasCrown = trims.contains {
+                        $0.id == "\(prefix)-hazard-crown-v5"
+                    }
+                    if gantryPosts.count != 2
+                        || !hasApron
+                        || !hasHeader
+                        || !hasCrown
+                    {
+                        itemFailures.append(
+                            "far industrial frontage lacks authored loading throat infrastructure"
+                        )
+                    }
+                } else if descriptor.entrance.canopyDepth < 18
+                    || abs(descriptor.entrance.porchLateralOffset) < 10
+                {
+                    itemFailures.append(
+                        "far frontage lacks a grounded visible porch return"
+                    )
+                }
             }
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")

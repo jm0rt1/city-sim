@@ -1562,6 +1562,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         if
             descriptor.sourceRevision != "source-v03",
             descriptor.sourceRevision != "source-v04",
+            descriptor.sourceRevision != "source-v05",
             abs(entrance.porchLateralOffset) >= 10
         {
             let returnNormal: [Double]

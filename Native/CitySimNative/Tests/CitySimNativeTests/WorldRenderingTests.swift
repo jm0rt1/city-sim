@@ -1189,15 +1189,35 @@ final class WorldRenderingTests: XCTestCase {
             backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
             10
         )
-        var fieldMarks: [SKNode] = []
-        backdrop.enumerateChildNodes(withName: "//terrain.field-mark.segment.*") { node, _ in
-            fieldMarks.append(node)
+        var furrowNodes: [SKShapeNode] = []
+        backdrop.enumerateChildNodes(withName: "//terrain.macro.furrows.*") { node, _ in
+            if let shape = node as? SKShapeNode { furrowNodes.append(shape) }
         }
-        XCTAssertFalse(fieldMarks.isEmpty)
-        XCTAssertTrue(fieldMarks.allSatisfy {
-            let frame = $0.calculateAccumulatedFrame()
-            return frame.width <= 45 && frame.height <= 24
-        })
+        XCTAssertFalse(furrowNodes.isEmpty)
+        var maximumFurrowSegmentLength: CGFloat = 0
+        for node in furrowNodes {
+            var lastMove: CGPoint?
+            node.path?.applyWithBlock { elementPointer in
+                let element = elementPointer.pointee
+                switch element.type {
+                case .moveToPoint:
+                    lastMove = element.points[0]
+                case .addLineToPoint:
+                    if let lastMove {
+                        maximumFurrowSegmentLength = max(
+                            maximumFurrowSegmentLength,
+                            hypot(
+                                element.points[0].x - lastMove.x,
+                                element.points[0].y - lastMove.y
+                            )
+                        )
+                    }
+                default:
+                    break
+                }
+            }
+        }
+        XCTAssertLessThanOrEqual(maximumFurrowSegmentLength, 45)
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.parcel.") })
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })

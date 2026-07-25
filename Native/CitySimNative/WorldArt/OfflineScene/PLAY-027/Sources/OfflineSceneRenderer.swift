@@ -3220,6 +3220,7 @@ enum OfflineSceneRendererMain {
             guard [
                 IndustrialL2V5EastStageCaptureContract.contractID,
                 IndustrialL2V5EastSceneKitLanczosContract.contractID,
+                IndustrialL2V6EastSceneKitCaptureContract.contractID,
             ].contains(diagnosticStageContractID) else {
                 throw OfflineRendererError.invalid(
                     "unknown diagnostic stage contract"
@@ -3395,11 +3396,40 @@ enum OfflineSceneRendererMain {
                 descriptor: descriptor,
                 sampling: descriptorSampling
             )
+        let diagnosticSourceV06EastCaptureRecord =
+            try IndustrialL2V6EastSceneKitCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V6EastSceneKitCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
         guard
             [
                 diagnosticMSAAIsolationRecord != nil,
                 diagnosticStageIsolationRecord != nil,
                 diagnosticSceneKitLanczosRecord != nil,
+                diagnosticSourceV06EastCaptureRecord != nil,
             ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
@@ -3410,6 +3440,7 @@ enum OfflineSceneRendererMain {
             diagnosticMSAAIsolationRecord?.value
             ?? diagnosticStageIsolationRecord?.value
             ?? diagnosticSceneKitLanczosRecord?.value
+            ?? diagnosticSourceV06EastCaptureRecord?.value
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3549,7 +3580,10 @@ enum OfflineSceneRendererMain {
                 descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
         let oversampledSupportWindow =
-            try diagnosticSceneKitLanczosRecord.map {
+            try (
+                diagnosticSceneKitLanczosRecord
+                    ?? diagnosticSourceV06EastCaptureRecord
+            ).map {
                 try rendererOversampledSupportWindowRecord(
                     image: oversampled,
                     geometry: $0.supportGeometry
@@ -3756,6 +3790,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5MSAAIsolationContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastSceneKitCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []

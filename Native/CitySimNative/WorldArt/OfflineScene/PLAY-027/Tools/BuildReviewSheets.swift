@@ -12,7 +12,7 @@ enum ReviewSheetError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: build-review-sheets --repository-root <path> --north <png> --east <png> --south <png> --west <png> --source-sheet <png> --actual-sheet <png> --grayscale-sheet <png> --manifest <json>"
+            return "usage: build-review-sheets --repository-root <path> --north <png> --east <png> --south <png> --west <png> --source-sheet <png> --actual-sheet <png> --grayscale-sheet <png> --footprint-sheet <png> --footprint-grayscale-sheet <png> --zoom-sheet <png> --manifest <json>"
         case let .invalid(message):
             return message
         }
@@ -215,6 +215,20 @@ func buildSheet(
     return output
 }
 
+func cropImages(
+    _ images: [CGImage],
+    sourceRect: CGRect
+) throws -> [CGImage] {
+    try images.map { image in
+        guard let cropped = image.cropping(to: sourceRect) else {
+            throw ReviewSheetError.invalid(
+                "could not crop fixed registered review envelope"
+            )
+        }
+        return cropped
+    }
+}
+
 @main
 enum BuildReviewSheetsMain {
     static func main() throws {
@@ -252,6 +266,24 @@ enum BuildReviewSheetsMain {
                 in: arguments
             )
         ).standardizedFileURL
+        let footprintSheetURL = URL(
+            fileURLWithPath: try sheetArgument(
+                "--footprint-sheet",
+                in: arguments
+            )
+        ).standardizedFileURL
+        let footprintGrayscaleSheetURL = URL(
+            fileURLWithPath: try sheetArgument(
+                "--footprint-grayscale-sheet",
+                in: arguments
+            )
+        ).standardizedFileURL
+        let zoomSheetURL = URL(
+            fileURLWithPath: try sheetArgument(
+                "--zoom-sheet",
+                in: arguments
+            )
+        ).standardizedFileURL
         let manifestURL = URL(
             fileURLWithPath: try sheetArgument(
                 "--manifest",
@@ -269,6 +301,20 @@ enum BuildReviewSheetsMain {
         }
         let reviewImages = try rawImages.map(reviewAlphaImage)
         let grayscaleImages = try reviewImages.map(grayscaleImage)
+        let registeredReviewRect = CGRect(
+            x: 512,
+            y: 512,
+            width: 512,
+            height: 384
+        )
+        let registeredReviewImages = try cropImages(
+            reviewImages,
+            sourceRect: registeredReviewRect
+        )
+        let registeredGrayscaleImages = try cropImages(
+            grayscaleImages,
+            sourceRect: registeredReviewRect
+        )
         let sourceSheet = try buildSheet(
             images: rawImages,
             panelSize: CGSize(width: 1536, height: 1024),
@@ -287,9 +333,33 @@ enum BuildReviewSheetsMain {
             background: [0.14, 0.14, 0.14, 1],
             interpolation: .high
         )
+        let footprintSheet = try buildSheet(
+            images: registeredReviewImages,
+            panelSize: CGSize(width: 144, height: 108),
+            background: [0.14, 0.15, 0.16, 1],
+            interpolation: .none
+        )
+        let zoomSheet = try buildSheet(
+            images: registeredReviewImages,
+            panelSize: CGSize(width: 512, height: 384),
+            background: [0.14, 0.15, 0.16, 1],
+            interpolation: .none
+        )
+        let footprintGrayscaleSheet = try buildSheet(
+            images: registeredGrayscaleImages,
+            panelSize: CGSize(width: 144, height: 108),
+            background: [0.14, 0.14, 0.14, 1],
+            interpolation: .none
+        )
         try writeSheetPNG(sourceSheet, to: sourceSheetURL)
         try writeSheetPNG(actualSheet, to: actualSheetURL)
         try writeSheetPNG(grayscaleSheet, to: grayscaleSheetURL)
+        try writeSheetPNG(footprintSheet, to: footprintSheetURL)
+        try writeSheetPNG(
+            footprintGrayscaleSheet,
+            to: footprintGrayscaleSheetURL
+        )
+        try writeSheetPNG(zoomSheet, to: zoomSheetURL)
 
         let inputRecords = try zip(directions, inputURLs).map {
             direction, url in
@@ -306,7 +376,7 @@ enum BuildReviewSheetsMain {
             "schema": 1,
             "task": "PLAY-027",
             "calibrationID":
-                "residential-l01-variant-0-directional-v01",
+                "residential-l01-variant-0-directional-v02",
             "directionOrder": directions,
             "layout": [
                 "columns": 2,
@@ -346,6 +416,50 @@ enum BuildReviewSheetsMain {
                 "sheetPixels": [864, 576],
                 "conversion":
                     "Core Image CIColorControls saturation=0",
+            ],
+            "registeredFootprintActualScale": [
+                "file": sheetRelativePath(
+                    footprintSheetURL,
+                    repositoryRoot: repositoryRoot
+                ),
+                "sha256": try sheetSHA256(footprintSheetURL),
+                "sourceCrop": [512, 512, 512, 384],
+                "sheetPixels": [288, 216],
+                "panelPixels": [144, 108],
+                "scale": 0.28125,
+                "interpolation": "none",
+                "presentation":
+                    "fixed descriptor-derived tile and vertical sprite envelope at native-2x scale",
+            ],
+            "registeredFootprintGrayscale": [
+                "file": sheetRelativePath(
+                    footprintGrayscaleSheetURL,
+                    repositoryRoot: repositoryRoot
+                ),
+                "sha256": try sheetSHA256(
+                    footprintGrayscaleSheetURL
+                ),
+                "sourceCrop": [512, 512, 512, 384],
+                "sheetPixels": [288, 216],
+                "panelPixels": [144, 108],
+                "scale": 0.28125,
+                "interpolation": "none",
+                "conversion":
+                    "Core Image CIColorControls saturation=0",
+            ],
+            "registeredFootprintZoom": [
+                "file": sheetRelativePath(
+                    zoomSheetURL,
+                    repositoryRoot: repositoryRoot
+                ),
+                "sha256": try sheetSHA256(zoomSheetURL),
+                "sourceCrop": [512, 512, 512, 384],
+                "sheetPixels": [1024, 768],
+                "panelPixels": [512, 384],
+                "scale": 1,
+                "interpolation": "none",
+                "presentation":
+                    "fixed descriptor-derived tile and vertical sprite envelope at source pixel scale",
             ],
             "previewAlphaIsNormalizedOutput": false,
             "reviewStatus": "pending-independent-source-art-review",

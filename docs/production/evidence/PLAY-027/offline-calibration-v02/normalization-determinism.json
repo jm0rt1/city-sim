@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "set": "residential-l01-variant-0-replacement-calibration",
+  "runs": 2,
+  "repeatRunFileHashesIdentical": true,
+  "uniqueNormalizedFileHashes": 12,
+  "normalizer": {
+    "file": "Native/CitySimNative/WorldArt/GeneratedV4/tools/normalize_calibration_asset.py",
+    "sha256": "0901077cf90151ea1bda1fbe0f21f3c4cebadc72733c762e8d7122480f2a6048",
+    "runtime": "Codex bundled Python with preinstalled Pillow",
+    "repositoryDependencyAdded": false,
+    "normalizerModified": false
+  },
+  "outputs": [
+    {"direction": "north", "revision": "source-v04", "lod": "block", "sha256": "a86e663764d95b2909ea587ec3975f426c132ab344419f8ae7aebeab6d6326c2"},
+    {"direction": "north", "revision": "source-v04", "lod": "neighborhood", "sha256": "bc1ed230574ecdc8b8060c9359d386ea9a9f1f44fc55e33f50029dfc7b34b45e"},
+    {"direction": "north", "revision": "source-v04", "lod": "city", "sha256": "ca6ecb00ec6209eb2c0bdf47a35361acc5f8d981ff8f4b1d8f6075c7ec81972c"},
+    {"direction": "east", "revision": "source-v04", "lod": "block", "sha256": "bf26e45940710e6f6d7e44bc3ad58193c81f44dd9a4403130561535731fe3bc9"},
+    {"direction": "east", "revision": "source-v04", "lod": "neighborhood", "sha256": "3fc45222b71c22ecaecc8ec205719a542b23b83fcd06dd5b676a26ddc0a2f836"},
+    {"direction": "east", "revision": "source-v04", "lod": "city", "sha256": "093f92c14a928d76d432f3b9ab72c57f6761a222dc940bf5ed92508085ab0f6b"},
+    {"direction": "south", "revision": "source-v04", "lod": "block", "sha256": "54e76759e257f73f83880148444d615caefae85c53cac13fe39a61fceaf89a69"},
+    {"direction": "south", "revision": "source-v04", "lod": "neighborhood", "sha256": "54e3188fbeaa0b13ea73a6a5e621cc6b8876b92bd19b46989135335e824f1a17"},
+    {"direction": "south", "revision": "source-v04", "lod": "city", "sha256": "1b0d06dad24fe66a1411f170063b8b1e2f8e77c3fe2de3b740659d3174f676ff"},
+    {"direction": "west", "revision": "source-v05", "lod": "block", "sha256": "672ea25b758c0752b0986b9f40f666a3316be303f6a413f251ee2f0da0553d22"},
+    {"direction": "west", "revision": "source-v05", "lod": "neighborhood", "sha256": "39f1adf16e417bd66add42abd2c03b13665332b82f810db5efe1e44b639c8605"},
+    {"direction": "west", "revision": "source-v05", "lod": "city", "sha256": "5bc19660c1b4830f9e0265278dae280e1ba21418b4b9297181e9dd437f2fcea1"}
+  ],
+  "passed": true,
+  "productionSelected": false
+}

@@ -353,7 +353,7 @@ enum ValidateScenesMain {
             "schema": 1,
             "task": "PLAY-027",
             "calibrationID":
-                "residential-l01-variant-0-directional-v01",
+                "residential-l01-variant-0-directional-v02",
             "schemaFile": repositoryRelativePath(
                 schemaURL,
                 repositoryRoot: repositoryRoot

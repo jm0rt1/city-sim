@@ -186,8 +186,13 @@ final class WorldRenderingTests: XCTestCase {
         let pollutionBounds = pollution.calculateAccumulatedFrame()
         XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
         XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
-        XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.60)
-        XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.50)
+        XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.40)
+        XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.20)
+        XCTAssertLessThan(
+            pollutionBounds.maxY,
+            -style.tileHeight * 0.20,
+            "Pollution marks must stay on the ground/frontage plane instead of crossing facades"
+        )
 
         let mild = CitySpatialConsequence(
             coordinate: tile.coordinate,
@@ -1148,10 +1153,20 @@ final class WorldRenderingTests: XCTestCase {
         let backdrop = renderer.makeBackdrop(gridWidth: 24, gridHeight: 24)
         let backdropNames = descendantNames(in: backdrop)
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.parcel.") }.count, 36)
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.boundary.") }.count, 36)
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count, 18)
-        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.patch.") })
+        XCTAssertEqual(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.material.patch.") }.count,
+            36
+        )
+        XCTAssertGreaterThan(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
+            12
+        )
+        XCTAssertGreaterThan(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
+            8
+        )
+        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.parcel.") })
+        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })
         XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
     }
@@ -1223,6 +1238,8 @@ final class WorldRenderingTests: XCTestCase {
         let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(cityVisible.contains("lot.lod.city.mass.cityHall"))
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.neighborhood.public-realm.") })
+        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
@@ -1238,6 +1255,8 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.neighborhood"))
         let neighborhoodVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(neighborhoodVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(neighborhoodVisible.contains("lot.lod.neighborhood.public-realm.civic"))
+        XCTAssertFalse(neighborhoodVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.city_hall_l01.neighborhood"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
@@ -1252,6 +1271,8 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.block"))
         let blockVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(blockVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(blockVisible.contains("lot.lod.neighborhood.public-realm.civic"))
+        XCTAssertTrue(blockVisible.contains("lot.lod.block.entrance.cityHall"))
         XCTAssertTrue(blockVisible.contains("lot.generated-v4.city_hall_l01.block"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
@@ -1294,6 +1315,63 @@ final class WorldRenderingTests: XCTestCase {
             defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
             accuracy: 0.001
         )
+    }
+
+    @MainActor
+    func testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth() throws {
+        let fixture = try XCTUnwrap(
+            try ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.moment == .complication
+            }
+        )
+        let state = fixture.state
+        let remoteIndustry = GridCoordinate(x: 4, y: 8)
+        let centralResidential = GridCoordinate(x: 9, y: 11)
+        let centralWaterTower = GridCoordinate(x: 15, y: 13)
+        XCTAssertEqual(state.tile(at: remoteIndustry)?.kind, .industrial)
+
+        for (size, insets, minimumPriorityWidth) in [
+            (
+                CGSize(width: 1_280, height: 800),
+                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
+                CGFloat(0.70)
+            ),
+            (
+                CGSize(width: 900, height: 600),
+                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
+                CGFloat(0.54)
+            ),
+        ] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(insets)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+
+            XCTAssertEqual(scene.cameraPriorityCoordinatesForTesting.count, 8)
+            XCTAssertFalse(scene.cameraPriorityCoordinatesForTesting.contains(remoteIndustry))
+            XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralResidential))
+            XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralWaterTower))
+            XCTAssertLessThan(
+                scene.cameraPriorityVisualBoundsForTesting.width,
+                scene.occupiedDevelopedVisualBoundsForTesting.width
+            )
+            XCTAssertGreaterThanOrEqual(
+                scene.cameraPriorityViewportOccupancyForTesting().width,
+                minimumPriorityWidth
+            )
+
+            // The remote authoritative industrial lot remains a normal
+            // semantic object and an exact inverse-isometric hit target. The
+            // camera prioritization changes no world geometry.
+            XCTAssertEqual(scene.tileRootIsAttachedForTesting(at: remoteIndustry), true)
+            XCTAssertEqual(
+                scene.resolvedCoordinateForTesting(
+                    at: scene.scenePointForTesting(at: remoteIndustry)
+                ),
+                remoteIndustry
+            )
+        }
     }
 
     @MainActor

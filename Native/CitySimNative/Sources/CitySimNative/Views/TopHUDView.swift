@@ -64,19 +64,27 @@ struct TopHUDView: View {
                         .font(.system(size: compact ? 14 : 15, weight: .bold, design: .rounded))
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
-                    Spacer(minLength: 1)
-                    Image(systemName: "building.2.crop.circle")
-                        .foregroundStyle(GameTheme.accent)
-                        .accessibilityHidden(true)
+                    if !compact {
+                        Spacer(minLength: 1)
+                        Image(systemName: "building.2.crop.circle")
+                            .foregroundStyle(GameTheme.accent)
+                            .accessibilityHidden(true)
+                    }
                 }
                 HStack(spacing: 5) {
                     Text(store.state.formattedDay)
                         .foregroundStyle(.secondary)
-                    Label(simulationStatus.label, systemImage: simulationStatus.symbol)
-                        .fontWeight(.heavy)
-                        .foregroundStyle(simulationStatusTint)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.78)
+                    if compact {
+                        Text(simulationStatus.label)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(simulationStatusTint)
+                            .lineLimit(1)
+                    } else {
+                        Label(simulationStatus.label, systemImage: simulationStatus.symbol)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(simulationStatusTint)
+                            .lineLimit(1)
+                    }
                 }
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .rounded).monospacedDigit())
             }
@@ -110,9 +118,11 @@ struct TopHUDView: View {
                             .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                             .lineLimit(1)
                         Spacer(minLength: 1)
-                        Text("\(store.completedObjectiveCount)/\(store.objectives.count)")
-                            .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .monospaced))
-                            .foregroundStyle(.secondary)
+                        if !compact {
+                            Text("\(store.completedObjectiveCount)/\(store.objectives.count)")
+                                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .monospaced))
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     ProgressView(value: objective.progress)
                         .tint(mandateComplete ? GameTheme.accent : GameTheme.information)
@@ -189,7 +199,7 @@ struct TopHUDView: View {
                 value: store.state.happiness.percentText,
                 symbol: "face.smiling.fill",
                 tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
-                detail: compact ? "Approval \(store.state.approval.percentText)" : "\(store.state.approval.percentText) mayor approval",
+                detail: compact ? "Appr \(store.state.approval.percentText)" : "\(store.state.approval.percentText) mayor approval",
                 progress: store.state.happiness / 100,
                 dense: compact
             ) { store.perform(.inspectorHappiness) }

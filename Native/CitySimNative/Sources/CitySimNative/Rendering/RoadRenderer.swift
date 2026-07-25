@@ -277,13 +277,16 @@ final class RoadRenderer {
             detail: detail
         ) {
             authoredRoad.name = "road.generated-v4.\(connections.rawValue).\(detail.assetSuffix)"
+            // Keep the accepted lane, crossing, wear, drainage, curb, and
+            // sidewalk pixels intact. A bounded whole-sprite value lift keeps
+            // the asphalt from becoming the scene's blackest mass without
+            // covering it with a procedural ribbon.
+            authoredRoad.color = style.palette.asphaltLight
+            authoredRoad.colorBlendFactor = emphasis == .developed ? 0.16 : 0.18
+            authoredRoad.alpha = 1
             corridor.addChild(authoredRoad)
         }
-        addCorridorMaterialGrade(
-            for: topology,
-            emphasis: emphasis,
-            to: corridor
-        )
+        addSocketSeamBlends(for: topology, to: corridor)
         if topology.classification == .end, let connectedEdge = topology.mask.edges.first {
             addAuthoredTerminus(
                 onUnconnectedSideOf: connectedEdge,
@@ -303,38 +306,37 @@ final class RoadRenderer {
         return root
     }
 
-    private func addCorridorMaterialGrade(
+    private func addSocketSeamBlends(
         for topology: RoadTopology,
-        emphasis: ContextEmphasis,
         to node: SKNode
     ) {
-        guard topology.classification != .isolated else { return }
-        let segments = CGMutablePath()
+        guard !topology.mask.isEmpty else { return }
+        let paths = CGMutablePath()
         for edge in topology.mask.edges {
-            segments.addPath(WorldGeometryCache.line(
-                from: .zero,
-                to: style.roadSocket(for: edge, overreach: 1.1)
+            let socket = style.roadSocket(for: edge)
+            let length = max(0.001, hypot(socket.x, socket.y))
+            let perpendicular = CGPoint(
+                x: -socket.y / length,
+                y: socket.x / length
+            )
+            paths.addPath(WorldGeometryCache.line(
+                from: CGPoint(
+                    x: socket.x - perpendicular.x * 10,
+                    y: socket.y - perpendicular.y * 10
+                ),
+                to: CGPoint(
+                    x: socket.x + perpendicular.x * 10,
+                    y: socket.y + perpendicular.y * 10
+                )
             ))
         }
-        let grade = SKShapeNode(path: segments)
-        grade.name = "road.material.unified-grade.\(topology.mask.rawValue)"
-        grade.strokeColor = style.palette.asphaltLight.withAlphaComponent(
-            emphasis == .developed ? 0.34 : 0.22
-        )
-        grade.lineWidth = 16.5
-        grade.lineCap = .butt
-        grade.lineJoin = .round
-        grade.zPosition = 2.5
-        node.addChild(grade)
-
-        let center = SKShapeNode(path: style.diamondPath(width: 18, height: 9))
-        center.name = "road.material.unified-junction.\(topology.mask.rawValue)"
-        center.fillColor = style.palette.asphaltLight.withAlphaComponent(
-            emphasis == .developed ? 0.26 : 0.16
-        )
-        center.strokeColor = .clear
-        center.zPosition = 2.5
-        node.addChild(center)
+        let seam = SKShapeNode(path: paths)
+        seam.name = "road.socket-seam-blend.\(topology.mask.rawValue)"
+        seam.strokeColor = style.palette.asphaltLight.withAlphaComponent(0.20)
+        seam.lineWidth = 1.2
+        seam.lineCap = .butt
+        seam.zPosition = 2.3
+        node.addChild(seam)
     }
 
     private func contextDistance(

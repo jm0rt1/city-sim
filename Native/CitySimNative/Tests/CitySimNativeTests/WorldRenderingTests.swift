@@ -1783,10 +1783,12 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertTrue(names.contains("road.production-corridor.developed.\(mask.rawValue)"))
             XCTAssertTrue(names.contains("road.generated-v4.\(mask.rawValue).block"))
             if mask.isEmpty {
-                XCTAssertFalse(names.contains { $0.hasPrefix("road.material.unified-") })
+                XCTAssertFalse(names.contains { $0.hasPrefix("road.socket-seam-blend.") })
             } else {
-                XCTAssertTrue(names.contains("road.material.unified-grade.\(mask.rawValue)"))
-                XCTAssertTrue(names.contains("road.material.unified-junction.\(mask.rawValue)"))
+                XCTAssertTrue(
+                    names.contains("road.socket-seam-blend.\(mask.rawValue)"),
+                    "One batched node may cover only the reciprocal socket seams"
+                )
             }
             if mask.edges.count == 1 {
                 XCTAssertTrue(names.contains("road.terminus.paved-apron"))
@@ -1885,8 +1887,24 @@ final class WorldRenderingTests: XCTestCase {
             let sprite = road.childNode(
                 withName: "//road.generated-v4.\(mask.rawValue).block"
             ) as? SKSpriteNode
-            XCTAssertEqual(sprite?.alpha ?? -1, 1, accuracy: 0.001)
-            XCTAssertEqual(sprite?.colorBlendFactor ?? -1, 0, accuracy: 0.001)
+            XCTAssertEqual(
+                sprite?.alpha ?? -1,
+                1,
+                accuracy: 0.001
+            )
+            XCTAssertEqual(
+                sprite?.colorBlendFactor ?? -1,
+                isDevelopedContext ? 0.16 : 0.18,
+                accuracy: 0.001
+            )
+            XCTAssertFalse(
+                names.contains { $0.hasPrefix("road.material.") },
+                "The generated-v4 road is the only visible road material layer"
+            )
+            XCTAssertEqual(
+                names.filter { $0.hasPrefix("road.socket-seam-blend.") }.count,
+                1
+            )
 
             let terrain = TerrainRenderer(style: WorldVisualStyle()).makeGround(
                 for: roadTile,
@@ -2129,6 +2147,35 @@ final class WorldRenderingTests: XCTestCase {
         ))
         XCTAssertTrue(powerPlantNames.contains("lot.generated-v4.industrial_l01.block"))
         XCTAssertTrue(powerPlantNames.contains("lot.generated-role.powerPlant"))
+
+        let powerPlantRoot = renderer.makeLot(
+            for: powerPlant,
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        )
+        let powerPlantSprite = powerPlantRoot.childNode(
+            withName: "//lot.generated-v4.industrial_l01.block"
+        ) as? SKSpriteNode
+        XCTAssertEqual(powerPlantSprite?.xScale ?? -1, 0.88, accuracy: 0.001)
+        XCTAssertEqual(powerPlantSprite?.yScale ?? -1, 0.88, accuracy: 0.001)
+
+        let waterTower = CityTile(
+            coordinate: GridCoordinate(x: 11, y: 14),
+            kind: .waterTower,
+            constructionProgress: 1
+        )
+        let waterTowerRoot = renderer.makeLot(
+            for: waterTower,
+            adjacentRoads: .north,
+            detail: .block,
+            reducedMotion: true
+        )
+        let waterTowerSprite = waterTowerRoot.childNode(
+            withName: "//lot.generated-v4.water_tower_l01.block"
+        ) as? SKSpriteNode
+        XCTAssertEqual(waterTowerSprite?.xScale ?? -1, 0.64, accuracy: 0.001)
+        XCTAssertEqual(waterTowerSprite?.yScale ?? -1, 0.64, accuracy: 0.001)
     }
 
     @MainActor
@@ -2156,7 +2203,25 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertGreaterThan(authored.zPosition, foundation.zPosition)
         XCTAssertNotNil(authored.texture)
         XCTAssertGreaterThan(authored.frame.width, 60)
-        XCTAssertGreaterThan(authored.frame.height, 32)
+        XCTAssertGreaterThan(authored.frame.height, 31)
+        XCTAssertEqual(authored.xScale, 0.96, accuracy: 0.001)
+        XCTAssertEqual(authored.yScale, 0.96, accuracy: 0.001)
+        let fullTextureSize = try XCTUnwrap(authored.texture?.size())
+        XCTAssertGreaterThan(fullTextureSize.width, 60)
+        XCTAssertGreaterThan(fullTextureSize.height, 32)
+        XCTAssertGreaterThan(authored.size.width, 60)
+        XCTAssertGreaterThan(authored.size.height, 32)
+        XCTAssertGreaterThanOrEqual(
+            authored.frame.width,
+            authored.size.width * authored.xScale
+        )
+        XCTAssertGreaterThanOrEqual(
+            authored.frame.height,
+            authored.size.height * authored.yScale
+        )
+        XCTAssertFalse(containsCropNode(in: root))
+        XCTAssertNil(root.childNode(withName: "//lot.park.source-edge-mask"))
+        XCTAssertNil(root.childNode(withName: "//lot.park.source-edge-ground-blend"))
         XCTAssertFalse(descendantNames(in: root).contains { $0.hasPrefix("lot.place.") })
     }
 
@@ -2578,6 +2643,7 @@ final class WorldRenderingTests: XCTestCase {
             placements: initial
         ))
         let initialRebuildCount = scene.ambientRebuildCountForTesting
+        let initialGroundRebuildCount = scene.ambientGroundRebuildCountForTesting
         let initialName = "world.activity.street.local-activity."
             + "\(firstSource.x).\(firstSource.y)"
         XCTAssertEqual(scene.renderedActivityNamesForTesting, [initialName])
@@ -2601,6 +2667,11 @@ final class WorldRenderingTests: XCTestCase {
             scene.ambientRebuildCountForTesting - initialRebuildCount,
             1,
             "A changed authoritative highest-band source must replace the rendered actor once"
+        )
+        XCTAssertEqual(
+            scene.ambientGroundRebuildCountForTesting,
+            initialGroundRebuildCount,
+            "Activity-only changes must reuse the identical developed-ground tree"
         )
     }
 
@@ -2934,7 +3005,34 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(districtNames.contains("district.ground.authoritative-public-realm"))
         XCTAssertTrue(districtNames.contains("district.ground.frontage-links.contact"))
         XCTAssertTrue(districtNames.contains("district.ground.frontage-links.material"))
+        XCTAssertTrue(districtNames.contains("district.ground.park-access.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.park-access.material"))
+        XCTAssertTrue(districtNames.contains("district.ground.service-access.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.service-access.material"))
         XCTAssertTrue(districtNames.contains { $0.hasPrefix("district.ground.authoritative-parcels.") })
+        XCTAssertTrue(
+            districtNames.contains {
+                $0.hasPrefix(
+                    "district.ground.authoritative-parcels.park.internal-material."
+                )
+            }
+        )
+        XCTAssertTrue(
+            districtNames.contains {
+                $0.hasPrefix(
+                    "district.ground.authoritative-parcels.park.surrounding-ground."
+                )
+            }
+        )
+        XCTAssertTrue(
+            districtNames.contains {
+                $0.hasPrefix(
+                    "district.ground.service-campus.internal-material"
+                )
+            }
+        )
+        XCTAssertTrue(districtNames.contains("district.ground.service-campus.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.service-campus.material"))
         XCTAssertEqual(recursiveActiveActionCount(districtGround), 0)
         XCTAssertTrue(
             scene.ambientEnvironmentNamesForTesting.contains(
@@ -3067,6 +3165,53 @@ final class WorldRenderingTests: XCTestCase {
                 1
             )
         }
+    }
+
+    @MainActor
+    func testStarterUtilityCampusGroundBridgesRealAnchorsAndAccessWithoutChangingBuildTruth() {
+        let state = CityGameState.newCity(seed: 42)
+        let renderer = TerrainRenderer(style: WorldVisualStyle())
+        let campus = renderer.serviceCampusGroundCoordinatesForTesting(in: state)
+        XCTAssertEqual(campus, Set([
+            GridCoordinate(x: 14, y: 11),
+            GridCoordinate(x: 13, y: 12),
+            GridCoordinate(x: 14, y: 12),
+            GridCoordinate(x: 15, y: 12),
+            GridCoordinate(x: 13, y: 13),
+            GridCoordinate(x: 14, y: 13),
+            GridCoordinate(x: 15, y: 13),
+        ]))
+
+        var visited = Set<GridCoordinate>()
+        var pending = [GridCoordinate(x: 13, y: 13)]
+        while let coordinate = pending.popLast() {
+            guard campus.contains(coordinate),
+                  visited.insert(coordinate).inserted else { continue }
+            pending.append(contentsOf: [
+                GridCoordinate(x: coordinate.x + 1, y: coordinate.y),
+                GridCoordinate(x: coordinate.x - 1, y: coordinate.y),
+                GridCoordinate(x: coordinate.x, y: coordinate.y + 1),
+                GridCoordinate(x: coordinate.x, y: coordinate.y - 1),
+            ])
+        }
+        XCTAssertEqual(visited, campus)
+
+        let bridge = GridCoordinate(x: 14, y: 13)
+        XCTAssertEqual(state.tile(at: bridge)?.kind, .empty)
+        if case .failure(let reason) = CitySimulation.validateBuild(
+            .residential,
+            at: bridge,
+            in: state
+        ) {
+            XCTFail("Renderer-only campus bridge must preserve buildability: \(reason)")
+        }
+
+        let ground = renderer.makeDevelopedDistrictGround(in: state)
+        let names = descendantNames(in: ground)
+        XCTAssertTrue(names.contains("district.ground.service-campus.contact"))
+        XCTAssertTrue(names.contains("district.ground.service-campus.material"))
+        XCTAssertTrue(names.contains("district.ground.service-campus.internal-material"))
+        XCTAssertEqual(recursiveActiveActionCount(ground), 0)
     }
 
     @MainActor
@@ -4220,6 +4365,11 @@ final class WorldRenderingTests: XCTestCase {
     private func recursiveActiveActionCount(_ node: SKNode) -> Int {
         let localCount = node.hasActions() ? 1 : 0
         return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
+    }
+
+    @MainActor
+    private func containsCropNode(in node: SKNode) -> Bool {
+        node is SKCropNode || node.children.contains(where: containsCropNode(in:))
     }
 
     private func pointSegmentDistanceForTesting(_ point: CGPoint, end: CGPoint) -> CGFloat {

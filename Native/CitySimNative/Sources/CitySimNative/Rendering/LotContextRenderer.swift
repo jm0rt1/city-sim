@@ -107,17 +107,19 @@ final class LotContextRenderer {
         selectedFrontage: RoadConnectionMask? = nil
     ) -> [Placement] {
         guard let family = family(for: tile.kind) else { return [] }
+        let variant = Self.districtMaterialVariant(for: tile)
         let frontage = selectedFrontage
             ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
                 where: adjacentRoads.contains
             )
         guard let frontage else { return [] }
-        return placementLedger(family: family, frontage: frontage)
+        return placementLedger(family: family, frontage: frontage, variant: variant)
     }
 
     private func placementLedger(
         family: Family,
-        frontage: RoadConnectionMask
+        frontage: RoadConnectionMask,
+        variant: Int
     ) -> [Placement] {
         let front = normalized(style.roadSocket(for: frontage))
         let across = CGPoint(x: -front.y, y: front.x)
@@ -130,26 +132,28 @@ final class LotContextRenderer {
 
         switch family {
         case .residential:
+            let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
             return [
                 Placement(
                     role: .plantingBed,
-                    center: point(along: -8.8, across: -10.5),
+                    center: point(along: -8.8, across: 10.5 * side),
                     size: CGSize(width: 11, height: 4),
                     groundOnly: true
                 ),
                 Placement(
                     role: .lamp,
-                    center: point(along: 10, across: 8.5),
+                    center: point(along: 10, across: -8.5 * side),
                     size: CGSize(width: 2.4, height: 2.4),
                     groundOnly: false
                 ),
             ]
         case .commercial:
+            let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
             return [
                 Placement(
                     role: .parkingBay,
-                    center: point(along: -10, across: 0),
-                    size: CGSize(width: 26, height: 8),
+                    center: point(along: -10, across: 3.5 * side),
+                    size: CGSize(width: variant.isMultiple(of: 2) ? 24 : 28, height: 8),
                     groundOnly: true
                 ),
                 Placement(
@@ -241,7 +245,11 @@ final class LotContextRenderer {
             to: neighborhood
         )
         if let frontage {
-            let placements = placementLedger(family: family, frontage: frontage)
+            let placements = placementLedger(
+                family: family,
+                frontage: frontage,
+                variant: variant
+            )
             for (index, placement) in placements.enumerated() {
                 let destination = placement.groundOnly ? neighborhood : block
                 add(
@@ -363,6 +371,37 @@ final class LotContextRenderer {
         boundary.lineCap = .round
         boundary.zPosition = 3.9
         node.addChild(boundary)
+
+        guard family == .residential, let frontage else { return }
+        let front = normalized(style.roadSocket(for: frontage))
+        let across = CGPoint(x: -front.y, y: front.x)
+        let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
+        let center = CGPoint(
+            x: -front.x * 10.5 + across.x * 8.5 * side,
+            y: -front.y * 10.5 + across.y * 8.5 * side
+        )
+        let edge = WorldGeometryCache.line(
+            from: CGPoint(
+                x: center.x - across.x * 5.2,
+                y: center.y - across.y * 2.6
+            ),
+            to: CGPoint(
+                x: center.x + across.x * 5.2,
+                y: center.y + across.y * 2.6
+            )
+        )
+        let rearEdge = SKShapeNode(path: edge)
+        rearEdge.name = "lot.context.residential.rear-edge.\(variant)"
+        rearEdge.strokeColor = style.palette.foliage[
+            variant % style.palette.foliage.count
+        ].blended(
+            withFraction: 0.38,
+            of: style.palette.mapEarthDark
+        )?.withAlphaComponent(0.82) ?? style.palette.foliage[0]
+        rearEdge.lineWidth = variant.isMultiple(of: 2) ? 1.8 : 1.25
+        rearEdge.lineCap = .round
+        rearEdge.zPosition = 4
+        node.addChild(rearEdge)
     }
 
     private func add(

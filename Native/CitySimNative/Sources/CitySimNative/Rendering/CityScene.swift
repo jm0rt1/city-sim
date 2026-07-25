@@ -102,6 +102,11 @@ private struct AmbientCorridorSignature: Equatable {
     let activitySamples: [AmbientActivitySignature]
 }
 
+private struct AmbientGroundSignature: Equatable {
+    let layoutRoles: [UInt8]
+    let detail: CameraDetailLevel
+}
+
 private struct GeneratedResidencyTileSignature: Equatable {
     let kind: BuildingKind
     let level: Int
@@ -162,6 +167,8 @@ final class CityScene: SKScene {
     private let backdropLayer = SKNode()
     private let tileLayer = SKNode()
     private let ambientLayer = SKNode()
+    private let ambientGroundLayer = SKNode()
+    private let ambientLifeLayer = SKNode()
     private let cameraNode = SKCameraNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
@@ -178,6 +185,7 @@ final class CityScene: SKScene {
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
     private var ambientCorridorSignature: AmbientCorridorSignature?
+    private var ambientGroundSignature: AmbientGroundSignature?
     private var ambientLayoutRoles: [UInt8] = []
     private var ambientActivityExcludedRoadCoordinates: Set<GridCoordinate> = []
     private var ambientActivityCandidates = AmbientLifeRenderer.ActivityCandidates(
@@ -210,6 +218,7 @@ final class CityScene: SKScene {
     var ambientActionCountForTesting: Int { runtimeTreeMetrics(ambientLayer).actions }
     var ambientMotionEnabledForTesting: Bool { ambientMotionEnabled }
     private(set) var ambientRebuildCountForTesting = 0
+    private(set) var ambientGroundRebuildCountForTesting = 0
     private(set) var generatedResidencyPreloadCountForTesting = 0
     var renderedActivityNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
@@ -274,6 +283,10 @@ final class CityScene: SKScene {
         worldLayer.addChild(backdropLayer)
         worldLayer.addChild(tileLayer)
         ambientLayer.name = "world.ambient.layer"
+        ambientGroundLayer.name = "world.ambient.ground-layer"
+        ambientLifeLayer.name = "world.ambient.life-layer"
+        ambientLayer.addChild(ambientGroundLayer)
+        ambientLayer.addChild(ambientLifeLayer)
         worldLayer.addChild(ambientLayer)
         addChild(cameraNode)
         camera = cameraNode
@@ -892,12 +905,21 @@ final class CityScene: SKScene {
         )
         guard signature != ambientCorridorSignature else { return false }
         ambientRebuildCountForTesting += 1
-        ambientLayer.removeAllChildren()
-        ambientLayer.addChild(terrainRenderer.makeDevelopedDistrictGround(
-            in: snapshot.state,
-            detail: currentCameraDetailLevel
-        ))
-        ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
+        let groundSignature = AmbientGroundSignature(
+            layoutRoles: context.layoutRoles,
+            detail: context.detail
+        )
+        if groundSignature != ambientGroundSignature {
+            ambientGroundLayer.removeAllChildren()
+            ambientGroundLayer.addChild(terrainRenderer.makeDevelopedDistrictGround(
+                in: snapshot.state,
+                detail: currentCameraDetailLevel
+            ))
+            ambientGroundSignature = groundSignature
+            ambientGroundRebuildCountForTesting += 1
+        }
+        ambientLifeLayer.removeAllChildren()
+        ambientLifeLayer.addChild(ambientLifeRenderer.makeCorridorLife(
             in: snapshot.state,
             consequences: snapshot.spatialConsequences,
             detail: currentCameraDetailLevel,

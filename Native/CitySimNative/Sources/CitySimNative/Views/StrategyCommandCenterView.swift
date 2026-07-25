@@ -333,6 +333,7 @@ struct StrategyCommandCenterView: View {
             Label(responseButtonTitle(response), systemImage: "waveform.path.ecg.rectangle")
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, compact ? 2 : 5)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
         }

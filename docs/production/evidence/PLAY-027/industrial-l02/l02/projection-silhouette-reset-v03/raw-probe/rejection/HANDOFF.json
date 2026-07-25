@@ -1,0 +1,23 @@
+{
+  "approvedPrepixelCommit": "aaa431e867a635d78f70e422caa756efe71d07e8",
+  "descriptorSHA256": "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca",
+  "disposition": "REJECTED_RAW_TECHNICAL_AND_VISUAL_GATE",
+  "freshMetalProcessCount": 1,
+  "materialLibrarySHA256": "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6",
+  "normalizationRunCount": 0,
+  "otherDirectionCount": 0,
+  "prepixelValidationSHA256": "f73a0a077e058845a03ed8cf273babebbab11fec6bd87dce34444ccd20d42a47",
+  "preservedV02PrimaryAttemptSHA256": "919ba04ee5a76d3f628ee2bb64732a7125c2b0986a8fe8c42aedbcf5ce239b2f",
+  "preservedV02RejectionSHA256": "7ca9a9dcdbf0552872baecb311eb5459c54d4c186e65ae8f3fa66015020cf4f5",
+  "productionSelected": false,
+  "rawDecodedRGBASHA256": "6748347ef60f9a40fcc0e2faa52564c3fe7b6968260b65715f75a4ac7fea1d83",
+  "rawFileSHA256": "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba",
+  "repeatAttemptCount": 0,
+  "reviewBinarySHA256": "65caf193d56ff56edf55fbd1ee6b00e8066e19c58e6082e6db37c0411bded93f",
+  "reviewSourceSHA256": "ab3c115ce94bb43798742ab8fad26f7676749a89cf90923b9580654686dc98f8",
+  "rendererBinarySHA256": "34fad40cb6064d36c953eb1b857084eac36757396f47adddeeae1f5911e05815",
+  "rendererSourceSHA256": "2cc0aa1eafd3fcbf987bce25f4ab6ef8e2f54cae2fb2974951a990e83c104ece",
+  "schema": 1,
+  "sourceAuthorityAccepted": false,
+  "task": "PLAY-027"
+}

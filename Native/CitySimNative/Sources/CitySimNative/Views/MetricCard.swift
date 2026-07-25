@@ -3,6 +3,7 @@ import SwiftUI
 struct MetricCard: View {
     let identifier: String
     let title: String
+    var shortTitle: String? = nil
     let value: String
     let symbol: String
     var tint: Color = .primary
@@ -10,6 +11,9 @@ struct MetricCard: View {
     var progress: Double? = nil
     var dense = false
     let action: () -> Void
+
+    static let criticalTextSize = GameTheme.hudCriticalTextSize
+    static let supportTextSize = GameTheme.hudSupportTextSize
 
     var body: some View {
         Button(action: action) {
@@ -21,7 +25,7 @@ struct MetricCard: View {
         }
         .buttonStyle(.plain)
         .frame(minWidth: dense ? 60 : 104, maxWidth: .infinity, alignment: .leading)
-        .background(GameTheme.contextCard.opacity(0.42), in: RoundedRectangle(cornerRadius: 9))
+        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
         .help("Open \(title.lowercased()) details")
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
@@ -32,28 +36,26 @@ struct MetricCard: View {
     private var denseContent: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 3) {
-                Image(systemName: symbol)
-                    .font(.system(size: 9, weight: .semibold))
-                    .foregroundStyle(tint)
-                    .accessibilityHidden(true)
-                Text(title.uppercased())
-                    .font(.system(size: 7, weight: .bold, design: .rounded))
-                    .tracking(0.35)
+                Text((shortTitle ?? title).uppercased())
+                    .font(.system(size: Self.criticalTextSize, weight: .bold, design: .rounded))
+                    .tracking(0.15)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.65)
+                Spacer(minLength: 0)
+                Circle()
+                    .fill(tint)
+                    .frame(width: 5, height: 5)
+                    .accessibilityHidden(true)
             }
             Text(value)
-                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .font(.system(size: GameTheme.hudMetricValueTextSize, weight: .bold, design: .rounded))
                 .monospacedDigit()
                 .lineLimit(1)
-                .minimumScaleFactor(0.72)
             if let detail {
                 Text(detail)
-                    .font(.system(size: 7, weight: .medium, design: .rounded))
+                    .font(.system(size: Self.supportTextSize, weight: .semibold, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.65)
             }
             if let progress {
                 GeometryReader { proxy in
@@ -67,36 +69,36 @@ struct MetricCard: View {
                 .frame(height: 2)
             }
         }
-        .padding(.horizontal, 4)
-        .padding(.vertical, 2)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 1)
         .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
         .contentShape(RoundedRectangle(cornerRadius: 9))
     }
 
     private var regularContent: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 7) {
+        VStack(alignment: .leading, spacing: 1) {
+            HStack(spacing: 5) {
                 Image(systemName: symbol)
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: Self.criticalTextSize, weight: .bold))
                     .foregroundStyle(tint)
-                    .frame(width: 27, height: 27)
-                    .background(tint.opacity(0.15), in: RoundedRectangle(cornerRadius: 7))
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(title.uppercased())
-                        .font(.system(size: 8, weight: .bold, design: .rounded))
-                        .tracking(0.65)
-                        .foregroundStyle(.secondary)
-                    Text(value)
-                        .font(.system(size: 14, weight: .semibold, design: .rounded))
-                        .monospacedDigit()
-                        .lineLimit(1)
-                }
+                    .frame(width: 19, height: 19)
+                    .background(tint.opacity(0.15), in: RoundedRectangle(cornerRadius: 5))
+                Text(title.uppercased())
+                    .font(.system(size: Self.criticalTextSize, weight: .bold, design: .rounded))
+                    .tracking(0.15)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
                 Spacer(minLength: 0)
             }
 
+            Text(value)
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .lineLimit(1)
+
             if let detail {
                 Text(detail)
-                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .font(.system(size: Self.supportTextSize, weight: .semibold, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
@@ -114,7 +116,7 @@ struct MetricCard: View {
             }
         }
         .padding(.horizontal, 7)
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
         .frame(minHeight: 52)
         .contentShape(RoundedRectangle(cornerRadius: 10))
     }

@@ -1326,6 +1326,43 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactOverviewAndJournalRenderUsefulDecisionRowsWithinOpenDeckBudget() throws {
+        let state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.moment == .complication
+            }?.state
+        )
+        let store = CityGameStore(state: state)
+        store.openInspector(.overview)
+        let size = CGSize(width: 854, height: BuildToolbarView.compactDetailsMaxHeight)
+
+        let overview = try bitmap(
+            of: InspectorView(store: store, compact: true)
+                .frame(width: size.width, height: size.height, alignment: .top),
+            size: size
+        )
+        XCTAssertEqual(overview.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
+        XCTAssertEqual(InspectorView.compactColumnCount, 2)
+
+        store.openInspector(.journal)
+        let journal = try bitmap(
+            of: InspectorView(store: store, compact: true)
+                .frame(width: size.width, height: size.height, alignment: .top),
+            size: size
+        )
+        XCTAssertEqual(journal.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
+        XCTAssertGreaterThanOrEqual(store.messageSummaries.count, InspectorView.compactMinimumVisibleNoticeCount)
+        XCTAssertTrue(store.messageSummaries.prefix(2).allSatisfy { !$0.message.detail.isEmpty })
+        XCTAssertTrue(
+            store.messageSummaries.prefix(2).allSatisfy {
+                CityNoticeActionCatalog.governedTitles.contains($0.message.title)
+                    || CityNoticeActionCatalog.actions(for: $0.message.title).isEmpty
+            }
+        )
+    }
+
+    @MainActor
     private func bitmap<Content: View>(of content: Content, size: CGSize) throws -> NSBitmapImageRep {
         let view = NSHostingView(rootView: content)
         view.frame = CGRect(origin: .zero, size: size)

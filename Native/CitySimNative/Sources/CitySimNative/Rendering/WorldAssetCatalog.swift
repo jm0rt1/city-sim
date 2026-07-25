@@ -28,6 +28,12 @@ struct GeneratedWorldPresentation {
     let lod: GeneratedWorldAssetManifest.LOD
 }
 
+@MainActor
+struct GeneratedResidentialPresentation {
+    let identity: ResidentialGeneratedAssetIdentity
+    let presentation: GeneratedWorldPresentation
+}
+
 /// Loads repo-owned world resources through SwiftPM's resource bundle. The
 /// generated-v4 loader validates page digests, creates descriptor-authorized
 /// subtextures, prefetches one adjacent semantic LOD, and keeps decoded pages
@@ -223,6 +229,48 @@ final class WorldAssetCatalog {
         if manifest.compiledNetwork.connectionMasks != 16 {
             issues.append("compiled road network does not contain 16 masks")
         }
+        let residential = manifest.assets.filter {
+            $0.family == "residential" && $0.viewDirection != nil
+        }
+        let expectedResidentialIdentities = Set(
+            (1...4).flatMap { level in
+                ["north", "east", "south", "west"].map {
+                    "residential_l\(String(format: "%02d", level))_v0_\($0)"
+                }
+            }
+        )
+        if Set(residential.map(\.logicalID)) != expectedResidentialIdentities {
+            issues.append("residential production selection is not the exact L1-L4 N/E/S/W matrix")
+        }
+        if Set(residential.compactMap(\.sourceKey)).count != 16
+            || Set(residential.compactMap(\.sourceSHA256)).count != 16 {
+            issues.append("residential production sources are missing or aliased")
+        }
+        let normalizedResidentialHashes = residential.flatMap { asset in
+            CameraDetailLevel.allCases.compactMap {
+                asset.lods[$0.assetSuffix]?.normalizedSHA256
+            }
+        }
+        if Set(normalizedResidentialHashes).count != 48 {
+            issues.append("residential normalized LODs are missing or aliased")
+        }
+        for asset in residential {
+            guard let direction = asset.viewDirection else {
+                issues.append("\(asset.logicalID) is missing view direction")
+                continue
+            }
+            if asset.frontageEdge != direction
+                || asset.supportedOrientation != "\(direction)-facing-authored"
+                || asset.sourceRevision == nil
+                || asset.provenanceFile == nil
+                || asset.provenanceSHA256 == nil
+                || asset.normalizationRecordFile == nil
+                || asset.normalizationRecordSHA256 == nil
+                || asset.sceneDescriptorFile == nil
+                || asset.sceneDescriptorSHA256 == nil {
+                issues.append("\(asset.logicalID) has incomplete directional provenance")
+            }
+        }
         for page in manifest.pages {
             if page.pixels.count != 2
                 || !page.pixels.allSatisfy({ $0 > 0 && $0 <= 2_048 && $0.nonzeroBitCount == 1 }) {
@@ -389,6 +437,41 @@ final class WorldAssetCatalog {
             ?? 0
         sprite.name = "asset.generated-v4.\(logicalID).\(detail.assetSuffix)"
         return GeneratedWorldPresentation(sprite: sprite, asset: asset, lod: lod)
+    }
+
+    func generatedResidentialPresentation(
+        level: Int,
+        adjacentRoads: RoadConnectionMask,
+        detail: CameraDetailLevel
+    ) -> GeneratedResidentialPresentation? {
+        guard let identity = ResidentialGeneratedAssetIdentity(
+            level: level,
+            adjacentRoads: adjacentRoads
+        ) else {
+            recordFallback(
+                "residential level \(min(4, max(1, level))) has no authoritative adjacent road"
+            )
+            return nil
+        }
+        guard let asset = generatedAssetsByID[identity.logicalID],
+              asset.family == "residential",
+              asset.level == identity.level,
+              asset.variant == 0,
+              asset.frontageEdge == identity.direction,
+              asset.viewDirection == identity.direction else {
+            recordFallback("directional descriptor mismatch \(identity.logicalID)")
+            return nil
+        }
+        guard let presentation = generatedPresentation(
+            logicalID: identity.logicalID,
+            detail: detail
+        ) else {
+            return nil
+        }
+        return GeneratedResidentialPresentation(
+            identity: identity,
+            presentation: presentation
+        )
     }
 
     func generatedSprite(

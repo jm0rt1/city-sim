@@ -4,24 +4,47 @@ struct InspectorView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
+    static let compactColumnCount = 2
+    static let regularColumnCount = 4
+    static let compactMinimumVisibleNoticeCount = 2
+
     private var analytics: CityAnalytics { store.analytics }
     private var contextColumns: [GridItem] {
-        Array(repeating: GridItem(.flexible(), spacing: 8, alignment: .top), count: 4)
+        Array(
+            repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
+            count: compact ? Self.compactColumnCount : Self.regularColumnCount
+        )
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            contextHeader
-            Divider().overlay(GameTheme.subtleDivider)
-
-            if store.hudContextScope == .selection, let tile = store.selectedTile {
-                tileContext(tile)
+        Group {
+            if compact {
+                HStack(alignment: .top, spacing: 8) {
+                    contextHeader
+                        .frame(width: 260, alignment: .topLeading)
+                    Divider().overlay(GameTheme.subtleDivider)
+                    contextBody
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
             } else {
-                cityContext
+                VStack(alignment: .leading, spacing: 8) {
+                    contextHeader
+                    Divider().overlay(GameTheme.subtleDivider)
+                    contextBody
+                }
             }
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(contextAccessibilityLabel)
+    }
+
+    @ViewBuilder
+    private var contextBody: some View {
+        if store.hudContextScope == .selection, let tile = store.selectedTile {
+            tileContext(tile)
+        } else {
+            cityContext
+        }
     }
 
     private var contextHeader: some View {
@@ -230,6 +253,28 @@ struct InspectorView: View {
 
     private var overviewContext: some View {
         LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            ContextCard(
+                title: "Operating position",
+                symbol: "chart.line.uptrend.xyaxis",
+                tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger
+            ) {
+                ContextValueRow(label: "Net / cycle", value: store.analytics.projectedBalance.signedCurrencyText)
+                ContextValueRow(label: "Housing open", value: store.analytics.housingHeadroom.formatted())
+                ContextValueRow(label: "Notices", value: store.alertCount.formatted())
+                compactAction("Open journal", symbol: "newspaper.fill") { store.perform(.inspectorJournal) }
+            }
+
+            ContextCard(title: "Current objective", symbol: "flag.checkered", tint: .cyan) {
+                Text(store.primaryObjective.title)
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
+                    .lineLimit(1)
+                Text(store.primaryObjective.remaining)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                ProgressView(value: store.primaryObjective.progress).tint(.cyan)
+            }
+
             ContextCard(title: "City identity", symbol: "building.2.fill", tint: GameTheme.accent) {
                 TextField(
                     "City name",
@@ -247,24 +292,6 @@ struct InspectorView: View {
                 ContextValueRow(label: "Residents", value: store.state.population.formatted())
                 ContextValueRow(label: "Happiness", value: store.state.happiness.percentText)
                 ContextValueRow(label: "Mayor approval", value: store.state.approval.percentText)
-            }
-
-            ContextCard(title: "Current objective", symbol: "flag.checkered", tint: .cyan) {
-                Text(store.primaryObjective.title)
-                    .font(.caption.weight(.semibold))
-                    .lineLimit(1)
-                Text(store.primaryObjective.remaining)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                ProgressView(value: store.primaryObjective.progress).tint(.cyan)
-            }
-
-            ContextCard(title: "Operating position", symbol: "chart.line.uptrend.xyaxis", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
-                ContextValueRow(label: "Net / cycle", value: store.analytics.projectedBalance.signedCurrencyText)
-                ContextValueRow(label: "Housing open", value: store.analytics.housingHeadroom.formatted())
-                ContextValueRow(label: "Notices", value: store.alertCount.formatted())
-                compactAction("Open journal", symbol: "newspaper.fill") { store.perform(.inspectorJournal) }
             }
         }
     }
@@ -438,7 +465,7 @@ struct InspectorView: View {
     private var journalContext: some View {
         let summaries = store.messageSummaries
         return Group {
-            if summaries.count > 4 {
+            if summaries.count > 4 && !compact {
                 ScrollView(.vertical) {
                     journalGrid(summaries)
                 }
@@ -467,10 +494,10 @@ struct InspectorView: View {
                             Spacer()
                             if summary.count > 1 { Text("×\(summary.count)") }
                         }
-                        .font(.caption2.monospacedDigit())
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .monospaced))
                         .foregroundStyle(.secondary)
                         Text(summary.message.detail)
-                            .font(.caption2)
+                            .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
                             .foregroundStyle(.secondary)
                             .lineLimit(3)
                         HStack(spacing: 6) {
@@ -595,15 +622,15 @@ private struct ContextCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Label(title.uppercased(), systemImage: symbol)
-                .font(.system(size: 9, weight: .heavy, design: .rounded))
-                .tracking(0.55)
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                .tracking(0.25)
                 .foregroundStyle(tint)
                 .lineLimit(1)
             content
         }
         .padding(9)
         .frame(maxWidth: .infinity, minHeight: 108, alignment: .topLeading)
-        .background(GameTheme.contextCard, in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 11, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 11, style: .continuous)
                 .stroke(tint.opacity(0.24), lineWidth: 1)

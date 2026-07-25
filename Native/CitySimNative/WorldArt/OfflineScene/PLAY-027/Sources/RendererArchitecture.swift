@@ -61,6 +61,8 @@ struct EffectiveSamplingContract: Equatable {
     let canonicalizerEncoder: String
     let canonicalizerPostEncoder: String
     let canonicalizerFormat: String
+    let preLanczosCanonicalizer:
+        SamplingPreLanczosCanonicalizerDescriptor?
     let postQuantizationCanonicalizer:
         SamplingPostQuantizationCanonicalizerDescriptor?
     let purpose: String
@@ -89,6 +91,7 @@ enum DescriptorSamplingResolver {
         canonicalizerEncoder: "ImageIO",
         canonicalizerPostEncoder: "/usr/bin/sips",
         canonicalizerFormat: "png",
+        preLanczosCanonicalizer: nil,
         postQuantizationCanonicalizer: nil,
         purpose: "accepted-legacy-reproduction"
     )
@@ -139,8 +142,15 @@ enum DescriptorSamplingResolver {
             && descriptor.sourceRevision == "source-v06"
             && descriptor.viewDirection == "east"
             && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV07East =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v07"
+            && descriptor.viewDirection == "east"
+            && sampling.purpose == "source-authority"
         let isIndustrialL2AuthoredConstant =
-            isIndustrialL2SourceV05 || isIndustrialL2SourceV06East
+            isIndustrialL2SourceV05
+            || isIndustrialL2SourceV06East
+            || isIndustrialL2SourceV07East
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -189,7 +199,7 @@ enum DescriptorSamplingResolver {
                     && sceneKitShadows == "current")
         else {
             throw SamplingContractError.invalid(
-                "SceneKit shadows may be disabled only by Industrial L2 source-v04/source-v05 or source-v06 East source-authority descriptors"
+                "SceneKit shadows may be disabled only by Industrial L2 source-v04/source-v05 or source-v06/source-v07 East source-authority descriptors"
             )
         }
         guard
@@ -203,7 +213,37 @@ enum DescriptorSamplingResolver {
                 )
         else {
             throw SamplingContractError.invalid(
-                "authored-constant-v1 may be selected only by Industrial L2 source-v05 or source-v06 East source-authority descriptors"
+                "authored-constant-v1 may be selected only by Industrial L2 source-v05 or source-v06/source-v07 East source-authority descriptors"
+            )
+        }
+        if isIndustrialL2SourceV07East {
+            guard
+                let preLanczos =
+                    sampling.preLanczosCanonicalizer,
+                preLanczos.algorithm
+                    == "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+                preLanczos.version == 1,
+                preLanczos.quantizationStep == 32,
+                preLanczos.midpointOffset == 8,
+                preLanczos.chromaBypassRGBA == [255, 0, 255, 255],
+                preLanczos.channels == "rgb-only",
+                preLanczos.opaquePixelPolicy
+                    == "quantize-each-rgb-channel",
+                preLanczos.transparentPixelPolicy
+                    == "zero-hidden-rgb",
+                preLanczos.partialAlphaPolicy == "reject",
+                preLanczos.preservesAlpha,
+                preLanczos.preservesChroma,
+                preLanczos.immutableSourceBuffer,
+                preLanczos.crossRunState == "none"
+            else {
+                throw SamplingContractError.invalid(
+                    "Industrial L2 source-v07 East pre-Lanczos canonicalizer mismatch"
+                )
+            }
+        } else if sampling.preLanczosCanonicalizer != nil {
+            throw SamplingContractError.invalid(
+                "pre-Lanczos canonicalization is authorized only for Industrial L2 source-v07 East"
             )
         }
         if isV1, sampling.postQuantizationCanonicalizer != nil {
@@ -302,6 +342,8 @@ enum DescriptorSamplingResolver {
             canonicalizerPostEncoder:
                 sampling.canonicalizer.postEncoder,
             canonicalizerFormat: sampling.canonicalizer.format,
+            preLanczosCanonicalizer:
+                sampling.preLanczosCanonicalizer,
             postQuantizationCanonicalizer:
                 sampling.postQuantizationCanonicalizer,
             purpose: sampling.purpose

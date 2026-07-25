@@ -883,6 +883,26 @@
       "scale" : 0.25
     },
     "linearOversamplingFactor" : 4,
+    "preLanczosCanonicalizer" : {
+      "algorithm" : "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+      "channels" : "rgb-only",
+      "chromaBypassRGBA" : [
+        255,
+        0,
+        255,
+        255
+      ],
+      "crossRunState" : "none",
+      "immutableSourceBuffer" : true,
+      "midpointOffset" : 8,
+      "opaquePixelPolicy" : "quantize-each-rgb-channel",
+      "partialAlphaPolicy" : "reject",
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationStep" : 32,
+      "transparentPixelPolicy" : "zero-hidden-rgb",
+      "version" : 1
+    },
     "postQuantizationCanonicalizer" : {
       "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
       "boundaryAssist" : {
@@ -925,11 +945,11 @@
     "sceneKitAntialiasing" : "none",
     "sceneKitLightingMode" : "authored-constant-v1",
     "sceneKitShadows" : "disabled",
-    "sourceRevisionBinding" : "source-v06"
+    "sourceRevisionBinding" : "source-v07"
   },
   "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v4",
   "schema" : 2,
-  "sourceRevision" : "source-v06",
+  "sourceRevision" : "source-v07",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",
@@ -937,9 +957,9 @@
   },
   "task" : "PLAY-027",
   "toolchainFingerprint" : {
-    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v06-east.json",
-    "role" : "frozen-schema-2-v3-authored-constant-east-noncoplanar-offline-host-and-frameworks",
-    "sha256" : "8fca3da76664f90c868f1c604e0d65e3dc681c4f0e7bad1295376e4d8f4afb15"
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v07-east.json",
+    "role" : "frozen-schema-2-v3-authored-constant-east-pre-lanczos-v1-offline-host-and-frameworks",
+    "sha256" : "4ccf615f226d4bbea5a625f77c97683ae9ffd94ac6b99402309c639b4f0c4716"
   },
   "variantID" : "variant-0",
   "viewDirection" : "east"

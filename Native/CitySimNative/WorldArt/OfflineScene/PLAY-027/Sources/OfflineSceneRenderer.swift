@@ -3221,6 +3221,7 @@ enum OfflineSceneRendererMain {
                 IndustrialL2V5EastStageCaptureContract.contractID,
                 IndustrialL2V5EastSceneKitLanczosContract.contractID,
                 IndustrialL2V6EastSceneKitCaptureContract.contractID,
+                IndustrialL2V7EastPreLanczosCaptureContract.contractID,
             ].contains(diagnosticStageContractID) else {
                 throw OfflineRendererError.invalid(
                     "unknown diagnostic stage contract"
@@ -3424,12 +3425,41 @@ enum OfflineSceneRendererMain {
                 descriptor: descriptor,
                 sampling: descriptorSampling
             )
+        let diagnosticSourceV07EastCaptureRecord =
+            try IndustrialL2V7EastPreLanczosCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V7EastPreLanczosCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
         guard
             [
                 diagnosticMSAAIsolationRecord != nil,
                 diagnosticStageIsolationRecord != nil,
                 diagnosticSceneKitLanczosRecord != nil,
                 diagnosticSourceV06EastCaptureRecord != nil,
+                diagnosticSourceV07EastCaptureRecord != nil,
             ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
@@ -3441,6 +3471,7 @@ enum OfflineSceneRendererMain {
             ?? diagnosticStageIsolationRecord?.value
             ?? diagnosticSceneKitLanczosRecord?.value
             ?? diagnosticSourceV06EastCaptureRecord?.value
+            ?? diagnosticSourceV07EastCaptureRecord?.value
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3573,21 +3604,50 @@ enum OfflineSceneRendererMain {
                     ? SCNAntialiasingMode.none
                     : SCNAntialiasingMode.multisampling4X
             )
-        let oversampled = try NativeSourceRenderer(
+        let rawOversampled = try NativeSourceRenderer(
             renderer: capabilityContext.renderer,
             antialiasingMode: effectiveAntialiasing,
             linearOversamplingFactor:
                 descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
+        let rawOversampledFrameRecord =
+            try diagnosticSourceV07EastCaptureRecord.map { _ in
+                try rendererFullFrameRecord(
+                    image: rawOversampled,
+                    stage: "scenekit-4x-before-pre-lanczos-canonicalization"
+                )
+            }
+        let preLanczosCanonicalization =
+            try descriptorSampling.preLanczosCanonicalizer.map {
+                try canonicalizePreLanczosFrameImage(
+                    rawOversampled,
+                    contract: $0
+                )
+            }
+        let oversampled =
+            preLanczosCanonicalization?.image ?? rawOversampled
+        let canonicalizedOversampledFrameRecord =
+            try diagnosticSourceV07EastCaptureRecord.map { _ in
+                try rendererFullFrameRecord(
+                    image: oversampled,
+                    stage: "pre-lanczos-canonicalized-4x"
+                )
+            }
         let oversampledSupportWindow =
             try (
                 diagnosticSceneKitLanczosRecord
                     ?? diagnosticSourceV06EastCaptureRecord
+                    ?? diagnosticSourceV07EastCaptureRecord
             ).map {
-                try rendererOversampledSupportWindowRecord(
+                var record = try rendererOversampledSupportWindowRecord(
                     image: oversampled,
                     geometry: $0.supportGeometry
                 )
+                if diagnosticSourceV07EastCaptureRecord != nil {
+                    record["stage"] =
+                        "pre-lanczos-canonicalized-4x-support-window"
+                }
+                return record
             }
         let compositor = NativeSourceCompositor(
             sampling: descriptorSampling,
@@ -3764,6 +3824,37 @@ enum OfflineSceneRendererMain {
                 capture["oversampledSupportWindow"] =
                     oversampledSupportWindow
             }
+            if let rawOversampledFrameRecord {
+                capture["rawSceneKit4xFrame"] =
+                    rawOversampledFrameRecord
+            }
+            if
+                let canonicalizedOversampledFrameRecord,
+                let result = preLanczosCanonicalization?.result
+            {
+                capture["preLanczosCanonicalized4xFrame"] =
+                    canonicalizedOversampledFrameRecord
+                capture["preLanczosCanonicalization"] = [
+                    "algorithm":
+                        descriptorSampling
+                        .preLanczosCanonicalizer?.algorithm
+                        ?? "missing",
+                    "version":
+                        descriptorSampling
+                        .preLanczosCanonicalizer?.version
+                        ?? -1,
+                    "changedChannelCount":
+                        result.changedChannelCount,
+                    "changedPixelCount": result.changedPixelCount,
+                    "opaquePixelCount": result.opaquePixelCount,
+                    "transparentPixelCount":
+                        result.transparentPixelCount,
+                    "chromaBypassPixelCount":
+                        result.chromaBypassPixelCount,
+                    "alphaChanged": false,
+                    "crossRunState": "none",
+                ]
+            }
             var captureData = try JSONSerialization.data(
                 withJSONObject: capture,
                 options: [
@@ -3791,6 +3882,8 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastSceneKitCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V7EastPreLanczosCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -3830,6 +3923,34 @@ enum OfflineSceneRendererMain {
             ],
             "rendererSourceCommit": sourceCommit,
             "rendererCapability": capabilityContext.snapshot.record,
+            "preLanczosCanonicalization":
+                preLanczosCanonicalization.map {
+                    [
+                        "algorithm":
+                            descriptorSampling
+                            .preLanczosCanonicalizer?.algorithm
+                            ?? "missing",
+                        "version":
+                            descriptorSampling
+                            .preLanczosCanonicalizer?.version
+                            ?? -1,
+                        "changedChannelCount":
+                            $0.result.changedChannelCount,
+                        "changedPixelCount":
+                            $0.result.changedPixelCount,
+                        "opaquePixelCount":
+                            $0.result.opaquePixelCount,
+                        "transparentPixelCount":
+                            $0.result.transparentPixelCount,
+                        "chromaBypassPixelCount":
+                            $0.result.chromaBypassPixelCount,
+                        "alphaChanged": false,
+                        "crossRunState": "none",
+                    ] as [String: Any]
+                } ?? [
+                    "algorithm": "none",
+                    "sourceChanged": false,
+                ],
             "diagnosticConfiguration": [
                 "antialiasingOverride":
                     diagnosticConfiguration.antialiasingOverride?.rawValue

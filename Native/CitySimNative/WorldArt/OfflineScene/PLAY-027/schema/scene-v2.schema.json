@@ -357,6 +357,9 @@
             }
           }
         },
+        "preLanczosCanonicalizer": {
+          "$ref": "#/$defs/preLanczosCanonicalizer"
+        },
         "postQuantizationCanonicalizer": {
           "$ref": "#/$defs/postQuantizationCanonicalizer"
         }
@@ -380,6 +383,71 @@
           }
         }
       ]
+    },
+    "preLanczosCanonicalizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "version",
+        "quantizationStep",
+        "midpointOffset",
+        "chromaBypassRGBA",
+        "channels",
+        "opaquePixelPolicy",
+        "transparentPixelPolicy",
+        "partialAlphaPolicy",
+        "preservesAlpha",
+        "preservesChroma",
+        "immutableSourceBuffer",
+        "crossRunState"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "rgb-step32-midpoint8-preserve-alpha-chroma-v1"
+        },
+        "version": {
+          "const": 1
+        },
+        "quantizationStep": {
+          "const": 32
+        },
+        "midpointOffset": {
+          "const": 8
+        },
+        "chromaBypassRGBA": {
+          "const": [
+            255,
+            0,
+            255,
+            255
+          ]
+        },
+        "channels": {
+          "const": "rgb-only"
+        },
+        "opaquePixelPolicy": {
+          "const": "quantize-each-rgb-channel"
+        },
+        "transparentPixelPolicy": {
+          "const": "zero-hidden-rgb"
+        },
+        "partialAlphaPolicy": {
+          "const": "reject"
+        },
+        "preservesAlpha": {
+          "const": true
+        },
+        "preservesChroma": {
+          "const": true
+        },
+        "immutableSourceBuffer": {
+          "const": true
+        },
+        "crossRunState": {
+          "const": "none"
+        }
+      }
     },
     "postQuantizationCanonicalizer": {
       "type": "object",

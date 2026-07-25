@@ -284,6 +284,66 @@ func rendererOversampledSupportWindowRecord(
     ]
 }
 
+func rendererFullFrameRecord(
+    image: CGImage,
+    stage: String
+) throws -> [String: Any] {
+    let rgba = try rendererCanonicalRGBA(image: image)
+    return [
+        "stage": stage,
+        "pixels": [image.width, image.height],
+        "decodedColorSpace": "sRGB",
+        "decodedPixelFormat":
+            "rgba8-premultiplied-last-byte-order-32-big",
+        "decodedRGBAByteCount": rgba.count,
+        "decodedRGBASHA256":
+            rendererStageSHA256(Data(rgba)),
+    ]
+}
+
+func canonicalizePreLanczosFrameImage(
+    _ image: CGImage,
+    contract: SamplingPreLanczosCanonicalizerDescriptor
+) throws -> (
+    image: CGImage,
+    result: PreLanczosFrameCanonicalizationResult
+) {
+    let rgba = try rendererCanonicalRGBA(image: image)
+    let result = try canonicalizePreLanczosFrameRGBA(
+        sourceRGBA: rgba,
+        width: image.width,
+        height: image.height,
+        contract: contract
+    )
+    guard
+        let provider = CGDataProvider(
+            data: Data(result.rgba) as CFData
+        ),
+        let output = CGImage(
+            width: image.width,
+            height: image.height,
+            bitsPerComponent: 8,
+            bitsPerPixel: 32,
+            bytesPerRow: image.width * 4,
+            space: CGColorSpace(name: CGColorSpace.sRGB)!,
+            bitmapInfo: CGBitmapInfo(
+                rawValue:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ),
+            provider: provider,
+            decode: nil,
+            shouldInterpolate: false,
+            intent: .defaultIntent
+        )
+    else {
+        throw PreLanczosFrameCanonicalizerError.invalid(
+            "could not create canonicalized pre-Lanczos image"
+        )
+    }
+    return (output, result)
+}
+
 func rendererPNGStageRecord(
     stage: String,
     url: URL,

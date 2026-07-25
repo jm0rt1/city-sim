@@ -187,6 +187,7 @@ func inspectNormalized(_ pixels: CanonicalPixels) -> [String: Any] {
     var alphaMaximum = 0
     var transparentPixelCount = 0
     var opaquePixelCount = 0
+    var hiddenRGBPixelCount = 0
     var opaqueChromaPixelCount = 0
     var visibleMagentaSpillPixelCount = 0
     var minimumX = pixels.width
@@ -205,6 +206,9 @@ func inspectNormalized(_ pixels: CanonicalPixels) -> [String: Any] {
             alphaMaximum = max(alphaMaximum, alpha)
             if alpha == 0 {
                 transparentPixelCount += 1
+                if red != 0 || green != 0 || blue != 0 {
+                    hiddenRGBPixelCount += 1
+                }
             } else {
                 opaquePixelCount += 1
                 minimumX = min(minimumX, x)
@@ -245,6 +249,8 @@ func inspectNormalized(_ pixels: CanonicalPixels) -> [String: Any] {
         "paddingPixels": padding,
         "paddingPassed": paddingPassed,
         "transparentPixelCount": transparentPixelCount,
+        "hiddenRGBPixelCount": hiddenRGBPixelCount,
+        "hiddenRGBPassed": hiddenRGBPixelCount == 0,
         "nonTransparentPixelCount": opaquePixelCount,
         "opaqueChromaPixelCount": opaqueChromaPixelCount,
         "visibleMagentaSpillPixelCount":
@@ -256,6 +262,7 @@ func inspectNormalized(_ pixels: CanonicalPixels) -> [String: Any] {
             && alphaMaximum == 255
             && transparentPixelCount > 0
             && opaquePixelCount > 0
+            && hiddenRGBPixelCount == 0
             && opaqueChromaPixelCount == 0
             && visibleMagentaSpillPixelCount == 0,
     ]

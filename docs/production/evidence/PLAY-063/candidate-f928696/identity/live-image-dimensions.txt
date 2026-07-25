@@ -1,0 +1,84 @@
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-block-scale-0.50.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-city-lod.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-city-scale-0.85.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-construction.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-focus-pollution.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-framed-city-command-0.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-invalid-occupied-preview.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-invalid-rejection.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-neighborhood-lod.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-neighborhood-scale-0.65.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-pointer-construction.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-pollution.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-selected-city.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-undo.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/industrial-valid-preview.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/regular/save-relaunch-load-paused.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-block-scale-0.45-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-details-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-details-fka-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-focus-pollution-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-overlay-happiness-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-overlay-land-value-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-overlay-pollution-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-overlay-traffic-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-overlay-utilities-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-pollution-block-scale-0.45-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/compact/industrial-selected-city-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/14c5/city-sim/docs/production/evidence/PLAY-063/candidate-f928696/live/reduce-motion/industrial-selected-900x600.png
+  pixelWidth: 900
+  pixelHeight: 652

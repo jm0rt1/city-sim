@@ -1,0 +1,143 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l04/variant-0/east/source-v02.png",
+      "fileSHA256" : "9f724ceae603a0b84e9c750f3168a791f6485d6ef8adf1d76aae4f2b05c161cb",
+      "id" : "primary",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1478363,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          403,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          503
+        ],
+        "nonChromaPixelCount" : 94501,
+        "paddingPixels" : [
+          619,
+          403,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "05d90449c75b2c072b71442391c8fcdce23b4c936f1300567cf61e4a74995170",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/repeat/east-run-b.png",
+      "fileSHA256" : "9f724ceae603a0b84e9c750f3168a791f6485d6ef8adf1d76aae4f2b05c161cb",
+      "id" : "run-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1478363,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          403,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          503
+        ],
+        "nonChromaPixelCount" : 94501,
+        "paddingPixels" : [
+          619,
+          403,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "05d90449c75b2c072b71442391c8fcdce23b4c936f1300567cf61e4a74995170",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/repeat/east-run-c.png",
+      "fileSHA256" : "9f724ceae603a0b84e9c750f3168a791f6485d6ef8adf1d76aae4f2b05c161cb",
+      "id" : "run-c",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1478363,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          403,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          503
+        ],
+        "nonChromaPixelCount" : 94501,
+        "paddingPixels" : [
+          619,
+          403,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "05d90449c75b2c072b71442391c8fcdce23b4c936f1300567cf61e4a74995170",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

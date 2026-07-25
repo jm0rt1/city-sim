@@ -11,11 +11,24 @@ enum RetainedPixelComparisonError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: compare-retained-raw-pixels --repository-root <path> --primary <png> --repeat-b <png> --repeat-c <png> --report <json> --sheet <png>"
+            return "usage: compare-retained-raw-pixels --repository-root <path> --primary <png> --repeat-b <png> --repeat-c <png> --report <json> --sheet <png> [--diagnostic-id <id>]"
         case let .invalid(message):
             return message
         }
     }
+}
+
+func comparisonOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
 }
 
 struct RetainedPNG {
@@ -414,7 +427,12 @@ enum CompareRetainedRawPixelsMain {
         let report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
-            "diagnostic": "commercial-l04-source-v02-west-pixel-locality",
+            "diagnostic":
+                comparisonOptionalArgument(
+                    "--diagnostic-id",
+                    in: arguments
+                )
+                ?? "commercial-l04-source-v02-west-pixel-locality",
             "coordinateOrigin": "top-left exact decoded RGBA row",
             "primary": [
                 "file": comparisonRelativePath(

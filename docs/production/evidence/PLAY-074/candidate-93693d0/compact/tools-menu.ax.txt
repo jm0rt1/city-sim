@@ -1,0 +1,23 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 Tools, Secondary Actions: Cancel, Pick
+	1 menu Secondary Actions: Cancel
+		2 Inspect Mode · V, ID: menuAction:
+		3 Build Mode · T, ID: menuAction:
+		4 Bulldoze Mode · B, ID: menuAction:
+		5 (disabled) Cancel Current Surface or Tool · Esc
+		6 Open Roads · ⇧1, ID: menuAction:
+		7 Open Zones · ⇧2, ID: menuAction:
+		8 Open Utilities · ⇧3, ID: menuAction:
+		9 Open Services · ⇧4, ID: menuAction:
+		10 Open Civic · ⇧5, ID: menuAction:
+		11 Build Road · R, ID: menuAction:
+		12 Build Residential · H, ID: menuAction:
+		13 Build Commercial · C, ID: menuAction:
+		14 Build Industrial · I, ID: menuAction:
+		15 Build Park · P, ID: menuAction:
+		16 Build Power Plant · E, ID: menuAction:
+		17 Build Water Tower · W, ID: menuAction:
+		18 Build Fire Station · F, ID: menuAction:
+		19 Build Police Station · L, ID: menuAction:
+		20 Build School · S, ID: menuAction:
+		21 Build City Hall · G, ID: menuAction:

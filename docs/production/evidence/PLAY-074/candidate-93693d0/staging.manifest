@@ -1,0 +1,15 @@
+branch=codex/citysim-ui-input
+commit=93693d0125f6cdd9ee660ea918891c23ed76bb4d
+worktree_root=/Users/James/.codex/worktrees/c8e2/city-sim
+worktree_token=wdbeadac6e0bd
+candidate_id=ui-input-wdbeadac6e0bd
+bundle_identifier=com.jfmortensen.citysim.ui-input.wdbeadac6e0bd
+preference_domain=com.jfmortensen.citysim.ui-input.wdbeadac6e0bd
+display_name=CitySim [UI wdbeadac6e0bd]
+data_root=/Users/James/.codex/worktrees/c8e2/city-sim/dist/test-data/ui-input-wdbeadac6e0bd
+launch_time=2026-07-25T17:15:06Z
+staged_bundle_path=/Users/James/.codex/worktrees/c8e2/city-sim/dist/CitySim-ui-input-wdbeadac6e0bd.app
+executable_path=/Users/James/.codex/worktrees/c8e2/city-sim/dist/CitySim-ui-input-wdbeadac6e0bd.app/Contents/MacOS/CitySimNative-wdbeadac6e0bd
+resource_bundle_path=/Users/James/.codex/worktrees/c8e2/city-sim/dist/CitySim-ui-input-wdbeadac6e0bd.app/CitySimNative_CitySimNative.bundle
+process_id=87740
+status=verified-running

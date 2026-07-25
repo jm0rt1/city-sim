@@ -11,17 +11,6 @@ private enum CityHUDChromeRegion: Hashable {
     case bottom
 }
 
-private struct CityHUDChromeFramePreference: PreferenceKey {
-    static let defaultValue: [CityHUDChromeRegion: CGRect] = [:]
-
-    static func reduce(
-        value: inout [CityHUDChromeRegion: CGRect],
-        nextValue: () -> [CityHUDChromeRegion: CGRect]
-    ) {
-        value.merge(nextValue(), uniquingKeysWith: { _, newest in newest })
-    }
-}
-
 enum ObjectiveSurfacePresentation: Equatable {
     case hidden
     case expanded
@@ -237,12 +226,12 @@ struct ContentView: View {
         let edgePadding = compact ? GameTheme.compactPadding : GameTheme.regularPadding
         let fallbackTop: CGFloat = 136
         let fallbackBottom: CGFloat = 116
-        let measuredTop = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY + 10
-        let measuredBottom = chromeFrames.bottom.isEmpty ? 0 : windowSize.height - chromeFrames.bottom.minY + 10
+        let measuredTop = chromeFrames.top.maxY + 10
+        let measuredBottom = windowSize.height - chromeFrames.bottom.minY + 10
         return CityMapViewportInsets(
-            top: max(fallbackTop, measuredTop),
+            top: chromeFrames.top.isEmpty ? fallbackTop : measuredTop,
             leading: edgePadding + 10,
-            bottom: max(fallbackBottom, measuredBottom),
+            bottom: chromeFrames.bottom.isEmpty ? fallbackBottom : measuredBottom,
             trailing: edgePadding + 10
         )
     }
@@ -355,11 +344,19 @@ struct ContentView: View {
                             compact: compact,
                             pointerTransitionGate: pointerTransitionGate
                         )
-                            .background(chromeFrameReader(.top))
+                            .onGeometryChange(for: CGRect.self) { proxy in
+                                proxy.frame(in: .named("city.game.surface"))
+                            } action: { frame in
+                                recordChromeFrame(frame, in: .top)
+                            }
                             .transition(.opacity)
                     } else {
                         TopHUDView(store: store, compact: compact)
-                            .background(chromeFrameReader(.top))
+                            .onGeometryChange(for: CGRect.self) { proxy in
+                                proxy.frame(in: .named("city.game.surface"))
+                            } action: { frame in
+                                recordChromeFrame(frame, in: .top)
+                            }
 
                         HStack(alignment: .top) {
                             switch Self.objectiveSurfacePresentation(
@@ -422,7 +419,11 @@ struct ContentView: View {
                             pointerTransitionGate: pointerTransitionGate
                         )
                             .frame(maxWidth: compact ? .infinity : 1_120)
-                            .background(chromeFrameReader(.bottom))
+                            .onGeometryChange(for: CGRect.self) { proxy in
+                                proxy.frame(in: .named("city.game.surface"))
+                            } action: { frame in
+                                recordChromeFrame(frame, in: .bottom)
+                            }
                             .transition(.opacity)
                     }
                 }
@@ -433,16 +434,7 @@ struct ContentView: View {
             .onChange(of: store.isCityFocusModeEnabled) { _, enabled in
                 if enabled {
                     retainedFocusCityViewportInsets = measuredViewportInsets
-                }
-            }
-            .onPreferenceChange(CityHUDChromeFramePreference.self) { frames in
-                let updated = CityHUDChromeFrames(
-                    top: frames[.top] ?? .zero,
-                    bottom: frames[.bottom] ?? .zero
-                )
-                if updated != hudChromeFrames { hudChromeFrames = updated }
-                if !store.isCityFocusModeEnabled, !updated.bottom.isEmpty {
-                    retainedFocusCityViewportInsets = nil
+                    hudChromeFrames.bottom = .zero
                 }
             }
             .onDisappear {
@@ -451,12 +443,22 @@ struct ContentView: View {
         }
     }
 
-    private func chromeFrameReader(_ region: CityHUDChromeRegion) -> some View {
-        GeometryReader { proxy in
-            Color.clear.preference(
-                key: CityHUDChromeFramePreference.self,
-                value: [region: proxy.frame(in: .named("city.game.surface"))]
-            )
+    private func recordChromeFrame(_ frame: CGRect, in region: CityHUDChromeRegion) {
+        guard !frame.isEmpty, !frame.isInfinite, !frame.isNull else { return }
+        if region == .bottom, store.isCityFocusModeEnabled { return }
+
+        var updated = hudChromeFrames
+        switch region {
+        case .top:
+            updated.top = frame
+        case .bottom:
+            updated.bottom = frame
+        }
+        if updated != hudChromeFrames {
+            hudChromeFrames = updated
+        }
+        if region == .bottom, !store.isCityFocusModeEnabled {
+            retainedFocusCityViewportInsets = nil
         }
     }
 

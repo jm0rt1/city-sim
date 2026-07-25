@@ -1763,6 +1763,156 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testBuildDecisionPresentsEveryCommitFactAndRoutesOneTruthfulRecovery() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let occupied = try XCTUnwrap(authored.tiles.first { $0.kind != .empty })
+        let roadless = try XCTUnwrap(authored.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                .residential,
+                at: tile.coordinate,
+                in: authored
+            ) {
+                return true
+            }
+            return false
+        })
+        let valid = try XCTUnwrap(authored.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.residential, at: tile.coordinate, in: authored) {
+                return true
+            }
+            return false
+        })
+
+        for kind in BuildingKind.buildPalette {
+            let decision = try XCTUnwrap(
+                CityMapPrimaryActionPresentation.make(
+                    interactionMode: .build(kind),
+                    tile: occupied,
+                    state: authored
+                ).buildDecision
+            )
+            XCTAssertEqual(decision.target, "Block \(occupied.coordinate.x + 1), \(occupied.coordinate.y + 1)")
+            XCTAssertEqual(decision.footprint, "1 × 1 block")
+            XCTAssertTrue(decision.cost.contains(kind.buildCost.currencyText))
+            XCTAssertTrue(decision.cost.contains(kind.upkeep.currencyText))
+            XCTAssertFalse(decision.likelyConsequence.isEmpty)
+            XCTAssertTrue(decision.cancellation.contains("Escape"))
+            XCTAssertTrue(decision.accessibilitySummary.contains("Likely consequence"))
+            XCTAssertTrue(decision.accessibilitySummary.contains("without changing the city"))
+        }
+
+        let validDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: valid,
+                state: authored
+            ).buildDecision
+        )
+        XCTAssertEqual(validDecision.availability, "Ready to build")
+        XCTAssertNil(validDecision.disabledReason)
+        XCTAssertNil(validDecision.recovery)
+        XCTAssertTrue(validDecision.likelyConsequence.contains("280 homes"))
+
+        let roadDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: roadless,
+                state: authored
+            ).buildDecision
+        )
+        XCTAssertEqual(roadDecision.availability, "Blocked")
+        XCTAssertEqual(roadDecision.disabledReason, BuildRejection.roadAccessRequired.message)
+        XCTAssertEqual(roadDecision.recovery?.command, .buildRoad)
+        XCTAssertTrue(roadDecision.recovery?.focusesMap == true)
+
+        let roadRecovery = CityGameStore(state: authored)
+        roadRecovery.selectTool(.residential)
+        roadRecovery.selectedCoordinate = roadless.coordinate
+        roadRecovery.hudContextScope = .selection
+        roadRecovery.clearFeedback()
+        let roadRecoveryState = roadRecovery.state
+        let roadRecoveryFocus = roadRecovery.mapFocusRequestGeneration
+        XCTAssertTrue(roadRecovery.performMapFocused(try XCTUnwrap(roadDecision.recovery?.command)))
+        XCTAssertEqual(roadRecovery.interactionMode, .build(.road))
+        XCTAssertEqual(roadRecovery.selectedTool, .road)
+        XCTAssertEqual(roadRecovery.selectedCoordinate, roadless.coordinate)
+        XCTAssertEqual(roadRecovery.hudContextScope, .selection)
+        XCTAssertEqual(roadRecovery.state, roadRecoveryState)
+        XCTAssertEqual(roadRecovery.mapFocusRequestGeneration, roadRecoveryFocus + 1)
+
+        let occupiedDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: occupied,
+                state: authored
+            ).buildDecision
+        )
+        XCTAssertEqual(occupiedDecision.recovery?.command, .bulldozeMode)
+        let occupiedRecovery = CityGameStore(state: authored)
+        occupiedRecovery.selectTool(.residential)
+        occupiedRecovery.selectedCoordinate = occupied.coordinate
+        occupiedRecovery.clearFeedback()
+        let occupiedState = occupiedRecovery.state
+        XCTAssertTrue(occupiedRecovery.performMapFocused(try XCTUnwrap(occupiedDecision.recovery?.command)))
+        XCTAssertEqual(occupiedRecovery.interactionMode, .bulldoze)
+        XCTAssertEqual(occupiedRecovery.selectedCoordinate, occupied.coordinate)
+        XCTAssertEqual(occupiedRecovery.state, occupiedState)
+
+        var unfunded = authored
+        unfunded.treasury = 0
+        let unfundedDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: valid,
+                state: unfunded
+            ).buildDecision
+        )
+        XCTAssertEqual(unfundedDecision.disabledReason, BuildRejection.insufficientFunds.message)
+        XCTAssertEqual(unfundedDecision.recovery?.command, .inspectorFinances)
+        XCTAssertFalse(unfundedDecision.recovery?.focusesMap ?? true)
+
+        XCTAssertEqual(
+            BuildToolbarView.closedMaximumHeight(
+                compact: true,
+                isBuildMode: true,
+                hasBuildDecision: true
+            ),
+            BuildToolbarView.compactBuildDecisionMaximumHeight
+        )
+    }
+
+    @MainActor
+    func testBuildDecisionCommitUsesTheExistingPrimaryMapIntentExactlyOnce() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let valid = try XCTUnwrap(store.state.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.commercial, at: tile.coordinate, in: store.state) {
+                return true
+            }
+            return false
+        })
+        store.selectTool(.commercial)
+        store.selectedCoordinate = valid.coordinate
+        store.hudContextScope = .selection
+        store.clearFeedback()
+        let stateBefore = store.state
+        let treasuryBefore = store.state.treasury
+
+        XCTAssertTrue(store.canPerformMapCommand(.mapPrimaryAction))
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: valid.coordinate)?.kind, .commercial)
+        XCTAssertEqual(store.state.treasury, treasuryBefore - BuildingKind.commercial.buildCost)
+        XCTAssertEqual(store.selectedCoordinate, valid.coordinate)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertTrue(store.canUndo)
+
+        XCTAssertTrue(store.perform(.undo))
+        XCTAssertEqual(store.state, stateBefore)
+    }
+
+    @MainActor
     func testDiagnosisConsumesExactSpatialSnapshotAndAuthoredNoticeInventoryHasHonestActions() throws {
         let state = CityGameState.newCity(seed: 42)
         let snapshot = try CityPresentationSnapshot(state: state)

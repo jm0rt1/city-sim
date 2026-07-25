@@ -802,6 +802,10 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
         XCTAssertEqual(state.status, .playing)
         XCTAssertEqual(state.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(
+            CityAnalytics(state: state).townCharterStatusText,
+            "Town Charter secured · Regional Capital chapter is active"
+        )
 
         let charter = state
         advance(&state, cycles: 20)
@@ -852,6 +856,10 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(decoded, legacy)
         XCTAssertEqual(decoded.status, .playing)
         XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        XCTAssertEqual(
+            CityAnalytics(state: decoded).townCharterStatusText,
+            "Town Charter secured permanently · Charter victory is complete"
+        )
 
         for expectedTick in 1...3 {
             CitySimulation.step(&decoded)
@@ -863,6 +871,10 @@ final class GameplayLoopTests: XCTestCase {
         CitySimulation.step(&decoded)
         XCTAssertEqual(decoded.tick, 4)
         XCTAssertEqual(decoded.status, .won)
+        XCTAssertEqual(
+            CityAnalytics(state: decoded).townCharterStatusText,
+            "Town Charter secured permanently · Charter victory is complete"
+        )
         XCTAssertEqual(decoded.progression?.townCharterQualifyingCycles, 12)
         XCTAssertTrue(decoded.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)

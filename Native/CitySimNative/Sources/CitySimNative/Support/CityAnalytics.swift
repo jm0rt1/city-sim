@@ -203,6 +203,9 @@ struct CityAnalytics {
 
     var townCharterStatusText: String {
         if townCharterAwarded {
+            if state.progression?.secondAct == nil {
+                return "Town Charter secured permanently · Charter victory is complete"
+            }
             return "Town Charter secured · Regional Capital chapter is active"
         }
         if waterHeadroom == 0 {

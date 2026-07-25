@@ -4,13 +4,28 @@ This task-owned source tool implements the CONTRACT-011 calibration boundary.
 It is not part of `CitySimNative`, is not referenced by `Package.swift`, and
 does not enter the application runtime or shipping asset pack.
 
-## Fixed calibration scope
+## Authorized and accepted source scope
 
-The only authorized initial batch is:
+CONTRACT-011 initially authorized only the Residential L1 calibration:
 
 ```text
 residential_l01/variant-0/{north,east,south,west}
 ```
+
+That calibration was independently accepted at
+`6380037d42ede73eca60aac4a9b1c7b710f681d6`. Integration then authorized the
+next controlled source slice:
+
+```text
+residential_l02/variant-0/{north,east,south,west}
+residential_l03/variant-0/{north,east,south,west}
+residential_l04/variant-0/{north,east,south,west}
+```
+
+The complete Residential L2-L4 slice was independently accepted at
+`8f928ed5dd01453ff9d4d9910858d8bf786afa9d`. Commercial and Industrial source
+production remains unauthorized until integration publishes a new claim and
+authority.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -76,7 +91,8 @@ dependency is permitted.
 
 ## Hard gate
 
-After four raw and normalized calibration sources, source-size, native-2x,
-and unlabeled grayscale sheets are returned for independent art review.
-No commercial, industrial, higher-level, or additional variant work may start
-without integration authorization.
+Residential L1 and the Residential L2-L4 variant-zero slice have passed their
+independent source-art gates. This acceptance does not production-select,
+ingest, package, or ship any source. No Commercial, Industrial, additional
+variant, or other source work may start without a newly published integration
+authority and claim.

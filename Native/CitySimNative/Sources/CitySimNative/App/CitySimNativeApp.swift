@@ -74,7 +74,7 @@ struct CityGameCommands: Commands {
             }
             Divider()
             ForEach(CityCommandCatalog.descriptors(in: .panels).filter {
-                [.toggleObjectives, .toggleCommandCenter, .openNotices].contains($0.id)
+                [.toggleObjectives, .toggleCommandCenter, .toggleCityFocus, .openNotices].contains($0.id)
             }) {
                 commandButton($0)
             }

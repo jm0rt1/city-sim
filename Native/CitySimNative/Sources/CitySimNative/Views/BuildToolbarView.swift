@@ -91,6 +91,7 @@ struct BuildToolbarView: View {
             }
 
             Spacer(minLength: 6)
+            cityFocusButton
             commandGuideButton
             detailsButton
             OverlayPickerView(store: store, compact: compact)
@@ -211,6 +212,24 @@ struct BuildToolbarView: View {
         .accessibilityLabel("Open command guide")
         .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
         .accessibilityIdentifier("hud.command.guide")
+    }
+
+    private var cityFocusButton: some View {
+        let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
+        return Button { store.perform(.toggleCityFocus) } label: {
+            Label(compact ? "Focus" : "Focus City", systemImage: "viewfinder")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, compact ? 2 : 8)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")
+        .accessibilityLabel("Enter Focus City")
+        .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
+        .accessibilityHint(descriptor.discoverability)
+        .accessibilityIdentifier("hud.focus-city.enter")
     }
 
     @ViewBuilder

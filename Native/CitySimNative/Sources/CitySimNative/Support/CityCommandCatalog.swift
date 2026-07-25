@@ -43,6 +43,7 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
 
     case toggleObjectives = "panel.objectives"
     case toggleCommandCenter = "panel.command-center"
+    case toggleCityFocus = "panel.focus-city"
     case openNotices = "panel.notices"
     case openCommandGuide = "panel.command-guide"
     case dismissFeedback = "panel.dismiss-feedback"
@@ -259,6 +260,7 @@ enum CityCommandCatalog {
 
         add(.toggleObjectives, "Toggle Objectives", .panels, "Open or collapse the current mayoral objectives.", shortcut: shortcut("j", [.command], "⌘J", scope: .global))
         add(.toggleCommandCenter, "Toggle Command Center", .panels, "Open or close contextual city details.", shortcut: shortcut("i", [.command, .option], "⌥⌘I", scope: .global))
+        add(.toggleCityFocus, "Toggle Focus City", .panels, "Give the city maximum space while retaining critical operating truth.", shortcut: shortcut("f", [.command, .shift], "⇧⌘F", scope: .global))
         add(.openNotices, "Open City Notices", .panels, "Open the notice journal and related diagnostics.", shortcut: shortcut("a", [.command, .shift], "⇧⌘A", scope: .global))
         add(.openCommandGuide, "Open Command Guide", .panels, "Search every command, shortcut, and availability rule.", shortcut: shortcut("/", [.command], "⌘/", scope: .global))
         add(.dismissFeedback, "Dismiss Action Message", .panels, "Dismiss the transient action message only.", shortcut: shortcut(".", [.command], "⌘.", scope: .global))

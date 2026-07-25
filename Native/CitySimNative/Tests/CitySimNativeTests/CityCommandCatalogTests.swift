@@ -52,6 +52,91 @@ final class CityCommandCatalogTests: XCTestCase {
         }
     }
 
+    func testFocusCityIsOneDiscoverableGlobalCatalogCommand() {
+        let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
+
+        XCTAssertEqual(descriptor.category, .panels)
+        XCTAssertEqual(descriptor.route, .store)
+        XCTAssertFalse(descriptor.isSpatial)
+        XCTAssertEqual(descriptor.shortcut?.key, "f")
+        XCTAssertEqual(descriptor.shortcut?.modifiers, [.command, .shift])
+        XCTAssertEqual(descriptor.shortcut?.display, "⇧⌘F")
+        XCTAssertEqual(descriptor.shortcut?.focusScope, .global)
+        XCTAssertEqual(
+            CityCommandCatalog.matchingCommand(
+                key: "f",
+                modifiers: [.command, .shift],
+                scope: .global
+            ),
+            .toggleCityFocus
+        )
+        XCTAssertEqual(
+            CityCommandCatalog.matchingDescriptors(query: "focus city").filter {
+                $0.id == .toggleCityFocus
+            }.count,
+            1
+        )
+    }
+
+    @MainActor
+    func testFocusCityNoticeUrgencyUsesAuthoritativeCountSeverityAndExistingRoute() {
+        var state = CityGameState.newCity(seed: 42)
+        state.messages = []
+        var store = CityGameStore(state: state)
+        var presentation = FocusCityNoticeUrgencyPresentation(
+            count: store.alertCount,
+            severity: store.highestAlertSeverity
+        )
+        XCTAssertEqual(presentation.compactLabel, "0")
+        XCTAssertEqual(presentation.regularLabel, "No notices")
+        XCTAssertEqual(presentation.accessibilityValue, "No active notices")
+
+        state.messages = [
+            CityMessage(
+                tick: state.tick,
+                severity: .warning,
+                title: "Utility Reserve Tight",
+                detail: "Authoritative warning detail"
+            )
+        ]
+        store = CityGameStore(state: state)
+        presentation = FocusCityNoticeUrgencyPresentation(
+            count: store.alertCount,
+            severity: store.highestAlertSeverity
+        )
+        XCTAssertEqual(presentation.compactLabel, "WARNING 1")
+        XCTAssertEqual(presentation.regularLabel, "1 WARNING")
+        XCTAssertEqual(presentation.accessibilityValue, "1 notice, highest severity warning")
+
+        state.messages.append(CityMessage(
+            tick: state.tick,
+            severity: .critical,
+            title: "Severe Storm",
+            detail: "Authoritative critical detail"
+        ))
+        store = CityGameStore(state: state)
+        presentation = FocusCityNoticeUrgencyPresentation(
+            count: store.alertCount,
+            severity: store.highestAlertSeverity
+        )
+        XCTAssertEqual(
+            CityStrategyHUDPresentation.make(analytics: store.analytics).tone,
+            .decision,
+            "The strategy presentation may remain calm while notice truth is independently critical"
+        )
+        XCTAssertEqual(presentation.severity, .critical)
+        XCTAssertEqual(presentation.compactLabel, "CRITICAL 2")
+        XCTAssertEqual(presentation.regularLabel, "2 CRITICAL")
+        XCTAssertEqual(presentation.accessibilityValue, "2 notices, highest severity critical")
+
+        XCTAssertTrue(store.perform(.toggleCityFocus))
+        XCTAssertTrue(store.isCityFocusModeEnabled)
+        XCTAssertTrue(store.perform(.openNotices))
+        XCTAssertFalse(store.isCityFocusModeEnabled)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertEqual(store.inspectorSection, .journal)
+    }
+
     func testWarningLanguageFindsTaxPolicyThroughTheCatalog() {
         for query in ["tax", "budget", "storefront"] {
             let matches = CityCommandCatalog.matchingDescriptors(query: query)
@@ -542,11 +627,13 @@ final class CityCommandCatalogTests: XCTestCase {
         store.hudContextScope = .selection
         store.perform(.toggleObjectives)
         store.perform(.inspectorUtilities)
+        store.perform(.toggleCityFocus)
         store.perform(.openCommandGuide)
         let focusGeneration = store.mapFocusRequestGeneration
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.showCommandGuide)
+        XCTAssertTrue(store.isCityFocusModeEnabled)
         XCTAssertTrue(store.showInspector)
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
@@ -554,22 +641,119 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
-        XCTAssertFalse(store.showInspector)
+        XCTAssertFalse(store.isCityFocusModeEnabled)
+        XCTAssertTrue(store.showInspector)
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
-        XCTAssertFalse(store.showObjectives)
+        XCTAssertFalse(store.showInspector)
+        XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
+        XCTAssertFalse(store.showObjectives)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 3)
+
+        XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertEqual(store.interactionMode, .inspect)
         XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 3)
+    }
+
+    @MainActor
+    func testFocusCityTogglePreservesPresentationIdentityAndUsesOneStoreIntent() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let target = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty }?.coordinate)
+        store.selectTool(.residential)
+        store.selectedCoordinate = target
+        store.hudContextScope = .selection
+        store.showObjectives = true
+        store.openInspector(.utilities)
+        let state = store.state
+        let speed = store.speed
+        let tool = store.selectedTool
+        let mode = store.interactionMode
+        let section = store.inspectorSection
+        let scope = store.hudContextScope
+        let focusGeneration = store.mapFocusRequestGeneration
+
+        XCTAssertTrue(store.perform(.toggleCityFocus))
+        XCTAssertTrue(store.isCityFocusModeEnabled)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.speed, speed)
+        XCTAssertEqual(store.selectedTool, tool)
+        XCTAssertEqual(store.interactionMode, mode)
+        XCTAssertEqual(store.selectedCoordinate, target)
+        XCTAssertEqual(store.inspectorSection, section)
+        XCTAssertEqual(store.hudContextScope, scope)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertTrue(store.showObjectives)
+
+        XCTAssertTrue(store.perform(.toggleCityFocus))
+        XCTAssertFalse(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.selectedCoordinate, target)
+        XCTAssertEqual(store.interactionMode, mode)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertTrue(store.showObjectives)
+
+        store.showCommandGuide = true
+        XCTAssertTrue(store.performFromCommandGuide(.toggleCityFocus))
+        XCTAssertTrue(store.isCityFocusModeEnabled)
+        XCTAssertFalse(store.showCommandGuide)
+        XCTAssertEqual(store.selectedCoordinate, target)
+        XCTAssertEqual(store.interactionMode, mode)
+    }
+
+    @MainActor
+    func testFocusCityShortcutRespectsTextAndWelcomeQuarantine() throws {
+        let shortcutEvent = try keyEvent(
+            characters: "f",
+            keyCode: 3,
+            modifiers: [.command, .shift]
+        )
+        let textField = NSTextField(frame: CGRect(x: 0, y: 0, width: 180, height: 24))
+        let nonText = FocusProbeView(frame: .zero)
+
+        XCTAssertTrue(
+            CityGameStore.shouldQuarantineCityFocusShortcut(
+                firstResponder: textField,
+                event: shortcutEvent
+            )
+        )
+        XCTAssertFalse(
+            CityGameStore.shouldQuarantineCityFocusShortcut(
+                firstResponder: nonText,
+                event: shortcutEvent
+            )
+        )
+        XCTAssertFalse(
+            CityGameStore.shouldQuarantineCityFocusShortcut(
+                firstResponder: textField,
+                event: try keyEvent(characters: "\r", keyCode: 36)
+            )
+        )
+
+        let blocked = CityGameStore(
+            state: .newCity(seed: 42),
+            commandPolicy: .blocked(.welcome)
+        )
+        XCTAssertFalse(blocked.canPerform(.toggleCityFocus))
+        XCTAssertFalse(blocked.perform(.toggleCityFocus))
+        XCTAssertFalse(blocked.isCityFocusModeEnabled)
+        XCTAssertEqual(
+            blocked.disabledReason(for: .toggleCityFocus),
+            "Finish Welcome to New Arcadia to use city commands"
+        )
     }
 
     @MainActor
@@ -635,6 +819,35 @@ final class CityCommandCatalogTests: XCTestCase {
         let shiftedSelection = store.selectedCoordinate
         let stateBeforeEscape = store.state
         let focusGeneration = store.mapFocusRequestGeneration
+        let cameraScale = scene.cameraScale
+        let cameraPosition = scene.camera?.position
+
+        XCTAssertTrue(store.perform(.toggleCityFocus))
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        let focusedMapView = try XCTUnwrap(firstDescendant(of: CityMapSKView.self, in: host))
+        XCTAssertTrue(focusedMapView === mapView, "Focus City must retain the semantic map instance")
+        XCTAssertTrue(store.isCityFocusModeEnabled)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
+        XCTAssertEqual(store.state, stateBeforeEscape)
+        XCTAssertEqual(scene.cameraScale, cameraScale, accuracy: 0.000_001)
+        XCTAssertEqual(scene.camera?.position, cameraPosition)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+
+        scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
+        host.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        XCTAssertFalse(store.isCityFocusModeEnabled)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
+        XCTAssertEqual(store.state, stateBeforeEscape)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+        XCTAssertTrue(window.firstResponder === mapView)
 
         scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
         host.layoutSubtreeIfNeeded()
@@ -644,7 +857,7 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
         XCTAssertEqual(store.state, stateBeforeEscape)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 3)
         XCTAssertTrue(window.firstResponder === mapView)
 
         scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))
@@ -654,7 +867,7 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
         XCTAssertEqual(store.state, stateBeforeEscape)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 4)
         XCTAssertTrue(window.firstResponder === mapView)
     }
 

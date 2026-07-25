@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "authority": "1744c3d62dd45ee206035793366c45a811c47229",
+  "acceptedCalibration": "6380037d42ede73eca60aac4a9b1c7b710f681d6",
+  "scope": "residential-l02-l04-variant-zero",
+  "auditDisposition": "all-authorized-keys-missing-not-aliased",
+  "acceptedBaseline": {
+    "logicalBuildingID": "residential_l01",
+    "directions": ["north", "east", "south", "west"],
+    "preservedUnchanged": true
+  },
+  "authorizedKeys": [
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "north", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "east", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "south", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "west", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "north", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "east", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "south", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "west", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "north", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "east", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "south", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "west", "coverage": "missing"}
+  ],
+  "crossTypeAliasCount": 0,
+  "productionSelected": false
+}

@@ -1,0 +1,96 @@
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/day17-city-clean.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-block-lod.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-city-lod.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-construction-0.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-default-lod.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-focus-city.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-happiness.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-invalid-preview.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-land-value.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-neighborhood-lod.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-pointer-ax-details.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-pollution-selected.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-pollution.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-south-road-selected.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-traffic.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-undo-restored.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-utilities.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/industrial-l1-valid-preview.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/compact/save-load-paused.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/day53-city-clean.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-block-lod.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-city-lod.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-focus-city.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-happiness.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-land-value.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-neighborhood-lod.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-pollution.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-south-road-selected.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-traffic.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/regular/industrial-l1-utilities.png
+  pixelWidth: 1278
+  pixelHeight: 768
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/reduce-motion/industrial-l1-selected-ax.png
+  pixelWidth: 900
+  pixelHeight: 652
+/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-062/candidate-02612e4/live/reduce-motion/industrial-l1-selected.png
+  pixelWidth: 900
+  pixelHeight: 652

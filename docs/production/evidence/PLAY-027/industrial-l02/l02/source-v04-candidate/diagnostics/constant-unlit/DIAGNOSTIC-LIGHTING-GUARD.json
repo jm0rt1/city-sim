@@ -1,0 +1,32 @@
+{
+  "binarySHA256": "1f424d84d1ca3e6b33b73e8c96aedad4766d4d0511bfc5a65a9b7dd312987098",
+  "compileResult": "PASS",
+  "descriptorChanged": false,
+  "descriptorSHA256": "08f17a9478d417f5f30d14ec231af02fb4c74a36108ab49ce5dd33940db0b6af",
+  "diagnosticControl": {
+    "argument": [
+      "--diagnostic-material-lighting",
+      "constant-unlit"
+    ],
+    "default": "current",
+    "sceneLightsDisabled": true,
+    "sceneMaterialLightingModel": "SCNLightingModel.constant"
+  },
+  "guardTest": {
+    "candidateOutputWritten": false,
+    "exitCode": 133,
+    "expectedError": "non-baseline diagnostic output must remain under a diagnostics path",
+    "output": "/private/tmp/play027-lighting-guard/raw.png",
+    "provenance": "/private/tmp/play027-lighting-guard/raw.json",
+    "result": "PASS"
+  },
+  "materialColorsChanged": false,
+  "materialLibraryChanged": false,
+  "materialLibrarySHA256": "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef",
+  "productionSelected": false,
+  "rendererSourceSHA256": "f53b44bb4a9ea1be60a076e18afa0cfc2c4050126cdb4c6959d875f41943e147",
+  "schema": 1,
+  "sourceAuthority": false,
+  "task": "PLAY-027",
+  "type": "diagnostics-path-guard"
+}

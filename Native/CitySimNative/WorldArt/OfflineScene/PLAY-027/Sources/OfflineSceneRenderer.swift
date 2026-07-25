@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -68,13 +68,55 @@ enum DiagnosticSceneShadows: String {
     case disabled
 }
 
+enum DiagnosticMaterialLighting: String {
+    case current
+    case constantUnlit = "constant-unlit"
+}
+
 struct RendererDiagnosticConfiguration {
     let antialiasingOverride: DiagnosticAntialiasing?
     let sceneShadows: DiagnosticSceneShadows
+    let materialLighting: DiagnosticMaterialLighting
 
     var hasOverride: Bool {
-        antialiasingOverride != nil || sceneShadows != .current
+        antialiasingOverride != nil
+            || sceneShadows != .current
+            || materialLighting != .current
     }
+}
+
+struct DiagnosticMaterialLightingApplication {
+    let uniqueMaterialCount: Int
+    let sceneLightCount: Int
+}
+
+func applyDiagnosticMaterialLighting(
+    _ mode: DiagnosticMaterialLighting,
+    to scene: SCNScene
+) -> DiagnosticMaterialLightingApplication {
+    guard mode == .constantUnlit else {
+        return DiagnosticMaterialLightingApplication(
+            uniqueMaterialCount: 0,
+            sceneLightCount: 0
+        )
+    }
+    var materialIdentities = Set<ObjectIdentifier>()
+    var sceneLightCount = 0
+    scene.rootNode.enumerateChildNodes { node, _ in
+        if let light = node.light {
+            light.intensity = 0
+            light.castsShadow = false
+            sceneLightCount += 1
+        }
+        for material in node.geometry?.materials ?? [] {
+            material.lightingModel = .constant
+            materialIdentities.insert(ObjectIdentifier(material))
+        }
+    }
+    return DiagnosticMaterialLightingApplication(
+        uniqueMaterialCount: materialIdentities.count,
+        sceneLightCount: sceneLightCount
+    )
 }
 
 func rendererSHA256(_ url: URL) throws -> String {
@@ -3167,6 +3209,12 @@ enum OfflineSceneRendererMain {
                     "--diagnostic-scene-shadows",
                     in: arguments
                 ) ?? "current"
+            ),
+            let diagnosticMaterialLighting = DiagnosticMaterialLighting(
+                rawValue: rendererOptionalArgument(
+                    "--diagnostic-material-lighting",
+                    in: arguments
+                ) ?? "current"
             )
         else {
             throw OfflineRendererError.arguments
@@ -3175,7 +3223,8 @@ enum OfflineSceneRendererMain {
             antialiasingOverride: diagnosticAntialiasingRaw.flatMap(
                 DiagnosticAntialiasing.init(rawValue:)
             ),
-            sceneShadows: diagnosticSceneShadows
+            sceneShadows: diagnosticSceneShadows,
+            materialLighting: diagnosticMaterialLighting
         )
         if let backendCapabilityRecordURL {
             guard
@@ -3347,6 +3396,11 @@ enum OfflineSceneRendererMain {
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
+        let diagnosticMaterialLightingApplication =
+            applyDiagnosticMaterialLighting(
+                diagnosticConfiguration.materialLighting,
+                to: scene
+            )
         if descriptorSampling.sceneKitShadows == "disabled"
             || diagnosticConfiguration.sceneShadows == .disabled
         {
@@ -3610,6 +3664,20 @@ enum OfflineSceneRendererMain {
                     ?? "none",
                 "sceneShadows":
                     diagnosticConfiguration.sceneShadows.rawValue,
+                "materialLighting":
+                    diagnosticConfiguration.materialLighting.rawValue,
+                "materialLightingApplication": [
+                    "uniqueMaterialCount":
+                        diagnosticMaterialLightingApplication
+                        .uniqueMaterialCount,
+                    "sceneLightCount":
+                        diagnosticMaterialLightingApplication.sceneLightCount,
+                    "sceneLightsDisabled":
+                        diagnosticConfiguration.materialLighting
+                        == .constantUnlit,
+                    "materialColorsChanged": false,
+                    "descriptorChanged": false,
+                ],
                 "descriptorGeometryChanged": false,
                 "sourceAuthority": false,
                 "prequantizedOutput":

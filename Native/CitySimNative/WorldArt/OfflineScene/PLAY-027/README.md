@@ -84,14 +84,19 @@ rotating a camera, a scene, or a sibling raster.
 
 ## Renderer diagnostic isolation
 
-Rejected retained raws may be investigated with two non-authority controls:
+Rejected retained raws may be investigated with task-owned non-authority
+controls:
 
 ```text
 --diagnostic-antialiasing current|none
 --diagnostic-scene-shadows current|disabled
+--diagnostic-material-lighting current|constant-unlit
 ```
 
-The defaults preserve the existing 4x SceneKit MSAA and scene-shadow settings.
+The defaults preserve the existing SceneKit antialiasing, shadow, Lambert
+material-lighting, and scene-light settings. The constant/unlit control
+preserves authored material colors and geometry while changing SceneKit
+materials to `.constant` and disabling scene lights for causal isolation.
 Any non-default diagnostic is rejected unless both its PNG and provenance
 record are written under a `diagnostics/` path. Diagnostic records explicitly
 state that descriptor geometry is unchanged and the output is not source-art

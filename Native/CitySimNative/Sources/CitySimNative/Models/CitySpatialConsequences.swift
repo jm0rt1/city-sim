@@ -47,6 +47,8 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
     let landValueIndex: Double?
     let localHappinessIndex: Double?
     let trafficPressure: Double?
+    let streetActivityIndex: Double?
+    let placeActivityIndex: Double?
 
     init(
         coordinate: GridCoordinate,
@@ -57,7 +59,9 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
         vitality: CityLocationVitality,
         landValueIndex: Double? = nil,
         localHappinessIndex: Double? = nil,
-        trafficPressure: Double? = nil
+        trafficPressure: Double? = nil,
+        streetActivityIndex: Double? = nil,
+        placeActivityIndex: Double? = nil
     ) {
         self.coordinate = coordinate
         self.utility = utility
@@ -68,6 +72,8 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
         self.landValueIndex = landValueIndex
         self.localHappinessIndex = localHappinessIndex
         self.trafficPressure = trafficPressure
+        self.streetActivityIndex = streetActivityIndex
+        self.placeActivityIndex = placeActivityIndex
     }
 }
 
@@ -85,22 +91,25 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
     }
 
     init(state: CityGameState) {
-        width = state.gridWidth
-        height = state.gridHeight
+        let gridWidth = state.gridWidth
+        let gridHeight = state.gridHeight
+        width = gridWidth
+        height = gridHeight
 
         let activeTiles = CitySimulation.activeTiles(in: state)
         let powerSources = activeTiles.filter { $0.kind == .powerPlant }.map(\.coordinate)
         let waterSources = activeTiles.filter { $0.kind == .waterTower }.map(\.coordinate)
         let industrialSources = activeTiles.filter { $0.kind == .industrial }.map(\.coordinate)
         let parkSources = activeTiles.filter { $0.kind == .park }.map(\.coordinate)
-        let powerDistances = DistanceField(width: width, height: height, sources: powerSources)
-        let waterDistances = DistanceField(width: width, height: height, sources: waterSources)
-        let industrialDistances = DistanceField(width: width, height: height, sources: industrialSources)
-        let parkDistances = DistanceField(width: width, height: height, sources: parkSources)
+        let powerDistances = DistanceField(width: gridWidth, height: gridHeight, sources: powerSources)
+        let waterDistances = DistanceField(width: gridWidth, height: gridHeight, sources: waterSources)
+        let industrialDistances = DistanceField(width: gridWidth, height: gridHeight, sources: industrialSources)
+        let parkDistances = DistanceField(width: gridWidth, height: gridHeight, sources: parkSources)
         let powerCapacityFactor = Self.capacityFactor(capacity: state.powerCapacity, used: state.powerUsed)
         let waterCapacityFactor = Self.capacityFactor(capacity: state.waterCapacity, used: state.waterUsed)
 
-        samples = state.tiles.sorted(by: Self.rowMajor).map { tile in
+        let orderedTiles = state.tiles.sorted(by: Self.rowMajor)
+        let baseSamples = orderedTiles.map { tile in
             let power = Self.utilityService(
                 at: tile.coordinate,
                 distances: powerDistances,
@@ -211,6 +220,31 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                     : nil
             )
         }
+        samples = zip(orderedTiles, baseSamples).map { tile, sample in
+            CitySpatialConsequence(
+                coordinate: sample.coordinate,
+                utility: sample.utility,
+                pollutionExposure: sample.pollutionExposure,
+                pollutionBand: sample.pollutionBand,
+                vitalityScore: sample.vitalityScore,
+                vitality: sample.vitality,
+                landValueIndex: sample.landValueIndex,
+                localHappinessIndex: sample.localHappinessIndex,
+                trafficPressure: sample.trafficPressure,
+                streetActivityIndex: tile.kind == .road
+                    ? Self.streetActivityIndex(
+                        at: tile.coordinate,
+                        in: state,
+                        samples: baseSamples,
+                        width: gridWidth,
+                        height: gridHeight
+                    )
+                    : nil,
+                placeActivityIndex: Self.isCompletedPlace(tile)
+                    ? Self.placeActivityIndex(tile: tile, consequence: sample, in: state)
+                    : nil
+            )
+        }
     }
 
     private static func rowMajor(_ lhs: CityTile, _ rhs: CityTile) -> Bool {
@@ -261,6 +295,102 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
             return 1
         }
         return clamp(Double(tile.occupancy) / Double(max(1, capacity)))
+    }
+
+    private static func isCompletedPlace(_ tile: CityTile) -> Bool {
+        tile.kind != .empty
+            && tile.kind != .road
+            && tile.constructionProgress >= 1
+    }
+
+    private static func placeActivityPotential(of tile: CityTile) -> Double {
+        switch tile.kind {
+        case .residential, .commercial, .industrial:
+            utilization(of: tile)
+        case .park, .powerPlant, .waterTower, .fireStation, .policeStation,
+             .school, .cityHall:
+            1
+        case .empty, .road:
+            0
+        }
+    }
+
+    private static func placeActivityIndex(
+        tile: CityTile,
+        consequence: CitySpatialConsequence,
+        in state: CityGameState
+    ) -> Double {
+        let roadAccess = state.neighbors(of: tile.coordinate).contains {
+            $0.kind == .road
+        } ? 1.0 : 0.0
+        return clamp(
+            roadAccess * 0.15
+                + placeActivityPotential(of: tile) * 0.25
+                + clamp(tile.condition) * 0.20
+                + consequence.utility.combined * 0.15
+                + (consequence.localHappinessIndex ?? 0) * 0.15
+                + (1 - consequence.pollutionExposure) * 0.10
+        )
+    }
+
+    private static func streetActivityIndex(
+        at coordinate: GridCoordinate,
+        in state: CityGameState,
+        samples: [CitySpatialConsequence],
+        width: Int,
+        height: Int
+    ) -> Double {
+        let roadConnections = state.neighbors(of: coordinate).filter {
+            $0.kind == .road
+        }.count
+        let connection = Double(roadConnections) / 4
+        let traffic = sample(
+            at: coordinate,
+            in: samples,
+            width: width,
+            height: height
+        )?.trafficPressure ?? 0
+
+        var nearbyVitality = 0.0
+        for yOffset in -3...3 {
+            for xOffset in -3...3 {
+                let distance = abs(xOffset) + abs(yOffset)
+                guard distance > 0, distance <= 3,
+                      let nearby = sample(
+                          at: GridCoordinate(
+                              x: coordinate.x + xOffset,
+                              y: coordinate.y + yOffset
+                          ),
+                          in: samples,
+                          width: width,
+                          height: height
+                      ),
+                      nearby.vitality != .notApplicable else {
+                    continue
+                }
+                let distanceWeight = 1 - Double(distance) / 4
+                nearbyVitality += nearby.vitalityScore * distanceWeight
+            }
+        }
+
+        return clamp(
+            connection * 0.25
+                + traffic * 0.45
+                + clamp(nearbyVitality / 4) * 0.30
+        )
+    }
+
+    private static func sample(
+        at coordinate: GridCoordinate,
+        in samples: [CitySpatialConsequence],
+        width: Int,
+        height: Int
+    ) -> CitySpatialConsequence? {
+        guard coordinate.x >= 0, coordinate.y >= 0,
+              coordinate.x < width, coordinate.y < height else {
+            return nil
+        }
+        return samples[coordinate.y * width + coordinate.x]
     }
 
     private static func trafficPressure(

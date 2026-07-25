@@ -1,0 +1,4 @@
+phase,pid,executable,outcome
+staged-verify,45167,CitySimNative-w5f893ad1da1b,terminated after verify
+industrial-pressured-default,48504,CitySimNative-w5f893ad1da1b,terminated after exact default inspection
+final,none,CitySimNative-w5f893ad1da1b,zero surviving exact-candidate process

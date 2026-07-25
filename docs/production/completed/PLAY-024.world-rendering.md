@@ -11,6 +11,9 @@
 - **Same-state evidence:** `4e0bb39ea66484e433d32338aa8b40ee92cb801a`
 - **Authoritative fresh-start evidence:** `9791621c7f3a8109500d2c8567e7b2db8fa4d9b7`
 - **Bundled-Python validation:** `108878f3ac0859349df8981781da11d27fcc492b`
+- **Returned visual product:** `08a53be3fe4843eeb701bf70ff2f5f2b80036aae`
+- **Returned camera test:** `d2c732284bc3839d2b52890feba600088effcafb`
+- **Returned evidence:** `5a2926e1e53a32be6250cf346ec6621dd54e0d27`
 - **Candidate identity:** `world-rendering-w5f893ad1da1b`
 - **Bundle identifier:** `com.jfmortensen.citysim.world-rendering.w5f893ad1da1b`
 - **Final Wave acceptance:** pending independent PLAY-053 scoring
@@ -140,3 +143,45 @@ binding 19/20 score, 4/4 composition and coherence, and zero automatic rejects
 remain open.
 
 No shared-contract proposal is required.
+
+## PLAY-053 returned correction
+
+The independent 14/20 return at `6803f61` was repaired without changing
+gameplay topology, store intent, save state, SwiftUI HUD, commands, package
+contracts, or generated-v4 pixels.
+
+The correction:
+
+- makes deterministic `0` frame the eight-lot pressured district rather than
+  the full opportunity network;
+- removes ordinary-City-layer debug-like circles, poles, facade boxes, and the
+  floating residential bar;
+- breaks traceable long terrain boundaries into short, low-contrast material
+  detail, then combines them into bounded paths to retain the 1,369-node
+  default budget;
+- preserves typed pollution truth as sparse ground marks with the non-color AX
+  legend; and
+- freezes exact camera metrics: default scale `0.312796950340271` with priority
+  width occupancy `0.7473417931726477`, and compact scale
+  `0.576345682144165` with priority width occupancy
+  `0.5796985019395197`.
+
+The exact returned packet is
+`docs/production/evidence/PLAY-024/candidate-08a53be/VALIDATION.md`. Focused
+renderer tests passed 43/43, the complete native suite passed 201/201, staged
+verification passed, source/staged pack identity passed, geometry reported
+zero collisions, total cold render measured 5.190 ms with zero decode loads,
+and settled RSS after three real LOD cycles measured 117,712 KiB
+(114.95 MiB). Independent PLAY-053 must still score the candidate; this record
+does not claim visual acceptance.
+
+## Deferred asset-family requirement
+
+The user requires substantially more and higher-quality residential,
+commercial, and industrial assets; no logical asset may stand in for a
+different building type. Each building needs authored road-facing N/E/S/W
+views with consistent footprint, pivot, shadow, entrance, LOD, and provenance
+so future player rotation can show all four sides without runtime raster
+mirroring. This is deliberately deferred to the next separately published
+world-rendering claim and any required manifest-orientation contract. No
+PLAY-025/026 product or asset work is included in this PLAY-024 handoff.

@@ -1,0 +1,351 @@
+{
+  "bothBoundaryPathsObserved" : true,
+  "boundaryValueCounts" : {
+    "23" : 3,
+    "24" : 9
+  },
+  "byteIdentity" : true,
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+  "failures" : [
+
+  ],
+  "finalDecodedRGBASHA256Counts" : {
+    "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c" : 12
+  },
+  "finalPNGFileSHA256Counts" : {
+    "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add" : 12
+  },
+  "pixelIdentity" : true,
+  "productionSelected" : false,
+  "records" : [
+    {
+      "boundaryPrequantizedGreen" : 23,
+      "eligibilityReason" : "boundary-assisted-6-plus-1",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 6,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-01/STAGE-CAPTURE.json",
+          "sha256" : "4dfc98eaf216ece41204479ab203face68b828af568a194379ce5ec9f938bf7f"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-01/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-01/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-01/provenance.json",
+          "sha256" : "aac3f6428bee3135f2829ec74219c98d97752e662fa7a9afa208f98637995be4"
+        }
+      ],
+      "run" : "run-01",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-02/STAGE-CAPTURE.json",
+          "sha256" : "60ec1f886f3b7f3d190a7d86b4ca2587428d1e86ab3ad83056fe6d23eb6a36b1"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-02/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-02/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-02/provenance.json",
+          "sha256" : "360bf721c030e0dafccccce072f761b5504e8c4b3f2624328de2b879a914027c"
+        }
+      ],
+      "run" : "run-02",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-03/STAGE-CAPTURE.json",
+          "sha256" : "3d679c69fce5bea6b77ca04b10615eab2983dd879e2d6af6e29c8bfa15573654"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-03/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-03/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-03/provenance.json",
+          "sha256" : "c6b7ed6e6b3c2bb11fce3d436bfbf58d2a8e109e1d6f1bccc3dabf4c1d8742d6"
+        }
+      ],
+      "run" : "run-03",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-04/STAGE-CAPTURE.json",
+          "sha256" : "0131e4f35901842e47f5e820804317682980a5a8cc7367de49231885a8116c07"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-04/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-04/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-04/provenance.json",
+          "sha256" : "3a11ef569962240629ffd29cafd54e5131551c9c9282b699efa8590ac73694a5"
+        }
+      ],
+      "run" : "run-04",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-05/STAGE-CAPTURE.json",
+          "sha256" : "5eed6823ec833416c6d36b208e8a368d6523e0bdb1a9efe9fb2f3760b70bd116"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-05/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-05/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-05/provenance.json",
+          "sha256" : "87e325e38f739138cbda9fb81888abadc22fb73381d2a64e62fdae81dcee021e"
+        }
+      ],
+      "run" : "run-05",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-06/STAGE-CAPTURE.json",
+          "sha256" : "470861b14f8c66f79a0090109791d8ce095682cd1ff6556103b2caf69d5a50ab"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-06/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-06/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-06/provenance.json",
+          "sha256" : "841664c38f94865152c022202fca952f19ff00b5c40c914c905800359890b13a"
+        }
+      ],
+      "run" : "run-06",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-07/STAGE-CAPTURE.json",
+          "sha256" : "94f0dca00526d30600f23673f82efddac3eb60a74fc4e92ea337912585d52075"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-07/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-07/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-07/provenance.json",
+          "sha256" : "ba1a1da3041ed00f6ec159d4fae6fa0d06a7333d01c9218f9458e3bdd82115ec"
+        }
+      ],
+      "run" : "run-07",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-08/STAGE-CAPTURE.json",
+          "sha256" : "56b3bd202181cd6971e087b8aa9eedc4c6660edf9e1eb55a2aa632814e8a53f8"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-08/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-08/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-08/provenance.json",
+          "sha256" : "65b9b0d385b11550c1b0ef478c534e82b10af4734d5dc21044f573b0e88a6fb2"
+        }
+      ],
+      "run" : "run-08",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 23,
+      "eligibilityReason" : "boundary-assisted-6-plus-1",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 6,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-09/STAGE-CAPTURE.json",
+          "sha256" : "4bc6edd88be288257ce8020e887a2f7f38172df8616636b701d2b3607076a6f5"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-09/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-09/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-09/provenance.json",
+          "sha256" : "6e787a85de9e20266cb2efc646d1af0861db56a75a677e31d007f573c926d8c4"
+        }
+      ],
+      "run" : "run-09",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-10/STAGE-CAPTURE.json",
+          "sha256" : "2fc046160c3cc5b9cddf5e3882fc1664b5e2dca686d720f2750618b6005b6657"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-10/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-10/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-10/provenance.json",
+          "sha256" : "7fd02df770189a46de2634d54c1ef99768c69240f7b8da0e539a2eb49ca11c49"
+        }
+      ],
+      "run" : "run-10",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 23,
+      "eligibilityReason" : "boundary-assisted-6-plus-1",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 6,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-11/STAGE-CAPTURE.json",
+          "sha256" : "a1e47f287a4037757839d9db422922dc20aac8c637b2858f573f7aaeb7627e39"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-11/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-11/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-11/provenance.json",
+          "sha256" : "241ec57cb92cc692cdeb746f67d419d711369772eb5bfe3edad8ab6ebf5598c0"
+        }
+      ],
+      "run" : "run-11",
+      "status" : "pass"
+    },
+    {
+      "boundaryPrequantizedGreen" : 24,
+      "eligibilityReason" : "standard-majority-7",
+      "finalDecodedRGBASHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+      "finalPNGFileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+      "majorityCount" : 7,
+      "retainedFiles" : [
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-12/STAGE-CAPTURE.json",
+          "sha256" : "d04dd4e61bbdb2ef9f4ce03ce8e94c316acf7abef855f93657e4c19a9e9c6c7f"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-12/source.png",
+          "sha256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-12/imageio-pre-sips.png",
+          "sha256" : "82a1c7a8ab381f40aecbde3240747f59518c5567d2fa7272c4bf617cd9015b4d"
+        },
+        {
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/calibration/runs/run-12/provenance.json",
+          "sha256" : "d20404430d27856e94a948c7ec099dcf66acf007862be18dabb2b4351fff4df2"
+        }
+      ],
+      "run" : "run-12",
+      "status" : "pass"
+    }
+  ],
+  "retainedFileCount" : 48,
+  "runCount" : 12,
+  "schema" : 1,
+  "status" : "pass",
+  "task" : "PLAY-027"
+}

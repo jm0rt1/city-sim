@@ -614,7 +614,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Closed/open aperture improves without hiding urgent truth; Details exposes a complete actionable section; target/focus/input identity remains exact; every command route and accessibility path remains operable.
 - **Claim:** `docs/production/claims/PLAY-067.ui-input.md`.
 
-### [ ] PLAY-068: Gate the city with a second act
+### [x] PLAY-068: Gate the city with a second act
 
 - **Player outcome:** Independent candidate-blind evidence proves the combined second act, public realm, local activity, and situational HUD are materially better, truthful, operable, and production-ready.
 - **Owning lane:** Playtest quality.
@@ -623,6 +623,12 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, candidate substitution, rubric changes, fixture-only acceptance, or author scoring.
 - **Acceptance:** At least 19/20; mandatory 4/4 in world/public-realm coherence and game/HUD cohesion; no category below 3; zero P0/P1 defects or automatic rejects; explicit material preference over the frozen baseline.
 - **Claim:** `docs/production/claims/PLAY-068.playtest-quality.md`.
+- **Closed disposition:** REJECTED and superseded. Exact Wave 008 candidate
+  `87e1e682566b68d20deb1a9e2028e2b885e0423a` did not clear the combined
+  gate; the preserved quality checkpoint is
+  `776cc9b7dfd9532bbf9eee09aca3359373b875a7`. Wave 009 replaces this release
+  attempt and must pass the stricter independent PLAY-075 gate; this closure is
+  not product acceptance.
 
 ### [ ] PLAY-069: Adopt Regional Capital into runtime trust
 

@@ -9,7 +9,8 @@
 - **Planned surfaces:** renderer-owned terrain/environment/park/ambient/overlay presentation, generated-v4 world resources, renderer tests and diagnostics, and `docs/production/evidence/PLAY-056/`
 - **Dependencies:** accepted PLAY-024/028/054/055; existing Utilities/Pollution spatial truth; accepted PLAY-059/CONTRACT-013 before Land Value/Traffic/Happiness adoption; exact published claim baseline
 - **Validation/proof:** same-state regular/compact and three-LOD comparisons; park/public-realm sheets; deterministic vegetation/prop/ambient identities; collision and frontage diagnostics; five data layers; 20-second ambient observations; selection/build/undo/save-load/AX/Reduce Motion; pack/residency/RSS/frame budgets; full suite; independent PLAY-058 review
-- **Status:** dispatched; acceptance belongs to integration after PLAY-058
+- **Status:** ready for independent PLAY-058 review; author evidence complete,
+  acceptance remains integration-owned
 
 Replace the remaining flat park and sparse repeated board dressing with a
 cohesive public realm that matches the accepted building projection, scale,

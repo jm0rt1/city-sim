@@ -94,7 +94,9 @@ private struct AmbientCorridorSignature: Equatable {
 
 private struct CityVisualCompositionBounds {
     let occupiedDeveloped: CGRect
+    let cameraPriority: CGRect
     let networkOpportunity: CGRect
+    let cameraPriorityCoordinates: Set<GridCoordinate>
 }
 
 private final class TileRenderRecord {
@@ -163,7 +165,9 @@ final class CityScene: SKScene {
     private var viewportInsets: CityMapViewportInsets = .zero
     private var hasUserAdjustedCamera = false
     private(set) var occupiedDevelopedVisualBoundsForTesting: CGRect = .null
+    private(set) var cameraPriorityVisualBoundsForTesting: CGRect = .null
     private(set) var networkOpportunityVisualBoundsForTesting: CGRect = .null
+    private(set) var cameraPriorityCoordinatesForTesting: Set<GridCoordinate> = []
     var developedVisualBoundsForTesting: CGRect { occupiedDevelopedVisualBoundsForTesting }
     private var tileRecords: [GridCoordinate: TileRenderRecord] = [:]
     private var lastDragLocation: CGPoint?
@@ -437,6 +441,16 @@ final class CityScene: SKScene {
 
     func networkOpportunityViewportOccupancyForTesting() -> CGSize {
         viewportOccupancy(for: networkOpportunityVisualBoundsForTesting)
+    }
+
+    func cameraPriorityViewportOccupancyForTesting() -> CGSize {
+        viewportOccupancy(for: cameraPriorityVisualBoundsForTesting)
+    }
+
+    func persistentConsequenceAlphaForTesting(at coordinate: GridCoordinate) -> CGFloat? {
+        tileRecords[coordinate]?.consequenceLayer?
+            .childNode(withName: "spatial.consequences")?
+            .alpha
     }
 
     func developedViewportOccupancyForTesting() -> CGSize {
@@ -715,12 +729,12 @@ final class CityScene: SKScene {
     /// is normalized separately, so the same three semantic texture families
     /// remain available without changing their shared thresholds.
     private var cityScaleLimit: CGFloat {
-        guard !occupiedDevelopedVisualBoundsForTesting.isNull,
-              !occupiedDevelopedVisualBoundsForTesting.isEmpty else {
+        guard !cameraPriorityVisualBoundsForTesting.isNull,
+              !cameraPriorityVisualBoundsForTesting.isEmpty else {
             return Self.canonicalCityCameraScale
         }
         let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
-        let occupiedWidthLimit = occupiedDevelopedVisualBoundsForTesting.width
+        let occupiedWidthLimit = cameraPriorityVisualBoundsForTesting.width
             / (safeWidth * Self.cityOccupiedWidthTarget)
         return min(
             Self.canonicalCityCameraScale,
@@ -1233,10 +1247,15 @@ final class CityScene: SKScene {
         at coordinate: GridCoordinate,
         overlay: DataOverlay
     ) {
-        let isTruthOverlay = overlay == .utilities || overlay == .pollution
-        let isActiveCoordinate = coordinate == renderedSelection || coordinate == hoveredCoordinate
-        layer.childNode(withName: "spatial.consequences")?.alpha =
-            isTruthOverlay && !isActiveCoordinate ? 0.52 : 0
+        // The selected diagnostic overlay already carries a sparse, typed,
+        // non-color pattern plus an AX legend. Revealing compound utility,
+        // pollution, and vitality glyphs on every facade duplicates that truth
+        // and obscures the authored buildings. Persistent cues stay available
+        // to focused renderer proofs, while the shipping map gives the chosen
+        // overlay and selection exclusive visual priority.
+        _ = coordinate
+        _ = overlay
+        layer.childNode(withName: "spatial.consequences")?.alpha = 0
     }
 
     private func makeOverlayLayer() -> SKNode {
@@ -1800,19 +1819,25 @@ final class CityScene: SKScene {
     private func applyDevelopedCoreCamera(_ state: CityGameState) {
         let composition = visualCompositionBounds(in: state)
         let occupiedBounds = composition.occupiedDeveloped
-        guard !occupiedBounds.isNull, !occupiedBounds.isEmpty else {
+        let cameraPriorityBounds = composition.cameraPriority
+        guard !occupiedBounds.isNull, !occupiedBounds.isEmpty,
+              !cameraPriorityBounds.isNull, !cameraPriorityBounds.isEmpty else {
             occupiedDevelopedVisualBoundsForTesting = .null
+            cameraPriorityVisualBoundsForTesting = .null
             networkOpportunityVisualBoundsForTesting = .null
+            cameraPriorityCoordinatesForTesting = []
             fitCity(state)
             return
         }
         occupiedDevelopedVisualBoundsForTesting = occupiedBounds
+        cameraPriorityVisualBoundsForTesting = cameraPriorityBounds
         networkOpportunityVisualBoundsForTesting = composition.networkOpportunity
+        cameraPriorityCoordinatesForTesting = composition.cameraPriorityCoordinates
 
         // Camera breathing room is deliberately excluded from the occupied-mass
         // measurement. Only authoritative lots and their immediately adjoining
         // public realm may satisfy that gate.
-        let cameraBounds = occupiedBounds.insetBy(dx: -14, dy: -10)
+        let cameraBounds = cameraPriorityBounds.insetBy(dx: -14, dy: -10)
 
         let safeWidth = max(420, size.width - viewportInsets.leading - viewportInsets.trailing)
         let safeHeight = max(260, size.height - viewportInsets.top - viewportInsets.bottom)
@@ -1833,10 +1858,12 @@ final class CityScene: SKScene {
         )
         if isCompact {
             // A fit-to-height camera still produces the rejected tiny island in
-            // the compact HUD's unusually shallow opening. Preserve the entire
-            // authoritative lot row horizontally and let peripheral public realm
-            // sit beneath translucent chrome when necessary.
-            let compactWidthScale = occupiedBounds.width / (safeWidth * 0.56)
+            // the compact HUD's unusually shallow opening. Preserve the
+            // dominant district horizontally without letting a remote, fully
+            // truthful lot pull the entire expansion network back into frame.
+            // Remote semantic objects stay rendered, hittable, and reachable
+            // through pan; they do not define the deterministic reset view.
+            let compactWidthScale = cameraPriorityBounds.width / (safeWidth * 0.64)
             scale = max(scale, min(compactWidthScale, 0.62))
             // Compact framing intentionally resolves to neighborhood LOD even
             // for unusually tight fixtures; block textures are reserved for an
@@ -1845,10 +1872,13 @@ final class CityScene: SKScene {
             let compactNeighborhoodMinimum = actualCameraScale(
                 forCanonicalScale: CameraDetailLevel.blockMaximumCameraScale + 0.01
             )
-            let compactNeighborhoodMaximum = actualCameraScale(
-                forCanonicalScale: CameraDetailLevel.neighborhoodMaximumCameraScale - 0.01
+            let compactNeighborhoodPreferredMaximum = actualCameraScale(
+                forCanonicalScale: 0.655
             )
-            scale = min(compactNeighborhoodMaximum, max(scale, compactNeighborhoodMinimum))
+            scale = min(
+                compactNeighborhoodPreferredMaximum,
+                max(scale, compactNeighborhoodMinimum)
+            )
         }
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
@@ -1872,9 +1902,16 @@ final class CityScene: SKScene {
     private func visualCompositionBounds(in state: CityGameState) -> CityVisualCompositionBounds {
         let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
         guard !developed.isEmpty else {
-            return CityVisualCompositionBounds(occupiedDeveloped: .null, networkOpportunity: .null)
+            return CityVisualCompositionBounds(
+                occupiedDeveloped: .null,
+                cameraPriority: .null,
+                networkOpportunity: .null,
+                cameraPriorityCoordinates: []
+            )
         }
         let developedCoordinates = Set(developed.map(\.coordinate))
+        let cameraPriorityDevelopment = dominantDevelopedDistrict(in: developed)
+        let cameraPriorityCoordinates = Set(cameraPriorityDevelopment.map(\.coordinate))
         let nearbyRoads = state.tiles.filter { tile in
             guard tile.kind == .road else { return false }
             return RoadConnectionMask.cardinalEdges.contains { edge in
@@ -1883,6 +1920,15 @@ final class CityScene: SKScene {
                 // once the player pans, but must not shrink the opening architecture.
                 let delta = edge.coordinateDelta
                 return developedCoordinates.contains(GridCoordinate(
+                    x: tile.coordinate.x + delta.x,
+                    y: tile.coordinate.y + delta.y
+                ))
+            }
+        }
+        let cameraPriorityRoads = nearbyRoads.filter { tile in
+            RoadConnectionMask.cardinalEdges.contains { edge in
+                let delta = edge.coordinateDelta
+                return cameraPriorityCoordinates.contains(GridCoordinate(
                     x: tile.coordinate.x + delta.x,
                     y: tile.coordinate.y + delta.y
                 ))
@@ -1899,32 +1945,14 @@ final class CityScene: SKScene {
             }
         }
 
-        var occupiedBounds = CGRect.null
-        for tile in developed {
-            let position = style.isoPosition(tile.coordinate)
-            occupiedBounds = occupiedBounds.union(tileGroundBounds(at: position))
-            if let logicalID = generatedLogicalID(for: tile.kind),
-               let asset = assets.generatedAsset(logicalID: logicalID),
-               asset.opaqueBoundsWorld.count == 4 {
-                let physical = asset.opaqueBoundsWorld
-                occupiedBounds = occupiedBounds.union(CGRect(
-                    x: position.x + physical[0],
-                    y: position.y + physical[1],
-                    width: physical[2] - physical[0],
-                    height: physical[3] - physical[1]
-                ))
-            } else {
-                occupiedBounds = occupiedBounds.union(CGRect(
-                    x: position.x - tileWidth / 2,
-                    y: position.y - tileHeight / 2,
-                    width: tileWidth,
-                    height: tileHeight + 64
-                ))
-            }
-        }
-        for tile in nearbyRoads {
-            occupiedBounds = occupiedBounds.union(tileGroundBounds(at: style.isoPosition(tile.coordinate)))
-        }
+        let occupiedBounds = visualBounds(
+            for: developed,
+            adjoiningRoads: nearbyRoads
+        )
+        let cameraPriorityBounds = visualBounds(
+            for: cameraPriorityDevelopment,
+            adjoiningRoads: cameraPriorityRoads
+        )
 
         var networkBounds = CGRect.null
         let contextTiles = state.tiles.filter { $0.kind == .road } + expansionSockets
@@ -1933,8 +1961,88 @@ final class CityScene: SKScene {
         }
         return CityVisualCompositionBounds(
             occupiedDeveloped: occupiedBounds,
-            networkOpportunity: networkBounds
+            cameraPriority: cameraPriorityBounds,
+            networkOpportunity: networkBounds,
+            cameraPriorityCoordinates: cameraPriorityCoordinates
         )
+    }
+
+    /// Selects the largest spatially coherent developed district without using
+    /// seed identity, numeric occupancy, balance thresholds, or scenario
+    /// knowledge. Remote authoritative places remain rendered and hittable;
+    /// they simply do not force the deterministic `0` camera to shrink the
+    /// lived-in district into a small island.
+    private func dominantDevelopedDistrict(in developed: [CityTile]) -> [CityTile] {
+        let tilesByCoordinate = Dictionary(uniqueKeysWithValues: developed.map {
+            ($0.coordinate, $0)
+        })
+        var remaining = Set(tilesByCoordinate.keys)
+        var districts: [[CityTile]] = []
+
+        while let origin = remaining.min(by: coordinateComesBefore) {
+            remaining.remove(origin)
+            var pending = [origin]
+            var coordinates = [origin]
+            while let current = pending.popLast() {
+                let neighbors = remaining.filter { candidate in
+                    abs(candidate.x - current.x) + abs(candidate.y - current.y) <= 4
+                }
+                for neighbor in neighbors {
+                    remaining.remove(neighbor)
+                    pending.append(neighbor)
+                    coordinates.append(neighbor)
+                }
+            }
+            districts.append(coordinates.compactMap { tilesByCoordinate[$0] })
+        }
+
+        return districts.max { lhs, rhs in
+            if lhs.count != rhs.count { return lhs.count < rhs.count }
+            let lhsLevel = lhs.reduce(0) { $0 + max(1, $1.level) }
+            let rhsLevel = rhs.reduce(0) { $0 + max(1, $1.level) }
+            if lhsLevel != rhsLevel { return lhsLevel < rhsLevel }
+            let lhsAnchor = lhs.map(\.coordinate).min(by: coordinateComesBefore)
+            let rhsAnchor = rhs.map(\.coordinate).min(by: coordinateComesBefore)
+            guard let lhsAnchor, let rhsAnchor else { return false }
+            return coordinateComesBefore(rhsAnchor, lhsAnchor)
+        } ?? developed
+    }
+
+    private func coordinateComesBefore(_ lhs: GridCoordinate, _ rhs: GridCoordinate) -> Bool {
+        (lhs.y, lhs.x) < (rhs.y, rhs.x)
+    }
+
+    private func visualBounds(
+        for developed: [CityTile],
+        adjoiningRoads: [CityTile]
+    ) -> CGRect {
+        var bounds = CGRect.null
+        for tile in developed {
+            let position = style.isoPosition(tile.coordinate)
+            bounds = bounds.union(tileGroundBounds(at: position))
+            if let logicalID = generatedLogicalID(for: tile.kind),
+               let asset = assets.generatedAsset(logicalID: logicalID),
+               asset.opaqueBoundsWorld.count == 4 {
+                let physical = asset.opaqueBoundsWorld
+                bounds = bounds.union(CGRect(
+                    x: position.x + physical[0],
+                    y: position.y + physical[1],
+                    width: physical[2] - physical[0],
+                    height: physical[3] - physical[1]
+                ))
+            } else {
+                bounds = bounds.union(CGRect(
+                    x: position.x - tileWidth / 2,
+                    y: position.y - tileHeight / 2,
+                    width: tileWidth,
+                    height: tileHeight + 64
+                ))
+            }
+        }
+        for tile in adjoiningRoads {
+            bounds = bounds.union(tileGroundBounds(at: style.isoPosition(tile.coordinate)))
+        }
+        return bounds
     }
 
     private func tileGroundBounds(at position: CGPoint) -> CGRect {

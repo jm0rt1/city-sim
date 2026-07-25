@@ -44,6 +44,16 @@ final class LotRenderer {
             to: neighborhoodLayer
         )
         if presentation.construction == .complete || presentation.construction == .finishing {
+            addNeighborhoodPublicRealm(for: tile.kind, to: neighborhoodLayer)
+        }
+        if presentation.construction == .complete {
+            addBlockInspectionDetail(
+                for: tile,
+                condition: presentation.condition,
+                to: blockLayer
+            )
+        }
+        if presentation.construction == .complete || presentation.construction == .finishing {
             _ = addAuthoredPlaceFamily(
                 tile,
                 variant: variant,
@@ -258,6 +268,178 @@ final class LotRenderer {
         curbBreak.lineWidth = 1.4
         curbBreak.zPosition = 3.2
         node.addChild(curbBreak)
+    }
+
+    /// Neighborhood LOD adds use-specific frontage furniture instead of only
+    /// enlarging the city silhouette. The cues stay in the ground plane and
+    /// share the authored site's material palette; they never become bright
+    /// circular markers, poles, facade-mounted boxes, or gameplay assertions.
+    private func addNeighborhoodPublicRealm(
+        for kind: BuildingKind,
+        to node: SKNode
+    ) {
+        let publicRealm = SKNode()
+        switch kind {
+        case .residential:
+            publicRealm.name = "lot.lod.neighborhood.public-realm.residential"
+            addGroundInlay(
+                name: "planting-west",
+                width: 18,
+                height: 6,
+                fill: style.palette.parkGrass.blended(
+                    withFraction: 0.34,
+                    of: style.palette.mapEarthDark
+                ) ?? style.palette.parkGrass,
+                at: CGPoint(x: -18, y: -10),
+                to: publicRealm
+            )
+            addGroundInlay(
+                name: "planting-east",
+                width: 12,
+                height: 4.5,
+                fill: style.palette.parkGrass.blended(
+                    withFraction: 0.28,
+                    of: style.palette.mapEarthDark
+                ) ?? style.palette.parkGrass,
+                at: CGPoint(x: 19, y: -8),
+                to: publicRealm
+            )
+        case .commercial:
+            publicRealm.name = "lot.lod.neighborhood.public-realm.commercial"
+            addPaverSeams(
+                from: CGPoint(x: -24, y: -10),
+                to: CGPoint(x: 24, y: -10),
+                count: 4,
+                to: publicRealm
+            )
+        case .industrial, .powerPlant, .waterTower:
+            publicRealm.name = "lot.lod.neighborhood.public-realm.industrial"
+            addLoadingRails(at: CGPoint(x: 18, y: -10), to: publicRealm)
+        case .park:
+            publicRealm.name = "lot.lod.neighborhood.public-realm.park"
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: -23, y: -9))
+            path.addQuadCurve(
+                to: CGPoint(x: 23, y: -5),
+                control: CGPoint(x: -2, y: -15)
+            )
+            let wornPath = SKShapeNode(path: path)
+            wornPath.name = "lot.lod.neighborhood.public-realm.park-worn-path"
+            wornPath.strokeColor = style.palette.parkPath.withAlphaComponent(0.46)
+            wornPath.lineWidth = 3.2
+            wornPath.lineCap = .round
+            publicRealm.addChild(wornPath)
+        case .cityHall, .fireStation, .policeStation, .school:
+            publicRealm.name = "lot.lod.neighborhood.public-realm.civic"
+            addGroundInlay(
+                name: "civic-forecourt",
+                width: 30,
+                height: 7,
+                fill: style.palette.concreteLight.blended(
+                    withFraction: 0.22,
+                    of: style.palette.mapEarth
+                ) ?? style.palette.concreteLight,
+                at: CGPoint(x: 0, y: -10),
+                to: publicRealm
+            )
+        case .empty, .road:
+            return
+        }
+        if !publicRealm.children.isEmpty { node.addChild(publicRealm) }
+    }
+
+    private func addGroundInlay(
+        name: String,
+        width: CGFloat,
+        height: CGFloat,
+        fill: NSColor,
+        at position: CGPoint,
+        to node: SKNode
+    ) {
+        let inlay = SKShapeNode(path: style.diamondPath(width: width, height: height))
+        inlay.name = "lot.lod.neighborhood.\(name)"
+        inlay.fillColor = fill.withAlphaComponent(0.58)
+        inlay.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.34)
+        inlay.lineWidth = 0.55
+        inlay.position = position
+        inlay.zPosition = 4.5
+        node.addChild(inlay)
+    }
+
+    private func addPaverSeams(
+        from start: CGPoint,
+        to end: CGPoint,
+        count: Int,
+        to node: SKNode
+    ) {
+        let seams = CGMutablePath()
+        for index in 0..<count {
+            let progress = CGFloat(index + 1) / CGFloat(count + 1)
+            let x = start.x + (end.x - start.x) * progress
+            seams.move(to: CGPoint(x: x - 3, y: start.y - 1.5))
+            seams.addLine(to: CGPoint(x: x + 3, y: start.y + 1.5))
+        }
+        let marks = SKShapeNode(path: seams)
+        marks.name = "lot.lod.neighborhood.public-realm.commercial-pavers"
+        marks.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.31)
+        marks.lineWidth = 0.65
+        marks.lineCap = .round
+        marks.zPosition = 4.5
+        node.addChild(marks)
+    }
+
+    private func addLoadingRails(at position: CGPoint, to node: SKNode) {
+        let rails = CGMutablePath()
+        for offset in [-3.0, 0.0, 3.0] {
+            rails.move(to: CGPoint(x: position.x - 10, y: position.y + offset))
+            rails.addLine(to: CGPoint(x: position.x + 10, y: position.y + offset))
+        }
+        let marks = SKShapeNode(path: rails)
+        marks.name = "lot.lod.neighborhood.public-realm.industrial-loading-rails"
+        marks.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.42)
+        marks.lineWidth = 0.8
+        marks.lineCap = .butt
+        marks.zPosition = 4.5
+        node.addChild(marks)
+    }
+
+    /// Block LOD exposes the physical entrance and material condition at the
+    /// player's active inspection scale. The condition mapping reuses the
+    /// renderer-only lifecycle presentation and remains subordinate to
+    /// selection, placement, and consequence overlays.
+    private func addBlockInspectionDetail(
+        for tile: CityTile,
+        condition: LotConditionPresentation,
+        to node: SKNode
+    ) {
+        let threshold = SKShapeNode(path: style.diamondPath(width: 13, height: 4.5))
+        threshold.name = "lot.lod.block.entrance.\(tile.kind.rawValue)"
+        threshold.fillColor = style.palette.concreteLight.withAlphaComponent(0.78)
+        threshold.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.48)
+        threshold.lineWidth = 0.65
+        threshold.position = CGPoint(x: 0, y: -12)
+        threshold.zPosition = 13
+        node.addChild(threshold)
+
+        guard condition != .maintained else { return }
+        let wear = SKNode()
+        wear.name = "lot.lod.block.material-wear.\(condition)"
+        let count = condition == .distressed ? 3 : 2
+        for index in 0..<count {
+            let x = CGFloat(index - (count - 1) / 2) * 7
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: x - 3, y: -9))
+            path.addLine(to: CGPoint(x: x, y: -12))
+            path.addLine(to: CGPoint(x: x + 3, y: -10))
+            let crack = SKShapeNode(path: path)
+            crack.strokeColor = style.palette.mapEarthDark.withAlphaComponent(
+                condition == .distressed ? 0.68 : 0.42
+            )
+            crack.lineWidth = condition == .distressed ? 1.15 : 0.75
+            crack.lineCap = .round
+            wear.addChild(crack)
+        }
+        node.addChild(wear)
     }
 
     private func addResidential(

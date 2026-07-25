@@ -447,6 +447,12 @@ final class CityScene: SKScene {
         viewportOccupancy(for: cameraPriorityVisualBoundsForTesting)
     }
 
+    func persistentConsequenceAlphaForTesting(at coordinate: GridCoordinate) -> CGFloat? {
+        tileRecords[coordinate]?.consequenceLayer?
+            .childNode(withName: "spatial.consequences")?
+            .alpha
+    }
+
     func developedViewportOccupancyForTesting() -> CGSize {
         occupiedDevelopedViewportOccupancyForTesting()
     }
@@ -1241,10 +1247,15 @@ final class CityScene: SKScene {
         at coordinate: GridCoordinate,
         overlay: DataOverlay
     ) {
-        let isTruthOverlay = overlay == .utilities || overlay == .pollution
-        let isActiveCoordinate = coordinate == renderedSelection || coordinate == hoveredCoordinate
-        layer.childNode(withName: "spatial.consequences")?.alpha =
-            isTruthOverlay && !isActiveCoordinate ? 0.52 : 0
+        // The selected diagnostic overlay already carries a sparse, typed,
+        // non-color pattern plus an AX legend. Revealing compound utility,
+        // pollution, and vitality glyphs on every facade duplicates that truth
+        // and obscures the authored buildings. Persistent cues stay available
+        // to focused renderer proofs, while the shipping map gives the chosen
+        // overlay and selection exclusive visual priority.
+        _ = coordinate
+        _ = overlay
+        layer.childNode(withName: "spatial.consequences")?.alpha = 0
     }
 
     private func makeOverlayLayer() -> SKNode {

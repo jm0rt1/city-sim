@@ -223,6 +223,30 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testTruthOverlaysDoNotRevealCompoundFacadeGlyphs() throws {
+        let state = spatialProofState(recovered: false)
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let focus = GridCoordinate(x: 13, y: 11)
+        XCTAssertNotNil(snapshot.spatialConsequences[focus])
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        for overlay in [DataOverlay.pollution, .utilities] {
+            scene.render(
+                snapshot: snapshot,
+                overlay: overlay,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            XCTAssertEqual(
+                scene.persistentConsequenceAlphaForTesting(at: focus),
+                0,
+                "The chosen sparse overlay pattern must have exclusive priority over compound facade glyphs"
+            )
+        }
+    }
+
+    @MainActor
     func testReducedMotionEventsExpireBoundedlyAndSuppressSaveLoadUndoReplayDuplicates() throws {
         var strained = CityGameState.newCity(seed: 42)
         strained.tick = 4
@@ -1155,15 +1179,15 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
         XCTAssertEqual(
             backdropNames.filter { $0.hasPrefix("terrain.macro.material.patch.") }.count,
-            36
+            49
         )
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
-            12
+            15
         )
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
-            8
+            10
         )
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.parcel.") })
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
@@ -1646,7 +1670,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.distressed"))
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.maintained"))
         XCTAssertTrue(recoveredNames.contains("lot.lifecycle.growth.tier.2"))
-        XCTAssertTrue(recoveredNames.contains("lot.growth.freshFacade"))
+        XCTAssertTrue(recoveredNames.contains("lot.growth.improvedFrontage"))
+        XCTAssertFalse(recoveredNames.contains("lot.growth.freshFacade"))
         XCTAssertTrue(recoveredNames.contains("lot.growth.entrance-canopy"))
         XCTAssertFalse(recoveredNames.contains("lot.growth.badge"))
         XCTAssertFalse(recoveredNames.contains { $0.contains("pennant") || $0.contains("chevron") })
@@ -1715,7 +1740,17 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertTrue(staticNames.contains(expectedName))
             XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.construction.progress") })
             XCTAssertFalse(staticNames.contains { $0.hasPrefix("lot.construction.progress") })
-            let expectedActions = progress >= 0.50 ? 1 : 0
+            if progress == 0.75 {
+                let animatedScaffold = animated.childNode(
+                    withName: "//lot.construction.scaffoldSilhouette"
+                )
+                XCTAssertNotNil(animatedScaffold)
+                XCTAssertLessThanOrEqual(animatedScaffold?.calculateAccumulatedFrame().width ?? 0, 50)
+                XCTAssertLessThanOrEqual(animatedScaffold?.calculateAccumulatedFrame().height ?? 0, 30)
+                XCTAssertTrue(animatedNames.contains("lot.construction.scaffoldBrace"))
+                XCTAssertFalse(animatedNames.contains("lot.construction.finishWrap"))
+            }
+            let expectedActions = progress == 0.50 ? 1 : 0
             XCTAssertEqual(recursiveActiveActionCount(animated), expectedActions)
             XCTAssertEqual(recursiveActiveActionCount(staticFallback), 0)
             XCTAssertTrue(descendantLabels(in: animated).isEmpty)
@@ -1733,8 +1768,14 @@ final class WorldRenderingTests: XCTestCase {
         let growthRoot = renderer.makeLot(for: healthyGrowth, detail: .block, reducedMotion: false)
         let growthNames = descendantNames(in: growthRoot)
         XCTAssertTrue(growthNames.contains("lot.lifecycle.growth.tier.3"))
+        XCTAssertTrue(growthNames.contains("lot.growth.improvedFrontage"))
         XCTAssertTrue(growthNames.contains("lot.growth.entrance-canopy"))
-        XCTAssertFalse(growthNames.contains { $0.contains("pennant") || $0.contains("chevron") })
+        XCTAssertFalse(growthNames.contains {
+            $0.contains("pennant")
+                || $0.contains("chevron")
+                || $0.contains("freshFacade")
+                || $0.contains("cautionRibbon")
+        })
         XCTAssertEqual(recursiveActiveActionCount(growthRoot), 0)
         XCTAssertTrue(descendantLabels(in: growthRoot).isEmpty)
 

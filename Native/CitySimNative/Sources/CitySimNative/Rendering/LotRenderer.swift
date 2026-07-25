@@ -271,9 +271,9 @@ final class LotRenderer {
     }
 
     /// Neighborhood LOD adds use-specific frontage furniture instead of only
-    /// enlarging the city silhouette. These objects remain grounded on the
-    /// occupied lot and communicate authored place family, never gameplay
-    /// traffic, service coverage, or economic state.
+    /// enlarging the city silhouette. The cues stay in the ground plane and
+    /// share the authored site's material palette; they never become bright
+    /// circular markers, poles, facade-mounted boxes, or gameplay assertions.
     private func addNeighborhoodPublicRealm(
         for kind: BuildingKind,
         to node: SKNode
@@ -282,29 +282,125 @@ final class LotRenderer {
         switch kind {
         case .residential:
             publicRealm.name = "lot.lod.neighborhood.public-realm.residential"
-            addHedge(at: CGPoint(x: -21, y: -7), count: 3, to: publicRealm)
-            addHedge(at: CGPoint(x: 14, y: -4), count: 2, to: publicRealm)
+            addGroundInlay(
+                name: "planting-west",
+                width: 18,
+                height: 6,
+                fill: style.palette.parkGrass.blended(
+                    withFraction: 0.34,
+                    of: style.palette.mapEarthDark
+                ) ?? style.palette.parkGrass,
+                at: CGPoint(x: -18, y: -10),
+                to: publicRealm
+            )
+            addGroundInlay(
+                name: "planting-east",
+                width: 12,
+                height: 4.5,
+                fill: style.palette.parkGrass.blended(
+                    withFraction: 0.28,
+                    of: style.palette.mapEarthDark
+                ) ?? style.palette.parkGrass,
+                at: CGPoint(x: 19, y: -8),
+                to: publicRealm
+            )
         case .commercial:
             publicRealm.name = "lot.lod.neighborhood.public-realm.commercial"
-            addPlanters(at: [CGPoint(x: -21, y: -5), CGPoint(x: 21, y: -2)], to: publicRealm)
-            addLamp(at: CGPoint(x: 26, y: -4), to: publicRealm)
+            addPaverSeams(
+                from: CGPoint(x: -24, y: -10),
+                to: CGPoint(x: 24, y: -10),
+                count: 4,
+                to: publicRealm
+            )
         case .industrial, .powerPlant, .waterTower:
             publicRealm.name = "lot.lod.neighborhood.public-realm.industrial"
-            addBollards(at: CGPoint(x: -22, y: -7), count: 3, to: publicRealm)
-            addCrates(at: CGPoint(x: 22, y: -5), to: publicRealm)
+            addLoadingRails(at: CGPoint(x: 18, y: -10), to: publicRealm)
         case .park:
             publicRealm.name = "lot.lod.neighborhood.public-realm.park"
-            addBench(at: CGPoint(x: -12, y: -6), rotation: -0.18, to: publicRealm)
-            addLamp(at: CGPoint(x: 18, y: -3), to: publicRealm)
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: -23, y: -9))
+            path.addQuadCurve(
+                to: CGPoint(x: 23, y: -5),
+                control: CGPoint(x: -2, y: -15)
+            )
+            let wornPath = SKShapeNode(path: path)
+            wornPath.name = "lot.lod.neighborhood.public-realm.park-worn-path"
+            wornPath.strokeColor = style.palette.parkPath.withAlphaComponent(0.46)
+            wornPath.lineWidth = 3.2
+            wornPath.lineCap = .round
+            publicRealm.addChild(wornPath)
         case .cityHall, .fireStation, .policeStation, .school:
             publicRealm.name = "lot.lod.neighborhood.public-realm.civic"
-            addPlanters(at: [CGPoint(x: -24, y: -4), CGPoint(x: 24, y: 0)], to: publicRealm)
-            addLamp(at: CGPoint(x: -18, y: -6), to: publicRealm)
-            addLamp(at: CGPoint(x: 18, y: -3), to: publicRealm)
+            addGroundInlay(
+                name: "civic-forecourt",
+                width: 30,
+                height: 7,
+                fill: style.palette.concreteLight.blended(
+                    withFraction: 0.22,
+                    of: style.palette.mapEarth
+                ) ?? style.palette.concreteLight,
+                at: CGPoint(x: 0, y: -10),
+                to: publicRealm
+            )
         case .empty, .road:
             return
         }
         if !publicRealm.children.isEmpty { node.addChild(publicRealm) }
+    }
+
+    private func addGroundInlay(
+        name: String,
+        width: CGFloat,
+        height: CGFloat,
+        fill: NSColor,
+        at position: CGPoint,
+        to node: SKNode
+    ) {
+        let inlay = SKShapeNode(path: style.diamondPath(width: width, height: height))
+        inlay.name = "lot.lod.neighborhood.\(name)"
+        inlay.fillColor = fill.withAlphaComponent(0.58)
+        inlay.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.34)
+        inlay.lineWidth = 0.55
+        inlay.position = position
+        inlay.zPosition = 4.5
+        node.addChild(inlay)
+    }
+
+    private func addPaverSeams(
+        from start: CGPoint,
+        to end: CGPoint,
+        count: Int,
+        to node: SKNode
+    ) {
+        let seams = CGMutablePath()
+        for index in 0..<count {
+            let progress = CGFloat(index + 1) / CGFloat(count + 1)
+            let x = start.x + (end.x - start.x) * progress
+            seams.move(to: CGPoint(x: x - 3, y: start.y - 1.5))
+            seams.addLine(to: CGPoint(x: x + 3, y: start.y + 1.5))
+        }
+        let marks = SKShapeNode(path: seams)
+        marks.name = "lot.lod.neighborhood.public-realm.commercial-pavers"
+        marks.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.31)
+        marks.lineWidth = 0.65
+        marks.lineCap = .round
+        marks.zPosition = 4.5
+        node.addChild(marks)
+    }
+
+    private func addLoadingRails(at position: CGPoint, to node: SKNode) {
+        let rails = CGMutablePath()
+        for offset in [-3.0, 0.0, 3.0] {
+            rails.move(to: CGPoint(x: position.x - 10, y: position.y + offset))
+            rails.addLine(to: CGPoint(x: position.x + 10, y: position.y + offset))
+        }
+        let marks = SKShapeNode(path: rails)
+        marks.name = "lot.lod.neighborhood.public-realm.industrial-loading-rails"
+        marks.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.42)
+        marks.lineWidth = 0.8
+        marks.lineCap = .butt
+        marks.zPosition = 4.5
+        node.addChild(marks)
     }
 
     /// Block LOD exposes the physical entrance and material condition at the

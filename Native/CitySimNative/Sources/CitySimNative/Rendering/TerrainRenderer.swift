@@ -120,22 +120,22 @@ final class TerrainRenderer {
     private func macroFieldColor(variant: Int) -> NSColor {
         switch variant {
         case 0:
-            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.20)
+            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.12)
         case 1:
-            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.13)
+            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.08)
         case 2:
-            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.17)
+            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.10)
         case 3:
-            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.14)
+            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.09)
         default:
-            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.11)
+            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.07)
         }
     }
 
-    /// Covers the map with overlapping, softly curved material fields rather
-    /// than outlined macro cells. Every mark is ground-only and deterministic;
-    /// the composition never implies a road, frontage, parcel, occupancy, or
-    /// simulation event.
+    /// Breaks the board into overlapping, low-contrast material swatches.
+    /// Unlike parcel-sized polygons, each swatch has a short irregular contour
+    /// with no shared edge, so a continuous diagonal seam cannot be traced
+    /// through the aperture. Every mark is ground-only and deterministic.
     private func addContinuousTerrainComposition(
         gridWidth: Int,
         gridHeight: Int,
@@ -143,41 +143,26 @@ final class TerrainRenderer {
         neighborhood: SKNode,
         block: SKNode
     ) {
-        let materialSpan = 4
+        guard gridWidth >= 5, gridHeight >= 5 else { return }
+        let materialSpan = 3
         var materialIndex = 0
-        for y in stride(from: 0, to: gridHeight, by: materialSpan) {
-            for x in stride(from: 0, to: gridWidth, by: materialSpan) {
+        for y in stride(from: 2, to: gridHeight - 1, by: materialSpan) {
+            for x in stride(from: 2, to: gridWidth - 1, by: materialSpan) {
                 let anchor = GridCoordinate(x: x, y: y)
-                let rowOffset = (y / materialSpan).isMultiple(of: 2) ? 0 : -2
-                let startX = max(0, min(gridWidth - 1, x + rowOffset))
-                let startY = max(
-                    0,
-                    y - WorldVisualSeed.variant(
-                        count: 2,
+                let center = style.isoPosition(anchor)
+                let radiusX = style.tileWidth * (
+                    1.08 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
-                        salt: 0x7E20
-                    )
+                        salt: 0x7E22
+                    ) * 0.42
                 )
-                let spanX = 3 + WorldVisualSeed.variant(
-                    count: 3,
-                    for: anchor,
-                    kind: .empty,
-                    salt: 0x7E22
-                )
-                let spanY = 2 + WorldVisualSeed.variant(
-                    count: 3,
-                    for: anchor,
-                    kind: .empty,
-                    salt: 0x7E23
-                )
-                let maximumX = min(gridWidth - 1, startX + spanX)
-                let maximumY = min(gridHeight - 1, startY + spanY)
-                let corners = fieldCorners(
-                    minimumX: startX,
-                    minimumY: startY,
-                    maximumX: maximumX,
-                    maximumY: maximumY
+                let radiusY = style.tileHeight * (
+                    0.78 + WorldVisualSeed.unit(
+                        for: anchor,
+                        kind: .empty,
+                        salt: 0x7E23
+                    ) * 0.34
                 )
                 let variant = WorldVisualSeed.variant(
                     count: 5,
@@ -185,10 +170,11 @@ final class TerrainRenderer {
                     kind: .empty,
                     salt: 0x7E21
                 )
-                let material = SKShapeNode(path: organicFieldPath(
-                    corners,
+                let material = SKShapeNode(path: organicSwatchPath(
+                    center: center,
                     anchor: anchor,
-                    inset: 0.08
+                    radiusX: radiusX,
+                    radiusY: radiusY
                 ))
                 material.name = "terrain.macro.material.patch.\(materialIndex)"
                 material.fillColor = macroFieldColor(variant: variant)
@@ -196,17 +182,22 @@ final class TerrainRenderer {
                 city.addChild(material)
 
                 if (materialIndex + variant).isMultiple(of: 2) {
-                    let meadow = SKShapeNode(path: organicFieldPath(
-                        corners,
+                    let meadow = SKShapeNode(path: organicSwatchPath(
+                        center: CGPoint(
+                            x: center.x + radiusX * 0.08,
+                            y: center.y - radiusY * 0.06
+                        ),
                         anchor: anchor,
-                        inset: 0.19
+                        radiusX: radiusX * 0.62,
+                        radiusY: radiusY * 0.58,
+                        saltOffset: 0x20
                     ))
                     meadow.name = "terrain.macro.meadow.patch.\(materialIndex)"
                     meadow.fillColor = NSColor(
                         calibratedRed: 0.54,
                         green: 0.58,
                         blue: 0.29,
-                        alpha: 0.07
+                        alpha: 0.055
                     )
                     meadow.strokeColor = .clear
                     neighborhood.addChild(meadow)
@@ -214,10 +205,10 @@ final class TerrainRenderer {
 
                 if (materialIndex + variant).isMultiple(of: 3) {
                     addFieldFurrows(
-                        minimumX: startX,
-                        minimumY: startY,
-                        maximumX: maximumX,
-                        maximumY: maximumY,
+                        minimumX: max(0, x - 1),
+                        minimumY: max(0, y - 1),
+                        maximumX: min(gridWidth - 1, x + 1),
+                        maximumY: min(gridHeight - 1, y + 1),
                         variant: variant,
                         parcelIndex: materialIndex,
                         to: block
@@ -228,47 +219,42 @@ final class TerrainRenderer {
         }
     }
 
-    private func organicFieldPath(
-        _ corners: [CGPoint],
+    private func organicSwatchPath(
+        center: CGPoint,
         anchor: GridCoordinate,
-        inset: CGFloat
+        radiusX: CGFloat,
+        radiusY: CGFloat,
+        saltOffset: UInt64 = 0
     ) -> CGPath {
-        guard corners.count == 4 else { return style.polygonPath(corners) }
-        let center = corners.reduce(CGPoint.zero) { partial, point in
-            CGPoint(x: partial.x + point.x / 4, y: partial.y + point.y / 4)
-        }
-        let adjusted = corners.enumerated().map { index, point in
-            let variation = WorldVisualSeed.unit(
+        let pointCount = 10
+        let points = (0..<pointCount).map { index in
+            let angle = CGFloat(index) / CGFloat(pointCount) * .pi * 2
+            let radialVariation = 0.84 + WorldVisualSeed.unit(
                 for: anchor,
                 kind: .empty,
-                salt: 0x7E30 + UInt64(index)
-            )
-            let resolvedInset = inset + variation * 0.035
+                salt: 0x7E30 + saltOffset + UInt64(index)
+            ) * 0.22
             return CGPoint(
-                x: point.x + (center.x - point.x) * resolvedInset,
-                y: point.y + (center.y - point.y) * resolvedInset
+                x: center.x + cos(angle) * radiusX * radialVariation,
+                y: center.y + sin(angle) * radiusY * radialVariation
             )
         }
 
         let path = CGMutablePath()
-        path.move(to: adjusted[0])
-        for index in 0..<adjusted.count {
-            let current = adjusted[index]
-            let next = adjusted[(index + 1) % adjusted.count]
-            let midpoint = CGPoint(
-                x: (current.x + next.x) / 2,
-                y: (current.y + next.y) / 2
+        path.move(to: CGPoint(
+            x: (points[pointCount - 1].x + points[0].x) / 2,
+            y: (points[pointCount - 1].y + points[0].y) / 2
+        ))
+        for index in 0..<pointCount {
+            let current = points[index]
+            let next = points[(index + 1) % pointCount]
+            path.addQuadCurve(
+                to: CGPoint(
+                    x: (current.x + next.x) / 2,
+                    y: (current.y + next.y) / 2
+                ),
+                control: current
             )
-            let bow = 0.05 + WorldVisualSeed.unit(
-                for: anchor,
-                kind: .empty,
-                salt: 0x7E40 + UInt64(index)
-            ) * 0.08
-            let control = CGPoint(
-                x: midpoint.x + (center.x - midpoint.x) * bow,
-                y: midpoint.y + (center.y - midpoint.y) * bow
-            )
-            path.addQuadCurve(to: next, control: control)
         }
         path.closeSubpath()
         return path

@@ -379,7 +379,7 @@ enum ValidateScenesMain {
                     }
                 } else if family == "industrial"
                     && logicalBuildingID == "industrial_l02"
-                    && descriptor.sourceRevision == "source-v03"
+                    && descriptor.sourceRevision == "source-v04"
                 {
                     let prefix = "i02-\(direction)-frontage"
                     let masses = descriptor.building.massBlocks ?? []

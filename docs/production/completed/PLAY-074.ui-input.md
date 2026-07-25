@@ -46,3 +46,30 @@ command, rule, target, renderer behavior, or persistence truth.
 
 Known limitations and the transient-free, candidate-bound evidence inventory
 are recorded in `VALIDATION.md`. No contract blocker remains.
+
+## Integration-return viewport settlement
+
+- **Accepted return base:** `f8124286f0b12a8433dc5d58d467909cba37e4e5`
+- **Viewport product repair:** `6bb06ee291fe3e7cac8ea7b7c74e367033650ab5`
+- **Evidence root:**
+  `docs/production/evidence/PLAY-074/candidate-6bb06ee-viewport-repair/`
+
+The returned compact LOD defect was a SwiftUI measurement defect, not a
+renderer-fit defect. Valid live HUD frames now supersede startup fallback
+floors, animated closed/decision/Details transitions publish their settled
+current frames, and Focus City retains the pre-focus measurement until the
+restored chrome reports.
+
+At exact 900 x 600 content, visible map height is now 416 px closed, 362 px
+with the active build decision, 304 px with Details open, and 416 px after
+close. The corresponding renderer-safe heights are 396 / 342 / 284 / 396 pt.
+Regular deterministic outputs are 554 / 510 / 410 / 554 pt. Selected City
+Hall block 12,12 and its active Residential rejection remain visible and
+authoritative throughout the transition journey.
+
+Focused tests passed 5/5 and the repeated complete suite passed 243/243. The
+exact staged candidate passed verification; FKA Space, topmost Escape, the
+live accessibility tree, Focus City continuity, and Reduce Motion were
+retained. No renderer, gameplay, simulation, command, save, undo, or package
+surface changed. The evidence commit containing this addendum is reported in
+the lane handoff because a commit cannot embed its own identity.

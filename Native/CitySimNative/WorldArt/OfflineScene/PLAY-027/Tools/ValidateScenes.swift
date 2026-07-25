@@ -348,21 +348,47 @@ enum ValidateScenesMain {
                     "entrance pavilion/porch hierarchy is not readable"
                 )
             }
-            if
-                (direction == "north" || direction == "west"),
-                (
-                    descriptor.entrance.canopyDepth < 18
-                        || abs(descriptor.entrance.porchLateralOffset) < 10
-                )
-            {
-                itemFailures.append(
-                    "far frontage lacks a grounded visible porch return"
-                )
+            if direction == "north" || direction == "west" {
+                if family == "industrial"
+                    && descriptor.sourceRevision == "source-v05"
+                {
+                    let prefix = "i01-\(direction)-frontage"
+                    let masses = descriptor.building.massBlocks ?? []
+                    let trims = descriptor.building.trimBands ?? []
+                    let gantryPosts = masses.filter {
+                        $0.id.hasPrefix(prefix)
+                            && $0.id.contains("gantry-post")
+                    }
+                    let hasApron = masses.contains {
+                        $0.id == "\(prefix)-service-apron-v5"
+                    }
+                    let hasHeader = trims.contains {
+                        $0.id == "\(prefix)-gantry-header-v5"
+                    }
+                    let hasCrown = trims.contains {
+                        $0.id == "\(prefix)-hazard-crown-v5"
+                    }
+                    if gantryPosts.count != 2
+                        || !hasApron
+                        || !hasHeader
+                        || !hasCrown
+                    {
+                        itemFailures.append(
+                            "far industrial frontage lacks authored loading throat infrastructure"
+                        )
+                    }
+                } else if descriptor.entrance.canopyDepth < 18
+                    || abs(descriptor.entrance.porchLateralOffset) < 10
+                {
+                    itemFailures.append(
+                        "far frontage lacks a grounded visible porch return"
+                    )
+                }
             }
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")
             }
-            if level > 1 || family == "commercial" {
+            if level > 1 || family == "commercial" || family == "industrial" {
                 if descriptor.building.massingProfile == nil
                     || descriptor.building.massBlocks?.isEmpty != false
                     || descriptor.building.roofVolumes?.isEmpty != false
@@ -416,6 +442,54 @@ enum ValidateScenesMain {
                     )
                 }
             }
+            if family == "industrial" {
+                if descriptor.entrance.style != "loading-bay" {
+                    itemFailures.append(
+                        "industrial frontage lacks an approved loading-bay style"
+                    )
+                }
+                if descriptor.entrance.width < 20
+                    || descriptor.entrance.height < 16
+                {
+                    itemFailures.append(
+                        "industrial loading bay is not legible at game scale"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "rooftop-hvac"
+                }) {
+                    itemFailures.append(
+                        "industrial roof lacks explicit mechanical treatment"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "exhaust-stack"
+                }) {
+                    itemFailures.append(
+                        "industrial roof lacks explicit exhaust treatment"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "service-tank"
+                }) {
+                    itemFailures.append(
+                        "industrial service yard lacks explicit tank logic"
+                    )
+                }
+                let windowCount = descriptor.facades.reduce(0) {
+                    count, facade in
+                    count
+                        + facade.windowBays.count
+                        + (facade.windowRhythms ?? []).reduce(0) {
+                            $0 + $1.centersWorld.count
+                        }
+                }
+                if windowCount > 16 {
+                    itemFailures.append(
+                        "industrial facade rhythm aliases residential/commercial glazing density"
+                    )
+                }
+            }
 
             if let camera = baselineCamera, camera != descriptor.camera {
                 itemFailures.append("camera drift across directions")
@@ -427,10 +501,44 @@ enum ValidateScenesMain {
             } else {
                 baselineLight = descriptor.light
             }
-            if let building = baselineBuilding,
-                building != descriptor.building
-            {
-                itemFailures.append("building envelope drift across directions")
+            if let building = baselineBuilding {
+                if family == "industrial" {
+                    let stableEnvelope =
+                        building.width == descriptor.building.width
+                        && building.depth == descriptor.building.depth
+                        && building.foundationHeight
+                            == descriptor.building.foundationHeight
+                        && building.floorHeight
+                            == descriptor.building.floorHeight
+                        && building.floors == descriptor.building.floors
+                        && building.wallHeight
+                            == descriptor.building.wallHeight
+                        && building.roofHeight
+                            == descriptor.building.roofHeight
+                        && building.roofOverhang
+                            == descriptor.building.roofOverhang
+                        && building.wallMaterialID
+                            == descriptor.building.wallMaterialID
+                        && building.trimMaterialID
+                            == descriptor.building.trimMaterialID
+                        && building.roofMaterialID
+                            == descriptor.building.roofMaterialID
+                        && building.foundationMaterialID
+                            == descriptor.building.foundationMaterialID
+                        && building.massingProfile
+                            == descriptor.building.massingProfile
+                        && building.usesLegacyDomesticDetails
+                            == descriptor.building.usesLegacyDomesticDetails
+                    if !stableEnvelope {
+                        itemFailures.append(
+                            "industrial stable building envelope drift across directions"
+                        )
+                    }
+                } else if building != descriptor.building {
+                    itemFailures.append(
+                        "building envelope drift across directions"
+                    )
+                }
             } else {
                 baselineBuilding = descriptor.building
             }

@@ -1,0 +1,2956 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v02-candidate/diagnostics/SOUTH-PIXEL-LOCALITY.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l01-source-v02-south-pixel-locality",
+  "differenceBoundsSource" : [
+    828,
+    765,
+    847,
+    779
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        765
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        765
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        766
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        766
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        766
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        766
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        767
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        767
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        767
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        767
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        768
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        768
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        768
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        768
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        768
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        840,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        841,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        843,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        845,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        846,
+        769
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        834,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        835,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        836,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        837,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        840,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        841,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        842,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        843,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        844,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        845,
+        770
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        834,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        835,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        836,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        837,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        838,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        840,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        841,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        842,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        843,
+        771
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        834,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        835,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        836,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        837,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        838,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        839,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        840,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        841,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        144,
+        144,
+        80,
+        255
+      ],
+      "repeatBRGBA" : [
+        144,
+        112,
+        80,
+        255
+      ],
+      "repeatCRGBA" : [
+        144,
+        144,
+        80,
+        255
+      ],
+      "sourceCoordinate" : [
+        844,
+        772
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        834,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        835,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        836,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        837,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        838,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        839,
+        773
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        834,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        835,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        836,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        837,
+        774
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        832,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        833,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        834,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        835,
+        775
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        776
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        776
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        776
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        776
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        777
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        777
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        830,
+        777
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        831,
+        777
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        828,
+        778
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        16,
+        16,
+        255
+      ],
+      "sourceCoordinate" : [
+        829,
+        778
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/south/source-v02.png",
+    "fileSHA256" : "342aeda71fd25020f3361e240f0b87f00de0826e0efe53e66e7afe5f0e4cc200"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 118,
+    "differingPixelCount" : 107
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v02-candidate/repeat/south-run-c.png",
+    "fileSHA256" : "b40e28952d404ba7ba7a3b69304571b320d879f76d464a4dc7a3c96fe8257bd3"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 118,
+    "differingPixelCount" : 107
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v02-candidate/repeat/south-run-b.png",
+    "fileSHA256" : "342aeda71fd25020f3361e240f0b87f00de0826e0efe53e66e7afe5f0e4cc200"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

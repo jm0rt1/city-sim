@@ -1,0 +1,83 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v02-candidate/diagnostics/EAST-PIXEL-LOCALITY.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l01-source-v02-east-pixel-locality",
+  "differenceBoundsSource" : [
+    845,
+    771,
+    846,
+    772
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        112,
+        112,
+        80,
+        255
+      ],
+      "repeatBRGBA" : [
+        112,
+        80,
+        80,
+        255
+      ],
+      "repeatCRGBA" : [
+        112,
+        112,
+        80,
+        255
+      ],
+      "sourceCoordinate" : [
+        845,
+        771
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/east/source-v02.png",
+    "fileSHA256" : "a5bdb4158b5f324b62b9d178f5f284a945c27c8807507ea2a2e0b3d2661c583c"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 1,
+    "differingPixelCount" : 1
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v02-candidate/repeat/east-run-b.png",
+    "fileSHA256" : "04d77d7558c4aba3f50a2f11dafc5b04029111ce6a3b2cfef581f3fdb586fe11"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 1,
+    "differingPixelCount" : 1
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v02-candidate/repeat/east-run-c.png",
+    "fileSHA256" : "a5bdb4158b5f324b62b9d178f5f284a945c27c8807507ea2a2e0b3d2661c583c"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

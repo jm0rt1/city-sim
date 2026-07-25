@@ -1,0 +1,54 @@
+{
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+  "descriptorCount" : 4,
+  "logicalBuildingID" : "industrial_l01",
+  "productionSelected" : false,
+  "repair" : "four authored loading-throat gantries, elevated hazard crowns, and socket-crossing service aprons",
+  "samples" : [
+    {
+      "archivedSourceV04File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v04-rejected/descriptors/north/scene.json",
+      "archivedSourceV04SHA256" : "91c1e55d47a54117225d5b0e430e1949282a4240a4a5d613b3c290cfcfadd42b",
+      "direction" : "north",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-north-loading-works-geometry-v5",
+      "sourceV05DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/north/scene.json",
+      "sourceV05DescriptorSHA256" : "8d87d79da48779acdeadc4fdfdb19f587998bff8afb6d899959c5b99c2883e1d"
+    },
+    {
+      "archivedSourceV04File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v04-rejected/descriptors/east/scene.json",
+      "archivedSourceV04SHA256" : "8ddba5fe2db39abf8ab64dc13cb4530c8e560d63d1a44209faebea09894fef98",
+      "direction" : "east",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v5",
+      "sourceV05DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/east/scene.json",
+      "sourceV05DescriptorSHA256" : "33f781cc7d3f1164309cb5577947ff21588c0a97cc3e3c8ebf371931a1cc2520"
+    },
+    {
+      "archivedSourceV04File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v04-rejected/descriptors/south/scene.json",
+      "archivedSourceV04SHA256" : "79820e1aeaef602bab1d17ee2564bb4273750b77d948800a3e8ef0fd2358db19",
+      "direction" : "south",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-south-loading-works-geometry-v5",
+      "sourceV05DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/south/scene.json",
+      "sourceV05DescriptorSHA256" : "f0863ab39b9deb6715f4b7fe9aa9b36ec8416cd3d926ed01269016a2cc0079ab"
+    },
+    {
+      "archivedSourceV04File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v04-rejected/descriptors/west/scene.json",
+      "archivedSourceV04SHA256" : "a6aa805871bec218444ec1bf351d8077921d161ae28d1d21e3afd811490ce2f4",
+      "direction" : "west",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v5",
+      "sourceV05DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/west/scene.json",
+      "sourceV05DescriptorSHA256" : "302fb2fe63d0056ae0bf43963663c4729bdca5e8de15bd1d5f085859d8f777f0"
+    }
+  ],
+  "schema" : 1,
+  "sourceRevision" : "source-v05",
+  "task" : "PLAY-027",
+  "uniqueDescriptorHashCount" : 4,
+  "uniqueSceneGeometryIDCount" : 4
+}

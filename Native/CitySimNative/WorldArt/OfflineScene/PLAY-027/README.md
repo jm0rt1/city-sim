@@ -30,7 +30,7 @@ L1 `source-v04` was accepted as non-shipping source-art authority at
 accepted as non-shipping source-art authority at
 `a224937e6aaae9c4824566403ead8c6087d646d9`. Commercial L3 `source-v01` was
 accepted as non-shipping source-art authority at
-`71655d5dbaf8a56fa287e68b5b99159ee4ba6144`. Commercial L4 is authorized from
+`71655d5dbaf8a56fa287e68b5b99159ee4ba6144`. Commercial L4 was authorized from
 that exact base:
 
 ```text
@@ -40,9 +40,12 @@ commercial_l04/variant-0/{north,east,south,west}
 The schema-2 v3 sampling contract was independently approved at
 `52599472fddb12723650d15489a2779d22de288c`, with its frozen regression packet
 at `a337a4f8b56c849f15d6be5833d1d22553f58d69`. Exactly one Commercial L4
-`source-v03` N/E/S/W set is authorized on that contract. It remains
-non-shipping and requires independent review before any production selection.
-Industrial source production remains unauthorized.
+`source-v03` N/E/S/W set was authored on that contract and independently
+accepted through clean source candidate
+`bf3e24b2b465870f131ac0a01a2327ac4969d5d5`. Published authority
+`91f885925fd601786fa95dbb969b71fefef5ddcd` now authorizes exactly Industrial
+L1 variant-zero N/E/S/W under the same schema-2 v3 contract and one-level
+independent-review gate. Industrial L2-L4 remain unauthorized.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -267,9 +270,8 @@ payload. It never edits an accepted descriptor or source record.
 ## Hard gate
 
 Residential L1 and Residential L2-L4 have passed their independent source-art
-gates. Commercial L1, Commercial L2, and Commercial L3 are accepted as
-non-shipping source-art authority. Commercial L4 `source-v03` alone is
-authorized on the independently approved schema-2 v3 sampling contract for
-governed source production and independent review. Industrial, additional
-variants, renderer ingestion, packaging, and production selection remain
-blocked without further integration authority.
+gates. Commercial L1-L4 are accepted as non-shipping source-art authority.
+Industrial L1 `source-v01` alone is authorized on the independently approved
+schema-2 v3 sampling contract for governed source production and independent
+review. Industrial L2-L4, additional variants, renderer ingestion, packaging,
+and production selection remain blocked without further integration authority.

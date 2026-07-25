@@ -1,0 +1,470 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "unique",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 12,
+  "sourceKind" : "normalized",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_block.png",
+      "fileSHA256" : "beba2ab0dbf920e0725ba7771f3c5288c02507c0b375bc8dd7940840dad8f13b",
+      "id" : "north-block",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          389,
+          345,
+          635,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 37783,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          389,
+          345,
+          389,
+          85
+        ],
+        "transparentPixelCount" : 661609,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "c97a186a60f1d77a229e16aab4f1158409b7d74b1d355ba34edc8e91c2740537",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_neighborhood.png",
+      "fileSHA256" : "d637c48c462942a6739434e3f8532291d5977bd6159da1bc9ca86a03648f3329",
+      "id" : "north-neighborhood",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          194,
+          172,
+          318,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 9582,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          194,
+          172,
+          194,
+          42
+        ],
+        "transparentPixelCount" : 165522,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "670b060a5422d1939c56f76b6d6978b57d262c7dd751228dea2a76aadd6f3644",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_city.png",
+      "fileSHA256" : "8134c56cb4ea3238fec85bf4b568eed0a2c8a0724695be16c105e057c3aa4583",
+      "id" : "north-city",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          97,
+          86,
+          159,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 2473,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          97,
+          86,
+          97,
+          21
+        ],
+        "transparentPixelCount" : 41303,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "38897c4436b03537c8135a462e7d5984413fcbe2b0ea446dc2f1a9e4bdb66bda",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_block.png",
+      "fileSHA256" : "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b",
+      "id" : "east-block",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          388,
+          358,
+          636,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 35497,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          388,
+          358,
+          388,
+          85
+        ],
+        "transparentPixelCount" : 663895,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "ccf31c02376fdfb5d790c256e3e9ae64e7b193f88449c912077037e5a6c9fead",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_neighborhood.png",
+      "fileSHA256" : "35803e7aa979aa9afecb134e457040e23fa58fdd51be18db4c4e010e3f470607",
+      "id" : "east-neighborhood",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          194,
+          179,
+          318,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 8982,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          194,
+          179,
+          194,
+          42
+        ],
+        "transparentPixelCount" : 166122,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "f666a9b052cb5fb45d76381abe508bb4c2de451d5d0ecdf6f9a60ff1f9648228",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_city.png",
+      "fileSHA256" : "a04aceca4ba2cd47b0b2fcbecb00d4dbf48fca8129c779bf6d27c825d8876d81",
+      "id" : "east-city",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          97,
+          89,
+          159,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 2304,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          97,
+          89,
+          97,
+          21
+        ],
+        "transparentPixelCount" : 41472,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "8356e8865318de991ff47817f4413ba778de22d3b3a86cd3eb1ff92325c7af34",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_block.png",
+      "fileSHA256" : "4c5228bdcf513c272b392e6175faa85327191b99433f81cd8c33b6e10a53020d",
+      "id" : "south-block",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          389,
+          389,
+          635,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 35553,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          389,
+          389,
+          389,
+          85
+        ],
+        "transparentPixelCount" : 663839,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "1e0278def36566810a7a2a2712a69b8b90005986e89de89943948ba44430dff7",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_neighborhood.png",
+      "fileSHA256" : "0794afa8e0002f88ba01a4458800f7b0ae886b9a608d7064a3c7a0fc759da274",
+      "id" : "south-neighborhood",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          194,
+          194,
+          318,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 9047,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          194,
+          194,
+          194,
+          42
+        ],
+        "transparentPixelCount" : 166057,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "7ac9667922c743837cb2a94e2d9175fefe3d690e0100af982b22e609b98bc574",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_city.png",
+      "fileSHA256" : "4d0dcaa65bb8bbea8661f37f426441996e5d4e88de36fc2689bd28eb7ab8103d",
+      "id" : "south-city",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          97,
+          97,
+          159,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 2321,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          97,
+          97,
+          97,
+          21
+        ],
+        "transparentPixelCount" : 41455,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "52f435a3892deaff12f2fb4e645a14b28b642390481df702b78636ff6951a4c2",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_block.png",
+      "fileSHA256" : "04a2963a211d4b7ae5ac4fa8ddbb88c46dbe18cc7b4685bf67c9167dc8bda9da",
+      "id" : "west-block",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          389,
+          345,
+          635,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 36906,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          389,
+          345,
+          389,
+          85
+        ],
+        "transparentPixelCount" : 662486,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "70d4b2fed9fe03133427b0ee19d99b189f24a83cc38219c454113123b8715435",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_neighborhood.png",
+      "fileSHA256" : "4fa100cfeb1abc0caecaf4cbd74ffa51abd0c521d9050a76ec2e1a4cbbf4a025",
+      "id" : "west-neighborhood",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          194,
+          172,
+          318,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 9343,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          194,
+          172,
+          194,
+          42
+        ],
+        "transparentPixelCount" : 165761,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "9dc8fedd0079a852b41a980d3b6fdfe9aa620b530ed6d92f5e1820fdeb8d7299",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_city.png",
+      "fileSHA256" : "be96b2aec303069741d625dd91620d6e29138ea6e4b6c9d3af98275cba8b6b9f",
+      "id" : "west-city",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          97,
+          86,
+          159,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 2403,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          97,
+          86,
+          97,
+          21
+        ],
+        "transparentPixelCount" : 41373,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "de90e49c84a15618cba7ccebf363864b2e81af119ec3f036eaddb45fabe1123f",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 12,
+  "validationPassed" : true
+}

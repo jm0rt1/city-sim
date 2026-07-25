@@ -933,6 +933,14 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         else {
             throw OfflineRendererError.invalid("entrance facade is missing")
         }
+        if entrance.style == "loading-bay" {
+            try addIndustrialLoadingBay(
+                descriptor,
+                facade: facade,
+                to: scene
+            )
+            return
+        }
         if let style = entrance.style, style != "domestic-porch" {
             try addDensityEntrance(
                 descriptor,
@@ -1397,6 +1405,304 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                     materialID: "window-warm"
                 )
             )
+        }
+    }
+
+    private func addIndustrialLoadingBay(
+        _ descriptor: SceneDescriptor,
+        facade: FacadeDescriptor,
+        to scene: SCNScene
+    ) throws {
+        guard descriptor.family == "industrial" else {
+            throw OfflineRendererError.invalid(
+                "loading-bay entrance is industrial-only"
+            )
+        }
+        let entrance = descriptor.entrance
+        let outward: [Double]
+        switch facade.direction {
+        case "north": outward = [0, 0, -1]
+        case "east": outward = [1, 0, 0]
+        case "south": outward = [0, 0, 1]
+        case "west": outward = [-1, 0, 0]
+        default:
+            throw OfflineRendererError.invalid("invalid facade direction")
+        }
+        let horizontal = facade.direction == "north"
+            || facade.direction == "south"
+        let tangent = horizontal
+            ? [1.0, 0.0, 0.0]
+            : [0.0, 0.0, 1.0]
+        let base = entrance.baseWorld
+        let doorCenter = [
+            base[0] + outward[0] * entrance.depth / 2,
+            base[1] + entrance.height / 2,
+            base[2] + outward[2] * entrance.depth / 2,
+        ]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-loading-bay-door",
+                dimensions: horizontal
+                    ? [entrance.width, entrance.height, entrance.depth]
+                    : [entrance.depth, entrance.height, entrance.width],
+                position: doorCenter,
+                materialID: entrance.doorMaterialID
+            )
+        )
+        let jambWidth = 1.8
+        let surroundDepth = entrance.depth + 1.4
+        for side in [-1.0, 1.0] {
+            let offset = side * (entrance.width / 2 + jambWidth / 2)
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-bay-jamb-\(side)",
+                    dimensions: horizontal
+                        ? [jambWidth, entrance.height + 3, surroundDepth]
+                        : [surroundDepth, entrance.height + 3, jambWidth],
+                    position: [
+                        doorCenter[0] + tangent[0] * offset,
+                        doorCenter[1] + 0.8,
+                        doorCenter[2] + tangent[2] * offset,
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+        }
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-loading-bay-header",
+                dimensions: horizontal
+                    ? [entrance.width + 5.4, 2.4, surroundDepth]
+                    : [surroundDepth, 2.4, entrance.width + 5.4],
+                position: [
+                    doorCenter[0],
+                    base[1] + entrance.height + 1.2,
+                    doorCenter[2],
+                ],
+                materialID: entrance.surroundMaterialID
+            )
+        )
+        for index in 1...5 {
+            let offsetY =
+                base[1] + Double(index) * entrance.height / 6
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-bay-slat-\(index)",
+                    dimensions: horizontal
+                        ? [entrance.width - 1.2, 0.55, entrance.depth + 0.5]
+                        : [entrance.depth + 0.5, 0.55, entrance.width - 1.2],
+                    position: [
+                        doorCenter[0],
+                        offsetY,
+                        doorCenter[2],
+                    ],
+                    materialID: entrance.pavilionMaterialID
+                )
+            )
+        }
+        let dockDepth = max(6, entrance.stepRun * 4)
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-loading-dock",
+                dimensions: horizontal
+                    ? [entrance.width + 8, 2.2, dockDepth]
+                    : [dockDepth, 2.2, entrance.width + 8],
+                position: [
+                    base[0] + outward[0] * dockDepth / 2,
+                    1.1,
+                    base[2] + outward[2] * dockDepth / 2,
+                ],
+                materialID: descriptor.building.foundationMaterialID
+            )
+        )
+        let canopyCenter = [
+            base[0] + outward[0] * entrance.canopyDepth / 2
+                + tangent[0] * entrance.porchLateralOffset,
+            base[1] + entrance.height + 4.5,
+            base[2] + outward[2] * entrance.canopyDepth / 2
+                + tangent[2] * entrance.porchLateralOffset,
+        ]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-loading-canopy",
+                dimensions: horizontal
+                    ? [entrance.porchWidth, 1.6, entrance.canopyDepth]
+                    : [entrance.canopyDepth, 1.6, entrance.porchWidth],
+                position: canopyCenter,
+                materialID: descriptor.building.roofMaterialID
+            )
+        )
+        for side in [-1.0, 1.0] {
+            let tangentOffset =
+                side * (entrance.porchWidth / 2 - 1.3)
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-bollard-\(side)",
+                    dimensions: [1.6, 6.5, 1.6],
+                    position: [
+                        base[0]
+                            + outward[0] * (dockDepth - 1)
+                            + tangent[0]
+                                * (entrance.porchLateralOffset
+                                    + tangentOffset),
+                        3.25,
+                        base[2]
+                            + outward[2] * (dockDepth - 1)
+                            + tangent[2]
+                                * (entrance.porchLateralOffset
+                                    + tangentOffset),
+                    ],
+                    materialID: "hazard-yellow"
+                )
+            )
+        }
+        // source-v01/v02 retained this renderer-created corner return for
+        // exact rejection reproduction. Source-v03 replaces it with explicit
+        // direction-specific dock-house massing in the scene descriptor.
+        if
+            descriptor.sourceRevision != "source-v03",
+            descriptor.sourceRevision != "source-v04",
+            descriptor.sourceRevision != "source-v05",
+            abs(entrance.porchLateralOffset) >= 10
+        {
+            let returnNormal: [Double]
+            let returnCenter: [Double]
+            switch facade.direction {
+            case "north":
+                returnNormal = [1, 0, 0]
+                returnCenter = [
+                    descriptor.building.width / 2 + 2,
+                    base[1] + entrance.height * 0.44,
+                    -descriptor.building.depth / 2 + 10,
+                ]
+            case "west":
+                returnNormal = [0, 0, 1]
+                returnCenter = [
+                    -descriptor.building.width / 2 + 10,
+                    base[1] + entrance.height * 0.44,
+                    descriptor.building.depth / 2 + 2,
+                ]
+            default:
+                let returnSign =
+                    entrance.porchLateralOffset > 0 ? 1.0 : -1.0
+                returnNormal = [
+                    tangent[0] * returnSign,
+                    0.0,
+                    tangent[2] * returnSign,
+                ]
+                returnCenter = [
+                    canopyCenter[0]
+                        + returnNormal[0] * entrance.porchWidth / 2,
+                    base[1] + entrance.height * 0.44,
+                    canopyCenter[2]
+                        + returnNormal[2] * entrance.porchWidth / 2,
+                ]
+            }
+            let returnWidth = min(20, entrance.width * 0.88)
+            let returnHeight = entrance.height * 0.82
+            let returnFacesXAxis = abs(returnNormal[0]) > 0
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-return-door",
+                    dimensions: returnFacesXAxis
+                        ? [1.0, returnHeight, returnWidth]
+                        : [returnWidth, returnHeight, 1.0],
+                    position: [
+                        returnCenter[0] + returnNormal[0] * 0.6,
+                        returnCenter[1],
+                        returnCenter[2] + returnNormal[2] * 0.6,
+                    ],
+                    materialID: entrance.doorMaterialID
+                )
+            )
+            let returnTangent = returnFacesXAxis
+                ? [0.0, 0.0, 1.0]
+                : [1.0, 0.0, 0.0]
+            for side in [-1.0, 1.0] {
+                let offset = side * (returnWidth / 2 + 1.1)
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-loading-return-jamb-\(side)",
+                        dimensions: returnFacesXAxis
+                            ? [2.0, returnHeight + 3, 2.2]
+                            : [2.2, returnHeight + 3, 2.0],
+                        position: [
+                            returnCenter[0]
+                                + returnTangent[0] * offset,
+                            returnCenter[1] + 0.6,
+                            returnCenter[2]
+                                + returnTangent[2] * offset,
+                        ],
+                        materialID: entrance.surroundMaterialID
+                    )
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-return-lintel",
+                    dimensions: returnFacesXAxis
+                        ? [2.0, 2.0, returnWidth + 5]
+                        : [returnWidth + 5, 2.0, 2.0],
+                    position: [
+                        returnCenter[0],
+                        returnCenter[1] + returnHeight / 2 + 1,
+                        returnCenter[2],
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+            let returnDockDepth = 8.0
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-return-dock",
+                    dimensions: returnFacesXAxis
+                        ? [returnDockDepth, 2.2, returnWidth + 8]
+                        : [returnWidth + 8, 2.2, returnDockDepth],
+                    position: [
+                        returnCenter[0]
+                            + returnNormal[0] * returnDockDepth / 2,
+                        1.1,
+                        returnCenter[2]
+                            + returnNormal[2] * returnDockDepth / 2,
+                    ],
+                    materialID: descriptor.building.foundationMaterialID
+                )
+            )
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-return-canopy",
+                    dimensions: returnFacesXAxis
+                        ? [8, 1.6, returnWidth + 10]
+                        : [returnWidth + 10, 1.6, 8],
+                    position: [
+                        returnCenter[0] + returnNormal[0] * 3.5,
+                        returnCenter[1] + returnHeight / 2 + 4.0,
+                        returnCenter[2] + returnNormal[2] * 3.5,
+                    ],
+                    materialID: descriptor.building.roofMaterialID
+                )
+            )
+            for index in 1...4 {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-loading-return-slat-\(index)",
+                        dimensions: returnFacesXAxis
+                            ? [1.3, 0.5, returnWidth - 1.0]
+                            : [returnWidth - 1.0, 0.5, 1.3],
+                        position: [
+                            returnCenter[0] + returnNormal[0] * 0.7,
+                            returnCenter[1] - returnHeight / 2
+                                + Double(index) * returnHeight / 5,
+                            returnCenter[2] + returnNormal[2] * 0.7,
+                        ],
+                        materialID: entrance.pavilionMaterialID
+                    )
+                )
+            }
         }
     }
 
@@ -2058,6 +2364,65 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                     )
                 )
             }
+        case "exhaust-stack":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "exhaust stack dimensions must contain diameter, height, diameter"
+                )
+            }
+            let diameter = min(prop.dimensions[0], prop.dimensions[2])
+            let stack = SCNCylinder(
+                radius: CGFloat(diameter / 2),
+                height: CGFloat(prop.dimensions[1])
+            )
+            stack.radialSegmentCount = 24
+            stack.firstMaterial = material
+            let stackNode = SCNNode(geometry: stack)
+            stackNode.name = prop.id + "-stack"
+            stackNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1],
+                prop.positionWorld[2]
+            )
+            stackNode.castsShadow = true
+            scene.rootNode.addChildNode(stackNode)
+            let cap = SCNCylinder(
+                radius: CGFloat(diameter * 0.66),
+                height: 1.1
+            )
+            cap.radialSegmentCount = 24
+            cap.firstMaterial = try materials.material("slate-charcoal")
+            let capNode = SCNNode(geometry: cap)
+            capNode.name = prop.id + "-cap"
+            capNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1] + prop.dimensions[1] / 2 + 0.55,
+                prop.positionWorld[2]
+            )
+            capNode.castsShadow = true
+            scene.rootNode.addChildNode(capNode)
+        case "service-tank":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "service tank dimensions must contain diameter, height, diameter"
+                )
+            }
+            let diameter = min(prop.dimensions[0], prop.dimensions[2])
+            let tank = SCNCylinder(
+                radius: CGFloat(diameter / 2),
+                height: CGFloat(prop.dimensions[1])
+            )
+            tank.radialSegmentCount = 24
+            tank.firstMaterial = material
+            let tankNode = SCNNode(geometry: tank)
+            tankNode.name = prop.id + "-tank"
+            tankNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1],
+                prop.positionWorld[2]
+            )
+            tankNode.castsShadow = true
+            scene.rootNode.addChildNode(tankNode)
         default:
             throw OfflineRendererError.invalid(
                 "unsupported prop kind: \(prop.kind)"
@@ -2591,7 +2956,7 @@ func validatedRawOccupancy(
         && occupiedHeight >= 260
     guard passed else {
         throw OfflineRendererError.rendering(
-            "raw occupied area cannot contain a complete building, footprint, and shadow"
+            "raw occupied area cannot contain a complete building, footprint, and shadow: pixels=\(occupiedPixelCount), bounds=\(occupiedWidth)x\(occupiedHeight), required=50000/400x260"
         )
     }
     return [

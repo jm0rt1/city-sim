@@ -1,0 +1,228 @@
+{
+  "directions" : [
+    {
+      "direction" : "north",
+      "entranceBaseWorld" : [
+        0,
+        2,
+        -28
+      ],
+      "failures" : [
+
+      ],
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "normalizationOutputs" : [
+        {
+          "fileIdentity" : true,
+          "lod" : "block",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_block.png",
+          "primarySHA256" : "beba2ab0dbf920e0725ba7771f3c5288c02507c0b375bc8dd7940840dad8f13b",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/north/generated_v4_industrial_l01_block.png",
+          "repeatSHA256" : "beba2ab0dbf920e0725ba7771f3c5288c02507c0b375bc8dd7940840dad8f13b"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "neighborhood",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_neighborhood.png",
+          "primarySHA256" : "d637c48c462942a6739434e3f8532291d5977bd6159da1bc9ca86a03648f3329",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/north/generated_v4_industrial_l01_neighborhood.png",
+          "repeatSHA256" : "d637c48c462942a6739434e3f8532291d5977bd6159da1bc9ca86a03648f3329"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "city",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_city.png",
+          "primarySHA256" : "8134c56cb4ea3238fec85bf4b568eed0a2c8a0724695be16c105e057c3aa4583",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/north/generated_v4_industrial_l01_city.png",
+          "repeatSHA256" : "8134c56cb4ea3238fec85bf4b568eed0a2c8a0724695be16c105e057c3aa4583"
+        }
+      ],
+      "passed" : true,
+      "rawFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/north/source-v05.png",
+      "rawSHA256" : "5ca93afa57157ddf686ef5740f1907da03f513906b9c703bc556ed75e2516728",
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/north/scene.json",
+      "shadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "direction" : "east",
+      "entranceBaseWorld" : [
+        28,
+        2,
+        0
+      ],
+      "failures" : [
+
+      ],
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "normalizationOutputs" : [
+        {
+          "fileIdentity" : true,
+          "lod" : "block",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_block.png",
+          "primarySHA256" : "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/east/generated_v4_industrial_l01_block.png",
+          "repeatSHA256" : "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "neighborhood",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_neighborhood.png",
+          "primarySHA256" : "35803e7aa979aa9afecb134e457040e23fa58fdd51be18db4c4e010e3f470607",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/east/generated_v4_industrial_l01_neighborhood.png",
+          "repeatSHA256" : "35803e7aa979aa9afecb134e457040e23fa58fdd51be18db4c4e010e3f470607"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "city",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_city.png",
+          "primarySHA256" : "a04aceca4ba2cd47b0b2fcbecb00d4dbf48fca8129c779bf6d27c825d8876d81",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/east/generated_v4_industrial_l01_city.png",
+          "repeatSHA256" : "a04aceca4ba2cd47b0b2fcbecb00d4dbf48fca8129c779bf6d27c825d8876d81"
+        }
+      ],
+      "passed" : true,
+      "rawFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/east/source-v05.png",
+      "rawSHA256" : "f20d78d6b4b43c7111250f231351166397e3444e3f7a7243f282dacd94592e4f",
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/east/scene.json",
+      "shadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "direction" : "south",
+      "entranceBaseWorld" : [
+        0,
+        2,
+        28
+      ],
+      "failures" : [
+
+      ],
+      "frontageSocketSource" : [
+        640,
+        832
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "normalizationOutputs" : [
+        {
+          "fileIdentity" : true,
+          "lod" : "block",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_block.png",
+          "primarySHA256" : "4c5228bdcf513c272b392e6175faa85327191b99433f81cd8c33b6e10a53020d",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/south/generated_v4_industrial_l01_block.png",
+          "repeatSHA256" : "4c5228bdcf513c272b392e6175faa85327191b99433f81cd8c33b6e10a53020d"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "neighborhood",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_neighborhood.png",
+          "primarySHA256" : "0794afa8e0002f88ba01a4458800f7b0ae886b9a608d7064a3c7a0fc759da274",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/south/generated_v4_industrial_l01_neighborhood.png",
+          "repeatSHA256" : "0794afa8e0002f88ba01a4458800f7b0ae886b9a608d7064a3c7a0fc759da274"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "city",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_city.png",
+          "primarySHA256" : "4d0dcaa65bb8bbea8661f37f426441996e5d4e88de36fc2689bd28eb7ab8103d",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/south/generated_v4_industrial_l01_city.png",
+          "repeatSHA256" : "4d0dcaa65bb8bbea8661f37f426441996e5d4e88de36fc2689bd28eb7ab8103d"
+        }
+      ],
+      "passed" : true,
+      "rawFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/south/source-v05.png",
+      "rawSHA256" : "f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e",
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/south/scene.json",
+      "shadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "direction" : "west",
+      "entranceBaseWorld" : [
+        -28,
+        2,
+        0
+      ],
+      "failures" : [
+
+      ],
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "normalizationOutputs" : [
+        {
+          "fileIdentity" : true,
+          "lod" : "block",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_block.png",
+          "primarySHA256" : "04a2963a211d4b7ae5ac4fa8ddbb88c46dbe18cc7b4685bf67c9167dc8bda9da",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/west/generated_v4_industrial_l01_block.png",
+          "repeatSHA256" : "04a2963a211d4b7ae5ac4fa8ddbb88c46dbe18cc7b4685bf67c9167dc8bda9da"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "neighborhood",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_neighborhood.png",
+          "primarySHA256" : "4fa100cfeb1abc0caecaf4cbd74ffa51abd0c521d9050a76ec2e1a4cbbf4a025",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/west/generated_v4_industrial_l01_neighborhood.png",
+          "repeatSHA256" : "4fa100cfeb1abc0caecaf4cbd74ffa51abd0c521d9050a76ec2e1a4cbbf4a025"
+        },
+        {
+          "fileIdentity" : true,
+          "lod" : "city",
+          "primaryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_city.png",
+          "primarySHA256" : "be96b2aec303069741d625dd91620d6e29138ea6e4b6c9d3af98275cba8b6b9f",
+          "repeatFile" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v05-candidate/normalized-repeat/west/generated_v4_industrial_l01_city.png",
+          "repeatSHA256" : "be96b2aec303069741d625dd91620d6e29138ea6e4b6c9d3af98275cba8b6b9f"
+        }
+      ],
+      "passed" : true,
+      "rawFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/west/source-v05.png",
+      "rawSHA256" : "9fa5759f88e2efd2f3eef36f66089f0e8e978dc4e052d08d919b9f1a40aa331a",
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/west/scene.json",
+      "shadowVectorSource" : [
+        2,
+        1
+      ]
+    }
+  ],
+  "expectedUniqueNormalizedPrimaryFileHashCount" : 12,
+  "failures" : [
+
+  ],
+  "logicalBuildingID" : "industrial_l01",
+  "passed" : true,
+  "productionSelected" : false,
+  "purpose" : "bind source-v05 socket, pivot, shadow, normalization registration, two-run file identity, and 12-output uniqueness",
+  "schema" : 1,
+  "sourceRevision" : "source-v05",
+  "task" : "PLAY-027",
+  "uniqueNormalizedPrimaryFileHashCount" : 12
+}

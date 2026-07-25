@@ -1,0 +1,110 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : false,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/south/source-v02.png",
+      "fileSHA256" : "85a55272ce445760af9355fe73220a5179a65d92315a57bf987912e617d85570",
+      "id" : "run-a",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1510936,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          619,
+          636,
+          1029,
+          906
+        ],
+        "paddingPixels" : [
+          619,
+          636,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "1ea5e33293acc98ee63df869e25b953c10db3442dc00378da80183e8ed9ef435",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "/private/tmp/play027-commercial-l01-v02-run-b/south/source-v02.png",
+      "fileSHA256" : "85a55272ce445760af9355fe73220a5179a65d92315a57bf987912e617d85570",
+      "id" : "run-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1510936,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          619,
+          636,
+          1029,
+          906
+        ],
+        "paddingPixels" : [
+          619,
+          636,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "1ea5e33293acc98ee63df869e25b953c10db3442dc00378da80183e8ed9ef435",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "/private/tmp/play027-commercial-l01-v02-run-c/south/source-v02.png",
+      "fileSHA256" : "7b77641f62e21c4c0771af99521d41dbe2c9b4c6d0be129c9fd1c76c7740abfc",
+      "id" : "run-c",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1510936,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          619,
+          636,
+          1029,
+          906
+        ],
+        "paddingPixels" : [
+          619,
+          636,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "b1e4f88fdc130192fc5493c7e34d3e33af9aaa8179a037d5a4d65cffb2995f19",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 2,
+  "validationPassed" : false
+}

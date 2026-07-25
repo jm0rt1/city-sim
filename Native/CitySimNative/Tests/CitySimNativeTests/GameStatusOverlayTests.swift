@@ -5,7 +5,7 @@ import XCTest
 
 final class GameStatusOverlayTests: XCTestCase {
     @MainActor
-    func testVictoryPresentationUsesOnlyCharterStrategyAndRecoveryTruth() throws {
+    func testVictoryPresentationPreservesAuthenticLegacyCharterIdentity() throws {
         let expectations: [(CityStrategyRecoveryResolution, String, String)] = [
             (.commercialTaxRelief, "Commercial Stewardship", "Temporary Tax Relief"),
             (.commercialPublicRealmInvestment, "Commercial Stewardship", "Public Realm Investment"),
@@ -22,6 +22,8 @@ final class GameStatusOverlayTests: XCTestCase {
 
             XCTAssertEqual(presentation.eyebrow, "Town Charter Secured")
             XCTAssertEqual(presentation.title, "New Arcadia Earned Its Town Charter")
+            XCTAssertEqual(presentation.storyHeading, "Your Charter Story")
+            XCTAssertEqual(presentation.accessibilityLabel, "Town Charter victory")
             XCTAssertTrue(presentation.summary.contains("612 residents"))
             XCTAssertTrue(presentation.summary.contains("Charter"))
             XCTAssertFalse(presentation.accessibilitySummary.localizedCaseInsensitiveContains("metropolis"))
@@ -35,8 +37,37 @@ final class GameStatusOverlayTests: XCTestCase {
     }
 
     @MainActor
+    func testVictoryPresentationUsesDurableRegionalCapitalIdentity() throws {
+        let resolutions: [CityStrategyRecoveryResolution] = [
+            .commercialTaxRelief,
+            .commercialPublicRealmInvestment,
+            .industrialUtilityExpansion,
+            .industrialGreenBuffer,
+        ]
+        for resolution in resolutions {
+            let state = wonFixture(resolution: resolution, regionalCapital: true)
+            let presentation = CityVictoryPresentation.make(
+                state: state,
+                analytics: CityAnalytics(state: state)
+            )
+
+            XCTAssertEqual(presentation.eyebrow, "Regional Capital Recognized")
+            XCTAssertEqual(presentation.title, "New Arcadia Became a Regional Capital")
+            XCTAssertEqual(presentation.storyHeading, "Your Regional Capital Story")
+            XCTAssertEqual(presentation.accessibilityLabel, "Regional Capital victory")
+            XCTAssertTrue(presentation.summary.contains("Regional Capital"))
+            XCTAssertTrue(presentation.accessibilitySummary.contains("Regional Capital"))
+            XCTAssertFalse(presentation.accessibilitySummary.contains(".."))
+            XCTAssertTrue(presentation.accessibilitySummary.hasSuffix("."))
+        }
+    }
+
+    @MainActor
     func testTerminalStorePausesAndQuarantinesGameplayUntilExistingReplayRouteRuns() {
-        let won = wonFixture(resolution: .commercialPublicRealmInvestment)
+        let won = wonFixture(
+            resolution: .commercialPublicRealmInvestment,
+            regionalCapital: true
+        )
         let store = CityGameStore(state: won)
 
         XCTAssertEqual(store.state.status, .won)
@@ -76,27 +107,34 @@ final class GameStatusOverlayTests: XCTestCase {
 
     @MainActor
     func testVictoryOverlayRendersWithinDefaultAndExactCompactBounds() throws {
-        let store = CityGameStore(state: wonFixture(resolution: .industrialGreenBuffer))
         let compactSize = CGSize(width: 900, height: 600)
         let defaultSize = CGSize(width: 1_278, height: 768)
-        let compact = try bitmap(
-            of: GameStatusOverlay(store: store).frame(width: compactSize.width, height: compactSize.height),
-            size: compactSize
-        )
-        let regular = try bitmap(
-            of: GameStatusOverlay(store: store).frame(width: defaultSize.width, height: defaultSize.height),
-            size: defaultSize
-        )
+        for regionalCapital in [false, true] {
+            let store = CityGameStore(state: wonFixture(
+                resolution: .industrialGreenBuffer,
+                regionalCapital: regionalCapital
+            ))
+            let compact = try bitmap(
+                of: GameStatusOverlay(store: store).frame(width: compactSize.width, height: compactSize.height),
+                size: compactSize
+            )
+            let regular = try bitmap(
+                of: GameStatusOverlay(store: store).frame(width: defaultSize.width, height: defaultSize.height),
+                size: defaultSize
+            )
 
-        XCTAssertEqual(compact.size.width, compactSize.width, accuracy: 0.5)
-        XCTAssertEqual(compact.size.height, compactSize.height, accuracy: 0.5)
-        XCTAssertEqual(regular.size.width, defaultSize.width, accuracy: 0.5)
-        XCTAssertEqual(regular.size.height, defaultSize.height, accuracy: 0.5)
-        XCTAssertGreaterThanOrEqual(compact.pixelsWide, 900)
-        XCTAssertGreaterThanOrEqual(compact.pixelsHigh, 600)
+            XCTAssertEqual(compact.size.width, compactSize.width, accuracy: 0.5)
+            XCTAssertEqual(compact.size.height, compactSize.height, accuracy: 0.5)
+            XCTAssertEqual(regular.size.width, defaultSize.width, accuracy: 0.5)
+            XCTAssertEqual(regular.size.height, defaultSize.height, accuracy: 0.5)
+            XCTAssertGreaterThanOrEqual(compact.pixelsWide, 900)
+            XCTAssertGreaterThanOrEqual(compact.pixelsHigh, 600)
 
-        try export(compact, environmentKey: "CITYSIM_PLAY038_COMPACT_PROOF")
-        try export(regular, environmentKey: "CITYSIM_PLAY038_DEFAULT_PROOF")
+            if regionalCapital {
+                try export(compact, environmentKey: "CITYSIM_PLAY070_COMPACT_PROOF")
+                try export(regular, environmentKey: "CITYSIM_PLAY070_DEFAULT_PROOF")
+            }
+        }
     }
 
     @MainActor
@@ -105,7 +143,10 @@ final class GameStatusOverlayTests: XCTestCase {
             .appending(path: "citysim-play038-\(UUID().uuidString)", directoryHint: .isDirectory)
         defer { try? FileManager.default.removeItem(at: root) }
         let service = SaveGameService(rootURL: root)
-        let won = wonFixture(resolution: .industrialUtilityExpansion)
+        let won = wonFixture(
+            resolution: .industrialUtilityExpansion,
+            regionalCapital: true
+        )
 
         _ = try service.save(won)
         let loaded = try service.load().state
@@ -129,7 +170,8 @@ final class GameStatusOverlayTests: XCTestCase {
     }
 
     private func wonFixture(
-        resolution: CityStrategyRecoveryResolution
+        resolution: CityStrategyRecoveryResolution,
+        regionalCapital: Bool = false
     ) -> CityGameState {
         let strategy: CityStrategy = switch resolution {
         case .commercialTaxRelief, .commercialPublicRealmInvestment:
@@ -154,7 +196,15 @@ final class GameStatusOverlayTests: XCTestCase {
                 currentPhase: .completed,
                 nextScheduledTick: nil,
                 recoveryResolution: resolution
-            )
+            ),
+            secondAct: regionalCapital
+                ? CitySecondActProgression(
+                    phase: .completed,
+                    nextScheduledTick: nil,
+                    qualifyingCycles: CitySimulation.regionalCapitalQualificationCycles,
+                    regionalCapitalAwarded: true
+                )
+                : nil
         )
         state.status = .won
         return state

@@ -154,14 +154,14 @@ final class CityCommandCatalogTests: XCTestCase {
 
     func testStrategyHUDConsumesEveryFrozenStoryMomentFromAuthoritativeAnalytics() throws {
         let fixtures = try ProductionStoryStateBuilder().buildAll()
-        XCTAssertEqual(fixtures.count, 8)
+        XCTAssertEqual(fixtures.count, 12)
 
         for fixture in fixtures {
             let presentation = CityStrategyHUDPresentation.make(
                 analytics: CityAnalytics(state: fixture.state)
             )
 
-            switch fixture.definition.moment {
+            switch fixture.definition.stage {
             case .opening:
                 XCTAssertEqual(presentation.tone, .active, fixture.definition.id)
                 XCTAssertEqual(presentation.status, "OPPORTUNITY · 16 DAYS", fixture.definition.id)
@@ -175,9 +175,15 @@ final class CityCommandCatalogTests: XCTestCase {
                 XCTAssertEqual(presentation.status, "REVIEW · 16 DAYS", fixture.definition.id)
                 XCTAssertTrue(presentation.title.contains("locked in"), fixture.definition.id)
                 XCTAssertTrue(presentation.actions.isEmpty, fixture.definition.id)
-            case .charterVictory:
+            case .charterMidpoint:
+                XCTAssertEqual(presentation.tone, .active, fixture.definition.id)
+                XCTAssertEqual(presentation.status, "MANDATE · 16 DAYS", fixture.definition.id)
+                XCTAssertEqual(presentation.title, "Regional Capital mandate", fixture.definition.id)
+                XCTAssertFalse(presentation.actions.isEmpty, fixture.definition.id)
+            case .regionalCapital:
                 XCTAssertEqual(presentation.tone, .resolved, fixture.definition.id)
-                XCTAssertEqual(presentation.status, "STORY COMPLETE", fixture.definition.id)
+                XCTAssertEqual(presentation.status, "RECOGNIZED", fixture.definition.id)
+                XCTAssertEqual(presentation.title, "Regional Capital secured", fixture.definition.id)
                 XCTAssertTrue(presentation.actions.isEmpty, fixture.definition.id)
             }
 
@@ -1793,7 +1799,9 @@ final class CityCommandCatalogTests: XCTestCase {
             "Budget Gap", "Chain Store Rumor", "Freight Contract Watch",
             "Freight Load Forecast", "Freight Recovery Delayed", "Hiring Bottleneck",
             "Industrial Load Surge", "Main Street Crossroads", "Main Street Recovery Delayed",
-            "Severe Storm", "Storefront Slump", "Utility Reserve Tight", "Utility Shortfall"
+            "Severe Storm", "Storefront Slump", "Utility Reserve Tight", "Utility Shortfall",
+            "Regional Retail Challenge", "Regional Retail Pressure",
+            "Regional Grid Mandate", "Regional Freight Overload"
         ]
         XCTAssertEqual(
             authoredWarningAndCriticalTitles,
@@ -1806,6 +1814,19 @@ final class CityCommandCatalogTests: XCTestCase {
             let actions = CityNoticeActionCatalog.actions(for: title)
             XCTAssertFalse(actions.isEmpty, "\(title) requires an explicit action disposition")
             XCTAssertTrue(actions.allSatisfy { !$0.explanation.isEmpty })
+        }
+
+        for title in ["Regional Retail Challenge", "Regional Retail Pressure"] {
+            XCTAssertEqual(
+                Set(CityNoticeActionCatalog.actions(for: title).map(\.command)),
+                Set([.inspectorFinances, .buildPark])
+            )
+        }
+        for title in ["Regional Grid Mandate", "Regional Freight Overload"] {
+            XCTAssertEqual(
+                Set(CityNoticeActionCatalog.actions(for: title).map(\.command)),
+                Set([.buildPowerPlant, .buildWaterTower, .buildPark])
+            )
         }
     }
 

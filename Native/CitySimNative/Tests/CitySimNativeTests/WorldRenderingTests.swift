@@ -3213,6 +3213,40 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testOpeningCameraRefitsOnceAfterTheShippingViewportSettles() {
+        let insets = CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
+        let scene = CityScene(size: CGSize(width: 420, height: 260))
+        scene.reducedMotion = true
+        scene.updateViewportInsets(insets)
+        let opening = CityGameState.newCity(seed: 42)
+        scene.render(state: opening, overlay: .none, selection: nil, interactionMode: .inspect)
+        let provisionalScale = scene.cameraScaleForTesting
+
+        // Model AppKit settling the SpriteKit viewport after the first
+        // representable update without routing a player camera gesture.
+        scene.size = CGSize(width: 1_280, height: 800)
+        var firstPulse = opening
+        firstPulse.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.occupancy += 1
+        }
+        scene.render(state: firstPulse, overlay: .none, selection: nil, interactionMode: .inspect)
+        let settledScale = scene.cameraScaleForTesting
+        XCTAssertLessThan(settledScale, provisionalScale)
+        XCTAssertEqual(settledScale, 0.3896103799343109, accuracy: 0.001)
+        XCTAssertGreaterThanOrEqual(
+            scene.occupiedDevelopedViewportOccupancyForTesting().width,
+            0.60
+        )
+
+        var secondPulse = firstPulse
+        secondPulse.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.occupancy += 1
+        }
+        scene.render(state: secondPulse, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.cameraScaleForTesting, settledScale, accuracy: 0.001)
+    }
+
+    @MainActor
     func testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth() throws {
         let fixture = try XCTUnwrap(
             try ProductionStoryStateBuilder().buildAll().first {

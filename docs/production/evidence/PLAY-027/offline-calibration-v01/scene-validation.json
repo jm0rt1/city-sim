@@ -46,7 +46,7 @@
         "north-right-flowers"
       ],
       "sceneGeometryID" : "residential-l01-v0-north-geometry-v1",
-      "sha256" : "184a7f9f932a55976507688e623c6fdbf5fb02fb39d3803feeafd330411b2b83",
+      "sha256" : "5b0ee8632b61a1544b12d0ae2cc96db3a0adf3fe8eb485ef2e49571796fe8c01",
       "viewDirection" : "north",
       "windowBayCount" : 17
     },
@@ -95,7 +95,7 @@
         "east-south-flowers"
       ],
       "sceneGeometryID" : "residential-l01-v0-east-geometry-v1",
-      "sha256" : "e3592a478a5834ca2cf9e618181850be818090867dcd85e1dd1ba89cd1464fbc",
+      "sha256" : "92cc5efbf701d5161e78030be72019a12b721808073dc5c72f3ce2a2a0941d9c",
       "viewDirection" : "east",
       "windowBayCount" : 17
     },
@@ -144,7 +144,7 @@
         "south-right-shrub"
       ],
       "sceneGeometryID" : "residential-l01-v0-south-geometry-v1",
-      "sha256" : "7e96d146462ea99ead132cc3638ff246447d3a7cb49446cdaa29733b14f3c057",
+      "sha256" : "ea738b34bf9c45aee8d288633139401f209a2cd97301351ac4669aaa5ed22a9f",
       "viewDirection" : "south",
       "windowBayCount" : 17
     },
@@ -192,8 +192,8 @@
         "west-south-flowers",
         "west-north-shrub"
       ],
-      "sceneGeometryID" : "residential-l01-v0-west-geometry-v1",
-      "sha256" : "f364507c435a2bb7a8b1117960a8416e4dbc786897ff776b2d887608c3cf1f1f",
+      "sceneGeometryID" : "residential-l01-v0-west-geometry-v2",
+      "sha256" : "41e4ab4be5bd4f0ecc6798bf4e81a0574dbe24b7a9e5d9ad3525dac2629092cb",
       "viewDirection" : "west",
       "windowBayCount" : 17
     }
@@ -209,7 +209,7 @@
   "productionSelected" : false,
   "schema" : 1,
   "schemaFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/schema/scene.schema.json",
-  "schemaSHA256" : "07205d27f46b7ff8800373cbf7209748a326c205dfa54c69d4cac5f1df2624e1",
+  "schemaSHA256" : "a516a67db5eab59a340d2d905a09ac0e8cf049c3f29697019ec31d5b28ec81b5",
   "task" : "PLAY-027",
   "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json",
   "toolchainFingerprintSHA256" : "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1",

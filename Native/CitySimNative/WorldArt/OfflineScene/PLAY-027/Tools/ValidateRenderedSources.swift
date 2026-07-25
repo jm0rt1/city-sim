@@ -10,7 +10,7 @@ enum RenderedSourceValidationError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: validate-rendered-sources --repository-root <path> --output <json> --expect <identical|unique> --source <id=png> [--source <id=png> ...]"
+            return "usage: validate-rendered-sources --repository-root <path> --output <json> --expect <identical|unique> [--kind <raw|normalized>] --source <id=png> [--source <id=png> ...]"
         case let .invalid(message):
             return message
         }
@@ -164,6 +164,71 @@ func inspect(_ pixels: CanonicalPixels) -> [String: Any] {
     ]
 }
 
+func inspectNormalized(_ pixels: CanonicalPixels) -> [String: Any] {
+    let bytes = [UInt8](pixels.data)
+    var alphaMinimum = 255
+    var alphaMaximum = 0
+    var transparentPixelCount = 0
+    var opaquePixelCount = 0
+    var opaqueChromaPixelCount = 0
+    var minimumX = pixels.width
+    var minimumY = pixels.height
+    var maximumX = -1
+    var maximumY = -1
+
+    for y in 0..<pixels.height {
+        for x in 0..<pixels.width {
+            let index = (y * pixels.width + x) * 4
+            let red = Int(bytes[index])
+            let green = Int(bytes[index + 1])
+            let blue = Int(bytes[index + 2])
+            let alpha = Int(bytes[index + 3])
+            alphaMinimum = min(alphaMinimum, alpha)
+            alphaMaximum = max(alphaMaximum, alpha)
+            if alpha == 0 {
+                transparentPixelCount += 1
+            } else {
+                opaquePixelCount += 1
+                minimumX = min(minimumX, x)
+                minimumY = min(minimumY, y)
+                maximumX = max(maximumX, x)
+                maximumY = max(maximumY, y)
+                if red == 255 && green == 0 && blue == 255 {
+                    opaqueChromaPixelCount += 1
+                }
+            }
+        }
+    }
+    let bounds = maximumX >= 0
+        ? [minimumX, minimumY, maximumX + 1, maximumY + 1]
+        : []
+    let padding = maximumX >= 0
+        ? [
+            minimumX,
+            minimumY,
+            pixels.width - maximumX - 1,
+            pixels.height - maximumY - 1,
+        ]
+        : []
+    let paddingPassed =
+        padding.count == 4 && padding.allSatisfy { $0 > 2 }
+    return [
+        "alphaRange": [alphaMinimum, alphaMaximum],
+        "alphaBounds": bounds,
+        "paddingPixels": padding,
+        "paddingPassed": paddingPassed,
+        "transparentPixelCount": transparentPixelCount,
+        "nonTransparentPixelCount": opaquePixelCount,
+        "opaqueChromaPixelCount": opaqueChromaPixelCount,
+        "alphaAndChromaPassed":
+            alphaMinimum == 0
+            && alphaMaximum == 255
+            && transparentPixelCount > 0
+            && opaquePixelCount > 0
+            && opaqueChromaPixelCount == 0,
+    ]
+}
+
 @main
 enum ValidateRenderedSourcesMain {
     static func main() throws {
@@ -179,6 +244,18 @@ enum ValidateRenderedSourcesMain {
         ).standardizedFileURL
         let expectation = try argument("--expect", in: arguments)
         guard expectation == "identical" || expectation == "unique" else {
+            throw RenderedSourceValidationError.arguments
+        }
+        let kind: String
+        if let kindIndex = arguments.firstIndex(of: "--kind") {
+            guard kindIndex + 1 < arguments.count else {
+                throw RenderedSourceValidationError.arguments
+            }
+            kind = arguments[kindIndex + 1]
+        } else {
+            kind = "raw"
+        }
+        guard kind == "raw" || kind == "normalized" else {
             throw RenderedSourceValidationError.arguments
         }
         let sourceArguments = try repeatedArguments(
@@ -204,13 +281,28 @@ enum ValidateRenderedSourcesMain {
                 : repositoryRoot.appendingPathComponent(parts[1])
             let fileData = try Data(contentsOf: sourceURL)
             let pixels = try loadCanonicalPixels(from: sourceURL)
-            let inspection = inspect(pixels)
-            let dimensionsPassed =
-                pixels.width == 1536 && pixels.height == 1024
-            let sourcePassed =
-                dimensionsPassed
-                && (inspection["flatChromaCorners"] as? Bool == true)
-                && (inspection["allRawPixelsOpaque"] as? Bool == true)
+            let inspection = kind == "raw"
+                ? inspect(pixels)
+                : inspectNormalized(pixels)
+            let dimensionsPassed = kind == "raw"
+                ? pixels.width == 1536 && pixels.height == 1024
+                : [
+                    [1024, 683],
+                    [512, 342],
+                    [256, 171],
+                ].contains([pixels.width, pixels.height])
+            let sourcePassed: Bool
+            if kind == "raw" {
+                sourcePassed =
+                    dimensionsPassed
+                    && (inspection["flatChromaCorners"] as? Bool == true)
+                    && (inspection["allRawPixelsOpaque"] as? Bool == true)
+            } else {
+                sourcePassed =
+                    dimensionsPassed
+                    && (inspection["alphaAndChromaPassed"] as? Bool == true)
+                    && (inspection["paddingPassed"] as? Bool == true)
+            }
             basicChecksPassed = basicChecksPassed && sourcePassed
             let pixelHash = sha256(pixels.data)
             pixelHashes.append(pixelHash)
@@ -236,6 +328,7 @@ enum ValidateRenderedSourcesMain {
             "schema": 1,
             "task": "PLAY-027",
             "tool": "macOS-native canonical RGBA source validator",
+            "sourceKind": kind,
             "canonicalPixelFormat": "8-bit sRGB premultiplied RGBA",
             "pixelExpectation": expectation,
             "pixelExpectationPassed": expectationPassed,

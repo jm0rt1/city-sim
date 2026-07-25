@@ -2143,23 +2143,28 @@ final class WorldRenderingTests: XCTestCase {
         let style = WorldVisualStyle()
         let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())
         let state = CityGameState.newCity(seed: 42)
+        let snapshot = try! CityPresentationSnapshot(state: state)
         let animated = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .block,
             reducedMotion: false
         )
         let reduced = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .block,
             reducedMotion: true
         )
         let repeated = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .block,
             reducedMotion: true
         )
         let city = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .city,
             reducedMotion: true
         )
@@ -2168,15 +2173,17 @@ final class WorldRenderingTests: XCTestCase {
         let reducedNames = descendantNames(in: reduced)
         XCTAssertEqual(reducedNames, descendantNames(in: repeated))
         for names in [animatedNames, reducedNames] {
-            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 4)
-            XCTAssertEqual(
-                names.filter {
-                    $0 == "world.ambient.pedestrian-pair.0"
-                        || $0 == "world.ambient.pedestrian-pair.1"
-                }.count,
-                2
-            )
-            XCTAssertEqual(names.filter { $0 == "world.ambient.parked-service-object" }.count, 1)
+            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 3)
+            XCTAssertEqual(names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 6
+                    && $0.hasPrefix("world.activity.street.local-activity.")
+            }.count, 2)
+            XCTAssertEqual(names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 6
+                    && $0.hasPrefix("world.activity.place.local-activity.")
+            }.count, 1)
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.vegetation-cluster.0"
@@ -2368,14 +2375,84 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
         XCTAssertFalse(animatedNames.contains { $0.contains(".banner") || $0.contains(".windsock") })
         XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 2)
-        let pedestrian = animated.childNode(withName: "//world.ambient.pedestrian-pair.0")
-        let stroll = pedestrian?.action(forKey: "ambient.corridor.walk")
+        let pedestrian = animated.childNode(withName: "//world.activity.street.local-activity.*")
+        let stroll = pedestrian?.action(forKey: "ambient.local-activity")
         XCTAssertNotNil(stroll)
         XCTAssertGreaterThanOrEqual(stroll?.duration ?? 0, 14.4)
         XCTAssertLessThanOrEqual(stroll?.duration ?? .infinity, 15.2)
         XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
         XCTAssertTrue(descendantLabels(in: animated).isEmpty)
         XCTAssertTrue(descendantLabels(in: reduced).isEmpty)
+    }
+
+    @MainActor
+    func testTypedLocalActivityIsDeterministicBoundedTruthSafeAndSuppressesNilOrZero() {
+        let style = WorldVisualStyle()
+        let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try! CityPresentationSnapshot(state: state)
+        let block = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block
+        )
+        let repeated = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block
+        )
+        let city = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .city
+        )
+
+        XCTAssertEqual(block, repeated)
+        XCTAssertLessThanOrEqual(block.count, 3)
+        XCTAssertLessThanOrEqual(city.count, 2)
+        XCTAssertEqual(block.filter { $0.domain == .street }.count, 2)
+        XCTAssertEqual(block.filter { $0.domain == .place }.count, 1)
+        XCTAssertEqual(Set(block.map(\.surfaceCoordinate)).count, block.count)
+        for placement in block {
+            XCTAssertGreaterThan(placement.intensity, 0)
+            XCTAssertLessThanOrEqual(placement.intensity, 1)
+            XCTAssertEqual(state.tile(at: placement.surfaceCoordinate)?.kind, .road)
+            let roadCenter = style.isoPosition(placement.surfaceCoordinate)
+            let local = CGPoint(
+                x: placement.position.x - roadCenter.x,
+                y: placement.position.y - roadCenter.y
+            )
+            let normalizedX = abs(local.x) / (style.tileWidth / 2)
+            let normalizedY = abs(local.y) / (style.tileHeight / 2)
+            XCTAssertLessThanOrEqual(normalizedX + normalizedY, 0.96)
+            let connections = RoadConnectionMask.resolving(
+                at: placement.surfaceCoordinate,
+                in: state
+            )
+            XCTAssertFalse(connections.isEmpty)
+            XCTAssertGreaterThanOrEqual(
+                connections.edges.map {
+                    pointSegmentDistanceForTesting(local, end: style.roadSocket(for: $0))
+                }.min() ?? 0,
+                9.1
+            )
+            if placement.domain == .place {
+                let source = try! XCTUnwrap(state.tile(at: placement.sourceCoordinate))
+                XCTAssertNotEqual(source.kind, .empty)
+                XCTAssertNotEqual(source.kind, .road)
+                XCTAssertGreaterThanOrEqual(source.constructionProgress, 1)
+            }
+        }
+
+        for value: Double? in [nil, 0] {
+            let suppressed = renderer.activityPlacements(
+                in: state,
+                detail: .block,
+                streetActivityIndex: { _ in value },
+                placeActivityIndex: { _ in value }
+            )
+            XCTAssertTrue(suppressed.isEmpty)
+        }
     }
 
     @MainActor

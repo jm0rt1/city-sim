@@ -87,9 +87,16 @@ private struct AmbientCorridorSignature: Equatable {
     let developedCoordinates: [GridCoordinate]
     let roadCoordinates: [GridCoordinate]
     let vacantCoordinates: [GridCoordinate]
+    let activitySamples: [AmbientActivitySignature]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
     let motionEnabled: Bool
+}
+
+private struct AmbientActivitySignature: Equatable {
+    let coordinate: GridCoordinate
+    let streetActivityIndex: Double?
+    let placeActivityIndex: Double?
 }
 
 private struct CityVisualCompositionBounds {
@@ -328,7 +335,7 @@ final class CityScene: SKScene {
             previousOverlay: previousOverlay,
             defersRuntimeMetricsToFullRecount: isFirstRender
         )
-        let ambientChanged = updateAmbientCorridor(in: state)
+        let ambientChanged = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
@@ -413,7 +420,9 @@ final class CityScene: SKScene {
             if !hasUserAdjustedCamera {
                 focusDevelopedCore(state)
             }
-            _ = updateAmbientCorridor(in: state)
+            if let renderedSnapshot {
+                _ = updateAmbientCorridor(snapshot: renderedSnapshot)
+            }
         }
     }
 
@@ -762,7 +771,8 @@ final class CityScene: SKScene {
     }
 
     @discardableResult
-    private func updateAmbientCorridor(in state: CityGameState) -> Bool {
+    private func updateAmbientCorridor(snapshot: CityPresentationSnapshot) -> Bool {
+        let state = snapshot.state
         let signature = AmbientCorridorSignature(
             developedCoordinates: state.tiles.compactMap { tile in
                 tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
@@ -771,6 +781,16 @@ final class CityScene: SKScene {
             },
             roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil },
             vacantCoordinates: state.tiles.compactMap { $0.kind == .empty ? $0.coordinate : nil },
+            activitySamples: snapshot.spatialConsequences.samples.compactMap { sample in
+                guard sample.streetActivityIndex != nil || sample.placeActivityIndex != nil else {
+                    return nil
+                }
+                return AmbientActivitySignature(
+                    coordinate: sample.coordinate,
+                    streetActivityIndex: sample.streetActivityIndex,
+                    placeActivityIndex: sample.placeActivityIndex
+                )
+            },
             detail: currentCameraDetailLevel,
             reducedMotion: reducedMotion,
             motionEnabled: ambientMotionEnabled
@@ -780,6 +800,7 @@ final class CityScene: SKScene {
         ambientLayer.removeAllChildren()
         ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: currentCameraDetailLevel,
             reducedMotion: !ambientMotionEnabled
         ))
@@ -1527,7 +1548,7 @@ final class CityScene: SKScene {
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
         style.updateDetailVisibility(in: backdropLayer, detail: detail)
-        let ambientChanged = renderedState.map { updateAmbientCorridor(in: $0) } ?? false
+        let ambientChanged = renderedSnapshot.map { updateAmbientCorridor(snapshot: $0) } ?? false
         if preservingUpdateDiagnostics {
             diagnosticsSnapshot.detailLevel = detail
         } else {

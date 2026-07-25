@@ -1,0 +1,99 @@
+{
+  "candidateThresholds" : {
+    "maximumHiddenNonMagentaPixelCount" : 0,
+    "minimumAlphaVisibilityRatio" : 0.999,
+    "minimumReferenceCountRatio" : 0.90000000000000002,
+    "minimumReferenceHeightRatio" : 0.94999999999999996,
+    "minimumReferenceWidthRatio" : 0.94999999999999996,
+    "rgbAndAlphaVisibleBoundsMustMatch" : true
+  },
+  "contactSheet" : {
+    "directionOrder" : [
+      "west"
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/msaa-none-shadow-current/EXACT-RGBA-OCCUPIED-CROP.png",
+    "panels" : [
+      {
+        "column" : 0,
+        "id" : "west",
+        "row" : 0,
+        "sheetPanel" : [
+          24,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          418,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          410,
+          1037,
+          914
+        ]
+      }
+    ],
+    "presentation" : "exact decoded RGBA, flat chroma masked transparent, occupied crop on neutral field"
+  },
+  "decodePath" : "CGImageSource immediate standard RGBA decode plus provider bytes",
+  "derivedReferenceFloor" : {
+    "alphaVisibleOccupiedPixelCount" : 80450,
+    "occupiedBoundsPixels" : [
+      410,
+      371
+    ]
+  },
+  "references" : [
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        535,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 80450,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/west/source-v01.png",
+      "fileSHA256" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "id" : "west"
+    }
+  ],
+  "schema" : 1,
+  "sources" : [
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        418,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 97431,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/msaa-none-shadow-current/west-run-a.png",
+      "fileSHA256" : "99275296eee285161d90d52489acd0e1978f9e931a7da1fcb3507a08af2f782a",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "west",
+      "referenceMinimumCountRatio" : 1.2110752019888129,
+      "referenceMinimumHeightRatio" : 1.3153638814016173,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        418,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 97431,
+      "validationPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "exact retained-byte ImageIO RGBA visibility validator",
+  "validationPassed" : true
+}

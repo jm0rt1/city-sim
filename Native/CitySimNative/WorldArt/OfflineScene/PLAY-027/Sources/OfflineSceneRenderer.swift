@@ -226,12 +226,18 @@ func color(_ components: [Double]) throws -> NSColor {
 
 final class NativeMaterialLibrary {
     private let specifications: [String: MaterialDescriptor]
+    private let repositoryRoot: URL
     private var sceneKitMaterials: [String: SCNMaterial] = [:]
+    private var sourceTextureImages: [String: CGImage] = [:]
 
-    init(descriptor: MaterialLibraryDescriptor) {
+    init(
+        descriptor: MaterialLibraryDescriptor,
+        repositoryRoot: URL
+    ) {
         specifications = Dictionary(
             uniqueKeysWithValues: descriptor.materials.map { ($0.id, $0) }
         )
+        self.repositoryRoot = repositoryRoot.standardizedFileURL
     }
 
     func material(_ id: String) throws -> SCNMaterial {
@@ -247,9 +253,7 @@ final class NativeMaterialLibrary {
         // not runtime PBR. Lambert retains the authored northwest key and
         // ambient hierarchy without SceneKit's stochastic PBR shading drift.
         material.lightingModel = .lambert
-        material.diffuse.contents = specification.pattern == "solid"
-            ? try color(specification.baseColorRGBA)
-            : try patternImage(specification)
+        material.diffuse.contents = try diffuseContents(specification)
         material.roughness.contents = NSNumber(
             value: specification.roughness
         )
@@ -267,6 +271,109 @@ final class NativeMaterialLibrary {
         material.isDoubleSided = false
         sceneKitMaterials[id] = material
         return material
+    }
+
+    func boxMaterials(
+        _ id: String,
+        dimensions: [Double]
+    ) throws -> [SCNMaterial] {
+        guard let specification = specifications[id] else {
+            throw OfflineRendererError.invalid("unknown material: \(id)")
+        }
+        guard let mapping = specification.textureMapping else {
+            return [try material(id)]
+        }
+        guard
+            mapping.mode == "world-scale-box-face-repeat-v1",
+            mapping.wrapS == "repeat",
+            mapping.wrapT == "repeat",
+            mapping.minificationFilter == "linear",
+            mapping.magnificationFilter == "linear",
+            mapping.mipFilter == "linear",
+            specification.physicalScaleWorld.count == 2,
+            specification.physicalScaleWorld.allSatisfy({ $0 > 0 }),
+            dimensions.count == 3,
+            dimensions.allSatisfy({ $0 > 0 })
+        else {
+            throw OfflineRendererError.invalid(
+                "invalid world-scale texture mapping for material: \(id)"
+            )
+        }
+        let faceSizes = [
+            [dimensions[0], dimensions[1]],
+            [dimensions[2], dimensions[1]],
+            [dimensions[0], dimensions[1]],
+            [dimensions[2], dimensions[1]],
+            [dimensions[0], dimensions[2]],
+            [dimensions[0], dimensions[2]],
+        ]
+        return try faceSizes.enumerated().map { index, faceSize in
+            guard
+                let faceMaterial = try material(id).copy()
+                    as? SCNMaterial
+            else {
+                throw OfflineRendererError.rendering(
+                    "could not copy mapped material: \(id)"
+                )
+            }
+            faceMaterial.name = "\(id)-box-face-\(index)"
+            let repeatX = max(
+                1,
+                faceSize[0] / specification.physicalScaleWorld[0]
+            )
+            let repeatY = max(
+                1,
+                faceSize[1] / specification.physicalScaleWorld[1]
+            )
+            faceMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(
+                CGFloat(repeatX),
+                CGFloat(repeatY),
+                1
+            )
+            return faceMaterial
+        }
+    }
+
+    private func diffuseContents(
+        _ specification: MaterialDescriptor
+    ) throws -> Any {
+        if let sourceTexture = specification.sourceTexture {
+            return try sourceTextureImage(sourceTexture)
+        }
+        return specification.pattern == "solid"
+            ? try color(specification.baseColorRGBA)
+            : try patternImage(specification)
+    }
+
+    private func sourceTextureImage(
+        _ reference: FileReference
+    ) throws -> CGImage {
+        if let cached = sourceTextureImages[reference.sha256] {
+            return cached
+        }
+        let url = repositoryRoot.appendingPathComponent(
+            reference.file
+        ).standardizedFileURL
+        let repositoryPrefix = repositoryRoot.path + "/"
+        guard
+            url.path.hasPrefix(repositoryPrefix),
+            try rendererSHA256(url) == reference.sha256,
+            let imageSource = CGImageSourceCreateWithURL(
+                url as CFURL,
+                nil
+            ),
+            let image = CGImageSourceCreateImageAtIndex(
+                imageSource,
+                0,
+                nil
+            )
+        else {
+            throw OfflineRendererError.invalid(
+                "material source texture hash/decode failed: \(reference.file)"
+            )
+        }
+        sourceTextureImages[reference.sha256] = image
+        return image
     }
 
     private func patternImage(
@@ -374,6 +481,69 @@ final class NativeMaterialLibrary {
                     )
                 )
             }
+        case "procedural-formed-concrete":
+            context.setLineWidth(1.5)
+            for coordinate in stride(from: 0, through: size, by: 64) {
+                context.move(to: CGPoint(x: coordinate, y: 0))
+                context.addLine(to: CGPoint(x: coordinate, y: size))
+                context.move(to: CGPoint(x: 0, y: coordinate))
+                context.addLine(to: CGPoint(x: size, y: coordinate))
+            }
+            context.strokePath()
+            context.setFillColor(lineColor.cgColor)
+            for y in stride(from: 32, through: size, by: 64) {
+                for x in stride(from: 32, through: size, by: 64) {
+                    context.fillEllipse(
+                        in: CGRect(x: x - 2, y: y - 2, width: 4, height: 4)
+                    )
+                }
+            }
+        case "procedural-vertical-corrugation":
+            for x in stride(from: 0, through: size, by: 12) {
+                context.setLineWidth((x / 12).isMultiple(of: 2) ? 3 : 1)
+                context.move(to: CGPoint(x: x, y: 0))
+                context.addLine(to: CGPoint(x: x, y: size))
+            }
+        case "horizontal-section-joints":
+            for y in stride(from: 0, through: size, by: 42) {
+                context.move(to: CGPoint(x: 0, y: y))
+                context.addLine(to: CGPoint(x: size, y: y))
+            }
+        case "large-scored-slabs":
+            for coordinate in stride(from: 0, through: size, by: 96) {
+                context.move(to: CGPoint(x: coordinate, y: 0))
+                context.addLine(to: CGPoint(x: coordinate, y: size))
+                context.move(to: CGPoint(x: 0, y: coordinate))
+                context.addLine(to: CGPoint(x: size, y: coordinate))
+            }
+        case "muted-mullion-grid", "muted-warm-glazing":
+            for coordinate in stride(from: 0, through: size, by: 64) {
+                context.move(to: CGPoint(x: coordinate, y: 0))
+                context.addLine(to: CGPoint(x: coordinate, y: size))
+                context.move(to: CGPoint(x: 0, y: coordinate))
+                context.addLine(to: CGPoint(x: size, y: coordinate))
+            }
+        case "fine-galvanized", "painted-steel":
+            for x in stride(from: 0, through: size, by: 24) {
+                context.move(to: CGPoint(x: x, y: 0))
+                context.addLine(to: CGPoint(x: x, y: size))
+            }
+        case "rolled-membrane-seams":
+            for x in stride(from: 0, through: size, by: 72) {
+                context.move(to: CGPoint(x: x, y: 0))
+                context.addLine(to: CGPoint(x: x, y: size))
+            }
+        case "compressible-seal":
+            context.setLineWidth(8)
+            context.stroke(CGRect(x: 18, y: 18, width: 220, height: 220))
+        case "restrained-oxide":
+            context.setLineWidth(5)
+            for offset in stride(from: -size, through: size, by: 48) {
+                context.move(to: CGPoint(x: offset, y: 0))
+                context.addLine(to: CGPoint(x: offset + size, y: size))
+            }
+        case "joint-line", "solid-depth-cavity", "solid-safety-paint":
+            break
         default:
             break
         }
@@ -400,16 +570,20 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 
         let foundation = try boxNode(
             name: "foundation",
-            dimensions: [
-                descriptor.building.width,
-                descriptor.building.foundationHeight,
-                descriptor.building.depth,
-            ],
-            position: [
-                0,
-                descriptor.building.foundationHeight / 2,
-                0,
-            ],
+            dimensions:
+                descriptor.building.foundationDimensions
+                ?? [
+                    descriptor.building.width,
+                    descriptor.building.foundationHeight,
+                    descriptor.building.depth,
+                ],
+            position:
+                descriptor.building.foundationPositionWorld
+                ?? [
+                    0,
+                    descriptor.building.foundationHeight / 2,
+                    0,
+                ],
             materialID: descriptor.building.foundationMaterialID
         )
         scene.rootNode.addChildNode(foundation)
@@ -463,37 +637,41 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             try addRoof(descriptor, to: scene)
             try addDormer(descriptor, to: scene)
         }
-        try addChimney(descriptor, to: scene)
+        if descriptor.building.usesExplicitComponentGeometry != true {
+            try addChimney(descriptor, to: scene)
+        }
 
-        for facade in descriptor.facades {
-            for bay in facade.windowBays {
-                try addWindow(
-                    bay,
-                    facade: facade.direction,
-                    family: descriptor.family,
-                    to: scene
-                )
-            }
-            for rhythm in facade.windowRhythms ?? [] {
-                for (index, center) in rhythm.centersWorld.enumerated() {
+        if descriptor.building.usesExplicitComponentGeometry != true {
+            for facade in descriptor.facades {
+                for bay in facade.windowBays {
                     try addWindow(
-                        WindowBayDescriptor(
-                            id: rhythm.id + "-\(index)",
-                            centerWorld: center,
-                            width: rhythm.width,
-                            height: rhythm.height,
-                            sillHeight: rhythm.sillHeight,
-                            floor: rhythm.floor,
-                            materialID: rhythm.materialID
-                        ),
+                        bay,
                         facade: facade.direction,
                         family: descriptor.family,
                         to: scene
                     )
                 }
+                for rhythm in facade.windowRhythms ?? [] {
+                    for (index, center) in rhythm.centersWorld.enumerated() {
+                        try addWindow(
+                            WindowBayDescriptor(
+                                id: rhythm.id + "-\(index)",
+                                centerWorld: center,
+                                width: rhythm.width,
+                                height: rhythm.height,
+                                sillHeight: rhythm.sillHeight,
+                                floor: rhythm.floor,
+                                materialID: rhythm.materialID
+                            ),
+                            facade: facade.direction,
+                            family: descriptor.family,
+                            to: scene
+                        )
+                    }
+                }
             }
+            try addEntrance(descriptor, to: scene)
         }
-        try addEntrance(descriptor, to: scene)
         for prop in descriptor.props {
             try addProp(prop, to: scene)
         }
@@ -626,7 +804,10 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             allocator: nil
         )
         let geometry = SCNGeometry(mdlMesh: mesh)
-        geometry.firstMaterial = try materials.material(materialID)
+        geometry.materials = try materials.boxMaterials(
+            materialID,
+            dimensions: dimensions
+        )
         let node = SCNNode(geometry: geometry)
         node.name = name
         node.position = SCNVector3(
@@ -2177,6 +2358,28 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
     ) throws {
         let material = try materials.material(prop.materialID)
         switch prop.kind {
+        case "explicit-cylinder":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "explicit cylinder dimensions must contain diameter, height, diameter"
+                )
+            }
+            let diameter = min(prop.dimensions[0], prop.dimensions[2])
+            let cylinder = SCNCylinder(
+                radius: CGFloat(diameter / 2),
+                height: CGFloat(prop.dimensions[1])
+            )
+            cylinder.radialSegmentCount = 32
+            cylinder.firstMaterial = material
+            let cylinderNode = SCNNode(geometry: cylinder)
+            cylinderNode.name = prop.id
+            cylinderNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1],
+                prop.positionWorld[2]
+            )
+            cylinderNode.castsShadow = true
+            scene.rootNode.addChildNode(cylinderNode)
         case "shrub-cluster":
             let offsets: [(Double, Double, Double)] = [
                 (-0.24, 0.0, -0.16),
@@ -3632,7 +3835,8 @@ enum OfflineSceneRendererMain {
             return
         }
         let materialLibrary = NativeMaterialLibrary(
-            descriptor: materialDescriptor
+            descriptor: materialDescriptor,
+            repositoryRoot: repositoryRoot
         )
         let scene = try ContractSceneBuilder(
             materials: materialLibrary

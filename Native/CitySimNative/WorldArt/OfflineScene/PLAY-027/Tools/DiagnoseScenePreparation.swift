@@ -515,7 +515,8 @@ enum DiagnoseScenePreparationMain {
 
         let sourceScene = try ContractSceneBuilder(
             materials: NativeMaterialLibrary(
-                descriptor: materialDescriptor
+                descriptor: materialDescriptor,
+                repositoryRoot: repositoryRoot
             )
         ).buildScene(from: descriptor)
         let selection = DiagnosticSelection(

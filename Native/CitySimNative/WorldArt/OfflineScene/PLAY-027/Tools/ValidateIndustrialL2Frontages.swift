@@ -147,7 +147,9 @@ enum ValidateIndustrialL2FrontagesMain {
                 || descriptor.family != "industrial"
                 || descriptor.level != 2
                 || descriptor.variantID != "variant-0"
-                || descriptor.sourceRevision != "source-v04"
+                || !["source-v04", "source-v05"].contains(
+                    descriptor.sourceRevision
+                )
                 || descriptor.viewDirection != direction
             {
                 itemFailures.append("identity mismatch")
@@ -174,7 +176,17 @@ enum ValidateIndustrialL2FrontagesMain {
                     || sampling.purpose != "source-authority"
                     || sampling.sceneKitShadows != "disabled"
                     || descriptor.sampling?.sourceRevisionBinding
-                        != "source-v04"
+                        != descriptor.sourceRevision
+                    || (
+                        descriptor.sourceRevision == "source-v05"
+                        && sampling.sceneKitLightingMode
+                            != "authored-constant-v1"
+                    )
+                    || (
+                        descriptor.sourceRevision == "source-v04"
+                        && sampling.sceneKitLightingMode
+                            != "lambert-scene-lights"
+                    )
                 {
                     itemFailures.append(
                         "schema-2 v3 source sampling binding mismatch"
@@ -393,9 +405,9 @@ enum ValidateIndustrialL2FrontagesMain {
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v04",
+            "sourceRevision": "source-v05",
             "purpose":
-                "freeze Industrial L2 source-v04 loading-logistics frontage, descriptor-bound disabled SceneKit shadows, independent direction authorship, and non-aliasing progression beyond accepted Industrial L1",
+                "freeze Industrial L2 source-v05 loading-logistics frontage, descriptor-bound disabled SceneKit shadows and authored constant lighting, independent direction authorship, and non-aliasing progression beyond accepted Industrial L1",
             "directions": records,
             "uniqueDescriptorHashCount": descriptorHashes.count,
             "uniqueSceneGeometryIDCount": geometryIDs.count,

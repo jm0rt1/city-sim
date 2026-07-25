@@ -7,7 +7,7 @@
         34,
         5
       ],
-      "materialID" : "i02-v05-mechanical",
+      "materialID" : "chimney-metal",
       "positionWorld" : [
         21,
         53,
@@ -18,7 +18,7 @@
     "floorHeight" : 14,
     "floors" : 3,
     "foundationHeight" : 2,
-    "foundationMaterialID" : "i02-v05-foundation",
+    "foundationMaterialID" : "concrete-industrial-warm",
     "massBlocks" : [
       {
         "dimensions" : [
@@ -27,7 +27,7 @@
           38
         ],
         "id" : "i02-north-high-assembly-hall",
-        "materialID" : "i02-v05-corrugated-northwest",
+        "materialID" : "corrugated-steel-sage",
         "positionWorld" : [
           6,
           23,
@@ -41,7 +41,7 @@
           48
         ],
         "id" : "i02-north-fabrication-annex",
-        "materialID" : "i02-v05-brick-side",
+        "materialID" : "brick-industrial-umber",
         "positionWorld" : [
           -20.5,
           17.199999999999999,
@@ -55,7 +55,7 @@
           16
         ],
         "id" : "i02-north-process-tower",
-        "materialID" : "i02-v05-brick-northwest",
+        "materialID" : "brick-industrial-umber",
         "positionWorld" : [
           18,
           26.5,
@@ -69,7 +69,7 @@
           12
         ],
         "id" : "i02-north-dual-dock-house",
-        "materialID" : "i02-v05-recess-sage",
+        "materialID" : "brick-industrial-umber",
         "positionWorld" : [
           0,
           14.4,
@@ -83,7 +83,7 @@
           1.2
         ],
         "id" : "i02-north-secondary-loading-door",
-        "materialID" : "i02-v05-loading-door",
+        "materialID" : "loading-door-steel",
         "positionWorld" : [
           -18,
           11.6,
@@ -97,7 +97,7 @@
           3
         ],
         "id" : "i02-north-frontage-left-post",
-        "materialID" : "i02-v05-mechanical",
+        "materialID" : "chimney-metal",
         "positionWorld" : [
           -25,
           32.25,
@@ -111,7 +111,7 @@
           3
         ],
         "id" : "i02-north-frontage-center-post",
-        "materialID" : "i02-v05-mechanical",
+        "materialID" : "chimney-metal",
         "positionWorld" : [
           -14,
           32.25,
@@ -125,7 +125,7 @@
           3
         ],
         "id" : "i02-north-frontage-right-post",
-        "materialID" : "i02-v05-mechanical",
+        "materialID" : "chimney-metal",
         "positionWorld" : [
           25,
           32.25,
@@ -139,7 +139,7 @@
           20
         ],
         "id" : "i02-north-service-apron",
-        "materialID" : "i02-v05-foundation",
+        "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           0,
           2.75,
@@ -149,7 +149,7 @@
     ],
     "massingProfile" : "dual-bay-logistics-foundry-v1",
     "roofHeight" : 10,
-    "roofMaterialID" : "i02-v05-roof-flat",
+    "roofMaterialID" : "roof-industrial-charcoal",
     "roofOverhang" : 1,
     "roofVolumes" : [
       {
@@ -159,14 +159,14 @@
           38
         ],
         "id" : "i02-north-sawtooth-west",
-        "materialID" : "i02-v05-roof-sawtooth",
+        "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           -6,
           49.200000000000003,
           6
         ],
         "shape" : "hip",
-        "trimMaterialID" : "limestone-warm"
+        "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
@@ -175,14 +175,14 @@
           38
         ],
         "id" : "i02-north-sawtooth-center",
-        "materialID" : "i02-v05-roof-sawtooth",
+        "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           5,
           49.399999999999999,
           6
         ],
         "shape" : "hip",
-        "trimMaterialID" : "limestone-warm"
+        "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
@@ -191,14 +191,14 @@
           38
         ],
         "id" : "i02-north-sawtooth-east",
-        "materialID" : "i02-v05-roof-sawtooth",
+        "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           16,
           49.600000000000001,
           6
         ],
         "shape" : "hip",
-        "trimMaterialID" : "limestone-warm"
+        "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
@@ -207,14 +207,14 @@
           48
         ],
         "id" : "i02-north-annex-roof",
-        "materialID" : "i02-v05-roof-flat",
+        "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           -20.5,
           35,
           4
         ],
         "shape" : "flat-parapet",
-        "trimMaterialID" : "limestone-warm"
+        "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
@@ -223,14 +223,14 @@
           16
         ],
         "id" : "i02-north-tower-roof",
-        "materialID" : "i02-v05-roof-flat",
+        "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           18,
           53.200000000000003,
           15
         ],
         "shape" : "flat-parapet",
-        "trimMaterialID" : "limestone-warm"
+        "trimMaterialID" : "hazard-yellow"
       },
       {
         "dimensions" : [
@@ -239,14 +239,14 @@
           12
         ],
         "id" : "i02-north-dock-roof",
-        "materialID" : "i02-v05-roof-flat",
+        "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
           0,
           29.100000000000001,
           -22
         ],
         "shape" : "flat-parapet",
-        "trimMaterialID" : "limestone-warm"
+        "trimMaterialID" : "hazard-yellow"
       }
     ],
     "trimBands" : [
@@ -257,7 +257,7 @@
           39
         ],
         "id" : "i02-north-hall-datum",
-        "materialID" : "limestone-warm",
+        "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           6,
           11.1,
@@ -271,7 +271,7 @@
           49
         ],
         "id" : "i02-north-annex-datum",
-        "materialID" : "slate-charcoal",
+        "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           -20.5,
           9.8000000000000007,
@@ -299,7 +299,7 @@
           2
         ],
         "id" : "i02-north-secondary-door-header",
-        "materialID" : "limestone-warm",
+        "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           -18,
           21.899999999999999,
@@ -313,7 +313,7 @@
           4
         ],
         "id" : "i02-north-frontage-secondary-header",
-        "materialID" : "limestone-warm",
+        "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           -19.5,
           60,
@@ -327,7 +327,7 @@
           4
         ],
         "id" : "i02-north-frontage-primary-header",
-        "materialID" : "limestone-warm",
+        "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           5.5,
           60.100000000000001,
@@ -391,10 +391,10 @@
         ]
       }
     ],
-    "trimMaterialID" : "limestone-warm",
+    "trimMaterialID" : "concrete-industrial-warm",
     "usesLegacyDomesticDetails" : false,
     "wallHeight" : 42,
-    "wallMaterialID" : "i02-v05-corrugated-northwest",
+    "wallMaterialID" : "corrugated-steel-sage",
     "width" : 60
   },
   "camera" : {
@@ -441,7 +441,7 @@
     ],
     "canopyDepth" : 20,
     "depth" : 2.3999999999999999,
-    "doorMaterialID" : "i02-v05-loading-door",
+    "doorMaterialID" : "loading-door-steel",
     "facadeID" : "north-facade",
     "height" : 20,
     "hingeSide" : "right",
@@ -456,7 +456,7 @@
     "stepCount" : 1,
     "stepRun" : 2.5,
     "style" : "loading-bay",
-    "surroundMaterialID" : "limestone-warm",
+    "surroundMaterialID" : "concrete-industrial-warm",
     "width" : 22
   },
   "facades" : [
@@ -474,7 +474,7 @@
       ],
       "hasEntrance" : true,
       "id" : "north-facade",
-      "materialID" : "i02-v05-loading-throat",
+      "materialID" : "corrugated-steel-sage",
       "windowBays" : [
 
       ],
@@ -495,7 +495,7 @@
           "floor" : 2,
           "height" : 5.5,
           "id" : "i02-n-north-high-clerestory",
-          "materialID" : "i02-v05-glazing-northwest",
+          "materialID" : "industrial-glass",
           "sillHeight" : 29,
           "width" : 6.5
         }
@@ -515,7 +515,7 @@
       ],
       "hasEntrance" : false,
       "id" : "east-facade",
-      "materialID" : "i02-v05-corrugated-side",
+      "materialID" : "corrugated-steel-sage",
       "windowBays" : [
 
       ],
@@ -541,7 +541,7 @@
           "floor" : 2,
           "height" : 5.5,
           "id" : "i02-n-east-high-clerestory",
-          "materialID" : "i02-v05-glazing-side",
+          "materialID" : "industrial-glass",
           "sillHeight" : 29,
           "width" : 6.5
         }
@@ -561,7 +561,7 @@
       ],
       "hasEntrance" : false,
       "id" : "south-facade",
-      "materialID" : "i02-v05-corrugated-side",
+      "materialID" : "corrugated-steel-sage",
       "windowBays" : [
 
       ],
@@ -587,7 +587,7 @@
           "floor" : 2,
           "height" : 5.5,
           "id" : "i02-n-south-high-clerestory",
-          "materialID" : "i02-v05-glazing-side",
+          "materialID" : "industrial-glass",
           "sillHeight" : 29,
           "width" : 6.5
         }
@@ -607,7 +607,7 @@
       ],
       "hasEntrance" : false,
       "id" : "west-facade",
-      "materialID" : "i02-v05-corrugated-northwest",
+      "materialID" : "corrugated-steel-sage",
       "windowBays" : [
 
       ],
@@ -633,7 +633,7 @@
           "floor" : 2,
           "height" : 5.5,
           "id" : "i02-n-west-high-clerestory",
-          "materialID" : "i02-v05-glazing-northwest",
+          "materialID" : "industrial-glass",
           "sillHeight" : 29,
           "width" : 6.5
         }
@@ -672,9 +672,9 @@
   },
   "logicalBuildingID" : "industrial_l02",
   "materialLibrary" : {
-    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l02-v0-source-v05-materials.json",
-    "role" : "industrial-l02-source-v05-authored-constant-material-roles",
-    "sha256" : "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815"
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+    "role" : "industrial-family-material-anchor-no-imagegen-swatches",
+    "sha256" : "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef"
   },
   "occlusionExclusions" : [
     {
@@ -895,13 +895,12 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sceneKitLightingMode" : "authored-constant-v1",
     "sceneKitShadows" : "disabled",
-    "sourceRevisionBinding" : "source-v05"
+    "sourceRevisionBinding" : "source-v04"
   },
   "sceneGeometryID" : "industrial-l02-v0-north-integrated-logistics-geometry-v3",
   "schema" : 2,
-  "sourceRevision" : "source-v05",
+  "sourceRevision" : "source-v04",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",
@@ -909,9 +908,9 @@
   },
   "task" : "PLAY-027",
   "toolchainFingerprint" : {
-    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v05.json",
-    "role" : "frozen-schema-2-v3-authored-constant-offline-host-and-frameworks",
-    "sha256" : "81bf644b41612c83d124c9b1e51ceade6b2931772402849ef71e16bee4545531"
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v04.json",
+    "role" : "frozen-schema-2-v3-shadows-disabled-offline-host-and-frameworks",
+    "sha256" : "741986f9482d1a62e46b31ad7dcbfbb68bd22b534c74a9e9268b89c0585d8f9e"
   },
   "variantID" : "variant-0",
   "viewDirection" : "north"

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "calibrationID": "industrial-l02-variant-0-directional-source-v04",
+  "calibrationID": "industrial-l02-variant-0-directional-source-v05",
   "directionOrder": ["north", "east", "south", "west"],
   "layout": {
     "columns": 2,
@@ -29,6 +29,6 @@
     "correspondingRawSourceCrop": [512, 270, 513, 695],
     "source": "future deterministic normalized-alpha block LOD"
   },
-  "reviewManifest": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/review/REVIEW-REQUEST.json",
+  "reviewManifest": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-prepixel/REVIEW-REQUEST.json",
   "productionSelected": false
 }

@@ -350,6 +350,7 @@ enum ValidateScenesMain {
             }
             if direction == "north" || direction == "west" {
                 if family == "industrial"
+                    && logicalBuildingID == "industrial_l01"
                     && descriptor.sourceRevision == "source-v05"
                 {
                     let prefix = "i01-\(direction)-frontage"
@@ -379,7 +380,9 @@ enum ValidateScenesMain {
                     }
                 } else if family == "industrial"
                     && logicalBuildingID == "industrial_l02"
-                    && descriptor.sourceRevision == "source-v04"
+                    && ["source-v04", "source-v05"].contains(
+                        descriptor.sourceRevision
+                    )
                 {
                     let prefix = "i02-\(direction)-frontage"
                     let masses = descriptor.building.massBlocks ?? []

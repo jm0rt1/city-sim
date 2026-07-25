@@ -44,10 +44,14 @@ at `a337a4f8b56c849f15d6be5833d1d22553f58d69`. Exactly one Commercial L4
 accepted through clean source candidate
 `bf3e24b2b465870f131ac0a01a2327ac4969d5d5`. Industrial L1 variant-zero
 N/E/S/W was independently accepted at
-`79668c347e58d602f9627c73cb09e3272a83ef57`. Published integration authority
-now authorizes Industrial L2 source-v04 as a controlled source revision of the
-frozen source-v03 geometry and materials. Only Industrial L2 source-v04 may
-bind `sceneKitShadows: disabled`; Industrial L3-L4 remain unauthorized.
+`79668c347e58d602f9627c73cb09e3272a83ef57`. Industrial L2 source-v04 remains
+rejected at `f069d15c6f9c9e9922ceafa6381f8546c1d3c6c5`; its exact raw, repeat,
+locality, and constant-light diagnostic trail is retained. Integration now
+authorizes only the Industrial L2 source-v05 pre-pixel architecture from clean
+causal checkpoint `ba4845612c2a5e8ce746c2a08379342bbca946f1`. Source-v05 may
+bind `sceneKitShadows: disabled` and `sceneKitLightingMode:
+authored-constant-v1`; no source-v05 render or normalization is authorized at
+this checkpoint. Industrial L3-L4 remain unauthorized.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -126,7 +130,9 @@ block. Its frozen contract is:
 contractID: play027-deterministic-4x-no-msaa-lanczos-v1, -v2, or -v3
 sceneKitAntialiasing: none
 sceneKitShadows: current (default when omitted), or disabled only for
-  industrial_l02/source-v04/source-authority
+  industrial_l02/source-v04 or source-v05/source-authority
+sceneKitLightingMode: lambert-scene-lights (default when omitted), or
+  authored-constant-v1 only for industrial_l02/source-v05/source-authority
 linearOversamplingFactor: 4
 downsample: CILanczosScaleTransform, scale 0.25, aspect 1
 CI context: software, no intermediate cache, extended-sRGB -> sRGB

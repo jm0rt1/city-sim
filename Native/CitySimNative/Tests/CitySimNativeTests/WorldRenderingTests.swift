@@ -515,6 +515,22 @@ final class WorldRenderingTests: XCTestCase {
                 XCTAssertEqual(asset.viewDirection, identity.direction)
                 XCTAssertEqual(asset.entranceSocketWorld, expectedSockets[edge])
                 XCTAssertEqual(asset.supportedOrientation, "\(identity.direction)-facing-authored")
+                XCTAssertEqual(asset.roadSetbackPoints, 0)
+                XCTAssertEqual(asset.allowedOverhangWorld.count, 4)
+                XCTAssertLessThanOrEqual(asset.allowedOverhangWorld[2], 0.51)
+                XCTAssertEqual(asset.propExclusionRectsWorld.count, 1)
+                let exclusion = try XCTUnwrap(asset.propExclusionRectsWorld.first)
+                XCTAssertEqual(exclusion.count, 4)
+                XCTAssertGreaterThanOrEqual(asset.entranceSocketWorld[0], exclusion[0])
+                XCTAssertLessThanOrEqual(
+                    asset.entranceSocketWorld[0],
+                    exclusion[0] + exclusion[2]
+                )
+                XCTAssertGreaterThanOrEqual(asset.entranceSocketWorld[1], exclusion[1])
+                XCTAssertLessThanOrEqual(
+                    asset.entranceSocketWorld[1],
+                    exclusion[1] + exclusion[3]
+                )
                 sourceKeys.insert(try XCTUnwrap(asset.sourceKey))
                 sourceHashes.insert(try XCTUnwrap(asset.sourceSHA256))
 

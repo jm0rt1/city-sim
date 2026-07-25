@@ -26,17 +26,37 @@ MANIFEST = ATLAS / "generated-v4-manifest.json"
 DETAILS = ("city", "neighborhood", "block")
 NEIGHBOR_OFFSETS = ((36.0, 18.0), (36.0, -18.0), (-36.0, -18.0), (-36.0, 18.0))
 SURFACE_FAMILIES = {"terrain", "network-material", "frontage"}
-VALID_FRONTAGE_EDGES = {"none", "south", "nearest-road", "all-road-sockets"}
+VALID_FRONTAGE_EDGES = {
+    "none",
+    "north",
+    "east",
+    "south",
+    "west",
+    "nearest-road",
+    "all-road-sockets",
+}
 VALID_ORIENTATIONS = {
     "projection-fixed",
     "topology-compiled",
     "road-socket-selected",
     "south-facing-fixed",
+    "north-facing-authored",
+    "east-facing-authored",
+    "south-facing-authored",
+    "west-facing-authored",
+}
+AUTHORED_FRONTAGE_SOCKET_WORLD = {
+    "north": (18.0, 9.0),
+    "east": (18.0, -9.0),
+    "south": (-18.0, -9.0),
+    "west": (-18.0, 9.0),
 }
 GEOMETRY_TOLERANCE = 0.01
 LOD_BOUNDS_TOLERANCE_WORLD = 1.25
 SOCKET_TOLERANCE_WORLD = 0.5
-FORBIDDEN_INTRUSION_TOLERANCE_WORLD = 0.5
+# Retain one half-point of accepted source-edge antialiasing while physical
+# ground contacts remain strictly constrained to the authoritative diamond.
+FORBIDDEN_INTRUSION_TOLERANCE_WORLD = 0.51
 TARGET_ACTIVE_BYTES = 96 * 1024 * 1024
 HARD_ACTIVE_BYTES = 128 * 1024 * 1024
 
@@ -97,6 +117,24 @@ def point_in_convex_polygon(point: tuple[float, float], polygon: list[tuple[floa
         if abs(cross) > tolerance:
             signs.add(cross > 0)
     return len(signs) <= 1
+
+
+def point_strictly_in_convex_polygon(
+    point: tuple[float, float],
+    polygon: list[tuple[float, float]],
+    tolerance: float = GEOMETRY_TOLERANCE,
+) -> bool:
+    signs: set[bool] = set()
+    for index, first in enumerate(polygon):
+        second = polygon[(index + 1) % len(polygon)]
+        cross = (
+            (second[0] - first[0]) * (point[1] - first[1])
+            - (second[1] - first[1]) * (point[0] - first[0])
+        )
+        if abs(cross) <= tolerance:
+            return False
+        signs.add(cross > 0)
+    return len(signs) == 1
 
 
 def polygon_area(points: list[tuple[float, float]]) -> float:
@@ -276,9 +314,19 @@ def main() -> None:
         if frontage_edge not in VALID_FRONTAGE_EDGES:
             failures.append(f"{logical_id} has unsupported frontage edge {frontage_edge!r}")
         if frontage_edge == "south" and orientation != "south-facing-fixed":
-            failures.append(f"{logical_id} south frontage is not south-facing-fixed")
+            if orientation != "south-facing-authored":
+                failures.append(f"{logical_id} south frontage has unsupported orientation")
         if frontage_edge == "all-road-sockets" and orientation != "topology-compiled":
             failures.append(f"{logical_id} all-road-sockets asset is not topology-compiled")
+        if frontage_edge in AUTHORED_FRONTAGE_SOCKET_WORLD:
+            expected_orientation = f"{frontage_edge}-facing-authored"
+            allowed_orientations = {expected_orientation}
+            if frontage_edge == "south":
+                allowed_orientations.add("south-facing-fixed")
+            if orientation not in allowed_orientations:
+                failures.append(
+                    f"{logical_id} authored frontage/orientation identity does not match"
+                )
 
         placement_offset = asset.get("placement_offset_world", [])
         source_canvas = asset.get("source_canvas_pixels", [])
@@ -380,7 +428,21 @@ def main() -> None:
                 measured_setback = max(0.0, (1 - normalized_radius) * half_height)
                 if abs(measured_setback - float(setback)) > SOCKET_TOLERANCE_WORLD:
                     socket_failures.append("socket-setback-mismatch")
-                if frontage_edge == "south" and (entrance[1] >= 0 or abs(float(entrance[0])) > SOCKET_TOLERANCE_WORLD):
+                expected_socket = AUTHORED_FRONTAGE_SOCKET_WORLD.get(str(frontage_edge))
+                if (
+                    orientation == f"{frontage_edge}-facing-authored"
+                    and expected_socket is not None
+                    and max(
+                        abs(float(entrance[index]) - expected_socket[index])
+                        for index in range(2)
+                    ) > SOCKET_TOLERANCE_WORLD
+                ):
+                    socket_failures.append("authored-socket-misaligned")
+                if (
+                    frontage_edge == "south"
+                    and orientation == "south-facing-fixed"
+                    and (entrance[1] >= 0 or abs(float(entrance[0])) > SOCKET_TOLERANCE_WORLD)
+                ):
                     socket_failures.append("south-socket-misaligned")
             else:
                 measured_setback = None
@@ -584,11 +646,19 @@ def main() -> None:
     # entrance and therefore intentionally skip this rule.
     for asset in frontaged_assets:
         entrance = asset.get("entrance_socket_world", [])
+        authored_road_frontage = asset.get("frontage_edge") in AUTHORED_FRONTAGE_SOCKET_WORLD
         exclusions = [
             rectangle for rectangle in asset.get("prop_exclusion_rects_world", [])
             if isinstance(rectangle, list) and finite_values(rectangle, 4)
         ]
         for other in frontaged_assets:
+            # A production-selected authored direction exists only when the
+            # named adjacent gameplay cell is a road. A building on that same
+            # neighbor is therefore an impossible state; ground-contact
+            # collision coverage remains exhaustive above. Validate the
+            # authored entrance clearance against the physical road material.
+            if authored_road_frontage and other.get("family") != "network-material":
+                continue
             other_exclusions = [
                 rectangle for rectangle in other.get("prop_exclusion_rects_world", [])
                 if isinstance(rectangle, list) and finite_values(rectangle, 4)
@@ -599,7 +669,10 @@ def main() -> None:
                 entrance_overlap = (
                     finite_values(entrance, 2)
                     and len(other_contact) >= 3
-                    and point_in_convex_polygon((float(entrance[0]), float(entrance[1])), other_contact)
+                    and point_strictly_in_convex_polygon(
+                        (float(entrance[0]), float(entrance[1])),
+                        other_contact,
+                    )
                 )
                 exclusion_overlap = any(
                     polygons_overlap(

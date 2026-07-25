@@ -2586,8 +2586,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         12.43652344
       ],
       "authoring_template": "1x1",
@@ -2808,10 +2808,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l01/variant-0/east/source-v08.json",
@@ -2822,7 +2822,7 @@
         "04b7ecfb484377ecbd3e02c47ce6af1addeed4014b8a81a781baa3d02fa4ae81"
       ],
       "residency_id": "generated-v4/residential/residential_l01_v0_east",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json",
       "scene_descriptor_sha256": "5a6ccb85adb129f4da73e086be2b14d417785a35c0391052b44180db872ef1fe",
       "shadow_bounds_world": [
@@ -2850,8 +2850,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         5.68652344
       ],
       "authoring_template": "1x1",
@@ -3072,10 +3072,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l01/variant-0/north/source-v12.json",
@@ -3086,7 +3086,7 @@
         "04b7ecfb484377ecbd3e02c47ce6af1addeed4014b8a81a781baa3d02fa4ae81"
       ],
       "residency_id": "generated-v4/residential/residential_l01_v0_north",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/north/scene.json",
       "scene_descriptor_sha256": "3b5b3cf50059c46967f3bd43febf6817cbfc35fe621ef20929fe760b9e16815f",
       "shadow_bounds_world": [
@@ -3114,8 +3114,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         12.43652344
       ],
       "authoring_template": "1x1",
@@ -3336,10 +3336,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l01/variant-0/south/source-v08.json",
@@ -3350,7 +3350,7 @@
         "04b7ecfb484377ecbd3e02c47ce6af1addeed4014b8a81a781baa3d02fa4ae81"
       ],
       "residency_id": "generated-v4/residential/residential_l01_v0_south",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/south/scene.json",
       "scene_descriptor_sha256": "b03d2b578420c300c92d94a53d2573fb00c8a2df340ceee1a8c3c8162bad0b30",
       "shadow_bounds_world": [
@@ -3378,8 +3378,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         5.68652344
       ],
       "authoring_template": "1x1",
@@ -3600,10 +3600,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l01/variant-0/west/source-v09.json",
@@ -3614,7 +3614,7 @@
         "04b7ecfb484377ecbd3e02c47ce6af1addeed4014b8a81a781baa3d02fa4ae81"
       ],
       "residency_id": "generated-v4/residential/residential_l01_v0_west",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/west/scene.json",
       "scene_descriptor_sha256": "be6c207ef15b99dd15b5707eeb21aa674d52fe1df73175f2feab93714a70f288",
       "shadow_bounds_world": [
@@ -3642,8 +3642,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         16.23339844
       ],
       "authoring_template": "1x1",
@@ -3864,10 +3864,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l02/variant-0/east/source-v05.json",
@@ -3878,7 +3878,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l02_v0_east",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l02/variant-0/east/scene.json",
       "scene_descriptor_sha256": "fa1b7c0851c292c1bf8ff741861349611190f11058e093acb84e8258bce61152",
       "shadow_bounds_world": [
@@ -3906,8 +3906,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         11.17089844
       ],
       "authoring_template": "1x1",
@@ -4128,10 +4128,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l02/variant-0/north/source-v05.json",
@@ -4142,7 +4142,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l02_v0_north",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l02/variant-0/north/scene.json",
       "scene_descriptor_sha256": "a44a992a5399dac593cbdf3c7a71df7e940fe6f7e4a3da796ad4b8061d5b8ea0",
       "shadow_bounds_world": [
@@ -4170,8 +4170,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         16.23339844
       ],
       "authoring_template": "1x1",
@@ -4392,10 +4392,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l02/variant-0/south/source-v05.json",
@@ -4406,7 +4406,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l02_v0_south",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l02/variant-0/south/scene.json",
       "scene_descriptor_sha256": "47ebb2cb156f23b2e91017e66ab96772bd853e4f2663d285c950e66984999674",
       "shadow_bounds_world": [
@@ -4434,8 +4434,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         10.53808594
       ],
       "authoring_template": "1x1",
@@ -4656,10 +4656,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l02/variant-0/west/source-v05.json",
@@ -4670,7 +4670,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l02_v0_west",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l02/variant-0/west/scene.json",
       "scene_descriptor_sha256": "109c97b9d620be1ca9d13dde8adff57008b97ba69e5592236105ea29a44dd5f3",
       "shadow_bounds_world": [
@@ -4698,8 +4698,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         28.88964844
       ],
       "authoring_template": "1x1",
@@ -4920,10 +4920,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l03/variant-0/east/source-v01.json",
@@ -4934,7 +4934,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l03_v0_east",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l03/variant-0/east/scene.json",
       "scene_descriptor_sha256": "bd5d9217c4e72e9e12eea7735d1c27671fa7895b75d6bca523f9da88f43abcb7",
       "shadow_bounds_world": [
@@ -4962,8 +4962,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         24.03808594
       ],
       "authoring_template": "1x1",
@@ -5184,10 +5184,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l03/variant-0/north/source-v01.json",
@@ -5198,7 +5198,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l03_v0_north",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l03/variant-0/north/scene.json",
       "scene_descriptor_sha256": "5aeb66acbfd16c8bce023ec00d4788e1f7ec3178015918e92fb2db870b97ddf1",
       "shadow_bounds_world": [
@@ -5226,8 +5226,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         30.57714844
       ],
       "authoring_template": "1x1",
@@ -5448,10 +5448,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l03/variant-0/south/source-v01.json",
@@ -5462,7 +5462,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l03_v0_south",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l03/variant-0/south/scene.json",
       "scene_descriptor_sha256": "49e555fcf8d40f2221e6bac73706d946c222881ad6f8d8516cf7918259e69587",
       "shadow_bounds_world": [
@@ -5490,8 +5490,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         22.56152344
       ],
       "authoring_template": "1x1",
@@ -5712,10 +5712,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l03/variant-0/west/source-v01.json",
@@ -5726,7 +5726,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l03_v0_west",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l03/variant-0/west/scene.json",
       "scene_descriptor_sha256": "08a1dad063584fc41976cedb5292a74de319b71efcc8312814fa7f76828ace26",
       "shadow_bounds_world": [
@@ -5754,8 +5754,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         35.42871094
       ],
       "authoring_template": "1x1",
@@ -5976,10 +5976,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l04/variant-0/east/source-v01.json",
@@ -5990,7 +5990,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l04_v0_east",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/east/scene.json",
       "scene_descriptor_sha256": "93da920e10e307c2e5a97b4a819444169e24dc55649ef13abb27044ea1173c72",
       "shadow_bounds_world": [
@@ -6018,8 +6018,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         28.25683594
       ],
       "authoring_template": "1x1",
@@ -6240,10 +6240,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          10.65625,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l04/variant-0/north/source-v01.json",
@@ -6254,7 +6254,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l04_v0_north",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/north/scene.json",
       "scene_descriptor_sha256": "eb0a46e3db08d784e120f66fcef2c01618a9aac4a46b5c6d5a1fbdee8ef8f37e",
       "shadow_bounds_world": [
@@ -6282,8 +6282,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         35.42871094
       ],
       "authoring_template": "1x1",
@@ -6504,10 +6504,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          -13.671875,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l04/variant-0/south/source-v01.json",
@@ -6518,7 +6518,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l04_v0_south",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/south/scene.json",
       "scene_descriptor_sha256": "d19578b7fdf025ea0eaf3c748188ab0fdcf0af01089d23b14c6b60b6c75df725",
       "shadow_bounds_world": [
@@ -6546,8 +6546,8 @@
     {
       "allowed_overhang_world": [
         0.0,
-        0.50097656,
         0.0,
+        0.50097656,
         28.25683594
       ],
       "authoring_template": "1x1",
@@ -6768,10 +6768,10 @@
       ],
       "prop_exclusion_rects_world": [
         [
-          -8.0,
-          -18.0,
-          16.0,
-          11.0
+          -25.34375,
+          4.328125,
+          14.6875,
+          9.34375
         ]
       ],
       "provenance_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/residential_l04/variant-0/west/source-v01.json",
@@ -6782,7 +6782,7 @@
         "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
       ],
       "residency_id": "generated-v4/residential/residential_l04_v0_west",
-      "road_setback_points": 4.0,
+      "road_setback_points": 0.0,
       "scene_descriptor_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/west/scene.json",
       "scene_descriptor_sha256": "b8807c69336f8f0137eb775ff20f55f948c2e1cc78c7569010a988cab712b60c",
       "shadow_bounds_world": [

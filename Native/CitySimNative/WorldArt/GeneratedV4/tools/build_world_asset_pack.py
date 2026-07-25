@@ -33,6 +33,7 @@ DIRECTION_SOCKET_WORLD = {
     "south": (-18.0, -9.0),
     "west": (-18.0, 9.0),
 }
+WORLD_HALF_TILE = (36.0, 18.0)
 
 
 def relative_to_package(path: Path) -> str:
@@ -66,6 +67,37 @@ def normalized_path(asset: dict[str, object], detail: str) -> Path:
 
 def rounded(value: float) -> float:
     return round(value, 8)
+
+
+def source_point_to_world(point: list[float]) -> tuple[float, float]:
+    return (
+        rounded((float(point[0]) - GROUND_PIVOT[0]) * WORLD_POINTS_PER_RAW_PIXEL),
+        rounded(
+            PLACEMENT_OFFSET[1]
+            + (GROUND_PIVOT[1] - float(point[1])) * WORLD_POINTS_PER_RAW_PIXEL
+        ),
+    )
+
+
+def entrance_exclusion_rect(
+    socket_source: list[float],
+    door_base_source: list[list[float]],
+) -> list[float]:
+    points = [
+        source_point_to_world(socket_source),
+        *(source_point_to_world(point) for point in door_base_source),
+    ]
+    padding = 2.0
+    minimum_x = max(-WORLD_HALF_TILE[0], min(point[0] for point in points) - padding)
+    maximum_x = min(WORLD_HALF_TILE[0], max(point[0] for point in points) + padding)
+    minimum_y = max(-WORLD_HALF_TILE[1], min(point[1] for point in points) - padding)
+    maximum_y = min(WORLD_HALF_TILE[1], max(point[1] for point in points) + padding)
+    return [
+        rounded(minimum_x),
+        rounded(minimum_y),
+        rounded(maximum_x - minimum_x),
+        rounded(maximum_y - minimum_y),
+    ]
 
 
 def play028_residential_assets() -> list[dict[str, object]]:
@@ -147,6 +179,31 @@ def play028_residential_assets() -> list[dict[str, object]]:
             or derivation.get("transform") != "none"
         ):
             raise SystemExit(f"build rejected: scene identity/transform mismatch for {logical_id}")
+        registration = scene_data.get("registration", {})
+        frontage_socket_source = registration.get("frontageSocketSource")
+        door_base_source = registration.get("doorBaseSource")
+        if (
+            registration.get("tileBasisPoints") != [72, 36]
+            or registration.get("groundPivotSource") != list(GROUND_PIVOT)
+            or registration.get("orientationTransform") != "none"
+            or not isinstance(frontage_socket_source, list)
+            or len(frontage_socket_source) != 2
+            or not isinstance(door_base_source, list)
+            or len(door_base_source) != 2
+            or any(not isinstance(point, list) or len(point) != 2 for point in door_base_source)
+        ):
+            raise SystemExit(f"build rejected: directional registration mismatch for {logical_id}")
+        entrance_socket = source_point_to_world(frontage_socket_source)
+        expected_socket = DIRECTION_SOCKET_WORLD[direction]
+        if any(
+            abs(actual - expected) > 0.000_001
+            for actual, expected in zip(entrance_socket, expected_socket)
+        ):
+            raise SystemExit(f"build rejected: frontage socket drift for {logical_id}")
+        exclusion_rect = entrance_exclusion_rect(
+            frontage_socket_source,
+            door_base_source,
+        )
 
         lods: dict[str, dict[str, object]] = {}
         block_registration: tuple[float, float, list[float], list[float]] | None = None
@@ -230,7 +287,6 @@ def play028_residential_assets() -> list[dict[str, object]]:
             "Native/", "", 1
         )
         material = repository_path(material_file)
-        entrance_socket = DIRECTION_SOCKET_WORLD[direction]
         assets.append(
             {
                 "logical_id": logical_id,
@@ -258,14 +314,14 @@ def play028_residential_assets() -> list[dict[str, object]]:
                 "shadow_bounds_world": opaque_bounds,
                 "allowed_overhang_world": [
                     rounded(max(0.0, -36.0 - opaque_bounds[0])),
-                    rounded(max(0.0, -18.0 - opaque_bounds[1])),
                     rounded(max(0.0, opaque_bounds[2] - 36.0)),
+                    rounded(max(0.0, -18.0 - opaque_bounds[1])),
                     rounded(max(0.0, opaque_bounds[3] - 18.0)),
                 ],
                 "frontage_edge": direction,
                 "entrance_socket_world": list(entrance_socket),
-                "road_setback_points": 4.0,
-                "prop_exclusion_rects_world": [[-8.0, -18.0, 16.0, 11.0]],
+                "road_setback_points": 0.0,
+                "prop_exclusion_rects_world": [exclusion_rect],
                 "depth_roles": {
                     "baked-shadow": 4.0,
                     "structure": 5.0,

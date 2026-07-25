@@ -3222,6 +3222,7 @@ enum OfflineSceneRendererMain {
                 IndustrialL2V5EastSceneKitLanczosContract.contractID,
                 IndustrialL2V6EastSceneKitCaptureContract.contractID,
                 IndustrialL2V7EastPreLanczosCaptureContract.contractID,
+                IndustrialL2V6EastFullFrameCaptureContract.contractID,
             ].contains(diagnosticStageContractID) else {
                 throw OfflineRendererError.invalid(
                     "unknown diagnostic stage contract"
@@ -3453,6 +3454,34 @@ enum OfflineSceneRendererMain {
                 descriptor: descriptor,
                 sampling: descriptorSampling
             )
+        let diagnosticSourceV06FullFrameCaptureRecord =
+            try IndustrialL2V6EastFullFrameCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V6EastFullFrameCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
         guard
             [
                 diagnosticMSAAIsolationRecord != nil,
@@ -3460,6 +3489,7 @@ enum OfflineSceneRendererMain {
                 diagnosticSceneKitLanczosRecord != nil,
                 diagnosticSourceV06EastCaptureRecord != nil,
                 diagnosticSourceV07EastCaptureRecord != nil,
+                diagnosticSourceV06FullFrameCaptureRecord != nil,
             ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
@@ -3472,6 +3502,7 @@ enum OfflineSceneRendererMain {
             ?? diagnosticSceneKitLanczosRecord?.value
             ?? diagnosticSourceV06EastCaptureRecord?.value
             ?? diagnosticSourceV07EastCaptureRecord?.value
+            ?? diagnosticSourceV06FullFrameCaptureRecord?.value
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3611,10 +3642,31 @@ enum OfflineSceneRendererMain {
                 descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
         let rawOversampledFrameRecord =
-            try diagnosticSourceV07EastCaptureRecord.map { _ in
+            try (
+                diagnosticSourceV07EastCaptureRecord
+                    ?? diagnosticSourceV06FullFrameCaptureRecord
+            ).map { _ in
                 try rendererFullFrameRecord(
                     image: rawOversampled,
                     stage: "scenekit-4x-before-pre-lanczos-canonicalization"
+                )
+            }
+        let persistedPreCanonicalFrameRecord =
+            try diagnosticSourceV06FullFrameCaptureRecord.map { _ in
+                guard let diagnosticStageCaptureDirectory else {
+                    throw OfflineRendererError.invalid(
+                        "full-frame capture directory missing after contract validation"
+                    )
+                }
+                return try rendererPersistCompleteRGBAFrame(
+                    image: rawOversampled,
+                    to: diagnosticStageCaptureDirectory
+                        .appendingPathComponent(
+                            "PRE-CANONICAL-4X.png"
+                        ),
+                    repositoryRoot: repositoryRoot,
+                    stage:
+                        "scenekit-4x-before-pre-lanczos-canonicalization"
                 )
             }
         let preLanczosCanonicalization =
@@ -3638,6 +3690,7 @@ enum OfflineSceneRendererMain {
                 diagnosticSceneKitLanczosRecord
                     ?? diagnosticSourceV06EastCaptureRecord
                     ?? diagnosticSourceV07EastCaptureRecord
+                    ?? diagnosticSourceV06FullFrameCaptureRecord
             ).map {
                 var record = try rendererOversampledSupportWindowRecord(
                     image: oversampled,
@@ -3828,6 +3881,10 @@ enum OfflineSceneRendererMain {
                 capture["rawSceneKit4xFrame"] =
                     rawOversampledFrameRecord
             }
+            if let persistedPreCanonicalFrameRecord {
+                capture["persistedPreCanonical4xFrame"] =
+                    persistedPreCanonicalFrameRecord
+            }
             if
                 let canonicalizedOversampledFrameRecord,
                 let result = preLanczosCanonicalization?.result
@@ -3883,6 +3940,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastSceneKitCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V7EastPreLanczosCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastFullFrameCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]

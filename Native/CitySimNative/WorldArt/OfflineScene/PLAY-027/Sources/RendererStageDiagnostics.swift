@@ -2,6 +2,7 @@ import CoreGraphics
 import CryptoKit
 import Foundation
 import ImageIO
+import UniformTypeIdentifiers
 
 enum RendererStageDiagnosticsError: Error, CustomStringConvertible {
     case invalid(String)
@@ -298,6 +299,99 @@ func rendererFullFrameRecord(
         "decodedRGBAByteCount": rgba.count,
         "decodedRGBASHA256":
             rendererStageSHA256(Data(rgba)),
+    ]
+}
+
+func rendererPersistCompleteRGBAFrame(
+    image: CGImage,
+    to url: URL,
+    repositoryRoot: URL,
+    stage: String
+) throws -> [String: Any] {
+    guard
+        url.path.contains("/diagnostics/"),
+        url.lastPathComponent == "PRE-CANONICAL-4X.png",
+        !FileManager.default.fileExists(atPath: url.path)
+    else {
+        throw RendererStageDiagnosticsError.invalid(
+            "complete RGBA frame must use one new diagnostics PRE-CANONICAL-4X.png path"
+        )
+    }
+    let rgba = try rendererCanonicalRGBA(image: image)
+    var storage = rgba
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+    let outputImage = try storage.withUnsafeMutableBytes {
+        bytes -> CGImage in
+        guard
+            let context = CGContext(
+                data: bytes.baseAddress,
+                width: image.width,
+                height: image.height,
+                bitsPerComponent: 8,
+                bytesPerRow: image.width * 4,
+                space: colorSpace,
+                bitmapInfo:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ),
+            let output = context.makeImage()
+        else {
+            throw RendererStageDiagnosticsError.invalid(
+                "could not create complete RGBA diagnostic frame"
+            )
+        }
+        return output
+    }
+    try FileManager.default.createDirectory(
+        at: url.deletingLastPathComponent(),
+        withIntermediateDirectories: true
+    )
+    guard let destination = CGImageDestinationCreateWithURL(
+        url as CFURL,
+        UTType.png.identifier as CFString,
+        1,
+        nil
+    ) else {
+        throw RendererStageDiagnosticsError.invalid(
+            "could not create complete RGBA diagnostic destination"
+        )
+    }
+    CGImageDestinationAddImage(destination, outputImage, [
+        kCGImagePropertyPNGInterlaceType: 0,
+    ] as CFDictionary)
+    guard CGImageDestinationFinalize(destination) else {
+        throw RendererStageDiagnosticsError.invalid(
+            "could not finalize complete RGBA diagnostic PNG"
+        )
+    }
+    let decoded = try rendererDecodePNG(url)
+    guard
+        decoded.width == image.width,
+        decoded.height == image.height,
+        decoded.rgba == rgba
+    else {
+        throw RendererStageDiagnosticsError.invalid(
+            "persisted complete RGBA diagnostic frame does not reproduce the in-memory frame"
+        )
+    }
+    return [
+        "stage": stage,
+        "file": rendererRelativePath(
+            url,
+            repositoryRoot: repositoryRoot
+        ),
+        "fileSHA256": try rendererSHA256(url),
+        "pixels": [image.width, image.height],
+        "decodedColorSpace": "sRGB",
+        "decodedPixelFormat":
+            "rgba8-premultiplied-last-byte-order-32-big",
+        "decodedRGBAByteCount": rgba.count,
+        "inMemoryDecodedRGBASHA256":
+            rendererStageSHA256(Data(rgba)),
+        "persistedDecodedRGBASHA256":
+            rendererStageSHA256(Data(decoded.rgba)),
+        "persistedDecodeEqualsInMemory": true,
+        "productionSelected": false,
     ]
 }
 

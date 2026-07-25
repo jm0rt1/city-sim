@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "purpose": "freeze diagnostic-only persistence of complete pre-canonical Industrial L2 source-v06 East 4x RGBA frames before consuming any Metal process",
+  "authority": "705490f4b76a5718e7fc5b11abcdaf4e2e14f4f7",
+  "diagnosticContractID": "industrial-l02-source-v06-east-full-precanonical-rgba-v1",
+  "sourceDescriptor": {
+    "commit": "6d3dffd60925ad1aa1a4babcf6c959b44d324714",
+    "gitObject": "ac523576aac0fee3b2f0b2a4f64f6b2b892415b9",
+    "sha256": "70b36a0e76581524e64d40f19e364659eed6a53d7f7ab8d8924c51ba5d0951dd",
+    "sourceRevision": "source-v06",
+    "direction": "east",
+    "preLanczosCanonicalizer": null,
+    "productionSelected": false
+  },
+  "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "capture": {
+    "pixels": [
+      6144,
+      4096
+    ],
+    "pixelFormat": "sRGB RGBA8 premultiplied-last byte-order-32-big",
+    "fileName": "PRE-CANONICAL-4X.png",
+    "decodedByteCount": 100663296,
+    "persistedDecodeMustEqualInMemory": true,
+    "freshProcessCount": 3,
+    "runIDs": [
+      "run-a",
+      "run-b",
+      "run-c"
+    ]
+  },
+  "sourceFiles": [
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastFullFrameCaptureContract.swift",
+      "sha256": "6fd43955acd05e2a89bde779cd531efbf5b3d676a5c621f74b72c8e5d04740c2"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+      "sha256": "ace9cf1ea84521afdf2be9919c4a9bb6229a2e65bb971efcec64738d26cdb80a"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256": "da8617c4298e706bf708a98e4503e98881ef8056ebf1a266ed3e1e146e0e4da2"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/TestIndustrialL2V6EastFullFrameCaptureContract.swift",
+      "sha256": "c6d4e6df9946dc7ce443a201572be5c5e3f8fd132cbcbd4a35e1839cb653929a"
+    }
+  ],
+  "compiledTools": {
+    "contractTestSHA256": "7bf2ebb3a9e048c159b72d1cb9cb70a3fde083a22f6e234b8b37ad28173bb53d",
+    "rendererPreCommitBuildSHA256": "8be1ebeb81c86f44d4c27cbe6a5e1be3991a534fc04feec69d2a29c8f90c67d3"
+  },
+  "tests": {
+    "contract": "PASS",
+    "acceptedExactGitObject": true,
+    "defaultPathNoOp": true,
+    "rejectedDrift": [
+      "revision",
+      "direction",
+      "descriptor hash",
+      "descriptor path",
+      "coordinate",
+      "evidence root"
+    ]
+  },
+  "pixelsCaptured": false,
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

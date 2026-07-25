@@ -23,6 +23,7 @@ MANIFEST_TEMPLATE = CANONICAL_ATLAS / "generated-v4-manifest.json"
 STYLE = ROOT / "GateA" / "golden_district_imagegen_source-v2.png"
 PLAY027 = ROOT / "OfflineScene" / "PLAY-027"
 PLAY028_SELECTION = GENERATED / "catalog" / "play-028-residential-directions.json"
+PLAY060_SELECTION = GENERATED / "catalog" / "play-060-commercial-directions.json"
 RAW_CANVAS = (1536, 1024)
 GROUND_PIVOT = (768, 896)
 WORLD_POINTS_PER_RAW_PIXEL = 72 / 512
@@ -100,8 +101,12 @@ def entrance_exclusion_rect(
     ]
 
 
-def play028_residential_assets() -> list[dict[str, object]]:
-    catalog = json.loads(PLAY028_SELECTION.read_text(encoding="utf-8"))
+def directional_building_assets(
+    selection_path: Path,
+    family: str,
+    task: str,
+) -> list[dict[str, object]]:
+    catalog = json.loads(selection_path.read_text(encoding="utf-8"))
     selections = catalog.get("selections", [])
     expected = {
         (level, direction)
@@ -110,23 +115,25 @@ def play028_residential_assets() -> list[dict[str, object]]:
     }
     actual = {(item.get("level"), item.get("direction")) for item in selections}
     if catalog.get("schema") != 1 or actual != expected or len(selections) != 16:
-        raise SystemExit("build rejected: PLAY-028 selection is not the exact L1-L4 N/E/S/W matrix")
+        raise SystemExit(
+            f"build rejected: {task} {family} selection is not the exact L1-L4 N/E/S/W matrix"
+        )
     if len({item["raw_sha256"] for item in selections}) != 16:
-        raise SystemExit("build rejected: PLAY-028 residential raw sources are aliased")
+        raise SystemExit(f"build rejected: {task} {family} raw sources are aliased")
     normalized_hashes = [
         item["normalized_sha256"][detail]
         for item in selections
         for detail in DETAILS
     ]
     if len(set(normalized_hashes)) != 48:
-        raise SystemExit("build rejected: PLAY-028 residential normalized LODs are aliased")
+        raise SystemExit(f"build rejected: {task} {family} normalized LODs are aliased")
 
     assets: list[dict[str, object]] = []
     for selection in sorted(selections, key=lambda item: (item["level"], item["direction"])):
         level = int(selection["level"])
         direction = str(selection["direction"])
         revision = str(selection["source_revision"])
-        source_id = f"residential_l{level:02d}"
+        source_id = f"{family}_l{level:02d}"
         logical_id = f"{source_id}_v0_{direction}"
         relative_base = (
             f"CitySimNative/WorldArt/OfflineScene/PLAY-027/"
@@ -137,11 +144,12 @@ def play028_residential_assets() -> list[dict[str, object]]:
         provenance_file = (
             f"{relative_base}provenance/{source_id}/variant-0/{direction}/{revision}.json"
         )
-        normalization_name = (
-            f"{revision}-normalization.json"
-            if level == 1
-            else f"normalization-{revision}-raw-tool.json"
-        )
+        if task == "PLAY-028" and level == 1:
+            normalization_name = f"{revision}-normalization.json"
+        elif family == "commercial" and level > 1:
+            normalization_name = f"normalization-{revision}-native-tool.json"
+        else:
+            normalization_name = f"normalization-{revision}-raw-tool.json"
         normalization_file = (
             f"{relative_base}provenance/{source_id}/variant-0/{direction}/"
             f"{normalization_name}"
@@ -293,7 +301,7 @@ def play028_residential_assets() -> list[dict[str, object]]:
                 "source_key": provenance_data["sourceKey"],
                 "source_revision": revision,
                 "view_direction": direction,
-                "family": "residential",
+                "family": family,
                 "variant": 0,
                 "level": level,
                 "state": "maintained",
@@ -327,7 +335,7 @@ def play028_residential_assets() -> list[dict[str, object]]:
                     "structure": 5.0,
                     "vegetation": 8.0,
                 },
-                "residency_id": f"generated-v4/residential/{logical_id}",
+                "residency_id": f"generated-v4/{family}/{logical_id}",
                 "decoded_byte_estimate": sum(
                     int(lod["decoded_byte_estimate"]) for lod in lods.values()
                 ),
@@ -508,11 +516,22 @@ def build(output_atlas: Path) -> None:
     manifest = json.loads(MANIFEST_TEMPLATE.read_text(encoding="utf-8"))
     if manifest.get("schema") != 4 or manifest.get("pack_id") != "generated-v4-calibration":
         raise SystemExit("build rejected: canonical manifest template is not generated-v4 schema 4")
-    directional_residential = play028_residential_assets()
-    directional_ids = {asset["logical_id"] for asset in directional_residential}
+    directional_assets = (
+        directional_building_assets(
+            PLAY028_SELECTION,
+            "residential",
+            "PLAY-028",
+        )
+        + directional_building_assets(
+            PLAY060_SELECTION,
+            "commercial",
+            "PLAY-060",
+        )
+    )
+    directional_ids = {asset["logical_id"] for asset in directional_assets}
     manifest["assets"] = [
         asset for asset in manifest["assets"] if asset.get("logical_id") not in directional_ids
-    ] + directional_residential
+    ] + directional_assets
     manifest["assets"] = sorted(manifest["assets"], key=lambda item: item["logical_id"])
 
     output_atlas.mkdir(parents=True, exist_ok=True)
@@ -584,7 +603,7 @@ def build(output_atlas: Path) -> None:
             for mask in range(16)
         }
 
-    manifest["generator_version"] = "PLAY-028-directional-residential-production-1"
+    manifest["generator_version"] = "PLAY-060-directional-commercial-production-1"
     manifest["pages"] = sorted(pages, key=lambda item: item["id"])
     manifest["inventory"] = [
         {
@@ -597,8 +616,8 @@ def build(output_atlas: Path) -> None:
     ]
     manifest["source_inventory"] = provenance_inventory(manifest)
     manifest["packing"] = {
-        "algorithm": "stable-detail-key-shelf-v1",
-        "sort": "detail then semantic key",
+        "algorithm": "stable-detail-tall-first-shelf-v2",
+        "sort": "detail then descending height, descending width, semantic key",
         "rotation": False,
         "padding_pixels": 4,
         "extrusion_pixels": 2,

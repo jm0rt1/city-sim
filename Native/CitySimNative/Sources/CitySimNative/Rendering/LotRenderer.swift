@@ -30,6 +30,34 @@ struct ResidentialGeneratedAssetIdentity: Equatable, Sendable {
     }
 }
 
+struct CommercialGeneratedAssetIdentity: Equatable, Sendable {
+    static let authoritativeFrontagePriority =
+        ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority
+
+    let level: Int
+    let frontage: RoadConnectionMask
+    let direction: String
+    let logicalID: String
+
+    init?(level: Int, adjacentRoads: RoadConnectionMask) {
+        guard let frontage = Self.authoritativeFrontagePriority.first(
+            where: adjacentRoads.contains
+        ) else {
+            return nil
+        }
+        self.level = min(4, max(1, level))
+        self.frontage = frontage
+        direction = switch frontage {
+        case .north: "north"
+        case .east: "east"
+        case .south: "south"
+        case .west: "west"
+        default: preconditionFailure("frontage priority contains only cardinal edges")
+        }
+        logicalID = "commercial_l\(String(format: "%02d", self.level))_v0_\(direction)"
+    }
+}
+
 @MainActor
 final class LotRenderer {
     private let style: WorldVisualStyle
@@ -54,6 +82,9 @@ final class LotRenderer {
         let residentialIdentity = tile.kind == .residential
             ? ResidentialGeneratedAssetIdentity(level: tile.level, adjacentRoads: adjacentRoads)
             : nil
+        let commercialIdentity = tile.kind == .commercial
+            ? CommercialGeneratedAssetIdentity(level: tile.level, adjacentRoads: adjacentRoads)
+            : nil
         let root = SKNode()
         root.name = if let strategyIdentity {
             "lot.\(tile.kind.rawValue).density.\(strategyIdentity.densityTier).variant.\(variant)"
@@ -72,7 +103,7 @@ final class LotRenderer {
         addAuthoredFrontage(
             for: tile.kind,
             adjacentRoads: adjacentRoads,
-            selectedEdge: residentialIdentity?.frontage,
+            selectedEdge: residentialIdentity?.frontage ?? commercialIdentity?.frontage,
             detail: detail,
             to: neighborhoodLayer
         )
@@ -91,6 +122,7 @@ final class LotRenderer {
                 tile,
                 variant: variant,
                 residentialIdentity: residentialIdentity,
+                commercialIdentity: commercialIdentity,
                 adjacentRoads: adjacentRoads,
                 detail: detail,
                 city: cityLayer,
@@ -128,6 +160,7 @@ final class LotRenderer {
         _ tile: CityTile,
         variant _: Int,
         residentialIdentity: ResidentialGeneratedAssetIdentity?,
+        commercialIdentity: CommercialGeneratedAssetIdentity?,
         adjacentRoads: RoadConnectionMask,
         detail: CameraDetailLevel,
         city: SKNode,
@@ -143,6 +176,20 @@ final class LotRenderer {
                 return false
             }
             guard residentialIdentity == result.identity else { return false }
+            let sprite = result.presentation.sprite
+            sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
+            city.addChild(sprite)
+            return true
+        }
+        if tile.kind == .commercial {
+            guard let result = assets.generatedCommercialPresentation(
+                level: tile.level,
+                adjacentRoads: adjacentRoads,
+                detail: detail
+            ) else {
+                return false
+            }
+            guard commercialIdentity == result.identity else { return false }
             let sprite = result.presentation.sprite
             sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
             city.addChild(sprite)

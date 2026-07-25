@@ -2086,6 +2086,15 @@ final class CityScene: SKScene {
                 )
             )?.logicalID
         }
+        if tile.kind == .commercial {
+            return CommercialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: RoadConnectionMask.resolving(
+                    at: tile.coordinate,
+                    in: state
+                )
+            )?.logicalID
+        }
         return generatedLogicalID(for: tile.kind)
     }
 

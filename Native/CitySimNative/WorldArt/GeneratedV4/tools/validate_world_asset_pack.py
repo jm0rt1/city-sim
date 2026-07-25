@@ -86,62 +86,70 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
     if set(item["file"] for item in pages.values()) != set(inventory):
         failures.append("page inventory differs from declared pages")
 
-    directional_residential = [
-        asset
-        for asset in manifest.get("assets", [])
-        if asset.get("family") == "residential"
-        and asset.get("view_direction") is not None
-    ]
-    expected_directional_ids = {
-        f"residential_l{level:02d}_v0_{direction}"
-        for level in range(1, 5)
-        for direction in ("north", "east", "south", "west")
-    }
-    if {asset.get("logical_id") for asset in directional_residential} != expected_directional_ids:
-        failures.append("directional residential selection is not the exact L1-L4 N/E/S/W matrix")
-    if len({asset.get("source_key") for asset in directional_residential}) != 16:
-        failures.append("directional residential source keys are missing or aliased")
-    if len({asset.get("source_sha256") for asset in directional_residential}) != 16:
-        failures.append("directional residential raw sources are missing or aliased")
-    directional_normalized_hashes = {
-        asset.get("lods", {}).get(detail, {}).get("normalized_sha256")
-        for asset in directional_residential
-        for detail in DETAILS
-    }
-    if None in directional_normalized_hashes or len(directional_normalized_hashes) != 48:
-        failures.append("directional residential normalized LODs are missing or aliased")
     direction_sockets = {
         "north": [18.0, 9.0],
         "east": [18.0, -9.0],
         "south": [-18.0, -9.0],
         "west": [-18.0, 9.0],
     }
-    for asset in directional_residential:
-        direction = asset.get("view_direction")
-        logical_id = asset.get("logical_id")
-        level = asset.get("level")
-        if (
-            direction not in direction_sockets
-            or level not in range(1, 5)
-            or asset.get("variant") != 0
-            or asset.get("frontage_edge") != direction
-            or asset.get("supported_orientation") != f"{direction}-facing-authored"
-            or asset.get("entrance_socket_world") != direction_sockets.get(direction)
-        ):
-            failures.append(f"{logical_id} has inconsistent level/frontage registration")
-        for field in (
-            "source_key",
-            "source_revision",
-            "source_sha256",
-            "provenance_file",
-            "provenance_sha256",
-            "normalization_record_file",
-            "normalization_record_sha256",
-            "scene_descriptor_file",
-            "scene_descriptor_sha256",
-        ):
-            if not asset.get(field):
-                failures.append(f"{logical_id} is missing {field}")
+    directional_assets: dict[str, list[dict[str, object]]] = {}
+    directional_normalized_hashes: dict[str, set[object]] = {}
+    for family in ("residential", "commercial"):
+        family_assets = [
+            asset
+            for asset in manifest.get("assets", [])
+            if asset.get("family") == family
+            and asset.get("view_direction") is not None
+        ]
+        directional_assets[family] = family_assets
+        expected_directional_ids = {
+            f"{family}_l{level:02d}_v0_{direction}"
+            for level in range(1, 5)
+            for direction in ("north", "east", "south", "west")
+        }
+        if {asset.get("logical_id") for asset in family_assets} != expected_directional_ids:
+            failures.append(
+                f"directional {family} selection is not the exact L1-L4 N/E/S/W matrix"
+            )
+        if len({asset.get("source_key") for asset in family_assets}) != 16:
+            failures.append(f"directional {family} source keys are missing or aliased")
+        if len({asset.get("source_sha256") for asset in family_assets}) != 16:
+            failures.append(f"directional {family} raw sources are missing or aliased")
+        family_normalized_hashes = {
+            asset.get("lods", {}).get(detail, {}).get("normalized_sha256")
+            for asset in family_assets
+            for detail in DETAILS
+        }
+        directional_normalized_hashes[family] = family_normalized_hashes
+        if None in family_normalized_hashes or len(family_normalized_hashes) != 48:
+            failures.append(f"directional {family} normalized LODs are missing or aliased")
+
+        for asset in family_assets:
+            direction = asset.get("view_direction")
+            logical_id = asset.get("logical_id")
+            level = asset.get("level")
+            if (
+                direction not in direction_sockets
+                or level not in range(1, 5)
+                or asset.get("variant") != 0
+                or asset.get("frontage_edge") != direction
+                or asset.get("supported_orientation") != f"{direction}-facing-authored"
+                or asset.get("entrance_socket_world") != direction_sockets.get(direction)
+            ):
+                failures.append(f"{logical_id} has inconsistent level/frontage registration")
+            for field in (
+                "source_key",
+                "source_revision",
+                "source_sha256",
+                "provenance_file",
+                "provenance_sha256",
+                "normalization_record_file",
+                "normalization_record_sha256",
+                "scene_descriptor_file",
+                "scene_descriptor_sha256",
+            ):
+                if not asset.get(field):
+                    failures.append(f"{logical_id} is missing {field}")
 
     actual_pages = {
         str(path.relative_to(atlas))
@@ -318,12 +326,19 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
         "packed_overlap_checks": overlap_checks,
         "anchor_drift_world": anchor_drift,
         "source_inventory_count": len(manifest.get("source_inventory", [])),
-        "directional_residential_count": len(directional_residential),
+        "directional_residential_count": len(directional_assets["residential"]),
         "directional_residential_raw_hash_count": len(
-            {asset.get("source_sha256") for asset in directional_residential}
+            {asset.get("source_sha256") for asset in directional_assets["residential"]}
         ),
         "directional_residential_normalized_hash_count": len(
-            directional_normalized_hashes
+            directional_normalized_hashes["residential"]
+        ),
+        "directional_commercial_count": len(directional_assets["commercial"]),
+        "directional_commercial_raw_hash_count": len(
+            {asset.get("source_sha256") for asset in directional_assets["commercial"]}
+        ),
+        "directional_commercial_normalized_hash_count": len(
+            directional_normalized_hashes["commercial"]
         ),
         "staged_matches_source": staged_matches,
         "fallback_policy": "explicit bounded diagnostic; production proof requires zero",

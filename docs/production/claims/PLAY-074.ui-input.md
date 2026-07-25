@@ -8,7 +8,9 @@
 - **Planned surfaces:** existing store presentation and typed commands, map-first construction/diagnosis/recovery composition, preview and decision-support UI, menus/guide wiring, focused UI/accessibility tests, staged proof, and `docs/production/evidence/PLAY-074/`
 - **Dependencies:** accepted PLAY-067/070 product; existing typed command/store contracts; no new public command without integration approval
 - **Validation/proof:** target/footprint/cost/availability/consequence/cancel before commit; invalid reason durability; selected-place recovery action; regular/compact map aperture; pointer/keyboard/menu/guide/Escape/FKA/AX/VoiceOver/Reduce Motion; undo/save/load; full suite; PLAY-075
-- **Status:** authorized on the exact published product candidate
+- **Status:** accepted into integration through final Focus City merge
+  `b259187`; exact integrated build `fbbff0c` passed 257/257, staged
+  verification, and integration's direct Return/Undo keyboard replay
 
 Make the core build-diagnose-recover loop direct and map-first. The player
 must understand what will happen before commitment and what to do after a

@@ -8,7 +8,9 @@
 - **Planned surfaces:** gameplay-owned growth, upgrade, reward, pressure, recovery, objective/message, scenario-test, staged-journey, and `docs/production/evidence/PLAY-071/` surfaces
 - **Dependencies:** accepted PLAY-064 product; current typed building level/construction/condition/strategy contracts; fresh PLAY-068 findings may return balance defects
 - **Validation/proof:** both strategies; early/pressure/recovery/terminal density checkpoints; multiple visible building levels; non-dominance; exact daily progression; undo/save/load/backup/replay; 20-minute live pointer/keyboard journey; full suite
-- **Status:** authorized on the exact published product candidate; stop and reconcile if PLAY-068 returns a contradictory gameplay defect
+- **Status:** accepted into integration through merge `42e5e8e`; exact
+  integrated build `fbbff0c` passed 257/257 and staged verification. PLAY-075
+  still owns independent release acceptance.
 
 Make success and recovery visibly change the built city. A viable 20-minute
 route must create a denser, varied district with multiple building levels and

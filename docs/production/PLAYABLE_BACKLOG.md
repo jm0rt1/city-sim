@@ -650,7 +650,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Retail notices expose tax/park remedies; grid/freight notices expose power/water/park remedies; legacy missing-secondAct wins retain Charter copy; current Regional wins use Regional Capital copy in visible and AX output; replay actions remain exact at regular and compact sizes.
 - **Stop conditions:** Title routing has no action, copy contradicts durable state, view code re-derives rules, command/input parity drifts, or legacy victories are relabeled.
 
-### [ ] PLAY-071: Make growth visibly transform the city
+### [x] PLAY-071: Make growth visibly transform the city
 
 - **Player outcome:** A successful or recovered 20-minute city visibly becomes denser, more varied, and more developed instead of changing counters on a sparse board.
 - **Owning lane:** Gameplay loop.
@@ -659,8 +659,12 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Renderer art, SwiftUI composition, commands, packages, legacy Python, or weakening Regional Capital.
 - **Acceptance:** Both strategies create visibly different, non-dominant, recoverable districts with multiple levels inside 20 minutes while daily progression, undo, save/load/backup/replay, and live input remain exact.
 - **Claim:** `docs/production/claims/PLAY-071.gameplay-loop.md`.
+- **Accepted integration:** Product and retained evidence merged through
+  `42e5e8e`; exact integrated build `fbbff0c` passed the 257-test native gate
+  and staged verification. Release-level visual acceptance remains owned by
+  open PLAY-073 and PLAY-075.
 
-### [ ] PLAY-072: Prove the visible-city state matrix
+### [x] PLAY-072: Prove the visible-city state matrix
 
 - **Player outcome:** Every visible lifecycle state used by the product has deterministic, replayable, performance-bounded authoritative truth.
 - **Owning lane:** Simulation platform.
@@ -669,6 +673,9 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** New gameplay outcomes, persisted presentation state, renderer/UI work, or schema/fingerprint version changes.
 - **Acceptance:** Two independent builds reproduce the complete state matrix and preserve legacy bytes, fingerprints, save/backup/replay/undo, snapshot truth, and performance.
 - **Claim:** `docs/production/claims/PLAY-072.simulation-platform.md`.
+- **Accepted integration:** Current additive matrices, story truth, and
+  reconciliation merged through `8da71cb`; exact integrated build `fbbff0c`
+  passed the 257-test native gate and staged verification.
 
 ### [ ] PLAY-073: Replace the board with an authored district
 
@@ -680,7 +687,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
 
-### [ ] PLAY-074: Make building and recovery obvious on the map
+### [x] PLAY-074: Make building and recovery obvious on the map
 
 - **Player outcome:** Construction, invalid placement, diagnosis, and recovery are understandable and operable directly on the map without panel archaeology.
 - **Owning lane:** UI and input.
@@ -689,6 +696,11 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** New gameplay rules, renderer art, persistence changes, pointer-only actions, or a second truth source.
 - **Acceptance:** Regular and compact pointer/keyboard/menu/guide/Escape/FKA/AX/VoiceOver/Reduce Motion journeys mutate the identical target once and preserve map, focus, undo, and save/load truth.
 - **Claim:** `docs/production/claims/PLAY-074.ui-input.md`.
+- **Accepted integration:** Map-first build/recovery, settled viewport, and
+  restored Focus City continuity merged through `b259187`. Exact integrated
+  build `fbbff0c` passed the 257-test native gate and staged verification;
+  integration also reconfirmed Road `Return` commit plus exact Undo on the
+  staged app.
 
 ### [ ] PLAY-075: Gate the city-not-board release
 

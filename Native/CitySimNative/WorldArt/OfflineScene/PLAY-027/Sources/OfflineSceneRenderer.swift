@@ -107,7 +107,7 @@ final class NativeMaterialLibrary {
         _ specification: MaterialDescriptor
     ) throws -> CGImage {
         let size = 256
-        let colorSpace = CGColorSpace(name: CGColorSpace.extendedSRGB)!
+        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
         guard let context = CGContext(
             data: nil,
             width: size,

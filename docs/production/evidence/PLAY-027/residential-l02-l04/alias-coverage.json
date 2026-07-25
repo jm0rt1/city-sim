@@ -11,10 +11,10 @@
     "preservedUnchanged": true
   },
   "authorizedKeys": [
-    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "north", "coverage": "missing"},
-    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "east", "coverage": "missing"},
-    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "south", "coverage": "missing"},
-    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "west", "coverage": "missing"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "north", "coverage": "review-candidate-source-v05", "rawSHA256": "c79c5e0906c2e2b3c25682d6f79824d4e0d52e3be1821ba62f69fc6139656f6e"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "east", "coverage": "review-candidate-source-v05", "rawSHA256": "d985175f7e31681343108df3e5360b11ddeb56eab6d101316f9ffd1b39591609"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "south", "coverage": "review-candidate-source-v05", "rawSHA256": "f0d7efcc05bbc9361cab8259daa9f8fd52f67f50baa1699217d9b41cbb714490"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "west", "coverage": "review-candidate-source-v05", "rawSHA256": "3ecb2a3892283c4b012360aa2413a47e772dd41aeaf18a71fe20c0c0c08e9521"},
     {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "north", "coverage": "missing"},
     {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "east", "coverage": "missing"},
     {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "south", "coverage": "missing"},

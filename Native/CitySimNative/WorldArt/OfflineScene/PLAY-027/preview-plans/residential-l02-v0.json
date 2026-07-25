@@ -21,6 +21,6 @@
     "correspondingRawSourceCrop": [512, 417, 512, 479],
     "source": "existing deterministic normalized-alpha block LOD"
   },
-  "reviewManifest": "docs/production/evidence/PLAY-027/residential-l02-l04/l02/CONTACT-SHEET-ORDER.json",
+  "reviewManifest": "docs/production/evidence/PLAY-027/residential-l02-l04/l02/SOURCE-V05-CONTACT-SHEET-ORDER-REVIEW-CANDIDATE.json",
   "productionSelected": false
 }

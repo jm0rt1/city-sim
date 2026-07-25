@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "calibrationID": "residential-l04-variant-0-directional-v01",
+  "directionOrder": ["north", "east", "south", "west"],
+  "layout": {"columns": 2, "rows": 2, "rowMajor": ["north", "east", "south", "west"]},
+  "sourceScale": {"panelPixels": [1536, 1024], "sheetPixels": [3072, 2048], "labels": false},
+  "native2xActualScale": {
+    "source": "existing deterministic normalized-alpha block LOD",
+    "native2xTileDiamondPixels": [144, 72],
+    "panelPixels": [432, 288],
+    "labels": false
+  },
+  "grayscaleRecognition": {
+    "source": "native2xActualScale",
+    "conversion": "Core Image CIColorControls saturation=0",
+    "labels": false
+  },
+  "registeredFootprint": {
+    "normalizedBlockCrop": [341, 100, 342, 517],
+    "correspondingRawSourceCrop": [512, 150, 512, 746],
+    "source": "existing deterministic normalized-alpha block LOD"
+  },
+  "reviewManifest": "docs/production/evidence/PLAY-027/residential-l02-l04/l04/SOURCE-V01-CONTACT-SHEET-ORDER-REVIEW-CANDIDATE.json",
+  "productionSelected": false
+}

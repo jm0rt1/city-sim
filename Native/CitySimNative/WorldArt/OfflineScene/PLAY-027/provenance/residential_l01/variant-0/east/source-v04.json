@@ -1,0 +1,110 @@
+{
+  "authoredIndependently" : true,
+  "cameraProjection" : "orthographic-2:1",
+  "chromaKeyRGBA" : [
+    255,
+    0,
+    255,
+    255
+  ],
+  "contactPolygonWorld" : [
+    [
+      -28,
+      -28
+    ],
+    [
+      28,
+      -28
+    ],
+    [
+      28,
+      28
+    ],
+    [
+      -28,
+      28
+    ]
+  ],
+  "doorBaseSource" : [
+    [
+      934,
+      813
+    ],
+    [
+      858,
+      851
+    ]
+  ],
+  "family" : "residential",
+  "frameworks" : [
+    "SceneKit",
+    "ModelIO",
+    "CoreImage",
+    "CoreGraphics"
+  ],
+  "frontageEdgeSource" : [
+    [
+      1024,
+      768
+    ],
+    [
+      768,
+      896
+    ]
+  ],
+  "frontageSocketSource" : [
+    896,
+    832
+  ],
+  "generatedPixelsAreGeometryAuthority" : false,
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "level" : 1,
+  "logicalBuildingID" : "residential_l01",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l01-v0-materials.json",
+  "materialLibrarySHA256" : "925242ffa738a9e5711045703e1b10c655c5b7a56f914551883fea2c284f21a9",
+  "northwestKeyOriginWorld" : [
+    -120,
+    180,
+    -120
+  ],
+  "orientationTransform" : "none",
+  "oversamplingFactor" : 2,
+  "productionSelected" : false,
+  "rawSourceFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/east/source-v04.png",
+  "rawSourcePixels" : [
+    1536,
+    1024
+  ],
+  "rawSourceSHA256" : "dcc7dba4d2ac8cb4fbdda0223100580ba53d0ae1ac747d22099548d670f53b1e",
+  "rendererSourceCommit" : "286b588e21d8fcf413b3d0aceffbd22f6a4854b2",
+  "rendererSources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256" : "45ce39e86570028b7567b460c4077f4578c2ec56509034052547d003357689c9"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "da9992c4d628809867278b24105399850f1fa2b3796034563c648287bdd69620"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "bc8c2711a63fade4909d1feae515fbeb8146f3a0bc2506548f85b4899eb70044"
+    }
+  ],
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json",
+  "sceneDescriptorSHA256" : "d9482b94b238f30d2271a617078e4c33587dbd7ebdb7133eb78e7e71b8f75e39",
+  "schema" : 1,
+  "sourceKey" : "residential_l01/variant-0/east/source-v04",
+  "sourceRevision" : "source-v04",
+  "southeastShadowVectorSource" : [
+    2,
+    1
+  ],
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source renderer",
+  "variantID" : "variant-0",
+  "viewDirection" : "east"
+}

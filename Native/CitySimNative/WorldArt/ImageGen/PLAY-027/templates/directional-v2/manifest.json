@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "templateID": "play-027-rci-directional-v2",
+  "purpose": "task-owned non-shipping ImageGen directional registration reference",
+  "projection": "orthographic 2:1 isometric",
+  "canvasPixels": [
+    1536,
+    1024
+  ],
+  "footprintTiles": [
+    1,
+    1
+  ],
+  "groundPivotSource": [
+    768,
+    896
+  ],
+  "generatedPixelsAreGeometryAuthority": false,
+  "productionSelected": false,
+  "templates": [
+    {
+      "viewDirection": "north",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-north.png",
+      "sha256": "3aa7508cf2c350cc928f278469ee1970136a19024647ec072336a150784ca840",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "frontageSocketSource": [
+        896,
+        704
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    },
+    {
+      "viewDirection": "east",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-east.png",
+      "sha256": "a5389a228a5b5fc67bc567fe8befa76b5f2ee596537d0f1cc663e9337f2d34b0",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "frontageSocketSource": [
+        896,
+        832
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    },
+    {
+      "viewDirection": "south",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-south.png",
+      "sha256": "70cd06da8245e02b8f1ac7047d12b97832fb5013183f9c3b7c7e1c549c8ed65a",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    },
+    {
+      "viewDirection": "west",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-west.png",
+      "sha256": "e0ab677157d389831ac92f4f2433ab2e22c62fc14d8d99e82371dec4db92fa5f",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "frontageSocketSource": [
+        640,
+        704
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    }
+  ]
+}

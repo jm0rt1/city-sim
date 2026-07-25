@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "authority": "1744c3d62dd45ee206035793366c45a811c47229",
+  "acceptedCalibration": "6380037d42ede73eca60aac4a9b1c7b710f681d6",
+  "scope": "residential-l02-l04-variant-zero",
+  "auditDisposition": "all-authorized-keys-missing-not-aliased",
+  "acceptedBaseline": {
+    "logicalBuildingID": "residential_l01",
+    "directions": ["north", "east", "south", "west"],
+    "preservedUnchanged": true
+  },
+  "authorizedKeys": [
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "north", "coverage": "review-candidate-source-v05", "rawSHA256": "c79c5e0906c2e2b3c25682d6f79824d4e0d52e3be1821ba62f69fc6139656f6e"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "east", "coverage": "review-candidate-source-v05", "rawSHA256": "d985175f7e31681343108df3e5360b11ddeb56eab6d101316f9ffd1b39591609"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "south", "coverage": "review-candidate-source-v05", "rawSHA256": "f0d7efcc05bbc9361cab8259daa9f8fd52f67f50baa1699217d9b41cbb714490"},
+    {"logicalBuildingID": "residential_l02", "level": 2, "variantID": "variant-0", "direction": "west", "coverage": "review-candidate-source-v05", "rawSHA256": "3ecb2a3892283c4b012360aa2413a47e772dd41aeaf18a71fe20c0c0c08e9521"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "north", "coverage": "review-candidate-source-v01", "rawSHA256": "9a53c7ca04e363e0d023a667a84de6ad26a7a5af2deaeb7cf2eb123ce5f7f881"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "east", "coverage": "review-candidate-source-v01", "rawSHA256": "180e0cad4da66d5180b1fd3bd5df98d5e524e0924827002d3065a93811ec1e9c"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "south", "coverage": "review-candidate-source-v01", "rawSHA256": "b6f709d0e4d56c4e13c7e69293891bc599dc706d8ceadddf87b8377c8dac105c"},
+    {"logicalBuildingID": "residential_l03", "level": 3, "variantID": "variant-0", "direction": "west", "coverage": "review-candidate-source-v01", "rawSHA256": "dc5056b8cfdc9676e8db214293f15e86e1dfaf4dc3ee680c420260e2a7adce71"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "north", "coverage": "review-candidate-source-v01", "rawSHA256": "b6ed8aaf95e4600bb476934824fab0976cadffe1191f3253aeb19c96cfe2f6b1"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "east", "coverage": "review-candidate-source-v01", "rawSHA256": "049ce1b85236c9e443571d925b6def3783cf4226a8b0b9794e47cc195400b5e4"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "south", "coverage": "review-candidate-source-v01", "rawSHA256": "cae30c6975f790b05a1de850649f2735a21079bb0c9321673106778f4ca98e34"},
+    {"logicalBuildingID": "residential_l04", "level": 4, "variantID": "variant-0", "direction": "west", "coverage": "review-candidate-source-v01", "rawSHA256": "64b51a0bef79104132a508f53f8a1fa567de9bc87c35ecd44c19ef3cc2596646"}
+  ],
+  "crossTypeAliasCount": 0,
+  "productionSelected": false
+}

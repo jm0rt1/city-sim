@@ -1,0 +1,218 @@
+{
+  "calibrationID" : "residential-l01-variant-0-directional-v02",
+  "directions" : [
+    {
+      "doorBaseSource" : [
+        [
+          858,
+          685
+        ],
+        [
+          934,
+          723
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        3,
+        -28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/north/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "propIDs" : [
+        "north-left-shrub",
+        "north-right-flowers"
+      ],
+      "sceneGeometryID" : "residential-l01-v0-north-geometry-v3",
+      "sha256" : "0baeee8f9a58b8c0977b4328bcdbf979c6bce4cb24fbc62f045404f3db856097",
+      "viewDirection" : "north",
+      "windowBayCount" : 17
+    },
+    {
+      "doorBaseSource" : [
+        [
+          934,
+          813
+        ],
+        [
+          858,
+          851
+        ]
+      ],
+      "entranceBaseWorld" : [
+        28,
+        3,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json",
+      "frontageEdgeSource" : [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "propIDs" : [
+        "east-north-shrub",
+        "east-south-flowers"
+      ],
+      "sceneGeometryID" : "residential-l01-v0-east-geometry-v3",
+      "sha256" : "d9482b94b238f30d2271a617078e4c33587dbd7ebdb7133eb78e7e71b8f75e39",
+      "viewDirection" : "east",
+      "windowBayCount" : 17
+    },
+    {
+      "doorBaseSource" : [
+        [
+          678,
+          851
+        ],
+        [
+          602,
+          813
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        3,
+        28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/south/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        832
+      ],
+      "propIDs" : [
+        "south-left-flowers",
+        "south-right-shrub"
+      ],
+      "sceneGeometryID" : "residential-l01-v0-south-geometry-v3",
+      "sha256" : "9a2081e8320dc087cf1999a3c80cc75f7b500f26cb2322bfa6db180b70c81c56",
+      "viewDirection" : "south",
+      "windowBayCount" : 17
+    },
+    {
+      "doorBaseSource" : [
+        [
+          602,
+          723
+        ],
+        [
+          678,
+          685
+        ]
+      ],
+      "entranceBaseWorld" : [
+        -28,
+        3,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/west/scene.json",
+      "frontageEdgeSource" : [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "propIDs" : [
+        "west-south-flowers",
+        "west-north-shrub"
+      ],
+      "sceneGeometryID" : "residential-l01-v0-west-geometry-v3",
+      "sha256" : "cc28c4cf39581a68eaaa0bad85e5e899d857cc44a20dcfb11028dd10d4117bdc",
+      "viewDirection" : "west",
+      "windowBayCount" : 17
+    }
+  ],
+  "failures" : [
+
+  ],
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l01-v0-materials.json",
+  "materialLibrarySHA256" : "925242ffa738a9e5711045703e1b10c655c5b7a56f914551883fea2c284f21a9",
+  "passed" : true,
+  "previewPlanFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/preview-plan.json",
+  "previewPlanSHA256" : "f3b755152f2b67081b9272f0bbbd6d9e1cf6f3f27118073265336de9e2b88c9d",
+  "productionSelected" : false,
+  "schema" : 1,
+  "schemaFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/schema/scene.schema.json",
+  "schemaSHA256" : "4ee5ab4cf19c3a995261846a0dd81ff45cabcf2a9c1f712a514a644e94af4fea",
+  "task" : "PLAY-027",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json",
+  "toolchainFingerprintSHA256" : "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1",
+  "uniqueDescriptorHashes" : 4,
+  "uniqueSceneGeometryIDs" : 4
+}

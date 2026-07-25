@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "residential-l01-v0-materials-v3",
+  "source": "authored numeric materials calibrated by visual inspection of the accepted residential family anchor",
+  "styleAnchorFile": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "familyAnchorFile": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+  "familyAnchorSHA256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+  "imageGenMaterialSwatchesUsed": false,
+  "colorSpace": "extended-sRGB",
+  "materials": [
+    {
+      "id": "brick-warm-red",
+      "baseColorRGBA": [
+        0.96,
+        0.61,
+        0.38,
+        1.0
+      ],
+      "emissionRGBA": [
+        0.18,
+        0.08,
+        0.03,
+        1.0
+      ],
+      "roughness": 0.82,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [
+        1.8,
+        0.65
+      ]
+    },
+    {
+      "id": "limestone-warm",
+      "baseColorRGBA": [
+        1.0,
+        0.86,
+        0.62,
+        1.0
+      ],
+      "emissionRGBA": [
+        0.16,
+        0.12,
+        0.06,
+        1.0
+      ],
+      "roughness": 0.76,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [
+        2.4,
+        0.9
+      ]
+    },
+    {
+      "id": "slate-charcoal",
+      "baseColorRGBA": [
+        0.14,
+        0.18,
+        0.20,
+        1.0
+      ],
+      "roughness": 0.68,
+      "metalness": 0.0,
+      "pattern": "staggered-slate",
+      "physicalScaleWorld": [
+        1.5,
+        0.75
+      ]
+    },
+    {
+      "id": "door-deep-green",
+      "baseColorRGBA": [
+        0.10,
+        0.45,
+        0.24,
+        1.0
+      ],
+      "roughness": 0.48,
+      "metalness": 0.0,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [
+        6.0,
+        11.0
+      ]
+    },
+    {
+      "id": "window-warm",
+      "baseColorRGBA": [
+        1.0,
+        0.78,
+        0.32,
+        1.0
+      ],
+      "roughness": 0.22,
+      "metalness": 0.0,
+      "emissionRGBA": [
+        0.72,
+        0.38,
+        0.08,
+        1.0
+      ],
+      "pattern": "divided-light",
+      "physicalScaleWorld": [
+        6.6,
+        9.2
+      ]
+    },
+    {
+      "id": "foundation-stone",
+      "baseColorRGBA": [
+        0.55,
+        0.50,
+        0.42,
+        1.0
+      ],
+      "roughness": 0.9,
+      "metalness": 0.0,
+      "pattern": "rusticated-block",
+      "physicalScaleWorld": [
+        3.0,
+        1.2
+      ]
+    },
+    {
+      "id": "planting-evergreen",
+      "baseColorRGBA": [
+        0.16,
+        0.40,
+        0.16,
+        1.0
+      ],
+      "roughness": 0.94,
+      "metalness": 0.0,
+      "pattern": "foliage-cluster",
+      "physicalScaleWorld": [
+        2.0,
+        2.0
+      ]
+    },
+    {
+      "id": "chimney-terracotta",
+      "baseColorRGBA": [
+        0.76,
+        0.32,
+        0.16,
+        1.0
+      ],
+      "roughness": 0.84,
+      "metalness": 0.0,
+      "pattern": "solid",
+      "physicalScaleWorld": [
+        1.8,
+        0.65
+      ]
+    }
+  ],
+  "productionSelected": false
+}

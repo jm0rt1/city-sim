@@ -1,0 +1,83 @@
+{
+  "calibrationID" : "residential-l01-variant-0-directional-v01",
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "grayscaleRecognition" : {
+    "conversion" : "Core Image CIColorControls saturation=0",
+    "file" : "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-native2x-grayscale.png",
+    "sha256" : "b4368bc1a83608fe3319270828353c6836084d7e99394d4112010d26fb7c05e3",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "inputs" : [
+    {
+      "direction" : "north",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/north/source-v03.png",
+      "sha256" : "79061b8ce51f889f8bca427aa01e65529862b54ee7a6e1f5617f9d2e80c3e733"
+    },
+    {
+      "direction" : "east",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/east/source-v03.png",
+      "sha256" : "9909a51ba7329313231139ec964dfed34ca084c4e3ff974b62e26895f9e6ce37"
+    },
+    {
+      "direction" : "south",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/south/source-v03.png",
+      "sha256" : "ae9553e6f7b928379f6a1521eba358d8bd40413bd55ea5565319525846113351"
+    },
+    {
+      "direction" : "west",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/west/source-v04.png",
+      "sha256" : "3e216b8e146f91e7bd9c942d094c18f51d3e0235c63cffd0f8eb87cee71a5fc7"
+    }
+  ],
+  "layout" : {
+    "columns" : 2,
+    "labels" : false,
+    "rowMajor" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "rows" : 2
+  },
+  "native2xActualScale" : {
+    "file" : "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-native2x.png",
+    "panelPixels" : [
+      432,
+      288
+    ],
+    "presentation" : "native review-only exact chroma and shadow decode on neutral background",
+    "scale" : 0.28125,
+    "sha256" : "e319cc48249393c4fad242d0003634e0b3fa175846aa188f90033f7a4b4d2478",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "previewAlphaIsNormalizedOutput" : false,
+  "productionSelected" : false,
+  "reviewStatus" : "pending-independent-source-art-review",
+  "schema" : 1,
+  "sourceScale" : {
+    "file" : "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-source-scale.png",
+    "panelPixels" : [
+      1536,
+      1024
+    ],
+    "presentation" : "unaltered raw #ff00ff inspection",
+    "sha256" : "e44411ad79da0ad324f1c66d5043f98cb4ab2dbd407a53623b4820b90bafd8ee",
+    "sheetPixels" : [
+      3072,
+      2048
+    ]
+  },
+  "task" : "PLAY-027"
+}

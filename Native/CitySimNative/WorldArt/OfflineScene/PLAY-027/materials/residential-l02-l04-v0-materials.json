@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "residential-l02-l04-v0-density-materials-v1",
+  "source": "authored numeric residential density materials calibrated from the independently accepted L1 family baseline",
+  "styleAnchorFile": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "familyAnchorFile": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/north/source-v12.png",
+  "familyAnchorSHA256": "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02",
+  "imageGenMaterialSwatchesUsed": false,
+  "colorSpace": "extended-sRGB",
+  "materials": [
+    {
+      "id": "brick-warm-red",
+      "baseColorRGBA": [0.96, 0.61, 0.38, 1.0],
+      "emissionRGBA": [0.18, 0.08, 0.03, 1.0],
+      "roughness": 0.82,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.8, 0.65]
+    },
+    {
+      "id": "brick-ochre",
+      "baseColorRGBA": [0.86, 0.54, 0.24, 1.0],
+      "emissionRGBA": [0.13, 0.07, 0.02, 1.0],
+      "roughness": 0.84,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.8, 0.65]
+    },
+    {
+      "id": "brick-terracotta-deep",
+      "baseColorRGBA": [0.70, 0.30, 0.18, 1.0],
+      "emissionRGBA": [0.10, 0.035, 0.015, 1.0],
+      "roughness": 0.86,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.7, 0.62]
+    },
+    {
+      "id": "stone-honey",
+      "baseColorRGBA": [0.88, 0.70, 0.42, 1.0],
+      "emissionRGBA": [0.12, 0.08, 0.035, 1.0],
+      "roughness": 0.80,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [2.5, 1.0]
+    },
+    {
+      "id": "tower-brick",
+      "baseColorRGBA": [0.76, 0.40, 0.24, 1.0],
+      "emissionRGBA": [0.11, 0.05, 0.02, 1.0],
+      "roughness": 0.82,
+      "metalness": 0.0,
+      "pattern": "stacked-brick",
+      "physicalScaleWorld": [1.7, 0.62]
+    },
+    {
+      "id": "limestone-warm",
+      "baseColorRGBA": [1.0, 0.86, 0.62, 1.0],
+      "emissionRGBA": [0.16, 0.12, 0.06, 1.0],
+      "roughness": 0.76,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [2.4, 0.9]
+    },
+    {
+      "id": "slate-charcoal",
+      "baseColorRGBA": [0.14, 0.18, 0.20, 1.0],
+      "roughness": 0.68,
+      "metalness": 0.0,
+      "pattern": "staggered-slate",
+      "physicalScaleWorld": [1.5, 0.75]
+    },
+    {
+      "id": "roof-green",
+      "baseColorRGBA": [0.16, 0.27, 0.18, 1.0],
+      "roughness": 0.72,
+      "metalness": 0.0,
+      "pattern": "staggered-slate",
+      "physicalScaleWorld": [1.4, 0.7]
+    },
+    {
+      "id": "roof-copper",
+      "baseColorRGBA": [0.28, 0.48, 0.38, 1.0],
+      "emissionRGBA": [0.025, 0.05, 0.035, 1.0],
+      "roughness": 0.56,
+      "metalness": 0.36,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.5, 0.75]
+    },
+    {
+      "id": "door-deep-green",
+      "baseColorRGBA": [0.10, 0.45, 0.24, 1.0],
+      "roughness": 0.48,
+      "metalness": 0.0,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [6.0, 11.0]
+    },
+    {
+      "id": "window-warm",
+      "baseColorRGBA": [1.0, 0.78, 0.32, 1.0],
+      "emissionRGBA": [0.72, 0.38, 0.08, 1.0],
+      "roughness": 0.22,
+      "metalness": 0.0,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [6.6, 9.2]
+    },
+    {
+      "id": "foundation-stone",
+      "baseColorRGBA": [0.55, 0.50, 0.42, 1.0],
+      "roughness": 0.9,
+      "metalness": 0.0,
+      "pattern": "rusticated-block",
+      "physicalScaleWorld": [3.0, 1.2]
+    },
+    {
+      "id": "planting-evergreen",
+      "baseColorRGBA": [0.16, 0.40, 0.16, 1.0],
+      "roughness": 0.94,
+      "metalness": 0.0,
+      "pattern": "foliage-cluster",
+      "physicalScaleWorld": [2.0, 2.0]
+    },
+    {
+      "id": "chimney-terracotta",
+      "baseColorRGBA": [0.76, 0.32, 0.16, 1.0],
+      "roughness": 0.84,
+      "metalness": 0.0,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.8, 0.65]
+    }
+  ],
+  "productionSelected": false
+}

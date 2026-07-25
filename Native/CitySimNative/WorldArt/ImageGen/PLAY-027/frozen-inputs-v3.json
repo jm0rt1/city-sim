@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "revision": 3,
+  "supersedesForFutureCalls": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs-v2.json",
+  "repairReason": "v2 corrected projection but visually privileged the near east and south faces through painter order and the full-family-anchor entrance composition",
+  "frozenDate": "2026-07-24",
+  "productionSelected": false,
+  "styleAnchor": {
+    "role": "immutable-appearance-only",
+    "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "referenceTreatment": {
+    "treatmentID": "play-027-rci-reference-treatment-v3",
+    "manifestFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/reference-treatment-manifest.json",
+    "manifestSHA256": "2f56d758acf4ff0337c20502c117bc84dd5ff8e6c12fb9d267d43aa46b89d4ce",
+    "generatorFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/tools/build_reference_treatment_v3.py",
+    "generatorSHA256": "326342e381032ad5bb5d10931a60c431046aa3bcb89a69678fdf2138b552dbde",
+    "validatorFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/tools/validate_reference_treatment.py",
+    "validatorSHA256": "b47d5eb91f209c8ddacb327bab86d57178a551a514b0e472fd7bec2e8b4f9d04",
+    "validationReportFile": "docs/production/evidence/PLAY-027/reference-treatment-v3-validation.json",
+    "validationReportSHA256": "05a6055eaa1c6339a51bf7fd1a0233bea5252ea1245fa8332abd11100905aa90",
+    "validationPassed": true,
+    "rejectedPixelsUsed": false
+  },
+  "northGeometryTemplate": {
+    "role": "authoritative-registration-and-spatial-assignment",
+    "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/registration-north.png",
+    "sha256": "1f673ba686e11e06d1f41de55f779ef477bc0d45ae0cf25344a6af823570872e",
+    "canvasPixels": [
+      1536,
+      1024
+    ],
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "frontageEdgeSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageSocketSource": [
+      896,
+      704
+    ],
+    "doorBaseSource": [
+      [
+        858,
+        685
+      ],
+      [
+        934,
+        723
+      ]
+    ],
+    "orientationTransform": "none"
+  },
+  "residentialMaterialScaleBoard": {
+    "role": "materials-family-identity-floor-door-and-window-scale-only",
+    "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/anchors/residential-v3/material-scale-board.png",
+    "sha256": "850d91d071dc7ce490c1af99d20d697158d2eaf33492609999dc633ad21b8437",
+    "sourceFamilyAnchorFile": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+    "sourceFamilyAnchorSHA256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+    "cameraCompositionAuthority": false,
+    "registrationAuthority": false,
+    "orientationTransform": "none"
+  },
+  "authorizedProbe": {
+    "sourceKey": "residential_l01/variant-0/north/source-v03",
+    "promptFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/prompts/residential_l01/variant-0/north-source-v03.md",
+    "promptSHA256": "e38e1e120790867e60f9ef1aff1f74f16811246388f74d88339e776c14399ccb",
+    "maximumCallsBeforeReview": 1,
+    "siblingCallsAuthorized": false
+  },
+  "registration": {
+    "presentationEnvelopeSource": [
+      256,
+      96,
+      1280,
+      896
+    ],
+    "shadowEnvelopeSource": [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "northwestLightOriginSource": [
+      176,
+      128
+    ],
+    "southeastShadowVectorSource": [
+      2,
+      1
+    ]
+  },
+  "invariants": {
+    "orientationTransform": "none",
+    "chromaKey": "#ff00ff",
+    "generatedPixelsAreGeometryAuthority": false,
+    "generatedPixelsAreProductionSelected": false,
+    "rejectedAttemptsAreReferences": false
+  }
+}

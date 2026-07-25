@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "revision": 2,
+  "supersedesForFutureCalls": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs.json",
+  "repairReason": "two residential directional-drift failures showed that the base socket template did not provide an unambiguous 3D camera and frontage cue",
+  "frozenAtCommit": "80aef87",
+  "frozenDate": "2026-07-24",
+  "productionSelected": false,
+  "styleAnchor": {
+    "role": "immutable-appearance-only",
+    "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "baseGeometryAuthority": {
+    "role": "authoritative-registration-data",
+    "file": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+    "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67",
+    "canvasPixels": [
+      1536,
+      1024
+    ],
+    "worldTilePoints": [
+      72,
+      36
+    ],
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ]
+  },
+  "directionalTemplateManifest": {
+    "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/manifest.json",
+    "sha256": "c80dd94ced31d3034d328a14fde798ff715059a58e7622cb6d78428c2d94e291",
+    "templateID": "play-027-rci-directional-v2",
+    "generatorFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/tools/build_directional_templates.py",
+    "generatorSHA256": "cc6d25c5c267978d22f99c2673f7f673e7db654e0c8bc42d1194f914cb360791"
+  },
+  "directionalTemplates": {
+    "north": {
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-north.png",
+      "sha256": "3aa7508cf2c350cc928f278469ee1970136a19024647ec072336a150784ca840",
+      "frontageSocketSource": [
+        896,
+        704
+      ]
+    },
+    "east": {
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-east.png",
+      "sha256": "a5389a228a5b5fc67bc567fe8befa76b5f2ee596537d0f1cc663e9337f2d34b0",
+      "frontageSocketSource": [
+        896,
+        832
+      ]
+    },
+    "south": {
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-south.png",
+      "sha256": "70cd06da8245e02b8f1ac7047d12b97832fb5013183f9c3b7c7e1c549c8ed65a",
+      "frontageSocketSource": [
+        640,
+        832
+      ]
+    },
+    "west": {
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-west.png",
+      "sha256": "e0ab677157d389831ac92f4f2433ab2e22c62fc14d8d99e82371dec4db92fa5f",
+      "frontageSocketSource": [
+        640,
+        704
+      ]
+    }
+  },
+  "residentialFamilyAnchor": {
+    "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+    "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+    "role": "materials-floor-door-scale-and-family-identity-only",
+    "cameraCompositionAuthority": false,
+    "registrationAuthority": false,
+    "allowedAppearanceCues": [
+      "warm brick and limestone",
+      "charcoal slate roof",
+      "dark green paneled door",
+      "warm divided-light windows",
+      "stone foundation",
+      "restrained low planting"
+    ]
+  },
+  "registration": {
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "presentationEnvelopeSource": [
+      256,
+      96,
+      1280,
+      896
+    ],
+    "shadowEnvelopeSource": [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "northwestLightOriginSource": [
+      176,
+      128
+    ],
+    "southeastShadowVectorSource": [
+      2,
+      1
+    ]
+  },
+  "invariants": {
+    "orientationTransform": "none",
+    "chromaKey": "#ff00ff",
+    "generatedPixelsAreGeometryAuthority": false,
+    "generatedPixelsAreProductionSelected": false,
+    "rejectedAttemptsAreReferences": false
+  }
+}

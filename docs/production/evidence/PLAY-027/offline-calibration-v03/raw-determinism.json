@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "calibrationID": "residential-l01-variant-0-directional-v03",
+  "rendererSourceCommit": "7c00638",
+  "processCountPerDirection": 3,
+  "comparison": "byte-identical cmp",
+  "passed": true,
+  "sources": [
+    {
+      "direction": "north",
+      "revision": "source-v12",
+      "sha256": "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+    },
+    {
+      "direction": "east",
+      "revision": "source-v08",
+      "sha256": "f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2"
+    },
+    {
+      "direction": "south",
+      "revision": "source-v08",
+      "sha256": "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+    },
+    {
+      "direction": "west",
+      "revision": "source-v09",
+      "sha256": "8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca"
+    }
+  ],
+  "productionSelected": false
+}

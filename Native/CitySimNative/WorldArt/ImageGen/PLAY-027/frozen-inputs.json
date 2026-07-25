@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "frozenAtAuthority": "d91dc81a4e6e38387e5af8621c4275f8be2bb96f",
+  "frozenDate": "2026-07-24",
+  "productionSelected": false,
+  "styleAnchor": {
+    "role": "immutable-appearance-only",
+    "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "geometryTemplate": {
+    "role": "authoritative-directional-registration",
+    "id": "play-027-rci-1x1-v1",
+    "file": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+    "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67",
+    "canvasPixels": [
+      1536,
+      1024
+    ],
+    "worldTilePoints": [
+      72,
+      36
+    ],
+    "authoringTilePixels": [
+      512,
+      256
+    ],
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "opaqueContactPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "presentationEnvelopeSource": [
+      256,
+      96,
+      1280,
+      896
+    ],
+    "shadowEnvelopeSource": [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "frontageSocketsSource": {
+      "north": [
+        896,
+        704
+      ],
+      "east": [
+        896,
+        832
+      ],
+      "south": [
+        640,
+        832
+      ],
+      "west": [
+        640,
+        704
+      ]
+    },
+    "entranceExclusionZonesSource": {
+      "north": [
+        848,
+        672,
+        96,
+        64
+      ],
+      "east": [
+        864,
+        784,
+        64,
+        96
+      ],
+      "south": [
+        592,
+        800,
+        96,
+        64
+      ],
+      "west": [
+        608,
+        656,
+        64,
+        96
+      ]
+    },
+    "northwestLightOriginSource": [
+      176,
+      128
+    ],
+    "southeastShadowVectorSource": [
+      2,
+      1
+    ],
+    "sourcePixelBudgets": {
+      "city": [
+        256,
+        171
+      ],
+      "neighborhood": [
+        512,
+        342
+      ],
+      "block": [
+        1024,
+        683
+      ]
+    }
+  },
+  "familyAnchors": {
+    "residential": {
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+      "role": "approved-calibration-family-appearance"
+    },
+    "commercial": {
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/commercial_l01/source-v01.png",
+      "sha256": "90207ec4ed651810df863e0ff21591c85eea444f8606c41c83e85060e4c1de89",
+      "role": "approved-calibration-family-appearance"
+    },
+    "industrial": {
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+      "sha256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+      "role": "approved-calibration-family-appearance"
+    }
+  },
+  "invariants": {
+    "orientationTransform": "none",
+    "chromaKey": "#ff00ff",
+    "lightDirection": "northwest-key",
+    "shadowDirection": "southeast-at-2-to-1",
+    "generatedPixelsAreGeometryAuthority": false,
+    "generatedPixelsAreProductionSelected": false
+  }
+}

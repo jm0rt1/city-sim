@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceKey": "residential_l01/variant-0/south/source-v01",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variant": 0,
+  "viewDirection": "south",
+  "sourceRevision": 1,
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generatedDate": "2026-07-24",
+  "promptFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/prompts/residential_l01/variant-0/south-source-v01.md",
+  "promptSHA256": "44c4d445154232d5fc27c68a5e7d67334076a2e8fa272d88d223756e36c94b64",
+  "completePromptRetainedVerbatim": true,
+  "frozenInputsFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs.json",
+  "frozenInputsSHA256": "8fa318389aed9c79479af8d5176b2fd69815c0e97b1e3a459772703dd3c86d0b",
+  "references": [
+    {
+      "role": "immutable-appearance-only-global-style-anchor",
+      "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative-play-027-1x1-registration",
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    },
+    {
+      "role": "approved-residential-family-appearance-anchor",
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+    }
+  ],
+  "rawSourceFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/raw/residential_l01/variant-0/south/source-v01.png",
+  "rawSourceSHA256": "b3a3ce2dd5647ac98d62549ca741ce04d7536b11d44410a345a2be81a6585ae0",
+  "rawSourcePixels": [
+    1536,
+    1024
+  ],
+  "chromaKey": "#ff00ff",
+  "registration": {
+    "geometryTemplateID": "play-027-rci-1x1-v1",
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "frontageSocketName": "south",
+    "frontageSocketSource": [
+      640,
+      832
+    ],
+    "entranceExclusionZoneSource": [
+      592,
+      800,
+      96,
+      64
+    ],
+    "orientationTransform": "none"
+  },
+  "normalizedSourceFile": null,
+  "normalizedSourceSHA256": null,
+  "intendedGameplayMeaning": "completed maintained level-one residential building with south road-facing frontage",
+  "generatedPixelsAreGeometryAuthority": false,
+  "productionSelected": false,
+  "reviewer": "world-art generation cell initial source review",
+  "disposition": "rejected-before-normalization",
+  "rejectionReasons": [
+    "projection failure: near-front elevation rather than orthographic 2:1 isometric",
+    "registration failure: base does not preserve the authoritative 1x1 diamond footprint or south socket",
+    "frontage failure: south entrance placement cannot be reconciled with the authoritative socket",
+    "chroma failure: background contains a visible magenta gradient instead of flat #ff00ff",
+    "shadow failure: broad background shadow is detached from deterministic registration"
+  ],
+  "directionalDriftFailureOrdinal": 2,
+  "eligibleAsSiblingReference": false
+}

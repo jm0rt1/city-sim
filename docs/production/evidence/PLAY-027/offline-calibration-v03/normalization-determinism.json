@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "calibrationID": "residential-l01-variant-0-directional-v03",
+  "normalizer": "Native/CitySimNative/WorldArt/GeneratedV4/tools/normalize_calibration_asset.py",
+  "processCountPerDirection": 2,
+  "comparison": "byte-identical cmp for block, neighborhood, and city PNGs",
+  "passed": true,
+  "directions": [
+    {
+      "direction": "north",
+      "revision": "source-v12",
+      "blockSHA256": "d2379a6c6ef39a236241013129aea442d8751b1d480a35eb8207c8541fabb597",
+      "neighborhoodSHA256": "3f1ccadaeed8bb155b54c616d7b3e29ec24c327d79cde1a791147528072d2149",
+      "citySHA256": "d1de08cae9cd5bb10cb834b38033b70e8a1393ebc88ceaaf4fcfc847b0945749"
+    },
+    {
+      "direction": "east",
+      "revision": "source-v08",
+      "blockSHA256": "4c99b92ced4e36858c0bd044e20535dee9a354cc2e14048286c58f1c5ef9bfe3",
+      "neighborhoodSHA256": "85def9c0b2ea99e16e6f9c7cc724e839a42823993c0b013af2e3cc5a4a601ff3",
+      "citySHA256": "845c5a4657f9e79cdd302fb3b89a8ad03a5a40754a61bf3c2e436d476b018246"
+    },
+    {
+      "direction": "south",
+      "revision": "source-v08",
+      "blockSHA256": "70672f1d8c896d2486092a213cad34d83d0eb3330806b6978fba83fb5272f4bb",
+      "neighborhoodSHA256": "52b5eec61130935bf2610767099969ffe585700271cfd26294996d1fae8d3844",
+      "citySHA256": "8833285706686ae739f2f5b1c3b33ec71c58dc2c458c3d50f75d8c94459d82f8"
+    },
+    {
+      "direction": "west",
+      "revision": "source-v09",
+      "blockSHA256": "ab889aa1e8f7639a2f8be9b5d6c435e17e23d64d06478884070ebb6738dbe482",
+      "neighborhoodSHA256": "054f9bfb80d2be4739bca3a0afe5c8d8f136438bef4c983439ae1086ca9aac2d",
+      "citySHA256": "a0a6d674d37189beb11e57f899e56b9e09ac637373c6c6b73f044dab95fbdd6c"
+    }
+  ],
+  "productionSelected": false
+}

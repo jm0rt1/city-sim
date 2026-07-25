@@ -428,7 +428,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Accepted integration:** Contract `e28fdd2` and final evidence `7943b90`. Independent default Commercial and exact-compact Industrial no-coaching routes reached Charter in 8:34 and 4:42; save/relaunch/load, backup-only recovery, four durable recovery routes, pointer/keyboard/AX replay, and the integrated suite passed. The preserved 17/20 renderer score is a Wave 005 floor, not the Wave 006 excellence target.
 - **Stop conditions:** Any P1 contradiction, hidden coaching, stale bundle, missing hashes/PID cleanup, save failure, pointer-only compact operation, nondurable choice, or misleading visual evidence.
 
-### [ ] PLAY-053: Gate world and HUD excellence
+### [x] PLAY-053: Gate world and HUD excellence
 
 - **Player outcome:** Independent evidence proves that the integrated city is not merely functional but visually cohesive, spatially believable, easy to read, and materially preferable in both default and compact play.
 - **Owning lane:** Playtest quality.
@@ -437,4 +437,4 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, fixture-only acceptance, candidate substitution, author self-scoring, or preserving the old 17/20 threshold.
 - **Acceptance:** At least 19/20 overall; 4/4 in composition/map occupancy and projection/material/light/street coherence; no category below 3; zero automatic rejects; the new candidate must be materially preferred to the frozen Wave 005 frame in an explicit side-by-side finding.
 - **Stop conditions:** Toy-island framing, unexplained road stubs, large undifferentiated green voids, sprite overlap, mixed fidelity/projection/light, obscured priority or selection, stale identity, coached success, missing compact proof, or misleading crop/zoom.
-- **Current status:** Exact candidate `91438bf` independently **REJECTED** at 14/20 by evidence commit `6803f61`: composition 2, coherence 2, LOD/life 3, interaction clarity 3, shipping quality 4. Both comparisons were materially preferred to Wave 005, but dominant empty green space and visible macro-terrain seams triggered automatic rejects. Final scoring resumes only after a new integrated PLAY-024 repair candidate.
+- **Current status:** Exact returned candidate `ad2f35314bb471a07923c41653374b05ace51ee3` independently **APPROVED** at 19/20 by evidence commit `2e83570eda92e14fcf39bca78b9152ff3c7b8411`: composition 4, coherence 4, LOD/life 3, interaction clarity 4, shipping quality 4. Both governed comparisons are materially preferred, no category is below 3, and no automatic reject remains; integration review remains separate.

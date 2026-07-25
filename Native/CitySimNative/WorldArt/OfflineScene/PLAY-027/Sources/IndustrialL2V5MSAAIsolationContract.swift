@@ -23,7 +23,8 @@ enum IndustrialL2V5MSAAIsolationContract {
         "industrial-l02-source-v05-msaa-none-current-shadows-v1"
     static let evidenceRoot =
         "docs/production/evidence/PLAY-027/industrial-l02/l02/"
-        + "source-v05-diagnostics/msaa-none-current-shadows"
+        + "source-v05-diagnostics/diagnostics/"
+        + "msaa-none-current-shadows"
     static let materialPath =
         "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/"
         + "industrial-l02-v0-source-v05-materials.json"

@@ -43,15 +43,12 @@ at `a337a4f8b56c849f15d6be5833d1d22553f58d69`. Exactly one Commercial L4
 `source-v03` N/E/S/W set was authored on that contract and independently
 accepted through clean source candidate
 `bf3e24b2b465870f131ac0a01a2327ac4969d5d5`. Industrial L1 variant-zero
-N/E/S/W was independently accepted at
-`79668c347e58d602f9627c73cb09e3272a83ef57`. Industrial L2 source-v04 remains
-rejected at `f069d15c6f9c9e9922ceafa6381f8546c1d3c6c5`; its exact raw, repeat,
-locality, and constant-light diagnostic trail is retained. Integration now
-authorizes only the Industrial L2 source-v05 pre-pixel architecture from clean
-causal checkpoint `ba4845612c2a5e8ce746c2a08379342bbca946f1`. Source-v05 may
-bind `sceneKitShadows: disabled` and `sceneKitLightingMode:
-authored-constant-v1`; no source-v05 render or normalization is authorized at
-this checkpoint. Industrial L3-L4 remain unauthorized.
+N/E/S/W source-v05 was independently accepted at
+`79668c347e58d602f9627c73cb09e3272a83ef57` and is the shipping Industrial L1
+source through PLAY-062. Industrial L2 source-v03 through source-v08 and their
+raw, repeat, locality, lighting, canonicalization, and finite-equivalence
+diagnostic trails are rejected and frozen. No Industrial L2 source is
+accepted. Industrial L3-L4 remain blocked.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -316,10 +313,8 @@ payload. It never edits an accepted descriptor or source record.
 
 Residential L1 and Residential L2-L4 have passed their independent source-art
 gates. Commercial L1-L4 are accepted as non-shipping source-art authority.
-Industrial L1 `source-v01` alone is authorized on the independently approved
-schema-2 v3 sampling contract for governed source production and independent
-review. Industrial L2 source-v04 is authorized only as a descriptor-bound
-SceneKit-shadow-disabled revision of frozen source-v03, with all other
-sampling, geometry, material, registration, and compositor fields unchanged.
-Industrial L3-L4, additional variants, renderer ingestion, packaging, and
-production selection remain blocked without further integration authority.
+Industrial L1 `source-v05` is accepted and shipping through PLAY-062.
+Industrial L2 source-v03 through source-v08 are rejected and frozen; no
+Industrial L2 source is accepted. Industrial L3-L4, additional variants,
+renderer ingestion, packaging, and production selection remain blocked
+without further integration authority.

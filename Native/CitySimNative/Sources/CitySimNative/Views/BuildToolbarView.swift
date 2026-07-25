@@ -216,7 +216,7 @@ struct BuildToolbarView: View {
 
     private var cityFocusButton: some View {
         let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
-        return Button { store.perform(.toggleCityFocus) } label: {
+        return Button { CityFocusPointerTransition.perform(on: store) } label: {
             Label(compact ? "Focus" : "Focus City", systemImage: "viewfinder")
                 .font(.caption.weight(.semibold))
                 .padding(.horizontal, compact ? 2 : 8)

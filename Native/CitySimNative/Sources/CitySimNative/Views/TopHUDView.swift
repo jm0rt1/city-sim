@@ -549,7 +549,7 @@ struct FocusCityHUDView: View {
 
     private var exitButton: some View {
         let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
-        return Button { store.perform(.toggleCityFocus) } label: {
+        return Button { CityFocusPointerTransition.perform(on: store) } label: {
             Label(compact ? "Exit" : "Exit Focus City", systemImage: "viewfinder.circle")
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .padding(.horizontal, compact ? 6 : 9)

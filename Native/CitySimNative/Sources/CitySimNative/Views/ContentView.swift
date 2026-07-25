@@ -27,6 +27,16 @@ enum ObjectiveSurfacePresentation: Equatable {
     case compactSummary
 }
 
+@MainActor
+enum CityFocusPointerTransition {
+    static func perform(on store: CityGameStore) {
+        Task { @MainActor [weak store] in
+            await Task.yield()
+            _ = store?.perform(.toggleCityFocus)
+        }
+    }
+}
+
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false

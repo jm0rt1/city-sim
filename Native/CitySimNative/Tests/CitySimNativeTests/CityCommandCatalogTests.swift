@@ -715,6 +715,47 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testFocusCityPointerTransitionDefersEnterAndExitWithoutPassingThroughToMap() async throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.selectTool(.commercial)
+        store.selectedCoordinate = GridCoordinate(x: 11, y: 11)
+        let state = store.state
+        let coordinate = store.selectedCoordinate
+        let target = try XCTUnwrap(store.activeMapActionTargetPresentation)
+        let focusGeneration = store.mapFocusRequestGeneration
+
+        CityFocusPointerTransition.perform(on: store)
+
+        XCTAssertFalse(
+            store.isCityFocusModeEnabled,
+            "The visible control must remain over the map until the pointer event completes"
+        )
+        for _ in 0..<4 where !store.isCityFocusModeEnabled {
+            await Task.yield()
+        }
+        XCTAssertTrue(store.isCityFocusModeEnabled)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.selectedCoordinate, coordinate)
+        XCTAssertEqual(store.activeMapActionTargetPresentation, target)
+
+        CityFocusPointerTransition.perform(on: store)
+
+        XCTAssertTrue(
+            store.isCityFocusModeEnabled,
+            "The exit control must remain over the map until the pointer event completes"
+        )
+        for _ in 0..<4 where store.isCityFocusModeEnabled {
+            await Task.yield()
+        }
+        XCTAssertFalse(store.isCityFocusModeEnabled)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.selectedCoordinate, coordinate)
+        XCTAssertEqual(store.activeMapActionTargetPresentation, target)
+    }
+
+    @MainActor
     func testFocusCityShortcutRespectsTextAndWelcomeQuarantine() throws {
         let shortcutEvent = try keyEvent(
             characters: "f",

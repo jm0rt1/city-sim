@@ -1,0 +1,86 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 2,
+  "sourceKind" : "normalized",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l04/variant-0/south/source-v03/generated_v4_commercial_l04_city.png",
+      "fileSHA256" : "d73f52604ab233207d1637b06ac09c64474ac8a3c02b740e621424d711ce6e21",
+      "id" : "primary",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          92,
+          29,
+          164,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "nonTransparentPixelCount" : 5379,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          92,
+          29,
+          92,
+          21
+        ],
+        "transparentPixelCount" : 38397,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "c5b9af5a97695c26771e53bcb3f4ce313a1eca6b93b19d458de505cc104c59e5",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v03-candidate/normalized-repeat/south/generated_v4_commercial_l04_city.png",
+      "fileSHA256" : "d73f52604ab233207d1637b06ac09c64474ac8a3c02b740e621424d711ce6e21",
+      "id" : "repeat",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          92,
+          29,
+          164,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "nonTransparentPixelCount" : 5379,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          92,
+          29,
+          92,
+          21
+        ],
+        "transparentPixelCount" : 38397,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "c5b9af5a97695c26771e53bcb3f4ce313a1eca6b93b19d458de505cc104c59e5",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

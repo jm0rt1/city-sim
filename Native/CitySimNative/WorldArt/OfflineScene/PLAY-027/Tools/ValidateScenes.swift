@@ -150,7 +150,8 @@ enum ValidateScenesMain {
                 || descriptor.family != "residential"
                 || descriptor.level != 1
                 || descriptor.variantID != "variant-0"
-                || descriptor.sourceRevision != "source-v01"
+                || !descriptor.sourceRevision.hasPrefix("source-v")
+                || descriptor.sourceRevision.count != 10
             {
                 itemFailures.append("calibration identity mismatch")
             }

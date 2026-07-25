@@ -3223,6 +3223,7 @@ enum OfflineSceneRendererMain {
                 IndustrialL2V6EastSceneKitCaptureContract.contractID,
                 IndustrialL2V7EastPreLanczosCaptureContract.contractID,
                 IndustrialL2V6EastFullFrameCaptureContract.contractID,
+                IndustrialL2V8EastFiniteEquivalenceContract.contractID,
             ].contains(diagnosticStageContractID) else {
                 throw OfflineRendererError.invalid(
                     "unknown diagnostic stage contract"
@@ -3482,6 +3483,34 @@ enum OfflineSceneRendererMain {
                 descriptor: descriptor,
                 sampling: descriptorSampling
             )
+        let diagnosticSourceV08FiniteEquivalenceRecord =
+            try IndustrialL2V8EastFiniteEquivalenceContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V8EastFiniteEquivalenceContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                diagnosticPrequantizedOutput:
+                    diagnosticPrequantizedOutput,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
         guard
             [
                 diagnosticMSAAIsolationRecord != nil,
@@ -3490,6 +3519,7 @@ enum OfflineSceneRendererMain {
                 diagnosticSourceV06EastCaptureRecord != nil,
                 diagnosticSourceV07EastCaptureRecord != nil,
                 diagnosticSourceV06FullFrameCaptureRecord != nil,
+                diagnosticSourceV08FiniteEquivalenceRecord != nil,
             ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
@@ -3503,6 +3533,7 @@ enum OfflineSceneRendererMain {
             ?? diagnosticSourceV06EastCaptureRecord?.value
             ?? diagnosticSourceV07EastCaptureRecord?.value
             ?? diagnosticSourceV06FullFrameCaptureRecord?.value
+            ?? diagnosticSourceV08FiniteEquivalenceRecord?.value
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3645,6 +3676,7 @@ enum OfflineSceneRendererMain {
             try (
                 diagnosticSourceV07EastCaptureRecord
                     ?? diagnosticSourceV06FullFrameCaptureRecord
+                    ?? diagnosticSourceV08FiniteEquivalenceRecord
             ).map { _ in
                 try rendererFullFrameRecord(
                     image: rawOversampled,
@@ -3669,15 +3701,73 @@ enum OfflineSceneRendererMain {
                         "scenekit-4x-before-pre-lanczos-canonicalization"
                 )
             }
+        let finiteEquivalenceApplication =
+            try diagnosticSourceV08FiniteEquivalenceRecord.map { _ in
+                let tableURL = repositoryRoot.appendingPathComponent(
+                    IndustrialL2V8EastFiniteEquivalenceContract.tablePath
+                )
+                let table =
+                    try IndustrialL2V8EastFiniteEquivalenceContract
+                    .loadValidatedTable(
+                        data: Data(contentsOf: tableURL)
+                    )
+                let inputRGBA = try rendererCanonicalRGBA(
+                    image: rawOversampled
+                )
+                return try IndustrialL2V8EastFiniteEquivalenceContract
+                    .apply(
+                        image: rawOversampled,
+                        table: table,
+                        expectedInputDecodedRGBASHA256:
+                            rendererStageSHA256(Data(inputRGBA))
+                    )
+            }
+        let persistedFiniteEquivalenceInputRecord =
+            try diagnosticSourceV08FiniteEquivalenceRecord.map { _ in
+                guard let diagnosticStageCaptureDirectory else {
+                    throw OfflineRendererError.invalid(
+                        "finite equivalence validation directory missing after contract validation"
+                    )
+                }
+                return try rendererPersistCompleteRGBAFrame(
+                    image: rawOversampled,
+                    to: diagnosticStageCaptureDirectory
+                        .appendingPathComponent("PRE-MAP-4X.png"),
+                    repositoryRoot: repositoryRoot,
+                    stage: "scenekit-4x-before-finite-equivalence-map",
+                    requiredFileName: "PRE-MAP-4X.png"
+                )
+            }
+        let persistedFiniteEquivalenceMappedRecord =
+            try finiteEquivalenceApplication.map { application in
+                guard let diagnosticStageCaptureDirectory else {
+                    throw OfflineRendererError.invalid(
+                        "finite equivalence validation directory missing after contract validation"
+                    )
+                }
+                return try rendererPersistCompleteRGBAFrame(
+                    image: application.image,
+                    to: diagnosticStageCaptureDirectory
+                        .appendingPathComponent(
+                            "MAPPED-PRE-LANCZOS-4X.png"
+                        ),
+                    repositoryRoot: repositoryRoot,
+                    stage: "finite-equivalence-mapped-pre-lanczos-4x",
+                    requiredFileName:
+                        "MAPPED-PRE-LANCZOS-4X.png"
+                )
+            }
+        let preLanczosInput =
+            finiteEquivalenceApplication?.image ?? rawOversampled
         let preLanczosCanonicalization =
             try descriptorSampling.preLanczosCanonicalizer.map {
                 try canonicalizePreLanczosFrameImage(
-                    rawOversampled,
+                    preLanczosInput,
                     contract: $0
                 )
             }
         let oversampled =
-            preLanczosCanonicalization?.image ?? rawOversampled
+            preLanczosCanonicalization?.image ?? preLanczosInput
         let canonicalizedOversampledFrameRecord =
             try diagnosticSourceV07EastCaptureRecord.map { _ in
                 try rendererFullFrameRecord(
@@ -3691,6 +3781,7 @@ enum OfflineSceneRendererMain {
                     ?? diagnosticSourceV06EastCaptureRecord
                     ?? diagnosticSourceV07EastCaptureRecord
                     ?? diagnosticSourceV06FullFrameCaptureRecord
+                    ?? diagnosticSourceV08FiniteEquivalenceRecord
             ).map {
                 var record = try rendererOversampledSupportWindowRecord(
                     image: oversampled,
@@ -3886,6 +3977,47 @@ enum OfflineSceneRendererMain {
                     persistedPreCanonicalFrameRecord
             }
             if
+                let application = finiteEquivalenceApplication,
+                let persistedFiniteEquivalenceInputRecord,
+                let persistedFiniteEquivalenceMappedRecord
+            {
+                capture["finiteEquivalenceValidation"] = [
+                    "contractID":
+                        IndustrialL2V8EastFiniteEquivalenceContract
+                        .contractID,
+                    "tableSHA256":
+                        IndustrialL2V8EastFiniteEquivalenceContract
+                        .tableSHA256,
+                    "inputDecodedRGBASHA256":
+                        application.inputDecodedRGBASHA256,
+                    "mappedDecodedRGBASHA256":
+                        application.mappedDecodedRGBASHA256,
+                    "governedCoordinateCount":
+                        IndustrialL2V8EastFiniteEquivalenceContract
+                        .expectedCoordinateCount,
+                    "mutationCount": application.mutations.count,
+                    "mutations": application.mutations.map {
+                        [
+                            "coordinate4x": [$0.x, $0.y],
+                            "classID": $0.classID,
+                            "originalRGB": $0.originalRGB,
+                            "representativeRGB":
+                                $0.representativeRGB,
+                        ] as [String: Any]
+                    },
+                    "onlyGovernedCoordinatesMayChange": true,
+                    "unknownTuplePolicy": "reject",
+                    "crossRunState": "none",
+                    "alphaWrites": false,
+                    "chromaWrites": false,
+                    "productionSelected": false,
+                ]
+                capture["persistedFiniteEquivalenceInput4xFrame"] =
+                    persistedFiniteEquivalenceInputRecord
+                capture["persistedFiniteEquivalenceMapped4xFrame"] =
+                    persistedFiniteEquivalenceMappedRecord
+            }
+            if
                 let canonicalizedOversampledFrameRecord,
                 let result = preLanczosCanonicalization?.result
             {
@@ -3941,6 +4073,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastSceneKitCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V7EastPreLanczosCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastFullFrameCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V8EastFiniteEquivalenceContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
@@ -4004,6 +4137,37 @@ enum OfflineSceneRendererMain {
                             $0.result.chromaBypassPixelCount,
                         "alphaChanged": false,
                         "crossRunState": "none",
+                    ] as [String: Any]
+                } ?? [
+                    "algorithm": "none",
+                    "sourceChanged": false,
+                ],
+            "finiteRGBEquivalence":
+                finiteEquivalenceApplication.map {
+                    [
+                        "contractID":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .contractID,
+                        "tableFile":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .tablePath,
+                        "tableSHA256":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .tableSHA256,
+                        "inputDecodedRGBASHA256":
+                            $0.inputDecodedRGBASHA256,
+                        "mappedDecodedRGBASHA256":
+                            $0.mappedDecodedRGBASHA256,
+                        "governedCoordinateCount":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .expectedCoordinateCount,
+                        "mutationCount": $0.mutations.count,
+                        "onlyGovernedCoordinatesMayChange": true,
+                        "unknownTuplePolicy": "reject",
+                        "crossRunState": "none",
+                        "alphaWrites": false,
+                        "chromaWrites": false,
+                        "productionSelected": false,
                     ] as [String: Any]
                 } ?? [
                     "algorithm": "none",

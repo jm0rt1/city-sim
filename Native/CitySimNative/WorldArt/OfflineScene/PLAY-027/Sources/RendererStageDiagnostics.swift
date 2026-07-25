@@ -306,15 +306,16 @@ func rendererPersistCompleteRGBAFrame(
     image: CGImage,
     to url: URL,
     repositoryRoot: URL,
-    stage: String
+    stage: String,
+    requiredFileName: String = "PRE-CANONICAL-4X.png"
 ) throws -> [String: Any] {
     guard
         url.path.contains("/diagnostics/"),
-        url.lastPathComponent == "PRE-CANONICAL-4X.png",
+        url.lastPathComponent == requiredFileName,
         !FileManager.default.fileExists(atPath: url.path)
     else {
         throw RendererStageDiagnosticsError.invalid(
-            "complete RGBA frame must use one new diagnostics PRE-CANONICAL-4X.png path"
+            "complete RGBA frame must use one new diagnostics \(requiredFileName) path"
         )
     }
     let rgba = try rendererCanonicalRGBA(image: image)

@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "status": "pre-render-contract-frozen",
+  "authority": "0696f69a223196253bb613f314384e41ee765df8",
+  "purpose": "freeze the East-only source-v08-equivalent finite RGB validation contract before consuming a fresh Metal triplet",
+  "contract": {
+    "id": "industrial-l02-source-v08-equivalent-east-finite-rgb-validation-v1",
+    "scope": "Industrial L2 variant-zero East only",
+    "sourceAuthority": false,
+    "productionSelected": false,
+    "crossRunState": "none",
+    "application": "pure single-frame coordinate-scoped RGB transform",
+    "passThroughElsewhere": "byte-exact",
+    "unknownTuplePolicy": "reject",
+    "ambiguousClassPolicy": "reject",
+    "alphaWrites": false,
+    "chromaWrites": false
+  },
+  "bindings": {
+    "sourceDescriptorRevision": "source-v06",
+    "sourceDescriptorSHA256": "70b36a0e76581524e64d40f19e364659eed6a53d7f7ab8d8924c51ba5d0951dd",
+    "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+    "finiteTableFile": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-finite-equivalence-diagnostic/proposal/FINITE-RGB-EQUIVALENCE-TABLE.json",
+    "finiteTableSHA256": "7c2d5940b8fca22d1e2cb15fa248ab678e8b8266fb3ed453332d82474284ed31",
+    "framePixels": [
+      6144,
+      4096
+    ],
+    "governedCoordinateCount": 57,
+    "classCount": 2,
+    "tupleCount": 15
+  },
+  "rendererPath": {
+    "sceneKitAntialiasing": "none",
+    "sceneKitShadows": "disabled",
+    "sceneKitLightingMode": "authored-constant-v1",
+    "linearOversamplingFactor": 4,
+    "downsample": "software CILanczosScaleTransform scale 0.25 aspect 1",
+    "quantizer": "step32-midpoint-offset8-v1",
+    "postQuantizationCanonicalizerVersion": 3,
+    "preLanczosDescriptorCanonicalizer": "none",
+    "finiteEquivalenceInsertion": "after complete SceneKit 4x frame and before software Lanczos"
+  },
+  "tests": {
+    "result": "PASS",
+    "failClosed": [
+      "descriptor hash drift",
+      "table hash drift",
+      "input dimension drift",
+      "input decoded hash drift",
+      "unknown tuple at governed coordinate",
+      "duplicate class identifier",
+      "ambiguous tuple ownership",
+      "ambiguous representative",
+      "non-opaque governed coordinate",
+      "exact chroma at governed coordinate",
+      "out-of-scope coordinate write"
+    ],
+    "repeatApplicationIdentity": true,
+    "defaultPathChanged": false
+  },
+  "sourceFiles": [
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V8EastFiniteEquivalenceContract.swift",
+      "sha256": "63b83046f6690d66fde0a2b9584f04268bcbcca8e167ab10d38d25e8211a23c1"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+      "sha256": "c68643e1dc224b621922db8d3729b6ceb908df826f1799ed478c49f077b9e76a"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256": "4e460b991529ec4c156c6469c77cfbc25bb544baf41b9035d8cf60df4fd8ed93"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/TestIndustrialL2V8EastFiniteEquivalenceContract.swift",
+      "sha256": "272e137b6bb91f824fc0d76b60bd85357dc722bc148e9729ee0d11c288ebc68a"
+    }
+  ],
+  "compiledTools": {
+    "rendererSHA256": "e97f00e42b8938d5e088d620ab9d7dce0bb33f10f739f0cdddfff4f02f76feb5",
+    "contractTestSHA256": "a725588161563775f8075c2f3b7ddbac87f953e195feefc2877ed45d80aa1ed4"
+  },
+  "preservation": {
+    "sourceV05V06V07SceneMaterialRawProvenanceDiff": "none",
+    "sourceV06FiniteDiagnosticTreeAtAuthority": "f0408a34eb041df1e9d40588811287aac00b928a",
+    "sourceV06RawEastTreeAtAuthority": "45e69222e5e4ccf963aa376ef87cf22a9d8ed850",
+    "sourceV06SceneEastTreeAtAuthority": "60d31e12deda6a3172bc8c3c6539925ed237748c"
+  },
+  "freshMetalProcessesConsumed": 0,
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

@@ -1380,7 +1380,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
             for pixel in stride(from: 0, to: storage.count, by: 4) {
                 let alpha = Int(storage[pixel + 3])
-                guard alpha >= 96 else {
+                guard alpha > 0 else {
                     storage[pixel] = 0
                     storage[pixel + 1] = 0
                     storage[pixel + 2] = 0

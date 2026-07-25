@@ -19,3 +19,21 @@ declared north door but extends around the east corner where its deck, roof,
 columns, and rails can remain grounded and visible. West receives the same
 independently declared southward return before its first v03 render. No sibling
 raster or scene is mirrored, rotated, or transformed.
+
+## North source-v06
+
+**Raw SHA-256:** `564ffd29f7213e1262a28a22764d05d12ae391999c91f1c25d50d0324102dc4b`
+
+**Disposition:** rejected as a deterministic source-tool failure
+
+The first porch-return render retained only the porch edge and shadow. A
+diagnostic render bypassing the new matte-safe object pass reproduced the
+complete building and the grounded return, isolating the defect to an invalid
+alpha threshold rather than scene geometry or SceneKit preparation. SceneKit
+reports semitransparent snapshot coverage for opaque prepared geometry, so the
+threshold incorrectly discarded most of the building.
+
+The raw PNG, provenance record, and byte-identical repeat are retained. The
+renderer repair preserves every nonzero object-coverage pixel, unpremultiplies
+its color, and hard-mattes it before the flat chroma field. North advances to
+`source-v07`; its geometry v5 remains unchanged.

@@ -33,7 +33,7 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v5` | `source-v06` |
+| north | `residential-l01-v0-north-geometry-v5` | `source-v07` |
 | east | `residential-l01-v0-east-geometry-v4` | `source-v05` |
 | south | `residential-l01-v0-south-geometry-v4` | `source-v05` |
 | west | `residential-l01-v0-west-geometry-v5` | `source-v06` |

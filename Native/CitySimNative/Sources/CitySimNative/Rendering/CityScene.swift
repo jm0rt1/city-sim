@@ -102,6 +102,12 @@ private struct AmbientCorridorSignature: Equatable {
     let activitySamples: [AmbientActivitySignature]
 }
 
+private struct GeneratedResidencyTileSignature: Equatable {
+    let kind: BuildingKind
+    let level: Int
+    let constructionBand: UInt8
+}
+
 private struct CityVisualCompositionBounds {
     let occupiedDeveloped: CGRect
     let cameraPriority: CGRect
@@ -179,6 +185,9 @@ final class CityScene: SKScene {
         places: [],
         reservedSurfaces: []
     )
+    private var generatedResidencyGridSize: CGSize?
+    private var generatedResidencyTileSignatures: [GeneratedResidencyTileSignature] = []
+    private var generatedResidencyDetail: CameraDetailLevel?
     private var viewportInsets: CityMapViewportInsets = .zero
     private var hasUserAdjustedCamera = false
     private(set) var occupiedDevelopedVisualBoundsForTesting: CGRect = .null
@@ -200,6 +209,7 @@ final class CityScene: SKScene {
     var ambientActionCountForTesting: Int { runtimeTreeMetrics(ambientLayer).actions }
     var ambientMotionEnabledForTesting: Bool { ambientMotionEnabled }
     private(set) var ambientRebuildCountForTesting = 0
+    private(set) var generatedResidencyPreloadCountForTesting = 0
     var renderedActivityNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
@@ -346,11 +356,7 @@ final class CityScene: SKScene {
             }
             lastPreviewSignature = nil
         }
-        assets.preloadGeneratedResidency(
-            for: resolvedDetail,
-            logicalIDs: generatedLogicalIDsNeeded(for: state),
-            roadMasks: generatedRoadMasksNeeded(for: state)
-        )
+        preloadGeneratedResidencyIfNeeded(for: resolvedDetail, state: state)
         renderedState = state
         renderedSnapshot = snapshot
         renderedOverlay = overlay
@@ -1166,6 +1172,64 @@ final class CityScene: SKScene {
         return logicalIDs
     }
 
+    private func generatedResidencyTileSignature(
+        for tile: CityTile
+    ) -> GeneratedResidencyTileSignature {
+        let constructionBand: UInt8
+        if tile.constructionProgress >= 1 {
+            constructionBand = 2
+        } else if tile.constructionProgress >= 0.75 {
+            constructionBand = 1
+        } else {
+            constructionBand = 0
+        }
+        return GeneratedResidencyTileSignature(
+            kind: tile.kind,
+            level: tile.level,
+            constructionBand: constructionBand
+        )
+    }
+
+    private func generatedResidencyStateChanged(_ state: CityGameState) -> Bool {
+        let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
+        guard generatedResidencyGridSize == gridSize,
+              generatedResidencyTileSignatures.count == state.tiles.count else {
+            return true
+        }
+        for index in state.tiles.indices
+        where generatedResidencyTileSignatures[index]
+            != generatedResidencyTileSignature(for: state.tiles[index]) {
+            return true
+        }
+        return false
+    }
+
+    private func preloadGeneratedResidencyIfNeeded(
+        for detail: CameraDetailLevel,
+        state: CityGameState
+    ) {
+        let stateChanged = generatedResidencyStateChanged(state)
+        guard stateChanged || detail != generatedResidencyDetail else {
+            return
+        }
+        assets.preloadGeneratedResidency(
+            for: detail,
+            logicalIDs: generatedLogicalIDsNeeded(for: state),
+            roadMasks: generatedRoadMasksNeeded(for: state)
+        )
+        if stateChanged {
+            generatedResidencyGridSize = CGSize(
+                width: state.gridWidth,
+                height: state.gridHeight
+            )
+            generatedResidencyTileSignatures = state.tiles.map {
+                generatedResidencyTileSignature(for: $0)
+            }
+        }
+        generatedResidencyDetail = detail
+        generatedResidencyPreloadCountForTesting += 1
+    }
+
     private func generatedRoadMasksNeeded(for state: CityGameState) -> Set<UInt8> {
         Set(state.tiles.compactMap { tile in
             guard tile.kind == .road else { return nil }
@@ -1646,11 +1710,7 @@ final class CityScene: SKScene {
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
         if let renderedState {
-            assets.preloadGeneratedResidency(
-                for: detail,
-                logicalIDs: generatedLogicalIDsNeeded(for: renderedState),
-                roadMasks: generatedRoadMasksNeeded(for: renderedState)
-            )
+            preloadGeneratedResidencyIfNeeded(for: detail, state: renderedState)
         } else {
             assets.prepareGeneratedResidency(for: detail)
         }

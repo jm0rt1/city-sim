@@ -244,6 +244,10 @@ final class CitySimulationTests: XCTestCase {
         var totalUpdatedTiles = 0
         var changedAcrossPulses: Set<GridCoordinate> = []
         var renderMilliseconds = 0.0
+        var worldUpdateMilliseconds = 0.0
+        var preparationMilliseconds = 0.0
+        var tileBuildMilliseconds = 0.0
+        var treeMetricsMilliseconds = 0.0
         for pulseIndex in 1...10 {
             let previousSnapshot = try CityPresentationSnapshot(state: pulsedState)
             CitySimulation.step(&pulsedState)
@@ -265,6 +269,10 @@ final class CitySimulationTests: XCTestCase {
             )
             renderMilliseconds += (ProcessInfo.processInfo.systemUptime - renderStarted) * 1_000
             let diagnostics = scene.diagnosticsSnapshot
+            worldUpdateMilliseconds += diagnostics.worldUpdateDurationMilliseconds
+            preparationMilliseconds += diagnostics.renderPreparationDurationMilliseconds
+            tileBuildMilliseconds += diagnostics.tileBuildDurationMilliseconds
+            treeMetricsMilliseconds += diagnostics.runtimeTreeMetricsDurationMilliseconds
             XCTAssertEqual(
                 diagnostics.updatedCoordinates,
                 expectedChanges,
@@ -302,6 +310,10 @@ final class CitySimulationTests: XCTestCase {
             "initial_nodes=\(initial.nodeCount) ten_pulses_reused=\(totalReusedTiles) " +
             "ten_pulses_updated=\(totalUpdatedTiles) render_ms=\(String(format: "%.3f", renderMilliseconds)) " +
             "average_render_ms=\(String(format: "%.3f", averageRenderMilliseconds)) " +
+            "world_update_ms=\(String(format: "%.3f", worldUpdateMilliseconds)) " +
+            "preparation_ms=\(String(format: "%.3f", preparationMilliseconds)) " +
+            "tile_build_ms=\(String(format: "%.3f", tileBuildMilliseconds)) " +
+            "tree_metrics_ms=\(String(format: "%.3f", treeMetricsMilliseconds)) " +
             "final_nodes=\(pulse.nodeCount)"
         )
     }

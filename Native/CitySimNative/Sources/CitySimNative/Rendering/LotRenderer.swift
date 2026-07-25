@@ -207,7 +207,7 @@ final class LotRenderer {
     @discardableResult
     private func addAuthoredPlaceFamily(
         _ tile: CityTile,
-        variant _: Int,
+        variant: Int,
         residentialIdentity: ResidentialGeneratedAssetIdentity?,
         commercialIdentity: CommercialGeneratedAssetIdentity?,
         industrialL1Identity: IndustrialL1GeneratedAssetIdentity?,
@@ -228,6 +228,7 @@ final class LotRenderer {
             guard residentialIdentity == result.identity else { return false }
             let sprite = result.presentation.sprite
             sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
+            harmonizeAuthoredSprite(sprite, for: tile, variant: variant)
             city.addChild(sprite)
             return true
         }
@@ -242,6 +243,7 @@ final class LotRenderer {
             guard commercialIdentity == result.identity else { return false }
             let sprite = result.presentation.sprite
             sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
+            harmonizeAuthoredSprite(sprite, for: tile, variant: variant)
             city.addChild(sprite)
             return true
         }
@@ -256,12 +258,14 @@ final class LotRenderer {
             guard industrialL1Identity == result.identity else { return false }
             let sprite = result.presentation.sprite
             sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
+            harmonizeAuthoredSprite(sprite, for: tile, variant: variant)
             city.addChild(sprite)
             return true
         }
         if let generatedID = generatedLogicalID(for: tile.kind),
            let sprite = assets.generatedSprite(logicalID: generatedID, detail: detail) {
             sprite.name = "lot.generated-v4.\(generatedID).\(detail.assetSuffix)"
+            harmonizeAuthoredSprite(sprite, for: tile, variant: variant)
             city.addChild(sprite)
             addGeneratedRoleIdentity(for: tile.kind, to: block)
             return true
@@ -270,6 +274,50 @@ final class LotRenderer {
         // buildings. A missing generated source is counted by the catalog and
         // leaves an explicit semantic hole for staged verification to reject.
         return false
+    }
+
+    /// Applies a secondary deterministic presentation grade without changing
+    /// accepted source bytes, projection, registration, frontage, or
+    /// silhouette. Structural grounding and contextual lot dressing carry the
+    /// district treatment; semantic identity continues to come exclusively
+    /// from the accepted logical asset.
+    private func harmonizeAuthoredSprite(
+        _ sprite: SKSpriteNode,
+        for tile: CityTile,
+        variant _: Int
+    ) {
+        switch tile.kind {
+        case .residential:
+            sprite.colorBlendFactor = 0
+        case .commercial:
+            sprite.colorBlendFactor = 0
+        case .industrial:
+            sprite.colorBlendFactor = 0
+        case .powerPlant:
+            sprite.color = style.palette.asphaltLight
+            sprite.colorBlendFactor = 0.03
+            sprite.setScale(0.88)
+        case .waterTower:
+            sprite.color = style.palette.concreteLight
+            sprite.colorBlendFactor = 0.018
+            // Preserve the descriptor pivot while bringing the one-cell
+            // landmark back into the starter district's physical hierarchy.
+            // The accepted source is still taller than its neighboring
+            // service building, but no longer overwhelms the whole corridor.
+            sprite.setScale(0.64)
+        case .park:
+            sprite.color = style.palette.parkGrass
+            sprite.colorBlendFactor = 0.014
+            // Reveal the continuous renderer-owned park ground and frontage
+            // around the accepted source plate instead of letting its square
+            // edge read as a floating tile.
+            sprite.setScale(0.96)
+        case .cityHall, .fireStation, .policeStation, .school:
+            sprite.color = style.palette.concreteLight
+            sprite.colorBlendFactor = 0.018
+        case .empty, .road:
+            break
+        }
     }
 
     private func generatedLogicalID(for kind: BuildingKind) -> String? {

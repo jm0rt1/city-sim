@@ -1,0 +1,143 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/diagnostics/constant-unlit/east-run-a.png",
+      "fileSHA256" : "6b54c6c4cee3eafd0529bd987c246e30adbb2fc56c19447def2c6fd0bc89f6bc",
+      "id" : "east-a",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1505266,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          309
+        ],
+        "nonChromaPixelCount" : 67598,
+        "paddingPixels" : [
+          619,
+          597,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "e34c4715fa317bbcca5f39508c83284c2f4447361ff16f840ee61d3697ffaa66",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/diagnostics/constant-unlit/east-run-b.png",
+      "fileSHA256" : "6b54c6c4cee3eafd0529bd987c246e30adbb2fc56c19447def2c6fd0bc89f6bc",
+      "id" : "east-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1505266,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          309
+        ],
+        "nonChromaPixelCount" : 67598,
+        "paddingPixels" : [
+          619,
+          597,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "e34c4715fa317bbcca5f39508c83284c2f4447361ff16f840ee61d3697ffaa66",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/diagnostics/constant-unlit/east-run-c.png",
+      "fileSHA256" : "6b54c6c4cee3eafd0529bd987c246e30adbb2fc56c19447def2c6fd0bc89f6bc",
+      "id" : "east-c",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1505266,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          309
+        ],
+        "nonChromaPixelCount" : 67598,
+        "paddingPixels" : [
+          619,
+          597,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "e34c4715fa317bbcca5f39508c83284c2f4447361ff16f840ee61d3697ffaa66",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

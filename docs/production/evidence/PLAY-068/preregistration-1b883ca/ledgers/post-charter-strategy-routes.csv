@@ -1,0 +1,7 @@
+route,strategy,start_authority,warning,setback,primary_recovery,alternate_recovery,qualification_days,failed_standard_reset,recognition_once,undo_digest,save_load_digest,backup_recovery,replay_identity,result,evidence
+C-primary,commercial,,,,,,,,,,,,,,
+C-alternate,commercial,,,,,,,,,,,,,,
+C-repeat,commercial,,,,,,,,,,,,,,
+I-primary,industrial,,,,,,,,,,,,,,
+I-alternate,industrial,,,,,,,,,,,,,,
+I-repeat,industrial,,,,,,,,,,,,,,

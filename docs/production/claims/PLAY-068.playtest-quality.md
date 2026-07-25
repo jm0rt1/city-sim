@@ -8,7 +8,7 @@
 - **Planned surfaces:** candidate-blind preregistration, exact-candidate manifests, same-state regular/compact matrices, no-coaching journey and accessibility ledgers, defect returns, disposition/completion, and `docs/production/evidence/PLAY-068/`
 - **Dependencies:** preregistration may start immediately; scoring requires clean PLAY-064/065/066/067 handoffs and an integration-provided exact combined candidate
 - **Validation/proof:** frozen 20-point rubric and automatic rejects; two strategy routes and one no-coaching 20-minute journey; post-Charter persistence; public-realm/activity truth; normal/Focus/Details aperture; pointer/keyboard/guide/menu/Escape/FKA/AX/Reduce Motion; pack/geometry/residency/RSS/frame budgets; focused/full suites; exact staged identity
-- **Status:** authorized to preregister from the published baseline; product scoring remains blocked until integration names the exact candidate
+- **Status:** candidate-blind preregistration frozen at published authority `0ed9f3a`; product scoring remains blocked until integration names the exact combined candidate
 
 Freeze the acceptance method before inspecting product candidates. Never
 repair product/source art, coach the journey, substitute a nearby commit,

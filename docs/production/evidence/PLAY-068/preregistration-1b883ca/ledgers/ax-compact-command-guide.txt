@@ -1,0 +1,48 @@
+Window: "", App: CitySim [Quality wf967be0ab5b4].
+0 sheet Secondary Actions: Raise
+	1 container CitySim command guide
+		2 text COMMAND GUIDE
+		3 text Search the entire command deck, see focus rules, and execute available non-spatial actions.
+		4 button Close command guide
+		5 text field (settable, string) Description: Search CitySim commands, Placeholder: Search commands, shortcuts, and outcomes
+		6 scroll area Description: Searchable CitySim command catalog, Secondary Actions: Scroll Up, Scroll Down
+			7 list Secondary Actions: AXScrollToTop, AXScrollToBottom
+				8 text FILE AND HISTORY
+				9 button Description: New Region, Help: Start a fresh authored city., Value: Shortcut ⌘N. Available
+				10 button Description: Save City, Help: Save the current city., Value: Shortcut ⌘S. Available
+				11 button Description: Load City, Help: Load the current quicksave., Value: Shortcut ⌘O. Available
+				12 button (disabled) Description: Undo Construction, Help: Undo the latest reversible build or demolition., Value: Shortcut ⌘Z. Unavailable: There is no reversible construction action
+				13 text SIMULATION
+				14 button Description: Pause or Resume, Help: Toggle between paused and the last active speed., Value: Shortcut Space. Available
+				15 button Description: Set 1x Speed, Help: Run the city at normal speed., Value: Shortcut 1. Available
+				16 button Description: Set 2x Speed, Help: Run the city at fast speed., Value: Shortcut 2. Available
+				17 button Description: Set 3x Speed, Help: Run the city at fastest speed., Value: Shortcut 3. Available
+				18 text INTERACTION MODES
+				19 button Description: Inspect Mode, Help: Read a block without changing it., Value: Shortcut V. Available
+				20 button Description: Build Mode, Help: Return to the selected construction tool., Value: Shortcut T. Available
+				21 button Description: Bulldoze Mode, Help: Enter or leave the reversible demolition tool., Value: Shortcut B. Available
+				22 button Description: Cancel Current Surface or Tool, Help: Close the topmost surface, then cancel the active tool., Value: Shortcut Esc. Available
+				23 text BUILD CATEGORIES
+				24 button Description: Open Roads, Help: Open the roads build category., Value: Shortcut ⇧1. Available
+				25 button Description: Open Zones, Help: Open the zones build category., Value: Shortcut ⇧2. Available
+				26 button Description: Open Utilities, Help: Open the utilities build category., Value: Shortcut ⇧3. Available
+				27 button Description: Open Services, Help: Open the services build category., Value: Shortcut ⇧4. Available
+				28 button Description: Open Civic, Help: Open the civic build category., Value: Shortcut ⇧5. Available
+			29 scroll bar (settable, float) 0
+				30 value indicator (settable, float) 0
+				31 increment arrow button
+				32 decrement arrow button
+				33 increment page button
+				34 decrement page button
+35 menu bar
+	36 CitySim [Quality wf967be0ab5b4]
+	37 File
+	38 Edit
+	39 View
+	40 Simulation
+	41 Tools
+	42 City Data
+	43 Window
+	44 Help
+
+The focused UI element is 5 text field (settable, string) Description: Search CitySim commands, Placeholder: Search commands, shortcuts, and outcomes

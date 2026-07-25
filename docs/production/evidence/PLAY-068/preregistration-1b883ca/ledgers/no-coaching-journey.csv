@@ -1,0 +1,12 @@
+route,wall_time,game_day,game_tick,input,event_or_decision,player_hypothesis,visible_cause,visible_consequence,dead_time_seconds,confusion_or_false_feedback,recovery,milestone_or_terminal,evidence
+NC-1,00:00,,,,Welcome visible; timer starts,,,,,,,,
+NC-1,,,,,first meaningful decision,,,,,,,,
+NC-1,,,,,strategy commitment,,,,,,,,
+NC-1,,,,,meaningful decision 2,,,,,,,,
+NC-1,,,,,meaningful decision 3,,,,,,,,
+NC-1,,,,,Town Charter transition,,,,,,,,
+NC-1,,,,,second-act warning,,,,,,,,
+NC-1,,,,,setback,,,,,,,,
+NC-1,,,,,recovery decision,,,,,,,,
+NC-1,18:00,,,,recovery deadline checkpoint,,,,,,,,
+NC-1,20:00,,,,route stop,,,,,,,,

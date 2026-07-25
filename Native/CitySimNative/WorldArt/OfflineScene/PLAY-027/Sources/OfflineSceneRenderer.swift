@@ -1334,9 +1334,8 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
 
         let verticalOffset = descriptor.camera.postProjectionOffsetPixels[1]
         context.interpolationQuality = .high
-        let matteSafeSource = try hardMatteObject(source)
         context.draw(
-            matteSafeSource,
+            source,
             in: CGRect(
                 x: descriptor.camera.postProjectionOffsetPixels[0],
                 y: -verticalOffset,
@@ -1350,58 +1349,6 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
         }
         return try deterministicallyQuantized(composited)
-    }
-
-    private func hardMatteObject(_ image: CGImage) throws -> CGImage {
-        let width = image.width
-        let height = image.height
-        var bytes = [UInt8](repeating: 0, count: width * height * 4)
-        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
-        return try bytes.withUnsafeMutableBytes { storage in
-            guard let context = CGContext(
-                data: storage.baseAddress,
-                width: width,
-                height: height,
-                bitsPerComponent: 8,
-                bytesPerRow: width * 4,
-                space: colorSpace,
-                bitmapInfo:
-                    CGImageAlphaInfo.premultipliedLast.rawValue
-                    | CGBitmapInfo.byteOrder32Big.rawValue
-            ) else {
-                throw OfflineRendererError.rendering(
-                    "could not allocate matte-safe object context"
-                )
-            }
-            context.interpolationQuality = .none
-            context.draw(
-                image,
-                in: CGRect(x: 0, y: 0, width: width, height: height)
-            )
-            for pixel in stride(from: 0, to: storage.count, by: 4) {
-                let alpha = Int(storage[pixel + 3])
-                guard alpha > 0 else {
-                    storage[pixel] = 0
-                    storage[pixel + 1] = 0
-                    storage[pixel + 2] = 0
-                    storage[pixel + 3] = 0
-                    continue
-                }
-                for channel in 0..<3 {
-                    let premultiplied = Int(storage[pixel + channel])
-                    storage[pixel + channel] = UInt8(
-                        min(255, premultiplied * 255 / max(1, alpha))
-                    )
-                }
-                storage[pixel + 3] = 255
-            }
-            guard let output = context.makeImage() else {
-                throw OfflineRendererError.rendering(
-                    "could not create matte-safe object"
-                )
-            }
-            return output
-        }
     }
 
     private func deterministicallyQuantized(

@@ -22,9 +22,9 @@
 - The wall palette is warmer and lighter, masonry relief is less contrasty,
   and the main roof becomes a lower charcoal hip roof rather than the
   oversized pale custom-plane roof.
-- The renderer hard-mattes oversampled object coverage before applying the
+- The renderer preserves native oversampled object coverage when applying the
   required flat `#ff00ff` field. The existing normalizer remains unmodified
-  and owns final transparent-alpha output.
+  and exclusively owns final transparent-alpha output and edge despill.
 - The normalized validator now rejects visible magenta-dominant pixels.
 - Native-2x, grayscale, footprint, and zoom review sheets consume the existing
   deterministic normalized-alpha block outputs, never the raw chroma preview.
@@ -33,7 +33,7 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v5` | `source-v07` |
+| north | `residential-l01-v0-north-geometry-v5` | `source-v08` |
 | east | `residential-l01-v0-east-geometry-v4` | `source-v05` |
 | south | `residential-l01-v0-south-geometry-v4` | `source-v05` |
 | west | `residential-l01-v0-west-geometry-v5` | `source-v06` |

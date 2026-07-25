@@ -37,3 +37,20 @@ The raw PNG, provenance record, and byte-identical repeat are retained. The
 renderer repair preserves every nonzero object-coverage pixel, unpremultiplies
 its color, and hard-mattes it before the flat chroma field. North advances to
 `source-v07`; its geometry v5 remains unchanged.
+
+## North source-v07
+
+**Raw SHA-256:** `7b15c482e2e588f6a0598795531a8dcd1d76a3ed579094cf7dd9254d6018797b`
+
+**Disposition:** rejected as a second deterministic source-tool failure
+
+Lowering the coverage threshold retained more of the building but still
+discarded large prepared-geometry regions. This confirms that SceneKit
+snapshot alpha cannot be reinterpreted as a binary object mask in the raw
+source compositor.
+
+The raw PNG and provenance record are retained. The source renderer returns
+to preserving native oversampled coverage on the required chroma field, while
+the existing deterministic normalizer remains the only authority for alpha,
+despill, and hidden RGB. The review tool consumes those normalized-alpha
+outputs directly. North advances to `source-v08`; geometry v5 is unchanged.

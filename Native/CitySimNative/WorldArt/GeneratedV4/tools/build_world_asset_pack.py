@@ -24,6 +24,7 @@ STYLE = ROOT / "GateA" / "golden_district_imagegen_source-v2.png"
 PLAY027 = ROOT / "OfflineScene" / "PLAY-027"
 PLAY028_SELECTION = GENERATED / "catalog" / "play-028-residential-directions.json"
 PLAY060_SELECTION = GENERATED / "catalog" / "play-060-commercial-directions.json"
+PLAY062_SELECTION = GENERATED / "catalog" / "play-062-industrial-l1-directions.json"
 RAW_CANVAS = (1536, 1024)
 GROUND_PIVOT = (768, 896)
 WORLD_POINTS_PER_RAW_PIXEL = 72 / 512
@@ -105,27 +106,35 @@ def directional_building_assets(
     selection_path: Path,
     family: str,
     task: str,
+    levels: tuple[int, ...] = (1, 2, 3, 4),
 ) -> list[dict[str, object]]:
     catalog = json.loads(selection_path.read_text(encoding="utf-8"))
     selections = catalog.get("selections", [])
     expected = {
         (level, direction)
-        for level in range(1, 5)
+        for level in levels
         for direction in ("north", "east", "south", "west")
     }
     actual = {(item.get("level"), item.get("direction")) for item in selections}
-    if catalog.get("schema") != 1 or actual != expected or len(selections) != 16:
+    expected_count = len(expected)
+    if (
+        catalog.get("schema") != 1
+        or catalog.get("task") != task
+        or actual != expected
+        or len(selections) != expected_count
+    ):
         raise SystemExit(
-            f"build rejected: {task} {family} selection is not the exact L1-L4 N/E/S/W matrix"
+            f"build rejected: {task} {family} selection is not the exact "
+            f"{'/'.join(f'L{level}' for level in levels)} N/E/S/W matrix"
         )
-    if len({item["raw_sha256"] for item in selections}) != 16:
+    if len({item["raw_sha256"] for item in selections}) != expected_count:
         raise SystemExit(f"build rejected: {task} {family} raw sources are aliased")
     normalized_hashes = [
         item["normalized_sha256"][detail]
         for item in selections
         for detail in DETAILS
     ]
-    if len(set(normalized_hashes)) != 48:
+    if len(set(normalized_hashes)) != expected_count * len(DETAILS):
         raise SystemExit(f"build rejected: {task} {family} normalized LODs are aliased")
 
     assets: list[dict[str, object]] = []
@@ -146,6 +155,8 @@ def directional_building_assets(
         )
         if task == "PLAY-028" and level == 1:
             normalization_name = f"{revision}-normalization.json"
+        elif task == "PLAY-062":
+            normalization_name = f"normalization-{revision}-native-tool.json"
         elif family == "commercial" and level > 1:
             normalization_name = f"normalization-{revision}-native-tool.json"
         else:
@@ -527,6 +538,12 @@ def build(output_atlas: Path) -> None:
             "commercial",
             "PLAY-060",
         )
+        + directional_building_assets(
+            PLAY062_SELECTION,
+            "industrial",
+            "PLAY-062",
+            levels=(1,),
+        )
     )
     directional_ids = {asset["logical_id"] for asset in directional_assets}
     manifest["assets"] = [
@@ -603,7 +620,7 @@ def build(output_atlas: Path) -> None:
             for mask in range(16)
         }
 
-    manifest["generator_version"] = "PLAY-060-directional-commercial-production-1"
+    manifest["generator_version"] = "PLAY-062-directional-industrial-l1-production-1"
     manifest["pages"] = sorted(pages, key=lambda item: item["id"])
     manifest["inventory"] = [
         {

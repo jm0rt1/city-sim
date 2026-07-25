@@ -663,6 +663,9 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         let base = entrance.baseWorld
         let horizontal = facade.direction == "north"
             || facade.direction == "south"
+        let tangent = horizontal
+            ? [1.0, 0.0, 0.0]
+            : [0.0, 0.0, 1.0]
         let pavilionCenter = [
             base[0]
                 - outward[0] * (entrance.pavilionDepth / 2 - 0.2),
@@ -893,14 +896,18 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         }
 
         let canopyCenter = [
-            base[0] + outward[0] * entrance.canopyDepth / 2,
+            base[0] + outward[0] * entrance.canopyDepth / 2
+                + tangent[0] * entrance.porchLateralOffset,
             base[1] + entrance.height + 2.0,
-            base[2] + outward[2] * entrance.canopyDepth / 2,
+            base[2] + outward[2] * entrance.canopyDepth / 2
+                + tangent[2] * entrance.porchLateralOffset,
         ]
         let porchDeckCenter = [
-            base[0] + outward[0] * entrance.canopyDepth / 2,
+            base[0] + outward[0] * entrance.canopyDepth / 2
+                + tangent[0] * entrance.porchLateralOffset,
             descriptor.building.foundationHeight - 0.35,
-            base[2] + outward[2] * entrance.canopyDepth / 2,
+            base[2] + outward[2] * entrance.canopyDepth / 2
+                + tangent[2] * entrance.porchLateralOffset,
         ]
         let porchDeckDimensions = horizontal
             ? [
@@ -943,9 +950,6 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         porchRoofNode.castsShadow = true
         scene.rootNode.addChildNode(porchRoofNode)
 
-        let tangent = horizontal
-            ? [1.0, 0.0, 0.0]
-            : [0.0, 0.0, 1.0]
         for side in [-1.0, 1.0] {
             let tangentOffset =
                 side
@@ -965,12 +969,16 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                         base[0]
                             + outward[0]
                                 * (entrance.canopyDepth - 1.0)
+                            + tangent[0]
+                                * entrance.porchLateralOffset
                             + tangent[0] * tangentOffset,
                         descriptor.building.foundationHeight
                             + (entrance.height + 3.5) / 2,
                         base[2]
                             + outward[2]
                                 * (entrance.canopyDepth - 1.0)
+                            + tangent[2]
+                                * entrance.porchLateralOffset
                             + tangent[2] * tangentOffset,
                     ],
                     materialID: entrance.surroundMaterialID
@@ -1005,11 +1013,15 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                         base[0]
                             + outward[0]
                                 * (entrance.canopyDepth / 2 + 1)
+                            + tangent[0]
+                                * entrance.porchLateralOffset
                             + tangent[0] * tangentOffset,
                         railHeight,
                         base[2]
                             + outward[2]
                                 * (entrance.canopyDepth / 2 + 1)
+                            + tangent[2]
+                                * entrance.porchLateralOffset
                             + tangent[2] * tangentOffset,
                     ],
                     materialID: entrance.surroundMaterialID

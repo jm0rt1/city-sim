@@ -33,14 +33,18 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v4` | `source-v05` |
+| north | `residential-l01-v0-north-geometry-v5` | `source-v06` |
 | east | `residential-l01-v0-east-geometry-v4` | `source-v05` |
 | south | `residential-l01-v0-south-geometry-v4` | `source-v05` |
-| west | `residential-l01-v0-west-geometry-v4` | `source-v06` |
+| west | `residential-l01-v0-west-geometry-v5` | `source-v06` |
 
 The four descriptors validate with unique descriptor hashes and geometry IDs.
 Camera, pivot, footprint, contact, socket, light, shadow, and orientation
 contracts remain frozen. No sibling is mirrored, rotated, or transformed.
+
+North `source-v05` proved that depth alone did not defeat far-edge occlusion.
+It is preserved and rejected in `ATTEMPT-REJECTIONS.md`; the revised north and
+west descriptors independently declare grounded lateral porch returns.
 
 Rendering must not begin until this redesign input is committed. The resulting
 pixels remain review candidates only and cannot authorize the remaining 44

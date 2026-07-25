@@ -113,6 +113,7 @@ struct EntranceDescriptor: Codable, Equatable {
     let pavilionMaterialID: String
     let porchWidth: Double
     let porchColumnWidth: Double
+    let porchLateralOffset: Double
 }
 
 struct PropDescriptor: Codable, Equatable {

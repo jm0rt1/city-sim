@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "residential-l01-v0-west-geometry-v4",
+  "sceneGeometryID": "residential-l01-v0-west-geometry-v5",
   "logicalBuildingID": "residential_l01",
   "family": "residential",
   "level": 1,
@@ -159,8 +159,9 @@
     "pavilionHeight": 31,
     "pavilionRoofHeight": 8,
     "pavilionMaterialID": "brick-warm-red",
-    "porchWidth": 28,
-    "porchColumnWidth": 1.8
+    "porchWidth": 30,
+    "porchColumnWidth": 1.8,
+    "porchLateralOffset": 14
   },
   "props": [
     {"id": "west-south-flowers", "kind": "flower-bed", "positionWorld": [-31, 1, 27], "dimensions": [3, 2, 7], "materialID": "planting-evergreen"},

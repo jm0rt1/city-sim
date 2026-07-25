@@ -160,7 +160,8 @@
     "pavilionRoofHeight": 8,
     "pavilionMaterialID": "brick-warm-red",
     "porchWidth": 26,
-    "porchColumnWidth": 1.8
+    "porchColumnWidth": 1.8,
+    "porchLateralOffset": 0
   },
   "props": [
     {"id": "south-left-flowers", "kind": "flower-bed", "positionWorld": [-18, 1, 31], "dimensions": [7, 2, 3], "materialID": "planting-evergreen"},

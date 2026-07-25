@@ -160,7 +160,8 @@
     "pavilionRoofHeight": 8,
     "pavilionMaterialID": "brick-warm-red",
     "porchWidth": 24,
-    "porchColumnWidth": 1.8
+    "porchColumnWidth": 1.8,
+    "porchLateralOffset": 0
   },
   "props": [
     {"id": "east-north-shrub", "kind": "shrub-cluster", "positionWorld": [31, 2, -18], "dimensions": [4, 4, 5], "materialID": "planting-evergreen"},

@@ -276,9 +276,22 @@ enum ValidateScenesMain {
                 || descriptor.entrance.porchWidth
                     < descriptor.entrance.width + 6
                 || descriptor.entrance.porchColumnWidth <= 0
+                || abs(descriptor.entrance.porchLateralOffset)
+                    > descriptor.entrance.porchWidth / 2
             {
                 itemFailures.append(
                     "entrance pavilion/porch hierarchy is not readable"
+                )
+            }
+            if
+                (direction == "north" || direction == "west"),
+                (
+                    descriptor.entrance.canopyDepth < 18
+                        || abs(descriptor.entrance.porchLateralOffset) < 10
+                )
+            {
+                itemFailures.append(
+                    "far frontage lacks a grounded visible porch return"
                 )
             }
             if descriptor.occlusionExclusions.isEmpty {

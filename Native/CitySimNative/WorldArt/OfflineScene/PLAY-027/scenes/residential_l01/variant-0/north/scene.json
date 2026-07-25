@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "residential-l01-v0-north-geometry-v4",
+  "sceneGeometryID": "residential-l01-v0-north-geometry-v5",
   "logicalBuildingID": "residential_l01",
   "family": "residential",
   "level": 1,
   "variantID": "variant-0",
   "viewDirection": "north",
-  "sourceRevision": "source-v05",
+  "sourceRevision": "source-v06",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {
@@ -159,8 +159,9 @@
     "pavilionHeight": 31,
     "pavilionRoofHeight": 8,
     "pavilionMaterialID": "brick-warm-red",
-    "porchWidth": 28,
-    "porchColumnWidth": 1.8
+    "porchWidth": 30,
+    "porchColumnWidth": 1.8,
+    "porchLateralOffset": 14
   },
   "props": [
     {"id": "north-left-shrub", "kind": "shrub-cluster", "positionWorld": [-19, 2, -31], "dimensions": [5, 4, 4], "materialID": "planting-evergreen"},

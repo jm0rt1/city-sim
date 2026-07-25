@@ -252,7 +252,8 @@
         "pavilionRoofHeight",
         "pavilionMaterialID",
         "porchWidth",
-        "porchColumnWidth"
+        "porchColumnWidth",
+        "porchLateralOffset"
       ]
     },
     "prop": {

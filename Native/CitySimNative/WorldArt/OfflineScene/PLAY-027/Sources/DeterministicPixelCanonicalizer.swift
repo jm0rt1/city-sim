@@ -21,16 +21,32 @@ struct PixelCanonicalizationMutation: Codable, Equatable {
     let majorityValue: Int
 }
 
+struct PixelCanonicalizationEvaluation: Codable, Equatable {
+    let x: Int
+    let y: Int
+    let channel: Int
+    let centerValue: Int
+    let majorityValue: Int?
+    let majorityCount: Int
+    let fullyOpaqueNeighborhood: Bool
+    let chromaFreeNeighborhood: Bool
+    let exactQuantumDifference: Bool
+    let eligible: Bool
+    let mutated: Bool
+}
+
 struct PixelCanonicalizationResult: Equatable {
     let rgba: [UInt8]
     let mutations: [PixelCanonicalizationMutation]
+    let evaluations: [PixelCanonicalizationEvaluation]
 }
 
 func canonicalizeIsolatedQuantizedRGBOutliers(
     sourceRGBA: [UInt8],
     width: Int,
     height: Int,
-    contract: SamplingPostQuantizationCanonicalizerDescriptor
+    contract: SamplingPostQuantizationCanonicalizerDescriptor,
+    traceCoordinates: [[Int]] = []
 ) throws -> PixelCanonicalizationResult {
     guard
         width >= contract.neighborhoodSize,
@@ -59,14 +75,20 @@ func canonicalizeIsolatedQuantizedRGBOutliers(
     let immutableSource = sourceRGBA
     var output = sourceRGBA
     var mutations: [PixelCanonicalizationMutation] = []
+    var evaluations: [PixelCanonicalizationEvaluation] = []
     let chroma = [UInt8(255), 0, 255, 255]
+    let traceKeys = Set(
+        traceCoordinates.compactMap { coordinate in
+            coordinate.count == 2
+                ? "\(coordinate[0]),\(coordinate[1])"
+                : nil
+        }
+    )
 
     for y in 1..<(height - 1) {
         for x in 1..<(width - 1) {
             let center = (y * width + x) * 4
-            if Array(immutableSource[center..<(center + 4)]) == chroma {
-                continue
-            }
+            let shouldTrace = traceKeys.contains("\(x),\(y)")
             var neighborhoodIndices: [Int] = []
             var allOpaque = true
             var containsChroma = false
@@ -85,6 +107,26 @@ func canonicalizeIsolatedQuantizedRGBOutliers(
                 }
             }
             guard allOpaque, !containsChroma else {
+                if shouldTrace {
+                    for channel in 0..<3 {
+                        evaluations.append(
+                            PixelCanonicalizationEvaluation(
+                                x: x,
+                                y: y,
+                                channel: channel,
+                                centerValue:
+                                    Int(immutableSource[center + channel]),
+                                majorityValue: nil,
+                                majorityCount: 0,
+                                fullyOpaqueNeighborhood: allOpaque,
+                                chromaFreeNeighborhood: !containsChroma,
+                                exactQuantumDifference: false,
+                                eligible: false,
+                                mutated: false
+                            )
+                        )
+                    }
+                }
                 continue
             }
             for channel in 0..<3 {
@@ -92,22 +134,42 @@ func canonicalizeIsolatedQuantizedRGBOutliers(
                 for index in neighborhoodIndices {
                     counts[immutableSource[index + channel], default: 0] += 1
                 }
-                guard
-                    let majority = counts.max(by: {
-                        if $0.value == $1.value {
-                            return $0.key > $1.key
-                        }
-                        return $0.value < $1.value
-                    }),
-                    majority.value >= contract.majorityThreshold
-                else {
-                    continue
-                }
                 let centerValue = immutableSource[center + channel]
-                guard
-                    abs(Int(centerValue) - Int(majority.key))
-                        == contract.quantizationQuantum
-                else {
+                let majority = counts.max(by: {
+                    if $0.value == $1.value {
+                        return $0.key > $1.key
+                    }
+                    return $0.value < $1.value
+                })
+                let majorityValue = majority.map { Int($0.key) }
+                let majorityCount = majority?.value ?? 0
+                let exactQuantumDifference =
+                    majorityValue.map {
+                        abs(Int(centerValue) - $0)
+                            == contract.quantizationQuantum
+                    } ?? false
+                let eligible =
+                    majorityCount >= contract.majorityThreshold
+                    && exactQuantumDifference
+                if shouldTrace {
+                    evaluations.append(
+                        PixelCanonicalizationEvaluation(
+                            x: x,
+                            y: y,
+                            channel: channel,
+                            centerValue: Int(centerValue),
+                            majorityValue: majorityValue,
+                            majorityCount: majorityCount,
+                            fullyOpaqueNeighborhood: true,
+                            chromaFreeNeighborhood: true,
+                            exactQuantumDifference:
+                                exactQuantumDifference,
+                            eligible: eligible,
+                            mutated: eligible
+                        )
+                    )
+                }
+                guard eligible, let majority else {
                     continue
                 }
                 output[center + channel] = majority.key
@@ -125,6 +187,7 @@ func canonicalizeIsolatedQuantizedRGBOutliers(
     }
     return PixelCanonicalizationResult(
         rgba: output,
-        mutations: mutations
+        mutations: mutations,
+        evaluations: evaluations
     )
 }

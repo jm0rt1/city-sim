@@ -171,6 +171,29 @@ env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
   -o /private/tmp/play027-offline-tools/compare-retained-raw-pixels
 ```
 
+Residual sampling diagnostics may additionally bind a new diagnostics-only
+directory and one source coordinate to the renderer with
+`--diagnostic-stage-capture-dir <dir>` and
+`--diagnostic-stage-coordinate <x,y>`. Both switches are required together.
+The output PNG and provenance record must be children of that new directory,
+which prevents overwriting an earlier attempt. The capture records the
+prequantized in-memory RGBA, quantized-before-majority RGBA, post-majority
+in-memory RGBA and target eligibility/mutation, ImageIO pre-sips decoded RGBA,
+and final sips decoded RGBA. It does not change descriptor sampling,
+canonicalizer thresholds, scene geometry, or accepted source paths.
+
+The exact five-stage capture packets can be summarized without modifying
+their retained bytes:
+
+```bash
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Tools/SummarizeRendererStageCaptures.swift \
+  -framework CryptoKit \
+  -o /private/tmp/play027-offline-tools/summarize-renderer-stage-captures
+```
+
 The task-owned native source normalizer compiles independently as well:
 
 ```bash

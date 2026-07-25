@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -2146,13 +2146,23 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 
 final class NativeSourceCompositor: OfflineSourceCompositing {
     private let sampling: EffectiveSamplingContract
+    private let stageTraceCoordinate: [Int]?
     private let ciContext: CIContext
     private(set) var prequantizedImage: CGImage?
+    private(set) var prequantizedRGBA: [UInt8]?
+    private(set) var quantizedBeforeMajorityRGBA: [UInt8]?
+    private(set) var postMajorityRGBA: [UInt8]?
     private(set) var postQuantizationMutations:
         [PixelCanonicalizationMutation] = []
+    private(set) var postQuantizationEvaluations:
+        [PixelCanonicalizationEvaluation] = []
 
-    init(sampling: EffectiveSamplingContract) {
+    init(
+        sampling: EffectiveSamplingContract,
+        stageTraceCoordinate: [Int]? = nil
+    ) {
         self.sampling = sampling
+        self.stageTraceCoordinate = stageTraceCoordinate
         ciContext = CIContext(options: [
             .useSoftwareRenderer: sampling.ciUseSoftwareRenderer,
             .cacheIntermediates: sampling.ciCacheIntermediates,
@@ -2236,6 +2246,9 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
         }
         prequantizedImage = composited
+        if stageTraceCoordinate != nil {
+            prequantizedRGBA = try rendererPackedRGBA(image: composited)
+        }
         return try deterministicallyQuantized(composited)
     }
 
@@ -2294,15 +2307,23 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 }
             }
         }
+        if stageTraceCoordinate != nil {
+            quantizedBeforeMajorityRGBA = bytes
+        }
         if let repair = sampling.postQuantizationCanonicalizer {
             let result = try canonicalizeIsolatedQuantizedRGBOutliers(
                 sourceRGBA: bytes,
                 width: width,
                 height: height,
-                contract: repair
+                contract: repair,
+                traceCoordinates: stageTraceCoordinate.map { [$0] } ?? []
             )
             bytes = result.rgba
             postQuantizationMutations = result.mutations
+            postQuantizationEvaluations = result.evaluations
+        }
+        if stageTraceCoordinate != nil {
+            postMajorityRGBA = bytes
         }
         return try bytes.withUnsafeMutableBytes { storage in
             guard let context = CGContext(
@@ -2537,16 +2558,35 @@ func writeImageIOPNG(_ image: CGImage, to url: URL) throws {
     }
 }
 
-func writePNG(_ image: CGImage, to url: URL) throws {
-    let intermediateURL = url.deletingLastPathComponent()
-        .appendingPathComponent(
-            "." + url.lastPathComponent + ".imageio-intermediate.png"
+func writePNG(
+    _ image: CGImage,
+    to url: URL,
+    diagnosticIntermediateURL: URL? = nil,
+    diagnosticRepositoryRoot: URL? = nil,
+    diagnosticTarget: [Int]? = nil
+) throws -> RendererPNGWriteDiagnostics? {
+    let intermediateURL =
+        diagnosticIntermediateURL
+        ?? url.deletingLastPathComponent()
+            .appendingPathComponent(
+                "." + url.lastPathComponent + ".imageio-intermediate.png"
+            )
+    if
+        diagnosticIntermediateURL != nil,
+        FileManager.default.fileExists(atPath: intermediateURL.path)
+    {
+        throw OfflineRendererError.invalid(
+            "diagnostic ImageIO intermediate already exists: \(intermediateURL.path)"
         )
+    }
     if FileManager.default.fileExists(atPath: intermediateURL.path) {
         try FileManager.default.removeItem(at: intermediateURL)
     }
+    let removeIntermediateAfterWrite = diagnosticIntermediateURL == nil
     defer {
-        try? FileManager.default.removeItem(at: intermediateURL)
+        if removeIntermediateAfterWrite {
+            try? FileManager.default.removeItem(at: intermediateURL)
+        }
     }
     try writeImageIOPNG(image, to: intermediateURL)
 
@@ -2573,6 +2613,26 @@ func writePNG(_ image: CGImage, to url: URL) throws {
             "native PNG canonicalization failed"
         )
     }
+    guard
+        let diagnosticRepositoryRoot,
+        let diagnosticTarget
+    else {
+        return nil
+    }
+    return RendererPNGWriteDiagnostics(
+        imageIOPreSips: try rendererPNGStageRecord(
+            stage: "imageio-pre-sips-decoded",
+            url: intermediateURL,
+            repositoryRoot: diagnosticRepositoryRoot,
+            target: diagnosticTarget
+        ),
+        finalSips: try rendererPNGStageRecord(
+            stage: "final-sips-decoded",
+            url: url,
+            repositoryRoot: diagnosticRepositoryRoot,
+            target: diagnosticTarget
+        )
+    )
 }
 
 @main
@@ -2610,6 +2670,33 @@ enum OfflineSceneRendererMain {
         ).map {
             URL(fileURLWithPath: $0).standardizedFileURL
         }
+        let diagnosticStageCaptureDirectory = rendererOptionalArgument(
+            "--diagnostic-stage-capture-dir",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
+        let diagnosticStageCoordinateRaw = rendererOptionalArgument(
+            "--diagnostic-stage-coordinate",
+            in: arguments
+        )
+        let diagnosticStageCoordinate: [Int]? = {
+            guard let diagnosticStageCoordinateRaw else {
+                return nil
+            }
+            let components = diagnosticStageCoordinateRaw.split(
+                separator: ",",
+                omittingEmptySubsequences: false
+            )
+            guard
+                components.count == 2,
+                let x = Int(components[0]),
+                let y = Int(components[1])
+            else {
+                return nil
+            }
+            return [x, y]
+        }()
         let diagnosticAntialiasingRaw = rendererOptionalArgument(
             "--diagnostic-antialiasing",
             in: arguments
@@ -2649,6 +2736,34 @@ enum OfflineSceneRendererMain {
             else {
                 throw OfflineRendererError.invalid(
                     "prequantized diagnostic output must remain under a diagnostics path"
+                )
+            }
+        }
+        guard
+            (diagnosticStageCaptureDirectory == nil)
+                == (diagnosticStageCoordinate == nil)
+        else {
+            throw OfflineRendererError.invalid(
+                "stage capture directory and coordinate must be supplied together"
+            )
+        }
+        if let diagnosticStageCaptureDirectory {
+            let capturePrefix =
+                diagnosticStageCaptureDirectory.path.hasSuffix("/")
+                ? diagnosticStageCaptureDirectory.path
+                : diagnosticStageCaptureDirectory.path + "/"
+            guard
+                diagnosticStageCaptureDirectory.path.contains(
+                    "/diagnostics/"
+                ),
+                outputURL.path.hasPrefix(capturePrefix),
+                recordURL.path.hasPrefix(capturePrefix),
+                !FileManager.default.fileExists(
+                    atPath: diagnosticStageCaptureDirectory.path
+                )
+            else {
+                throw OfflineRendererError.invalid(
+                    "stage capture output and record must use one new diagnostics directory"
                 )
             }
         }
@@ -2714,21 +2829,170 @@ enum OfflineSceneRendererMain {
                 descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
         let compositor = NativeSourceCompositor(
-            sampling: descriptorSampling
+            sampling: descriptorSampling,
+            stageTraceCoordinate: diagnosticStageCoordinate
         )
         let source = try compositor.compositeRegisteredSource(
             renderedImage: oversampled,
             descriptor: descriptor
         )
         let rawOccupancy = try validatedRawOccupancy(source)
-        try writePNG(source, to: outputURL)
+        var pngWriteDiagnostics: RendererPNGWriteDiagnostics?
+        if
+            let diagnosticStageCaptureDirectory,
+            let diagnosticStageCoordinate
+        {
+            try FileManager.default.createDirectory(
+                at: diagnosticStageCaptureDirectory,
+                withIntermediateDirectories: true
+            )
+            pngWriteDiagnostics = try writePNG(
+                source,
+                to: outputURL,
+                diagnosticIntermediateURL:
+                    diagnosticStageCaptureDirectory.appendingPathComponent(
+                        "imageio-pre-sips.png"
+                    ),
+                diagnosticRepositoryRoot: repositoryRoot,
+                diagnosticTarget: diagnosticStageCoordinate
+            )
+        } else {
+            _ = try writePNG(source, to: outputURL)
+        }
         if
             let diagnosticPrequantizedOutput,
             let prequantizedImage = compositor.prequantizedImage
         {
-            try writePNG(
+            _ = try writePNG(
                 prequantizedImage,
                 to: diagnosticPrequantizedOutput
+            )
+        }
+
+        if
+            let diagnosticStageCaptureDirectory,
+            let diagnosticStageCoordinate,
+            let prequantizedRGBA = compositor.prequantizedRGBA,
+            let quantizedBeforeMajorityRGBA =
+                compositor.quantizedBeforeMajorityRGBA,
+            let postMajorityRGBA = compositor.postMajorityRGBA,
+            let pngWriteDiagnostics
+        {
+            let width = descriptor.camera.renderViewportPixels[0]
+            let height = descriptor.camera.renderViewportPixels[1]
+            let prequantized = try rendererRGBAStageRecord(
+                stage: "prequantized-in-memory",
+                rgba: prequantizedRGBA,
+                width: width,
+                height: height,
+                target: diagnosticStageCoordinate
+            )
+            let quantizedBeforeMajority = try rendererRGBAStageRecord(
+                stage: "quantized-before-majority-in-memory",
+                rgba: quantizedBeforeMajorityRGBA,
+                width: width,
+                height: height,
+                target: diagnosticStageCoordinate
+            )
+            let postMajority = try rendererRGBAStageRecord(
+                stage: "post-majority-in-memory",
+                rgba: postMajorityRGBA,
+                width: width,
+                height: height,
+                target: diagnosticStageCoordinate
+            )
+            let evaluations = compositor.postQuantizationEvaluations.map {
+                [
+                    "x": $0.x,
+                    "y": $0.y,
+                    "channel": $0.channel,
+                    "centerValue": $0.centerValue,
+                    "majorityValue":
+                        $0.majorityValue.map { $0 as Any } ?? NSNull(),
+                    "majorityCount": $0.majorityCount,
+                    "fullyOpaqueNeighborhood":
+                        $0.fullyOpaqueNeighborhood,
+                    "chromaFreeNeighborhood":
+                        $0.chromaFreeNeighborhood,
+                    "exactQuantumDifference":
+                        $0.exactQuantumDifference,
+                    "eligible": $0.eligible,
+                    "mutated": $0.mutated,
+                ] as [String: Any]
+            }
+            let postSHA =
+                postMajority["decodedRGBASHA256"] as? String
+            let imageIOSHA =
+                pngWriteDiagnostics.imageIOPreSips[
+                    "decodedRGBASHA256"
+                ] as? String
+            let finalSHA =
+                pngWriteDiagnostics.finalSips[
+                    "decodedRGBASHA256"
+                ] as? String
+            let capture: [String: Any] = [
+                "schema": 1,
+                "task": "PLAY-027",
+                "purpose":
+                    "residual-stage-isolation-no-authority",
+                "coordinateSystem":
+                    "top-left decoded RGBA source pixel",
+                "targetCoordinate": diagnosticStageCoordinate,
+                "sourceKey":
+                    "\(descriptor.logicalBuildingID)/\(descriptor.variantID)/\(descriptor.viewDirection)/\(descriptor.sourceRevision)",
+                "stages": [
+                    prequantized,
+                    quantizedBeforeMajority,
+                    postMajority,
+                    pngWriteDiagnostics.imageIOPreSips,
+                    pngWriteDiagnostics.finalSips,
+                ],
+                "postMajorityTargetEvaluations": evaluations,
+                "postMajorityTargetEligible":
+                    evaluations.contains { $0["eligible"] as? Bool == true },
+                "postMajorityTargetMutated":
+                    evaluations.contains { $0["mutated"] as? Bool == true },
+                "postMajorityTotalMutationCount":
+                    compositor.postQuantizationMutations.count,
+                "postMajorityMutationCountsByChannel": [
+                    "red":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 0
+                        }.count,
+                    "green":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 1
+                        }.count,
+                    "blue":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 2
+                        }.count,
+                ],
+                "stageIdentity": [
+                    "postMajorityEqualsImageIODecode":
+                        postSHA != nil && postSHA == imageIOSHA,
+                    "imageIODecodeEqualsFinalSipsDecode":
+                        imageIOSHA != nil && imageIOSHA == finalSHA,
+                ],
+                "descriptorSamplingContractID":
+                    descriptorSampling.contractID,
+                "repairThresholdsChanged": false,
+                "productionSelected": false,
+            ]
+            var captureData = try JSONSerialization.data(
+                withJSONObject: capture,
+                options: [
+                    .prettyPrinted,
+                    .sortedKeys,
+                    .withoutEscapingSlashes,
+                ]
+            )
+            captureData.append(0x0a)
+            try captureData.write(
+                to: diagnosticStageCaptureDirectory.appendingPathComponent(
+                    "STAGE-CAPTURE.json"
+                ),
+                options: .atomic
             )
         }
 
@@ -2736,6 +3000,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -2775,6 +3040,13 @@ enum OfflineSceneRendererMain {
                 "sourceAuthority": false,
                 "prequantizedOutput":
                     diagnosticPrequantizedOutput.map {
+                        rendererRelativePath(
+                            $0,
+                            repositoryRoot: repositoryRoot
+                        )
+                    } ?? "not-requested",
+                "stageCapture":
+                    diagnosticStageCaptureDirectory.map {
                         rendererRelativePath(
                             $0,
                             repositoryRoot: repositoryRoot

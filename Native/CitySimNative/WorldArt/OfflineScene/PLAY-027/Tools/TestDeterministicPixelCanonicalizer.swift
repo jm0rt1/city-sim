@@ -83,6 +83,24 @@ enum TestDeterministicPixelCanonicalizerMain {
             ],
             "isolated mutation record mismatch"
         )
+        let tracedRepair = try canonicalizeIsolatedQuantizedRGBOutliers(
+            sourceRGBA: isolated,
+            width: 5,
+            height: 5,
+            contract: contract,
+            traceCoordinates: [[2, 2]]
+        )
+        try requireTest(
+            tracedRepair.rgba == repaired.rgba
+                && tracedRepair.mutations == repaired.mutations,
+            "diagnostic trace must not change repair pixels or mutations"
+        )
+        try requireTest(
+            tracedRepair.evaluations.count == 3
+                && tracedRepair.evaluations[1].eligible
+                && tracedRepair.evaluations[1].mutated,
+            "diagnostic trace did not record target eligibility and mutation"
+        )
 
         var weakMajority = isolated
         for point in [(1, 1), (2, 1)] {
@@ -201,6 +219,7 @@ enum TestDeterministicPixelCanonicalizerMain {
 
         let passedTests = [
             "isolated one-quantum RGB repair",
+            "diagnostic trace pixel identity and eligibility",
             "six-of-nine majority rejection",
             "two-quantum rejection",
             "non-opaque-neighborhood rejection",

@@ -55,6 +55,7 @@ func requireTest(
 @main
 enum TestDeterministicPixelCanonicalizerMain {
     static func main() throws {
+        let arguments = Array(CommandLine.arguments.dropFirst())
         let contract = testContract()
 
         var isolated = makeTestImage()
@@ -198,6 +199,58 @@ enum TestDeterministicPixelCanonicalizerMain {
             "RGB-only repair or alpha preservation failed"
         )
 
-        print("PASS 8 deterministic pixel canonicalizer tests")
+        let passedTests = [
+            "isolated one-quantum RGB repair",
+            "six-of-nine majority rejection",
+            "two-quantum rejection",
+            "non-opaque-neighborhood rejection",
+            "exact-chroma preservation",
+            "chroma-neighbor exclusion",
+            "immutable-buffer non-cascade",
+            "RGB channel isolation and alpha preservation",
+        ]
+        if
+            let reportIndex = arguments.firstIndex(of: "--report"),
+            reportIndex + 1 < arguments.count
+        {
+            let reportURL = URL(
+                fileURLWithPath: arguments[reportIndex + 1]
+            ).standardizedFileURL
+            guard reportURL.path.contains("/diagnostics/") else {
+                throw CanonicalizerTestError.failed(
+                    "test report must remain under diagnostics"
+                )
+            }
+            let report: [String: Any] = [
+                "schema": 1,
+                "task": "PLAY-027",
+                "contractID":
+                    "play027-deterministic-4x-no-msaa-lanczos-v2",
+                "algorithm":
+                    "opaque-isolated-one-quantum-majority-3x3",
+                "requiresChromaFreeNeighborhood": true,
+                "testCount": passedTests.count,
+                "passedTests": passedTests,
+                "status": "pass",
+                "productionSelected": false,
+            ]
+            var data = try JSONSerialization.data(
+                withJSONObject: report,
+                options: [
+                    .prettyPrinted,
+                    .sortedKeys,
+                    .withoutEscapingSlashes,
+                ]
+            )
+            data.append(0x0a)
+            try FileManager.default.createDirectory(
+                at: reportURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            try data.write(to: reportURL, options: .atomic)
+        }
+        print(
+            "PASS \(passedTests.count) deterministic pixel canonicalizer tests"
+        )
     }
 }

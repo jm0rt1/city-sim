@@ -4,7 +4,8 @@ import XCTest
 
 final class ProductionStoryStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/StoryStates"
-    private static let currentManifestFile = "story-states-manifest-v2.json"
+    private static let currentManifestFile = "story-states-manifest-v3.json"
+    private static let play069ManifestFile = "story-states-manifest-v2.json"
     private static let legacyManifestFile = "story-states-manifest-v1.json"
 
     private let resolutions: [CityStrategyRecoveryResolution] = [
@@ -16,7 +17,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
 
     func testWriteCurrentFixtureCorpusOnlyWhenExplicitlyRequested() throws {
         guard let rootPath = ProcessInfo.processInfo.environment[
-            "CITYSIM_PLAY069_WRITE_FIXTURES"
+            "CITYSIM_PLAY072_WRITE_STORY_FIXTURES"
         ],
         !rootPath.isEmpty else {
             return
@@ -29,7 +30,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         let root = URL(filePath: rootPath, directoryHint: .isDirectory)
         try first.write(to: root)
         print(
-            "PLAY069_FIXTURE_WRITE root=\(root.path) fixtures=\(first.artifacts.count) " +
+            "PLAY072_STORY_FIXTURE_WRITE root=\(root.path) fixtures=\(first.artifacts.count) " +
             "manifest=\(Self.currentManifestFile)"
         )
     }
@@ -98,6 +99,52 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         }
     }
 
+    func testPlay069V2CorpusRemainsByteExact() throws {
+        let expectedSHA256 = [
+            "story-commercial-charter-midpoint-v2.json":
+                "bf7d2234043ca757fd62a711d55168f9c26be646a61cb1ab9f662eb47bd69824",
+            "story-commercial-tax-relief-regional-capital-v2.json":
+                "3c9b71abd681676ed5d8acd58bb8f41e9fb88c24f95281c0f41b0b61cf144d02",
+            "story-commercial-public-realm-regional-capital-v2.json":
+                "2a2044f43c05cf5b87e87f1f1a4a2f75c9c222f1a812e99128859a24094a0676",
+            "story-industrial-charter-midpoint-v2.json":
+                "17040195a2c76f7bb149b6d89c22e3b3dfdf6be1325a32cca917d2555c42840b",
+            "story-industrial-utility-expansion-regional-capital-v2.json":
+                "78781f5bc0e989ea41cb3fed1de2a445211fa0aa0e9634173bcd8b615cb13d5d",
+            "story-industrial-green-buffer-regional-capital-v2.json":
+                "f25bca43bf2c6506200a969eb16e3cde25cb14fc092c8f31303f621dfe334a9d",
+            Self.play069ManifestFile:
+                "a793dc9ea5cfc50b7482fb7f4bf4e7a3a3c5e9cfb1cad6e47722fc17cbf22153",
+        ]
+        let manifestData = try resourceData(file: Self.play069ManifestFile)
+        XCTAssertEqual(
+            ProductionStoryFixtureCorpus.sha256(manifestData),
+            expectedSHA256[Self.play069ManifestFile]
+        )
+        let manifest = try JSONDecoder().decode(
+            ProductionStoryFixtureManifestV2.self,
+            from: manifestData
+        )
+        XCTAssertEqual(manifest.fixtures.count, 12)
+        XCTAssertEqual(manifest.schemaVersion, 1)
+        XCTAssertEqual(manifest.fingerprintVersion, 1)
+        XCTAssertEqual(manifest.seed, 42)
+
+        for entry in manifest.fixtures where entry.file.contains("-v2.json") {
+            let bytes = try resourceData(file: entry.file)
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                expectedSHA256[entry.file],
+                entry.id
+            )
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                entry.fileSHA256,
+                entry.id
+            )
+        }
+    }
+
     func testCurrentCorpusMatchesTwoIndependentBuildsAndManifest() throws {
         let firstStart = ProcessInfo.processInfo.systemUptime
         let first = try ProductionStoryFixtureCorpus.build()
@@ -110,6 +157,10 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         XCTAssertEqual(first.artifacts.count, 12)
         XCTAssertEqual(first.manifest.fixtures.count, 12)
         XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 12)
+        XCTAssertTrue(first.artifacts.allSatisfy {
+            $0.definition.id.hasSuffix("-v3")
+                && $0.definition.file.hasSuffix("-v3.json")
+        })
         XCTAssertEqual(
             first.artifacts.filter { $0.definition.stage == .charterMidpoint }.count,
             2
@@ -168,7 +219,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         }
 
         print(
-            "PLAY069_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
+            "PLAY072_STORY_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
             "generation_two_ms=\(metric(secondMilliseconds)) fixtures=12"
         )
     }
@@ -447,7 +498,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertLessThan(loadMilliseconds, 1_500, entry.id)
 
                 print(
-                    "PLAY069_FIXTURE id=\(entry.id) tick=\(entry.tick) " +
+                    "PLAY072_STORY_FIXTURE id=\(entry.id) tick=\(entry.tick) " +
                     "bytes=\(entry.byteCount) digest=\(entry.expectedStateDigest) " +
                     "spatial=\(entry.spatialDigest) " +
                     "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +

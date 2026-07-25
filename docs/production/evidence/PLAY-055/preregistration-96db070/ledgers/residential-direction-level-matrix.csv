@@ -1,0 +1,17 @@
+level,direction,baseline_runtime_identity,baseline_authored_frontage,final_candidate_requirement,required_live_evidence,automatic_reject
+L1,N,residential_l01,south,Distinct accepted L1 North identity with authoritative north road frontage,City neighborhood block plus AX and resource identity,wrong frontage mirror rotation alias or fallback
+L1,E,residential_l01,south,Distinct accepted L1 East identity with authoritative east road frontage,City neighborhood block plus AX and resource identity,wrong frontage mirror rotation alias or fallback
+L1,S,residential_l01,south,Distinct accepted L1 South identity with authoritative south road frontage,City neighborhood block plus AX and resource identity,wrong frontage mirror rotation alias or fallback
+L1,W,residential_l01,south,Distinct accepted L1 West identity with authoritative west road frontage,City neighborhood block plus AX and resource identity,wrong frontage mirror rotation alias or fallback
+L2,N,residential_l01,south,Distinct accepted L2 North identity with authoritative north road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L2,E,residential_l01,south,Distinct accepted L2 East identity with authoritative east road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L2,S,residential_l01,south,Distinct accepted L2 South identity with authoritative south road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L2,W,residential_l01,south,Distinct accepted L2 West identity with authoritative west road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L3,N,residential_l01,south,Distinct accepted L3 North identity with authoritative north road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L3,E,residential_l01,south,Distinct accepted L3 East identity with authoritative east road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L3,S,residential_l01,south,Distinct accepted L3 South identity with authoritative south road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L3,W,residential_l01,south,Distinct accepted L3 West identity with authoritative west road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L4,N,residential_l01,south,Distinct accepted L4 North identity with authoritative north road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L4,E,residential_l01,south,Distinct accepted L4 East identity with authoritative east road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L4,S,residential_l01,south,Distinct accepted L4 South identity with authoritative south road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback
+L4,W,residential_l01,south,Distinct accepted L4 West identity with authoritative west road frontage,City neighborhood block plus AX and resource identity,wrong level frontage mirror rotation alias or fallback

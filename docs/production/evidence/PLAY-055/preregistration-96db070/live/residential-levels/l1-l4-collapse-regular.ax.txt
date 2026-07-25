@@ -1,0 +1,62 @@
+Window: "CitySim", App: CitySim [Quality wf967be0ab5b4].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container City command status
+			3 button Description: Open New Arcadia command center, Value: Day 17. Paused, ID: hud.city.identity
+			4 progress indicator Description: Show objectives, Help: Need J 50 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+			5 container City status
+				6 unknown Description: Treasury, Details: $27,474, +$99 / cycle, ID: hud.metric.treasury
+				7 unknown Description: Residents, Details: 316, 1,084 homes open, ID: hud.metric.population
+				8 unknown Description: Happiness, Details: 62%, 100% mayor approval, ID: hud.metric.happiness
+				9 unknown Description: Jobs filled, Details: 220, 80 openings, ID: hud.metric.employment
+				10 unknown Description: Utilities, Details: 100%, P 22 · W 25, ID: hud.metric.utilities
+			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+			13 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+			14 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+			15 button Description: Open city notices, Value: 8 notices, highest severity warning, ID: hud.notices
+			16 container Description: City priority: Industrial expansion, ID: hud.strategy.priority, Details: OPPORTUNITY · 16 DAYS. The route is committed. Prepare utility capacity or a green buffer before freight load rises.
+				17 text Help: The route is committed. Prepare utility capacity or a green buffer before freight load rises., Value: FREIGHT STRATEGY
+				18 text Help: The route is committed. Prepare utility capacity or a green buffer before freight load rises., Value: OPPORTUNITY · 16 DAYS
+				19 text Help: The route is committed. Prepare utility capacity or a green buffer before freight load rises., Value: Industrial expansion
+				20 text The route is committed. Prepare utility capacity or a green buffer before freight load rises.
+				21 button Description: Utility capacity, Help: The route is committed. Prepare utility capacity or a green buffer before freight load rises.
+				22 menu button Act, Description: Act on Industrial expansion, Help: The route is committed. Prepare utility capacity or a green buffer before freight load rises., Value: 3 available routes, ID: arrow.turn.down.right
+		23 container City command deck
+			24 button (selected) Description: Inspect mode, Value: Selected
+			25 button Description: Build mode, Value: Not selected
+			26 button Description: Bulldoze mode, Value: Not selected
+			27 button Description: Roads build category, Value: Selected
+			28 button Description: Zones build category, Value: Not selected
+			29 button Description: Utilities build category, Value: Not selected
+			30 button Description: Services build category, Value: Not selected
+			31 button Description: Civic build category, Value: Not selected
+			32 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			33 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			34 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			35 text INSPECT
+			36 text Value: Inspect mode. Choose a block for details, ID: hud.selected.context
+			37 text Arrows move · Shift-Return opens details
+		38 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	39 toolbar
+		40 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		41 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		42 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		43 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		44 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	45 close button
+	46 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	47 minimize button
+	48 text CitySim
+49 menu bar
+	50 CitySim [Quality wf967be0ab5b4]
+	51 File
+	52 Edit
+	53 View
+	54 Simulation
+	55 Tools
+	56 City Data
+	57 Window
+	58 Help
+
+The focused UI element is 38 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

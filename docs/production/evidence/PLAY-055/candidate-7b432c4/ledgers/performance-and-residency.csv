@@ -1,0 +1,15 @@
+metric,comparison_or_authority,candidate_result,disposition,evidence
+Page count,CONTRACT-006 maximum 4,4,PASS,validation/world-asset-pack.json
+City active plus adjacent,PLAY-024 observation 10485760 bytes,12582912 bytes / plus 20 percent,PASS below 128 MiB authority,validation/world-asset-pack.json
+Neighborhood active plus adjacent,PLAY-024 observation 33554432 bytes,41943040 bytes / plus 25 percent,PASS below 128 MiB authority,validation/world-asset-pack.json
+Block active plus adjacent,PLAY-024 observation 33554432 bytes,41943040 bytes / plus 25 percent,PASS below 128 MiB authority,validation/world-asset-pack.json
+Repeated LOD high water,CONTRACT-006 128 MiB ceiling,41943040 bytes with 648 hits 12 misses 9 evictions 0 fallback,PASS bounded plateau,validation/world-rendering-tests.log
+Focused cold world update,PLAY-028 3.830 ms,3.664 ms,PASS no regression,validation/world-rendering-tests.log
+Focused total render,PLAY-028 5.154 ms,4.946 ms,PASS no regression,validation/world-rendering-tests.log
+Unchanged-pulse soak,stable identity and bounded actions,4286 pulses 1369 nodes 553 drawables 2 actions 0.0006 ms average,PASS,validation/world-rendering-tests.log
+Regular settled RSS,333.8 MiB ceiling,199184 KiB / 194.52 MiB after three cycles,PASS no continuing growth,identity/IDENTITY.md
+Compact settled RSS,333.8 MiB ceiling,180048 KiB / 175.83 MiB,PASS no continuing growth,identity/IDENTITY.md
+Reduce Motion settled RSS,333.8 MiB ceiling,198912 KiB / 194.25 MiB,PASS no continuing growth,identity/IDENTITY.md
+World rendering tests,frozen focused gate,47/47 in 21.401 s,PASS,validation/world-rendering-tests.log
+Full native suite,frozen full gate,206/206 in 94.122 s,PASS,validation/full-native-suite.log
+Staged verify,exact isolated identity,PASS,PASS,validation/staged-verify.log

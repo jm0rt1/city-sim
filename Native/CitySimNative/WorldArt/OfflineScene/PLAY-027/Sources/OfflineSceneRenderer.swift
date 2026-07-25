@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -2502,13 +2502,16 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 }
 
 final class NativeSourceRenderer: OfflineSourceRendering {
+    private let renderer: SCNRenderer
     private let antialiasingMode: SCNAntialiasingMode
     private let linearOversamplingFactor: Int
 
     init(
+        renderer: SCNRenderer,
         antialiasingMode: SCNAntialiasingMode,
         linearOversamplingFactor: Int
     ) {
+        self.renderer = renderer
         self.antialiasingMode = antialiasingMode
         self.linearOversamplingFactor = linearOversamplingFactor
     }
@@ -2517,7 +2520,6 @@ final class NativeSourceRenderer: OfflineSourceRendering {
         scene: SCNScene,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
-        let renderer = SCNRenderer(device: nil, options: nil)
         // SceneKit can otherwise expose a process-dependent first snapshot:
         // descriptor nodes exist, but their presentation tree or prepared
         // material state is incomplete. Flush authored transactions and hold
@@ -3108,6 +3110,12 @@ enum OfflineSceneRendererMain {
         let recordURL = URL(
             fileURLWithPath: try rendererArgument("--record", in: arguments)
         ).standardizedFileURL
+        let backendCapabilityRecordURL = rendererOptionalArgument(
+            "--backend-capability-record",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
         let sourceCommit = try rendererArgument(
             "--renderer-source-commit",
             in: arguments
@@ -3169,6 +3177,19 @@ enum OfflineSceneRendererMain {
             ),
             sceneShadows: diagnosticSceneShadows
         )
+        if let backendCapabilityRecordURL {
+            guard
+                backendCapabilityRecordURL.path.contains("/diagnostics/"),
+                backendCapabilityRecordURL.pathExtension == "json",
+                !FileManager.default.fileExists(
+                    atPath: backendCapabilityRecordURL.path
+                )
+            else {
+                throw OfflineRendererError.invalid(
+                    "backend capability record must be a new JSON under a diagnostics path"
+                )
+            }
+        }
         if diagnosticConfiguration.hasOverride {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3249,6 +3270,77 @@ enum OfflineSceneRendererMain {
                 "non-shipping/no-sibling contract failed"
             )
         }
+        let capabilityContext = RendererCapabilityPreflight.capture()
+        let resolvedCapabilityRecordURL: URL? = {
+            if let backendCapabilityRecordURL {
+                return backendCapabilityRecordURL
+            }
+            guard !capabilityContext.snapshot.available else {
+                return nil
+            }
+            return recordURL.deletingPathExtension().appendingPathExtension(
+                "backend-unavailable.json"
+            )
+        }()
+        if let resolvedCapabilityRecordURL {
+            guard !FileManager.default.fileExists(
+                atPath: resolvedCapabilityRecordURL.path
+            ) else {
+                throw OfflineRendererError.invalid(
+                    "backend capability record already exists"
+                )
+            }
+            let fingerprintURL = repositoryRoot.appendingPathComponent(
+                descriptor.toolchainFingerprint.file
+            )
+            try rendererWriteCapabilityRecord(
+                [
+                    "schema": 1,
+                    "task": "PLAY-027",
+                    "type": capabilityContext.snapshot.result,
+                    "capability": capabilityContext.snapshot.record,
+                    "rendererSourceCommit": sourceCommit,
+                    "sceneDescriptorFile": rendererRelativePath(
+                        sceneURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "sceneDescriptorSHA256":
+                        try rendererSHA256(sceneURL),
+                    "materialLibraryFile": rendererRelativePath(
+                        materialsURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "materialLibrarySHA256":
+                        try rendererSHA256(materialsURL),
+                    "toolchainFingerprintFile":
+                        descriptor.toolchainFingerprint.file,
+                    "toolchainFingerprintDeclaredSHA256":
+                        descriptor.toolchainFingerprint.sha256,
+                    "toolchainFingerprintActualSHA256":
+                        try rendererSHA256(fingerprintURL),
+                    "requestedRawSourceFile": rendererRelativePath(
+                        outputURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "requestedProvenanceFile": rendererRelativePath(
+                        recordURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "candidateOutputWritten": false,
+                    "candidateFailureClassified": false,
+                    "sceneConstructionStarted": false,
+                    "scenePreparationStarted": false,
+                    "productionSelected": false,
+                ],
+                to: resolvedCapabilityRecordURL
+            )
+        }
+        guard capabilityContext.snapshot.available else {
+            let recordPath = resolvedCapabilityRecordURL?.path
+                ?? "capability-record-unavailable"
+            print("renderer-backend-unavailable \(recordPath)")
+            return
+        }
         let materialLibrary = NativeMaterialLibrary(
             descriptor: materialDescriptor
         )
@@ -3272,6 +3364,7 @@ enum OfflineSceneRendererMain {
                     : SCNAntialiasingMode.multisampling4X
             )
         let oversampled = try NativeSourceRenderer(
+            renderer: capabilityContext.renderer,
             antialiasingMode: effectiveAntialiasing,
             linearOversamplingFactor:
                 descriptorSampling.linearOversamplingFactor
@@ -3469,6 +3562,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -3507,6 +3601,7 @@ enum OfflineSceneRendererMain {
                 "CoreGraphics",
             ],
             "rendererSourceCommit": sourceCommit,
+            "rendererCapability": capabilityContext.snapshot.record,
             "diagnosticConfiguration": [
                 "antialiasingOverride":
                     diagnosticConfiguration.antialiasingOverride?.rawValue

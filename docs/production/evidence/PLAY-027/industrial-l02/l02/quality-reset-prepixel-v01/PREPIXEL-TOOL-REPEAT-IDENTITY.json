@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceRevision": "quality-reset-prepixel-v01",
+  "purpose": "prove deterministic repeat identity for non-authority descriptors and diagnostic panels",
+  "method": "build-industrial-l2-quality-reset-prepixel was executed twice against the exact same repository root and output root; the first output was copied to a temporary immutable comparison directory before the second execution",
+  "comparison": "byte-for-byte cmp/diff",
+  "passed": true,
+  "files": [
+    {
+      "file": "descriptors/north/scene-design.json",
+      "sha256": "83c4bb6b8437f44b9c25b168395725c788b6f7326d6595d7404882090e1a3596"
+    },
+    {
+      "file": "descriptors/east/scene-design.json",
+      "sha256": "46896f6c9aae7e37e682d6137cfaec7d35c706f4222bedece9be7127ff9d0265"
+    },
+    {
+      "file": "descriptors/south/scene-design.json",
+      "sha256": "b6e5df380e17cd10c08394e844066fe2e4e25f4e181484b178172ea0663f0185"
+    },
+    {
+      "file": "descriptors/west/scene-design.json",
+      "sha256": "57a150395f4c073b77fc4eeecc4d246e9b3c00e81ec87661383e8c120faabbc3"
+    },
+    {
+      "file": "materials/industrial-l02-quality-reset-v01-materials.json",
+      "sha256": "cbe08743f146ccb522e67df3525171da4ab2cc7912ea37431d4c2ef921ca5570"
+    },
+    {
+      "file": "review/SOURCE-SCALE-CLAY-NON-AUTHORITY.png",
+      "sha256": "41e0000d069d6ab077f3fc19710de821013f22481cea5a0ad6d7c4e346a83b7b"
+    },
+    {
+      "file": "review/SOURCE-SCALE-WIREFRAME-NON-AUTHORITY.png",
+      "sha256": "05f97a5e04204e7e8df7a286337ff2ca03b997fb1333b9e9b4d7a575d6586d9e"
+    },
+    {
+      "file": "review/SOURCE-SCALE-MATERIAL-LOOK-NON-AUTHORITY.png",
+      "sha256": "fe2ebcb5da59f6b56b84aef942445f15b83db12b4870d7a49970b9d35edbbdb3"
+    },
+    {
+      "file": "review/NATIVE-2X-COLOR-MOCKUP-NON-AUTHORITY.png",
+      "sha256": "d4bc56b1b78e9830a0700ce2a3d3c4f672a162613cc8b806bc7adfb6f25a4fb3"
+    },
+    {
+      "file": "review/NATIVE-2X-GRAYSCALE-MOCKUP-NON-AUTHORITY.png",
+      "sha256": "f72b0905b70d21a35a7f7c0c168e466dfecbd8098039e52da3095cf1a3ca635f"
+    },
+    {
+      "file": "review/MATERIAL-SWATCH-SHEET.png",
+      "sha256": "b21caf5f3b0afa10206c23f9002924b16a6a4fb2233aed0a41f73e139f130eac"
+    },
+    {
+      "file": "PREPIXEL-VALIDATION.json",
+      "sha256": "ebdb225d262c1f878f0b543c1bbad2df68de54fd893f28da05435256f78184fc"
+    }
+  ],
+  "governedSourcePixelsCreated": false,
+  "productionSelected": false
+}

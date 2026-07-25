@@ -1189,6 +1189,15 @@ final class WorldRenderingTests: XCTestCase {
             backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
             10
         )
+        var fieldMarks: [SKNode] = []
+        backdrop.enumerateChildNodes(withName: "//terrain.field-mark.segment.*") { node, _ in
+            fieldMarks.append(node)
+        }
+        XCTAssertFalse(fieldMarks.isEmpty)
+        XCTAssertTrue(fieldMarks.allSatisfy {
+            let frame = $0.calculateAccumulatedFrame()
+            return frame.width <= 45 && frame.height <= 24
+        })
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.parcel.") })
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })

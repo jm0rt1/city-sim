@@ -287,7 +287,8 @@ final class TerrainRenderer {
         parcelIndex: Int,
         to layer: SKNode
     ) {
-        let combined = CGMutablePath()
+        let furrows = SKNode()
+        furrows.name = "terrain.macro.furrows.\(parcelIndex)"
         let runsAlongX = variant.isMultiple(of: 2)
         for offset in 1...3 {
             let progress = CGFloat(offset) / 4
@@ -302,22 +303,42 @@ final class TerrainRenderer {
                 startCoordinate = GridCoordinate(x: x, y: minimumY)
                 endCoordinate = GridCoordinate(x: x, y: maximumY)
             }
-            combined.addPath(WorldGeometryCache.line(
-                from: style.isoPosition(startCoordinate),
-                to: style.isoPosition(endCoordinate)
-            ))
+            let start = style.isoPosition(startCoordinate)
+            let end = style.isoPosition(endCoordinate)
+            let phase = WorldVisualSeed.unit(
+                for: GridCoordinate(x: minimumX + offset, y: minimumY + variant),
+                kind: .empty,
+                salt: 0x7E71 + UInt64(parcelIndex)
+            ) * 0.08
+            for (segmentIndex, range) in [
+                (0.16 + phase, 0.39 + phase),
+                (0.61 - phase, 0.82 - phase)
+            ].enumerated() {
+                let segmentStart = CGPoint(
+                    x: start.x + (end.x - start.x) * range.0,
+                    y: start.y + (end.y - start.y) * range.0
+                )
+                let segmentEnd = CGPoint(
+                    x: start.x + (end.x - start.x) * range.1,
+                    y: start.y + (end.y - start.y) * range.1
+                )
+                let mark = SKShapeNode(path: WorldGeometryCache.line(
+                    from: segmentStart,
+                    to: segmentEnd
+                ))
+                mark.name = "terrain.field-mark.segment.\(offset).\(segmentIndex)"
+                mark.fillColor = .clear
+                mark.strokeColor = NSColor(
+                    calibratedRed: 0.69,
+                    green: 0.68,
+                    blue: 0.39,
+                    alpha: 0.075
+                )
+                mark.lineWidth = 0.7
+                mark.lineCap = .round
+                furrows.addChild(mark)
+            }
         }
-        let furrows = SKShapeNode(path: combined)
-        furrows.name = "terrain.macro.furrows.\(parcelIndex)"
-        furrows.fillColor = .clear
-        furrows.strokeColor = NSColor(
-            calibratedRed: 0.69,
-            green: 0.68,
-            blue: 0.39,
-            alpha: 0.12
-        )
-        furrows.lineWidth = 0.9
-        furrows.lineCap = .round
         layer.addChild(furrows)
     }
 

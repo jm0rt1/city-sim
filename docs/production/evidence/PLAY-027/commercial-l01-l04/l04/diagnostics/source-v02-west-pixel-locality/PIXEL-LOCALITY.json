@@ -1,0 +1,193 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/source-v02-west-pixel-locality/PIXEL-LOCALITY-ZOOM.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "commercial-l04-source-v02-west-pixel-locality",
+  "differenceBoundsSource" : [
+    756,
+    565,
+    758,
+    570
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatBRGBA" : [
+        16,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        16,
+        48,
+        48,
+        255
+      ],
+      "sourceCoordinate" : [
+        756,
+        565
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        16,
+        48,
+        48,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        48,
+        255
+      ],
+      "sourceCoordinate" : [
+        757,
+        566
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        80,
+        80,
+        48,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        80,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        80,
+        48,
+        255
+      ],
+      "sourceCoordinate" : [
+        756,
+        567
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red",
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        144,
+        112,
+        80,
+        255
+      ],
+      "repeatBRGBA" : [
+        112,
+        80,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        112,
+        80,
+        48,
+        255
+      ],
+      "sourceCoordinate" : [
+        757,
+        568
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        112,
+        80,
+        48,
+        255
+      ],
+      "repeatBRGBA" : [
+        112,
+        112,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        112,
+        112,
+        48,
+        255
+      ],
+      "sourceCoordinate" : [
+        757,
+        569
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l04/variant-0/west/source-v02.png",
+    "fileSHA256" : "fd652cada0a87cbd90aa415b82c8a157eae114632b6c831dc99d0d7414a71146"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 7,
+    "differingPixelCount" : 5
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 7,
+    "differingPixelCount" : 5
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/repeat/west-run-b.png",
+    "fileSHA256" : "7d5fbba2e15fc2742d689d7800c89280b181275d73dd3d9bce5a62059574e91c"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/repeat/west-run-c.png",
+    "fileSHA256" : "7d5fbba2e15fc2742d689d7800c89280b181275d73dd3d9bce5a62059574e91c"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

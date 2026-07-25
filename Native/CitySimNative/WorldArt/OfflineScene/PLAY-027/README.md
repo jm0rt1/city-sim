@@ -100,6 +100,19 @@ env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
   -o /private/tmp/play027-offline-tools/validate-structural-boundaries
 ```
 
+Retained raw failures can be localized without changing source art using the
+task-owned ImageIO/Core Graphics comparator:
+
+```bash
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Tools/CompareRetainedRawPixels.swift \
+  -framework CoreGraphics -framework ImageIO \
+  -framework UniformTypeIdentifiers -framework CryptoKit \
+  -o /private/tmp/play027-offline-tools/compare-retained-raw-pixels
+```
+
 The task-owned native source normalizer compiles independently as well:
 
 ```bash

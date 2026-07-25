@@ -41,10 +41,13 @@
       "minLength": 1
     },
     "logicalBuildingID": {
-      "pattern": "^residential_l0[1-4]$"
+      "pattern": "^(residential|commercial)_l0[1-4]$"
     },
     "family": {
-      "const": "residential"
+      "enum": [
+        "residential",
+        "commercial"
+      ]
     },
     "level": {
       "minimum": 1,

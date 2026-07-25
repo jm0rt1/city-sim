@@ -113,6 +113,10 @@ enum ValidateScenesMain {
             "--logical-building-id",
             in: arguments
         ) ?? "residential_l01"
+        let family = optionalArgument(
+            "--family",
+            in: arguments
+        ) ?? String(logicalBuildingID.split(separator: "_")[0])
         let level = Int(
             optionalArgument("--level", in: arguments) ?? "1"
         ) ?? 1
@@ -171,7 +175,7 @@ enum ValidateScenesMain {
                 itemFailures.append("schema/task mismatch")
             }
             if descriptor.logicalBuildingID != logicalBuildingID
-                || descriptor.family != "residential"
+                || descriptor.family != family
                 || descriptor.level != level
                 || descriptor.variantID != "variant-0"
                 || !descriptor.sourceRevision.hasPrefix("source-v")
@@ -321,7 +325,7 @@ enum ValidateScenesMain {
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")
             }
-            if level > 1 {
+            if level > 1 || family == "commercial" {
                 if descriptor.building.massingProfile == nil
                     || descriptor.building.massBlocks?.isEmpty != false
                     || descriptor.building.roofVolumes?.isEmpty != false
@@ -335,6 +339,43 @@ enum ValidateScenesMain {
                 if descriptor.building.floors < level + 1 {
                     itemFailures.append(
                         "density level lacks readable vertical progression"
+                    )
+                }
+            }
+            if family == "commercial" {
+                let commercialStyles = Set([
+                    "shopfront",
+                    "market-arcade",
+                    "office-lobby",
+                    "tower-lobby",
+                ])
+                if !commercialStyles.contains(
+                    descriptor.entrance.style ?? ""
+                ) {
+                    itemFailures.append(
+                        "commercial entrance lacks an approved storefront/lobby style"
+                    )
+                }
+                let groundFloorGlazing = descriptor.facades.reduce(0) {
+                    count, facade in
+                    count
+                        + facade.windowBays.filter { $0.floor == 1 }.count
+                        + (facade.windowRhythms ?? []).filter {
+                            $0.floor == 1
+                        }.reduce(0) {
+                            $0 + $1.centersWorld.count
+                        }
+                }
+                if groundFloorGlazing < 8 {
+                    itemFailures.append(
+                        "commercial ground floor lacks storefront glazing rhythm"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "rooftop-hvac"
+                }) {
+                    itemFailures.append(
+                        "commercial roof lacks explicit mechanical treatment"
                     )
                 }
             }
@@ -413,6 +454,7 @@ enum ValidateScenesMain {
             "calibrationID":
                 calibrationID,
             "logicalBuildingID": logicalBuildingID,
+            "family": family,
             "level": level,
             "schemaFile": repositoryRelativePath(
                 schemaURL,

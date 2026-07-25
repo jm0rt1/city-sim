@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "authority": "1d4d4f7eba1bb1cf3c8d64b1c221f33d3be91637",
+  "family": "commercial",
+  "variantID": "variant-0",
+  "productionSelected": false,
+  "coverage": [
+    {"logicalBuildingID": "commercial_l01", "level": 1, "direction": "north", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l01", "level": 1, "direction": "east", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l01", "level": 1, "direction": "south", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l01", "level": 1, "direction": "west", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l02", "level": 2, "direction": "north", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l02", "level": 2, "direction": "east", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l02", "level": 2, "direction": "south", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l02", "level": 2, "direction": "west", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l03", "level": 3, "direction": "north", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l03", "level": 3, "direction": "east", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l03", "level": 3, "direction": "south", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l03", "level": 3, "direction": "west", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l04", "level": 4, "direction": "north", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l04", "level": 4, "direction": "east", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l04", "level": 4, "direction": "south", "status": "authorized-not-authored"},
+    {"logicalBuildingID": "commercial_l04", "level": 4, "direction": "west", "status": "authorized-not-authored"}
+  ]
+}

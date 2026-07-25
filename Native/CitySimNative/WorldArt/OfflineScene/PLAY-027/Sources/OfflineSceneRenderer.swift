@@ -306,7 +306,12 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 
         for facade in descriptor.facades {
             for bay in facade.windowBays {
-                try addWindow(bay, facade: facade.direction, to: scene)
+                try addWindow(
+                    bay,
+                    facade: facade.direction,
+                    family: descriptor.family,
+                    to: scene
+                )
             }
             for rhythm in facade.windowRhythms ?? [] {
                 for (index, center) in rhythm.centersWorld.enumerated() {
@@ -321,6 +326,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                             materialID: rhythm.materialID
                         ),
                         facade: facade.direction,
+                        family: descriptor.family,
                         to: scene
                     )
                 }
@@ -658,6 +664,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
     private func addWindow(
         _ bay: WindowBayDescriptor,
         facade: String,
+        family: String,
         to scene: SCNScene
     ) throws {
         let isHorizontal = facade == "north" || facade == "south"
@@ -748,7 +755,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
             )
         }
-        if bay.floor == 1 {
+        if bay.floor == 1 && family == "residential" {
             let outward: [Double]
             switch facade {
             case "north": outward = [0, 0, -1]
@@ -1284,6 +1291,10 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             "walkup-stoop",
             "courtyard-portal",
             "urban-lobby",
+            "shopfront",
+            "market-arcade",
+            "office-lobby",
+            "tower-lobby",
         ].contains(style) else {
             throw OfflineRendererError.invalid(
                 "unsupported density entrance style: \(style)"
@@ -1322,12 +1333,18 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
         )
 
+        let isCommercial = descriptor.family == "commercial"
+        let isLargeLobby = [
+            "urban-lobby",
+            "office-lobby",
+            "tower-lobby",
+        ].contains(style)
         let portalWidth = entrance.width
-            + (style == "urban-lobby" ? 8 : 5)
+            + (isLargeLobby ? 8 : 5)
         let portalHeight = entrance.height
-            + (style == "courtyard-portal" ? 9 : 6)
+            + (style == "courtyard-portal" || style == "market-arcade" ? 9 : 6)
         let portalDepth = entrance.depth + 1.2
-        let sideWidth = style == "urban-lobby" ? 2.2 : 1.5
+        let sideWidth = isLargeLobby ? 2.2 : 1.5
         for side in [-1.0, 1.0] {
             let offset = side * (portalWidth / 2 - sideWidth / 2)
             let dimensions = horizontal
@@ -1364,6 +1381,79 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 materialID: entrance.surroundMaterialID
             )
         )
+        if isCommercial {
+            let facadeSpan = horizontal
+                ? descriptor.building.width
+                : descriptor.building.depth
+            let storefrontWidth = max(
+                7,
+                (facadeSpan - portalWidth - 10) / 2
+            )
+            let storefrontHeight = min(
+                15,
+                descriptor.building.floorHeight - 2
+            )
+            for side in [-1.0, 1.0] {
+                let offset = side
+                    * (portalWidth / 2 + storefrontWidth / 2 + 2)
+                let storefrontCenter = [
+                    base[0] + outward[0] * 0.8 + tangent[0] * offset,
+                    descriptor.building.foundationHeight
+                        + storefrontHeight / 2,
+                    base[2] + outward[2] * 0.8 + tangent[2] * offset,
+                ]
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-\(style)-storefront-\(side)",
+                        dimensions: horizontal
+                            ? [storefrontWidth, storefrontHeight, 0.8]
+                            : [0.8, storefrontHeight, storefrontWidth],
+                        position: storefrontCenter,
+                        materialID: "window-warm"
+                    )
+                )
+                let mullionOffset = storefrontWidth * 0.22
+                for mullionSide in [-1.0, 1.0] {
+                    scene.rootNode.addChildNode(
+                        try boxNode(
+                            name:
+                                facade.direction
+                                + "-\(style)-storefront-mullion-\(side)-\(mullionSide)",
+                            dimensions: horizontal
+                                ? [0.7, storefrontHeight + 1.5, 1.0]
+                                : [1.0, storefrontHeight + 1.5, 0.7],
+                            position: [
+                                storefrontCenter[0]
+                                    + tangent[0]
+                                        * mullionOffset * mullionSide,
+                                storefrontCenter[1],
+                                storefrontCenter[2]
+                                    + tangent[2]
+                                        * mullionOffset * mullionSide,
+                            ],
+                            materialID: entrance.surroundMaterialID
+                        )
+                    )
+                }
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-\(style)-storefront-cornice",
+                    dimensions: horizontal
+                        ? [facadeSpan - 4, 2.1, 2.2]
+                        : [2.2, 2.1, facadeSpan - 4],
+                    position: [
+                        base[0] + outward[0] * 1.1,
+                        descriptor.building.foundationHeight
+                            + storefrontHeight + 1.2,
+                        base[2] + outward[2] * 1.1,
+                    ],
+                    materialID: entrance.pavilionMaterialID
+                )
+            )
+        }
         let transomDimensions = horizontal
             ? [entrance.width * 0.82, 3.2, entrance.depth + 1.4]
             : [entrance.depth + 1.4, 3.2, entrance.width * 0.82]
@@ -1798,6 +1888,57 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
             pavilionRoofNode.castsShadow = true
             scene.rootNode.addChildNode(pavilionRoofNode)
+        case "rooftop-hvac":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "rooftop HVAC dimensions must contain width, height, depth"
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-cabinet",
+                    dimensions: prop.dimensions,
+                    position: prop.positionWorld,
+                    materialID: prop.materialID
+                )
+            )
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-cap",
+                    dimensions: [
+                        prop.dimensions[0] + 1.8,
+                        0.9,
+                        prop.dimensions[2] + 1.8,
+                    ],
+                    position: [
+                        prop.positionWorld[0],
+                        prop.positionWorld[1]
+                            + prop.dimensions[1] / 2 + 0.35,
+                        prop.positionWorld[2],
+                    ],
+                    materialID: "slate-charcoal"
+                )
+            )
+            for offset in [-0.25, 0.0, 0.25] {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: prop.id + "-louver-\(offset)",
+                        dimensions: [
+                            prop.dimensions[0] * 0.68,
+                            0.55,
+                            0.7,
+                        ],
+                        position: [
+                            prop.positionWorld[0],
+                            prop.positionWorld[1]
+                                + offset * prop.dimensions[1],
+                            prop.positionWorld[2]
+                                + prop.dimensions[2] / 2 + 0.2,
+                        ],
+                        materialID: "slate-charcoal"
+                    )
+                )
+            }
         default:
             throw OfflineRendererError.invalid(
                 "unsupported prop kind: \(prop.kind)"

@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "commercial-l01-l04-v0-materials-v1",
+  "source": "authored numeric commercial materials calibrated from the existing generated-v4 commercial family anchor",
+  "styleAnchorFile": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "familyAnchorFile": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/commercial_l01/source-v01.png",
+  "familyAnchorSHA256": "90207ec4ed651810df863e0ff21591c85eea444f8606c41c83e85060e4c1de89",
+  "imageGenMaterialSwatchesUsed": false,
+  "colorSpace": "extended-sRGB",
+  "materials": [
+    {
+      "id": "brick-commercial-red",
+      "baseColorRGBA": [0.72, 0.32, 0.18, 1.0],
+      "emissionRGBA": [0.08, 0.03, 0.01, 1.0],
+      "roughness": 0.84,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.7, 0.62]
+    },
+    {
+      "id": "brick-commercial-burgundy",
+      "baseColorRGBA": [0.48, 0.18, 0.14, 1.0],
+      "emissionRGBA": [0.055, 0.018, 0.012, 1.0],
+      "roughness": 0.86,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.7, 0.62]
+    },
+    {
+      "id": "stone-commercial-sand",
+      "baseColorRGBA": [0.88, 0.72, 0.48, 1.0],
+      "emissionRGBA": [0.10, 0.065, 0.025, 1.0],
+      "roughness": 0.78,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [2.5, 1.0]
+    },
+    {
+      "id": "terracotta-commercial",
+      "baseColorRGBA": [0.78, 0.42, 0.23, 1.0],
+      "emissionRGBA": [0.08, 0.035, 0.012, 1.0],
+      "roughness": 0.82,
+      "metalness": 0.0,
+      "pattern": "stacked-brick",
+      "physicalScaleWorld": [1.8, 0.7]
+    },
+    {
+      "id": "limestone-warm",
+      "baseColorRGBA": [1.0, 0.86, 0.62, 1.0],
+      "emissionRGBA": [0.16, 0.12, 0.06, 1.0],
+      "roughness": 0.76,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [2.4, 0.9]
+    },
+    {
+      "id": "slate-charcoal",
+      "baseColorRGBA": [0.14, 0.18, 0.20, 1.0],
+      "roughness": 0.68,
+      "metalness": 0.0,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.5, 0.75]
+    },
+    {
+      "id": "roof-copper",
+      "baseColorRGBA": [0.28, 0.48, 0.38, 1.0],
+      "emissionRGBA": [0.025, 0.05, 0.035, 1.0],
+      "roughness": 0.56,
+      "metalness": 0.36,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.5, 0.75]
+    },
+    {
+      "id": "awning-deep-teal",
+      "baseColorRGBA": [0.08, 0.32, 0.30, 1.0],
+      "emissionRGBA": [0.01, 0.035, 0.03, 1.0],
+      "roughness": 0.58,
+      "metalness": 0.08,
+      "pattern": "solid",
+      "physicalScaleWorld": [2.0, 1.0]
+    },
+    {
+      "id": "window-warm",
+      "baseColorRGBA": [0.90, 0.68, 0.28, 1.0],
+      "emissionRGBA": [0.62, 0.34, 0.07, 1.0],
+      "roughness": 0.18,
+      "metalness": 0.02,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [8.0, 12.0]
+    },
+    {
+      "id": "glass-office-blue",
+      "baseColorRGBA": [0.25, 0.48, 0.56, 1.0],
+      "emissionRGBA": [0.08, 0.16, 0.18, 1.0],
+      "roughness": 0.16,
+      "metalness": 0.08,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [7.0, 10.0]
+    },
+    {
+      "id": "door-commercial-brass",
+      "baseColorRGBA": [0.18, 0.42, 0.34, 1.0],
+      "emissionRGBA": [0.035, 0.09, 0.065, 1.0],
+      "roughness": 0.34,
+      "metalness": 0.22,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [8.0, 13.0]
+    },
+    {
+      "id": "foundation-stone",
+      "baseColorRGBA": [0.50, 0.46, 0.40, 1.0],
+      "roughness": 0.9,
+      "metalness": 0.0,
+      "pattern": "rusticated-block",
+      "physicalScaleWorld": [3.0, 1.2]
+    },
+    {
+      "id": "rooftop-metal",
+      "baseColorRGBA": [0.42, 0.46, 0.43, 1.0],
+      "roughness": 0.62,
+      "metalness": 0.45,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 3.0]
+    },
+    {
+      "id": "chimney-metal",
+      "baseColorRGBA": [0.32, 0.36, 0.35, 1.0],
+      "roughness": 0.62,
+      "metalness": 0.48,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    }
+  ],
+  "productionSelected": false
+}

@@ -410,6 +410,12 @@ final class SpatialConsequenceTests: XCTestCase {
                 "73455e6d36a7bb989adad95d2e3368663dd9c907f47a5286bda54152df1275a7",
             "commercial-recovery-v1":
                 "a00476df33257fbb7a729c0ee60417a9e2f06be644c426defccbea1e13042406",
+            "commercial-charter-midpoint-v2":
+                "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
+            "commercial-tax-relief-regional-capital-v2":
+                "050b25cdd9dc6443830d6f8a2caaa7645e2f9d1159a0f0ac84245a4e12e76575",
+            "commercial-public-realm-regional-capital-v2":
+                "437d4850ddb4069811e56448dba46d4ebfb2282041f12b2477e0736e3a1c9e71",
             "commercial-charter-victory-v1":
                 "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
             "industrial-opening-v1":
@@ -418,6 +424,12 @@ final class SpatialConsequenceTests: XCTestCase {
                 "e89291b1d8606325e4e8e4ee3197f7c111a3865c55fbacd903f7f171dbef64e5",
             "industrial-recovery-v1":
                 "09e8d88251ae5a63e135ccd9ecb1a71630bd960311b567e44a475281e96f23a3",
+            "industrial-charter-midpoint-v2":
+                "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
+            "industrial-utility-expansion-regional-capital-v2":
+                "c029f1bcc185daf2ad51874d82a036dc2ec599b691a99514b49e2a9ab227d10e",
+            "industrial-green-buffer-regional-capital-v2":
+                "3334ba02628116acd92380d39c1f85efaa4943ea6489c85628c1fb75004d4f8b",
             "industrial-charter-victory-v1":
                 "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
         ]
@@ -428,6 +440,12 @@ final class SpatialConsequenceTests: XCTestCase {
                 "07296cfe78941dcf2a0597171623d90eded97c514e091665c13549a290e163c5",
             "commercial-recovery-v1":
                 "9b032f071496b9f45ef4787291d0dcc00b1b121007d3ac0a5441750aca7e0d4e",
+            "commercial-charter-midpoint-v2":
+                "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
+            "commercial-tax-relief-regional-capital-v2":
+                "c4aa6f7a069836d9b2d7cfc1031a63d5b86046799a253a9d84a9e9e8bd01b07b",
+            "commercial-public-realm-regional-capital-v2":
+                "738ee73e6eae304043de515784a14b57e0fe9e4fdfd635af75052c6b9d7cd6a6",
             "commercial-charter-victory-v1":
                 "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
             "industrial-opening-v1":
@@ -436,6 +454,12 @@ final class SpatialConsequenceTests: XCTestCase {
                 "b7b84220d43c4fc4e785d9287a04d78239e29f123327885922969c72f16c1bac",
             "industrial-recovery-v1":
                 "80d2971381a37e39851529e80614e1f395f14d27445487aa60d292f49e8c4d99",
+            "industrial-charter-midpoint-v2":
+                "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
+            "industrial-utility-expansion-regional-capital-v2":
+                "f8df607a9ace0e91579174e2c31a171cdcc221069e8fb329180c6aae2fead0e4",
+            "industrial-green-buffer-regional-capital-v2":
+                "f3bdf3c464c3e7d627bba2a19fe8edded09576b0f37fbef09c68958b48e0a393",
             "industrial-charter-victory-v1":
                 "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
         ]
@@ -468,6 +492,40 @@ final class SpatialConsequenceTests: XCTestCase {
                 expectedActivityDigests[artifact.definition.id],
                 artifact.definition.id
             )
+        }
+
+        for legacy in [
+            (
+                id: "commercial-charter-victory-v1",
+                file: "story-commercial-charter-victory-v1.json"
+            ),
+            (
+                id: "industrial-charter-victory-v1",
+                file: "story-industrial-charter-victory-v1.json"
+            ),
+        ] {
+            let bytes = try storyFixtureData(file: legacy.file)
+            try withTemporaryRoot { root in
+                let service = SaveGameService(rootURL: root)
+                try FileManager.default.createDirectory(
+                    at: root,
+                    withIntermediateDirectories: true
+                )
+                try bytes.write(to: service.saveURL, options: .atomic)
+                let state = try service.load().state
+                XCTAssertNil(state.progression?.secondAct, legacy.id)
+                let snapshot = try CityPresentationSnapshot(state: state)
+                XCTAssertEqual(
+                    diagnosticChannelsDigest(snapshot.spatialConsequences),
+                    expectedDiagnosticDigests[legacy.id],
+                    legacy.id
+                )
+                XCTAssertEqual(
+                    localActivityDigest(snapshot.spatialConsequences),
+                    expectedActivityDigests[legacy.id],
+                    legacy.id
+                )
+            }
         }
     }
 
@@ -853,6 +911,18 @@ final class SpatialConsequenceTests: XCTestCase {
         return SHA256.hash(data: Data(canonical.utf8))
             .map { String(format: "%02x", $0) }
             .joined()
+    }
+
+    private func storyFixtureData(file: String) throws -> Data {
+        let name = String(file.dropLast(".json".count))
+        let url = try XCTUnwrap(
+            Bundle.module.url(
+                forResource: name,
+                withExtension: "json",
+                subdirectory: "Fixtures/StoryStates"
+            )
+        )
+        return try Data(contentsOf: url)
     }
 
     private func optionalBitPattern(_ value: Double?) -> String {

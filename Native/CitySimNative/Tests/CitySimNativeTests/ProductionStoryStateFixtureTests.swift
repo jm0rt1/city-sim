@@ -4,11 +4,19 @@ import XCTest
 
 final class ProductionStoryStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/StoryStates"
-    private static let manifestFile = "story-states-manifest-v1.json"
+    private static let currentManifestFile = "story-states-manifest-v2.json"
+    private static let legacyManifestFile = "story-states-manifest-v1.json"
 
-    func testWriteFixtureCorpusOnlyWhenExplicitlyRequested() throws {
+    private let resolutions: [CityStrategyRecoveryResolution] = [
+        .commercialTaxRelief,
+        .commercialPublicRealmInvestment,
+        .industrialUtilityExpansion,
+        .industrialGreenBuffer,
+    ]
+
+    func testWriteCurrentFixtureCorpusOnlyWhenExplicitlyRequested() throws {
         guard let rootPath = ProcessInfo.processInfo.environment[
-            "CITYSIM_PLAY047_WRITE_FIXTURES"
+            "CITYSIM_PLAY069_WRITE_FIXTURES"
         ],
         !rootPath.isEmpty else {
             return
@@ -21,12 +29,76 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         let root = URL(filePath: rootPath, directoryHint: .isDirectory)
         try first.write(to: root)
         print(
-            "PLAY047_FIXTURE_WRITE root=\(root.path) fixtures=\(first.artifacts.count) " +
-            "manifest=\(Self.manifestFile)"
+            "PLAY069_FIXTURE_WRITE root=\(root.path) fixtures=\(first.artifacts.count) " +
+            "manifest=\(Self.currentManifestFile)"
         )
     }
 
-    func testFrozenCorpusMatchesTwoIndependentBuildsAndManifest() throws {
+    func testAuthenticV1CorpusRemainsByteExactAndMissingSecondActCompatible() throws {
+        let expectedSHA256 = [
+            "story-commercial-opening-v1.json":
+                "d19b5e6b27af6133ec90548cd480d3707c4a3e693dfb34e49585d044cd4a0e0a",
+            "story-commercial-complication-v1.json":
+                "fbcff0377fb1692595292cabd81c2ea70f2b69681a9964006078d031546fe03a",
+            "story-commercial-recovery-v1.json":
+                "d3620bdee148cc0093e7303890df3facba7914208f39079affc29fc882e2e1b4",
+            "story-commercial-charter-victory-v1.json":
+                "4df448848a8fa71a536df60d3fcf9a8d0c096025bc7d04cfcb6af5ad8f772c60",
+            "story-industrial-opening-v1.json":
+                "b6fb32abafca99592a5ad5f0e7312c0cad7520c556c4b785e19e8894936ce0d3",
+            "story-industrial-complication-v1.json":
+                "7d12f458ad9117e369862126314905538d2bde3a74548a68cd4c546a8722d1b7",
+            "story-industrial-recovery-v1.json":
+                "a9c3e22db19c9c880178b5928e2af867b5de67e2dec686357b845194dd00d411",
+            "story-industrial-charter-victory-v1.json":
+                "e5b2c53592149960400e15948518d0aaab9e9977184118d12d3a0c4e96088aab",
+            Self.legacyManifestFile:
+                "3614c6f7cd6eeed473c499f05a29c122aa92858744a717cc2e34bdb98f72fef0",
+        ]
+        let manifestData = try resourceData(file: Self.legacyManifestFile)
+        XCTAssertEqual(
+            ProductionStoryFixtureCorpus.sha256(manifestData),
+            expectedSHA256[Self.legacyManifestFile]
+        )
+        let manifest = try JSONDecoder().decode(
+            ProductionStoryFixtureManifest.self,
+            from: manifestData
+        )
+        XCTAssertEqual(manifest.fixtures.count, 8)
+        XCTAssertEqual(manifest.schemaVersion, 1)
+        XCTAssertEqual(manifest.fingerprintVersion, 1)
+        XCTAssertEqual(manifest.seed, 42)
+
+        for entry in manifest.fixtures {
+            let bytes = try resourceData(file: entry.file)
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                expectedSHA256[entry.file],
+                entry.id
+            )
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                entry.fileSHA256,
+                entry.id
+            )
+            XCTAssertEqual(bytes.count, entry.byteCount, entry.id)
+
+            try withTemporaryRoot(id: "legacy-\(entry.id)") { root in
+                let service = SaveGameService(rootURL: root)
+                let state = try decodedState(from: bytes, using: service)
+                let load = try service.load()
+                XCTAssertEqual(load.schemaVersion, 1, entry.id)
+                XCTAssertEqual(load.fingerprint.version, 1, entry.id)
+                XCTAssertEqual(load.fingerprint.digest, entry.expectedStateDigest, entry.id)
+                XCTAssertEqual(state.progression?.secondAct, nil, entry.id)
+                XCTAssertEqual(state.status, entry.status, entry.id)
+                XCTAssertEqual(state.tick, entry.tick, entry.id)
+                XCTAssertEqual(try Data(contentsOf: service.saveURL), bytes, entry.id)
+            }
+        }
+    }
+
+    func testCurrentCorpusMatchesTwoIndependentBuildsAndManifest() throws {
         let firstStart = ProcessInfo.processInfo.systemUptime
         let first = try ProductionStoryFixtureCorpus.build()
         let firstMilliseconds = elapsedMilliseconds(since: firstStart)
@@ -35,16 +107,24 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         let secondMilliseconds = elapsedMilliseconds(since: secondStart)
 
         XCTAssertEqual(first, second)
-        XCTAssertEqual(first.artifacts.count, 8)
-        XCTAssertEqual(first.manifest.fixtures.count, 8)
-        XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 8)
-        XCTAssertLessThan(firstMilliseconds, 10_000)
-        XCTAssertLessThan(secondMilliseconds, 10_000)
+        XCTAssertEqual(first.artifacts.count, 12)
+        XCTAssertEqual(first.manifest.fixtures.count, 12)
+        XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 12)
+        XCTAssertEqual(
+            first.artifacts.filter { $0.definition.stage == .charterMidpoint }.count,
+            2
+        )
+        XCTAssertEqual(
+            first.artifacts.filter { $0.definition.stage == .regionalCapital }.count,
+            4
+        )
+        XCTAssertLessThan(firstMilliseconds, 20_000)
+        XCTAssertLessThan(secondMilliseconds, 20_000)
 
-        let committedManifestData = try resourceData(file: Self.manifestFile)
+        let committedManifestData = try resourceData(file: Self.currentManifestFile)
         XCTAssertEqual(committedManifestData, first.manifestData)
         let committedManifest = try JSONDecoder().decode(
-            ProductionStoryFixtureManifest.self,
+            ProductionStoryFixtureManifestV2.self,
             from: committedManifestData
         )
         XCTAssertEqual(committedManifest, first.manifest)
@@ -67,8 +147,9 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
             XCTAssertEqual(entry.spatialDigest, artifact.spatialDigest)
             XCTAssertEqual(entry.byteCount, committedBytes.count)
             XCTAssertEqual(entry.strategy, artifact.definition.strategy)
-            XCTAssertEqual(entry.moment, artifact.definition.moment)
+            XCTAssertEqual(entry.stage, artifact.definition.stage)
             XCTAssertEqual(entry.phase, artifact.definition.phase)
+            XCTAssertEqual(entry.secondActPhase, artifact.definition.secondActPhase)
             XCTAssertEqual(entry.resolution, artifact.definition.resolution)
             XCTAssertEqual(entry.status, artifact.definition.status)
             XCTAssertTrue(
@@ -87,14 +168,14 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         }
 
         print(
-            "PLAY047_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
-            "generation_two_ms=\(metric(secondMilliseconds)) fixtures=8"
+            "PLAY069_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
+            "generation_two_ms=\(metric(secondMilliseconds)) fixtures=12"
         )
     }
 
     @MainActor
-    func testPrimaryAndBackupFixturesLoadPausedWithExactImmutableSnapshots() throws {
-        let manifest = try committedManifest()
+    func testCurrentPrimaryAndCorruptPrimaryBackupLoadPausedWithImmutableSnapshots() throws {
+        let manifest = try currentManifest()
 
         for entry in manifest.fixtures {
             let bytes = try resourceData(file: entry.file)
@@ -132,10 +213,18 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 let snapshot = try CityPresentationSnapshot(state: store.state)
                 let frozenState = snapshot.state
                 let frozenFingerprint = snapshot.fingerprint
+                let frozenSecondActPhase = snapshot.analytics.secondActPhase
+                let frozenRegionalStatus = snapshot.analytics.regionalCapitalStatusText
                 let frozenSpatial = snapshot.spatialConsequences
                 store.state.treasury += 1
                 XCTAssertEqual(snapshot.state, frozenState, entry.id)
                 XCTAssertEqual(snapshot.fingerprint, frozenFingerprint, entry.id)
+                XCTAssertEqual(snapshot.analytics.secondActPhase, frozenSecondActPhase, entry.id)
+                XCTAssertEqual(
+                    snapshot.analytics.regionalCapitalStatusText,
+                    frozenRegionalStatus,
+                    entry.id
+                )
                 XCTAssertEqual(snapshot.spatialConsequences, frozenSpatial, entry.id)
             }
 
@@ -146,14 +235,16 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                     withIntermediateDirectories: true
                 )
                 try bytes.write(to: service.backupURL, options: .atomic)
+                let corruptBytes = Data("{\"invalid\":true}".utf8)
+                try corruptBytes.write(to: service.saveURL, options: .atomic)
 
                 let direct = try service.load()
                 XCTAssertEqual(direct.source, .backup, entry.id)
                 XCTAssertTrue(direct.recoveredFromBackup, entry.id)
                 XCTAssertEqual(direct.fingerprint.digest, entry.expectedStateDigest, entry.id)
+                XCTAssertEqual(try Data(contentsOf: service.saveURL), corruptBytes, entry.id)
 
                 let store = preparedStore(saveService: service)
-                XCTAssertTrue(store.canUndo, entry.id)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity), entry.id)
                 XCTAssertEqual(store.state, direct.state, entry.id)
@@ -164,36 +255,28 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                     "Recovered last known-good city · Simulation paused",
                     entry.id
                 )
-                XCTAssertFalse(FileManager.default.fileExists(atPath: service.saveURL.path))
+                XCTAssertEqual(try Data(contentsOf: service.saveURL), corruptBytes, entry.id)
                 XCTAssertEqual(try Data(contentsOf: service.backupURL), bytes, entry.id)
             }
         }
     }
 
     @MainActor
-    func testReplayAndUndoBoundariesMatchEveryFrozenStoryMoment() throws {
+    func testReplayUndoAndTerminalBoundariesMatchEveryCurrentStoryIdentity() throws {
         let artifacts = try committedArtifacts()
         let builder = ProductionStoryStateBuilder()
 
         for strategy in [CityStrategy.commercialStewardship, .industrialExpansion] {
-            let opening = try artifact(
-                strategy: strategy,
-                moment: .opening,
-                in: artifacts
-            )
+            let opening = try artifact(strategy: strategy, stage: .opening, in: artifacts)
             let complication = try artifact(
                 strategy: strategy,
-                moment: .complication,
+                stage: .complication,
                 in: artifacts
             )
-            let recovery = try artifact(
+            let recovery = try artifact(strategy: strategy, stage: .recovery, in: artifacts)
+            let midpoint = try artifact(
                 strategy: strategy,
-                moment: .recovery,
-                in: artifacts
-            )
-            let victory = try artifact(
-                strategy: strategy,
-                moment: .charterVictory,
+                stage: .charterMidpoint,
                 in: artifacts
             )
 
@@ -212,14 +295,14 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 recovery.state
             )
             XCTAssertEqual(
-                try builder.replayRecoveryToVictory(
+                try builder.replayRecoveryToCharterMidpoint(
                     recovery.state,
                     strategy: strategy
                 ),
-                victory.state
+                midpoint.state
             )
 
-            for artifact in [opening, complication, recovery] {
+            for artifact in [opening, complication, recovery, midpoint] {
                 let store = CityGameStore(state: artifact.state)
                 let before = store.state
                 let beforeFingerprint = try CityStateFingerprinter.fingerprint(before)
@@ -236,14 +319,24 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                     artifact.definition.id
                 )
             }
+        }
 
-            let terminalStore = CityGameStore(state: victory.state)
-            let terminal = terminalStore.state
+        for resolution in resolutions {
+            let terminal = try artifact(
+                resolution: resolution,
+                stage: .regionalCapital,
+                in: artifacts
+            )
+            XCTAssertEqual(
+                try builder.regionalCapitalTerminal(resolvedBy: resolution),
+                terminal.state,
+                terminal.definition.id
+            )
+            let terminalStore = CityGameStore(state: terminal.state)
             XCTAssertEqual(terminalStore.speed, .paused)
             XCTAssertFalse(terminalStore.canUndo)
             XCTAssertFalse(terminalStore.perform(.undo))
-            XCTAssertEqual(terminalStore.state, terminal)
-            var attempted = terminal
+            var attempted = terminal.state
             XCTAssertEqual(
                 CitySimulationCommandExecutor.apply(
                     .advanceOneDailyBoundary,
@@ -251,12 +344,12 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 ),
                 .rejected(.simulationNotPlaying)
             )
-            XCTAssertEqual(attempted, terminal)
+            XCTAssertEqual(attempted, terminal.state)
         }
     }
 
-    func testFixtureIdentityLegacyCompatibilityAndBudgetsRemainFrozen() throws {
-        let manifest = try committedManifest()
+    func testCurrentIdentityAndExistingBudgetsRemainFrozen() throws {
+        let manifest = try currentManifest()
         let retainedSpatialBytes =
             MemoryLayout<CitySpatialConsequence>.stride * 24 * 24
         XCTAssertLessThanOrEqual(retainedSpatialBytes, 128 * 1_024)
@@ -283,26 +376,43 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                     entry.resolution,
                     entry.id
                 )
-                XCTAssertEqual(
-                    analytics.strategyRecoveryResolution,
-                    entry.resolution,
-                    entry.id
-                )
+                XCTAssertEqual(analytics.strategyRecoveryResolution, entry.resolution, entry.id)
                 XCTAssertEqual(analytics.committedStrategy, entry.strategy, entry.id)
                 XCTAssertEqual(analytics.strategyPhase, entry.phase, entry.id)
+                XCTAssertEqual(state.progression?.secondAct?.phase, entry.secondActPhase, entry.id)
                 XCTAssertEqual(state.status, entry.status, entry.id)
                 XCTAssertEqual(state.tick, entry.tick, entry.id)
-                XCTAssertEqual(
-                    entry.status == .won,
-                    state.progression?.townCharterAwarded == true,
-                    entry.id
-                )
+
+                switch entry.stage {
+                case .opening, .complication, .recovery:
+                    XCTAssertNil(state.progression?.secondAct, entry.id)
+                    XCTAssertFalse(state.progression?.townCharterAwarded ?? true, entry.id)
+                case .charterMidpoint:
+                    XCTAssertTrue(state.progression?.townCharterAwarded ?? false, entry.id)
+                    XCTAssertEqual(state.progression?.secondAct?.phase, .mandate, entry.id)
+                    XCTAssertFalse(
+                        state.progression?.secondAct?.regionalCapitalAwarded ?? true,
+                        entry.id
+                    )
+                    XCTAssertEqual(state.status, .playing, entry.id)
+                case .regionalCapital:
+                    XCTAssertTrue(state.progression?.townCharterAwarded ?? false, entry.id)
+                    XCTAssertTrue(
+                        state.progression?.secondAct?.regionalCapitalAwarded ?? false,
+                        entry.id
+                    )
+                    XCTAssertEqual(state.progression?.secondAct?.qualifyingCycles, 12, entry.id)
+                    XCTAssertEqual(
+                        state.messages.filter { $0.title == "Regional Capital Recognized" }.count,
+                        1,
+                        entry.id
+                    )
+                    XCTAssertEqual(state.status, .won, entry.id)
+                }
 
                 let fingerprintStart = ProcessInfo.processInfo.systemUptime
                 let fingerprint = try CityStateFingerprinter.fingerprint(state)
-                let fingerprintMilliseconds = elapsedMilliseconds(
-                    since: fingerprintStart
-                )
+                let fingerprintMilliseconds = elapsedMilliseconds(since: fingerprintStart)
                 let snapshotStart = ProcessInfo.processInfo.systemUptime
                 let snapshot = try CityPresentationSnapshot(state: state)
                 let snapshotMilliseconds = elapsedMilliseconds(since: snapshotStart)
@@ -337,7 +447,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertLessThan(loadMilliseconds, 1_500, entry.id)
 
                 print(
-                    "PLAY047_FIXTURE id=\(entry.id) tick=\(entry.tick) " +
+                    "PLAY069_FIXTURE id=\(entry.id) tick=\(entry.tick) " +
                     "bytes=\(entry.byteCount) digest=\(entry.expectedStateDigest) " +
                     "spatial=\(entry.spatialDigest) " +
                     "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
@@ -348,7 +458,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
             }
         }
 
-        let legacy: [(file: String, sha256: String, schema: Int, digest: String)] = [
+        let authenticLegacy: [(file: String, sha256: String, schema: Int, digest: String)] = [
             (
                 "strategy-legacy-schema0-v1.json",
                 "28c41c2a8c44adc0de49110ebb05ba0952f9deb4f9cb59c3f10035e7a925e908",
@@ -362,7 +472,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 "947b383684145d6d18738f313fec4f648861680165134f33b4f65ad42e5c0e3f"
             ),
         ]
-        for fixture in legacy {
+        for fixture in authenticLegacy {
             let bytes = try legacyResourceData(file: fixture.file)
             XCTAssertEqual(
                 ProductionStoryFixtureCorpus.sha256(bytes),
@@ -377,14 +487,15 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertEqual(load.fingerprint.version, 1, fixture.file)
                 XCTAssertEqual(load.fingerprint.digest, fixture.digest, fixture.file)
                 XCTAssertNil(state.progression?.strategy, fixture.file)
+                XCTAssertNil(state.progression?.secondAct, fixture.file)
             }
         }
     }
 
-    private func committedManifest() throws -> ProductionStoryFixtureManifest {
+    private func currentManifest() throws -> ProductionStoryFixtureManifestV2 {
         try JSONDecoder().decode(
-            ProductionStoryFixtureManifest.self,
-            from: resourceData(file: Self.manifestFile)
+            ProductionStoryFixtureManifestV2.self,
+            from: resourceData(file: Self.currentManifestFile)
         )
     }
 
@@ -404,14 +515,16 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
     }
 
     private func artifact(
-        strategy: CityStrategy,
-        moment: ProductionStoryMoment,
+        strategy: CityStrategy? = nil,
+        resolution: CityStrategyRecoveryResolution? = nil,
+        stage: ProductionStoryStage,
         in artifacts: [ProductionStoryFixtureArtifact]
     ) throws -> ProductionStoryFixtureArtifact {
         try XCTUnwrap(
             artifacts.first {
-                $0.definition.strategy == strategy
-                    && $0.definition.moment == moment
+                (strategy == nil || $0.definition.strategy == strategy)
+                    && (resolution == nil || $0.definition.resolution == resolution)
+                    && $0.definition.stage == stage
             }
         )
     }
@@ -509,7 +622,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         _ body: (URL) throws -> T
     ) throws -> T {
         let root = FileManager.default.temporaryDirectory.appending(
-            path: "citysim-play047-\(id)-\(UUID().uuidString)",
+            path: "citysim-play069-\(id)-\(UUID().uuidString)",
             directoryHint: .isDirectory
         )
         defer { try? FileManager.default.removeItem(at: root) }

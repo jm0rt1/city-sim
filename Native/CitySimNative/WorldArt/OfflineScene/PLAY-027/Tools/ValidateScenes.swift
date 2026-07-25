@@ -8,7 +8,7 @@ enum ValidationError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: validate-scenes --repository-root <path> --scenes-root <path> --schema <path> --fingerprint <path> --materials <path> --preview-plan <path> --report <path>"
+            return "usage: validate-scenes --repository-root <path> --scenes-root <path> --schema <path> --fingerprint <path> --materials <path> --preview-plan <path> --report <path> [--descriptor-schema 1|2]"
         case let .invalid(message):
             return message
         }
@@ -113,6 +113,10 @@ enum ValidateScenesMain {
             "--logical-building-id",
             in: arguments
         ) ?? "residential_l01"
+        let family = optionalArgument(
+            "--family",
+            in: arguments
+        ) ?? String(logicalBuildingID.split(separator: "_")[0])
         let level = Int(
             optionalArgument("--level", in: arguments) ?? "1"
         ) ?? 1
@@ -120,6 +124,15 @@ enum ValidateScenesMain {
             "--calibration-id",
             in: arguments
         ) ?? "residential-l01-variant-0-directional-v03"
+        let expectedDescriptorSchema = Int(
+            optionalArgument("--descriptor-schema", in: arguments) ?? "1"
+        ) ?? 1
+        guard expectedDescriptorSchema == 1 || expectedDescriptorSchema == 2
+        else {
+            throw ValidationError.invalid(
+                "descriptor schema must be 1 or 2"
+            )
+        }
         let directions = ["north", "east", "south", "west"]
         let expectedEdges: [String: [[Double]]] = [
             "north": [[768, 640], [1024, 768]],
@@ -167,11 +180,38 @@ enum ValidateScenesMain {
             let digest = try sha256(sceneURL)
             var itemFailures: [String] = []
 
-            if descriptor.schema != 1 || descriptor.task != "PLAY-027" {
+            if descriptor.schema != expectedDescriptorSchema
+                || descriptor.task != "PLAY-027"
+            {
                 itemFailures.append("schema/task mismatch")
             }
+            do {
+                let sampling = try DescriptorSamplingResolver.resolve(
+                    descriptor: descriptor
+                )
+                if sampling.descriptorSchema != expectedDescriptorSchema {
+                    itemFailures.append(
+                        "effective sampling schema mismatch"
+                    )
+                }
+                if expectedDescriptorSchema == 2
+                    && (
+                        sampling.contractID
+                            != DescriptorSamplingResolver.schema2ContractV3ID
+                        || sampling.purpose != "source-authority"
+                    )
+                {
+                    itemFailures.append(
+                        "source-authority schema-2 v3 sampling mismatch"
+                    )
+                }
+            } catch {
+                itemFailures.append(
+                    "descriptor sampling contract invalid: \(error)"
+                )
+            }
             if descriptor.logicalBuildingID != logicalBuildingID
-                || descriptor.family != "residential"
+                || descriptor.family != family
                 || descriptor.level != level
                 || descriptor.variantID != "variant-0"
                 || !descriptor.sourceRevision.hasPrefix("source-v")
@@ -247,7 +287,8 @@ enum ValidateScenesMain {
                 || descriptor.camera.yawDegrees != 45
                 || descriptor.camera.elevationDegrees != 30
                 || descriptor.camera.renderViewportPixels != [1536, 1024]
-                || descriptor.camera.oversamplingFactor != 2
+                || descriptor.camera.oversamplingFactor
+                    != (expectedDescriptorSchema == 2 ? 4 : 2)
                 || descriptor.camera.sourceGroundCenter != [768, 768]
                 || descriptor.camera.postProjectionOffsetPixels != [0, 256]
             {
@@ -321,7 +362,7 @@ enum ValidateScenesMain {
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")
             }
-            if level > 1 {
+            if level > 1 || family == "commercial" {
                 if descriptor.building.massingProfile == nil
                     || descriptor.building.massBlocks?.isEmpty != false
                     || descriptor.building.roofVolumes?.isEmpty != false
@@ -335,6 +376,43 @@ enum ValidateScenesMain {
                 if descriptor.building.floors < level + 1 {
                     itemFailures.append(
                         "density level lacks readable vertical progression"
+                    )
+                }
+            }
+            if family == "commercial" {
+                let commercialStyles = Set([
+                    "shopfront",
+                    "market-arcade",
+                    "office-lobby",
+                    "tower-lobby",
+                ])
+                if !commercialStyles.contains(
+                    descriptor.entrance.style ?? ""
+                ) {
+                    itemFailures.append(
+                        "commercial entrance lacks an approved storefront/lobby style"
+                    )
+                }
+                let groundFloorGlazing = descriptor.facades.reduce(0) {
+                    count, facade in
+                    count
+                        + facade.windowBays.filter { $0.floor == 1 }.count
+                        + (facade.windowRhythms ?? []).filter {
+                            $0.floor == 1
+                        }.reduce(0) {
+                            $0 + $1.centersWorld.count
+                        }
+                }
+                if groundFloorGlazing < 8 {
+                    itemFailures.append(
+                        "commercial ground floor lacks storefront glazing rhythm"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "rooftop-hvac"
+                }) {
+                    itemFailures.append(
+                        "commercial roof lacks explicit mechanical treatment"
                     )
                 }
             }
@@ -413,6 +491,7 @@ enum ValidateScenesMain {
             "calibrationID":
                 calibrationID,
             "logicalBuildingID": logicalBuildingID,
+            "family": family,
             "level": level,
             "schemaFile": repositoryRelativePath(
                 schemaURL,

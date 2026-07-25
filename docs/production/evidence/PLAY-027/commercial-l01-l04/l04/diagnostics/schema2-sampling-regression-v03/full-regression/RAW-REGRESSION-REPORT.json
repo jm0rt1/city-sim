@@ -1,0 +1,1531 @@
+{
+  "completedSchema2Primaries" : 28,
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+  "expectedSchema2Samples" : 28,
+  "failures" : [
+
+  ],
+  "legacySchema1Reproduction" : [
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "a72cbac78f69ca65e441dfdc688ae7ec4133d6a238c872e3ff59034337d80c4f",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/north/source-v04.png",
+        "fileSHA256" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/north",
+      "reproduced" : {
+        "decodedPixelSHA256" : "a72cbac78f69ca65e441dfdc688ae7ec4133d6a238c872e3ff59034337d80c4f",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l01/north/source.png",
+        "fileSHA256" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "f42741f64b30a8e34db5de1bbfa9163362134d923ffbddf648ab970a9c1737fd",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/east/source-v04.png",
+        "fileSHA256" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/east",
+      "reproduced" : {
+        "decodedPixelSHA256" : "f42741f64b30a8e34db5de1bbfa9163362134d923ffbddf648ab970a9c1737fd",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l01/east/source.png",
+        "fileSHA256" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "bc4011690e0a4b4e97cddb00afa9351db287a810aae9913275f8eabd59ced4a1",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/south/source-v04.png",
+        "fileSHA256" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/south",
+      "reproduced" : {
+        "decodedPixelSHA256" : "bc4011690e0a4b4e97cddb00afa9351db287a810aae9913275f8eabd59ced4a1",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l01/south/source.png",
+        "fileSHA256" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "6595555d85207551f5d3179f4d998095aad00bd01b73308afdadd943b713874a",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/west/source-v04.png",
+        "fileSHA256" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/west",
+      "reproduced" : {
+        "decodedPixelSHA256" : "6595555d85207551f5d3179f4d998095aad00bd01b73308afdadd943b713874a",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l01/west/source.png",
+        "fileSHA256" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "52716692e60a660eb9063a1fb3ad9706330df754dc44c2552428e161bedd7063",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/north/source-v01.png",
+        "fileSHA256" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/north",
+      "reproduced" : {
+        "decodedPixelSHA256" : "52716692e60a660eb9063a1fb3ad9706330df754dc44c2552428e161bedd7063",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l02/north/source.png",
+        "fileSHA256" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "1ff9889409b2a2ed15e2c95bb9dcb6cbafb700d31f2fda24bf71cca9b5819f84",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/east/source-v01.png",
+        "fileSHA256" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/east",
+      "reproduced" : {
+        "decodedPixelSHA256" : "1ff9889409b2a2ed15e2c95bb9dcb6cbafb700d31f2fda24bf71cca9b5819f84",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l02/east/source.png",
+        "fileSHA256" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "5400316c9d00791f1df8f0b55c6c01386844659680b05eebf920ce61a621c48b",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/south/source-v01.png",
+        "fileSHA256" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/south",
+      "reproduced" : {
+        "decodedPixelSHA256" : "5400316c9d00791f1df8f0b55c6c01386844659680b05eebf920ce61a621c48b",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l02/south/source.png",
+        "fileSHA256" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "7c2aae4d26e9d086e4114bdf44ca0aad53a8dd3fabd5356261f6e1d877be3ee4",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/west/source-v01.png",
+        "fileSHA256" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/west",
+      "reproduced" : {
+        "decodedPixelSHA256" : "7c2aae4d26e9d086e4114bdf44ca0aad53a8dd3fabd5356261f6e1d877be3ee4",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l02/west/source.png",
+        "fileSHA256" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "d2f94104b8ae6ffe3669820cf22824fb786913bb68436880ab5d592668ebb382",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/north/source-v01.png",
+        "fileSHA256" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/north",
+      "reproduced" : {
+        "decodedPixelSHA256" : "d2f94104b8ae6ffe3669820cf22824fb786913bb68436880ab5d592668ebb382",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l03/north/source.png",
+        "fileSHA256" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "e79fe52692c4388fb1d5b2da009c7c406d7685baba130bb31808a4130a95b17f",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/east/source-v01.png",
+        "fileSHA256" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/east",
+      "reproduced" : {
+        "decodedPixelSHA256" : "e79fe52692c4388fb1d5b2da009c7c406d7685baba130bb31808a4130a95b17f",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l03/east/source.png",
+        "fileSHA256" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "7472636a3a3dee2dc1f8619091de36521dcb79a3aa945b7bd4e63c76a786031d",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/south/source-v01.png",
+        "fileSHA256" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/south",
+      "reproduced" : {
+        "decodedPixelSHA256" : "7472636a3a3dee2dc1f8619091de36521dcb79a3aa945b7bd4e63c76a786031d",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l03/south/source.png",
+        "fileSHA256" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "91a66fe788ae7a4cd16b4fb345bd4a6b9b0b1b8b08edcd8fec8760d48ee7b3c5",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/west/source-v01.png",
+        "fileSHA256" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/west",
+      "reproduced" : {
+        "decodedPixelSHA256" : "91a66fe788ae7a4cd16b4fb345bd4a6b9b0b1b8b08edcd8fec8760d48ee7b3c5",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/legacy-schema1/commercial_l03/west/source.png",
+        "fileSHA256" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9"
+      }
+    }
+  ],
+  "normalizationAuthorizedByRawGate" : true,
+  "primaryUniquenessPassed" : true,
+  "productionSelected" : false,
+  "schema" : 1,
+  "schema2Samples" : [
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "425585081450c1b57cbc93da148c9b10a50e8b1f354e3514ff3f725db8168b82",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/north/run-a.png",
+          "fileSHA256" : "f595d8d42b3ce5597c008e757b551129fdaad7befd80624ef5d5c60317f1f33b",
+          "postQuantizationMutationCount" : 611,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 139,
+            "green" : 344,
+            "red" : 128
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "425585081450c1b57cbc93da148c9b10a50e8b1f354e3514ff3f725db8168b82",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/north/run-b.png",
+          "fileSHA256" : "f595d8d42b3ce5597c008e757b551129fdaad7befd80624ef5d5c60317f1f33b",
+          "postQuantizationMutationCount" : 611,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 139,
+            "green" : 344,
+            "red" : 128
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "425585081450c1b57cbc93da148c9b10a50e8b1f354e3514ff3f725db8168b82",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/north/run-c.png",
+          "fileSHA256" : "f595d8d42b3ce5597c008e757b551129fdaad7befd80624ef5d5c60317f1f33b",
+          "postQuantizationMutationCount" : 611,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 139,
+            "green" : 344,
+            "red" : 128
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "c4ddedfbb7df4931f97e6317bdeea896e5a33fa35151ffa915b38d91b9eecd58",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/east/run-a.png",
+          "fileSHA256" : "1db7ea8d443fabd4aebc8a7bacc44b274e67364f057febc496177322623e2b0e",
+          "postQuantizationMutationCount" : 497,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 91,
+            "green" : 277,
+            "red" : 129
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "c4ddedfbb7df4931f97e6317bdeea896e5a33fa35151ffa915b38d91b9eecd58",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/east/run-b.png",
+          "fileSHA256" : "1db7ea8d443fabd4aebc8a7bacc44b274e67364f057febc496177322623e2b0e",
+          "postQuantizationMutationCount" : 497,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 91,
+            "green" : 277,
+            "red" : 129
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "c4ddedfbb7df4931f97e6317bdeea896e5a33fa35151ffa915b38d91b9eecd58",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/east/run-c.png",
+          "fileSHA256" : "1db7ea8d443fabd4aebc8a7bacc44b274e67364f057febc496177322623e2b0e",
+          "postQuantizationMutationCount" : 497,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 91,
+            "green" : 277,
+            "red" : 129
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "521abcd8358f5f5cfc00307ecfaf69817fbd35233ddc862af05b91903e77b566",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/south/run-a.png",
+          "fileSHA256" : "6ce0868c52789df96fe31e0b12ba45dd7ef6b95fca40043e520638a90cc46306",
+          "postQuantizationMutationCount" : 496,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 111,
+            "green" : 265,
+            "red" : 120
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "521abcd8358f5f5cfc00307ecfaf69817fbd35233ddc862af05b91903e77b566",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/south/run-b.png",
+          "fileSHA256" : "6ce0868c52789df96fe31e0b12ba45dd7ef6b95fca40043e520638a90cc46306",
+          "postQuantizationMutationCount" : 496,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 111,
+            "green" : 265,
+            "red" : 120
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "521abcd8358f5f5cfc00307ecfaf69817fbd35233ddc862af05b91903e77b566",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/south/run-c.png",
+          "fileSHA256" : "6ce0868c52789df96fe31e0b12ba45dd7ef6b95fca40043e520638a90cc46306",
+          "postQuantizationMutationCount" : 496,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 111,
+            "green" : 265,
+            "red" : 120
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "3adc77777fa5f2436c5aa7b00699413bcb38afc56be1e088c59374c669cbc5e1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/west/run-a.png",
+          "fileSHA256" : "6933f034144f107ad923606230443143cf8fc8e7133e690d0cb39f454e937e5f",
+          "postQuantizationMutationCount" : 625,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 145,
+            "green" : 346,
+            "red" : 134
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "3adc77777fa5f2436c5aa7b00699413bcb38afc56be1e088c59374c669cbc5e1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/west/run-b.png",
+          "fileSHA256" : "6933f034144f107ad923606230443143cf8fc8e7133e690d0cb39f454e937e5f",
+          "postQuantizationMutationCount" : 625,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 145,
+            "green" : 346,
+            "red" : 134
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "3adc77777fa5f2436c5aa7b00699413bcb38afc56be1e088c59374c669cbc5e1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/west/run-c.png",
+          "fileSHA256" : "6933f034144f107ad923606230443143cf8fc8e7133e690d0cb39f454e937e5f",
+          "postQuantizationMutationCount" : 625,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 145,
+            "green" : 346,
+            "red" : 134
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l01/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "9bcc66e80c08e831d2cf58f6a728fec1ea32d06fb4d32b8fc25984d0fd1f19a3",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/north/run-a.png",
+          "fileSHA256" : "017577902681cb2588c32ccdd140bffac6ab0c422c4ac8999b34df8a374e951a",
+          "postQuantizationMutationCount" : 738,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 156,
+            "green" : 178,
+            "red" : 404
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "9bcc66e80c08e831d2cf58f6a728fec1ea32d06fb4d32b8fc25984d0fd1f19a3",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/north/run-b.png",
+          "fileSHA256" : "017577902681cb2588c32ccdd140bffac6ab0c422c4ac8999b34df8a374e951a",
+          "postQuantizationMutationCount" : 738,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 156,
+            "green" : 178,
+            "red" : 404
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "9bcc66e80c08e831d2cf58f6a728fec1ea32d06fb4d32b8fc25984d0fd1f19a3",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/north/run-c.png",
+          "fileSHA256" : "017577902681cb2588c32ccdd140bffac6ab0c422c4ac8999b34df8a374e951a",
+          "postQuantizationMutationCount" : 738,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 156,
+            "green" : 178,
+            "red" : 404
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "f63d4621dc0bd45347ba082be2a76a72bf9cad8be6f2e407ff7e4ce638cbb95d",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/east/run-a.png",
+          "fileSHA256" : "3ac657c330e578912a2741348211a23161d917814555292b5bb0a9e0f51bb599",
+          "postQuantizationMutationCount" : 674,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 152,
+            "green" : 131,
+            "red" : 391
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "f63d4621dc0bd45347ba082be2a76a72bf9cad8be6f2e407ff7e4ce638cbb95d",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/east/run-b.png",
+          "fileSHA256" : "3ac657c330e578912a2741348211a23161d917814555292b5bb0a9e0f51bb599",
+          "postQuantizationMutationCount" : 674,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 152,
+            "green" : 131,
+            "red" : 391
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "f63d4621dc0bd45347ba082be2a76a72bf9cad8be6f2e407ff7e4ce638cbb95d",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/east/run-c.png",
+          "fileSHA256" : "3ac657c330e578912a2741348211a23161d917814555292b5bb0a9e0f51bb599",
+          "postQuantizationMutationCount" : 674,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 152,
+            "green" : 131,
+            "red" : 391
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "85fa059a4aacb3e63732fcadcf976a55e548958831a3493fb98c2dbb980f782c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/south/run-a.png",
+          "fileSHA256" : "67872d86bd3118a21f9b33081545c7da171b8d9f18990c9bbf86b2742a52ad5c",
+          "postQuantizationMutationCount" : 650,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 161,
+            "green" : 128,
+            "red" : 361
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "85fa059a4aacb3e63732fcadcf976a55e548958831a3493fb98c2dbb980f782c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/south/run-b.png",
+          "fileSHA256" : "67872d86bd3118a21f9b33081545c7da171b8d9f18990c9bbf86b2742a52ad5c",
+          "postQuantizationMutationCount" : 650,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 161,
+            "green" : 128,
+            "red" : 361
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "85fa059a4aacb3e63732fcadcf976a55e548958831a3493fb98c2dbb980f782c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/south/run-c.png",
+          "fileSHA256" : "67872d86bd3118a21f9b33081545c7da171b8d9f18990c9bbf86b2742a52ad5c",
+          "postQuantizationMutationCount" : 650,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 161,
+            "green" : 128,
+            "red" : 361
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "521a609aec3b1e48ca533fec76b87dc40346451211f14c2613a534371628fe69",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/west/run-a.png",
+          "fileSHA256" : "734315977c06adf2baf45f4d0d9c9033cbf0596121a0a4085c496db7e4d87650",
+          "postQuantizationMutationCount" : 718,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 150,
+            "green" : 172,
+            "red" : 396
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "521a609aec3b1e48ca533fec76b87dc40346451211f14c2613a534371628fe69",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/west/run-b.png",
+          "fileSHA256" : "734315977c06adf2baf45f4d0d9c9033cbf0596121a0a4085c496db7e4d87650",
+          "postQuantizationMutationCount" : 718,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 150,
+            "green" : 172,
+            "red" : 396
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "521a609aec3b1e48ca533fec76b87dc40346451211f14c2613a534371628fe69",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/west/run-c.png",
+          "fileSHA256" : "734315977c06adf2baf45f4d0d9c9033cbf0596121a0a4085c496db7e4d87650",
+          "postQuantizationMutationCount" : 718,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 150,
+            "green" : 172,
+            "red" : 396
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l02/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "8d5568e20f1f472b159dc08fef78056eb2910afd4fdeed213f0c1bbeba60cd7c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-a.png",
+          "fileSHA256" : "7e4b00bc3f1ffa639076f530351ca01c0ecc1032c273f72ce280929904f5567a",
+          "postQuantizationMutationCount" : 500,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 214,
+            "green" : 65,
+            "red" : 221
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "8d5568e20f1f472b159dc08fef78056eb2910afd4fdeed213f0c1bbeba60cd7c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-b.png",
+          "fileSHA256" : "7e4b00bc3f1ffa639076f530351ca01c0ecc1032c273f72ce280929904f5567a",
+          "postQuantizationMutationCount" : 500,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 214,
+            "green" : 65,
+            "red" : 221
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "8d5568e20f1f472b159dc08fef78056eb2910afd4fdeed213f0c1bbeba60cd7c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-c.png",
+          "fileSHA256" : "7e4b00bc3f1ffa639076f530351ca01c0ecc1032c273f72ce280929904f5567a",
+          "postQuantizationMutationCount" : 500,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 214,
+            "green" : 65,
+            "red" : 221
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "f1a7d15c952a84126174c19274a9c454e3ee2139131b3b68f26ec58a9c038200",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-a.png",
+          "fileSHA256" : "4e92f910ce82e8ece0c6d1e5650991b95940b64ff674d7f2256dcbb2312edc4c",
+          "postQuantizationMutationCount" : 546,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 194,
+            "green" : 71,
+            "red" : 281
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "f1a7d15c952a84126174c19274a9c454e3ee2139131b3b68f26ec58a9c038200",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-b.png",
+          "fileSHA256" : "4e92f910ce82e8ece0c6d1e5650991b95940b64ff674d7f2256dcbb2312edc4c",
+          "postQuantizationMutationCount" : 546,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 194,
+            "green" : 71,
+            "red" : 281
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "f1a7d15c952a84126174c19274a9c454e3ee2139131b3b68f26ec58a9c038200",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-c.png",
+          "fileSHA256" : "4e92f910ce82e8ece0c6d1e5650991b95940b64ff674d7f2256dcbb2312edc4c",
+          "postQuantizationMutationCount" : 546,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 194,
+            "green" : 71,
+            "red" : 281
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "7a1524deb7582131d4413447da4b5e39d98a00f8ead330fbae3f44724ff0128e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-a.png",
+          "fileSHA256" : "01dc598032f91d117f0fa03178b5230446e95ab3e034118a0f4bf3f303f45c85",
+          "postQuantizationMutationCount" : 559,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 205,
+            "green" : 70,
+            "red" : 284
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "7a1524deb7582131d4413447da4b5e39d98a00f8ead330fbae3f44724ff0128e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-b.png",
+          "fileSHA256" : "01dc598032f91d117f0fa03178b5230446e95ab3e034118a0f4bf3f303f45c85",
+          "postQuantizationMutationCount" : 559,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 205,
+            "green" : 70,
+            "red" : 284
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "7a1524deb7582131d4413447da4b5e39d98a00f8ead330fbae3f44724ff0128e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-c.png",
+          "fileSHA256" : "01dc598032f91d117f0fa03178b5230446e95ab3e034118a0f4bf3f303f45c85",
+          "postQuantizationMutationCount" : 559,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 205,
+            "green" : 70,
+            "red" : 284
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "f4584a6310bd1e44df001b46a63d0fd5d8e55a285e9e5663cf5bb4d2cfe425fe",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-a.png",
+          "fileSHA256" : "8a19e5717644af0ca21ad86e5beaa4ea320fbac2c41e199cbe8b8aeaa09d9d09",
+          "postQuantizationMutationCount" : 513,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 223,
+            "green" : 66,
+            "red" : 224
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "f4584a6310bd1e44df001b46a63d0fd5d8e55a285e9e5663cf5bb4d2cfe425fe",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-b.png",
+          "fileSHA256" : "8a19e5717644af0ca21ad86e5beaa4ea320fbac2c41e199cbe8b8aeaa09d9d09",
+          "postQuantizationMutationCount" : 513,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 223,
+            "green" : 66,
+            "red" : 224
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "f4584a6310bd1e44df001b46a63d0fd5d8e55a285e9e5663cf5bb4d2cfe425fe",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-c.png",
+          "fileSHA256" : "8a19e5717644af0ca21ad86e5beaa4ea320fbac2c41e199cbe8b8aeaa09d9d09",
+          "postQuantizationMutationCount" : 513,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 223,
+            "green" : 66,
+            "red" : 224
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l01/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "175cb076dd07f7e533db3abeedcd745a96a52c5b50d3d9d828fb8aa2fe36f26a",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/north/run-a.png",
+          "fileSHA256" : "aa96adf6f564ac2ebb0e25b6ae3cbaca5124b01048fe2368ee325439b4ad3eb4",
+          "postQuantizationMutationCount" : 1699,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 871,
+            "green" : 477,
+            "red" : 351
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "175cb076dd07f7e533db3abeedcd745a96a52c5b50d3d9d828fb8aa2fe36f26a",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/north/run-b.png",
+          "fileSHA256" : "aa96adf6f564ac2ebb0e25b6ae3cbaca5124b01048fe2368ee325439b4ad3eb4",
+          "postQuantizationMutationCount" : 1699,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 871,
+            "green" : 477,
+            "red" : 351
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "175cb076dd07f7e533db3abeedcd745a96a52c5b50d3d9d828fb8aa2fe36f26a",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/north/run-c.png",
+          "fileSHA256" : "aa96adf6f564ac2ebb0e25b6ae3cbaca5124b01048fe2368ee325439b4ad3eb4",
+          "postQuantizationMutationCount" : 1699,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 871,
+            "green" : 477,
+            "red" : 351
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l01/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "ae1d70dd39a14cd62cc2f5a44d40bde19e3616b4424e9748ce460fb0e0846965",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/east/run-a.png",
+          "fileSHA256" : "29dfe73b36470e0a21b78991c0132e2e6534c7a73f2b34d99231931cc1339f8a",
+          "postQuantizationMutationCount" : 1563,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 786,
+            "green" : 483,
+            "red" : 294
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "ae1d70dd39a14cd62cc2f5a44d40bde19e3616b4424e9748ce460fb0e0846965",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/east/run-b.png",
+          "fileSHA256" : "29dfe73b36470e0a21b78991c0132e2e6534c7a73f2b34d99231931cc1339f8a",
+          "postQuantizationMutationCount" : 1563,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 786,
+            "green" : 483,
+            "red" : 294
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "ae1d70dd39a14cd62cc2f5a44d40bde19e3616b4424e9748ce460fb0e0846965",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/east/run-c.png",
+          "fileSHA256" : "29dfe73b36470e0a21b78991c0132e2e6534c7a73f2b34d99231931cc1339f8a",
+          "postQuantizationMutationCount" : 1563,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 786,
+            "green" : 483,
+            "red" : 294
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l01/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "68fbca269620a62e57e639c9abb6f4e36c554f5b026628bcf2e8ba921094ba48",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/south/run-a.png",
+          "fileSHA256" : "05f449337a80cb5ceaeda9cfd3e8f698c5be13997e7e45267bca93c38156b65a",
+          "postQuantizationMutationCount" : 1591,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 785,
+            "green" : 496,
+            "red" : 310
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "68fbca269620a62e57e639c9abb6f4e36c554f5b026628bcf2e8ba921094ba48",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/south/run-b.png",
+          "fileSHA256" : "05f449337a80cb5ceaeda9cfd3e8f698c5be13997e7e45267bca93c38156b65a",
+          "postQuantizationMutationCount" : 1591,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 785,
+            "green" : 496,
+            "red" : 310
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "68fbca269620a62e57e639c9abb6f4e36c554f5b026628bcf2e8ba921094ba48",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/south/run-c.png",
+          "fileSHA256" : "05f449337a80cb5ceaeda9cfd3e8f698c5be13997e7e45267bca93c38156b65a",
+          "postQuantizationMutationCount" : 1591,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 785,
+            "green" : 496,
+            "red" : 310
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l01/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "03cd491ef03fad72f74d957c1272462521b82d948dcf8b820f0b5e2c70993006",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/west/run-a.png",
+          "fileSHA256" : "ee874bb00df86f35ec302c52ae72ef13d51b0596891e25168139a708e975b19b",
+          "postQuantizationMutationCount" : 1731,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 868,
+            "green" : 505,
+            "red" : 358
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "03cd491ef03fad72f74d957c1272462521b82d948dcf8b820f0b5e2c70993006",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/west/run-b.png",
+          "fileSHA256" : "ee874bb00df86f35ec302c52ae72ef13d51b0596891e25168139a708e975b19b",
+          "postQuantizationMutationCount" : 1731,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 868,
+            "green" : 505,
+            "red" : 358
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "03cd491ef03fad72f74d957c1272462521b82d948dcf8b820f0b5e2c70993006",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/west/run-c.png",
+          "fileSHA256" : "ee874bb00df86f35ec302c52ae72ef13d51b0596891e25168139a708e975b19b",
+          "postQuantizationMutationCount" : 1731,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 868,
+            "green" : 505,
+            "red" : 358
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l01/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l02/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "b5eaf41673866dc109b7de2f513015e0ae5b17028e1023f96d09ca8884d56f24",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/north/run-a.png",
+          "fileSHA256" : "ca4aee9a507af2f0eba29f67a93b7c0c3874bb704ebca8b44de6b867cd99df4e",
+          "postQuantizationMutationCount" : 678,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 130,
+            "green" : 375,
+            "red" : 173
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "b5eaf41673866dc109b7de2f513015e0ae5b17028e1023f96d09ca8884d56f24",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/north/run-b.png",
+          "fileSHA256" : "ca4aee9a507af2f0eba29f67a93b7c0c3874bb704ebca8b44de6b867cd99df4e",
+          "postQuantizationMutationCount" : 678,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 130,
+            "green" : 375,
+            "red" : 173
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "b5eaf41673866dc109b7de2f513015e0ae5b17028e1023f96d09ca8884d56f24",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/north/run-c.png",
+          "fileSHA256" : "ca4aee9a507af2f0eba29f67a93b7c0c3874bb704ebca8b44de6b867cd99df4e",
+          "postQuantizationMutationCount" : 678,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 130,
+            "green" : 375,
+            "red" : 173
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l02/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "6c5aef04dff10326c6f4a576e830f6dba91492925b5df0401952b589523a25fd",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/east/run-a.png",
+          "fileSHA256" : "3eda34ef26de405dc980a39fe6ed8886409689259e18f6df10f21d9e9c537549",
+          "postQuantizationMutationCount" : 672,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 120,
+            "green" : 396,
+            "red" : 156
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "6c5aef04dff10326c6f4a576e830f6dba91492925b5df0401952b589523a25fd",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/east/run-b.png",
+          "fileSHA256" : "3eda34ef26de405dc980a39fe6ed8886409689259e18f6df10f21d9e9c537549",
+          "postQuantizationMutationCount" : 672,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 120,
+            "green" : 396,
+            "red" : 156
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "6c5aef04dff10326c6f4a576e830f6dba91492925b5df0401952b589523a25fd",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/east/run-c.png",
+          "fileSHA256" : "3eda34ef26de405dc980a39fe6ed8886409689259e18f6df10f21d9e9c537549",
+          "postQuantizationMutationCount" : 672,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 120,
+            "green" : 396,
+            "red" : 156
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l02/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "533d282548e4f75236f82597f52ef43725835fbddf9ddec583582f35082310b0",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/south/run-a.png",
+          "fileSHA256" : "fad4318449a622d1de60930be617bcce4ec59f1e677dedec487fd64fd45f82dc",
+          "postQuantizationMutationCount" : 655,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 123,
+            "green" : 377,
+            "red" : 155
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "533d282548e4f75236f82597f52ef43725835fbddf9ddec583582f35082310b0",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/south/run-b.png",
+          "fileSHA256" : "fad4318449a622d1de60930be617bcce4ec59f1e677dedec487fd64fd45f82dc",
+          "postQuantizationMutationCount" : 655,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 123,
+            "green" : 377,
+            "red" : 155
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "533d282548e4f75236f82597f52ef43725835fbddf9ddec583582f35082310b0",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/south/run-c.png",
+          "fileSHA256" : "fad4318449a622d1de60930be617bcce4ec59f1e677dedec487fd64fd45f82dc",
+          "postQuantizationMutationCount" : 655,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 123,
+            "green" : 377,
+            "red" : 155
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l02/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "cd9c89815fdabfcf58d462562b6cb0ad6eabefa3fca96e7fc8ab7ffa0f29f863",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/west/run-a.png",
+          "fileSHA256" : "c5dfa6e71ae1962f7d4c591e686a2ff3e9536e2381cb0b0876c5cfbd042ba9b8",
+          "postQuantizationMutationCount" : 675,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 141,
+            "green" : 374,
+            "red" : 160
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "cd9c89815fdabfcf58d462562b6cb0ad6eabefa3fca96e7fc8ab7ffa0f29f863",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/west/run-b.png",
+          "fileSHA256" : "c5dfa6e71ae1962f7d4c591e686a2ff3e9536e2381cb0b0876c5cfbd042ba9b8",
+          "postQuantizationMutationCount" : 675,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 141,
+            "green" : 374,
+            "red" : 160
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "cd9c89815fdabfcf58d462562b6cb0ad6eabefa3fca96e7fc8ab7ffa0f29f863",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/west/run-c.png",
+          "fileSHA256" : "c5dfa6e71ae1962f7d4c591e686a2ff3e9536e2381cb0b0876c5cfbd042ba9b8",
+          "postQuantizationMutationCount" : 675,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 141,
+            "green" : 374,
+            "red" : 160
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l02/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l03/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "84e8ab0354a6a3e17e5116118406dd258751acc4d2d11a24efe17fcb171a73e7",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/north/run-a.png",
+          "fileSHA256" : "faec6ea78b13f9b55454216a37f9118aa5b527f568b33f61ce2ffe2e38cb3841",
+          "postQuantizationMutationCount" : 915,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 177,
+            "green" : 579,
+            "red" : 159
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "84e8ab0354a6a3e17e5116118406dd258751acc4d2d11a24efe17fcb171a73e7",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/north/run-b.png",
+          "fileSHA256" : "faec6ea78b13f9b55454216a37f9118aa5b527f568b33f61ce2ffe2e38cb3841",
+          "postQuantizationMutationCount" : 916,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 177,
+            "green" : 580,
+            "red" : 159
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "84e8ab0354a6a3e17e5116118406dd258751acc4d2d11a24efe17fcb171a73e7",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/north/run-c.png",
+          "fileSHA256" : "faec6ea78b13f9b55454216a37f9118aa5b527f568b33f61ce2ffe2e38cb3841",
+          "postQuantizationMutationCount" : 916,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 177,
+            "green" : 580,
+            "red" : 159
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l03/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "8ba810b0458255496eec820c13a4e74d0a7321f9229d07d4525bcd6cd7c4a76e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/east/run-a.png",
+          "fileSHA256" : "96abf8a6f01368d446cfb88c8d6b4c70d2dab98d76f71a25162b84ce94f586a9",
+          "postQuantizationMutationCount" : 916,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 165,
+            "green" : 594,
+            "red" : 157
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "8ba810b0458255496eec820c13a4e74d0a7321f9229d07d4525bcd6cd7c4a76e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/east/run-b.png",
+          "fileSHA256" : "96abf8a6f01368d446cfb88c8d6b4c70d2dab98d76f71a25162b84ce94f586a9",
+          "postQuantizationMutationCount" : 916,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 165,
+            "green" : 594,
+            "red" : 157
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "8ba810b0458255496eec820c13a4e74d0a7321f9229d07d4525bcd6cd7c4a76e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/east/run-c.png",
+          "fileSHA256" : "96abf8a6f01368d446cfb88c8d6b4c70d2dab98d76f71a25162b84ce94f586a9",
+          "postQuantizationMutationCount" : 915,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 165,
+            "green" : 593,
+            "red" : 157
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l03/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "d0189052bb91b2da938c95116c5e70314de702d31bded7a18779f157d7c06fb6",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/south/run-a.png",
+          "fileSHA256" : "472c64d74a05860e842001f9a96cd413c90aa395e2764cc6c387597ec7f68869",
+          "postQuantizationMutationCount" : 849,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 166,
+            "green" : 549,
+            "red" : 134
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "d0189052bb91b2da938c95116c5e70314de702d31bded7a18779f157d7c06fb6",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/south/run-b.png",
+          "fileSHA256" : "472c64d74a05860e842001f9a96cd413c90aa395e2764cc6c387597ec7f68869",
+          "postQuantizationMutationCount" : 849,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 166,
+            "green" : 549,
+            "red" : 134
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "d0189052bb91b2da938c95116c5e70314de702d31bded7a18779f157d7c06fb6",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/south/run-c.png",
+          "fileSHA256" : "472c64d74a05860e842001f9a96cd413c90aa395e2764cc6c387597ec7f68869",
+          "postQuantizationMutationCount" : 849,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 166,
+            "green" : 549,
+            "red" : 134
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l03/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/west/run-a.png",
+          "fileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+          "postQuantizationMutationCount" : 920,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 169,
+            "green" : 596,
+            "red" : 155
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/west/run-b.png",
+          "fileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+          "postQuantizationMutationCount" : 920,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 169,
+            "green" : 596,
+            "red" : 155
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "81e528484ed0757cfa8b87dbea666ee0e29e9cb66fc847801c8b55cbfe359b5c",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/west/run-c.png",
+          "fileSHA256" : "b15ec294b1f276372702dca3822f4326646cc42e299ba0187bd81b681bec3add",
+          "postQuantizationMutationCount" : 920,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 169,
+            "green" : 596,
+            "red" : 155
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l03/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l04/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "1182e613417ee1f6f3b19cbb100e86cbcd2f2314ce73feaa7be097b7b558d700",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/north/run-a.png",
+          "fileSHA256" : "75134e4f163250d48c8dfa1d79c43b86bb9f63c5a9833c8fd408b01d8511332e",
+          "postQuantizationMutationCount" : 1212,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 368,
+            "green" : 656,
+            "red" : 188
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "1182e613417ee1f6f3b19cbb100e86cbcd2f2314ce73feaa7be097b7b558d700",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/north/run-b.png",
+          "fileSHA256" : "75134e4f163250d48c8dfa1d79c43b86bb9f63c5a9833c8fd408b01d8511332e",
+          "postQuantizationMutationCount" : 1212,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 368,
+            "green" : 656,
+            "red" : 188
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "1182e613417ee1f6f3b19cbb100e86cbcd2f2314ce73feaa7be097b7b558d700",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/north/run-c.png",
+          "fileSHA256" : "75134e4f163250d48c8dfa1d79c43b86bb9f63c5a9833c8fd408b01d8511332e",
+          "postQuantizationMutationCount" : 1212,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 368,
+            "green" : 656,
+            "red" : 188
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l04/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "a14912d305b3495197104a1f552f88cccfc72ff0cb91d5eed7c024208c49a7b1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/east/run-a.png",
+          "fileSHA256" : "58d0bc9f9718f2cc5017b5ce81fee45b65c26f7a4550621c1ccbd8fa1988e8d2",
+          "postQuantizationMutationCount" : 1058,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 264,
+            "green" : 616,
+            "red" : 178
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "a14912d305b3495197104a1f552f88cccfc72ff0cb91d5eed7c024208c49a7b1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/east/run-b.png",
+          "fileSHA256" : "58d0bc9f9718f2cc5017b5ce81fee45b65c26f7a4550621c1ccbd8fa1988e8d2",
+          "postQuantizationMutationCount" : 1058,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 264,
+            "green" : 616,
+            "red" : 178
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "a14912d305b3495197104a1f552f88cccfc72ff0cb91d5eed7c024208c49a7b1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/east/run-c.png",
+          "fileSHA256" : "58d0bc9f9718f2cc5017b5ce81fee45b65c26f7a4550621c1ccbd8fa1988e8d2",
+          "postQuantizationMutationCount" : 1058,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 264,
+            "green" : 616,
+            "red" : 178
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l04/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "b9f98f662aef66b945ae36d743a3fff609393c4a0cf316ce05e5d775f50ddaa7",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/south/run-a.png",
+          "fileSHA256" : "9fd463b312db377d9a3e31ae65ace3f9bff6dcf2b3ed733d1a2e88293e234426",
+          "postQuantizationMutationCount" : 1101,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 306,
+            "green" : 608,
+            "red" : 187
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "b9f98f662aef66b945ae36d743a3fff609393c4a0cf316ce05e5d775f50ddaa7",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/south/run-b.png",
+          "fileSHA256" : "9fd463b312db377d9a3e31ae65ace3f9bff6dcf2b3ed733d1a2e88293e234426",
+          "postQuantizationMutationCount" : 1101,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 306,
+            "green" : 608,
+            "red" : 187
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "b9f98f662aef66b945ae36d743a3fff609393c4a0cf316ce05e5d775f50ddaa7",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/south/run-c.png",
+          "fileSHA256" : "9fd463b312db377d9a3e31ae65ace3f9bff6dcf2b3ed733d1a2e88293e234426",
+          "postQuantizationMutationCount" : 1101,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 306,
+            "green" : 608,
+            "red" : 187
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l04/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "a6ce46b0eff3eae4fbd24f98d6c4efad20e6a1d4686ff3e0feec290e697e9e8f",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/west/run-a.png",
+          "fileSHA256" : "6abe2abe6e303a639c57976f0ff29beb0d8010b7029867b526c9f1c8eaede565",
+          "postQuantizationMutationCount" : 1219,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 337,
+            "green" : 694,
+            "red" : 188
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "a6ce46b0eff3eae4fbd24f98d6c4efad20e6a1d4686ff3e0feec290e697e9e8f",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/west/run-b.png",
+          "fileSHA256" : "6abe2abe6e303a639c57976f0ff29beb0d8010b7029867b526c9f1c8eaede565",
+          "postQuantizationMutationCount" : 1219,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 337,
+            "green" : 694,
+            "red" : 188
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "a6ce46b0eff3eae4fbd24f98d6c4efad20e6a1d4686ff3e0feec290e697e9e8f",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/west/run-c.png",
+          "fileSHA256" : "6abe2abe6e303a639c57976f0ff29beb0d8010b7029867b526c9f1c8eaede565",
+          "postQuantizationMutationCount" : 1219,
+          "postQuantizationMutationCountsByChannel" : {
+            "blue" : 337,
+            "green" : 694,
+            "red" : 188
+          },
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/residential_l04/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    }
+  ],
+  "status" : "pass",
+  "task" : "PLAY-027",
+  "uniqueCompletedPrimaryHashes" : 28
+}

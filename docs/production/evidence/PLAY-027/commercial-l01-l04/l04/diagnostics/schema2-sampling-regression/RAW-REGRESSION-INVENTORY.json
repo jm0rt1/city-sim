@@ -1,0 +1,652 @@
+{
+  "completedSchema2Primaries" : 15,
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v1",
+  "expectedSchema2Samples" : 16,
+  "failures" : [
+    "residential_l03/west: three-process raw identity failed",
+    "residential_l04/west: run-a missing",
+    "residential_l04/west: run-b missing",
+    "residential_l04/west: run-c missing"
+  ],
+  "legacySchema1Reproduction" : [
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "a72cbac78f69ca65e441dfdc688ae7ec4133d6a238c872e3ff59034337d80c4f",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/north/source-v04.png",
+        "fileSHA256" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/north",
+      "reproduced" : {
+        "decodedPixelSHA256" : "a72cbac78f69ca65e441dfdc688ae7ec4133d6a238c872e3ff59034337d80c4f",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l01/north/source.png",
+        "fileSHA256" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "f42741f64b30a8e34db5de1bbfa9163362134d923ffbddf648ab970a9c1737fd",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/east/source-v04.png",
+        "fileSHA256" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/east",
+      "reproduced" : {
+        "decodedPixelSHA256" : "f42741f64b30a8e34db5de1bbfa9163362134d923ffbddf648ab970a9c1737fd",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l01/east/source.png",
+        "fileSHA256" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "bc4011690e0a4b4e97cddb00afa9351db287a810aae9913275f8eabd59ced4a1",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/south/source-v04.png",
+        "fileSHA256" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/south",
+      "reproduced" : {
+        "decodedPixelSHA256" : "bc4011690e0a4b4e97cddb00afa9351db287a810aae9913275f8eabd59ced4a1",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l01/south/source.png",
+        "fileSHA256" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "6595555d85207551f5d3179f4d998095aad00bd01b73308afdadd943b713874a",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/west/source-v04.png",
+        "fileSHA256" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l01/west",
+      "reproduced" : {
+        "decodedPixelSHA256" : "6595555d85207551f5d3179f4d998095aad00bd01b73308afdadd943b713874a",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l01/west/source.png",
+        "fileSHA256" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "52716692e60a660eb9063a1fb3ad9706330df754dc44c2552428e161bedd7063",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/north/source-v01.png",
+        "fileSHA256" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/north",
+      "reproduced" : {
+        "decodedPixelSHA256" : "52716692e60a660eb9063a1fb3ad9706330df754dc44c2552428e161bedd7063",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l02/north/source.png",
+        "fileSHA256" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "1ff9889409b2a2ed15e2c95bb9dcb6cbafb700d31f2fda24bf71cca9b5819f84",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/east/source-v01.png",
+        "fileSHA256" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/east",
+      "reproduced" : {
+        "decodedPixelSHA256" : "1ff9889409b2a2ed15e2c95bb9dcb6cbafb700d31f2fda24bf71cca9b5819f84",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l02/east/source.png",
+        "fileSHA256" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "5400316c9d00791f1df8f0b55c6c01386844659680b05eebf920ce61a621c48b",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/south/source-v01.png",
+        "fileSHA256" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/south",
+      "reproduced" : {
+        "decodedPixelSHA256" : "5400316c9d00791f1df8f0b55c6c01386844659680b05eebf920ce61a621c48b",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l02/south/source.png",
+        "fileSHA256" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "7c2aae4d26e9d086e4114bdf44ca0aad53a8dd3fabd5356261f6e1d877be3ee4",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/west/source-v01.png",
+        "fileSHA256" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l02/west",
+      "reproduced" : {
+        "decodedPixelSHA256" : "7c2aae4d26e9d086e4114bdf44ca0aad53a8dd3fabd5356261f6e1d877be3ee4",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l02/west/source.png",
+        "fileSHA256" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "d2f94104b8ae6ffe3669820cf22824fb786913bb68436880ab5d592668ebb382",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/north/source-v01.png",
+        "fileSHA256" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/north",
+      "reproduced" : {
+        "decodedPixelSHA256" : "d2f94104b8ae6ffe3669820cf22824fb786913bb68436880ab5d592668ebb382",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l03/north/source.png",
+        "fileSHA256" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "e79fe52692c4388fb1d5b2da009c7c406d7685baba130bb31808a4130a95b17f",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/east/source-v01.png",
+        "fileSHA256" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/east",
+      "reproduced" : {
+        "decodedPixelSHA256" : "e79fe52692c4388fb1d5b2da009c7c406d7685baba130bb31808a4130a95b17f",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l03/east/source.png",
+        "fileSHA256" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "7472636a3a3dee2dc1f8619091de36521dcb79a3aa945b7bd4e63c76a786031d",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/south/source-v01.png",
+        "fileSHA256" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/south",
+      "reproduced" : {
+        "decodedPixelSHA256" : "7472636a3a3dee2dc1f8619091de36521dcb79a3aa945b7bd4e63c76a786031d",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l03/south/source.png",
+        "fileSHA256" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736"
+      }
+    },
+    {
+      "accepted" : {
+        "decodedPixelSHA256" : "91a66fe788ae7a4cd16b4fb345bd4a6b9b0b1b8b08edcd8fec8760d48ee7b3c5",
+        "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/west/source-v01.png",
+        "fileSHA256" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9"
+      },
+      "byteAndPixelIdentityPassed" : true,
+      "key" : "commercial_l03/west",
+      "reproduced" : {
+        "decodedPixelSHA256" : "91a66fe788ae7a4cd16b4fb345bd4a6b9b0b1b8b08edcd8fec8760d48ee7b3c5",
+        "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/legacy-schema1/commercial_l03/west/source.png",
+        "fileSHA256" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9"
+      }
+    }
+  ],
+  "normalizationAuthorizedByRawGate" : false,
+  "primaryUniquenessPassed" : true,
+  "productionSelected" : false,
+  "schema" : 1,
+  "schema2Samples" : [
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "2d0b90d1652cbe0057dca093dd8767fab21279e5dcd4a6a7b84d36feaaf79cde",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/north/run-a.png",
+          "fileSHA256" : "dc5c031986720f65db7bb2ba8b3c275af89cc33596f52f281504ca5e32b1356c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "2d0b90d1652cbe0057dca093dd8767fab21279e5dcd4a6a7b84d36feaaf79cde",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/north/run-b.png",
+          "fileSHA256" : "dc5c031986720f65db7bb2ba8b3c275af89cc33596f52f281504ca5e32b1356c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "2d0b90d1652cbe0057dca093dd8767fab21279e5dcd4a6a7b84d36feaaf79cde",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/north/run-c.png",
+          "fileSHA256" : "dc5c031986720f65db7bb2ba8b3c275af89cc33596f52f281504ca5e32b1356c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "c33890cb8f2f3a7b4f917058e4656bc276a1dd7907c99be397ceeead4029ac53",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/east/run-a.png",
+          "fileSHA256" : "bfaf29c3c7fff46721b7338930a9fe84b79e764764263e416467bb555dd02d67",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "c33890cb8f2f3a7b4f917058e4656bc276a1dd7907c99be397ceeead4029ac53",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/east/run-b.png",
+          "fileSHA256" : "bfaf29c3c7fff46721b7338930a9fe84b79e764764263e416467bb555dd02d67",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "c33890cb8f2f3a7b4f917058e4656bc276a1dd7907c99be397ceeead4029ac53",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/east/run-c.png",
+          "fileSHA256" : "bfaf29c3c7fff46721b7338930a9fe84b79e764764263e416467bb555dd02d67",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "39ec94adaaa64022bf7616bd20f6a33799e45f3c1f0edc2eb7b0f9637cbeb46e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/south/run-a.png",
+          "fileSHA256" : "95eef9ab3f403a7a1d25f20fc04f304cd6b0cca30c60ac2b3d0397fd03346b0b",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "39ec94adaaa64022bf7616bd20f6a33799e45f3c1f0edc2eb7b0f9637cbeb46e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/south/run-b.png",
+          "fileSHA256" : "95eef9ab3f403a7a1d25f20fc04f304cd6b0cca30c60ac2b3d0397fd03346b0b",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "39ec94adaaa64022bf7616bd20f6a33799e45f3c1f0edc2eb7b0f9637cbeb46e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/south/run-c.png",
+          "fileSHA256" : "95eef9ab3f403a7a1d25f20fc04f304cd6b0cca30c60ac2b3d0397fd03346b0b",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l01/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "6115819cd8b8f6171f5b4666be27c8259d269e0b23e54f4c42bf819f3b5c9909",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/west/run-a.png",
+          "fileSHA256" : "4827f102225d88287ce21ad579d4cd39756e973d57b65a4b3f3980b75407d60f",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "6115819cd8b8f6171f5b4666be27c8259d269e0b23e54f4c42bf819f3b5c9909",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/west/run-b.png",
+          "fileSHA256" : "4827f102225d88287ce21ad579d4cd39756e973d57b65a4b3f3980b75407d60f",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "6115819cd8b8f6171f5b4666be27c8259d269e0b23e54f4c42bf819f3b5c9909",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/west/run-c.png",
+          "fileSHA256" : "4827f102225d88287ce21ad579d4cd39756e973d57b65a4b3f3980b75407d60f",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l01/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "ff38cacf61579e129e364a41609e18acc9aa4b89c1ebe3acf580abc5e4971174",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/north/run-a.png",
+          "fileSHA256" : "6749aab138baacf221d4b55665e05ba115d4b02d052bec796aa124de0e15f46c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "ff38cacf61579e129e364a41609e18acc9aa4b89c1ebe3acf580abc5e4971174",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/north/run-b.png",
+          "fileSHA256" : "6749aab138baacf221d4b55665e05ba115d4b02d052bec796aa124de0e15f46c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "ff38cacf61579e129e364a41609e18acc9aa4b89c1ebe3acf580abc5e4971174",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/north/run-c.png",
+          "fileSHA256" : "6749aab138baacf221d4b55665e05ba115d4b02d052bec796aa124de0e15f46c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "e5cb111fa9751cd30e5a377de88a29a97259123d5afbbed5d3de01593765c95e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/east/run-a.png",
+          "fileSHA256" : "77df370fd97b45de38d2b97227ad313e9000861cf7dd5d443ff9b3aea52401ce",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "e5cb111fa9751cd30e5a377de88a29a97259123d5afbbed5d3de01593765c95e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/east/run-b.png",
+          "fileSHA256" : "77df370fd97b45de38d2b97227ad313e9000861cf7dd5d443ff9b3aea52401ce",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "e5cb111fa9751cd30e5a377de88a29a97259123d5afbbed5d3de01593765c95e",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/east/run-c.png",
+          "fileSHA256" : "77df370fd97b45de38d2b97227ad313e9000861cf7dd5d443ff9b3aea52401ce",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "53dd67f0ee7b13c0e509d864c80d442c001f2fa17706d3852cf38c0fe3cd5902",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/south/run-a.png",
+          "fileSHA256" : "fd666810d7a38b3642dbfa95fb39c23f816585c1dbf5d5cc58304d8a56459e69",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "53dd67f0ee7b13c0e509d864c80d442c001f2fa17706d3852cf38c0fe3cd5902",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/south/run-b.png",
+          "fileSHA256" : "fd666810d7a38b3642dbfa95fb39c23f816585c1dbf5d5cc58304d8a56459e69",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "53dd67f0ee7b13c0e509d864c80d442c001f2fa17706d3852cf38c0fe3cd5902",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/south/run-c.png",
+          "fileSHA256" : "fd666810d7a38b3642dbfa95fb39c23f816585c1dbf5d5cc58304d8a56459e69",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l02/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "d311c25d1e37387b5ccb1c4261c6f7a8d2dc50b73612f80ba9e8ef26fbb85cba",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/west/run-a.png",
+          "fileSHA256" : "1dc049385ae95f228edcce59ddd4df648d99963124be971900182093410650c6",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "d311c25d1e37387b5ccb1c4261c6f7a8d2dc50b73612f80ba9e8ef26fbb85cba",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/west/run-b.png",
+          "fileSHA256" : "1dc049385ae95f228edcce59ddd4df648d99963124be971900182093410650c6",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "d311c25d1e37387b5ccb1c4261c6f7a8d2dc50b73612f80ba9e8ef26fbb85cba",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/west/run-c.png",
+          "fileSHA256" : "1dc049385ae95f228edcce59ddd4df648d99963124be971900182093410650c6",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l02/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/north",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "14cb956f75c4b70acfe47a955225f71e8482ccafa42906f0a34cbd1bb688a875",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/north/run-a.png",
+          "fileSHA256" : "d7d1f868d5aa1920dfab4125e7b4da84e429cc875284091f16b5e2b44a3e3f63",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/north/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "14cb956f75c4b70acfe47a955225f71e8482ccafa42906f0a34cbd1bb688a875",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/north/run-b.png",
+          "fileSHA256" : "d7d1f868d5aa1920dfab4125e7b4da84e429cc875284091f16b5e2b44a3e3f63",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/north/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "14cb956f75c4b70acfe47a955225f71e8482ccafa42906f0a34cbd1bb688a875",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/north/run-c.png",
+          "fileSHA256" : "d7d1f868d5aa1920dfab4125e7b4da84e429cc875284091f16b5e2b44a3e3f63",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/north/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/east",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "f1a79d19a6f918f7bd564e67b173c5cad8cfe31c8b475f30c2973a16652d7bed",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/east/run-a.png",
+          "fileSHA256" : "10e0ecaeab686c80291a9e7b7c5185624f4dc7d0a39ba963230ab33891aad2ee",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/east/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "f1a79d19a6f918f7bd564e67b173c5cad8cfe31c8b475f30c2973a16652d7bed",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/east/run-b.png",
+          "fileSHA256" : "10e0ecaeab686c80291a9e7b7c5185624f4dc7d0a39ba963230ab33891aad2ee",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/east/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "f1a79d19a6f918f7bd564e67b173c5cad8cfe31c8b475f30c2973a16652d7bed",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/east/run-c.png",
+          "fileSHA256" : "10e0ecaeab686c80291a9e7b7c5185624f4dc7d0a39ba963230ab33891aad2ee",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/east/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/south",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "915c65e22c9455c76720adafb74caab4cb216d647ede60dbf4cc24b6ea983720",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/south/run-a.png",
+          "fileSHA256" : "7b55e95b4f83b7dd682ecc6df0c336c1a99cb0471e1e7a487a721dd266ff4153",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/south/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "915c65e22c9455c76720adafb74caab4cb216d647ede60dbf4cc24b6ea983720",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/south/run-b.png",
+          "fileSHA256" : "7b55e95b4f83b7dd682ecc6df0c336c1a99cb0471e1e7a487a721dd266ff4153",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/south/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "915c65e22c9455c76720adafb74caab4cb216d647ede60dbf4cc24b6ea983720",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/south/run-c.png",
+          "fileSHA256" : "7b55e95b4f83b7dd682ecc6df0c336c1a99cb0471e1e7a487a721dd266ff4153",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/south/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "commercial_l03/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "012fc02846bd436c57255c366eb5d5c0b265fef2ec88acf66c0a0e8dab03d383",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/west/run-a.png",
+          "fileSHA256" : "f933d4fd9e3a2f835a0a8737bd7824f461df17c9a98285a9f241cfa1322c5d2c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "012fc02846bd436c57255c366eb5d5c0b265fef2ec88acf66c0a0e8dab03d383",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/west/run-b.png",
+          "fileSHA256" : "f933d4fd9e3a2f835a0a8737bd7824f461df17c9a98285a9f241cfa1322c5d2c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "012fc02846bd436c57255c366eb5d5c0b265fef2ec88acf66c0a0e8dab03d383",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/west/run-c.png",
+          "fileSHA256" : "f933d4fd9e3a2f835a0a8737bd7824f461df17c9a98285a9f241cfa1322c5d2c",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/commercial_l03/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l01/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "d978bf23549671971144a1f465d6100f4e46fe51d06f7812391057cc35a9cfa9",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l01/west/run-a.png",
+          "fileSHA256" : "8a079c5162615a02d22d0b0d31e9bbf16714bd709bc88afae433e5c62adc88ba",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l01/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "d978bf23549671971144a1f465d6100f4e46fe51d06f7812391057cc35a9cfa9",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l01/west/run-b.png",
+          "fileSHA256" : "8a079c5162615a02d22d0b0d31e9bbf16714bd709bc88afae433e5c62adc88ba",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l01/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "d978bf23549671971144a1f465d6100f4e46fe51d06f7812391057cc35a9cfa9",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l01/west/run-c.png",
+          "fileSHA256" : "8a079c5162615a02d22d0b0d31e9bbf16714bd709bc88afae433e5c62adc88ba",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l01/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+
+      ],
+      "key" : "residential_l02/west",
+      "repeatIdentityPassed" : true,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "13b94e9c0f41312a4c91f409d770cac0bd58bbf8cc827d666fdb2eb4b8e7e8e1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l02/west/run-a.png",
+          "fileSHA256" : "85cd7cdc826b218f460d5f3efa2569d3c9d5309b5952f8b19d139a18679727af",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l02/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "13b94e9c0f41312a4c91f409d770cac0bd58bbf8cc827d666fdb2eb4b8e7e8e1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l02/west/run-b.png",
+          "fileSHA256" : "85cd7cdc826b218f460d5f3efa2569d3c9d5309b5952f8b19d139a18679727af",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l02/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "13b94e9c0f41312a4c91f409d770cac0bd58bbf8cc827d666fdb2eb4b8e7e8e1",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l02/west/run-c.png",
+          "fileSHA256" : "85cd7cdc826b218f460d5f3efa2569d3c9d5309b5952f8b19d139a18679727af",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l02/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+        "three-process raw identity failed"
+      ],
+      "key" : "residential_l03/west",
+      "repeatIdentityPassed" : false,
+      "runs" : [
+        {
+          "decodedPixelSHA256" : "023d092d19676b3336a3462784a070e97ef793ad65c0be9415a42a2722f4c35b",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l03/west/run-a.png",
+          "fileSHA256" : "3133d55a5f935c83ce4fb8bcc50c74855649986dbef31254674fc23242161f9f",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l03/west/run-a.json",
+          "run" : "a"
+        },
+        {
+          "decodedPixelSHA256" : "023d092d19676b3336a3462784a070e97ef793ad65c0be9415a42a2722f4c35b",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l03/west/run-b.png",
+          "fileSHA256" : "3133d55a5f935c83ce4fb8bcc50c74855649986dbef31254674fc23242161f9f",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l03/west/run-b.json",
+          "run" : "b"
+        },
+        {
+          "decodedPixelSHA256" : "9433cd6fba99b96227cc8cae442856199d9e2dd321e050ddf432c3416bfbdd49",
+          "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l03/west/run-c.png",
+          "fileSHA256" : "5a70eb4e98a30eeec07e32986676114adb73952cb483843830ae1f512b51dcef",
+          "recordFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/raw/residential_l03/west/run-c.json",
+          "run" : "c"
+        }
+      ]
+    },
+    {
+      "failures" : [
+        "run-a missing",
+        "run-b missing",
+        "run-c missing"
+      ],
+      "key" : "residential_l04/west",
+      "repeatIdentityPassed" : false,
+      "runs" : [
+
+      ]
+    }
+  ],
+  "status" : "fail",
+  "task" : "PLAY-027",
+  "uniqueCompletedPrimaryHashes" : 15
+}

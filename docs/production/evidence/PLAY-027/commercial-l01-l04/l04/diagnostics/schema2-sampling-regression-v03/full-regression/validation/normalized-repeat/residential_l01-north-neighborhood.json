@@ -1,0 +1,86 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 2,
+  "sourceKind" : "normalized",
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/normalized/residential_l01/north/run-a/generated_v4_residential_l01_neighborhood.png",
+      "fileSHA256" : "3d6893277718afbcbcc0f768800bb547fc91f149e7c40739add5600f6ac31354",
+      "id" : "run-a",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          190,
+          201,
+          322,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "nonTransparentPixelCount" : 8641,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          190,
+          201,
+          190,
+          42
+        ],
+        "transparentPixelCount" : 166463,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "5f6e8fcd118bdc010c7dd1517f1774d3dd09cbc9d401938c9ab07b1e554ff6ab",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/normalized/residential_l01/north/run-b/generated_v4_residential_l01_neighborhood.png",
+      "fileSHA256" : "3d6893277718afbcbcc0f768800bb547fc91f149e7c40739add5600f6ac31354",
+      "id" : "run-b",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          190,
+          201,
+          322,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "nonTransparentPixelCount" : 8641,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          190,
+          201,
+          190,
+          42
+        ],
+        "transparentPixelCount" : 166463,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "5f6e8fcd118bdc010c7dd1517f1774d3dd09cbc9d401938c9ab07b1e554ff6ab",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

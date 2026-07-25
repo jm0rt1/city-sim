@@ -1,0 +1,225 @@
+{
+  "calibrationID" : "commercial-l04-variant-0-directional-v02",
+  "directions" : [
+    {
+      "doorBaseSource" : [
+        [
+          858,
+          685
+        ],
+        [
+          934,
+          723
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        3,
+        -28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/north/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "propIDs" : [
+        "north-tower-hvac-a",
+        "north-tower-hvac-b",
+        "north-tower-hvac-c"
+      ],
+      "sceneGeometryID" : "commercial-l04-v0-north-premium-tower-geometry-v2",
+      "sha256" : "2fadeafa36fc14b017a7f818bc3690f95e16d66ab5befe234517cc596d524559",
+      "viewDirection" : "north",
+      "windowBayCount" : 100
+    },
+    {
+      "doorBaseSource" : [
+        [
+          934,
+          813
+        ],
+        [
+          858,
+          851
+        ]
+      ],
+      "entranceBaseWorld" : [
+        28,
+        3,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/east/scene.json",
+      "frontageEdgeSource" : [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "propIDs" : [
+        "east-tower-hvac-a",
+        "east-tower-hvac-b",
+        "east-tower-hvac-c"
+      ],
+      "sceneGeometryID" : "commercial-l04-v0-east-premium-tower-geometry-v2",
+      "sha256" : "252e000de6e5b99916df44a6265cc64784a5585b3ab3e2967ebf483cb59340ee",
+      "viewDirection" : "east",
+      "windowBayCount" : 100
+    },
+    {
+      "doorBaseSource" : [
+        [
+          678,
+          851
+        ],
+        [
+          602,
+          813
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        3,
+        28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/south/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        832
+      ],
+      "propIDs" : [
+        "south-tower-hvac-a",
+        "south-tower-hvac-b",
+        "south-tower-hvac-c"
+      ],
+      "sceneGeometryID" : "commercial-l04-v0-south-premium-tower-geometry-v2",
+      "sha256" : "7dd786a7322320653cb7f40b200e5942384a5c986d2439ea5e3f9b1c1c59230c",
+      "viewDirection" : "south",
+      "windowBayCount" : 100
+    },
+    {
+      "doorBaseSource" : [
+        [
+          602,
+          723
+        ],
+        [
+          678,
+          685
+        ]
+      ],
+      "entranceBaseWorld" : [
+        -28,
+        3,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/west/scene.json",
+      "frontageEdgeSource" : [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "propIDs" : [
+        "west-tower-hvac-a",
+        "west-tower-hvac-b",
+        "west-tower-hvac-c"
+      ],
+      "sceneGeometryID" : "commercial-l04-v0-west-premium-tower-geometry-v2",
+      "sha256" : "7ec24286982735476cc377dd3420bec2beafd905ac5443bc1cc0cc390bff27cc",
+      "viewDirection" : "west",
+      "windowBayCount" : 100
+    }
+  ],
+  "failures" : [
+
+  ],
+  "family" : "commercial",
+  "level" : 4,
+  "logicalBuildingID" : "commercial_l04",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/commercial-l01-l04-v0-materials.json",
+  "materialLibrarySHA256" : "ebe723369cf5b01ef471e3ef7bedb286d1eee8e4752c9d6237838fea5a634205",
+  "passed" : true,
+  "previewPlanFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/preview-plans/commercial-l04-v0.json",
+  "previewPlanSHA256" : "5b89a0da7c3a3a3549da27408fbfbe3ad7a4ea700de7f090d3c6d20559d234f9",
+  "productionSelected" : false,
+  "schema" : 1,
+  "schemaFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/schema/scene.schema.json",
+  "schemaSHA256" : "ef85c13f873e41c806b760c19ccb378459d1c60aa8190ed6f941fb57b168c4e9",
+  "task" : "PLAY-027",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json",
+  "toolchainFingerprintSHA256" : "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1",
+  "uniqueDescriptorHashes" : 4,
+  "uniqueSceneGeometryIDs" : 4
+}

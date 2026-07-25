@@ -1,0 +1,143 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l04/variant-0/north/source-v01.png",
+      "fileSHA256" : "a6b59667d977f83e3e13169e2c99d8952d2ab4beb5338faa2c3fc1adae29018c",
+      "id" : "primary",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1476659,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          411,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          495
+        ],
+        "nonChromaPixelCount" : 96205,
+        "paddingPixels" : [
+          619,
+          411,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "3be5d8a610ca42efbcfbc752176078faf7194867905d021466ba8c544c3a2480",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v01-rejected/repeat/north-run-b.png",
+      "fileSHA256" : "a6b59667d977f83e3e13169e2c99d8952d2ab4beb5338faa2c3fc1adae29018c",
+      "id" : "run-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1476659,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          411,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          495
+        ],
+        "nonChromaPixelCount" : 96205,
+        "paddingPixels" : [
+          619,
+          411,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "3be5d8a610ca42efbcfbc752176078faf7194867905d021466ba8c544c3a2480",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v01-rejected/repeat/north-run-c.png",
+      "fileSHA256" : "a6b59667d977f83e3e13169e2c99d8952d2ab4beb5338faa2c3fc1adae29018c",
+      "id" : "run-c",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1476659,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          411,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          495
+        ],
+        "nonChromaPixelCount" : 96205,
+        "paddingPixels" : [
+          619,
+          411,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "3be5d8a610ca42efbcfbc752176078faf7194867905d021466ba8c544c3a2480",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

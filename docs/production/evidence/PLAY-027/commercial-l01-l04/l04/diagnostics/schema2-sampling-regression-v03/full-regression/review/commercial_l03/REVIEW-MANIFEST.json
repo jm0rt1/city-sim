@@ -1,0 +1,206 @@
+{
+  "calibrationID" : "schema2-v3-commercial_l03",
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "grayscaleRecognition" : {
+    "conversion" : "Core Graphics deterministic Rec.709 integer luma",
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/NATIVE-2X-GRAYSCALE.png",
+    "sha256" : "cf54d608fc3bf2add4f58e37dce08beb168a2ead03de1f727506357df215bd36",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "inputs" : [
+    {
+      "direction" : "north",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/north/run-a.png",
+      "sha256" : "7e4b00bc3f1ffa639076f530351ca01c0ecc1032c273f72ce280929904f5567a"
+    },
+    {
+      "direction" : "east",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/east/run-a.png",
+      "sha256" : "4e92f910ce82e8ece0c6d1e5650991b95940b64ff674d7f2256dcbb2312edc4c"
+    },
+    {
+      "direction" : "south",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/south/run-a.png",
+      "sha256" : "01dc598032f91d117f0fa03178b5230446e95ab3e034118a0f4bf3f303f45c85"
+    },
+    {
+      "direction" : "west",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/raw/commercial_l03/west/run-a.png",
+      "sha256" : "8a19e5717644af0ca21ad86e5beaa4ea320fbac2c41e199cbe8b8aeaa09d9d09"
+    }
+  ],
+  "layout" : {
+    "columns" : 2,
+    "labels" : false,
+    "rowMajor" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "rows" : 2
+  },
+  "native2xActualScale" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/NATIVE-2X-COLOR.png",
+    "panelPixels" : [
+      432,
+      288
+    ],
+    "presentation" : "existing deterministic normalized-alpha block output on neutral background",
+    "scale" : 0.421875,
+    "sha256" : "674276544f88e6373bfce5ad87ee5702d9f53532224a7dc1474be96bd240e311",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "normalizedAlphaInputs" : [
+    {
+      "direction" : "north",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/normalized/commercial_l03/north/run-a/generated_v4_commercial_l03_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "683e5eda6ff3eb8521d481fc8c12885451181090edeb94075b30d17a615e4d59"
+    },
+    {
+      "direction" : "east",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/normalized/commercial_l03/east/run-a/generated_v4_commercial_l03_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "5a6af1d5f169935f51d2f84d82a6dc7f54ec5dd3ebbaa1a3e6e819c8cffc751f"
+    },
+    {
+      "direction" : "south",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/normalized/commercial_l03/south/run-a/generated_v4_commercial_l03_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "7cebb0032911b41a96a300e1a14ac89a28bed649203c9e89da0c307366d51d14"
+    },
+    {
+      "direction" : "west",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/normalized/commercial_l03/west/run-a/generated_v4_commercial_l03_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "02c0d41c067253ecb7312b13d1eb4338cc49944abe61792ad3bc1e84fb7f7198"
+    }
+  ],
+  "previewAlphaIsNormalizedOutput" : true,
+  "productionSelected" : false,
+  "registeredFootprintActualScale" : {
+    "correspondingRawSourceCrop" : [
+      512,
+      180,
+      513,
+      725
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/FOOTPRINT-NATIVE-2X-COLOR.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      120,
+      342,
+      483
+    ],
+    "panelPixels" : [
+      144,
+      204
+    ],
+    "presentation" : "fixed descriptor-derived normalized-alpha tile and vertical sprite envelope at native-2x scale",
+    "scale" : 0.421875,
+    "sha256" : "f293923f4ba0c4810249bdcadbd660f775e07c928cbcebf5206d3f2c552e348a",
+    "sheetPixels" : [
+      288,
+      408
+    ]
+  },
+  "registeredFootprintGrayscale" : {
+    "conversion" : "Core Graphics deterministic Rec.709 integer luma",
+    "correspondingRawSourceCrop" : [
+      512,
+      180,
+      513,
+      725
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/FOOTPRINT-NATIVE-2X-GRAYSCALE.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      120,
+      342,
+      483
+    ],
+    "panelPixels" : [
+      144,
+      204
+    ],
+    "scale" : 0.421875,
+    "sha256" : "9d436760ac0d34a04bfedf578fe0a1e903f5b5ab89f4fbb37bf046152f68fc2a",
+    "sheetPixels" : [
+      288,
+      408
+    ]
+  },
+  "registeredFootprintZoom" : {
+    "correspondingRawSourceCrop" : [
+      512,
+      180,
+      513,
+      725
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/ZOOM.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      120,
+      342,
+      483
+    ],
+    "panelPixels" : [
+      512,
+      723
+    ],
+    "presentation" : "fixed descriptor-derived normalized-alpha envelope enlarged with nearest-neighbor review scaling",
+    "scale" : 1.4970760233918128,
+    "sha256" : "eb4d2010de53cdc19c9722d44faea48763fe98ce1ca9ec9603059a813db89d6e",
+    "sheetPixels" : [
+      1024,
+      1446
+    ]
+  },
+  "reviewStatus" : "pending-independent-source-art-review",
+  "schema" : 1,
+  "sourceScale" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/SOURCE-SCALE.png",
+    "panelPixels" : [
+      1536,
+      1024
+    ],
+    "presentation" : "unaltered raw #ff00ff inspection",
+    "sha256" : "d4de37a1a066aa926f1193387c195fb835445a57a13928f0e39bcb85085ff114",
+    "sheetPixels" : [
+      3072,
+      2048
+    ]
+  },
+  "task" : "PLAY-027"
+}

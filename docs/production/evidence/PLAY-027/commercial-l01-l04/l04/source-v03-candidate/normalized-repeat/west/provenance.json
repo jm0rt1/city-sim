@@ -1,0 +1,74 @@
+{
+  "asset_id" : "commercial_l04",
+  "ground_pivot_source" : [
+    768,
+    896
+  ],
+  "normalization" : "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports",
+  "object_width" : 410,
+  "outputs" : [
+    {
+      "file" : "generated_v4_commercial_l04_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "f1dce124c8286d02371bdc6bf9eb4ade0a280854b08fc2d41bdae99917d458c6"
+    },
+    {
+      "file" : "generated_v4_commercial_l04_neighborhood.png",
+      "lod" : "neighborhood",
+      "pixels" : [
+        512,
+        342
+      ],
+      "sha256" : "2cc90c0f34b951ad4d826fae04104ead68fde2a5ab1a87d12f805118b0a374d2"
+    },
+    {
+      "file" : "generated_v4_commercial_l04_city.png",
+      "lod" : "city",
+      "pixels" : [
+        256,
+        171
+      ],
+      "sha256" : "c21c46448fa912574c5f386aee616d0fb0ba1fdec958ac7dbb4adc802f58800f"
+    }
+  ],
+  "productionSelected" : false,
+  "reference_subject_width" : 234,
+  "registration" : {
+    "mode" : "uniform-object-registration",
+    "reference_subject_width" : 234,
+    "source_bbox" : [
+      630,
+      421,
+      869,
+      818
+    ],
+    "target_ground_pivot" : [
+      768,
+      896
+    ],
+    "target_origin" : [
+      559,
+      200
+    ],
+    "target_size" : [
+      419,
+      696
+    ],
+    "uniform_scale" : 1.7521367521367521
+  },
+  "schema" : 1,
+  "source_bbox" : [
+    559,
+    200,
+    978,
+    896
+  ],
+  "source_file" : "\/Users\/James\/.codex\/worktrees\/0648\/city-sim\/Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l04\/variant-0\/west\/source-v03.png",
+  "source_sha256" : "ac58ebd8c769fddd24d160f1ba4e4a5097d04f17ccab41bbb120672f5173433f",
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source normalizer"
+}

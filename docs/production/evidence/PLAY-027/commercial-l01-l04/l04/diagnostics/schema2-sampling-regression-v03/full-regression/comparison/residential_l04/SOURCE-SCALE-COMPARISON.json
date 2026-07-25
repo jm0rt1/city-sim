@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/residential-l02-l04/l04/SOURCE-V01-SOURCE-SCALE-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      3072,
+      2048
+    ],
+    "sha256" : "c0d43c55cf206226926ec39b8f742857e421e58761158897642375faf9465a1e"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/residential_l04/SOURCE-SCALE.png",
+    "pixels" : [
+      3072,
+      2048
+    ],
+    "sha256" : "dd16bd82162b29b96471b9c4298fb061100c03ccf8a59a853d60c2d74b8baf64"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/residential_l04/SOURCE-SCALE-COMPARISON.png",
+    "pixels" : [
+      6160,
+      2048
+    ],
+    "sha256" : "5346a68d542f2b8d844a8e727abae4596b435d3798fbc81217462942a53772e3"
+  },
+  "comparisonID" : "residential_l04-source",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

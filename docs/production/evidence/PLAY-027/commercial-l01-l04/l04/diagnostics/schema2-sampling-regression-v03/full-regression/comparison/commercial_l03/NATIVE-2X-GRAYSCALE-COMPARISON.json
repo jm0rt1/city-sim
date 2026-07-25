@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l03/SOURCE-V01-NATIVE-2X-GRAYSCALE-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      864,
+      576
+    ],
+    "sha256" : "fd2a0664f8f4b6e5dc29a50843ce84b6e97e0d368f6486285a2c0b521998f67f"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l03/NATIVE-2X-GRAYSCALE.png",
+    "pixels" : [
+      864,
+      576
+    ],
+    "sha256" : "cf54d608fc3bf2add4f58e37dce08beb168a2ead03de1f727506357df215bd36"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/commercial_l03/NATIVE-2X-GRAYSCALE-COMPARISON.png",
+    "pixels" : [
+      1744,
+      576
+    ],
+    "sha256" : "267eb2e6a89c4f4dd0a951ad5834ae2b66019adafc70d1f09c8d179727e85631"
+  },
+  "comparisonID" : "commercial_l03-grayscale",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

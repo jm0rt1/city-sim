@@ -1,0 +1,47 @@
+{
+  "failedDiagnosticPathGuardProbe": {
+    "result": "expected rejection",
+    "reason": "schema-2 diagnostic regression output must remain under a diagnostics path",
+    "retainedPixels": false
+  },
+  "productionSelected": false,
+  "reproductions": [
+    {
+      "contract": "schema-1 legacy factor-2 plus SceneKit 4x MSAA",
+      "expectedPNGFileSHA256": "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "observedPNGFile": "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/legacy-reproduction/schema1/source.png",
+      "observedPNGFileSHA256": "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "provenanceFile": "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/legacy-reproduction/schema1/provenance.json",
+      "provenanceFileSHA256": "57de44b6eb4990345aa96eee7b4b7592ec8c56ef17fa872c626b138b02e9da7a",
+      "status": "pass"
+    },
+    {
+      "contract": "play027-deterministic-4x-no-msaa-lanczos-v1",
+      "historicalPNGFileSHA256Set": [
+        "3133d55a5f935c83ce4fb8bcc50c74855649986dbef31254674fc23242161f9f",
+        "5a70eb4e98a30eeec07e32986676114adb73952cb483843830ae1f512b51dcef"
+      ],
+      "observedPNGFile": "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/legacy-reproduction/v1/source.png",
+      "observedPNGFileSHA256": "3133d55a5f935c83ce4fb8bcc50c74855649986dbef31254674fc23242161f9f",
+      "provenanceFile": "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/legacy-reproduction/v1/provenance.json",
+      "provenanceFileSHA256": "e1015c1a3fa0fe606f1866692bfb556496c2bbfe795f12a9782c6c59ec362e5f",
+      "status": "pass"
+    },
+    {
+      "contract": "play027-deterministic-4x-no-msaa-lanczos-v2",
+      "historicalPNGFileSHA256Set": [
+        "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+        "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830"
+      ],
+      "observedPNGFile": "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/legacy-reproduction/v2/source.png",
+      "observedPNGFileSHA256": "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "provenanceFile": "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/legacy-reproduction/v2/provenance.json",
+      "provenanceFileSHA256": "928dd1360275d9c2baf26ae3da0137a38282ff5327df1196cf69625aa26dda33",
+      "status": "pass"
+    }
+  ],
+  "schema": 1,
+  "sourceAuthority": "6363828f131e951574ab8e4f68765fe3b5672018",
+  "status": "pass",
+  "task": "PLAY-027"
+}

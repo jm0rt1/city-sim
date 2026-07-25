@@ -1,0 +1,86 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 2,
+  "sourceKind" : "normalized",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l03/variant-0/east/source-v01/generated_v4_commercial_l03_block.png",
+      "fileSHA256" : "f5a5dee1f4b64eed0fef74615905e1334f6ede3125c5bb30d84eda42a422bec0",
+      "id" : "primary",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          378,
+          258,
+          647,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "nonTransparentPixelCount" : 60024,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          378,
+          258,
+          377,
+          85
+        ],
+        "transparentPixelCount" : 639368,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "8065e8097506f2f0260e5473e5a34a0f5187330b87dfd19ff065c418ab6cb194",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l03/source-v01-review-candidate/normalized-repeat/east/generated_v4_commercial_l03_block.png",
+      "fileSHA256" : "f5a5dee1f4b64eed0fef74615905e1334f6ede3125c5bb30d84eda42a422bec0",
+      "id" : "repeat",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          378,
+          258,
+          647,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "nonTransparentPixelCount" : 60024,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          378,
+          258,
+          377,
+          85
+        ],
+        "transparentPixelCount" : 639368,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "8065e8097506f2f0260e5473e5a34a0f5187330b87dfd19ff065c418ab6cb194",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

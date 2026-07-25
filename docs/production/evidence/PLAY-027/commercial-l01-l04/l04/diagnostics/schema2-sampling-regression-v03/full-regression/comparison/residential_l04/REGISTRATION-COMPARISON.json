@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/residential-l02-l04/l04/SOURCE-V01-FOOTPRINT-NATIVE-2X-NORMALIZED-ALPHA-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      288,
+      436
+    ],
+    "sha256" : "8cc8e501173dc2b63603d6895331de5aaaafc5ab32bbc960db658b062f3be289"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/residential_l04/FOOTPRINT-NATIVE-2X-COLOR.png",
+    "pixels" : [
+      288,
+      436
+    ],
+    "sha256" : "4c7dea1ae22d489670324a993529448701de5336237c4e3b537da7a3deec153a"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/residential_l04/REGISTRATION-COMPARISON.png",
+    "pixels" : [
+      592,
+      436
+    ],
+    "sha256" : "7e4ff7ae8fec6426e4be8b597621f69d4b21e3714007846b897f34b889de3a95"
+  },
+  "comparisonID" : "residential_l04-registration",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

@@ -1,0 +1,143 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : false,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l04/variant-0/west/source-v02.png",
+      "fileSHA256" : "fd652cada0a87cbd90aa415b82c8a157eae114632b6c831dc99d0d7414a71146",
+      "id" : "primary",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1475542,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          418,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          488
+        ],
+        "nonChromaPixelCount" : 97322,
+        "paddingPixels" : [
+          619,
+          418,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "05bd2543d624772a781c674f3e7d57522f97357143098d5dc70e84b0e0ceccbe",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/repeat/west-run-b.png",
+      "fileSHA256" : "7d5fbba2e15fc2742d689d7800c89280b181275d73dd3d9bce5a62059574e91c",
+      "id" : "run-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1475542,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          418,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          488
+        ],
+        "nonChromaPixelCount" : 97322,
+        "paddingPixels" : [
+          619,
+          418,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "9eeefea7342355e47ceb151ad0d990e57d858ca743a0a9181a5c9d9fd0295ea2",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/repeat/west-run-c.png",
+      "fileSHA256" : "7d5fbba2e15fc2742d689d7800c89280b181275d73dd3d9bce5a62059574e91c",
+      "id" : "run-c",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1475542,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          418,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          488
+        ],
+        "nonChromaPixelCount" : 97322,
+        "paddingPixels" : [
+          619,
+          418,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "9eeefea7342355e47ceb151ad0d990e57d858ca743a0a9181a5c9d9fd0295ea2",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 2,
+  "validationPassed" : false
+}

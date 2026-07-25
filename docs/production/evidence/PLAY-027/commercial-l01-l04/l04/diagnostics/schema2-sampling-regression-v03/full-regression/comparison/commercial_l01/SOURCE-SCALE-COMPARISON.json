@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-SOURCE-SCALE-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      3072,
+      2048
+    ],
+    "sha256" : "4afdf8554ea5dc69964a49511110e530686b2a7e968f983799a5187e4d145420"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/commercial_l01/SOURCE-SCALE.png",
+    "pixels" : [
+      3072,
+      2048
+    ],
+    "sha256" : "7e0c8908ba4dc440240fcb9be2a2be63c27bc16b3a8c579cbeeb7f59c88ebe68"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/commercial_l01/SOURCE-SCALE-COMPARISON.png",
+    "pixels" : [
+      6160,
+      2048
+    ],
+    "sha256" : "4dd5e0e13c8f98a20d1d3a490317713922d5db3f466060aa98077c9977ba3f9f"
+  },
+  "comparisonID" : "commercial_l01-source",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

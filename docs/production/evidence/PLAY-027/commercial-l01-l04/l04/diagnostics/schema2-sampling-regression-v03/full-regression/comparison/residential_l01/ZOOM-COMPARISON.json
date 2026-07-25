@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/offline-calibration-v03/residential-l01-v0-footprint-zoom-normalized-alpha.png",
+    "pixels" : [
+      1024,
+      768
+    ],
+    "sha256" : "46adc4398064647411f2ee0f622b67afb7211c264408f321b9e94e2a8cca1ea1"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/residential_l01/ZOOM.png",
+    "pixels" : [
+      1024,
+      766
+    ],
+    "sha256" : "a8776bdcb13c60c1783ce8849328147ccc14d89f16d1171e14d0b5947ff9ded1"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/residential_l01/ZOOM-COMPARISON.png",
+    "pixels" : [
+      2064,
+      768
+    ],
+    "sha256" : "d92b865cf5bf36ff7145c482b00466702c6ed9f2e80547c6d238626dd3d1f313"
+  },
+  "comparisonID" : "residential_l01-zoom",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

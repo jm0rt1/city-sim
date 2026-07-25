@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/residential-l02-l04/l03/SOURCE-V01-ZOOM-NORMALIZED-ALPHA-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      1024,
+      1278
+    ],
+    "sha256" : "915fbf08fd145729d48be1ed923a563de26c69f2018630e06447e3676f7898bc"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/residential_l03/ZOOM.png",
+    "pixels" : [
+      1024,
+      1278
+    ],
+    "sha256" : "c2395ce773b64f858b7c9e8f0a655b0c37fad70c153339d384f7bd65488df835"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/residential_l03/ZOOM-COMPARISON.png",
+    "pixels" : [
+      2064,
+      1278
+    ],
+    "sha256" : "a28d551d3f79f8409b2d9bcb2a571e7f3370774dd330614e9d6cfaa5a51b3810"
+  },
+  "comparisonID" : "residential_l03-zoom",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

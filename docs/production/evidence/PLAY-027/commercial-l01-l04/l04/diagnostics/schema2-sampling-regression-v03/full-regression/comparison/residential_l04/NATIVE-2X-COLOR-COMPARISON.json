@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/residential-l02-l04/l04/SOURCE-V01-NATIVE-2X-NORMALIZED-ALPHA-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      864,
+      576
+    ],
+    "sha256" : "93ad47e7ade46710b9961576026fd35f94f9a902196db26b2a4abe7d79c51797"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/residential_l04/NATIVE-2X-COLOR.png",
+    "pixels" : [
+      864,
+      576
+    ],
+    "sha256" : "6b551ee0d70d420fa20abf3895ae9707e0e6ff27f560ebffbf3d66aa6daf3fe1"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/residential_l04/NATIVE-2X-COLOR-COMPARISON.png",
+    "pixels" : [
+      1744,
+      576
+    ],
+    "sha256" : "91b02b1f41ca633470d577aeb0c8b7dac5046e2d632c69d2c8b5c4c62c9efc2c"
+  },
+  "comparisonID" : "residential_l04-native",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

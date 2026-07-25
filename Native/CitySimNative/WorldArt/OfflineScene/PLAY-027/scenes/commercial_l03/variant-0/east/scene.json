@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sceneGeometryID": "commercial-l03-v0-east-office-setback-geometry-v1",
+  "logicalBuildingID": "commercial_l03",
+  "family": "commercial",
+  "level": 3,
+  "variantID": "variant-0",
+  "viewDirection": "east",
+  "sourceRevision": "source-v01",
+  "authoredIndependently": true,
+  "productionSelected": false,
+  "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},
+  "toolchainFingerprint": {"role": "frozen-offline-host-and-frameworks", "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json", "sha256": "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1"},
+  "styleAnchor": {"role": "immutable-appearance-only-global-style-anchor", "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png", "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"},
+  "materialLibrary": {"role": "shared-commercial-density-material-library", "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/commercial-l01-l04-v0-materials.json", "sha256": "ebe723369cf5b01ef471e3ef7bedb286d1eee8e4752c9d6237838fea5a634205"},
+  "registration": {
+    "tileBasisPoints": [72, 36], "sceneFootprintUnits": [72, 72],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotSource": [768, 896], "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "frontageEdgeSource": [[1024, 768], [768, 896]], "frontageSocketSource": [896, 832],
+    "doorBaseSource": [[934, 813], [858, 851]], "presentationEnvelopeSource": [256, 40, 1280, 896],
+    "shadowEnvelopeSource": [768, 512, 1456, 976], "orientationTransform": "none"
+  },
+  "camera": {"projection": "orthographic-2:1", "yawDegrees": 45, "elevationDegrees": 30, "orthographicScale": 203.64675298172568, "renderViewportPixels": [1536, 1024], "oversamplingFactor": 2, "positionWorld": [180, 146.9693845669907, 180], "targetWorld": [0, 0, 0], "sourceGroundCenter": [768, 768], "postProjectionOffsetPixels": [0, 256]},
+  "light": {"keyOrigin": [-120, 180, -120], "keyIntensity": 1000, "keyColorRGBA": [1.0, 0.86, 0.68, 1.0], "ambientIntensity": 0.5, "ambientColorRGBA": [0.50, 0.46, 0.38, 1.0], "shadowVectorSource": [2, 1], "shadowOpacity": 0.34, "shadowBlurSourcePixels": 18, "shadowReceiver": "task-owned-transparent-ground-plane"},
+  "building": {
+    "width": 56, "depth": 56, "foundationHeight": 3, "floorHeight": 16, "floors": 5,
+    "wallHeight": 83, "roofHeight": 6, "roofOverhang": 1,
+    "wallMaterialID": "terracotta-commercial", "trimMaterialID": "limestone-warm",
+    "roofMaterialID": "slate-charcoal", "foundationMaterialID": "foundation-stone",
+    "chimney": {"positionWorld": [14, 94, 12], "dimensions": [3, 6, 3], "materialID": "chimney-metal"},
+    "massingProfile": "five-floor-office-department-block-with-centered-setback-wing", "usesLegacyDomesticDetails": false,
+    "massBlocks": [
+      {"id": "c03-rusticated-department-podium", "dimensions": [54, 15, 54], "positionWorld": [0, 10.5, 0], "materialID": "stone-commercial-sand"},
+      {"id": "c03-main-office-block", "dimensions": [50, 42, 50], "positionWorld": [0, 39, 0], "materialID": "terracotta-commercial"},
+      {"id": "c03-centered-setback-office-wing", "dimensions": [36, 26, 36], "positionWorld": [0, 73, 0], "materialID": "brick-commercial-burgundy"}],
+    "roofVolumes": [
+      {"id": "c03-lower-terrace-coping", "shape": "flat-parapet", "dimensions": [52, 3, 52], "positionWorld": [0, 61.5, 0], "materialID": "slate-charcoal", "trimMaterialID": "limestone-warm"},
+      {"id": "c03-setback-wing-crown", "shape": "flat-parapet", "dimensions": [38, 4, 38], "positionWorld": [0, 88, 0], "materialID": "roof-copper", "trimMaterialID": "limestone-warm"},
+      {"id": "c03-screened-roof-plant", "shape": "flat-parapet", "dimensions": [24, 5, 20], "positionWorld": [0, 92.5, 0], "materialID": "rooftop-metal", "trimMaterialID": "roof-copper"}],
+    "trimBands": [
+      {"id": "c03-podium-cornice", "dimensions": [55, 1.6, 55], "positionWorld": [0, 18.2, 0], "materialID": "limestone-warm"},
+      {"id": "c03-department-belt", "dimensions": [51, 1.2, 51], "positionWorld": [0, 33, 0], "materialID": "awning-deep-teal"},
+      {"id": "c03-lower-office-coping", "dimensions": [52, 1.5, 52], "positionWorld": [0, 59.2, 0], "materialID": "limestone-warm"},
+      {"id": "c03-setback-crown-band", "dimensions": [38, 1.4, 38], "positionWorld": [0, 85.4, 0], "materialID": "limestone-warm"}]
+  },
+  "facades": [
+    {"id": "north-facade", "direction": "north", "edgeWorld": [[-28, -28], [28, -28]], "materialID": "terracotta-commercial", "hasEntrance": false, "windowBays": [], "windowRhythms": [
+      {"id": "n-department-display", "centersWorld": [[-17, 10, -26.4], [17, 10, -26.4]], "width": 11, "height": 13, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "n-office-f2", "centersWorld": [[-18, 29, -25.3], [-6, 29, -25.3], [6, 29, -25.3], [18, 29, -25.3]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"},
+      {"id": "n-office-f3", "centersWorld": [[-18, 45, -25.3], [-6, 45, -25.3], [6, 45, -25.3], [18, 45, -25.3]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 3, "materialID": "glass-office-blue"},
+      {"id": "n-setback-f4", "centersWorld": [[-10, 68, -18.3], [0, 68, -18.3], [10, 68, -18.3]], "width": 5, "height": 8, "sillHeight": 3, "floor": 4, "materialID": "glass-office-blue"},
+      {"id": "n-setback-f5", "centersWorld": [[-10, 81, -18.3], [0, 81, -18.3], [10, 81, -18.3]], "width": 5, "height": 8, "sillHeight": 3, "floor": 5, "materialID": "glass-office-blue"}]},
+    {"id": "east-facade", "direction": "east", "edgeWorld": [[28, -28], [28, 28]], "materialID": "terracotta-commercial", "hasEntrance": true, "windowBays": [], "windowRhythms": [
+      {"id": "e-department-display", "centersWorld": [[26.4, 10, -17], [26.4, 10, 17]], "width": 11, "height": 13, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "e-office-f2", "centersWorld": [[25.3, 29, -18], [25.3, 29, -6], [25.3, 29, 6], [25.3, 29, 18]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"},
+      {"id": "e-office-f3", "centersWorld": [[25.3, 45, -18], [25.3, 45, -6], [25.3, 45, 6], [25.3, 45, 18]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 3, "materialID": "glass-office-blue"},
+      {"id": "e-setback-f4", "centersWorld": [[18.3, 68, -10], [18.3, 68, 0], [18.3, 68, 10]], "width": 5, "height": 8, "sillHeight": 3, "floor": 4, "materialID": "glass-office-blue"},
+      {"id": "e-setback-f5", "centersWorld": [[18.3, 81, -10], [18.3, 81, 0], [18.3, 81, 10]], "width": 5, "height": 8, "sillHeight": 3, "floor": 5, "materialID": "glass-office-blue"}]},
+    {"id": "south-facade", "direction": "south", "edgeWorld": [[28, 28], [-28, 28]], "materialID": "terracotta-commercial", "hasEntrance": false, "windowBays": [], "windowRhythms": [
+      {"id": "s-department-display", "centersWorld": [[17, 10, 26.4], [-17, 10, 26.4]], "width": 11, "height": 13, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "s-office-f2", "centersWorld": [[18, 29, 25.3], [6, 29, 25.3], [-6, 29, 25.3], [-18, 29, 25.3]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"},
+      {"id": "s-office-f3", "centersWorld": [[18, 45, 25.3], [6, 45, 25.3], [-6, 45, 25.3], [-18, 45, 25.3]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 3, "materialID": "glass-office-blue"},
+      {"id": "s-setback-f4", "centersWorld": [[10, 68, 18.3], [0, 68, 18.3], [-10, 68, 18.3]], "width": 5, "height": 8, "sillHeight": 3, "floor": 4, "materialID": "glass-office-blue"},
+      {"id": "s-setback-f5", "centersWorld": [[10, 81, 18.3], [0, 81, 18.3], [-10, 81, 18.3]], "width": 5, "height": 8, "sillHeight": 3, "floor": 5, "materialID": "glass-office-blue"}]},
+    {"id": "west-facade", "direction": "west", "edgeWorld": [[-28, 28], [-28, -28]], "materialID": "terracotta-commercial", "hasEntrance": false, "windowBays": [], "windowRhythms": [
+      {"id": "w-department-display", "centersWorld": [[-26.4, 10, 17], [-26.4, 10, -17]], "width": 11, "height": 13, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "w-office-f2", "centersWorld": [[-25.3, 29, 18], [-25.3, 29, 6], [-25.3, 29, -6], [-25.3, 29, -18]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"},
+      {"id": "w-office-f3", "centersWorld": [[-25.3, 45, 18], [-25.3, 45, 6], [-25.3, 45, -6], [-25.3, 45, -18]], "width": 5.5, "height": 9, "sillHeight": 3, "floor": 3, "materialID": "glass-office-blue"},
+      {"id": "w-setback-f4", "centersWorld": [[-18.3, 68, 10], [-18.3, 68, 0], [-18.3, 68, -10]], "width": 5, "height": 8, "sillHeight": 3, "floor": 4, "materialID": "glass-office-blue"},
+      {"id": "w-setback-f5", "centersWorld": [[-18.3, 81, 10], [-18.3, 81, 0], [-18.3, 81, -10]], "width": 5, "height": 8, "sillHeight": 3, "floor": 5, "materialID": "glass-office-blue"}]}
+  ],
+  "entrance": {"facadeID": "east-facade", "baseWorld": [28, 3, 0], "width": 14, "height": 17, "depth": 2, "doorMaterialID": "door-commercial-brass", "surroundMaterialID": "limestone-warm", "stepCount": 2, "stepRun": 2, "canopyDepth": 18, "hingeSide": "left", "pavilionWidth": 24, "pavilionDepth": 9, "pavilionHeight": 24, "pavilionRoofHeight": 3, "pavilionMaterialID": "awning-deep-teal", "porchWidth": 28, "porchColumnWidth": 2, "porchLateralOffset": -10, "style": "office-lobby"},
+  "props": [
+    {"id": "east-office-hvac-a", "kind": "rooftop-hvac", "positionWorld": [-8, 96, -5], "dimensions": [10, 7, 9], "materialID": "rooftop-metal"},
+    {"id": "east-office-hvac-b", "kind": "rooftop-hvac", "positionWorld": [-6, 95, 8], "dimensions": [8, 6, 7], "materialID": "rooftop-metal"}
+  ],
+  "occlusionExclusions": [{"id": "east-office-lobby-clearance", "purpose": "protect grounded east office lobby, storefront returns, and declared commercial frontage socket", "polygonWorld": [[20, -22], [50, -22], [50, 26], [20, 26]]}]
+}

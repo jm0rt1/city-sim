@@ -1,0 +1,294 @@
+{
+  "candidateThresholds" : {
+    "maximumHiddenNonMagentaPixelCount" : 0,
+    "minimumAlphaVisibilityRatio" : 0.999,
+    "minimumReferenceCountRatio" : 0.90000000000000002,
+    "minimumReferenceHeightRatio" : 0.94999999999999996,
+    "minimumReferenceWidthRatio" : 0.94999999999999996,
+    "rgbAndAlphaVisibleBoundsMustMatch" : true
+  },
+  "contactSheet" : {
+    "directionOrder" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l03/SOURCE-V01-EXACT-RGBA-OCCUPIED-CROPS.png",
+    "panels" : [
+      {
+        "column" : 0,
+        "id" : "north",
+        "row" : 0,
+        "sheetPanel" : [
+          24,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          535,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          527,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 1,
+        "id" : "east",
+        "row" : 0,
+        "sheetPanel" : [
+          504,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          525,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          517,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 0,
+        "id" : "south",
+        "row" : 1,
+        "sheetPanel" : [
+          24,
+          24,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          525,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          517,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 1,
+        "id" : "west",
+        "row" : 1,
+        "sheetPanel" : [
+          504,
+          24,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          535,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          527,
+          1037,
+          914
+        ]
+      }
+    ],
+    "presentation" : "exact decoded RGBA, flat chroma masked transparent, occupied crop on neutral field"
+  },
+  "decodePath" : "CGImageSource immediate standard RGBA decode plus provider bytes",
+  "derivedReferenceFloor" : {
+    "alphaVisibleOccupiedPixelCount" : 69070,
+    "occupiedBoundsPixels" : [
+      410,
+      313
+    ]
+  },
+  "references" : [
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        593,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 69990,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/north/source-v01.png",
+      "fileSHA256" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47",
+      "id" : "l02-north"
+    },
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        593,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 69070,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/east/source-v01.png",
+      "fileSHA256" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a",
+      "id" : "l02-east"
+    },
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        593,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 69199,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/south/source-v01.png",
+      "fileSHA256" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa",
+      "id" : "l02-south"
+    },
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        593,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 69344,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l02/variant-0/west/source-v01.png",
+      "fileSHA256" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d",
+      "id" : "l02-west"
+    }
+  ],
+  "schema" : 1,
+  "sources" : [
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        535,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 78995,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/north/source-v01.png",
+      "fileSHA256" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "north",
+      "referenceMinimumCountRatio" : 1.1436948023744027,
+      "referenceMinimumHeightRatio" : 1.1853035143769968,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        535,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 78995,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        525,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 78407,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/east/source-v01.png",
+      "fileSHA256" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "east",
+      "referenceMinimumCountRatio" : 1.1351816997249167,
+      "referenceMinimumHeightRatio" : 1.2172523961661341,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        525,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 78407,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        525,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 79930,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/south/source-v01.png",
+      "fileSHA256" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "south",
+      "referenceMinimumCountRatio" : 1.157231793832344,
+      "referenceMinimumHeightRatio" : 1.2172523961661341,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        525,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 79930,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        535,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 80450,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l03/variant-0/west/source-v01.png",
+      "fileSHA256" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "west",
+      "referenceMinimumCountRatio" : 1.1647603880121615,
+      "referenceMinimumHeightRatio" : 1.1853035143769968,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        535,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 80450,
+      "validationPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "exact retained-byte ImageIO RGBA visibility validator",
+  "validationPassed" : true
+}

@@ -1,0 +1,164 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/quantizer-trace-residential-l03-west-v01/PREQUANTIZED-PIXEL-LOCALITY-ZOOM.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "schema2-residential-l03-west-prequantized-split",
+  "differenceBoundsSource" : [
+    731,
+    776,
+    737,
+    779
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        24,
+        55,
+        13,
+        255
+      ],
+      "repeatBRGBA" : [
+        24,
+        54,
+        13,
+        255
+      ],
+      "repeatCRGBA" : [
+        24,
+        55,
+        13,
+        255
+      ],
+      "sourceCoordinate" : [
+        732,
+        776
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        47,
+        71,
+        25,
+        255
+      ],
+      "repeatBRGBA" : [
+        47,
+        70,
+        25,
+        255
+      ],
+      "repeatCRGBA" : [
+        47,
+        71,
+        25,
+        255
+      ],
+      "sourceCoordinate" : [
+        736,
+        776
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        15,
+        36,
+        8,
+        255
+      ],
+      "repeatBRGBA" : [
+        16,
+        36,
+        8,
+        255
+      ],
+      "repeatCRGBA" : [
+        15,
+        36,
+        8,
+        255
+      ],
+      "sourceCoordinate" : [
+        731,
+        777
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        4,
+        23,
+        2,
+        255
+      ],
+      "repeatBRGBA" : [
+        4,
+        24,
+        2,
+        255
+      ],
+      "repeatCRGBA" : [
+        4,
+        23,
+        2,
+        255
+      ],
+      "sourceCoordinate" : [
+        733,
+        778
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/quantizer-trace-residential-l03-west-v01/run-a-prequantized.png",
+    "fileSHA256" : "faf778538268eb1b2125f21318c559a535308040a7ebe084d505e16d58f6cf91"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 4,
+    "differingPixelCount" : 4
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2,
+    "differingPixelCount" : 2
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/quantizer-trace-residential-l03-west-v01/run-b-prequantized.png",
+    "fileSHA256" : "762db36b8308b12236c949c9d6cd165013e469eed3984dde1a35b0f5c3827af1"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 6,
+    "differingPixelCount" : 6
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression/quantizer-trace-residential-l03-west-v01/run-c-prequantized.png",
+    "fileSHA256" : "c251d58c4496619176a1d31327582833da206e2d978339b417d2c657ba68f909"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

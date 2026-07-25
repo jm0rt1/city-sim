@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha>"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -36,6 +36,47 @@ func rendererArgument(_ name: String, in arguments: [String]) throws -> String {
     return arguments[index + 1]
 }
 
+func rendererOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
+}
+
+enum DiagnosticAntialiasing: String {
+    case current
+    case none
+
+    var sceneKitMode: SCNAntialiasingMode {
+        switch self {
+        case .current:
+            return .multisampling4X
+        case .none:
+            return .none
+        }
+    }
+}
+
+enum DiagnosticSceneShadows: String {
+    case current
+    case disabled
+}
+
+struct RendererDiagnosticConfiguration {
+    let antialiasingOverride: DiagnosticAntialiasing?
+    let sceneShadows: DiagnosticSceneShadows
+
+    var hasOverride: Bool {
+        antialiasingOverride != nil || sceneShadows != .current
+    }
+}
+
 func rendererSHA256(_ url: URL) throws -> String {
     SHA256.hash(data: try Data(contentsOf: url)).map {
         String(format: "%02x", $0)
@@ -50,6 +91,84 @@ func rendererRelativePath(_ url: URL, repositoryRoot: URL) -> String {
         return url.path
     }
     return String(url.path.dropFirst(prefix.count))
+}
+
+func rendererBoundaryAssistMutationRecord(
+    _ mutation: PixelCanonicalizationMutation
+) -> [String: Any]? {
+    guard let assist = mutation.boundaryAssist else {
+        return nil
+    }
+    let vote: [String: Any] = [
+        "coordinate": [assist.vote.x, assist.vote.y],
+        "channel": assist.vote.channel,
+        "prequantizedValue": assist.vote.prequantizedValue,
+        "quantizedValue": assist.vote.quantizedValue,
+        "boundaryPair": assist.vote.boundaryPair,
+    ]
+    return [
+        "target": [mutation.x, mutation.y],
+        "channel": mutation.channel,
+        "originalValue": mutation.originalValue,
+        "majorityValue": mutation.majorityValue,
+        "prequantizedVote": vote,
+        "effectiveSupportCount": assist.effectiveSupportCount,
+        "competingSupportAfterBoundaryReclassification":
+            assist.competingSupportAfterBoundaryReclassification,
+        "reason": assist.reason,
+    ]
+}
+
+func rendererPostQuantizationContractRecord(
+    _ contract: SamplingPostQuantizationCanonicalizerDescriptor?
+) -> [String: Any] {
+    guard let contract else {
+        return ["algorithm": "none"]
+    }
+    let boundaryAssist: [String: Any]
+    if let assist = contract.boundaryAssist {
+        boundaryAssist = [
+            "algorithm": assist.algorithm,
+            "version": assist.version,
+            "baseQuantizedMajorityCount":
+                assist.baseQuantizedMajorityCount,
+            "requiredBoundaryVoteCount":
+                assist.requiredBoundaryVoteCount,
+            "effectiveSupportCount": assist.effectiveSupportCount,
+            "maximumCompetingSupportAfterBoundaryReclassification":
+                assist
+                .maximumCompetingSupportAfterBoundaryReclassification,
+            "quantizerStep": assist.quantizerStep,
+            "quantizerMidpointOffset":
+                assist.quantizerMidpointOffset,
+            "boundaryBandWidthValues":
+                assist.boundaryBandWidthValues,
+            "requiresSameChannelEvidence":
+                assist.requiresSameChannelEvidence,
+            "immutablePrequantizedBuffer":
+                assist.immutablePrequantizedBuffer,
+            "recordsBoundaryVoteReason":
+                assist.recordsBoundaryVoteReason,
+        ]
+    } else {
+        boundaryAssist = ["algorithm": "none"]
+    }
+    return [
+        "algorithm": contract.algorithm,
+        "version": contract.version,
+        "quantizationQuantum": contract.quantizationQuantum,
+        "neighborhoodSize": contract.neighborhoodSize,
+        "majorityThreshold": contract.majorityThreshold,
+        "requiresFullyOpaqueNeighborhood":
+            contract.requiresFullyOpaqueNeighborhood,
+        "immutableSourceBuffer": contract.immutableSourceBuffer,
+        "requiresChromaFreeNeighborhood":
+            contract.requiresChromaFreeNeighborhood,
+        "channels": contract.channels,
+        "preservesAlpha": contract.preservesAlpha,
+        "preservesChroma": contract.preservesChroma,
+        "boundaryAssist": boundaryAssist,
+    ]
 }
 
 func color(_ components: [Double]) throws -> NSColor {
@@ -306,7 +425,12 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 
         for facade in descriptor.facades {
             for bay in facade.windowBays {
-                try addWindow(bay, facade: facade.direction, to: scene)
+                try addWindow(
+                    bay,
+                    facade: facade.direction,
+                    family: descriptor.family,
+                    to: scene
+                )
             }
             for rhythm in facade.windowRhythms ?? [] {
                 for (index, center) in rhythm.centersWorld.enumerated() {
@@ -321,6 +445,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                             materialID: rhythm.materialID
                         ),
                         facade: facade.direction,
+                        family: descriptor.family,
                         to: scene
                     )
                 }
@@ -658,6 +783,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
     private func addWindow(
         _ bay: WindowBayDescriptor,
         facade: String,
+        family: String,
         to scene: SCNScene
     ) throws {
         let isHorizontal = facade == "north" || facade == "south"
@@ -748,7 +874,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
             )
         }
-        if bay.floor == 1 {
+        if bay.floor == 1 && family == "residential" {
             let outward: [Double]
             switch facade {
             case "north": outward = [0, 0, -1]
@@ -1284,6 +1410,10 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             "walkup-stoop",
             "courtyard-portal",
             "urban-lobby",
+            "shopfront",
+            "market-arcade",
+            "office-lobby",
+            "tower-lobby",
         ].contains(style) else {
             throw OfflineRendererError.invalid(
                 "unsupported density entrance style: \(style)"
@@ -1322,12 +1452,18 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
         )
 
+        let isCommercial = descriptor.family == "commercial"
+        let isLargeLobby = [
+            "urban-lobby",
+            "office-lobby",
+            "tower-lobby",
+        ].contains(style)
         let portalWidth = entrance.width
-            + (style == "urban-lobby" ? 8 : 5)
+            + (isLargeLobby ? 8 : 5)
         let portalHeight = entrance.height
-            + (style == "courtyard-portal" ? 9 : 6)
+            + (style == "courtyard-portal" || style == "market-arcade" ? 9 : 6)
         let portalDepth = entrance.depth + 1.2
-        let sideWidth = style == "urban-lobby" ? 2.2 : 1.5
+        let sideWidth = isLargeLobby ? 2.2 : 1.5
         for side in [-1.0, 1.0] {
             let offset = side * (portalWidth / 2 - sideWidth / 2)
             let dimensions = horizontal
@@ -1364,6 +1500,79 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 materialID: entrance.surroundMaterialID
             )
         )
+        if isCommercial {
+            let facadeSpan = horizontal
+                ? descriptor.building.width
+                : descriptor.building.depth
+            let storefrontWidth = max(
+                7,
+                (facadeSpan - portalWidth - 10) / 2
+            )
+            let storefrontHeight = min(
+                15,
+                descriptor.building.floorHeight - 2
+            )
+            for side in [-1.0, 1.0] {
+                let offset = side
+                    * (portalWidth / 2 + storefrontWidth / 2 + 2)
+                let storefrontCenter = [
+                    base[0] + outward[0] * 0.8 + tangent[0] * offset,
+                    descriptor.building.foundationHeight
+                        + storefrontHeight / 2,
+                    base[2] + outward[2] * 0.8 + tangent[2] * offset,
+                ]
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-\(style)-storefront-\(side)",
+                        dimensions: horizontal
+                            ? [storefrontWidth, storefrontHeight, 0.8]
+                            : [0.8, storefrontHeight, storefrontWidth],
+                        position: storefrontCenter,
+                        materialID: "window-warm"
+                    )
+                )
+                let mullionOffset = storefrontWidth * 0.22
+                for mullionSide in [-1.0, 1.0] {
+                    scene.rootNode.addChildNode(
+                        try boxNode(
+                            name:
+                                facade.direction
+                                + "-\(style)-storefront-mullion-\(side)-\(mullionSide)",
+                            dimensions: horizontal
+                                ? [0.7, storefrontHeight + 1.5, 1.0]
+                                : [1.0, storefrontHeight + 1.5, 0.7],
+                            position: [
+                                storefrontCenter[0]
+                                    + tangent[0]
+                                        * mullionOffset * mullionSide,
+                                storefrontCenter[1],
+                                storefrontCenter[2]
+                                    + tangent[2]
+                                        * mullionOffset * mullionSide,
+                            ],
+                            materialID: entrance.surroundMaterialID
+                        )
+                    )
+                }
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-\(style)-storefront-cornice",
+                    dimensions: horizontal
+                        ? [facadeSpan - 4, 2.1, 2.2]
+                        : [2.2, 2.1, facadeSpan - 4],
+                    position: [
+                        base[0] + outward[0] * 1.1,
+                        descriptor.building.foundationHeight
+                            + storefrontHeight + 1.2,
+                        base[2] + outward[2] * 1.1,
+                    ],
+                    materialID: entrance.pavilionMaterialID
+                )
+            )
+        }
         let transomDimensions = horizontal
             ? [entrance.width * 0.82, 3.2, entrance.depth + 1.4]
             : [entrance.depth + 1.4, 3.2, entrance.width * 0.82]
@@ -1798,6 +2007,57 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
             pavilionRoofNode.castsShadow = true
             scene.rootNode.addChildNode(pavilionRoofNode)
+        case "rooftop-hvac":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "rooftop HVAC dimensions must contain width, height, depth"
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-cabinet",
+                    dimensions: prop.dimensions,
+                    position: prop.positionWorld,
+                    materialID: prop.materialID
+                )
+            )
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-cap",
+                    dimensions: [
+                        prop.dimensions[0] + 1.8,
+                        0.9,
+                        prop.dimensions[2] + 1.8,
+                    ],
+                    position: [
+                        prop.positionWorld[0],
+                        prop.positionWorld[1]
+                            + prop.dimensions[1] / 2 + 0.35,
+                        prop.positionWorld[2],
+                    ],
+                    materialID: "slate-charcoal"
+                )
+            )
+            for offset in [-0.25, 0.0, 0.25] {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: prop.id + "-louver-\(offset)",
+                        dimensions: [
+                            prop.dimensions[0] * 0.68,
+                            0.55,
+                            0.7,
+                        ],
+                        position: [
+                            prop.positionWorld[0],
+                            prop.positionWorld[1]
+                                + offset * prop.dimensions[1],
+                            prop.positionWorld[2]
+                                + prop.dimensions[2] / 2 + 0.2,
+                        ],
+                        materialID: "slate-charcoal"
+                    )
+                )
+            }
         default:
             throw OfflineRendererError.invalid(
                 "unsupported prop kind: \(prop.kind)"
@@ -1877,12 +2137,30 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 }
 
 final class NativeSourceRenderer: OfflineSourceRendering {
+    private let antialiasingMode: SCNAntialiasingMode
+    private let linearOversamplingFactor: Int
+
+    init(
+        antialiasingMode: SCNAntialiasingMode,
+        linearOversamplingFactor: Int
+    ) {
+        self.antialiasingMode = antialiasingMode
+        self.linearOversamplingFactor = linearOversamplingFactor
+    }
+
     func renderSource(
         scene: SCNScene,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
         let renderer = SCNRenderer(device: nil, options: nil)
+        // SceneKit can otherwise expose a process-dependent first snapshot:
+        // descriptor nodes exist, but their presentation tree or prepared
+        // material state is incomplete. Flush authored transactions and hold
+        // the offline scene at one fixed time before synchronous preparation.
+        SCNTransaction.flush()
+        scene.isPaused = true
         renderer.scene = scene
+        renderer.sceneTime = 0
         guard let camera = scene.rootNode.childNode(
             withName: "contract-camera",
             recursively: false
@@ -1900,15 +2178,29 @@ final class NativeSourceRenderer: OfflineSourceRendering {
                 "SceneKit could not prepare the complete scene graph"
             )
         }
-        let scale = descriptor.camera.oversamplingFactor
+        let scale = linearOversamplingFactor
         let size = CGSize(
             width: descriptor.camera.renderViewportPixels[0] * scale,
             height: descriptor.camera.renderViewportPixels[1] * scale
         )
+        // The first two snapshots are explicit native-pipeline warmups. They
+        // force camera/frustum state, the complete node presentation tree,
+        // and prepared materials through the same fixed frame without making
+        // either warmup a source-art authority.
+        _ = renderer.snapshot(
+            atTime: 0,
+            with: size,
+            antialiasingMode: antialiasingMode
+        )
+        _ = renderer.snapshot(
+            atTime: 0,
+            with: size,
+            antialiasingMode: antialiasingMode
+        )
         let snapshot = renderer.snapshot(
             atTime: 0,
             with: size,
-            antialiasingMode: .multisampling4X
+            antialiasingMode: antialiasingMode
         )
         if let cgImage = snapshot.cgImage(
             forProposedRect: nil,
@@ -1931,31 +2223,53 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 }
 
 final class NativeSourceCompositor: OfflineSourceCompositing {
-    private let ciContext = CIContext(options: [
-        .useSoftwareRenderer: true,
-        .cacheIntermediates: false,
-        .workingColorSpace: CGColorSpace(
-            name: CGColorSpace.extendedSRGB
-        )!,
-        .outputColorSpace: CGColorSpace(
-            name: CGColorSpace.sRGB
-        )!,
-    ])
+    private let sampling: EffectiveSamplingContract
+    private let stageTraceCoordinate: [Int]?
+    private let ciContext: CIContext
+    private(set) var prequantizedImage: CGImage?
+    private(set) var prequantizedRGBA: [UInt8]?
+    private(set) var quantizedBeforeMajorityRGBA: [UInt8]?
+    private(set) var postMajorityRGBA: [UInt8]?
+    private(set) var postQuantizationMutations:
+        [PixelCanonicalizationMutation] = []
+    private(set) var postQuantizationEvaluations:
+        [PixelCanonicalizationEvaluation] = []
+
+    init(
+        sampling: EffectiveSamplingContract,
+        stageTraceCoordinate: [Int]? = nil
+    ) {
+        self.sampling = sampling
+        self.stageTraceCoordinate = stageTraceCoordinate
+        ciContext = CIContext(options: [
+            .useSoftwareRenderer: sampling.ciUseSoftwareRenderer,
+            .cacheIntermediates: sampling.ciCacheIntermediates,
+            .workingColorSpace: CGColorSpace(
+                name: CGColorSpace.extendedSRGB
+            )!,
+            .outputColorSpace: CGColorSpace(
+                name: CGColorSpace.sRGB
+            )!,
+        ])
+    }
 
     func compositeRegisteredSource(
         renderedImage: CGImage,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
-        let scale = 1 / CGFloat(descriptor.camera.oversamplingFactor)
+        let scale = CGFloat(sampling.downsampleScale)
         let input = CIImage(cgImage: renderedImage)
-        guard let filter = CIFilter(name: "CILanczosScaleTransform") else {
+        guard let filter = CIFilter(name: sampling.downsampleFilter) else {
             throw OfflineRendererError.rendering(
                 "CILanczosScaleTransform unavailable"
             )
         }
         filter.setValue(input, forKey: kCIInputImageKey)
         filter.setValue(scale, forKey: kCIInputScaleKey)
-        filter.setValue(1, forKey: kCIInputAspectRatioKey)
+        filter.setValue(
+            sampling.downsampleAspectRatio,
+            forKey: kCIInputAspectRatioKey
+        )
         guard let downsampled = filter.outputImage else {
             throw OfflineRendererError.rendering("downsample failed")
         }
@@ -2009,6 +2323,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 "could not create registered source"
             )
         }
+        prequantizedImage = composited
         return try deterministicallyQuantized(composited)
     }
 
@@ -2019,7 +2334,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
         let height = image.height
         var bytes = [UInt8](repeating: 0, count: width * height * 4)
         let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
-        return try bytes.withUnsafeMutableBytes { storage in
+        try bytes.withUnsafeMutableBytes { storage in
             guard let context = CGContext(
                 data: storage.baseAddress,
                 width: width,
@@ -2040,19 +2355,26 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 image,
                 in: CGRect(x: 0, y: 0, width: width, height: height)
             )
+        }
+        let immutablePrequantizedBytes = bytes
+        if stageTraceCoordinate != nil {
+            prequantizedRGBA = immutablePrequantizedBytes
+        }
+        bytes.withUnsafeMutableBytes { storage in
             // SceneKit's Metal snapshot can alternate a shaded sample across
             // an exact floor-bucket boundary in otherwise identical process
             // invocations. Shift the existing midpoint palette boundary by
             // eight values so the observed 191/192 pair converges while the
             // established 16,48,...,240 palette remains intact for the
             // deterministic normalizer's edge-despill behavior.
-            let step = 32
+            let step = sampling.quantizerStep
+            let midpointOffset = sampling.quantizerMidpointOffset
             for pixel in stride(from: 0, to: storage.count, by: 4) {
                 if
-                    storage[pixel] == 255,
-                    storage[pixel + 1] == 0,
-                    storage[pixel + 2] == 255,
-                    storage[pixel + 3] == 255
+                    storage[pixel] == sampling.chromaBypassRGBA[0],
+                    storage[pixel + 1] == sampling.chromaBypassRGBA[1],
+                    storage[pixel + 2] == sampling.chromaBypassRGBA[2],
+                    storage[pixel + 3] == sampling.chromaBypassRGBA[3]
                 {
                     continue
                 }
@@ -2060,12 +2382,44 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                     let value = Int(storage[pixel + channel])
                     let quantized = min(
                         255,
-                        ((value + step / 4) / step) * step + step / 2
+                        ((value + midpointOffset) / step) * step + step / 2
                     )
                     storage[pixel + channel] = UInt8(quantized)
                 }
             }
-            guard let output = context.makeImage() else {
+        }
+        if stageTraceCoordinate != nil {
+            quantizedBeforeMajorityRGBA = bytes
+        }
+        if let repair = sampling.postQuantizationCanonicalizer {
+            let result = try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: bytes,
+                prequantizedRGBA: immutablePrequantizedBytes,
+                width: width,
+                height: height,
+                contract: repair,
+                traceCoordinates: stageTraceCoordinate.map { [$0] } ?? []
+            )
+            bytes = result.rgba
+            postQuantizationMutations = result.mutations
+            postQuantizationEvaluations = result.evaluations
+        }
+        if stageTraceCoordinate != nil {
+            postMajorityRGBA = bytes
+        }
+        return try bytes.withUnsafeMutableBytes { storage in
+            guard let context = CGContext(
+                data: storage.baseAddress,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: colorSpace,
+                bitmapInfo:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ), let output = context.makeImage()
+            else {
                 throw OfflineRendererError.rendering(
                     "could not create deterministic source"
                 )
@@ -2123,7 +2477,138 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
     }
 }
 
-func writePNG(_ image: CGImage, to url: URL) throws {
+func validatedRenderedNodeBounds(
+    _ scene: SCNScene,
+    descriptor: SceneDescriptor
+) throws -> [String: Any] {
+    let bounds = scene.rootNode.boundingBox
+    let minimum = bounds.min
+    let maximum = bounds.max
+    guard
+        maximum.x > minimum.x,
+        maximum.y > minimum.y,
+        maximum.z > minimum.z
+    else {
+        throw OfflineRendererError.rendering(
+            "complete rendered-node bounds unavailable"
+        )
+    }
+    let halfWidth = descriptor.building.width / 2
+    let halfDepth = descriptor.building.depth / 2
+    let minimumRequiredHeight =
+        descriptor.building.foundationHeight
+        + descriptor.building.wallHeight
+    let complete =
+        Double(minimum.x) <= -halfWidth
+        && Double(maximum.x) >= halfWidth
+        && Double(minimum.z) <= -halfDepth
+        && Double(maximum.z) >= halfDepth
+        && Double(minimum.y) <= 0
+        && Double(maximum.y) >= minimumRequiredHeight
+    guard complete else {
+        throw OfflineRendererError.rendering(
+            "rendered-node bounds do not contain the complete building volume"
+        )
+    }
+    return [
+        "minimumWorld": [
+            Double(minimum.x),
+            Double(minimum.y),
+            Double(minimum.z),
+        ],
+        "maximumWorld": [
+            Double(maximum.x),
+            Double(maximum.y),
+            Double(maximum.z),
+        ],
+        "requiredFootprintHalfExtents": [halfWidth, halfDepth],
+        "minimumRequiredHeight": minimumRequiredHeight,
+        "completeBuildingVolumePassed": true,
+    ]
+}
+
+func validatedRawOccupancy(
+    _ image: CGImage
+) throws -> [String: Any] {
+    let width = image.width
+    let height = image.height
+    var bytes = [UInt8](repeating: 0, count: width * height * 4)
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+    let created = bytes.withUnsafeMutableBytes { storage -> Bool in
+        guard let context = CGContext(
+            data: storage.baseAddress,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: width * 4,
+            space: colorSpace,
+            bitmapInfo:
+                CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.byteOrder32Big.rawValue
+        ) else {
+            return false
+        }
+        context.interpolationQuality = .none
+        context.draw(
+            image,
+            in: CGRect(x: 0, y: 0, width: width, height: height)
+        )
+        return true
+    }
+    guard created else {
+        throw OfflineRendererError.rendering(
+            "could not inspect raw occupied area"
+        )
+    }
+
+    var occupiedPixelCount = 0
+    var minimumX = width
+    var minimumY = height
+    var maximumX = -1
+    var maximumY = -1
+    for y in 0..<height {
+        for x in 0..<width {
+            let index = (y * width + x) * 4
+            let chroma =
+                bytes[index] == 255
+                && bytes[index + 1] == 0
+                && bytes[index + 2] == 255
+                && bytes[index + 3] == 255
+            if !chroma {
+                occupiedPixelCount += 1
+                minimumX = min(minimumX, x)
+                minimumY = min(minimumY, y)
+                maximumX = max(maximumX, x)
+                maximumY = max(maximumY, y)
+            }
+        }
+    }
+    let occupiedWidth = maximumX >= 0 ? maximumX - minimumX + 1 : 0
+    let occupiedHeight = maximumY >= 0 ? maximumY - minimumY + 1 : 0
+    let passed =
+        occupiedPixelCount >= 50_000
+        && occupiedWidth >= 400
+        && occupiedHeight >= 260
+    guard passed else {
+        throw OfflineRendererError.rendering(
+            "raw occupied area cannot contain a complete building, footprint, and shadow"
+        )
+    }
+    return [
+        "nonChromaPixelCount": occupiedPixelCount,
+        "nonChromaBounds": [
+            minimumX,
+            minimumY,
+            maximumX + 1,
+            maximumY + 1,
+        ],
+        "minimumNonChromaPixelCount": 50_000,
+        "minimumBoundsPixels": [400, 260],
+        "completeOccupiedAreaPassed": true,
+    ]
+}
+
+func writeImageIOPNG(_ image: CGImage, to url: URL) throws {
     try FileManager.default.createDirectory(
         at: url.deletingLastPathComponent(),
         withIntermediateDirectories: true
@@ -2155,6 +2640,83 @@ func writePNG(_ image: CGImage, to url: URL) throws {
     }
 }
 
+func writePNG(
+    _ image: CGImage,
+    to url: URL,
+    diagnosticIntermediateURL: URL? = nil,
+    diagnosticRepositoryRoot: URL? = nil,
+    diagnosticTarget: [Int]? = nil
+) throws -> RendererPNGWriteDiagnostics? {
+    let intermediateURL =
+        diagnosticIntermediateURL
+        ?? url.deletingLastPathComponent()
+            .appendingPathComponent(
+                "." + url.lastPathComponent + ".imageio-intermediate.png"
+            )
+    if
+        diagnosticIntermediateURL != nil,
+        FileManager.default.fileExists(atPath: intermediateURL.path)
+    {
+        throw OfflineRendererError.invalid(
+            "diagnostic ImageIO intermediate already exists: \(intermediateURL.path)"
+        )
+    }
+    if FileManager.default.fileExists(atPath: intermediateURL.path) {
+        try FileManager.default.removeItem(at: intermediateURL)
+    }
+    let removeIntermediateAfterWrite = diagnosticIntermediateURL == nil
+    defer {
+        if removeIntermediateAfterWrite {
+            try? FileManager.default.removeItem(at: intermediateURL)
+        }
+    }
+    try writeImageIOPNG(image, to: intermediateURL)
+
+    // `/usr/bin/sips` is a macOS-native ImageIO front end. Re-encoding the
+    // already canonical pixels through it removes the direction-dependent PNG
+    // presentation seen in the review decoder while preserving exact pixels.
+    // The fixed host/toolchain makes this final byte encoding deterministic.
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/sips")
+    process.arguments = [
+        "-s",
+        "format",
+        "png",
+        intermediateURL.path,
+        "--out",
+        url.path,
+    ]
+    process.standardOutput = FileHandle.nullDevice
+    process.standardError = FileHandle.nullDevice
+    try process.run()
+    process.waitUntilExit()
+    guard process.terminationStatus == 0 else {
+        throw OfflineRendererError.rendering(
+            "native PNG canonicalization failed"
+        )
+    }
+    guard
+        let diagnosticRepositoryRoot,
+        let diagnosticTarget
+    else {
+        return nil
+    }
+    return RendererPNGWriteDiagnostics(
+        imageIOPreSips: try rendererPNGStageRecord(
+            stage: "imageio-pre-sips-decoded",
+            url: intermediateURL,
+            repositoryRoot: diagnosticRepositoryRoot,
+            target: diagnosticTarget
+        ),
+        finalSips: try rendererPNGStageRecord(
+            stage: "final-sips-decoded",
+            url: url,
+            repositoryRoot: diagnosticRepositoryRoot,
+            target: diagnosticTarget
+        )
+    )
+}
+
 @main
 enum OfflineSceneRendererMain {
     static func main() throws {
@@ -2184,11 +2746,127 @@ enum OfflineSceneRendererMain {
             "--renderer-source-commit",
             in: arguments
         )
+        let diagnosticPrequantizedOutput = rendererOptionalArgument(
+            "--diagnostic-prequantized-output",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
+        let diagnosticStageCaptureDirectory = rendererOptionalArgument(
+            "--diagnostic-stage-capture-dir",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
+        let diagnosticStageCoordinateRaw = rendererOptionalArgument(
+            "--diagnostic-stage-coordinate",
+            in: arguments
+        )
+        let diagnosticStageCoordinate: [Int]? = {
+            guard let diagnosticStageCoordinateRaw else {
+                return nil
+            }
+            let components = diagnosticStageCoordinateRaw.split(
+                separator: ",",
+                omittingEmptySubsequences: false
+            )
+            guard
+                components.count == 2,
+                let x = Int(components[0]),
+                let y = Int(components[1])
+            else {
+                return nil
+            }
+            return [x, y]
+        }()
+        let diagnosticAntialiasingRaw = rendererOptionalArgument(
+            "--diagnostic-antialiasing",
+            in: arguments
+        )
+        guard
+            diagnosticAntialiasingRaw == nil
+                || DiagnosticAntialiasing(
+                    rawValue: diagnosticAntialiasingRaw!
+                ) != nil,
+            let diagnosticSceneShadows = DiagnosticSceneShadows(
+                rawValue: rendererOptionalArgument(
+                    "--diagnostic-scene-shadows",
+                    in: arguments
+                ) ?? "current"
+            )
+        else {
+            throw OfflineRendererError.arguments
+        }
+        let diagnosticConfiguration = RendererDiagnosticConfiguration(
+            antialiasingOverride: diagnosticAntialiasingRaw.flatMap(
+                DiagnosticAntialiasing.init(rawValue:)
+            ),
+            sceneShadows: diagnosticSceneShadows
+        )
+        if diagnosticConfiguration.hasOverride {
+            guard
+                outputURL.path.contains("/diagnostics/"),
+                recordURL.path.contains("/diagnostics/")
+            else {
+                throw OfflineRendererError.invalid(
+                    "non-baseline diagnostic output must remain under a diagnostics path"
+                )
+            }
+        }
+        if let diagnosticPrequantizedOutput {
+            guard diagnosticPrequantizedOutput.path.contains("/diagnostics/")
+            else {
+                throw OfflineRendererError.invalid(
+                    "prequantized diagnostic output must remain under a diagnostics path"
+                )
+            }
+        }
+        guard
+            (diagnosticStageCaptureDirectory == nil)
+                == (diagnosticStageCoordinate == nil)
+        else {
+            throw OfflineRendererError.invalid(
+                "stage capture directory and coordinate must be supplied together"
+            )
+        }
+        if let diagnosticStageCaptureDirectory {
+            let capturePrefix =
+                diagnosticStageCaptureDirectory.path.hasSuffix("/")
+                ? diagnosticStageCaptureDirectory.path
+                : diagnosticStageCaptureDirectory.path + "/"
+            guard
+                diagnosticStageCaptureDirectory.path.contains(
+                    "/diagnostics/"
+                ),
+                outputURL.path.hasPrefix(capturePrefix),
+                recordURL.path.hasPrefix(capturePrefix),
+                !FileManager.default.fileExists(
+                    atPath: diagnosticStageCaptureDirectory.path
+                )
+            else {
+                throw OfflineRendererError.invalid(
+                    "stage capture output and record must use one new diagnostics directory"
+                )
+            }
+        }
         let decoder = JSONDecoder()
         let descriptor = try decoder.decode(
             SceneDescriptor.self,
             from: Data(contentsOf: sceneURL)
         )
+        let descriptorSampling = try DescriptorSamplingResolver.resolve(
+            descriptor: descriptor
+        )
+        if descriptorSampling.purpose == "diagnostic-regression" {
+            guard
+                outputURL.path.contains("/diagnostics/"),
+                recordURL.path.contains("/diagnostics/")
+            else {
+                throw OfflineRendererError.invalid(
+                    "schema-2 diagnostic regression output must remain under a diagnostics path"
+                )
+            }
+        }
         let materialDescriptor = try decoder.decode(
             MaterialLibraryDescriptor.self,
             from: Data(contentsOf: materialsURL)
@@ -2211,19 +2889,220 @@ enum OfflineSceneRendererMain {
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
-        let oversampled = try NativeSourceRenderer().renderSource(
-            scene: scene,
+        if diagnosticConfiguration.sceneShadows == .disabled {
+            scene.rootNode.enumerateChildNodes { node, _ in
+                node.light?.castsShadow = false
+            }
+        }
+        let renderedNodeBounds = try validatedRenderedNodeBounds(
+            scene,
             descriptor: descriptor
         )
-        let source = try NativeSourceCompositor().compositeRegisteredSource(
+        let effectiveAntialiasing =
+            diagnosticConfiguration.antialiasingOverride?.sceneKitMode
+            ?? (
+                descriptorSampling.sceneKitAntialiasing == "none"
+                    ? SCNAntialiasingMode.none
+                    : SCNAntialiasingMode.multisampling4X
+            )
+        let oversampled = try NativeSourceRenderer(
+            antialiasingMode: effectiveAntialiasing,
+            linearOversamplingFactor:
+                descriptorSampling.linearOversamplingFactor
+        ).renderSource(scene: scene, descriptor: descriptor)
+        let compositor = NativeSourceCompositor(
+            sampling: descriptorSampling,
+            stageTraceCoordinate: diagnosticStageCoordinate
+        )
+        let source = try compositor.compositeRegisteredSource(
             renderedImage: oversampled,
             descriptor: descriptor
         )
-        try writePNG(source, to: outputURL)
+        let rawOccupancy = try validatedRawOccupancy(source)
+        var pngWriteDiagnostics: RendererPNGWriteDiagnostics?
+        if
+            let diagnosticStageCaptureDirectory,
+            let diagnosticStageCoordinate
+        {
+            try FileManager.default.createDirectory(
+                at: diagnosticStageCaptureDirectory,
+                withIntermediateDirectories: true
+            )
+            pngWriteDiagnostics = try writePNG(
+                source,
+                to: outputURL,
+                diagnosticIntermediateURL:
+                    diagnosticStageCaptureDirectory.appendingPathComponent(
+                        "imageio-pre-sips.png"
+                    ),
+                diagnosticRepositoryRoot: repositoryRoot,
+                diagnosticTarget: diagnosticStageCoordinate
+            )
+        } else {
+            _ = try writePNG(source, to: outputURL)
+        }
+        if
+            let diagnosticPrequantizedOutput,
+            let prequantizedImage = compositor.prequantizedImage
+        {
+            _ = try writePNG(
+                prequantizedImage,
+                to: diagnosticPrequantizedOutput
+            )
+        }
+
+        if
+            let diagnosticStageCaptureDirectory,
+            let diagnosticStageCoordinate,
+            let prequantizedRGBA = compositor.prequantizedRGBA,
+            let quantizedBeforeMajorityRGBA =
+                compositor.quantizedBeforeMajorityRGBA,
+            let postMajorityRGBA = compositor.postMajorityRGBA,
+            let pngWriteDiagnostics
+        {
+            let width = descriptor.camera.renderViewportPixels[0]
+            let height = descriptor.camera.renderViewportPixels[1]
+            let prequantized = try rendererRGBAStageRecord(
+                stage: "prequantized-in-memory",
+                rgba: prequantizedRGBA,
+                width: width,
+                height: height,
+                target: diagnosticStageCoordinate
+            )
+            let quantizedBeforeMajority = try rendererRGBAStageRecord(
+                stage: "quantized-before-majority-in-memory",
+                rgba: quantizedBeforeMajorityRGBA,
+                width: width,
+                height: height,
+                target: diagnosticStageCoordinate
+            )
+            let postMajority = try rendererRGBAStageRecord(
+                stage: "post-majority-in-memory",
+                rgba: postMajorityRGBA,
+                width: width,
+                height: height,
+                target: diagnosticStageCoordinate
+            )
+            let evaluations = compositor.postQuantizationEvaluations.map {
+                [
+                    "x": $0.x,
+                    "y": $0.y,
+                    "channel": $0.channel,
+                    "centerValue": $0.centerValue,
+                    "majorityValue":
+                        $0.majorityValue.map { $0 as Any } ?? NSNull(),
+                    "majorityCount": $0.majorityCount,
+                    "fullyOpaqueNeighborhood":
+                        $0.fullyOpaqueNeighborhood,
+                    "chromaFreeNeighborhood":
+                        $0.chromaFreeNeighborhood,
+                    "exactQuantumDifference":
+                        $0.exactQuantumDifference,
+                    "eligible": $0.eligible,
+                    "mutated": $0.mutated,
+                    "standardMajorityEligible":
+                        $0.standardMajorityEligible,
+                    "boundaryAssistEligible":
+                        $0.boundaryAssistEligible,
+                    "boundaryVotes": $0.boundaryVotes.map {
+                        [
+                            "coordinate": [$0.x, $0.y],
+                            "channel": $0.channel,
+                            "prequantizedValue":
+                                $0.prequantizedValue,
+                            "quantizedValue":
+                                $0.quantizedValue,
+                            "boundaryPair": $0.boundaryPair,
+                        ] as [String: Any]
+                    },
+                    "competingSupportAfterBoundaryReclassification":
+                        $0
+                        .competingSupportAfterBoundaryReclassification
+                        .map { $0 as Any } ?? NSNull(),
+                    "eligibilityReason": $0.eligibilityReason,
+                ] as [String: Any]
+            }
+            let postSHA =
+                postMajority["decodedRGBASHA256"] as? String
+            let imageIOSHA =
+                pngWriteDiagnostics.imageIOPreSips[
+                    "decodedRGBASHA256"
+                ] as? String
+            let finalSHA =
+                pngWriteDiagnostics.finalSips[
+                    "decodedRGBASHA256"
+                ] as? String
+            let capture: [String: Any] = [
+                "schema": 1,
+                "task": "PLAY-027",
+                "purpose":
+                    "residual-stage-isolation-no-authority",
+                "coordinateSystem":
+                    "top-left decoded RGBA source pixel",
+                "targetCoordinate": diagnosticStageCoordinate,
+                "sourceKey":
+                    "\(descriptor.logicalBuildingID)/\(descriptor.variantID)/\(descriptor.viewDirection)/\(descriptor.sourceRevision)",
+                "stages": [
+                    prequantized,
+                    quantizedBeforeMajority,
+                    postMajority,
+                    pngWriteDiagnostics.imageIOPreSips,
+                    pngWriteDiagnostics.finalSips,
+                ],
+                "postMajorityTargetEvaluations": evaluations,
+                "postMajorityTargetEligible":
+                    evaluations.contains { $0["eligible"] as? Bool == true },
+                "postMajorityTargetMutated":
+                    evaluations.contains { $0["mutated"] as? Bool == true },
+                "postMajorityTotalMutationCount":
+                    compositor.postQuantizationMutations.count,
+                "postMajorityMutationCountsByChannel": [
+                    "red":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 0
+                        }.count,
+                    "green":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 1
+                        }.count,
+                    "blue":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 2
+                        }.count,
+                ],
+                "stageIdentity": [
+                    "postMajorityEqualsImageIODecode":
+                        postSHA != nil && postSHA == imageIOSHA,
+                    "imageIODecodeEqualsFinalSipsDecode":
+                        imageIOSHA != nil && imageIOSHA == finalSHA,
+                ],
+                "descriptorSamplingContractID":
+                    descriptorSampling.contractID,
+                "repairThresholdsChanged": false,
+                "productionSelected": false,
+            ]
+            var captureData = try JSONSerialization.data(
+                withJSONObject: capture,
+                options: [
+                    .prettyPrinted,
+                    .sortedKeys,
+                    .withoutEscapingSlashes,
+                ]
+            )
+            captureData.append(0x0a)
+            try captureData.write(
+                to: diagnosticStageCaptureDirectory.appendingPathComponent(
+                    "STAGE-CAPTURE.json"
+                ),
+                options: .atomic
+            )
+        }
 
         let sourceFiles = [
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -2234,11 +3113,20 @@ enum OfflineSceneRendererMain {
                 "sha256": try rendererSHA256(url),
             ])
         }
+        let sourceKey =
+            "\(descriptor.logicalBuildingID)/\(descriptor.variantID)/\(descriptor.viewDirection)/\(descriptor.sourceRevision)"
+        let boundaryAssistMutations =
+            compositor.postQuantizationMutations.compactMap {
+                rendererBoundaryAssistMutationRecord($0)
+            }
+        let postQuantizationContract =
+            rendererPostQuantizationContractRecord(
+                descriptorSampling.postQuantizationCanonicalizer
+            )
         let record: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
-            "sourceKey":
-                "\(descriptor.logicalBuildingID)/\(descriptor.variantID)/\(descriptor.viewDirection)/\(descriptor.sourceRevision)",
+            "sourceKey": sourceKey,
             "logicalBuildingID": descriptor.logicalBuildingID,
             "family": descriptor.family,
             "level": descriptor.level,
@@ -2253,6 +3141,89 @@ enum OfflineSceneRendererMain {
                 "CoreGraphics",
             ],
             "rendererSourceCommit": sourceCommit,
+            "diagnosticConfiguration": [
+                "antialiasingOverride":
+                    diagnosticConfiguration.antialiasingOverride?.rawValue
+                    ?? "none",
+                "sceneShadows":
+                    diagnosticConfiguration.sceneShadows.rawValue,
+                "descriptorGeometryChanged": false,
+                "sourceAuthority": false,
+                "prequantizedOutput":
+                    diagnosticPrequantizedOutput.map {
+                        rendererRelativePath(
+                            $0,
+                            repositoryRoot: repositoryRoot
+                        )
+                    } ?? "not-requested",
+                "stageCapture":
+                    diagnosticStageCaptureDirectory.map {
+                        rendererRelativePath(
+                            $0,
+                            repositoryRoot: repositoryRoot
+                        )
+                    } ?? "not-requested",
+            ],
+            "descriptorSamplingContract": [
+                "contractID": descriptorSampling.contractID,
+                "descriptorSchema": descriptorSampling.descriptorSchema,
+                "purpose": descriptorSampling.purpose,
+                "sceneKitAntialiasing":
+                    descriptorSampling.sceneKitAntialiasing,
+                "effectiveSceneKitAntialiasing":
+                    diagnosticConfiguration.antialiasingOverride?.rawValue
+                    ?? descriptorSampling.sceneKitAntialiasing,
+                "linearOversamplingFactor":
+                    descriptorSampling.linearOversamplingFactor,
+                "downsampleFilter":
+                    descriptorSampling.downsampleFilter,
+                "downsampleScale":
+                    descriptorSampling.downsampleScale,
+                "downsampleAspectRatio":
+                    descriptorSampling.downsampleAspectRatio,
+                "ciUseSoftwareRenderer":
+                    descriptorSampling.ciUseSoftwareRenderer,
+                "ciCacheIntermediates":
+                    descriptorSampling.ciCacheIntermediates,
+                "ciWorkingColorSpace":
+                    descriptorSampling.ciWorkingColorSpace,
+                "ciOutputColorSpace":
+                    descriptorSampling.ciOutputColorSpace,
+                "quantizerID": descriptorSampling.quantizerID,
+                "quantizerStep": descriptorSampling.quantizerStep,
+                "quantizerMidpointOffset":
+                    descriptorSampling.quantizerMidpointOffset,
+                "canonicalizerID":
+                    descriptorSampling.canonicalizerID,
+                "canonicalizerEncoder":
+                    descriptorSampling.canonicalizerEncoder,
+                "canonicalizerPostEncoder":
+                    descriptorSampling.canonicalizerPostEncoder,
+                "canonicalizerFormat":
+                    descriptorSampling.canonicalizerFormat,
+                "postQuantizationCanonicalizer":
+                    postQuantizationContract,
+                "postQuantizationMutationCount":
+                    compositor.postQuantizationMutations.count,
+                "postQuantizationMutationCountsByChannel": [
+                    "red":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 0
+                        }.count,
+                    "green":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 1
+                        }.count,
+                    "blue":
+                        compositor.postQuantizationMutations.filter {
+                            $0.channel == 2
+                        }.count,
+                ],
+                "postQuantizationBoundaryAssistMutationCount":
+                    boundaryAssistMutations.count,
+                "postQuantizationBoundaryAssistMutations":
+                    boundaryAssistMutations,
+            ],
             "rendererSources": sourceHashes,
             "sceneDescriptorFile": rendererRelativePath(
                 sceneURL,
@@ -2269,6 +3240,12 @@ enum OfflineSceneRendererMain {
                 repositoryRoot: repositoryRoot
             ),
             "rawSourceSHA256": try rendererSHA256(outputURL),
+            "renderedNodeBounds": renderedNodeBounds,
+            "rawOccupancy": rawOccupancy,
+            "nativePNGCanonicalizer": [
+                "path": "/usr/bin/sips",
+                "role": "deterministic review-decoder-safe final PNG encoding",
+            ],
             "rawSourcePixels":
                 descriptor.camera.renderViewportPixels,
             "oversamplingFactor":

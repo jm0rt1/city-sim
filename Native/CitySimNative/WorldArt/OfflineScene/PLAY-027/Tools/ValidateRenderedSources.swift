@@ -142,6 +142,8 @@ func inspect(_ pixels: CanonicalPixels) -> [String: Any] {
     }
     let bounds: [Int]
     let padding: [Int]
+    let occupiedWidth: Int
+    let occupiedHeight: Int
     if maximumX >= 0 {
         bounds = [minimumX, minimumY, maximumX + 1, maximumY + 1]
         padding = [
@@ -150,16 +152,31 @@ func inspect(_ pixels: CanonicalPixels) -> [String: Any] {
             pixels.width - maximumX - 1,
             pixels.height - maximumY - 1,
         ]
+        occupiedWidth = maximumX - minimumX + 1
+        occupiedHeight = maximumY - minimumY + 1
     } else {
         bounds = []
         padding = []
+        occupiedWidth = 0
+        occupiedHeight = 0
     }
+    let nonChromaPixelCount =
+        pixels.width * pixels.height - chromaPixelCount
+    let completeOccupiedAreaPassed =
+        nonChromaPixelCount >= 50_000
+        && occupiedWidth >= 400
+        && occupiedHeight >= 260
     return [
         "alphaRange": [alphaMinimum, alphaMaximum],
         "allRawPixelsOpaque": alphaMinimum == 255 && alphaMaximum == 255,
         "exactChromaPixelCount": chromaPixelCount,
+        "nonChromaPixelCount": nonChromaPixelCount,
         "flatChromaCorners": corners.allSatisfy { $0 },
         "nonChromaBounds": bounds,
+        "nonChromaBoundsPixels": [occupiedWidth, occupiedHeight],
+        "minimumNonChromaPixelCount": 50_000,
+        "minimumNonChromaBoundsPixels": [400, 260],
+        "completeOccupiedAreaPassed": completeOccupiedAreaPassed,
         "paddingPixels": padding,
     ]
 }
@@ -312,6 +329,10 @@ enum ValidateRenderedSourcesMain {
                     dimensionsPassed
                     && (inspection["flatChromaCorners"] as? Bool == true)
                     && (inspection["allRawPixelsOpaque"] as? Bool == true)
+                    && (
+                        inspection["completeOccupiedAreaPassed"] as? Bool
+                            == true
+                    )
             } else {
                 sourcePassed =
                     dimensionsPassed

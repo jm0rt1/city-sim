@@ -1,0 +1,39 @@
+{
+  "baseline" : {
+    "file" : "docs/production/evidence/PLAY-027/residential-l02-l04/l02/SOURCE-V05-NATIVE-2X-GRAYSCALE-REVIEW-CANDIDATE.png",
+    "pixels" : [
+      864,
+      576
+    ],
+    "sha256" : "5516a312f293c1c80dd16994aa13514b4ebf361909328992f21cb10f0373d967"
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/review/residential_l02/NATIVE-2X-GRAYSCALE.png",
+    "pixels" : [
+      864,
+      576
+    ],
+    "sha256" : "baf7eea1b0cbe24405f2d68066d90b37877a53925511d9afb68efc17a55d4df2"
+  },
+  "comparison" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/full-regression/comparison/residential_l02/NATIVE-2X-GRAYSCALE-COMPARISON.png",
+    "pixels" : [
+      1744,
+      576
+    ],
+    "sha256" : "33dd4a13ae22c1e86e863b9334cbfdbed68c7e7e60b5510d7a1a9388c604921e"
+  },
+  "comparisonID" : "residential_l02-grayscale",
+  "layout" : {
+    "gutterPixels" : 16,
+    "interpolation" : "none",
+    "order" : [
+      "accepted-schema-1",
+      "candidate-schema-2-v3"
+    ],
+    "orientation" : "left-to-right"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

@@ -1632,6 +1632,53 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testGeneratedResidencyPreloadTracksOnlyAssetIdentityTopologyAndLOD() {
+        var state = CityGameState.newCity(seed: 42)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(scene.generatedResidencyPreloadCountForTesting, 1)
+
+        state.updateTile(at: GridCoordinate(x: 11, y: 11)) {
+            $0.occupancy += 1
+            $0.condition = 0.58
+        }
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(
+            scene.generatedResidencyPreloadCountForTesting,
+            1,
+            "Occupancy, condition, and spatial-only pulses must not rescan generated-v4 residency"
+        )
+
+        state.updateTile(at: GridCoordinate(x: 11, y: 11)) {
+            $0.level = 2
+        }
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(scene.generatedResidencyPreloadCountForTesting, 2)
+
+        scene.configureProofCamera(
+            detail: scene.currentCameraDetailLevel == .city ? .block : .city,
+            centeredOn: GridCoordinate(x: 11, y: 11)
+        )
+        XCTAssertEqual(scene.generatedResidencyPreloadCountForTesting, 3)
+    }
+
+    @MainActor
     func testGeneratedWorldPreloadsOneAdjacentLODWithinPageBudget() throws {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)

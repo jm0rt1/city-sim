@@ -147,3 +147,28 @@ struct SceneDescriptor: Codable, Equatable {
     let props: [PropDescriptor]
     let occlusionExclusions: [OcclusionExclusionDescriptor]
 }
+
+struct MaterialLibraryDescriptor: Codable {
+    let schema: Int
+    let task: String
+    let libraryID: String
+    let source: String
+    let styleAnchorFile: String
+    let styleAnchorSHA256: String
+    let familyAnchorFile: String
+    let familyAnchorSHA256: String
+    let imageGenMaterialSwatchesUsed: Bool
+    let colorSpace: String
+    let materials: [MaterialDescriptor]
+    let productionSelected: Bool
+}
+
+struct MaterialDescriptor: Codable {
+    let id: String
+    let baseColorRGBA: [Double]
+    let roughness: Double
+    let metalness: Double
+    let emissionRGBA: [Double]?
+    let pattern: String
+    let physicalScaleWorld: [Double]
+}

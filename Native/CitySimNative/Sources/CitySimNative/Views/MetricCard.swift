@@ -75,25 +75,25 @@ struct MetricCard: View {
     }
 
     private var regularContent: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 7) {
+        VStack(alignment: .leading, spacing: 1) {
+            HStack(spacing: 5) {
                 Image(systemName: symbol)
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.system(size: Self.criticalTextSize, weight: .bold))
                     .foregroundStyle(tint)
-                    .frame(width: 27, height: 27)
-                    .background(tint.opacity(0.15), in: RoundedRectangle(cornerRadius: 7))
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(title.uppercased())
-                        .font(.system(size: Self.criticalTextSize, weight: .bold, design: .rounded))
-                        .tracking(0.35)
-                        .foregroundStyle(.secondary)
-                    Text(value)
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .monospacedDigit()
-                        .lineLimit(1)
-                }
+                    .frame(width: 19, height: 19)
+                    .background(tint.opacity(0.15), in: RoundedRectangle(cornerRadius: 5))
+                Text(title.uppercased())
+                    .font(.system(size: Self.criticalTextSize, weight: .bold, design: .rounded))
+                    .tracking(0.15)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
                 Spacer(minLength: 0)
             }
+
+            Text(value)
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .lineLimit(1)
 
             if let detail {
                 Text(detail)
@@ -115,7 +115,7 @@ struct MetricCard: View {
             }
         }
         .padding(.horizontal, 7)
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
         .frame(minHeight: 52)
         .contentShape(RoundedRectangle(cornerRadius: 10))
     }

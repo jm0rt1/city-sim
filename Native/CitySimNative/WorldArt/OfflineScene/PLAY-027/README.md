@@ -23,9 +23,18 @@ residential_l04/variant-0/{north,east,south,west}
 ```
 
 The complete Residential L2-L4 slice was independently accepted at
-`8f928ed5dd01453ff9d4d9910858d8bf786afa9d`. Commercial and Industrial source
-production remains unauthorized until integration publishes a new claim and
-authority.
+`8f928ed5dd01453ff9d4d9910858d8bf786afa9d`. Integration then authorized the
+Commercial L1-L4 source slice under a level-by-level review gate. Commercial
+L1 `source-v04` was accepted as non-shipping source-art authority at
+`9718b5e63d6322daa5b9616aea31244b3f3d6629`. Commercial L2 is the current
+authorized review candidate:
+
+```text
+commercial_l02/variant-0/{north,east,south,west}
+```
+
+Commercial L3/L4 remain blocked until Commercial L2 is independently
+reviewed. Industrial source production remains unauthorized.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -74,6 +83,22 @@ env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
 No committed binary, new package target, build-script hook, or product
 dependency is permitted.
 
+The task-owned native source normalizer compiles independently as well:
+
+```bash
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Tools/NormalizeOfflineSource.swift \
+  -framework CoreGraphics -framework ImageIO \
+  -framework UniformTypeIdentifiers -framework CryptoKit \
+  -o /private/tmp/play027-offline-tools/normalize-offline-source
+```
+
+It is an offline source tool only. It is not referenced by `Package.swift`,
+the application runtime, a build script, a shared manifest, or a shipping
+asset selection.
+
 ## Registration
 
 - source canvas: 1536 x 1024 pixels;
@@ -91,8 +116,8 @@ dependency is permitted.
 
 ## Hard gate
 
-Residential L1 and the Residential L2-L4 variant-zero slice have passed their
-independent source-art gates. This acceptance does not production-select,
-ingest, package, or ship any source. No Commercial, Industrial, additional
-variant, or other source work may start without a newly published integration
-authority and claim.
+Residential L1 and Residential L2-L4 have passed their independent source-art
+gates. Commercial L1 is accepted as non-shipping source-art authority, and
+Commercial L2 is frozen for independent review. Commercial L3/L4, Industrial,
+additional variants, renderer ingestion, packaging, and production selection
+remain blocked without further integration authority.

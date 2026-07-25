@@ -44,9 +44,14 @@ template/anchor redesign rather than continuing prompt or geometry churn.
 
 ## Current controlled checkpoint
 
-Commercial L1 `source-v04` is the integration-approved normalized source
-candidate. Its exact clean packet is documented in
+Commercial L1 `source-v04` is accepted non-shipping source-art authority at
+`9718b5e63d6322daa5b9616aea31244b3f3d6629`. Its exact packet is documented in
 `l01/SOURCE-V04-REVIEW-CANDIDATE.md`; `productionSelected` remains false.
-After that checkpoint, Commercial L2 is the only authorized next level.
-Commercial L3/L4 remain blocked until L2 is separately frozen and visually
-reviewed.
+
+Commercial L2 `source-v01` is the current clean review candidate. It preserves
+four independently authored descriptors, three-process raw identity,
+two-process normalized identity, twelve unique direction/LOD pixel hashes,
+exact RGBA visibility, stable registration, and the complete color,
+grayscale, registered-footprint, zoom, and source-scale review packet under
+`l02/`. Commercial L3/L4 remain blocked until this L2 candidate is
+independently reviewed and integration publishes further authority.

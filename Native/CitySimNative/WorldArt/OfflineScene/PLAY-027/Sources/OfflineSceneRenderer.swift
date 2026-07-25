@@ -962,6 +962,14 @@ final class NativeSourceRenderer: OfflineSourceRendering {
         renderer.pointOfView = camera
         renderer.isJitteringEnabled = false
         renderer.autoenablesDefaultLighting = false
+        guard renderer.prepare(
+            scene,
+            shouldAbortBlock: nil
+        ) else {
+            throw OfflineRendererError.rendering(
+                "SceneKit could not prepare the complete scene graph"
+            )
+        }
         let scale = descriptor.camera.oversamplingFactor
         let size = CGSize(
             width: descriptor.camera.renderViewportPixels[0] * scale,

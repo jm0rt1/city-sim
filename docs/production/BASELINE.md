@@ -2,7 +2,7 @@
 
 **Status:** BASELINE READY
 
-**Published:** July 24, 2026
+**Published:** July 25, 2026
 
 **Integration branch:** `master`
 
@@ -24,6 +24,11 @@
   terrain/public-realm composition, grounded environmental detail, sparse
   non-obscuring consequence marks, and deterministic default/compact framing
   centered on the developed pressured district.
+- The accepted non-shipping world-art catalog now contains separately authored
+  Residential L1–L4 N/E/S/W variant-zero sources. Independent review accepted
+  L2 at 26/28, L3 at 25/28, L4 at 26/28, and cross-level identity at 19/20;
+  all 12 new raw sources and 36 normalized LOD outputs are unique. PLAY-028
+  owns production selection and live renderer ingestion.
 - Independent PLAY-053 scored the exact accepted product 19/20, with 4/4
   composition, 4/4 projection/material/light/street coherence, no category
   below 3, zero automatic rejects, and materially preferred regular and
@@ -41,9 +46,11 @@
 - Accepted PLAY-053 RSS remained bounded below the 333.8 MiB ceiling:
   126,320 KiB regular, 213,984 KiB compact interaction, and 229,808 KiB
   Reduce Motion. Continued profiling remains release work.
-- Authored building-family and N/E/S/W directional breadth remains visibly
-  narrow and scored 3/4. PLAY-027 and CONTRACT-011 own the separately authored
-  offline-scene catalog; no incomplete source is production-selected.
+- Live authored building-family and N/E/S/W directional breadth remains
+  visibly narrow and scored 3/4. PLAY-027 and CONTRACT-011 own the separately
+  authored offline-scene catalog; PLAY-028 owns production selection of the
+  accepted Residential L1–L4 source set. No incomplete source is
+  production-selected.
 - Deeper game identity, content breadth, audio, delight, progression beyond
   the first Charter, and continued world/HUD richness remain active production
   goals.
@@ -63,6 +70,13 @@
   3.749 ms cold world update / 4.973 ms total render, and independent real-app
   pointer, keyboard, AX, Full Keyboard Access, Reduce Motion, regular, and
   exact 900 x 600 compact routes.
+- The integrated non-shipping Residential L1–L4 source catalog at
+  `32e5d1dec2857f8617ecc3cd3c194c98d35b2d6b` passed 201/201 native tests,
+  43/43 renderer tests, `git diff --check`, script syntax validation, and an
+  exact staged `./script/build_and_run.sh --verify`. The accepted L2–L4 source
+  candidate is `8f928ed5dd01453ff9d4d9910858d8bf786afa9d`;
+  `8b6b16bad5c033f3036ed5b3a0c31fabad57051a` adds only the scope-truth
+  documentation repair.
 - The binding acceptance packet is
   `docs/production/evidence/PLAY-053/rescore-ad2f353/`; the quality completion
   is `docs/production/completed/PLAY-053.playtest-quality.md`.
@@ -81,5 +95,7 @@ Wave 002 passed integration and PLAY-050. Waves 003–005 established the
 current gameplay, simulation, persistence, HUD, and generated-v4 platform.
 Wave 006 is now accepted under
 `docs/production/WAVE-006-WORLD-EXCELLENCE.md`. PLAY-027/CONTRACT-011 is the
-active visual-breadth continuation; its source calibration is not yet part of
-the accepted product.
+active visual-breadth continuation. Residential L1–L4 source art is accepted
+as a non-shipping input; PLAY-028 must still prove deterministic ingestion and
+materially better live presentation before it becomes part of the accepted
+product.

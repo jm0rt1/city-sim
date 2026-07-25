@@ -54,7 +54,7 @@ func industrialL2Relative(_ url: URL, root: URL) -> String {
 func industrialL2Sampling() -> [String: Any] {
     [
         "contractID": "play027-deterministic-4x-no-msaa-lanczos-v3",
-        "sourceRevisionBinding": "source-v02",
+        "sourceRevisionBinding": "source-v03",
         "purpose": "source-authority",
         "sceneKitAntialiasing": "none",
         "linearOversamplingFactor": 4,
@@ -358,7 +358,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-secondary-crown", "dimensions": [13, 1.8, 4.6], "positionWorld": [-19.5, 63.4, -25], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-frontage-primary-crown", "dimensions": [39, 1.8, 4.6], "positionWorld": [5.5, 63.6, -25], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-apron-secondary-lane", "dimensions": [12, 0.3, 3], "positionWorld": [-18, 3.25, -30], "materialID": "hazard-yellow"],
-                ["id": "\(prefix)-apron-primary-lane", "dimensions": [18, 0.3, 3], "positionWorld": [4, 3.3, -30], "materialID": "hazard-yellow"],
+                ["id": "\(prefix)-apron-primary-lane", "dimensions": [18, 0.3, 3], "positionWorld": [4, 3.35, -30], "materialID": "hazard-yellow"],
             ],
             chimney: ["positionWorld": [21, 53, 18], "dimensions": [5, 34, 5], "materialID": "chimney-metal"],
             props: [
@@ -400,7 +400,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-secondary-crown", "dimensions": [4.6, 1.8, 13], "positionWorld": [25, 63.4, -19.5], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-frontage-primary-crown", "dimensions": [4.6, 1.8, 39], "positionWorld": [25, 63.6, 5.5], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-apron-secondary-lane", "dimensions": [3, 0.3, 12], "positionWorld": [30, 3.25, -18], "materialID": "hazard-yellow"],
-                ["id": "\(prefix)-apron-primary-lane", "dimensions": [3, 0.3, 18], "positionWorld": [30, 3.3, 4], "materialID": "hazard-yellow"],
+                ["id": "\(prefix)-apron-primary-lane", "dimensions": [3, 0.3, 18], "positionWorld": [30, 3.35, 4], "materialID": "hazard-yellow"],
             ],
             chimney: ["positionWorld": [-18, 53, 21], "dimensions": [5, 34, 5], "materialID": "chimney-metal"],
             props: [
@@ -442,7 +442,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-secondary-crown", "dimensions": [13, 1.8, 4.6], "positionWorld": [19.5, 63.4, 25], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-frontage-primary-crown", "dimensions": [39, 1.8, 4.6], "positionWorld": [-5.5, 63.6, 25], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-apron-secondary-lane", "dimensions": [12, 0.3, 3], "positionWorld": [18, 3.25, 30], "materialID": "hazard-yellow"],
-                ["id": "\(prefix)-apron-primary-lane", "dimensions": [18, 0.3, 3], "positionWorld": [-4, 3.3, 30], "materialID": "hazard-yellow"],
+                ["id": "\(prefix)-apron-primary-lane", "dimensions": [18, 0.3, 3], "positionWorld": [-4, 3.35, 30], "materialID": "hazard-yellow"],
             ],
             chimney: ["positionWorld": [-21, 53, -18], "dimensions": [5, 34, 5], "materialID": "chimney-metal"],
             props: [
@@ -484,7 +484,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-secondary-crown", "dimensions": [4.6, 1.8, 13], "positionWorld": [-25, 63.4, 19.5], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-frontage-primary-crown", "dimensions": [4.6, 1.8, 39], "positionWorld": [-25, 63.6, -5.5], "materialID": "hazard-yellow"],
                 ["id": "\(prefix)-apron-secondary-lane", "dimensions": [3, 0.3, 12], "positionWorld": [-30, 3.25, 18], "materialID": "hazard-yellow"],
-                ["id": "\(prefix)-apron-primary-lane", "dimensions": [3, 0.3, 18], "positionWorld": [-30, 3.3, -4], "materialID": "hazard-yellow"],
+                ["id": "\(prefix)-apron-primary-lane", "dimensions": [3, 0.3, 18], "positionWorld": [-30, 3.35, -4], "materialID": "hazard-yellow"],
             ],
             chimney: ["positionWorld": [18, 53, -21], "dimensions": [5, 34, 5], "materialID": "chimney-metal"],
             props: [
@@ -581,7 +581,7 @@ enum FreezeIndustrialL2DescriptorsMain {
                 .appendingPathComponent(direction)
                 .appendingPathComponent("scene.json")
             let geometryID =
-                "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v2"
+                "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v3"
             let object: [String: Any] = [
                 "schema": 2,
                 "task": "PLAY-027",
@@ -591,7 +591,7 @@ enum FreezeIndustrialL2DescriptorsMain {
                 "level": 2,
                 "variantID": "variant-0",
                 "viewDirection": direction,
-                "sourceRevision": "source-v02",
+                "sourceRevision": "source-v03",
                 "authoredIndependently": true,
                 "productionSelected": false,
                 "derivation": [
@@ -783,7 +783,7 @@ enum FreezeIndustrialL2DescriptorsMain {
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v02",
+            "sourceRevision": "source-v03",
             "architecture":
                 "asymmetric high assembly hall, fabrication annex, process tower, dual loading house, three-post gantry, and expanded service apron",
             "contractID":

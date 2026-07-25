@@ -386,7 +386,7 @@
         "materialID" : "hazard-yellow",
         "positionWorld" : [
           30,
-          3.2999999999999998,
+          3.3500000000000001,
           4
         ]
       }
@@ -895,11 +895,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v02"
+    "sourceRevisionBinding" : "source-v03"
   },
-  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v2",
+  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v3",
   "schema" : 2,
-  "sourceRevision" : "source-v02",
+  "sourceRevision" : "source-v03",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",

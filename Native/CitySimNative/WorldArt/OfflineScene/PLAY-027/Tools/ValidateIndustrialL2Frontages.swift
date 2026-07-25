@@ -147,7 +147,7 @@ enum ValidateIndustrialL2FrontagesMain {
                 || descriptor.family != "industrial"
                 || descriptor.level != 2
                 || descriptor.variantID != "variant-0"
-                || descriptor.sourceRevision != "source-v02"
+                || descriptor.sourceRevision != "source-v03"
                 || descriptor.viewDirection != direction
             {
                 itemFailures.append("identity mismatch")
@@ -173,7 +173,7 @@ enum ValidateIndustrialL2FrontagesMain {
                     != DescriptorSamplingResolver.schema2ContractV3ID
                     || sampling.purpose != "source-authority"
                     || descriptor.sampling?.sourceRevisionBinding
-                        != "source-v02"
+                        != "source-v03"
                 {
                     itemFailures.append(
                         "schema-2 v3 source sampling binding mismatch"
@@ -183,7 +183,7 @@ enum ValidateIndustrialL2FrontagesMain {
                 itemFailures.append("sampling invalid: \(error)")
             }
             if descriptor.sceneGeometryID
-                != "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v2"
+                != "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v3"
             {
                 itemFailures.append("geometry ID mismatch")
             }
@@ -392,7 +392,7 @@ enum ValidateIndustrialL2FrontagesMain {
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v02",
+            "sourceRevision": "source-v03",
             "purpose":
                 "freeze Industrial L2 loading-logistics frontage, independent direction authorship, and non-aliasing progression beyond accepted Industrial L1",
             "directions": records,

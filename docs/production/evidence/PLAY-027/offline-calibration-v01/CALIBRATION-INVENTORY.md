@@ -14,10 +14,14 @@
 | east | source-v02 | `9909a51ba7329313231139ec964dfed34ca084c4e3ff974b62e26895f9e6ce37` | candidate pending four-view and independent review; repeat-run identity passed |
 | south | source-v02 | `ae9553e6f7b928379f6a1521eba358d8bd40413bd55ea5565319525846113351` | candidate pending four-view and independent review; repeat-run identity passed |
 | west | source-v02 | `79061b8ce51f889f8bca427aa01e65529862b54ee7a6e1f5617f9d2e80c3e733` | rejected: exact raw and canonical-pixel alias of north v02 |
+| west | source-v03 | `3e216b8e146f91e7bd9c942d094c18f51d3e0235c63cffd0f8eb87cee71a5fc7` | rejected: repeat-run identity and four-way uniqueness passed, but the rendered roof and east wall are materially incomplete |
 
 West v02 proves that hidden west-only entrance/prop geometry does not create a
 distinct visible source under the frozen camera. It must be repaired in the
 west scene itself; no passing sibling may be transformed into its replacement.
+West v03 proves that hash gates do not replace visual inspection. Its
+independently authored visible facade repair is retained, but the incomplete
+SceneKit snapshot cannot proceed to normalization or contact-sheet review.
 
 ## Retained normalization probe
 

@@ -1,0 +1,121 @@
+{
+  "authorityCommit" : "af6b35bee6732d8ad9b16e7353083258c48e5607",
+  "exactV04Hashes" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v04/materials/industrial-l02-projection-silhouette-reset-v04.json",
+      "passed" : true,
+      "sha256" : "31f500488b7d143e88015bf71b53db4d1a4b19076563dc3d774d61f00c8b83a3"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v04/scenes/industrial_l02/variant-0/east/scene.json",
+      "passed" : true,
+      "sha256" : "fdb92d39acb8847178a95d1e0f6315332a93eda01df71388e54582fe1e6f12bf"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/diagnosis/CAUSAL-DIAGNOSIS.md",
+      "passed" : true,
+      "sha256" : "c7a10f38f19744b5fbf043e4b2720183f53b99722f2a92ef660ad3da59886cc8"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/diagnosis/MATERIAL-SEGMENTATION.json",
+      "passed" : true,
+      "sha256" : "2c07696e2d6fc14e554ee1715a84bc741f70fcb1d110d927c5892ce67dfde48a"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/INVENTORY.json",
+      "passed" : true,
+      "sha256" : "799bcd3cadbb97622bbb36da6d5306ea5e24fa403b2cf3ec28f3aea2d92d742f"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/PREDICTED-VALUE-LEDGER.json",
+      "passed" : true,
+      "sha256" : "60da32f89de16cd4706675dac83dc6dbd0395305acbb5a9cd1ee0f2ef67cb77e"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/PREPIXEL-VALIDATION.json",
+      "passed" : true,
+      "sha256" : "bd53c10abbe0393555333b5498db25f6973a775248a981bf523d408ad2bbb17a"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/V04-ALPHA-COMPOSITOR-CONTRACT.json",
+      "passed" : true,
+      "sha256" : "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/V04-MATERIAL-LIGHT-CONTRACT.json",
+      "passed" : true,
+      "sha256" : "96d51f18e8a7eef98eba3bdd1d3af74c0be90e648257602fa844cf43f090ba15"
+    }
+  ],
+  "geometry" : {
+    "unchanged" : true,
+    "v03CanonicalSHA256" : "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3",
+    "v04CanonicalSHA256" : "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3"
+  },
+  "metalProcessesConsumed" : 0,
+  "passed" : true,
+  "pixelFilesCreated" : 0,
+  "prediction" : {
+    "identityBearingMinimumBin" : 80,
+    "maximumBinShare" : 0.33547877061223275,
+    "occupiedStep32BinCount" : 7,
+    "p25" : 112,
+    "p75MinusP25" : 96,
+    "p95" : 240
+  },
+  "preservedV02V03Hashes" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v02/materials/industrial-l02-projection-silhouette-reset-v02.json",
+      "passed" : true,
+      "sha256" : "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v03/scenes/industrial_l02/variant-0/east/scene.json",
+      "passed" : true,
+      "sha256" : "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/neutral-alpha-composite.png",
+      "passed" : true,
+      "sha256" : "89fcc84601214345e35c2ac07cd0fc4475aa99b038e03553ca515bfcfbc7506c"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/pre-chroma-registered-alpha.png",
+      "passed" : true,
+      "sha256" : "f6cdf5833011cf2842e2f4245216d8224de760c63ede8ec4473b259667afeafc"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/pre-chroma-registered-building.png",
+      "passed" : true,
+      "sha256" : "b571b6bbabf5c1d1c2a60167af076d05ece13d379d323368c6150f79e2e119c6"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/raw.png",
+      "passed" : true,
+      "sha256" : "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/rejection/REJECTION.md",
+      "passed" : true,
+      "sha256" : "3ccefb83cded63bf0958c4b28eabf00af8ccf4551dd4191d3675c4641110a877"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/RAW-PROBE-METRICS.json",
+      "passed" : true,
+      "sha256" : "cd55e28517b2e2ca5896d433f5a0646840786b8684a45c2f3ef0bd931f69c1c9"
+    }
+  ],
+  "productionSelected" : false,
+  "sceneKitSnapshotsCreated" : 0,
+  "schema" : 1,
+  "segmentation" : {
+    "attributedAlphaRatio" : 0.99232796831053316,
+    "attributedOpaqueRatio" : 0.99822812516285619,
+    "nearMagentaPartialAlphaPixels" : 8460,
+    "neutralMagentaFamilyPixels" : 0,
+    "unsupportedV03PatternCount" : 6
+  },
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-v04-prepixel-validator-replay",
+  "validatorSourceSHA256" : "bf301d39e4895b181008050949e108f5848ed35d2232638f61bde3a02d4ca6ab"
+}

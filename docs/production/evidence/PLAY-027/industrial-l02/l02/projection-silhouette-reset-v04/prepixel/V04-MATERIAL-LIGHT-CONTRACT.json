@@ -1,0 +1,69 @@
+{
+  "geometryAuthority" : {
+    "buildingOnlyNative2xWidth" : 144.5625,
+    "buildingOnlySourceWidth" : 514,
+    "byteEquivalent" : true,
+    "coreFormNative2xWidth" : 118.6875,
+    "coreFormSourceWidth" : 422,
+    "minimumIdentityFeatureNative2xPixels" : 17.15625,
+    "v03CanonicalGeometrySHA256" : "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3",
+    "v04CanonicalGeometrySHA256" : "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3"
+  },
+  "hierarchy" : [
+    "pale formed concrete foundation and administration remain distinct",
+    "medium blue-gray corrugated production hall carries the broad industrial mass",
+    "roof membrane and apron are lighter but patterned and may not become one dominant slab",
+    "dock recesses remain dark but target step-32 bin 80 rather than the crushed 16/48 bins",
+    "loading doors and glazing retain mid-value separation",
+    "ochre safety trim remains restrained and subordinate",
+    "secondary process metal stays distinct from both hall and concrete"
+  ],
+  "laterLiteralPixelRejectTargets" : {
+    "globalBleachForbidden" : true,
+    "identityBearingMinimumBin" : 80,
+    "maximumMajorFacadeBinShare" : 0.34999999999999998,
+    "occupiedStep32BinsMinimum" : 5,
+    "p25Minimum" : 80,
+    "p75MinusP25StrictlyGreaterThan" : 48,
+    "p95Minimum" : 192,
+    "singleBrightRoofSlabForbidden" : true
+  },
+  "light" : {
+    "ambientColorRGBA" : [
+      0.71999999999999997,
+      0.76000000000000001,
+      0.80000000000000004,
+      1
+    ],
+    "ambientIntensity" : 0.71999999999999997,
+    "keyColorRGBA" : [
+      1,
+      0.92000000000000004,
+      0.83999999999999997,
+      1
+    ],
+    "keyIntensity" : 1050,
+    "keyOrigin" : [
+      -120,
+      180,
+      -120
+    ],
+    "shadowBlurSourcePixels" : 18,
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowReceiver" : "task-owned-transparent-ground-plane",
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "materialLibrary" : {
+    "allPatternsImplementedByFrozenRenderer" : true,
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v04/materials/industrial-l02-projection-silhouette-reset-v04.json",
+    "imageGen" : false,
+    "sha256" : "31f500488b7d143e88015bf71b53db4d1a4b19076563dc3d774d61f00c8b83a3"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-v04-material-light-contract"
+}

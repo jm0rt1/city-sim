@@ -9,7 +9,7 @@
 - **Planned surfaces:** generated-v4 authored terrain/street/environment sources and descriptors, deterministic road/terrain grammar, SpriteKit world presentation, renderer tests, performance diagnostics, and exact staged evidence
 - **Dependencies:** accepted PLAY-023; existing CONTRACT-005/006 geometry and asset contracts; immutable PLAY-041 spatial truth
 - **Validation/proof:** deterministic pack builds, 16-mask reciprocal roads, 3 x 3 seam mosaics, overlap/ground-contact checks, same-seed before/after, city/neighborhood/block LOD, default/compact, construction/strain/recovery, Reduce Motion, pointer/keyboard/AX hit truth, full suite, and independent PLAY-053 handoff
-- **Status:** active — returned for focused repair by independent PLAY-053 evidence commit `6803f61`; exact integrated candidate `91438bf` scored 14/20 and triggered the composition/coherence automatic rejects below
+- **Status:** ready for integration review — the returned repair is preserved as exact visual product `08a53be`, camera-metric test checkpoint `d2c7322`, and evidence `5a2926e`; independent PLAY-053 rescoring remains required and no acceptance is claimed
 
 Make the playable world itself excellent. Replace the current crossroads
 diorama, abrupt road stubs, empty green board, and mixed-fidelity surroundings
@@ -60,3 +60,25 @@ No gameplay topology, save, public store, SwiftUI HUD, command, or simulation
 contract change is authorized. Product, retained real-app evidence, and the
 updated completion record must be committed separately before a new exact
 integration handoff.
+
+## Returned repair handoff
+
+The ordered returned-repair commits are:
+
+1. `4184e83310a6c35f40e25e8ab14466b15a9af295` — prioritize the
+   pressured authoritative district and reduce broad overlay coverage.
+2. `f3dbb9110fbb0a06e91f8d08b80f7a8862784873` — replace mixed-fidelity
+   debug-like site details with grounded material cues.
+3. `2ca0326216505312f78aa287b273b4a6bc644321` — dissolve traceable
+   aperture-spanning terrain edges.
+4. `08a53be3fe4843eeb701bf70ff2f5f2b80036aae` — retain the short terrain
+   detail while restoring the bounded node budget.
+5. `d2c732284bc3839d2b52890feba600088effcafb` — freeze exact default and
+   compact deterministic camera scale and priority occupancy.
+6. `5a2926e1e53a32be6250cf346ec6621dd54e0d27` — retain hashed default,
+   compact, three-LOD, overlay, Reduce Motion, AX, validator, and budget proof.
+
+The exact packet is
+`docs/production/evidence/PLAY-024/candidate-08a53be/VALIDATION.md`. The
+default image was captured after paused fixture load followed by explicit
+deterministic `0`; no post-cycle camera state is presented as the default.

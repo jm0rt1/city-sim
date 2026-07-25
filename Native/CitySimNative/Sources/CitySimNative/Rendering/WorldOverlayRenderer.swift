@@ -146,19 +146,22 @@ final class WorldOverlayRenderer {
         detail: CameraDetailLevel
     ) -> SKNode {
         let root = SKNode()
-        let ink = color.withAlphaComponent(detail == .city ? 0.76 : 0.64)
+        let ink = color.withAlphaComponent(detail == .city ? 0.72 : 0.60)
         let hatchCount = severityMarkCount(severity)
-        let verticalOffset = style.tileHeight / 18
+        // Keep pollution truth on the lot's ground/frontage plane. Marks over
+        // roofs and facades obscure the very building condition the player is
+        // diagnosing, especially when several pressured lots sit together.
+        let verticalOffset = -style.tileHeight * 0.40
         for index in 0..<hatchCount {
-            let x = CGFloat(index - (hatchCount - 1) / 2) * 8
+            let x = CGFloat(index - (hatchCount - 1) / 2) * 6
             let hatch = SKShapeNode(path: WorldGeometryCache.line(
-                from: CGPoint(x: x - 5, y: verticalOffset),
-                to: CGPoint(x: x + 3, y: verticalOffset + 6)
+                from: CGPoint(x: x - 3, y: verticalOffset),
+                to: CGPoint(x: x + 2, y: verticalOffset + 2.5)
             ))
             hatch.name = "overlay.pollution.exposure-hatch"
             hatch.fillColor = .clear
             hatch.strokeColor = ink
-            hatch.lineWidth = detail == .city ? 1.5 : 1.1
+            hatch.lineWidth = detail == .city ? 1.2 : 0.9
             hatch.lineCap = .round
             root.addChild(hatch)
         }

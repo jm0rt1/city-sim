@@ -88,48 +88,13 @@ final class TerrainRenderer {
         field.addChild(neighborhoodLayer)
         field.addChild(blockLayer)
 
-        let parcelSpan = 4
-        var parcelIndex = 0
-        for y in stride(from: 0, to: gridHeight, by: parcelSpan) {
-            for x in stride(from: 0, to: gridWidth, by: parcelSpan) {
-                let maximumX = min(gridWidth - 1, x + parcelSpan - 1)
-                let maximumY = min(gridHeight - 1, y + parcelSpan - 1)
-                let parcelPath = style.polygonPath(fieldCorners(
-                    minimumX: x,
-                    minimumY: y,
-                    maximumX: maximumX,
-                    maximumY: maximumY
-                ))
-                let variant = (x / parcelSpan + (y / parcelSpan) * 2) % 4
-                let parcel = SKShapeNode(path: parcelPath)
-                parcel.name = "terrain.macro.parcel.\(parcelIndex)"
-                parcel.fillColor = macroFieldColor(variant: variant)
-                parcel.strokeColor = .clear
-                cityLayer.addChild(parcel)
-
-                let boundary = SKShapeNode(path: parcelPath)
-                boundary.name = "terrain.macro.boundary.\(parcelIndex)"
-                boundary.fillColor = .clear
-                boundary.strokeColor = variant.isMultiple(of: 2)
-                    ? style.palette.mapEarthDark.withAlphaComponent(0.30)
-                    : NSColor(calibratedRed: 0.51, green: 0.61, blue: 0.35, alpha: 0.20)
-                boundary.lineWidth = 1.15
-                neighborhoodLayer.addChild(boundary)
-
-                if parcelIndex.isMultiple(of: 2) {
-                    addFieldFurrows(
-                        minimumX: x,
-                        minimumY: y,
-                        maximumX: maximumX,
-                        maximumY: maximumY,
-                        variant: variant,
-                        parcelIndex: parcelIndex,
-                        to: blockLayer
-                    )
-                }
-                parcelIndex += 1
-            }
-        }
+        addContinuousTerrainComposition(
+            gridWidth: gridWidth,
+            gridHeight: gridHeight,
+            city: cityLayer,
+            neighborhood: neighborhoodLayer,
+            block: blockLayer
+        )
         root.addChild(field)
 
         let rim = SKShapeNode(path: path)
@@ -155,14 +120,144 @@ final class TerrainRenderer {
     private func macroFieldColor(variant: Int) -> NSColor {
         switch variant {
         case 0:
-            NSColor(calibratedRed: 0.17, green: 0.36, blue: 0.22, alpha: 0.44)
+            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.12)
         case 1:
-            NSColor(calibratedRed: 0.34, green: 0.44, blue: 0.22, alpha: 0.30)
+            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.08)
         case 2:
-            NSColor(calibratedRed: 0.20, green: 0.31, blue: 0.18, alpha: 0.37)
+            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.10)
+        case 3:
+            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.09)
         default:
-            NSColor(calibratedRed: 0.30, green: 0.42, blue: 0.24, alpha: 0.34)
+            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.07)
         }
+    }
+
+    /// Breaks the board into overlapping, low-contrast material swatches.
+    /// Unlike parcel-sized polygons, each swatch has a short irregular contour
+    /// with no shared edge, so a continuous diagonal seam cannot be traced
+    /// through the aperture. Every mark is ground-only and deterministic.
+    private func addContinuousTerrainComposition(
+        gridWidth: Int,
+        gridHeight: Int,
+        city: SKNode,
+        neighborhood: SKNode,
+        block: SKNode
+    ) {
+        guard gridWidth >= 5, gridHeight >= 5 else { return }
+        let materialSpan = 3
+        var materialIndex = 0
+        for y in stride(from: 2, to: gridHeight - 1, by: materialSpan) {
+            for x in stride(from: 2, to: gridWidth - 1, by: materialSpan) {
+                let anchor = GridCoordinate(x: x, y: y)
+                let center = style.isoPosition(anchor)
+                let radiusX = style.tileWidth * (
+                    1.08 + WorldVisualSeed.unit(
+                        for: anchor,
+                        kind: .empty,
+                        salt: 0x7E22
+                    ) * 0.42
+                )
+                let radiusY = style.tileHeight * (
+                    0.78 + WorldVisualSeed.unit(
+                        for: anchor,
+                        kind: .empty,
+                        salt: 0x7E23
+                    ) * 0.34
+                )
+                let variant = WorldVisualSeed.variant(
+                    count: 5,
+                    for: anchor,
+                    kind: .empty,
+                    salt: 0x7E21
+                )
+                let material = SKShapeNode(path: organicSwatchPath(
+                    center: center,
+                    anchor: anchor,
+                    radiusX: radiusX,
+                    radiusY: radiusY
+                ))
+                material.name = "terrain.macro.material.patch.\(materialIndex)"
+                material.fillColor = macroFieldColor(variant: variant)
+                material.strokeColor = .clear
+                city.addChild(material)
+
+                if (materialIndex + variant).isMultiple(of: 2) {
+                    let meadow = SKShapeNode(path: organicSwatchPath(
+                        center: CGPoint(
+                            x: center.x + radiusX * 0.08,
+                            y: center.y - radiusY * 0.06
+                        ),
+                        anchor: anchor,
+                        radiusX: radiusX * 0.62,
+                        radiusY: radiusY * 0.58,
+                        saltOffset: 0x20
+                    ))
+                    meadow.name = "terrain.macro.meadow.patch.\(materialIndex)"
+                    meadow.fillColor = NSColor(
+                        calibratedRed: 0.54,
+                        green: 0.58,
+                        blue: 0.29,
+                        alpha: 0.055
+                    )
+                    meadow.strokeColor = .clear
+                    neighborhood.addChild(meadow)
+                }
+
+                if (materialIndex + variant).isMultiple(of: 3) {
+                    addFieldFurrows(
+                        minimumX: max(0, x - 1),
+                        minimumY: max(0, y - 1),
+                        maximumX: min(gridWidth - 1, x + 1),
+                        maximumY: min(gridHeight - 1, y + 1),
+                        variant: variant,
+                        parcelIndex: materialIndex,
+                        to: block
+                    )
+                }
+                materialIndex += 1
+            }
+        }
+    }
+
+    private func organicSwatchPath(
+        center: CGPoint,
+        anchor: GridCoordinate,
+        radiusX: CGFloat,
+        radiusY: CGFloat,
+        saltOffset: UInt64 = 0
+    ) -> CGPath {
+        let pointCount = 10
+        let points = (0..<pointCount).map { index in
+            let angle = CGFloat(index) / CGFloat(pointCount) * .pi * 2
+            let radialVariation = 0.84 + WorldVisualSeed.unit(
+                for: anchor,
+                kind: .empty,
+                salt: 0x7E30 + saltOffset + UInt64(index)
+            ) * 0.22
+            return CGPoint(
+                x: center.x + cos(angle) * radiusX * radialVariation,
+                y: center.y + sin(angle) * radiusY * radialVariation
+            )
+        }
+
+        let path = CGMutablePath()
+        path.move(to: CGPoint(
+            x: (points[pointCount - 1].x + points[0].x) / 2,
+            y: (points[pointCount - 1].y + points[0].y) / 2
+        ))
+        for index in 0..<pointCount {
+            let current = points[index]
+            let next = points[(index + 1) % pointCount]
+            path.addQuadCurve(
+                to: CGPoint(
+                    x: (current.x + next.x) / 2,
+                    y: (current.y + next.y) / 2
+                ),
+                control: current
+            )
+        }
+        path.closeSubpath()
+        return path
     }
 
     private func fieldCorners(
@@ -207,16 +302,41 @@ final class TerrainRenderer {
                 startCoordinate = GridCoordinate(x: x, y: minimumY)
                 endCoordinate = GridCoordinate(x: x, y: maximumY)
             }
-            combined.addPath(WorldGeometryCache.line(
-                from: style.isoPosition(startCoordinate),
-                to: style.isoPosition(endCoordinate)
-            ))
+            let start = style.isoPosition(startCoordinate)
+            let end = style.isoPosition(endCoordinate)
+            let phase = WorldVisualSeed.unit(
+                for: GridCoordinate(x: minimumX + offset, y: minimumY + variant),
+                kind: .empty,
+                salt: 0x7E71 + UInt64(parcelIndex)
+            ) * 0.08
+            for range in [
+                (0.16 + phase, 0.39 + phase),
+                (0.61 - phase, 0.82 - phase)
+            ] {
+                let segmentStart = CGPoint(
+                    x: start.x + (end.x - start.x) * range.0,
+                    y: start.y + (end.y - start.y) * range.0
+                )
+                let segmentEnd = CGPoint(
+                    x: start.x + (end.x - start.x) * range.1,
+                    y: start.y + (end.y - start.y) * range.1
+                )
+                combined.addPath(WorldGeometryCache.line(
+                    from: segmentStart,
+                    to: segmentEnd
+                ))
+            }
         }
         let furrows = SKShapeNode(path: combined)
         furrows.name = "terrain.macro.furrows.\(parcelIndex)"
         furrows.fillColor = .clear
-        furrows.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.17)
-        furrows.lineWidth = 0.75
+        furrows.strokeColor = NSColor(
+            calibratedRed: 0.69,
+            green: 0.68,
+            blue: 0.39,
+            alpha: 0.075
+        )
+        furrows.lineWidth = 0.7
         furrows.lineCap = .round
         layer.addChild(furrows)
     }

@@ -46,7 +46,6 @@ final class LotLifecycleRenderer {
         case .finishing:
             addFoundation(to: city)
             addScaffold(to: city)
-            addTowerCrane(for: tile, reducedMotion: reducedMotion, to: neighborhood)
             addFinishProps(to: block)
         case .complete:
             break
@@ -169,27 +168,37 @@ final class LotLifecycleRenderer {
     private func addScaffold(to node: SKNode) {
         let scaffold = SKNode()
         scaffold.name = "lot.construction.scaffoldSilhouette"
-        for x in [-25.0, -8.0, 8.0, 25.0] {
-            let upright = SKShapeNode(rectOf: CGSize(width: 1.7, height: 48))
-            upright.fillColor = constructionColor.withAlphaComponent(0.92)
-            upright.strokeColor = .clear
-            upright.position = CGPoint(x: x, y: 24)
-            scaffold.addChild(upright)
+        let timber = NSColor(
+            calibratedRed: 0.29,
+            green: 0.22,
+            blue: 0.15,
+            alpha: 0.76
+        )
+        // Finishing construction remains visible through a grounded stack of
+        // scaffold rails at the frontage. A tall facade-crossing grid reads as
+        // a progress bar at the strategic camera stop and competes with the
+        // authored building, so the renderer keeps the material on the site.
+        for y in [-12.0, -8.0] {
+            let rail = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: -20, y: y),
+                to: CGPoint(x: 20, y: y)
+            ))
+            rail.strokeColor = timber
+            rail.lineWidth = 1.1
+            rail.lineCap = .butt
+            scaffold.addChild(rail)
         }
-        for row in 0..<5 {
-            let platform = SKShapeNode(rectOf: CGSize(width: 54, height: 1.5))
-            platform.fillColor = constructionColor.withAlphaComponent(0.78)
-            platform.strokeColor = .clear
-            platform.position = CGPoint(x: 0, y: CGFloat(row) * 10 + 4)
-            scaffold.addChild(platform)
+        for direction in [-1.0, 1.0] {
+            let brace = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: -18 * direction, y: -13),
+                to: CGPoint(x: 18 * direction, y: -7)
+            ))
+            brace.name = "lot.construction.scaffoldBrace"
+            brace.strokeColor = timber.withAlphaComponent(0.68)
+            brace.lineWidth = 0.85
+            brace.lineCap = .round
+            scaffold.addChild(brace)
         }
-        let wrap = SKShapeNode(rectOf: CGSize(width: 51, height: 39), cornerRadius: 2)
-        wrap.fillColor = NSColor(calibratedRed: 0.72, green: 0.66, blue: 0.51, alpha: 0.14)
-        wrap.strokeColor = NSColor(calibratedRed: 0.57, green: 0.52, blue: 0.39, alpha: 0.72)
-        wrap.lineWidth = 1.4
-        wrap.position.y = 22
-        wrap.name = "lot.construction.finishWrap"
-        scaffold.addChild(wrap)
         node.addChild(scaffold)
     }
 
@@ -460,45 +469,6 @@ final class LotLifecycleRenderer {
         node.addChild(layer)
     }
 
-    private func addPatchwork(
-        for tile: CityTile,
-        distressed: Bool,
-        reducedMotion: Bool,
-        to node: SKNode
-    ) {
-        let patch = SKNode()
-        patch.name = "lot.condition.patchwork"
-        let color = distressed ? NSColor.systemRed : NSColor.systemOrange
-        for index in 0..<(distressed ? 3 : 2) {
-            let panel = SKShapeNode(rectOf: CGSize(width: 13, height: 7), cornerRadius: 1)
-            panel.fillColor = NSColor(calibratedWhite: 0.16, alpha: 0.84)
-            panel.strokeColor = color.withAlphaComponent(0.74)
-            panel.lineWidth = 1
-            panel.position = CGPoint(x: CGFloat(index * 13 - 13), y: 12 + CGFloat(index % 2) * 9)
-            patch.addChild(panel)
-        }
-
-        let ribbon = SKShapeNode(rectOf: CGSize(width: 43, height: 2.5), cornerRadius: 1)
-        ribbon.fillColor = color
-        ribbon.strokeColor = .clear
-        ribbon.position = CGPoint(x: 0, y: 41)
-        ribbon.name = "lot.lifecycle.motion.cautionRibbon"
-        patch.addChild(ribbon)
-        if !reducedMotion {
-            runDeterministicLoop(
-                .sequence([
-                    .scaleX(to: 0.86, duration: 0.55),
-                    .scaleX(to: 1.0, duration: 0.55)
-                ]),
-                on: ribbon,
-                for: tile,
-                salt: distressed ? 0xDEC1 : 0x57E55,
-                key: "lifecycle.ribbon"
-            )
-        }
-        node.addChild(patch)
-    }
-
     private func addBoarding(to node: SKNode) {
         let boarding = SKNode()
         boarding.name = "lot.condition.boarding"
@@ -568,22 +538,29 @@ final class LotLifecycleRenderer {
         growth.name = "lot.lifecycle.growth.tier.\(tier)"
         city.addChild(growth)
 
-        let freshFacade = SKNode()
-        freshFacade.name = "lot.growth.freshFacade"
-        for index in 0..<min(4, tier + 1) {
-            let window = SKShapeNode(rectOf: CGSize(width: 6, height: 8), cornerRadius: 0.8)
-            window.fillColor = style.palette.warmWindow.withAlphaComponent(0.92)
-            window.strokeColor = NSColor.white.withAlphaComponent(0.32)
-            window.lineWidth = 0.7
-            window.position = CGPoint(x: CGFloat(index * 9 - 14), y: 21)
-            freshFacade.addChild(window)
+        // The authored building family already carries the tier in its
+        // silhouette. Extra windows and a continuous bright sill read as a
+        // screen-space progress bar when the strategic camera compresses the
+        // facade. Keep the secondary cue on the ground plane instead.
+        let improvedFrontage = SKNode()
+        improvedFrontage.name = "lot.growth.improvedFrontage"
+        let planting = NSColor(
+            calibratedRed: 0.22,
+            green: 0.34,
+            blue: 0.20,
+            alpha: 0.62
+        )
+        for offset in [-13.0, 13.0] {
+            let bed = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: offset - 5, y: -9),
+                to: CGPoint(x: offset + 5, y: -6.5)
+            ))
+            bed.strokeColor = planting
+            bed.lineWidth = 1.6
+            bed.lineCap = .round
+            improvedFrontage.addChild(bed)
         }
-        let sill = SKShapeNode(rectOf: CGSize(width: 38, height: 1.5), cornerRadius: 0.5)
-        sill.fillColor = style.palette.concreteLight
-        sill.strokeColor = .clear
-        sill.position = CGPoint(x: 0, y: 15)
-        freshFacade.addChild(sill)
-        neighborhood.addChild(freshFacade)
+        neighborhood.addChild(improvedFrontage)
 
         let entranceCanopy = SKShapeNode(path: style.diamondPath(width: 24, height: 8))
         entranceCanopy.name = "lot.growth.entrance-canopy"

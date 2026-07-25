@@ -230,24 +230,26 @@ final class SpatialConsequenceRenderer {
 
     private func addPollutionCue(_ band: CityConsequenceBand, to root: SKNode) {
         guard band != .healthy else { return }
-        let color = NSColor(calibratedWhite: band == .severe ? 0.18 : 0.30, alpha: 0.78)
-        let count = band == .severe ? 5 : 3
+        let color = NSColor(calibratedWhite: band == .severe ? 0.18 : 0.30, alpha: 0.70)
+        let count = band == .severe ? 4 : 2
+        let frontageY = -style.tileHeight / 2 + 4
         for index in 0..<count {
-            let x = CGFloat(index - count / 2) * 8
+            let x = CGFloat(index - count / 2) * 6
             let slash = SKShapeNode(path: WorldGeometryCache.line(
-                from: CGPoint(x: x - 5, y: -8),
-                to: CGPoint(x: x + 5, y: 8)
+                from: CGPoint(x: x - 3, y: frontageY),
+                to: CGPoint(x: x + 3, y: frontageY + 4)
             ))
             slash.name = "spatial.pollution.\(bandName(band)).hatch.\(index)"
             slash.strokeColor = color
-            slash.lineWidth = band == .severe ? 2.0 : 1.2
+            slash.lineWidth = band == .severe ? 1.35 : 0.95
+            slash.lineCap = .round
             root.addChild(slash)
         }
-        let particulate = SKShapeNode(circleOfRadius: band == .severe ? 3 : 2)
+        let particulate = SKShapeNode(circleOfRadius: band == .severe ? 2.1 : 1.5)
         particulate.name = "spatial.pollution.\(bandName(band)).particulate"
         particulate.fillColor = color
         particulate.strokeColor = .clear
-        particulate.position = CGPoint(x: 17, y: 10)
+        particulate.position = CGPoint(x: 15, y: frontageY + 3)
         root.addChild(particulate)
     }
 

@@ -186,8 +186,13 @@ final class WorldRenderingTests: XCTestCase {
         let pollutionBounds = pollution.calculateAccumulatedFrame()
         XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
         XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
-        XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.60)
-        XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.50)
+        XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.40)
+        XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.20)
+        XCTAssertLessThan(
+            pollutionBounds.maxY,
+            -style.tileHeight * 0.20,
+            "Pollution marks must stay on the ground/frontage plane instead of crossing facades"
+        )
 
         let mild = CitySpatialConsequence(
             coordinate: tile.coordinate,
@@ -215,6 +220,30 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(neighborhoodLayer?.isHidden, true)
         style.updateDetailVisibility(in: mildAtCity, detail: .block)
         XCTAssertEqual(neighborhoodLayer?.isHidden, false)
+    }
+
+    @MainActor
+    func testTruthOverlaysDoNotRevealCompoundFacadeGlyphs() throws {
+        let state = spatialProofState(recovered: false)
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let focus = GridCoordinate(x: 13, y: 11)
+        XCTAssertNotNil(snapshot.spatialConsequences[focus])
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        for overlay in [DataOverlay.pollution, .utilities] {
+            scene.render(
+                snapshot: snapshot,
+                overlay: overlay,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            XCTAssertEqual(
+                scene.persistentConsequenceAlphaForTesting(at: focus),
+                0,
+                "The chosen sparse overlay pattern must have exclusive priority over compound facade glyphs"
+            )
+        }
     }
 
     @MainActor
@@ -1148,10 +1177,49 @@ final class WorldRenderingTests: XCTestCase {
         let backdrop = renderer.makeBackdrop(gridWidth: 24, gridHeight: 24)
         let backdropNames = descendantNames(in: backdrop)
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.parcel.") }.count, 36)
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.boundary.") }.count, 36)
-        XCTAssertEqual(backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count, 18)
-        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.patch.") })
+        XCTAssertEqual(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.material.patch.") }.count,
+            49
+        )
+        XCTAssertGreaterThan(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
+            15
+        )
+        XCTAssertGreaterThan(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
+            10
+        )
+        var furrowNodes: [SKShapeNode] = []
+        backdrop.enumerateChildNodes(withName: "//terrain.macro.furrows.*") { node, _ in
+            if let shape = node as? SKShapeNode { furrowNodes.append(shape) }
+        }
+        XCTAssertFalse(furrowNodes.isEmpty)
+        var maximumFurrowSegmentLength: CGFloat = 0
+        for node in furrowNodes {
+            var lastMove: CGPoint?
+            node.path?.applyWithBlock { elementPointer in
+                let element = elementPointer.pointee
+                switch element.type {
+                case .moveToPoint:
+                    lastMove = element.points[0]
+                case .addLineToPoint:
+                    if let lastMove {
+                        maximumFurrowSegmentLength = max(
+                            maximumFurrowSegmentLength,
+                            hypot(
+                                element.points[0].x - lastMove.x,
+                                element.points[0].y - lastMove.y
+                            )
+                        )
+                    }
+                default:
+                    break
+                }
+            }
+        }
+        XCTAssertLessThanOrEqual(maximumFurrowSegmentLength, 45)
+        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.parcel.") })
+        XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })
         XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
     }
@@ -1223,6 +1291,8 @@ final class WorldRenderingTests: XCTestCase {
         let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(cityVisible.contains("lot.lod.city.mass.cityHall"))
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.neighborhood.public-realm.") })
+        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
@@ -1238,6 +1308,8 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.neighborhood"))
         let neighborhoodVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(neighborhoodVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(neighborhoodVisible.contains("lot.lod.neighborhood.public-realm.civic"))
+        XCTAssertFalse(neighborhoodVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.city_hall_l01.neighborhood"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
@@ -1252,6 +1324,8 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.block"))
         let blockVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(blockVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(blockVisible.contains("lot.lod.neighborhood.public-realm.civic"))
+        XCTAssertTrue(blockVisible.contains("lot.lod.block.entrance.cityHall"))
         XCTAssertTrue(blockVisible.contains("lot.generated-v4.city_hall_l01.block"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
@@ -1294,6 +1368,80 @@ final class WorldRenderingTests: XCTestCase {
             defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
             accuracy: 0.001
         )
+    }
+
+    @MainActor
+    func testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth() throws {
+        let fixture = try XCTUnwrap(
+            try ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.moment == .complication
+            }
+        )
+        let state = fixture.state
+        let remoteIndustry = GridCoordinate(x: 4, y: 8)
+        let centralResidential = GridCoordinate(x: 9, y: 11)
+        let centralWaterTower = GridCoordinate(x: 15, y: 13)
+        XCTAssertEqual(state.tile(at: remoteIndustry)?.kind, .industrial)
+
+        for (size, insets, expectedScale, expectedPriorityOccupancy) in [
+            (
+                CGSize(width: 1_280, height: 800),
+                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
+                CGFloat(0.312796950340271),
+                CGSize(width: 0.7473417931726477, height: 1.2329704703499522)
+            ),
+            (
+                CGSize(width: 900, height: 600),
+                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
+                CGFloat(0.576345682144165),
+                CGSize(width: 0.5796985019395197, height: 1.58704226315938)
+            ),
+        ] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(insets)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+
+            XCTAssertEqual(scene.cameraPriorityCoordinatesForTesting.count, 8)
+            XCTAssertFalse(scene.cameraPriorityCoordinatesForTesting.contains(remoteIndustry))
+            XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralResidential))
+            XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralWaterTower))
+            XCTAssertLessThan(
+                scene.cameraPriorityVisualBoundsForTesting.width,
+                scene.occupiedDevelopedVisualBoundsForTesting.width
+            )
+            let priorityOccupancy = scene.cameraPriorityViewportOccupancyForTesting()
+            XCTAssertEqual(scene.cameraScaleForTesting, expectedScale, accuracy: 0.000_001)
+            XCTAssertEqual(
+                priorityOccupancy.width,
+                expectedPriorityOccupancy.width,
+                accuracy: 0.000_001
+            )
+            XCTAssertEqual(
+                priorityOccupancy.height,
+                expectedPriorityOccupancy.height,
+                accuracy: 0.000_001
+            )
+            print(
+                "PLAY024_RETURN_CAMERA " +
+                    "size=\(Int(size.width))x\(Int(size.height)) " +
+                    "scale=\(scene.cameraScaleForTesting) " +
+                    "priority_width=\(priorityOccupancy.width) " +
+                    "priority_height=\(priorityOccupancy.height)"
+            )
+
+            // The remote authoritative industrial lot remains a normal
+            // semantic object and an exact inverse-isometric hit target. The
+            // camera prioritization changes no world geometry.
+            XCTAssertEqual(scene.tileRootIsAttachedForTesting(at: remoteIndustry), true)
+            XCTAssertEqual(
+                scene.resolvedCoordinateForTesting(
+                    at: scene.scenePointForTesting(at: remoteIndustry)
+                ),
+                remoteIndustry
+            )
+        }
     }
 
     @MainActor
@@ -1568,7 +1716,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.distressed"))
         XCTAssertFalse(recoveredNames.contains("lot.lifecycle.condition.maintained"))
         XCTAssertTrue(recoveredNames.contains("lot.lifecycle.growth.tier.2"))
-        XCTAssertTrue(recoveredNames.contains("lot.growth.freshFacade"))
+        XCTAssertTrue(recoveredNames.contains("lot.growth.improvedFrontage"))
+        XCTAssertFalse(recoveredNames.contains("lot.growth.freshFacade"))
         XCTAssertTrue(recoveredNames.contains("lot.growth.entrance-canopy"))
         XCTAssertFalse(recoveredNames.contains("lot.growth.badge"))
         XCTAssertFalse(recoveredNames.contains { $0.contains("pennant") || $0.contains("chevron") })
@@ -1637,7 +1786,17 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertTrue(staticNames.contains(expectedName))
             XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.construction.progress") })
             XCTAssertFalse(staticNames.contains { $0.hasPrefix("lot.construction.progress") })
-            let expectedActions = progress >= 0.50 ? 1 : 0
+            if progress == 0.75 {
+                let animatedScaffold = animated.childNode(
+                    withName: "//lot.construction.scaffoldSilhouette"
+                )
+                XCTAssertNotNil(animatedScaffold)
+                XCTAssertLessThanOrEqual(animatedScaffold?.calculateAccumulatedFrame().width ?? 0, 50)
+                XCTAssertLessThanOrEqual(animatedScaffold?.calculateAccumulatedFrame().height ?? 0, 30)
+                XCTAssertTrue(animatedNames.contains("lot.construction.scaffoldBrace"))
+                XCTAssertFalse(animatedNames.contains("lot.construction.finishWrap"))
+            }
+            let expectedActions = progress == 0.50 ? 1 : 0
             XCTAssertEqual(recursiveActiveActionCount(animated), expectedActions)
             XCTAssertEqual(recursiveActiveActionCount(staticFallback), 0)
             XCTAssertTrue(descendantLabels(in: animated).isEmpty)
@@ -1655,8 +1814,14 @@ final class WorldRenderingTests: XCTestCase {
         let growthRoot = renderer.makeLot(for: healthyGrowth, detail: .block, reducedMotion: false)
         let growthNames = descendantNames(in: growthRoot)
         XCTAssertTrue(growthNames.contains("lot.lifecycle.growth.tier.3"))
+        XCTAssertTrue(growthNames.contains("lot.growth.improvedFrontage"))
         XCTAssertTrue(growthNames.contains("lot.growth.entrance-canopy"))
-        XCTAssertFalse(growthNames.contains { $0.contains("pennant") || $0.contains("chevron") })
+        XCTAssertFalse(growthNames.contains {
+            $0.contains("pennant")
+                || $0.contains("chevron")
+                || $0.contains("freshFacade")
+                || $0.contains("cautionRibbon")
+        })
         XCTAssertEqual(recursiveActiveActionCount(growthRoot), 0)
         XCTAssertTrue(descendantLabels(in: growthRoot).isEmpty)
 

@@ -120,9 +120,90 @@ struct CityAnalytics {
         state.progression?.townCharterAwarded ?? false
     }
 
+    var secondActPhase: CitySecondActPhase? {
+        state.progression?.secondAct?.phase
+    }
+
+    var secondActDaysUntilConsequence: Int? {
+        guard let nextTick = state.progression?.secondAct?.nextScheduledTick else { return nil }
+        let remainingTicks = max(0, nextTick - state.tick)
+        return (remainingTicks + 3) / 4
+    }
+
+    var regionalCapitalQualifyingCycles: Int {
+        state.progression?.secondAct?.qualifyingCycles ?? 0
+    }
+
+    var regionalCapitalAwarded: Bool {
+        state.progression?.secondAct?.regionalCapitalAwarded ?? false
+    }
+
+    var meetsRegionalCapitalStandards: Bool {
+        CitySimulation.meetsRegionalCapitalStandards(in: state)
+    }
+
+    var regionalCapitalStatusText: String {
+        guard townCharterAwarded else { return "Earn the Town Charter to open the Regional Capital mandate" }
+        guard let secondAct = state.progression?.secondAct else {
+            return "Legacy Charter victory remains complete"
+        }
+        if secondAct.regionalCapitalAwarded {
+            return "Regional Capital recognition secured permanently"
+        }
+
+        let resolution = strategyRecoveryResolution
+        switch secondAct.phase {
+        case .mandate:
+            if resolution == nil {
+                return committedStrategy == .commercialStewardship
+                    ? "Finish recovery: lower tax to 9% or build a second park"
+                    : "Finish recovery: add reserve utilities or build a second park"
+            }
+            return "Regional mandate arrives in \(secondActDaysUntilConsequence ?? 0) days"
+        case .warnedPressure:
+            return "Pressure lands in \(secondActDaysUntilConsequence ?? 0) days · protect cash and livability"
+        case .recovery:
+            switch resolution {
+            case .commercialTaxRelief:
+                return "Lower tax to 8% or less to restore local foot traffic"
+            case .commercialPublicRealmInvestment:
+                return "Build a third park to create a regional destination"
+            case .industrialUtilityExpansion:
+                return "Add a third Power Plant and Water Tower for reserve capacity"
+            case .industrialGreenBuffer:
+                return "Build a third park to buffer freight pollution"
+            case nil:
+                return "Complete the established recovery before qualification"
+            }
+        case .qualification:
+            if state.population < 525 {
+                return "Grow \((525 - state.population).formatted()) residents without losing daily standards"
+            }
+            if committedStrategy == .commercialStewardship {
+                if state.treasury < 12_000 { return "Restore the treasury to $12,000" }
+                if state.happiness < 56 { return "Raise happiness to 56%" }
+                if count(.commercial) < 3 { return "Maintain three active Commercial zones" }
+            } else {
+                if state.treasury < 15_000 { return "Restore the treasury to $15,000" }
+                if state.happiness < 44 { return "Raise happiness to 44%" }
+                if count(.industrial) < 3 { return "Maintain three active Industrial zones" }
+                if utilityReserve < 0.20 { return "Build 20% utility reserve" }
+            }
+            if projectedBalance < 0 {
+                return "Close the \((-projectedBalance).currencyText) operating gap"
+            }
+            if employmentRate < 0.92 { return "Raise employment to 92%" }
+            if utilityCoverage < 1 { return "Restore complete utility coverage" }
+            if utilityReserve < 0.18 { return "Build 18% utility reserve" }
+            return "\(regionalCapitalQualifyingCycles) of \(CitySimulation.regionalCapitalQualificationCycles) qualifying days complete"
+        case .completed:
+            return "Regional Capital recognition secured permanently"
+        }
+    }
+
     var townCharterStatusText: String {
         if townCharterAwarded {
-            return "Town Charter secured permanently"
+            return "Town Charter secured · Regional Capital chapter is active"
         }
         if waterHeadroom == 0 {
             return "Next: add water capacity · then grow \(max(0, 500 - state.population)) residents"

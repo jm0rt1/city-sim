@@ -75,6 +75,34 @@ final class CityGameStore: ObservableObject {
         let charterProgress = metrics.townCharterAwarded
             ? 1
             : Double(metrics.townCharterQualifyingCycles) / Double(CitySimulation.townCharterQualificationCycles)
+        if metrics.townCharterAwarded, state.progression?.secondAct != nil {
+            let regionalProgress: Double = switch metrics.secondActPhase {
+            case .mandate: 0.10
+            case .warnedPressure: 0.25
+            case .recovery: 0.45
+            case .qualification:
+                0.55 + 0.45 * Double(metrics.regionalCapitalQualifyingCycles)
+                    / Double(CitySimulation.regionalCapitalQualificationCycles)
+            case .completed: 1
+            case nil: 0
+            }
+            return [
+                CityObjective(
+                    id: "town-charter",
+                    title: "Town Charter Secured",
+                    detail: "Permanent first-act achievement",
+                    progress: 1,
+                    remaining: "The Charter opened a Regional Capital mandate"
+                ),
+                CityObjective(
+                    id: "regional-capital",
+                    title: "Earn Regional Capital",
+                    detail: "Survive regional pressure, recover, and sustain the strategy",
+                    progress: regionalProgress,
+                    remaining: metrics.regionalCapitalStatusText
+                ),
+            ]
+        }
         return [
             CityObjective(
                 id: "stabilize",
@@ -597,7 +625,7 @@ final class CityGameStore: ObservableObject {
         switch objective.id {
         case "stabilize": openInspector(.finances)
         case "capacity": openInspector(.utilities)
-        case "town-charter":
+        case "town-charter", "regional-capital":
             showObjectives = true
             openInspector(.overview)
         default: openInspector(.overview)
@@ -627,6 +655,15 @@ final class CityGameStore: ObservableObject {
         case "State Growth Grant":
             openInspector(.finances)
         case "Town Charter Awarded":
+            showObjectives = true
+            openInspector(.overview)
+        case "Regional Retail Challenge", "Regional Retail Pressure":
+            overlay = .happiness
+            openInspector(.demand)
+        case "Regional Grid Mandate", "Regional Freight Overload":
+            overlay = .utilities
+            openInspector(.utilities)
+        case "Regional Main Street Recovery", "Regional Freight Recovery", "Regional Capital Recognized":
             showObjectives = true
             openInspector(.overview)
         default:

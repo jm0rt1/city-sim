@@ -16,6 +16,7 @@ enum BuildRejection: Error, Equatable {
 
 enum CitySimulation {
     static let townCharterQualificationCycles = 12
+    static let regionalCapitalQualificationCycles = 12
     static let strategyPhaseIntervalTicks = 64
     static let strategyMinimumWarningTicks = strategyPhaseIntervalTicks
     static let commercialJobCapacity = 80
@@ -151,6 +152,35 @@ enum CitySimulation {
             && (counts[.industrial] ?? 0) >= 1
     }
 
+    static func meetsRegionalCapitalStandards(in state: CityGameState) -> Bool {
+        guard let story = state.progression?.strategy,
+              story.currentPhase == .completed,
+              story.recoveryResolution != nil else { return false }
+
+        let active = activeTiles(in: state)
+        let counts = Dictionary(grouping: active, by: \.kind).mapValues(\.count)
+        let workforceTarget = max(1, state.population * 7 / 10)
+        let employment = min(1, Double(state.jobs) / Double(workforceTarget))
+        let sharedStandards = state.population >= 525
+            && projectedBalance(in: state) >= 0
+            && employment >= 0.92
+            && utilityCoverage(in: state) >= 1
+            && utilityReserve(in: state) >= 0.18
+
+        guard sharedStandards else { return false }
+        switch story.committedStrategy {
+        case .commercialStewardship:
+            return state.treasury >= 12_000
+                && state.happiness >= 56
+                && (counts[.commercial] ?? 0) >= 3
+        case .industrialExpansion:
+            return state.treasury >= 15_000
+                && state.happiness >= 44
+                && utilityReserve(in: state) >= 0.20
+                && (counts[.industrial] ?? 0) >= 3
+        }
+    }
+
     static func step(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
         let previousPopulation = state.population
@@ -226,6 +256,7 @@ enum CitySimulation {
             advanceStrategyStory(&state)
             maybeCreateEvent(&state)
             updateTownCharterProgression(&state)
+            updateSecondActProgression(&state)
             checkMilestones(&state, previousPopulation: previousPopulation)
             checkEndState(&state)
         }
@@ -285,7 +316,14 @@ enum CitySimulation {
             return
         }
 
-        guard story.currentPhase != .completed,
+        if story.currentPhase == .completed {
+            captureFirstQualifyingResolution(for: &story, in: state)
+            progression.strategy = story
+            state.progression = progression
+            return
+        }
+
+        guard
               let scheduledTick = story.nextScheduledTick,
               state.tick >= scheduledTick else { return }
 
@@ -744,7 +782,10 @@ enum CitySimulation {
         var progression = state.progression ?? CityProgressionState()
         guard !progression.townCharterAwarded else {
             state.progression = progression
-            state.status = .won
+            if progression.secondAct == nil {
+                // Preserve the accepted legacy awarded + playing normalization.
+                state.status = .won
+            }
             return
         }
 
@@ -760,7 +801,10 @@ enum CitySimulation {
         let awardedNow = progression.townCharterQualifyingCycles == townCharterQualificationCycles
         if awardedNow {
             progression.townCharterAwarded = true
-            state.status = .won
+            progression.secondAct = CitySecondActProgression(
+                phase: .mandate,
+                nextScheduledTick: state.tick + strategyPhaseIntervalTicks
+            )
         }
         state.progression = progression
 
@@ -770,7 +814,219 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .good,
                     title: "Town Charter Awarded",
-                    detail: "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Town Charter is now permanent."
+                    detail: "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by \(formattedDay(for: state.tick + strategyPhaseIntervalTicks))."
+                ),
+                to: &state
+            )
+        }
+    }
+
+    private static func updateSecondActProgression(_ state: inout CityGameState) {
+        guard var progression = state.progression,
+              var secondAct = progression.secondAct,
+              let story = progression.strategy,
+              let resolution = story.recoveryResolution,
+              !secondAct.regionalCapitalAwarded else { return }
+
+        switch secondAct.phase {
+        case .mandate:
+            guard let scheduledTick = secondAct.nextScheduledTick,
+                  state.tick >= scheduledTick else { return }
+            postRegionalWarning(for: story.committedStrategy, resolution: resolution, to: &state)
+            secondAct.phase = .warnedPressure
+            secondAct.nextScheduledTick = state.tick + strategyMinimumWarningTicks
+        case .warnedPressure:
+            guard let scheduledTick = secondAct.nextScheduledTick,
+                  state.tick >= scheduledTick else { return }
+            applyRegionalPressure(for: story.committedStrategy, resolution: resolution, to: &state)
+            secondAct.phase = .recovery
+            secondAct.nextScheduledTick = nil
+        case .recovery:
+            guard meetsSecondActRecovery(for: resolution, in: state) else { return }
+            applyRegionalRecovery(for: story.committedStrategy, resolution: resolution, to: &state)
+            secondAct.phase = .qualification
+            secondAct.qualifyingCycles = 0
+            secondAct.nextScheduledTick = nil
+        case .qualification:
+            if meetsRegionalCapitalStandards(in: state) {
+                secondAct.qualifyingCycles = min(
+                    regionalCapitalQualificationCycles,
+                    secondAct.qualifyingCycles + 1
+                )
+            } else {
+                secondAct.qualifyingCycles = 0
+            }
+
+            if secondAct.qualifyingCycles == regionalCapitalQualificationCycles {
+                secondAct.phase = .completed
+                secondAct.regionalCapitalAwarded = true
+                state.status = .won
+                applyRegionalCapitalPayoff(for: story.committedStrategy, to: &state)
+            }
+        case .completed:
+            secondAct.nextScheduledTick = nil
+        }
+
+        progression.secondAct = secondAct
+        state.progression = progression
+    }
+
+    private static func postRegionalWarning(
+        for strategy: CityStrategy,
+        resolution: CityStrategyRecoveryResolution,
+        to state: inout CityGameState
+    ) {
+        let deadline = state.tick + strategyMinimumWarningTicks
+        switch strategy {
+        case .commercialStewardship:
+            let remedy = resolution == .commercialTaxRelief
+                ? "Lower tax to 8% or less after the pressure lands."
+                : "Build a third park after the pressure lands."
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Regional Retail Challenge",
+                    detail: "The Charter has drawn regional competitors. A $4,500 confidence shock lands by \(formattedDay(for: deadline)). \(remedy)"
+                ),
+                to: &state
+            )
+        case .industrialExpansion:
+            let remedy = resolution == .industrialUtilityExpansion
+                ? "Add a third Power Plant and Water Tower after the pressure lands."
+                : "Build a third park after the pressure lands."
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Regional Grid Mandate",
+                    detail: "The Charter has brought a regional freight-grid audit. A $7,000 repair and livability shock lands by \(formattedDay(for: deadline)). \(remedy)"
+                ),
+                to: &state
+            )
+        }
+    }
+
+    private static func applyRegionalPressure(
+        for strategy: CityStrategy,
+        resolution: CityStrategyRecoveryResolution,
+        to state: inout CityGameState
+    ) {
+        switch strategy {
+        case .commercialStewardship:
+            state.treasury -= 4_500
+            state.happiness = max(0, state.happiness - 5)
+            state.approval = max(0, state.approval - 3)
+            let remedy = resolution == .commercialTaxRelief
+                ? "Lower tax to 8% or less to restore local foot traffic."
+                : "Build a third park to create a regional public-realm draw."
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .critical,
+                    title: "Regional Retail Pressure",
+                    detail: "Competitors pulled spending away, costing $4,500 and 5 happiness. \(remedy)"
+                ),
+                to: &state
+            )
+        case .industrialExpansion:
+            state.treasury -= 7_000
+            state.happiness = max(0, state.happiness - 8)
+            state.approval = max(0, state.approval - 5)
+            let remedy = resolution == .industrialUtilityExpansion
+                ? "Add a third Power Plant and Water Tower to prove regional reserve capacity."
+                : "Build a third park to buffer freight pollution."
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .critical,
+                    title: "Regional Freight Overload",
+                    detail: "The grid audit exposed freight strain, costing $7,000 and 8 happiness. \(remedy)"
+                ),
+                to: &state
+            )
+        }
+    }
+
+    private static func meetsSecondActRecovery(
+        for resolution: CityStrategyRecoveryResolution,
+        in state: CityGameState
+    ) -> Bool {
+        let active = activeTiles(in: state)
+        switch resolution {
+        case .commercialTaxRelief:
+            return state.taxRate <= 0.08
+        case .commercialPublicRealmInvestment, .industrialGreenBuffer:
+            return active.filter { $0.kind == .park }.count >= 3
+        case .industrialUtilityExpansion:
+            return active.filter { $0.kind == .powerPlant }.count >= 3
+                && active.filter { $0.kind == .waterTower }.count >= 3
+        }
+    }
+
+    private static func applyRegionalRecovery(
+        for strategy: CityStrategy,
+        resolution: CityStrategyRecoveryResolution,
+        to state: inout CityGameState
+    ) {
+        switch strategy {
+        case .commercialStewardship:
+            state.treasury += 2_000
+            state.happiness = min(100, state.happiness + 4)
+            state.approval = min(100, state.approval + 3)
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Regional Main Street Recovery",
+                    detail: "\(resolution == .commercialTaxRelief ? "Tax relief restored local foot traffic." : "The third park became a regional destination.") The city recovered $2,000 and 4 happiness; now sustain 525 residents, $12,000, 56 happiness, 92% employment, balanced cashflow, and 18% utility reserve for 12 days."
+                ),
+                to: &state
+            )
+        case .industrialExpansion:
+            state.treasury += 4_000
+            state.happiness = min(100, state.happiness + 3)
+            state.approval = min(100, state.approval + 2)
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Regional Freight Recovery",
+                    detail: "\(resolution == .industrialUtilityExpansion ? "New utility reserves passed the grid audit." : "The third park buffered freight pollution.") The city recovered $4,000 and 3 happiness; now sustain 525 residents, $15,000, 44 happiness, 92% employment, balanced cashflow, and 20% utility reserve for 12 days."
+                ),
+                to: &state
+            )
+        }
+    }
+
+    private static func applyRegionalCapitalPayoff(
+        for strategy: CityStrategy,
+        to state: inout CityGameState
+    ) {
+        switch strategy {
+        case .commercialStewardship:
+            state.treasury += 8_000
+            state.happiness = min(100, state.happiness + 6)
+            state.approval = min(100, state.approval + 5)
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Regional Capital Recognized",
+                    detail: "Twelve durable days proved New Arcadia's Main Street model. Regional Capital recognition grants $8,000, 6 happiness, and a permanent commercial-stewardship victory."
+                ),
+                to: &state
+            )
+        case .industrialExpansion:
+            state.treasury += 12_000
+            state.happiness = min(100, state.happiness + 3)
+            state.approval = min(100, state.approval + 4)
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Regional Capital Recognized",
+                    detail: "Twelve durable days proved New Arcadia's freight network. Regional Capital recognition grants $12,000, 3 happiness, and a permanent industrial-expansion victory."
                 ),
                 to: &state
             )
@@ -786,9 +1042,7 @@ enum CitySimulation {
 
     private static func checkEndState(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
-        if state.population >= 2_500 && state.happiness >= 65 && state.treasury >= 0 {
-            state.status = .won
-        } else if state.treasury < -75_000 || (state.tick > 40 && state.happiness < 10) {
+        if state.treasury < -75_000 || (state.tick > 40 && state.happiness < 10) {
             state.status = .lost
         }
     }

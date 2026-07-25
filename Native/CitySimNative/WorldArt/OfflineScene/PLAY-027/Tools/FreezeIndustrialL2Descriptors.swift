@@ -54,7 +54,7 @@ func industrialL2Relative(_ url: URL, root: URL) -> String {
 func industrialL2Sampling() -> [String: Any] {
     [
         "contractID": "play027-deterministic-4x-no-msaa-lanczos-v3",
-        "sourceRevisionBinding": "source-v01",
+        "sourceRevisionBinding": "source-v02",
         "purpose": "source-authority",
         "sceneKitAntialiasing": "none",
         "linearOversamplingFactor": 4,
@@ -338,7 +338,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-left-post", "dimensions": [3, 60, 3], "positionWorld": [-25, 32.25, -25], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-center-post", "dimensions": [3, 60, 3], "positionWorld": [-14, 32.25, -25], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-right-post", "dimensions": [3, 60, 3], "positionWorld": [25, 32.25, -25], "materialID": "chimney-metal"],
-                ["id": "\(prefix)-service-apron", "dimensions": [50, 0.8, 20], "positionWorld": [0, 2.65, -23], "materialID": "concrete-industrial-warm"],
+                ["id": "\(prefix)-service-apron", "dimensions": [50, 0.8, 20], "positionWorld": [0, 2.75, -23], "materialID": "concrete-industrial-warm"],
             ],
             roofVolumes: [
                 ["id": "\(prefix)-sawtooth-west", "shape": "hip", "dimensions": [10, 10, 38], "positionWorld": [-6, 49.2, 6], "materialID": "roof-industrial-charcoal", "trimMaterialID": "concrete-industrial-warm"],
@@ -364,7 +364,7 @@ func industrialL2Architecture(
             props: [
                 ["id": "\(prefix)-rooftop-hvac", "kind": "rooftop-hvac", "positionWorld": [-6, 59, 12], "dimensions": [12, 8, 10], "materialID": "rooftop-metal"],
                 ["id": "\(prefix)-exhaust-stack", "kind": "exhaust-stack", "positionWorld": [8, 64, 4], "dimensions": [5, 24, 5], "materialID": "exhaust-dark"],
-                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [26, 9.4, -17], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
+                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [26, 9.55, -17], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
             ],
             entranceBase: [0, 2, -28],
             exclusion: [[-28, -52], [28, -52], [28, -18], [-28, -18]]
@@ -380,7 +380,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-left-post", "dimensions": [3, 60, 3], "positionWorld": [25, 32.25, -25], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-center-post", "dimensions": [3, 60, 3], "positionWorld": [25, 32.25, -14], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-right-post", "dimensions": [3, 60, 3], "positionWorld": [25, 32.25, 25], "materialID": "chimney-metal"],
-                ["id": "\(prefix)-service-apron", "dimensions": [20, 0.8, 50], "positionWorld": [23, 2.65, 0], "materialID": "concrete-industrial-warm"],
+                ["id": "\(prefix)-service-apron", "dimensions": [20, 0.8, 50], "positionWorld": [23, 2.75, 0], "materialID": "concrete-industrial-warm"],
             ],
             roofVolumes: [
                 ["id": "\(prefix)-sawtooth-north", "shape": "hip", "dimensions": [38, 10, 10], "positionWorld": [-6, 49.2, -6], "materialID": "roof-industrial-charcoal", "trimMaterialID": "concrete-industrial-warm"],
@@ -406,7 +406,7 @@ func industrialL2Architecture(
             props: [
                 ["id": "\(prefix)-rooftop-hvac", "kind": "rooftop-hvac", "positionWorld": [-12, 59, -6], "dimensions": [10, 8, 12], "materialID": "rooftop-metal"],
                 ["id": "\(prefix)-exhaust-stack", "kind": "exhaust-stack", "positionWorld": [-4, 64, 8], "dimensions": [5, 24, 5], "materialID": "exhaust-dark"],
-                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [17, 9.4, 26], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
+                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [17, 9.55, 26], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
             ],
             entranceBase: [28, 2, 0],
             exclusion: [[18, -28], [52, -28], [52, 28], [18, 28]]
@@ -422,7 +422,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-left-post", "dimensions": [3, 60, 3], "positionWorld": [25, 32.25, 25], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-center-post", "dimensions": [3, 60, 3], "positionWorld": [14, 32.25, 25], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-right-post", "dimensions": [3, 60, 3], "positionWorld": [-25, 32.25, 25], "materialID": "chimney-metal"],
-                ["id": "\(prefix)-service-apron", "dimensions": [50, 0.8, 20], "positionWorld": [0, 2.65, 23], "materialID": "concrete-industrial-warm"],
+                ["id": "\(prefix)-service-apron", "dimensions": [50, 0.8, 20], "positionWorld": [0, 2.75, 23], "materialID": "concrete-industrial-warm"],
             ],
             roofVolumes: [
                 ["id": "\(prefix)-sawtooth-east", "shape": "hip", "dimensions": [10, 10, 38], "positionWorld": [6, 49.2, -6], "materialID": "roof-industrial-charcoal", "trimMaterialID": "concrete-industrial-warm"],
@@ -448,7 +448,7 @@ func industrialL2Architecture(
             props: [
                 ["id": "\(prefix)-rooftop-hvac", "kind": "rooftop-hvac", "positionWorld": [6, 59, -12], "dimensions": [12, 8, 10], "materialID": "rooftop-metal"],
                 ["id": "\(prefix)-exhaust-stack", "kind": "exhaust-stack", "positionWorld": [-8, 64, -4], "dimensions": [5, 24, 5], "materialID": "exhaust-dark"],
-                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [-26, 9.4, 17], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
+                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [-26, 9.55, 17], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
             ],
             entranceBase: [0, 2, 28],
             exclusion: [[28, 18], [-28, 18], [-28, 52], [28, 52]]
@@ -464,7 +464,7 @@ func industrialL2Architecture(
                 ["id": "\(prefix)-frontage-left-post", "dimensions": [3, 60, 3], "positionWorld": [-25, 32.25, 25], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-center-post", "dimensions": [3, 60, 3], "positionWorld": [-25, 32.25, 14], "materialID": "chimney-metal"],
                 ["id": "\(prefix)-frontage-right-post", "dimensions": [3, 60, 3], "positionWorld": [-25, 32.25, -25], "materialID": "chimney-metal"],
-                ["id": "\(prefix)-service-apron", "dimensions": [20, 0.8, 50], "positionWorld": [-23, 2.65, 0], "materialID": "concrete-industrial-warm"],
+                ["id": "\(prefix)-service-apron", "dimensions": [20, 0.8, 50], "positionWorld": [-23, 2.75, 0], "materialID": "concrete-industrial-warm"],
             ],
             roofVolumes: [
                 ["id": "\(prefix)-sawtooth-south", "shape": "hip", "dimensions": [38, 10, 10], "positionWorld": [6, 49.2, 6], "materialID": "roof-industrial-charcoal", "trimMaterialID": "concrete-industrial-warm"],
@@ -490,7 +490,7 @@ func industrialL2Architecture(
             props: [
                 ["id": "\(prefix)-rooftop-hvac", "kind": "rooftop-hvac", "positionWorld": [12, 59, 6], "dimensions": [10, 8, 12], "materialID": "rooftop-metal"],
                 ["id": "\(prefix)-exhaust-stack", "kind": "exhaust-stack", "positionWorld": [4, 64, -8], "dimensions": [5, 24, 5], "materialID": "exhaust-dark"],
-                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [-17, 9.4, -26], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
+                ["id": "\(prefix)-service-tank", "kind": "service-tank", "positionWorld": [-17, 9.55, -26], "dimensions": [9, 14, 9], "materialID": "tank-oxide"],
             ],
             entranceBase: [-28, 2, 0],
             exclusion: [[-52, 28], [-52, -28], [-18, -28], [-18, 28]]
@@ -581,7 +581,7 @@ enum FreezeIndustrialL2DescriptorsMain {
                 .appendingPathComponent(direction)
                 .appendingPathComponent("scene.json")
             let geometryID =
-                "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v1"
+                "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v2"
             let object: [String: Any] = [
                 "schema": 2,
                 "task": "PLAY-027",
@@ -591,7 +591,7 @@ enum FreezeIndustrialL2DescriptorsMain {
                 "level": 2,
                 "variantID": "variant-0",
                 "viewDirection": direction,
-                "sourceRevision": "source-v01",
+                "sourceRevision": "source-v02",
                 "authoredIndependently": true,
                 "productionSelected": false,
                 "derivation": [
@@ -783,7 +783,7 @@ enum FreezeIndustrialL2DescriptorsMain {
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v01",
+            "sourceRevision": "source-v02",
             "architecture":
                 "asymmetric high assembly hall, fabrication annex, process tower, dual loading house, three-post gantry, and expanded service apron",
             "contractID":

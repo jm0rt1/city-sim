@@ -142,7 +142,7 @@
         "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
           23,
-          2.6499999999999999,
+          2.75,
           0
         ]
       }
@@ -743,7 +743,7 @@
       "materialID" : "tank-oxide",
       "positionWorld" : [
         17,
-        9.4000000000000004,
+        9.5500000000000007,
         26
       ]
     }
@@ -895,11 +895,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v01"
+    "sourceRevisionBinding" : "source-v02"
   },
-  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v1",
+  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v2",
   "schema" : 2,
-  "sourceRevision" : "source-v01",
+  "sourceRevision" : "source-v02",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",

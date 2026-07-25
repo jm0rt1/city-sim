@@ -112,10 +112,10 @@ enum ValidateIndustrialL2FrontagesMain {
             "west": [640, 704],
         ]
         let expectedApronCenters: [String: [Double]] = [
-            "north": [0, 2.8, -25],
-            "east": [25, 2.8, 0],
-            "south": [0, 2.8, 25],
-            "west": [-25, 2.8, 0],
+            "north": [0, 2.75, -23],
+            "east": [23, 2.75, 0],
+            "south": [0, 2.75, 23],
+            "west": [-23, 2.75, 0],
         ]
         let decoder = JSONDecoder()
         var failures: [String] = []
@@ -147,7 +147,7 @@ enum ValidateIndustrialL2FrontagesMain {
                 || descriptor.family != "industrial"
                 || descriptor.level != 2
                 || descriptor.variantID != "variant-0"
-                || descriptor.sourceRevision != "source-v01"
+                || descriptor.sourceRevision != "source-v02"
                 || descriptor.viewDirection != direction
             {
                 itemFailures.append("identity mismatch")
@@ -173,7 +173,7 @@ enum ValidateIndustrialL2FrontagesMain {
                     != DescriptorSamplingResolver.schema2ContractV3ID
                     || sampling.purpose != "source-authority"
                     || descriptor.sampling?.sourceRevisionBinding
-                        != "source-v01"
+                        != "source-v02"
                 {
                     itemFailures.append(
                         "schema-2 v3 source sampling binding mismatch"
@@ -183,7 +183,7 @@ enum ValidateIndustrialL2FrontagesMain {
                 itemFailures.append("sampling invalid: \(error)")
             }
             if descriptor.sceneGeometryID
-                != "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v1"
+                != "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v2"
             {
                 itemFailures.append("geometry ID mismatch")
             }
@@ -220,7 +220,7 @@ enum ValidateIndustrialL2FrontagesMain {
             )
                 || descriptor.registration.groundPivotSource != [768, 896]
                 || descriptor.registration.contactPolygonWorld
-                    != [[-30, -30], [30, -30], [30, 30], [-30, 30]]
+                    != [[-28, -28], [28, -28], [28, 28], [-28, 28]]
             {
                 itemFailures.append("registration mismatch")
             }
@@ -392,7 +392,7 @@ enum ValidateIndustrialL2FrontagesMain {
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v01",
+            "sourceRevision": "source-v02",
             "purpose":
                 "freeze Industrial L2 loading-logistics frontage, independent direction authorship, and non-aliasing progression beyond accepted Industrial L1",
             "directions": records,

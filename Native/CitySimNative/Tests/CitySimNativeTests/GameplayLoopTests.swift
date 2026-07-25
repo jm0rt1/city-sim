@@ -109,6 +109,97 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertLessThan(4.0 * 0.42, 15)
     }
 
+    func testDemandDrivenDevelopmentCreatesVariedLevelsForBothStrategies() throws {
+        var commerce = try commercialStrategy()
+        var industry = try industrialStrategy()
+
+        advanceToTick(&commerce, tick: 64)
+        advanceToTick(&industry, tick: 64)
+        XCTAssertEqual(commerce.progression?.strategy?.committedStrategy, .commercialStewardship)
+        XCTAssertEqual(industry.progression?.strategy?.committedStrategy, .industrialExpansion)
+        XCTAssertFalse(
+            commerce.tiles.contains { $0.kind == .commercial && $0.level > 1 },
+            "A thin utility reserve should delay Commercial density"
+        )
+        XCTAssertFalse(
+            industry.tiles.contains { $0.kind == .industrial && $0.level > 1 },
+            "A thin utility reserve should delay Industrial density"
+        )
+
+        try prepareReserveUtilities(in: &commerce)
+        try prepareReserveUtilities(in: &industry)
+        advanceToTick(&commerce, tick: 256)
+        advanceToTick(&industry, tick: 256)
+        XCTAssertTrue(
+            commerce.tiles.contains { $0.kind == .commercial && $0.level > 1 },
+            "Commercial occupancy and demand should change an actual storefront: \(scenarioSummary(commerce))"
+        )
+        XCTAssertTrue(
+            industry.tiles.contains { $0.kind == .industrial && $0.level > 1 },
+            "Industrial occupancy and demand should change an actual factory: \(scenarioSummary(industry))"
+        )
+        for (state, kind) in [(commerce, BuildingKind.commercial), (industry, .industrial)] {
+            let developed = try XCTUnwrap(
+                state.tiles.first { $0.kind == kind && $0.level > 1 }
+            )
+            XCTAssertTrue(state.messages.contains {
+                $0.title == "Neighborhood Upgraded"
+                    && $0.detail.contains(
+                        "block \(developed.coordinate.x + 1), \(developed.coordinate.y + 1)"
+                    )
+            })
+        }
+
+        for state in [commerce, industry] {
+            let levels = Set(
+                state.tiles
+                    .filter { [.residential, .commercial, .industrial].contains($0.kind) }
+                    .map(\.level)
+            )
+            XCTAssertGreaterThanOrEqual(levels.count, 2)
+            XCTAssertTrue(state.messages.contains {
+                $0.title == "Neighborhood Upgraded"
+                    && $0.detail.contains("occupancy and demand")
+                    && $0.detail.contains("utility load")
+            })
+        }
+    }
+
+    func testDevelopedLevelsCarryUtilityUpkeepAndPollutionTradeoffs() throws {
+        var baseline = CityGameState.newCity(seed: 42)
+        advanceDays(&baseline, days: 1)
+
+        var commercialDensity = baseline
+        let commercialIndex = try XCTUnwrap(
+            commercialDensity.tiles.firstIndex { $0.kind == .commercial }
+        )
+        commercialDensity.tiles[commercialIndex].level = 2
+        let commercialUpkeep = CitySimulation.projectedUpkeep(in: commercialDensity)
+        let baselineUpkeep = CitySimulation.projectedUpkeep(in: baseline)
+        XCTAssertGreaterThan(
+            CitySimulation.projectedRevenue(in: commercialDensity),
+            CitySimulation.projectedRevenue(in: baseline)
+        )
+        CitySimulation.step(&baseline)
+        CitySimulation.step(&commercialDensity)
+        XCTAssertEqual(commercialDensity.powerUsed - baseline.powerUsed, 2)
+        XCTAssertEqual(commercialDensity.waterUsed - baseline.waterUsed, 1)
+        XCTAssertGreaterThan(commercialUpkeep, baselineUpkeep)
+
+        var industrialDensity = baseline
+        let industrialIndex = try XCTUnwrap(
+            industrialDensity.tiles.firstIndex { $0.kind == .industrial }
+        )
+        industrialDensity.tiles[industrialIndex].level = 2
+        CitySimulation.step(&industrialDensity)
+        XCTAssertEqual(industrialDensity.powerUsed - baseline.powerUsed, 2)
+        XCTAssertEqual(industrialDensity.waterUsed - baseline.waterUsed, 1)
+        XCTAssertGreaterThan(
+            CityAnalytics(state: industrialDensity).pollutionPressure,
+            CityAnalytics(state: baseline).pollutionPressure
+        )
+    }
+
     func testLiveCommercialRecoveryReachesACharterPathByDay128() throws {
         var state = CityGameState.newCity(seed: 42)
         advanceToTick(&state, tick: 60)
@@ -458,6 +549,28 @@ final class GameplayLoopTests: XCTestCase {
             XCTAssertLessThanOrEqual(victoryTick, 2_800, resolution.rawValue)
             XCTAssertEqual(state.status, .won, resolution.rawValue)
             XCTAssertTrue(state.progression?.secondAct?.regionalCapitalAwarded ?? false)
+            let zoneLevels = state.tiles
+                .filter { [.residential, .commercial, .industrial].contains($0.kind) }
+                .map(\.level)
+            XCTAssertGreaterThanOrEqual(Set(zoneLevels).count, 2, resolution.rawValue)
+            XCTAssertGreaterThanOrEqual(
+                zoneLevels.filter { $0 > 1 }.count,
+                2,
+                resolution.rawValue
+            )
+            let strategyKind: BuildingKind = switch resolution {
+            case .commercialTaxRelief, .commercialPublicRealmInvestment: .commercial
+            case .industrialUtilityExpansion, .industrialGreenBuffer: .industrial
+            }
+            XCTAssertEqual(
+                state.tiles.filter {
+                    $0.kind == strategyKind
+                        && $0.condition >= 0.4
+                        && $0.condition < 0.75
+                }.count,
+                1,
+                resolution.rawValue
+            )
             let terminal = state
             for _ in 0..<128 {
                 CitySimulation.step(&state)
@@ -1014,6 +1127,62 @@ final class GameplayLoopTests: XCTestCase {
         )
     }
 
+    func testRegionalPressureDamagesRouteLotsAndRecoveryLeavesWeatheredHistory() throws {
+        var commerce = try charterCity(resolvedBy: .commercialPublicRealmInvestment)
+        var industry = try charterCity(resolvedBy: .industrialGreenBuffer)
+
+        for route in [CityStrategy.commercialStewardship, .industrialExpansion] {
+            var state = route == .commercialStewardship ? commerce : industry
+            let warningTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+            advanceToTick(&state, tick: warningTick)
+            let pressureTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+            advanceToTick(&state, tick: pressureTick)
+
+            let kind: BuildingKind = route == .commercialStewardship
+                ? .commercial
+                : .industrial
+            let pressured = state.tiles.filter {
+                $0.kind == kind && $0.condition < 0.75
+            }
+            XCTAssertEqual(pressured.count, 2)
+            XCTAssertEqual(pressured.filter { $0.condition < 0.4 }.count, 1)
+            XCTAssertEqual(
+                pressured.filter { $0.condition >= 0.4 && $0.condition < 0.75 }.count,
+                1
+            )
+            XCTAssertTrue(state.messages.contains {
+                $0.title == (
+                    route == .commercialStewardship
+                        ? "Regional Retail Pressure"
+                        : "Regional Freight Overload"
+                ) && $0.detail.contains("developed")
+            })
+
+            try buildFirstValid(.park, in: &state)
+            advanceDays(&state, days: 1)
+            XCTAssertEqual(state.progression?.secondAct?.phase, .qualification)
+            XCTAssertFalse(state.tiles.contains {
+                $0.kind == kind && $0.condition < 0.4
+            })
+            XCTAssertEqual(state.tiles.filter {
+                $0.kind == kind && $0.condition >= 0.4 && $0.condition < 0.75
+            }.count, 1)
+            XCTAssertTrue(state.messages.contains {
+                $0.title == (
+                    route == .commercialStewardship
+                        ? "Regional Main Street Recovery"
+                        : "Regional Freight Recovery"
+                ) && $0.detail.contains("visible recovery record")
+            })
+
+            if route == .commercialStewardship {
+                commerce = state
+            } else {
+                industry = state
+            }
+        }
+    }
+
     func testSecondActLegacyDecodeAndEveryPhaseRoundTripExactly() throws {
         let newCity = CityGameState.newCity(seed: 42)
         XCTAssertNil(newCity.progression?.secondAct)
@@ -1297,8 +1466,21 @@ final class GameplayLoopTests: XCTestCase {
             advance(&state, cycles: 1)
             if condition(state) { return state.tick }
         }
-        XCTFail("Expected scenario condition within \(maximumCycles) cycles")
+        XCTFail(
+            "Expected scenario condition within \(maximumCycles) cycles: \(scenarioSummary(state))"
+        )
         return state.tick
+    }
+
+    private func scenarioSummary(_ state: CityGameState) -> String {
+        let analytics = CityAnalytics(state: state)
+        let zoneSummary = state.tiles
+            .filter { [.residential, .commercial, .industrial].contains($0.kind) }
+            .map {
+                "\($0.kind.title.prefix(1))L\($0.level):occ\($0.occupancy):cond\(String(format: "%.2f", $0.condition))"
+            }
+            .joined(separator: ",")
+        return "tick=\(state.tick) treasury=\(state.treasury) balance=\(analytics.projectedBalance) happiness=\(String(format: "%.1f", state.happiness)) reserve=\(String(format: "%.2f", analytics.utilityReserve)) demand=R\(String(format: "%.2f", state.demand.residential))/C\(String(format: "%.2f", state.demand.commercial))/I\(String(format: "%.2f", state.demand.industrial)) charter=\(analytics.townCharterStatusText) zones=[\(zoneSummary)]"
     }
 
     private func qualifyingTown() throws -> CityGameState {

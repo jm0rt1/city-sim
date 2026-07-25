@@ -79,7 +79,16 @@ struct CityAnalytics {
     }
 
     var pollutionPressure: Double {
-        min(100, Double(count(.industrial)) * 8 + Double(count(.powerPlant)) * 20)
+        let industrial = activeTiles.filter { $0.kind == .industrial }
+        let levelGrowth = industrial.reduce(0) {
+            $0 + max(0, $1.level - 1)
+        }
+        return min(
+            100,
+            Double(industrial.count) * 8
+                + Double(levelGrowth) * 2
+                + Double(count(.powerPlant)) * 20
+        )
     }
 
     var serviceBuildings: Int {

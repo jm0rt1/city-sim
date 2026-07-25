@@ -95,10 +95,18 @@ enum CitySimulation {
     static func projectedRevenue(in state: CityGameState) -> Double {
         let active = activeTiles(in: state)
         let counts = Dictionary(grouping: active, by: \.kind).mapValues(\.count)
+        let commercialLevelGrowth = active
+            .filter { $0.kind == .commercial }
+            .reduce(0) { $0 + max(0, $1.level - 1) }
+        let industrialLevelGrowth = active
+            .filter { $0.kind == .industrial }
+            .reduce(0) { $0 + max(0, $1.level - 1) }
         return (Double(state.population) * residentRevenueBase
                 + Double(state.jobs) * employedResidentRevenueBase) * state.taxRate
             + Double(counts[.commercial] ?? 0) * commercialRevenue
             + Double(counts[.industrial] ?? 0) * industrialRevenue
+            + Double(commercialLevelGrowth) * 45
+            + Double(industrialLevelGrowth) * 60
     }
 
     static func projectedUpkeep(in state: CityGameState) -> Double {
@@ -196,12 +204,22 @@ enum CitySimulation {
         let jobCapacity = jobCapacity(in: state)
         state.powerCapacity = (counts[.powerPlant] ?? 0) * powerCapacityPerPlant
         state.waterCapacity = (counts[.waterTower] ?? 0) * waterCapacityPerTower
-        let commercialExpansion = max(0, (counts[.commercial] ?? 0) - 1)
-        let industrialExpansion = max(0, (counts[.industrial] ?? 0) - 1)
+        let commercialTiles = active.filter { $0.kind == .commercial }
+        let industrialTiles = active.filter { $0.kind == .industrial }
+        let commercialExpansion = max(0, commercialTiles.count - 1)
+        let industrialExpansion = max(0, industrialTiles.count - 1)
+        let commercialLevelGrowth = commercialTiles.reduce(0) {
+            $0 + max(0, $1.level - 1)
+        }
+        let industrialLevelGrowth = industrialTiles.reduce(0) {
+            $0 + max(0, $1.level - 1)
+        }
         state.powerUsed = Int(Double(state.population) * 0.82)
             + commercialExpansion * 7 + industrialExpansion * 20
+            + commercialLevelGrowth * 2 + industrialLevelGrowth * 2
         state.waterUsed = Int(Double(state.population) * 0.74)
             + commercialExpansion * 5 + industrialExpansion * 12
+            + commercialLevelGrowth + industrialLevelGrowth
         let workforceTarget = max(1, state.population * 7 / 10)
         state.jobs = min(jobCapacity, workforceTarget)
 
@@ -210,7 +228,12 @@ enum CitySimulation {
         let employment = min(1, Double(jobCapacity) / Double(workforceTarget))
         let parkBonus = min(12, Double(counts[.park] ?? 0) * 3)
         let services = min(10, Double((counts[.fireStation] ?? 0) + (counts[.policeStation] ?? 0) + (counts[.school] ?? 0)) * 2.5)
-        let pollution = min(26, Double(counts[.industrial] ?? 0) * 3.5 + Double(counts[.powerPlant] ?? 0) * 4)
+        let pollution = min(
+            26,
+            Double(industrialTiles.count) * 3.5
+                + Double(industrialLevelGrowth) * 0.5
+                + Double(counts[.powerPlant] ?? 0) * 4
+        )
         let taxPressure = max(0, state.taxRate - 0.10) * 140
         let shortagePressure = max(0, 0.98 - utilityCoverage) * 100
         let targetHappiness = 32 + utilityCoverage * 18 + employment * 16
@@ -273,16 +296,198 @@ enum CitySimulation {
     }
 
     private static func maybeUpgrade(_ state: inout CityGameState) {
-        guard state.tick % 20 == 0 else { return }
-        for index in state.tiles.indices {
-            let tile = state.tiles[index]
-            guard [.residential, .commercial, .industrial].contains(tile.kind), tile.level < 4,
-                  tile.constructionProgress >= 1, tile.occupancy > 150, state.happiness > 58 else { continue }
-            state.tiles[index].level += 1
-            state.tiles[index].constructionProgress = 0.6
-            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "Neighborhood Upgraded", detail: "Strong demand has attracted denser development."), at: 0)
-            break
+        let charterReviewActive = !(state.progression?.townCharterAwarded ?? false)
+            && (state.progression?.townCharterQualifyingCycles ?? 0) > 0
+        let regionalReviewActive = state.progression?.secondAct?.phase == .qualification
+            && (state.progression?.secondAct?.qualifyingCycles ?? 0) > 0
+        guard state.tick % 64 == 0,
+              state.treasury >= 5_000,
+              projectedBalance(in: state) >= 0,
+              utilityCoverage(in: state) >= 1,
+              !charterReviewActive,
+              !regionalReviewActive
+        else { return }
+
+        let strategyKind: BuildingKind? = switch state.progression?.strategy?.committedStrategy {
+        case .commercialStewardship: .commercial
+        case .industrialExpansion: .industrial
+        case nil: nil
         }
+        let candidates = state.tiles.indices.filter { index in
+            let tile = state.tiles[index]
+            guard [.residential, .commercial, .industrial].contains(tile.kind),
+                  strategyKind == nil || tile.kind == strategyKind,
+                  tile.level < maximumDevelopmentLevel(for: tile.kind),
+                  tile.constructionProgress >= 1,
+                  tile.condition >= 0.75,
+                  state.happiness >= minimumDevelopmentHappiness(for: tile.kind),
+                  developmentDemand(for: tile.kind, in: state) >= minimumDevelopmentDemand(for: tile.kind),
+                  preservesDevelopmentCashflow(afterDeveloping: tile.kind, in: state),
+                  preservesProgressionUtilityReserve(afterDeveloping: tile.kind, in: state)
+            else { return false }
+
+            let utilization = Double(tile.occupancy)
+                / Double(max(1, developmentCapacity(for: tile.kind, level: tile.level)))
+            return utilization >= minimumDevelopmentUtilization(for: tile.level)
+        }
+        guard let index = candidates.sorted(by: { lhs, rhs in
+            let left = state.tiles[lhs]
+            let right = state.tiles[rhs]
+            let leftPreferred = left.kind == strategyKind
+            let rightPreferred = right.kind == strategyKind
+            if leftPreferred != rightPreferred { return leftPreferred }
+
+            let leftUtilization = Double(left.occupancy)
+                / Double(max(1, developmentCapacity(for: left.kind, level: left.level)))
+            let rightUtilization = Double(right.occupancy)
+                / Double(max(1, developmentCapacity(for: right.kind, level: right.level)))
+            if leftUtilization != rightUtilization {
+                return leftUtilization > rightUtilization
+            }
+            if left.level != right.level { return left.level < right.level }
+            if left.coordinate.y != right.coordinate.y {
+                return left.coordinate.y < right.coordinate.y
+            }
+            return left.coordinate.x < right.coordinate.x
+        }).first else { return }
+
+        state.tiles[index].level += 1
+        state.tiles[index].constructionProgress = 0.6
+        let upgraded = state.tiles[index]
+        post(
+            CityMessage(
+                tick: state.tick,
+                severity: .good,
+                title: "Neighborhood Upgraded",
+                detail: "\(upgraded.kind.title) at block \(upgraded.coordinate.x + 1), \(upgraded.coordinate.y + 1) reached level \(upgraded.level) because occupancy and demand stayed strong. Capacity and the tax base increased, but developed levels also add upkeep\(upgraded.kind == .industrial ? ", pollution," : "") and utility load."
+            ),
+            to: &state
+        )
+    }
+
+    private static func developmentCapacity(for kind: BuildingKind, level: Int) -> Int {
+        switch kind {
+        case .residential: 280 * max(1, level)
+        case .commercial, .industrial: jobCapacity(for: kind) * max(1, level)
+        default: 0
+        }
+    }
+
+    private static func maximumDevelopmentLevel(for kind: BuildingKind) -> Int {
+        switch kind {
+        case .commercial: 2
+        case .residential, .industrial: 3
+        default: 1
+        }
+    }
+
+    private static func developmentDemand(for kind: BuildingKind, in state: CityGameState) -> Double {
+        switch kind {
+        case .residential: state.demand.residential
+        case .commercial: state.demand.commercial
+        case .industrial: state.demand.industrial
+        default: 0
+        }
+    }
+
+    private static func minimumDevelopmentDemand(for kind: BuildingKind) -> Double {
+        switch kind {
+        case .residential: 0.45
+        case .commercial: 0.38
+        case .industrial: 0.34
+        default: 1
+        }
+    }
+
+    private static func minimumDevelopmentHappiness(for kind: BuildingKind) -> Double {
+        switch kind {
+        case .residential: 52
+        case .commercial: 50
+        case .industrial: 42
+        default: 100
+        }
+    }
+
+    private static func minimumDevelopmentUtilization(for level: Int) -> Double {
+        switch level {
+        case 1: 0.30
+        case 2: 0.38
+        default: 0.45
+        }
+    }
+
+    private static func preservesProgressionUtilityReserve(
+        afterDeveloping kind: BuildingKind,
+        in state: CityGameState
+    ) -> Bool {
+        let addedPower: Int
+        let addedWater: Int
+        switch kind {
+        case .commercial:
+            addedPower = 2
+            addedWater = 1
+        case .industrial:
+            addedPower = 2
+            addedWater = 1
+        default:
+            addedPower = 0
+            addedWater = 0
+        }
+
+        let milestonePopulation = (state.progression?.townCharterAwarded ?? false) ? 525 : 500
+        let addedJobCapacity = jobCapacity(for: kind)
+        let reachablePopulation = min(
+            housingCapacity(in: state),
+            max(120, (jobCapacity(in: state) + addedJobCapacity) * 2)
+        )
+        let targetPopulation = max(milestonePopulation, reachablePopulation)
+        let nonPopulationPower = state.powerUsed - Int(Double(state.population) * 0.82)
+        let nonPopulationWater = state.waterUsed - Int(Double(state.population) * 0.74)
+        let active = activeTiles(in: state)
+        let anticipatedExpansionPower: Int
+        let anticipatedExpansionWater: Int
+        if !(state.progression?.townCharterAwarded ?? false) {
+            switch state.progression?.strategy?.committedStrategy {
+            case .commercialStewardship:
+                let remainingLots = max(0, 3 - active.filter { $0.kind == .commercial }.count)
+                anticipatedExpansionPower = remainingLots * 7
+                anticipatedExpansionWater = remainingLots * 5
+            case .industrialExpansion:
+                let remainingLots = max(0, 3 - active.filter { $0.kind == .industrial }.count)
+                anticipatedExpansionPower = remainingLots * 20
+                anticipatedExpansionWater = remainingLots * 12
+            case nil:
+                anticipatedExpansionPower = 0
+                anticipatedExpansionWater = 0
+            }
+        } else {
+            anticipatedExpansionPower = 0
+            anticipatedExpansionWater = 0
+        }
+        let forecastPowerUsed = Int(Double(targetPopulation) * 0.82)
+            + nonPopulationPower + anticipatedExpansionPower + addedPower
+        let forecastWaterUsed = Int(Double(targetPopulation) * 0.74)
+            + nonPopulationWater + anticipatedExpansionWater + addedWater
+        let powerReserve = Double(state.powerCapacity - forecastPowerUsed)
+            / Double(max(1, state.powerCapacity))
+        let waterReserve = Double(state.waterCapacity - forecastWaterUsed)
+            / Double(max(1, state.waterCapacity))
+        let requiredReserve: Double
+        if !(state.progression?.townCharterAwarded ?? false) {
+            requiredReserve = 0.16
+        } else if state.progression?.strategy?.committedStrategy == .industrialExpansion {
+            requiredReserve = 0.21
+        } else {
+            requiredReserve = 0.19
+        }
+        return min(powerReserve, waterReserve) >= requiredReserve
+    }
+
+    private static func preservesDevelopmentCashflow(
+        afterDeveloping kind: BuildingKind,
+        in state: CityGameState
+    ) -> Bool {
+        projectedBalance(in: state) - kind.upkeep * upkeepMultiplier >= 0
     }
 
     private static func maybeCreateEvent(_ state: inout CityGameState) {
@@ -917,6 +1122,11 @@ enum CitySimulation {
             state.treasury -= 4_500
             state.happiness = max(0, state.happiness - 5)
             state.approval = max(0, state.approval - 3)
+            let stressedLots = applyDevelopmentPressure(
+                to: .commercial,
+                reductions: [0.66, 0.46],
+                in: &state
+            )
             let remedy = resolution == .commercialTaxRelief
                 ? "Lower tax to 8% or less to restore local foot traffic."
                 : "Build a third park to create a regional public-realm draw."
@@ -925,7 +1135,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .critical,
                     title: "Regional Retail Pressure",
-                    detail: "Competitors pulled spending away, costing $4,500 and 5 happiness. \(remedy)"
+                    detail: "Competitors pulled spending away, costing $4,500 and 5 happiness. \(stressedLots) developed storefront parcels now show the damage. \(remedy)"
                 ),
                 to: &state
             )
@@ -933,6 +1143,11 @@ enum CitySimulation {
             state.treasury -= 7_000
             state.happiness = max(0, state.happiness - 8)
             state.approval = max(0, state.approval - 5)
+            let stressedLots = applyDevelopmentPressure(
+                to: .industrial,
+                reductions: [0.72, 0.52],
+                in: &state
+            )
             let remedy = resolution == .industrialUtilityExpansion
                 ? "Add a third Power Plant and Water Tower to prove regional reserve capacity."
                 : "Build a third park to buffer freight pollution."
@@ -941,7 +1156,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .critical,
                     title: "Regional Freight Overload",
-                    detail: "The grid audit exposed freight strain, costing $7,000 and 8 happiness. \(remedy)"
+                    detail: "The grid audit exposed freight strain, costing $7,000 and 8 happiness. \(stressedLots) developed industrial parcels now show the damage. \(remedy)"
                 ),
                 to: &state
             )
@@ -974,12 +1189,17 @@ enum CitySimulation {
             state.treasury += 2_000
             state.happiness = min(100, state.happiness + 4)
             state.approval = min(100, state.approval + 3)
+            let weatheredLots = repairDevelopmentPressure(
+                for: .commercial,
+                improvement: 0.34,
+                in: &state
+            )
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .good,
                     title: "Regional Main Street Recovery",
-                    detail: "\(resolution == .commercialTaxRelief ? "Tax relief restored local foot traffic." : "The third park became a regional destination.") The city recovered $2,000 and 4 happiness; now sustain 525 residents, $12,000, 56 happiness, 92% employment, balanced cashflow, and 18% utility reserve for 12 days."
+                    detail: "\(resolution == .commercialTaxRelief ? "Tax relief restored local foot traffic." : "The third park became a regional destination.") Repairs stabilized the storefronts while \(weatheredLots) parcel remains weathered as a visible recovery record. The city recovered $2,000 and 4 happiness; now sustain 525 residents, $12,000, 56 happiness, 92% employment, balanced cashflow, and 18% utility reserve for 12 days."
                 ),
                 to: &state
             )
@@ -987,16 +1207,70 @@ enum CitySimulation {
             state.treasury += 4_000
             state.happiness = min(100, state.happiness + 3)
             state.approval = min(100, state.approval + 2)
+            let weatheredLots = repairDevelopmentPressure(
+                for: .industrial,
+                improvement: 0.36,
+                in: &state
+            )
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .good,
                     title: "Regional Freight Recovery",
-                    detail: "\(resolution == .industrialUtilityExpansion ? "New utility reserves passed the grid audit." : "The third park buffered freight pollution.") The city recovered $4,000 and 3 happiness; now sustain 525 residents, $15,000, 44 happiness, 92% employment, balanced cashflow, and 20% utility reserve for 12 days."
+                    detail: "\(resolution == .industrialUtilityExpansion ? "New utility reserves passed the grid audit." : "The third park buffered freight pollution.") Repairs stabilized the freight district while \(weatheredLots) parcel remains weathered as a visible recovery record. The city recovered $4,000 and 3 happiness; now sustain 525 residents, $15,000, 44 happiness, 92% employment, balanced cashflow, and 20% utility reserve for 12 days."
                 ),
                 to: &state
             )
         }
+    }
+
+    @discardableResult
+    private static func applyDevelopmentPressure(
+        to kind: BuildingKind,
+        reductions: [Double],
+        in state: inout CityGameState
+    ) -> Int {
+        let candidates = state.tiles.indices
+            .filter {
+                state.tiles[$0].kind == kind
+                    && state.tiles[$0].constructionProgress >= 1
+            }
+            .sorted {
+                let left = state.tiles[$0]
+                let right = state.tiles[$1]
+                if left.level != right.level { return left.level > right.level }
+                if left.coordinate.y != right.coordinate.y {
+                    return left.coordinate.y < right.coordinate.y
+                }
+                return left.coordinate.x < right.coordinate.x
+            }
+        let affected = min(candidates.count, reductions.count)
+        for offset in 0..<affected {
+            let index = candidates[offset]
+            state.tiles[index].condition = max(
+                0.2,
+                state.tiles[index].condition - reductions[offset]
+            )
+        }
+        return affected
+    }
+
+    @discardableResult
+    private static func repairDevelopmentPressure(
+        for kind: BuildingKind,
+        improvement: Double,
+        in state: inout CityGameState
+    ) -> Int {
+        for index in state.tiles.indices
+        where state.tiles[index].kind == kind && state.tiles[index].condition < 1 {
+            state.tiles[index].condition = min(
+                1,
+                state.tiles[index].condition + improvement
+            )
+        }
+        return state.tiles.filter {
+            $0.kind == kind && $0.condition >= 0.4 && $0.condition < 0.75
+        }.count
     }
 
     private static func applyRegionalCapitalPayoff(

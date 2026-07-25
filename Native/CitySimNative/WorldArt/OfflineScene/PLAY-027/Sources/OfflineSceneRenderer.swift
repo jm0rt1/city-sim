@@ -1556,7 +1556,13 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
             )
         }
-        if abs(entrance.porchLateralOffset) >= 10 {
+        // source-v01/v02 retained this renderer-created corner return for
+        // exact rejection reproduction. Source-v03 replaces it with explicit
+        // direction-specific dock-house massing in the scene descriptor.
+        if
+            descriptor.sourceRevision != "source-v03",
+            abs(entrance.porchLateralOffset) >= 10
+        {
             let returnNormal: [Double]
             let returnCenter: [Double]
             switch facade.direction {

@@ -4,14 +4,14 @@
     "chimney" : {
       "dimensions" : [
         4.5,
-        17,
+        19,
         4.5
       ],
       "materialID" : "chimney-metal",
       "positionWorld" : [
-        -20,
-        37.5,
-        14
+        14,
+        39.5,
+        18
       ]
     },
     "depth" : 56,
@@ -22,114 +22,130 @@
     "massBlocks" : [
       {
         "dimensions" : [
-          52,
+          42,
           26,
-          48
+          52
         ],
-        "id" : "i01-main-assembly-hall",
+        "id" : "i01-west-setback-hall",
         "materialID" : "corrugated-steel-sage",
         "positionWorld" : [
-          0,
+          5,
           15,
-          2
+          0
         ]
       },
       {
         "dimensions" : [
-          18,
-          20,
-          16
+          12,
+          22,
+          32
         ],
-        "id" : "i01-brick-service-wing",
+        "id" : "i01-west-dock-house",
         "materialID" : "brick-industrial-umber",
         "positionWorld" : [
-          17,
-          12.199999999999999,
-          -16
+          -22,
+          13.199999999999999,
+          0
         ]
       }
     ],
-    "massingProfile" : "low-high-bay-loading-works",
+    "massingProfile" : "directional-setback-high-bay-loading-works",
     "roofHeight" : 10,
     "roofMaterialID" : "roof-industrial-charcoal",
     "roofOverhang" : 1,
     "roofVolumes" : [
       {
         "dimensions" : [
-          17,
+          42,
           9,
-          48
+          17
         ],
-        "id" : "i01-saw-bay-west",
+        "id" : "i01-west-roof-north",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
-          -17.5,
+          5,
           32.799999999999997,
-          2
+          -17.5
         ],
         "shape" : "hip",
         "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
-          17,
+          42,
           9,
-          48
+          17
         ],
-        "id" : "i01-saw-bay-center",
+        "id" : "i01-west-roof-center",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
-          0,
+          5,
           33,
-          2
+          0
         ],
         "shape" : "hip",
         "trimMaterialID" : "concrete-industrial-warm"
       },
       {
         "dimensions" : [
-          17,
+          42,
           9,
-          48
+          17
         ],
-        "id" : "i01-saw-bay-east",
+        "id" : "i01-west-roof-south",
         "materialID" : "roof-industrial-charcoal",
         "positionWorld" : [
-          17.5,
+          5,
           33.200000000000003,
-          2
+          17.5
         ],
         "shape" : "hip",
         "trimMaterialID" : "concrete-industrial-warm"
+      },
+      {
+        "dimensions" : [
+          12,
+          5,
+          32
+        ],
+        "id" : "i01-west-dock-roof",
+        "materialID" : "roof-industrial-charcoal",
+        "positionWorld" : [
+          -22,
+          27,
+          0
+        ],
+        "shape" : "flat-parapet",
+        "trimMaterialID" : "hazard-yellow"
       }
     ],
     "trimBands" : [
       {
         "dimensions" : [
-          53,
+          43,
           1.3999999999999999,
-          49
+          53
         ],
-        "id" : "i01-concrete-datum",
+        "id" : "i01-west-main-datum",
         "materialID" : "concrete-industrial-warm",
         "positionWorld" : [
-          0,
+          5,
           9.3000000000000007,
-          2
+          0
         ]
       },
       {
         "dimensions" : [
-          52.5,
+          12.5,
           1.2,
-          48.5
+          33
         ],
-        "id" : "i01-eave-safety-band",
+        "id" : "i01-west-dock-header",
         "materialID" : "hazard-yellow",
         "positionWorld" : [
-          0,
-          27.100000000000001,
-          2
+          -22,
+          23.100000000000001,
+          0
         ]
       }
     ],
@@ -367,19 +383,19 @@
         {
           "centersWorld" : [
             [
-              -25.699999999999999,
-              23.5,
-              17
+              -27.199999999999999,
+              20.5,
+              10
             ],
             [
-              -25.699999999999999,
-              23.5,
-              -17
+              -27.199999999999999,
+              20.5,
+              -10
             ]
           ],
           "floor" : 1,
           "height" : 5.5,
-          "id" : "w-west-clerestory",
+          "id" : "west-dockhouse-clerestory-v3",
           "materialID" : "industrial-glass",
           "sillHeight" : 18,
           "width" : 7
@@ -642,11 +658,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v02"
+    "sourceRevisionBinding" : "source-v03"
   },
-  "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v2",
+  "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v3",
   "schema" : 2,
-  "sourceRevision" : "source-v02",
+  "sourceRevision" : "source-v03",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",

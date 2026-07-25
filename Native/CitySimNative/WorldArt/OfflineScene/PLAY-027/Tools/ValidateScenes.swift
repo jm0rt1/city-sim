@@ -475,10 +475,44 @@ enum ValidateScenesMain {
             } else {
                 baselineLight = descriptor.light
             }
-            if let building = baselineBuilding,
-                building != descriptor.building
-            {
-                itemFailures.append("building envelope drift across directions")
+            if let building = baselineBuilding {
+                if family == "industrial" {
+                    let stableEnvelope =
+                        building.width == descriptor.building.width
+                        && building.depth == descriptor.building.depth
+                        && building.foundationHeight
+                            == descriptor.building.foundationHeight
+                        && building.floorHeight
+                            == descriptor.building.floorHeight
+                        && building.floors == descriptor.building.floors
+                        && building.wallHeight
+                            == descriptor.building.wallHeight
+                        && building.roofHeight
+                            == descriptor.building.roofHeight
+                        && building.roofOverhang
+                            == descriptor.building.roofOverhang
+                        && building.wallMaterialID
+                            == descriptor.building.wallMaterialID
+                        && building.trimMaterialID
+                            == descriptor.building.trimMaterialID
+                        && building.roofMaterialID
+                            == descriptor.building.roofMaterialID
+                        && building.foundationMaterialID
+                            == descriptor.building.foundationMaterialID
+                        && building.massingProfile
+                            == descriptor.building.massingProfile
+                        && building.usesLegacyDomesticDetails
+                            == descriptor.building.usesLegacyDomesticDetails
+                    if !stableEnvelope {
+                        itemFailures.append(
+                            "industrial stable building envelope drift across directions"
+                        )
+                    }
+                } else if building != descriptor.building {
+                    itemFailures.append(
+                        "building envelope drift across directions"
+                    )
+                }
             } else {
                 baselineBuilding = descriptor.building
             }

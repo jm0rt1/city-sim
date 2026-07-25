@@ -34,3 +34,23 @@ deterministic quantizer advances from floor-bucket midpoints to nearest
 converges. No scene geometry, materials, camera, light, shadow, registration,
 or compositor layout changes. The coherent set advances to `source-v03` and
 must pass fresh cross-process identity before normalization.
+
+## Source-v03 four-view set
+
+**Disposition:** rejected after normalization
+
+All four raw sources passed byte identity against two additional native
+processes per direction. Raw validation passed four unique pixels, opaque
+chroma fields, flat corners, and common non-chroma bounds. The unchanged
+deterministic normalizer also produced twelve unique, repeatable LOD files.
+Native validation then found three visible magenta-spill pixels in each block
+LOD. Neighborhood and city LODs had zero spill, but the block failure rejects
+the complete normalized set.
+
+All raw, normalized, renderer, normalizer, and validation evidence is retained.
+The nearest-entry repair changed the established palette and exposed the edge
+regression. The next repair keeps the established midpoint palette but shifts
+its bucket boundary by eight values, which still converges the observed
+`191/192` unstable pair. No geometry, material, camera, light, shadow,
+registration, normalizer, or review-tool change is permitted. The coherent set
+advances to `source-v04`.

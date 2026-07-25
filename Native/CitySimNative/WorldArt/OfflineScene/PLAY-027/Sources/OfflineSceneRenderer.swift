@@ -1939,10 +1939,10 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
             // SceneKit's Metal snapshot can alternate a shaded sample across
             // an exact floor-bucket boundary in otherwise identical process
-            // invocations. Round to the nearest 32-value palette entry so the
-            // observed 191/192 boundary pair converges to the same value while
-            // retaining nine stable levels per channel for the small-scale
-            // authored palette.
+            // invocations. Shift the existing midpoint palette boundary by
+            // eight values so the observed 191/192 pair converges while the
+            // established 16,48,...,240 palette remains intact for the
+            // deterministic normalizer's edge-despill behavior.
             let step = 32
             for pixel in stride(from: 0, to: storage.count, by: 4) {
                 if
@@ -1957,7 +1957,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                     let value = Int(storage[pixel + channel])
                     let quantized = min(
                         255,
-                        ((value + step / 2) / step) * step
+                        ((value + step / 4) / step) * step + step / 2
                     )
                     storage[pixel + channel] = UInt8(quantized)
                 }

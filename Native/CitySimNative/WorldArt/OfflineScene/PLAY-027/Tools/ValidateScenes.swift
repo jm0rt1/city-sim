@@ -8,7 +8,7 @@ enum ValidationError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: validate-scenes --repository-root <path> --scenes-root <path> --schema <path> --fingerprint <path> --materials <path> --preview-plan <path> --report <path>"
+            return "usage: validate-scenes --repository-root <path> --scenes-root <path> --schema <path> --fingerprint <path> --materials <path> --preview-plan <path> --report <path> [--descriptor-schema 1|2]"
         case let .invalid(message):
             return message
         }
@@ -124,6 +124,15 @@ enum ValidateScenesMain {
             "--calibration-id",
             in: arguments
         ) ?? "residential-l01-variant-0-directional-v03"
+        let expectedDescriptorSchema = Int(
+            optionalArgument("--descriptor-schema", in: arguments) ?? "1"
+        ) ?? 1
+        guard expectedDescriptorSchema == 1 || expectedDescriptorSchema == 2
+        else {
+            throw ValidationError.invalid(
+                "descriptor schema must be 1 or 2"
+            )
+        }
         let directions = ["north", "east", "south", "west"]
         let expectedEdges: [String: [[Double]]] = [
             "north": [[768, 640], [1024, 768]],
@@ -171,8 +180,35 @@ enum ValidateScenesMain {
             let digest = try sha256(sceneURL)
             var itemFailures: [String] = []
 
-            if descriptor.schema != 1 || descriptor.task != "PLAY-027" {
+            if descriptor.schema != expectedDescriptorSchema
+                || descriptor.task != "PLAY-027"
+            {
                 itemFailures.append("schema/task mismatch")
+            }
+            do {
+                let sampling = try DescriptorSamplingResolver.resolve(
+                    descriptor: descriptor
+                )
+                if sampling.descriptorSchema != expectedDescriptorSchema {
+                    itemFailures.append(
+                        "effective sampling schema mismatch"
+                    )
+                }
+                if expectedDescriptorSchema == 2
+                    && (
+                        sampling.contractID
+                            != DescriptorSamplingResolver.schema2ContractV3ID
+                        || sampling.purpose != "source-authority"
+                    )
+                {
+                    itemFailures.append(
+                        "source-authority schema-2 v3 sampling mismatch"
+                    )
+                }
+            } catch {
+                itemFailures.append(
+                    "descriptor sampling contract invalid: \(error)"
+                )
             }
             if descriptor.logicalBuildingID != logicalBuildingID
                 || descriptor.family != family
@@ -251,7 +287,8 @@ enum ValidateScenesMain {
                 || descriptor.camera.yawDegrees != 45
                 || descriptor.camera.elevationDegrees != 30
                 || descriptor.camera.renderViewportPixels != [1536, 1024]
-                || descriptor.camera.oversamplingFactor != 2
+                || descriptor.camera.oversamplingFactor
+                    != (expectedDescriptorSchema == 2 ? 4 : 2)
                 || descriptor.camera.sourceGroundCenter != [768, 768]
                 || descriptor.camera.postProjectionOffsetPixels != [0, 256]
             {

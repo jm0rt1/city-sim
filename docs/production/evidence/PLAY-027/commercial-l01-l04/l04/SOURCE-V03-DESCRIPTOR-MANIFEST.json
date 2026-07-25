@@ -1,0 +1,71 @@
+{
+  "authoredGeometryChangedFromSourceV02" : false,
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+  "descriptorCount" : 4,
+  "logicalBuildingID" : "commercial_l04",
+  "productionSelected" : false,
+  "samples" : [
+    {
+      "archivedSourceV02File" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/descriptors/north/scene.json",
+      "archivedSourceV02SHA256" : "2fadeafa36fc14b017a7f818bc3690f95e16d66ab5befe234517cc596d524559",
+      "authoredPayloadChanged" : false,
+      "direction" : "north",
+      "immutableAuthoredPayloadSHA256" : "2c811cb1e5176df62954e30aa68c54f1f0253140252380b73a9f607f657d3293",
+      "logicalBuildingID" : "commercial_l04",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "commercial-l04-v0-north-premium-tower-geometry-v3",
+      "sourceRevision" : "source-v03",
+      "sourceV03DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/north/scene.json",
+      "sourceV03DescriptorSHA256" : "5ca733355a30d12fa90d754d3d0f0682f8e2cd534b5f9022661268b675fd3842"
+    },
+    {
+      "archivedSourceV02File" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/descriptors/east/scene.json",
+      "archivedSourceV02SHA256" : "252e000de6e5b99916df44a6265cc64784a5585b3ab3e2967ebf483cb59340ee",
+      "authoredPayloadChanged" : false,
+      "direction" : "east",
+      "immutableAuthoredPayloadSHA256" : "71e0109039ecfa2c14fd718eab4d42659bad2e7cd17c5c87f9eebf844fa44076",
+      "logicalBuildingID" : "commercial_l04",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "commercial-l04-v0-east-premium-tower-geometry-v3",
+      "sourceRevision" : "source-v03",
+      "sourceV03DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/east/scene.json",
+      "sourceV03DescriptorSHA256" : "96d83408cc43763264ef904c01194aab667295701b11ff1ceb5e98649be2b071"
+    },
+    {
+      "archivedSourceV02File" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/descriptors/south/scene.json",
+      "archivedSourceV02SHA256" : "7dd786a7322320653cb7f40b200e5942384a5c986d2439ea5e3f9b1c1c59230c",
+      "authoredPayloadChanged" : false,
+      "direction" : "south",
+      "immutableAuthoredPayloadSHA256" : "687edad32810872c51cf9f4c4718b4275e70186812b99c28e56eb0bc09878a3e",
+      "logicalBuildingID" : "commercial_l04",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "commercial-l04-v0-south-premium-tower-geometry-v3",
+      "sourceRevision" : "source-v03",
+      "sourceV03DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/south/scene.json",
+      "sourceV03DescriptorSHA256" : "f1eef527eb6dcaf8938bf710b75e1dd9a49ed5b1c76737f9775083443decf985"
+    },
+    {
+      "archivedSourceV02File" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/source-v02-rejected/descriptors/west/scene.json",
+      "archivedSourceV02SHA256" : "7ec24286982735476cc377dd3420bec2beafd905ac5443bc1cc0cc390bff27cc",
+      "authoredPayloadChanged" : false,
+      "direction" : "west",
+      "immutableAuthoredPayloadSHA256" : "16410d5d7cda16609f93ba56372a506c94cbb386c264d51433bbf9854eeefcfe",
+      "logicalBuildingID" : "commercial_l04",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "commercial-l04-v0-west-premium-tower-geometry-v3",
+      "sourceRevision" : "source-v03",
+      "sourceV03DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l04/variant-0/west/scene.json",
+      "sourceV03DescriptorSHA256" : "27231848c0576d737f73c8d3a5c14a7a71a890bd850b7ce34574a5934556539b"
+    }
+  ],
+  "samplingPurpose" : "source-authority",
+  "schema" : 1,
+  "sourceRevision" : "source-v03",
+  "task" : "PLAY-027",
+  "uniqueDescriptorHashCount" : 4,
+  "uniqueSceneGeometryIDCount" : 4
+}

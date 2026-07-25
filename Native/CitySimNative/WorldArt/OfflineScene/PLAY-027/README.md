@@ -37,8 +37,12 @@ that exact base:
 commercial_l04/variant-0/{north,east,south,west}
 ```
 
-Commercial L4 remains non-shipping and requires independent review before any
-production selection. Industrial source production remains unauthorized.
+The schema-2 v3 sampling contract was independently approved at
+`52599472fddb12723650d15489a2779d22de288c`, with its frozen regression packet
+at `a337a4f8b56c849f15d6be5833d1d22553f58d69`. Exactly one Commercial L4
+`source-v03` N/E/S/W set is authorized on that contract. It remains
+non-shipping and requires independent review before any production selection.
+Industrial source production remains unauthorized.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -264,8 +268,8 @@ payload. It never edits an accepted descriptor or source record.
 
 Residential L1 and Residential L2-L4 have passed their independent source-art
 gates. Commercial L1, Commercial L2, and Commercial L3 are accepted as
-non-shipping source-art authority. Commercial L4 alone is authorized from
-`71655d5dbaf8a56fa287e68b5b99159ee4ba6144` for governed source production and
-independent review. Industrial, additional variants, renderer ingestion,
-packaging, and production selection remain blocked without further integration
-authority.
+non-shipping source-art authority. Commercial L4 `source-v03` alone is
+authorized on the independently approved schema-2 v3 sampling contract for
+governed source production and independent review. Industrial, additional
+variants, renderer ingestion, packaging, and production selection remain
+blocked without further integration authority.

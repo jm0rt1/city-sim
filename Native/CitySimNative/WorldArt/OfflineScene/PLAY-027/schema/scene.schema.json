@@ -41,13 +41,14 @@
       "minLength": 1
     },
     "logicalBuildingID": {
-      "const": "residential_l01"
+      "pattern": "^residential_l0[1-4]$"
     },
     "family": {
       "const": "residential"
     },
     "level": {
-      "const": 1
+      "minimum": 1,
+      "maximum": 4
     },
     "variantID": {
       "const": "variant-0"
@@ -219,6 +220,69 @@
         "roofHeight",
         "roofOverhang",
         "chimney"
+      ],
+      "properties": {
+        "massingProfile": {
+          "type": "string"
+        },
+        "massBlocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/massBlock"
+          }
+        },
+        "roofVolumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/roofVolume"
+          }
+        },
+        "trimBands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trimBand"
+          }
+        },
+        "usesLegacyDomesticDetails": {
+          "type": "boolean"
+        }
+      }
+    },
+    "massBlock": {
+      "type": "object",
+      "required": [
+        "id",
+        "dimensions",
+        "positionWorld",
+        "materialID"
+      ]
+    },
+    "roofVolume": {
+      "type": "object",
+      "required": [
+        "id",
+        "shape",
+        "dimensions",
+        "positionWorld",
+        "materialID",
+        "trimMaterialID"
+      ],
+      "properties": {
+        "shape": {
+          "enum": [
+            "hip",
+            "flat-parapet"
+          ]
+        }
+      }
+    },
+    "trimBand": {
+      "type": "object",
+      "required": [
+        "id",
+        "dimensions",
+        "positionWorld",
+        "materialID"
       ]
     },
     "facade": {
@@ -230,6 +294,26 @@
         "materialID",
         "hasEntrance",
         "windowBays"
+      ],
+      "properties": {
+        "windowRhythms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/windowRhythm"
+          }
+        }
+      }
+    },
+    "windowRhythm": {
+      "type": "object",
+      "required": [
+        "id",
+        "centersWorld",
+        "width",
+        "height",
+        "sillHeight",
+        "floor",
+        "materialID"
       ]
     },
     "entrance": {
@@ -254,7 +338,17 @@
         "porchWidth",
         "porchColumnWidth",
         "porchLateralOffset"
-      ]
+      ],
+      "properties": {
+        "style": {
+          "enum": [
+            "domestic-porch",
+            "walkup-stoop",
+            "courtyard-portal",
+            "urban-lobby"
+          ]
+        }
+      }
     },
     "prop": {
       "type": "object",

@@ -253,32 +253,77 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         )
         scene.rootNode.addChildNode(foundation)
 
-        let walls = try boxNode(
-            name: "wall-mass",
-            dimensions: [
-                descriptor.building.width,
-                descriptor.building.wallHeight,
-                descriptor.building.depth,
-            ],
-            position: [
-                0,
-                descriptor.building.foundationHeight
-                    + descriptor.building.wallHeight / 2,
-                0,
-            ],
-            materialID: descriptor.building.wallMaterialID
-        )
-        scene.rootNode.addChildNode(walls)
+        if let massBlocks = descriptor.building.massBlocks,
+            !massBlocks.isEmpty
+        {
+            for block in massBlocks {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: block.id,
+                        dimensions: block.dimensions,
+                        position: block.positionWorld,
+                        materialID: block.materialID
+                    )
+                )
+            }
+            for band in descriptor.building.trimBands ?? [] {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: band.id,
+                        dimensions: band.dimensions,
+                        position: band.positionWorld,
+                        materialID: band.materialID
+                    )
+                )
+            }
+            for roof in descriptor.building.roofVolumes ?? [] {
+                try addRoofVolume(roof, to: scene)
+            }
+        } else {
+            let walls = try boxNode(
+                name: "wall-mass",
+                dimensions: [
+                    descriptor.building.width,
+                    descriptor.building.wallHeight,
+                    descriptor.building.depth,
+                ],
+                position: [
+                    0,
+                    descriptor.building.foundationHeight
+                        + descriptor.building.wallHeight / 2,
+                    0,
+                ],
+                materialID: descriptor.building.wallMaterialID
+            )
+            scene.rootNode.addChildNode(walls)
 
-        try addCornices(descriptor, to: scene)
-        try addCornerQuoins(descriptor, to: scene)
-        try addRoof(descriptor, to: scene)
-        try addDormer(descriptor, to: scene)
+            try addCornices(descriptor, to: scene)
+            try addCornerQuoins(descriptor, to: scene)
+            try addRoof(descriptor, to: scene)
+            try addDormer(descriptor, to: scene)
+        }
         try addChimney(descriptor, to: scene)
 
         for facade in descriptor.facades {
             for bay in facade.windowBays {
                 try addWindow(bay, facade: facade.direction, to: scene)
+            }
+            for rhythm in facade.windowRhythms ?? [] {
+                for (index, center) in rhythm.centersWorld.enumerated() {
+                    try addWindow(
+                        WindowBayDescriptor(
+                            id: rhythm.id + "-\(index)",
+                            centerWorld: center,
+                            width: rhythm.width,
+                            height: rhythm.height,
+                            sillHeight: rhythm.sillHeight,
+                            floor: rhythm.floor,
+                            materialID: rhythm.materialID
+                        ),
+                        facade: facade.direction,
+                        to: scene
+                    )
+                }
             }
         }
         try addEntrance(descriptor, to: scene)
@@ -288,6 +333,112 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         try addLights(descriptor, to: scene)
         addCamera(descriptor, to: scene)
         return scene
+    }
+
+    private func addRoofVolume(
+        _ roof: RoofVolumeDescriptor,
+        to scene: SCNScene
+    ) throws {
+        guard roof.dimensions.count == 3, roof.positionWorld.count == 3 else {
+            throw OfflineRendererError.invalid(
+                "roof volume requires three dimensions and position values"
+            )
+        }
+        switch roof.shape {
+        case "hip":
+            let geometry = SCNPyramid(
+                width: roof.dimensions[0],
+                height: roof.dimensions[1],
+                length: roof.dimensions[2]
+            )
+            geometry.firstMaterial = try materials.material(roof.materialID)
+            let node = SCNNode(geometry: geometry)
+            node.name = roof.id
+            node.position = SCNVector3(
+                roof.positionWorld[0],
+                roof.positionWorld[1],
+                roof.positionWorld[2]
+            )
+            node.castsShadow = true
+            scene.rootNode.addChildNode(node)
+        case "flat-parapet":
+            let slabHeight = min(1.5, max(0.8, roof.dimensions[1] * 0.22))
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: roof.id + "-slab",
+                    dimensions: [
+                        roof.dimensions[0],
+                        slabHeight,
+                        roof.dimensions[2],
+                    ],
+                    position: [
+                        roof.positionWorld[0],
+                        roof.positionWorld[1]
+                            - roof.dimensions[1] / 2 + slabHeight / 2,
+                        roof.positionWorld[2],
+                    ],
+                    materialID: roof.materialID
+                )
+            )
+            let parapetHeight = max(1.8, roof.dimensions[1] - slabHeight)
+            let parapetY =
+                roof.positionWorld[1]
+                + roof.dimensions[1] / 2
+                - parapetHeight / 2
+            let halfWidth = roof.dimensions[0] / 2
+            let halfDepth = roof.dimensions[2] / 2
+            for (suffix, dimensions, position) in [
+                (
+                    "north",
+                    [roof.dimensions[0], parapetHeight, 1.0],
+                    [
+                        roof.positionWorld[0],
+                        parapetY,
+                        roof.positionWorld[2] - halfDepth,
+                    ]
+                ),
+                (
+                    "south",
+                    [roof.dimensions[0], parapetHeight, 1.0],
+                    [
+                        roof.positionWorld[0],
+                        parapetY,
+                        roof.positionWorld[2] + halfDepth,
+                    ]
+                ),
+                (
+                    "east",
+                    [1.0, parapetHeight, roof.dimensions[2]],
+                    [
+                        roof.positionWorld[0] + halfWidth,
+                        parapetY,
+                        roof.positionWorld[2],
+                    ]
+                ),
+                (
+                    "west",
+                    [1.0, parapetHeight, roof.dimensions[2]],
+                    [
+                        roof.positionWorld[0] - halfWidth,
+                        parapetY,
+                        roof.positionWorld[2],
+                    ]
+                ),
+            ] {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: roof.id + "-parapet-" + suffix,
+                        dimensions: dimensions,
+                        position: position,
+                        materialID: roof.trimMaterialID
+                    )
+                )
+            }
+        default:
+            throw OfflineRendererError.invalid(
+                "unsupported roof volume shape: \(roof.shape)"
+            )
+        }
     }
 
     private func boxNode(
@@ -655,6 +806,15 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
         else {
             throw OfflineRendererError.invalid("entrance facade is missing")
+        }
+        if let style = entrance.style, style != "domestic-porch" {
+            try addDensityEntrance(
+                descriptor,
+                facade: facade,
+                style: style,
+                to: scene
+            )
+            return
         }
         let outward: [Double]
         switch facade.direction {
@@ -1114,6 +1274,242 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         }
     }
 
+    private func addDensityEntrance(
+        _ descriptor: SceneDescriptor,
+        facade: FacadeDescriptor,
+        style: String,
+        to scene: SCNScene
+    ) throws {
+        guard [
+            "walkup-stoop",
+            "courtyard-portal",
+            "urban-lobby",
+        ].contains(style) else {
+            throw OfflineRendererError.invalid(
+                "unsupported density entrance style: \(style)"
+            )
+        }
+        let entrance = descriptor.entrance
+        let outward: [Double]
+        switch facade.direction {
+        case "north": outward = [0, 0, -1]
+        case "east": outward = [1, 0, 0]
+        case "south": outward = [0, 0, 1]
+        case "west": outward = [-1, 0, 0]
+        default:
+            throw OfflineRendererError.invalid("invalid facade direction")
+        }
+        let horizontal = facade.direction == "north"
+            || facade.direction == "south"
+        let tangent = horizontal
+            ? [1.0, 0.0, 0.0]
+            : [0.0, 0.0, 1.0]
+        let base = entrance.baseWorld
+        let doorCenter = [
+            base[0] + outward[0] * entrance.depth / 2,
+            base[1] + entrance.height / 2,
+            base[2] + outward[2] * entrance.depth / 2,
+        ]
+        let doorDimensions = horizontal
+            ? [entrance.width, entrance.height, entrance.depth]
+            : [entrance.depth, entrance.height, entrance.width]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-" + style + "-door",
+                dimensions: doorDimensions,
+                position: doorCenter,
+                materialID: entrance.doorMaterialID
+            )
+        )
+
+        let portalWidth = entrance.width
+            + (style == "urban-lobby" ? 8 : 5)
+        let portalHeight = entrance.height
+            + (style == "courtyard-portal" ? 9 : 6)
+        let portalDepth = entrance.depth + 1.2
+        let sideWidth = style == "urban-lobby" ? 2.2 : 1.5
+        for side in [-1.0, 1.0] {
+            let offset = side * (portalWidth / 2 - sideWidth / 2)
+            let dimensions = horizontal
+                ? [sideWidth, portalHeight, portalDepth]
+                : [portalDepth, portalHeight, sideWidth]
+            let position = [
+                doorCenter[0] + tangent[0] * offset,
+                base[1] + portalHeight / 2,
+                doorCenter[2] + tangent[2] * offset,
+            ]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-\(style)-portal-side-\(side)",
+                    dimensions: dimensions,
+                    position: position,
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+        }
+        let lintelDimensions = horizontal
+            ? [portalWidth, 2.2, portalDepth]
+            : [portalDepth, 2.2, portalWidth]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-" + style + "-lintel",
+                dimensions: lintelDimensions,
+                position: [
+                    doorCenter[0],
+                    base[1] + portalHeight - 1.1,
+                    doorCenter[2],
+                ],
+                materialID: entrance.surroundMaterialID
+            )
+        )
+        let transomDimensions = horizontal
+            ? [entrance.width * 0.82, 3.2, entrance.depth + 1.4]
+            : [entrance.depth + 1.4, 3.2, entrance.width * 0.82]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-" + style + "-transom",
+                dimensions: transomDimensions,
+                position: [
+                    doorCenter[0],
+                    base[1] + entrance.height + 2.2,
+                    doorCenter[2],
+                ],
+                materialID: "window-warm"
+            )
+        )
+
+        let stepHeight = descriptor.building.foundationHeight
+            / Double(entrance.stepCount)
+        for level in 0..<entrance.stepCount {
+            let remaining = entrance.stepCount - level
+            let run = Double(remaining) * entrance.stepRun
+            let stepCenter = [
+                base[0] + outward[0] * run / 2,
+                stepHeight / 2 + Double(level) * stepHeight,
+                base[2] + outward[2] * run / 2,
+            ]
+            let stepWidth = entrance.width
+                + 3.5 + Double(remaining) * 0.8
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-" + style + "-step-\(level)",
+                    dimensions: horizontal
+                        ? [stepWidth, stepHeight, run]
+                        : [run, stepHeight, stepWidth],
+                    position: stepCenter,
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+        }
+
+        let canopyCenter = [
+            base[0] + outward[0] * entrance.canopyDepth / 2
+                + tangent[0] * entrance.porchLateralOffset,
+            base[1] + entrance.height + 5.2,
+            base[2] + outward[2] * entrance.canopyDepth / 2
+                + tangent[2] * entrance.porchLateralOffset,
+        ]
+        let canopyDimensions = horizontal
+            ? [entrance.porchWidth, 1.5, entrance.canopyDepth]
+            : [entrance.canopyDepth, 1.5, entrance.porchWidth]
+        scene.rootNode.addChildNode(
+            try boxNode(
+                name: facade.direction + "-" + style + "-canopy",
+                dimensions: canopyDimensions,
+                position: canopyCenter,
+                materialID: descriptor.building.roofMaterialID
+            )
+        )
+
+        for side in [-1.0, 1.0] {
+            let tangentOffset =
+                side
+                * (entrance.porchWidth / 2
+                    - entrance.porchColumnWidth)
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-\(style)-canopy-column-\(side)",
+                    dimensions: [
+                        entrance.porchColumnWidth,
+                        entrance.height + 4.8,
+                        entrance.porchColumnWidth,
+                    ],
+                    position: [
+                        base[0]
+                            + outward[0] * (entrance.canopyDepth - 0.8)
+                            + tangent[0]
+                                * (entrance.porchLateralOffset
+                                    + tangentOffset),
+                        descriptor.building.foundationHeight
+                            + (entrance.height + 4.8) / 2,
+                        base[2]
+                            + outward[2] * (entrance.canopyDepth - 0.8)
+                            + tangent[2]
+                                * (entrance.porchLateralOffset
+                                    + tangentOffset),
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+        }
+
+        if abs(entrance.porchLateralOffset) > 0 {
+            let returnSign =
+                entrance.porchLateralOffset > 0 ? 1.0 : -1.0
+            let returnNormal = [
+                tangent[0] * returnSign,
+                0.0,
+                tangent[2] * returnSign,
+            ]
+            let returnCenter = [
+                canopyCenter[0]
+                    + returnNormal[0] * entrance.porchWidth / 2,
+                descriptor.building.foundationHeight + 7,
+                canopyCenter[2]
+                    + returnNormal[2] * entrance.porchWidth / 2,
+            ]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-" + style + "-return-frame",
+                    dimensions: horizontal
+                        ? [
+                            entrance.porchColumnWidth,
+                            entrance.height + 6,
+                            entrance.canopyDepth * 0.62,
+                        ]
+                        : [
+                            entrance.canopyDepth * 0.62,
+                            entrance.height + 6,
+                            entrance.porchColumnWidth,
+                        ],
+                    position: returnCenter,
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+            let lanternDimensions = horizontal
+                ? [0.9, 5.4, 5.0]
+                : [5.0, 5.4, 0.9]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-" + style + "-return-lantern",
+                    dimensions: lanternDimensions,
+                    position: [
+                        returnCenter[0] + returnNormal[0] * 0.6,
+                        descriptor.building.foundationHeight + 10,
+                        returnCenter[2] + returnNormal[2] * 0.6,
+                    ],
+                    materialID: "window-warm"
+                )
+            )
+        }
+    }
+
     private func addProp(
         _ prop: PropDescriptor,
         to scene: SCNScene
@@ -1221,6 +1617,84 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
             bayRoofNode.castsShadow = true
             scene.rootNode.addChildNode(bayRoofNode)
+        case "balcony-stack":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "balcony stack dimensions must contain width, height, depth"
+                )
+            }
+            let facesXAxis =
+                abs(prop.positionWorld[0]) > abs(prop.positionWorld[2])
+            let levelCount = max(2, Int((prop.dimensions[1] / 11).rounded()))
+            let levelSpacing = prop.dimensions[1] / Double(levelCount)
+            for level in 0..<levelCount {
+                let y =
+                    prop.positionWorld[1]
+                    - prop.dimensions[1] / 2
+                    + Double(level) * levelSpacing
+                    + 1
+                let slabDimensions = facesXAxis
+                    ? [prop.dimensions[2], 0.8, prop.dimensions[0]]
+                    : [prop.dimensions[0], 0.8, prop.dimensions[2]]
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: prop.id + "-slab-\(level)",
+                        dimensions: slabDimensions,
+                        position: [
+                            prop.positionWorld[0],
+                            y,
+                            prop.positionWorld[2],
+                        ],
+                        materialID: prop.materialID
+                    )
+                )
+                let railDimensions = facesXAxis
+                    ? [0.8, 3.4, prop.dimensions[0]]
+                    : [prop.dimensions[0], 3.4, 0.8]
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name: prop.id + "-rail-\(level)",
+                        dimensions: railDimensions,
+                        position: [
+                            prop.positionWorld[0],
+                            y + 2.0,
+                            prop.positionWorld[2],
+                        ],
+                        materialID: "limestone-warm"
+                    )
+                )
+            }
+        case "roof-pavilion":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "roof pavilion dimensions must contain width, height, depth"
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-mass",
+                    dimensions: prop.dimensions,
+                    position: prop.positionWorld,
+                    materialID: prop.materialID
+                )
+            )
+            let pavilionRoof = SCNPyramid(
+                width: prop.dimensions[0] + 2,
+                height: 4,
+                length: prop.dimensions[2] + 2
+            )
+            pavilionRoof.firstMaterial = try materials.material(
+                "roof-copper"
+            )
+            let pavilionRoofNode = SCNNode(geometry: pavilionRoof)
+            pavilionRoofNode.name = prop.id + "-roof"
+            pavilionRoofNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1] + prop.dimensions[1] / 2 + 2,
+                prop.positionWorld[2]
+            )
+            pavilionRoofNode.castsShadow = true
+            scene.rootNode.addChildNode(pavilionRoofNode)
         default:
             throw OfflineRendererError.invalid(
                 "unsupported prop kind: \(prop.kind)"

@@ -59,6 +59,29 @@ struct ChimneyDescriptor: Codable, Equatable {
     let materialID: String
 }
 
+struct MassBlockDescriptor: Codable, Equatable {
+    let id: String
+    let dimensions: [Double]
+    let positionWorld: [Double]
+    let materialID: String
+}
+
+struct RoofVolumeDescriptor: Codable, Equatable {
+    let id: String
+    let shape: String
+    let dimensions: [Double]
+    let positionWorld: [Double]
+    let materialID: String
+    let trimMaterialID: String
+}
+
+struct TrimBandDescriptor: Codable, Equatable {
+    let id: String
+    let dimensions: [Double]
+    let positionWorld: [Double]
+    let materialID: String
+}
+
 struct BuildingDescriptor: Codable, Equatable {
     let width: Double
     let depth: Double
@@ -73,11 +96,26 @@ struct BuildingDescriptor: Codable, Equatable {
     let roofMaterialID: String
     let foundationMaterialID: String
     let chimney: ChimneyDescriptor
+    let massingProfile: String?
+    let massBlocks: [MassBlockDescriptor]?
+    let roofVolumes: [RoofVolumeDescriptor]?
+    let trimBands: [TrimBandDescriptor]?
+    let usesLegacyDomesticDetails: Bool?
 }
 
 struct WindowBayDescriptor: Codable, Equatable {
     let id: String
     let centerWorld: [Double]
+    let width: Double
+    let height: Double
+    let sillHeight: Double
+    let floor: Int
+    let materialID: String
+}
+
+struct WindowRhythmDescriptor: Codable, Equatable {
+    let id: String
+    let centersWorld: [[Double]]
     let width: Double
     let height: Double
     let sillHeight: Double
@@ -92,6 +130,7 @@ struct FacadeDescriptor: Codable, Equatable {
     let materialID: String
     let hasEntrance: Bool
     let windowBays: [WindowBayDescriptor]
+    let windowRhythms: [WindowRhythmDescriptor]?
 }
 
 struct EntranceDescriptor: Codable, Equatable {
@@ -114,6 +153,7 @@ struct EntranceDescriptor: Codable, Equatable {
     let porchWidth: Double
     let porchColumnWidth: Double
     let porchLateralOffset: Double
+    let style: String?
 }
 
 struct PropDescriptor: Codable, Equatable {

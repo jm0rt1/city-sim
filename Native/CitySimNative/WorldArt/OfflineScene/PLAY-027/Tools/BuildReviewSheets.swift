@@ -12,11 +12,44 @@ enum ReviewSheetError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: build-review-sheets --repository-root <path> --north <raw-png> --east <raw-png> --south <raw-png> --west <raw-png> --north-normalized <block-png> --east-normalized <block-png> --south-normalized <block-png> --west-normalized <block-png> --source-sheet <png> --actual-sheet <png> --grayscale-sheet <png> --footprint-sheet <png> --footprint-grayscale-sheet <png> --zoom-sheet <png> --manifest <json>"
+            return "usage: build-review-sheets --repository-root <path> --north <raw-png> --east <raw-png> --south <raw-png> --west <raw-png> --north-normalized <block-png> --east-normalized <block-png> --south-normalized <block-png> --west-normalized <block-png> --source-sheet <png> --actual-sheet <png> --grayscale-sheet <png> --footprint-sheet <png> --footprint-grayscale-sheet <png> --zoom-sheet <png> --manifest <json> [--calibration-id <id>] [--registered-crop x,y,width,height]"
         case let .invalid(message):
             return message
         }
     }
+}
+
+func optionalSheetArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
+}
+
+func parseReviewRect(_ value: String?) throws -> CGRect {
+    guard let value else {
+        return CGRect(x: 341, y: 341, width: 342, height: 256)
+    }
+    let components = value.split(separator: ",").compactMap {
+        Double($0)
+    }
+    guard components.count == 4 else {
+        throw ReviewSheetError.invalid(
+            "registered crop must be x,y,width,height"
+        )
+    }
+    return CGRect(
+        x: components[0],
+        y: components[1],
+        width: components[2],
+        height: components[3]
+    )
 }
 
 func sheetArgument(_ name: String, in arguments: [String]) throws -> String {
@@ -298,6 +331,13 @@ enum BuildReviewSheetsMain {
                 in: arguments
             )
         ).standardizedFileURL
+        let calibrationID = optionalSheetArgument(
+            "--calibration-id",
+            in: arguments
+        ) ?? "residential-l01-variant-0-directional-v03"
+        let registeredReviewRect = try parseReviewRect(
+            optionalSheetArgument("--registered-crop", in: arguments)
+        )
 
         let rawImages = try inputURLs.map(loadImage)
         guard rawImages.allSatisfy({
@@ -316,12 +356,6 @@ enum BuildReviewSheetsMain {
             )
         }
         let grayscaleImages = try reviewImages.map(grayscaleImage)
-        let registeredReviewRect = CGRect(
-            x: 341,
-            y: 341,
-            width: 342,
-            height: 256
-        )
         let registeredReviewImages = try cropImages(
             reviewImages,
             sourceRect: registeredReviewRect
@@ -348,21 +382,34 @@ enum BuildReviewSheetsMain {
             background: [0.14, 0.14, 0.14, 1],
             interpolation: .high
         )
+        let actualScale = 0.421875
+        let footprintPanelSize = CGSize(
+            width: round(registeredReviewRect.width * actualScale),
+            height: round(registeredReviewRect.height * actualScale)
+        )
+        let zoomPanelSize = CGSize(
+            width: 512,
+            height: round(
+                512
+                    * registeredReviewRect.height
+                    / registeredReviewRect.width
+            )
+        )
         let footprintSheet = try buildSheet(
             images: registeredReviewImages,
-            panelSize: CGSize(width: 144, height: 108),
+            panelSize: footprintPanelSize,
             background: [0.14, 0.15, 0.16, 1],
             interpolation: .none
         )
         let zoomSheet = try buildSheet(
             images: registeredReviewImages,
-            panelSize: CGSize(width: 512, height: 384),
+            panelSize: zoomPanelSize,
             background: [0.14, 0.15, 0.16, 1],
             interpolation: .none
         )
         let footprintGrayscaleSheet = try buildSheet(
             images: registeredGrayscaleImages,
-            panelSize: CGSize(width: 144, height: 108),
+            panelSize: footprintPanelSize,
             background: [0.14, 0.14, 0.14, 1],
             interpolation: .none
         )
@@ -405,8 +452,7 @@ enum BuildReviewSheetsMain {
         let manifest: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
-            "calibrationID":
-                "residential-l01-variant-0-directional-v03",
+            "calibrationID": calibrationID,
             "directionOrder": directions,
             "layout": [
                 "columns": 2,
@@ -454,11 +500,27 @@ enum BuildReviewSheetsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "sha256": try sheetSHA256(footprintSheetURL),
-                "normalizedBlockCrop": [341, 341, 342, 256],
-                "correspondingRawSourceCrop": [512, 512, 512, 384],
-                "sheetPixels": [288, 216],
-                "panelPixels": [144, 108],
-                "scale": 0.421875,
+                "normalizedBlockCrop": [
+                    Int(registeredReviewRect.origin.x),
+                    Int(registeredReviewRect.origin.y),
+                    Int(registeredReviewRect.width),
+                    Int(registeredReviewRect.height),
+                ],
+                "correspondingRawSourceCrop": [
+                    Int(round(registeredReviewRect.origin.x * 1.5)),
+                    Int(round(registeredReviewRect.origin.y * 1.5)),
+                    Int(round(registeredReviewRect.width * 1.5)),
+                    Int(round(registeredReviewRect.height * 1.5)),
+                ],
+                "sheetPixels": [
+                    Int(footprintPanelSize.width * 2),
+                    Int(footprintPanelSize.height * 2),
+                ],
+                "panelPixels": [
+                    Int(footprintPanelSize.width),
+                    Int(footprintPanelSize.height),
+                ],
+                "scale": actualScale,
                 "interpolation": "none",
                 "presentation":
                     "fixed descriptor-derived normalized-alpha tile and vertical sprite envelope at native-2x scale",
@@ -471,11 +533,27 @@ enum BuildReviewSheetsMain {
                 "sha256": try sheetSHA256(
                     footprintGrayscaleSheetURL
                 ),
-                "normalizedBlockCrop": [341, 341, 342, 256],
-                "correspondingRawSourceCrop": [512, 512, 512, 384],
-                "sheetPixels": [288, 216],
-                "panelPixels": [144, 108],
-                "scale": 0.421875,
+                "normalizedBlockCrop": [
+                    Int(registeredReviewRect.origin.x),
+                    Int(registeredReviewRect.origin.y),
+                    Int(registeredReviewRect.width),
+                    Int(registeredReviewRect.height),
+                ],
+                "correspondingRawSourceCrop": [
+                    Int(round(registeredReviewRect.origin.x * 1.5)),
+                    Int(round(registeredReviewRect.origin.y * 1.5)),
+                    Int(round(registeredReviewRect.width * 1.5)),
+                    Int(round(registeredReviewRect.height * 1.5)),
+                ],
+                "sheetPixels": [
+                    Int(footprintPanelSize.width * 2),
+                    Int(footprintPanelSize.height * 2),
+                ],
+                "panelPixels": [
+                    Int(footprintPanelSize.width),
+                    Int(footprintPanelSize.height),
+                ],
+                "scale": actualScale,
                 "interpolation": "none",
                 "conversion":
                     "Core Image CIColorControls saturation=0",
@@ -486,11 +564,29 @@ enum BuildReviewSheetsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "sha256": try sheetSHA256(zoomSheetURL),
-                "normalizedBlockCrop": [341, 341, 342, 256],
-                "correspondingRawSourceCrop": [512, 512, 512, 384],
-                "sheetPixels": [1024, 768],
-                "panelPixels": [512, 384],
-                "scale": 1.497076,
+                "normalizedBlockCrop": [
+                    Int(registeredReviewRect.origin.x),
+                    Int(registeredReviewRect.origin.y),
+                    Int(registeredReviewRect.width),
+                    Int(registeredReviewRect.height),
+                ],
+                "correspondingRawSourceCrop": [
+                    Int(round(registeredReviewRect.origin.x * 1.5)),
+                    Int(round(registeredReviewRect.origin.y * 1.5)),
+                    Int(round(registeredReviewRect.width * 1.5)),
+                    Int(round(registeredReviewRect.height * 1.5)),
+                ],
+                "sheetPixels": [
+                    Int(zoomPanelSize.width * 2),
+                    Int(zoomPanelSize.height * 2),
+                ],
+                "panelPixels": [
+                    Int(zoomPanelSize.width),
+                    Int(zoomPanelSize.height),
+                ],
+                "scale":
+                    Double(zoomPanelSize.width)
+                    / Double(registeredReviewRect.width),
                 "interpolation": "none",
                 "presentation":
                     "fixed descriptor-derived normalized-alpha envelope enlarged with nearest-neighbor review scaling",

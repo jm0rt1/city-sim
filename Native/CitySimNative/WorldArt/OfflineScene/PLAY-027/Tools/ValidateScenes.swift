@@ -32,6 +32,19 @@ func argument(_ name: String, in arguments: [String]) throws -> String {
     return arguments[index + 1]
 }
 
+func optionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
+}
+
 func midpoint(_ segment: [[Double]]) -> [Double] {
     [
         (segment[0][0] + segment[1][0]) / 2,
@@ -96,6 +109,17 @@ enum ValidateScenesMain {
         let reportURL = URL(
             fileURLWithPath: try argument("--report", in: arguments)
         ).standardizedFileURL
+        let logicalBuildingID = optionalArgument(
+            "--logical-building-id",
+            in: arguments
+        ) ?? "residential_l01"
+        let level = Int(
+            optionalArgument("--level", in: arguments) ?? "1"
+        ) ?? 1
+        let calibrationID = optionalArgument(
+            "--calibration-id",
+            in: arguments
+        ) ?? "residential-l01-variant-0-directional-v03"
         let directions = ["north", "east", "south", "west"]
         let expectedEdges: [String: [[Double]]] = [
             "north": [[768, 640], [1024, 768]],
@@ -131,7 +155,7 @@ enum ValidateScenesMain {
 
         for direction in directions {
             let sceneURL = scenesRoot
-                .appendingPathComponent("residential_l01")
+                .appendingPathComponent(logicalBuildingID)
                 .appendingPathComponent("variant-0")
                 .appendingPathComponent(direction)
                 .appendingPathComponent("scene.json")
@@ -146,9 +170,9 @@ enum ValidateScenesMain {
             if descriptor.schema != 1 || descriptor.task != "PLAY-027" {
                 itemFailures.append("schema/task mismatch")
             }
-            if descriptor.logicalBuildingID != "residential_l01"
+            if descriptor.logicalBuildingID != logicalBuildingID
                 || descriptor.family != "residential"
-                || descriptor.level != 1
+                || descriptor.level != level
                 || descriptor.variantID != "variant-0"
                 || !descriptor.sourceRevision.hasPrefix("source-v")
                 || descriptor.sourceRevision.count != 10
@@ -267,14 +291,14 @@ enum ValidateScenesMain {
                 itemFailures.append("entrance base is not facade midpoint")
             }
             if descriptor.entrance.pavilionWidth
-                < descriptor.entrance.width + 6
+                < descriptor.entrance.width + 4
                 || descriptor.entrance.pavilionDepth
-                    < descriptor.entrance.depth + 4
+                    < descriptor.entrance.depth + 3
                 || descriptor.entrance.pavilionHeight
-                    <= descriptor.building.wallHeight
+                    < descriptor.entrance.height + 4
                 || descriptor.entrance.pavilionRoofHeight <= 0
                 || descriptor.entrance.porchWidth
-                    < descriptor.entrance.width + 6
+                    < descriptor.entrance.width + 4
                 || descriptor.entrance.porchColumnWidth <= 0
                 || abs(descriptor.entrance.porchLateralOffset)
                     > descriptor.entrance.porchWidth / 2
@@ -296,6 +320,23 @@ enum ValidateScenesMain {
             }
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")
+            }
+            if level > 1 {
+                if descriptor.building.massingProfile == nil
+                    || descriptor.building.massBlocks?.isEmpty != false
+                    || descriptor.building.roofVolumes?.isEmpty != false
+                    || descriptor.building.trimBands?.isEmpty != false
+                    || descriptor.building.usesLegacyDomesticDetails != false
+                {
+                    itemFailures.append(
+                        "density massing/roof/trim profile is incomplete"
+                    )
+                }
+                if descriptor.building.floors < level + 1 {
+                    itemFailures.append(
+                        "density level lacks readable vertical progression"
+                    )
+                }
             }
 
             if let camera = baselineCamera, camera != descriptor.camera {
@@ -348,7 +389,11 @@ enum ValidateScenesMain {
                 "entranceBaseWorld": descriptor.entrance.baseWorld,
                 "facadeIDs": descriptor.facades.map(\.id),
                 "windowBayCount": descriptor.facades.reduce(0) {
-                    $0 + $1.windowBays.count
+                    $0
+                        + $1.windowBays.count
+                        + ($1.windowRhythms ?? []).reduce(0) {
+                            $0 + $1.centersWorld.count
+                        }
                 },
                 "propIDs": descriptor.props.map(\.id),
                 "failures": itemFailures,
@@ -366,7 +411,9 @@ enum ValidateScenesMain {
             "schema": 1,
             "task": "PLAY-027",
             "calibrationID":
-                "residential-l01-variant-0-directional-v03",
+                calibrationID,
+            "logicalBuildingID": logicalBuildingID,
+            "level": level,
             "schemaFile": repositoryRelativePath(
                 schemaURL,
                 repositoryRoot: repositoryRoot

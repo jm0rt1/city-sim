@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "calibrationID": "residential-l01-variant-0-directional-v02",
+  "calibrationID": "residential-l01-variant-0-directional-v03",
   "directionOrder": [
     "north",
     "east",
@@ -28,9 +28,10 @@
       2048
     ],
     "labels": false,
-    "file": "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-source-scale.png"
+    "file": "docs/production/evidence/PLAY-027/offline-calibration-v03/contact-sheets/residential-l01-v0-source-scale.png"
   },
   "native2xActualScale": {
+    "source": "existing deterministic normalized-alpha block LOD",
     "authoritativeSourceDiamondPixels": [
       512,
       256
@@ -39,7 +40,7 @@
       144,
       72
     ],
-    "scale": 0.28125,
+    "scale": 0.421875,
     "panelPixels": [
       432,
       288
@@ -49,7 +50,7 @@
       576
     ],
     "labels": false,
-    "file": "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-native2x.png"
+    "file": "docs/production/evidence/PLAY-027/offline-calibration-v03/contact-sheets/residential-l01-v0-native2x-normalized-alpha.png"
   },
   "grayscaleRecognition": {
     "source": "native2xActualScale",
@@ -59,8 +60,15 @@
       864,
       576
     ],
-    "file": "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-native2x-grayscale.png"
+    "file": "docs/production/evidence/PLAY-027/offline-calibration-v03/contact-sheets/residential-l01-v0-native2x-normalized-alpha-grayscale.png"
   },
-  "reviewManifest": "docs/production/evidence/PLAY-027/offline-calibration-v01/CONTACT-SHEET-ORDER.json",
+  "registeredFootprint": {
+    "normalizedBlockCrop": [341, 341, 342, 256],
+    "correspondingRawSourceCrop": [512, 512, 512, 384],
+    "actualPanelPixels": [144, 108],
+    "zoomPanelPixels": [512, 384],
+    "source": "existing deterministic normalized-alpha block LOD"
+  },
+  "reviewManifest": "docs/production/evidence/PLAY-027/offline-calibration-v03/CONTACT-SHEET-ORDER.json",
   "productionSelected": false
 }

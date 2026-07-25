@@ -12,7 +12,7 @@ enum ReviewSheetError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: build-review-sheets --repository-root <path> --north <png> --east <png> --south <png> --west <png> --source-sheet <png> --actual-sheet <png> --grayscale-sheet <png> --footprint-sheet <png> --footprint-grayscale-sheet <png> --zoom-sheet <png> --manifest <json>"
+            return "usage: build-review-sheets --repository-root <path> --north <raw-png> --east <raw-png> --south <raw-png> --west <raw-png> --north-normalized <block-png> --east-normalized <block-png> --south-normalized <block-png> --west-normalized <block-png> --source-sheet <png> --actual-sheet <png> --grayscale-sheet <png> --footprint-sheet <png> --footprint-grayscale-sheet <png> --zoom-sheet <png> --manifest <json>"
         case let .invalid(message):
             return message
         }
@@ -248,6 +248,14 @@ enum BuildReviewSheetsMain {
                 )
             ).standardizedFileURL
         }
+        let normalizedInputURLs = try directions.map { direction in
+            URL(
+                fileURLWithPath: try sheetArgument(
+                    "--\(direction)-normalized",
+                    in: arguments
+                )
+            ).standardizedFileURL
+        }
         let sourceSheetURL = URL(
             fileURLWithPath: try sheetArgument(
                 "--source-sheet",
@@ -299,13 +307,20 @@ enum BuildReviewSheetsMain {
                 "all source panels must be 1536 x 1024"
             )
         }
-        let reviewImages = try rawImages.map(reviewAlphaImage)
+        let reviewImages = try normalizedInputURLs.map(loadImage)
+        guard reviewImages.allSatisfy({
+            $0.width == 1024 && $0.height == 683
+        }) else {
+            throw ReviewSheetError.invalid(
+                "all normalized review panels must be 1024 x 683 block LOD PNGs"
+            )
+        }
         let grayscaleImages = try reviewImages.map(grayscaleImage)
         let registeredReviewRect = CGRect(
-            x: 512,
-            y: 512,
-            width: 512,
-            height: 384
+            x: 341,
+            y: 341,
+            width: 342,
+            height: 256
         )
         let registeredReviewImages = try cropImages(
             reviewImages,
@@ -372,11 +387,26 @@ enum BuildReviewSheetsMain {
                 "sha256": try sheetSHA256(url),
             ]
         }
+        let normalizedInputRecords = try zip(
+            directions,
+            normalizedInputURLs
+        ).map { direction, url in
+            [
+                "direction": direction,
+                "file": sheetRelativePath(
+                    url,
+                    repositoryRoot: repositoryRoot
+                ),
+                "sha256": try sheetSHA256(url),
+                "pixels": [1024, 683],
+                "lod": "block",
+            ]
+        }
         let manifest: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
             "calibrationID":
-                "residential-l01-variant-0-directional-v02",
+                "residential-l01-variant-0-directional-v03",
             "directionOrder": directions,
             "layout": [
                 "columns": 2,
@@ -385,6 +415,7 @@ enum BuildReviewSheetsMain {
                 "labels": false,
             ],
             "inputs": inputRecords,
+            "normalizedAlphaInputs": normalizedInputRecords,
             "sourceScale": [
                 "file": sheetRelativePath(
                     sourceSheetURL,
@@ -403,9 +434,9 @@ enum BuildReviewSheetsMain {
                 "sha256": try sheetSHA256(actualSheetURL),
                 "sheetPixels": [864, 576],
                 "panelPixels": [432, 288],
-                "scale": 0.28125,
+                "scale": 0.421875,
                 "presentation":
-                    "native review-only exact chroma and shadow decode on neutral background",
+                    "existing deterministic normalized-alpha block output on neutral background",
             ],
             "grayscaleRecognition": [
                 "file": sheetRelativePath(
@@ -423,13 +454,14 @@ enum BuildReviewSheetsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "sha256": try sheetSHA256(footprintSheetURL),
-                "sourceCrop": [512, 512, 512, 384],
+                "normalizedBlockCrop": [341, 341, 342, 256],
+                "correspondingRawSourceCrop": [512, 512, 512, 384],
                 "sheetPixels": [288, 216],
                 "panelPixels": [144, 108],
-                "scale": 0.28125,
+                "scale": 0.421875,
                 "interpolation": "none",
                 "presentation":
-                    "fixed descriptor-derived tile and vertical sprite envelope at native-2x scale",
+                    "fixed descriptor-derived normalized-alpha tile and vertical sprite envelope at native-2x scale",
             ],
             "registeredFootprintGrayscale": [
                 "file": sheetRelativePath(
@@ -439,10 +471,11 @@ enum BuildReviewSheetsMain {
                 "sha256": try sheetSHA256(
                     footprintGrayscaleSheetURL
                 ),
-                "sourceCrop": [512, 512, 512, 384],
+                "normalizedBlockCrop": [341, 341, 342, 256],
+                "correspondingRawSourceCrop": [512, 512, 512, 384],
                 "sheetPixels": [288, 216],
                 "panelPixels": [144, 108],
-                "scale": 0.28125,
+                "scale": 0.421875,
                 "interpolation": "none",
                 "conversion":
                     "Core Image CIColorControls saturation=0",
@@ -453,15 +486,16 @@ enum BuildReviewSheetsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "sha256": try sheetSHA256(zoomSheetURL),
-                "sourceCrop": [512, 512, 512, 384],
+                "normalizedBlockCrop": [341, 341, 342, 256],
+                "correspondingRawSourceCrop": [512, 512, 512, 384],
                 "sheetPixels": [1024, 768],
                 "panelPixels": [512, 384],
-                "scale": 1,
+                "scale": 1.497076,
                 "interpolation": "none",
                 "presentation":
-                    "fixed descriptor-derived tile and vertical sprite envelope at source pixel scale",
+                    "fixed descriptor-derived normalized-alpha envelope enlarged with nearest-neighbor review scaling",
             ],
-            "previewAlphaIsNormalizedOutput": false,
+            "previewAlphaIsNormalizedOutput": true,
             "reviewStatus": "pending-independent-source-art-review",
             "productionSelected": false,
         ]

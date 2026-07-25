@@ -126,7 +126,7 @@ final class NativeMaterialLibrary {
 
         let lineColor = try color(
             specification.baseColorRGBA.enumerated().map { index, value in
-                index == 3 ? value : max(0, value * 0.58)
+                index == 3 ? value : max(0, value * 0.72)
             }
         )
         context.setStrokeColor(lineColor.cgColor)
@@ -370,43 +370,32 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
         _ descriptor: SceneDescriptor,
         to scene: SCNScene
     ) throws {
+        let baseY = descriptor.building.foundationHeight
+            + descriptor.building.wallHeight
+        let roof = SCNPyramid(
+            width: descriptor.building.width
+                + descriptor.building.roofOverhang * 2,
+            height: descriptor.building.roofHeight,
+            length: descriptor.building.depth
+                + descriptor.building.roofOverhang * 2
+        )
+        roof.firstMaterial = try materials.material(
+            descriptor.building.roofMaterialID
+        )
+        let roofNode = SCNNode(geometry: roof)
+        roofNode.name = "domestic-hip-roof"
+        roofNode.position = SCNVector3(
+            0,
+            baseY + descriptor.building.roofHeight / 2,
+            0
+        )
+        roofNode.castsShadow = true
+        scene.rootNode.addChildNode(roofNode)
+
         let halfWidth = descriptor.building.width / 2
             + descriptor.building.roofOverhang
         let halfDepth = descriptor.building.depth / 2
             + descriptor.building.roofOverhang
-        let baseY = descriptor.building.foundationHeight
-            + descriptor.building.wallHeight
-        let ridgeY = baseY + descriptor.building.roofHeight
-        let ridgeHalf = descriptor.building.depth * 0.21
-        let northwest = SCNVector3(-halfWidth, baseY, -halfDepth)
-        let northeast = SCNVector3(halfWidth, baseY, -halfDepth)
-        let southeast = SCNVector3(halfWidth, baseY, halfDepth)
-        let southwest = SCNVector3(-halfWidth, baseY, halfDepth)
-        let ridgeNorth = SCNVector3(0, ridgeY, -ridgeHalf)
-        let ridgeSouth = SCNVector3(0, ridgeY, ridgeHalf)
-        let material = try materials.material(
-            descriptor.building.roofMaterialID
-        )
-        let planes: [(String, [SCNVector3])] = [
-            ("roof-north", [northwest, ridgeNorth, northeast]),
-            (
-                "roof-east",
-                [northeast, ridgeNorth, ridgeSouth, southeast]
-            ),
-            ("roof-south", [southeast, ridgeSouth, southwest]),
-            (
-                "roof-west",
-                [southwest, ridgeSouth, ridgeNorth, northwest]
-            ),
-        ]
-        for (name, vertices) in planes {
-            let geometry = roofPlane(vertices: vertices, material: material)
-            let node = SCNNode(geometry: geometry)
-            node.name = name
-            node.castsShadow = true
-            scene.rootNode.addChildNode(node)
-        }
-
         let fasciaY = baseY + 0.3
         scene.rootNode.addChildNode(
             try boxNode(
@@ -440,53 +429,6 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 materialID: descriptor.building.trimMaterialID
             )
         )
-    }
-
-    private func roofPlane(
-        vertices: [SCNVector3],
-        material: SCNMaterial
-    ) -> SCNGeometry {
-        let first = vertices[0]
-        let second = vertices[1]
-        let third = vertices[2]
-        let firstVector = SIMD3<Double>(
-            Double(second.x - first.x),
-            Double(second.y - first.y),
-            Double(second.z - first.z)
-        )
-        let secondVector = SIMD3<Double>(
-            Double(third.x - first.x),
-            Double(third.y - first.y),
-            Double(third.z - first.z)
-        )
-        var normalVector = simd_normalize(
-            simd_cross(firstVector, secondVector)
-        )
-        if normalVector.y < 0 {
-            normalVector *= -1
-        }
-        let normal = SCNVector3(
-            CGFloat(normalVector.x),
-            CGFloat(normalVector.y),
-            CGFloat(normalVector.z)
-        )
-        let normals = Array(repeating: normal, count: vertices.count)
-        let vertexSource = SCNGeometrySource(vertices: vertices)
-        let normalSource = SCNGeometrySource(normals: normals)
-        let indices: [Int32] = vertices.count == 3
-            ? [0, 1, 2]
-            : [0, 1, 2, 0, 2, 3]
-        let element = SCNGeometryElement(
-            indices: indices,
-            primitiveType: .triangles
-        )
-        let geometry = SCNGeometry(
-            sources: [vertexSource, normalSource],
-            elements: [element]
-        )
-        geometry.firstMaterial = material
-        geometry.firstMaterial?.isDoubleSided = true
-        return geometry
     }
 
     private func addDormer(
@@ -1035,6 +977,45 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
             )
         }
+        let railHeight = descriptor.building.foundationHeight + 3.4
+        let railThickness = max(0.8, entrance.porchColumnWidth * 0.55)
+        for side in [-1.0, 1.0] {
+            let tangentOffset =
+                side
+                * (entrance.porchWidth / 2
+                    - entrance.porchColumnWidth / 2)
+            let railDimensions = horizontal
+                ? [
+                    railThickness,
+                    2.1,
+                    max(4, entrance.canopyDepth - 4),
+                ]
+                : [
+                    max(4, entrance.canopyDepth - 4),
+                    2.1,
+                    railThickness,
+                ]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-porch-side-rail-\(side)",
+                    dimensions: railDimensions,
+                    position: [
+                        base[0]
+                            + outward[0]
+                                * (entrance.canopyDepth / 2 + 1)
+                            + tangent[0] * tangentOffset,
+                        railHeight,
+                        base[2]
+                            + outward[2]
+                                * (entrance.canopyDepth / 2 + 1)
+                            + tangent[2] * tangentOffset,
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+        }
     }
 
     private func addProp(
@@ -1089,6 +1070,61 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
                 scene.rootNode.addChildNode(node)
             }
+        case "domestic-bay-window":
+            let dimensions = prop.dimensions
+            guard dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "domestic bay dimensions must contain width, height, depth"
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-masonry",
+                    dimensions: dimensions,
+                    position: prop.positionWorld,
+                    materialID: prop.materialID
+                )
+            )
+            let facesXAxis =
+                abs(prop.positionWorld[0]) > abs(prop.positionWorld[2])
+            let sign = facesXAxis
+                ? (prop.positionWorld[0] >= 0 ? 1.0 : -1.0)
+                : (prop.positionWorld[2] >= 0 ? 1.0 : -1.0)
+            let windowDimensions = facesXAxis
+                ? [0.8, dimensions[1] * 0.58, dimensions[2] * 0.64]
+                : [dimensions[0] * 0.64, dimensions[1] * 0.58, 0.8]
+            let windowPosition = [
+                prop.positionWorld[0]
+                    + (facesXAxis ? sign * dimensions[0] / 2 : 0),
+                prop.positionWorld[1] + 1,
+                prop.positionWorld[2]
+                    + (facesXAxis ? 0 : sign * dimensions[2] / 2),
+            ]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id + "-window",
+                    dimensions: windowDimensions,
+                    position: windowPosition,
+                    materialID: "window-warm"
+                )
+            )
+            let bayRoof = SCNPyramid(
+                width: dimensions[0] + 2,
+                height: 4,
+                length: dimensions[2] + 2
+            )
+            bayRoof.firstMaterial = try materials.material(
+                "slate-charcoal"
+            )
+            let bayRoofNode = SCNNode(geometry: bayRoof)
+            bayRoofNode.name = prop.id + "-roof"
+            bayRoofNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1] + dimensions[1] / 2 + 2,
+                prop.positionWorld[2]
+            )
+            bayRoofNode.castsShadow = true
+            scene.rootNode.addChildNode(bayRoofNode)
         default:
             throw OfflineRendererError.invalid(
                 "unsupported prop kind: \(prop.kind)"
@@ -1286,8 +1322,9 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
 
         let verticalOffset = descriptor.camera.postProjectionOffsetPixels[1]
         context.interpolationQuality = .high
+        let matteSafeSource = try hardMatteObject(source)
         context.draw(
-            source,
+            matteSafeSource,
             in: CGRect(
                 x: descriptor.camera.postProjectionOffsetPixels[0],
                 y: -verticalOffset,
@@ -1301,6 +1338,58 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
         }
         return try deterministicallyQuantized(composited)
+    }
+
+    private func hardMatteObject(_ image: CGImage) throws -> CGImage {
+        let width = image.width
+        let height = image.height
+        var bytes = [UInt8](repeating: 0, count: width * height * 4)
+        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+        return try bytes.withUnsafeMutableBytes { storage in
+            guard let context = CGContext(
+                data: storage.baseAddress,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: colorSpace,
+                bitmapInfo:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ) else {
+                throw OfflineRendererError.rendering(
+                    "could not allocate matte-safe object context"
+                )
+            }
+            context.interpolationQuality = .none
+            context.draw(
+                image,
+                in: CGRect(x: 0, y: 0, width: width, height: height)
+            )
+            for pixel in stride(from: 0, to: storage.count, by: 4) {
+                let alpha = Int(storage[pixel + 3])
+                guard alpha >= 96 else {
+                    storage[pixel] = 0
+                    storage[pixel + 1] = 0
+                    storage[pixel + 2] = 0
+                    storage[pixel + 3] = 0
+                    continue
+                }
+                for channel in 0..<3 {
+                    let premultiplied = Int(storage[pixel + channel])
+                    storage[pixel + channel] = UInt8(
+                        min(255, premultiplied * 255 / max(1, alpha))
+                    )
+                }
+                storage[pixel + 3] = 255
+            }
+            guard let output = context.makeImage() else {
+                throw OfflineRendererError.rendering(
+                    "could not create matte-safe object"
+                )
+            }
+            return output
+        }
     }
 
     private func deterministicallyQuantized(

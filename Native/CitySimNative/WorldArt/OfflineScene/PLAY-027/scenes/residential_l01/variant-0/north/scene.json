@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "residential-l01-v0-north-geometry-v3",
+  "sceneGeometryID": "residential-l01-v0-north-geometry-v4",
   "logicalBuildingID": "residential_l01",
   "family": "residential",
   "level": 1,
   "variantID": "variant-0",
   "viewDirection": "north",
-  "sourceRevision": "source-v04",
+  "sourceRevision": "source-v05",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {
@@ -30,7 +30,7 @@
   "materialLibrary": {
     "role": "shared-numeric-family-material-library",
     "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l01-v0-materials.json",
-    "sha256": "925242ffa738a9e5711045703e1b10c655c5b7a56f914551883fea2c284f21a9"
+    "sha256": "e4c43681c31287346930339918209731eb7b1af45f7d903c61ef6d72f48a2b4f"
   },
   "registration": {
     "tileBasisPoints": [72, 36],
@@ -74,9 +74,9 @@
     "foundationHeight": 3,
     "floorHeight": 13,
     "floors": 2,
-    "wallHeight": 29,
-    "roofHeight": 14,
-    "roofOverhang": 2,
+    "wallHeight": 30,
+    "roofHeight": 10,
+    "roofOverhang": 1.5,
     "wallMaterialID": "brick-warm-red",
     "trimMaterialID": "limestone-warm",
     "roofMaterialID": "slate-charcoal",
@@ -95,11 +95,11 @@
       "materialID": "brick-warm-red",
       "hasEntrance": true,
       "windowBays": [
-        {"id": "n-f1-left", "centerWorld": [-15, 11.25, -28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "n-f1-right", "centerWorld": [15, 11.25, -28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "n-f2-left", "centerWorld": [-15, 24.25, -28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
-        {"id": "n-f2-center", "centerWorld": [0, 24.25, -28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
-        {"id": "n-f2-right", "centerWorld": [15, 24.25, -28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
+        {"id": "n-f1-left", "centerWorld": [-15, 11.25, -28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "n-f1-right", "centerWorld": [15, 11.25, -28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "n-f2-left", "centerWorld": [-15, 24.25, -28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
+        {"id": "n-f2-center", "centerWorld": [0, 24.25, -28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
+        {"id": "n-f2-right", "centerWorld": [15, 24.25, -28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
       ]
     },
     {
@@ -109,10 +109,10 @@
       "materialID": "brick-warm-red",
       "hasEntrance": false,
       "windowBays": [
-        {"id": "e-f1-north", "centerWorld": [28.2, 11.25, -14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "e-f1-south", "centerWorld": [28.2, 11.25, 14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "e-f2-north", "centerWorld": [28.2, 24.25, -14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
-        {"id": "e-f2-south", "centerWorld": [28.2, 24.25, 14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
+        {"id": "e-f1-north", "centerWorld": [28.2, 11.25, -14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "e-f1-south", "centerWorld": [28.2, 11.25, 14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "e-f2-north", "centerWorld": [28.2, 24.25, -14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
+        {"id": "e-f2-south", "centerWorld": [28.2, 24.25, 14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
       ]
     },
     {
@@ -122,10 +122,10 @@
       "materialID": "brick-warm-red",
       "hasEntrance": false,
       "windowBays": [
-        {"id": "s-f1-left", "centerWorld": [-14, 11.25, 28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "s-f1-right", "centerWorld": [14, 11.25, 28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "s-f2-left", "centerWorld": [-14, 24.25, 28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
-        {"id": "s-f2-right", "centerWorld": [14, 24.25, 28.2], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
+        {"id": "s-f1-left", "centerWorld": [-14, 11.25, 28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "s-f1-right", "centerWorld": [14, 11.25, 28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "s-f2-left", "centerWorld": [-14, 24.25, 28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
+        {"id": "s-f2-right", "centerWorld": [14, 24.25, 28.2], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
       ]
     },
     {
@@ -135,42 +135,43 @@
       "materialID": "brick-warm-red",
       "hasEntrance": false,
       "windowBays": [
-        {"id": "w-f1-south", "centerWorld": [-28.2, 11.25, 14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "w-f1-north", "centerWorld": [-28.2, 11.25, -14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
-        {"id": "w-f2-south", "centerWorld": [-28.2, 24.25, 14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
-        {"id": "w-f2-north", "centerWorld": [-28.2, 24.25, -14], "width": 6.6, "height": 9.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
+        {"id": "w-f1-south", "centerWorld": [-28.2, 11.25, 14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "w-f1-north", "centerWorld": [-28.2, 11.25, -14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 1, "materialID": "window-warm"},
+        {"id": "w-f2-south", "centerWorld": [-28.2, 24.25, 14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"},
+        {"id": "w-f2-north", "centerWorld": [-28.2, 24.25, -14], "width": 8.2, "height": 10.2, "sillHeight": 4.5, "floor": 2, "materialID": "window-warm"}
       ]
     }
   ],
   "entrance": {
     "facadeID": "north-facade",
     "baseWorld": [0, 3, -28],
-    "width": 10,
-    "height": 14,
-    "depth": 1.4,
+    "width": 12,
+    "height": 15,
+    "depth": 1.8,
     "doorMaterialID": "door-deep-green",
     "surroundMaterialID": "limestone-warm",
-    "stepCount": 5,
-    "stepRun": 1.4,
-    "canopyDepth": 8,
+    "stepCount": 6,
+    "stepRun": 2.5,
+    "canopyDepth": 22,
     "hingeSide": "right",
-    "pavilionWidth": 18,
-    "pavilionDepth": 10,
-    "pavilionHeight": 47,
-    "pavilionRoofHeight": 11,
-    "pavilionMaterialID": "limestone-warm",
-    "porchWidth": 20,
+    "pavilionWidth": 22,
+    "pavilionDepth": 9,
+    "pavilionHeight": 31,
+    "pavilionRoofHeight": 8,
+    "pavilionMaterialID": "brick-warm-red",
+    "porchWidth": 28,
     "porchColumnWidth": 1.8
   },
   "props": [
     {"id": "north-left-shrub", "kind": "shrub-cluster", "positionWorld": [-19, 2, -31], "dimensions": [5, 4, 4], "materialID": "planting-evergreen"},
-    {"id": "north-right-flowers", "kind": "flower-bed", "positionWorld": [18, 1, -31], "dimensions": [7, 2, 3], "materialID": "planting-evergreen"}
+    {"id": "north-right-flowers", "kind": "flower-bed", "positionWorld": [18, 1, -31], "dimensions": [7, 2, 3], "materialID": "planting-evergreen"},
+    {"id": "north-south-bay", "kind": "domestic-bay-window", "positionWorld": [-15, 11, 30], "dimensions": [13, 18, 5], "materialID": "limestone-warm"}
   ],
   "occlusionExclusions": [
     {
       "id": "north-entrance-clearance",
       "purpose": "protect declared entrance, steps, and road-facing socket",
-      "polygonWorld": [[-12, -39], [12, -39], [12, -22], [-12, -22]]
+      "polygonWorld": [[-15, -54], [15, -54], [15, -22], [-15, -22]]
     }
   ]
 }

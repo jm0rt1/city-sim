@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "purpose": "non-compositional material reference generation for the Industrial L2 pre-pixel quality reset",
+  "productionSelected": false,
+  "generator": {
+    "provider": "OpenAI built-in ImageGen",
+    "model": "not disclosed by tool response",
+    "threadID": "019f96e0-3793-7542-9172-060a9ca09b0a",
+    "callsPerSwatch": 1,
+    "wholeBuildingGenerationUsed": false
+  },
+  "normalization": {
+    "tool": "/usr/bin/sips",
+    "operation": "--resampleHeightWidth 512 512",
+    "sourcePixels": [1254, 1254],
+    "normalizedPixels": [512, 512],
+    "interpolation": "sips default image resampling",
+    "artEdits": "none"
+  },
+  "swatches": [
+    {
+      "id": "galvanized-corrugated-steel",
+      "callID": "call_KPL62ZFIv6IQeHQrCUSojDnE",
+      "attempt": 1,
+      "prompt": "Create one seamless, tileable, square PBR-style material swatch of weathered galvanized corrugated steel cladding for a credible medium industrial logistics/manufacturing facility. Orthographic front-on material sample only, evenly and diffusely illuminated, neutral color balance, physically plausible fine zinc spangle, restrained oxidation at fasteners and lower ridges, vertical corrugation pitch large enough to read at game-sprite scale, no dramatic highlights. Edge-to-edge repeat with no seams. Non-compositional texture only: no building, facade, entrance, door, window, camera view, cast shadow, road, parcel, text, labels, people, vehicles, or objects. 1024x1024.",
+      "rawFile": "raw/galvanized-corrugated-steel.png",
+      "rawSHA256": "677045ec4bf256b9d1207992062eb900ea677955718044960811ea9a0872b62a",
+      "normalizedFile": "normalized/galvanized-corrugated-steel.png",
+      "normalizedSHA256": "3f7c964486be97b19fca79b8f48333ee9c059f338e70cfb34a1ac2c1205ee105",
+      "physicalScaleWorldMeters": [4.0, 4.0],
+      "disposition": "rejected-for-direct-tiling-retained-for-provenance"
+    },
+    {
+      "id": "aged-cast-concrete",
+      "callID": "call_f7NFy0MHBW5VlXzxeWns8Vg0",
+      "attempt": 1,
+      "prompt": "Create one seamless, tileable, square PBR-style material swatch of restrained aged cast-in-place industrial concrete for a credible medium manufacturing facility. Orthographic front-on material sample only, evenly and diffusely illuminated, neutral warm-gray cement, fine aggregate and subtle formwork grain, sparse shallow pores, faint mineral staining and restrained lower-edge grime distributed so the texture repeats cleanly. Human-scale texture that remains legible when reduced, realistic rather than stylized. Edge-to-edge repeat with no seams. Non-compositional texture only: no building, facade, entrance, door, window, camera view, cast shadow, road, parcel, text, labels, people, vehicles, or objects. 1024x1024.",
+      "rawFile": "raw/aged-cast-concrete.png",
+      "rawSHA256": "f0f8cf72ec250cb2ff86de0d854c8e8a0bca6adc2388dcc1d02bbb64086236b4",
+      "normalizedFile": "normalized/aged-cast-concrete.png",
+      "normalizedSHA256": "1b5e9218fedca7f6c317bb948dfdbb33491ced17f6bcdbc1fa8cd7f91560b8ec",
+      "physicalScaleWorldMeters": [4.0, 4.0],
+      "disposition": "rejected-for-direct-tiling-retained-for-provenance"
+    },
+    {
+      "id": "dark-roof-membrane",
+      "callID": "call_8G1a4iPdDAbIQ0fUeoBf8KBl",
+      "attempt": 1,
+      "prompt": "Create one seamless, tileable, square PBR-style material swatch of dark charcoal industrial TPO/EPDM flat-roof membrane. Orthographic front-on material sample only, evenly and diffusely illuminated, matte low-sheen surface, subtle rolled seams at credible spacing, restrained granulation, faint drainage wear and patch variation without puddles or directional cast shadows. The texture must remain readable when reduced but never look noisy or stylized. Edge-to-edge repeat with no seams. Non-compositional texture only: no roof structure, building, facade, entrance, door, window, camera view, cast shadow, road, parcel, text, labels, people, vehicles, or objects. 1024x1024.",
+      "rawFile": "raw/dark-roof-membrane.png",
+      "rawSHA256": "26093776bf7012c94113b307a026d572da0dd593cae76dc34668878b0b8e5855",
+      "normalizedFile": "normalized/dark-roof-membrane.png",
+      "normalizedSHA256": "c5e6c30df2cf266303bdf69c2017de4d67898f5ef6ddcc1481316b6f9ee421f2",
+      "physicalScaleWorldMeters": [8.0, 8.0],
+      "disposition": "accepted-for-prepixel-material-reference"
+    },
+    {
+      "id": "blue-gray-painted-steel",
+      "callID": "call_v00M0Zz2fIAZLAyvOGf0aSiZ",
+      "attempt": 1,
+      "prompt": "Create one seamless, tileable, square PBR-style material swatch of restrained blue-gray factory-painted steel paneling for a credible medium industrial logistics/manufacturing facility. Orthographic front-on material sample only, evenly and diffusely illuminated, satin low-gloss enamel, very subtle roller/orange-peel texture, fine vertical panel joints at realistic spacing, sparse edge wear and tiny oxidation freckles, no dramatic reflections. Human-scale and readable when reduced, sophisticated and realistic rather than toy-like. Edge-to-edge repeat with no seams. Non-compositional texture only: no building, facade, entrance, door, window, camera view, cast shadow, road, parcel, text, labels, people, vehicles, or objects. 1024x1024.",
+      "rawFile": "raw/blue-gray-painted-steel.png",
+      "rawSHA256": "193ae2729a2866395989fbe4e85876ff7a014eceddd123b31dfa721f528a4b08",
+      "normalizedFile": "normalized/blue-gray-painted-steel.png",
+      "normalizedSHA256": "cdff5e3f387a9efaea845eae44ff6bf6841a2b8d440f3796a060c624259056fb",
+      "physicalScaleWorldMeters": [4.0, 4.0],
+      "disposition": "accepted-for-prepixel-material-reference"
+    }
+  ]
+}

@@ -231,6 +231,15 @@ final class CityScene: SKScene {
             ) && !$0.contains(".generated-v4.")
         }
     }
+    var ambientEnvironmentNamesForTesting: [String] {
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: ambientLayer).filter {
+            $0.hasPrefix("world.environment.")
+                || $0.hasPrefix("district.ground.")
+        }
+    }
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }

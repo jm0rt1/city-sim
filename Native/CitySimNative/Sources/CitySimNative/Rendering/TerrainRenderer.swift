@@ -1030,6 +1030,46 @@ final class TerrainRenderer {
         return path
     }
 
+    private func terrainTexturePath(
+        center: CGPoint,
+        anchor: GridCoordinate,
+        radiusX: CGFloat,
+        radiusY: CGFloat,
+        saltOffset: UInt64 = 0
+    ) -> CGPath {
+        let pointCount = 12
+        let points = (0..<pointCount).map { index in
+            let angle = CGFloat(index) / CGFloat(pointCount) * .pi * 2
+            let radialVariation = 0.78 + WorldVisualSeed.unit(
+                for: anchor,
+                kind: .empty,
+                salt: 0x7E30 + saltOffset + UInt64(index)
+            ) * 0.28
+            return CGPoint(
+                x: center.x + cos(angle) * radiusX * radialVariation,
+                y: center.y + sin(angle) * radiusY * radialVariation
+            )
+        }
+        let path = CGMutablePath()
+        path.move(to: CGPoint(
+            x: (points[pointCount - 1].x + points[0].x) / 2,
+            y: (points[pointCount - 1].y + points[0].y) / 2
+        ))
+        for index in 0..<pointCount {
+            let current = points[index]
+            let next = points[(index + 1) % pointCount]
+            path.addQuadCurve(
+                to: CGPoint(
+                    x: (current.x + next.x) / 2,
+                    y: (current.y + next.y) / 2
+                ),
+                control: current
+            )
+        }
+        path.closeSubpath()
+        return path
+    }
+
     private func fieldCorners(
         minimumX: Int,
         minimumY: Int,

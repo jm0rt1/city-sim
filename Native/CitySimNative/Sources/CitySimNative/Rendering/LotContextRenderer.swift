@@ -293,6 +293,22 @@ final class LotContextRenderer {
         templates.count
     }
 
+    /// Four-neighbor parcels never receive the same immediate site treatment.
+    /// This renderer-owned material choice does not alter building identity,
+    /// occupancy, frontage, or gameplay state.
+    static func districtMaterialVariant(for tile: CityTile) -> Int {
+        let familyOffset: Int = switch tile.kind {
+        case .residential: 0
+        case .commercial: 1
+        case .industrial, .powerPlant, .waterTower: 2
+        case .cityHall, .fireStation, .policeStation, .school: 3
+        case .park: 1
+        case .empty, .road: 0
+        }
+        let value = tile.coordinate.x + tile.coordinate.y * 2 + familyOffset
+        return ((value % 4) + 4) % 4
+    }
+
     private func family(for kind: BuildingKind) -> Family? {
         switch kind {
         case .residential:

@@ -2002,6 +2002,7 @@ final class WorldRenderingTests: XCTestCase {
             scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
+            let network = scene.networkOpportunityViewportOccupancyForTesting()
             let priority = scene.cameraPriorityViewportOccupancyForTesting()
             XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
             XCTAssertLessThanOrEqual(occupied.width, 0.61)

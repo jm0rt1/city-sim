@@ -34,6 +34,12 @@ struct GeneratedResidentialPresentation {
     let presentation: GeneratedWorldPresentation
 }
 
+@MainActor
+struct GeneratedCommercialPresentation {
+    let identity: CommercialGeneratedAssetIdentity
+    let presentation: GeneratedWorldPresentation
+}
+
 /// Loads repo-owned world resources through SwiftPM's resource bundle. The
 /// generated-v4 loader validates page digests, creates descriptor-authorized
 /// subtextures, prefetches one adjacent semantic LOD, and keeps decoded pages
@@ -469,6 +475,41 @@ final class WorldAssetCatalog {
             return nil
         }
         return GeneratedResidentialPresentation(
+            identity: identity,
+            presentation: presentation
+        )
+    }
+
+    func generatedCommercialPresentation(
+        level: Int,
+        adjacentRoads: RoadConnectionMask,
+        detail: CameraDetailLevel
+    ) -> GeneratedCommercialPresentation? {
+        guard let identity = CommercialGeneratedAssetIdentity(
+            level: level,
+            adjacentRoads: adjacentRoads
+        ) else {
+            recordFallback(
+                "commercial level \(min(4, max(1, level))) has no authoritative adjacent road"
+            )
+            return nil
+        }
+        guard let asset = generatedAssetsByID[identity.logicalID],
+              asset.family == "commercial",
+              asset.level == identity.level,
+              asset.variant == 0,
+              asset.frontageEdge == identity.direction,
+              asset.viewDirection == identity.direction else {
+            recordFallback("directional descriptor mismatch \(identity.logicalID)")
+            return nil
+        }
+        guard let presentation = generatedPresentation(
+            logicalID: identity.logicalID,
+            detail: detail
+        ) else {
+            return nil
+        }
+        return GeneratedCommercialPresentation(
             identity: identity,
             presentation: presentation
         )

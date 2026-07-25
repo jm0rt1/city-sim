@@ -104,7 +104,7 @@ def paste_with_extrusion(page: Image.Image, source: Image.Image, x: int, y: int)
 
 
 def layout_pages(payloads: Iterable[Payload]) -> list[list[tuple[Payload, int, int, Image.Image]]]:
-    """Stable shelf packing: detail/key order, no rotation, fixed padding."""
+    """Stable tall-first shelf packing with no rotation and fixed padding."""
 
     pages: list[list[tuple[Payload, int, int, Image.Image]]] = []
     current: list[tuple[Payload, int, int, Image.Image]] = []
@@ -112,8 +112,18 @@ def layout_pages(payloads: Iterable[Payload]) -> list[list[tuple[Payload, int, i
     y = 0
     row_height = 0
 
-    for payload in sorted(payloads, key=lambda item: item.key):
-        image = verify_payload(payload)
+    verified = [(payload, verify_payload(payload)) for payload in payloads]
+    # Tall-first rows materially reduce fragmentation from mixed skyline
+    # heights while retaining a complete deterministic tie break. Source
+    # pixels are never rotated or transformed.
+    for payload, image in sorted(
+        verified,
+        key=lambda item: (
+            -item[1].height,
+            -item[1].width,
+            item[0].key,
+        ),
+    ):
         width = image.width + PADDING * 2
         height = image.height + PADDING * 2
         if x > 0 and x + width > PAGE_LIMIT:

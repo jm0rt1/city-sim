@@ -1,0 +1,183 @@
+{
+  "accepted_source_commit": "bf3e24b2b465870f131ac0a01a2327ac4969d5d5",
+  "schema": 1,
+  "selections": [
+    {
+      "direction": "north",
+      "level": 1,
+      "normalized_sha256": {
+        "block": "a172b049427a88e688cbcb1e21bc3ad090692fb84e45d6141ac6f1200030af9b",
+        "city": "56f0c350208c6718e23c1aaadcf2b226cf5d3de2fdddf3f39454798273f719e6",
+        "neighborhood": "019b3426fb453cd898a9e179b153b7272ffd96dab2f706faa8d5f62f012a2c9e"
+      },
+      "raw_sha256": "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d",
+      "source_revision": "source-v04"
+    },
+    {
+      "direction": "east",
+      "level": 1,
+      "normalized_sha256": {
+        "block": "555e813f5b24fea0bd3df70183f34caaf6defc1ca8951baf4f63092536414406",
+        "city": "2c1fd5e262d00d6333fff672fe391be52d9092a7450959c31070467a9481454f",
+        "neighborhood": "78958e37f17f25d651cdbf2deb21b65fdf2b898c9799071430a024f215fc9be4"
+      },
+      "raw_sha256": "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2",
+      "source_revision": "source-v04"
+    },
+    {
+      "direction": "south",
+      "level": 1,
+      "normalized_sha256": {
+        "block": "cbad9d06c2aaa63f19f3059e6e4f68af724a94c886938794f0bac043a3265fba",
+        "city": "e4db22bd66d9e8ef1d99ed756af5a47edb7060d371cc717c3b208bd8d13fa10e",
+        "neighborhood": "a463f34d0edc929233be590af953aab0cff4b1a822f3922b1e2fc0bed44f59af"
+      },
+      "raw_sha256": "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e",
+      "source_revision": "source-v04"
+    },
+    {
+      "direction": "west",
+      "level": 1,
+      "normalized_sha256": {
+        "block": "682ed34ad346ca4537898bd0a2628ff148db7ac6f71d6cec510e7c3af7626c0a",
+        "city": "39eebe14f24b38eef19db235aea63ca797b872b4955b5df4b7b959586bdfe0a9",
+        "neighborhood": "5a21b2fa753e419eb0fff32dc583163528223e7b4c8289637157381d5d4f327c"
+      },
+      "raw_sha256": "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e",
+      "source_revision": "source-v04"
+    },
+    {
+      "direction": "north",
+      "level": 2,
+      "normalized_sha256": {
+        "block": "a08a9a22403790bdcca09a5b73ecd974d9e9dad912abecdcdb4fc0750de50658",
+        "city": "16021b56b438cf61c5589301617fc20f75cd05957a164d3afaf7f0f08b380234",
+        "neighborhood": "c70b7b6c2843560000713d5e1c21d1fbb7b47bf98724e65576ec7f749db9b83f"
+      },
+      "raw_sha256": "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "east",
+      "level": 2,
+      "normalized_sha256": {
+        "block": "4bc301f47a59bf2da041d69c3708acdd41a5ec5c784b248037dac6bd68e17b79",
+        "city": "dc001def9135a071355d76021d97d1c8e688c018901937231144ad2ba02656bb",
+        "neighborhood": "55c26bd355087e3897adcc6d828e68f8f9654e8099c5d4895544562e9a921c9f"
+      },
+      "raw_sha256": "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "south",
+      "level": 2,
+      "normalized_sha256": {
+        "block": "f68d23e0ae65249d547f8435ec47f50d688752ad0db80aa75133d9a8b998b13d",
+        "city": "f2e6e479714bb913bc27ce50edad1fa6c64b19ef5f5e53aab26365c9379c3385",
+        "neighborhood": "768035441c14f9e111c8a741c19c7592a5f0f2f0379af2dc7f057946cdcc9d9f"
+      },
+      "raw_sha256": "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "west",
+      "level": 2,
+      "normalized_sha256": {
+        "block": "658d67c49466f03def9c96364cb738e6cb7d903d01c9d7bbaba7314761c9292c",
+        "city": "fc35235d1f80d82b72c18b8ed56c68477cf756211ee02c7782818fea8edf5e80",
+        "neighborhood": "8a472bef7da07df3e3ad8aa334444f1190bcd3edc6eff9d57bacf02bee8646eb"
+      },
+      "raw_sha256": "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "north",
+      "level": 3,
+      "normalized_sha256": {
+        "block": "42dc96ef32cfce8c1717a0e6a8019ddadfadc00385eaccb8aac6ac33599f286a",
+        "city": "a024f89978776286d1b28e792cbbb4e0be0a2fd1dfff9d0ae62d3f2b9c0ad2a4",
+        "neighborhood": "ec2af484f519acc8f3486a1bb5ab1cc7947af2956dc1610d79227396bbbfe068"
+      },
+      "raw_sha256": "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "east",
+      "level": 3,
+      "normalized_sha256": {
+        "block": "f5a5dee1f4b64eed0fef74615905e1334f6ede3125c5bb30d84eda42a422bec0",
+        "city": "8e4b9bc5420819af3206c8af02cd3d3759bb81a89acb35252bd6d51e8c0e3a68",
+        "neighborhood": "5df20aa94314dab24d242cf1ee3844830690f9286f519dc26682a1da341232d1"
+      },
+      "raw_sha256": "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "south",
+      "level": 3,
+      "normalized_sha256": {
+        "block": "62dfba7710fa045c1f1d289440f2d5d21109801d2eeade0a74affcf15e4aa5af",
+        "city": "4400a77be62a99973f9f27ab6cc5235d2ac74d10e9ce4bd42786abd87100d4e0",
+        "neighborhood": "eb59e32076d49315a0fe489b3d781760dc672e51a09ad0f27f48217b3eb526ca"
+      },
+      "raw_sha256": "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "west",
+      "level": 3,
+      "normalized_sha256": {
+        "block": "fbec0d8199e4d8cce55c24bf7cea26ae4b6ebf6e92a422ab01f976dc3ce18796",
+        "city": "725fdfe960e6147d33205fdd63cc2abbbb72e14f390f99b7a12f919d91b43f1a",
+        "neighborhood": "f81f1a3c60ae720ff09e27f04573647f9f143232bc53288a18274f4570813fac"
+      },
+      "raw_sha256": "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "source_revision": "source-v01"
+    },
+    {
+      "direction": "north",
+      "level": 4,
+      "normalized_sha256": {
+        "block": "2beb5b157c5615ef1b61edaa42482bc48c08de92b76ca155302e73d4eb667919",
+        "city": "794b069bdf94e91bad6ff8afac4e0f8e58eef804d534e770afda3869761a503e",
+        "neighborhood": "f104659b56336b9f97fa6b70388c6d97ce364bb452b0b0ec232b458928d8128a"
+      },
+      "raw_sha256": "9e996eb088bddc197468c5f881c111cf64ab16fa5220de7641d876d0601b4cff",
+      "source_revision": "source-v03"
+    },
+    {
+      "direction": "east",
+      "level": 4,
+      "normalized_sha256": {
+        "block": "b0f6232dbd40802320611cd93da455b193b98bcd1525bd0b7374532b22daec55",
+        "city": "8f19c1ad8a94c028471d2ac637fffa6b9adf76bafdf9ed272c6df152549ab67e",
+        "neighborhood": "877bc0da3f4e1296e353043018e60896c7f13b3158a70a3fee277bc9d0177e2b"
+      },
+      "raw_sha256": "a97d881325c22217e57807a2b63b9cdbd9218de37f155c1dd097cc67a52c617c",
+      "source_revision": "source-v03"
+    },
+    {
+      "direction": "south",
+      "level": 4,
+      "normalized_sha256": {
+        "block": "a7c2a23c41d325f3baab2479d1a61860414347a836ab7ff72bd62a50c4eb4df7",
+        "city": "d73f52604ab233207d1637b06ac09c64474ac8a3c02b740e621424d711ce6e21",
+        "neighborhood": "45ff04759a5a31b02be0c3fc24953f06fd709905301115aa35d0f52a2eaa9f29"
+      },
+      "raw_sha256": "985d2df5c5c852b4614609eec120bfc67e6ac4d1efb8376791ec8a5020d77122",
+      "source_revision": "source-v03"
+    },
+    {
+      "direction": "west",
+      "level": 4,
+      "normalized_sha256": {
+        "block": "f1dce124c8286d02371bdc6bf9eb4ade0a280854b08fc2d41bdae99917d458c6",
+        "city": "c21c46448fa912574c5f386aee616d0fb0ba1fdec958ac7dbb4adc802f58800f",
+        "neighborhood": "2cc90c0f34b951ad4d826fae04104ead68fde2a5ab1a87d12f805118b0a374d2"
+      },
+      "raw_sha256": "ac58ebd8c769fddd24d160f1ba4e4a5097d04f17ccab41bbb120672f5173433f",
+      "source_revision": "source-v03"
+    }
+  ],
+  "task": "PLAY-060"
+}

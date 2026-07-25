@@ -1,0 +1,53 @@
+{
+  "candidateFailureClassified" : false,
+  "candidateOutputWritten" : false,
+  "capability" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+  "materialLibrarySHA256" : "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef",
+  "productionSelected" : false,
+  "rendererSourceCommit" : "5fa1e4fd71e772bcd765c62c8eda4313fee57b4f",
+  "requestedProvenanceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/repeat/south-run-b.json",
+  "requestedRawSourceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/repeat/south-run-b.png",
+  "sceneConstructionStarted" : false,
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/south/scene.json",
+  "sceneDescriptorSHA256" : "ce4c8067135a1f57ee50dbfed9aa3b83b7fab6aa847aa7bd8c79cb783bb72d1c",
+  "scenePreparationStarted" : false,
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "toolchainFingerprintActualSHA256" : "201ef1a1bdc54fb048f7bb00708e97c1605c0ca48814ba28c8dc6fdc65d3fccd",
+  "toolchainFingerprintDeclaredSHA256" : "201ef1a1bdc54fb048f7bb00708e97c1605c0ca48814ba28c8dc6fdc65d3fccd",
+  "toolchainFingerprintFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/TOOLCHAIN-FINGERPRINT.json",
+  "type" : "renderer-backend-available"
+}

@@ -69,11 +69,11 @@ enum DiagnosticSceneShadows: String {
 }
 
 struct RendererDiagnosticConfiguration {
-    let antialiasing: DiagnosticAntialiasing
+    let antialiasingOverride: DiagnosticAntialiasing?
     let sceneShadows: DiagnosticSceneShadows
 
-    var isBaseline: Bool {
-        antialiasing == .current && sceneShadows == .current
+    var hasOverride: Bool {
+        antialiasingOverride != nil || sceneShadows != .current
     }
 }
 
@@ -2060,9 +2060,14 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 
 final class NativeSourceRenderer: OfflineSourceRendering {
     private let antialiasingMode: SCNAntialiasingMode
+    private let linearOversamplingFactor: Int
 
-    init(antialiasingMode: SCNAntialiasingMode = .multisampling4X) {
+    init(
+        antialiasingMode: SCNAntialiasingMode,
+        linearOversamplingFactor: Int
+    ) {
         self.antialiasingMode = antialiasingMode
+        self.linearOversamplingFactor = linearOversamplingFactor
     }
 
     func renderSource(
@@ -2095,7 +2100,7 @@ final class NativeSourceRenderer: OfflineSourceRendering {
                 "SceneKit could not prepare the complete scene graph"
             )
         }
-        let scale = descriptor.camera.oversamplingFactor
+        let scale = linearOversamplingFactor
         let size = CGSize(
             width: descriptor.camera.renderViewportPixels[0] * scale,
             height: descriptor.camera.renderViewportPixels[1] * scale
@@ -2140,31 +2145,40 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 }
 
 final class NativeSourceCompositor: OfflineSourceCompositing {
-    private let ciContext = CIContext(options: [
-        .useSoftwareRenderer: true,
-        .cacheIntermediates: false,
-        .workingColorSpace: CGColorSpace(
-            name: CGColorSpace.extendedSRGB
-        )!,
-        .outputColorSpace: CGColorSpace(
-            name: CGColorSpace.sRGB
-        )!,
-    ])
+    private let sampling: EffectiveSamplingContract
+    private let ciContext: CIContext
+
+    init(sampling: EffectiveSamplingContract) {
+        self.sampling = sampling
+        ciContext = CIContext(options: [
+            .useSoftwareRenderer: sampling.ciUseSoftwareRenderer,
+            .cacheIntermediates: sampling.ciCacheIntermediates,
+            .workingColorSpace: CGColorSpace(
+                name: CGColorSpace.extendedSRGB
+            )!,
+            .outputColorSpace: CGColorSpace(
+                name: CGColorSpace.sRGB
+            )!,
+        ])
+    }
 
     func compositeRegisteredSource(
         renderedImage: CGImage,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
-        let scale = 1 / CGFloat(descriptor.camera.oversamplingFactor)
+        let scale = CGFloat(sampling.downsampleScale)
         let input = CIImage(cgImage: renderedImage)
-        guard let filter = CIFilter(name: "CILanczosScaleTransform") else {
+        guard let filter = CIFilter(name: sampling.downsampleFilter) else {
             throw OfflineRendererError.rendering(
                 "CILanczosScaleTransform unavailable"
             )
         }
         filter.setValue(input, forKey: kCIInputImageKey)
         filter.setValue(scale, forKey: kCIInputScaleKey)
-        filter.setValue(1, forKey: kCIInputAspectRatioKey)
+        filter.setValue(
+            sampling.downsampleAspectRatio,
+            forKey: kCIInputAspectRatioKey
+        )
         guard let downsampled = filter.outputImage else {
             throw OfflineRendererError.rendering("downsample failed")
         }
@@ -2255,13 +2269,14 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             // eight values so the observed 191/192 pair converges while the
             // established 16,48,...,240 palette remains intact for the
             // deterministic normalizer's edge-despill behavior.
-            let step = 32
+            let step = sampling.quantizerStep
+            let midpointOffset = sampling.quantizerMidpointOffset
             for pixel in stride(from: 0, to: storage.count, by: 4) {
                 if
-                    storage[pixel] == 255,
-                    storage[pixel + 1] == 0,
-                    storage[pixel + 2] == 255,
-                    storage[pixel + 3] == 255
+                    storage[pixel] == sampling.chromaBypassRGBA[0],
+                    storage[pixel + 1] == sampling.chromaBypassRGBA[1],
+                    storage[pixel + 2] == sampling.chromaBypassRGBA[2],
+                    storage[pixel + 3] == sampling.chromaBypassRGBA[3]
                 {
                     continue
                 }
@@ -2269,7 +2284,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                     let value = Int(storage[pixel + channel])
                     let quantized = min(
                         255,
-                        ((value + step / 4) / step) * step + step / 2
+                        ((value + midpointOffset) / step) * step + step / 2
                     )
                     storage[pixel + channel] = UInt8(quantized)
                 }
@@ -2562,13 +2577,15 @@ enum OfflineSceneRendererMain {
             "--renderer-source-commit",
             in: arguments
         )
+        let diagnosticAntialiasingRaw = rendererOptionalArgument(
+            "--diagnostic-antialiasing",
+            in: arguments
+        )
         guard
-            let diagnosticAntialiasing = DiagnosticAntialiasing(
-                rawValue: rendererOptionalArgument(
-                    "--diagnostic-antialiasing",
-                    in: arguments
-                ) ?? "current"
-            ),
+            diagnosticAntialiasingRaw == nil
+                || DiagnosticAntialiasing(
+                    rawValue: diagnosticAntialiasingRaw!
+                ) != nil,
             let diagnosticSceneShadows = DiagnosticSceneShadows(
                 rawValue: rendererOptionalArgument(
                     "--diagnostic-scene-shadows",
@@ -2579,10 +2596,12 @@ enum OfflineSceneRendererMain {
             throw OfflineRendererError.arguments
         }
         let diagnosticConfiguration = RendererDiagnosticConfiguration(
-            antialiasing: diagnosticAntialiasing,
+            antialiasingOverride: diagnosticAntialiasingRaw.flatMap(
+                DiagnosticAntialiasing.init(rawValue:)
+            ),
             sceneShadows: diagnosticSceneShadows
         )
-        if !diagnosticConfiguration.isBaseline {
+        if diagnosticConfiguration.hasOverride {
             guard
                 outputURL.path.contains("/diagnostics/"),
                 recordURL.path.contains("/diagnostics/")
@@ -2597,6 +2616,19 @@ enum OfflineSceneRendererMain {
             SceneDescriptor.self,
             from: Data(contentsOf: sceneURL)
         )
+        let descriptorSampling = try DescriptorSamplingResolver.resolve(
+            descriptor: descriptor
+        )
+        if descriptorSampling.purpose == "diagnostic-regression" {
+            guard
+                outputURL.path.contains("/diagnostics/"),
+                recordURL.path.contains("/diagnostics/")
+            else {
+                throw OfflineRendererError.invalid(
+                    "schema-2 diagnostic regression output must remain under a diagnostics path"
+                )
+            }
+        }
         let materialDescriptor = try decoder.decode(
             MaterialLibraryDescriptor.self,
             from: Data(contentsOf: materialsURL)
@@ -2628,11 +2660,21 @@ enum OfflineSceneRendererMain {
             scene,
             descriptor: descriptor
         )
+        let effectiveAntialiasing =
+            diagnosticConfiguration.antialiasingOverride?.sceneKitMode
+            ?? (
+                descriptorSampling.sceneKitAntialiasing == "none"
+                    ? SCNAntialiasingMode.none
+                    : SCNAntialiasingMode.multisampling4X
+            )
         let oversampled = try NativeSourceRenderer(
-            antialiasingMode:
-                diagnosticConfiguration.antialiasing.sceneKitMode
+            antialiasingMode: effectiveAntialiasing,
+            linearOversamplingFactor:
+                descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
-        let source = try NativeSourceCompositor().compositeRegisteredSource(
+        let source = try NativeSourceCompositor(
+            sampling: descriptorSampling
+        ).compositeRegisteredSource(
             renderedImage: oversampled,
             descriptor: descriptor
         )
@@ -2672,12 +2714,51 @@ enum OfflineSceneRendererMain {
             ],
             "rendererSourceCommit": sourceCommit,
             "diagnosticConfiguration": [
-                "antialiasing":
-                    diagnosticConfiguration.antialiasing.rawValue,
+                "antialiasingOverride":
+                    diagnosticConfiguration.antialiasingOverride?.rawValue
+                    ?? "none",
                 "sceneShadows":
                     diagnosticConfiguration.sceneShadows.rawValue,
                 "descriptorGeometryChanged": false,
                 "sourceAuthority": false,
+            ],
+            "descriptorSamplingContract": [
+                "contractID": descriptorSampling.contractID,
+                "descriptorSchema": descriptorSampling.descriptorSchema,
+                "purpose": descriptorSampling.purpose,
+                "sceneKitAntialiasing":
+                    descriptorSampling.sceneKitAntialiasing,
+                "effectiveSceneKitAntialiasing":
+                    diagnosticConfiguration.antialiasingOverride?.rawValue
+                    ?? descriptorSampling.sceneKitAntialiasing,
+                "linearOversamplingFactor":
+                    descriptorSampling.linearOversamplingFactor,
+                "downsampleFilter":
+                    descriptorSampling.downsampleFilter,
+                "downsampleScale":
+                    descriptorSampling.downsampleScale,
+                "downsampleAspectRatio":
+                    descriptorSampling.downsampleAspectRatio,
+                "ciUseSoftwareRenderer":
+                    descriptorSampling.ciUseSoftwareRenderer,
+                "ciCacheIntermediates":
+                    descriptorSampling.ciCacheIntermediates,
+                "ciWorkingColorSpace":
+                    descriptorSampling.ciWorkingColorSpace,
+                "ciOutputColorSpace":
+                    descriptorSampling.ciOutputColorSpace,
+                "quantizerID": descriptorSampling.quantizerID,
+                "quantizerStep": descriptorSampling.quantizerStep,
+                "quantizerMidpointOffset":
+                    descriptorSampling.quantizerMidpointOffset,
+                "canonicalizerID":
+                    descriptorSampling.canonicalizerID,
+                "canonicalizerEncoder":
+                    descriptorSampling.canonicalizerEncoder,
+                "canonicalizerPostEncoder":
+                    descriptorSampling.canonicalizerPostEncoder,
+                "canonicalizerFormat":
+                    descriptorSampling.canonicalizerFormat,
             ],
             "rendererSources": sourceHashes,
             "sceneDescriptorFile": rendererRelativePath(

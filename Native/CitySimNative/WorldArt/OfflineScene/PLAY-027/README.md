@@ -53,10 +53,16 @@ The offline pipeline has six explicit stages:
    sibling derivation, transform, missing facade, or misplaced entrance.
 2. Model I/O supplies deterministic mesh topology and vertex data. SceneKit
    owns the offline scene graph, orthographic camera, materials, and light.
-3. The fixed camera renders a 2:1 projection at 2x oversampling. Descriptor
-   geometry owns massing and the entrance; no generated pixel owns geometry.
-4. Core Image performs the declared Lanczos downsample and source-color-space
-   conversion.
+3. The fixed camera renders a 2:1 projection under the descriptor's sampling
+   contract. Accepted schema-1 descriptors reproduce the historical factor-2
+   plus SceneKit 4x-MSAA path exactly. Schema-2 descriptors must explicitly
+   bind factor-4, no SceneKit MSAA, and the frozen software downsample block.
+   Descriptor geometry owns massing and the entrance; no generated pixel owns
+   geometry.
+4. Core Image performs the descriptor-bound Lanczos downsample and
+   source-color-space conversion. Schema 2 binds
+   `CILanczosScaleTransform` scale `0.25`, aspect `1`, software CI rendering,
+   extended-sRGB working space, and sRGB output.
 5. Core Graphics composites the exact registration offset, southeast shadow,
    and mathematically flat `#ff00ff` source field.
 6. The writer strips variable metadata and emits raw PNG plus a sorted,
@@ -82,6 +88,33 @@ record are written under a `diagnostics/` path. Diagnostic records explicitly
 state that descriptor geometry is unchanged and the output is not source-art
 authority. The deterministic registered southeast footprint shadow remains
 fixed when SceneKit self/cast shadows are isolated.
+
+## Descriptor-bound sampling compatibility
+
+`schema/scene.schema.json` remains the unchanged schema-1 authority used by
+accepted Residential L1-L4 and Commercial L1-L3 descriptors. A schema-1 scene
+must omit `sampling`, retain camera `oversamplingFactor: 2`, render with
+SceneKit `multisampling4X`, and downsample by Lanczos scale `0.5`.
+
+`schema/scene-v2.schema.json` adds an explicit, source-revision-bound sampling
+block. Its frozen contract is:
+
+```text
+contractID: play027-deterministic-4x-no-msaa-lanczos-v1
+sceneKitAntialiasing: none
+linearOversamplingFactor: 4
+downsample: CILanczosScaleTransform, scale 0.25, aspect 1
+CI context: software, no intermediate cache, extended-sRGB -> sRGB
+quantizer: step32-midpoint-offset8-v1, exact-magenta bypass
+canonicalizer: ImageIO -> /usr/bin/sips PNG
+```
+
+Normal production invocation contains no sampling CLI choice: the descriptor
+resolves the sampling path. The existing antialiasing and scene-shadow CLI
+switches are explicit diagnostic overrides and may write only beneath a
+`diagnostics/` path. Schema-2 descriptors with purpose
+`diagnostic-regression` are likewise prevented from writing outside a
+diagnostics path.
 
 ## Standalone compilation
 
@@ -144,6 +177,30 @@ env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
 It is an offline source tool only. It is not referenced by `Package.swift`,
 the application runtime, a build script, a shared manifest, or a shipping
 asset selection.
+
+Schema-2 diagnostic copies and their immutable-authored-payload validation are
+created by standalone task-owned tools:
+
+```bash
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Tools/CreateSamplingRegressionDescriptors.swift \
+  -framework CryptoKit \
+  -o /private/tmp/play027-offline-tools/create-sampling-regression-descriptors
+
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Tools/ValidateSamplingContracts.swift \
+  -framework CryptoKit \
+  -o /private/tmp/play027-offline-tools/validate-sampling-contracts
+```
+
+The generator copies accepted schema-1 descriptors only into task-owned
+diagnostics, changes exactly `schema`, `camera.oversamplingFactor`, and
+`sampling`, and records a canonical hash of the otherwise unchanged authored
+payload. It never edits an accepted descriptor or source record.
 
 ## Registration
 

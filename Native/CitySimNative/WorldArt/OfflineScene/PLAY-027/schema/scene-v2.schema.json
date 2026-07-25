@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://play-027/offline-directional-scene-v2",
+  "title": "PLAY-027 descriptor-bound deterministic sampling scene",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task",
+    "sceneGeometryID",
+    "logicalBuildingID",
+    "family",
+    "level",
+    "variantID",
+    "viewDirection",
+    "sourceRevision",
+    "authoredIndependently",
+    "productionSelected",
+    "derivation",
+    "toolchainFingerprint",
+    "styleAnchor",
+    "materialLibrary",
+    "registration",
+    "camera",
+    "sampling",
+    "light",
+    "building",
+    "facades",
+    "entrance",
+    "props",
+    "occlusionExclusions"
+  ],
+  "properties": {
+    "schema": {
+      "const": 2
+    },
+    "task": {
+      "const": "PLAY-027"
+    },
+    "sceneGeometryID": {
+      "type": "string",
+      "minLength": 1
+    },
+    "logicalBuildingID": {
+      "pattern": "^(residential|commercial)_l0[1-4]$"
+    },
+    "family": {
+      "enum": [
+        "residential",
+        "commercial"
+      ]
+    },
+    "level": {
+      "minimum": 1,
+      "maximum": 4
+    },
+    "variantID": {
+      "const": "variant-0"
+    },
+    "viewDirection": {
+      "enum": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ]
+    },
+    "sourceRevision": {
+      "pattern": "^source-v[0-9]{2}$"
+    },
+    "authoredIndependently": {
+      "const": true
+    },
+    "productionSelected": {
+      "const": false
+    },
+    "derivation": {
+      "type": "object"
+    },
+    "toolchainFingerprint": {
+      "type": "object"
+    },
+    "styleAnchor": {
+      "type": "object"
+    },
+    "materialLibrary": {
+      "type": "object"
+    },
+    "registration": {
+      "type": "object"
+    },
+    "camera": {
+      "type": "object",
+      "required": [
+        "projection",
+        "renderViewportPixels",
+        "oversamplingFactor"
+      ],
+      "properties": {
+        "projection": {
+          "const": "orthographic-2:1"
+        },
+        "renderViewportPixels": {
+          "const": [
+            1536,
+            1024
+          ]
+        },
+        "oversamplingFactor": {
+          "const": 4
+        }
+      }
+    },
+    "sampling": {
+      "$ref": "#/$defs/sampling"
+    },
+    "light": {
+      "type": "object"
+    },
+    "building": {
+      "type": "object"
+    },
+    "facades": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "entrance": {
+      "type": "object"
+    },
+    "props": {
+      "type": "array"
+    },
+    "occlusionExclusions": {
+      "type": "array",
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "sampling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractID",
+        "sourceRevisionBinding",
+        "purpose",
+        "sceneKitAntialiasing",
+        "linearOversamplingFactor",
+        "downsample",
+        "ciContext",
+        "quantizer",
+        "canonicalizer"
+      ],
+      "properties": {
+        "contractID": {
+          "const": "play027-deterministic-4x-no-msaa-lanczos-v1"
+        },
+        "sourceRevisionBinding": {
+          "pattern": "^source-v[0-9]{2}$"
+        },
+        "purpose": {
+          "enum": [
+            "diagnostic-regression",
+            "source-authority"
+          ]
+        },
+        "sceneKitAntialiasing": {
+          "const": "none"
+        },
+        "linearOversamplingFactor": {
+          "const": 4
+        },
+        "downsample": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "filter",
+            "scale",
+            "aspectRatio"
+          ],
+          "properties": {
+            "filter": {
+              "const": "CILanczosScaleTransform"
+            },
+            "scale": {
+              "const": 0.25
+            },
+            "aspectRatio": {
+              "const": 1
+            }
+          }
+        },
+        "ciContext": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "useSoftwareRenderer",
+            "cacheIntermediates",
+            "workingColorSpace",
+            "outputColorSpace"
+          ],
+          "properties": {
+            "useSoftwareRenderer": {
+              "const": true
+            },
+            "cacheIntermediates": {
+              "const": false
+            },
+            "workingColorSpace": {
+              "const": "extended-srgb"
+            },
+            "outputColorSpace": {
+              "const": "srgb"
+            }
+          }
+        },
+        "quantizer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "step",
+            "midpointOffset",
+            "chromaBypassRGBA"
+          ],
+          "properties": {
+            "id": {
+              "const": "step32-midpoint-offset8-v1"
+            },
+            "step": {
+              "const": 32
+            },
+            "midpointOffset": {
+              "const": 8
+            },
+            "chromaBypassRGBA": {
+              "const": [
+                255,
+                0,
+                255,
+                255
+              ]
+            }
+          }
+        },
+        "canonicalizer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "encoder",
+            "postEncoder",
+            "format"
+          ],
+          "properties": {
+            "id": {
+              "const": "imageio-sips-png-v1"
+            },
+            "encoder": {
+              "const": "ImageIO"
+            },
+            "postEncoder": {
+              "const": "/usr/bin/sips"
+            },
+            "format": {
+              "const": "png"
+            }
+          }
+        }
+      }
+    }
+  }
+}

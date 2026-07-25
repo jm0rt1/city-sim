@@ -41,6 +41,45 @@ struct CameraDescriptor: Codable, Equatable {
     let postProjectionOffsetPixels: [Double]
 }
 
+struct SamplingDownsampleDescriptor: Codable, Equatable {
+    let filter: String
+    let scale: Double
+    let aspectRatio: Double
+}
+
+struct SamplingCIContextDescriptor: Codable, Equatable {
+    let useSoftwareRenderer: Bool
+    let cacheIntermediates: Bool
+    let workingColorSpace: String
+    let outputColorSpace: String
+}
+
+struct SamplingQuantizerDescriptor: Codable, Equatable {
+    let id: String
+    let step: Int
+    let midpointOffset: Int
+    let chromaBypassRGBA: [Int]
+}
+
+struct SamplingCanonicalizerDescriptor: Codable, Equatable {
+    let id: String
+    let encoder: String
+    let postEncoder: String
+    let format: String
+}
+
+struct SamplingDescriptor: Codable, Equatable {
+    let contractID: String
+    let sourceRevisionBinding: String
+    let purpose: String
+    let sceneKitAntialiasing: String
+    let linearOversamplingFactor: Int
+    let downsample: SamplingDownsampleDescriptor
+    let ciContext: SamplingCIContextDescriptor
+    let quantizer: SamplingQuantizerDescriptor
+    let canonicalizer: SamplingCanonicalizerDescriptor
+}
+
 struct LightDescriptor: Codable, Equatable {
     let keyOrigin: [Double]
     let keyIntensity: Double
@@ -188,6 +227,7 @@ struct SceneDescriptor: Codable, Equatable {
     let materialLibrary: FileReference
     let registration: RegistrationDescriptor
     let camera: CameraDescriptor
+    let sampling: SamplingDescriptor?
     let light: LightDescriptor
     let building: BuildingDescriptor
     let facades: [FacadeDescriptor]

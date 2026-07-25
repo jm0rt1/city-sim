@@ -56,6 +56,16 @@ scar or anticipate gameplay tuning.
 The new corpus will be additive under test `Fixtures/VisibleCityStates` and
 will retain one focus coordinate in its test manifest. The coordinate selects
 existing state; it is not production or persisted presentation state.
+The manifest binds generation to authority
+`e38059e721dae05c8df421754e3cb63ddf3fa153` and the unchanged PLAY-069
+`story-states-manifest-v2.json` SHA-256
+`a793dc9ea5cfc50b7482fb7f4bf4e7a3a3c5e9cfb1cad6e47722fc17cbf22153`.
+
+This corpus freezes baseline truth only. It cannot become final PLAY-073/075
+candidate authority until integration reconciles it against accepted PLAY-071
+growth and condition behavior. That reconciliation must be a narrow,
+explicitly dispatched regeneration/adoption step rather than an implicit
+cross-lane assumption.
 
 Validation must freeze:
 

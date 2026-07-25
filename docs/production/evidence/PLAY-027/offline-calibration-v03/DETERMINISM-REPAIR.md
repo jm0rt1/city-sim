@@ -52,3 +52,20 @@ metalness sampling that is unnecessary for the small-scale authored sprite.
 The 32-value final canonicalizer remains as a bounded last-stage color
 canonicalization. Every direction advances to keep one renderer/material
 authority across the candidate.
+
+## Lambert texture probe result
+
+The first two total Lambert processes matched for all four sources. A third
+process matched north, east, and west but exposed a second south state at
+nineteen opaque pixels, all within the small patterned chimney:
+
+- retained south `source-v07` SHA-256:
+  `06bd01fe06c08b37166b4793d462808b598d1e6839d715937253a495c3d19e5a`;
+- third-process SHA-256:
+  `8fa0c0a2cc7f3d808ddcd7d9c745c6dafa46d6d1f9057061276de5f3ed91deaa`.
+
+No other pixel or direction differed. This localizes the last observed drift
+to texture sampling rather than scene geometry, lighting direction, shadow,
+registration, or PNG writing. The chimney retains its authored mesh and
+terracotta family color but uses an explicit solid diffuse value instead of a
+repeating brick texture. Facade brick textures remain unchanged.

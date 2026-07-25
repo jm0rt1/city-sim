@@ -132,3 +132,26 @@ The source material model advances to Lambert illumination, which retains the
 descriptor-owned northwest key and ambient field without runtime-oriented PBR
 sampling. Replacement revisions are north `source-v11`, east `source-v07`,
 south `source-v07`, and west `source-v08`; geometry remains unchanged.
+
+## Lambert patterned-chimney pass at renderer `99e5190`
+
+**North source-v11:** retained superseded probe; raw SHA-256
+`8ae9db6f02b9757bc447f2e1e13dc478962f9f3da4887a1c9a6265fa050ba232`
+
+**East source-v07:** retained superseded probe; raw SHA-256
+`35e7a8e0dcd6a91442e01d1990e9135a06d01e3c2150d98d837a0205639ee415`
+
+**South source-v07:** rejected for patterned-chimney hash alternation; raw
+SHA-256
+`06bd01fe06c08b37166b4793d462808b598d1e6839d715937253a495c3d19e5a`
+
+**West source-v08:** retained superseded probe; raw SHA-256
+`11b00303d11eae65317b13df29cfc9b8979e991d28facddbe8b612a98f56c739`
+
+The first repeat matched all four sources. A third process differed only at
+nineteen opaque pixels on the south patterned chimney, with SHA-256
+`8fa0c0a2cc7f3d808ddcd7d9c745c6dafa46d6d1f9057061276de5f3ed91deaa`.
+The chimney retains its mesh and terracotta material but changes to an
+explicit solid diffuse value, removing that nonessential texture-sampling
+surface. Replacement revisions are north `source-v12`, east `source-v08`,
+south `source-v08`, and west `source-v09`; geometry remains unchanged.

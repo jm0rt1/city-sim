@@ -7,7 +7,7 @@
   "level": 1,
   "variantID": "variant-0",
   "viewDirection": "north",
-  "sourceRevision": "source-v11",
+  "sourceRevision": "source-v12",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {
@@ -30,7 +30,7 @@
   "materialLibrary": {
     "role": "shared-numeric-family-material-library",
     "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l01-v0-materials.json",
-    "sha256": "cbe7dfb998ae3a96401ca67213eb439249a25b11868a83de48d8f75510bd8b46"
+    "sha256": "04b7ecfb484377ecbd3e02c47ce6af1addeed4014b8a81a781baa3d02fa4ae81"
   },
   "registration": {
     "tileBasisPoints": [72, 36],

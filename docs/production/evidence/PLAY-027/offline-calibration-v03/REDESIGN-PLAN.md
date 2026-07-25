@@ -33,10 +33,10 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v6` | `source-v11` |
-| east | `residential-l01-v0-east-geometry-v4` | `source-v07` |
-| south | `residential-l01-v0-south-geometry-v4` | `source-v07` |
-| west | `residential-l01-v0-west-geometry-v6` | `source-v08` |
+| north | `residential-l01-v0-north-geometry-v6` | `source-v12` |
+| east | `residential-l01-v0-east-geometry-v4` | `source-v08` |
+| south | `residential-l01-v0-south-geometry-v4` | `source-v08` |
+| west | `residential-l01-v0-west-geometry-v6` | `source-v09` |
 
 The four descriptors validate with unique descriptor hashes and geometry IDs.
 Camera, pivot, footprint, contact, socket, light, shadow, and orientation
@@ -59,6 +59,13 @@ model therefore advances from stochastic SceneKit PBR to deterministic
 Lambert illumination. Lambert preserves the descriptor-owned northwest key
 and ambient hierarchy while removing runtime-oriented roughness sampling from
 the offline authoring result. All four revisions advance together again.
+
+A third Lambert process then isolated the remaining alternation to nineteen
+south chimney pixels; all other directions and pixels were stable. The tiny
+chimney keeps its geometry and terracotta material but changes from a
+repeating brick texture to an explicit solid diffuse color. This removes the
+last observed GPU texture-sampling authority from that anchor without changing
+directional geometry or the authored facade materials. All revisions advance.
 
 Rendering must not begin until this redesign input is committed. The resulting
 pixels remain review candidates only and cannot authorize the remaining 44

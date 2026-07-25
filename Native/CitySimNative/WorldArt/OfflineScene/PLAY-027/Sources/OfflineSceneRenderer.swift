@@ -972,16 +972,23 @@ final class NativeSourceRenderer: OfflineSourceRendering {
             with: size,
             antialiasingMode: .multisampling4X
         )
-        guard let cgImage = snapshot.cgImage(
+        if let cgImage = snapshot.cgImage(
             forProposedRect: nil,
             context: nil,
             hints: nil
-        ) else {
-            throw OfflineRendererError.rendering(
-                "SceneKit did not return a CGImage"
-            )
+        ) {
+            return cgImage
         }
-        return cgImage
+        if
+            let tiffData = snapshot.tiffRepresentation,
+            let bitmap = NSBitmapImageRep(data: tiffData),
+            let cgImage = bitmap.cgImage
+        {
+            return cgImage
+        }
+        throw OfflineRendererError.rendering(
+            "SceneKit snapshot could not be decoded as a CGImage"
+        )
     }
 }
 

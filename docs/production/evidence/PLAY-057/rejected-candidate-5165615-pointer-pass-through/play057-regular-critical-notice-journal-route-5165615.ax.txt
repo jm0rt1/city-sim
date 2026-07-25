@@ -1,0 +1,127 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container City command status
+			3 button Description: Open New Arcadia command center, Value: Day 57. Paused, ID: hud.city.identity
+			4 progress indicator Description: Show objectives, Help: Need J 50 · P 110 · W 100, Value: 0.7297297297297297, ID: hud.objective.summary
+			5 container City status
+				6 unknown Description: Treasury, Details: $36,570, +$117 / cycle, ID: hud.metric.treasury
+				7 unknown Description: Residents, Details: 356, 1,884 homes open, ID: hud.metric.population
+				8 unknown Description: Happiness, Details: 57%, 100% mayor approval, ID: hud.metric.happiness
+				9 unknown Description: Jobs filled, Details: 248, 52 openings, ID: hud.metric.employment
+				10 unknown Description: Utilities, Details: 96%, P 0 · W 0, ID: hud.metric.utilities
+			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+			13 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+			14 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+			15 button Description: Open city notices, Value: 12 notices, highest severity critical, ID: hud.notices
+			16 container Description: City priority: Freight consequence pending, ID: hud.strategy.priority, Details: ACT NOW · 8 DAYS. Add reserve power and water or place a green buffer while the decision window remains open.
+				17 text Help: Add reserve power and water or place a green buffer while the decision window remains open., Value: FREIGHT URGENT
+				18 text Help: Add reserve power and water or place a green buffer while the decision window remains open., Value: ACT NOW · 8 DAYS
+				19 text Help: Add reserve power and water or place a green buffer while the decision window remains open., Value: Freight consequence pending
+				20 text Add reserve power and water or place a green buffer while the decision window remains open.
+				21 button Description: Utility capacity, Help: Add reserve power and water or place a green buffer while the decision window remains open.
+				22 menu button Act, Description: Act on Freight consequence pending, Help: Add reserve power and water or place a green buffer while the decision window remains open., Value: 3 available routes, ID: arrow.turn.down.right
+		23 container City command deck with details open
+			24 button Description: Inspect mode, Value: Not selected
+			25 button (selected) Description: Build mode, Value: Selected
+			26 button Description: Bulldoze mode, Value: Not selected
+			27 button Description: Roads build category, Value: Not selected
+			28 button Description: Zones build category, Value: Selected
+			29 button Description: Utilities build category, Value: Not selected
+			30 button Description: Services build category, Value: Not selected
+			31 button Description: Civic build category, Value: Not selected
+			32 button Description: Enter Focus City, Help: Give the city maximum space while retaining critical operating truth., Value: ⇧⌘F, ID: hud.focus-city.enter
+			33 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			34 button Description: Close command-center details, Value: Open, ID: hud.command.details
+			35 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
+			36 scroll area Description: Scrollable command-center details, ID: hud.command.details.scroll, Secondary Actions: Scroll Up, Scroll Down
+				37 container City command center, Journal
+					38 text Journal
+					39 button Return to selected block details
+					40 button Description: Show Overview, Help: Overview, Value: Not selected, ID: hud.context.section.overview
+					41 button Description: Show Finances, Help: Finances, Value: Not selected, ID: hud.context.section.finances
+					42 button Description: Show Population, Help: Population, Value: Not selected, ID: hud.context.section.population
+					43 button Description: Show Happiness, Help: Happiness, Value: Not selected, ID: hud.context.section.happiness
+					44 button Description: Show Employment, Help: Employment, Value: Not selected, ID: hud.context.section.employment
+					45 button Description: Show Demand, Help: Demand, Value: Not selected, ID: hud.context.section.demand
+					46 button Description: Show Utilities, Help: Utilities, Value: Not selected, ID: hud.context.section.utilities
+					47 button Description: Show Journal, Help: Journal, Value: Selected, ID: hud.context.section.journal
+					48 button Description: Close command-center details, ID: hud.context.close
+					49 scroll area Description: City notice journal, Secondary Actions: Scroll Up, Scroll Down
+						50 collection Secondary Actions: AXScrollToTop, AXScrollToBottom
+							51 text TOWN CHARTER STANDARDS
+							52 text Day 53
+							53 text Reach 500 residents, $10,000 treasury, non-negative cashflow, 90% employment, full utilities with 15% reserve, and 52% happiness; keep every zone active for 12 consecutive days. Growth needs job openings and utility headroom.
+							54 button Related data
+							55 button Dismiss Town Charter Standards notices
+							56 text UTILITY SHORTFALL
+							57 text Day 52
+							58 text Power or water is below current use. Growth has stalled and livability will keep falling until capacity or demand changes.
+							59 button Related data
+							60 menu button Act on Utility Shortfall
+							61 button Dismiss Utility Shortfall notices
+							62 text FREIGHT LOAD FORECAST
+							63 text Day 49
+							64 text The freight surge lands by Day 65. A second power plant and water tower, or a second park, prevents the load shock; waiting preserves capital now but risks $5,500 and livability.
+							65 button Related data
+							66 menu button Act on Freight Load Forecast
+							67 button Dismiss Freight Load Forecast notices
+							68 text REGIONAL FREIGHT CONTRACT
+							69 text Day 33
+							70 text Measured industrial growth won $5,000 and more jobs. It earns less than a factory push, but limits pollution and utility exposure before the load surge.
+							71 button Related data
+							72 button Dismiss Regional Freight Contract notices
+							73 text NEIGHBORHOOD UPGRADED
+							74 text Day 31
+							75 text ×6
+							76 text Strong demand has attracted denser development.
+							77 button Related data
+							78 button Dismiss Neighborhood Upgraded notices
+							79 text FREIGHT CONTRACT WATCH
+							80 text Day 17
+							81 text Industrial expansion is committed. A regional freight contract arrives by Day 33; reserve power and water or a second park can absorb the load complication that follows.
+							82 button Related data
+							83 menu button Act on Freight Contract Watch
+							84 button Dismiss Freight Contract Watch notices
+							85 text UTILITY RESERVE TIGHT
+							86 text Day 17
+							87 text Only 22 power and 25 water remain spare. Build a Power Plant ($12,000) before adding more homes or jobs.
+							88 button Related data
+							89 menu button Act on Utility Reserve Tight
+							90 button Dismiss Utility Reserve Tight notices
+						91 scroll bar (settable, float) 0
+							92 value indicator (settable, float) 0
+							93 increment arrow button
+							94 decrement arrow button
+							95 increment page button
+							96 decrement page button
+				97 scroll bar (settable, float) 0
+					98 value indicator (settable, float) 0
+					99 increment arrow button
+					100 decrement arrow button
+					101 increment page button
+					102 decrement page button
+		103 container Description: City map, Help: Unavailable. Demolish the existing structure before building here., Secondary Actions: Inspect City Hall at block 12, 12, Value: Selected target, pending Commercial placement at block 12, 12. Completed, maintained condition. Power service is strained at 67%; Water service is strained at 50%; Pollution exposure is severe at 67%. This block is prosperous at 76% vitality.. Primary action: Build Commercial at block 12, 12. Unavailable. Demolish the existing structure before building here.
+	104 toolbar
+		105 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		106 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		107 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		108 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		109 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	110 close button
+	111 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	112 minimize button
+	113 text CitySim
+114 menu bar
+	115 CitySim [UI wdbeadac6e0bd]
+	116 File
+	117 Edit
+	118 View
+	119 Simulation
+	120 Tools
+	121 City Data
+	122 Window
+	123 Help
+
+The focused UI element is 103 container Description: City map, Help: Unavailable. Demolish the existing structure before building here., Secondary Actions: Inspect City Hall at block 12, 12, Value: Selected target, pending Commercial placement at block 12, 12. Completed, maintained condition. Power service is strained at 67%; Water service is strained at 50%; Pollution exposure is severe at 67%. This block is prosperous at 76% vitality.. Primary action: Build Commercial at block 12, 12. Unavailable. Demolish the existing structure before building here.

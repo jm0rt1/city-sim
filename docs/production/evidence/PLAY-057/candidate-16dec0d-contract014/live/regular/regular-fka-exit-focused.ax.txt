@@ -1,0 +1,34 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container Description: Focus City status rail, Details: Focus City active, ID: hud.focus-city.rail
+			3 unknown Description: New Arcadia, Details: Day 33. Paused, ID: hud.focus-city.identity
+			4 unknown Description: Treasury, Details: $34,037, +$93 per cycle, ID: hud.focus-city.treasury
+			5 unknown Description: Strategy priority: Prepare for the load surge, Details: DECISION · 16 DAYS. Diagnose utilities, then add capacity or a park before the consequence., ID: hud.focus-city.urgency
+			6 button Description: Open city notices, Help: Exit Focus City and open the existing notice journal, Value: 12 notices, highest severity warning, ID: hud.focus-city.notices
+			7 unknown Description: Inspect mode, Help: Return uses the announced primary action on the focused city map, Details: No block selected, ID: hud.focus-city.selected-context
+			8 container Focus City simulation speed
+				9 button Description: Pause simulation, Value: Selected, ID: hud.focus-city.speed.0
+				10 button Description: Set simulation speed to 1x, Value: Not selected, ID: hud.focus-city.speed.1
+				11 button Description: Set simulation speed to 2x, Value: Not selected, ID: hud.focus-city.speed.2
+				12 button Description: Set simulation speed to 3x, Value: Not selected, ID: hud.focus-city.speed.3
+			13 button Description: Exit Focus City, Help: Restore the full command surface without changing the active city target, Value: ⇧⌘F, ID: hud.focus-city.exit
+		14 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	15 toolbar
+		16 button Description: Exit Focus City, ID: toolbar.focus-city.exit, Secondary Actions: Increment, Decrement, Delete, Cancel, Remove from toolbar
+	17 close button
+	18 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	19 minimize button
+	20 text CitySim
+21 menu bar
+	22 CitySim [UI wdbeadac6e0bd]
+	23 File
+	24 Edit
+	25 View
+	26 Simulation
+	27 Tools
+	28 City Data
+	29 Window
+	30 Help
+
+The focused UI element is 13 button Description: Exit Focus City, Help: Restore the full command surface without changing the active city target, Value: ⇧⌘F, ID: hud.focus-city.exit

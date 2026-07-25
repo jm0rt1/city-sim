@@ -308,3 +308,377 @@ struct TopHUDView: View {
         return "\(store.alertCount) notices, highest severity \(severity.rawValue)"
     }
 }
+
+struct FocusCityNoticeUrgencyPresentation: Equatable {
+    let count: Int
+    let severity: MessageSeverity?
+
+    var compactLabel: String {
+        guard count > 0, severity != nil else { return "0" }
+        return "\(severityLabel) \(count)"
+    }
+
+    var regularLabel: String {
+        guard count > 0, severity != nil else { return "No notices" }
+        return "\(count) \(severityLabel)"
+    }
+
+    var accessibilityValue: String {
+        guard count > 0, let severity else { return "No active notices" }
+        let noticeCount = count == 1 ? "1 notice" : "\(count) notices"
+        return "\(noticeCount), highest severity \(severity.rawValue)"
+    }
+
+    private var severityLabel: String {
+        switch severity {
+        case .critical: "CRITICAL"
+        case .warning: "WARNING"
+        case .information: "INFO"
+        case .good: "GOOD"
+        case nil: "NONE"
+        }
+    }
+}
+
+struct FocusCityHUDView: View {
+    @ObservedObject var store: CityGameStore
+    var compact = false
+    let pointerTransitionGate: CityMapPointerTransitionGate
+
+    static let compactMaximumHeight: CGFloat = 98
+    static let regularMaximumHeight: CGFloat = 68
+
+    private var strategy: CityStrategyHUDPresentation {
+        CityStrategyHUDPresentation.make(analytics: store.analytics)
+    }
+
+    private var simulationStatus: HUDSimulationStatePresentation {
+        TopHUDView.simulationState(for: store.speed)
+    }
+
+    private var noticeUrgency: FocusCityNoticeUrgencyPresentation {
+        FocusCityNoticeUrgencyPresentation(
+            count: store.alertCount,
+            severity: store.highestAlertSeverity
+        )
+    }
+
+    var body: some View {
+        Group {
+            if compact {
+                VStack(spacing: 4) {
+                    HStack(spacing: 6) {
+                        identity
+                        treasury
+                        priority
+                        noticesButton
+                        Spacer(minLength: 4)
+                        exitButton
+                    }
+                    HStack(spacing: 6) {
+                        selectedContext
+                        Spacer(minLength: 4)
+                        speedControls
+                    }
+                }
+            } else {
+                HStack(spacing: 8) {
+                    identity
+                    railDivider
+                    treasury
+                    railDivider
+                    priority
+                    noticesButton
+                    railDivider
+                    selectedContext
+                    Spacer(minLength: 4)
+                    speedControls
+                    exitButton
+                }
+            }
+        }
+        .padding(6)
+        .frame(maxWidth: .infinity)
+        .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
+        .background(
+            .thinMaterial,
+            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+        )
+        .background(
+            GameTheme.hudSurfaceFill,
+            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+                .stroke(GameTheme.accent.opacity(0.55), lineWidth: 1.5)
+        )
+        .shadow(color: .black.opacity(0.2), radius: 12, y: 5)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Focus City status rail")
+        .accessibilityValue("Focus City active")
+        .accessibilityIdentifier("hud.focus-city.rail")
+    }
+
+    private var identity: some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(store.state.cityName)
+                .font(.system(size: compact ? 13 : 14, weight: .bold, design: .rounded))
+                .lineLimit(1)
+            Text("\(store.state.formattedDay) · \(simulationStatus.label)")
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded).monospacedDigit())
+                .foregroundStyle(store.speed == .paused ? GameTheme.warning : GameTheme.accent)
+                .lineLimit(1)
+        }
+        .frame(minWidth: compact ? 112 : 142, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(store.state.cityName)
+        .accessibilityValue("\(store.state.formattedDay). \(simulationStatus.accessibilityValue)")
+        .accessibilityIdentifier("hud.focus-city.identity")
+    }
+
+    private var treasury: some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(store.state.treasury.currencyText)
+                .font(.system(size: 14, weight: .bold, design: .rounded).monospacedDigit())
+            Text("\(store.analytics.projectedBalance.signedCurrencyText) / cycle")
+                .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded).monospacedDigit())
+                .foregroundStyle(treasuryTint)
+        }
+        .frame(minWidth: compact ? 94 : 112, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Treasury")
+        .accessibilityValue(
+            "\(store.state.treasury.currencyText), \(store.analytics.projectedBalance.signedCurrencyText) per cycle"
+        )
+        .accessibilityIdentifier("hud.focus-city.treasury")
+    }
+
+    private var priority: some View {
+        HStack(spacing: 5) {
+            Image(systemName: prioritySymbol)
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(priorityTint)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(strategy.status)
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded).monospacedDigit())
+                    .foregroundStyle(priorityTint)
+                    .lineLimit(1)
+                Text(strategy.title)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded))
+                    .lineLimit(1)
+            }
+        }
+        .frame(maxWidth: compact ? 224 : 260, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Strategy priority: \(strategy.title)")
+        .accessibilityValue(strategy.accessibilityValue)
+        .accessibilityIdentifier("hud.focus-city.urgency")
+    }
+
+    private var selectedContext: some View {
+        HStack(spacing: 5) {
+            Image(systemName: selectedContextSymbol)
+                .foregroundStyle(selectedContextTint)
+                .accessibilityHidden(true)
+            Text(selectedContextTitle)
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .rounded))
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 7)
+        .frame(maxWidth: compact ? .infinity : 286, minHeight: GameTheme.controlMinimum, alignment: .leading)
+        .background(GameTheme.contextCard.opacity(0.55), in: RoundedRectangle(cornerRadius: 9))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(selectedContextAccessibilityLabel)
+        .accessibilityValue(selectedContextAccessibilityValue)
+        .accessibilityHint("Return uses the announced primary action on the focused city map")
+        .accessibilityIdentifier("hud.focus-city.selected-context")
+    }
+
+    private var noticesButton: some View {
+        Button { store.perform(.openNotices) } label: {
+            Label(
+                compact ? noticeUrgency.compactLabel : noticeUrgency.regularLabel,
+                systemImage: noticeSymbol
+            )
+            .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
+            .foregroundStyle(noticeTint)
+            .lineLimit(1)
+            .padding(.horizontal, compact ? 5 : 8)
+            .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(noticeTint.opacity(0.14), in: RoundedRectangle(cornerRadius: 9))
+        .overlay(
+            RoundedRectangle(cornerRadius: 9)
+                .stroke(noticeTint.opacity(0.5), lineWidth: noticeUrgency.severity == .critical ? 1.5 : 1)
+        )
+        .help("Open the city notice journal")
+        .accessibilityLabel("Open city notices")
+        .accessibilityValue(noticeUrgency.accessibilityValue)
+        .accessibilityHint("Exit Focus City and open the existing notice journal")
+        .accessibilityIdentifier("hud.focus-city.notices")
+    }
+
+    private var speedControls: some View {
+        HStack(spacing: 4) {
+            ForEach(SimulationSpeed.allCases) { speed in
+                Button { store.perform(CityCommandCatalog.id(for: speed)) } label: {
+                    Text(speed.controlLabel)
+                        .font(.caption.weight(.bold))
+                        .frame(minWidth: speed == .paused ? 48 : GameTheme.controlMinimum)
+                        .frame(minHeight: GameTheme.controlMinimum)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(store.speed == speed ? Color.black : Color.primary)
+                .background(
+                    store.speed == speed ? GameTheme.accent : GameTheme.inactiveControl,
+                    in: RoundedRectangle(cornerRadius: 9)
+                )
+                .accessibilityLabel(
+                    speed == .paused ? "Pause simulation" : "Set simulation speed to \(speed.controlLabel)"
+                )
+                .accessibilityValue(store.speed == speed ? "Selected" : "Not selected")
+                .accessibilityIdentifier("hud.focus-city.speed.\(speed.rawValue)")
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Focus City simulation speed")
+    }
+
+    private var exitButton: some View {
+        let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
+        return Button { store.perform(.toggleCityFocus) } label: {
+            Label(compact ? "Exit" : "Exit Focus City", systemImage: "viewfinder.circle")
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
+                .padding(.horizontal, compact ? 6 : 9)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(Color.black)
+        .background(GameTheme.accent, in: RoundedRectangle(cornerRadius: 9))
+        .overlay {
+            CityFocusPointerTransitionMonitor(pointerTransitionGate: pointerTransitionGate)
+                .accessibilityHidden(true)
+        }
+        .help("Return to the full command surface · \(descriptor.shortcut?.display ?? "")")
+        .accessibilityLabel("Exit Focus City")
+        .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
+        .accessibilityHint("Restore the full command surface without changing the active city target")
+        .accessibilityIdentifier("hud.focus-city.exit")
+    }
+
+    private var railDivider: some View {
+        Rectangle()
+            .fill(GameTheme.subtleDivider)
+            .frame(width: 1, height: 34)
+    }
+
+    private var treasuryTint: Color {
+        store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger
+    }
+
+    private var priorityTint: Color {
+        switch strategy.tone {
+        case .decision: GameTheme.information
+        case .active: GameTheme.warning
+        case .urgent: GameTheme.danger
+        case .recovery, .resolved: GameTheme.accent
+        }
+    }
+
+    private var prioritySymbol: String {
+        switch strategy.tone {
+        case .decision: "signpost.right.and.left.fill"
+        case .active: "scope"
+        case .urgent: "exclamationmark.triangle.fill"
+        case .recovery: "arrow.trianglehead.2.clockwise.rotate.90"
+        case .resolved: "checkmark.seal.fill"
+        }
+    }
+
+    private var noticeSymbol: String {
+        switch noticeUrgency.severity {
+        case .critical: "exclamationmark.octagon.fill"
+        case .warning: "exclamationmark.triangle.fill"
+        case .information: "info.circle.fill"
+        case .good: "sparkles"
+        case nil: "bell"
+        }
+    }
+
+    private var noticeTint: Color {
+        switch noticeUrgency.severity {
+        case .critical: GameTheme.danger
+        case .warning: GameTheme.warning
+        case .information: GameTheme.information
+        case .good: GameTheme.accent
+        case nil: .secondary
+        }
+    }
+
+    private var selectedContextTitle: String {
+        switch store.interactionMode {
+        case .inspect:
+            guard let tile = store.selectedTile else { return "Inspect · No block selected" }
+            return "Inspect \(tile.kind.title) · Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)"
+        case .build(let kind):
+            guard let target = store.activeMapActionTargetPresentation else {
+                return "Build \(kind.title) · Choose a block"
+            }
+            return "\(kind.title) · Block \(target.coordinate.x + 1), \(target.coordinate.y + 1) · "
+                + (target.primaryAction.isAvailable ? "Ready" : "Blocked")
+        case .bulldoze:
+            guard let target = store.activeMapActionTargetPresentation else {
+                return "Bulldoze · Choose a structure"
+            }
+            return "Bulldoze · Block \(target.coordinate.x + 1), \(target.coordinate.y + 1) · "
+                + (target.primaryAction.isAvailable ? "Ready" : "Blocked")
+        }
+    }
+
+    private var selectedContextSymbol: String {
+        if let target = store.activeMapActionTargetPresentation {
+            return target.primaryAction.isAvailable ? "mappin.circle.fill" : "exclamationmark.triangle.fill"
+        }
+        return store.interactionMode.symbol
+    }
+
+    private var selectedContextTint: Color {
+        if let target = store.activeMapActionTargetPresentation {
+            return target.primaryAction.isAvailable ? GameTheme.accent : GameTheme.warning
+        }
+        return GameTheme.information
+    }
+
+    private var selectedContextAccessibilityLabel: String {
+        if let target = store.activeMapActionTargetPresentation {
+            return target.primaryAction.name
+        }
+        return switch store.interactionMode {
+        case .inspect: "Inspect mode"
+        case .build(let kind): "Build \(kind.title)"
+        case .bulldoze: "Bulldoze mode"
+        }
+    }
+
+    private var selectedContextAccessibilityValue: String {
+        if let target = store.activeMapActionTargetPresentation {
+            return target.primaryAction.disclosure
+        }
+        switch store.interactionMode {
+        case .inspect:
+            return store.selectedTile.map {
+                "Selected \($0.kind.title) at block \($0.coordinate.x + 1), \($0.coordinate.y + 1)"
+            } ?? "No block selected"
+        case .build(let kind):
+            return "Selected \(kind.title). Cost \(kind.buildCost.currencyText), "
+                + "upkeep \(kind.upkeep.currencyText) per cycle. Choose a block."
+        case .bulldoze:
+            return "Choose a structure. Protected structures and open land remain unavailable."
+        }
+    }
+}

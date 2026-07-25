@@ -24,6 +24,7 @@ final class CityGameStore: ObservableObject {
     @Published var showInspector = false
     @Published var showObjectives = false
     @Published var showCommandGuide = false
+    @Published private(set) var isCityFocusModeEnabled = false
     @Published private(set) var commandPolicy: CityCommandPolicy
     @Published var inspectorSection: InspectorSection = .overview
     @Published var hudContextScope: HUDContextScope = .city
@@ -143,6 +144,13 @@ final class CityGameStore: ObservableObject {
 
     @discardableResult
     func perform(_ command: CityCommandID) -> Bool {
+        if command == .toggleCityFocus,
+           Self.shouldQuarantineCityFocusShortcut(
+               firstResponder: NSApp.keyWindow?.firstResponder,
+               event: NSApp.currentEvent
+           ) {
+            return false
+        }
         guard canPerform(command) else { return false }
 
         if let kind = CityCommandCatalog.buildingKind(for: command) {
@@ -188,9 +196,12 @@ final class CityGameStore: ObservableObject {
         case .cancelInteraction:
             dismissTopmostSurfaceOrCancel()
         case .toggleObjectives:
+            leaveCityFocusForPresentedSurface()
             showObjectives.toggle()
         case .toggleCommandCenter:
             toggleInspector()
+        case .toggleCityFocus:
+            toggleCityFocus()
         case .openNotices:
             openAlertCenter()
         case .openCommandGuide:
@@ -226,7 +237,8 @@ final class CityGameStore: ObservableObject {
         case .dismissFeedback:
             lastFeedback != nil
         case .cancelInteraction:
-            showCommandGuide || showInspector || showObjectives || selectedCoordinate != nil || interactionMode != .inspect
+            showCommandGuide || isCityFocusModeEnabled || showInspector || showObjectives
+                || selectedCoordinate != nil || interactionMode != .inspect
         default:
             true
         }
@@ -398,6 +410,11 @@ final class CityGameStore: ObservableObject {
         speed = speed == .paused ? lastNonPausedSpeed : .paused
     }
 
+    func toggleCityFocus() {
+        isCityFocusModeEnabled.toggle()
+        requestMapFocus()
+    }
+
     func presentBlockingModal(_ modal: CityBlockingModal) {
         commandPolicy = .blocked(modal)
     }
@@ -412,6 +429,9 @@ final class CityGameStore: ObservableObject {
     private func dismissTopmostSurfaceOrCancel() {
         if showCommandGuide {
             showCommandGuide = false
+        } else if isCityFocusModeEnabled {
+            isCityFocusModeEnabled = false
+            requestMapFocus()
         } else if showInspector {
             dismissInspector()
             requestMapFocus()
@@ -483,6 +503,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func openInspector(_ section: InspectorSection) {
+        leaveCityFocusForPresentedSurface()
         inspectorSection = section
         hudContextScope = .city
         showInspector = true
@@ -495,6 +516,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func toggleInspector() {
+        leaveCityFocusForPresentedSurface()
         if showInspector {
             showInspector = false
         } else {
@@ -628,6 +650,7 @@ final class CityGameStore: ObservableObject {
         hudContextScope = .city
         showInspector = false
         showCommandGuide = false
+        isCityFocusModeEnabled = false
         undoStates.removeAll()
         canUndo = false
         requestMapFocus()
@@ -653,6 +676,7 @@ final class CityGameStore: ObservableObject {
             hudContextScope = .city
             showInspector = false
             showCommandGuide = false
+            isCityFocusModeEnabled = false
             undoStates.removeAll()
             canUndo = false
             showFeedback(
@@ -708,6 +732,24 @@ final class CityGameStore: ObservableObject {
     private func playSound(named name: String) {
         guard UserDefaults.standard.object(forKey: "soundEffects") as? Bool ?? true else { return }
         NSSound(named: NSSound.Name(name))?.play()
+    }
+
+    private func leaveCityFocusForPresentedSurface() {
+        isCityFocusModeEnabled = false
+    }
+
+    static func shouldQuarantineCityFocusShortcut(
+        firstResponder: NSResponder?,
+        event: NSEvent?
+    ) -> Bool {
+        guard firstResponder is NSTextView || firstResponder is NSTextField,
+              let event,
+              event.type == .keyDown,
+              event.charactersIgnoringModifiers?.lowercased() == "f" else {
+            return false
+        }
+        let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+        return modifiers.contains(.command) && modifiers.contains(.shift)
     }
 
     private func alertPriority(_ severity: MessageSeverity) -> Int {

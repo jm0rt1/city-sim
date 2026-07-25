@@ -8,7 +8,7 @@ enum StageCaptureSummaryError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: summarize-renderer-stage-captures --repository-root <path> --capture-root <diagnostics-dir> --report <json> [--expected-coordinate <x,y> --expected-run-count <n> --classification-mode first-divergence]"
+            return "usage: summarize-renderer-stage-captures --repository-root <path> --capture-root <diagnostics-dir> --report <json> [--expected-coordinate <x,y> --expected-run-count <n> --classification-mode first-divergence|scene-kit-vs-lanczos]"
         case let .invalid(message):
             return message
         }
@@ -120,7 +120,11 @@ enum SummarizeRendererStageCapturesMain {
             captureRoot.path.contains("/diagnostics/"),
             reportURL.path.contains("/diagnostics/"),
             expectedCoordinate.count == 2,
-            ["legacy-v2-residual", "first-divergence"]
+            [
+                "legacy-v2-residual",
+                "first-divergence",
+                "scene-kit-vs-lanczos",
+            ]
                 .contains(classificationMode)
         else {
             throw StageCaptureSummaryError.invalid(
@@ -139,6 +143,22 @@ enum SummarizeRendererStageCapturesMain {
             else {
                 throw StageCaptureSummaryError.invalid(
                     "first-divergence mode is bound to the exact East 707,687 three-run packet"
+                )
+            }
+        }
+        if classificationMode == "scene-kit-vs-lanczos" {
+            let requiredSuffix =
+                "/docs/production/evidence/PLAY-027/industrial-l02/l02/"
+                + "source-v05-stage-capture/diagnostics/"
+                + "east-707x687-scene-kit-vs-lanczos"
+            guard
+                expectedCoordinate == [707, 687],
+                expectedRunCount == 3,
+                captureRoot.path.hasSuffix(requiredSuffix),
+                reportURL.path.hasPrefix(captureRoot.path + "/")
+            else {
+                throw StageCaptureSummaryError.invalid(
+                    "SceneKit/Lanczos mode is bound to the exact East 707,687 three-run packet"
                 )
             }
         }
@@ -192,6 +212,8 @@ enum SummarizeRendererStageCapturesMain {
             }
         )
         var finalFileHashes: [String: Int] = [:]
+        var oversampledFullFrameHashes: [String: Int] = [:]
+        var oversampledSupportWindowHashes: [String: Int] = [:]
         var allStageIdentityPassed = true
         var retainedFileCount = 0
 
@@ -245,6 +267,96 @@ enum SummarizeRendererStageCapturesMain {
                 throw StageCaptureSummaryError.invalid(
                     "invalid capture record: \(captureURL.path)"
                 )
+            }
+            var oversampledSupportSummary: [String: Any]?
+            if classificationMode == "scene-kit-vs-lanczos" {
+                guard
+                    let support =
+                        capture["oversampledSupportWindow"]
+                        as? [String: Any],
+                    support["stage"] as? String
+                        == "scenekit-4x-in-memory",
+                    let sourceColorSpace =
+                        support["sourceCGImageColorSpace"] as? String,
+                    sourceColorSpace.isEmpty == false,
+                    support["decodedColorSpace"] as? String
+                        == "sRGB",
+                    support["decodedPixelFormat"] as? String
+                        == "rgba8-premultiplied-last-byte-order-32-big",
+                    support["decodeInterpolation"] as? String
+                        == "none",
+                    support["fullFramePixels"] as? [Int]
+                        == [6144, 4096],
+                    let fullFrameSHA =
+                        support["fullFrameDecodedRGBASHA256"]
+                        as? String,
+                    support["outputTargetCoordinate"] as? [Int]
+                        == expectedCoordinate,
+                    support["downsampledInputCoordinate"] as? [Int]
+                        == [707, 431],
+                    support["highResolutionCenterTwice"] as? [Int]
+                        == [5659, 3451],
+                    support["highResolutionCenterDenominator"]
+                        as? Int == 2,
+                    support["supportWindowBoundsExclusive"]
+                        as? [Int] == [2813, 1709, 2846, 1742],
+                    support["supportWindowPixels"] as? [Int]
+                        == [33, 33],
+                    support[
+                        "supportWindowCapturedRadiusInputPixels"
+                    ] as? Int == 16,
+                    support["supportWindowBorderPolicy"] as? String
+                        == "reject-if-window-crosses-4x-frame",
+                    support["supportWindowByteCount"] as? Int
+                        == 4356,
+                    let declaredWindowSHA =
+                        support["supportWindowRGBASHA256"]
+                        as? String,
+                    let windowIntegers =
+                        support["supportWindowRGBA"] as? [Int],
+                    windowIntegers.count == 4356,
+                    windowIntegers.allSatisfy({ (0...255).contains($0) })
+                else {
+                    throw StageCaptureSummaryError.invalid(
+                        "invalid SceneKit 4x support record: \(captureURL.path)"
+                    )
+                }
+                let windowBytes = windowIntegers.map(UInt8.init)
+                let computedWindowSHA =
+                    stageSummarySHA256(Data(windowBytes))
+                guard computedWindowSHA == declaredWindowSHA else {
+                    throw StageCaptureSummaryError.invalid(
+                        "SceneKit 4x support bytes do not match their hash"
+                    )
+                }
+                oversampledFullFrameHashes[
+                    fullFrameSHA,
+                    default: 0
+                ] += 1
+                oversampledSupportWindowHashes[
+                    declaredWindowSHA,
+                    default: 0
+                ] += 1
+                oversampledSupportSummary = [
+                    "stage": "scenekit-4x-in-memory",
+                    "sourceCGImageColorSpace": sourceColorSpace,
+                    "decodedColorSpace": "sRGB",
+                    "decodedPixelFormat":
+                        "rgba8-premultiplied-last-byte-order-32-big",
+                    "fullFramePixels": [6144, 4096],
+                    "fullFrameDecodedRGBASHA256": fullFrameSHA,
+                    "outputTargetCoordinate": expectedCoordinate,
+                    "downsampledInputCoordinate": [707, 431],
+                    "highResolutionCenterTwice": [5659, 3451],
+                    "highResolutionCenterDenominator": 2,
+                    "supportWindowBoundsExclusive": [
+                        2813, 1709, 2846, 1742,
+                    ],
+                    "supportWindowPixels": [33, 33],
+                    "supportWindowByteCount": 4356,
+                    "supportWindowRGBASHA256": declaredWindowSHA,
+                    "supportWindowRGBAValidated": true,
+                ]
             }
             let recordsByName = Dictionary(
                 uniqueKeysWithValues: try stages.map { stage in
@@ -304,7 +416,7 @@ enum SummarizeRendererStageCapturesMain {
             }
             allStageIdentityPassed =
                 allStageIdentityPassed && postToImageIO && imageIOToSips
-            runRecords.append([
+            var runRecord: [String: Any] = [
                 "run": captureURL.deletingLastPathComponent()
                     .lastPathComponent,
                 "captureFile": stageSummaryRelativePath(
@@ -326,7 +438,12 @@ enum SummarizeRendererStageCapturesMain {
                     capture["postMajorityTotalMutationCount"] as? Int
                     ?? -1,
                 "stageIdentity": identity,
-            ])
+            ]
+            if let oversampledSupportSummary {
+                runRecord["oversampledSupportWindow"] =
+                    oversampledSupportSummary
+            }
+            runRecords.append(runRecord)
         }
 
         let stageDistributions: [[String: Any]] = expectedStages.map {
@@ -356,12 +473,32 @@ enum SummarizeRendererStageCapturesMain {
         } ?? "none"
         let finalDistribution =
             hashesByStage["final-sips-decoded"]!
+        let sceneKitVsLanczosClassification: String = {
+            guard classificationMode == "scene-kit-vs-lanczos" else {
+                return "not-requested"
+            }
+            if oversampledSupportWindowHashes.count > 1 {
+                return "scene-kit-draw-coverage"
+            }
+            if hashesByStage["prequantized-in-memory"]!.count > 1 {
+                return "software-ci-lanczos"
+            }
+            return "no-divergence-observed"
+        }()
         let status: String = {
             if classificationMode == "first-divergence" {
                 return runRecords.count == expectedRunCount
                         && allStageIdentityPassed
                     ? "stage-boundary-classified"
                     : "incomplete"
+            }
+            if classificationMode == "scene-kit-vs-lanczos" {
+                return runRecords.count == expectedRunCount
+                        && allStageIdentityPassed
+                        && sceneKitVsLanczosClassification
+                            != "no-divergence-observed"
+                    ? "stage-boundary-classified"
+                    : "inconclusive"
             }
             return finalFileHashes.count >= 2
                     && allStageIdentityPassed
@@ -393,6 +530,12 @@ enum SummarizeRendererStageCapturesMain {
                 exactStageThatReintroducesTarget,
             "finalDecodedRGBASHA256Counts": finalDistribution,
             "finalPNGFileSHA256Counts": finalFileHashes,
+            "oversampledFullFrameDecodedRGBASHA256Counts":
+                oversampledFullFrameHashes,
+            "oversampledSupportWindowRGBASHA256Counts":
+                oversampledSupportWindowHashes,
+            "sceneKitVsLanczosClassification":
+                sceneKitVsLanczosClassification,
             "allPostMajorityImageIOSipsDecodedPixelsIdentical":
                 allStageIdentityPassed,
             "thresholdsBroadened": false,
@@ -415,7 +558,7 @@ enum SummarizeRendererStageCapturesMain {
         )
         try data.write(to: reportURL, options: .atomic)
         print(
-            "\(status) \(runRecords.count) runs; target split: \(exactStageThatReintroducesTarget)"
+            "\(status) \(runRecords.count) runs; target split: \(exactStageThatReintroducesTarget); SceneKit/Lanczos: \(sceneKitVsLanczosClassification)"
         )
     }
 }

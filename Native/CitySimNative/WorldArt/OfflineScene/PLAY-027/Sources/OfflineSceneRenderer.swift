@@ -3215,6 +3215,16 @@ enum OfflineSceneRendererMain {
             "--diagnostic-stage-contract",
             in: arguments
         )
+        if let diagnosticStageContractID {
+            guard [
+                IndustrialL2V5EastStageCaptureContract.contractID,
+                IndustrialL2V5EastSceneKitLanczosContract.contractID,
+            ].contains(diagnosticStageContractID) else {
+                throw OfflineRendererError.invalid(
+                    "unknown diagnostic stage contract"
+                )
+            }
+        }
         guard
             diagnosticAntialiasingRaw == nil
                 || DiagnosticAntialiasing(
@@ -3326,7 +3336,12 @@ enum OfflineSceneRendererMain {
             )
         let diagnosticStageIsolationRecord =
             try IndustrialL2V5EastStageCaptureContract.validate(
-                requestedContractID: diagnosticStageContractID,
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V5EastStageCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
                 repositoryRoot: repositoryRoot,
                 sceneURL: sceneURL,
                 materialsURL: materialsURL,
@@ -3351,9 +3366,40 @@ enum OfflineSceneRendererMain {
                 descriptorSceneKitShadows:
                     descriptorSampling.sceneKitShadows
             )
+        let diagnosticSceneKitLanczosRecord =
+            try IndustrialL2V5EastSceneKitLanczosContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V5EastSceneKitLanczosContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
         guard
-            diagnosticMSAAIsolationRecord == nil
-                || diagnosticStageIsolationRecord == nil
+            [
+                diagnosticMSAAIsolationRecord != nil,
+                diagnosticStageIsolationRecord != nil,
+                diagnosticSceneKitLanczosRecord != nil,
+            ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
                 "only one diagnostic isolation contract may be active"
@@ -3362,6 +3408,7 @@ enum OfflineSceneRendererMain {
         let diagnosticIsolationRecord =
             diagnosticMSAAIsolationRecord?.value
             ?? diagnosticStageIsolationRecord?.value
+            ?? diagnosticSceneKitLanczosRecord?.value
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3500,6 +3547,13 @@ enum OfflineSceneRendererMain {
             linearOversamplingFactor:
                 descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
+        let oversampledSupportWindow =
+            try diagnosticSceneKitLanczosRecord.map {
+                try rendererOversampledSupportWindowRecord(
+                    image: oversampled,
+                    geometry: $0.supportGeometry
+                )
+            }
         let compositor = NativeSourceCompositor(
             sampling: descriptorSampling,
             stageTraceCoordinate: diagnosticStageCoordinate
@@ -3622,7 +3676,7 @@ enum OfflineSceneRendererMain {
                 pngWriteDiagnostics.finalSips[
                     "decodedRGBASHA256"
                 ] as? String
-            let capture: [String: Any] = [
+            var capture: [String: Any] = [
                 "schema": 1,
                 "task": "PLAY-027",
                 "purpose":
@@ -3671,6 +3725,10 @@ enum OfflineSceneRendererMain {
                 "repairThresholdsChanged": false,
                 "productionSelected": false,
             ]
+            if let oversampledSupportWindow {
+                capture["oversampledSupportWindow"] =
+                    oversampledSupportWindow
+            }
             var captureData = try JSONSerialization.data(
                 withJSONObject: capture,
                 options: [
@@ -3696,6 +3754,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5MSAAIsolationContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []

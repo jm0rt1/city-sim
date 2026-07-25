@@ -1,0 +1,102 @@
+{
+  "alphaRelation": {
+    "alphaContractMismatchPixelCount": 0,
+    "alphaVisibleBoundsEqualRGBBounds": false,
+    "alphaVisibleToRGBWidthRatio": 0.9884615384615385,
+    "foregroundInputAlphaSHA256": "5125d9cdf12a67d5f122b9bc1c28805189b9cc7e1dca42568b7b740147a8a496",
+    "foregroundOutputAlphaSHA256": "5125d9cdf12a67d5f122b9bc1c28805189b9cc7e1dca42568b7b740147a8a496",
+    "hiddenRGBPixelCount": 0,
+    "inputAlphaSHA256": "3860473f9cf0f6b62e18ce25b0d634094f07672a493c20cd29a25693ea68c124",
+    "nearMagentaOpaquePixelCount": 0,
+    "outputAlphaSHA256": "75eff96dfcde7452ff5b3e08702006f92ad82ff5cc1e85bf3ee05ac78fb95a20",
+    "preChromaAlphaVisibleBounds": {
+      "height": 406,
+      "maximum": [
+        1024,
+        895
+      ],
+      "minimum": [
+        511,
+        490
+      ],
+      "width": 514
+    },
+    "rawRGBOccupiedBounds": {
+      "height": 418,
+      "maximum": [
+        1028,
+        905
+      ],
+      "minimum": [
+        509,
+        488
+      ],
+      "width": 520
+    },
+    "zeroToChromaPixelCount": 1426723
+  },
+  "approvedAuthority": "39ee0b196ce4f11b38d7ab54b1c540e25aa3882d",
+  "attempt": "industrial-l02-east-v04-primary-alpha-relation-repair",
+  "disposition": "REJECTED_RAW_TECHNICAL_GATE",
+  "freshMetalProcessCount": 1,
+  "firstFailedGate": "alpha-visible-bounds-equal-rgb-bounds",
+  "inputs": {
+    "alphaCompositorContractSHA256": "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9",
+    "canonicalGeometrySHA256": "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3",
+    "descriptorSHA256": "fdb92d39acb8847178a95d1e0f6315332a93eda01df71388e54582fe1e6f12bf",
+    "materialLibrarySHA256": "31f500488b7d143e88015bf71b53db4d1a4b19076563dc3d774d61f00c8b83a3",
+    "validatorReplaySHA256": "09c659428e3cb5a24b2cb3f83d996f3509d77897f0dc51f15b06af0eda7c608a"
+  },
+  "luma": {
+    "identityBearingMinimumBin": 112,
+    "maximumMajorFacadeBinShare": 0.34305070981713187,
+    "occupiedStep32Bins": [
+      48,
+      80,
+      112,
+      144,
+      176,
+      208,
+      240
+    ],
+    "p25": 114,
+    "p75MinusP25": 62,
+    "p95": 201
+  },
+  "normalizationRunCount": 0,
+  "outputs": {
+    "neutralCompositeSHA256": "0b9983c5e2604185dea6a15c59913f3288cacb53a6b0b49bb3d1810c2dd1237e",
+    "preChromaDownsampledSHA256": "4fa4f030bcea189eb3d35d55e5a3684c91c7708bdb3a6abb61f98685a0a7885f",
+    "preChromaRegisteredAlphaSHA256": "94a4323fe8a6a5da7009a7c0c12b52c4350fe19a3cd5b23d00fd51992a2b35bf",
+    "preChromaRegisteredBuildingSHA256": "43dea7e238c90879f2fc0600e56b3f64de511055cfafcc9f79a406837eae948c",
+    "provenanceSHA256": "f9f383e4a8e00f28b6c413f0c8a48151bc3fbe3e425f1b07de9c5fb635f0b28c",
+    "rawDecodedRGBASHA256": "597276c83896c9236a84acbe18482416d96c7b5683a3473ad5c11c0e4e5d7fce",
+    "rawFileSHA256": "41ba5f09159534438e1a89fc25cf28ccb99ea48bc09d9c3bba80f03f14403072",
+    "reviewInventorySHA256": "ac2674871a4198b0605890f213b7382bd8a51bc24169ef70cc10fff8c649c73c",
+    "reviewMetricsSHA256": "83b0b403efcac6b9d8794a036dd69da470acd3d399b5a3a3a7a76bab47fb27b3"
+  },
+  "productionSelected": false,
+  "registrationPassed": true,
+  "repeatAttempts": 0,
+  "review": {
+    "independentDisposition": "PENDING",
+    "literalPanelObservation": "The wide low campus, three loading doors, material hierarchy, and safety trim remain legible in source-scale and native-2x color and grayscale panels.",
+    "selfAcceptance": false
+  },
+  "schema": 1,
+  "spans": {
+    "buildingOnlyNative2xWidth": 144.5625,
+    "buildingOnlySourceWidth": 514,
+    "coreFormNative2xWidth": 118.6875,
+    "coreFormSourceWidth": 422,
+    "minimumFeatureNative2xPixels": 17.15625
+  },
+  "task": "PLAY-027",
+  "tools": {
+    "probeBinarySHA256": "b5621e8d14816ed90be8b8f72da073cf1ab723f6e8912324d9bbfe15db4ab5e8",
+    "probeToolSHA256": "3376bd5a8ce7617715ed569410615f5984ffac31b65adf0b96a813cf44b91169",
+    "reviewBinarySHA256": "ea3ee4a40c7abed8826a01905a4f293d54c9f987cf8206fed4e316d75fcc7cd7",
+    "reviewToolSHA256": "44ce28dc9f10346cd91e2c9c1af9e48dc2b9ac6829303ba8aeb3e2a036e7241c"
+  },
+  "type": "industrial-l02-east-v04-single-primary-raw-rejection"
+}

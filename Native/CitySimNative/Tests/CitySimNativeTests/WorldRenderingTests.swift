@@ -1384,16 +1384,18 @@ final class WorldRenderingTests: XCTestCase {
         let centralWaterTower = GridCoordinate(x: 15, y: 13)
         XCTAssertEqual(state.tile(at: remoteIndustry)?.kind, .industrial)
 
-        for (size, insets, minimumPriorityWidth) in [
+        for (size, insets, expectedScale, expectedPriorityOccupancy) in [
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.70)
+                CGFloat(0.312796950340271),
+                CGSize(width: 0.7473417931726477, height: 1.2329704703499522)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
-                CGFloat(0.54)
+                CGFloat(0.576345682144165),
+                CGSize(width: 0.5796985019395197, height: 1.58704226315938)
             ),
         ] {
             let scene = CityScene(size: size)
@@ -1409,9 +1411,24 @@ final class WorldRenderingTests: XCTestCase {
                 scene.cameraPriorityVisualBoundsForTesting.width,
                 scene.occupiedDevelopedVisualBoundsForTesting.width
             )
-            XCTAssertGreaterThanOrEqual(
-                scene.cameraPriorityViewportOccupancyForTesting().width,
-                minimumPriorityWidth
+            let priorityOccupancy = scene.cameraPriorityViewportOccupancyForTesting()
+            XCTAssertEqual(scene.cameraScaleForTesting, expectedScale, accuracy: 0.000_001)
+            XCTAssertEqual(
+                priorityOccupancy.width,
+                expectedPriorityOccupancy.width,
+                accuracy: 0.000_001
+            )
+            XCTAssertEqual(
+                priorityOccupancy.height,
+                expectedPriorityOccupancy.height,
+                accuracy: 0.000_001
+            )
+            print(
+                "PLAY024_RETURN_CAMERA " +
+                    "size=\(Int(size.width))x\(Int(size.height)) " +
+                    "scale=\(scene.cameraScaleForTesting) " +
+                    "priority_width=\(priorityOccupancy.width) " +
+                    "priority_height=\(priorityOccupancy.height)"
             )
 
             // The remote authoritative industrial lot remains a normal

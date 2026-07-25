@@ -3082,6 +3082,7 @@ func writePNG(
     )
 }
 
+#if !PLAY027_SCENE_PREP_DIAGNOSTIC
 @main
 enum OfflineSceneRendererMain {
     static func main() throws {
@@ -3649,3 +3650,4 @@ enum OfflineSceneRendererMain {
         try terminated.write(to: recordURL, options: .atomic)
     }
 }
+#endif

@@ -1,0 +1,77 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : false,
+  "schema" : 1,
+  "sourceCount" : 2,
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/offline-calibration-v01/determinism/north-run-a.png",
+      "fileSHA256" : "d3f1307de0b7f096ef9442e0215ebda9ad7ead624c41d980a9206a3bf0049fe8",
+      "id" : "north-run-a",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1510410,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          619,
+          640,
+          1029,
+          906
+        ],
+        "paddingPixels" : [
+          619,
+          640,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "f3939605c50605ea236bcc96d391392b9d3721c09040a9411e6a877e4bf3a50a",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/offline-calibration-v01/determinism/north-run-b.png",
+      "fileSHA256" : "a9f43986af0787f7f9f85ee398287f85c6f371fd51c4819648761b3d1eaf7e98",
+      "id" : "north-run-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1510410,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          619,
+          640,
+          1029,
+          906
+        ],
+        "paddingPixels" : [
+          619,
+          640,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "7cb5ae5bd062b5b70939cc035bda5e44a884ce44d02bf9f940cf9e537885e307",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 2,
+  "validationPassed" : false
+}

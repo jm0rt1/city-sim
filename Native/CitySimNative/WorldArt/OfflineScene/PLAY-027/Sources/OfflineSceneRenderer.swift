@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -3199,22 +3199,28 @@ enum OfflineSceneRendererMain {
             "--diagnostic-antialiasing",
             in: arguments
         )
+        let diagnosticSceneShadowsRaw = rendererOptionalArgument(
+            "--diagnostic-scene-shadows",
+            in: arguments
+        )
+        let diagnosticMaterialLightingRaw = rendererOptionalArgument(
+            "--diagnostic-material-lighting",
+            in: arguments
+        )
+        let diagnosticContractID = rendererOptionalArgument(
+            "--diagnostic-contract",
+            in: arguments
+        )
         guard
             diagnosticAntialiasingRaw == nil
                 || DiagnosticAntialiasing(
                     rawValue: diagnosticAntialiasingRaw!
                 ) != nil,
             let diagnosticSceneShadows = DiagnosticSceneShadows(
-                rawValue: rendererOptionalArgument(
-                    "--diagnostic-scene-shadows",
-                    in: arguments
-                ) ?? "current"
+                rawValue: diagnosticSceneShadowsRaw ?? "current"
             ),
             let diagnosticMaterialLighting = DiagnosticMaterialLighting(
-                rawValue: rendererOptionalArgument(
-                    "--diagnostic-material-lighting",
-                    in: arguments
-                ) ?? "current"
+                rawValue: diagnosticMaterialLightingRaw ?? "current"
             )
         else {
             throw OfflineRendererError.arguments
@@ -3293,6 +3299,27 @@ enum OfflineSceneRendererMain {
         let descriptorSampling = try DescriptorSamplingResolver.resolve(
             descriptor: descriptor
         )
+        let diagnosticIsolationRecord =
+            try IndustrialL2V5MSAAIsolationContract.validate(
+                requestedContractID: diagnosticContractID,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                materialsURL: materialsURL,
+                outputURL: outputURL,
+                recordURL: recordURL,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting: diagnosticMaterialLightingRaw,
+                logicalBuildingID: descriptor.logicalBuildingID,
+                variantID: descriptor.variantID,
+                sourceRevision: descriptor.sourceRevision,
+                viewDirection: descriptor.viewDirection,
+                productionSelected: descriptor.productionSelected,
+                descriptorSceneKitAntialiasing:
+                    descriptorSampling.sceneKitAntialiasing,
+                descriptorSceneKitShadows:
+                    descriptorSampling.sceneKitShadows
+            )
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3701,6 +3728,12 @@ enum OfflineSceneRendererMain {
                         )
                     } ?? "not-requested",
             ],
+            "diagnosticIsolationContract":
+                diagnosticIsolationRecord?.value ?? [
+                    "contractID": "none",
+                    "sourceAuthority": false,
+                    "productionSelected": false,
+                ],
             "descriptorSamplingContract": [
                 "contractID": descriptorSampling.contractID,
                 "descriptorSchema": descriptorSampling.descriptorSchema,

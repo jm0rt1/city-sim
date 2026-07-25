@@ -3396,9 +3396,15 @@ enum OfflineSceneRendererMain {
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
-        let diagnosticMaterialLightingApplication =
+        let effectiveSceneKitLightingMode =
+            diagnosticConfiguration.materialLighting == .constantUnlit
+            ? "authored-constant-v1"
+            : descriptorSampling.sceneKitLightingMode
+        let sceneKitLightingApplication =
             applyDiagnosticMaterialLighting(
-                diagnosticConfiguration.materialLighting,
+                effectiveSceneKitLightingMode == "authored-constant-v1"
+                    ? .constantUnlit
+                    : .current,
                 to: scene
             )
         if descriptorSampling.sceneKitShadows == "disabled"
@@ -3668,13 +3674,13 @@ enum OfflineSceneRendererMain {
                     diagnosticConfiguration.materialLighting.rawValue,
                 "materialLightingApplication": [
                     "uniqueMaterialCount":
-                        diagnosticMaterialLightingApplication
+                        sceneKitLightingApplication
                         .uniqueMaterialCount,
                     "sceneLightCount":
-                        diagnosticMaterialLightingApplication.sceneLightCount,
+                        sceneKitLightingApplication.sceneLightCount,
                     "sceneLightsDisabled":
-                        diagnosticConfiguration.materialLighting
-                        == .constantUnlit,
+                        effectiveSceneKitLightingMode
+                        == "authored-constant-v1",
                     "materialColorsChanged": false,
                     "descriptorChanged": false,
                 ],
@@ -3710,6 +3716,20 @@ enum OfflineSceneRendererMain {
                     diagnosticConfiguration.sceneShadows == .disabled
                     ? "disabled"
                     : descriptorSampling.sceneKitShadows,
+                "sceneKitLightingMode":
+                    descriptorSampling.sceneKitLightingMode,
+                "effectiveSceneKitLightingMode":
+                    effectiveSceneKitLightingMode,
+                "sceneKitMaterialLightingModel":
+                    effectiveSceneKitLightingMode
+                        == "authored-constant-v1"
+                    ? "constant"
+                    : "lambert",
+                "sceneLights":
+                    effectiveSceneKitLightingMode
+                        == "authored-constant-v1"
+                    ? "disabled-zero-intensity-no-shadow"
+                    : "descriptor-authored",
                 "linearOversamplingFactor":
                     descriptorSampling.linearOversamplingFactor,
                 "downsampleFilter":

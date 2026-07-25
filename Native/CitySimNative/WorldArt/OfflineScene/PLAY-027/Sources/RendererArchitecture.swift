@@ -44,6 +44,7 @@ struct EffectiveSamplingContract: Equatable {
     let descriptorSchema: Int
     let sceneKitAntialiasing: String
     let sceneKitShadows: String
+    let sceneKitLightingMode: String
     let linearOversamplingFactor: Int
     let downsampleFilter: String
     let downsampleScale: Double
@@ -71,6 +72,7 @@ enum DescriptorSamplingResolver {
         descriptorSchema: 1,
         sceneKitAntialiasing: "multisampling4X",
         sceneKitShadows: "current",
+        sceneKitLightingMode: "lambert-scene-lights",
         linearOversamplingFactor: 2,
         downsampleFilter: "CILanczosScaleTransform",
         downsampleScale: 0.5,
@@ -122,9 +124,15 @@ enum DescriptorSamplingResolver {
         let isV2 = sampling.contractID == schema2ContractV2ID
         let isV3 = sampling.contractID == schema2ContractV3ID
         let sceneKitShadows = sampling.sceneKitShadows ?? "current"
+        let sceneKitLightingMode =
+            sampling.sceneKitLightingMode ?? "lambert-scene-lights"
         let isIndustrialL2SourceV04 =
             descriptor.logicalBuildingID == "industrial_l02"
             && descriptor.sourceRevision == "source-v04"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV05 =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v05"
             && sampling.purpose == "source-authority"
         guard
             isV1 || isV2 || isV3,
@@ -134,6 +142,10 @@ enum DescriptorSamplingResolver {
             ),
             sampling.sceneKitAntialiasing == "none",
             ["current", "disabled"].contains(sceneKitShadows),
+            [
+                "lambert-scene-lights",
+                "authored-constant-v1",
+            ].contains(sceneKitLightingMode),
             sampling.linearOversamplingFactor == 4,
             descriptor.camera.oversamplingFactor == 4,
             sampling.downsample.filter == "CILanczosScaleTransform",
@@ -157,12 +169,31 @@ enum DescriptorSamplingResolver {
             )
         }
         guard
-            (isIndustrialL2SourceV04 && sceneKitShadows == "disabled")
-                || (!isIndustrialL2SourceV04
+            (
+                (isIndustrialL2SourceV04 || isIndustrialL2SourceV05)
+                    && sceneKitShadows == "disabled"
+            )
+                || (
+                    !isIndustrialL2SourceV04
+                    && !isIndustrialL2SourceV05
                     && sceneKitShadows == "current")
         else {
             throw SamplingContractError.invalid(
-                "SceneKit shadows may be disabled only by Industrial L2 source-v04 source-authority descriptors"
+                "SceneKit shadows may be disabled only by Industrial L2 source-v04/source-v05 source-authority descriptors"
+            )
+        }
+        guard
+            (
+                isIndustrialL2SourceV05
+                    && sceneKitLightingMode == "authored-constant-v1"
+            )
+                || (
+                    !isIndustrialL2SourceV05
+                    && sceneKitLightingMode == "lambert-scene-lights"
+                )
+        else {
+            throw SamplingContractError.invalid(
+                "authored-constant-v1 may be selected only by Industrial L2 source-v05 source-authority descriptors"
             )
         }
         if isV1, sampling.postQuantizationCanonicalizer != nil {
@@ -237,6 +268,7 @@ enum DescriptorSamplingResolver {
             descriptorSchema: descriptor.schema,
             sceneKitAntialiasing: sampling.sceneKitAntialiasing,
             sceneKitShadows: sceneKitShadows,
+            sceneKitLightingMode: sceneKitLightingMode,
             linearOversamplingFactor: sampling.linearOversamplingFactor,
             downsampleFilter: sampling.downsample.filter,
             downsampleScale: sampling.downsample.scale,

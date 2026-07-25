@@ -137,6 +137,57 @@
       "minItems": 1
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "logicalBuildingID": {
+            "const": "industrial_l02"
+          },
+          "sourceRevision": {
+            "const": "source-v05"
+          }
+        },
+        "required": [
+          "logicalBuildingID",
+          "sourceRevision"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sampling": {
+            "properties": {
+              "purpose": {
+                "const": "source-authority"
+              },
+              "sceneKitLightingMode": {
+                "const": "authored-constant-v1"
+              },
+              "sceneKitShadows": {
+                "const": "disabled"
+              }
+            },
+            "required": [
+              "purpose",
+              "sceneKitLightingMode",
+              "sceneKitShadows"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "sampling": {
+            "properties": {
+              "sceneKitLightingMode": {
+                "const": "lambert-scene-lights"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "sampling": {
       "type": "object",
@@ -176,6 +227,12 @@
           "enum": [
             "current",
             "disabled"
+          ]
+        },
+        "sceneKitLightingMode": {
+          "enum": [
+            "lambert-scene-lights",
+            "authored-constant-v1"
           ]
         },
         "linearOversamplingFactor": {

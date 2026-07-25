@@ -106,6 +106,7 @@ struct SamplingDescriptor: Codable, Equatable {
     let purpose: String
     let sceneKitAntialiasing: String
     let sceneKitShadows: String?
+    let sceneKitLightingMode: String?
     let linearOversamplingFactor: Int
     let downsample: SamplingDownsampleDescriptor
     let ciContext: SamplingCIContextDescriptor

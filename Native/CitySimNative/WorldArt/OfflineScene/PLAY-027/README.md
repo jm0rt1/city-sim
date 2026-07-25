@@ -103,6 +103,15 @@ state that descriptor geometry is unchanged and the output is not source-art
 authority. The deterministic registered southeast footprint shadow remains
 fixed when SceneKit self/cast shadows are isolated.
 
+The additive schema-2 `sceneKitLightingMode` field defaults to
+`lambert-scene-lights` when omitted, preserving every legacy and accepted
+descriptor. The resolver accepts `authored-constant-v1` only for an Industrial
+L2 `source-v05` source-authority descriptor. That mode is descriptor-bound:
+all SceneKit materials use `.constant`, both descriptor-authored scene lights
+are zero-intensity and non-shadowing, and the authored southeast contact shadow
+remains geometry. A diagnostic CLI override still cannot write source
+authority.
+
 ## Descriptor-bound sampling compatibility
 
 `schema/scene.schema.json` remains the unchanged schema-1 authority used by

@@ -1,0 +1,876 @@
+{
+  "complete" : true,
+  "faceContributors" : {
+    "maxX" : [
+      "foundation",
+      "v02-dock-canopy-a",
+      "v02-dock-canopy-b",
+      "v02-dock-canopy-c",
+      "v02-hazard-header",
+      "v02-loading-apron",
+      "v02-personnel-canopy"
+    ],
+    "maxY" : [
+      "v03-hall-clerestory-envelope"
+    ],
+    "maxZ" : [
+      "foundation",
+      "v02-process-base",
+      "v02-process-tank"
+    ],
+    "minX" : [
+      "foundation"
+    ],
+    "minY" : [
+      "foundation",
+      "v02-loading-apron"
+    ],
+    "minZ" : [
+      "foundation"
+    ]
+  },
+  "geometryNodeCount" : 31,
+  "geometryNodes" : [
+    {
+      "boundsWorld" : {
+        "x" : [
+          -28,
+          28
+        ],
+        "y" : [
+          0,
+          2.4000000953674316
+        ],
+        "z" : [
+          -28,
+          28
+        ]
+      },
+      "materialIDs" : [
+        "v02-formed-concrete-box-face-0",
+        "v02-formed-concrete-box-face-1",
+        "v02-formed-concrete-box-face-2",
+        "v02-formed-concrete-box-face-3",
+        "v02-formed-concrete-box-face-4",
+        "v02-formed-concrete-box-face-5"
+      ],
+      "name" : "foundation",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          25.700000762939453,
+          26.700000762939453
+        ],
+        "y" : [
+          9.5,
+          15.5
+        ],
+        "z" : [
+          10.5,
+          23.5
+        ]
+      },
+      "materialIDs" : [
+        "v02-industrial-glazing-box-face-0",
+        "v02-industrial-glazing-box-face-1",
+        "v02-industrial-glazing-box-face-2",
+        "v02-industrial-glazing-box-face-3",
+        "v02-industrial-glazing-box-face-4",
+        "v02-industrial-glazing-box-face-5"
+      ],
+      "name" : "v02-admin-glazing",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          9.25,
+          26.75
+        ],
+        "y" : [
+          19.399999618530273,
+          21.899999618530273
+        ],
+        "z" : [
+          17.25,
+          26.75
+        ]
+      },
+      "materialIDs" : [
+        "v02-roof-membrane-box-face-0",
+        "v02-roof-membrane-box-face-1",
+        "v02-roof-membrane-box-face-2",
+        "v02-roof-membrane-box-face-3",
+        "v02-roof-membrane-box-face-4",
+        "v02-roof-membrane-box-face-5"
+      ],
+      "name" : "v02-admin-roof",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          10,
+          26
+        ],
+        "y" : [
+          2.3999996185302734,
+          19.399999618530273
+        ],
+        "z" : [
+          18,
+          26
+        ]
+      },
+      "materialIDs" : [
+        "v02-warm-concrete-box-face-0",
+        "v02-warm-concrete-box-face-1",
+        "v02-warm-concrete-box-face-2",
+        "v02-warm-concrete-box-face-3",
+        "v02-warm-concrete-box-face-4",
+        "v02-warm-concrete-box-face-5"
+      ],
+      "name" : "v02-administration-wing",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          23.25,
+          27.75
+        ],
+        "y" : [
+          1.2000000476837158,
+          6.1999998092651367
+        ],
+        "z" : [
+          -27.25,
+          -22.75
+        ]
+      },
+      "materialIDs" : [
+        "v02-safety-trim"
+      ],
+      "name" : "v02-bollard-north",
+      "primitiveCount" : 192
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          23.25,
+          27.75
+        ],
+        "y" : [
+          1.2000000476837158,
+          6.1999998092651367
+        ],
+        "z" : [
+          16.25,
+          20.75
+        ]
+      },
+      "materialIDs" : [
+        "v02-safety-trim"
+      ],
+      "name" : "v02-bollard-south",
+      "primitiveCount" : 192
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          22,
+          28
+        ],
+        "y" : [
+          17.399999618530273,
+          20.399999618530273
+        ],
+        "z" : [
+          -24,
+          -12
+        ]
+      },
+      "materialIDs" : [
+        "v02-structural-trim-box-face-0",
+        "v02-structural-trim-box-face-1",
+        "v02-structural-trim-box-face-2",
+        "v02-structural-trim-box-face-3",
+        "v02-structural-trim-box-face-4",
+        "v02-structural-trim-box-face-5"
+      ],
+      "name" : "v02-dock-canopy-a",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          22,
+          28
+        ],
+        "y" : [
+          17.399999618530273,
+          20.399999618530273
+        ],
+        "z" : [
+          -9,
+          3
+        ]
+      },
+      "materialIDs" : [
+        "v02-structural-trim-box-face-0",
+        "v02-structural-trim-box-face-1",
+        "v02-structural-trim-box-face-2",
+        "v02-structural-trim-box-face-3",
+        "v02-structural-trim-box-face-4",
+        "v02-structural-trim-box-face-5"
+      ],
+      "name" : "v02-dock-canopy-b",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          22,
+          28
+        ],
+        "y" : [
+          17.399999618530273,
+          20.399999618530273
+        ],
+        "z" : [
+          6,
+          18
+        ]
+      },
+      "materialIDs" : [
+        "v02-structural-trim-box-face-0",
+        "v02-structural-trim-box-face-1",
+        "v02-structural-trim-box-face-2",
+        "v02-structural-trim-box-face-3",
+        "v02-structural-trim-box-face-4",
+        "v02-structural-trim-box-face-5"
+      ],
+      "name" : "v02-dock-canopy-c",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          26.100000381469727,
+          27.100000381469727
+        ],
+        "y" : [
+          4,
+          16
+        ],
+        "z" : [
+          -23.25,
+          -12.75
+        ]
+      },
+      "materialIDs" : [
+        "v02-loading-door-box-face-0",
+        "v02-loading-door-box-face-1",
+        "v02-loading-door-box-face-2",
+        "v02-loading-door-box-face-3",
+        "v02-loading-door-box-face-4",
+        "v02-loading-door-box-face-5"
+      ],
+      "name" : "v02-dock-door-a",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          26.100000381469727,
+          27.100000381469727
+        ],
+        "y" : [
+          4,
+          16
+        ],
+        "z" : [
+          -8.25,
+          2.25
+        ]
+      },
+      "materialIDs" : [
+        "v02-loading-door-box-face-0",
+        "v02-loading-door-box-face-1",
+        "v02-loading-door-box-face-2",
+        "v02-loading-door-box-face-3",
+        "v02-loading-door-box-face-4",
+        "v02-loading-door-box-face-5"
+      ],
+      "name" : "v02-dock-door-b",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          26.100000381469727,
+          27.100000381469727
+        ],
+        "y" : [
+          4,
+          16
+        ],
+        "z" : [
+          6.75,
+          17.25
+        ]
+      },
+      "materialIDs" : [
+        "v02-loading-door-box-face-0",
+        "v02-loading-door-box-face-1",
+        "v02-loading-door-box-face-2",
+        "v02-loading-door-box-face-3",
+        "v02-loading-door-box-face-4",
+        "v02-loading-door-box-face-5"
+      ],
+      "name" : "v02-dock-door-c",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          22,
+          25
+        ],
+        "y" : [
+          20.5,
+          25
+        ],
+        "z" : [
+          -25,
+          17
+        ]
+      },
+      "materialIDs" : [
+        "v02-galvanized-box-face-0",
+        "v02-galvanized-box-face-1",
+        "v02-galvanized-box-face-2",
+        "v02-galvanized-box-face-3",
+        "v02-galvanized-box-face-4",
+        "v02-galvanized-box-face-5"
+      ],
+      "name" : "v02-dock-header",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          24.399999618530273,
+          26.399999618530273
+        ],
+        "y" : [
+          3.3999996185302734,
+          17.399999618530273
+        ],
+        "z" : [
+          -23.5,
+          -12.5
+        ]
+      },
+      "materialIDs" : [
+        "v02-deep-recess-box-face-0",
+        "v02-deep-recess-box-face-1",
+        "v02-deep-recess-box-face-2",
+        "v02-deep-recess-box-face-3",
+        "v02-deep-recess-box-face-4",
+        "v02-deep-recess-box-face-5"
+      ],
+      "name" : "v02-dock-throat-a",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          24.399999618530273,
+          26.399999618530273
+        ],
+        "y" : [
+          3.3999996185302734,
+          17.399999618530273
+        ],
+        "z" : [
+          -8.5,
+          2.5
+        ]
+      },
+      "materialIDs" : [
+        "v02-deep-recess-box-face-0",
+        "v02-deep-recess-box-face-1",
+        "v02-deep-recess-box-face-2",
+        "v02-deep-recess-box-face-3",
+        "v02-deep-recess-box-face-4",
+        "v02-deep-recess-box-face-5"
+      ],
+      "name" : "v02-dock-throat-b",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          24.399999618530273,
+          26.399999618530273
+        ],
+        "y" : [
+          3.3999996185302734,
+          17.399999618530273
+        ],
+        "z" : [
+          6.5,
+          17.5
+        ]
+      },
+      "materialIDs" : [
+        "v02-deep-recess-box-face-0",
+        "v02-deep-recess-box-face-1",
+        "v02-deep-recess-box-face-2",
+        "v02-deep-recess-box-face-3",
+        "v02-deep-recess-box-face-4",
+        "v02-deep-recess-box-face-5"
+      ],
+      "name" : "v02-dock-throat-c",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -25.75,
+          19.75
+        ],
+        "y" : [
+          26.399999618530273,
+          28.899999618530273
+        ],
+        "z" : [
+          -24.75,
+          17.75
+        ]
+      },
+      "materialIDs" : [
+        "v02-roof-membrane-box-face-0",
+        "v02-roof-membrane-box-face-1",
+        "v02-roof-membrane-box-face-2",
+        "v02-roof-membrane-box-face-3",
+        "v02-roof-membrane-box-face-4",
+        "v02-roof-membrane-box-face-5"
+      ],
+      "name" : "v02-hall-roof",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          26,
+          28
+        ],
+        "y" : [
+          20.5,
+          25.5
+        ],
+        "z" : [
+          -25,
+          17
+        ]
+      },
+      "materialIDs" : [
+        "v02-safety-trim-box-face-0",
+        "v02-safety-trim-box-face-1",
+        "v02-safety-trim-box-face-2",
+        "v02-safety-trim-box-face-3",
+        "v02-safety-trim-box-face-4",
+        "v02-safety-trim-box-face-5"
+      ],
+      "name" : "v02-hazard-header",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -3,
+          9
+        ],
+        "y" : [
+          28.899999618530273,
+          33.900001525878906
+        ],
+        "z" : [
+          5,
+          13
+        ]
+      },
+      "materialIDs" : [
+        "v02-galvanized-box-face-0",
+        "v02-galvanized-box-face-1",
+        "v02-galvanized-box-face-2",
+        "v02-galvanized-box-face-3",
+        "v02-galvanized-box-face-4",
+        "v02-galvanized-box-face-5"
+      ],
+      "name" : "v02-hvac-bank",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          22.5,
+          28
+        ],
+        "y" : [
+          0,
+          2.2000000476837158
+        ],
+        "z" : [
+          -25,
+          23
+        ]
+      },
+      "materialIDs" : [
+        "v02-neutral-apron-box-face-0",
+        "v02-neutral-apron-box-face-1",
+        "v02-neutral-apron-box-face-2",
+        "v02-neutral-apron-box-face-3",
+        "v02-neutral-apron-box-face-4",
+        "v02-neutral-apron-box-face-5"
+      ],
+      "name" : "v02-loading-apron",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          19.25,
+          25.75
+        ],
+        "y" : [
+          23.399999618530273,
+          25.899999618530273
+        ],
+        "z" : [
+          -25.5,
+          17.5
+        ]
+      },
+      "materialIDs" : [
+        "v02-roof-membrane-box-face-0",
+        "v02-roof-membrane-box-face-1",
+        "v02-roof-membrane-box-face-2",
+        "v02-roof-membrane-box-face-3",
+        "v02-roof-membrane-box-face-4",
+        "v02-roof-membrane-box-face-5"
+      ],
+      "name" : "v02-loading-roof",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          20,
+          25
+        ],
+        "y" : [
+          2.3999996185302734,
+          23.399999618530273
+        ],
+        "z" : [
+          -25,
+          17
+        ]
+      },
+      "materialIDs" : [
+        "v02-painted-steel-box-face-0",
+        "v02-painted-steel-box-face-1",
+        "v02-painted-steel-box-face-2",
+        "v02-painted-steel-box-face-3",
+        "v02-painted-steel-box-face-4",
+        "v02-painted-steel-box-face-5"
+      ],
+      "name" : "v02-loading-spine",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -25,
+          19
+        ],
+        "y" : [
+          2.3999996185302734,
+          26.399999618530273
+        ],
+        "z" : [
+          -24,
+          17
+        ]
+      },
+      "materialIDs" : [
+        "v02-formed-concrete-box-face-0",
+        "v02-formed-concrete-box-face-1",
+        "v02-formed-concrete-box-face-2",
+        "v02-formed-concrete-box-face-3",
+        "v02-formed-concrete-box-face-4",
+        "v02-formed-concrete-box-face-5"
+      ],
+      "name" : "v02-main-production-hall",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          23.25,
+          27.75
+        ],
+        "y" : [
+          1.2000000476837158,
+          6.1999998092651367
+        ],
+        "z" : [
+          22.75,
+          27.25
+        ]
+      },
+      "materialIDs" : [
+        "v02-safety-trim"
+      ],
+      "name" : "v02-personnel-bollard",
+      "primitiveCount" : 192
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          24,
+          28
+        ],
+        "y" : [
+          12.25,
+          14.75
+        ],
+        "z" : [
+          18.5,
+          25.5
+        ]
+      },
+      "materialIDs" : [
+        "v02-safety-trim-box-face-0",
+        "v02-safety-trim-box-face-1",
+        "v02-safety-trim-box-face-2",
+        "v02-safety-trim-box-face-3",
+        "v02-safety-trim-box-face-4",
+        "v02-safety-trim-box-face-5"
+      ],
+      "name" : "v02-personnel-canopy",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          25.80000114440918,
+          26.600000381469727
+        ],
+        "y" : [
+          3,
+          11
+        ],
+        "z" : [
+          19.25,
+          24.75
+        ]
+      },
+      "materialIDs" : [
+        "v02-warm-glazing-box-face-0",
+        "v02-warm-glazing-box-face-1",
+        "v02-warm-glazing-box-face-2",
+        "v02-warm-glazing-box-face-3",
+        "v02-warm-glazing-box-face-4",
+        "v02-warm-glazing-box-face-5"
+      ],
+      "name" : "v02-personnel-door",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          25.100000381469727,
+          26.100000381469727
+        ],
+        "y" : [
+          3,
+          13
+        ],
+        "z" : [
+          19,
+          25
+        ]
+      },
+      "materialIDs" : [
+        "v02-deep-recess-box-face-0",
+        "v02-deep-recess-box-face-1",
+        "v02-deep-recess-box-face-2",
+        "v02-deep-recess-box-face-3",
+        "v02-deep-recess-box-face-4",
+        "v02-deep-recess-box-face-5"
+      ],
+      "name" : "v02-personnel-recess",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -24.5,
+          -9.5
+        ],
+        "y" : [
+          2.3999996185302734,
+          20.399999618530273
+        ],
+        "z" : [
+          18,
+          28
+        ]
+      },
+      "materialIDs" : [
+        "v02-painted-steel-box-face-0",
+        "v02-painted-steel-box-face-1",
+        "v02-painted-steel-box-face-2",
+        "v02-painted-steel-box-face-3",
+        "v02-painted-steel-box-face-4",
+        "v02-painted-steel-box-face-5"
+      ],
+      "name" : "v02-process-base",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -22.5,
+          -11.5
+        ],
+        "y" : [
+          20.700000762939453,
+          26
+        ],
+        "z" : [
+          19,
+          27
+        ]
+      },
+      "materialIDs" : [
+        "v02-galvanized-box-face-0",
+        "v02-galvanized-box-face-1",
+        "v02-galvanized-box-face-2",
+        "v02-galvanized-box-face-3",
+        "v02-galvanized-box-face-4",
+        "v02-galvanized-box-face-5"
+      ],
+      "name" : "v02-process-monitor",
+      "primitiveCount" : 12
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -22,
+          -12
+        ],
+        "y" : [
+          2.3999996185302734,
+          24.399999618530273
+        ],
+        "z" : [
+          18,
+          28
+        ]
+      },
+      "materialIDs" : [
+        "v02-oxide-process"
+      ],
+      "name" : "v02-process-tank",
+      "primitiveCount" : 192
+    },
+    {
+      "boundsWorld" : {
+        "x" : [
+          -15,
+          3
+        ],
+        "y" : [
+          28.850000381469727,
+          35.650001525878906
+        ],
+        "z" : [
+          -9,
+          -3
+        ]
+      },
+      "materialIDs" : [
+        "v02-industrial-glazing-box-face-0",
+        "v02-industrial-glazing-box-face-1",
+        "v02-industrial-glazing-box-face-2",
+        "v02-industrial-glazing-box-face-3",
+        "v02-industrial-glazing-box-face-4",
+        "v02-industrial-glazing-box-face-5"
+      ],
+      "name" : "v03-hall-clerestory-envelope",
+      "primitiveCount" : 12
+    }
+  ],
+  "manualGeometryUnionBoundsWorld" : {
+    "x" : [
+      -28,
+      28
+    ],
+    "y" : [
+      0,
+      35.650001525878906
+    ],
+    "z" : [
+      -28,
+      28
+    ]
+  },
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v02/materials/industrial-l02-projection-silhouette-reset-v02.json",
+  "materialLibrarySHA256" : "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6",
+  "pixelsCreated" : false,
+  "productionSelected" : false,
+  "rendererCapabilityPreflightInvoked" : false,
+  "requiredBoundsWorld" : {
+    "minimumMaximumY" : 35.649999999999999,
+    "minimumY" : 0,
+    "x" : [
+      -28,
+      28
+    ],
+    "z" : [
+      -28,
+      28
+    ]
+  },
+  "rootMatchesManualGeometryUnion" : true,
+  "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v03/scenes/industrial_l02/variant-0/east/scene.json",
+  "sceneGeometryID" : "industrial-l02-east-wide-low-campus-geometry-v03",
+  "sceneKitRendererCreated" : false,
+  "sceneKitRootBoundsWorld" : {
+    "x" : [
+      -28,
+      28
+    ],
+    "y" : [
+      0,
+      35.650001525878906
+    ],
+    "z" : [
+      -28,
+      28
+    ]
+  },
+  "sceneKitSnapshotInvoked" : false,
+  "sceneSHA256" : "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca",
+  "schema" : 1,
+  "sourceRevision" : "projection-silhouette-reset-art-proof-v03",
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-pre-render-bounds-audit"
+}

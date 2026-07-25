@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "auditAuthority": "d91dc81a4e6e38387e5af8621c4275f8be2bb96f",
+  "auditDate": "2026-07-24",
+  "productionSelected": false,
+  "aliasAudit": {
+    "calibrationLogicalIDs": 12,
+    "uniqueCalibrationLogicalIDs": 12,
+    "retainedRawSources": 12,
+    "uniqueRetainedRawSHA256": 12,
+    "normalizedExports": 36,
+    "uniqueNormalizedSHA256": 36,
+    "productionManifestSources": 12,
+    "uniqueProductionManifestSourceSHA256": 12,
+    "packedPayloads": 36,
+    "uniquePackedPayloadPixelSHA256": 36,
+    "duplicateGroups": []
+  },
+  "directionalCoverage": {
+    "required": 48,
+    "accepted": 0,
+    "calibrationAnchorsNotCounted": 3,
+    "identities": [
+      {
+        "logicalBuildingID": "residential_l01",
+        "family": "residential",
+        "level": 1,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "calibration-anchor-only",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "residential_l02",
+        "family": "residential",
+        "level": 2,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "residential_l03",
+        "family": "residential",
+        "level": 3,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "residential_l04",
+        "family": "residential",
+        "level": 4,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "commercial_l01",
+        "family": "commercial",
+        "level": 1,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "calibration-anchor-only",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "commercial_l02",
+        "family": "commercial",
+        "level": 2,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "commercial_l03",
+        "family": "commercial",
+        "level": 3,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "commercial_l04",
+        "family": "commercial",
+        "level": 4,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "industrial_l01",
+        "family": "industrial",
+        "level": 1,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "calibration-anchor-only",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "industrial_l02",
+        "family": "industrial",
+        "level": 2,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "industrial_l03",
+        "family": "industrial",
+        "level": 3,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      },
+      {
+        "logicalBuildingID": "industrial_l04",
+        "family": "industrial",
+        "level": 4,
+        "variant": 0,
+        "north": "missing",
+        "east": "missing",
+        "south": "missing",
+        "west": "missing"
+      }
+    ]
+  }
+}

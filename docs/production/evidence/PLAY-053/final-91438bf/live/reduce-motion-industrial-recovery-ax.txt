@@ -1,0 +1,52 @@
+Window: "CitySim", App: CitySim.
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container City command status
+			3 button Description: Open New Arcadia command center, Value: Day 65. Paused, ID: hud.city.identity
+			4 progress indicator Description: Show objectives, Help: Close the $97 operating gap, Value: 0.6105999999999999, ID: hud.objective.summary
+			5 container City status
+				6 unknown Description: Treasury, Details: $13,891, -$97 / cycle, ID: hud.metric.treasury
+				7 unknown Description: Residents, Details: 364, 1,876 homes open, ID: hud.metric.population
+				8 unknown Description: Happiness, Details: 58%, 100% mayor approval, ID: hud.metric.happiness
+				9 unknown Description: Jobs filled, Details: 254, 46 openings, ID: hud.metric.employment
+				10 unknown Description: Utilities, Details: 100%, P 283 · W 260, ID: hud.metric.utilities
+			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+			13 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+			14 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+			15 button Description: Open city notices, Value: 12 notices, highest severity warning, ID: hud.notices
+			16 container Description: City priority: Utility expansion locked in, ID: hud.strategy.priority, Details: REVIEW · 16 DAYS. The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+				17 text Help: The accepted recovery is recorded. Watch its payoff and the citywide operating result., Value: FREIGHT RECOVERY REVIEW · 16 DAYS Utility expansion locked in The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+				18 button Description: Utility capacity, Help: The accepted recovery is recorded. Watch its payoff and the citywide operating result.
+		19 container City command deck
+			20 button (selected) Description: Inspect mode, Value: Selected
+			21 button Description: Build mode, Value: Not selected
+			22 button Description: Bulldoze mode, Value: Not selected
+			23 menu button Catalog, Description: Open categorized build catalog, Value: Selected Road, ID: square.grid.2x2
+			24 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			25 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			26 menu button City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., ID: building.2
+			27 text Inspect mode
+			28 text Value: Inspect mode. Choose a block for details, ID: hud.selected.context
+		29 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.
+	30 toolbar
+		31 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		32 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		33 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		34 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		35 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	36 close button
+	37 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	38 text CitySim
+39 menu bar
+	40 CitySim
+	41 File
+	42 Edit
+	43 View
+	44 Simulation
+	45 Tools
+	46 City Data
+	47 Window
+	48 Help
+
+The focused UI element is 29 container Description: City map, Value: No block selected, Help: Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect.

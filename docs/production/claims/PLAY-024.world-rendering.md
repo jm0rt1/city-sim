@@ -9,7 +9,7 @@
 - **Planned surfaces:** generated-v4 authored terrain/street/environment sources and descriptors, deterministic road/terrain grammar, SpriteKit world presentation, renderer tests, performance diagnostics, and exact staged evidence
 - **Dependencies:** accepted PLAY-023; existing CONTRACT-005/006 geometry and asset contracts; immutable PLAY-041 spatial truth
 - **Validation/proof:** deterministic pack builds, 16-mask reciprocal roads, 3 x 3 seam mosaics, overlap/ground-contact checks, same-seed before/after, city/neighborhood/block LOD, default/compact, construction/strain/recovery, Reduce Motion, pointer/keyboard/AX hit truth, full suite, and independent PLAY-053 handoff
-- **Status:** ready for integration review — the returned repair is preserved as exact visual product `08a53be`, camera-metric test checkpoint `d2c7322`, and evidence `5a2926e`; independent PLAY-053 rescoring remains required and no acceptance is claimed
+- **Status:** accepted by integration — returned repair merged as exact product `ad2f35314bb471a07923c41653374b05ace51ee3` and independently approved 19/20 by PLAY-053 evidence `2e83570eda92e14fcf39bca78b9152ff3c7b8411`
 
 Make the playable world itself excellent. Replace the current crossroads
 diorama, abrupt road stubs, empty green board, and mixed-fidelity surroundings
@@ -33,7 +33,8 @@ retired-cross same-state packet remains under
 `docs/production/evidence/PLAY-024/candidate-20edac8/`; the changed-state
 fresh-start packet is explicitly labeled Comparison B under
 `docs/production/evidence/PLAY-024/candidate-a1e589e/`. The completion record
-does not claim PLAY-053 acceptance.
+did not claim PLAY-053 acceptance at that historical handoff; the final
+disposition is recorded below.
 
 ## Independent return contract
 
@@ -82,3 +83,16 @@ The exact packet is
 `docs/production/evidence/PLAY-024/candidate-08a53be/VALIDATION.md`. The
 default image was captured after paused fixture load followed by explicit
 deterministic `0`; no post-cycle camera state is presented as the default.
+
+## Final independent disposition
+
+Integration merged the returned repair as
+`ad2f35314bb471a07923c41653374b05ace51ee3`. Independent PLAY-053 then
+approved that exact staged product at 19/20 with mandatory 4/4 composition,
+mandatory 4/4 coherence, no category below 3, zero automatic rejects, and
+material preference in both governed comparisons. The binding packet is
+`docs/production/evidence/PLAY-053/rescore-ad2f353/`.
+
+PLAY-024 is closed. The remaining 3/4 LOD/life breadth finding is not hidden;
+it is assigned to the separately governed PLAY-027 directional source catalog
+and later renderer ingestion.

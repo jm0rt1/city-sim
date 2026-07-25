@@ -297,60 +297,88 @@ struct ProductionStoryStateBuilder {
         return replay
     }
 
-    func regionalRecovery(
-        resolvedBy resolution: CityStrategyRecoveryResolution
+    func replayCharterMidpointToRegionalRecovery(
+        _ state: CityGameState,
+        resolution: CityStrategyRecoveryResolution
     ) throws -> CityGameState {
-        var state = try charterCity(resolvedBy: resolution)
-        guard let warningTick = state.progression?.secondAct?.nextScheduledTick else {
+        try requireCharterMidpoint(state, resolution: resolution)
+        var replay = state
+        guard let warningTick = replay.progression?.secondAct?.nextScheduledTick else {
             throw ProductionStoryFixtureError.unexpectedState(
                 "\(resolution.rawValue): missing Regional warning tick"
             )
         }
-        try advanceToTick(&state, tick: warningTick)
-        guard state.progression?.secondAct?.phase == .warnedPressure,
-              let pressureTick = state.progression?.secondAct?.nextScheduledTick else {
+        try advanceToTick(&replay, tick: warningTick)
+        guard replay.progression?.secondAct?.phase == .warnedPressure,
+              let pressureTick = replay.progression?.secondAct?.nextScheduledTick else {
             throw ProductionStoryFixtureError.unexpectedState(
                 "\(resolution.rawValue): missing Regional pressure tick"
             )
         }
-        try advanceToTick(&state, tick: pressureTick)
-        guard state.progression?.secondAct?.phase == .recovery else {
+        try advanceToTick(&replay, tick: pressureTick)
+        guard replay.progression?.secondAct?.phase == .recovery else {
             throw ProductionStoryFixtureError.unexpectedState(
                 "\(resolution.rawValue): expected Regional recovery"
             )
         }
-        return state
+        return replay
+    }
+
+    func replayRegionalRecoveryToTerminal(
+        _ state: CityGameState,
+        resolution: CityStrategyRecoveryResolution
+    ) throws -> CityGameState {
+        guard state.status == .playing,
+              state.progression?.strategy?.recoveryResolution == resolution,
+              state.progression?.secondAct?.phase == .recovery,
+              state.progression?.secondAct?.regionalCapitalAwarded == false else {
+            throw ProductionStoryFixtureError.unexpectedState(
+                "\(resolution.rawValue): expected active Regional recovery"
+            )
+        }
+        var replay = state
+        try enterRegionalQualification(&replay, resolution: resolution)
+        try advanceUntil(&replay, maximumCycles: 430) {
+            $0.status == .won
+        }
+        guard replay.status == .won,
+              replay.progression?.secondAct?.phase == .completed,
+              replay.progression?.secondAct?.qualifyingCycles
+                == CitySimulation.regionalCapitalQualificationCycles,
+              replay.progression?.secondAct?.regionalCapitalAwarded == true,
+              replay.messages.filter({
+                  $0.title == "Regional Capital Recognized"
+              }).count == 1 else {
+            throw ProductionStoryFixtureError.unexpectedState(
+                "\(resolution.rawValue): expected Regional Capital terminal"
+            )
+        }
+        return replay
+    }
+
+    func regionalRecovery(
+        resolvedBy resolution: CityStrategyRecoveryResolution
+    ) throws -> CityGameState {
+        try replayCharterMidpointToRegionalRecovery(
+            charterCity(resolvedBy: resolution),
+            resolution: resolution
+        )
     }
 
     func regionalCapitalTerminal(
         resolvedBy resolution: CityStrategyRecoveryResolution
     ) throws -> CityGameState {
-        var state = try regionalRecovery(resolvedBy: resolution)
-        try enterRegionalQualification(&state, resolution: resolution)
-        try advanceUntil(&state, maximumCycles: 430) {
-            $0.status == .won
-        }
-        guard state.status == .won,
-              state.progression?.secondAct?.phase == .completed,
-              state.progression?.secondAct?.qualifyingCycles
-                == CitySimulation.regionalCapitalQualificationCycles,
-              state.progression?.secondAct?.regionalCapitalAwarded == true,
-              state.messages.filter({ $0.title == "Regional Capital Recognized" }).count == 1 else {
-            throw ProductionStoryFixtureError.unexpectedState(
-                "\(resolution.rawValue): expected Regional Capital terminal"
-            )
-        }
-        return state
+        try replayRegionalRecoveryToTerminal(
+            regionalRecovery(resolvedBy: resolution),
+            resolution: resolution
+        )
     }
 
-    private func buildFirstAct(
-        strategy: CityStrategy
-    ) throws -> [ProductionStoryFixtureState] {
+    func committedOpening(strategy: CityStrategy) throws -> CityGameState {
         var state = CityGameState.newCity(seed: ProductionStoryFixtureCorpus.seed)
         try advanceToTick(&state, tick: 60)
         try buildFirstValid(jobs(for: strategy), in: &state)
         try advanceToTick(&state, tick: 64)
-
         try requireIdentity(
             state,
             strategy: strategy,
@@ -358,6 +386,13 @@ struct ProductionStoryStateBuilder {
             resolution: nil,
             status: .playing
         )
+        return state
+    }
+
+    private func buildFirstAct(
+        strategy: CityStrategy
+    ) throws -> [ProductionStoryFixtureState] {
+        var state = try committedOpening(strategy: strategy)
         let opening = ProductionStoryFixtureState(
             definition: definition(for: strategy, stage: .opening),
             state: state

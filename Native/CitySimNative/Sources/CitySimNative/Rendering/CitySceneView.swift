@@ -116,10 +116,6 @@ struct CitySceneView: NSViewRepresentable {
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
         scene.updateViewportInsets(viewportInsets)
-        context.coordinator.synchronizeCityFocusCamera(
-            isEnabled: store.isCityFocusModeEnabled,
-            selectedCoordinate: store.selectedCoordinate
-        )
         let proofReducedMotion: Bool
 #if DEBUG
         proofReducedMotion = ProcessInfo.processInfo.environment["CITYSIM_REDUCE_MOTION_PROOF"] == "1"
@@ -134,6 +130,10 @@ struct CitySceneView: NSViewRepresentable {
             selection: store.selectedCoordinate,
             interactionMode: store.interactionMode,
             activeActionTarget: store.activeMapActionTargetPresentation
+        )
+        context.coordinator.synchronizeCityFocusCamera(
+            isEnabled: store.isCityFocusModeEnabled,
+            selectedCoordinate: store.selectedCoordinate
         )
         // The representable's first update can render before AppKit has
         // delivered its final map aperture. Reapply the same authoritative

@@ -93,6 +93,8 @@ enum DescriptorSamplingResolver {
         "play027-deterministic-4x-no-msaa-lanczos-v1"
     static let schema2ContractV2ID =
         "play027-deterministic-4x-no-msaa-lanczos-v2"
+    static let schema2ContractV3ID =
+        "play027-deterministic-4x-no-msaa-lanczos-v3"
 
     static func resolve(
         descriptor: SceneDescriptor
@@ -116,8 +118,9 @@ enum DescriptorSamplingResolver {
         }
         let isV1 = sampling.contractID == schema2ContractV1ID
         let isV2 = sampling.contractID == schema2ContractV2ID
+        let isV3 = sampling.contractID == schema2ContractV3ID
         guard
-            isV1 || isV2,
+            isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
             ["diagnostic-regression", "source-authority"].contains(
                 sampling.purpose
@@ -165,10 +168,50 @@ enum DescriptorSamplingResolver {
                 repair.requiresChromaFreeNeighborhood,
                 repair.channels == "rgb-only",
                 repair.preservesAlpha,
-                repair.preservesChroma
+                repair.preservesChroma,
+                repair.boundaryAssist == nil
             else {
                 throw SamplingContractError.invalid(
                     "schema-2 contract v2 post-quantization canonicalizer mismatch"
+                )
+            }
+        }
+        if isV3 {
+            guard
+                let repair =
+                    sampling.postQuantizationCanonicalizer,
+                repair.algorithm
+                    == "opaque-isolated-one-quantum-majority-3x3",
+                repair.version == 3,
+                repair.quantizationQuantum == 32,
+                repair.neighborhoodSize == 3,
+                repair.majorityThreshold == 7,
+                repair.requiresFullyOpaqueNeighborhood,
+                repair.immutableSourceBuffer,
+                repair.requiresChromaFreeNeighborhood,
+                repair.channels == "rgb-only",
+                repair.preservesAlpha,
+                repair.preservesChroma,
+                let assist = repair.boundaryAssist,
+                assist.algorithm
+                    == "immutable-prequantized-one-value-boundary-6-plus-1",
+                assist.version == 1,
+                assist.baseQuantizedMajorityCount == 6,
+                assist.requiredBoundaryVoteCount == 1,
+                assist.effectiveSupportCount == 7,
+                assist
+                    .maximumCompetingSupportAfterBoundaryReclassification
+                    == 2,
+                assist.quantizerStep == sampling.quantizer.step,
+                assist.quantizerMidpointOffset
+                    == sampling.quantizer.midpointOffset,
+                assist.boundaryBandWidthValues == 1,
+                assist.requiresSameChannelEvidence,
+                assist.immutablePrequantizedBuffer,
+                assist.recordsBoundaryVoteReason
+            else {
+                throw SamplingContractError.invalid(
+                    "schema-2 contract v3 boundary-assisted canonicalizer mismatch"
                 )
             }
         }

@@ -155,7 +155,8 @@
         "contractID": {
           "enum": [
             "play027-deterministic-4x-no-msaa-lanczos-v1",
-            "play027-deterministic-4x-no-msaa-lanczos-v2"
+            "play027-deterministic-4x-no-msaa-lanczos-v2",
+            "play027-deterministic-4x-no-msaa-lanczos-v3"
           ]
         },
         "sourceRevisionBinding": {
@@ -279,7 +280,10 @@
           "if": {
             "properties": {
               "contractID": {
-                "const": "play027-deterministic-4x-no-msaa-lanczos-v2"
+                "enum": [
+                  "play027-deterministic-4x-no-msaa-lanczos-v2",
+                  "play027-deterministic-4x-no-msaa-lanczos-v3"
+                ]
               }
             }
           },
@@ -312,7 +316,10 @@
           "const": "opaque-isolated-one-quantum-majority-3x3"
         },
         "version": {
-          "const": 2
+          "enum": [
+            2,
+            3
+          ]
         },
         "quantizationQuantum": {
           "const": 32
@@ -339,6 +346,97 @@
           "const": true
         },
         "preservesChroma": {
+          "const": true
+        },
+        "boundaryAssist": {
+          "$ref": "#/$defs/boundaryAssist"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": 3
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "boundaryAssist"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "version": {
+                "const": 2
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "boundaryAssist"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "boundaryAssist": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "version",
+        "baseQuantizedMajorityCount",
+        "requiredBoundaryVoteCount",
+        "effectiveSupportCount",
+        "maximumCompetingSupportAfterBoundaryReclassification",
+        "quantizerStep",
+        "quantizerMidpointOffset",
+        "boundaryBandWidthValues",
+        "requiresSameChannelEvidence",
+        "immutablePrequantizedBuffer",
+        "recordsBoundaryVoteReason"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "immutable-prequantized-one-value-boundary-6-plus-1"
+        },
+        "version": {
+          "const": 1
+        },
+        "baseQuantizedMajorityCount": {
+          "const": 6
+        },
+        "requiredBoundaryVoteCount": {
+          "const": 1
+        },
+        "effectiveSupportCount": {
+          "const": 7
+        },
+        "maximumCompetingSupportAfterBoundaryReclassification": {
+          "const": 2
+        },
+        "quantizerStep": {
+          "const": 32
+        },
+        "quantizerMidpointOffset": {
+          "const": 8
+        },
+        "boundaryBandWidthValues": {
+          "const": 1
+        },
+        "requiresSameChannelEvidence": {
+          "const": true
+        },
+        "immutablePrequantizedBuffer": {
+          "const": true
+        },
+        "recordsBoundaryVoteReason": {
           "const": true
         }
       }

@@ -68,6 +68,21 @@ struct SamplingCanonicalizerDescriptor: Codable, Equatable {
     let format: String
 }
 
+struct SamplingBoundaryAssistDescriptor: Codable, Equatable {
+    let algorithm: String
+    let version: Int
+    let baseQuantizedMajorityCount: Int
+    let requiredBoundaryVoteCount: Int
+    let effectiveSupportCount: Int
+    let maximumCompetingSupportAfterBoundaryReclassification: Int
+    let quantizerStep: Int
+    let quantizerMidpointOffset: Int
+    let boundaryBandWidthValues: Int
+    let requiresSameChannelEvidence: Bool
+    let immutablePrequantizedBuffer: Bool
+    let recordsBoundaryVoteReason: Bool
+}
+
 struct SamplingPostQuantizationCanonicalizerDescriptor:
     Codable, Equatable
 {
@@ -82,6 +97,7 @@ struct SamplingPostQuantizationCanonicalizerDescriptor:
     let channels: String
     let preservesAlpha: Bool
     let preservesChroma: Bool
+    let boundaryAssist: SamplingBoundaryAssistDescriptor?
 }
 
 struct SamplingDescriptor: Codable, Equatable {

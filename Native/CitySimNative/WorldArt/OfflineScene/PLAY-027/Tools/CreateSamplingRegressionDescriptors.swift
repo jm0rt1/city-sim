@@ -8,7 +8,7 @@ enum SamplingDescriptorToolError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: create-sampling-regression-descriptors --repository-root <path> --output-root <diagnostics-path> --manifest <json> [--contract-revision v1|v2]"
+            return "usage: create-sampling-regression-descriptors --repository-root <path> --output-root <diagnostics-path> --manifest <json> [--contract-revision v1|v2|v3] [--sample-policy legacy-sample|calibration-l3-west|full-accepted]"
         case let .invalid(message):
             return message
         }
@@ -84,9 +84,9 @@ func samplingBlock(
     sourceRevision: String,
     contractRevision: String
 ) throws -> [String: Any] {
-    guard ["v1", "v2"].contains(contractRevision) else {
+    guard ["v1", "v2", "v3"].contains(contractRevision) else {
         throw SamplingDescriptorToolError.invalid(
-            "contract revision must be v1 or v2"
+            "contract revision must be v1, v2, or v3"
         )
     }
     var block: [String: Any] = [
@@ -120,10 +120,10 @@ func samplingBlock(
             "format": "png",
         ],
     ]
-    if contractRevision == "v2" {
-        block["postQuantizationCanonicalizer"] = [
+    if ["v2", "v3"].contains(contractRevision) {
+        var repair: [String: Any] = [
             "algorithm": "opaque-isolated-one-quantum-majority-3x3",
-            "version": 2,
+            "version": contractRevision == "v3" ? 3 : 2,
             "quantizationQuantum": 32,
             "neighborhoodSize": 3,
             "majorityThreshold": 7,
@@ -134,6 +134,24 @@ func samplingBlock(
             "preservesAlpha": true,
             "preservesChroma": true,
         ]
+        if contractRevision == "v3" {
+            repair["boundaryAssist"] = [
+                "algorithm":
+                    "immutable-prequantized-one-value-boundary-6-plus-1",
+                "version": 1,
+                "baseQuantizedMajorityCount": 6,
+                "requiredBoundaryVoteCount": 1,
+                "effectiveSupportCount": 7,
+                "maximumCompetingSupportAfterBoundaryReclassification": 2,
+                "quantizerStep": 32,
+                "quantizerMidpointOffset": 8,
+                "boundaryBandWidthValues": 1,
+                "requiresSameChannelEvidence": true,
+                "immutablePrequantizedBuffer": true,
+                "recordsBoundaryVoteReason": true,
+            ]
+        }
+        block["postQuantizationCanonicalizer"] = repair
     }
     return block
 }
@@ -165,9 +183,21 @@ enum CreateSamplingRegressionDescriptorsMain {
                 "--contract-revision",
                 in: arguments
             ) ?? "v1"
-        guard ["v1", "v2"].contains(contractRevision) else {
+        let samplePolicy =
+            samplingToolOptionalArgument(
+                "--sample-policy",
+                in: arguments
+            ) ?? "legacy-sample"
+        guard
+            ["v1", "v2", "v3"].contains(contractRevision),
+            [
+                "legacy-sample",
+                "calibration-l3-west",
+                "full-accepted",
+            ].contains(samplePolicy)
+        else {
             throw SamplingDescriptorToolError.invalid(
-                "contract revision must be v1 or v2"
+                "invalid contract revision or sample policy"
             )
         }
         guard
@@ -193,14 +223,26 @@ enum CreateSamplingRegressionDescriptorsMain {
             "residential_l03",
             "residential_l04",
         ]
+        let directions = ["north", "east", "south", "west"]
         var samples: [(String, String)] = []
-        for logicalID in commercialIDs {
-            for direction in ["north", "east", "south", "west"] {
-                samples.append((logicalID, direction))
+        switch samplePolicy {
+        case "calibration-l3-west":
+            samples = [("residential_l03", "west")]
+        case "full-accepted":
+            for logicalID in commercialIDs + residentialIDs {
+                for direction in directions {
+                    samples.append((logicalID, direction))
+                }
             }
-        }
-        for logicalID in residentialIDs {
-            samples.append((logicalID, "west"))
+        default:
+            for logicalID in commercialIDs {
+                for direction in directions {
+                    samples.append((logicalID, direction))
+                }
+            }
+            for logicalID in residentialIDs {
+                samples.append((logicalID, "west"))
+            }
         }
 
         var records: [[String: Any]] = []
@@ -295,9 +337,20 @@ enum CreateSamplingRegressionDescriptorsMain {
             "contractRevision": contractRevision,
             "purpose": "diagnostic-regression",
             "samplePolicy": [
-                "commercial": "L1-L3 all N/E/S/W",
+                "id": samplePolicy,
+                "commercial":
+                    samplePolicy == "full-accepted"
+                    || samplePolicy == "legacy-sample"
+                    ? "L1-L3 all N/E/S/W"
+                    : "not in calibration",
                 "residential":
-                    "L1-L4 West; far-frontage orientation matching the isolated L4 seam",
+                    samplePolicy == "full-accepted"
+                    ? "L1-L4 all N/E/S/W"
+                    : (
+                        samplePolicy == "calibration-l3-west"
+                        ? "L3 West only"
+                        : "L1-L4 West"
+                    ),
             ],
             "acceptedDescriptorsModified": false,
             "sampleCount": records.count,

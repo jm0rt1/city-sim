@@ -88,11 +88,15 @@ enum ValidateSamplingContractsMain {
             [
                 "play027-deterministic-4x-no-msaa-lanczos-v1",
                 "play027-deterministic-4x-no-msaa-lanczos-v2",
+                "play027-deterministic-4x-no-msaa-lanczos-v3",
             ].contains(contractID)
         else {
             throw SamplingValidationError.invalid("invalid manifest")
         }
-        let expectsPostQuantizationRepair = contractID.hasSuffix("-v2")
+        let expectsPostQuantizationRepair =
+            contractID.hasSuffix("-v2")
+            || contractID.hasSuffix("-v3")
+        let expectsBoundaryAssist = contractID.hasSuffix("-v3")
         var failures: [String] = []
         var records: [[String: Any]] = []
         for sample in samples {
@@ -199,7 +203,8 @@ enum ValidateSamplingContractsMain {
             if expectsPostQuantizationRepair {
                 if repair?["algorithm"] as? String
                     != "opaque-isolated-one-quantum-majority-3x3"
-                    || samplingValidationNumber(repair?["version"]) != 2
+                    || samplingValidationNumber(repair?["version"])
+                        != (expectsBoundaryAssist ? 3 : 2)
                     || samplingValidationNumber(
                         repair?["quantizationQuantum"]
                     ) != 32
@@ -220,6 +225,51 @@ enum ValidateSamplingContractsMain {
                 {
                     itemFailures.append(
                         "schema-2 post-quantization canonicalizer mismatch"
+                    )
+                }
+                let assist =
+                    repair?["boundaryAssist"] as? [String: Any]
+                if expectsBoundaryAssist {
+                    if assist?["algorithm"] as? String
+                        != "immutable-prequantized-one-value-boundary-6-plus-1"
+                        || samplingValidationNumber(assist?["version"]) != 1
+                        || samplingValidationNumber(
+                            assist?["baseQuantizedMajorityCount"]
+                        ) != 6
+                        || samplingValidationNumber(
+                            assist?["requiredBoundaryVoteCount"]
+                        ) != 1
+                        || samplingValidationNumber(
+                            assist?["effectiveSupportCount"]
+                        ) != 7
+                        || samplingValidationNumber(
+                            assist?[
+                                "maximumCompetingSupportAfterBoundaryReclassification"
+                            ]
+                        ) != 2
+                        || samplingValidationNumber(
+                            assist?["quantizerStep"]
+                        ) != 32
+                        || samplingValidationNumber(
+                            assist?["quantizerMidpointOffset"]
+                        ) != 8
+                        || samplingValidationNumber(
+                            assist?["boundaryBandWidthValues"]
+                        ) != 1
+                        || assist?["requiresSameChannelEvidence"] as? Bool
+                            != true
+                        || assist?["immutablePrequantizedBuffer"] as? Bool
+                            != true
+                        || assist?["recordsBoundaryVoteReason"] as? Bool
+                            != true
+                    {
+                        itemFailures.append(
+                            "schema-2 v3 boundary-assist contract mismatch"
+                        )
+                    }
+                } else if assist != nil {
+                    itemFailures.append(
+                        "schema-2 v2 must omit boundary assist"
                     )
                 }
             } else if repair != nil {

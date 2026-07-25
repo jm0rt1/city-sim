@@ -1,0 +1,37 @@
+{
+  "failedDiagnosticPathGuardProbe": {
+    "result": "expected rejection",
+    "reason": "schema-2 diagnostic regression output must remain under a diagnostics path",
+    "retainedPixels": false
+  },
+  "productionSelected": false,
+  "reproductions": [
+    {
+      "contract": "schema-1 legacy factor-2 plus SceneKit 4x MSAA",
+      "expectedPNGFileSHA256": "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "observedPNGFileSHA256": "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "status": "pass"
+    },
+    {
+      "contract": "play027-deterministic-4x-no-msaa-lanczos-v1",
+      "historicalPNGFileSHA256Set": [
+        "3133d55a5f935c83ce4fb8bcc50c74855649986dbef31254674fc23242161f9f",
+        "5a70eb4e98a30eeec07e32986676114adb73952cb483843830ae1f512b51dcef"
+      ],
+      "observedPNGFileSHA256": "3133d55a5f935c83ce4fb8bcc50c74855649986dbef31254674fc23242161f9f",
+      "status": "pass"
+    },
+    {
+      "contract": "play027-deterministic-4x-no-msaa-lanczos-v2",
+      "historicalPNGFileSHA256Set": [
+        "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+        "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830"
+      ],
+      "observedPNGFileSHA256": "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "status": "pass"
+    }
+  ],
+  "schema": 1,
+  "status": "pass",
+  "task": "PLAY-027"
+}

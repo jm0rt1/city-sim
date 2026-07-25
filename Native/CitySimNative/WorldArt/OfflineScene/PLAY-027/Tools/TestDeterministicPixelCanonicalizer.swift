@@ -23,8 +23,73 @@ func testContract() -> SamplingPostQuantizationCanonicalizerDescriptor {
         requiresChromaFreeNeighborhood: true,
         channels: "rgb-only",
         preservesAlpha: true,
-        preservesChroma: true
+        preservesChroma: true,
+        boundaryAssist: nil
     )
+}
+
+func testV3Contract() -> SamplingPostQuantizationCanonicalizerDescriptor {
+    SamplingPostQuantizationCanonicalizerDescriptor(
+        algorithm: "opaque-isolated-one-quantum-majority-3x3",
+        version: 3,
+        quantizationQuantum: 32,
+        neighborhoodSize: 3,
+        majorityThreshold: 7,
+        requiresFullyOpaqueNeighborhood: true,
+        immutableSourceBuffer: true,
+        requiresChromaFreeNeighborhood: true,
+        channels: "rgb-only",
+        preservesAlpha: true,
+        preservesChroma: true,
+        boundaryAssist: SamplingBoundaryAssistDescriptor(
+            algorithm:
+                "immutable-prequantized-one-value-boundary-6-plus-1",
+            version: 1,
+            baseQuantizedMajorityCount: 6,
+            requiredBoundaryVoteCount: 1,
+            effectiveSupportCount: 7,
+            maximumCompetingSupportAfterBoundaryReclassification: 2,
+            quantizerStep: 32,
+            quantizerMidpointOffset: 8,
+            boundaryBandWidthValues: 1,
+            requiresSameChannelEvidence: true,
+            immutablePrequantizedBuffer: true,
+            recordsBoundaryVoteReason: true
+        )
+    )
+}
+
+func quantizeTestImage(_ prequantized: [UInt8]) -> [UInt8] {
+    var result = prequantized
+    for pixel in stride(from: 0, to: result.count, by: 4) {
+        if Array(result[pixel..<(pixel + 4)]) == [255, 0, 255, 255] {
+            continue
+        }
+        for channel in 0..<3 {
+            let value = Int(result[pixel + channel])
+            result[pixel + channel] = UInt8(
+                min(255, ((value + 8) / 32) * 32 + 16)
+            )
+        }
+    }
+    return result
+}
+
+func makeBoundaryFixture(
+    boundaryGreen: UInt8,
+    secondBoundaryGreen: UInt8? = nil
+) -> [UInt8] {
+    var image = makeTestImage(rgba: [4, 32, 2, 255])
+    let center = testPixelIndex(x: 2, y: 2)
+    let stableMinority = testPixelIndex(x: 1, y: 2)
+    let boundary = testPixelIndex(x: 3, y: 2)
+    image[center + 1] = 22
+    image[stableMinority + 1] = 22
+    image[boundary + 1] = boundaryGreen
+    if let secondBoundaryGreen {
+        image[stableMinority + 1] = secondBoundaryGreen
+    }
+    return image
 }
 
 func makeTestImage(
@@ -78,7 +143,8 @@ enum TestDeterministicPixelCanonicalizerMain {
                     y: 2,
                     channel: 1,
                     originalValue: 16,
-                    majorityValue: 48
+                    majorityValue: 48,
+                    boundaryAssist: nil
                 )
             ],
             "isolated mutation record mismatch"
@@ -217,6 +283,152 @@ enum TestDeterministicPixelCanonicalizerMain {
             "RGB-only repair or alpha preservation failed"
         )
 
+        let v3Contract = testV3Contract()
+        let retained23 = makeBoundaryFixture(boundaryGreen: 23)
+        let retained24 = makeBoundaryFixture(boundaryGreen: 24)
+        let retained23Result =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(retained23),
+                prequantizedRGBA: retained23,
+                width: 5,
+                height: 5,
+                contract: v3Contract,
+                traceCoordinates: [[2, 2]]
+            )
+        let retained24Result =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(retained24),
+                prequantizedRGBA: retained24,
+                width: 5,
+                height: 5,
+                contract: v3Contract,
+                traceCoordinates: [[2, 2]]
+            )
+        try requireTest(
+            retained23Result.rgba == retained24Result.rgba
+                && retained23Result.rgba[isolatedIndex + 1] == 48,
+            "retained 23/24 boundary identities did not converge"
+        )
+        try requireTest(
+            retained23Result.mutations.first {
+                $0.x == 2 && $0.y == 2 && $0.channel == 1
+            }?.boundaryAssist?.vote.prequantizedValue == 23,
+            "boundary-assisted repair did not retain the prequantized vote"
+        )
+        try requireTest(
+            retained24Result.evaluations.first {
+                $0.x == 2 && $0.y == 2 && $0.channel == 1
+            }?.boundaryVotes.first?.prequantizedValue == 24,
+            "standard seven-vote sibling did not retain symmetric boundary evidence"
+        )
+
+        let ordinarySix = makeBoundaryFixture(boundaryGreen: 22)
+        let ordinarySixResult =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(ordinarySix),
+                prequantizedRGBA: ordinarySix,
+                width: 5,
+                height: 5,
+                contract: v3Contract
+            )
+        try requireTest(
+            ordinarySixResult.rgba[isolatedIndex + 1] == 16,
+            "ordinary six-of-nine support must remain rejected"
+        )
+
+        let twoBoundaryVotes = makeBoundaryFixture(
+            boundaryGreen: 23,
+            secondBoundaryGreen: 23
+        )
+        let twoBoundaryResult =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(twoBoundaryVotes),
+                prequantizedRGBA: twoBoundaryVotes,
+                width: 5,
+                height: 5,
+                contract: v3Contract
+            )
+        try requireTest(
+            twoBoundaryResult.rgba[isolatedIndex + 1] == 16,
+            "two boundary votes must remain rejected"
+        )
+
+        let nonAdjacentBoundary = makeBoundaryFixture(
+            boundaryGreen: 56
+        )
+        let nonAdjacentResult =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(nonAdjacentBoundary),
+                prequantizedRGBA: nonAdjacentBoundary,
+                width: 5,
+                height: 5,
+                contract: v3Contract
+            )
+        try requireTest(
+            nonAdjacentResult.rgba[isolatedIndex + 1] == 16,
+            "a boundary for non-adjacent bins must remain rejected"
+        )
+
+        try requireTest(
+            !boundaryAssistEligible(
+                majorityCount: 6,
+                boundaryVoteCount: 1,
+                nonMajorityBoundaryVoteCount: 1,
+                effectiveSupport: 7,
+                competingSupport: 3,
+                contract: v3Contract.boundaryAssist!
+            ),
+            "competing support above two must remain rejected"
+        )
+
+        var v3Chroma = retained23
+        let v3Neighbor = testPixelIndex(x: 1, y: 1)
+        v3Chroma.replaceSubrange(
+            v3Neighbor..<(v3Neighbor + 4),
+            with: [255, 0, 255, 255]
+        )
+        let v3ChromaResult =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(v3Chroma),
+                prequantizedRGBA: v3Chroma,
+                width: 5,
+                height: 5,
+                contract: v3Contract
+            )
+        try requireTest(
+            v3ChromaResult.rgba[isolatedIndex + 1] == 16,
+            "v3 exact-chroma neighborhood must suppress boundary assist"
+        )
+
+        var v3Alpha = retained23
+        v3Alpha[v3Neighbor + 3] = 254
+        let v3AlphaResult =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: quantizeTestImage(v3Alpha),
+                prequantizedRGBA: v3Alpha,
+                width: 5,
+                height: 5,
+                contract: v3Contract
+            )
+        try requireTest(
+            v3AlphaResult.rgba[isolatedIndex + 1] == 16,
+            "v3 non-opaque neighborhood must suppress boundary assist"
+        )
+
+        let v3ImmutableResult =
+            try canonicalizeIsolatedQuantizedRGBOutliers(
+                sourceRGBA: immutableCascade,
+                prequantizedRGBA: immutableCascade,
+                width: 5,
+                height: 3,
+                contract: v3Contract
+            )
+        try requireTest(
+            v3ImmutableResult.rgba[firstOutlier + 1] == 48
+                && v3ImmutableResult.rgba[secondOutlier + 1] == 16,
+            "v3 decisions must not cascade from earlier mutations"
+        )
+
         let passedTests = [
             "isolated one-quantum RGB repair",
             "diagnostic trace pixel identity and eligibility",
@@ -227,6 +439,16 @@ enum TestDeterministicPixelCanonicalizerMain {
             "chroma-neighbor exclusion",
             "immutable-buffer non-cascade",
             "RGB channel isolation and alpha preservation",
+            "retained 23/24 boundary convergence",
+            "prequantized boundary vote provenance",
+            "symmetric 24-side boundary evidence",
+            "ordinary six-of-nine rejection",
+            "two-boundary-vote rejection",
+            "non-adjacent-boundary rejection",
+            "competing-support rejection",
+            "v3 exact-chroma exclusion",
+            "v3 alpha exclusion",
+            "v3 immutable-buffer non-cascade",
         ]
         if
             let reportIndex = arguments.firstIndex(of: "--report"),
@@ -243,11 +465,15 @@ enum TestDeterministicPixelCanonicalizerMain {
             let report: [String: Any] = [
                 "schema": 1,
                 "task": "PLAY-027",
-                "contractID":
+                "contractsTested": [
                     "play027-deterministic-4x-no-msaa-lanczos-v2",
+                    "play027-deterministic-4x-no-msaa-lanczos-v3",
+                ],
                 "algorithm":
                     "opaque-isolated-one-quantum-majority-3x3",
                 "requiresChromaFreeNeighborhood": true,
+                "v3BoundaryAssistAlgorithm":
+                    "immutable-prequantized-one-value-boundary-6-plus-1",
                 "testCount": passedTests.count,
                 "passedTests": passedTests,
                 "status": "pass",

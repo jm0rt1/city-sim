@@ -93,6 +93,84 @@ func rendererRelativePath(_ url: URL, repositoryRoot: URL) -> String {
     return String(url.path.dropFirst(prefix.count))
 }
 
+func rendererBoundaryAssistMutationRecord(
+    _ mutation: PixelCanonicalizationMutation
+) -> [String: Any]? {
+    guard let assist = mutation.boundaryAssist else {
+        return nil
+    }
+    let vote: [String: Any] = [
+        "coordinate": [assist.vote.x, assist.vote.y],
+        "channel": assist.vote.channel,
+        "prequantizedValue": assist.vote.prequantizedValue,
+        "quantizedValue": assist.vote.quantizedValue,
+        "boundaryPair": assist.vote.boundaryPair,
+    ]
+    return [
+        "target": [mutation.x, mutation.y],
+        "channel": mutation.channel,
+        "originalValue": mutation.originalValue,
+        "majorityValue": mutation.majorityValue,
+        "prequantizedVote": vote,
+        "effectiveSupportCount": assist.effectiveSupportCount,
+        "competingSupportAfterBoundaryReclassification":
+            assist.competingSupportAfterBoundaryReclassification,
+        "reason": assist.reason,
+    ]
+}
+
+func rendererPostQuantizationContractRecord(
+    _ contract: SamplingPostQuantizationCanonicalizerDescriptor?
+) -> [String: Any] {
+    guard let contract else {
+        return ["algorithm": "none"]
+    }
+    let boundaryAssist: [String: Any]
+    if let assist = contract.boundaryAssist {
+        boundaryAssist = [
+            "algorithm": assist.algorithm,
+            "version": assist.version,
+            "baseQuantizedMajorityCount":
+                assist.baseQuantizedMajorityCount,
+            "requiredBoundaryVoteCount":
+                assist.requiredBoundaryVoteCount,
+            "effectiveSupportCount": assist.effectiveSupportCount,
+            "maximumCompetingSupportAfterBoundaryReclassification":
+                assist
+                .maximumCompetingSupportAfterBoundaryReclassification,
+            "quantizerStep": assist.quantizerStep,
+            "quantizerMidpointOffset":
+                assist.quantizerMidpointOffset,
+            "boundaryBandWidthValues":
+                assist.boundaryBandWidthValues,
+            "requiresSameChannelEvidence":
+                assist.requiresSameChannelEvidence,
+            "immutablePrequantizedBuffer":
+                assist.immutablePrequantizedBuffer,
+            "recordsBoundaryVoteReason":
+                assist.recordsBoundaryVoteReason,
+        ]
+    } else {
+        boundaryAssist = ["algorithm": "none"]
+    }
+    return [
+        "algorithm": contract.algorithm,
+        "version": contract.version,
+        "quantizationQuantum": contract.quantizationQuantum,
+        "neighborhoodSize": contract.neighborhoodSize,
+        "majorityThreshold": contract.majorityThreshold,
+        "requiresFullyOpaqueNeighborhood":
+            contract.requiresFullyOpaqueNeighborhood,
+        "immutableSourceBuffer": contract.immutableSourceBuffer,
+        "requiresChromaFreeNeighborhood":
+            contract.requiresChromaFreeNeighborhood,
+        "channels": contract.channels,
+        "preservesAlpha": contract.preservesAlpha,
+        "preservesChroma": contract.preservesChroma,
+        "boundaryAssist": boundaryAssist,
+    ]
+}
+
 func color(_ components: [Double]) throws -> NSColor {
     guard components.count == 4 else {
         throw OfflineRendererError.invalid("material color must contain RGBA")
@@ -2246,9 +2324,6 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
         }
         prequantizedImage = composited
-        if stageTraceCoordinate != nil {
-            prequantizedRGBA = try rendererPackedRGBA(image: composited)
-        }
         return try deterministicallyQuantized(composited)
     }
 
@@ -2280,6 +2355,12 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 image,
                 in: CGRect(x: 0, y: 0, width: width, height: height)
             )
+        }
+        let immutablePrequantizedBytes = bytes
+        if stageTraceCoordinate != nil {
+            prequantizedRGBA = immutablePrequantizedBytes
+        }
+        bytes.withUnsafeMutableBytes { storage in
             // SceneKit's Metal snapshot can alternate a shaded sample across
             // an exact floor-bucket boundary in otherwise identical process
             // invocations. Shift the existing midpoint palette boundary by
@@ -2313,6 +2394,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
         if let repair = sampling.postQuantizationCanonicalizer {
             let result = try canonicalizeIsolatedQuantizedRGBOutliers(
                 sourceRGBA: bytes,
+                prequantizedRGBA: immutablePrequantizedBytes,
                 width: width,
                 height: height,
                 contract: repair,
@@ -2918,6 +3000,26 @@ enum OfflineSceneRendererMain {
                         $0.exactQuantumDifference,
                     "eligible": $0.eligible,
                     "mutated": $0.mutated,
+                    "standardMajorityEligible":
+                        $0.standardMajorityEligible,
+                    "boundaryAssistEligible":
+                        $0.boundaryAssistEligible,
+                    "boundaryVotes": $0.boundaryVotes.map {
+                        [
+                            "coordinate": [$0.x, $0.y],
+                            "channel": $0.channel,
+                            "prequantizedValue":
+                                $0.prequantizedValue,
+                            "quantizedValue":
+                                $0.quantizedValue,
+                            "boundaryPair": $0.boundaryPair,
+                        ] as [String: Any]
+                    },
+                    "competingSupportAfterBoundaryReclassification":
+                        $0
+                        .competingSupportAfterBoundaryReclassification
+                        .map { $0 as Any } ?? NSNull(),
+                    "eligibilityReason": $0.eligibilityReason,
                 ] as [String: Any]
             }
             let postSHA =
@@ -3011,11 +3113,20 @@ enum OfflineSceneRendererMain {
                 "sha256": try rendererSHA256(url),
             ])
         }
+        let sourceKey =
+            "\(descriptor.logicalBuildingID)/\(descriptor.variantID)/\(descriptor.viewDirection)/\(descriptor.sourceRevision)"
+        let boundaryAssistMutations =
+            compositor.postQuantizationMutations.compactMap {
+                rendererBoundaryAssistMutationRecord($0)
+            }
+        let postQuantizationContract =
+            rendererPostQuantizationContractRecord(
+                descriptorSampling.postQuantizationCanonicalizer
+            )
         let record: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
-            "sourceKey":
-                "\(descriptor.logicalBuildingID)/\(descriptor.variantID)/\(descriptor.viewDirection)/\(descriptor.sourceRevision)",
+            "sourceKey": sourceKey,
             "logicalBuildingID": descriptor.logicalBuildingID,
             "family": descriptor.family,
             "level": descriptor.level,
@@ -3091,29 +3202,7 @@ enum OfflineSceneRendererMain {
                 "canonicalizerFormat":
                     descriptorSampling.canonicalizerFormat,
                 "postQuantizationCanonicalizer":
-                    descriptorSampling.postQuantizationCanonicalizer.map {
-                        [
-                            "algorithm": $0.algorithm,
-                            "version": $0.version,
-                            "quantizationQuantum":
-                                $0.quantizationQuantum,
-                            "neighborhoodSize":
-                                $0.neighborhoodSize,
-                            "majorityThreshold":
-                                $0.majorityThreshold,
-                            "requiresFullyOpaqueNeighborhood":
-                                $0.requiresFullyOpaqueNeighborhood,
-                            "immutableSourceBuffer":
-                                $0.immutableSourceBuffer,
-                            "requiresChromaFreeNeighborhood":
-                                $0.requiresChromaFreeNeighborhood,
-                            "channels": $0.channels,
-                            "preservesAlpha": $0.preservesAlpha,
-                            "preservesChroma": $0.preservesChroma,
-                        ] as [String: Any]
-                    } ?? [
-                        "algorithm": "none",
-                    ],
+                    postQuantizationContract,
                 "postQuantizationMutationCount":
                     compositor.postQuantizationMutations.count,
                 "postQuantizationMutationCountsByChannel": [
@@ -3130,6 +3219,10 @@ enum OfflineSceneRendererMain {
                             $0.channel == 2
                         }.count,
                 ],
+                "postQuantizationBoundaryAssistMutationCount":
+                    boundaryAssistMutations.count,
+                "postQuantizationBoundaryAssistMutations":
+                    boundaryAssistMutations,
             ],
             "rendererSources": sourceHashes,
             "sceneDescriptorFile": rendererRelativePath(

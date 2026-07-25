@@ -100,7 +100,7 @@ SceneKit `multisampling4X`, and downsample by Lanczos scale `0.5`.
 block. Its frozen contract is:
 
 ```text
-contractID: play027-deterministic-4x-no-msaa-lanczos-v1 or -v2
+contractID: play027-deterministic-4x-no-msaa-lanczos-v1, -v2, or -v3
 sceneKitAntialiasing: none
 linearOversamplingFactor: 4
 downsample: CILanczosScaleTransform, scale 0.25, aspect 1
@@ -117,6 +117,17 @@ least seven channel samples share one value, and the center differs from that
 majority by exactly the 32-value quantization quantum. The rule never writes
 alpha, never reads a prior mutation, never applies a broad median, and never
 changes schema-1 output.
+
+Contract v3 retains the v2 rule and its unchanged seven-of-nine threshold. It
+adds one descriptor-bound 6+1 path: six stable quantized votes may receive
+exactly one additional same-channel vote only when an immutable
+prequantization sample is one value on either side of the exact step-32,
+midpoint-offset-8 boundary between the center and proposed majority bins. The
+3x3 neighborhood must remain fully opaque and chroma-free, there must be
+exactly one such boundary vote, effective support must be seven, and competing
+support after reclassifying that vote may not exceed two. The renderer records
+the prequantized vote, boundary pair, support counts, and repair reason.
+Schema-1 and schema-2 v1/v2 paths remain byte-compatible.
 
 Normal production invocation contains no sampling CLI choice: the descriptor
 resolves the sampling path. The existing antialiasing and scene-shadow CLI

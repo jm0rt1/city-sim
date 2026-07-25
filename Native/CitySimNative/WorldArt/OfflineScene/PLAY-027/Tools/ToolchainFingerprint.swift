@@ -12,7 +12,7 @@ enum FingerprintError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2]"
+            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2|v3]"
         case let .command(command, status, error):
             return "\(command) failed with status \(status): \(error)"
         case let .framework(name):
@@ -93,7 +93,10 @@ enum ToolchainFingerprintMain {
             }
             return arguments[index + 1]
         }()
-        guard samplingContract == nil || samplingContract == "v2" else {
+        guard
+            samplingContract == nil
+                || ["v2", "v3"].contains(samplingContract!)
+        else {
             throw FingerprintError.arguments
         }
         let frameworkNames = [
@@ -169,10 +172,42 @@ enum ToolchainFingerprintMain {
             "packageManifestChanged": false,
             "productionSelected": false,
         ]
-        if samplingContract == "v2" {
+        if let samplingContract {
+            var repair: [String: Any] = [
+                "algorithm":
+                    "opaque-isolated-one-quantum-majority-3x3",
+                "version": samplingContract == "v3" ? 3 : 2,
+                "quantizationQuantum": 32,
+                "neighborhoodSize": 3,
+                "majorityThreshold": 7,
+                "requiresFullyOpaqueNeighborhood": true,
+                "immutableSourceBuffer": true,
+                "requiresChromaFreeNeighborhood": true,
+                "channels": "rgb-only",
+                "preservesAlpha": true,
+                "preservesChroma": true,
+            ]
+            if samplingContract == "v3" {
+                repair["boundaryAssist"] = [
+                    "algorithm":
+                        "immutable-prequantized-one-value-boundary-6-plus-1",
+                    "version": 1,
+                    "baseQuantizedMajorityCount": 6,
+                    "requiredBoundaryVoteCount": 1,
+                    "effectiveSupportCount": 7,
+                    "maximumCompetingSupportAfterBoundaryReclassification":
+                        2,
+                    "quantizerStep": 32,
+                    "quantizerMidpointOffset": 8,
+                    "boundaryBandWidthValues": 1,
+                    "requiresSameChannelEvidence": true,
+                    "immutablePrequantizedBuffer": true,
+                    "recordsBoundaryVoteReason": true,
+                ]
+            }
             object["descriptorSamplingContract"] = [
                 "contractID":
-                    "play027-deterministic-4x-no-msaa-lanczos-v2",
+                    "play027-deterministic-4x-no-msaa-lanczos-\(samplingContract)",
                 "sceneKitAntialiasing": "none",
                 "linearOversamplingFactor": 4,
                 "downsample": [
@@ -191,20 +226,7 @@ enum ToolchainFingerprintMain {
                     "quantizationQuantum": 32,
                     "midpointOffset": 8,
                 ],
-                "postQuantizationCanonicalizer": [
-                    "algorithm":
-                        "opaque-isolated-one-quantum-majority-3x3",
-                    "version": 2,
-                    "quantizationQuantum": 32,
-                    "neighborhoodSize": 3,
-                    "majorityThreshold": 7,
-                    "requiresFullyOpaqueNeighborhood": true,
-                    "immutableSourceBuffer": true,
-                    "requiresChromaFreeNeighborhood": true,
-                    "channels": "rgb-only",
-                    "preservesAlpha": true,
-                    "preservesChroma": true,
-                ],
+                "postQuantizationCanonicalizer": repair,
                 "canonicalizer": [
                     "id": "imageio-sips-png-v1",
                     "encoder": "ImageIO",

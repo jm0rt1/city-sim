@@ -1,0 +1,379 @@
+{
+  "bothIdentitiesDescribedSymmetrically" : true,
+  "boundaryCoordinate" : [
+    733,
+    778
+  ],
+  "boundaryPair" : [
+    23,
+    24
+  ],
+  "boundaryValueCounts" : {
+    "23" : 7,
+    "24" : 5
+  },
+  "failures" : [
+
+  ],
+  "productionSelected" : false,
+  "purpose" : "schema-2-v3-preimplementation-symmetry-gate",
+  "records" : [
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-01",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-02",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-03",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-04",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 24,
+      "finalPNGFileSHA256" : "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "quantizedMajority48Count" : 7,
+      "run" : "run-05",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        48,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-06",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-07",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 23,
+      "finalPNGFileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "quantizedMajority48Count" : 6,
+      "run" : "run-08",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 24,
+      "finalPNGFileSHA256" : "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "quantizedMajority48Count" : 7,
+      "run" : "run-09",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        48,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 24,
+      "finalPNGFileSHA256" : "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "quantizedMajority48Count" : 7,
+      "run" : "run-10",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        48,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 24,
+      "finalPNGFileSHA256" : "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "quantizedMajority48Count" : 7,
+      "run" : "run-11",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        48,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "boundaryCoordinate" : [
+        733,
+        778
+      ],
+      "boundaryPrequantizedGreen" : 24,
+      "finalPNGFileSHA256" : "23f9a952eaa5650babeb2efea11b4f66215dc31162bc305a45ec719da392b2e7",
+      "quantizedMajority48Count" : 7,
+      "run" : "run-12",
+      "status" : "pass",
+      "targetPostMajorityRGBA" : [
+        16,
+        48,
+        16,
+        255
+      ],
+      "targetPrequantizedRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ],
+      "targetQuantizedRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    }
+  ],
+  "runCount" : 12,
+  "sameChannelOnly" : true,
+  "schema" : 1,
+  "status" : "pass",
+  "targetCoordinate" : [
+    732,
+    778
+  ],
+  "task" : "PLAY-027"
+}

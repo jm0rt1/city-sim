@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sceneGeometryID": "commercial-l01-v0-west-corner-shop-geometry-v1",
+  "logicalBuildingID": "commercial_l01",
+  "family": "commercial",
+  "level": 1,
+  "variantID": "variant-0",
+  "viewDirection": "west",
+  "sourceRevision": "source-v01",
+  "authoredIndependently": true,
+  "productionSelected": false,
+  "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},
+  "toolchainFingerprint": {"role": "frozen-offline-host-and-frameworks", "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json", "sha256": "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1"},
+  "styleAnchor": {"role": "immutable-appearance-only-global-style-anchor", "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png", "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"},
+  "materialLibrary": {"role": "shared-commercial-density-material-library", "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/commercial-l01-l04-v0-materials.json", "sha256": "ebe723369cf5b01ef471e3ef7bedb286d1eee8e4752c9d6237838fea5a634205"},
+  "registration": {
+    "tileBasisPoints": [72, 36], "sceneFootprintUnits": [72, 72],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotSource": [768, 896],
+    "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "frontageEdgeSource": [[512, 768], [768, 640]],
+    "frontageSocketSource": [640, 704],
+    "doorBaseSource": [[602, 723], [678, 685]],
+    "presentationEnvelopeSource": [256, 64, 1280, 896],
+    "shadowEnvelopeSource": [768, 512, 1456, 976],
+    "orientationTransform": "none"
+  },
+  "camera": {"projection": "orthographic-2:1", "yawDegrees": 45, "elevationDegrees": 30, "orthographicScale": 203.64675298172568, "renderViewportPixels": [1536, 1024], "oversamplingFactor": 2, "positionWorld": [180, 146.9693845669907, 180], "targetWorld": [0, 0, 0], "sourceGroundCenter": [768, 768], "postProjectionOffsetPixels": [0, 256]},
+  "light": {"keyOrigin": [-120, 180, -120], "keyIntensity": 1000, "keyColorRGBA": [1.0, 0.86, 0.68, 1.0], "ambientIntensity": 0.5, "ambientColorRGBA": [0.50, 0.46, 0.38, 1.0], "shadowVectorSource": [2, 1], "shadowOpacity": 0.34, "shadowBlurSourcePixels": 18, "shadowReceiver": "task-owned-transparent-ground-plane"},
+  "building": {
+    "width": 56, "depth": 56, "foundationHeight": 2, "floorHeight": 15, "floors": 2,
+    "wallHeight": 32, "roofHeight": 5, "roofOverhang": 1,
+    "wallMaterialID": "brick-commercial-red", "trimMaterialID": "limestone-warm",
+    "roofMaterialID": "awning-deep-teal", "foundationMaterialID": "foundation-stone",
+    "chimney": {"positionWorld": [-14, 39, 12], "dimensions": [3, 7, 3], "materialID": "chimney-metal"},
+    "massingProfile": "compact-two-floor-corner-shop", "usesLegacyDomesticDetails": false,
+    "massBlocks": [
+      {"id": "c01-main-corner-shop", "dimensions": [52, 30, 52], "positionWorld": [0, 17, 0], "materialID": "brick-commercial-red"},
+      {"id": "c01-corner-stone-pier", "dimensions": [12, 34, 12], "positionWorld": [20, 19, -20], "materialID": "stone-commercial-sand"}
+    ],
+    "roofVolumes": [
+      {"id": "c01-flat-coping", "shape": "flat-parapet", "dimensions": [54, 5, 54], "positionWorld": [0, 34.5, 0], "materialID": "slate-charcoal", "trimMaterialID": "limestone-warm"}
+    ],
+    "trimBands": [
+      {"id": "c01-storefront-cornice", "dimensions": [53, 1.5, 53], "positionWorld": [0, 18.5, 0], "materialID": "awning-deep-teal"},
+      {"id": "c01-roof-coping-band", "dimensions": [55, 1.4, 55], "positionWorld": [0, 32.5, 0], "materialID": "limestone-warm"}
+    ]
+  },
+  "facades": [
+    {"id": "north-facade", "direction": "north", "edgeWorld": [[-28, -28], [28, -28]], "materialID": "brick-commercial-red", "hasEntrance": false, "windowBays": [], "windowRhythms": [
+      {"id": "n-display", "centersWorld": [[-16, 9, -26.2], [16, 9, -26.2]], "width": 11, "height": 12, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "n-upper", "centersWorld": [[-17, 25, -26.2], [0, 25, -26.2], [17, 25, -26.2]], "width": 7, "height": 8.5, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"}
+    ]},
+    {"id": "east-facade", "direction": "east", "edgeWorld": [[28, -28], [28, 28]], "materialID": "brick-commercial-red", "hasEntrance": false, "windowBays": [], "windowRhythms": [
+      {"id": "e-display", "centersWorld": [[26.2, 9, -16], [26.2, 9, 16]], "width": 11, "height": 12, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "e-upper", "centersWorld": [[26.2, 25, -17], [26.2, 25, 0], [26.2, 25, 17]], "width": 7, "height": 8.5, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"}
+    ]},
+    {"id": "south-facade", "direction": "south", "edgeWorld": [[28, 28], [-28, 28]], "materialID": "brick-commercial-red", "hasEntrance": false, "windowBays": [], "windowRhythms": [
+      {"id": "s-display", "centersWorld": [[16, 9, 26.2], [-16, 9, 26.2]], "width": 11, "height": 12, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "s-upper", "centersWorld": [[17, 25, 26.2], [0, 25, 26.2], [-17, 25, 26.2]], "width": 7, "height": 8.5, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"}
+    ]},
+    {"id": "west-facade", "direction": "west", "edgeWorld": [[-28, 28], [-28, -28]], "materialID": "brick-commercial-red", "hasEntrance": true, "windowBays": [], "windowRhythms": [
+      {"id": "w-display", "centersWorld": [[-26.2, 9, 16], [-26.2, 9, -16]], "width": 11, "height": 12, "sillHeight": 1.5, "floor": 1, "materialID": "window-warm"},
+      {"id": "w-upper", "centersWorld": [[-26.2, 25, 17], [-26.2, 25, 0], [-26.2, 25, -17]], "width": 7, "height": 8.5, "sillHeight": 3, "floor": 2, "materialID": "glass-office-blue"}
+    ]}
+  ],
+  "entrance": {"facadeID": "west-facade", "baseWorld": [-28, 2, 0], "width": 10, "height": 13, "depth": 2, "doorMaterialID": "door-commercial-brass", "surroundMaterialID": "limestone-warm", "stepCount": 2, "stepRun": 2, "canopyDepth": 18, "hingeSide": "left", "pavilionWidth": 20, "pavilionDepth": 7, "pavilionHeight": 18, "pavilionRoofHeight": 3, "pavilionMaterialID": "awning-deep-teal", "porchWidth": 26, "porchColumnWidth": 1.5, "porchLateralOffset": 10, "style": "shopfront"},
+  "props": [
+    {"id": "west-rooftop-hvac", "kind": "rooftop-hvac", "positionWorld": [8, 40, -11], "dimensions": [10, 7, 9], "materialID": "rooftop-metal"}
+  ],
+  "occlusionExclusions": [{"id": "west-shopfront-clearance", "purpose": "protect west storefront return and declared commercial frontage socket", "polygonWorld": [[-50, -22], [-22, -22], [-22, 16], [-50, 16]]}]
+}

@@ -7,7 +7,7 @@
   "level": 2,
   "variantID": "variant-0",
   "viewDirection": "north",
-  "sourceRevision": "source-v01",
+  "sourceRevision": "source-v02",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},
@@ -84,8 +84,8 @@
     ],
     "roofVolumes": [
       {"id": "l02-long-cross-roof", "shape": "hip", "dimensions": [54, 8, 30], "positionWorld": [0, 46, -4], "materialID": "roof-green", "trimMaterialID": "limestone-warm"},
-      {"id": "l02-transverse-cross-roof", "shape": "hip", "dimensions": [30, 9, 54], "positionWorld": [8, 46.5, 0], "materialID": "slate-charcoal", "trimMaterialID": "limestone-warm"},
-      {"id": "l02-stair-bay-roof", "shape": "hip", "dimensions": [18, 8, 18], "positionWorld": [20, 54, -20], "materialID": "roof-green", "trimMaterialID": "limestone-warm"}
+      {"id": "l02-transverse-cross-roof", "shape": "hip", "dimensions": [30, 9, 54], "positionWorld": [8, 46.5, 0], "materialID": "roof-green", "trimMaterialID": "limestone-warm"},
+      {"id": "l02-stair-bay-roof", "shape": "hip", "dimensions": [18, 8, 18], "positionWorld": [20, 54, -20], "materialID": "roof-copper", "trimMaterialID": "limestone-warm"}
     ],
     "trimBands": [
       {"id": "l02-ground-string", "dimensions": [51, 1, 51], "positionWorld": [0, 15.5, 0], "materialID": "limestone-warm"},

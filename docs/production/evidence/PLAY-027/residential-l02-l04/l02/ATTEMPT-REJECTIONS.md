@@ -54,3 +54,22 @@ its bucket boundary by eight values, which still converges the observed
 `191/192` unstable pair. No geometry, material, camera, light, shadow,
 registration, normalizer, or review-tool change is permitted. The coherent set
 advances to `source-v04`.
+
+## Source-v04 four-view set
+
+**Disposition:** technically valid; rejected at local art review
+
+The full raw and normalized set passes repeat-run identity, unique hashes,
+alpha, chroma, padding, and source registration checks. Exact native-2x and
+zoomed normalized-alpha sheets show clear east and south walk-up entrances.
+North and west fail the level gate: each hidden road-facing plane exposes only
+a narrow return frame, so the grounded door itself disappears at game scale.
+That is two direction failures and freezes L2 for local redesign.
+
+All v04 raw, normalized, provenance, validation, and six-sheet review evidence
+is retained. The redesign adds a real green door, warm surround, lintel, and
+grounded stoop on each independently authored visible return plane elected by
+the north/west lateral offset. It does not move the contracted frontage socket,
+pivot, contact polygon, camera, light, shadow, or shared massing; east and south
+retain their direct facade entrances. The coherent set advances to
+`source-v05`.

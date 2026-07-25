@@ -7,7 +7,7 @@
   "level": 2,
   "variantID": "variant-0",
   "viewDirection": "west",
-  "sourceRevision": "source-v04",
+  "sourceRevision": "source-v05",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},

@@ -1507,6 +1507,109 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                     materialID: "window-warm"
                 )
             )
+
+            // A hidden road-facing plane cannot rely on a canopy return alone
+            // at game scale. The independently authored lateral offset elects
+            // a grounded secondary door plane on the visible corner return.
+            // North returns face east; west returns face south. No sibling
+            // scene or raster transform participates in this geometry.
+            let returnDoorWidth = min(8.0, entrance.width * 0.72)
+            let returnDoorHeight = min(11.5, entrance.height * 0.82)
+            let returnDoorDepth = 1.0
+            let returnDoorCenter = [
+                returnCenter[0] + returnNormal[0] * 0.7,
+                descriptor.building.foundationHeight
+                    + returnDoorHeight / 2,
+                returnCenter[2] + returnNormal[2] * 0.7,
+            ]
+            let returnDoorDimensions = horizontal
+                ? [returnDoorDepth, returnDoorHeight, returnDoorWidth]
+                : [returnDoorWidth, returnDoorHeight, returnDoorDepth]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-" + style + "-return-door",
+                    dimensions: returnDoorDimensions,
+                    position: returnDoorCenter,
+                    materialID: entrance.doorMaterialID
+                )
+            )
+            let returnTangent = outward
+            let returnSideWidth = 1.35
+            for side in [-1.0, 1.0] {
+                let offset =
+                    side
+                    * (returnDoorWidth / 2 + returnSideWidth / 2)
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-" + style
+                            + "-return-door-side-\(side)",
+                        dimensions: horizontal
+                            ? [
+                                returnDoorDepth + 0.5,
+                                returnDoorHeight + 2.5,
+                                returnSideWidth,
+                            ]
+                            : [
+                                returnSideWidth,
+                                returnDoorHeight + 2.5,
+                                returnDoorDepth + 0.5,
+                            ],
+                        position: [
+                            returnDoorCenter[0]
+                                + returnTangent[0] * offset,
+                            returnDoorCenter[1] + 0.8,
+                            returnDoorCenter[2]
+                                + returnTangent[2] * offset,
+                        ],
+                        materialID: entrance.surroundMaterialID
+                    )
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-" + style + "-return-door-lintel",
+                    dimensions: horizontal
+                        ? [
+                            returnDoorDepth + 0.5,
+                            1.5,
+                            returnDoorWidth + 4.0,
+                        ]
+                        : [
+                            returnDoorWidth + 4.0,
+                            1.5,
+                            returnDoorDepth + 0.5,
+                        ],
+                    position: [
+                        returnDoorCenter[0],
+                        descriptor.building.foundationHeight
+                            + returnDoorHeight + 1.2,
+                        returnDoorCenter[2],
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name:
+                        facade.direction
+                        + "-" + style + "-return-stoop",
+                    dimensions: horizontal
+                        ? [4.5, 0.8, returnDoorWidth + 5.0]
+                        : [returnDoorWidth + 5.0, 0.8, 4.5],
+                    position: [
+                        returnDoorCenter[0] + returnNormal[0] * 2.0,
+                        descriptor.building.foundationHeight - 0.4,
+                        returnDoorCenter[2] + returnNormal[2] * 2.0,
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
         }
     }
 

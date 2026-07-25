@@ -258,11 +258,15 @@ struct StrategyCommandCenterView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
-    static let compactMaximumHeight: CGFloat = 54
-    static let regularMaximumHeight: CGFloat = 64
+    static let compactMaximumHeight: CGFloat = 48
+    static let regularMaximumHeight: CGFloat = 52
 
     private var presentation: CityStrategyHUDPresentation {
         CityStrategyHUDPresentation.make(analytics: store.analytics)
+    }
+
+    private var trajectory: CityTrajectoryHUDPresentation {
+        CityTrajectoryHUDPresentation.make(projectedBalance: store.analytics.projectedBalance)
     }
 
     var body: some View {
@@ -291,16 +295,31 @@ struct StrategyCommandCenterView: View {
                     Text(presentation.title)
                         .font(.system(size: 13, weight: .bold, design: .rounded))
                         .lineLimit(1)
-                    Text(presentation.summary)
-                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                    if !compact {
+                        Text(presentation.summary)
+                            .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
                 }
             }
 
             Spacer(minLength: 2)
 
             HStack(spacing: 4) {
+                Label(trajectory.label, systemImage: trajectory.symbol)
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded).monospacedDigit())
+                    .foregroundStyle(trajectory.isPositive ? GameTheme.accent : GameTheme.danger)
+                    .lineLimit(1)
+                    .padding(.horizontal, 7)
+                    .frame(minHeight: GameTheme.controlMinimum)
+                    .background(
+                        (trajectory.isPositive ? GameTheme.accent : GameTheme.danger).opacity(0.13),
+                        in: RoundedRectangle(cornerRadius: 8)
+                    )
+                    .accessibilityLabel("City trajectory")
+                    .accessibilityValue(trajectory.accessibilityValue)
+                    .accessibilityIdentifier("hud.city.trajectory")
                 if let diagnostic = presentation.diagnostic {
                     responseButton(diagnostic)
                 }
@@ -396,5 +415,37 @@ struct StrategyCommandCenterView: View {
         case .recovery: GameTheme.accent
         case .resolved: GameTheme.accent
         }
+    }
+}
+
+struct CityTrajectoryHUDPresentation: Equatable {
+    let label: String
+    let symbol: String
+    let accessibilityValue: String
+    let isPositive: Bool
+
+    static func make(projectedBalance: Double) -> Self {
+        if projectedBalance > 0 {
+            return Self(
+                label: "\(projectedBalance.signedCurrencyText) / cycle",
+                symbol: "arrow.up.right",
+                accessibilityValue: "Growing by \(projectedBalance.currencyText) per cycle",
+                isPositive: true
+            )
+        }
+        if projectedBalance < 0 {
+            return Self(
+                label: "\(projectedBalance.signedCurrencyText) / cycle",
+                symbol: "arrow.down.right",
+                accessibilityValue: "Losing \(abs(projectedBalance).currencyText) per cycle",
+                isPositive: false
+            )
+        }
+        return Self(
+            label: "$0 / cycle",
+            symbol: "arrow.right",
+            accessibilityValue: "Holding steady",
+            isPositive: true
+        )
     }
 }

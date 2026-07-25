@@ -27,10 +27,26 @@ struct CityStrategyProgression: Codable, Equatable, Sendable {
     var recoveryResolution: CityStrategyRecoveryResolution? = nil
 }
 
+enum CitySecondActPhase: String, Codable, Equatable, Sendable {
+    case mandate
+    case warnedPressure
+    case recovery
+    case qualification
+    case completed
+}
+
+struct CitySecondActProgression: Codable, Equatable, Sendable {
+    var phase: CitySecondActPhase
+    var nextScheduledTick: Int?
+    var qualifyingCycles: Int = 0
+    var regionalCapitalAwarded = false
+}
+
 struct CityProgressionState: Codable, Equatable, Sendable {
     var townCharterQualifyingCycles: Int = 0
     var townCharterAwarded = false
     var strategy: CityStrategyProgression?
+    var secondAct: CitySecondActProgression? = nil
 }
 
 struct CityGameState: Codable, Equatable, Sendable {

@@ -139,7 +139,8 @@ final class GameplayLoopTests: XCTestCase {
 
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertLessThanOrEqual(state.tick, 2_200)
-        XCTAssertEqual(state.status, .won)
+        XCTAssertEqual(state.status, .playing)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .mandate)
     }
 
     func testBothDiscoverableStrategiesReachDurablePayoffWithInteractionMargin() throws {
@@ -190,8 +191,10 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertGreaterThan(CityAnalytics(state: industry).jobCapacity, CityAnalytics(state: commerce).jobCapacity)
         XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
-        XCTAssertEqual(commerce.status, .won)
-        XCTAssertEqual(industry.status, .won)
+        XCTAssertEqual(commerce.status, .playing)
+        XCTAssertEqual(industry.status, .playing)
+        XCTAssertEqual(commerce.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(industry.progression?.secondAct?.phase, .mandate)
     }
 
     func testOpeningExposesARealButRecoverableTradeoff() {
@@ -262,18 +265,20 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertTrue(commerceAndTax.messages.contains { $0.title == "Main Street Rebound" })
         commerceAndTax.taxRate = 0.10
 
-        let industryVictoryTick = advanceUntil(&industryFirst, maximumCycles: 430) {
-            $0.status == .won
+        advanceUntil(&industryFirst, maximumCycles: 430) {
+            $0.progression?.townCharterAwarded == true
         }
-        let commerceVictoryTick = advanceUntil(&commerceAndTax, maximumCycles: 430) {
-            $0.status == .won
+        advanceUntil(&commerceAndTax, maximumCycles: 430) {
+            $0.progression?.townCharterAwarded == true
         }
+        let industryVictoryTick = try completeSecondAct(&industryFirst)
+        let commerceVictoryTick = try completeSecondAct(&commerceAndTax)
 
         let industryAnalytics = CityAnalytics(state: industryFirst)
         let commerceAnalytics = CityAnalytics(state: commerceAndTax)
         XCTAssertGreaterThan(industryAnalytics.jobCapacity, commerceAnalytics.jobCapacity)
         XCTAssertGreaterThan(industryAnalytics.pollutionPressure, commerceAnalytics.pollutionPressure)
-        XCTAssertLessThan(industryAnalytics.utilityReserve, commerceAnalytics.utilityReserve)
+        XCTAssertGreaterThan(industryAnalytics.utilityReserve, commerceAnalytics.utilityReserve)
         XCTAssertNotEqual(industryFirst.treasury, commerceAndTax.treasury)
         XCTAssertNotEqual(industryFirst.happiness, commerceAndTax.happiness)
         XCTAssertGreaterThanOrEqual(industryFirst.population, 500)
@@ -441,19 +446,23 @@ final class GameplayLoopTests: XCTestCase {
         ]
 
         for resolution in resolutions {
-            let state = try charterCity(resolvedBy: resolution)
+            var state = try charterCity(resolvedBy: resolution)
             XCTAssertEqual(state.progression?.strategy?.recoveryResolution, resolution)
             XCTAssertEqual(CityAnalytics(state: state).strategyRecoveryResolution, resolution)
             XCTAssertTrue(state.progression?.townCharterAwarded ?? false, resolution.rawValue)
             XCTAssertEqual(state.tick, 844, resolution.rawValue)
-            XCTAssertEqual(state.status, .won, resolution.rawValue)
+            XCTAssertEqual(state.status, .playing, resolution.rawValue)
             XCTAssertGreaterThan(state.treasury, 0, resolution.rawValue)
 
-            var terminal = state
+            let victoryTick = try completeSecondAct(&state)
+            XCTAssertLessThanOrEqual(victoryTick, 2_800, resolution.rawValue)
+            XCTAssertEqual(state.status, .won, resolution.rawValue)
+            XCTAssertTrue(state.progression?.secondAct?.regionalCapitalAwarded ?? false)
+            let terminal = state
             for _ in 0..<128 {
-                CitySimulation.step(&terminal)
+                CitySimulation.step(&state)
             }
-            XCTAssertEqual(terminal, state, resolution.rawValue)
+            XCTAssertEqual(state, terminal, resolution.rawValue)
         }
     }
 
@@ -791,11 +800,17 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
-        XCTAssertEqual(state.status, .won)
+        XCTAssertEqual(state.status, .playing)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(
+            CityAnalytics(state: state).townCharterStatusText,
+            "Town Charter secured · Regional Capital chapter is active"
+        )
 
-        let victory = state
+        let charter = state
         advance(&state, cycles: 20)
-        XCTAssertEqual(state, victory)
+        XCTAssertGreaterThan(state.tick, charter.tick)
+        XCTAssertEqual(state.status, .playing)
     }
 
     func testFailedTownCharterCheckResetsBeforeLaterSuccessfulRun() throws {
@@ -814,7 +829,8 @@ final class GameplayLoopTests: XCTestCase {
         advanceQualifyingTown(&state, days: 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
-        XCTAssertEqual(state.status, .won)
+        XCTAssertEqual(state.status, .playing)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .mandate)
     }
 
     func testLegacyAwardedPlayingStateNormalizesOnlyAtNextDailyBoundary() throws {
@@ -840,6 +856,10 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(decoded, legacy)
         XCTAssertEqual(decoded.status, .playing)
         XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        XCTAssertEqual(
+            CityAnalytics(state: decoded).townCharterStatusText,
+            "Town Charter secured permanently · Charter victory is complete"
+        )
 
         for expectedTick in 1...3 {
             CitySimulation.step(&decoded)
@@ -851,6 +871,10 @@ final class GameplayLoopTests: XCTestCase {
         CitySimulation.step(&decoded)
         XCTAssertEqual(decoded.tick, 4)
         XCTAssertEqual(decoded.status, .won)
+        XCTAssertEqual(
+            CityAnalytics(state: decoded).townCharterStatusText,
+            "Town Charter secured permanently · Charter victory is complete"
+        )
         XCTAssertEqual(decoded.progression?.townCharterQualifyingCycles, 12)
         XCTAssertTrue(decoded.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(decoded.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
@@ -922,6 +946,224 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(store.inspectorSection, .overview)
     }
 
+    func testTownCharterOpensDistinctWarnedSecondActsWithoutImmediatePressure() throws {
+        var commerce = try charterCity(resolvedBy: .commercialPublicRealmInvestment)
+        var industry = try charterCity(resolvedBy: .industrialGreenBuffer)
+
+        XCTAssertEqual(commerce.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(industry.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(commerce.status, .playing)
+        XCTAssertEqual(industry.status, .playing)
+        XCTAssertFalse(commerce.messages.contains { $0.title == "Regional Retail Pressure" })
+        XCTAssertFalse(industry.messages.contains { $0.title == "Regional Freight Overload" })
+
+        let commerceWarningTick = try XCTUnwrap(commerce.progression?.secondAct?.nextScheduledTick)
+        let industryWarningTick = try XCTUnwrap(industry.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&commerce, tick: commerceWarningTick)
+        advanceToTick(&industry, tick: industryWarningTick)
+
+        XCTAssertEqual(commerce.progression?.secondAct?.phase, .warnedPressure)
+        XCTAssertEqual(industry.progression?.secondAct?.phase, .warnedPressure)
+        XCTAssertTrue(commerce.messages.contains {
+            $0.title == "Regional Retail Challenge"
+                && $0.detail.contains("$4,500")
+                && $0.detail.contains("third park")
+        })
+        XCTAssertTrue(industry.messages.contains {
+            $0.title == "Regional Grid Mandate"
+                && $0.detail.contains("$7,000")
+                && $0.detail.contains("third park")
+        })
+
+        let commercePressureTick = try XCTUnwrap(commerce.progression?.secondAct?.nextScheduledTick)
+        let industryPressureTick = try XCTUnwrap(industry.progression?.secondAct?.nextScheduledTick)
+        XCTAssertEqual(
+            commercePressureTick - commerceWarningTick,
+            CitySimulation.strategyMinimumWarningTicks
+        )
+        XCTAssertEqual(
+            industryPressureTick - industryWarningTick,
+            CitySimulation.strategyMinimumWarningTicks
+        )
+
+        advanceToTick(&commerce, tick: commercePressureTick - 1)
+        advanceToTick(&industry, tick: industryPressureTick - 1)
+        XCTAssertFalse(commerce.messages.contains { $0.title == "Regional Retail Pressure" })
+        XCTAssertFalse(industry.messages.contains { $0.title == "Regional Freight Overload" })
+        let commerceTreasury = commerce.treasury
+        let commerceHappiness = commerce.happiness
+        let industryTreasury = industry.treasury
+        let industryHappiness = industry.happiness
+        CitySimulation.step(&commerce)
+        CitySimulation.step(&industry)
+
+        XCTAssertEqual(commerce.progression?.secondAct?.phase, .recovery)
+        XCTAssertEqual(industry.progression?.secondAct?.phase, .recovery)
+        XCTAssertTrue(commerce.messages.contains { $0.title == "Regional Retail Pressure" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Regional Freight Overload" })
+        let commerceTreasuryChange = commerce.treasury - commerceTreasury
+        let industryTreasuryChange = industry.treasury - industryTreasury
+        XCTAssertLessThan(commerceTreasuryChange, -3_000)
+        XCTAssertLessThan(commerce.happiness, commerceHappiness)
+        XCTAssertLessThan(industryTreasuryChange, -5_000)
+        XCTAssertLessThan(industry.happiness, industryHappiness)
+        XCTAssertLessThan(industryTreasuryChange, commerceTreasuryChange)
+        XCTAssertLessThan(
+            industry.happiness - industryHappiness,
+            commerce.happiness - commerceHappiness
+        )
+    }
+
+    func testSecondActLegacyDecodeAndEveryPhaseRoundTripExactly() throws {
+        let newCity = CityGameState.newCity(seed: 42)
+        XCTAssertNil(newCity.progression?.secondAct)
+
+        let encoded = try JSONEncoder().encode(newCity)
+        let payload = try XCTUnwrap(JSONSerialization.jsonObject(with: encoded) as? [String: Any])
+        let progression = try XCTUnwrap(payload["progression"] as? [String: Any])
+        XCTAssertNil(progression["secondAct"])
+        let legacy = try JSONDecoder().decode(CityGameState.self, from: encoded)
+        XCTAssertNil(legacy.progression?.secondAct)
+
+        for phase in [
+            CitySecondActPhase.mandate,
+            .warnedPressure,
+            .recovery,
+            .qualification,
+            .completed,
+        ] {
+            let expected = CitySecondActProgression(
+                phase: phase,
+                nextScheduledTick: [.mandate, .warnedPressure].contains(phase) ? 960 : nil,
+                qualifyingCycles: phase == .qualification ? 7 : 0,
+                regionalCapitalAwarded: phase == .completed
+            )
+            let roundTrip = try JSONDecoder().decode(
+                CitySecondActProgression.self,
+                from: JSONEncoder().encode(expected)
+            )
+            XCTAssertEqual(roundTrip, expected)
+        }
+    }
+
+    func testRegionalQualificationCountsOnlyDailyBoundariesResetsAndAwardsOnce() throws {
+        var state = try charterCity(resolvedBy: .commercialTaxRelief)
+        try enterRegionalQualification(&state)
+        prepareRegionalMetrics(&state)
+
+        for _ in 0..<3 { CitySimulation.step(&state) }
+        XCTAssertEqual(state.progression?.secondAct?.qualifyingCycles, 0)
+        CitySimulation.step(&state)
+        XCTAssertEqual(state.progression?.secondAct?.qualifyingCycles, 1)
+
+        advanceRegionalQualifying(&state, days: 5)
+        XCTAssertEqual(state.progression?.secondAct?.qualifyingCycles, 6)
+        state.happiness = 0
+        advanceDays(&state, days: 1)
+        XCTAssertEqual(state.progression?.secondAct?.qualifyingCycles, 0)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .qualification)
+        XCTAssertFalse(state.progression?.secondAct?.regionalCapitalAwarded ?? true)
+
+        advanceRegionalQualifying(&state, days: 12)
+        XCTAssertEqual(state.status, .won)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .completed)
+        XCTAssertTrue(state.progression?.secondAct?.regionalCapitalAwarded ?? false)
+        XCTAssertEqual(state.messages.filter { $0.title == "Regional Capital Recognized" }.count, 1)
+
+        let terminal = state
+        for _ in 0..<64 { CitySimulation.step(&state) }
+        XCTAssertEqual(state, terminal)
+        XCTAssertEqual(state.messages.filter { $0.title == "Regional Capital Recognized" }.count, 1)
+    }
+
+    func testSecondActSaveLoadBackupAndReplayPreserveExactState() throws {
+        var state = try charterCity(resolvedBy: .industrialGreenBuffer)
+        let pressureTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&state, tick: pressureTick)
+        let setbackTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&state, tick: setbackTick)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .recovery)
+
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-play064-save-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        let write = try saves.save(state)
+        let load = try saves.load()
+        XCTAssertEqual(write.schemaVersion, 1)
+        XCTAssertEqual(load.schemaVersion, 1)
+        XCTAssertEqual(load.state, state)
+        XCTAssertEqual(load.fingerprint, try CityStateFingerprinter.fingerprint(state))
+
+        var uninterrupted = state
+        var replay = load.state
+        for _ in 0..<31 {
+            CitySimulation.step(&uninterrupted)
+            CitySimulation.step(&replay)
+        }
+        XCTAssertEqual(replay, uninterrupted)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(replay),
+            try CityStateFingerprinter.fingerprint(uninterrupted)
+        )
+
+        try saves.save(uninterrupted)
+        try Data("corrupt".utf8).write(to: saves.saveURL, options: .atomic)
+        let recovered = try saves.load()
+        XCTAssertEqual(recovered.source, .backup)
+        XCTAssertEqual(recovered.state, state)
+        XCTAssertEqual(recovered.fingerprint, write.fingerprint)
+    }
+
+    @MainActor
+    func testUndoRestoresExactSecondActRecoverySnapshotAndMappingsRouteRemedies() throws {
+        var state = try charterCity(resolvedBy: .commercialPublicRealmInvestment)
+        let warningTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&state, tick: warningTick)
+        let pressureTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&state, tick: pressureTick)
+        let beforeBuild = state
+
+        let store = CityGameStore(state: state)
+        store.selectTool(.park)
+        let coordinate = try XCTUnwrap(
+            store.state.tiles.first {
+                guard $0.kind == .empty else { return false }
+                if case .success = CitySimulation.validateBuild(
+                    .park,
+                    at: $0.coordinate,
+                    in: store.state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate
+        )
+        store.primaryAction(at: coordinate)
+        advanceDays(&store.state, days: 1)
+        XCTAssertEqual(store.state.progression?.secondAct?.phase, .qualification)
+        store.undoLastAction()
+        XCTAssertEqual(store.state, beforeBuild)
+        XCTAssertEqual(store.state.progression?.secondAct?.phase, .recovery)
+
+        let regional = try XCTUnwrap(store.objectives.first { $0.id == "regional-capital" })
+        XCTAssertTrue(regional.remaining.contains("third park"))
+        store.openObjective(regional)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .overview)
+
+        store.openMessage(
+            CityMessage(
+                tick: store.state.tick,
+                severity: .critical,
+                title: "Regional Retail Pressure",
+                detail: "Cause and remedy"
+            )
+        )
+        XCTAssertEqual(store.overlay, .happiness)
+        XCTAssertEqual(store.inspectorSection, .demand)
+    }
+
     @discardableResult
     private func advanceThroughStrategyPhase(
         _ state: inout CityGameState,
@@ -971,6 +1213,77 @@ final class GameplayLoopTests: XCTestCase {
                 CitySimulation.meetsTownCharterStandards(in: state),
                 CityAnalytics(state: state).townCharterStatusText
             )
+        }
+    }
+
+    private func prepareRegionalMetrics(_ state: inout CityGameState) {
+        state.population = max(state.population, 525)
+        state.treasury = max(state.treasury, 75_000)
+        state.happiness = max(state.happiness, 70)
+        state.taxRate = 0.10
+    }
+
+    private func advanceRegionalQualifying(_ state: inout CityGameState, days: Int) {
+        for _ in 0..<days {
+            prepareRegionalMetrics(&state)
+            advanceDays(&state, days: 1)
+            XCTAssertTrue(
+                CitySimulation.meetsRegionalCapitalStandards(in: state),
+                CityAnalytics(state: state).regionalCapitalStatusText
+            )
+        }
+    }
+
+    private func enterRegionalQualification(_ state: inout CityGameState) throws {
+        let warningTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&state, tick: warningTick)
+        let pressureTick = try XCTUnwrap(state.progression?.secondAct?.nextScheduledTick)
+        advanceToTick(&state, tick: pressureTick)
+        XCTAssertEqual(state.progression?.secondAct?.phase, .recovery)
+
+        guard let story = state.progression?.strategy,
+              let resolution = story.recoveryResolution else {
+            XCTFail("Expected a durable first-act recovery resolution")
+            return
+        }
+        let jobs: BuildingKind = story.committedStrategy == .commercialStewardship
+            ? .commercial
+            : .industrial
+        if story.committedStrategy == .industrialExpansion {
+            for kind in [BuildingKind.powerPlant, .waterTower] {
+                while CityAnalytics(state: state).count(kind) < 3 {
+                    advanceUntil(&state, maximumCycles: 160) { $0.treasury >= kind.buildCost }
+                    try buildFirstValid(kind, in: &state)
+                    advance(&state, cycles: 1)
+                }
+            }
+        }
+        while CityAnalytics(state: state).jobCapacity < 500 {
+            advanceUntil(&state, maximumCycles: 160) { $0.treasury >= jobs.buildCost }
+            try buildFirstValid(jobs, in: &state)
+            advance(&state, cycles: 1)
+        }
+
+        switch resolution {
+        case .commercialTaxRelief:
+            state.taxRate = 0.08
+        case .commercialPublicRealmInvestment, .industrialGreenBuffer:
+            try buildFirstValid(.park, in: &state)
+        case .industrialUtilityExpansion:
+            break
+        }
+
+        advanceUntil(&state, maximumCycles: 80) {
+            $0.progression?.secondAct?.phase == .qualification
+        }
+        state.taxRate = 0.10
+    }
+
+    @discardableResult
+    private func completeSecondAct(_ state: inout CityGameState) throws -> Int {
+        try enterRegionalQualification(&state)
+        return advanceUntil(&state, maximumCycles: 430) {
+            $0.status == .won
         }
     }
 

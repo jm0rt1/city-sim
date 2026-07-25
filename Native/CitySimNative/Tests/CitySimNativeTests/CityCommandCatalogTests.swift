@@ -725,7 +725,7 @@ final class CityCommandCatalogTests: XCTestCase {
         )
         let content = NSView(frame: window.contentView?.bounds ?? .zero)
         window.contentView = content
-        let monitor = CityFocusPointerShieldView {}
+        let monitor = CityFocusPointerShieldView(traceLabel: "lifecycle") {}
         monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
 
         content.addSubview(monitor)
@@ -799,7 +799,7 @@ final class CityCommandCatalogTests: XCTestCase {
             let treasury = store.state.treasury
             var actionCount = 0
 
-            let monitor = CityFocusPointerShieldView {
+            let monitor = CityFocusPointerShieldView(traceLabel: "mode") {
                 actionCount += 1
                 _ = store.perform(.toggleCityFocus)
             }
@@ -862,7 +862,7 @@ final class CityCommandCatalogTests: XCTestCase {
             backing: .buffered,
             defer: false
         )
-        let monitor = CityFocusPointerShieldView {}
+        let monitor = CityFocusPointerShieldView(traceLabel: "window") {}
         monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
         owningWindow.contentView?.addSubview(monitor)
         owningWindow.orderFront(nil)

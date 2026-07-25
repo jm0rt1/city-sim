@@ -560,7 +560,9 @@ struct FocusCityHUDView: View {
         .foregroundStyle(Color.black)
         .background(GameTheme.accent, in: RoundedRectangle(cornerRadius: 9))
         .overlay {
-            CityFocusPointerShield { store.perform(.toggleCityFocus) }
+            CityFocusPointerShield(traceLabel: "exit") {
+                store.perform(.toggleCityFocus)
+            }
                 .accessibilityHidden(true)
         }
         .help("Return to the full command surface · \(descriptor.shortcut?.display ?? "")")

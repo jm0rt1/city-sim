@@ -30,13 +30,15 @@ enum ObjectiveSurfacePresentation: Equatable {
 
 @MainActor
 final class CityFocusPointerShieldView: NSView {
+    var traceLabel: String
     var action: () -> Void
     private(set) var monitorIsInstalled = false
     private var localMonitor: Any?
     private var ownsPointerSequence = false
     private var pointerDraggedOutside = false
 
-    init(action: @escaping () -> Void) {
+    init(traceLabel: String, action: @escaping () -> Void) {
+        self.traceLabel = traceLabel
         self.action = action
         super.init(frame: .zero)
         setAccessibilityElement(false)
@@ -64,6 +66,12 @@ final class CityFocusPointerShieldView: NSView {
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
         startMonitoringIfNeeded()
+        trace(phase: "viewDidMoveToWindow")
+    }
+
+    override func layout() {
+        super.layout()
+        trace(phase: "layout")
     }
 
     func startMonitoringIfNeeded() {
@@ -74,6 +82,7 @@ final class CityFocusPointerShieldView: NSView {
             self?.handleLocalPointerEvent(event) ?? event
         }
         monitorIsInstalled = localMonitor != nil
+        trace(phase: "monitorInstalled")
     }
 
     func stopMonitoring() {
@@ -87,35 +96,45 @@ final class CityFocusPointerShieldView: NSView {
     }
 
     func handleLocalPointerEvent(_ event: NSEvent) -> NSEvent? {
+        trace(phase: "callback.pre", event: event)
         if ownsPointerSequence {
             switch event.type {
             case .leftMouseDragged:
                 if !contains(event) {
                     pointerDraggedOutside = true
                 }
+                trace(phase: "callback.post.consumeDrag", event: event)
                 return nil
             case .leftMouseUp:
                 let shouldPerform = !pointerDraggedOutside && contains(event)
                 ownsPointerSequence = false
                 pointerDraggedOutside = false
+                trace(
+                    phase: shouldPerform ? "callback.post.perform" : "callback.post.cancel",
+                    event: event
+                )
                 if shouldPerform {
                     action()
                 }
                 return nil
             case .leftMouseDown:
+                trace(phase: "callback.post.consumeRepeatedDown", event: event)
                 return nil
             default:
+                trace(phase: "callback.post.passUnexpected", event: event)
                 return event
             }
         }
 
-        guard event.type == .leftMouseDown,
-              event.window === window,
-              contains(event) else {
+        let exactWindow = event.window === window
+        let isInside = contains(event)
+        guard event.type == .leftMouseDown, exactWindow, isInside else {
+            trace(phase: "callback.post.pass", event: event)
             return event
         }
         ownsPointerSequence = true
         pointerDraggedOutside = false
+        trace(phase: "callback.post.own", event: event)
         return nil
     }
 
@@ -123,17 +142,60 @@ final class CityFocusPointerShieldView: NSView {
         guard event.window === window else { return false }
         return bounds.contains(convert(event.locationInWindow, from: nil))
     }
+
+    #if DEBUG
+    private func trace(phase: String, event: NSEvent? = nil) {
+        guard let path = ProcessInfo.processInfo.environment["CITYSIM_FOCUS_POINTER_TRACE_PATH"],
+              !path.isEmpty else { return }
+        let eventPoint = event.map { convert($0.locationInWindow, from: nil) }
+        let eventWindowObject = event?.window?.windowNumber ?? -1
+        let line = [
+            "label=\(traceLabel)",
+            "phase=\(phase)",
+            "eventType=\(event.map { String(describing: $0.type) } ?? "none")",
+            "eventWindowNumber=\(event?.windowNumber ?? -1)",
+            "eventWindowObject=\(eventWindowObject)",
+            "viewWindowNumber=\(window?.windowNumber ?? -1)",
+            "eventLocationInWindow=\(event.map { NSStringFromPoint($0.locationInWindow) } ?? "none")",
+            "convertedPoint=\(eventPoint.map(NSStringFromPoint) ?? "none")",
+            "bounds=\(NSStringFromRect(bounds))",
+            "frame=\(NSStringFromRect(frame))",
+            "windowRect=\(NSStringFromRect(convert(bounds, to: nil)))",
+            "windowFrame=\(NSStringFromRect(window?.frame ?? .zero))",
+            "contains=\(event.map(contains) ?? false)",
+            "owned=\(ownsPointerSequence)",
+            "draggedOutside=\(pointerDraggedOutside)",
+            "monitorInstalled=\(monitorIsInstalled)"
+        ].joined(separator: " ")
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: path) {
+            fileManager.createFile(atPath: path, contents: nil)
+        }
+        guard let handle = FileHandle(forWritingAtPath: path) else { return }
+        defer { try? handle.close() }
+        do {
+            try handle.seekToEnd()
+            try handle.write(contentsOf: Data((line + "\n").utf8))
+        } catch {
+            // The trace is task-owned diagnostics only and must never affect input.
+        }
+    }
+    #else
+    private func trace(phase: String, event: NSEvent? = nil) {}
+    #endif
 }
 
 @MainActor
 struct CityFocusPointerShield: NSViewRepresentable {
+    let traceLabel: String
     let action: () -> Void
 
     func makeNSView(context: Context) -> CityFocusPointerShieldView {
-        CityFocusPointerShieldView(action: action)
+        CityFocusPointerShieldView(traceLabel: traceLabel, action: action)
     }
 
     func updateNSView(_ nsView: CityFocusPointerShieldView, context: Context) {
+        nsView.traceLabel = traceLabel
         nsView.action = action
     }
 

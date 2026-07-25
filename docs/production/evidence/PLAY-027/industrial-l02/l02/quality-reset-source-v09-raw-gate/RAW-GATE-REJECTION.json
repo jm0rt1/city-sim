@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceRevision": "source-v09",
+  "descriptorFreezeCommit": "b4699474bee2fb74da9b644b603272896e57a9d1",
+  "status": "REJECTED_FROZEN",
+  "productionSelected": false,
+  "firstFailedGate": {
+    "sequence": 1,
+    "direction": "north",
+    "attempt": "A",
+    "stage": "post-scene-build pre-SceneKit-render rendered-node bounds validation",
+    "exitCode": 133,
+    "error": "rendered-node bounds do not contain the complete building volume",
+    "candidateRawWritten": false,
+    "candidateProvenanceWritten": false
+  },
+  "capability": {
+    "result": "renderer-backend-available",
+    "metalDevice": "Apple M5 Pro",
+    "metalRegistryID": "0x000000010000060c",
+    "visibleMetalDeviceCount": 1,
+    "record": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v09-raw-gate/diagnostics/capability/01-north-a.json",
+    "recordSHA256": "bebabb8ec7be0d133ed619eb54b1bfe6022fa5709d2444cd04b247a24b0ad1eb"
+  },
+  "frozenInputs": {
+    "northDescriptorSHA256": "b810d67d2edb2603f3904fec2b7f50e3da61b61c2b289311ff0200fc6a6972bc",
+    "materialLibrarySHA256": "27e4c199da63e9a3a4e8c0084caa8c4f375e7b16499dd7a7b507cdb384eeb8e1",
+    "rendererBinarySHA256": "da4783059d0a4296d1383391b8229369971643ebf3c81445969b472c9bbdec97",
+    "toolchainFingerprintSHA256": "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e"
+  },
+  "boundsEvidence": {
+    "descriptorRequiredHalfExtents": [28, 28],
+    "descriptorMinimumRequiredHeight": 51,
+    "approvedComponentEnvelopeWorld": {
+      "minimum": [-27.5, 0, -28],
+      "maximum": [27.6, 64, 27]
+    },
+    "failedConditions": [
+      "minimum x -27.5 does not reach required -28",
+      "maximum z 27 does not reach required 28"
+    ],
+    "classification": "source-authority descriptor envelope metadata does not satisfy the existing rendered-node completeness invariant before governed pixels"
+  },
+  "stopDisposition": {
+    "remainingProcessesConsumed": 0,
+    "remainingProcessesNotRun": 11,
+    "reason": "the approved plan says the first failed gate freezes the attempt and stops",
+    "rerenderAuthorized": false,
+    "descriptorRepairAuthorized": false,
+    "normalizationAuthorized": false
+  },
+  "stderrSHA256": "1e9091a1e55190032100a85f23cb1ac2f50ebf2d8db6ad03e52fbef210603d8e",
+  "acceptedSourceBytesMutated": false,
+  "frozenIndustrialL2TrailsMutated": false,
+  "shippingRuntimeSharedPackageBuildMutated": false,
+  "passed": false
+}

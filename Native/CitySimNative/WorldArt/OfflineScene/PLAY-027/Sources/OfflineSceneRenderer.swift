@@ -1028,6 +1028,85 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                 )
             )
         }
+        if abs(entrance.porchLateralOffset) > 0 {
+            let returnSign =
+                entrance.porchLateralOffset > 0 ? 1.0 : -1.0
+            let returnNormal = [
+                tangent[0] * returnSign,
+                0.0,
+                tangent[2] * returnSign,
+            ]
+            let returnCenter = [
+                porchDeckCenter[0]
+                    + returnNormal[0] * entrance.porchWidth / 2,
+                descriptor.building.foundationHeight,
+                porchDeckCenter[2]
+                    + returnNormal[2] * entrance.porchWidth / 2,
+            ]
+            let postHeight = entrance.height + 1
+            for depthFraction in [0.22, 0.78] {
+                let depthOffset =
+                    (depthFraction - 0.5) * entrance.canopyDepth
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-porch-return-post-\(depthFraction)",
+                        dimensions: [
+                            entrance.porchColumnWidth,
+                            postHeight,
+                            entrance.porchColumnWidth,
+                        ],
+                        position: [
+                            returnCenter[0] + outward[0] * depthOffset,
+                            descriptor.building.foundationHeight
+                                + postHeight / 2,
+                            returnCenter[2] + outward[2] * depthOffset,
+                        ],
+                        materialID: entrance.surroundMaterialID
+                    )
+                )
+            }
+            let lintelDimensions = horizontal
+                ? [
+                    entrance.porchColumnWidth,
+                    2.2,
+                    entrance.canopyDepth * 0.58,
+                ]
+                : [
+                    entrance.canopyDepth * 0.58,
+                    2.2,
+                    entrance.porchColumnWidth,
+                ]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-porch-return-lintel",
+                    dimensions: lintelDimensions,
+                    position: [
+                        returnCenter[0],
+                        descriptor.building.foundationHeight
+                            + postHeight - 0.4,
+                        returnCenter[2],
+                    ],
+                    materialID: entrance.surroundMaterialID
+                )
+            )
+            let lanternDimensions = horizontal
+                ? [0.9, 4.6, 4.2]
+                : [4.2, 4.6, 0.9]
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-porch-return-lantern",
+                    dimensions: lanternDimensions,
+                    position: [
+                        returnCenter[0] + returnNormal[0] * 0.5,
+                        descriptor.building.foundationHeight + 10,
+                        returnCenter[2] + returnNormal[2] * 0.5,
+                    ],
+                    materialID: "window-warm"
+                )
+            )
+        }
     }
 
     private func addProp(

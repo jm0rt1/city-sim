@@ -54,3 +54,31 @@ to preserving native oversampled coverage on the required chroma field, while
 the existing deterministic normalizer remains the only authority for alpha,
 despill, and hidden RGB. The review tool consumes those normalized-alpha
 outputs directly. North advances to `source-v08`; geometry v5 is unchanged.
+
+## North source-v08
+
+**Raw SHA-256:** `d8cb0b45cdf966f2d79a5902b4554dc22f799728dea81902280494646891cca0`
+
+**Normalized block SHA-256:** `5256bafcaa24716be0234f33c711507d0725713ded613a0c93bad25c75f64bc2`
+
+**Normalized neighborhood SHA-256:** `85e6e12293c0bcdc13ad0883bcdde244d7e3c76421d6f2b163c7e86752f7a37e`
+
+**Normalized city SHA-256:** `63701a434737d6380e4bb77d18f6072ca7c3febff3d9c13fd926e975cf81543c`
+
+**Disposition:** rejected after normalized-alpha edge validation
+
+Returning the raw compositor to native oversampled coverage restored the
+complete building and passed deterministic normalization. The normalized block
+has alpha range 0...255, zero opaque chroma pixels, zero visible
+magenta-dominant spill pixels, and valid padding. It therefore preserves the
+first final-edge proof for the third calibration.
+
+The art remains rejected: the far grounded porch return reads as an unlit
+black opening and the warm masonry remains too underlit at actual scale.
+Before the next render, the independently authored north and west porch
+returns gain a grounded post-and-lintel frame with a warm return lantern, and
+all four descriptors advance to a warmer ambient field. The material library
+adds low masonry emission to retain facade value separation without altering
+the northwest key or southeast shadow contract. North advances to
+`source-v09` / geometry v6; west advances to geometry v6 before its first v03
+render.

@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "residential-l01-v0-north-geometry-v5",
+  "sceneGeometryID": "residential-l01-v0-north-geometry-v6",
   "logicalBuildingID": "residential_l01",
   "family": "residential",
   "level": 1,
   "variantID": "variant-0",
   "viewDirection": "north",
-  "sourceRevision": "source-v08",
+  "sourceRevision": "source-v09",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {
@@ -30,7 +30,7 @@
   "materialLibrary": {
     "role": "shared-numeric-family-material-library",
     "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l01-v0-materials.json",
-    "sha256": "e4c43681c31287346930339918209731eb7b1af45f7d903c61ef6d72f48a2b4f"
+    "sha256": "cbe7dfb998ae3a96401ca67213eb439249a25b11868a83de48d8f75510bd8b46"
   },
   "registration": {
     "tileBasisPoints": [72, 36],
@@ -61,8 +61,8 @@
     "keyOrigin": [-120, 180, -120],
     "keyIntensity": 1000,
     "keyColorRGBA": [1.0, 0.86, 0.68, 1.0],
-    "ambientIntensity": 0.33,
-    "ambientColorRGBA": [0.42, 0.5, 0.62, 1.0],
+    "ambientIntensity": 0.5,
+    "ambientColorRGBA": [0.50, 0.46, 0.38, 1.0],
     "shadowVectorSource": [2, 1],
     "shadowOpacity": 0.34,
     "shadowBlurSourcePixels": 18,

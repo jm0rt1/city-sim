@@ -33,10 +33,10 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v5` | `source-v08` |
+| north | `residential-l01-v0-north-geometry-v6` | `source-v09` |
 | east | `residential-l01-v0-east-geometry-v4` | `source-v05` |
 | south | `residential-l01-v0-south-geometry-v4` | `source-v05` |
-| west | `residential-l01-v0-west-geometry-v5` | `source-v06` |
+| west | `residential-l01-v0-west-geometry-v6` | `source-v06` |
 
 The four descriptors validate with unique descriptor hashes and geometry IDs.
 Camera, pivot, footprint, contact, socket, light, shadow, and orientation

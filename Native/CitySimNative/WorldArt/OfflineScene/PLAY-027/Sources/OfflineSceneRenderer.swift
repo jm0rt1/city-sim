@@ -82,7 +82,10 @@ final class NativeMaterialLibrary {
         }
         let material = SCNMaterial()
         material.name = id
-        material.lightingModel = .physicallyBased
+        // The offline source contract needs stable directional illumination,
+        // not runtime PBR. Lambert retains the authored northwest key and
+        // ambient hierarchy without SceneKit's stochastic PBR shading drift.
+        material.lightingModel = .lambert
         material.diffuse.contents = try patternImage(specification)
         material.roughness.contents = NSNumber(
             value: specification.roughness

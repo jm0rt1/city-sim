@@ -33,10 +33,10 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v6` | `source-v10` |
-| east | `residential-l01-v0-east-geometry-v4` | `source-v06` |
-| south | `residential-l01-v0-south-geometry-v4` | `source-v06` |
-| west | `residential-l01-v0-west-geometry-v6` | `source-v07` |
+| north | `residential-l01-v0-north-geometry-v6` | `source-v11` |
+| east | `residential-l01-v0-east-geometry-v4` | `source-v07` |
+| south | `residential-l01-v0-south-geometry-v4` | `source-v07` |
+| west | `residential-l01-v0-west-geometry-v6` | `source-v08` |
 
 The four descriptors validate with unique descriptor hashes and geometry IDs.
 Camera, pivot, footprint, contact, socket, light, shadow, and orientation
@@ -52,6 +52,13 @@ task-owned compositor now canonicalizes each 32-value RGB bucket to its
 midpoint after compositing. This absorbs the observed bounded drift while
 retaining eight stable levels per channel. All four final revisions advance
 because the canonicalizer is a shared source-rendering input.
+
+The first 32-bucket probe still exposed two PBR states in twelve south chimney
+pixels, including samples that crossed bucket boundaries. The source material
+model therefore advances from stochastic SceneKit PBR to deterministic
+Lambert illumination. Lambert preserves the descriptor-owned northwest key
+and ambient hierarchy while removing runtime-oriented roughness sampling from
+the offline authoring result. All four revisions advance together again.
 
 Rendering must not begin until this redesign input is committed. The resulting
 pixels remain review candidates only and cannot authorize the remaining 44

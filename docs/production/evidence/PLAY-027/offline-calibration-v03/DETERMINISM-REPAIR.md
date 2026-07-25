@@ -30,3 +30,25 @@ calibration attempts. All final source revisions advance so that no accepted
 four-view candidate mixes canonicalizer versions. This repair does not derive
 one direction from another and does not touch the product renderer or shipping
 assets.
+
+## 32-bucket probe result
+
+The first replacement pass at renderer commit `44a7798` retained repeat
+identity for north, east, and west. South still alternated at twelve opaque
+chimney pixels:
+
+- first raw SHA-256:
+  `75fd92ee47539c646d893ae23edda03856b38800b708751669e3e6b9a911d385`;
+- repeat raw SHA-256:
+  `8070d2aec477f89c53a7e226a84a0b922fa3155985e7bf8f0ea8dfd54fdd0a03`.
+
+The values crossed 32-value bucket boundaries, demonstrating that post-color
+quantization alone cannot make SceneKit's physically based material shader a
+source-art authority. The retained probe is rejected as a set.
+
+The offline source material model now uses Lambert illumination. It preserves
+the explicit northwest key and ambient light while removing PBR roughness and
+metalness sampling that is unnecessary for the small-scale authored sprite.
+The 32-value final canonicalizer remains as a bounded last-stage color
+canonicalization. Every direction advances to keep one renderer/material
+authority across the candidate.

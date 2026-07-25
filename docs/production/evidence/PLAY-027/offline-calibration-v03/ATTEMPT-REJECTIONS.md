@@ -108,3 +108,27 @@ North and east also advance despite matching repeat hashes so the final
 candidate cannot mix canonicalizer versions. The replacement revisions are
 north `source-v10`, east `source-v06`, south `source-v06`, and west
 `source-v07`; geometry remains unchanged.
+
+## First 32-bucket canonicalizer pass at renderer `44a7798`
+
+**North source-v10:** retained superseded probe; raw SHA-256
+`686806936f7afbd002fe73dfdf03d39e8806b33566508ce71babe0b8984b6972`
+
+**East source-v06:** retained superseded probe; raw SHA-256
+`d6757053a62c75a40665a854e2c54e8c7c64a7944264f8831897fedf9fd2ea41`
+
+**South source-v06:** rejected for recurring PBR hash alternation; raw SHA-256
+`75fd92ee47539c646d893ae23edda03856b38800b708751669e3e6b9a911d385`
+
+**West source-v07:** retained superseded probe; raw SHA-256
+`a8fe6e171ee6e28a5538f8c908bd1fa18feb5f02073096ea8c383da3146f713c`
+
+North, east, and west repeated byte-identically. South differed from its
+repeat at twelve opaque chimney pixels, with repeat SHA-256
+`8070d2aec477f89c53a7e226a84a0b922fa3155985e7bf8f0ea8dfd54fdd0a03`.
+Some PBR samples crossed the wider bucket boundaries, so the set is rejected.
+
+The source material model advances to Lambert illumination, which retains the
+descriptor-owned northwest key and ambient field without runtime-oriented PBR
+sampling. Replacement revisions are north `source-v11`, east `source-v07`,
+south `source-v07`, and west `source-v08`; geometry remains unchanged.

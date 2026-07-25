@@ -716,6 +716,7 @@ final class CityCommandCatalogTests: XCTestCase {
 
     @MainActor
     func testFocusCityPointerTransitionDefersEnterAndExitWithoutPassingThroughToMap() async throws {
+        _ = NSApplication.shared
         let store = CityGameStore(state: .newCity(seed: 42))
         store.selectTool(.commercial)
         store.selectedCoordinate = GridCoordinate(x: 11, y: 11)
@@ -730,9 +731,9 @@ final class CityCommandCatalogTests: XCTestCase {
             store.isCityFocusModeEnabled,
             "The visible control must remain over the map until the pointer event completes"
         )
-        for _ in 0..<4 where !store.isCityFocusModeEnabled {
-            await Task.yield()
-        }
+        try await Task.sleep(nanoseconds: 20_000_000)
+        XCTAssertFalse(store.isCityFocusModeEnabled)
+        try await Task.sleep(nanoseconds: 90_000_000)
         XCTAssertTrue(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
         XCTAssertEqual(store.state, state)
@@ -745,9 +746,9 @@ final class CityCommandCatalogTests: XCTestCase {
             store.isCityFocusModeEnabled,
             "The exit control must remain over the map until the pointer event completes"
         )
-        for _ in 0..<4 where store.isCityFocusModeEnabled {
-            await Task.yield()
-        }
+        try await Task.sleep(nanoseconds: 20_000_000)
+        XCTAssertTrue(store.isCityFocusModeEnabled)
+        try await Task.sleep(nanoseconds: 90_000_000)
         XCTAssertFalse(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
         XCTAssertEqual(store.state, state)

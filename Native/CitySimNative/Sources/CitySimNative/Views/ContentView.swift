@@ -31,7 +31,7 @@ enum ObjectiveSurfacePresentation: Equatable {
 enum CityFocusPointerTransition {
     static func perform(on store: CityGameStore) {
         Task { @MainActor [weak store] in
-            await Task.yield()
+            try? await Task.sleep(nanoseconds: 80_000_000)
             _ = store?.perform(.toggleCityFocus)
         }
     }

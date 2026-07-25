@@ -216,7 +216,7 @@ struct BuildToolbarView: View {
 
     private var cityFocusButton: some View {
         let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
-        return Button { CityFocusPointerTransition.perform(on: store) } label: {
+        return Button { store.perform(.toggleCityFocus) } label: {
             Label(compact ? "Focus" : "Focus City", systemImage: "viewfinder")
                 .font(.caption.weight(.semibold))
                 .padding(.horizontal, compact ? 2 : 8)
@@ -225,6 +225,10 @@ struct BuildToolbarView: View {
         }
         .buttonStyle(.plain)
         .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .overlay {
+            CityFocusPointerShield { store.perform(.toggleCityFocus) }
+                .accessibilityHidden(true)
+        }
         .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")
         .accessibilityLabel("Enter Focus City")
         .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")

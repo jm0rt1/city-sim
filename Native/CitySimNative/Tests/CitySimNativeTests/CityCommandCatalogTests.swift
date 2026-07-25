@@ -715,7 +715,7 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testFocusCityPointerTransitionDefersEnterAndExitWithoutPassingThroughToMap() async throws {
+    func testFocusCityPointerShieldConsumesDownAndPerformsEnterAndExitExactlyOnce() throws {
         _ = NSApplication.shared
         let store = CityGameStore(state: .newCity(seed: 42))
         store.selectTool(.commercial)
@@ -725,30 +725,82 @@ final class CityCommandCatalogTests: XCTestCase {
         let target = try XCTUnwrap(store.activeMapActionTargetPresentation)
         let focusGeneration = store.mapFocusRequestGeneration
 
-        CityFocusPointerTransition.perform(on: store)
-
-        XCTAssertFalse(
-            store.isCityFocusModeEnabled,
-            "The visible control must remain over the map until the pointer event completes"
+        let shield = CityFocusPointerShieldView {
+            _ = store.perform(.toggleCityFocus)
+        }
+        shield.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
+        let mouseDown = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseDown,
+                location: NSPoint(x: 60, y: 22),
+                modifierFlags: [],
+                timestamp: 1,
+                windowNumber: 0,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 1
+            )
         )
-        try await Task.sleep(nanoseconds: 20_000_000)
+        let mouseUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: NSPoint(x: 60, y: 22),
+                modifierFlags: [],
+                timestamp: 1.1,
+                windowNumber: 0,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let mouseDraggedOutside = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseDragged,
+                location: NSPoint(x: 180, y: 80),
+                modifierFlags: [],
+                timestamp: 1.05,
+                windowNumber: 0,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 1
+            )
+        )
+        let mouseUpOutside = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: NSPoint(x: 180, y: 80),
+                modifierFlags: [],
+                timestamp: 1.1,
+                windowNumber: 0,
+                context: nil,
+                eventNumber: 3,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+
+        shield.mouseDown(with: mouseDown)
+        shield.mouseDragged(with: mouseDraggedOutside)
+        shield.mouseUp(with: mouseUpOutside)
         XCTAssertFalse(store.isCityFocusModeEnabled)
-        try await Task.sleep(nanoseconds: 90_000_000)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
+
+        shield.mouseDown(with: mouseDown)
+        shield.mouseUp(with: mouseUp)
         XCTAssertTrue(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
         XCTAssertEqual(store.state, state)
         XCTAssertEqual(store.selectedCoordinate, coordinate)
         XCTAssertEqual(store.activeMapActionTargetPresentation, target)
 
-        CityFocusPointerTransition.perform(on: store)
-
-        XCTAssertTrue(
-            store.isCityFocusModeEnabled,
-            "The exit control must remain over the map until the pointer event completes"
-        )
-        try await Task.sleep(nanoseconds: 20_000_000)
+        shield.mouseDown(with: mouseDown)
         XCTAssertTrue(store.isCityFocusModeEnabled)
-        try await Task.sleep(nanoseconds: 90_000_000)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+
+        shield.mouseUp(with: mouseUp)
         XCTAssertFalse(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
         XCTAssertEqual(store.state, state)

@@ -549,7 +549,7 @@ struct FocusCityHUDView: View {
 
     private var exitButton: some View {
         let descriptor = CityCommandCatalog.descriptor(for: .toggleCityFocus)
-        return Button { CityFocusPointerTransition.perform(on: store) } label: {
+        return Button { store.perform(.toggleCityFocus) } label: {
             Label(compact ? "Exit" : "Exit Focus City", systemImage: "viewfinder.circle")
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .padding(.horizontal, compact ? 6 : 9)
@@ -559,6 +559,10 @@ struct FocusCityHUDView: View {
         .buttonStyle(.plain)
         .foregroundStyle(Color.black)
         .background(GameTheme.accent, in: RoundedRectangle(cornerRadius: 9))
+        .overlay {
+            CityFocusPointerShield { store.perform(.toggleCityFocus) }
+                .accessibilityHidden(true)
+        }
         .help("Return to the full command surface · \(descriptor.shortcut?.display ?? "")")
         .accessibilityLabel("Exit Focus City")
         .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")

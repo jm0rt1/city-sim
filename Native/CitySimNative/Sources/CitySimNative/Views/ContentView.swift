@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct CityHUDChromeFrames: Equatable {
@@ -28,12 +29,50 @@ enum ObjectiveSurfacePresentation: Equatable {
 }
 
 @MainActor
-enum CityFocusPointerTransition {
-    static func perform(on store: CityGameStore) {
-        Task { @MainActor [weak store] in
-            try? await Task.sleep(nanoseconds: 80_000_000)
-            _ = store?.perform(.toggleCityFocus)
-        }
+final class CityFocusPointerShieldView: NSView {
+    var action: () -> Void
+
+    init(action: @escaping () -> Void) {
+        self.action = action
+        super.init(frame: .zero)
+        setAccessibilityElement(false)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        true
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        // Deliberately consume mouse-down above SpriteKit. The command executes
+        // on mouse-up, matching native button activation semantics.
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        // Continue owning the pointer sequence without invoking the command.
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        let location = convert(event.locationInWindow, from: nil)
+        guard bounds.contains(location) else { return }
+        action()
+    }
+}
+
+@MainActor
+struct CityFocusPointerShield: NSViewRepresentable {
+    let action: () -> Void
+
+    func makeNSView(context: Context) -> CityFocusPointerShieldView {
+        CityFocusPointerShieldView(action: action)
+    }
+
+    func updateNSView(_ nsView: CityFocusPointerShieldView, context: Context) {
+        nsView.action = action
     }
 }
 

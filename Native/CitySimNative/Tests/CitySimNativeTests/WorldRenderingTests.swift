@@ -558,6 +558,100 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testDirectionalResidentialRuntimeMatrixExportsPreIngestionAndProductionSelection() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let size = CGSize(width: 1_400, height: 1_100)
+        let directions: [(String, RoadConnectionMask)] = [
+            ("N", .north), ("E", .east), ("S", .south), ("W", .west),
+        ]
+
+        func frame(directional: Bool) throws -> Data {
+            let view = SKView(frame: CGRect(origin: .zero, size: size))
+            let scene = SKScene(size: size)
+            scene.backgroundColor = NSColor(
+                calibratedRed: 0.24,
+                green: 0.34,
+                blue: 0.25,
+                alpha: 1
+            )
+            view.presentScene(scene)
+
+            for (column, entry) in directions.enumerated() {
+                let label = SKLabelNode(
+                    fontNamed: "AvenirNext-DemiBold"
+                )
+                label.text = entry.0
+                label.fontSize = 24
+                label.fontColor = .white
+                label.position = CGPoint(x: 230 + column * 310, y: 1_045)
+                scene.addChild(label)
+            }
+            for level in 1...4 {
+                let row = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
+                row.text = "L\(level)"
+                row.fontSize = 24
+                row.fontColor = .white
+                row.horizontalAlignmentMode = .right
+                row.position = CGPoint(x: 78, y: 925 - (level - 1) * 235)
+                scene.addChild(row)
+
+                for (column, entry) in directions.enumerated() {
+                    let node: SKNode
+                    if directional {
+                        node = renderer.makeLot(
+                            for: CityTile(
+                                coordinate: GridCoordinate(x: level, y: column),
+                                kind: .residential,
+                                level: level,
+                                condition: 1,
+                                constructionProgress: 1
+                            ),
+                            adjacentRoads: entry.1,
+                            detail: .block,
+                            reducedMotion: true
+                        )
+                    } else {
+                        node = try XCTUnwrap(
+                            catalog.generatedSprite(
+                                logicalID: "residential_l01",
+                                detail: .block
+                            )
+                        )
+                    }
+                    node.position = CGPoint(
+                        x: 230 + column * 310,
+                        y: 880 - (level - 1) * 235
+                    )
+                    node.setScale(2.7)
+                    scene.addChild(node)
+                }
+            }
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.08))
+            let texture = try XCTUnwrap(view.texture(from: scene))
+            let representation = NSBitmapImageRep(cgImage: texture.cgImage())
+            return try XCTUnwrap(
+                representation.representation(using: .png, properties: [:])
+            )
+        }
+
+        let before = try frame(directional: false)
+        let after = try frame(directional: true)
+        XCTAssertNotEqual(before, after)
+        XCTAssertGreaterThan(before.count, 100_000)
+        XCTAssertGreaterThan(after.count, 100_000)
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+        try export(
+            before,
+            environmentKey: "CITYSIM_PLAY028_DIRECTIONAL_MATRIX_BEFORE"
+        )
+        try export(
+            after,
+            environmentKey: "CITYSIM_PLAY028_DIRECTIONAL_MATRIX_AFTER"
+        )
+    }
+
+    @MainActor
     func testResidentialFrontagePriorityIsStableAndRoadlessLotsFailExplicitly() throws {
         let all = try XCTUnwrap(
             ResidentialGeneratedAssetIdentity(level: 9, adjacentRoads: .all)

@@ -7,7 +7,7 @@ enum StructuralBoundaryError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: validate-structural-boundaries --repository-root <path> --scenes-root <path> --logical-building-id <id> --report <path>"
+            return "usage: validate-structural-boundaries --repository-root <path> --scenes-root <path> --logical-building-id <id> [--directions north,east,south,west] --report <path>"
         case let .invalid(message):
             return message
         }
@@ -17,6 +17,7 @@ enum StructuralBoundaryError: Error, CustomStringConvertible {
 struct StructuralPrimitive {
     let id: String
     let kind: String
+    let materialID: String?
     let xMin: Double
     let xMax: Double
     let yMin: Double
@@ -28,6 +29,7 @@ struct StructuralPrimitive {
         [
             "id": id,
             "kind": kind,
+            "materialID": materialID ?? NSNull(),
             "boundsWorld": [
                 "x": [xMin, xMax],
                 "y": [yMin, yMax],
@@ -66,6 +68,7 @@ func repositoryPath(
 func primitive(
     id: String,
     kind: String,
+    materialID: String? = nil,
     dimensions: [Double],
     position: [Double]
 ) throws -> StructuralPrimitive {
@@ -77,6 +80,7 @@ func primitive(
     return StructuralPrimitive(
         id: id,
         kind: kind,
+        materialID: materialID,
         xMin: position[0] - dimensions[0] / 2,
         xMax: position[0] + dimensions[0] / 2,
         yMin: position[1] - dimensions[1] / 2,
@@ -84,6 +88,15 @@ func primitive(
         zMin: position[2] - dimensions[2] / 2,
         zMax: position[2] + dimensions[2] / 2
     )
+}
+
+func overlapLength(
+    _ firstMin: Double,
+    _ firstMax: Double,
+    _ secondMin: Double,
+    _ secondMax: Double
+) -> Double {
+    min(firstMax, secondMax) - max(firstMin, secondMin)
 }
 
 func overlapsFootprint(
@@ -95,6 +108,100 @@ func overlapsFootprint(
         - max(first.xMin, second.xMin) > tolerance
         && min(first.zMax, second.zMax)
             - max(first.zMin, second.zMin) > tolerance
+}
+
+func visibleOutwardMaterialOwnerCollisions(
+    _ massBlocks: [StructuralPrimitive],
+    cameraPosition: [Double],
+    cameraTarget: [Double],
+    tolerance: Double
+) -> [[String: Any]] {
+    guard cameraPosition.count == 3, cameraTarget.count == 3 else {
+        return [[
+            "failure": "camera position and target require three values",
+        ]]
+    }
+    let visibleXBoundary: (StructuralPrimitive) -> Double =
+        cameraPosition[0] >= cameraTarget[0]
+        ? { $0.xMax }
+        : { $0.xMin }
+    let visibleZBoundary: (StructuralPrimitive) -> Double =
+        cameraPosition[2] >= cameraTarget[2]
+        ? { $0.zMax }
+        : { $0.zMin }
+    var collisions: [[String: Any]] = []
+    for firstIndex in massBlocks.indices {
+        for secondIndex in massBlocks.indices where secondIndex > firstIndex {
+            let first = massBlocks[firstIndex]
+            let second = massBlocks[secondIndex]
+            let yOverlap = overlapLength(
+                first.yMin,
+                first.yMax,
+                second.yMin,
+                second.yMax
+            )
+            guard yOverlap > tolerance else {
+                continue
+            }
+            let zOverlap = overlapLength(
+                first.zMin,
+                first.zMax,
+                second.zMin,
+                second.zMax
+            )
+            let firstVisibleX = visibleXBoundary(first)
+            let secondVisibleX = visibleXBoundary(second)
+            if zOverlap > tolerance
+                && abs(firstVisibleX - secondVisibleX) <= tolerance
+            {
+                collisions.append([
+                    "axis": "x",
+                    "cameraVisibleFace":
+                        cameraPosition[0] >= cameraTarget[0]
+                        ? "positive-x"
+                        : "negative-x",
+                    "sharedPlaneWorld": firstVisibleX,
+                    "firstID": first.id,
+                    "firstMaterialID": first.materialID ?? NSNull(),
+                    "secondID": second.id,
+                    "secondMaterialID": second.materialID ?? NSNull(),
+                    "overlapWorld": [
+                        "y": yOverlap,
+                        "z": zOverlap,
+                    ],
+                ])
+            }
+            let xOverlap = overlapLength(
+                first.xMin,
+                first.xMax,
+                second.xMin,
+                second.xMax
+            )
+            let firstVisibleZ = visibleZBoundary(first)
+            let secondVisibleZ = visibleZBoundary(second)
+            if xOverlap > tolerance
+                && abs(firstVisibleZ - secondVisibleZ) <= tolerance
+            {
+                collisions.append([
+                    "axis": "z",
+                    "cameraVisibleFace":
+                        cameraPosition[2] >= cameraTarget[2]
+                        ? "positive-z"
+                        : "negative-z",
+                    "sharedPlaneWorld": firstVisibleZ,
+                    "firstID": first.id,
+                    "firstMaterialID": first.materialID ?? NSNull(),
+                    "secondID": second.id,
+                    "secondMaterialID": second.materialID ?? NSNull(),
+                    "overlapWorld": [
+                        "x": xOverlap,
+                        "y": yOverlap,
+                    ],
+                ])
+            }
+        }
+    }
+    return collisions
 }
 
 @main
@@ -123,7 +230,27 @@ enum ValidateStructuralBoundariesMain {
                 in: arguments
             )
         ).standardizedFileURL
-        let directions = ["north", "east", "south", "west"]
+        let directions: [String]
+        if
+            let directionsIndex = arguments.firstIndex(of: "--directions"),
+            directionsIndex + 1 < arguments.count
+        {
+            directions = arguments[directionsIndex + 1]
+                .split(separator: ",")
+                .map(String.init)
+        } else {
+            directions = ["north", "east", "south", "west"]
+        }
+        guard
+            !directions.isEmpty,
+            directions.allSatisfy({
+                ["north", "east", "south", "west"].contains($0)
+            })
+        else {
+            throw StructuralBoundaryError.invalid(
+                "--directions must contain north,east,south,west values"
+            )
+        }
         let tolerance = 0.000_001
         let decoder = JSONDecoder()
         var directionRecords: [[String: Any]] = []
@@ -140,15 +267,17 @@ enum ValidateStructuralBoundariesMain {
                 from: Data(contentsOf: sceneURL)
             )
             var primitives: [StructuralPrimitive] = []
+            var massBlockPrimitives: [StructuralPrimitive] = []
             for block in descriptor.building.massBlocks ?? [] {
-                primitives.append(
-                    try primitive(
-                        id: block.id,
-                        kind: "mass-block",
-                        dimensions: block.dimensions,
-                        position: block.positionWorld
-                    )
+                let massBlock = try primitive(
+                    id: block.id,
+                    kind: "mass-block",
+                    materialID: block.materialID,
+                    dimensions: block.dimensions,
+                    position: block.positionWorld
                 )
+                primitives.append(massBlock)
+                massBlockPrimitives.append(massBlock)
             }
             for roof in descriptor.building.roofVolumes ?? [] {
                 primitives.append(
@@ -222,6 +351,19 @@ enum ValidateStructuralBoundariesMain {
                     "\(direction): \(collisions.count) coincident structural Y boundaries"
                 )
             }
+            let visibleMaterialOwnerCollisions =
+                visibleOutwardMaterialOwnerCollisions(
+                    massBlockPrimitives,
+                    cameraPosition: descriptor.camera.positionWorld,
+                    cameraTarget: descriptor.camera.targetWorld,
+                    tolerance: tolerance
+                )
+            if !visibleMaterialOwnerCollisions.isEmpty {
+                failures.append(
+                    "\(direction): "
+                        + "\(visibleMaterialOwnerCollisions.count) camera-visible coincident material-owner planes"
+                )
+            }
             directionRecords.append([
                 "viewDirection": direction,
                 "sceneFile": repositoryPath(
@@ -234,7 +376,13 @@ enum ValidateStructuralBoundariesMain {
                 "primitives": primitives.map(\.record),
                 "coincidentBoundaryCount": collisions.count,
                 "coincidentBoundaries": collisions,
-                "passed": collisions.isEmpty,
+                "visibleOutwardMaterialOwnerCount":
+                    visibleMaterialOwnerCollisions.count,
+                "visibleOutwardMaterialOwners":
+                    visibleMaterialOwnerCollisions,
+                "passed":
+                    collisions.isEmpty
+                    && visibleMaterialOwnerCollisions.isEmpty,
             ])
         }
 
@@ -243,7 +391,7 @@ enum ValidateStructuralBoundariesMain {
             "task": "PLAY-027",
             "logicalBuildingID": logicalBuildingID,
             "purpose":
-                "reject exact shared structural Y planes between overlapping authored volumes",
+                "reject exact shared structural Y planes and multiple material owners on a camera-visible coincident mass-block plane",
             "toleranceWorld": tolerance,
             "directions": directionRecords,
             "failures": failures,

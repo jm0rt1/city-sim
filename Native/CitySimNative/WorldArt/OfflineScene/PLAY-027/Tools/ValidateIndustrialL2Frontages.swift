@@ -140,6 +140,9 @@ enum ValidateIndustrialL2FrontagesMain {
             let masses = descriptor.building.massBlocks ?? []
             let trims = descriptor.building.trimBands ?? []
             let roofs = descriptor.building.roofVolumes ?? []
+            let isEastSourceV06 =
+                direction == "east"
+                && descriptor.sourceRevision == "source-v06"
 
             if descriptor.schema != 2
                 || descriptor.task != "PLAY-027"
@@ -147,8 +150,11 @@ enum ValidateIndustrialL2FrontagesMain {
                 || descriptor.family != "industrial"
                 || descriptor.level != 2
                 || descriptor.variantID != "variant-0"
-                || !["source-v04", "source-v05"].contains(
-                    descriptor.sourceRevision
+                || (
+                    !["source-v04", "source-v05"].contains(
+                        descriptor.sourceRevision
+                    )
+                    && !isEastSourceV06
                 )
                 || descriptor.viewDirection != direction
             {
@@ -178,7 +184,9 @@ enum ValidateIndustrialL2FrontagesMain {
                     || descriptor.sampling?.sourceRevisionBinding
                         != descriptor.sourceRevision
                     || (
-                        descriptor.sourceRevision == "source-v05"
+                        ["source-v05", "source-v06"].contains(
+                            descriptor.sourceRevision
+                        )
                         && sampling.sceneKitLightingMode
                             != "authored-constant-v1"
                     )
@@ -195,8 +203,11 @@ enum ValidateIndustrialL2FrontagesMain {
             } catch {
                 itemFailures.append("sampling invalid: \(error)")
             }
-            if descriptor.sceneGeometryID
-                != "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v3"
+            let expectedGeometryID =
+                isEastSourceV06
+                ? "industrial-l02-v0-east-integrated-logistics-geometry-v4"
+                : "industrial-l02-v0-\(direction)-integrated-logistics-geometry-v3"
+            if descriptor.sceneGeometryID != expectedGeometryID
             {
                 itemFailures.append("geometry ID mismatch")
             }
@@ -293,14 +304,14 @@ enum ValidateIndustrialL2FrontagesMain {
                     "dual loading headers, crowns, or apron lanes missing"
                 )
             }
-            if masses.count != 9
+            let expectedMassCount = isEastSourceV06 ? 11 : 9
+            if masses.count != expectedMassCount
                 || roofs.count != 6
                 || trims.count != 10
             {
                 itemFailures.append("authored primitive inventory mismatch")
             }
             let requiredMassSuffixes = [
-                "high-assembly-hall",
                 "fabrication-annex",
                 "process-tower",
                 "dual-dock-house",
@@ -310,6 +321,28 @@ enum ValidateIndustrialL2FrontagesMain {
                 masses.contains { $0.id == "\(prefix)-\(suffix)" }
             }) {
                 itemFailures.append("L2 operational massing inventory missing")
+            }
+            if isEastSourceV06 {
+                let hallParts = [
+                    "high-assembly-hall-left-strip",
+                    "high-assembly-hall-right-strip",
+                    "high-assembly-hall-rear-block",
+                ]
+                if !hallParts.allSatisfy({ suffix in
+                    masses.contains { $0.id == "\(prefix)-\(suffix)" }
+                })
+                    || masses.contains(where: {
+                        $0.id == "\(prefix)-high-assembly-hall"
+                    })
+                {
+                    itemFailures.append(
+                        "East source-v06 non-coplanar hall decomposition mismatch"
+                    )
+                }
+            } else if !masses.contains(where: {
+                $0.id == "\(prefix)-high-assembly-hall"
+            }) {
+                itemFailures.append("L2 high assembly hall missing")
             }
             let propKinds = Set(descriptor.props.map(\.kind))
             if propKinds != Set([
@@ -405,9 +438,9 @@ enum ValidateIndustrialL2FrontagesMain {
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v05",
+            "sourceRevision": "source-v05-with-east-source-v06",
             "purpose":
-                "freeze Industrial L2 source-v05 loading-logistics frontage, descriptor-bound disabled SceneKit shadows and authored constant lighting, independent direction authorship, and non-aliasing progression beyond accepted Industrial L1",
+                "freeze the East-only source-v06 non-coplanar topology repair while preserving Industrial L2 source-v05 N/S/W frontage, registration, authored constant lighting, and progression beyond accepted Industrial L1",
             "directions": records,
             "uniqueDescriptorHashCount": descriptorHashes.count,
             "uniqueSceneGeometryIDCount": geometryIDs.count,

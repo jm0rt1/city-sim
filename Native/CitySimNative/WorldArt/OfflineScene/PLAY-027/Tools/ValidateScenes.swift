@@ -380,7 +380,7 @@ enum ValidateScenesMain {
                     }
                 } else if family == "industrial"
                     && logicalBuildingID == "industrial_l02"
-                    && ["source-v04", "source-v05"].contains(
+                    && ["source-v04", "source-v05", "source-v06"].contains(
                         descriptor.sourceRevision
                     )
                 {

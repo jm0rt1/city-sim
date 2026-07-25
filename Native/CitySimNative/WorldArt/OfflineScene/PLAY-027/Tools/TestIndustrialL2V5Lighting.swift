@@ -44,6 +44,7 @@ func lightingTestDescriptor(
     from original: [String: Any],
     logicalBuildingID: String,
     sourceRevision: String,
+    viewDirection: String? = nil,
     purpose: String = "source-authority",
     sceneKitShadows: String?,
     sceneKitLightingMode: String?
@@ -51,6 +52,9 @@ func lightingTestDescriptor(
     var object = original
     object["logicalBuildingID"] = logicalBuildingID
     object["sourceRevision"] = sourceRevision
+    if let viewDirection {
+        object["viewDirection"] = viewDirection
+    }
     guard var sampling = object["sampling"] as? [String: Any] else {
         throw IndustrialL2V5LightingTestError.failed("sampling missing")
     }
@@ -105,12 +109,27 @@ func lightingTestSchema(_ object: [String: Any]) throws {
         conditions.count == 1,
         let condition = conditions.first,
         let ifObject = condition["if"] as? [String: Any],
-        let ifProperties = ifObject["properties"] as? [String: Any],
-        let logicalID = ifProperties["logicalBuildingID"]
+        let alternatives = ifObject["anyOf"] as? [[String: Any]],
+        alternatives.count == 2,
+        let sourceV05Properties = alternatives[0]["properties"]
             as? [String: Any],
-        logicalID["const"] as? String == "industrial_l02",
-        let revision = ifProperties["sourceRevision"] as? [String: Any],
-        revision["const"] as? String == "source-v05",
+        let sourceV05LogicalID = sourceV05Properties["logicalBuildingID"]
+            as? [String: Any],
+        sourceV05LogicalID["const"] as? String == "industrial_l02",
+        let sourceV05Revision = sourceV05Properties["sourceRevision"]
+            as? [String: Any],
+        sourceV05Revision["const"] as? String == "source-v05",
+        let sourceV06Properties = alternatives[1]["properties"]
+            as? [String: Any],
+        let sourceV06LogicalID = sourceV06Properties["logicalBuildingID"]
+            as? [String: Any],
+        sourceV06LogicalID["const"] as? String == "industrial_l02",
+        let sourceV06Revision = sourceV06Properties["sourceRevision"]
+            as? [String: Any],
+        sourceV06Revision["const"] as? String == "source-v06",
+        let sourceV06Direction = sourceV06Properties["viewDirection"]
+            as? [String: Any],
+        sourceV06Direction["const"] as? String == "east",
         let thenObject = condition["then"] as? [String: Any],
         let thenProperties = thenObject["properties"]
             as? [String: Any],
@@ -124,7 +143,7 @@ func lightingTestSchema(_ object: [String: Any]) throws {
             ])
     else {
         throw IndustrialL2V5LightingTestError.failed(
-            "scene-v2 schema does not bind the additive source-v05 lighting rule"
+            "scene-v2 schema does not bind the additive source-v05 and source-v06 East lighting rules"
         )
     }
 }
@@ -222,6 +241,34 @@ enum TestIndustrialL2V5LightingMain {
             )
         }
 
+        let sourceV06East = try lightingTestDescriptor(
+            from: sourceV04Object,
+            logicalBuildingID: "industrial_l02",
+            sourceRevision: "source-v06",
+            viewDirection: "east",
+            sceneKitShadows: "disabled",
+            sceneKitLightingMode: "authored-constant-v1"
+        )
+        let sourceV06EastResolved = try DescriptorSamplingResolver.resolve(
+            descriptor: sourceV06East
+        )
+        guard
+            sourceV06EastResolved.sceneKitLightingMode
+                == "authored-constant-v1",
+            sourceV06EastResolved.sceneKitShadows == "disabled",
+            sourceV06EastResolved.sceneKitAntialiasing == "none",
+            sourceV06EastResolved.linearOversamplingFactor == 4,
+            sourceV06EastResolved.downsampleScale == 0.25,
+            sourceV06EastResolved.ciUseSoftwareRenderer,
+            sourceV06EastResolved.quantizerStep == 32,
+            sourceV06EastResolved
+                .postQuantizationCanonicalizer?.version == 3
+        else {
+            throw IndustrialL2V5LightingTestError.failed(
+                "source-v06 East authored-constant sampling did not resolve"
+            )
+        }
+
         try lightingTestRequiresFailure(
             lightingTestDescriptor(
                 from: sourceV04Object,
@@ -276,6 +323,28 @@ enum TestIndustrialL2V5LightingMain {
             lightingTestDescriptor(
                 from: sourceV04Object,
                 logicalBuildingID: "industrial_l02",
+                sourceRevision: "source-v06",
+                viewDirection: "north",
+                sceneKitShadows: "disabled",
+                sceneKitLightingMode: "authored-constant-v1"
+            ),
+            label: "non-East source-v06 authored constant"
+        )
+        try lightingTestRequiresFailure(
+            lightingTestDescriptor(
+                from: sourceV04Object,
+                logicalBuildingID: "industrial_l02",
+                sourceRevision: "source-v06",
+                viewDirection: "east",
+                sceneKitShadows: "current",
+                sceneKitLightingMode: "authored-constant-v1"
+            ),
+            label: "source-v06 East current shadows"
+        )
+        try lightingTestRequiresFailure(
+            lightingTestDescriptor(
+                from: sourceV04Object,
+                logicalBuildingID: "industrial_l02",
                 sourceRevision: "source-v05",
                 purpose: "diagnostic-regression",
                 sceneKitShadows: "disabled",
@@ -285,7 +354,7 @@ enum TestIndustrialL2V5LightingMain {
         )
 
         print(
-            "PASS schema-1 and source-v04 retain Lambert defaults; only Industrial L2 source-v05 source-authority resolves authored-constant-v1"
+            "PASS schema-1 and source-v04 retain Lambert defaults; only Industrial L2 source-v05 and source-v06 East source-authority resolve authored-constant-v1"
         )
     }
 }

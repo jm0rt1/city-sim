@@ -140,17 +140,39 @@
   "allOf": [
     {
       "if": {
-        "properties": {
-          "logicalBuildingID": {
-            "const": "industrial_l02"
+        "anyOf": [
+          {
+            "properties": {
+              "logicalBuildingID": {
+                "const": "industrial_l02"
+              },
+              "sourceRevision": {
+                "const": "source-v05"
+              }
+            },
+            "required": [
+              "logicalBuildingID",
+              "sourceRevision"
+            ]
           },
-          "sourceRevision": {
-            "const": "source-v05"
+          {
+            "properties": {
+              "logicalBuildingID": {
+                "const": "industrial_l02"
+              },
+              "sourceRevision": {
+                "const": "source-v06"
+              },
+              "viewDirection": {
+                "const": "east"
+              }
+            },
+            "required": [
+              "logicalBuildingID",
+              "sourceRevision",
+              "viewDirection"
+            ]
           }
-        },
-        "required": [
-          "logicalBuildingID",
-          "sourceRevision"
         ]
       },
       "then": {

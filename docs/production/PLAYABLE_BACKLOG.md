@@ -480,3 +480,33 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Proof:** Candidate-bound manifests, hashes, uncropped color and grayscale comparisons, directional/level contact sheets, Overview/Journal frames, AX trees, interaction ledger, performance logs, rejection records, and independent disposition under `docs/production/evidence/PLAY-055/`.
 - **Stop conditions:** Missing exact candidate, stale or duplicate process, changed fixture between comparisons, cropped defect, author-authored score, visually hidden but AX-present information, one hero frame masking systemic failure, any fallback/mirror/alias/wrong frontage, unbounded resource growth, or quality-lane product mutation.
 - **Accepted integration:** Exact combined product `7b432c4af1ee62553598e70c6103efe7a26e8af9` independently **APPROVED** at 20/20 by quality evidence `4389a3edaaf328ba40af2a41fa644c7e3e439a9d`: every category 4/4, zero P0/P1, zero automatic rejects, 47/47 renderer tests, 206/206 full native tests, stable four-page 40 MiB residency, bounded regular/compact/Reduce Motion RSS, and materially preferred regular and compact comparisons. Binding packet: `docs/production/evidence/PLAY-055/candidate-7b432c4/`.
+
+### [ ] PLAY-056: Make the public realm feel alive
+
+- **Player outcome:** Parks, vegetation, streets, ambient life, and data layers match the accepted building quality, so the city feels inhabited and the world explains itself without relying on HUD legends.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-024/028/054/055; CONTRACT-003; published PLAY-056 claim.
+- **In scope:** Deterministic authored park compositions, vegetation and street-prop variety, truth-safe ambient life, world-visible Land Value/Traffic/Utilities/Happiness/Pollution presentation, three LODs, collisions, resources, performance, accessibility, and retained real-app proof.
+- **Out of scope:** Pending Commercial/Industrial ingestion, invented simulation truth, HUD composition, public store/command contracts, gameplay, save schema, or package topology.
+- **Acceptance:** Public realm and world-layer legibility independently score 4/4; same-state regular/compact comparisons are materially preferred; no repeated-grid, mixed-fidelity, collision, legend-only, invented-truth, or budget defect remains.
+- **Claim:** `docs/production/claims/PLAY-056.world-rendering.md`.
+
+### [ ] PLAY-057: Let the player focus the city
+
+- **Player outcome:** One visible action and shortcut give the city the screen while preserving critical operating and selected-target truth, then restore the exact full command context.
+- **Owning lane:** UI and input.
+- **Dependencies:** Accepted PLAY-030/034/039/054/055; CONTRACT-012; published PLAY-057 claim.
+- **In scope:** One transient store-owned presentation intent; one existing-catalog command; Focus City HUD composition; visible/guide/menu/shortcut parity; aperture, continuity, focus, Escape, FKA, AX, Reduce Motion, compact/default proof.
+- **Out of scope:** Renderer/world assets, simulation/gameplay/save truth, camera redesign, persistent layout state, a second command system, or hidden urgent state.
+- **Acceptance:** Focus City materially increases regular and compact aperture, retains the CONTRACT-012 status rail, preserves target/tool/camera/panel/focus identity, and passes every input/accessibility route without hidden or stale truth.
+- **Claim:** `docs/production/claims/PLAY-057.ui-input.md`.
+
+### [ ] PLAY-058: Gate the living city
+
+- **Player outcome:** Independent real-app evidence proves the next city is more alive, more legible, and more immersive without sacrificing truth or operability.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** Frozen `4c0414b` baseline; clean PLAY-056 and PLAY-057 handoffs; exact combined integration candidate.
+- **In scope:** Preregistered 20-point rubric, same-state regular/compact/LOD/overlay comparisons, ambient observation, Focus City journey, pointer/keyboard/menu/guide/FKA/AX/Reduce Motion, exact resources, performance, and independent disposition.
+- **Out of scope:** Product repair, coaching, fixture substitution, author scoring, candidate substitution, or accepting one hero frame.
+- **Acceptance:** At least 19/20; public-realm coherence and world/HUD composition both 4/4; no category below 3; zero P0/P1 and automatic rejects; explicit material preference at both viewports.
+- **Claim:** `docs/production/claims/PLAY-058.playtest-quality.md`.

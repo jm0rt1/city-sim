@@ -411,6 +411,37 @@ enum ValidateScenesMain {
                             "Industrial L2 far frontage lacks explicit three-post logistics gantry and service apron"
                         )
                     }
+                } else if descriptor.building.usesExplicitComponentGeometry
+                    == true
+                {
+                    let masses = descriptor.building.massBlocks ?? []
+                    let frontagePrefix =
+                        direction.prefix(1) + "-"
+                    let hasGroundedPortalSupport = masses.contains {
+                        $0.id.hasPrefix(frontagePrefix)
+                            && (
+                                $0.id.contains("portal-post")
+                                    || $0.id.contains("canopy-post")
+                            )
+                            && $0.positionWorld[1]
+                                - $0.dimensions[1] / 2 <= 3
+                    }
+                    let hasRoofClearingPortal = masses.contains {
+                        $0.id.hasPrefix(frontagePrefix)
+                            && $0.id.contains("portal-header")
+                    }
+                    let hasSocketApron = masses.contains {
+                        $0.id.hasPrefix(frontagePrefix)
+                            && $0.id.contains("apron")
+                    }
+                    if !hasGroundedPortalSupport
+                        || !hasRoofClearingPortal
+                        || !hasSocketApron
+                    {
+                        itemFailures.append(
+                            "explicit far frontage lacks a grounded portal and socket apron"
+                        )
+                    }
                 } else if descriptor.entrance.canopyDepth < 18
                     || abs(descriptor.entrance.porchLateralOffset) < 10
                 {
@@ -423,10 +454,24 @@ enum ValidateScenesMain {
                 itemFailures.append("occlusion exclusions are missing")
             }
             if level > 1 || family == "commercial" || family == "industrial" {
+                let explicitComponentGeometry =
+                    descriptor.building.usesExplicitComponentGeometry == true
+                let masses = descriptor.building.massBlocks ?? []
+                let explicitProfileComplete =
+                    explicitComponentGeometry
+                    && masses.contains(where: { $0.id.contains("roof") })
+                    && masses.contains(where: {
+                        $0.id.contains("canopy")
+                            || $0.id.contains("portal")
+                            || $0.id.contains("rail")
+                    })
+                let legacyProfileComplete =
+                    !explicitComponentGeometry
+                    && descriptor.building.roofVolumes?.isEmpty == false
+                    && descriptor.building.trimBands?.isEmpty == false
                 if descriptor.building.massingProfile == nil
-                    || descriptor.building.massBlocks?.isEmpty != false
-                    || descriptor.building.roofVolumes?.isEmpty != false
-                    || descriptor.building.trimBands?.isEmpty != false
+                    || masses.isEmpty
+                    || (!explicitProfileComplete && !legacyProfileComplete)
                     || descriptor.building.usesLegacyDomesticDetails != false
                 {
                     itemFailures.append(
@@ -477,13 +522,43 @@ enum ValidateScenesMain {
                 }
             }
             if family == "industrial" {
-                if descriptor.entrance.style != "loading-bay" {
+                let explicitComponentGeometry =
+                    descriptor.building.usesExplicitComponentGeometry == true
+                let masses = descriptor.building.massBlocks ?? []
+                let frontagePrefix = direction.prefix(1) + "-"
+                let dockDoorCount = masses.filter {
+                    $0.id.hasPrefix(frontagePrefix)
+                        && $0.id.contains("dock-door")
+                }.count
+                let dockSealCount = masses.filter {
+                    $0.id.hasPrefix(frontagePrefix)
+                        && $0.id.contains("dock-seal")
+                }.count
+                let hasCanopy = masses.contains {
+                    $0.id.hasPrefix(frontagePrefix)
+                        && $0.id.contains("canopy")
+                }
+                if descriptor.entrance.style != "loading-bay"
+                    && !(
+                        explicitComponentGeometry
+                        && descriptor.entrance.style
+                            == "explicit-component-frontage"
+                    )
+                {
                     itemFailures.append(
                         "industrial frontage lacks an approved loading-bay style"
                     )
                 }
-                if descriptor.entrance.width < 20
-                    || descriptor.entrance.height < 16
+                if explicitComponentGeometry
+                    ? (
+                        dockDoorCount != 3
+                            || dockSealCount != 3
+                            || !hasCanopy
+                    )
+                    : (
+                        descriptor.entrance.width < 20
+                            || descriptor.entrance.height < 16
+                    )
                 {
                     itemFailures.append(
                         "industrial loading bay is not legible at game scale"
@@ -491,6 +566,12 @@ enum ValidateScenesMain {
                 }
                 if !descriptor.props.contains(where: {
                     $0.kind == "rooftop-hvac"
+                        || (
+                            $0.kind == "explicit-cylinder"
+                                && $0.id.contains("hvac")
+                        )
+                }) && !masses.contains(where: {
+                    $0.id.contains("hvac")
                 }) {
                     itemFailures.append(
                         "industrial roof lacks explicit mechanical treatment"
@@ -498,6 +579,10 @@ enum ValidateScenesMain {
                 }
                 if !descriptor.props.contains(where: {
                     $0.kind == "exhaust-stack"
+                        || (
+                            $0.kind == "explicit-cylinder"
+                                && $0.id.contains("exhaust")
+                        )
                 }) {
                     itemFailures.append(
                         "industrial roof lacks explicit exhaust treatment"
@@ -505,6 +590,10 @@ enum ValidateScenesMain {
                 }
                 if !descriptor.props.contains(where: {
                     $0.kind == "service-tank"
+                        || (
+                            $0.kind == "explicit-cylinder"
+                                && $0.id.contains("tank")
+                        )
                 }) {
                     itemFailures.append(
                         "industrial service yard lacks explicit tank logic"

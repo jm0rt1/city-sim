@@ -1,0 +1,438 @@
+{
+  "colorSpace" : "extended-sRGB",
+  "familyAnchorFile" : "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "familyAnchorSHA256" : "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "imageGenMaterialSwatchesUsed" : true,
+  "libraryID" : "industrial-l02-quality-reset-source-v09-materials",
+  "materials" : [
+    {
+      "baseColorRGBA" : [
+        0.055,
+        0.065000000000000002,
+        0.070000000000000007,
+        1
+      ],
+      "id" : "deep-loading-recess",
+      "metalness" : 0,
+      "pattern" : "solid-depth-cavity",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.90000000000000002,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.080000000000000002,
+        0.089999999999999997,
+        0.095000000000000001,
+        1
+      ],
+      "id" : "dock-seal-charcoal",
+      "metalness" : 0,
+      "pattern" : "compressible-seal",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.94999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.14000000000000001,
+        0.14999999999999999,
+        0.16,
+        1
+      ],
+      "id" : "dark-roof-membrane",
+      "metalness" : 0,
+      "pattern" : "rolled-membrane-seams",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.92000000000000004,
+      "sourceTexture" : {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-prepixel-v01/material-swatches/normalized/dark-roof-membrane.png",
+        "role" : "seam-passing-dark-roof-membrane",
+        "sha256" : "c5e6c30df2cf266303bdf69c2017de4d67898f5ef6ddcc1481316b6f9ee421f2"
+      },
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.19,
+        0.22,
+        0.23000000000000001,
+        1
+      ],
+      "id" : "sectional-loading-door",
+      "metalness" : 0.25,
+      "pattern" : "horizontal-section-joints",
+      "physicalScaleWorld" : [
+        6,
+        12
+      ],
+      "roughness" : 0.69999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.20000000000000001,
+        0.20999999999999999,
+        0.20000000000000001,
+        1
+      ],
+      "id" : "apron-joint",
+      "metalness" : 0,
+      "pattern" : "joint-line",
+      "physicalScaleWorld" : [
+        0.59999999999999998,
+        6
+      ],
+      "roughness" : 1,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.27000000000000002,
+        0.28000000000000003,
+        0.27000000000000002,
+        1
+      ],
+      "id" : "cast-concrete-plinth",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.95999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.39000000000000001,
+        0.22,
+        0.14000000000000001,
+        1
+      ],
+      "id" : "oxide-process-metal",
+      "metalness" : 0.55000000000000004,
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.78000000000000003,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.29999999999999999,
+        0.40000000000000002,
+        0.44,
+        1
+      ],
+      "id" : "blue-gray-painted-steel",
+      "metalness" : 0.32000000000000001,
+      "pattern" : "vertical-painted-panel",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.71999999999999997,
+      "sourceTexture" : {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-prepixel-v01/material-swatches/normalized/blue-gray-painted-steel.png",
+        "role" : "seam-passing-blue-gray-painted-steel",
+        "sha256" : "cdff5e3f387a9efaea845eae44ff6bf6841a2b8d440f3796a060c624259056fb"
+      },
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.42999999999999999,
+        0.41999999999999998,
+        0.38,
+        1
+      ],
+      "id" : "warm-concrete-side",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.93000000000000005,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.34000000000000002,
+        0.38,
+        1
+      ],
+      "id" : "industrial-glazing",
+      "metalness" : 0.12,
+      "pattern" : "muted-mullion-grid",
+      "physicalScaleWorld" : [
+        8,
+        4
+      ],
+      "roughness" : 0.34000000000000002,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.44,
+        0.44,
+        0.40999999999999998,
+        1
+      ],
+      "id" : "service-apron-concrete",
+      "metalness" : 0,
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.97999999999999998,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.55000000000000004,
+        0.58999999999999997,
+        0.57999999999999996,
+        1
+      ],
+      "id" : "galvanized-corrugated-northwest",
+      "metalness" : 0.65000000000000002,
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.68000000000000005,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.31,
+        0.35999999999999999,
+        0.37,
+        1
+      ],
+      "id" : "painted-structural-steel",
+      "metalness" : 0.57999999999999996,
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.66000000000000003,
+      "sourceTexture" : {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-prepixel-v01/material-swatches/normalized/blue-gray-painted-steel.png",
+        "role" : "seam-passing-blue-gray-painted-steel",
+        "sha256" : "cdff5e3f387a9efaea845eae44ff6bf6841a2b8d440f3796a060c624259056fb"
+      },
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.62,
+        0.58999999999999997,
+        0.51000000000000001,
+        1
+      ],
+      "id" : "warm-concrete-northwest",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.92000000000000004,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.65000000000000002,
+        0.68000000000000005,
+        0.66000000000000003,
+        1
+      ],
+      "id" : "galvanized-service-metal",
+      "metalness" : 0.71999999999999997,
+      "pattern" : "fine-galvanized",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.62,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.88,
+        0.60999999999999999,
+        0.12,
+        1
+      ],
+      "id" : "safety-yellow",
+      "metalness" : 0.25,
+      "pattern" : "solid-safety-paint",
+      "physicalScaleWorld" : [
+        2,
+        2
+      ],
+      "roughness" : 0.60999999999999999,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.78000000000000003,
+        0.58999999999999997,
+        0.28000000000000003,
+        1
+      ],
+      "id" : "warm-interior-glazing",
+      "metalness" : 0.080000000000000002,
+      "pattern" : "muted-warm-glazing",
+      "physicalScaleWorld" : [
+        4,
+        4
+      ],
+      "roughness" : 0.32000000000000001,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "source" : "component-traceable quality-reset roles; procedural concrete and corrugation plus two seam-passing governed ImageGen swatches",
+  "styleAnchorFile" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "task" : "PLAY-027"
+}

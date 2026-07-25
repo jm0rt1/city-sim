@@ -377,6 +377,37 @@ enum ValidateScenesMain {
                             "far industrial frontage lacks authored loading throat infrastructure"
                         )
                     }
+                } else if family == "industrial"
+                    && logicalBuildingID == "industrial_l02"
+                    && descriptor.sourceRevision == "source-v01"
+                {
+                    let prefix = "i02-\(direction)-frontage"
+                    let masses = descriptor.building.massBlocks ?? []
+                    let trims = descriptor.building.trimBands ?? []
+                    let gantryPosts = masses.filter {
+                        $0.id.hasPrefix(prefix)
+                            && $0.id.hasSuffix("-post")
+                    }
+                    let hasApron = masses.contains {
+                        $0.id == "i02-\(direction)-service-apron"
+                    }
+                    let headerCount = trims.filter {
+                        $0.id.hasPrefix(prefix)
+                            && $0.id.hasSuffix("-header")
+                    }.count
+                    let crownCount = trims.filter {
+                        $0.id.hasPrefix(prefix)
+                            && $0.id.hasSuffix("-crown")
+                    }.count
+                    if gantryPosts.count != 3
+                        || !hasApron
+                        || headerCount != 2
+                        || crownCount != 2
+                    {
+                        itemFailures.append(
+                            "Industrial L2 far frontage lacks explicit three-post logistics gantry and service apron"
+                        )
+                    }
                 } else if descriptor.entrance.canopyDepth < 18
                     || abs(descriptor.entrance.porchLateralOffset) < 10
                 {

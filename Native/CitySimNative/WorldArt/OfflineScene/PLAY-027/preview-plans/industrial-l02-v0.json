@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "calibrationID": "industrial-l02-variant-0-directional-v01",
+  "directionOrder": ["north", "east", "south", "west"],
+  "layout": {
+    "columns": 2,
+    "rows": 2,
+    "rowMajor": ["north", "east", "south", "west"]
+  },
+  "sourceScale": {
+    "panelPixels": [1536, 1024],
+    "sheetPixels": [3072, 2048],
+    "labels": false
+  },
+  "native2xActualScale": {
+    "source": "future deterministic normalized-alpha block LOD",
+    "native2xTileDiamondPixels": [144, 72],
+    "panelPixels": [432, 288],
+    "labels": false
+  },
+  "grayscaleRecognition": {
+    "source": "native2xActualScale",
+    "conversion": "Core Graphics deterministic Rec.709 integer luma",
+    "labels": false
+  },
+  "registeredFootprint": {
+    "normalizedBlockCrop": [341, 180, 342, 463],
+    "correspondingRawSourceCrop": [512, 270, 513, 695],
+    "source": "future deterministic normalized-alpha block LOD"
+  },
+  "reviewManifest": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v01-candidate/review/REVIEW-MANIFEST.json",
+  "productionSelected": false
+}

@@ -222,7 +222,13 @@ final class LotRenderer {
         foundation.fillColor = fill.withAlphaComponent(0.88)
         foundation.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.42)
         foundation.lineWidth = 0.9
-        foundation.zPosition = -3.4
+        // The generated park is a ground-and-vegetation composition whose
+        // authored depth role is intentionally below building structures.
+        // Keeping the generic density plate above it hid the fountain,
+        // planting, paths, benches, and trees and left only a turquoise slab
+        // visible in normal play. Park grounding belongs behind that authored
+        // composition; structure families retain their prior depth.
+        foundation.zPosition = kind == .park ? -5.2 : -3.4
         node.addChild(foundation)
     }
 

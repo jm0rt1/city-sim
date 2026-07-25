@@ -1346,6 +1346,35 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(powerPlantNames.contains("lot.generated-role.powerPlant"))
     }
 
+    @MainActor
+    func testAuthoredParkCompositionRendersAboveItsGroundingFoundation() throws {
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: WorldAssetCatalog())
+        let park = CityTile(
+            coordinate: GridCoordinate(x: 8, y: 8),
+            kind: .park,
+            condition: 1,
+            constructionProgress: 1
+        )
+        let root = renderer.makeLot(
+            for: park,
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        )
+        let authored = try XCTUnwrap(
+            root.childNode(withName: "//lot.generated-v4.park_l01.block") as? SKSpriteNode
+        )
+        let foundation = try XCTUnwrap(
+            root.childNode(withName: "//lot.lod.city.mass.park") as? SKShapeNode
+        )
+
+        XCTAssertGreaterThan(authored.zPosition, foundation.zPosition)
+        XCTAssertNotNil(authored.texture)
+        XCTAssertGreaterThan(authored.frame.width, 60)
+        XCTAssertGreaterThan(authored.frame.height, 32)
+        XCTAssertFalse(descendantNames(in: root).contains { $0.hasPrefix("lot.place.") })
+    }
+
     func testStrategyDistrictIdentityIsStableClampedAndTruthLimited() {
         let coordinate = GridCoordinate(x: 14, y: 9)
         let low = StrategyDistrictVisualIdentity(tile: CityTile(
@@ -1379,7 +1408,8 @@ final class WorldRenderingTests: XCTestCase {
 
     @MainActor
     func testCorridorAmbientLifeHasBoundedConnectedContextAndIsReduceMotionSafe() {
-        let renderer = AmbientLifeRenderer(style: WorldVisualStyle(), assets: WorldAssetCatalog())
+        let style = WorldVisualStyle()
+        let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())
         let state = CityGameState.newCity(seed: 42)
         let animated = renderer.makeCorridorLife(
             in: state,
@@ -1391,9 +1421,20 @@ final class WorldRenderingTests: XCTestCase {
             detail: .block,
             reducedMotion: true
         )
+        let repeated = renderer.makeCorridorLife(
+            in: state,
+            detail: .block,
+            reducedMotion: true
+        )
+        let city = renderer.makeCorridorLife(
+            in: state,
+            detail: .city,
+            reducedMotion: true
+        )
 
         let animatedNames = descendantNames(in: animated)
         let reducedNames = descendantNames(in: reduced)
+        XCTAssertEqual(reducedNames, descendantNames(in: repeated))
         for names in [animatedNames, reducedNames] {
             XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 5)
             XCTAssertEqual(
@@ -1414,6 +1455,25 @@ final class WorldRenderingTests: XCTestCase {
                 }.count,
                 5
             )
+            let furniture = names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 6
+                    && components[0] == "world"
+                    && components[1] == "public-realm"
+                    && components[2] == "street-furniture"
+            }
+            XCTAssertEqual(furniture.count, 3)
+            XCTAssertEqual(
+                Set(furniture.map { $0.split(separator: ".")[3] }),
+                Set(["wood-bench", "stone-planter", "cycle-rack"])
+            )
+            for name in furniture {
+                let components = name.split(separator: ".")
+                let x = Int(components[components.count - 2])
+                let y = Int(components[components.count - 1])
+                let coordinate = GridCoordinate(x: try! XCTUnwrap(x), y: try! XCTUnwrap(y))
+                XCTAssertEqual(state.tile(at: coordinate)?.kind, .road)
+            }
             let vacantGroves = names.filter {
                 let components = $0.split(separator: ".")
                 return components.count == 5
@@ -1423,7 +1483,10 @@ final class WorldRenderingTests: XCTestCase {
             }
             XCTAssertEqual(vacantGroves.count, 16)
             XCTAssertEqual(
-                names.filter { $0.hasSuffix(".ground-contact") }.count,
+                names.filter {
+                    $0.hasPrefix("world.environment.vacant-grove.")
+                        && $0.hasSuffix(".ground-contact")
+                }.count,
                 vacantGroves.count
             )
             XCTAssertEqual(
@@ -1440,6 +1503,120 @@ final class WorldRenderingTests: XCTestCase {
                     abs($0.coordinate.x - coordinate.x) + abs($0.coordinate.y - coordinate.y)
                 }.min()
                 XCTAssertGreaterThanOrEqual(roadDistance ?? 0, 2)
+            }
+            let compositions = names.filter { $0.contains(".composition.") }
+            XCTAssertGreaterThanOrEqual(
+                Set(compositions.compactMap { $0.split(separator: ".").last }).count,
+                2
+            )
+        }
+        XCTAssertFalse(
+            descendantNames(in: city).contains {
+                $0.hasPrefix("world.public-realm.street-furniture.")
+            }
+        )
+        let landscape = try! XCTUnwrap(
+            reduced.childNode(withName: "//world.environment.vacant-landscape")
+        )
+        for grove in landscape.children {
+            guard let name = grove.name else {
+                XCTFail("Vacant grove must retain its coordinate identity")
+                continue
+            }
+            let components = name.split(separator: ".")
+            let coordinate = GridCoordinate(
+                x: try! XCTUnwrap(Int(components[components.count - 2])),
+                y: try! XCTUnwrap(Int(components[components.count - 1]))
+            )
+            let center = style.isoPosition(coordinate)
+            XCTAssertNotEqual(grove.position, center)
+            XCTAssertLessThanOrEqual(abs(grove.position.x - center.x), 8)
+            XCTAssertLessThanOrEqual(abs(grove.position.y - center.y), 3)
+        }
+        let furnitureNames = reducedNames.filter {
+            let components = $0.split(separator: ".")
+            return components.count == 6
+                && components[0] == "world"
+                && components[1] == "public-realm"
+                && components[2] == "street-furniture"
+        }
+        var furnitureFootprints: [CGRect] = []
+        for name in furnitureNames {
+            let components = name.split(separator: ".")
+            let coordinate = GridCoordinate(
+                x: try! XCTUnwrap(Int(components[components.count - 2])),
+                y: try! XCTUnwrap(Int(components[components.count - 1]))
+            )
+            let furniture = try! XCTUnwrap(reduced.childNode(withName: "//\(name)"))
+            let roadCenter = style.isoPosition(coordinate)
+            let direction = CGPoint(x: cos(furniture.zRotation), y: sin(furniture.zRotation))
+            let perpendicular = CGPoint(x: -direction.y, y: direction.x)
+            let alongOffsets: [CGFloat] = [-6, 6]
+            let acrossOffsets: [CGFloat] = [-1.25, 1.25]
+            var corners: [CGPoint] = []
+            for along in alongOffsets {
+                for across in acrossOffsets {
+                    let alongPoint = CGPoint(
+                        x: direction.x * along,
+                        y: direction.y * along
+                    )
+                    let acrossPoint = CGPoint(
+                        x: perpendicular.x * across,
+                        y: perpendicular.y * across
+                    )
+                    corners.append(CGPoint(
+                        x: furniture.position.x + alongPoint.x + acrossPoint.x,
+                        y: furniture.position.y + alongPoint.y + acrossPoint.y
+                    ))
+                }
+            }
+            let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
+            XCTAssertFalse(connections.isEmpty)
+            for point in corners {
+                let local = CGPoint(x: point.x - roadCenter.x, y: point.y - roadCenter.y)
+                let coreDistances = connections.edges.map {
+                    pointSegmentDistanceForTesting(local, end: style.roadSocket(for: $0))
+                }
+                XCTAssertGreaterThanOrEqual(coreDistances.min() ?? 0, 9.1)
+                XCTAssertLessThanOrEqual(coreDistances.min() ?? .infinity, 13.5)
+                let normalizedX = abs(local.x) / (style.tileWidth / 2)
+                let normalizedY = abs(local.y) / (style.tileHeight / 2)
+                XCTAssertLessThanOrEqual(
+                    normalizedX + normalizedY,
+                    0.96
+                )
+                for edge in connections.edges {
+                    let socket = style.roadSocket(for: edge)
+                    XCTAssertGreaterThanOrEqual(
+                        hypot(local.x - socket.x, local.y - socket.y),
+                        3.0
+                    )
+                }
+                for tile in state.tiles
+                where tile.kind != .empty && tile.kind != .road {
+                    let buildingCenter = style.isoPosition(tile.coordinate)
+                    let buildingLocal = CGPoint(
+                        x: point.x - buildingCenter.x,
+                        y: point.y - buildingCenter.y
+                    )
+                    XCTAssertGreaterThan(
+                        abs(buildingLocal.x) / 34 + abs(buildingLocal.y) / 17,
+                        1.0
+                    )
+                }
+            }
+            let xs = corners.map(\.x)
+            let ys = corners.map(\.y)
+            furnitureFootprints.append(CGRect(
+                x: xs.min() ?? 0,
+                y: ys.min() ?? 0,
+                width: (xs.max() ?? 0) - (xs.min() ?? 0),
+                height: (ys.max() ?? 0) - (ys.min() ?? 0)
+            ))
+        }
+        for index in furnitureFootprints.indices {
+            for sibling in furnitureFootprints.indices where sibling > index {
+                XCTAssertFalse(furnitureFootprints[index].intersects(furnitureFootprints[sibling]))
             }
         }
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
@@ -2657,5 +2834,13 @@ final class WorldRenderingTests: XCTestCase {
     private func recursiveActiveActionCount(_ node: SKNode) -> Int {
         let localCount = node.hasActions() ? 1 : 0
         return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
+    }
+
+    private func pointSegmentDistanceForTesting(_ point: CGPoint, end: CGPoint) -> CGFloat {
+        let lengthSquared = end.x * end.x + end.y * end.y
+        guard lengthSquared > 0 else { return hypot(point.x, point.y) }
+        let projection = min(1, max(0, (point.x * end.x + point.y * end.y) / lengthSquared))
+        let closest = CGPoint(x: end.x * projection, y: end.y * projection)
+        return hypot(point.x - closest.x, point.y - closest.y)
     }
 }

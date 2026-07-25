@@ -49,6 +49,22 @@ final class AmbientLifeRenderer {
         )
         guard !roads.isEmpty else { return root }
 
+        var furnitureByRoadIndex: [Int: SKNode] = [:]
+        if detail.includes(.neighborhood) {
+            let preferredRoadOrder = Array(roads.indices.dropFirst(2)) + Array(roads.indices.prefix(2))
+            for roadIndex in preferredRoadOrder where furnitureByRoadIndex.count < 3 {
+                let road = roads[roadIndex]
+                if let furniture = streetFurniture(
+                    at: road.coordinate,
+                    index: furnitureByRoadIndex.count,
+                    in: state,
+                    position: style.isoPosition(road.coordinate)
+                ) {
+                    furnitureByRoadIndex[roadIndex] = furniture
+                }
+            }
+        }
+
         var occupiedVegetationCoordinates: Set<GridCoordinate> = []
         for (index, road) in roads.enumerated() {
             let roadPosition = style.isoPosition(road.coordinate)
@@ -93,6 +109,10 @@ final class AmbientLifeRenderer {
                 vignette.addChild(service)
             }
 
+            if let furniture = furnitureByRoadIndex[index] {
+                vignette.addChild(furniture)
+            }
+
             if let coordinate = vegetationCoordinate(
                 in: state,
                 near: road.coordinate,
@@ -101,10 +121,17 @@ final class AmbientLifeRenderer {
                 logicalID: "ambient_vegetation_cluster",
                 semanticName: "world.ambient.vegetation-cluster.\(index)",
                 detail: detail,
-                position: style.isoPosition(coordinate),
+                position: vegetationPosition(for: coordinate, salt: 0x6A11),
                 zPosition: style.depth(for: coordinate) + 48
             ) {
                 occupiedVegetationCoordinates.insert(coordinate)
+                addVegetationComposition(
+                    to: cluster,
+                    coordinate: coordinate,
+                    semanticName: "world.ambient.vegetation-cluster.\(index)",
+                    detail: detail,
+                    salt: 0x6A12
+                )
                 let scale = 0.84 + 0.16 * WorldVisualSeed.unit(
                     for: coordinate,
                     kind: .empty,
@@ -171,22 +198,37 @@ final class AmbientLifeRenderer {
                 logicalID: "ambient_vegetation_cluster",
                 semanticName: semanticName,
                 detail: detail,
-                position: style.isoPosition(coordinate),
+                position: vegetationPosition(for: coordinate, salt: 0x6A26),
                 zPosition: style.depth(for: coordinate) + 46
             ) else { continue }
-            let meadow = SKShapeNode(path: style.diamondPath(width: 48, height: 24))
+            let composition = WorldVisualSeed.variant(
+                count: 3,
+                for: coordinate,
+                kind: .empty,
+                salt: 0x6A27
+            )
+            let meadow = SKShapeNode(path: meadowSwatchPath(variant: composition))
             meadow.name = "\(semanticName).undeveloped-meadow"
             meadow.fillColor = NSColor(
                 calibratedRed: 0.28,
                 green: 0.43,
                 blue: 0.22,
-                alpha: 0.34
+                alpha: 0.18
             )
-            meadow.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.16)
-            meadow.lineWidth = 0.7
+            meadow.strokeColor = .clear
             meadow.position = CGPoint(x: -1, y: -3)
             meadow.zPosition = -2
             grove.addChild(meadow)
+            let compositionIdentity = SKNode()
+            compositionIdentity.name = "\(semanticName).composition.\(composition)"
+            grove.addChild(compositionIdentity)
+            addVegetationComposition(
+                to: grove,
+                coordinate: coordinate,
+                semanticName: semanticName,
+                detail: detail,
+                salt: 0x6A27
+            )
             let contact = SKShapeNode(ellipseOf: CGSize(width: 31, height: 9))
             contact.name = "\(semanticName).ground-contact"
             contact.fillColor = NSColor.black.withAlphaComponent(0.16)
@@ -240,6 +282,327 @@ final class AmbientLifeRenderer {
             }
         }
         return selected
+    }
+
+    private func vegetationPosition(for coordinate: GridCoordinate, salt: UInt64) -> CGPoint {
+        let center = style.isoPosition(coordinate)
+        let horizontal = WorldVisualSeed.unit(
+            for: coordinate,
+            kind: .empty,
+            salt: salt
+        )
+        let vertical = WorldVisualSeed.unit(
+            for: coordinate,
+            kind: .empty,
+            salt: salt &+ 1
+        )
+        return CGPoint(
+            x: center.x + (horizontal * 16 - 8),
+            y: center.y + (vertical * 6 - 3)
+        )
+    }
+
+    private func meadowSwatchPath(variant: Int) -> CGPath {
+        let points: [CGPoint]
+        switch variant {
+        case 1:
+            points = [
+                CGPoint(x: -23, y: -1),
+                CGPoint(x: -15, y: 7),
+                CGPoint(x: -2, y: 10),
+                CGPoint(x: 18, y: 6),
+                CGPoint(x: 23, y: -2),
+                CGPoint(x: 8, y: -9),
+                CGPoint(x: -12, y: -7),
+            ]
+        case 2:
+            points = [
+                CGPoint(x: -21, y: 2),
+                CGPoint(x: -9, y: 10),
+                CGPoint(x: 9, y: 8),
+                CGPoint(x: 24, y: 1),
+                CGPoint(x: 14, y: -8),
+                CGPoint(x: -5, y: -10),
+                CGPoint(x: -24, y: -4),
+            ]
+        default:
+            points = [
+                CGPoint(x: -24, y: 0),
+                CGPoint(x: -13, y: 9),
+                CGPoint(x: 5, y: 8),
+                CGPoint(x: 22, y: 3),
+                CGPoint(x: 17, y: -7),
+                CGPoint(x: -1, y: -9),
+                CGPoint(x: -18, y: -6),
+            ]
+        }
+        return WorldGeometryCache.polygon(points)
+    }
+
+    private func addVegetationComposition(
+        to root: SKNode,
+        coordinate: GridCoordinate,
+        semanticName: String,
+        detail: CameraDetailLevel,
+        salt: UInt64
+    ) {
+        let composition = WorldVisualSeed.variant(
+            count: 3,
+            for: coordinate,
+            kind: .empty,
+            salt: salt
+        )
+        guard let primary = root.children.first as? SKSpriteNode else { return }
+        primary.position.x += composition == 1 ? -4 : composition == 2 ? 5 : 0
+
+        let companions: [(position: CGPoint, scale: CGFloat)]
+        switch composition {
+        case 1:
+            companions = [(CGPoint(x: 13, y: -4), 0.52)]
+        case 2:
+            companions = [
+                (CGPoint(x: -12, y: -4), 0.46),
+                (CGPoint(x: -3, y: 4), 0.34),
+            ]
+        default:
+            companions = []
+        }
+        for (index, companion) in companions.enumerated() {
+            guard let sprite = assets.generatedSprite(
+                logicalID: "ambient_vegetation_cluster",
+                detail: detail
+            ) else { continue }
+            sprite.name = "\(semanticName).companion.\(index).generated-v4.\(detail.assetSuffix)"
+            sprite.position = companion.position
+            sprite.setScale(companion.scale)
+            sprite.zPosition = CGFloat(index) - 1
+            root.addChild(sprite)
+        }
+    }
+
+    private func streetFurniture(
+        at coordinate: GridCoordinate,
+        index: Int,
+        in state: CityGameState,
+        position roadPosition: CGPoint
+    ) -> SKNode? {
+        let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
+        let orderedEdges = connections.edges
+        guard !orderedEdges.isEmpty else { return nil }
+        let variant = index % 3
+        let preferredSide: CGFloat = WorldVisualSeed.unit(
+            for: coordinate,
+            kind: .road,
+            salt: 0x57A33
+        ) < 0.5 ? -1 : 1
+        let orderedSides = [preferredSide, -preferredSide]
+        let orderedCandidates = orderedEdges.flatMap { edge in
+            orderedSides.map { side in (edge: edge, side: side) }
+        }
+        guard let placement = orderedCandidates.first(where: {
+            isClearSidewalkPlacement(
+                edge: $0.edge,
+                side: $0.side,
+                connections: connections
+            )
+        }) else { return nil }
+
+        let endpoint = style.roadSocket(for: placement.edge)
+        let endpointLength = max(0.001, hypot(endpoint.x, endpoint.y))
+        let direction = CGPoint(x: endpoint.x / endpointLength, y: endpoint.y / endpointLength)
+        let perpendicular = CGPoint(x: -direction.y, y: direction.x)
+        let localCenter = CGPoint(
+            x: endpoint.x * 0.50 + perpendicular.x * 11.25 * placement.side,
+            y: endpoint.y * 0.50 + perpendicular.y * 11.25 * placement.side
+        )
+        let root = SKNode()
+        let identity: String
+        switch variant {
+        case 1: identity = "stone-planter"
+        case 2: identity = "cycle-rack"
+        default: identity = "wood-bench"
+        }
+        root.name = "world.public-realm.street-furniture.\(identity).\(coordinate.x).\(coordinate.y)"
+        root.position = CGPoint(
+            x: roadPosition.x + localCenter.x,
+            y: roadPosition.y + localCenter.y
+        )
+        root.zRotation = atan2(direction.y, direction.x)
+        root.zPosition = style.depth(for: coordinate) + 55
+
+        let contact = SKShapeNode(path: WorldGeometryCache.polygon([
+            CGPoint(x: -6, y: 0),
+            CGPoint(x: -3, y: 1.25),
+            CGPoint(x: 6, y: 0),
+            CGPoint(x: 3, y: -1.25),
+        ]))
+        contact.name = "\(root.name ?? "world.public-realm.street-furniture").ground-contact"
+        contact.fillColor = NSColor.black.withAlphaComponent(0.14)
+        contact.strokeColor = .clear
+        contact.position.y = -1.5
+        root.addChild(contact)
+
+        switch variant {
+        case 1:
+            addStonePlanter(to: root)
+        case 2:
+            addCycleRack(to: root)
+        default:
+            addWoodBench(to: root)
+        }
+        root.setScale(0.72)
+        return root
+    }
+
+    private func isClearSidewalkPlacement(
+        edge: RoadConnectionMask,
+        side: CGFloat,
+        connections: RoadConnectionMask
+    ) -> Bool {
+        let endpoint = style.roadSocket(for: edge)
+        let endpointLength = max(0.001, hypot(endpoint.x, endpoint.y))
+        let direction = CGPoint(x: endpoint.x / endpointLength, y: endpoint.y / endpointLength)
+        let perpendicular = CGPoint(x: -direction.y, y: direction.x)
+        let center = CGPoint(
+            x: endpoint.x * 0.50 + perpendicular.x * 11.25 * side,
+            y: endpoint.y * 0.50 + perpendicular.y * 11.25 * side
+        )
+        let alongOffsets: [CGFloat] = [-6, 6]
+        let acrossOffsets: [CGFloat] = [-1.25, 1.25]
+        var corners: [CGPoint] = []
+        for along in alongOffsets {
+            for across in acrossOffsets {
+                let alongPoint = CGPoint(
+                    x: direction.x * along,
+                    y: direction.y * along
+                )
+                let acrossPoint = CGPoint(
+                    x: perpendicular.x * across,
+                    y: perpendicular.y * across
+                )
+                corners.append(CGPoint(
+                    x: center.x + alongPoint.x + acrossPoint.x,
+                    y: center.y + alongPoint.y + acrossPoint.y
+                ))
+            }
+        }
+        return corners.allSatisfy { point in
+            let normalizedX = abs(point.x) / (style.tileWidth / 2)
+            let normalizedY = abs(point.y) / (style.tileHeight / 2)
+            let insideRoadTile = normalizedX + normalizedY <= 0.96
+            let outsideEveryRoadCore = connections.edges.allSatisfy { connection in
+                pointSegmentDistance(point, end: style.roadSocket(for: connection)) >= 9.1
+            }
+            let awayFromSockets = connections.edges.allSatisfy { connection in
+                let socket = style.roadSocket(for: connection)
+                return hypot(point.x - socket.x, point.y - socket.y) >= 3.0
+            }
+            return insideRoadTile && outsideEveryRoadCore && awayFromSockets
+        }
+    }
+
+    private func pointSegmentDistance(_ point: CGPoint, end: CGPoint) -> CGFloat {
+        let lengthSquared = end.x * end.x + end.y * end.y
+        guard lengthSquared > 0 else { return hypot(point.x, point.y) }
+        let projection = min(1, max(0, (point.x * end.x + point.y * end.y) / lengthSquared))
+        let closest = CGPoint(x: end.x * projection, y: end.y * projection)
+        return hypot(point.x - closest.x, point.y - closest.y)
+    }
+
+    private func addWoodBench(to root: SKNode) {
+        let seat = SKShapeNode(path: WorldGeometryCache.polygon([
+            CGPoint(x: -6, y: 1),
+            CGPoint(x: -3, y: 2.6),
+            CGPoint(x: 6, y: 1),
+            CGPoint(x: 3, y: -0.6),
+        ]))
+        seat.name = "\(root.name ?? "world.public-realm.street-furniture").seat"
+        seat.fillColor = NSColor(calibratedRed: 0.33, green: 0.22, blue: 0.13, alpha: 1)
+        seat.strokeColor = NSColor(calibratedRed: 0.16, green: 0.12, blue: 0.09, alpha: 0.75)
+        seat.lineWidth = 0.7
+        seat.position.y = 2
+        root.addChild(seat)
+
+        let back = SKShapeNode(path: WorldGeometryCache.polygon([
+            CGPoint(x: -5.5, y: 3),
+            CGPoint(x: -3, y: 4.3),
+            CGPoint(x: 5.5, y: 3),
+            CGPoint(x: 3, y: 1.7),
+        ]))
+        back.fillColor = NSColor(calibratedRed: 0.39, green: 0.26, blue: 0.15, alpha: 1)
+        back.strokeColor = NSColor.white.withAlphaComponent(0.12)
+        back.lineWidth = 0.5
+        back.position.y = 3
+        root.addChild(back)
+
+        for x in [-3.5, 3.5] {
+            let leg = SKShapeNode(rectOf: CGSize(width: 1.1, height: 3.5), cornerRadius: 0.3)
+            leg.fillColor = style.palette.roofDark
+            leg.strokeColor = .clear
+            leg.position = CGPoint(x: x, y: 0)
+            root.addChild(leg)
+        }
+    }
+
+    private func addStonePlanter(to root: SKNode) {
+        let base = SKShapeNode(path: WorldGeometryCache.polygon([
+            CGPoint(x: -5.5, y: 1),
+            CGPoint(x: -3, y: 3),
+            CGPoint(x: 5.5, y: 1),
+            CGPoint(x: 4, y: -2.5),
+            CGPoint(x: -4, y: -2.5),
+        ]))
+        base.name = "\(root.name ?? "world.public-realm.street-furniture").basin"
+        base.fillColor = NSColor(calibratedWhite: 0.38, alpha: 1)
+        base.strokeColor = style.palette.concreteLight.withAlphaComponent(0.52)
+        base.lineWidth = 0.7
+        base.position.y = 1
+        root.addChild(base)
+
+        for (index, x) in [-3.5, 0.0, 3.5].enumerated() {
+            let leaf = SKShapeNode(path: WorldGeometryCache.polygon([
+                CGPoint(x: 0, y: 0),
+                CGPoint(x: -2.2, y: 4.8 + CGFloat(index % 2)),
+                CGPoint(x: 0.4, y: 7.5 + CGFloat(index)),
+                CGPoint(x: 2.1, y: 3.5),
+            ]))
+            leaf.fillColor = NSColor(
+                calibratedRed: 0.12 + CGFloat(index) * 0.02,
+                green: 0.26 + CGFloat(index) * 0.025,
+                blue: 0.16,
+                alpha: 0.94
+            )
+            leaf.strokeColor = NSColor(calibratedRed: 0.06, green: 0.14, blue: 0.08, alpha: 0.72)
+            leaf.lineWidth = 0.45
+            leaf.position = CGPoint(x: x, y: 3)
+            root.addChild(leaf)
+        }
+    }
+
+    private func addCycleRack(to root: SKNode) {
+        let railPath = CGMutablePath()
+        for x in [-4.0, 0.0, 4.0] {
+            railPath.move(to: CGPoint(x: x - 2, y: 0))
+            railPath.addLine(to: CGPoint(x: x - 2, y: 5))
+            railPath.addLine(to: CGPoint(x: x, y: 7))
+            railPath.addLine(to: CGPoint(x: x + 2, y: 5))
+            railPath.addLine(to: CGPoint(x: x + 2, y: 0))
+        }
+        let rack = SKShapeNode(path: railPath)
+        rack.name = "\(root.name ?? "world.public-realm.street-furniture").rail"
+        rack.strokeColor = style.palette.roofDark.withAlphaComponent(0.78)
+        rack.lineWidth = 0.9
+        rack.lineCap = .round
+        rack.position.y = 0.5
+        root.addChild(rack)
+
+        let highlight = SKShapeNode(path: WorldGeometryCache.line(
+            from: CGPoint(x: -6, y: 1.5),
+            to: CGPoint(x: 6, y: 1.5)
+        ))
+        highlight.strokeColor = NSColor.white.withAlphaComponent(0.08)
+        highlight.lineWidth = 0.4
+        root.addChild(highlight)
     }
 
     private func corridorAnchors(

@@ -1,0 +1,77 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 2,
+  "sources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/residential_l01/variant-0/east/source-v03.png",
+      "fileSHA256" : "9909a51ba7329313231139ec964dfed34ca084c4e3ff974b62e26895f9e6ce37",
+      "id" : "east-v03-a",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1517830,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          625,
+          642,
+          1023,
+          896
+        ],
+        "paddingPixels" : [
+          625,
+          642,
+          513,
+          128
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "d1b78a1c7c4fadf802590e9b84494ea753df8371da2a508afbce3dfd3673a6d3",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/offline-calibration-v01/determinism/east-v03-run-b.png",
+      "fileSHA256" : "9909a51ba7329313231139ec964dfed34ca084c4e3ff974b62e26895f9e6ce37",
+      "id" : "east-v03-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "exactChromaPixelCount" : 1517830,
+        "flatChromaCorners" : true,
+        "nonChromaBounds" : [
+          625,
+          642,
+          1023,
+          896
+        ],
+        "paddingPixels" : [
+          625,
+          642,
+          513,
+          128
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "d1b78a1c7c4fadf802590e9b84494ea753df8371da2a508afbce3dfd3673a6d3",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

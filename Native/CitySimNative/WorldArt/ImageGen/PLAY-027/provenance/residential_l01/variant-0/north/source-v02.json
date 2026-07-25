@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceKey": "residential_l01/variant-0/north/source-v02",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variant": 0,
+  "viewDirection": "north",
+  "sourceRevision": 2,
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generatedDate": "2026-07-24",
+  "promptFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/prompts/residential_l01/variant-0/north-source-v02.md",
+  "promptSHA256": "1eadeb8111712015e601a5a817dbfb5220cb4d8e16480efed78188337327162b",
+  "completePromptRetainedVerbatim": true,
+  "frozenInputsFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs-v2.json",
+  "frozenInputsSHA256": "f687834f3bab2c01fbcd6ea37c550bbdd5330e1cf8e33d16bc4ab47f01c1458c",
+  "references": [
+    {
+      "role": "immutable-appearance-only-global-style-anchor",
+      "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "repaired-authoritative-north-direction-template",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v2/registration-north.png",
+      "sha256": "3aa7508cf2c350cc928f278469ee1970136a19024647ec072336a150784ca840"
+    },
+    {
+      "role": "approved-residential-family-material-and-scale-anchor",
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+    }
+  ],
+  "rawSourceFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/raw/residential_l01/variant-0/north/source-v02.png",
+  "rawSourceSHA256": "1c608c327dd253163b70eb6f1f10ce08e6199ae482ad38482d17cd4ef522e0ad",
+  "rawSourcePixels": [
+    1536,
+    1024
+  ],
+  "chromaKey": "#ff00ff",
+  "registration": {
+    "geometryTemplateID": "play-027-rci-directional-v2",
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "frontageSocketName": "north",
+    "frontageSocketSource": [
+      896,
+      704
+    ],
+    "orientationTransform": "none"
+  },
+  "normalizedSourceFile": null,
+  "normalizedSourceSHA256": null,
+  "intendedGameplayMeaning": "completed maintained level-one residential building with north road-facing frontage",
+  "generatedPixelsAreGeometryAuthority": false,
+  "productionSelected": false,
+  "reviewer": "world-art generation cell repaired-template probe review",
+  "disposition": "rejected-before-normalization",
+  "rejectionReasons": [
+    "frontage failure: primary entrance appears on the near screen-facing edge instead of the repaired template's north edge and socket",
+    "registration failure: visible entry and stoop cannot reconcile with north socket 896x704",
+    "chroma failure: background contains a visible magenta gradient instead of flat #ff00ff"
+  ],
+  "repairOutcome": {
+    "projectionCorrected": true,
+    "frontageRegistrationCorrected": false
+  },
+  "postRepairDirectionalDriftFailureOrdinal": 1,
+  "eligibleAsSiblingReference": false
+}

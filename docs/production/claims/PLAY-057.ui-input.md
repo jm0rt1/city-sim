@@ -9,7 +9,7 @@
 - **Planned surfaces:** existing command catalog/store presentation state, `ContentView`, top HUD and command deck composition, macOS command/menu wiring, focused UI/input/accessibility tests, and `docs/production/evidence/PLAY-057/`
 - **Dependencies:** accepted PLAY-030/034/039/054/055; approved CONTRACT-012 and CONTRACT-014; exact published claim baseline
 - **Validation/proof:** same-state regular and exact 900 x 600 closed/Focus City/open-Details frames; measured aperture; pointer/shortcut/command-guide/menu parity; mode/target/camera/panel continuity; modal/text quarantine; Escape/focus restoration; FKA/AX/Reduce Motion; 3x state updates; full suite; independent PLAY-058 review
-- **Status:** dispatched; acceptance belongs to integration after PLAY-058
+- **Status:** ready-for-integration; acceptance belongs to integration after PLAY-058
 
 Implement the narrow transient Focus City mode authorized by CONTRACT-012.
 When active, the city must dominate the window while a compact status rail

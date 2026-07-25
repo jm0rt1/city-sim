@@ -12,8 +12,8 @@ struct TopHUDView: View {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
 
-    static let compactMaximumHeight: CGFloat = 126
-    static let regularMaximumHeight: CGFloat = 126
+    static let compactMaximumHeight: CGFloat = 116
+    static let regularMaximumHeight: CGFloat = 136
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -25,7 +25,11 @@ struct TopHUDView: View {
         .padding(6)
         .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
         .background(
-            .ultraThinMaterial,
+            .thinMaterial,
+            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+        )
+        .background(
+            GameTheme.hudSurfaceFill,
             in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
         )
         .overlay(
@@ -74,7 +78,7 @@ struct TopHUDView: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.78)
                 }
-                .font(.caption2.monospacedDigit())
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .rounded).monospacedDigit())
             }
             .padding(.horizontal, 5)
             .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
@@ -103,12 +107,11 @@ struct TopHUDView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 3) {
                         Text(mandateComplete ? "Mandate complete" : objective.title)
-                            .font(.caption2.weight(.semibold))
+                            .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                             .lineLimit(1)
-                            .minimumScaleFactor(0.72)
                         Spacer(minLength: 1)
                         Text("\(store.completedObjectiveCount)/\(store.objectives.count)")
-                            .font(.system(size: 8, weight: .semibold, design: .monospaced))
+                            .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .monospaced))
                             .foregroundStyle(.secondary)
                     }
                     ProgressView(value: objective.progress)
@@ -155,55 +158,64 @@ struct TopHUDView: View {
             MetricCard(
                 identifier: "hud.metric.treasury",
                 title: "Treasury",
+                shortTitle: compact ? "Cash" : nil,
                 value: store.state.treasury.currencyText,
                 symbol: "dollarsign.circle.fill",
                 tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger,
-                detail: "\(store.analytics.projectedBalance.signedCurrencyText) / cycle",
-                dense: true
+                detail: compact
+                    ? "Net \(store.analytics.projectedBalance.signedCurrencyText)"
+                    : "\(store.analytics.projectedBalance.signedCurrencyText) / cycle",
+                dense: compact
             ) { store.perform(.inspectorFinances) }
 
             MetricCard(
                 identifier: "hud.metric.population",
                 title: "Residents",
+                shortTitle: compact ? "People" : nil,
                 value: store.state.population.compactText,
                 symbol: "person.3.fill",
                 tint: .cyan,
-                detail: "\(store.analytics.housingHeadroom.formatted()) homes open",
+                detail: compact
+                    ? "Open \(store.analytics.housingHeadroom.compactText)"
+                    : "\(store.analytics.housingHeadroom.formatted()) homes open",
                 progress: store.analytics.housingUtilization,
-                dense: true
+                dense: compact
             ) { store.perform(.inspectorPopulation) }
 
             MetricCard(
                 identifier: "hud.metric.happiness",
                 title: "Happiness",
+                shortTitle: compact ? "Happy" : nil,
                 value: store.state.happiness.percentText,
                 symbol: "face.smiling.fill",
                 tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
-                detail: "\(store.state.approval.percentText) mayor approval",
+                detail: compact ? "Approval \(store.state.approval.percentText)" : "\(store.state.approval.percentText) mayor approval",
                 progress: store.state.happiness / 100,
-                dense: true
+                dense: compact
             ) { store.perform(.inspectorHappiness) }
 
             MetricCard(
                 identifier: "hud.metric.employment",
                 title: "Jobs filled",
+                shortTitle: compact ? "Jobs" : nil,
                 value: store.state.jobs.compactText,
                 symbol: "briefcase.fill",
                 tint: .purple,
-                detail: "\(store.analytics.jobHeadroom.formatted()) openings",
+                detail: compact ? "Open \(store.analytics.jobHeadroom.compactText)" : "\(store.analytics.jobHeadroom.formatted()) openings",
                 progress: store.analytics.jobUtilization,
-                dense: true
+                dense: compact
             ) { store.perform(.inspectorEmployment) }
 
             MetricCard(
                 identifier: "hud.metric.utilities",
                 title: "Utilities",
+                shortTitle: compact ? "Utility" : nil,
                 value: (store.analytics.utilityCoverage * 100).percentText,
                 symbol: "bolt.horizontal.fill",
                 tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger,
                 detail: "P \(store.analytics.powerHeadroom.formatted()) · W \(store.analytics.waterHeadroom.formatted())",
                 progress: store.analytics.utilityCoverage,
-                dense: true
+                dense: compact
             ) { store.perform(.inspectorUtilities) }
         }
         .frame(maxWidth: .infinity)

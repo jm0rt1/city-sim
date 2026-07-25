@@ -258,8 +258,8 @@ struct StrategyCommandCenterView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
-    static let compactMaximumHeight: CGFloat = 58
-    static let regularMaximumHeight: CGFloat = 58
+    static let compactMaximumHeight: CGFloat = 54
+    static let regularMaximumHeight: CGFloat = 64
 
     private var presentation: CityStrategyHUDPresentation {
         CityStrategyHUDPresentation.make(analytics: store.analytics)
@@ -268,7 +268,7 @@ struct StrategyCommandCenterView: View {
     var body: some View {
         HStack(alignment: .center, spacing: compact ? 6 : 8) {
             Image(systemName: symbol)
-                .font(.system(size: 14, weight: .bold))
+                .font(.system(size: 16, weight: .bold))
                 .foregroundStyle(tint)
                 .frame(width: 30, height: 30)
                 .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 8))
@@ -277,27 +277,24 @@ struct StrategyCommandCenterView: View {
             VStack(alignment: .leading, spacing: 1) {
                 HStack(spacing: 5) {
                     Text(presentation.eyebrow)
-                        .font(.system(size: 7, weight: .heavy, design: .rounded))
-                        .tracking(0.55)
+                        .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                        .tracking(0.25)
                         .foregroundStyle(tint)
                     Text(presentation.status)
-                        .font(.system(size: 7, weight: .heavy, design: .rounded).monospacedDigit())
+                        .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded).monospacedDigit())
                         .lineLimit(1)
-                        .minimumScaleFactor(0.7)
                         .padding(.horizontal, 5)
                         .padding(.vertical, 2)
                         .background(tint.opacity(0.16), in: Capsule())
                 }
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text(presentation.title)
-                        .font(.caption.weight(.bold))
+                        .font(.system(size: 13, weight: .bold, design: .rounded))
                         .lineLimit(1)
-                        .minimumScaleFactor(0.75)
                     Text(presentation.summary)
-                        .font(.system(size: 9))
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
-                        .minimumScaleFactor(0.7)
                 }
             }
 
@@ -316,7 +313,10 @@ struct StrategyCommandCenterView: View {
         .padding(.vertical, 3)
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
-        .background(tint.opacity(0.07), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+        .background(
+            GameTheme.hudRaisedFill.opacity(0.88),
+            in: RoundedRectangle(cornerRadius: 9, style: .continuous)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 9, style: .continuous)
                 .stroke(tint.opacity(0.48), lineWidth: presentation.tone == .urgent ? 1.5 : 1)
@@ -331,7 +331,7 @@ struct StrategyCommandCenterView: View {
     private func responseButton(_ response: CityDirectResponse) -> some View {
         Button { perform(response) } label: {
             Label(responseButtonTitle(response), systemImage: "waveform.path.ecg.rectangle")
-                .font(.system(size: 9, weight: .semibold))
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .lineLimit(1)
                 .padding(.horizontal, compact ? 2 : 5)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
@@ -359,7 +359,7 @@ struct StrategyCommandCenterView: View {
             }
         } label: {
             Label("Act", systemImage: "arrow.turn.down.right")
-                .font(.system(size: 9, weight: .bold))
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
         }
         .menuStyle(.borderlessButton)

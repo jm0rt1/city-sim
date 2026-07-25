@@ -362,7 +362,7 @@ enum ValidateScenesMain {
             if descriptor.occlusionExclusions.isEmpty {
                 itemFailures.append("occlusion exclusions are missing")
             }
-            if level > 1 || family == "commercial" {
+            if level > 1 || family == "commercial" || family == "industrial" {
                 if descriptor.building.massingProfile == nil
                     || descriptor.building.massBlocks?.isEmpty != false
                     || descriptor.building.roofVolumes?.isEmpty != false
@@ -413,6 +413,54 @@ enum ValidateScenesMain {
                 }) {
                     itemFailures.append(
                         "commercial roof lacks explicit mechanical treatment"
+                    )
+                }
+            }
+            if family == "industrial" {
+                if descriptor.entrance.style != "loading-bay" {
+                    itemFailures.append(
+                        "industrial frontage lacks an approved loading-bay style"
+                    )
+                }
+                if descriptor.entrance.width < 20
+                    || descriptor.entrance.height < 16
+                {
+                    itemFailures.append(
+                        "industrial loading bay is not legible at game scale"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "rooftop-hvac"
+                }) {
+                    itemFailures.append(
+                        "industrial roof lacks explicit mechanical treatment"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "exhaust-stack"
+                }) {
+                    itemFailures.append(
+                        "industrial roof lacks explicit exhaust treatment"
+                    )
+                }
+                if !descriptor.props.contains(where: {
+                    $0.kind == "service-tank"
+                }) {
+                    itemFailures.append(
+                        "industrial service yard lacks explicit tank logic"
+                    )
+                }
+                let windowCount = descriptor.facades.reduce(0) {
+                    count, facade in
+                    count
+                        + facade.windowBays.count
+                        + (facade.windowRhythms ?? []).reduce(0) {
+                            $0 + $1.centersWorld.count
+                        }
+                }
+                if windowCount > 16 {
+                    itemFailures.append(
+                        "industrial facade rhythm aliases residential/commercial glazing density"
                     )
                 }
             }

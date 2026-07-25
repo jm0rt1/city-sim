@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "industrial-l01-l04-v0-materials-v1",
+  "source": "authored numeric industrial materials calibrated from the retained generated-v4 Industrial L1 family anchor",
+  "styleAnchorFile": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "familyAnchorFile": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "familyAnchorSHA256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "imageGenMaterialSwatchesUsed": false,
+  "colorSpace": "extended-sRGB",
+  "materials": [
+    {
+      "id": "corrugated-steel-sage",
+      "baseColorRGBA": [0.40, 0.50, 0.42, 1.0],
+      "emissionRGBA": [0.025, 0.035, 0.027, 1.0],
+      "roughness": 0.72,
+      "metalness": 0.34,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 1.0]
+    },
+    {
+      "id": "brick-industrial-umber",
+      "baseColorRGBA": [0.48, 0.25, 0.16, 1.0],
+      "emissionRGBA": [0.040, 0.018, 0.010, 1.0],
+      "roughness": 0.88,
+      "metalness": 0.0,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.9, 0.7]
+    },
+    {
+      "id": "concrete-industrial-warm",
+      "baseColorRGBA": [0.61, 0.57, 0.49, 1.0],
+      "emissionRGBA": [0.025, 0.022, 0.017, 1.0],
+      "roughness": 0.94,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [4.0, 2.0]
+    },
+    {
+      "id": "roof-industrial-charcoal",
+      "baseColorRGBA": [0.17, 0.22, 0.23, 1.0],
+      "roughness": 0.68,
+      "metalness": 0.42,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.5, 1.2]
+    },
+    {
+      "id": "loading-door-steel",
+      "baseColorRGBA": [0.58, 0.64, 0.61, 1.0],
+      "emissionRGBA": [0.030, 0.035, 0.032, 1.0],
+      "roughness": 0.58,
+      "metalness": 0.55,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 1.0]
+    },
+    {
+      "id": "hazard-yellow",
+      "baseColorRGBA": [0.92, 0.62, 0.12, 1.0],
+      "emissionRGBA": [0.10, 0.055, 0.005, 1.0],
+      "roughness": 0.60,
+      "metalness": 0.10,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    },
+    {
+      "id": "industrial-glass",
+      "baseColorRGBA": [0.28, 0.50, 0.56, 1.0],
+      "emissionRGBA": [0.08, 0.14, 0.15, 1.0],
+      "roughness": 0.20,
+      "metalness": 0.08,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [7.0, 6.0]
+    },
+    {
+      "id": "window-warm",
+      "baseColorRGBA": [0.82, 0.58, 0.24, 1.0],
+      "emissionRGBA": [0.42, 0.24, 0.055, 1.0],
+      "roughness": 0.22,
+      "metalness": 0.02,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [7.0, 6.0]
+    },
+    {
+      "id": "limestone-warm",
+      "baseColorRGBA": [0.73, 0.66, 0.54, 1.0],
+      "emissionRGBA": [0.045, 0.035, 0.022, 1.0],
+      "roughness": 0.86,
+      "metalness": 0.0,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [3.0, 1.2]
+    },
+    {
+      "id": "slate-charcoal",
+      "baseColorRGBA": [0.13, 0.17, 0.18, 1.0],
+      "roughness": 0.68,
+      "metalness": 0.18,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.5, 0.75]
+    },
+    {
+      "id": "rooftop-metal",
+      "baseColorRGBA": [0.38, 0.45, 0.43, 1.0],
+      "roughness": 0.60,
+      "metalness": 0.50,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 3.0]
+    },
+    {
+      "id": "exhaust-dark",
+      "baseColorRGBA": [0.26, 0.30, 0.29, 1.0],
+      "roughness": 0.58,
+      "metalness": 0.60,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    },
+    {
+      "id": "tank-oxide",
+      "baseColorRGBA": [0.55, 0.31, 0.20, 1.0],
+      "emissionRGBA": [0.028, 0.012, 0.006, 1.0],
+      "roughness": 0.74,
+      "metalness": 0.44,
+      "pattern": "solid",
+      "physicalScaleWorld": [2.0, 2.0]
+    },
+    {
+      "id": "chimney-metal",
+      "baseColorRGBA": [0.30, 0.34, 0.33, 1.0],
+      "roughness": 0.60,
+      "metalness": 0.54,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    }
+  ],
+  "productionSelected": false
+}

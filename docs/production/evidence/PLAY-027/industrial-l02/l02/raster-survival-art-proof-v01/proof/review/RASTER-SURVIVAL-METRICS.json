@@ -1,0 +1,184 @@
+{
+  "acceptedIndustrialL1RawFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l01/variant-0/east/source-v05.png",
+  "acceptedIndustrialL1RawSHA256" : "f20d78d6b4b43c7111250f231351166397e3444e3f7a7243f282dacd94592e4f",
+  "alpha" : {
+    "exactChromaRGBA" : [
+      255,
+      0,
+      255,
+      255
+    ],
+    "literalRaw" : {
+      "hiddenRGBPixels" : 0,
+      "maximum" : 255,
+      "minimum" : 255,
+      "nonOpaquePixels" : 0,
+      "transparentPixels" : 0
+    },
+    "reviewExtraction" : {
+      "hiddenRGBPixels" : 0,
+      "maximum" : 255,
+      "minimum" : 0,
+      "nonOpaquePixels" : 1496488,
+      "transparentPixels" : 1496488
+    }
+  },
+  "authority" : "single-process-non-source-authority",
+  "bounds" : {
+    "acceptedIndustrialL1Building" : {
+      "area" : 25085,
+      "height" : 205,
+      "maxX" : 877,
+      "maxY" : 817,
+      "minX" : 668,
+      "minY" : 613,
+      "width" : 210
+    },
+    "alphaMaskedOccupied" : {
+      "area" : 76376,
+      "height" : 400,
+      "maxX" : 1028,
+      "maxY" : 905,
+      "minX" : 619,
+      "minY" : 506,
+      "width" : 410
+    },
+    "buildingExcludingQuantizedMagentaFamily" : {
+      "area" : 42888,
+      "height" : 323,
+      "maxX" : 893,
+      "maxY" : 830,
+      "minX" : 640,
+      "minY" : 508,
+      "width" : 254
+    }
+  },
+  "componentSurvivalBudget" : {
+    "allIdentityBearingFeaturesAtLeastFourPixels" : true,
+    "bollardDiameterNative2xPixels" : 4.2999999999999998,
+    "bollardDiameterWorld" : 3,
+    "dockCanopyDepthNative2xPixels" : 11.5,
+    "dockCanopyDepthWorld" : 8,
+    "dockDoorWidthNative2xPixels" : 10.1,
+    "dockDoorWidthWorld" : 7,
+    "dockThroatDepthNative2xPixels" : 5.7999999999999998,
+    "dockThroatDepthWorld" : 4,
+    "personnelDoorWidthNative2xPixels" : 5.7999999999999998,
+    "personnelDoorWidthWorld" : 4
+  },
+  "disposition" : "VISUAL-REJECTION",
+  "frozenMask" : {
+    "classification" : "border-connected exact chroma or g<=8, abs(r-b)<=2, r>=16",
+    "exactChromaPixelsMadeTransparent" : 1496488,
+    "floodPixels" : 1496488,
+    "residualQuantizedMagentaPlatePixels" : 33488,
+    "shadowPixelsReconstructed" : 0
+  },
+  "luma" : {
+    "occupiedLumaBins" : [
+      {
+        "count" : 4952,
+        "lowerBound" : 16
+      },
+      {
+        "count" : 4159,
+        "lowerBound" : 32
+      },
+      {
+        "count" : 26040,
+        "lowerBound" : 48
+      },
+      {
+        "count" : 3515,
+        "lowerBound" : 64
+      },
+      {
+        "count" : 496,
+        "lowerBound" : 80
+      },
+      {
+        "count" : 878,
+        "lowerBound" : 96
+      },
+      {
+        "count" : 314,
+        "lowerBound" : 112
+      },
+      {
+        "count" : 580,
+        "lowerBound" : 128
+      },
+      {
+        "count" : 1850,
+        "lowerBound" : 144
+      },
+      {
+        "count" : 78,
+        "lowerBound" : 160
+      },
+      {
+        "count" : 26,
+        "lowerBound" : 176
+      }
+    ],
+    "p05" : 16,
+    "p25" : 48,
+    "p50" : 48,
+    "p75" : 54,
+    "p75MinusP25" : 6,
+    "p95" : 141,
+    "p95MinusP05" : 125,
+    "residualQuantizedMagentaPlatePixels" : 33488,
+    "sampleCount" : 42888
+  },
+  "neutralPresentationPassed" : false,
+  "observedLiteralVisualSurvival" : {
+    "basis" : "independent live pixel review plus bound source/native-2x color and grayscale panels",
+    "footprintFieldSubordinateToBuilding" : false,
+    "majorFormsReadAsDistinctCapabilityHierarchy" : false,
+    "materialHierarchySurvivesNative2x" : false,
+    "personnelRouteUnmistakableWithoutZoom" : false,
+    "threeDocksUnmistakableWithoutZoom" : false
+  },
+  "productionSelected" : false,
+  "provenanceCorrectionRequired" : true,
+  "provenanceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/provenance.json",
+  "provenanceSHA256" : "e5a5e663fa71f0dcb61f5b2c5ff835f3aeeccba2c41342bd67f628d1195e6e4c",
+  "rawFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/raw.png",
+  "rawSHA256" : "77d47f3feef50c584dfd60177e41ab6793247a6772c536270806a0c3196db5b8",
+  "registration" : {
+    "doorBaseSource" : [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ],
+    "eastSocketSource" : [
+      896,
+      832
+    ],
+    "pivotSource" : [
+      768,
+      896
+    ],
+    "renderedNodeBoundsComplete" : true,
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "technicalChecksPassed" : false,
+  "type" : "industrial-l02-east-raster-survival-proof",
+  "utilization" : {
+    "alphaMaskedOccupiedWidthOver512" : 0.80078125,
+    "passedAboveRejected" : false,
+    "registeredDiamondExpected" : 1,
+    "rejectedObserved" : 0.80100000000000005
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "type": "non-destructive-render-provenance-qualification",
+  "rawFile": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/raw.png",
+  "rawSHA256": "77d47f3feef50c584dfd60177e41ab6793247a6772c536270806a0c3196db5b8",
+  "rendererRecordFile": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/provenance.json",
+  "rendererRecordSHA256": "e5a5e663fa71f0dcb61f5b2c5ff835f3aeeccba2c41342bd67f628d1195e6e4c",
+  "rendererRecordDeclaredSourceCommit": "920af3bb18fdd699b2fe51f66f9c3d79fbcff29a",
+  "actualCleanSourceTreeCommit": "920af3b8730a556c564daa56d9a0c9a4d451cf18",
+  "actualRendererBinarySHA256": "1be3cccedd3af05218cca63f0446d82699a69a67c71fc1236ce22fca9eccf9fa",
+  "qualification": "The CLI renderer-source-commit argument contains a transcription error. The renderer binary was compiled from the exact clean approved 920af3b8730a556c564daa56d9a0c9a4d451cf18 source tree, as bound by the complete source-file and binary hashes in TOOLCHAIN-BINARY-OPTIONS.json. The original renderer record is preserved byte-exact and is not rewritten.",
+  "pixelImpact": "none; rendererSourceCommit is record metadata and does not enter scene construction, sampling, compositing, or PNG encoding",
+  "rerenderPerformed": false,
+  "reasonNoRerender": "the dispatch authorizes exactly one fresh process; the visual proof independently fails binding art gates",
+  "disposition": "qualified evidence inside a visual rejection, never source authority",
+  "productionSelected": false
+}

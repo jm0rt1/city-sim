@@ -33,10 +33,10 @@
 
 | Direction | Scene geometry | Planned raw revision |
 |---|---|---|
-| north | `residential-l01-v0-north-geometry-v6` | `source-v09` |
-| east | `residential-l01-v0-east-geometry-v4` | `source-v05` |
-| south | `residential-l01-v0-south-geometry-v4` | `source-v05` |
-| west | `residential-l01-v0-west-geometry-v6` | `source-v06` |
+| north | `residential-l01-v0-north-geometry-v6` | `source-v10` |
+| east | `residential-l01-v0-east-geometry-v4` | `source-v06` |
+| south | `residential-l01-v0-south-geometry-v4` | `source-v06` |
+| west | `residential-l01-v0-west-geometry-v6` | `source-v07` |
 
 The four descriptors validate with unique descriptor hashes and geometry IDs.
 Camera, pivot, footprint, contact, socket, light, shadow, and orientation
@@ -45,6 +45,13 @@ contracts remain frozen. No sibling is mirrored, rotated, or transformed.
 North `source-v05` proved that depth alone did not defeat far-edge occlusion.
 It is preserved and rejected in `ATTEMPT-REJECTIONS.md`; the revised north and
 west descriptors independently declare grounded lateral porch returns.
+
+The first complete raw pass proved that SceneKit could alternate one shaded
+sample by an 8-value color interval across separate native processes. The
+task-owned compositor now canonicalizes each 32-value RGB bucket to its
+midpoint after compositing. This absorbs the observed bounded drift while
+retaining eight stable levels per channel. All four final revisions advance
+because the canonicalizer is a shared source-rendering input.
 
 Rendering must not begin until this redesign input is committed. The resulting
 pixels remain review candidates only and cannot authorize the remaining 44

@@ -82,3 +82,29 @@ adds low masonry emission to retain facade value separation without altering
 the northwest key or southeast shadow contract. North advances to
 `source-v09` / geometry v6; west advances to geometry v6 before its first v03
 render.
+
+## First complete raw pass at renderer `a961cb7`
+
+**North source-v09:** retained deterministic predecessor; raw SHA-256
+`9f4f4604b397204fd712e04fdbc9f1e50ddcfa775e608730f3aa5638127fe599`
+
+**East source-v05:** retained deterministic predecessor; raw SHA-256
+`39feeffc737db64546e53cd35256dde091872ff30b6a359a0b6045012a27612f`
+
+**South source-v05:** rejected for recurring raw hash alternation; retained raw
+SHA-256
+`370cb84e9cf8e3636bdce569444f8c5395a24aa40b3f754eabf762514fa85c4c`
+
+**West source-v06:** rejected for recurring raw hash alternation; retained raw
+SHA-256
+`4565fee32bf90ffe9c1895e355b0a364c1705307c04d5623e52b08c7f0d7e747`
+
+The separate south and west repeat processes differed at 27 and 1 opaque
+pixels respectively; every changed channel moved by exactly 8. A third
+process reproduced each original hash. `DETERMINISM-REPAIR.md` records both
+hash states and the bounded task-owned canonicalizer repair.
+
+North and east also advance despite matching repeat hashes so the final
+candidate cannot mix canonicalizer versions. The replacement revisions are
+north `source-v10`, east `source-v06`, south `source-v06`, and west
+`source-v07`; geometry remains unchanged.

@@ -4,7 +4,8 @@ import XCTest
 
 final class VisibleCityStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/VisibleCityStates"
-    private static let manifestFile = "visible-city-states-manifest-v1.json"
+    private static let manifestFile = "visible-city-states-manifest-v2.json"
+    private static let e380ManifestFile = "visible-city-states-manifest-v1.json"
 
     func testWriteFixtureCorpusOnlyWhenExplicitlyRequested() throws {
         guard let rootPath = ProcessInfo.processInfo.environment[
@@ -36,6 +37,10 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         XCTAssertEqual(first.artifacts.count, 14)
         XCTAssertEqual(first.manifest.fixtures.count, 14)
         XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 14)
+        XCTAssertTrue(first.artifacts.allSatisfy {
+            $0.definition.id.hasSuffix("-v2")
+                && $0.definition.file.hasSuffix("-v2.json")
+        })
         for strategy in [CityStrategy.commercialStewardship, .industrialExpansion] {
             XCTAssertEqual(
                 first.artifacts.filter {
@@ -110,6 +115,39 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         )
     }
 
+    func testE380ComparisonCorpusRemainsByteExact() throws {
+        let manifestData = try resourceData(file: Self.e380ManifestFile)
+        XCTAssertEqual(
+            ProductionStoryFixtureCorpus.sha256(manifestData),
+            "e9ee17bc14a5d61334a9598bddb5d25bc1cfe0cb12443f0b08cb6100526af236"
+        )
+        let manifest = try JSONDecoder().decode(
+            VisibleCityFixtureManifest.self,
+            from: manifestData
+        )
+        XCTAssertEqual(
+            manifest.authorityCommit,
+            "e38059e721dae05c8df421754e3cb63ddf3fa153"
+        )
+        XCTAssertEqual(
+            manifest.sourceStoryManifestSHA256,
+            "a793dc9ea5cfc50b7482fb7f4bf4e7a3a3c5e9cfb1cad6e47722fc17cbf22153"
+        )
+        XCTAssertEqual(manifest.schemaVersion, 1)
+        XCTAssertEqual(manifest.fingerprintVersion, 1)
+        XCTAssertEqual(manifest.fixtures.count, 14)
+
+        for entry in manifest.fixtures {
+            let bytes = try resourceData(file: entry.file)
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                entry.fileSHA256,
+                entry.id
+            )
+            XCTAssertEqual(bytes.count, entry.byteCount, entry.id)
+        }
+    }
+
     func testLifecycleInvariantsAndExactReplayRemainAuthoritative() throws {
         let builder = ProductionStoryStateBuilder()
         let artifacts = try committedArtifacts()
@@ -155,39 +193,25 @@ final class VisibleCityStateFixtureTests: XCTestCase {
             XCTAssertEqual(active.state.tile(at: focus)?.constructionProgress, 1)
             XCTAssertGreaterThan(active.state.tile(at: focus)?.occupancy ?? 0, 0)
 
-            XCTAssertEqual(
-                try builder.replayOpeningToComplication(
-                    active.state,
-                    strategy: strategy
-                ),
-                pressured.state
+            let firstActComplication = try builder.replayOpeningToComplication(
+                active.state,
+                strategy: strategy
             )
-            XCTAssertEqual(
-                pressured.state.progression?.strategy?.currentPhase,
-                .complication
-            )
-            XCTAssertEqual(
-                try builder.replayComplicationToRecovery(
-                    pressured.state,
-                    strategy: strategy
-                ),
-                recovering.state
-            )
-            XCTAssertEqual(
-                recovering.state.progression?.strategy?.recoveryResolution,
-                resolution
+            let firstActRecovery = try builder.replayComplicationToRecovery(
+                firstActComplication,
+                strategy: strategy
             )
             XCTAssertEqual(
                 try builder.replayRecoveryToCharterMidpoint(
-                    recovering.state,
+                    firstActRecovery,
                     strategy: strategy
                 ),
                 upgraded.state
             )
             XCTAssertEqual(upgraded.state.progression?.secondAct?.phase, .mandate)
             let upgradedFocus = upgraded.definition.focusCoordinate
-            XCTAssertEqual(upgraded.definition.focusKind, .residential)
-            XCTAssertEqual(upgraded.state.tile(at: upgradedFocus)?.kind, .residential)
+            XCTAssertEqual(upgraded.definition.focusKind, kind)
+            XCTAssertEqual(upgraded.state.tile(at: upgradedFocus)?.kind, kind)
             XCTAssertGreaterThan(
                 upgraded.state.tile(at: upgradedFocus)?.level ?? 0,
                 1
@@ -197,14 +221,54 @@ final class VisibleCityStateFixtureTests: XCTestCase {
                 1
             )
 
-            let regionalRecovery = try builder.replayCharterMidpointToRegionalRecovery(
-                upgraded.state,
-                resolution: resolution
-            )
-            XCTAssertEqual(regionalRecovery.progression?.secondAct?.phase, .recovery)
             XCTAssertEqual(
-                try builder.replayRegionalRecoveryToTerminal(
-                    regionalRecovery,
+                try builder.replayCharterMidpointToRegionalRecovery(
+                    upgraded.state,
+                    resolution: resolution
+                ),
+                pressured.state
+            )
+            XCTAssertEqual(pressured.state.progression?.secondAct?.phase, .recovery)
+            XCTAssertEqual(pressured.definition.focusCoordinate, recovering.definition.focusCoordinate)
+            XCTAssertEqual(pressured.state.tile(at: pressured.definition.focusCoordinate)?.kind, kind)
+            XCTAssertLessThan(
+                pressured.state.tile(at: pressured.definition.focusCoordinate)?.condition ?? 1,
+                0.4
+            )
+            XCTAssertEqual(
+                pressured.state.tiles.filter {
+                    $0.kind == kind && $0.condition < 0.75
+                }.count,
+                2
+            )
+
+            XCTAssertEqual(
+                try builder.replayRegionalRecoveryToQualification(
+                    pressured.state,
+                    resolution: resolution
+                ),
+                recovering.state
+            )
+            XCTAssertEqual(recovering.state.progression?.secondAct?.phase, .qualification)
+            let recoveringCondition =
+                recovering.state.tile(at: recovering.definition.focusCoordinate)?.condition ?? 1
+            XCTAssertGreaterThanOrEqual(recoveringCondition, 0.4)
+            XCTAssertLessThan(recoveringCondition, 0.75)
+            XCTAssertEqual(
+                recovering.state.tiles.filter {
+                    $0.kind == kind
+                        && $0.condition >= 0.4
+                        && $0.condition < 0.75
+                }.count,
+                1
+            )
+            XCTAssertFalse(recovering.state.tiles.contains {
+                $0.kind == kind && $0.condition < 0.4
+            })
+
+            XCTAssertEqual(
+                try builder.replayRegionalQualificationToTerminal(
+                    recovering.state,
                     resolution: resolution
                 ),
                 terminal.state
@@ -214,11 +278,14 @@ final class VisibleCityStateFixtureTests: XCTestCase {
             XCTAssertTrue(
                 terminal.state.progression?.secondAct?.regionalCapitalAwarded ?? false
             )
-            XCTAssertEqual(terminal.definition.focusCoordinate, upgradedFocus)
-            XCTAssertEqual(terminal.definition.focusKind, .residential)
+            XCTAssertEqual(
+                terminal.definition.focusCoordinate,
+                recovering.definition.focusCoordinate
+            )
+            XCTAssertEqual(terminal.definition.focusKind, kind)
             XCTAssertEqual(
                 terminal.state.tile(at: terminal.definition.focusCoordinate)?.kind,
-                .residential
+                kind
             )
             XCTAssertEqual(terminal.state.tile(at: focus)?.kind, kind)
         }

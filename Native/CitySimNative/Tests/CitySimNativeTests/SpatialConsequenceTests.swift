@@ -404,62 +404,62 @@ final class SpatialConsequenceTests: XCTestCase {
     func testStoryFixturesFreezeDiagnosticChannelIdentityWithoutChangingStateFingerprints() throws {
         let corpus = try ProductionStoryFixtureCorpus.build()
         let expectedDiagnosticDigests = [
-            "commercial-opening-v1":
-                "aee4d9a138d5a207091879c1c71250e44a8aeae4143beaa9eff2f0aeaf572b47",
-            "commercial-complication-v1":
-                "73455e6d36a7bb989adad95d2e3368663dd9c907f47a5286bda54152df1275a7",
-            "commercial-recovery-v1":
-                "a00476df33257fbb7a729c0ee60417a9e2f06be644c426defccbea1e13042406",
-            "commercial-charter-midpoint-v2":
-                "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
-            "commercial-tax-relief-regional-capital-v2":
-                "050b25cdd9dc6443830d6f8a2caaa7645e2f9d1159a0f0ac84245a4e12e76575",
-            "commercial-public-realm-regional-capital-v2":
-                "437d4850ddb4069811e56448dba46d4ebfb2282041f12b2477e0736e3a1c9e71",
+            "commercial-opening-v3":
+                "1d68a4218943f8f8bf1e4959d2731994e88a5adcc3466a66d01cc04255798e98",
+            "commercial-complication-v3":
+                "e848cf922e762e03a53abbf8b42c4f83f5f6f83ddc2d43f4885e068dbe78a76b",
+            "commercial-recovery-v3":
+                "0091590c1554125160ea04e784b688af1fe1fdf7051c638f0cf2be18bf8770b6",
+            "commercial-charter-midpoint-v3":
+                "6226d9037cbc8aee871b408b92440217b4b415f201b9bb4835a79471f05295b9",
+            "commercial-tax-relief-regional-capital-v3":
+                "38f759fbf0b04b67b9b07261d7c09f1dc22c8b5ed73fb21ea914274190d63850",
+            "commercial-public-realm-regional-capital-v3":
+                "9eb0e73c1474f7182a8caa5c16d4f552970a14572292db06ac0df7add4e6b63f",
             "commercial-charter-victory-v1":
                 "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
-            "industrial-opening-v1":
-                "afb5a8084e6400e49226a55527fc1382be2e8092ff285e3a9f25182040eaa50a",
-            "industrial-complication-v1":
-                "e89291b1d8606325e4e8e4ee3197f7c111a3865c55fbacd903f7f171dbef64e5",
-            "industrial-recovery-v1":
-                "09e8d88251ae5a63e135ccd9ecb1a71630bd960311b567e44a475281e96f23a3",
-            "industrial-charter-midpoint-v2":
-                "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
-            "industrial-utility-expansion-regional-capital-v2":
-                "c029f1bcc185daf2ad51874d82a036dc2ec599b691a99514b49e2a9ab227d10e",
-            "industrial-green-buffer-regional-capital-v2":
-                "3334ba02628116acd92380d39c1f85efaa4943ea6489c85628c1fb75004d4f8b",
+            "industrial-opening-v3":
+                "ad825abf41405fb2864ae5bb800ceebdf6eb9560fca0f820582504940837a9c3",
+            "industrial-complication-v3":
+                "4877a909eadfaefa862631adee0d1f4ed38073121db01e6bdc643a6a0c5622ef",
+            "industrial-recovery-v3":
+                "dda222e3c3d14e724f4cc841f4a414a45365141f967c58802455f69de9431414",
+            "industrial-charter-midpoint-v3":
+                "258276ebb3343f46bee74a72444edc662f764d0a1e7b9432502cf7b02c302893",
+            "industrial-utility-expansion-regional-capital-v3":
+                "450f6caef57cf3501ebfa863c9aa418eeacafc6eb86be5df2aa6e45ef3846354",
+            "industrial-green-buffer-regional-capital-v3":
+                "8bb17688dcc1c61d904db131200988001bfb1252d9ebd97aa23e2d9893398194",
             "industrial-charter-victory-v1":
                 "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
         ]
         let expectedActivityDigests = [
-            "commercial-opening-v1":
-                "21e4927edde685eae5c23378d0290e88386300c1675f548f21ed8e438b08f5c2",
-            "commercial-complication-v1":
-                "07296cfe78941dcf2a0597171623d90eded97c514e091665c13549a290e163c5",
-            "commercial-recovery-v1":
-                "9b032f071496b9f45ef4787291d0dcc00b1b121007d3ac0a5441750aca7e0d4e",
-            "commercial-charter-midpoint-v2":
-                "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
-            "commercial-tax-relief-regional-capital-v2":
-                "c4aa6f7a069836d9b2d7cfc1031a63d5b86046799a253a9d84a9e9e8bd01b07b",
-            "commercial-public-realm-regional-capital-v2":
-                "738ee73e6eae304043de515784a14b57e0fe9e4fdfd635af75052c6b9d7cd6a6",
+            "commercial-opening-v3":
+                "7aabdf91130f15a63faad21b107944a263fff00060fb74120a2d530fb1ae8dba",
+            "commercial-complication-v3":
+                "22c7346580424e8d09682f7b3b0264606ac2c743869c95a612a53a9df550710e",
+            "commercial-recovery-v3":
+                "5cccefea9b9a8235baa0f7c92a8ee1c6fe28ae9afa056142bd5112e9c6070651",
+            "commercial-charter-midpoint-v3":
+                "783cc75ae88f7dbac769390baaa861cbb6757e499c7aea1b58c8d7dc2620ed80",
+            "commercial-tax-relief-regional-capital-v3":
+                "97277a2a9cbd23c1c6eccaa37c63b862ffc3d949db9bed5e447070ae5fd7b0bc",
+            "commercial-public-realm-regional-capital-v3":
+                "4b55fe14a985fbae26a350367247a302ece0e97df04e80bbe99e8a139b863611",
             "commercial-charter-victory-v1":
                 "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
-            "industrial-opening-v1":
-                "7039a2d2b77e202772726611f1e98854c1537d289bd38383c17ddeb70cfcda75",
-            "industrial-complication-v1":
-                "b7b84220d43c4fc4e785d9287a04d78239e29f123327885922969c72f16c1bac",
-            "industrial-recovery-v1":
-                "80d2971381a37e39851529e80614e1f395f14d27445487aa60d292f49e8c4d99",
-            "industrial-charter-midpoint-v2":
-                "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
-            "industrial-utility-expansion-regional-capital-v2":
-                "f8df607a9ace0e91579174e2c31a171cdcc221069e8fb329180c6aae2fead0e4",
-            "industrial-green-buffer-regional-capital-v2":
-                "f3bdf3c464c3e7d627bba2a19fe8edded09576b0f37fbef09c68958b48e0a393",
+            "industrial-opening-v3":
+                "3cec89d4698e4f986f5ad1a49de7575170ada9175a9eb04172d4c2169b71e1ca",
+            "industrial-complication-v3":
+                "5bad93ab73998e6c7345627d50f874912cd7b205a101407aff0e92b2c226aff7",
+            "industrial-recovery-v3":
+                "3596b6a54bbe57fe0d2c61ad8923477ada7206dd0dea0ebca897a81c063d1614",
+            "industrial-charter-midpoint-v3":
+                "1f274175e2c169b0109d6742b4b7be2928ec127ca84fc12e7b7c1a8ff014adc1",
+            "industrial-utility-expansion-regional-capital-v3":
+                "84ae4028741a29f28fb85d2eeb2274812450575cb2ec4542616c3db25a07a9b1",
+            "industrial-green-buffer-regional-capital-v3":
+                "996fc4156139cf1422b59d98708de32d00d4174ac4007a106d4d8715873bdc4e",
             "industrial-charter-victory-v1":
                 "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
         ]

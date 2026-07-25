@@ -70,12 +70,12 @@ struct VisibleCityFixtureArtifact: Equatable, Sendable {
 }
 
 struct VisibleCityFixtureCorpus: Equatable, Sendable {
-    static let fixtureSet = "PLAY-072 authoritative visible-city states"
+    static let fixtureSet = "PLAY-072 post-PLAY-071 visible-city states"
     static let authorityCommit =
-        "e38059e721dae05c8df421754e3cb63ddf3fa153"
+        "5cb532cb515a911ff8f47f4d509a50a5071d369f"
     static let sourceStoryManifestSHA256 =
-        "a793dc9ea5cfc50b7482fb7f4bf4e7a3a3c5e9cfb1cad6e47722fc17cbf22153"
-    static let manifestFile = "visible-city-states-manifest-v1.json"
+        "bb27da325a259eb4186c54a749e6eb0391731a7f277860103099813ded7fba69"
+    static let manifestFile = "visible-city-states-manifest-v2.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1
     static let seed: UInt64 = 42
@@ -197,7 +197,7 @@ struct VisibleCityFixtureCorpus: Equatable, Sendable {
         id: String
     ) throws -> Data {
         let root = FileManager.default.temporaryDirectory.appending(
-            path: "citysim-play072-\(id)-\(UUID().uuidString)",
+            path: "citysim-play072-visible-\(id)-\(UUID().uuidString)",
             directoryHint: .isDirectory
         )
         defer { try? FileManager.default.removeItem(at: root) }
@@ -245,25 +245,36 @@ struct VisibleCityStateBuilder {
 
         var active = construction
         for _ in 0..<4 { CitySimulation.step(&active) }
-        let pressured = try storyBuilder.replayOpeningToComplication(
+        let firstActComplication = try storyBuilder.replayOpeningToComplication(
             active,
             strategy: strategy
         )
-        let recovering = try storyBuilder.replayComplicationToRecovery(
-            pressured,
+        let firstActRecovery = try storyBuilder.replayComplicationToRecovery(
+            firstActComplication,
             strategy: strategy
         )
         let upgraded = try storyBuilder.replayRecoveryToCharterMidpoint(
-            recovering,
+            firstActRecovery,
             strategy: strategy
         )
-        let upgradedFocus = try upgradedCoordinate(in: upgraded)
-        let regionalRecovery = try storyBuilder.replayCharterMidpointToRegionalRecovery(
+        let upgradedFocus = try upgradedCoordinate(
+            in: upgraded,
+            kind: districtKind
+        )
+        let pressured = try storyBuilder.replayCharterMidpointToRegionalRecovery(
             upgraded,
             resolution: resolution
         )
-        let terminal = try storyBuilder.replayRegionalRecoveryToTerminal(
-            regionalRecovery,
+        let pressureFocus = try weatheredCoordinate(
+            in: pressured,
+            kind: districtKind
+        )
+        let recovering = try storyBuilder.replayRegionalRecoveryToQualification(
+            pressured,
+            resolution: resolution
+        )
+        let terminal = try storyBuilder.replayRegionalQualificationToTerminal(
+            recovering,
             resolution: resolution
         )
 
@@ -276,8 +287,18 @@ struct VisibleCityStateBuilder {
                 focus: focus
             ),
             fixture(.active, state: active, strategy: strategy, focus: focus),
-            fixture(.pressured, state: pressured, strategy: strategy, focus: focus),
-            fixture(.recovering, state: recovering, strategy: strategy, focus: focus),
+            fixture(
+                .pressured,
+                state: pressured,
+                strategy: strategy,
+                focus: pressureFocus
+            ),
+            fixture(
+                .recovering,
+                state: recovering,
+                strategy: strategy,
+                focus: pressureFocus
+            ),
             fixture(
                 .upgraded,
                 state: upgraded,
@@ -288,7 +309,7 @@ struct VisibleCityStateBuilder {
                 .terminal,
                 state: terminal,
                 strategy: strategy,
-                focus: upgradedFocus
+                focus: pressureFocus
             ),
         ]
     }
@@ -302,7 +323,7 @@ struct VisibleCityStateBuilder {
         let prefix = strategy == .commercialStewardship
             ? "commercial"
             : "industrial"
-        let id = "\(prefix)-\(lifecycle.rawValue)-district-v1"
+        let id = "\(prefix)-\(lifecycle.rawValue)-district-v2"
         return VisibleCityFixtureState(
             definition: VisibleCityFixtureDefinition(
                 id: id,
@@ -318,11 +339,12 @@ struct VisibleCityStateBuilder {
     }
 
     private func upgradedCoordinate(
-        in state: CityGameState
+        in state: CityGameState,
+        kind: BuildingKind
     ) throws -> GridCoordinate {
         let upgraded = state.tiles
             .filter {
-                $0.kind == .residential
+                $0.kind == kind
                     && $0.level > 1
                     && $0.constructionProgress >= 1
             }
@@ -335,7 +357,30 @@ struct VisibleCityStateBuilder {
             }
         guard let focus = upgraded.first?.coordinate else {
             throw VisibleCityFixtureError.unexpectedState(
-                "missing authoritative upgraded Residential place"
+                "missing authoritative upgraded \(kind.rawValue) place"
+            )
+        }
+        return focus
+    }
+
+    private func weatheredCoordinate(
+        in state: CityGameState,
+        kind: BuildingKind
+    ) throws -> GridCoordinate {
+        let pressured = state.tiles
+            .filter { $0.kind == kind && $0.condition < 0.4 }
+            .sorted {
+                if $0.condition != $1.condition {
+                    return $0.condition < $1.condition
+                }
+                if $0.coordinate.y != $1.coordinate.y {
+                    return $0.coordinate.y < $1.coordinate.y
+                }
+                return $0.coordinate.x < $1.coordinate.x
+            }
+        guard let focus = pressured.first?.coordinate else {
+            throw VisibleCityFixtureError.unexpectedState(
+                "missing authoritative pressured \(kind.rawValue) place"
             )
         }
         return focus

@@ -60,6 +60,7 @@ struct ProductionStoryFixtureManifest: Codable, Equatable, Sendable {
     }
 }
 
+// PLAY-069 v2 and PLAY-072 v3 intentionally share this test-manifest shape.
 struct ProductionStoryFixtureManifestV2: Codable, Equatable, Sendable {
     let fixtureSet: String
     let schemaVersion: Int
@@ -94,8 +95,8 @@ struct ProductionStoryFixtureArtifact: Equatable, Sendable {
 }
 
 struct ProductionStoryFixtureCorpus: Equatable, Sendable {
-    static let fixtureSet = "PLAY-069 current production story states"
-    static let manifestFile = "story-states-manifest-v2.json"
+    static let fixtureSet = "PLAY-072 post-PLAY-071 production story states"
+    static let manifestFile = "story-states-manifest-v3.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1
     static let seed: UInt64 = 42
@@ -194,7 +195,7 @@ struct ProductionStoryFixtureCorpus: Equatable, Sendable {
 
     private static func schemaOneBytes(for state: CityGameState, id: String) throws -> Data {
         let root = FileManager.default.temporaryDirectory.appending(
-            path: "citysim-play069-\(id)-\(UUID().uuidString)",
+            path: "citysim-play072-story-\(id)-\(UUID().uuidString)",
             directoryHint: .isDirectory
         )
         defer { try? FileManager.default.removeItem(at: root) }
@@ -328,6 +329,20 @@ struct ProductionStoryStateBuilder {
         _ state: CityGameState,
         resolution: CityStrategyRecoveryResolution
     ) throws -> CityGameState {
+        let qualification = try replayRegionalRecoveryToQualification(
+            state,
+            resolution: resolution
+        )
+        return try replayRegionalQualificationToTerminal(
+            qualification,
+            resolution: resolution
+        )
+    }
+
+    func replayRegionalRecoveryToQualification(
+        _ state: CityGameState,
+        resolution: CityStrategyRecoveryResolution
+    ) throws -> CityGameState {
         guard state.status == .playing,
               state.progression?.strategy?.recoveryResolution == resolution,
               state.progression?.secondAct?.phase == .recovery,
@@ -338,6 +353,28 @@ struct ProductionStoryStateBuilder {
         }
         var replay = state
         try enterRegionalQualification(&replay, resolution: resolution)
+        guard replay.progression?.secondAct?.phase == .qualification,
+              replay.progression?.secondAct?.regionalCapitalAwarded == false else {
+            throw ProductionStoryFixtureError.unexpectedState(
+                "\(resolution.rawValue): expected Regional qualification"
+            )
+        }
+        return replay
+    }
+
+    func replayRegionalQualificationToTerminal(
+        _ state: CityGameState,
+        resolution: CityStrategyRecoveryResolution
+    ) throws -> CityGameState {
+        guard state.status == .playing,
+              state.progression?.strategy?.recoveryResolution == resolution,
+              state.progression?.secondAct?.phase == .qualification,
+              state.progression?.secondAct?.regionalCapitalAwarded == false else {
+            throw ProductionStoryFixtureError.unexpectedState(
+                "\(resolution.rawValue): expected active Regional qualification"
+            )
+        }
+        var replay = state
         try advanceUntil(&replay, maximumCycles: 430) {
             $0.status == .won
         }
@@ -519,7 +556,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Main Street Crossroads"
                 : "Freight Contract Watch"
-            suffix = "opening-v1"
+            suffix = "opening-v3"
             moment = .opening
         case .complication:
             resolution = nil
@@ -529,7 +566,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Market Weekend"
                 : "Regional Freight Contract"
-            suffix = "complication-v1"
+            suffix = "complication-v3"
             moment = .complication
         case .recovery:
             resolution = defaultResolution(for: strategy)
@@ -539,7 +576,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Storefront Slump Avoided"
                 : "Industrial Load Absorbed"
-            suffix = "recovery-v1"
+            suffix = "recovery-v3"
             moment = .recovery
         case .charterMidpoint:
             resolution = defaultResolution(for: strategy)
@@ -547,7 +584,7 @@ struct ProductionStoryStateBuilder {
             secondActPhase = .mandate
             status = .playing
             messageTitle = "Town Charter Awarded"
-            suffix = "charter-midpoint-v2"
+            suffix = "charter-midpoint-v3"
             moment = .charterVictory
         case .regionalCapital:
             let route = suppliedResolution ?? defaultResolution(for: strategy)
@@ -556,7 +593,7 @@ struct ProductionStoryStateBuilder {
             secondActPhase = .completed
             status = .won
             messageTitle = "Regional Capital Recognized"
-            suffix = "\(route.fixtureName)-regional-capital-v2"
+            suffix = "\(route.fixtureName)-regional-capital-v3"
             moment = .charterVictory
         }
 

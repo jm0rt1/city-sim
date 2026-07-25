@@ -7,19 +7,20 @@ struct BuildToolbarView: View {
 
     // The low command rail preserves the world aperture; details remain
     // reachable in a visibly scrolling region instead of growing over the map.
-    static let compactClosedMaximumHeight: CGFloat = 108
+    static let compactClosedMaximumHeight: CGFloat = 64
     static let regularClosedMaximumHeight: CGFloat = 108
-    static let compactOpenMaximumHeight: CGFloat = 198
-    static let regularOpenMaximumHeight: CGFloat = 238
-    static let compactDetailsMaxHeight: CGFloat = 132
-    static let regularDetailsMaxHeight: CGFloat = 168
+    static let regularSituationalMaximumHeight: CGFloat = 64
+    static let compactOpenMaximumHeight: CGFloat = 176
+    static let regularOpenMaximumHeight: CGFloat = 208
+    static let compactDetailsMaxHeight: CGFloat = 112
+    static let regularDetailsMaxHeight: CGFloat = 144
 
     var body: some View {
         VStack(spacing: compact ? 5 : 6) {
             commandRow
             if store.showInspector {
                 inspectorDetails
-            } else {
+            } else if !compact, isBuildMode {
                 operationalRow
             }
         }
@@ -27,7 +28,7 @@ struct BuildToolbarView: View {
         .frame(
             maxHeight: store.showInspector
                 ? (compact ? Self.compactOpenMaximumHeight : Self.regularOpenMaximumHeight)
-                : (compact ? Self.compactClosedMaximumHeight : Self.regularClosedMaximumHeight)
+                : Self.closedMaximumHeight(compact: compact, isBuildMode: isBuildMode)
         )
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
@@ -91,12 +92,22 @@ struct BuildToolbarView: View {
                 }
             }
 
-            Spacer(minLength: 6)
+            if !store.showInspector {
+                selectedToolSummary
+                    .frame(maxWidth: compact ? 184 : 260, alignment: .trailing)
+            }
+
+            Spacer(minLength: 2)
             cityFocusButton
             commandGuideButton
             detailsButton
             OverlayPickerView(store: store, compact: compact)
         }
+    }
+
+    static func closedMaximumHeight(compact: Bool, isBuildMode: Bool) -> CGFloat {
+        if compact { return compactClosedMaximumHeight }
+        return isBuildMode ? regularClosedMaximumHeight : regularSituationalMaximumHeight
     }
 
     @ViewBuilder

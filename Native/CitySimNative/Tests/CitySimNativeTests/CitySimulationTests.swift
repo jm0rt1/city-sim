@@ -698,16 +698,20 @@ final class CitySimulationTests: XCTestCase {
             ContentView.objectiveSurfacePresentation(compact: false, showObjectives: true, showInspector: true),
             .expanded
         )
-        XCTAssertLessThanOrEqual(TopHUDView.compactMaximumHeight, 116)
-        XCTAssertLessThanOrEqual(TopHUDView.regularMaximumHeight, 136)
-        XCTAssertLessThanOrEqual(BuildToolbarView.compactClosedMaximumHeight, 108)
+        XCTAssertLessThanOrEqual(TopHUDView.compactMaximumHeight, 104)
+        XCTAssertLessThanOrEqual(TopHUDView.regularMaximumHeight, 118)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactClosedMaximumHeight, 64)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularSituationalMaximumHeight, 64)
         XCTAssertLessThanOrEqual(BuildToolbarView.regularClosedMaximumHeight, 108)
-        XCTAssertLessThanOrEqual(BuildToolbarView.compactOpenMaximumHeight, 198)
-        XCTAssertLessThanOrEqual(BuildToolbarView.regularOpenMaximumHeight, 238)
-        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 132)
-        XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 168)
-        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 54)
-        XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 64)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactOpenMaximumHeight, 176)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularOpenMaximumHeight, 208)
+        XCTAssertLessThanOrEqual(BuildToolbarView.compactDetailsMaxHeight, 112)
+        XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 144)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 48)
+        XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 52)
+        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: true, isBuildMode: false), 64)
+        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: false, isBuildMode: false), 64)
+        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: false, isBuildMode: true), 108)
         XCTAssertLessThanOrEqual(FocusCityHUDView.compactMaximumHeight, 98)
         XCTAssertLessThanOrEqual(FocusCityHUDView.regularMaximumHeight, 68)
         XCTAssertGreaterThanOrEqual(GameTheme.hudCriticalTextSize, 11)
@@ -717,20 +721,20 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(InspectorView.compactColumnCount, 2)
         XCTAssertGreaterThanOrEqual(InspectorView.compactMinimumVisibleNoticeCount, 2)
         let compactClosedChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 116),
-            bottom: CGRect(x: 8, y: 484, width: 884, height: 108)
+            top: CGRect(x: 8, y: 8, width: 884, height: 104),
+            bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
         )
         XCTAssertGreaterThanOrEqual(
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactClosedChrome) / 600,
-            0.58
+            0.68
         )
         let compactDetailsChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 116),
-            bottom: CGRect(x: 8, y: 394, width: 884, height: 198)
+            top: CGRect(x: 8, y: 8, width: 884, height: 104),
+            bottom: CGRect(x: 8, y: 416, width: 884, height: 176)
         )
         XCTAssertGreaterThanOrEqual(
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactDetailsChrome) / 600,
-            0.45
+            0.50
         )
         let compactFocusChrome = CityHUDChromeFrames(
             top: CGRect(x: 8, y: 8, width: 884, height: 98),
@@ -746,7 +750,7 @@ final class CitySimulationTests: XCTestCase {
             chromeFrames: compactClosedChrome
         )
         XCTAssertEqual(compactInsets.top, 136)
-        XCTAssertEqual(compactInsets.bottom, 126)
+        XCTAssertEqual(compactInsets.bottom, 116)
         let compactFocusInsets = ContentView.mapViewportInsets(
             windowSize: CGSize(width: 900, height: 600),
             compact: true,
@@ -793,6 +797,28 @@ final class CitySimulationTests: XCTestCase {
                 symbol: "play.fill",
                 accessibilityValue: "Running at 2x speed"
             )
+        )
+        XCTAssertEqual(
+            CityTrajectoryHUDPresentation.make(projectedBalance: -82),
+            CityTrajectoryHUDPresentation(
+                label: "-$82 / cycle",
+                symbol: "arrow.down.right",
+                accessibilityValue: "Losing $82 per cycle",
+                isPositive: false
+            )
+        )
+        XCTAssertEqual(
+            CityTrajectoryHUDPresentation.make(projectedBalance: 93),
+            CityTrajectoryHUDPresentation(
+                label: "+$93 / cycle",
+                symbol: "arrow.up.right",
+                accessibilityValue: "Growing by $93 per cycle",
+                isPositive: true
+            )
+        )
+        XCTAssertEqual(
+            CityTrajectoryHUDPresentation.make(projectedBalance: 0).accessibilityValue,
+            "Holding steady"
         )
     }
 

@@ -152,6 +152,8 @@ struct InspectorView: View {
 
     private func tileContext(_ tile: CityTile) -> some View {
         LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            nextActionCard(for: tile)
+
             ContextCard(title: "Identity", symbol: tile.kind.symbol, tint: tile.kind.contextTint) {
                 ContextValueRow(label: "Type", value: tile.kind.title)
                 ContextValueRow(label: "Level", value: "\(tile.level)")
@@ -217,35 +219,38 @@ struct InspectorView: View {
                 .accessibilityLabel(diagnosis.accessibilitySummary)
             }
 
-            ContextCard(title: "Next action", symbol: "arrow.turn.down.right", tint: GameTheme.accent) {
-                if tile.kind == .empty {
-                    HStack(spacing: 6) {
-                        compactAction("Road", symbol: BuildingKind.road.symbol) { store.perform(.buildRoad) }
-                        compactAction("Homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
-                    }
-                    compactAction("Open build catalog", symbol: "square.grid.2x2") { store.perform(.buildMode) }
-                } else if tile.kind == .cityHall {
-                    Label("Protected landmark", systemImage: "shield.lefthalf.filled")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(GameTheme.information)
-                        .accessibilityLabel("City Hall is a protected landmark and cannot be demolished")
-                    Text("City Hall anchors the city and cannot be removed.")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
+        }
+    }
+
+    private func nextActionCard(for tile: CityTile) -> some View {
+        ContextCard(title: "Next action", symbol: "arrow.turn.down.right", tint: GameTheme.accent) {
+            if tile.kind == .empty {
+                HStack(spacing: 6) {
+                    compactAction("Road", symbol: BuildingKind.road.symbol) { store.perform(.buildRoad) }
+                    compactAction("Homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
+                }
+                compactAction("Open build catalog", symbol: "square.grid.2x2") { store.perform(.buildMode) }
+            } else if tile.kind == .cityHall {
+                Label("Protected landmark", systemImage: "shield.lefthalf.filled")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(GameTheme.information)
+                    .accessibilityLabel("City Hall is a protected landmark and cannot be demolished")
+                Text("City Hall anchors the city and cannot be removed.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
+            } else {
+                ContextValueRow(label: "Demolition", value: tile.kind.demolitionCost.currencyText)
+                HStack(spacing: 6) {
                     compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
-                } else {
-                    ContextValueRow(label: "Demolition", value: tile.kind.demolitionCost.currencyText)
-                    HStack(spacing: 6) {
-                        compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
-                        Button(role: .destructive) { store.demolishSelected() } label: {
-                            Label("Demolish", systemImage: "trash")
-                                .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
-                        }
-                        .buttonStyle(.bordered)
-                        .accessibilityLabel("Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)")
-                        .accessibilityHint("Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation.")
+                    Button(role: .destructive) { store.demolishSelected() } label: {
+                        Label("Demolish", systemImage: "trash")
+                            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
                     }
+                    .buttonStyle(.bordered)
+                    .accessibilityLabel("Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)")
+                    .accessibilityHint("Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation.")
                 }
             }
         }

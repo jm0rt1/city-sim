@@ -1066,12 +1066,68 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 height: Double(height)
             )
         )
-        guard let output = context.makeImage() else {
+        guard let composited = context.makeImage() else {
             throw OfflineRendererError.rendering(
                 "could not create registered source"
             )
         }
-        return output
+        return try deterministicallyQuantized(composited)
+    }
+
+    private func deterministicallyQuantized(
+        _ image: CGImage
+    ) throws -> CGImage {
+        let width = image.width
+        let height = image.height
+        var bytes = [UInt8](repeating: 0, count: width * height * 4)
+        let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+        return try bytes.withUnsafeMutableBytes { storage in
+            guard let context = CGContext(
+                data: storage.baseAddress,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: colorSpace,
+                bitmapInfo:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ) else {
+                throw OfflineRendererError.rendering(
+                    "could not allocate deterministic quantizer"
+                )
+            }
+            context.interpolationQuality = .none
+            context.draw(
+                image,
+                in: CGRect(x: 0, y: 0, width: width, height: height)
+            )
+            let step = 8
+            for pixel in stride(from: 0, to: storage.count, by: 4) {
+                if
+                    storage[pixel] == 255,
+                    storage[pixel + 1] == 0,
+                    storage[pixel + 2] == 255,
+                    storage[pixel + 3] == 255
+                {
+                    continue
+                }
+                for channel in 0..<3 {
+                    let value = Int(storage[pixel + channel])
+                    let quantized = min(
+                        255,
+                        ((value + step / 2) / step) * step
+                    )
+                    storage[pixel + channel] = UInt8(quantized)
+                }
+            }
+            guard let output = context.makeImage() else {
+                throw OfflineRendererError.rendering(
+                    "could not create deterministic source"
+                )
+            }
+            return output
+        }
     }
 
     private func drawShadow(

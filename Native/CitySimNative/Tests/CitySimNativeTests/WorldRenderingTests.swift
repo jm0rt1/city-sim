@@ -2476,6 +2476,82 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testTypedLocalActivitySwitchesToCurrentHighestBandSourceExactlyOnce() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let renderer = AmbientLifeRenderer(
+            style: WorldVisualStyle(),
+            assets: WorldAssetCatalog()
+        )
+        let eligible = renderer.activityPlacements(
+            in: state,
+            detail: .block,
+            streetActivityIndex: { coordinate in
+                state.tile(at: coordinate)?.kind == .road ? 0.5 : nil
+            },
+            placeActivityIndex: { _ in nil }
+        )
+        let firstSource = try XCTUnwrap(eligible.first?.sourceCoordinate)
+        let secondSource = try XCTUnwrap(
+            eligible.first(where: { $0.sourceCoordinate != firstSource })?.sourceCoordinate
+        )
+        let initial = renderer.activityPlacements(
+            in: state,
+            detail: .city,
+            streetActivityIndex: { coordinate in
+                if coordinate == firstSource { return 0.9 }
+                if coordinate == secondSource { return 0.5 }
+                return nil
+            },
+            placeActivityIndex: { _ in nil }
+        )
+        let switched = renderer.activityPlacements(
+            in: state,
+            detail: .city,
+            streetActivityIndex: { coordinate in
+                if coordinate == firstSource { return 0.5 }
+                if coordinate == secondSource { return 0.9 }
+                return nil
+            },
+            placeActivityIndex: { _ in nil }
+        )
+        XCTAssertEqual(initial.map(\.sourceCoordinate), [firstSource])
+        XCTAssertEqual(switched.map(\.sourceCoordinate), [secondSource])
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        XCTAssertTrue(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: initial
+        ))
+        let initialRebuildCount = scene.ambientRebuildCountForTesting
+        let initialName = "world.activity.street.local-activity."
+            + "\(firstSource.x).\(firstSource.y)"
+        XCTAssertEqual(scene.renderedActivityNamesForTesting, [initialName])
+
+        XCTAssertFalse(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: initial
+        ))
+        XCTAssertTrue(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: switched
+        ))
+        XCTAssertFalse(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: switched
+        ))
+        let switchedName = "world.activity.street.local-activity."
+            + "\(secondSource.x).\(secondSource.y)"
+        XCTAssertEqual(scene.renderedActivityNamesForTesting, [switchedName])
+        XCTAssertEqual(
+            scene.ambientRebuildCountForTesting - initialRebuildCount,
+            1,
+            "A changed authoritative highest-band source must replace the rendered actor once"
+        )
+    }
+
+    @MainActor
     func testLotContextIsDeterministicTruthBoundedAndProtectsFrontage() {
         let style = WorldVisualStyle()
         let renderer = LotContextRenderer(style: style)

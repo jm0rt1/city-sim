@@ -26,6 +26,20 @@ final class AmbientLifeRenderer {
         let motionVector: CGPoint
     }
 
+    struct ActivityCandidates: Equatable, Sendable {
+        let streets: [ActivityCandidate]
+        let places: [ActivityCandidate]
+        let reservedSurfaces: Set<GridCoordinate>
+    }
+
+    struct ActivityCandidate: Equatable, Sendable {
+        let domain: ActivityDomain
+        let sourceCoordinate: GridCoordinate
+        let surfaceCoordinate: GridCoordinate
+        let position: CGPoint
+        let motionVector: CGPoint
+    }
+
     private enum VacantLandscapeIdentity: Int, CaseIterable {
         case meadow
         case shrubPatch
@@ -61,7 +75,8 @@ final class AmbientLifeRenderer {
         in state: CityGameState,
         consequences: CitySpatialConsequenceMap,
         detail: CameraDetailLevel,
-        reducedMotion: Bool
+        reducedMotion: Bool,
+        resolvedActivityPlacements: [ActivityPlacement]? = nil
     ) -> SKNode {
         lastActivityPlacements = []
         let root = SKNode()
@@ -150,12 +165,19 @@ final class AmbientLifeRenderer {
                 root.addChild(vignette)
             }
         }
-        addLocalActivity(
+        let excludedActivityRoads = Set(
+            furnitureByRoadIndex.keys.map { roads[$0].coordinate }
+        )
+        let placements = resolvedActivityPlacements ?? activityPlacements(
             in: state,
             consequences: consequences,
             detail: detail,
+            excluding: excludedActivityRoads
+        )
+        addLocalActivity(
+            placements: placements,
+            detail: detail,
             reducedMotion: reducedMotion,
-            excluding: Set(furnitureByRoadIndex.keys.map { roads[$0].coordinate }),
             to: root
         )
         addVacantLandscape(
@@ -169,16 +191,131 @@ final class AmbientLifeRenderer {
         return root
     }
 
+    /// Returns the exact road surfaces reserved by deterministic furniture.
+    /// This is geometry-only selection: it creates no SpriteKit nodes and can
+    /// safely be reused while resolving the current activity signature.
+    func activityExcludedRoadCoordinates(
+        in state: CityGameState,
+        detail: CameraDetailLevel
+    ) -> Set<GridCoordinate> {
+        guard detail.includes(.neighborhood) else { return [] }
+        let completed = state.tiles.filter {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        }
+        let developedCoordinates = completed.map(\.coordinate)
+        guard !developedCoordinates.isEmpty else { return [] }
+        let candidateRoads = state.tiles.filter { tile in
+            guard tile.kind == .road else { return false }
+            let distance = developedCoordinates.map {
+                abs($0.x - tile.coordinate.x) + abs($0.y - tile.coordinate.y)
+            }.min() ?? .max
+            return distance <= 4
+        }
+        let roads = corridorAnchors(
+            from: candidateRoads,
+            developedCoordinates: developedCoordinates,
+            limit: 5
+        )
+        let preferredRoadOrder = Array(roads.indices.dropFirst(2))
+            + Array(roads.indices.prefix(2))
+        var excluded: Set<GridCoordinate> = []
+        for roadIndex in preferredRoadOrder where excluded.count < 3 {
+            let road = roads[roadIndex]
+            guard streetFurniturePlacement(
+                at: road.coordinate,
+                index: excluded.count,
+                in: state
+            ) != nil else { continue }
+            excluded.insert(road.coordinate)
+        }
+        return excluded
+    }
+
     func activityPlacements(
         in state: CityGameState,
         consequences: CitySpatialConsequenceMap,
         detail: CameraDetailLevel,
         excluding excludedRoads: Set<GridCoordinate> = []
     ) -> [ActivityPlacement] {
+        let candidates = activityCandidates(in: state, excluding: excludedRoads)
+        return activityPlacements(
+            in: state,
+            candidates: candidates,
+            detail: detail,
+            streetActivityIndex: { consequences[$0]?.streetActivityIndex },
+            placeActivityIndex: { consequences[$0]?.placeActivityIndex }
+        )
+    }
+
+    func activityCandidates(
+        in state: CityGameState,
+        excluding excludedRoads: Set<GridCoordinate> = []
+    ) -> ActivityCandidates {
+        var streets: [ActivityCandidate] = []
+        var places: [ActivityCandidate] = []
+        streets.reserveCapacity(32)
+        places.reserveCapacity(16)
+        for tile in state.tiles {
+            if tile.kind == .road,
+               !excludedRoads.contains(tile.coordinate),
+               let geometry = sidewalkActivityGeometry(
+                   at: tile.coordinate,
+                   in: state,
+                   salt: 0xAC7100
+               ) {
+                streets.append(ActivityCandidate(
+                    domain: .street,
+                    sourceCoordinate: tile.coordinate,
+                    surfaceCoordinate: tile.coordinate,
+                    position: geometry.position,
+                    motionVector: geometry.motionVector
+                ))
+            } else if tile.kind != .empty,
+                      tile.kind != .road,
+                      tile.constructionProgress >= 1 {
+                let frontages = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
+                guard let frontage = ResidentialGeneratedAssetIdentity
+                    .authoritativeFrontagePriority
+                    .first(where: frontages.contains) else { continue }
+                let delta = frontage.coordinateDelta
+                let roadCoordinate = GridCoordinate(
+                    x: tile.coordinate.x + delta.x,
+                    y: tile.coordinate.y + delta.y
+                )
+                guard !excludedRoads.contains(roadCoordinate),
+                      state.tile(at: roadCoordinate)?.kind == .road,
+                      let geometry = sidewalkActivityGeometry(
+                          at: roadCoordinate,
+                          in: state,
+                          facing: tile.coordinate,
+                          salt: 0xAC7200
+                      ) else { continue }
+                places.append(ActivityCandidate(
+                    domain: .place,
+                    sourceCoordinate: tile.coordinate,
+                    surfaceCoordinate: roadCoordinate,
+                    position: geometry.position,
+                    motionVector: geometry.motionVector
+                ))
+            }
+        }
+        return ActivityCandidates(
+            streets: streets,
+            places: places,
+            reservedSurfaces: excludedRoads
+        )
+    }
+
+    func activityPlacements(
+        in state: CityGameState,
+        candidates: ActivityCandidates,
+        consequences: CitySpatialConsequenceMap,
+        detail: CameraDetailLevel
+    ) -> [ActivityPlacement] {
         activityPlacements(
             in: state,
+            candidates: candidates,
             detail: detail,
-            excluding: excludedRoads,
             streetActivityIndex: { consequences[$0]?.streetActivityIndex },
             placeActivityIndex: { consequences[$0]?.placeActivityIndex }
         )
@@ -191,99 +328,84 @@ final class AmbientLifeRenderer {
         streetActivityIndex: (GridCoordinate) -> Double?,
         placeActivityIndex: (GridCoordinate) -> Double?
     ) -> [ActivityPlacement] {
+        let candidates = activityCandidates(in: state, excluding: excludedRoads)
+        return activityPlacements(
+            in: state,
+            candidates: candidates,
+            detail: detail,
+            streetActivityIndex: streetActivityIndex,
+            placeActivityIndex: placeActivityIndex
+        )
+    }
+
+    private func activityPlacements(
+        in state: CityGameState,
+        candidates: ActivityCandidates,
+        detail: CameraDetailLevel,
+        streetActivityIndex: (GridCoordinate) -> Double?,
+        placeActivityIndex: (GridCoordinate) -> Double?
+    ) -> [ActivityPlacement] {
         let streetLimit = detail == .city ? 1 : 2
         let placeLimit = 1
-        var occupiedSurfaces = excludedRoads
+        var occupiedSurfaces = candidates.reservedSurfaces
         var placements: [ActivityPlacement] = []
+        placements.reserveCapacity(streetLimit + placeLimit)
 
-        let streets = state.tiles.compactMap { tile -> (CityTile, Double)? in
-            guard tile.kind == .road,
-                  !excludedRoads.contains(tile.coordinate),
-                  let band = Self.presentationBand(
-                    for: streetActivityIndex(tile.coordinate)
-                  ),
-                  band > 0 else { return nil }
-            return (tile, Double(band) / 3)
-        }.sorted(by: activityOrder)
-
-        for (tile, intensity) in streets {
-            guard placements.filter({ $0.domain == .street }).count < streetLimit,
-                  !occupiedSurfaces.contains(tile.coordinate),
-                  let geometry = sidewalkActivityGeometry(
-                    at: tile.coordinate,
-                    in: state,
-                    salt: 0xAC7100
-                  ) else { continue }
-            occupiedSurfaces.insert(tile.coordinate)
-            placements.append(ActivityPlacement(
-                domain: .street,
-                sourceCoordinate: tile.coordinate,
-                surfaceCoordinate: tile.coordinate,
-                intensity: intensity,
-                position: geometry.position,
-                motionVector: geometry.motionVector
-            ))
+        var selectedStreetCount = 0
+        streetSelection: for band in stride(from: 3, through: 1, by: -1) {
+            for candidate in candidates.streets {
+                guard selectedStreetCount < streetLimit else {
+                    break streetSelection
+                }
+                guard Self.presentationBand(
+                    for: streetActivityIndex(candidate.sourceCoordinate)
+                ) == UInt8(band) else { continue }
+                occupiedSurfaces.insert(candidate.surfaceCoordinate)
+                selectedStreetCount += 1
+                placements.append(ActivityPlacement(
+                    domain: .street,
+                    sourceCoordinate: candidate.sourceCoordinate,
+                    surfaceCoordinate: candidate.surfaceCoordinate,
+                    intensity: Double(band) / 3,
+                    position: candidate.position,
+                    motionVector: candidate.motionVector
+                ))
+            }
         }
 
-        let places = state.tiles.compactMap { tile -> (CityTile, Double)? in
-            guard tile.kind != .empty,
-                  tile.kind != .road,
-                  tile.constructionProgress >= 1,
-                  let band = Self.presentationBand(
-                    for: placeActivityIndex(tile.coordinate)
-                  ),
-                  band > 0 else { return nil }
-            return (tile, Double(band) / 3)
-        }.sorted(by: activityOrder)
-
-        for (tile, intensity) in places {
-            guard placements.filter({ $0.domain == .place }).count < placeLimit else {
-                break
+        var selectedPlaceCount = 0
+        placeSelection: for band in stride(from: 3, through: 1, by: -1) {
+            for candidate in candidates.places {
+                guard selectedPlaceCount < placeLimit else {
+                    break placeSelection
+                }
+                guard Self.presentationBand(
+                    for: placeActivityIndex(candidate.sourceCoordinate)
+                ) == UInt8(band) else { continue }
+                guard !occupiedSurfaces.contains(candidate.surfaceCoordinate) else {
+                    continue
+                }
+                occupiedSurfaces.insert(candidate.surfaceCoordinate)
+                selectedPlaceCount += 1
+                placements.append(ActivityPlacement(
+                    domain: .place,
+                    sourceCoordinate: candidate.sourceCoordinate,
+                    surfaceCoordinate: candidate.surfaceCoordinate,
+                    intensity: Double(band) / 3,
+                    position: candidate.position,
+                    motionVector: candidate.motionVector
+                ))
             }
-            let frontages = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
-            guard let frontage = ResidentialGeneratedAssetIdentity
-                .authoritativeFrontagePriority
-                .first(where: frontages.contains) else { continue }
-            let delta = frontage.coordinateDelta
-            let roadCoordinate = GridCoordinate(
-                x: tile.coordinate.x + delta.x,
-                y: tile.coordinate.y + delta.y
-            )
-            guard !occupiedSurfaces.contains(roadCoordinate),
-                  state.tile(at: roadCoordinate)?.kind == .road,
-                  let geometry = sidewalkActivityGeometry(
-                    at: roadCoordinate,
-                    in: state,
-                    facing: tile.coordinate,
-                    salt: 0xAC7200
-                  ) else { continue }
-            occupiedSurfaces.insert(roadCoordinate)
-            placements.append(ActivityPlacement(
-                domain: .place,
-                sourceCoordinate: tile.coordinate,
-                surfaceCoordinate: roadCoordinate,
-                intensity: intensity,
-                position: geometry.position,
-                motionVector: geometry.motionVector
-            ))
         }
         return placements
     }
 
     private func addLocalActivity(
-        in state: CityGameState,
-        consequences: CitySpatialConsequenceMap,
+        placements: [ActivityPlacement],
         detail: CameraDetailLevel,
         reducedMotion: Bool,
-        excluding excludedRoads: Set<GridCoordinate>,
         to root: SKNode
     ) {
-        let placements = activityPlacements(
-            in: state,
-            consequences: consequences,
-            detail: detail,
-            excluding: excludedRoads
-        )
         lastActivityPlacements = placements
         guard !placements.isEmpty else { return }
 
@@ -339,15 +461,6 @@ final class AmbientLifeRenderer {
         if !activity.children.isEmpty {
             root.addChild(activity)
         }
-    }
-
-    private func activityOrder(
-        _ lhs: (CityTile, Double),
-        _ rhs: (CityTile, Double)
-    ) -> Bool {
-        if lhs.1 != rhs.1 { return lhs.1 > rhs.1 }
-        return (lhs.0.coordinate.y, lhs.0.coordinate.x)
-            < (rhs.0.coordinate.y, rhs.0.coordinate.x)
     }
 
     private func sidewalkActivityGeometry(
@@ -891,26 +1004,12 @@ final class AmbientLifeRenderer {
         in state: CityGameState,
         position roadPosition: CGPoint
     ) -> SKNode? {
-        let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
-        let orderedEdges = connections.edges
-        guard !orderedEdges.isEmpty else { return nil }
+        guard let placement = streetFurniturePlacement(
+            at: coordinate,
+            index: index,
+            in: state
+        ) else { return nil }
         let variant = index % 3
-        let preferredSide: CGFloat = WorldVisualSeed.unit(
-            for: coordinate,
-            kind: .road,
-            salt: 0x57A33
-        ) < 0.5 ? -1 : 1
-        let orderedSides = [preferredSide, -preferredSide]
-        let orderedCandidates = orderedEdges.flatMap { edge in
-            orderedSides.map { side in (edge: edge, side: side) }
-        }
-        guard let placement = orderedCandidates.first(where: {
-            isClearSidewalkPlacement(
-                edge: $0.edge,
-                side: $0.side,
-                connections: connections
-            )
-        }) else { return nil }
 
         let endpoint = style.roadSocket(for: placement.edge)
         let endpointLength = max(0.001, hypot(endpoint.x, endpoint.y))
@@ -957,6 +1056,32 @@ final class AmbientLifeRenderer {
         }
         root.setScale(0.72)
         return root
+    }
+
+    private func streetFurniturePlacement(
+        at coordinate: GridCoordinate,
+        index: Int,
+        in state: CityGameState
+    ) -> (edge: RoadConnectionMask, side: CGFloat)? {
+        let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
+        let orderedEdges = connections.edges
+        guard !orderedEdges.isEmpty else { return nil }
+        let preferredSide: CGFloat = WorldVisualSeed.unit(
+            for: coordinate,
+            kind: .road,
+            salt: 0x57A33
+        ) < 0.5 ? -1 : 1
+        let orderedSides = [preferredSide, -preferredSide]
+        let orderedCandidates = orderedEdges.flatMap { edge in
+            orderedSides.map { side in (edge: edge, side: side) }
+        }
+        return orderedCandidates.first(where: {
+            isClearSidewalkPlacement(
+                edge: $0.edge,
+                side: $0.side,
+                connections: connections
+            )
+        })
     }
 
     private func isClearSidewalkPlacement(

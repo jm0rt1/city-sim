@@ -333,7 +333,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** UI infers gameplay truth from prose or tile counts, bypasses the store/catalog, adds a public contract without approval, hides the map before victory, or cannot prove keyboard/AX replay initiation.
 - **Accepted integration:** Product `a8e88ee`, `4683fff`, `af4b821`, and `a10cc9b`; evidence/completion `38c925c`.
 
-### [ ] PLAY-039: Make the world the hero of the HUD
+### [x] PLAY-039: Make the world the hero of the HUD
 
 - **Player outcome:** The city is the dominant, beautiful play surface; the HUD remains immediately understandable without looking like two opaque control walls placed over the world.
 - **Owning lane:** UI and input.
@@ -342,7 +342,22 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Renderer art, simulation facts, gameplay balance, new commands, save state, active-target ownership, or local re-derivation of strategy truth.
 - **Acceptance:** Default and exact 900 x 600 materially increase the visible interactive world while retaining every critical action and semantic route; the priority no longer reads as a floating opaque map obstruction; top and bottom chrome establish one clear hierarchy; selection, rejection, command search, focus, and accessibility remain exact.
 - **Stop conditions:** Hiding required truth, icon-only critical actions, reducing hit targets or contrast, keyboard/AX divergence, SwiftUI claims over renderer-owned geometry, or accepting a screenshot that is prettier but less operable.
-- **Current status:** Authorized by `docs/production/claims/PLAY-039.ui-input.md` under `docs/production/WAVE-006-WORLD-EXCELLENCE.md`.
+- **Accepted integration:** Product `f8f800656cf1cefb87aa5cdca231fa31bef6d860`, evidence `a895568cbf618830e587d1675be72702669c9af1`, and completion `b497f1d` are integrated. Independent PLAY-053 accepted the combined world/HUD candidate at 19/20 with shipping/HUD/accessibility/performance at 4/4. PLAY-054 owns the newly observed legibility and compact command-center follow-up without reopening the accepted map-aperture outcome.
+
+### [ ] PLAY-054: Make the command surface readable and alive
+
+- **Player outcome:** The player can read the city’s condition, priority, and next action at a glance, and opening Details or Notices reveals a genuinely usable command surface rather than tiny text or visually collapsed content.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** UX-001, UX-003, UX-004, UX-007, UX-009, UX-010, AUD-001, REL-005.
+- **Dependencies:** Accepted PLAY-033 and PLAY-039; published Residential source authority `1d4d4f7eba1bb1cf3c8d64b1c221f33d3be91637`. May proceed in parallel with PLAY-027 and PLAY-028 because it changes no SpriteKit or asset contract.
+- **In scope:** Responsive Top HUD hierarchy; MetricCard and priority typography; compact/default command-deck composition; useful Details/Inspector/Journal viewport; HUD-specific material, contrast, grouping, depth, and motion; existing selected-context continuity; pointer/keyboard/FKA/AX parity; retained same-state evidence.
+- **Out of scope:** Renderer art or camera, simulation/gameplay facts, new commands, save state, active-target ownership, command/store contract changes, or hiding critical information to create whitespace.
+- **Work checklist:** Freeze exact compact/default baseline frames and typography/aperture measurements; design responsive open/closed hierarchy; implement semantic type and HUD-specific visual tokens; repair Overview/Journal visibility; retain selected/rejection/action continuity; exercise every existing input/accessibility route; capture candidate-bound comparison and completion evidence.
+- **Acceptance:** At standard text size, no critical metric, priority, action, warning, or current-state text renders below 11 points and no supporting text required to choose an action renders below 10 points. Exact 900 x 600 Details/Journal visually exposes at least one complete actionable section and two complete notice summaries without relying on an invisible AX-only scroll region; default exposes a useful diagnostic section without microscopic cards. Closed compact map aperture remains at least the accepted 58%, open compact aperture remains at least 45%, and every critical action remains present. Priority, paused/running state, negative cashflow, utility shortfall, selected context, and action availability are readable in one glance in color and grayscale. Pointer, keyboard, command search, Escape, FKA, AX, Reduce Motion, focus stability at 3x, full tests, and exact staged default/compact journeys pass. Independent review must materially prefer the candidate over the retained baseline.
+- **Validation:** Focused UI/layout/accessibility tests; `swift test --package-path Native/CitySimNative`; `git diff --check`; `bash -n script/build_and_run.sh`; exact lane-staged `./script/build_and_run.sh --verify`; direct pointer and keyboard journeys at regular and exact 900 x 600.
+- **Proof:** Candidate-bound font inventory, open/closed aperture measurements, default/compact color and grayscale before/after frames, visible Overview and Journal frames, AX trees, focus route, Reduce Motion state, staged identity/manifest, performance observations, and independent quality disposition under `docs/production/evidence/PLAY-054/`.
+- **Stop conditions:** Font scaling without responsive recomposition; a taller opaque wall that violates the aperture floor; visually hidden but AX-present information; icon-only critical actions; fixed-height clipping; state duplication; renderer/store/simulation contract changes; screenshot-only or author self-acceptance.
+- **Current disposition:** Ready for dispatch from the first published authority containing `docs/production/claims/PLAY-054.ui-input.md`; the binding integration audit is `docs/production/evidence/PLAY-054/INTEGRATION-AUDIT.md`.
 
 ### [x] PLAY-042: Adopt durable strategy progression into runtime trust
 

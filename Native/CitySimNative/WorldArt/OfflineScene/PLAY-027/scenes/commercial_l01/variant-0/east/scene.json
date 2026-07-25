@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "commercial-l01-v0-east-corner-shop-geometry-v1",
+  "sceneGeometryID": "commercial-l01-v0-east-corner-shop-geometry-v2",
   "logicalBuildingID": "commercial_l01",
   "family": "commercial",
   "level": 1,
   "variantID": "variant-0",
   "viewDirection": "east",
-  "sourceRevision": "source-v02",
+  "sourceRevision": "source-v03",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},
@@ -37,7 +37,7 @@
     "massingProfile": "compact-two-floor-corner-shop", "usesLegacyDomesticDetails": false,
     "massBlocks": [
       {"id": "c01-main-corner-shop", "dimensions": [52, 30, 52], "positionWorld": [0, 17, 0], "materialID": "brick-commercial-red"},
-      {"id": "c01-corner-stone-pier", "dimensions": [12, 34, 12], "positionWorld": [20, 19, -20], "materialID": "stone-commercial-sand"}
+      {"id": "c01-corner-stone-pier", "dimensions": [13.2, 34, 13.2], "positionWorld": [20.6, 19, -20.6], "materialID": "stone-commercial-sand"}
     ],
     "roofVolumes": [
       {"id": "c01-flat-coping", "shape": "flat-parapet", "dimensions": [54, 5, 54], "positionWorld": [0, 34.5, 0], "materialID": "slate-charcoal", "trimMaterialID": "limestone-warm"}

@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceRevision": "industrial_l02/variant-0/source-v05",
+  "attempts": [
+    {
+      "id": "north-primary",
+      "raw": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/north/source-v05.png",
+      "provenance": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/industrial_l02/variant-0/north/source-v05.json"
+    },
+    {
+      "id": "north-b",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/north-run-b.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/north-run-b.json"
+    },
+    {
+      "id": "north-c",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/north-run-c.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/north-run-c.json"
+    },
+    {
+      "id": "east-primary",
+      "raw": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/east/source-v05.png",
+      "provenance": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/industrial_l02/variant-0/east/source-v05.json"
+    },
+    {
+      "id": "east-b",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/east-run-b.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/east-run-b.json"
+    },
+    {
+      "id": "east-c",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/east-run-c.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/east-run-c.json"
+    },
+    {
+      "id": "south-primary",
+      "raw": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/south/source-v05.png",
+      "provenance": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/industrial_l02/variant-0/south/source-v05.json"
+    },
+    {
+      "id": "south-b",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/south-run-b.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/south-run-b.json"
+    },
+    {
+      "id": "south-c",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/south-run-c.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/south-run-c.json"
+    },
+    {
+      "id": "west-primary",
+      "raw": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/west/source-v05.png",
+      "provenance": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/industrial_l02/variant-0/west/source-v05.json"
+    },
+    {
+      "id": "west-b",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/west-run-b.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/west-run-b.json"
+    },
+    {
+      "id": "west-c",
+      "raw": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/west-run-c.png",
+      "provenance": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/west-run-c.json"
+    }
+  ],
+  "attemptCount": 12,
+  "allAttemptsRetained": true,
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

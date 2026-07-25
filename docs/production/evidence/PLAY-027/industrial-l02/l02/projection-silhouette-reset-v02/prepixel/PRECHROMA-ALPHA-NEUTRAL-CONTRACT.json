@@ -1,0 +1,26 @@
+{
+  "alphaTruth" : "SceneKit RGBA alpha channel from that pre-chroma image",
+  "authoredShadow" : "draw the existing registration.contactPolygonWorld and frozen southeast shadow into a transparent RGBA context, then source-over the pre-chroma SceneKit RGBA",
+  "authority" : "future-review-presentation-only-never-governed-raw",
+  "captureBoundary" : "CIImage returned by SCNRenderer.snapshot after fixed 4x downsample and before the compositor creates or fills the magenta canvas",
+  "colorClassification" : "forbidden",
+  "governedRawMutation" : false,
+  "mathematicalGuarantee" : "the proof context is initialized transparent and receives no magenta fill; therefore an output pixel can contain magenta only if the pre-chroma building itself emits magenta, which is a fail-closed material violation",
+  "neutralCompositeRGBA" : [
+    224,
+    226,
+    220,
+    255
+  ],
+  "postHocMagentaGuess" : false,
+  "productionSelected" : false,
+  "requiredChecks" : [
+    "zero exact or near-magenta opaque pixels",
+    "zero residual magenta-family pixels",
+    "alpha bounds preserve the pre-chroma building plus authored shadow union",
+    "pivot, socket, contact polygon, and shadow vector remain exact"
+  ],
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-proof-only-pre-chroma-alpha-v02"
+}

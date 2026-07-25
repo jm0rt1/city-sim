@@ -715,97 +715,176 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testFocusCityPointerShieldConsumesDownAndPerformsEnterAndExitExactlyOnce() throws {
+    func testFocusCityPointerMonitorInstallsOnlyWhileVisibleAndLeavesButtonSemanticsExposed() {
         _ = NSApplication.shared
-        let store = CityGameStore(state: .newCity(seed: 42))
-        store.selectTool(.commercial)
-        store.selectedCoordinate = GridCoordinate(x: 11, y: 11)
-        let state = store.state
-        let coordinate = store.selectedCoordinate
-        let target = try XCTUnwrap(store.activeMapActionTargetPresentation)
-        let focusGeneration = store.mapFocusRequestGeneration
+        let window = NSWindow(
+            contentRect: CGRect(x: 0, y: 0, width: 320, height: 200),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let content = NSView(frame: window.contentView?.bounds ?? .zero)
+        window.contentView = content
+        let monitor = CityFocusPointerShieldView {}
+        monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
 
-        let shield = CityFocusPointerShieldView {
-            _ = store.perform(.toggleCityFocus)
+        content.addSubview(monitor)
+        XCTAssertTrue(monitor.monitorIsInstalled)
+        XCTAssertNil(
+            monitor.hitTest(NSPoint(x: 60, y: 22)),
+            "The AppKit boundary must not replace or cover the SwiftUI Button semantic action"
+        )
+
+        monitor.removeFromSuperview()
+        XCTAssertFalse(monitor.monitorIsInstalled)
+    }
+
+    @MainActor
+    func testFocusCityPointerMonitorCancelsDragOutAndPreservesEveryModeExactlyOnce() throws {
+        _ = NSApplication.shared
+        let window = NSWindow(
+            contentRect: CGRect(x: 0, y: 0, width: 320, height: 200),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let content = NSView(frame: window.contentView?.bounds ?? .zero)
+        window.contentView = content
+        window.orderFront(nil)
+
+        func mouseEvent(
+            _ type: NSEvent.EventType,
+            location: NSPoint,
+            eventNumber: Int
+        ) throws -> NSEvent {
+            try XCTUnwrap(
+                NSEvent.mouseEvent(
+                    with: type,
+                    location: location,
+                    modifierFlags: [],
+                    timestamp: TimeInterval(eventNumber),
+                    windowNumber: window.windowNumber,
+                    context: nil,
+                    eventNumber: eventNumber,
+                    clickCount: 1,
+                    pressure: type == .leftMouseUp ? 0 : 1
+                )
+            )
         }
-        shield.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
-        let mouseDown = try XCTUnwrap(
+
+        let inside = NSPoint(x: 100, y: 62)
+        let outside = NSPoint(x: 260, y: 160)
+        let mouseDownInside = try mouseEvent(.leftMouseDown, location: inside, eventNumber: 1)
+        let mouseDraggedOutside = try mouseEvent(.leftMouseDragged, location: outside, eventNumber: 2)
+        let mouseUpInside = try mouseEvent(.leftMouseUp, location: inside, eventNumber: 3)
+        let mouseDownOutside = try mouseEvent(.leftMouseDown, location: outside, eventNumber: 4)
+
+        for mode in [
+            CityInteractionMode.inspect,
+            .build(.commercial),
+            .bulldoze
+        ] {
+            let store = CityGameStore(state: .newCity(seed: 42))
+            store.interactionMode = mode
+            store.selectedTool = .commercial
+            store.selectedCoordinate = GridCoordinate(x: 11, y: 11)
+            store.showObjectives = true
+            store.showInspector = true
+            let state = store.state
+            let digest = try CityStateFingerprinter.fingerprint(state).digest
+            let coordinate = store.selectedCoordinate
+            let target = try XCTUnwrap(store.activeMapActionTargetPresentation)
+            let focusGeneration = store.mapFocusRequestGeneration
+            let undoAvailable = store.canUndo
+            let treasury = store.state.treasury
+            var actionCount = 0
+
+            let monitor = CityFocusPointerShieldView {
+                actionCount += 1
+                _ = store.perform(.toggleCityFocus)
+            }
+            monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
+            content.addSubview(monitor)
+            XCTAssertTrue(monitor.monitorIsInstalled)
+
+            XCTAssertTrue(
+                monitor.handleLocalPointerEvent(mouseDownOutside) === mouseDownOutside,
+                "Pointer events beginning outside the exact control bounds must remain untouched"
+            )
+
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDownInside))
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDraggedOutside))
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseUpInside))
+            XCTAssertEqual(actionCount, 0, "A drag outside must cancel even if mouse-up returns inside")
+            XCTAssertFalse(store.isCityFocusModeEnabled)
+
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDownInside))
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseUpInside))
+            XCTAssertTrue(store.isCityFocusModeEnabled)
+            XCTAssertEqual(actionCount, 1)
+            XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDownInside))
+            XCTAssertNil(monitor.handleLocalPointerEvent(mouseUpInside))
+            XCTAssertFalse(store.isCityFocusModeEnabled)
+            XCTAssertEqual(actionCount, 2)
+            XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+            XCTAssertEqual(store.state, state)
+            XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state).digest, digest)
+            XCTAssertEqual(store.state.treasury, treasury)
+            XCTAssertEqual(store.selectedCoordinate, coordinate)
+            XCTAssertEqual(store.activeMapActionTargetPresentation, target)
+            XCTAssertEqual(store.interactionMode, mode)
+            XCTAssertEqual(store.selectedTool, .commercial)
+            XCTAssertEqual(store.canUndo, undoAvailable)
+            XCTAssertTrue(store.showInspector)
+            XCTAssertTrue(store.showObjectives)
+
+            monitor.removeFromSuperview()
+            XCTAssertFalse(monitor.monitorIsInstalled)
+        }
+
+        window.orderOut(nil)
+    }
+
+    @MainActor
+    func testFocusCityPointerMonitorConsumesOnlyExactWindowSequence() throws {
+        _ = NSApplication.shared
+        let owningWindow = NSWindow(
+            contentRect: CGRect(x: 0, y: 0, width: 320, height: 200),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let otherWindow = NSWindow(
+            contentRect: CGRect(x: 0, y: 0, width: 320, height: 200),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let monitor = CityFocusPointerShieldView {}
+        monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
+        owningWindow.contentView?.addSubview(monitor)
+        owningWindow.orderFront(nil)
+        otherWindow.orderFront(nil)
+
+        let foreignDown = try XCTUnwrap(
             NSEvent.mouseEvent(
                 with: .leftMouseDown,
-                location: NSPoint(x: 60, y: 22),
+                location: NSPoint(x: 100, y: 62),
                 modifierFlags: [],
                 timestamp: 1,
-                windowNumber: 0,
+                windowNumber: otherWindow.windowNumber,
                 context: nil,
                 eventNumber: 1,
                 clickCount: 1,
                 pressure: 1
             )
         )
-        let mouseUp = try XCTUnwrap(
-            NSEvent.mouseEvent(
-                with: .leftMouseUp,
-                location: NSPoint(x: 60, y: 22),
-                modifierFlags: [],
-                timestamp: 1.1,
-                windowNumber: 0,
-                context: nil,
-                eventNumber: 2,
-                clickCount: 1,
-                pressure: 0
-            )
-        )
-        let mouseDraggedOutside = try XCTUnwrap(
-            NSEvent.mouseEvent(
-                with: .leftMouseDragged,
-                location: NSPoint(x: 180, y: 80),
-                modifierFlags: [],
-                timestamp: 1.05,
-                windowNumber: 0,
-                context: nil,
-                eventNumber: 2,
-                clickCount: 1,
-                pressure: 1
-            )
-        )
-        let mouseUpOutside = try XCTUnwrap(
-            NSEvent.mouseEvent(
-                with: .leftMouseUp,
-                location: NSPoint(x: 180, y: 80),
-                modifierFlags: [],
-                timestamp: 1.1,
-                windowNumber: 0,
-                context: nil,
-                eventNumber: 3,
-                clickCount: 1,
-                pressure: 0
-            )
-        )
-
-        shield.mouseDown(with: mouseDown)
-        shield.mouseDragged(with: mouseDraggedOutside)
-        shield.mouseUp(with: mouseUpOutside)
-        XCTAssertFalse(store.isCityFocusModeEnabled)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
-
-        shield.mouseDown(with: mouseDown)
-        shield.mouseUp(with: mouseUp)
-        XCTAssertTrue(store.isCityFocusModeEnabled)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
-        XCTAssertEqual(store.state, state)
-        XCTAssertEqual(store.selectedCoordinate, coordinate)
-        XCTAssertEqual(store.activeMapActionTargetPresentation, target)
-
-        shield.mouseDown(with: mouseDown)
-        XCTAssertTrue(store.isCityFocusModeEnabled)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
-
-        shield.mouseUp(with: mouseUp)
-        XCTAssertFalse(store.isCityFocusModeEnabled)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
-        XCTAssertEqual(store.state, state)
-        XCTAssertEqual(store.selectedCoordinate, coordinate)
-        XCTAssertEqual(store.activeMapActionTargetPresentation, target)
+        XCTAssertTrue(monitor.handleLocalPointerEvent(foreignDown) === foreignDown)
+        monitor.removeFromSuperview()
+        owningWindow.orderOut(nil)
+        otherWindow.orderOut(nil)
     }
 
     @MainActor

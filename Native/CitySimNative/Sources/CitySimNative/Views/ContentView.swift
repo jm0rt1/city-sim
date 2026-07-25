@@ -31,6 +31,10 @@ enum ObjectiveSurfacePresentation: Equatable {
 @MainActor
 final class CityFocusPointerShieldView: NSView {
     var action: () -> Void
+    private(set) var monitorIsInstalled = false
+    private var localMonitor: Any?
+    private var ownsPointerSequence = false
+    private var pointerDraggedOutside = false
 
     init(action: @escaping () -> Void) {
         self.action = action
@@ -43,23 +47,81 @@ final class CityFocusPointerShieldView: NSView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
-        true
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        // The SwiftUI Button remains the semantic, FKA, focus-ring, and AX
+        // control. This view exists only to install the window-scoped pointer
+        // event boundary.
+        nil
     }
 
-    override func mouseDown(with event: NSEvent) {
-        // Deliberately consume mouse-down above SpriteKit. The command executes
-        // on mouse-up, matching native button activation semantics.
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+        if newWindow !== window {
+            stopMonitoring()
+        }
+        super.viewWillMove(toWindow: newWindow)
     }
 
-    override func mouseDragged(with event: NSEvent) {
-        // Continue owning the pointer sequence without invoking the command.
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        startMonitoringIfNeeded()
     }
 
-    override func mouseUp(with event: NSEvent) {
-        let location = convert(event.locationInWindow, from: nil)
-        guard bounds.contains(location) else { return }
-        action()
+    func startMonitoringIfNeeded() {
+        guard window != nil, localMonitor == nil else { return }
+        localMonitor = NSEvent.addLocalMonitorForEvents(
+            matching: [.leftMouseDown, .leftMouseDragged, .leftMouseUp]
+        ) { [weak self] event in
+            self?.handleLocalPointerEvent(event) ?? event
+        }
+        monitorIsInstalled = localMonitor != nil
+    }
+
+    func stopMonitoring() {
+        if let localMonitor {
+            NSEvent.removeMonitor(localMonitor)
+        }
+        localMonitor = nil
+        monitorIsInstalled = false
+        ownsPointerSequence = false
+        pointerDraggedOutside = false
+    }
+
+    func handleLocalPointerEvent(_ event: NSEvent) -> NSEvent? {
+        if ownsPointerSequence {
+            switch event.type {
+            case .leftMouseDragged:
+                if !contains(event) {
+                    pointerDraggedOutside = true
+                }
+                return nil
+            case .leftMouseUp:
+                let shouldPerform = !pointerDraggedOutside && contains(event)
+                ownsPointerSequence = false
+                pointerDraggedOutside = false
+                if shouldPerform {
+                    action()
+                }
+                return nil
+            case .leftMouseDown:
+                return nil
+            default:
+                return event
+            }
+        }
+
+        guard event.type == .leftMouseDown,
+              event.window === window,
+              contains(event) else {
+            return event
+        }
+        ownsPointerSequence = true
+        pointerDraggedOutside = false
+        return nil
+    }
+
+    private func contains(_ event: NSEvent) -> Bool {
+        guard event.window === window else { return false }
+        return bounds.contains(convert(event.locationInWindow, from: nil))
     }
 }
 
@@ -73,6 +135,10 @@ struct CityFocusPointerShield: NSViewRepresentable {
 
     func updateNSView(_ nsView: CityFocusPointerShieldView, context: Context) {
         nsView.action = action
+    }
+
+    static func dismantleNSView(_ nsView: CityFocusPointerShieldView, coordinator: ()) {
+        nsView.stopMonitoring()
     }
 }
 

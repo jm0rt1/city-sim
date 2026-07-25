@@ -9,7 +9,10 @@
 - **Planned surfaces:** quality-owned preregistration, frozen baseline captures, exact-candidate manifests and hashes, interaction/AX/performance ledgers, uncropped visual comparisons, defect returns, and independent disposition under `docs/production/evidence/PLAY-055/`
 - **Dependencies:** preregistration may begin from the published claim baseline; candidate scoring requires exact clean PLAY-028 and PLAY-054 handoffs and an integration-provided combined candidate
 - **Validation/proof:** R L1–L4 N/E/S/W real-app matrix; three LODs; regular and exact 900 x 600; typography and aperture measurements; visible Overview/Journal; priority/metric/selection/rejection state; pointer/keyboard/FKA/AX/Reduce Motion; staged-resource parity; pack/residency/RSS/performance; explicit same-state preference
-- **Status:** ready for baseline preregistration after synchronization to the published authority containing this claim
+- **Status:** accepted on `master` — preregistration `a6919c2`, quality merge
+  `fc8684a24f5cc36489c9b2b4d8edefe0b6c2e42b`, independent approval
+  `4389a3edaaf328ba40af2a41fa644c7e3e439a9d`, and exact combined product
+  `7b432c4af1ee62553598e70c6103efe7a26e8af9`
 
 Freeze the baseline and rubric before receiving final product candidates. The
 quality lane is read-mostly and must not repair product or source art. Separate

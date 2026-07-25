@@ -9,7 +9,11 @@
 - **Planned surfaces:** `Views/ContentView.swift`, `Views/TopHUDView.swift`, `Views/MetricCard.swift`, `Views/StrategyCommandCenterView.swift`, `Views/BuildToolbarView.swift`, `Views/InspectorView.swift`, existing HUD/layout/accessibility tests, HUD-specific additions to `Support/GameTheme.swift`, and `docs/production/evidence/PLAY-054/`
 - **Dependencies:** accepted PLAY-033 and PLAY-039; published authority containing the integrated PLAY-054 audit; existing command/store/focus contracts remain unchanged
 - **Validation/proof:** exact same-state default and 900 x 600 before/after; measured closed/open map aperture; rendered font-size inventory; complete visible Details/Journal sections; priority/metric/selection/rejection states; pointer/keyboard/command-search/Escape/FKA/AX/Reduce Motion/3x focus routes; grayscale/contrast comparison; full suite; independent quality review
-- **Status:** ready after synchronization to the published authority containing this claim
+- **Status:** accepted on `master` — product
+  `35c5eba893b0515560b9a37a5fd92d83d02d3b19`, evidence
+  `132d4819930a5bae0d0fd66c1b7cefe3fab9f1df`, completion `f3806c2`,
+  combined product `7b432c4af1ee62553598e70c6103efe7a26e8af9`, and independent
+  PLAY-055 approval `4389a3edaaf328ba40af2a41fa644c7e3e439a9d`
 
 Repair the observed information hierarchy without rebuilding the HUD as another
 opaque control wall. The closed command surface must stay world-first, while

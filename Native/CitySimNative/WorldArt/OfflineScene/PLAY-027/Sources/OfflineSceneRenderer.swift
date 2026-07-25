@@ -2948,7 +2948,7 @@ func validatedRawOccupancy(
         && occupiedHeight >= 260
     guard passed else {
         throw OfflineRendererError.rendering(
-            "raw occupied area cannot contain a complete building, footprint, and shadow"
+            "raw occupied area cannot contain a complete building, footprint, and shadow: pixels=\(occupiedPixelCount), bounds=\(occupiedWidth)x\(occupiedHeight), required=50000/400x260"
         )
     }
     return [

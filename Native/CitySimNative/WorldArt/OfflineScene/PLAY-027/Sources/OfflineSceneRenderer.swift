@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -2147,6 +2147,7 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 final class NativeSourceCompositor: OfflineSourceCompositing {
     private let sampling: EffectiveSamplingContract
     private let ciContext: CIContext
+    private(set) var prequantizedImage: CGImage?
 
     init(sampling: EffectiveSamplingContract) {
         self.sampling = sampling
@@ -2232,6 +2233,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 "could not create registered source"
             )
         }
+        prequantizedImage = composited
         return try deterministicallyQuantized(composited)
     }
 
@@ -2577,6 +2579,12 @@ enum OfflineSceneRendererMain {
             "--renderer-source-commit",
             in: arguments
         )
+        let diagnosticPrequantizedOutput = rendererOptionalArgument(
+            "--diagnostic-prequantized-output",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
         let diagnosticAntialiasingRaw = rendererOptionalArgument(
             "--diagnostic-antialiasing",
             in: arguments
@@ -2608,6 +2616,14 @@ enum OfflineSceneRendererMain {
             else {
                 throw OfflineRendererError.invalid(
                     "non-baseline diagnostic output must remain under a diagnostics path"
+                )
+            }
+        }
+        if let diagnosticPrequantizedOutput {
+            guard diagnosticPrequantizedOutput.path.contains("/diagnostics/")
+            else {
+                throw OfflineRendererError.invalid(
+                    "prequantized diagnostic output must remain under a diagnostics path"
                 )
             }
         }
@@ -2672,14 +2688,24 @@ enum OfflineSceneRendererMain {
             linearOversamplingFactor:
                 descriptorSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
-        let source = try NativeSourceCompositor(
+        let compositor = NativeSourceCompositor(
             sampling: descriptorSampling
-        ).compositeRegisteredSource(
+        )
+        let source = try compositor.compositeRegisteredSource(
             renderedImage: oversampled,
             descriptor: descriptor
         )
         let rawOccupancy = try validatedRawOccupancy(source)
         try writePNG(source, to: outputURL)
+        if
+            let diagnosticPrequantizedOutput,
+            let prequantizedImage = compositor.prequantizedImage
+        {
+            try writePNG(
+                prequantizedImage,
+                to: diagnosticPrequantizedOutput
+            )
+        }
 
         let sourceFiles = [
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
@@ -2721,6 +2747,13 @@ enum OfflineSceneRendererMain {
                     diagnosticConfiguration.sceneShadows.rawValue,
                 "descriptorGeometryChanged": false,
                 "sourceAuthority": false,
+                "prequantizedOutput":
+                    diagnosticPrequantizedOutput.map {
+                        rendererRelativePath(
+                            $0,
+                            repositoryRoot: repositoryRoot
+                        )
+                    } ?? "not-requested",
             ],
             "descriptorSamplingContract": [
                 "contractID": descriptorSampling.contractID,

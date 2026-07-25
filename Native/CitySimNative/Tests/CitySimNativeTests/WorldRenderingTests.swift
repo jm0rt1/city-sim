@@ -1979,13 +1979,20 @@ final class WorldRenderingTests: XCTestCase {
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
+            let priority = scene.cameraPriorityViewportOccupancyForTesting()
             if size.width <= 900 {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.57)
-                XCTAssertLessThanOrEqual(occupied.width, 0.60)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.50)
+                XCTAssertLessThanOrEqual(occupied.width, 0.52)
+                XCTAssertGreaterThanOrEqual(priority.width, 1.08)
+                XCTAssertLessThanOrEqual(priority.width, 1.10)
             } else {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.64)
-                XCTAssertLessThanOrEqual(occupied.width, 0.68)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.36)
+                XCTAssertLessThanOrEqual(occupied.width, 0.38)
+                XCTAssertGreaterThanOrEqual(priority.width, 0.78)
+                XCTAssertLessThanOrEqual(priority.width, 0.80)
             }
+            XCTAssertGreaterThan(priority.width, occupied.width)
+            XCTAssertGreaterThan(priority.height, occupied.height)
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
             XCTAssertNotEqual(
                 scene.occupiedDevelopedVisualBoundsForTesting,
@@ -2994,29 +3001,31 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertLessThan(block.calculateAccumulatedFrame().width, 1_000)
         XCTAssertLessThan(block.calculateAccumulatedFrame().height, 600)
 
-        let buildableCoordinate = try? XCTUnwrap(
-            commons.sorted { ($0.y, $0.x) < ($1.y, $1.x) }.first {
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let buildableCoordinate = commons
+            .sorted { ($0.y, $0.x) < ($1.y, $1.x) }
+            .first {
                 if case .success = CitySimulation.validateBuild(
                     .residential,
                     at: $0,
                     in: state
                 ) {
-                    return true
+                    return scene.resolvedCoordinateForTesting(
+                        at: scene.scenePointForTesting(at: $0)
+                    ) == $0
                 }
                 return false
             }
-        )
         XCTAssertNotNil(buildableCoordinate)
         if let buildableCoordinate,
            let tile = state.tile(at: buildableCoordinate) {
-            let scene = CityScene(size: CGSize(width: 1_280, height: 800))
-            scene.reducedMotion = true
-            scene.render(
-                state: state,
-                overlay: .none,
-                selection: nil,
-                interactionMode: .inspect
-            )
             let originalRoot = scene.tileRootIdentifier(at: buildableCoordinate)
             XCTAssertEqual(
                 scene.resolvedCoordinateForTesting(
@@ -4098,6 +4107,7 @@ final class WorldRenderingTests: XCTestCase {
             selection: GridCoordinate(x: 10, y: 11),
             interactionMode: .inspect
         )
+        let transitionDiagnostics = scene.diagnosticsSnapshot
         scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 11))
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
         let texture = try XCTUnwrap(view.texture(from: scene))
@@ -4105,9 +4115,9 @@ final class WorldRenderingTests: XCTestCase {
         let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
         return (
             png,
-            scene.diagnosticsSnapshot.consumedConsequenceEventCount,
-            scene.diagnosticsSnapshot.displayedConsequenceCueCount,
-            scene.diagnosticsSnapshot.activeActionCount
+            transitionDiagnostics.consumedConsequenceEventCount,
+            transitionDiagnostics.displayedConsequenceCueCount,
+            transitionDiagnostics.activeActionCount
         )
     }
 

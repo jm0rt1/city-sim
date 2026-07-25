@@ -77,7 +77,7 @@ final class TerrainRenderer {
 
         let turf = SKShapeNode(path: path)
         turf.name = "terrain.macro.turf"
-        turf.fillColor = NSColor(calibratedRed: 0.235, green: 0.405, blue: 0.255, alpha: 1)
+        turf.fillColor = NSColor(calibratedRed: 0.205, green: 0.355, blue: 0.225, alpha: 1)
         turf.strokeColor = .clear
         field.addChild(turf)
 
@@ -149,8 +149,8 @@ final class TerrainRenderer {
         let sharedCoordinates = completed.map(\.coordinate) + developedRoads.map(\.coordinate)
         let shadowPath = combinedDiamondPath(
             coordinates: sharedCoordinates,
-            width: style.tileWidth - 1,
-            height: style.tileHeight - 0.5,
+            width: style.tileWidth - 0.5,
+            height: style.tileHeight - 0.25,
             offset: CGPoint(x: 1.6, y: -1.4)
         )
         let shadow = SKShapeNode(path: shadowPath)
@@ -161,8 +161,8 @@ final class TerrainRenderer {
 
         let roadPath = combinedDiamondPath(
             coordinates: developedRoads.map(\.coordinate),
-            width: style.tileWidth - 1.5,
-            height: style.tileHeight - 0.75
+            width: style.tileWidth + 1.5,
+            height: style.tileHeight + 0.75
         )
         let publicRealm = SKShapeNode(path: roadPath)
         publicRealm.name = "district.ground.authoritative-public-realm"
@@ -173,6 +173,32 @@ final class TerrainRenderer {
         publicRealm.strokeColor = .clear
         publicRealm.zPosition = 1
         root.addChild(publicRealm)
+
+        let frontageShadow = SKShapeNode(path: frontageLinkPath(
+            completed: completed,
+            in: state,
+            offset: CGPoint(x: 1.2, y: -1.1)
+        ))
+        frontageShadow.name = "district.ground.frontage-links.contact"
+        frontageShadow.strokeColor = NSColor.black.withAlphaComponent(0.16)
+        frontageShadow.lineWidth = 18
+        frontageShadow.lineCap = .butt
+        frontageShadow.zPosition = 1.2
+        root.addChild(frontageShadow)
+
+        let frontageLinks = SKShapeNode(path: frontageLinkPath(
+            completed: completed,
+            in: state
+        ))
+        frontageLinks.name = "district.ground.frontage-links.material"
+        frontageLinks.strokeColor = style.palette.concrete.blended(
+            withFraction: 0.22,
+            of: style.palette.sidewalk
+        )?.withAlphaComponent(0.96) ?? style.palette.concrete
+        frontageLinks.lineWidth = 15
+        frontageLinks.lineCap = .butt
+        frontageLinks.zPosition = 1.4
+        root.addChild(frontageLinks)
 
         let familyGroups = Dictionary(grouping: completed, by: \.kind)
         for (kind, tiles) in familyGroups {
@@ -332,7 +358,7 @@ final class TerrainRenderer {
         let meadow = SKShapeNode(path: style.polygonPath(field))
         meadow.name = "district.commons.natural-meadow.\(index)"
         meadow.fillColor = style.palette.lotGrass.blended(
-            withFraction: 0.10,
+            withFraction: 0.18,
             of: style.palette.soil
         ) ?? style.palette.lotGrass
         meadow.strokeColor = .clear
@@ -341,28 +367,52 @@ final class TerrainRenderer {
         city.addChild(meadow)
 
         guard commons.vacantCoordinates.count >= 8 else { return }
-        let textureCoordinate = commons.vacantCoordinates[
-            commons.vacantCoordinates.count / 2
+        let textureAnchors = [
+            commons.vacantCoordinates.count / 4,
+            commons.vacantCoordinates.count / 2,
+            commons.vacantCoordinates.count * 3 / 4,
         ]
-        let textureCenter = style.isoPosition(textureCoordinate)
-        let texture = SKShapeNode(path: terrainTexturePath(
-            center: CGPoint(
-                x: textureCenter.x + style.tileWidth * 0.18,
-                y: textureCenter.y - style.tileHeight * 0.02
-            ),
-            anchor: textureCoordinate,
-            radiusX: style.tileWidth * 0.66,
-            radiusY: style.tileHeight * 0.30,
-            saltOffset: 0xC073
-        ))
-        texture.name = "district.commons.natural-texture.\(index)"
-        texture.fillColor = style.palette.parkGrass.blended(
-            withFraction: 0.48,
-            of: style.palette.lotGrass
-        )?.withAlphaComponent(0.18) ?? style.palette.parkGrass.withAlphaComponent(0.18)
-        texture.strokeColor = .clear
-        texture.zPosition = 4
-        neighborhood.addChild(texture)
+        for (textureIndex, coordinateIndex) in textureAnchors.enumerated() {
+            let textureCoordinate = commons.vacantCoordinates[coordinateIndex]
+            let textureCenter = style.isoPosition(textureCoordinate)
+            let texture = SKShapeNode(path: terrainTexturePath(
+                center: CGPoint(
+                    x: textureCenter.x + (
+                        WorldVisualSeed.unit(
+                            for: textureCoordinate,
+                            kind: .empty,
+                            salt: 0xC080 + UInt64(textureIndex)
+                        ) - 0.5
+                    ) * style.tileWidth * 0.42,
+                    y: textureCenter.y + (
+                        WorldVisualSeed.unit(
+                            for: textureCoordinate,
+                            kind: .empty,
+                            salt: 0xC090 + UInt64(textureIndex)
+                        ) - 0.5
+                    ) * style.tileHeight * 0.30
+                ),
+                anchor: textureCoordinate,
+                radiusX: style.tileWidth * (1.15 + CGFloat(textureIndex) * 0.12),
+                radiusY: style.tileHeight * (0.54 + CGFloat(textureIndex) * 0.05),
+                saltOffset: 0xC073 + UInt64(textureIndex) * 0x20
+            ))
+            texture.name = "district.commons.natural-texture.\(index).\(textureIndex)"
+            let fill = textureIndex.isMultiple(of: 2)
+                ? style.palette.parkGrass.blended(
+                    withFraction: 0.46,
+                    of: style.palette.lotGrass
+                )
+                : style.palette.soil.blended(
+                    withFraction: 0.72,
+                    of: style.palette.lotGrass
+                )
+            texture.fillColor = fill?.withAlphaComponent(0.18)
+                ?? style.palette.parkGrass.withAlphaComponent(0.18)
+            texture.strokeColor = .clear
+            texture.zPosition = 4
+            neighborhood.addChild(texture)
+        }
 
         guard let foliageCoordinate = commons.vacantCoordinates.first,
               let grove = assets.generatedSprite(
@@ -414,6 +464,31 @@ final class TerrainRenderer {
         return path
     }
 
+    private func frontageLinkPath(
+        completed: [CityTile],
+        in state: CityGameState,
+        offset: CGPoint = .zero
+    ) -> CGPath {
+        let path = CGMutablePath()
+        for tile in completed {
+            let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
+            guard let frontage = ResidentialGeneratedAssetIdentity
+                .authoritativeFrontagePriority
+                .first(where: roads.contains) else { continue }
+            let center = style.isoPosition(tile.coordinate)
+            let socket = style.roadSocket(for: frontage, overreach: 1.25)
+            path.move(to: CGPoint(
+                x: center.x + socket.x * 0.30 + offset.x,
+                y: center.y + socket.y * 0.30 + offset.y
+            ))
+            path.addLine(to: CGPoint(
+                x: center.x + socket.x * 1.05 + offset.x,
+                y: center.y + socket.y * 1.05 + offset.y
+            ))
+        }
+        return path
+    }
+
     private func districtGroundColor(for kind: BuildingKind) -> NSColor {
         switch kind {
         case .residential:
@@ -435,15 +510,15 @@ final class TerrainRenderer {
     private func macroFieldColor(variant: Int) -> NSColor {
         switch variant {
         case 0:
-            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.105)
+            NSColor(calibratedRed: 0.12, green: 0.25, blue: 0.15, alpha: 0.11)
         case 1:
-            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.085)
+            NSColor(calibratedRed: 0.45, green: 0.46, blue: 0.22, alpha: 0.09)
         case 2:
-            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.098)
+            NSColor(calibratedRed: 0.16, green: 0.34, blue: 0.22, alpha: 0.105)
         case 3:
-            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.090)
+            NSColor(calibratedRed: 0.34, green: 0.39, blue: 0.18, alpha: 0.09)
         default:
-            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.080)
+            NSColor(calibratedRed: 0.32, green: 0.25, blue: 0.14, alpha: 0.085)
         }
     }
 
@@ -459,7 +534,7 @@ final class TerrainRenderer {
         block: SKNode
     ) {
         guard gridWidth >= 5, gridHeight >= 5 else { return }
-        let materialSpan = 3
+        let materialSpan = 2
         var materialIndex = 0
         for y in stride(from: 2, to: gridHeight - 1, by: materialSpan) {
             for x in stride(from: 2, to: gridWidth - 1, by: materialSpan) {
@@ -474,18 +549,18 @@ final class TerrainRenderer {
                     ) * style.tileHeight * 1.10
                 )
                 let radiusX = style.tileWidth * (
-                    0.60 + WorldVisualSeed.unit(
+                    1.18 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E22
-                    ) * 0.20
+                    ) * 0.38
                 )
                 let radiusY = style.tileHeight * (
-                    0.42 + WorldVisualSeed.unit(
+                    0.62 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E23
-                    ) * 0.15
+                    ) * 0.22
                 )
                 let variant = WorldVisualSeed.variant(
                     count: 5,

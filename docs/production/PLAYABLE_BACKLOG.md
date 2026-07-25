@@ -186,7 +186,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
 - **Acceptance:** The CONTRACT-011 residential L1 N/E/S/W calibration set passes before batch expansion; every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all scene/tool/source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
 - **Stop conditions:** Reuse across building types, recolor-only variants, runtime mirroring/rotation, perspective or light drift, invented roads or ground truth, geometry/pivot/frontage mismatch, missing provenance, direct edits to live renderer/shipping selection, or generation continuing after two rejected direction siblings without anchor review.
-- **Current disposition:** Residential L1–L4 source authority is accepted and its 16 directional identities ship through PLAY-028. The complete Commercial L1–L4 N/E/S/W source slice is independently accepted through clean source candidate `bf3e24b2b465870f131ac0a01a2327ac4969d5d5`: every level has four authored, unique, repeat-identical raw directions; 12 unique repeat-identical normalized LOD outputs; complete color/grayscale frontage; stable pivot/registration; and literal cross-level comparisons proving no aliasing. Commercial production selection belongs to PLAY-060. Industrial source expansion may begin under the existing PLAY-027 boundaries, but Industrial production selection remains blocked.
+- **Current disposition:** Residential L1–L4 source authority is accepted and its 16 directional identities ship through PLAY-028. Commercial L1–L4 source authority `bf3e24b2b465870f131ac0a01a2327ac4969d5d5` ships through independently approved PLAY-060/061. Industrial L1 N/E/S/W source-v05 is independently accepted through clean source candidate `79668c347e58d602f9627c73cb09e3272a83ef57`: four unique raw directions are repeat-identical across three fresh processes, all 12 normalized LOD outputs are unique and repeat-identical, registration and frontage pass, and Industrial remains unmistakable from Residential and Commercial in color and grayscale. Industrial L1 production selection belongs to PLAY-062. Industrial L2 source authoring may begin under the same one-level-at-a-time gate; L3/L4 and all Industrial production selection beyond L1 remain blocked.
 
 ### [x] PLAY-028: Ship the directional residential skyline
 
@@ -525,7 +525,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Claim:** `docs/production/claims/PLAY-059.simulation-platform.md`.
 - **Accepted integration:** Product `3bdfb41` and completion `8a73878` are ancestors of tested product `64dd475`; PLAY-056 consumes the accepted local truth and PLAY-058 approved all five visible overlays.
 
-### [ ] PLAY-060: Ship the directional commercial skyline
+### [x] PLAY-060: Ship the directional commercial skyline
 
 - **Player outcome:** Commercial growth progresses from storefronts through mixed-use blocks and mid-rises to a premium tower, with every level facing its authoritative road frontage and remaining visually distinct from Residential.
 - **Owning lane:** World rendering.
@@ -534,6 +534,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Source-art repair, Industrial ingestion, runtime transforms, gameplay/simulation/save/UI changes, package topology, or self-acceptance.
 - **Acceptance:** All 16 Commercial identities ship from exact accepted source bytes; no Residential or cross-level alias appears; N/E/S/W frontage is correct; L1–L4 remain distinct at all LODs; pack identity and residency are bounded; full suite and staged real-app proof pass; PLAY-061 independently approves the exact integrated candidate.
 - **Claim:** `docs/production/claims/PLAY-060.world-rendering.md`.
+- **Accepted integration:** Product `4473f5a`, evidence `528f0e0`, and completion `2c1e9f2` are integrated through exact combined candidate `1799fbc`; independent PLAY-061 approved it 20/20 with zero P0/P1 defects and zero automatic rejects.
 
 ### [x] PLAY-061: Gate the directional commercial skyline
 
@@ -545,3 +546,27 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** At least 19/20; Commercial identity/direction and world/HUD cohesion both 4/4; zero alias, fallback, wrong frontage, overlap, P0/P1, or automatic reject; explicit material preference at regular and compact sizes.
 - **Claim:** `docs/production/claims/PLAY-061.playtest-quality.md`.
 - **Accepted quality gate:** Exact combined candidate `1799fbc` independently scored 20/20 with every category 4/4, zero P0/P1, zero automatic rejects, and evidence commit `cca4281`.
+
+### [ ] PLAY-062: Ship the directional Industrial L1 works
+
+- **Player outcome:** The first Industrial commitment reads immediately as a grounded working factory, faces its authoritative road frontage from every direction, and remains unmistakably different from homes and shops at every camera detail level.
+- **Owning lane:** World rendering.
+- **Requirement IDs:** ART-001, ART-002, ART-005, UX-003, TEC-002, TEC-003, REL-001.
+- **Dependencies:** Accepted PLAY-028 shipping pipeline; independently accepted PLAY-027 Industrial L1 source candidate `79668c347e58d602f9627c73cb09e3272a83ef57`; CONTRACT-006, CONTRACT-010, and CONTRACT-011; published PLAY-062 claim.
+- **In scope:** Renderer-lead review and production selection of exactly Industrial L1 variant-zero N/E/S/W source-v05; deterministic pack/manifest ingestion; authoritative frontage lookup; all three LODs; construction, condition, selection, preview, overlays, Focus City, undo, save/load, Reduce Motion, pointer/keyboard/AX, residency, RSS, timing, regular and exact compact proof.
+- **Out of scope:** Industrial L2–L4, source-art repair, runtime image transforms, gameplay/simulation/save/UI changes, package topology, or self-acceptance.
+- **Acceptance:** All four Industrial L1 directions ship from exact accepted source bytes with zero alias, mirror, rotation, fallback, crop, wrong frontage, or cross-family substitution; the factory/gantry/service-apron hierarchy remains legible in color and grayscale at city, neighborhood, and block LODs; interaction and state truth remain exact; resource budgets, full suite, staged journeys, and PLAY-063 independent approval pass.
+- **Stop conditions:** Any source repair inside the renderer lane, family substitution, frontage inferred from camera, runtime pixel transform, loss of public-realm/HUD readability, unbounded pack or memory growth, fixture-only proof, or author self-acceptance.
+- **Claim:** `docs/production/claims/PLAY-062.world-rendering.md`.
+
+### [ ] PLAY-063: Gate the directional Industrial L1 works
+
+- **Player outcome:** Independent evidence proves the new working-factory identity is beautiful, coherent, correctly road-facing, readable beside Residential and Commercial, and materially better than the previous generic Industrial presentation.
+- **Owning lane:** Playtest quality.
+- **Requirement IDs:** ART-001, ART-002, ART-005, UX-003, UX-009, UX-010, TEC-003, REL-001, REL-003, REL-005.
+- **Dependencies:** Published candidate-blind PLAY-063 preregistration; clean PLAY-062 handoff; exact integration-provided candidate.
+- **In scope:** Frozen 20-point rubric; N/E/S/W and all three LODs; unlabeled color/grayscale family recognition; regular and exact 900 x 600 comparisons; construction, condition, selection, preview, overlays, Focus City, undo, save/load; pointer, keyboard, FKA, AX, Escape, Reduce Motion; pack identity, residency, RSS, frame timing, and independent disposition.
+- **Out of scope:** Product repair, coaching, candidate substitution, source-art redesign, Industrial L2–L4, author scoring, fixture-only acceptance, or hero-frame acceptance.
+- **Acceptance:** At least 19/20; Industrial identity/frontage and world/HUD cohesion both 4/4; zero family alias, fallback, wrong frontage, overlap, cropped gantry, P0/P1 defect, or automatic reject; explicit material preference at regular and compact sizes.
+- **Stop conditions:** Ambiguous candidate/process/data root, altered rubric after nomination, missing real-app route, unretained proof, author evidence substituted for independent evidence, or any automatic reject.
+- **Claim:** `docs/production/claims/PLAY-063.playtest-quality.md`.

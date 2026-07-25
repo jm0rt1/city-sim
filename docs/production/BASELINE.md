@@ -6,12 +6,16 @@
 
 **Integration branch:** `master`
 
-**Accepted product tip:** `7b432c4af1ee62553598e70c6103efe7a26e8af9`
-(independently accepted directional Residential and readable-HUD candidate)
+**Accepted product tip:** `1799fbc2810f14d85511b74a8808bbee1928eef7`
+(independently accepted directional Residential and Commercial product)
 
-**Independent evidence:** `4389a3edaaf328ba40af2a41fa644c7e3e439a9d`
+**Independent evidence:** `0497eb0bd48903faecaeb086e4638e33f06e1f48`
 
-**Integration evidence merge:** `af96d7d`
+**Integration evidence merge:** `597abbcdee608b56e8bf2758aa50e03168eb912c`
+
+**Accepted Industrial L1 source authority:** `79668c347e58d602f9627c73cb09e3272a83ef57`
+
+**Industrial source integration merge:** `d34345720bd1ffff7858928ad5d5c428acd57f3d`
 
 **Baseline ref:** the `master` commit that contains this document, the active backlog, and the five first-wave claims.
 
@@ -32,6 +36,14 @@
   Residential L1–L4 N/E/S/W identities and 48 unique normalized LOD payloads.
   Runtime selection derives from authoritative adjacent-road frontage with no
   mirror, rotation, alias, cross-level substitution, or fallback.
+- The shipping generated-v4 world also contains 16 separately authored
+  Commercial L1–L4 N/E/S/W identities and 48 unique normalized LOD payloads.
+  PLAY-061 independently approved the exact combined product 20/20 with every
+  category 4/4, zero P0/P1 defects, and zero automatic rejects.
+- Industrial L1 source authority now contains four separately authored,
+  repeat-identical N/E/S/W factory identities and 12 unique repeat-identical
+  normalized LOD payloads. These are integrated as non-shipping inputs;
+  production selection is exclusively owned by PLAY-062.
 - The readable command surface uses responsive HUD composition with 11-point
   critical/action typography, 10-point decision-support typography, complete
   compact Overview and Journal content, and a world-first 60.2% closed /
@@ -39,8 +51,8 @@
 - Independent PLAY-055 scored the exact accepted product 20/20, with every
   category at 4/4, zero P0/P1 defects, zero automatic rejects, and material
   preference over the frozen baseline in both regular and compact layouts.
-- The complete native suite passes with 206 tests and no failures. The accepted
-  renderer passes 47 focused tests, reports zero fallback assets and zero
+- The complete native suite passes with 223 tests and no failures. The accepted
+  renderer passes 52 focused tests, reports zero fallback assets and zero
   geometry collisions, uses four pages with a stable 41,943,040-byte
   repeated-cycle high-water, and remains within declared render and RSS
   ceilings.
@@ -52,10 +64,10 @@
 - Accepted PLAY-055 RSS remained bounded below the 333.8 MiB ceiling:
   194.52 MiB regular, 175.83 MiB compact, and 194.25 MiB Reduce Motion.
   Continued profiling remains release work.
-- Commercial and Industrial directional breadth is not yet production
-  selected. PLAY-027 has independently accepted Commercial L1 and L2 source
-  authority and is proceeding through controlled L3/L4 source slices before a
-  separately governed renderer ingestion task.
+- Industrial directional breadth remains incomplete. Industrial L1 source art
+  is independently accepted but not yet production selected; PLAY-062/063 own
+  shipping and its independent gate. Industrial L2 source authoring is
+  authorized next, while L3/L4 remain blocked behind level-by-level review.
 - Spoken VoiceOver audio was not recorded for PLAY-055. Live AX actions, AX
   trees, and Full Keyboard Access were exercised successfully.
 - Deeper game identity, content breadth, audio, delight, progression beyond
@@ -76,6 +88,15 @@
   fallback, zero collisions across 2,972 geometry checks, and independent
   real-app pointer, keyboard, AX, Full Keyboard Access, Reduce Motion, regular,
   and exact 900 x 600 compact routes.
+- Exact Commercial product `1799fbc` passed 223/223 native tests, 52/52
+  renderer tests, deterministic source/staged pack identity, four-page bounded
+  residency, zero fallback, zero geometry collisions, staged regular and exact
+  compact pointer/keyboard/FKA/AX/Reduce Motion/save-load/undo journeys, and
+  independent PLAY-061 approval at 20/20.
+- Non-shipping Industrial L1 source authority `79668c3` passed four-direction
+  three-process raw identity, 12/12 unique two-run normalized LOD identity,
+  registration/frontage/alpha/chroma/padding checks, accepted-source byte
+  preservation, and independent color/grayscale family review.
 - The integrated non-shipping Residential L1–L4 source catalog at
   `32e5d1dec2857f8617ecc3cd3c194c98d35b2d6b` passed 201/201 native tests,
   43/43 renderer tests, `git diff --check`, script syntax validation, and an

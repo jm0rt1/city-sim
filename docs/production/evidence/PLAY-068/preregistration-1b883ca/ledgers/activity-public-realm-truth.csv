@@ -1,0 +1,11 @@
+case,coordinate,street_index,place_index,lod,viewport,motion,expected_visual,forbidden_implication,result,evidence
+nil-boundary,,,,city,regular,normal,no activity actors or density,counts trips routes services prosperity pollution,,
+zero,,,,neighborhood,regular,normal,no activity actors or density,counts trips routes services prosperity pollution,,
+low,,,,block,regular,normal,restrained deterministic local activity,counts trips routes services prosperity pollution,,
+high,,,,block,regular,normal,greater deterministic local activity without clutter,counts trips routes services prosperity pollution,,
+recovery,,,,block,regular,normal,density falls with authoritative values,counts trips routes services prosperity pollution,,
+nil-boundary,,,,city,compact-900x600,normal,no activity actors or density,counts trips routes services prosperity pollution,,
+low,,,,neighborhood,compact-900x600,normal,restrained deterministic local activity,counts trips routes services prosperity pollution,,
+high,,,,block,compact-900x600,normal,greater deterministic local activity without clutter,counts trips routes services prosperity pollution,,
+recovery,,,,block,compact-900x600,reduce-motion,static meaning falls with authoritative values,counts trips routes services prosperity pollution,,
+overlay-isolation,,,,block,both,normal,all five overlays preserve identical activity truth,overlay color treated as activity or hidden gameplay,,

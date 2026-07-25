@@ -1,0 +1,62 @@
+{
+  "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+  "descriptorCount" : 4,
+  "family" : "industrial",
+  "level" : 1,
+  "logicalBuildingID" : "industrial_l01",
+  "productionSelected" : false,
+  "repair" : "grounded full-scale loading-bay returns for far-frontage north and west visibility",
+  "samples" : [
+    {
+      "archivedSourceV01File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v01-rejected/descriptors/north/scene.json",
+      "archivedSourceV01SHA256" : "b49549ee414a5b002cf2a4315282027abe2504a495af3d601c3a52ec495d4c13",
+      "direction" : "north",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-north-loading-works-geometry-v2",
+      "sourceRevision" : "source-v02",
+      "sourceV02DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/north/scene.json",
+      "sourceV02DescriptorSHA256" : "5f0af96b13de8cb6df03643ae3c4d7a99c0faa14c6d5a9b241a0b6b0ba47a9e1"
+    },
+    {
+      "archivedSourceV01File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v01-rejected/descriptors/east/scene.json",
+      "archivedSourceV01SHA256" : "aeb698f636cf9bffea4bca26dc69ab1bf8f5536e72be282913a21199e372319b",
+      "direction" : "east",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v2",
+      "sourceRevision" : "source-v02",
+      "sourceV02DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/east/scene.json",
+      "sourceV02DescriptorSHA256" : "f1e12c118a0420b70b9f1e94c9f5587f35994095c24208dce6fe410a2e87c5b3"
+    },
+    {
+      "archivedSourceV01File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v01-rejected/descriptors/south/scene.json",
+      "archivedSourceV01SHA256" : "2cdcca17ad464d9f4f52f76ee3c991fe21b8771e8803c16b6d4cdf317bd8a578",
+      "direction" : "south",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-south-loading-works-geometry-v2",
+      "sourceRevision" : "source-v02",
+      "sourceV02DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/south/scene.json",
+      "sourceV02DescriptorSHA256" : "be1d4a7d1443fbb6e55e3588cfa1413a337fc529e07334560d25fbfaac4b7c24"
+    },
+    {
+      "archivedSourceV01File" : "docs/production/evidence/PLAY-027/industrial-l01/l01/source-v01-rejected/descriptors/west/scene.json",
+      "archivedSourceV01SHA256" : "43a9e34e1c01957c62dce3e0aa11542f69ed47816845712c2834ba26cb4d1454",
+      "direction" : "west",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v2",
+      "sourceRevision" : "source-v02",
+      "sourceV02DescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l01/variant-0/west/scene.json",
+      "sourceV02DescriptorSHA256" : "5142a8ce74a79245ddf393e2b6f404824182c95b1f91fbc781f258b3dab6ad99"
+    }
+  ],
+  "samplingPurpose" : "source-authority",
+  "schema" : 1,
+  "sourceRevision" : "source-v02",
+  "task" : "PLAY-027",
+  "uniqueDescriptorHashCount" : 4,
+  "uniqueSceneGeometryIDCount" : 4,
+  "variant" : 0
+}

@@ -642,11 +642,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v02"
+    "sourceRevisionBinding" : "source-v01"
   },
-  "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v2",
+  "sceneGeometryID" : "industrial-l01-v0-east-loading-works-geometry-v1",
   "schema" : 2,
-  "sourceRevision" : "source-v02",
+  "sourceRevision" : "source-v01",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",

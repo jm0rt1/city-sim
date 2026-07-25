@@ -193,7 +193,7 @@
     "pavilionRoofHeight" : 3,
     "pavilionWidth" : 28,
     "porchColumnWidth" : 1.8,
-    "porchLateralOffset" : -10,
+    "porchLateralOffset" : 10,
     "porchWidth" : 32,
     "stepCount" : 1,
     "stepRun" : 2,
@@ -642,11 +642,11 @@
       "step" : 32
     },
     "sceneKitAntialiasing" : "none",
-    "sourceRevisionBinding" : "source-v01"
+    "sourceRevisionBinding" : "source-v02"
   },
-  "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v1",
+  "sceneGeometryID" : "industrial-l01-v0-west-loading-works-geometry-v2",
   "schema" : 2,
-  "sourceRevision" : "source-v01",
+  "sourceRevision" : "source-v02",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",

@@ -1557,27 +1557,48 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             )
         }
         if abs(entrance.porchLateralOffset) >= 10 {
-            let returnSign =
-                entrance.porchLateralOffset > 0 ? 1.0 : -1.0
-            let returnNormal = [
-                tangent[0] * returnSign,
-                0.0,
-                tangent[2] * returnSign,
-            ]
-            let returnCenter = [
-                canopyCenter[0]
-                    + returnNormal[0] * entrance.porchWidth / 2,
-                base[1] + entrance.height / 2,
-                canopyCenter[2]
-                    + returnNormal[2] * entrance.porchWidth / 2,
-            ]
-            let returnWidth = min(15, entrance.width * 0.68)
+            let returnNormal: [Double]
+            let returnCenter: [Double]
+            switch facade.direction {
+            case "north":
+                returnNormal = [1, 0, 0]
+                returnCenter = [
+                    descriptor.building.width / 2 + 2,
+                    base[1] + entrance.height * 0.44,
+                    -descriptor.building.depth / 2 + 10,
+                ]
+            case "west":
+                returnNormal = [0, 0, 1]
+                returnCenter = [
+                    -descriptor.building.width / 2 + 10,
+                    base[1] + entrance.height * 0.44,
+                    descriptor.building.depth / 2 + 2,
+                ]
+            default:
+                let returnSign =
+                    entrance.porchLateralOffset > 0 ? 1.0 : -1.0
+                returnNormal = [
+                    tangent[0] * returnSign,
+                    0.0,
+                    tangent[2] * returnSign,
+                ]
+                returnCenter = [
+                    canopyCenter[0]
+                        + returnNormal[0] * entrance.porchWidth / 2,
+                    base[1] + entrance.height * 0.44,
+                    canopyCenter[2]
+                        + returnNormal[2] * entrance.porchWidth / 2,
+                ]
+            }
+            let returnWidth = min(20, entrance.width * 0.88)
+            let returnHeight = entrance.height * 0.82
+            let returnFacesXAxis = abs(returnNormal[0]) > 0
             scene.rootNode.addChildNode(
                 try boxNode(
                     name: facade.direction + "-loading-return-door",
-                    dimensions: horizontal
-                        ? [1.0, entrance.height * 0.78, returnWidth]
-                        : [returnWidth, entrance.height * 0.78, 1.0],
+                    dimensions: returnFacesXAxis
+                        ? [1.0, returnHeight, returnWidth]
+                        : [returnWidth, returnHeight, 1.0],
                     position: [
                         returnCenter[0] + returnNormal[0] * 0.6,
                         returnCenter[1],
@@ -1586,7 +1607,9 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                     materialID: entrance.doorMaterialID
                 )
             )
-            let returnTangent = outward
+            let returnTangent = returnFacesXAxis
+                ? [0.0, 0.0, 1.0]
+                : [1.0, 0.0, 0.0]
             for side in [-1.0, 1.0] {
                 let offset = side * (returnWidth / 2 + 1.1)
                 scene.rootNode.addChildNode(
@@ -1594,9 +1617,9 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
                         name:
                             facade.direction
                             + "-loading-return-jamb-\(side)",
-                        dimensions: horizontal
-                            ? [2.0, entrance.height * 0.78 + 3, 2.2]
-                            : [2.2, entrance.height * 0.78 + 3, 2.0],
+                        dimensions: returnFacesXAxis
+                            ? [2.0, returnHeight + 3, 2.2]
+                            : [2.2, returnHeight + 3, 2.0],
                         position: [
                             returnCenter[0]
                                 + returnTangent[0] * offset,
@@ -1611,17 +1634,67 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             scene.rootNode.addChildNode(
                 try boxNode(
                     name: facade.direction + "-loading-return-lintel",
-                    dimensions: horizontal
+                    dimensions: returnFacesXAxis
                         ? [2.0, 2.0, returnWidth + 5]
                         : [returnWidth + 5, 2.0, 2.0],
                     position: [
                         returnCenter[0],
-                        base[1] + entrance.height * 0.78 + 1,
+                        returnCenter[1] + returnHeight / 2 + 1,
                         returnCenter[2],
                     ],
                     materialID: entrance.surroundMaterialID
                 )
             )
+            let returnDockDepth = 8.0
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-return-dock",
+                    dimensions: returnFacesXAxis
+                        ? [returnDockDepth, 2.2, returnWidth + 8]
+                        : [returnWidth + 8, 2.2, returnDockDepth],
+                    position: [
+                        returnCenter[0]
+                            + returnNormal[0] * returnDockDepth / 2,
+                        1.1,
+                        returnCenter[2]
+                            + returnNormal[2] * returnDockDepth / 2,
+                    ],
+                    materialID: descriptor.building.foundationMaterialID
+                )
+            )
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: facade.direction + "-loading-return-canopy",
+                    dimensions: returnFacesXAxis
+                        ? [8, 1.6, returnWidth + 10]
+                        : [returnWidth + 10, 1.6, 8],
+                    position: [
+                        returnCenter[0] + returnNormal[0] * 3.5,
+                        returnCenter[1] + returnHeight / 2 + 4.0,
+                        returnCenter[2] + returnNormal[2] * 3.5,
+                    ],
+                    materialID: descriptor.building.roofMaterialID
+                )
+            )
+            for index in 1...4 {
+                scene.rootNode.addChildNode(
+                    try boxNode(
+                        name:
+                            facade.direction
+                            + "-loading-return-slat-\(index)",
+                        dimensions: returnFacesXAxis
+                            ? [1.3, 0.5, returnWidth - 1.0]
+                            : [returnWidth - 1.0, 0.5, 1.3],
+                        position: [
+                            returnCenter[0] + returnNormal[0] * 0.7,
+                            returnCenter[1] - returnHeight / 2
+                                + Double(index) * returnHeight / 5,
+                            returnCenter[2] + returnNormal[2] * 0.7,
+                        ],
+                        materialID: entrance.pavilionMaterialID
+                    )
+                )
+            }
         }
     }
 

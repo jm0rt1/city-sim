@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "updatedDate": "2026-07-24",
+  "families": {
+    "residential": {
+      "status": "frozen-after-two-directional-drift-failures",
+      "consecutiveDirectionalDriftFailures": 2,
+      "failedSourceKeys": [
+        "residential_l01/variant-0/north/source-v01",
+        "residential_l01/variant-0/south/source-v01"
+      ],
+      "additionalRejectedSourceKeys": [
+        "residential_l01/variant-0/east/source-v01"
+      ],
+      "nextAuthorizedAction": "repair task-owned directional geometry template and residential anchor treatment before another ImageGen call"
+    },
+    "commercial": {
+      "status": "not-started",
+      "consecutiveDirectionalDriftFailures": 0
+    },
+    "industrial": {
+      "status": "not-started",
+      "consecutiveDirectionalDriftFailures": 0
+    }
+  },
+  "productionSelected": false
+}

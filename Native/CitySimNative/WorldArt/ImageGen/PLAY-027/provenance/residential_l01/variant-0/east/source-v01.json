@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceKey": "residential_l01/variant-0/east/source-v01",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variant": 0,
+  "viewDirection": "east",
+  "sourceRevision": 1,
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generatedDate": "2026-07-24",
+  "promptFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/prompts/residential_l01/variant-0/east-source-v01.md",
+  "promptSHA256": "6a68811bc9345fcfb5ece6dc0062e93a6200bc481a3613fe88ce972865271057",
+  "completePromptRetainedVerbatim": true,
+  "frozenInputsFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs.json",
+  "frozenInputsSHA256": "8fa318389aed9c79479af8d5176b2fd69815c0e97b1e3a459772703dd3c86d0b",
+  "references": [
+    {
+      "role": "immutable-appearance-only-global-style-anchor",
+      "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative-play-027-1x1-registration",
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    },
+    {
+      "role": "approved-residential-family-appearance-anchor",
+      "file": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+    }
+  ],
+  "rawSourceFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/raw/residential_l01/variant-0/east/source-v01.png",
+  "rawSourceSHA256": "0f28eb2c53e941181ca1615956516d12afeb17487ea98291486d727c36130315",
+  "rawSourcePixels": [
+    1536,
+    1024
+  ],
+  "chromaKey": "#ff00ff",
+  "registration": {
+    "geometryTemplateID": "play-027-rci-1x1-v1",
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "frontageSocketName": "east",
+    "frontageSocketSource": [
+      896,
+      832
+    ],
+    "entranceExclusionZoneSource": [
+      864,
+      784,
+      64,
+      96
+    ],
+    "orientationTransform": "none"
+  },
+  "normalization": {
+    "toolFile": "Native/CitySimNative/WorldArt/GeneratedV4/tools/normalize_calibration_asset.py",
+    "recordFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/provenance/residential_l01/variant-0/east/normalization-source-v01.json",
+    "recordSHA256": "16736af8afbb81fcfe501578f17ca97ec1b0f438e0ae334aeb3083a95fdd70b2",
+    "registrationMode": "uniform-object-registration",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "outputs": [
+      {
+        "lod": "city",
+        "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/normalized/residential_l01/variant-0/east/generated_v4_residential_l01_city.png",
+        "sha256": "748b901a49dbe8a6cc89cb6887a643ffe8fc7d0a5e91806e003def5eaeabc681"
+      },
+      {
+        "lod": "neighborhood",
+        "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/normalized/residential_l01/variant-0/east/generated_v4_residential_l01_neighborhood.png",
+        "sha256": "9aacbe062061e500371d1d4de1d1d4eff4234fcaee95e5131f98074f9ae608d2"
+      },
+      {
+        "lod": "block",
+        "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/normalized/residential_l01/variant-0/east/generated_v4_residential_l01_block.png",
+        "sha256": "55c79dd0de2c2149789cf996a4cf14528e2a2d3153e75512b5e3442443e36394"
+      }
+    ]
+  },
+  "validation": {
+    "blockOpaqueBBox": [
+      379,
+      261,
+      645,
+      600
+    ],
+    "blockPadding": [
+      379,
+      261,
+      379,
+      83
+    ],
+    "blockCornerAlpha": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "blockHiddenRGBPixels": 97,
+    "blockMagentaSpillPixels": 317
+  },
+  "intendedGameplayMeaning": "completed maintained level-one residential building with east road-facing frontage",
+  "generatedPixelsAreGeometryAuthority": false,
+  "productionSelected": false,
+  "reviewer": "world-art generation cell initial source review",
+  "disposition": "rejected-after-normalization",
+  "rejectionReasons": [
+    "alpha cleanup failure: normalized block export retains 97 hidden-RGB pixels",
+    "chroma cleanup failure: normalized block export retains 317 magenta-spill pixels",
+    "four-view gate unavailable: family froze before a complete coherent sibling set existed"
+  ],
+  "directionalDriftFailureOrdinal": null,
+  "eligibleAsSiblingReference": false
+}

@@ -40,6 +40,12 @@ struct GeneratedCommercialPresentation {
     let presentation: GeneratedWorldPresentation
 }
 
+@MainActor
+struct GeneratedIndustrialL1Presentation {
+    let identity: IndustrialL1GeneratedAssetIdentity
+    let presentation: GeneratedWorldPresentation
+}
+
 /// Loads repo-owned world resources through SwiftPM's resource bundle. The
 /// generated-v4 loader validates page digests, creates descriptor-authorized
 /// subtextures, prefetches one adjacent semantic LOD, and keeps decoded pages
@@ -268,6 +274,47 @@ final class WorldAssetCatalog {
             if asset.frontageEdge != direction
                 || asset.supportedOrientation != "\(direction)-facing-authored"
                 || asset.sourceRevision == nil
+                || asset.provenanceFile == nil
+                || asset.provenanceSHA256 == nil
+                || asset.normalizationRecordFile == nil
+                || asset.normalizationRecordSHA256 == nil
+                || asset.sceneDescriptorFile == nil
+                || asset.sceneDescriptorSHA256 == nil {
+                issues.append("\(asset.logicalID) has incomplete directional provenance")
+            }
+        }
+        let industrialL1 = manifest.assets.filter {
+            $0.family == "industrial" && $0.viewDirection != nil
+        }
+        let expectedIndustrialL1Identities = Set(
+            ["north", "east", "south", "west"].map {
+                "industrial_l01_v0_\($0)"
+            }
+        )
+        if Set(industrialL1.map(\.logicalID)) != expectedIndustrialL1Identities {
+            issues.append("industrial production selection is not the exact L1 N/E/S/W matrix")
+        }
+        if Set(industrialL1.compactMap(\.sourceKey)).count != 4
+            || Set(industrialL1.compactMap(\.sourceSHA256)).count != 4 {
+            issues.append("industrial L1 production sources are missing or aliased")
+        }
+        let normalizedIndustrialHashes = industrialL1.flatMap { asset in
+            CameraDetailLevel.allCases.compactMap {
+                asset.lods[$0.assetSuffix]?.normalizedSHA256
+            }
+        }
+        if Set(normalizedIndustrialHashes).count != 12 {
+            issues.append("industrial L1 normalized LODs are missing or aliased")
+        }
+        for asset in industrialL1 {
+            guard let direction = asset.viewDirection else {
+                issues.append("\(asset.logicalID) is missing view direction")
+                continue
+            }
+            if asset.level != 1
+                || asset.frontageEdge != direction
+                || asset.supportedOrientation != "\(direction)-facing-authored"
+                || asset.sourceRevision != "source-v05"
                 || asset.provenanceFile == nil
                 || asset.provenanceSHA256 == nil
                 || asset.normalizationRecordFile == nil
@@ -510,6 +557,41 @@ final class WorldAssetCatalog {
             return nil
         }
         return GeneratedCommercialPresentation(
+            identity: identity,
+            presentation: presentation
+        )
+    }
+
+    func generatedIndustrialL1Presentation(
+        level: Int,
+        adjacentRoads: RoadConnectionMask,
+        detail: CameraDetailLevel
+    ) -> GeneratedIndustrialL1Presentation? {
+        guard let identity = IndustrialL1GeneratedAssetIdentity(
+            level: level,
+            adjacentRoads: adjacentRoads
+        ) else {
+            recordFallback(
+                "industrial L1 has no authoritative adjacent road or requested level is not L1"
+            )
+            return nil
+        }
+        guard let asset = generatedAssetsByID[identity.logicalID],
+              asset.family == "industrial",
+              asset.level == 1,
+              asset.variant == 0,
+              asset.frontageEdge == identity.direction,
+              asset.viewDirection == identity.direction else {
+            recordFallback("directional descriptor mismatch \(identity.logicalID)")
+            return nil
+        }
+        guard let presentation = generatedPresentation(
+            logicalID: identity.logicalID,
+            detail: detail
+        ) else {
+            return nil
+        }
+        return GeneratedIndustrialL1Presentation(
             identity: identity,
             presentation: presentation
         )

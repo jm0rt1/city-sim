@@ -94,7 +94,13 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
     }
     directional_assets: dict[str, list[dict[str, object]]] = {}
     directional_normalized_hashes: dict[str, set[object]] = {}
-    for family in ("residential", "commercial"):
+    directional_raw_hashes: dict[str, set[object]] = {}
+    family_levels = {
+        "residential": range(1, 5),
+        "commercial": range(1, 5),
+        "industrial": range(1, 2),
+    }
+    for family, levels in family_levels.items():
         family_assets = [
             asset
             for asset in manifest.get("assets", [])
@@ -104,16 +110,19 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
         directional_assets[family] = family_assets
         expected_directional_ids = {
             f"{family}_l{level:02d}_v0_{direction}"
-            for level in range(1, 5)
+            for level in levels
             for direction in ("north", "east", "south", "west")
         }
+        expected_count = len(expected_directional_ids)
         if {asset.get("logical_id") for asset in family_assets} != expected_directional_ids:
             failures.append(
-                f"directional {family} selection is not the exact L1-L4 N/E/S/W matrix"
+                f"directional {family} selection is not the exact production N/E/S/W matrix"
             )
-        if len({asset.get("source_key") for asset in family_assets}) != 16:
+        if len({asset.get("source_key") for asset in family_assets}) != expected_count:
             failures.append(f"directional {family} source keys are missing or aliased")
-        if len({asset.get("source_sha256") for asset in family_assets}) != 16:
+        family_raw_hashes = {asset.get("source_sha256") for asset in family_assets}
+        directional_raw_hashes[family] = family_raw_hashes
+        if len(family_raw_hashes) != expected_count:
             failures.append(f"directional {family} raw sources are missing or aliased")
         family_normalized_hashes = {
             asset.get("lods", {}).get(detail, {}).get("normalized_sha256")
@@ -121,7 +130,10 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
             for detail in DETAILS
         }
         directional_normalized_hashes[family] = family_normalized_hashes
-        if None in family_normalized_hashes or len(family_normalized_hashes) != 48:
+        if (
+            None in family_normalized_hashes
+            or len(family_normalized_hashes) != expected_count * len(DETAILS)
+        ):
             failures.append(f"directional {family} normalized LODs are missing or aliased")
 
         for asset in family_assets:
@@ -130,7 +142,7 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
             level = asset.get("level")
             if (
                 direction not in direction_sockets
-                or level not in range(1, 5)
+                or level not in levels
                 or asset.get("variant") != 0
                 or asset.get("frontage_edge") != direction
                 or asset.get("supported_orientation") != f"{direction}-facing-authored"
@@ -150,6 +162,27 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
             ):
                 if not asset.get(field):
                     failures.append(f"{logical_id} is missing {field}")
+
+    for family, raw_hashes in directional_raw_hashes.items():
+        other_raw_hashes = set().union(
+            *(
+                hashes
+                for other_family, hashes in directional_raw_hashes.items()
+                if other_family != family
+            )
+        )
+        if not raw_hashes.isdisjoint(other_raw_hashes):
+            failures.append(f"directional {family} raw sources alias another family")
+    for family, normalized_hashes in directional_normalized_hashes.items():
+        other_normalized_hashes = set().union(
+            *(
+                hashes
+                for other_family, hashes in directional_normalized_hashes.items()
+                if other_family != family
+            )
+        )
+        if not normalized_hashes.isdisjoint(other_normalized_hashes):
+            failures.append(f"directional {family} normalized LODs alias another family")
 
     actual_pages = {
         str(path.relative_to(atlas))
@@ -339,6 +372,13 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
         ),
         "directional_commercial_normalized_hash_count": len(
             directional_normalized_hashes["commercial"]
+        ),
+        "directional_industrial_count": len(directional_assets["industrial"]),
+        "directional_industrial_raw_hash_count": len(
+            directional_raw_hashes["industrial"]
+        ),
+        "directional_industrial_normalized_hash_count": len(
+            directional_normalized_hashes["industrial"]
         ),
         "staged_matches_source": staged_matches,
         "fallback_policy": "explicit bounded diagnostic; production proof requires zero",

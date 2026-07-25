@@ -1436,7 +1436,7 @@ final class WorldRenderingTests: XCTestCase {
         let reducedNames = descendantNames(in: reduced)
         XCTAssertEqual(reducedNames, descendantNames(in: repeated))
         for names in [animatedNames, reducedNames] {
-            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 5)
+            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 4)
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.pedestrian-pair.0"
@@ -1448,12 +1448,9 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.vegetation-cluster.0"
-                        || $0 == "world.ambient.vegetation-cluster.1"
-                        || $0 == "world.ambient.vegetation-cluster.2"
-                        || $0 == "world.ambient.vegetation-cluster.3"
                         || $0 == "world.ambient.vegetation-cluster.4"
                 }.count,
-                5
+                2
             )
             let furniture = names.filter {
                 let components = $0.split(separator: ".")
@@ -1474,41 +1471,58 @@ final class WorldRenderingTests: XCTestCase {
                 let coordinate = GridCoordinate(x: try! XCTUnwrap(x), y: try! XCTUnwrap(y))
                 XCTAssertEqual(state.tile(at: coordinate)?.kind, .road)
             }
-            let vacantGroves = names.filter {
+            let vacantCompositions = names.filter {
                 let components = $0.split(separator: ".")
-                return components.count == 5
+                return components.count == 6
                     && components[0] == "world"
                     && components[1] == "environment"
-                    && components[2] == "vacant-grove"
+                    && components[2] == "vacant-composition"
             }
-            XCTAssertEqual(vacantGroves.count, 16)
+            XCTAssertEqual(vacantCompositions.count, 8)
+            let vacantIdentities = Set(vacantCompositions.map {
+                $0.split(separator: ".")[3]
+            })
+            XCTAssertEqual(
+                vacantIdentities,
+                Set(["meadow", "shrub-patch", "single-grove", "asymmetric-copse"])
+            )
+            let generatedGroveCompositions = vacantCompositions.filter {
+                let identity = $0.split(separator: ".")[3]
+                return identity == "single-grove" || identity == "asymmetric-copse"
+            }
+            XCTAssertLessThanOrEqual(generatedGroveCompositions.count, 2)
             XCTAssertEqual(
                 names.filter {
-                    $0.hasPrefix("world.environment.vacant-grove.")
+                    $0.hasPrefix("world.environment.vacant-composition.")
                         && $0.hasSuffix(".ground-contact")
                 }.count,
-                vacantGroves.count
+                generatedGroveCompositions.count
             )
             XCTAssertEqual(
                 names.filter { $0.hasSuffix(".undeveloped-meadow") }.count,
-                vacantGroves.count
+                vacantCompositions.count
             )
-            for name in vacantGroves {
+            var identityByCoordinate: [GridCoordinate: Substring] = [:]
+            for name in vacantCompositions {
                 let components = name.split(separator: ".")
                 let x = Int(components[components.count - 2])
                 let y = Int(components[components.count - 1])
                 let coordinate = GridCoordinate(x: try! XCTUnwrap(x), y: try! XCTUnwrap(y))
+                identityByCoordinate[coordinate] = components[3]
                 XCTAssertEqual(state.tile(at: coordinate)?.kind, .empty)
                 let roadDistance = state.tiles.filter { $0.kind == .road }.map {
                     abs($0.coordinate.x - coordinate.x) + abs($0.coordinate.y - coordinate.y)
                 }.min()
                 XCTAssertGreaterThanOrEqual(roadDistance ?? 0, 2)
             }
-            let compositions = names.filter { $0.contains(".composition.") }
-            XCTAssertGreaterThanOrEqual(
-                Set(compositions.compactMap { $0.split(separator: ".").last }).count,
-                2
-            )
+            for first in identityByCoordinate {
+                for second in identityByCoordinate
+                where first.key != second.key && first.value == second.value {
+                    let distance = abs(first.key.x - second.key.x)
+                        + abs(first.key.y - second.key.y)
+                    XCTAssertGreaterThan(distance, 3)
+                }
+            }
         }
         XCTAssertFalse(
             descendantNames(in: city).contains {
@@ -1518,9 +1532,9 @@ final class WorldRenderingTests: XCTestCase {
         let landscape = try! XCTUnwrap(
             reduced.childNode(withName: "//world.environment.vacant-landscape")
         )
-        for grove in landscape.children {
-            guard let name = grove.name else {
-                XCTFail("Vacant grove must retain its coordinate identity")
+        for composition in landscape.children {
+            guard let name = composition.name else {
+                XCTFail("Vacant landscape composition must retain its coordinate identity")
                 continue
             }
             let components = name.split(separator: ".")
@@ -1529,9 +1543,9 @@ final class WorldRenderingTests: XCTestCase {
                 y: try! XCTUnwrap(Int(components[components.count - 1]))
             )
             let center = style.isoPosition(coordinate)
-            XCTAssertNotEqual(grove.position, center)
-            XCTAssertLessThanOrEqual(abs(grove.position.x - center.x), 8)
-            XCTAssertLessThanOrEqual(abs(grove.position.y - center.y), 3)
+            XCTAssertNotEqual(composition.position, center)
+            XCTAssertLessThanOrEqual(abs(composition.position.x - center.x), 8)
+            XCTAssertLessThanOrEqual(abs(composition.position.y - center.y), 3)
         }
         let furnitureNames = reducedNames.filter {
             let components = $0.split(separator: ".")

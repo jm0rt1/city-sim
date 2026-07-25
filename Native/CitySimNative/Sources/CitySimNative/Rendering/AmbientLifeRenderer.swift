@@ -4,6 +4,22 @@ import SpriteKit
 /// occupancy, employment, prosperity, or service coverage.
 @MainActor
 final class AmbientLifeRenderer {
+    private enum VacantLandscapeIdentity: Int, CaseIterable {
+        case meadow
+        case shrubPatch
+        case singleGrove
+        case asymmetricCopse
+
+        var semanticName: String {
+            switch self {
+            case .meadow: "meadow"
+            case .shrubPatch: "shrub-patch"
+            case .singleGrove: "single-grove"
+            case .asymmetricCopse: "asymmetric-copse"
+            }
+        }
+    }
+
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
 
@@ -113,7 +129,11 @@ final class AmbientLifeRenderer {
                 vignette.addChild(furniture)
             }
 
-            if let coordinate = vegetationCoordinate(
+            // Two authored groves anchor the lived-in corridor. Vacant-land
+            // compositions below carry the wider landscape rhythm; repeating
+            // this same source at every road vignette reads as a stamped
+            // perimeter even when the coordinates and scale differ.
+            if (index == 0 || index == 4), let coordinate = vegetationCoordinate(
                 in: state,
                 near: road.coordinate,
                 excluding: occupiedVegetationCoordinates
@@ -163,10 +183,10 @@ final class AmbientLifeRenderer {
         excluding occupied: Set<GridCoordinate>,
         to root: SKNode
     ) {
-        // Keep one semantic set across camera changes. Generated-v4 source
-        // detail and the terrain material layers provide LOD meaning; changing
-        // entity quantity would defeat incremental reuse and residency.
-        let limit = 16
+        // Keep one semantic set across camera changes. The bounded set is
+        // intentionally sparse: the same generated grove must not become a
+        // decorative perimeter stamp around authoritative vacant land.
+        let limit = 8
         let candidates = state.tiles.compactMap { tile -> GridCoordinate? in
             guard tile.kind == .empty, !occupied.contains(tile.coordinate) else { return nil }
             let roadDistance = roadCoordinates.map {
@@ -189,60 +209,65 @@ final class AmbientLifeRenderer {
             limit: limit
         )
         guard !anchors.isEmpty else { return }
+        let identities = vacantLandscapeIdentities(for: anchors)
 
         let landscape = SKNode()
         landscape.name = "world.environment.vacant-landscape"
         for coordinate in anchors {
-            let semanticName = "world.environment.vacant-grove.\(coordinate.x).\(coordinate.y)"
-            guard let grove = generatedDecoration(
-                logicalID: "ambient_vegetation_cluster",
-                semanticName: semanticName,
-                detail: detail,
-                position: vegetationPosition(for: coordinate, salt: 0x6A26),
-                zPosition: style.depth(for: coordinate) + 46
-            ) else { continue }
-            let composition = WorldVisualSeed.variant(
+            guard let identity = identities[coordinate] else { continue }
+            let semanticName = "world.environment.vacant-composition."
+                + "\(identity.semanticName).\(coordinate.x).\(coordinate.y)"
+            let composition = SKNode()
+            composition.name = semanticName
+            composition.position = vegetationPosition(for: coordinate, salt: 0x6A26)
+            composition.zPosition = style.depth(for: coordinate) + 46
+            let swatchVariant = WorldVisualSeed.variant(
                 count: 3,
                 for: coordinate,
                 kind: .empty,
-                salt: 0x6A27
+                salt: 0x6A28
             )
-            let meadow = SKShapeNode(path: meadowSwatchPath(variant: composition))
+            let meadow = SKShapeNode(path: meadowSwatchPath(variant: swatchVariant))
             meadow.name = "\(semanticName).undeveloped-meadow"
             meadow.fillColor = NSColor(
                 calibratedRed: 0.28,
                 green: 0.43,
                 blue: 0.22,
-                alpha: 0.18
+                alpha: identity == .meadow ? 0.20 : 0.10
             )
             meadow.strokeColor = .clear
             meadow.position = CGPoint(x: -1, y: -3)
             meadow.zPosition = -2
-            grove.addChild(meadow)
-            let compositionIdentity = SKNode()
-            compositionIdentity.name = "\(semanticName).composition.\(composition)"
-            grove.addChild(compositionIdentity)
-            addVegetationComposition(
-                to: grove,
-                coordinate: coordinate,
-                semanticName: semanticName,
-                detail: detail,
-                salt: 0x6A27
-            )
-            let contact = SKShapeNode(ellipseOf: CGSize(width: 31, height: 9))
-            contact.name = "\(semanticName).ground-contact"
-            contact.fillColor = NSColor.black.withAlphaComponent(0.16)
-            contact.strokeColor = .clear
-            contact.position = CGPoint(x: 2, y: -5)
-            contact.zPosition = -1
-            grove.addChild(contact)
+            composition.addChild(meadow)
+
+            switch identity {
+            case .meadow:
+                addWildflowerMeadow(
+                    to: composition,
+                    coordinate: coordinate,
+                    semanticName: semanticName
+                )
+            case .shrubPatch:
+                addLowShrubPatch(
+                    to: composition,
+                    coordinate: coordinate,
+                    semanticName: semanticName
+                )
+            case .singleGrove, .asymmetricCopse:
+                addVacantGrove(
+                    identity: identity,
+                    to: composition,
+                    detail: detail,
+                    semanticName: semanticName
+                )
+            }
             let scale = 0.62 + 0.16 * WorldVisualSeed.unit(
                 for: coordinate,
                 kind: .empty,
                 salt: 0x6A24
             )
-            grove.setScale(scale)
-            landscape.addChild(grove)
+            composition.setScale(scale)
+            landscape.addChild(composition)
         }
         if !landscape.children.isEmpty {
             root.addChild(landscape)
@@ -282,6 +307,242 @@ final class AmbientLifeRenderer {
             }
         }
         return selected
+    }
+
+    private func vacantLandscapeIdentities(
+        for anchors: [GridCoordinate]
+    ) -> [GridCoordinate: VacantLandscapeIdentity] {
+        let rotation = anchors.first.map {
+            WorldVisualSeed.variant(
+                count: VacantLandscapeIdentity.allCases.count,
+                for: $0,
+                kind: .empty,
+                salt: 0x6A29
+            )
+        } ?? 0
+        var assigned: [GridCoordinate: VacantLandscapeIdentity] = [:]
+        var remaining: [VacantLandscapeIdentity: Int] = [
+            .meadow: 3,
+            .shrubPatch: 3,
+            .singleGrove: 1,
+            .asymmetricCopse: 1,
+        ]
+
+        func assign(_ index: Int) -> Bool {
+            guard index < anchors.count else { return true }
+            let coordinate = anchors[index]
+            let preferred = (rotation + index) % VacantLandscapeIdentity.allCases.count
+            for offset in 0..<VacantLandscapeIdentity.allCases.count {
+                let rawValue = (preferred + offset) % VacantLandscapeIdentity.allCases.count
+                guard let candidate = VacantLandscapeIdentity(rawValue: rawValue) else { continue }
+                guard remaining[candidate, default: 0] > 0 else { continue }
+                let repeatsNearby = assigned.contains { entry in
+                    let otherCoordinate = entry.key
+                    let identity = entry.value
+                    let distance = abs(otherCoordinate.x - coordinate.x)
+                        + abs(otherCoordinate.y - coordinate.y)
+                    return distance <= 3 && identity == candidate
+                }
+                if !repeatsNearby {
+                    assigned[coordinate] = candidate
+                    remaining[candidate, default: 0] -= 1
+                    if assign(index + 1) { return true }
+                    remaining[candidate, default: 0] += 1
+                    assigned[coordinate] = nil
+                }
+            }
+            return false
+        }
+        if !assign(0) {
+            // Small or tightly clustered maps still receive deterministic
+            // landscape meaning even when the preferred separation cannot be
+            // satisfied. The production starter district takes the separated
+            // path above; this fallback never invents occupancy.
+            assigned.removeAll()
+            for (index, coordinate) in anchors.enumerated() {
+                assigned[coordinate] = VacantLandscapeIdentity.allCases[
+                    (rotation + index) % VacantLandscapeIdentity.allCases.count
+                ]
+            }
+        }
+        return assigned
+    }
+
+    private func addWildflowerMeadow(
+        to root: SKNode,
+        coordinate: GridCoordinate,
+        semanticName: String
+    ) {
+        let patch = SKNode()
+        patch.name = "\(semanticName).wildflower-meadow"
+        let baseSeed = WorldVisualSeed.variant(
+            count: 3,
+            for: coordinate,
+            kind: .empty,
+            salt: 0x6A2A
+        )
+        let positions = [
+            CGPoint(x: -11 + CGFloat(baseSeed), y: -1),
+            CGPoint(x: -4, y: 3),
+            CGPoint(x: 4 + CGFloat(baseSeed), y: -3),
+            CGPoint(x: 11, y: 2),
+            CGPoint(x: 1, y: 5),
+        ]
+        for (index, position) in positions.enumerated() {
+            let tuft = SKShapeNode(
+                ellipseOf: CGSize(
+                    width: 5.2 + CGFloat(index % 3),
+                    height: 2.4 + CGFloat(index % 2) * 0.7
+                )
+            )
+            tuft.name = "\(semanticName).meadow-tuft.\(index)"
+            tuft.fillColor = NSColor(
+                calibratedRed: 0.20,
+                green: 0.35 + CGFloat(index % 2) * 0.022,
+                blue: 0.19,
+                alpha: 0.64
+            )
+            tuft.strokeColor = .clear
+            tuft.position = position
+            tuft.zRotation = (CGFloat(index % 3) - 1) * 0.14
+            patch.addChild(tuft)
+
+            let flower = SKShapeNode(
+                ellipseOf: CGSize(
+                    width: index.isMultiple(of: 2) ? 1.4 : 1.1,
+                    height: index.isMultiple(of: 2) ? 0.9 : 1.3
+                )
+            )
+            flower.name = "\(semanticName).wildflower.\(index)"
+            flower.fillColor = index.isMultiple(of: 2)
+                ? NSColor(calibratedRed: 0.72, green: 0.58, blue: 0.30, alpha: 0.72)
+                : NSColor(calibratedRed: 0.58, green: 0.38, blue: 0.40, alpha: 0.66)
+            flower.strokeColor = .clear
+            flower.position = CGPoint(x: position.x + 0.7, y: position.y + 1.2)
+            patch.addChild(flower)
+        }
+        root.addChild(patch)
+    }
+
+    private func addLowShrubPatch(
+        to root: SKNode,
+        coordinate: GridCoordinate,
+        semanticName: String
+    ) {
+        let patch = SKNode()
+        patch.name = "\(semanticName).low-shrub-patch"
+        let contact = SKShapeNode(ellipseOf: CGSize(width: 34, height: 6))
+        contact.fillColor = NSColor.black.withAlphaComponent(0.09)
+        contact.strokeColor = .clear
+        contact.position = CGPoint(x: 1, y: -2.5)
+        patch.addChild(contact)
+        let offset = WorldVisualSeed.unit(
+            for: coordinate,
+            kind: .empty,
+            salt: 0x6A2B
+        ) * 4 - 2
+        let xPositions: [CGFloat] = [-10, -3, 5, 11]
+        for (index, x) in xPositions.enumerated() {
+            let backLobe = SKShapeNode(
+                ellipseOf: CGSize(
+                    width: 9 + CGFloat(index % 2) * 2,
+                    height: 5.4 + CGFloat((index + 1) % 2)
+                )
+            )
+            backLobe.name = "\(semanticName).shrub.\(index).back"
+            backLobe.fillColor = NSColor(
+                calibratedRed: 0.12 + CGFloat(index) * 0.012,
+                green: 0.25 + CGFloat(index) * 0.018,
+                blue: 0.14,
+                alpha: 0.88
+            )
+            backLobe.strokeColor = .clear
+            backLobe.position = CGPoint(
+                x: x + offset,
+                y: CGFloat((index * 3) % 4) - 1
+            )
+            backLobe.zRotation = (CGFloat(index % 3) - 1) * 0.11
+            patch.addChild(backLobe)
+
+            let frontLobe = SKShapeNode(
+                ellipseOf: CGSize(
+                    width: 6.5 + CGFloat((index + 1) % 2),
+                    height: 3.8 + CGFloat(index % 2) * 0.6
+                )
+            )
+            frontLobe.name = "\(semanticName).shrub.\(index).front"
+            frontLobe.fillColor = NSColor(
+                calibratedRed: 0.16 + CGFloat(index) * 0.011,
+                green: 0.32 + CGFloat(index) * 0.016,
+                blue: 0.17,
+                alpha: 0.92
+            )
+            frontLobe.strokeColor = .clear
+            frontLobe.position = CGPoint(
+                x: x + offset + 1.8,
+                y: CGFloat((index * 3) % 4)
+            )
+            frontLobe.zRotation = (CGFloat((index + 1) % 3) - 1) * 0.13
+            frontLobe.zPosition = 0.2
+            patch.addChild(frontLobe)
+
+            if index.isMultiple(of: 2) {
+                let seed = SKShapeNode(
+                    ellipseOf: CGSize(width: 1.2, height: 0.8)
+                )
+                seed.name = "\(semanticName).shrub-seed.\(index)"
+                seed.fillColor = NSColor(
+                    calibratedRed: 0.61,
+                    green: 0.50,
+                    blue: 0.28,
+                    alpha: 0.55
+                )
+                seed.strokeColor = .clear
+                seed.position = CGPoint(
+                    x: x + offset + 2.5,
+                    y: CGFloat((index * 3) % 4) + 1.2
+                )
+                seed.zPosition = 0.4
+                patch.addChild(seed)
+            }
+        }
+        root.addChild(patch)
+    }
+
+    private func addVacantGrove(
+        identity: VacantLandscapeIdentity,
+        to root: SKNode,
+        detail: CameraDetailLevel,
+        semanticName: String
+    ) {
+        guard let primary = assets.generatedSprite(
+            logicalID: "ambient_vegetation_cluster",
+            detail: detail
+        ) else { return }
+        primary.name = "\(semanticName).primary.generated-v4.\(detail.assetSuffix)"
+        primary.position = identity == .asymmetricCopse
+            ? CGPoint(x: -5, y: 1)
+            : .zero
+        root.addChild(primary)
+        if identity == .asymmetricCopse,
+           let companion = assets.generatedSprite(
+               logicalID: "ambient_vegetation_cluster",
+               detail: detail
+           ) {
+            companion.name = "\(semanticName).companion.generated-v4.\(detail.assetSuffix)"
+            companion.position = CGPoint(x: 13, y: -5)
+            companion.setScale(0.46)
+            companion.zPosition = -0.5
+            root.addChild(companion)
+        }
+
+        let contact = SKShapeNode(ellipseOf: CGSize(width: 24, height: 6))
+        contact.name = "\(semanticName).ground-contact"
+        contact.fillColor = NSColor.black.withAlphaComponent(0.08)
+        contact.strokeColor = .clear
+        contact.position = CGPoint(x: 2, y: -4)
+        contact.zPosition = -1
+        root.addChild(contact)
     }
 
     private func vegetationPosition(for coordinate: GridCoordinate, salt: UInt64) -> CGPoint {

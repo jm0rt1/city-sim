@@ -186,7 +186,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
 - **Acceptance:** The CONTRACT-011 residential L1 N/E/S/W calibration set passes before batch expansion; every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all scene/tool/source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
 - **Stop conditions:** Reuse across building types, recolor-only variants, runtime mirroring/rotation, perspective or light drift, invented roads or ground truth, geometry/pivot/frontage mismatch, missing provenance, direct edits to live renderer/shipping selection, or generation continuing after two rejected direction siblings without anchor review.
-- **Current disposition:** Residential L1–L4 source authority is accepted and its 16 directional identities ship through PLAY-028. Commercial L1 `9718b5e63d6322daa5b9616aea31244b3f3d6629` and Commercial L2 `a224937e6aaae9c4824566403ead8c6087d646d9` are independently accepted non-shipping source authorities with unique N/E/S/W raw views, 12 unique repeat-identical normalized LOD outputs per level, complete color/grayscale frontage, and stable registration. Commercial L3 alone is authorized next; L4 remains blocked pending independent L3 review. Industrial expansion and Commercial production selection remain blocked.
+- **Current disposition:** Residential L1–L4 source authority is accepted and its 16 directional identities ship through PLAY-028. The complete Commercial L1–L4 N/E/S/W source slice is independently accepted through clean source candidate `bf3e24b2b465870f131ac0a01a2327ac4969d5d5`: every level has four authored, unique, repeat-identical raw directions; 12 unique repeat-identical normalized LOD outputs; complete color/grayscale frontage; stable pivot/registration; and literal cross-level comparisons proving no aliasing. Commercial production selection belongs to PLAY-060. Industrial source expansion may begin under the existing PLAY-027 boundaries, but Industrial production selection remains blocked.
 
 ### [x] PLAY-028: Ship the directional residential skyline
 
@@ -481,7 +481,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Missing exact candidate, stale or duplicate process, changed fixture between comparisons, cropped defect, author-authored score, visually hidden but AX-present information, one hero frame masking systemic failure, any fallback/mirror/alias/wrong frontage, unbounded resource growth, or quality-lane product mutation.
 - **Accepted integration:** Exact combined product `7b432c4af1ee62553598e70c6103efe7a26e8af9` independently **APPROVED** at 20/20 by quality evidence `4389a3edaaf328ba40af2a41fa644c7e3e439a9d`: every category 4/4, zero P0/P1, zero automatic rejects, 47/47 renderer tests, 206/206 full native tests, stable four-page 40 MiB residency, bounded regular/compact/Reduce Motion RSS, and materially preferred regular and compact comparisons. Binding packet: `docs/production/evidence/PLAY-055/candidate-7b432c4/`.
 
-### [ ] PLAY-056: Make the public realm feel alive
+### [x] PLAY-056: Make the public realm feel alive
 
 - **Player outcome:** Parks, vegetation, streets, ambient life, and data layers match the accepted building quality, so the city feels inhabited and the world explains itself without relying on HUD legends.
 - **Owning lane:** World rendering.
@@ -490,8 +490,9 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Pending Commercial/Industrial ingestion, invented simulation truth, HUD composition, public store/command contracts, gameplay, save schema, or package topology.
 - **Acceptance:** Public realm and world-layer legibility independently score 4/4; same-state regular/compact comparisons are materially preferred; no repeated-grid, mixed-fidelity, collision, legend-only, invented-truth, or budget defect remains.
 - **Claim:** `docs/production/claims/PLAY-056.world-rendering.md`.
+- **Accepted integration:** Product `f06047b`, evidence `1b96f3d`, and completion handoff `4474052` are integrated through tested product `64dd475`; independent PLAY-058 scored world/public realm 4/4 with no automatic reject.
 
-### [ ] PLAY-057: Let the player focus the city
+### [x] PLAY-057: Let the player focus the city
 
 - **Player outcome:** One visible action and shortcut give the city the screen while preserving critical operating and selected-target truth, then restore the exact full command context.
 - **Owning lane:** UI and input.
@@ -500,8 +501,9 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Renderer/world assets, simulation/gameplay/save truth, camera redesign, persistent layout state, a second command system, or hidden urgent state.
 - **Acceptance:** Focus City materially increases regular and compact aperture, retains the CONTRACT-012 status rail, preserves target/tool/camera/panel/focus identity, and passes every input/accessibility route without hidden or stale truth.
 - **Claim:** `docs/production/claims/PLAY-057.ui-input.md`.
+- **Accepted integration:** Product `16dec0d`, evidence `ba79a0b`, and completion handoff `7ccc548` are integrated through tested product `64dd475`; independent PLAY-058 scored HUD/Focus City and playability/control 4/4 each.
 
-### [ ] PLAY-058: Gate the living city
+### [x] PLAY-058: Gate the living city
 
 - **Player outcome:** Independent real-app evidence proves the next city is more alive, more legible, and more immersive without sacrificing truth or operability.
 - **Owning lane:** Playtest quality.
@@ -510,8 +512,9 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, fixture substitution, author scoring, candidate substitution, or accepting one hero frame.
 - **Acceptance:** At least 19/20; public-realm coherence and world/HUD composition both 4/4; no category below 3; zero P0/P1 and automatic rejects; explicit material preference at both viewports.
 - **Claim:** `docs/production/claims/PLAY-058.playtest-quality.md`.
+- **Accepted integration:** Exact product `64dd47500fe5e2d4a32a64f6298ded5789d3b773` passed independently at 20/20 with evidence `cc69cf4c77852f951bb38a4f3d07cacbe8f98632`; evidence-only integration is published through `4116d8491f764cc5518cae5b38b6888b88f1e6e1`.
 
-### [ ] PLAY-059: Give every diagnostic layer authoritative local truth
+### [x] PLAY-059: Give every diagnostic layer authoritative local truth
 
 - **Player outcome:** Land Value, Traffic, and Happiness produce localized, deterministic, actionable world truth instead of a legend-only mode or renderer-authored guess.
 - **Owning lane:** Simulation platform.
@@ -520,3 +523,24 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Traffic simulation/routing, land-price gameplay, happiness rebalance, persistence/fingerprint changes, renderer/UI implementation, package changes, or legacy fixture regeneration.
 - **Acceptance:** All three channels are typed, clamped, deterministic, nil off-domain, responsive to authoritative local inputs, snapshot-bounded, and leave save/fingerprint/replay/undo/gameplay truth exact.
 - **Claim:** `docs/production/claims/PLAY-059.simulation-platform.md`.
+- **Accepted integration:** Product `3bdfb41` and completion `8a73878` are ancestors of tested product `64dd475`; PLAY-056 consumes the accepted local truth and PLAY-058 approved all five visible overlays.
+
+### [ ] PLAY-060: Ship the directional commercial skyline
+
+- **Player outcome:** Commercial growth progresses from storefronts through mixed-use blocks and mid-rises to a premium tower, with every level facing its authoritative road frontage and remaining visually distinct from Residential.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-028 shipping pipeline; independently accepted PLAY-027 Commercial L1–L4 source candidate `bf3e24b2b465870f131ac0a01a2327ac4969d5d5`; CONTRACT-006, CONTRACT-010, and CONTRACT-011; published PLAY-060 claim.
+- **In scope:** Renderer-lead production selection; deterministic pack/manifest ingestion for 16 Commercial level/direction identities; stable level/frontage lookup; zero alias/mirror/rotation/fallback; staged regular/compact/directional/LOD/construction/selection/undo/save-load/Reduce Motion proof; resource and performance validation.
+- **Out of scope:** Source-art repair, Industrial ingestion, runtime transforms, gameplay/simulation/save/UI changes, package topology, or self-acceptance.
+- **Acceptance:** All 16 Commercial identities ship from exact accepted source bytes; no Residential or cross-level alias appears; N/E/S/W frontage is correct; L1–L4 remain distinct at all LODs; pack identity and residency are bounded; full suite and staged real-app proof pass; PLAY-061 independently approves the exact integrated candidate.
+- **Claim:** `docs/production/claims/PLAY-060.world-rendering.md`.
+
+### [ ] PLAY-061: Gate the directional commercial skyline
+
+- **Player outcome:** Independent real-app evidence proves Commercial density progression is beautiful, coherent, correctly oriented, and meaningfully more varied without destabilizing the accepted living-city experience.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** Published PLAY-061 preregistration; clean PLAY-060 handoff; exact integration-provided candidate.
+- **In scope:** Frozen 20-point rubric; regular and exact 900 x 600; all four directions and four levels; city/neighborhood/block LODs; Commercial-versus-Residential distinction; construction/selection/undo/save-load; pointer/keyboard/AX/Reduce Motion; pack/residency/RSS/frame budgets; independent disposition.
+- **Out of scope:** Product repair, coaching, candidate substitution, author scoring, fixture-only acceptance, or accepting a hero frame over systemic coverage.
+- **Acceptance:** At least 19/20; Commercial identity/direction and world/HUD cohesion both 4/4; zero alias, fallback, wrong frontage, overlap, P0/P1, or automatic reject; explicit material preference at regular and compact sizes.
+- **Claim:** `docs/production/claims/PLAY-061.playtest-quality.md`.

@@ -8,7 +8,8 @@
 - **Planned surfaces:** `CitySpatialConsequence` snapshot derivation, deterministic/performance tests, exact compatibility evidence, and `docs/production/evidence/PLAY-065/`
 - **Dependencies:** accepted PLAY-041/048/059, CONTRACT-016, exact published baseline
 - **Validation/proof:** applicability/nil boundaries; monotonic connection/occupancy/condition/service/recovery fixtures; repeat identity; no state mutation; exact save/fingerprint/undo/replay compatibility; bounded snapshot time and memory; focused/full suites
-- **Status:** authorized on the exact published baseline
+- **Status:** ready for integration at product commit
+  `aadbc3e4b0192d1c8aec1a753817c57ca5ff0f01`
 
 Add only the transient `streetActivityIndex` and `placeActivityIndex` channels
 approved by CONTRACT-016. Derive them from existing authoritative state and

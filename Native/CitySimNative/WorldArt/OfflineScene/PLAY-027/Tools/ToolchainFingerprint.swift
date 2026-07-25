@@ -12,7 +12,7 @@ enum FingerprintError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2|v3]"
+            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2|v3] [--scene-shadows current|disabled]"
         case let .command(command, status, error):
             return "\(command) failed with status \(status): \(error)"
         case let .framework(name):
@@ -93,9 +93,20 @@ enum ToolchainFingerprintMain {
             }
             return arguments[index + 1]
         }()
+        let sceneShadows: String = {
+            guard
+                let index = arguments.firstIndex(of: "--scene-shadows"),
+                index + 1 < arguments.count
+            else {
+                return "current"
+            }
+            return arguments[index + 1]
+        }()
         guard
             samplingContract == nil
-                || ["v2", "v3"].contains(samplingContract!)
+                || ["v2", "v3"].contains(samplingContract!),
+            ["current", "disabled"].contains(sceneShadows),
+            samplingContract != nil || sceneShadows == "current"
         else {
             throw FingerprintError.arguments
         }
@@ -209,6 +220,7 @@ enum ToolchainFingerprintMain {
                 "contractID":
                     "play027-deterministic-4x-no-msaa-lanczos-\(samplingContract)",
                 "sceneKitAntialiasing": "none",
+                "sceneKitShadows": sceneShadows,
                 "linearOversamplingFactor": 4,
                 "downsample": [
                     "filter": "CILanczosScaleTransform",

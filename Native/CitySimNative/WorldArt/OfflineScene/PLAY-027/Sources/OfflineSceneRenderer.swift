@@ -3347,7 +3347,9 @@ enum OfflineSceneRendererMain {
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
-        if diagnosticConfiguration.sceneShadows == .disabled {
+        if descriptorSampling.sceneKitShadows == "disabled"
+            || diagnosticConfiguration.sceneShadows == .disabled
+        {
             scene.rootNode.enumerateChildNodes { node, _ in
                 node.light?.castsShadow = false
             }
@@ -3634,6 +3636,12 @@ enum OfflineSceneRendererMain {
                 "effectiveSceneKitAntialiasing":
                     diagnosticConfiguration.antialiasingOverride?.rawValue
                     ?? descriptorSampling.sceneKitAntialiasing,
+                "sceneKitShadows":
+                    descriptorSampling.sceneKitShadows,
+                "effectiveSceneKitShadows":
+                    diagnosticConfiguration.sceneShadows == .disabled
+                    ? "disabled"
+                    : descriptorSampling.sceneKitShadows,
                 "linearOversamplingFactor":
                     descriptorSampling.linearOversamplingFactor,
                 "downsampleFilter":

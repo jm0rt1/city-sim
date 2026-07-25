@@ -42,12 +42,13 @@
       "minLength": 1
     },
     "logicalBuildingID": {
-      "pattern": "^(residential|commercial)_l0[1-4]$"
+      "pattern": "^(residential|commercial|industrial)_l0[1-4]$"
     },
     "family": {
       "enum": [
         "residential",
-        "commercial"
+        "commercial",
+        "industrial"
       ]
     },
     "level": {
@@ -170,6 +171,12 @@
         },
         "sceneKitAntialiasing": {
           "const": "none"
+        },
+        "sceneKitShadows": {
+          "enum": [
+            "current",
+            "disabled"
+          ]
         },
         "linearOversamplingFactor": {
           "const": 4

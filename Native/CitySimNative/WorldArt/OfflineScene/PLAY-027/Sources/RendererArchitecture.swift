@@ -43,6 +43,7 @@ struct EffectiveSamplingContract: Equatable {
     let contractID: String
     let descriptorSchema: Int
     let sceneKitAntialiasing: String
+    let sceneKitShadows: String
     let linearOversamplingFactor: Int
     let downsampleFilter: String
     let downsampleScale: Double
@@ -69,6 +70,7 @@ enum DescriptorSamplingResolver {
         contractID: "play027-legacy-schema1-factor2-msaa4x-v1",
         descriptorSchema: 1,
         sceneKitAntialiasing: "multisampling4X",
+        sceneKitShadows: "current",
         linearOversamplingFactor: 2,
         downsampleFilter: "CILanczosScaleTransform",
         downsampleScale: 0.5,
@@ -119,6 +121,11 @@ enum DescriptorSamplingResolver {
         let isV1 = sampling.contractID == schema2ContractV1ID
         let isV2 = sampling.contractID == schema2ContractV2ID
         let isV3 = sampling.contractID == schema2ContractV3ID
+        let sceneKitShadows = sampling.sceneKitShadows ?? "current"
+        let isIndustrialL2SourceV04 =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v04"
+            && sampling.purpose == "source-authority"
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -126,6 +133,7 @@ enum DescriptorSamplingResolver {
                 sampling.purpose
             ),
             sampling.sceneKitAntialiasing == "none",
+            ["current", "disabled"].contains(sceneKitShadows),
             sampling.linearOversamplingFactor == 4,
             descriptor.camera.oversamplingFactor == 4,
             sampling.downsample.filter == "CILanczosScaleTransform",
@@ -146,6 +154,15 @@ enum DescriptorSamplingResolver {
         else {
             throw SamplingContractError.invalid(
                 "schema 2 sampling block does not match the frozen deterministic contract"
+            )
+        }
+        guard
+            (isIndustrialL2SourceV04 && sceneKitShadows == "disabled")
+                || (!isIndustrialL2SourceV04
+                    && sceneKitShadows == "current")
+        else {
+            throw SamplingContractError.invalid(
+                "SceneKit shadows may be disabled only by Industrial L2 source-v04 source-authority descriptors"
             )
         }
         if isV1, sampling.postQuantizationCanonicalizer != nil {
@@ -219,6 +236,7 @@ enum DescriptorSamplingResolver {
             contractID: sampling.contractID,
             descriptorSchema: descriptor.schema,
             sceneKitAntialiasing: sampling.sceneKitAntialiasing,
+            sceneKitShadows: sceneKitShadows,
             linearOversamplingFactor: sampling.linearOversamplingFactor,
             downsampleFilter: sampling.downsample.filter,
             downsampleScale: sampling.downsample.scale,

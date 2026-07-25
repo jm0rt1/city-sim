@@ -8,8 +8,10 @@ struct BuildToolbarView: View {
     // reachable in a visibly scrolling region instead of growing over the map.
     static let compactClosedMaximumHeight: CGFloat = 108
     static let regularClosedMaximumHeight: CGFloat = 108
-    static let compactDetailsMaxHeight: CGFloat = 66
-    static let regularDetailsMaxHeight: CGFloat = 96
+    static let compactOpenMaximumHeight: CGFloat = 198
+    static let regularOpenMaximumHeight: CGFloat = 238
+    static let compactDetailsMaxHeight: CGFloat = 132
+    static let regularDetailsMaxHeight: CGFloat = 168
 
     var body: some View {
         VStack(spacing: compact ? 5 : 6) {
@@ -23,10 +25,14 @@ struct BuildToolbarView: View {
         .padding(compact ? 7 : 8)
         .frame(
             maxHeight: store.showInspector
-                ? nil
+                ? (compact ? Self.compactOpenMaximumHeight : Self.regularOpenMaximumHeight)
                 : (compact ? Self.compactClosedMaximumHeight : Self.regularClosedMaximumHeight)
         )
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .background(
+            GameTheme.hudSurfaceFill,
+            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+        )
         .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
         .shadow(color: .black.opacity(0.2), radius: 12, y: 5)
         .accessibilityElement(children: .contain)
@@ -34,24 +40,19 @@ struct BuildToolbarView: View {
     }
 
     private var inspectorDetails: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Label("Scrollable command-center details", systemImage: "arrow.up.and.down.text.horizontal")
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .accessibilityHint("Use the scroll area to reach every diagnostic control")
-            ScrollView(.vertical) {
-                InspectorView(store: store, compact: compact)
-                    .padding(.trailing, 6)
-            }
-            .scrollIndicators(.visible)
-            .frame(
-                maxHeight: compact ? Self.compactDetailsMaxHeight : Self.regularDetailsMaxHeight,
-                alignment: .top
-            )
-            .focusable()
-            .accessibilityLabel("Scrollable command-center details")
-            .accessibilityIdentifier("hud.command.details.scroll")
+        ScrollView(.vertical) {
+            InspectorView(store: store, compact: compact)
+                .padding(.trailing, 6)
         }
+        .scrollIndicators(.visible)
+        .frame(
+            maxHeight: compact ? Self.compactDetailsMaxHeight : Self.regularDetailsMaxHeight,
+            alignment: .top
+        )
+        .focusable()
+        .accessibilityLabel("Scrollable command-center details")
+        .accessibilityHint("Use the scroll area to reach every diagnostic control")
+        .accessibilityIdentifier("hud.command.details.scroll")
         .transition(.opacity)
     }
 
@@ -115,7 +116,7 @@ struct BuildToolbarView: View {
     private var catalogRow: some View {
         HStack(spacing: 7) {
             Label(store.selectedBuildCategory.title.uppercased(), systemImage: store.selectedBuildCategory.symbol)
-                .font(.system(size: 9, weight: .heavy, design: .rounded))
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                 .foregroundStyle(.secondary)
                 .frame(minWidth: 76, alignment: .leading)
 

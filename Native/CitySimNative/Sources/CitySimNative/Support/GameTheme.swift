@@ -12,6 +12,11 @@ enum GameTheme {
     static let contextCard = Color.primary.opacity(0.065)
     static let contextCardSelected = accent.opacity(0.14)
     static let subtleDivider = Color.white.opacity(0.10)
+    static let hudSurfaceFill = Color.black.opacity(0.42)
+    static let hudRaisedFill = Color.white.opacity(0.075)
+    static let hudCriticalTextSize: CGFloat = 11
+    static let hudSupportTextSize: CGFloat = 10
+    static let hudMetricValueTextSize: CGFloat = 14
 
     static let controlMinimum: CGFloat = 44
     static let compactRadius: CGFloat = 12

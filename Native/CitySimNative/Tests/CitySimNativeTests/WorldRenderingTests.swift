@@ -62,7 +62,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testUtilityAndPollutionOverlaysUseApprovedSpatialSampleInsteadOfStateInference() throws {
+    func testFiveOverlaysUseOnlyApprovedSpatialSamplesAndRespectTypedDomains() throws {
         let renderer = WorldOverlayRenderer(style: WorldVisualStyle())
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
         let consequence = CitySpatialConsequence(
@@ -78,7 +78,19 @@ final class WorldRenderingTests: XCTestCase {
             pollutionExposure: 0.64,
             pollutionBand: .severe,
             vitalityScore: 0,
-            vitality: .notApplicable
+            vitality: .notApplicable,
+            landValueIndex: 0.62,
+            localHappinessIndex: 0.44
+        )
+        let road = CityTile(coordinate: GridCoordinate(x: 2, y: 4), kind: .road)
+        let roadConsequence = CitySpatialConsequence(
+            coordinate: road.coordinate,
+            utility: consequence.utility,
+            pollutionExposure: consequence.pollutionExposure,
+            pollutionBand: consequence.pollutionBand,
+            vitalityScore: 0,
+            vitality: .notApplicable,
+            trafficPressure: 0.73
         )
         var contradictoryState = CityGameState.newCity(seed: 42)
         contradictoryState.powerCapacity = 99_999
@@ -101,22 +113,54 @@ final class WorldRenderingTests: XCTestCase {
             consequence: consequence,
             overlay: .pollution
         )
+        let landValue = renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .landValue
+        )
+        let happiness = renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .happiness
+        )
+        let traffic = renderer.sample(
+            for: road,
+            state: contradictoryState,
+            consequence: roadConsequence,
+            overlay: .traffic
+        )
         XCTAssertEqual(try XCTUnwrap(utility).value, 0.33, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(pollution).value, 0.36, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(landValue).value, 0.62, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(happiness).value, 0.44, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(traffic).value, 0.27, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(utility).pattern.rawValue, "utilityEdge")
         XCTAssertEqual(try XCTUnwrap(pollution).pattern.rawValue, "pollutionHatch")
+        XCTAssertEqual(try XCTUnwrap(landValue).pattern.rawValue, "landValueContour")
+        XCTAssertEqual(try XCTUnwrap(happiness).pattern.rawValue, "happinessRipples")
+        XCTAssertEqual(try XCTUnwrap(traffic).pattern.rawValue, "trafficPressureTicks")
         XCTAssertNil(renderer.sample(
             for: tile,
             state: contradictoryState,
             consequence: nil,
             overlay: .utilities
         ))
-        for unsupportedOverlay in [DataOverlay.landValue, .traffic, .happiness] {
+        let nilDomain = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: consequence.utility,
+            pollutionExposure: consequence.pollutionExposure,
+            pollutionBand: consequence.pollutionBand,
+            vitalityScore: 0,
+            vitality: .notApplicable
+        )
+        for overlay in [DataOverlay.landValue, .traffic, .happiness] {
             XCTAssertNil(renderer.sample(
                 for: tile,
                 state: contradictoryState,
-                consequence: consequence,
-                overlay: unsupportedOverlay
+                consequence: nilDomain,
+                overlay: overlay
             ))
         }
         for undevelopedKind in [BuildingKind.empty, .road] {
@@ -127,6 +171,28 @@ final class WorldRenderingTests: XCTestCase {
                 overlay: .pollution
             ))
         }
+        var underConstruction = tile
+        underConstruction.constructionProgress = 0.99
+        for overlay in [DataOverlay.landValue, .happiness] {
+            XCTAssertNil(renderer.sample(
+                for: underConstruction,
+                state: contradictoryState,
+                consequence: consequence,
+                overlay: overlay
+            ))
+        }
+        XCTAssertNil(renderer.sample(
+            for: road,
+            state: contradictoryState,
+            consequence: roadConsequence,
+            overlay: .landValue
+        ))
+        XCTAssertNil(renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .traffic
+        ))
         XCTAssertNil(renderer.sample(
             for: CityTile(coordinate: GridCoordinate(x: 3, y: 3), kind: .residential),
             state: contradictoryState,
@@ -136,7 +202,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testApprovedOverlaysUseSparseNonColorSeverityMarksWithoutTileWashOrLabels() {
+    func testFiveOverlaysUseDistinctSparseNonColorMarksWithoutTileWashOrLabels() {
         let style = WorldVisualStyle()
         let renderer = WorldOverlayRenderer(style: style)
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
@@ -153,7 +219,19 @@ final class WorldRenderingTests: XCTestCase {
             pollutionExposure: 0.80,
             pollutionBand: .severe,
             vitalityScore: 0,
-            vitality: .notApplicable
+            vitality: .notApplicable,
+            landValueIndex: 0.20,
+            localHappinessIndex: 0.20
+        )
+        let road = CityTile(coordinate: tile.coordinate, kind: .road)
+        let trafficConsequence = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: severe.utility,
+            pollutionExposure: severe.pollutionExposure,
+            pollutionBand: severe.pollutionBand,
+            vitalityScore: 0,
+            vitality: .notApplicable,
+            trafficPressure: 0.80
         )
         let state = CityGameState.newCity(seed: 42)
 
@@ -171,28 +249,70 @@ final class WorldRenderingTests: XCTestCase {
             overlay: .pollution,
             detail: .block
         )
+        let landValue = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .landValue,
+            detail: .block
+        )
+        let traffic = renderer.makeOverlay(
+            for: road,
+            state: state,
+            consequence: trafficConsequence,
+            overlay: .traffic,
+            detail: .block
+        )
+        let happiness = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .happiness,
+            detail: .block
+        )
 
         let utilityNames = descendantNames(in: utility)
         let pollutionNames = descendantNames(in: pollution)
-        XCTAssertFalse(utilityNames.contains("overlay.base"))
-        XCTAssertFalse(pollutionNames.contains("overlay.base"))
+        let landValueNames = descendantNames(in: landValue)
+        let trafficNames = descendantNames(in: traffic)
+        let happinessNames = descendantNames(in: happiness)
+        for names in [utilityNames, pollutionNames, landValueNames, trafficNames, happinessNames] {
+            XCTAssertFalse(names.contains("overlay.base"))
+        }
         XCTAssertTrue(utilityNames.contains("overlay.utility.status-edge"))
         XCTAssertEqual(utilityNames.filter { $0 == "overlay.utility.severity-notch" }.count, 3)
         XCTAssertEqual(pollutionNames.filter { $0 == "overlay.pollution.exposure-hatch" }.count, 3)
-        XCTAssertTrue(descendantLabels(in: utility).isEmpty)
-        XCTAssertTrue(descendantLabels(in: pollution).isEmpty)
+        XCTAssertEqual(landValueNames.filter { $0 == "overlay.land-value.ground-contour" }.count, 3)
+        XCTAssertEqual(trafficNames.filter { $0 == "overlay.traffic.pressure-tick" }.count, 6)
+        XCTAssertEqual(happinessNames.filter { $0 == "overlay.happiness.ground-ripple" }.count, 3)
+        for overlay in [utility, pollution, landValue, traffic, happiness] {
+            XCTAssertTrue(descendantLabels(in: overlay).isEmpty)
+            XCTAssertEqual(recursiveActiveActionCount(overlay), 0)
+        }
 
         let utilityBounds = utility.calculateAccumulatedFrame()
         let pollutionBounds = pollution.calculateAccumulatedFrame()
+        let landValueBounds = landValue.calculateAccumulatedFrame()
+        let trafficBounds = traffic.calculateAccumulatedFrame()
+        let happinessBounds = happiness.calculateAccumulatedFrame()
         XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
         XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
         XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.40)
         XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.20)
-        XCTAssertLessThan(
-            pollutionBounds.maxY,
-            -style.tileHeight * 0.20,
-            "Pollution marks must stay on the ground/frontage plane instead of crossing facades"
-        )
+        for (name, bounds) in [
+            ("pollution", pollutionBounds),
+            ("land-value", landValueBounds),
+            ("traffic-pressure", trafficBounds),
+            ("happiness", happinessBounds),
+        ] {
+            XCTAssertLessThan(
+                bounds.maxY,
+                -style.tileHeight * 0.12,
+                "\(name) marks must stay on the ground/frontage plane instead of crossing facades"
+            )
+            XCTAssertLessThan(bounds.width, style.tileWidth * 0.55, "\(name) width")
+            XCTAssertLessThan(bounds.height, style.tileHeight * 0.25, "\(name) height")
+        }
 
         let mild = CitySpatialConsequence(
             coordinate: tile.coordinate,
@@ -220,6 +340,34 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(neighborhoodLayer?.isHidden, true)
         style.updateDetailVisibility(in: mildAtCity, detail: .block)
         XCTAssertEqual(neighborhoodLayer?.isHidden, false)
+
+        for detail in CameraDetailLevel.allCases {
+            let landAtDetail = renderer.makeOverlay(
+                for: tile,
+                state: state,
+                consequence: severe,
+                overlay: .landValue,
+                detail: detail
+            )
+            let trafficAtDetail = renderer.makeOverlay(
+                for: road,
+                state: state,
+                consequence: trafficConsequence,
+                overlay: .traffic,
+                detail: detail
+            )
+            let happinessAtDetail = renderer.makeOverlay(
+                for: tile,
+                state: state,
+                consequence: severe,
+                overlay: .happiness,
+                detail: detail
+            )
+            for overlay in [landAtDetail, trafficAtDetail, happinessAtDetail] {
+                XCTAssertEqual(overlay.childNode(withName: "//detail.city")?.isHidden, false)
+                XCTAssertEqual(recursiveActiveActionCount(overlay), 0)
+            }
+        }
     }
 
     @MainActor
@@ -231,7 +379,13 @@ final class WorldRenderingTests: XCTestCase {
 
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
-        for overlay in [DataOverlay.pollution, .utilities] {
+        for overlay in [
+            DataOverlay.landValue,
+            .traffic,
+            .utilities,
+            .happiness,
+            .pollution,
+        ] {
             scene.render(
                 snapshot: snapshot,
                 overlay: overlay,
@@ -1346,6 +1500,35 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(powerPlantNames.contains("lot.generated-role.powerPlant"))
     }
 
+    @MainActor
+    func testAuthoredParkCompositionRendersAboveItsGroundingFoundation() throws {
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: WorldAssetCatalog())
+        let park = CityTile(
+            coordinate: GridCoordinate(x: 8, y: 8),
+            kind: .park,
+            condition: 1,
+            constructionProgress: 1
+        )
+        let root = renderer.makeLot(
+            for: park,
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        )
+        let authored = try XCTUnwrap(
+            root.childNode(withName: "//lot.generated-v4.park_l01.block") as? SKSpriteNode
+        )
+        let foundation = try XCTUnwrap(
+            root.childNode(withName: "//lot.lod.city.mass.park") as? SKShapeNode
+        )
+
+        XCTAssertGreaterThan(authored.zPosition, foundation.zPosition)
+        XCTAssertNotNil(authored.texture)
+        XCTAssertGreaterThan(authored.frame.width, 60)
+        XCTAssertGreaterThan(authored.frame.height, 32)
+        XCTAssertFalse(descendantNames(in: root).contains { $0.hasPrefix("lot.place.") })
+    }
+
     func testStrategyDistrictIdentityIsStableClampedAndTruthLimited() {
         let coordinate = GridCoordinate(x: 14, y: 9)
         let low = StrategyDistrictVisualIdentity(tile: CityTile(
@@ -1379,7 +1562,8 @@ final class WorldRenderingTests: XCTestCase {
 
     @MainActor
     func testCorridorAmbientLifeHasBoundedConnectedContextAndIsReduceMotionSafe() {
-        let renderer = AmbientLifeRenderer(style: WorldVisualStyle(), assets: WorldAssetCatalog())
+        let style = WorldVisualStyle()
+        let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())
         let state = CityGameState.newCity(seed: 42)
         let animated = renderer.makeCorridorLife(
             in: state,
@@ -1391,11 +1575,22 @@ final class WorldRenderingTests: XCTestCase {
             detail: .block,
             reducedMotion: true
         )
+        let repeated = renderer.makeCorridorLife(
+            in: state,
+            detail: .block,
+            reducedMotion: true
+        )
+        let city = renderer.makeCorridorLife(
+            in: state,
+            detail: .city,
+            reducedMotion: true
+        )
 
         let animatedNames = descendantNames(in: animated)
         let reducedNames = descendantNames(in: reduced)
+        XCTAssertEqual(reducedNames, descendantNames(in: repeated))
         for names in [animatedNames, reducedNames] {
-            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 5)
+            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 4)
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.pedestrian-pair.0"
@@ -1407,39 +1602,189 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.vegetation-cluster.0"
-                        || $0 == "world.ambient.vegetation-cluster.1"
-                        || $0 == "world.ambient.vegetation-cluster.2"
-                        || $0 == "world.ambient.vegetation-cluster.3"
                         || $0 == "world.ambient.vegetation-cluster.4"
                 }.count,
-                5
+                2
             )
-            let vacantGroves = names.filter {
+            let furniture = names.filter {
                 let components = $0.split(separator: ".")
-                return components.count == 5
+                return components.count == 6
                     && components[0] == "world"
-                    && components[1] == "environment"
-                    && components[2] == "vacant-grove"
+                    && components[1] == "public-realm"
+                    && components[2] == "street-furniture"
             }
-            XCTAssertEqual(vacantGroves.count, 16)
+            XCTAssertEqual(furniture.count, 3)
             XCTAssertEqual(
-                names.filter { $0.hasSuffix(".ground-contact") }.count,
-                vacantGroves.count
+                Set(furniture.map { $0.split(separator: ".")[3] }),
+                Set(["wood-bench", "stone-planter", "cycle-rack"])
             )
-            XCTAssertEqual(
-                names.filter { $0.hasSuffix(".undeveloped-meadow") }.count,
-                vacantGroves.count
-            )
-            for name in vacantGroves {
+            for name in furniture {
                 let components = name.split(separator: ".")
                 let x = Int(components[components.count - 2])
                 let y = Int(components[components.count - 1])
                 let coordinate = GridCoordinate(x: try! XCTUnwrap(x), y: try! XCTUnwrap(y))
+                XCTAssertEqual(state.tile(at: coordinate)?.kind, .road)
+            }
+            let vacantCompositions = names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 6
+                    && components[0] == "world"
+                    && components[1] == "environment"
+                    && components[2] == "vacant-composition"
+            }
+            XCTAssertEqual(vacantCompositions.count, 8)
+            let vacantIdentities = Set(vacantCompositions.map {
+                $0.split(separator: ".")[3]
+            })
+            XCTAssertEqual(
+                vacantIdentities,
+                Set(["meadow", "shrub-patch", "single-grove", "asymmetric-copse"])
+            )
+            let generatedGroveCompositions = vacantCompositions.filter {
+                let identity = $0.split(separator: ".")[3]
+                return identity == "single-grove" || identity == "asymmetric-copse"
+            }
+            XCTAssertLessThanOrEqual(generatedGroveCompositions.count, 2)
+            XCTAssertEqual(
+                names.filter {
+                    $0.hasPrefix("world.environment.vacant-composition.")
+                        && $0.hasSuffix(".ground-contact")
+                }.count,
+                generatedGroveCompositions.count
+            )
+            XCTAssertEqual(
+                names.filter { $0.hasSuffix(".undeveloped-meadow") }.count,
+                vacantCompositions.count
+            )
+            var identityByCoordinate: [GridCoordinate: Substring] = [:]
+            for name in vacantCompositions {
+                let components = name.split(separator: ".")
+                let x = Int(components[components.count - 2])
+                let y = Int(components[components.count - 1])
+                let coordinate = GridCoordinate(x: try! XCTUnwrap(x), y: try! XCTUnwrap(y))
+                identityByCoordinate[coordinate] = components[3]
                 XCTAssertEqual(state.tile(at: coordinate)?.kind, .empty)
                 let roadDistance = state.tiles.filter { $0.kind == .road }.map {
                     abs($0.coordinate.x - coordinate.x) + abs($0.coordinate.y - coordinate.y)
                 }.min()
                 XCTAssertGreaterThanOrEqual(roadDistance ?? 0, 2)
+            }
+            for first in identityByCoordinate {
+                for second in identityByCoordinate
+                where first.key != second.key && first.value == second.value {
+                    let distance = abs(first.key.x - second.key.x)
+                        + abs(first.key.y - second.key.y)
+                    XCTAssertGreaterThan(distance, 3)
+                }
+            }
+        }
+        XCTAssertFalse(
+            descendantNames(in: city).contains {
+                $0.hasPrefix("world.public-realm.street-furniture.")
+            }
+        )
+        let landscape = try! XCTUnwrap(
+            reduced.childNode(withName: "//world.environment.vacant-landscape")
+        )
+        for composition in landscape.children {
+            guard let name = composition.name else {
+                XCTFail("Vacant landscape composition must retain its coordinate identity")
+                continue
+            }
+            let components = name.split(separator: ".")
+            let coordinate = GridCoordinate(
+                x: try! XCTUnwrap(Int(components[components.count - 2])),
+                y: try! XCTUnwrap(Int(components[components.count - 1]))
+            )
+            let center = style.isoPosition(coordinate)
+            XCTAssertNotEqual(composition.position, center)
+            XCTAssertLessThanOrEqual(abs(composition.position.x - center.x), 8)
+            XCTAssertLessThanOrEqual(abs(composition.position.y - center.y), 3)
+        }
+        let furnitureNames = reducedNames.filter {
+            let components = $0.split(separator: ".")
+            return components.count == 6
+                && components[0] == "world"
+                && components[1] == "public-realm"
+                && components[2] == "street-furniture"
+        }
+        var furnitureFootprints: [CGRect] = []
+        for name in furnitureNames {
+            let components = name.split(separator: ".")
+            let coordinate = GridCoordinate(
+                x: try! XCTUnwrap(Int(components[components.count - 2])),
+                y: try! XCTUnwrap(Int(components[components.count - 1]))
+            )
+            let furniture = try! XCTUnwrap(reduced.childNode(withName: "//\(name)"))
+            let roadCenter = style.isoPosition(coordinate)
+            let direction = CGPoint(x: cos(furniture.zRotation), y: sin(furniture.zRotation))
+            let perpendicular = CGPoint(x: -direction.y, y: direction.x)
+            let alongOffsets: [CGFloat] = [-6, 6]
+            let acrossOffsets: [CGFloat] = [-1.25, 1.25]
+            var corners: [CGPoint] = []
+            for along in alongOffsets {
+                for across in acrossOffsets {
+                    let alongPoint = CGPoint(
+                        x: direction.x * along,
+                        y: direction.y * along
+                    )
+                    let acrossPoint = CGPoint(
+                        x: perpendicular.x * across,
+                        y: perpendicular.y * across
+                    )
+                    corners.append(CGPoint(
+                        x: furniture.position.x + alongPoint.x + acrossPoint.x,
+                        y: furniture.position.y + alongPoint.y + acrossPoint.y
+                    ))
+                }
+            }
+            let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
+            XCTAssertFalse(connections.isEmpty)
+            for point in corners {
+                let local = CGPoint(x: point.x - roadCenter.x, y: point.y - roadCenter.y)
+                let coreDistances = connections.edges.map {
+                    pointSegmentDistanceForTesting(local, end: style.roadSocket(for: $0))
+                }
+                XCTAssertGreaterThanOrEqual(coreDistances.min() ?? 0, 9.1)
+                XCTAssertLessThanOrEqual(coreDistances.min() ?? .infinity, 13.5)
+                let normalizedX = abs(local.x) / (style.tileWidth / 2)
+                let normalizedY = abs(local.y) / (style.tileHeight / 2)
+                XCTAssertLessThanOrEqual(
+                    normalizedX + normalizedY,
+                    0.96
+                )
+                for edge in connections.edges {
+                    let socket = style.roadSocket(for: edge)
+                    XCTAssertGreaterThanOrEqual(
+                        hypot(local.x - socket.x, local.y - socket.y),
+                        3.0
+                    )
+                }
+                for tile in state.tiles
+                where tile.kind != .empty && tile.kind != .road {
+                    let buildingCenter = style.isoPosition(tile.coordinate)
+                    let buildingLocal = CGPoint(
+                        x: point.x - buildingCenter.x,
+                        y: point.y - buildingCenter.y
+                    )
+                    XCTAssertGreaterThan(
+                        abs(buildingLocal.x) / 34 + abs(buildingLocal.y) / 17,
+                        1.0
+                    )
+                }
+            }
+            let xs = corners.map(\.x)
+            let ys = corners.map(\.y)
+            furnitureFootprints.append(CGRect(
+                x: xs.min() ?? 0,
+                y: ys.min() ?? 0,
+                width: (xs.max() ?? 0) - (xs.min() ?? 0),
+                height: (ys.max() ?? 0) - (ys.min() ?? 0)
+            ))
+        }
+        for index in furnitureFootprints.indices {
+            for sibling in furnitureFootprints.indices where sibling > index {
+                XCTAssertFalse(furnitureFootprints[index].intersects(furnitureFootprints[sibling]))
             }
         }
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
@@ -2657,5 +3002,13 @@ final class WorldRenderingTests: XCTestCase {
     private func recursiveActiveActionCount(_ node: SKNode) -> Int {
         let localCount = node.hasActions() ? 1 : 0
         return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
+    }
+
+    private func pointSegmentDistanceForTesting(_ point: CGPoint, end: CGPoint) -> CGFloat {
+        let lengthSquared = end.x * end.x + end.y * end.y
+        guard lengthSquared > 0 else { return hypot(point.x, point.y) }
+        let projection = min(1, max(0, (point.x * end.x + point.y * end.y) / lengthSquared))
+        let closest = CGPoint(x: end.x * projection, y: end.y * projection)
+        return hypot(point.x - closest.x, point.y - closest.y)
     }
 }

@@ -344,7 +344,8 @@ struct StrategyCommandCenterView: View {
     }
 
     private func responseButtonTitle(_ response: CityDirectResponse) -> String {
-        if compact, response.command == .inspectorFinances { return "Tax & cashflow" }
+        if response.command == .inspectorFinances { return "Tax & cashflow" }
+        if response.command == .inspectorUtilities { return "Utilities" }
         return response.title
     }
 

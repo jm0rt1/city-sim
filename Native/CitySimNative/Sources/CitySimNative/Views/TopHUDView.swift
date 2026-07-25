@@ -44,9 +44,9 @@ struct TopHUDView: View {
     private var statusRow: some View {
         HStack(spacing: compact ? 4 : 6) {
             cityIdentity
-                .frame(width: compact ? 118 : 150)
+                .frame(width: compact ? 104 : 150)
             objectiveSummary
-                .frame(width: compact ? 106 : 184)
+                .frame(width: compact ? 138 : 184)
 
             hudDivider
             metricRibbon
@@ -197,7 +197,7 @@ struct TopHUDView: View {
             MetricCard(
                 identifier: "hud.metric.employment",
                 title: "Jobs filled",
-                shortTitle: compact ? "Jobs" : nil,
+                shortTitle: "Jobs",
                 value: store.state.jobs.compactText,
                 symbol: "briefcase.fill",
                 tint: .purple,

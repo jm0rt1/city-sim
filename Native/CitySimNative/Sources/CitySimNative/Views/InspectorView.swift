@@ -24,6 +24,7 @@ struct InspectorView: View {
                         .frame(width: 260, alignment: .topLeading)
                     Divider().overlay(GameTheme.subtleDivider)
                     contextBody
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
             } else {
                 VStack(alignment: .leading, spacing: 8) {

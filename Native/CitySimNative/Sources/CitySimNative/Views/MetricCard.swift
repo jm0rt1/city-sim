@@ -36,15 +36,16 @@ struct MetricCard: View {
     private var denseContent: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 3) {
-                Image(systemName: symbol)
-                    .font(.system(size: Self.criticalTextSize, weight: .semibold))
-                    .foregroundStyle(tint)
-                    .accessibilityHidden(true)
                 Text((shortTitle ?? title).uppercased())
                     .font(.system(size: Self.criticalTextSize, weight: .bold, design: .rounded))
                     .tracking(0.15)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                Spacer(minLength: 0)
+                Circle()
+                    .fill(tint)
+                    .frame(width: 5, height: 5)
+                    .accessibilityHidden(true)
             }
             Text(value)
                 .font(.system(size: GameTheme.hudMetricValueTextSize, weight: .bold, design: .rounded))

@@ -9,7 +9,7 @@
 - **Planned surfaces:** `Native/CitySimNative/WorldArt/ImageGen/`, task-owned non-shipping source catalog records, source validators, contact sheets, and `docs/production/evidence/PLAY-027/`
 - **Dependencies:** CONTRACT-006, CONTRACT-010, CONTRACT-011, frozen generated-v4 style/family anchors; shipping ingestion waits for accepted PLAY-024
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** active for CONTRACT-011 residential L1 N/E/S/W offline-scene calibration; PLAY-024 is accepted, while renderer ingestion and production selection remain blocked pending calibration acceptance and renderer-lead review
+- **Status:** active for a third CONTRACT-011 residential L1 N/E/S/W offline-scene calibration. Candidate `fda4a15ead47b37f3610e4b3d7f07bb7ff102d8a` is technically valid but independently rejected at 18/28 for north/west frontage readability, residential character, grayscale hierarchy, and exact game-scale presentation. The remaining 44 sources, renderer ingestion, and production selection remain blocked pending a later calibration acceptance and renderer-lead review.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

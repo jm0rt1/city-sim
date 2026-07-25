@@ -374,10 +374,15 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(overlayDiagnostics.updatedTileCount, 0)
         XCTAssertEqual(overlayDiagnostics.reusedTileCount, state.tiles.count)
         XCTAssertEqual(overlayDiagnostics.overlayUpdateCount, state.tiles.count)
-        XCTAssertEqual(
+        XCTAssertGreaterThan(
             overlayDiagnostics.nodeCount,
             initialNodeCount,
-            "Land value must abstain until coordinate-scoped analytics are approved"
+            "Accepted coordinate-scoped Land Value truth must be visible without rebuilding base tiles"
+        )
+        XCTAssertLessThanOrEqual(
+            overlayDiagnostics.nodeCount - initialNodeCount,
+            state.tiles.count,
+            "Sparse overlay presentation must remain bounded to at most one aggregate node per map tile"
         )
 
         scene.configureProofCamera(detail: .city, centeredOn: center)
@@ -396,7 +401,16 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(blockDiagnostics.createdTileCount, 0)
         XCTAssertEqual(blockDiagnostics.updatedTileCount, 0)
         XCTAssertEqual(blockDiagnostics.reusedTileCount, state.tiles.count)
-        XCTAssertEqual(blockDiagnostics.nodeCount, cityDiagnostics.nodeCount)
+        XCTAssertGreaterThan(
+            blockDiagnostics.nodeCount,
+            cityDiagnostics.nodeCount,
+            "Block LOD must reveal more typed overlay detail than the strategic city view"
+        )
+        XCTAssertLessThanOrEqual(
+            blockDiagnostics.nodeCount - cityDiagnostics.nodeCount,
+            state.tiles.count,
+            "LOD overlay detail must remain bounded by the authoritative map"
+        )
         print(
             "CITYSIM_OVERLAY_DIAGNOSTICS overlay_updates=\(overlayDiagnostics.overlayUpdateCount) " +
             "overlay_nodes=\(overlayDiagnostics.nodeCount) city_nodes=\(cityDiagnostics.nodeCount) " +

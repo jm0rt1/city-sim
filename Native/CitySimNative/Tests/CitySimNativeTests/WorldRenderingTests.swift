@@ -62,7 +62,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testUtilityAndPollutionOverlaysUseApprovedSpatialSampleInsteadOfStateInference() throws {
+    func testFiveOverlaysUseOnlyApprovedSpatialSamplesAndRespectTypedDomains() throws {
         let renderer = WorldOverlayRenderer(style: WorldVisualStyle())
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
         let consequence = CitySpatialConsequence(
@@ -78,7 +78,19 @@ final class WorldRenderingTests: XCTestCase {
             pollutionExposure: 0.64,
             pollutionBand: .severe,
             vitalityScore: 0,
-            vitality: .notApplicable
+            vitality: .notApplicable,
+            landValueIndex: 0.62,
+            localHappinessIndex: 0.44
+        )
+        let road = CityTile(coordinate: GridCoordinate(x: 2, y: 4), kind: .road)
+        let roadConsequence = CitySpatialConsequence(
+            coordinate: road.coordinate,
+            utility: consequence.utility,
+            pollutionExposure: consequence.pollutionExposure,
+            pollutionBand: consequence.pollutionBand,
+            vitalityScore: 0,
+            vitality: .notApplicable,
+            trafficPressure: 0.73
         )
         var contradictoryState = CityGameState.newCity(seed: 42)
         contradictoryState.powerCapacity = 99_999
@@ -101,22 +113,54 @@ final class WorldRenderingTests: XCTestCase {
             consequence: consequence,
             overlay: .pollution
         )
+        let landValue = renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .landValue
+        )
+        let happiness = renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .happiness
+        )
+        let traffic = renderer.sample(
+            for: road,
+            state: contradictoryState,
+            consequence: roadConsequence,
+            overlay: .traffic
+        )
         XCTAssertEqual(try XCTUnwrap(utility).value, 0.33, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(pollution).value, 0.36, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(landValue).value, 0.62, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(happiness).value, 0.44, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(traffic).value, 0.27, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(utility).pattern.rawValue, "utilityEdge")
         XCTAssertEqual(try XCTUnwrap(pollution).pattern.rawValue, "pollutionHatch")
+        XCTAssertEqual(try XCTUnwrap(landValue).pattern.rawValue, "landValueContour")
+        XCTAssertEqual(try XCTUnwrap(happiness).pattern.rawValue, "happinessRipples")
+        XCTAssertEqual(try XCTUnwrap(traffic).pattern.rawValue, "trafficPressureTicks")
         XCTAssertNil(renderer.sample(
             for: tile,
             state: contradictoryState,
             consequence: nil,
             overlay: .utilities
         ))
-        for unsupportedOverlay in [DataOverlay.landValue, .traffic, .happiness] {
+        let nilDomain = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: consequence.utility,
+            pollutionExposure: consequence.pollutionExposure,
+            pollutionBand: consequence.pollutionBand,
+            vitalityScore: 0,
+            vitality: .notApplicable
+        )
+        for overlay in [DataOverlay.landValue, .traffic, .happiness] {
             XCTAssertNil(renderer.sample(
                 for: tile,
                 state: contradictoryState,
-                consequence: consequence,
-                overlay: unsupportedOverlay
+                consequence: nilDomain,
+                overlay: overlay
             ))
         }
         for undevelopedKind in [BuildingKind.empty, .road] {
@@ -127,6 +171,28 @@ final class WorldRenderingTests: XCTestCase {
                 overlay: .pollution
             ))
         }
+        var underConstruction = tile
+        underConstruction.constructionProgress = 0.99
+        for overlay in [DataOverlay.landValue, .happiness] {
+            XCTAssertNil(renderer.sample(
+                for: underConstruction,
+                state: contradictoryState,
+                consequence: consequence,
+                overlay: overlay
+            ))
+        }
+        XCTAssertNil(renderer.sample(
+            for: road,
+            state: contradictoryState,
+            consequence: roadConsequence,
+            overlay: .landValue
+        ))
+        XCTAssertNil(renderer.sample(
+            for: tile,
+            state: contradictoryState,
+            consequence: consequence,
+            overlay: .traffic
+        ))
         XCTAssertNil(renderer.sample(
             for: CityTile(coordinate: GridCoordinate(x: 3, y: 3), kind: .residential),
             state: contradictoryState,
@@ -136,7 +202,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testApprovedOverlaysUseSparseNonColorSeverityMarksWithoutTileWashOrLabels() {
+    func testFiveOverlaysUseDistinctSparseNonColorMarksWithoutTileWashOrLabels() {
         let style = WorldVisualStyle()
         let renderer = WorldOverlayRenderer(style: style)
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
@@ -153,7 +219,19 @@ final class WorldRenderingTests: XCTestCase {
             pollutionExposure: 0.80,
             pollutionBand: .severe,
             vitalityScore: 0,
-            vitality: .notApplicable
+            vitality: .notApplicable,
+            landValueIndex: 0.20,
+            localHappinessIndex: 0.20
+        )
+        let road = CityTile(coordinate: tile.coordinate, kind: .road)
+        let trafficConsequence = CitySpatialConsequence(
+            coordinate: tile.coordinate,
+            utility: severe.utility,
+            pollutionExposure: severe.pollutionExposure,
+            pollutionBand: severe.pollutionBand,
+            vitalityScore: 0,
+            vitality: .notApplicable,
+            trafficPressure: 0.80
         )
         let state = CityGameState.newCity(seed: 42)
 
@@ -171,28 +249,70 @@ final class WorldRenderingTests: XCTestCase {
             overlay: .pollution,
             detail: .block
         )
+        let landValue = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .landValue,
+            detail: .block
+        )
+        let traffic = renderer.makeOverlay(
+            for: road,
+            state: state,
+            consequence: trafficConsequence,
+            overlay: .traffic,
+            detail: .block
+        )
+        let happiness = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .happiness,
+            detail: .block
+        )
 
         let utilityNames = descendantNames(in: utility)
         let pollutionNames = descendantNames(in: pollution)
-        XCTAssertFalse(utilityNames.contains("overlay.base"))
-        XCTAssertFalse(pollutionNames.contains("overlay.base"))
+        let landValueNames = descendantNames(in: landValue)
+        let trafficNames = descendantNames(in: traffic)
+        let happinessNames = descendantNames(in: happiness)
+        for names in [utilityNames, pollutionNames, landValueNames, trafficNames, happinessNames] {
+            XCTAssertFalse(names.contains("overlay.base"))
+        }
         XCTAssertTrue(utilityNames.contains("overlay.utility.status-edge"))
         XCTAssertEqual(utilityNames.filter { $0 == "overlay.utility.severity-notch" }.count, 3)
         XCTAssertEqual(pollutionNames.filter { $0 == "overlay.pollution.exposure-hatch" }.count, 3)
-        XCTAssertTrue(descendantLabels(in: utility).isEmpty)
-        XCTAssertTrue(descendantLabels(in: pollution).isEmpty)
+        XCTAssertEqual(landValueNames.filter { $0 == "overlay.land-value.ground-contour" }.count, 3)
+        XCTAssertEqual(trafficNames.filter { $0 == "overlay.traffic.pressure-tick" }.count, 6)
+        XCTAssertEqual(happinessNames.filter { $0 == "overlay.happiness.ground-ripple" }.count, 3)
+        for overlay in [utility, pollution, landValue, traffic, happiness] {
+            XCTAssertTrue(descendantLabels(in: overlay).isEmpty)
+            XCTAssertEqual(recursiveActiveActionCount(overlay), 0)
+        }
 
         let utilityBounds = utility.calculateAccumulatedFrame()
         let pollutionBounds = pollution.calculateAccumulatedFrame()
+        let landValueBounds = landValue.calculateAccumulatedFrame()
+        let trafficBounds = traffic.calculateAccumulatedFrame()
+        let happinessBounds = happiness.calculateAccumulatedFrame()
         XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
         XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
         XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.40)
         XCTAssertLessThan(pollutionBounds.height, style.tileHeight * 0.20)
-        XCTAssertLessThan(
-            pollutionBounds.maxY,
-            -style.tileHeight * 0.20,
-            "Pollution marks must stay on the ground/frontage plane instead of crossing facades"
-        )
+        for (name, bounds) in [
+            ("pollution", pollutionBounds),
+            ("land-value", landValueBounds),
+            ("traffic-pressure", trafficBounds),
+            ("happiness", happinessBounds),
+        ] {
+            XCTAssertLessThan(
+                bounds.maxY,
+                -style.tileHeight * 0.12,
+                "\(name) marks must stay on the ground/frontage plane instead of crossing facades"
+            )
+            XCTAssertLessThan(bounds.width, style.tileWidth * 0.55, "\(name) width")
+            XCTAssertLessThan(bounds.height, style.tileHeight * 0.25, "\(name) height")
+        }
 
         let mild = CitySpatialConsequence(
             coordinate: tile.coordinate,
@@ -220,6 +340,34 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(neighborhoodLayer?.isHidden, true)
         style.updateDetailVisibility(in: mildAtCity, detail: .block)
         XCTAssertEqual(neighborhoodLayer?.isHidden, false)
+
+        for detail in CameraDetailLevel.allCases {
+            let landAtDetail = renderer.makeOverlay(
+                for: tile,
+                state: state,
+                consequence: severe,
+                overlay: .landValue,
+                detail: detail
+            )
+            let trafficAtDetail = renderer.makeOverlay(
+                for: road,
+                state: state,
+                consequence: trafficConsequence,
+                overlay: .traffic,
+                detail: detail
+            )
+            let happinessAtDetail = renderer.makeOverlay(
+                for: tile,
+                state: state,
+                consequence: severe,
+                overlay: .happiness,
+                detail: detail
+            )
+            for overlay in [landAtDetail, trafficAtDetail, happinessAtDetail] {
+                XCTAssertEqual(overlay.childNode(withName: "//detail.city")?.isHidden, false)
+                XCTAssertEqual(recursiveActiveActionCount(overlay), 0)
+            }
+        }
     }
 
     @MainActor
@@ -231,7 +379,13 @@ final class WorldRenderingTests: XCTestCase {
 
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
-        for overlay in [DataOverlay.pollution, .utilities] {
+        for overlay in [
+            DataOverlay.landValue,
+            .traffic,
+            .utilities,
+            .happiness,
+            .pollution,
+        ] {
             scene.render(
                 snapshot: snapshot,
                 overlay: overlay,

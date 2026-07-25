@@ -26,15 +26,17 @@ The complete Residential L2-L4 slice was independently accepted at
 `8f928ed5dd01453ff9d4d9910858d8bf786afa9d`. Integration then authorized the
 Commercial L1-L4 source slice under a level-by-level review gate. Commercial
 L1 `source-v04` was accepted as non-shipping source-art authority at
-`9718b5e63d6322daa5b9616aea31244b3f3d6629`. Commercial L2 is the current
+`9718b5e63d6322daa5b9616aea31244b3f3d6629`. Commercial L2 `source-v01` was
+accepted as non-shipping source-art authority at
+`a224937e6aaae9c4824566403ead8c6087d646d9`. Commercial L3 is the current
 authorized review candidate:
 
 ```text
-commercial_l02/variant-0/{north,east,south,west}
+commercial_l03/variant-0/{north,east,south,west}
 ```
 
-Commercial L3/L4 remain blocked until Commercial L2 is independently
-reviewed. Industrial source production remains unauthorized.
+Commercial L4 remains blocked until Commercial L3 is independently reviewed.
+Industrial source production remains unauthorized.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -117,7 +119,7 @@ asset selection.
 ## Hard gate
 
 Residential L1 and Residential L2-L4 have passed their independent source-art
-gates. Commercial L1 is accepted as non-shipping source-art authority, and
-Commercial L2 is frozen for independent review. Commercial L3/L4, Industrial,
-additional variants, renderer ingestion, packaging, and production selection
-remain blocked without further integration authority.
+gates. Commercial L1 and Commercial L2 are accepted as non-shipping source-art
+authority, and Commercial L3 is frozen for independent review. Commercial L4,
+Industrial, additional variants, renderer ingestion, packaging, and production
+selection remain blocked without further integration authority.

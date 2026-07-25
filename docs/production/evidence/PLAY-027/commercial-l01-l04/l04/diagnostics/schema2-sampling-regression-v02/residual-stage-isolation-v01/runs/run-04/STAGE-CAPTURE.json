@@ -1,0 +1,873 @@
+{
+  "coordinateSystem" : "top-left decoded RGBA source pixel",
+  "descriptorSamplingContractID" : "play027-deterministic-4x-no-msaa-lanczos-v2",
+  "postMajorityMutationCountsByChannel" : {
+    "blue" : 149,
+    "green" : 525,
+    "red" : 128
+  },
+  "postMajorityTargetEligible" : false,
+  "postMajorityTargetEvaluations" : [
+    {
+      "centerValue" : 16,
+      "channel" : 0,
+      "chromaFreeNeighborhood" : true,
+      "eligible" : false,
+      "exactQuantumDifference" : false,
+      "fullyOpaqueNeighborhood" : true,
+      "majorityCount" : 8,
+      "majorityValue" : 16,
+      "mutated" : false,
+      "x" : 732,
+      "y" : 778
+    },
+    {
+      "centerValue" : 16,
+      "channel" : 1,
+      "chromaFreeNeighborhood" : true,
+      "eligible" : false,
+      "exactQuantumDifference" : true,
+      "fullyOpaqueNeighborhood" : true,
+      "majorityCount" : 6,
+      "majorityValue" : 48,
+      "mutated" : false,
+      "x" : 732,
+      "y" : 778
+    },
+    {
+      "centerValue" : 16,
+      "channel" : 2,
+      "chromaFreeNeighborhood" : true,
+      "eligible" : false,
+      "exactQuantumDifference" : false,
+      "fullyOpaqueNeighborhood" : true,
+      "majorityCount" : 9,
+      "majorityValue" : 16,
+      "mutated" : false,
+      "x" : 732,
+      "y" : 778
+    }
+  ],
+  "postMajorityTargetMutated" : false,
+  "postMajorityTotalMutationCount" : 802,
+  "productionSelected" : false,
+  "purpose" : "residual-stage-isolation-no-authority",
+  "repairThresholdsChanged" : false,
+  "schema" : 1,
+  "sourceKey" : "residential_l03/variant-0/west/source-v01",
+  "stageIdentity" : {
+    "imageIODecodeEqualsFinalSipsDecode" : true,
+    "postMajorityEqualsImageIODecode" : true
+  },
+  "stages" : [
+    {
+      "decodedRGBASHA256" : "3b8bfad4f4f229e65c23bb2c4b5dba51924afb38ee1add39fde8bbdf21780d41",
+      "local3x3" : [
+        {
+          "coordinate" : [
+            731,
+            777
+          ],
+          "offset" : [
+            -1,
+            -1
+          ],
+          "rgba" : [
+            15,
+            36,
+            8,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            777
+          ],
+          "offset" : [
+            0,
+            -1
+          ],
+          "rgba" : [
+            11,
+            32,
+            5,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            777
+          ],
+          "offset" : [
+            1,
+            -1
+          ],
+          "rgba" : [
+            10,
+            32,
+            5,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            778
+          ],
+          "offset" : [
+            -1,
+            0
+          ],
+          "rgba" : [
+            1,
+            22,
+            0,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            778
+          ],
+          "offset" : [
+            0,
+            0
+          ],
+          "rgba" : [
+            4,
+            22,
+            2,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            778
+          ],
+          "offset" : [
+            1,
+            0
+          ],
+          "rgba" : [
+            4,
+            23,
+            2,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            779
+          ],
+          "offset" : [
+            -1,
+            1
+          ],
+          "rgba" : [
+            29,
+            40,
+            15,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            779
+          ],
+          "offset" : [
+            0,
+            1
+          ],
+          "rgba" : [
+            13,
+            29,
+            7,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            779
+          ],
+          "offset" : [
+            1,
+            1
+          ],
+          "rgba" : [
+            15,
+            30,
+            8,
+            255
+          ]
+        }
+      ],
+      "sourcePixels" : [
+        1536,
+        1024
+      ],
+      "stage" : "prequantized-in-memory",
+      "targetRGBA" : [
+        4,
+        22,
+        2,
+        255
+      ]
+    },
+    {
+      "decodedRGBASHA256" : "9433cd6fba99b96227cc8cae442856199d9e2dd321e050ddf432c3416bfbdd49",
+      "local3x3" : [
+        {
+          "coordinate" : [
+            731,
+            777
+          ],
+          "offset" : [
+            -1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            777
+          ],
+          "offset" : [
+            0,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            777
+          ],
+          "offset" : [
+            1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            778
+          ],
+          "offset" : [
+            -1,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            778
+          ],
+          "offset" : [
+            0,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            778
+          ],
+          "offset" : [
+            1,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            779
+          ],
+          "offset" : [
+            -1,
+            1
+          ],
+          "rgba" : [
+            48,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            779
+          ],
+          "offset" : [
+            0,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            779
+          ],
+          "offset" : [
+            1,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        }
+      ],
+      "sourcePixels" : [
+        1536,
+        1024
+      ],
+      "stage" : "quantized-before-majority-in-memory",
+      "targetRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "decodedRGBASHA256" : "d344a49708e869ed950c611cb8843cb27549e12ddf33e95b105c78d55b2a99b3",
+      "local3x3" : [
+        {
+          "coordinate" : [
+            731,
+            777
+          ],
+          "offset" : [
+            -1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            777
+          ],
+          "offset" : [
+            0,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            777
+          ],
+          "offset" : [
+            1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            778
+          ],
+          "offset" : [
+            -1,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            778
+          ],
+          "offset" : [
+            0,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            778
+          ],
+          "offset" : [
+            1,
+            0
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            779
+          ],
+          "offset" : [
+            -1,
+            1
+          ],
+          "rgba" : [
+            48,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            779
+          ],
+          "offset" : [
+            0,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            779
+          ],
+          "offset" : [
+            1,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        }
+      ],
+      "sourcePixels" : [
+        1536,
+        1024
+      ],
+      "stage" : "post-majority-in-memory",
+      "targetRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "decodedRGBASHA256" : "d344a49708e869ed950c611cb8843cb27549e12ddf33e95b105c78d55b2a99b3",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v02/residual-stage-isolation-v01/runs/run-04/imageio-pre-sips.png",
+      "fileSHA256" : "4fa054841fa14bd430c1d63ee1c7e4c877a954fe74323fe7020c36bdd422052c",
+      "local3x3" : [
+        {
+          "coordinate" : [
+            731,
+            777
+          ],
+          "offset" : [
+            -1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            777
+          ],
+          "offset" : [
+            0,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            777
+          ],
+          "offset" : [
+            1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            778
+          ],
+          "offset" : [
+            -1,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            778
+          ],
+          "offset" : [
+            0,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            778
+          ],
+          "offset" : [
+            1,
+            0
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            779
+          ],
+          "offset" : [
+            -1,
+            1
+          ],
+          "rgba" : [
+            48,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            779
+          ],
+          "offset" : [
+            0,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            779
+          ],
+          "offset" : [
+            1,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        }
+      ],
+      "sourcePixels" : [
+        1536,
+        1024
+      ],
+      "stage" : "imageio-pre-sips-decoded",
+      "targetRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    },
+    {
+      "decodedRGBASHA256" : "d344a49708e869ed950c611cb8843cb27549e12ddf33e95b105c78d55b2a99b3",
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v02/residual-stage-isolation-v01/runs/run-04/final-sips.png",
+      "fileSHA256" : "52011ce067bad07dcca911dbf40cef6b2f9c8c843c8f136859027e21d8f02830",
+      "local3x3" : [
+        {
+          "coordinate" : [
+            731,
+            777
+          ],
+          "offset" : [
+            -1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            777
+          ],
+          "offset" : [
+            0,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            777
+          ],
+          "offset" : [
+            1,
+            -1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            778
+          ],
+          "offset" : [
+            -1,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            778
+          ],
+          "offset" : [
+            0,
+            0
+          ],
+          "rgba" : [
+            16,
+            16,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            778
+          ],
+          "offset" : [
+            1,
+            0
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            731,
+            779
+          ],
+          "offset" : [
+            -1,
+            1
+          ],
+          "rgba" : [
+            48,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            732,
+            779
+          ],
+          "offset" : [
+            0,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        },
+        {
+          "coordinate" : [
+            733,
+            779
+          ],
+          "offset" : [
+            1,
+            1
+          ],
+          "rgba" : [
+            16,
+            48,
+            16,
+            255
+          ]
+        }
+      ],
+      "sourcePixels" : [
+        1536,
+        1024
+      ],
+      "stage" : "final-sips-decoded",
+      "targetRGBA" : [
+        16,
+        16,
+        16,
+        255
+      ]
+    }
+  ],
+  "targetCoordinate" : [
+    732,
+    778
+  ],
+  "task" : "PLAY-027"
+}

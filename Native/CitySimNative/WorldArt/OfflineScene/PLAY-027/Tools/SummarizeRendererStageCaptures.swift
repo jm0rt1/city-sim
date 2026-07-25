@@ -45,6 +45,12 @@ func stageSummarySHA256(_ url: URL) throws -> String {
     }.joined()
 }
 
+func stageSummarySHA256(_ data: Data) -> String {
+    SHA256.hash(data: data).map {
+        String(format: "%02x", $0)
+    }.joined()
+}
+
 @main
 enum SummarizeRendererStageCapturesMain {
     static func main() throws {
@@ -119,9 +125,41 @@ enum SummarizeRendererStageCapturesMain {
                 ($0, [String: Int]())
             }
         )
+        var local3x3ByStage = Dictionary(
+            uniqueKeysWithValues: expectedStages.map {
+                ($0, [String: Int]())
+            }
+        )
+        var finalFileHashes: [String: Int] = [:]
         var allStageIdentityPassed = true
+        var retainedFileCount = 0
 
         for captureURL in captureURLs {
+            let runDirectory = captureURL.deletingLastPathComponent()
+            let expectedRetainedFiles = [
+                captureURL,
+                runDirectory.appendingPathComponent("final-sips.png"),
+                runDirectory.appendingPathComponent("imageio-pre-sips.png"),
+                runDirectory.appendingPathComponent("provenance.json"),
+            ]
+            guard expectedRetainedFiles.allSatisfy({
+                manager.fileExists(atPath: $0.path)
+            }) else {
+                throw StageCaptureSummaryError.invalid(
+                    "run is missing one of four retained files: \(runDirectory.path)"
+                )
+            }
+            let retainedFiles: [[String: String]] =
+                try expectedRetainedFiles.map { fileURL in
+                    [
+                        "file": stageSummaryRelativePath(
+                            fileURL,
+                            repositoryRoot: repositoryRoot
+                        ),
+                        "sha256": try stageSummarySHA256(fileURL),
+                    ]
+                }
+            retainedFileCount += retainedFiles.count
             guard
                 let capture = try JSONSerialization.jsonObject(
                     with: Data(contentsOf: captureURL)
@@ -160,7 +198,15 @@ enum SummarizeRendererStageCapturesMain {
                             "incomplete stage record: \(captureURL.path)"
                         )
                     }
-                    return (name, (sha, target, local))
+                    return (
+                        name,
+                        (
+                            sha,
+                            target,
+                            local,
+                            stage["fileSHA256"] as? String
+                        )
+                    )
                 }
             )
             guard Set(recordsByName.keys) == Set(expectedStages) else {
@@ -174,12 +220,26 @@ enum SummarizeRendererStageCapturesMain {
                 hashesByStage[stageName]![stage.0, default: 0] += 1
                 let targetKey = stage.1.map(String.init).joined(separator: ",")
                 targetsByStage[stageName]![targetKey, default: 0] += 1
-                summarizedStages.append([
+                let localData = try JSONSerialization.data(
+                    withJSONObject: stage.2,
+                    options: [.sortedKeys, .withoutEscapingSlashes]
+                )
+                let localSHA = stageSummarySHA256(localData)
+                local3x3ByStage[stageName]![localSHA, default: 0] += 1
+                var summarizedStage: [String: Any] = [
                     "stage": stageName,
                     "decodedRGBASHA256": stage.0,
                     "targetRGBA": stage.1,
                     "local3x3": stage.2,
-                ])
+                    "local3x3SHA256": localSHA,
+                ]
+                if let fileSHA = stage.3 {
+                    summarizedStage["fileSHA256"] = fileSHA
+                    if stageName == "final-sips-decoded" {
+                        finalFileHashes[fileSHA, default: 0] += 1
+                    }
+                }
+                summarizedStages.append(summarizedStage)
             }
             allStageIdentityPassed =
                 allStageIdentityPassed && postToImageIO && imageIOToSips
@@ -192,6 +252,7 @@ enum SummarizeRendererStageCapturesMain {
                 ),
                 "captureFileSHA256":
                     try stageSummarySHA256(captureURL),
+                "retainedFiles": retainedFiles,
                 "stages": summarizedStages,
                 "postMajorityTargetEvaluations": evaluations,
                 "postMajorityTargetEligible":
@@ -217,17 +278,28 @@ enum SummarizeRendererStageCapturesMain {
                     hashesByStage[stageName]!,
                 "targetRGBACounts":
                     targetsByStage[stageName]!,
+                "distinctLocal3x3Count":
+                    local3x3ByStage[stageName]!.count,
+                "local3x3SHA256Counts":
+                    local3x3ByStage[stageName]!,
             ]
         }
-        let earliestDivergentStage = expectedStages.first {
+        let earliestFullFrameDivergentStage = expectedStages.first {
             hashesByStage[$0]!.count > 1
+        } ?? "none"
+        let earliestLocal3x3DivergentStage = expectedStages.first {
+            local3x3ByStage[$0]!.count > 1
+        } ?? "none"
+        let exactStageThatReintroducesTarget = expectedStages.first {
+            targetsByStage[$0]!.count > 1
         } ?? "none"
         let finalDistribution =
             hashesByStage["final-sips-decoded"]!
         let status =
-            finalDistribution.count >= 2
+            finalFileHashes.count >= 2
                 && allStageIdentityPassed
-                && earliestDivergentStage != "none"
+                && exactStageThatReintroducesTarget
+                    == "post-majority-in-memory"
             ? "stage-boundary-isolated"
             : "incomplete"
         let report: [String: Any] = [
@@ -239,10 +311,17 @@ enum SummarizeRendererStageCapturesMain {
             "coordinateSystem":
                 "top-left decoded RGBA source pixel",
             "runCount": runRecords.count,
+            "retainedRunFileCount": retainedFileCount,
             "runs": runRecords,
             "stageDistributions": stageDistributions,
-            "earliestDivergentStage": earliestDivergentStage,
+            "earliestFullFrameDivergentStage":
+                earliestFullFrameDivergentStage,
+            "earliestLocal3x3DivergentStage":
+                earliestLocal3x3DivergentStage,
+            "exactStageThatReintroducesTarget":
+                exactStageThatReintroducesTarget,
             "finalDecodedRGBASHA256Counts": finalDistribution,
+            "finalPNGFileSHA256Counts": finalFileHashes,
             "allPostMajorityImageIOSipsDecodedPixelsIdentical":
                 allStageIdentityPassed,
             "thresholdsBroadened": false,
@@ -265,7 +344,7 @@ enum SummarizeRendererStageCapturesMain {
         )
         try data.write(to: reportURL, options: .atomic)
         print(
-            "\(status) \(runRecords.count) runs; earliest split: \(earliestDivergentStage)"
+            "\(status) \(runRecords.count) runs; target split: \(exactStageThatReintroducesTarget)"
         )
     }
 }

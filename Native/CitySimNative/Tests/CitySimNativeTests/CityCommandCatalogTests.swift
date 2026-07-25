@@ -839,6 +839,133 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testHostedFocusCityRendersRestoredUndoSnapshotBeforeReframing() throws {
+        _ = NSApplication.shared
+        let defaults = UserDefaults.standard
+        let welcomeKey = "hasSeenCitySimWelcome"
+        let priorWelcome = defaults.object(forKey: welcomeKey)
+        defaults.set(true, forKey: welcomeKey)
+        defer {
+            if let priorWelcome {
+                defaults.set(priorWelcome, forKey: welcomeKey)
+            } else {
+                defaults.removeObject(forKey: welcomeKey)
+            }
+        }
+
+        let cases: [(size: CGSize, compact: Bool, chrome: CityHUDChromeFrames)] = [
+            (
+                CGSize(width: 1_278, height: 768),
+                false,
+                CityHUDChromeFrames(
+                    top: CGRect(x: 16, y: 16, width: 1_246, height: 118),
+                    bottom: CGRect(x: 79, y: 688, width: 1_120, height: 64)
+                )
+            ),
+            (
+                CGSize(width: 900, height: 600),
+                true,
+                CityHUDChromeFrames(
+                    top: CGRect(x: 8, y: 8, width: 884, height: 104),
+                    bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
+                )
+            ),
+        ]
+
+        for testCase in cases {
+            let store = CityGameStore(state: .newCity(seed: 42))
+            store.speed = .paused
+            let host = NSHostingView(
+                rootView: ContentView(store: store)
+                    .frame(width: testCase.size.width, height: testCase.size.height)
+            )
+            host.frame = CGRect(origin: .zero, size: testCase.size)
+            let window = NSWindow(
+                contentRect: host.frame,
+                styleMask: [.titled],
+                backing: .buffered,
+                defer: false
+            )
+            window.contentView = host
+            host.layoutSubtreeIfNeeded()
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+
+            let mapView = try XCTUnwrap(firstDescendant(of: CityMapSKView.self, in: host))
+            let scene = try XCTUnwrap(mapView.scene as? CityScene)
+            let target = try XCTUnwrap(store.state.tiles.first { tile in
+                if case .success = CitySimulation.validateBuild(
+                    .commercial,
+                    at: tile.coordinate,
+                    in: store.state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate)
+            let restoredState = store.state
+            let restoredTreasury = store.state.treasury
+
+            store.selectTool(.commercial)
+            store.selectedCoordinate = target
+            store.primaryAction(at: target)
+            XCTAssertNotEqual(store.state, restoredState)
+            scene.render(
+                state: store.state,
+                overlay: store.overlay,
+                selection: store.selectedCoordinate,
+                interactionMode: store.interactionMode
+            )
+
+            store.undoLastAction()
+            XCTAssertEqual(store.state, restoredState)
+            XCTAssertEqual(store.state.treasury, restoredTreasury)
+            XCTAssertNil(store.selectedCoordinate)
+            scene.configureProofCamera(detail: .block, centeredOn: target)
+            let staleCameraPosition = scene.cameraPositionForTesting
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            host.layoutSubtreeIfNeeded()
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+
+            let expectedInsets = ContentView.mapViewportInsets(
+                windowSize: testCase.size,
+                compact: testCase.compact,
+                chromeFrames: testCase.chrome
+            )
+            let expectedScene = CityScene(size: testCase.size)
+            expectedScene.reducedMotion = true
+            expectedScene.updateViewportInsets(expectedInsets)
+            expectedScene.render(
+                state: restoredState,
+                overlay: store.overlay,
+                selection: nil,
+                interactionMode: store.interactionMode
+            )
+            expectedScene.frameCity()
+
+            XCTAssertTrue(store.isCityFocusModeEnabled)
+            XCTAssertNil(store.selectedCoordinate)
+            XCTAssertNotEqual(scene.cameraPositionForTesting, staleCameraPosition)
+            XCTAssertEqual(scene.cameraScale, expectedScene.cameraScale, accuracy: 0.000_001)
+            XCTAssertEqual(
+                scene.cameraPositionForTesting.x,
+                expectedScene.cameraPositionForTesting.x,
+                accuracy: 0.5
+            )
+            XCTAssertEqual(
+                scene.cameraPositionForTesting.y,
+                expectedScene.cameraPositionForTesting.y,
+                accuracy: 0.5
+            )
+            XCTAssertEqual(
+                scene.cameraPriorityCoordinatesForTesting,
+                expectedScene.cameraPriorityCoordinatesForTesting,
+                "Focus City must frame the restored snapshot's developed district"
+            )
+        }
+    }
+
+    @MainActor
     func testFocusCityPointerMonitorLifecyclePreservesTransitionGateAfterCompletedClick() throws {
         _ = NSApplication.shared
         let gate = CityMapPointerTransitionGate()

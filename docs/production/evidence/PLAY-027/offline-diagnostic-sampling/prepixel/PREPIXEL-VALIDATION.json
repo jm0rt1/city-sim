@@ -1,0 +1,94 @@
+{
+  "absenceProof": {
+    "commercialOrIndustrialDescriptorChanges": 0,
+    "commercialOrIndustrialMaterialChanges": 0,
+    "commercialOrIndustrialNewNormalizedPNGs": 0,
+    "commercialOrIndustrialNewSceneKitRawPNGs": 0,
+    "newPNGsAreSyntheticCalibrationOnly": true,
+    "sceneKitOrMetalProcesses": 0
+  },
+  "authority": {
+    "baseCommit": "67646d5a930aa019d9947d99d2a083caabd9ca40",
+    "commercialL4DiagnosticAncestor": "b3a891c50d7f48804d3213ef0df174928a541413",
+    "historicalEvidencePreserved": true
+  },
+  "binaries": {
+    "contractTestSHA256": "b32de3d61e5e59a4c26632c0efee470335183091239a27991b5a1a95ad9c3d87",
+    "offlineRendererSHA256": "cf4089d26ddb55ec4c4a2ab54d92ddea06c7f6783678c56c6b275d641a71e3f7",
+    "syntheticCalibrationSHA256": "77528e4839a8138358bb0813a7fa576dc2cffff81acc84f77467e139673c0661"
+  },
+  "compilation": {
+    "allTouchedStandaloneToolsWarningsAsErrors": true,
+    "moduleCache": "/private/tmp/play027-diagnostic-module-cache",
+    "rendererCompiled": true,
+    "syntheticCalibrationCompiled": true,
+    "testCompiled": true
+  },
+  "defaultRegression": {
+    "defaultOptionResolution": "nil-no-op",
+    "helperDecodedRGBASHA256": "b7579c63c3df70c79a44e909f24daa5eb4ad7b993dd0b3edafd22fc037417fb5",
+    "legacyContractID": "play027-legacy-schema1-factor2-msaa4x-v1",
+    "pixelByteIdentical": true,
+    "referenceDecodedRGBASHA256": "b7579c63c3df70c79a44e909f24daa5eb4ad7b993dd0b3edafd22fc037417fb5"
+  },
+  "diagnosticPipeline": {
+    "aspectRatio": 1,
+    "borderPolicy": "crop-to-final-1536x1024-extent-without-clamp-or-wrap",
+    "ciCacheIntermediates": false,
+    "ciContextMode": "software",
+    "contractID": "play027-diagnostics-4x-no-msaa-software-lanczos-v1",
+    "crossRunState": "none",
+    "filter": "CILanczosScaleTransform",
+    "finalRegistrationPixels": [
+      1536,
+      1024
+    ],
+    "kernel": "CoreImage.CILanczosScaleTransform",
+    "linearOversamplingFactor": 4,
+    "outputColorSpace": "srgb",
+    "scale": 0.25,
+    "sceneKitAntialiasing": "none",
+    "version": 1,
+    "workingColorSpace": "extended-srgb"
+  },
+  "failClosedTest": {
+    "invalidCasesPassed": 8,
+    "replayCount": 2,
+    "result": "PASS"
+  },
+  "productionSelected": false,
+  "schema": 1,
+  "sources": {
+    "DiagnosticSamplingPipeline.swift": "ff14d485fe4790a2436db985675bdf8e7200fdf971cb8c9b4ce2f801febbbb4b",
+    "OfflineSceneRenderer.swift": "b712784c25bff79d3032755f4dde6e251ebee9a7bc7250361e0c7deea483f5b0",
+    "RunDiagnosticSamplingSyntheticCalibration.swift": "6a600ecf6b6a649a958f4d6fcae8a45e6822df1ed93f79d42f61150e6e38b1b0",
+    "TestDiagnosticSamplingPipeline.swift": "5e0923864610dbafcc19e75e35f6fa7478db6e74f3cfbee64066aac1ae6d5071"
+  },
+  "syntheticCalibration": {
+    "alphaRampValues": [
+      0,
+      1,
+      8,
+      9,
+      64,
+      128,
+      254,
+      255
+    ],
+    "finalDecodedRGBASHA256": "3a6022e9d99ead0a8e28bbfba83a7a5cf2f05d16f3eb26bdbf0fcd65310143f9",
+    "finalFileSHA256": "7d50b372ae0f2917334c7a6267c425b63f1bf077a2296681f1d2346ce53d9219",
+    "freshPassingProcessCount": 3,
+    "inputFileSHA256": "b60774801602749fe85a2271560884e436d26c4fba30cc086b2c37aa899d8b79",
+    "lanczosFileSHA256": "6f3fba2741e9d46411dc7d3d2daeca9577674da9d038fd61f3ce6d2daf709bb9",
+    "patternCount": 8,
+    "reportsByteIdentical": true,
+    "reportSHA256": "7b76d9bc30d9321379e6b8750b6c5f8d479a2ec8ca991ea795482e59e07569b2",
+    "runIDs": [
+      "run-a",
+      "run-b",
+      "run-c"
+    ]
+  },
+  "task": "PLAY-027",
+  "type": "offline-diagnostic-sampling-prepixel-validation"
+}

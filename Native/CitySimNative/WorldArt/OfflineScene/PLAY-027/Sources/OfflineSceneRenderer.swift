@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-sampling-pipeline <id>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -2838,7 +2838,6 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 final class NativeSourceCompositor: OfflineSourceCompositing {
     private let sampling: EffectiveSamplingContract
     private let stageTraceCoordinate: [Int]?
-    private let ciContext: CIContext
     private(set) var prequantizedImage: CGImage?
     private(set) var prequantizedRGBA: [UInt8]?
     private(set) var quantizedBeforeMajorityRGBA: [UInt8]?
@@ -2854,48 +2853,20 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
     ) {
         self.sampling = sampling
         self.stageTraceCoordinate = stageTraceCoordinate
-        ciContext = CIContext(options: [
-            .useSoftwareRenderer: sampling.ciUseSoftwareRenderer,
-            .cacheIntermediates: sampling.ciCacheIntermediates,
-            .workingColorSpace: CGColorSpace(
-                name: CGColorSpace.extendedSRGB
-            )!,
-            .outputColorSpace: CGColorSpace(
-                name: CGColorSpace.sRGB
-            )!,
-        ])
     }
 
     func compositeRegisteredSource(
         renderedImage: CGImage,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
-        let scale = CGFloat(sampling.downsampleScale)
-        let input = CIImage(cgImage: renderedImage)
-        guard let filter = CIFilter(name: sampling.downsampleFilter) else {
-            throw OfflineRendererError.rendering(
-                "CILanczosScaleTransform unavailable"
-            )
-        }
-        filter.setValue(input, forKey: kCIInputImageKey)
-        filter.setValue(scale, forKey: kCIInputScaleKey)
-        filter.setValue(
-            sampling.downsampleAspectRatio,
-            forKey: kCIInputAspectRatioKey
-        )
-        guard let downsampled = filter.outputImage else {
-            throw OfflineRendererError.rendering("downsample failed")
-        }
         let width = descriptor.camera.renderViewportPixels[0]
         let height = descriptor.camera.renderViewportPixels[1]
-        guard let source = ciContext.createCGImage(
-            downsampled,
-            from: CGRect(x: 0, y: 0, width: width, height: height)
-        ) else {
-            throw OfflineRendererError.rendering(
-                "Core Image could not create downsampled source"
-            )
-        }
+        let source = try FrozenSoftwareLanczos.downsample(
+            renderedImage,
+            sampling: sampling,
+            outputWidth: width,
+            outputHeight: height
+        )
         let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
         guard let context = CGContext(
             data: nil,
@@ -3411,6 +3382,10 @@ enum OfflineSceneRendererMain {
             "--diagnostic-material-lighting",
             in: arguments
         )
+        let diagnosticSamplingPipelineID = rendererOptionalArgument(
+            "--diagnostic-sampling-pipeline",
+            in: arguments
+        )
         let diagnosticContractID = rendererOptionalArgument(
             "--diagnostic-contract",
             in: arguments
@@ -3521,6 +3496,27 @@ enum OfflineSceneRendererMain {
         let descriptorSampling = try DescriptorSamplingResolver.resolve(
             descriptor: descriptor
         )
+        let diagnosticSamplingResolution =
+            try DiagnosticSamplingPipelineContract.resolve(
+                requestedContractID: diagnosticSamplingPipelineID,
+                repositoryRoot: repositoryRoot,
+                outputURL: outputURL,
+                recordURL: recordURL,
+                descriptorSHA256: try rendererSHA256(sceneURL),
+                rendererSourceCommit: sourceCommit,
+                productionSelected: descriptor.productionSelected,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                diagnosticContractID: diagnosticContractID,
+                diagnosticStageContractID:
+                    diagnosticStageContractID,
+                descriptorSampling: descriptorSampling
+            )
+        let effectiveSampling =
+            diagnosticSamplingResolution?.effectiveSampling
+            ?? descriptorSampling
         let diagnosticMSAAIsolationRecord =
             try IndustrialL2V5MSAAIsolationContract.validate(
                 requestedContractID: diagnosticContractID,
@@ -3737,7 +3733,7 @@ enum OfflineSceneRendererMain {
             ?? diagnosticSourceV07EastCaptureRecord?.value
             ?? diagnosticSourceV06FullFrameCaptureRecord?.value
             ?? diagnosticSourceV08FiniteEquivalenceRecord?.value
-        if descriptorSampling.purpose == "diagnostic-regression" {
+        if effectiveSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
                 recordURL.path.contains("/diagnostics/")
@@ -3844,7 +3840,7 @@ enum OfflineSceneRendererMain {
         let effectiveSceneKitLightingMode =
             diagnosticConfiguration.materialLighting == .constantUnlit
             ? "authored-constant-v1"
-            : descriptorSampling.sceneKitLightingMode
+            : effectiveSampling.sceneKitLightingMode
         let sceneKitLightingApplication =
             applyDiagnosticMaterialLighting(
                 effectiveSceneKitLightingMode == "authored-constant-v1"
@@ -3852,7 +3848,7 @@ enum OfflineSceneRendererMain {
                     : .current,
                 to: scene
             )
-        if descriptorSampling.sceneKitShadows == "disabled"
+        if effectiveSampling.sceneKitShadows == "disabled"
             || diagnosticConfiguration.sceneShadows == .disabled
         {
             scene.rootNode.enumerateChildNodes { node, _ in
@@ -3866,7 +3862,7 @@ enum OfflineSceneRendererMain {
         let effectiveAntialiasing =
             diagnosticConfiguration.antialiasingOverride?.sceneKitMode
             ?? (
-                descriptorSampling.sceneKitAntialiasing == "none"
+                effectiveSampling.sceneKitAntialiasing == "none"
                     ? SCNAntialiasingMode.none
                     : SCNAntialiasingMode.multisampling4X
             )
@@ -3874,7 +3870,7 @@ enum OfflineSceneRendererMain {
             renderer: capabilityContext.renderer,
             antialiasingMode: effectiveAntialiasing,
             linearOversamplingFactor:
-                descriptorSampling.linearOversamplingFactor
+                effectiveSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
         let rawOversampledFrameRecord =
             try (
@@ -3964,7 +3960,7 @@ enum OfflineSceneRendererMain {
         let preLanczosInput =
             finiteEquivalenceApplication?.image ?? rawOversampled
         let preLanczosCanonicalization =
-            try descriptorSampling.preLanczosCanonicalizer.map {
+            try effectiveSampling.preLanczosCanonicalizer.map {
                 try canonicalizePreLanczosFrameImage(
                     preLanczosInput,
                     contract: $0
@@ -3998,7 +3994,7 @@ enum OfflineSceneRendererMain {
                 return record
             }
         let compositor = NativeSourceCompositor(
-            sampling: descriptorSampling,
+            sampling: effectiveSampling,
             stageTraceCoordinate: diagnosticStageCoordinate
         )
         let source = try compositor.compositeRegisteredSource(
@@ -4164,7 +4160,7 @@ enum OfflineSceneRendererMain {
                         imageIOSHA != nil && imageIOSHA == finalSHA,
                 ],
                 "descriptorSamplingContractID":
-                    descriptorSampling.contractID,
+                    effectiveSampling.contractID,
                 "repairThresholdsChanged": false,
                 "productionSelected": false,
             ]
@@ -4229,11 +4225,11 @@ enum OfflineSceneRendererMain {
                     canonicalizedOversampledFrameRecord
                 capture["preLanczosCanonicalization"] = [
                     "algorithm":
-                        descriptorSampling
+                        effectiveSampling
                         .preLanczosCanonicalizer?.algorithm
                         ?? "missing",
                     "version":
-                        descriptorSampling
+                        effectiveSampling
                         .preLanczosCanonicalizer?.version
                         ?? -1,
                     "changedChannelCount":
@@ -4271,6 +4267,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DiagnosticSamplingPipeline.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5MSAAIsolationContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
@@ -4297,7 +4294,7 @@ enum OfflineSceneRendererMain {
             }
         let postQuantizationContract =
             rendererPostQuantizationContractRecord(
-                descriptorSampling.postQuantizationCanonicalizer
+                effectiveSampling.postQuantizationCanonicalizer
             )
         let record: [String: Any] = [
             "schema": 1,
@@ -4322,11 +4319,11 @@ enum OfflineSceneRendererMain {
                 preLanczosCanonicalization.map {
                     [
                         "algorithm":
-                            descriptorSampling
+                            effectiveSampling
                             .preLanczosCanonicalizer?.algorithm
                             ?? "missing",
                         "version":
-                            descriptorSampling
+                            effectiveSampling
                             .preLanczosCanonicalizer?.version
                             ?? -1,
                         "changedChannelCount":
@@ -4420,23 +4417,31 @@ enum OfflineSceneRendererMain {
                     "sourceAuthority": false,
                     "productionSelected": false,
                 ],
+            "diagnosticSamplingPipeline":
+                diagnosticSamplingResolution?.provenance ?? [
+                    "contractID": "none",
+                    "sourceAuthority": false,
+                    "productionSelected": false,
+                ],
             "descriptorSamplingContract": [
-                "contractID": descriptorSampling.contractID,
-                "descriptorSchema": descriptorSampling.descriptorSchema,
-                "purpose": descriptorSampling.purpose,
+                "contractID": effectiveSampling.contractID,
+                "declaredDescriptorContractID":
+                    descriptorSampling.contractID,
+                "descriptorSchema": effectiveSampling.descriptorSchema,
+                "purpose": effectiveSampling.purpose,
                 "sceneKitAntialiasing":
-                    descriptorSampling.sceneKitAntialiasing,
+                    effectiveSampling.sceneKitAntialiasing,
                 "effectiveSceneKitAntialiasing":
                     diagnosticConfiguration.antialiasingOverride?.rawValue
-                    ?? descriptorSampling.sceneKitAntialiasing,
+                    ?? effectiveSampling.sceneKitAntialiasing,
                 "sceneKitShadows":
-                    descriptorSampling.sceneKitShadows,
+                    effectiveSampling.sceneKitShadows,
                 "effectiveSceneKitShadows":
                     diagnosticConfiguration.sceneShadows == .disabled
                     ? "disabled"
-                    : descriptorSampling.sceneKitShadows,
+                    : effectiveSampling.sceneKitShadows,
                 "sceneKitLightingMode":
-                    descriptorSampling.sceneKitLightingMode,
+                    effectiveSampling.sceneKitLightingMode,
                 "effectiveSceneKitLightingMode":
                     effectiveSceneKitLightingMode,
                 "sceneKitMaterialLightingModel":
@@ -4450,33 +4455,33 @@ enum OfflineSceneRendererMain {
                     ? "disabled-zero-intensity-no-shadow"
                     : "descriptor-authored",
                 "linearOversamplingFactor":
-                    descriptorSampling.linearOversamplingFactor,
+                    effectiveSampling.linearOversamplingFactor,
                 "downsampleFilter":
-                    descriptorSampling.downsampleFilter,
+                    effectiveSampling.downsampleFilter,
                 "downsampleScale":
-                    descriptorSampling.downsampleScale,
+                    effectiveSampling.downsampleScale,
                 "downsampleAspectRatio":
-                    descriptorSampling.downsampleAspectRatio,
+                    effectiveSampling.downsampleAspectRatio,
                 "ciUseSoftwareRenderer":
-                    descriptorSampling.ciUseSoftwareRenderer,
+                    effectiveSampling.ciUseSoftwareRenderer,
                 "ciCacheIntermediates":
-                    descriptorSampling.ciCacheIntermediates,
+                    effectiveSampling.ciCacheIntermediates,
                 "ciWorkingColorSpace":
-                    descriptorSampling.ciWorkingColorSpace,
+                    effectiveSampling.ciWorkingColorSpace,
                 "ciOutputColorSpace":
-                    descriptorSampling.ciOutputColorSpace,
-                "quantizerID": descriptorSampling.quantizerID,
-                "quantizerStep": descriptorSampling.quantizerStep,
+                    effectiveSampling.ciOutputColorSpace,
+                "quantizerID": effectiveSampling.quantizerID,
+                "quantizerStep": effectiveSampling.quantizerStep,
                 "quantizerMidpointOffset":
-                    descriptorSampling.quantizerMidpointOffset,
+                    effectiveSampling.quantizerMidpointOffset,
                 "canonicalizerID":
-                    descriptorSampling.canonicalizerID,
+                    effectiveSampling.canonicalizerID,
                 "canonicalizerEncoder":
-                    descriptorSampling.canonicalizerEncoder,
+                    effectiveSampling.canonicalizerEncoder,
                 "canonicalizerPostEncoder":
-                    descriptorSampling.canonicalizerPostEncoder,
+                    effectiveSampling.canonicalizerPostEncoder,
                 "canonicalizerFormat":
-                    descriptorSampling.canonicalizerFormat,
+                    effectiveSampling.canonicalizerFormat,
                 "postQuantizationCanonicalizer":
                     postQuantizationContract,
                 "postQuantizationMutationCount":
@@ -4525,6 +4530,8 @@ enum OfflineSceneRendererMain {
             "rawSourcePixels":
                 descriptor.camera.renderViewportPixels,
             "oversamplingFactor":
+                effectiveSampling.linearOversamplingFactor,
+            "descriptorOversamplingFactor":
                 descriptor.camera.oversamplingFactor,
             "cameraProjection": descriptor.camera.projection,
             "groundPivotSource":

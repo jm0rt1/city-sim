@@ -1,0 +1,7 @@
+PASS diagnostic sampling option is fail-closed; nil invocation preserves the legacy sampling contract
+
+Compiled with `-D PLAY027_SCENE_PREP_DIAGNOSTIC -parse-as-library -warnings-as-errors`.
+The identical result was replayed twice. Covered invalid cases: unknown mode,
+output outside diagnostics, record outside diagnostics, independent
+antialiasing override, independent shadow override, diagnostic-contract
+collision, productionSelected true, and missing descriptor hash.

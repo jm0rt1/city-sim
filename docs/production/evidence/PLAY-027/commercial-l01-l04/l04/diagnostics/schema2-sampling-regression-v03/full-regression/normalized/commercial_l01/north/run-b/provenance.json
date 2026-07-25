@@ -1,0 +1,74 @@
+{
+  "asset_id" : "commercial_l01",
+  "ground_pivot_source" : [
+    768,
+    896
+  ],
+  "normalization" : "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports",
+  "object_width" : 410,
+  "outputs" : [
+    {
+      "file" : "generated_v4_commercial_l01_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "d88c694382393cd6152e4e1a5bbac9cf01ef93d67ee7667ebe145ea7a6d20197"
+    },
+    {
+      "file" : "generated_v4_commercial_l01_neighborhood.png",
+      "lod" : "neighborhood",
+      "pixels" : [
+        512,
+        342
+      ],
+      "sha256" : "f41f92344432ef986d6f1efcc4d714eadac2a5909638a2430df28af1e2dd8103"
+    },
+    {
+      "file" : "generated_v4_commercial_l01_city.png",
+      "lod" : "city",
+      "pixels" : [
+        256,
+        171
+      ],
+      "sha256" : "bdd9135e36518a03de53a195f14a1b0240488123680ed7d12812447c04c54659"
+    }
+  ],
+  "productionSelected" : false,
+  "reference_subject_width" : 226,
+  "registration" : {
+    "mode" : "uniform-object-registration",
+    "reference_subject_width" : 226,
+    "source_bbox" : [
+      668,
+      639,
+      894,
+      818
+    ],
+    "target_ground_pivot" : [
+      768,
+      896
+    ],
+    "target_origin" : [
+      563,
+      571
+    ],
+    "target_size" : [
+      410,
+      325
+    ],
+    "uniform_scale" : 1.8141592920353982
+  },
+  "schema" : 1,
+  "source_bbox" : [
+    563,
+    571,
+    973,
+    896
+  ],
+  "source_file" : "\/Users\/James\/.codex\/worktrees\/0648\/city-sim\/docs\/production\/evidence\/PLAY-027\/commercial-l01-l04\/l04\/diagnostics\/schema2-sampling-regression-v03\/full-regression\/raw\/commercial_l01\/north\/run-a.png",
+  "source_sha256" : "f595d8d42b3ce5597c008e757b551129fdaad7befd80624ef5d5c60317f1f33b",
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source normalizer"
+}

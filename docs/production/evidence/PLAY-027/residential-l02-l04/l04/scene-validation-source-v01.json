@@ -1,0 +1,220 @@
+{
+  "calibrationID" : "residential-l04-variant-0-directional-v01",
+  "directions" : [
+    {
+      "doorBaseSource" : [
+        [
+          858,
+          685
+        ],
+        [
+          934,
+          723
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        3,
+        -28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/north/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "propIDs" : [
+        "north-tower-balconies",
+        "north-podium-planters"
+      ],
+      "sceneGeometryID" : "residential-l04-v0-north-urban-tower-geometry-v1",
+      "sha256" : "eb0a46e3db08d784e120f66fcef2c01618a9aac4a46b5c6d5a1fbdee8ef8f37e",
+      "viewDirection" : "north",
+      "windowBayCount" : 81
+    },
+    {
+      "doorBaseSource" : [
+        [
+          934,
+          813
+        ],
+        [
+          858,
+          851
+        ]
+      ],
+      "entranceBaseWorld" : [
+        28,
+        3,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/east/scene.json",
+      "frontageEdgeSource" : [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "propIDs" : [
+        "east-tower-balconies",
+        "east-podium-planters"
+      ],
+      "sceneGeometryID" : "residential-l04-v0-east-urban-tower-geometry-v1",
+      "sha256" : "93da920e10e307c2e5a97b4a819444169e24dc55649ef13abb27044ea1173c72",
+      "viewDirection" : "east",
+      "windowBayCount" : 81
+    },
+    {
+      "doorBaseSource" : [
+        [
+          678,
+          851
+        ],
+        [
+          602,
+          813
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        3,
+        28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/south/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        832
+      ],
+      "propIDs" : [
+        "south-tower-balconies",
+        "south-podium-planters"
+      ],
+      "sceneGeometryID" : "residential-l04-v0-south-urban-tower-geometry-v1",
+      "sha256" : "d19578b7fdf025ea0eaf3c748188ab0fdcf0af01089d23b14c6b60b6c75df725",
+      "viewDirection" : "south",
+      "windowBayCount" : 81
+    },
+    {
+      "doorBaseSource" : [
+        [
+          602,
+          723
+        ],
+        [
+          678,
+          685
+        ]
+      ],
+      "entranceBaseWorld" : [
+        -28,
+        3,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l04/variant-0/west/scene.json",
+      "frontageEdgeSource" : [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "propIDs" : [
+        "west-tower-balconies",
+        "west-podium-planters"
+      ],
+      "sceneGeometryID" : "residential-l04-v0-west-urban-tower-geometry-v1",
+      "sha256" : "b8807c69336f8f0137eb775ff20f55f948c2e1cc78c7569010a988cab712b60c",
+      "viewDirection" : "west",
+      "windowBayCount" : 81
+    }
+  ],
+  "failures" : [
+
+  ],
+  "level" : 4,
+  "logicalBuildingID" : "residential_l04",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l02-l04-v0-materials.json",
+  "materialLibrarySHA256" : "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1",
+  "passed" : true,
+  "previewPlanFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/preview-plans/residential-l04-v0.json",
+  "previewPlanSHA256" : "0611df2a92a6ce7c7ea653049896686f97aab779320648098586a7e4179a976e",
+  "productionSelected" : false,
+  "schema" : 1,
+  "schemaFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/schema/scene.schema.json",
+  "schemaSHA256" : "9904a946cf2824bb09c7eac2bbbadbf73360b0de9c710e365fea724520136c08",
+  "task" : "PLAY-027",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json",
+  "toolchainFingerprintSHA256" : "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1",
+  "uniqueDescriptorHashes" : 4,
+  "uniqueSceneGeometryIDs" : 4
+}

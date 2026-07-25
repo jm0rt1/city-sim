@@ -643,3 +643,53 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** New commands, gameplay rules, save state, renderer changes, fixture generation, or a second progression authority.
 - **Acceptance:** Retail notices expose tax/park remedies; grid/freight notices expose power/water/park remedies; legacy missing-secondAct wins retain Charter copy; current Regional wins use Regional Capital copy in visible and AX output; replay actions remain exact at regular and compact sizes.
 - **Stop conditions:** Title routing has no action, copy contradicts durable state, view code re-derives rules, command/input parity drifts, or legacy victories are relabeled.
+
+### [ ] PLAY-071: Make growth visibly transform the city
+
+- **Player outcome:** A successful or recovered 20-minute city visibly becomes denser, more varied, and more developed instead of changing counters on a sparse board.
+- **Owning lane:** Gameplay loop.
+- **Dependencies:** Accepted PLAY-064 product; current building lifecycle contracts; reconcile any contradictory PLAY-068 gameplay defect.
+- **In scope:** Growth/upgrade/reward/pressure/recovery tuning, multiple building levels, objective/message truth, both strategies, deterministic scenarios, persistence, and staged journeys.
+- **Out of scope:** Renderer art, SwiftUI composition, commands, packages, legacy Python, or weakening Regional Capital.
+- **Acceptance:** Both strategies create visibly different, non-dominant, recoverable districts with multiple levels inside 20 minutes while daily progression, undo, save/load/backup/replay, and live input remain exact.
+- **Claim:** `docs/production/claims/PLAY-071.gameplay-loop.md`.
+
+### [ ] PLAY-072: Prove the visible-city state matrix
+
+- **Player outcome:** Every visible lifecycle state used by the product has deterministic, replayable, performance-bounded authoritative truth.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** Accepted PLAY-065/069 product and existing spatial/activity contracts.
+- **In scope:** Vacant/construction/active/pressured/recovering/upgraded/terminal fixtures for both strategies, manifests, snapshots, digests, persistence, undo, replay, and budgets.
+- **Out of scope:** New gameplay outcomes, persisted presentation state, renderer/UI work, or schema/fingerprint version changes.
+- **Acceptance:** Two independent builds reproduce the complete state matrix and preserve legacy bytes, fingerprints, save/backup/replay/undo, snapshot truth, and performance.
+- **Claim:** `docs/production/claims/PLAY-072.simulation-platform.md`.
+
+### [ ] PLAY-073: Replace the board with an authored district
+
+- **Player outcome:** The world reads as one coherent, populated district rather than isolated buildings on a broad green board.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-024/062/065/066 product; PLAY-072 fixtures when available; only separately accepted PLAY-027 art.
+- **In scope:** Camera composition, terrain, roads, curbs, sidewalks, parcels, entrances, parks, service yards, vegetation, props, activity, lighting/shadow/material harmonization, repetition control, interactions, LOD, and performance.
+- **Out of scope:** Invented simulation truth, unaccepted art, mirroring/rotation/aliasing, gameplay/UI/persistence changes, or hero-frame-only work.
+- **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
+- **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
+
+### [ ] PLAY-074: Make building and recovery obvious on the map
+
+- **Player outcome:** Construction, invalid placement, diagnosis, and recovery are understandable and operable directly on the map without panel archaeology.
+- **Owning lane:** UI and input.
+- **Dependencies:** Accepted PLAY-067/070 product and existing typed command/store contracts.
+- **In scope:** Pre-commit target/footprint/cost/availability/consequence/cancel truth; durable invalid reasons; selected-place recovery; compact map aperture; complete input/accessibility parity.
+- **Out of scope:** New gameplay rules, renderer art, persistence changes, pointer-only actions, or a second truth source.
+- **Acceptance:** Regular and compact pointer/keyboard/menu/guide/Escape/FKA/AX/VoiceOver/Reduce Motion journeys mutate the identical target once and preserve map, focus, undo, and save/load truth.
+- **Claim:** `docs/production/claims/PLAY-074.ui-input.md`.
+
+### [ ] PLAY-075: Gate the city-not-board release
+
+- **Player outcome:** Independent evidence proves the combined city is beautiful, cohesive, visibly evolving, direct to operate, and production-ready at every governed state and scale.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** PLAY-068 closure; clean PLAY-071/072/073/074 handoffs; exact integration candidate.
+- **In scope:** Candidate-blind Wave 009 rubric, full same-state matrix, fresh 20-minute journey, construction/recovery/accessibility/persistence/performance gates, and independent disposition.
+- **Out of scope:** Product repair, coaching, candidate substitution, rubric changes, fixture-only acceptance, or author scoring.
+- **Acceptance:** 20/20 with every category 4/4, zero P0/P1 and zero automatic rejects, plus material preference over `87e1e68` at both widths and all LODs.
+- **Claim:** `docs/production/claims/PLAY-075.playtest-quality.md`.

@@ -14,27 +14,75 @@ final class TerminalVictoryPlatformTests: XCTestCase {
     func testFourTerminalRoutesFreezeCommandsPersistenceBackupUndoAndSnapshots() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
             .commercialTaxRelief:
-                "53658735f410722d3b123f2d68bc4d85c4c4ae93847ae213e44577d101ea7b7c",
+                "7b369309ef0a64dd8a9c0f11914fee0f94e4c9a6495639d86b356b6d4d6d2c11",
             .commercialPublicRealmInvestment:
-                "157001094cf3fe9209cc47faef265ab627e3833b2a33ff180e0ffc9bb05f8e8f",
+                "115dc11b4d5a138387d55064773187c71c5fd85b23f76349e55225bad7dc4145",
             .industrialUtilityExpansion:
-                "6c15af94cd9430e78e4fb09894ca4592c322daf90d0622b550b474f379683b34",
+                "8a1de464c82480dcf5299c0903002066bd60bcebe3b533b7cf52f2ef51be3639",
             .industrialGreenBuffer:
-                "66432973b84648ee55f8051564de8de53180ce48485316117fa34509376e1653",
+                "f69193c9c472af05d4968c83d24aad7532c3dfd09620328f34f64543ea9e2cc4",
         ]
+        let expectedTicks: [CityStrategyRecoveryResolution: Int] = [
+            .commercialTaxRelief: 1_040,
+            .commercialPublicRealmInvestment: 1_060,
+            .industrialUtilityExpansion: 1_036,
+            .industrialGreenBuffer: 1_236,
+        ]
+        let builder = ProductionStoryStateBuilder()
 
         for resolution in resolutions {
-            let terminal = try charterCity(resolvedBy: resolution)
-            let replay = try charterCity(resolvedBy: resolution)
+            let recovery = try builder.regionalRecovery(resolvedBy: resolution)
+            let groupedRecoveryStates = [1, 2, 4].map { pulse in
+                var grouped = recovery
+                var remaining = 64
+                while remaining > 0 {
+                    let group = min(pulse, remaining)
+                    for _ in 0..<group { CitySimulation.step(&grouped) }
+                    remaining -= group
+                }
+                return grouped
+            }
+            XCTAssertEqual(groupedRecoveryStates[0], groupedRecoveryStates[1])
+            XCTAssertEqual(groupedRecoveryStates[1], groupedRecoveryStates[2])
+            XCTAssertEqual(
+                try CityStateFingerprinter.fingerprint(groupedRecoveryStates[0]),
+                try CityStateFingerprinter.fingerprint(groupedRecoveryStates[2]),
+                resolution.rawValue
+            )
+            let recoveryStore = CityGameStore(state: recovery)
+            let recoveryFingerprint = try CityStateFingerprinter.fingerprint(recovery)
+            let (undoKind, undoCoordinate) = try undoableBuild(in: recovery)
+            recoveryStore.selectTool(undoKind)
+            recoveryStore.primaryAction(at: undoCoordinate)
+            XCTAssertTrue(recoveryStore.canUndo, resolution.rawValue)
+            XCTAssertNotEqual(recoveryStore.state, recovery, resolution.rawValue)
+            recoveryStore.undoLastAction()
+            XCTAssertEqual(recoveryStore.state, recovery, resolution.rawValue)
+            XCTAssertEqual(
+                try CityStateFingerprinter.fingerprint(recoveryStore.state),
+                recoveryFingerprint,
+                resolution.rawValue
+            )
+            XCTAssertEqual(
+                recoveryStore.state.progression?.secondAct?.phase,
+                .recovery,
+                resolution.rawValue
+            )
+
+            let terminal = try builder.regionalCapitalTerminal(resolvedBy: resolution)
+            let replay = try builder.regionalCapitalTerminal(resolvedBy: resolution)
             let fingerprintStart = ProcessInfo.processInfo.systemUptime
             let fingerprint = try CityStateFingerprinter.fingerprint(terminal)
             let fingerprintMilliseconds = elapsedMilliseconds(since: fingerprintStart)
 
             XCTAssertEqual(terminal, replay, resolution.rawValue)
-            XCTAssertEqual(terminal.tick, 844, resolution.rawValue)
+            XCTAssertEqual(terminal.tick, expectedTicks[resolution], resolution.rawValue)
             XCTAssertEqual(terminal.status, .won, resolution.rawValue)
             XCTAssertEqual(terminal.progression?.townCharterQualifyingCycles, 12)
             XCTAssertTrue(terminal.progression?.townCharterAwarded ?? false)
+            XCTAssertEqual(terminal.progression?.secondAct?.phase, .completed)
+            XCTAssertEqual(terminal.progression?.secondAct?.qualifyingCycles, 12)
+            XCTAssertTrue(terminal.progression?.secondAct?.regionalCapitalAwarded ?? false)
             XCTAssertEqual(
                 terminal.progression?.strategy?.recoveryResolution,
                 resolution,
@@ -46,7 +94,7 @@ final class TerminalVictoryPlatformTests: XCTestCase {
                 resolution.rawValue
             )
             XCTAssertEqual(
-                terminal.messages.filter { $0.title == "Town Charter Awarded" }.count,
+                terminal.messages.filter { $0.title == "Regional Capital Recognized" }.count,
                 1,
                 resolution.rawValue
             )
@@ -164,7 +212,7 @@ final class TerminalVictoryPlatformTests: XCTestCase {
                 XCTAssertLessThan(write.byteCount, 2_000_000, resolution.rawValue)
 
                 print(
-                    "PLAY046_TERMINAL resolution=\(resolution.rawValue) " +
+                    "PLAY069_TERMINAL resolution=\(resolution.rawValue) tick=\(terminal.tick) " +
                     "digest=\(fingerprint.digest) bytes=\(write.byteCount) " +
                     "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
                     "snapshot_ms=\(metric(snapshotMilliseconds)) " +
@@ -256,147 +304,32 @@ final class TerminalVictoryPlatformTests: XCTestCase {
         }
     }
 
-    private func charterCity(
-        resolvedBy resolution: CityStrategyRecoveryResolution
-    ) throws -> CityGameState {
-        let strategy: CityStrategy
-        let jobs: BuildingKind
-        switch resolution {
-        case .commercialTaxRelief, .commercialPublicRealmInvestment:
-            strategy = .commercialStewardship
-            jobs = .commercial
-        case .industrialUtilityExpansion, .industrialGreenBuffer:
-            strategy = .industrialExpansion
-            jobs = .industrial
-        }
-
-        var state = CityGameState.newCity(seed: 42)
-        try advanceToTick(&state, tick: 60)
-        try buildFirstValid(jobs, in: &state)
-        try advanceToTick(&state, tick: 64)
-        guard state.progression?.strategy?.committedStrategy == strategy else {
-            throw FixtureError.unexpectedState
-        }
-        try advanceThroughStrategyPhase(&state, phase: .opportunity)
-        try advanceThroughStrategyPhase(&state, phase: .complication)
-        try advanceThroughStrategyPhase(&state, phase: .setback)
-        guard state.progression?.strategy?.recoveryResolution == nil else {
-            throw FixtureError.unexpectedState
-        }
-
-        switch resolution {
-        case .commercialTaxRelief:
-            state.taxRate = 0.09
-        case .commercialPublicRealmInvestment, .industrialGreenBuffer:
-            try buildFirstValid(.park, in: &state)
-        case .industrialUtilityExpansion:
-            try prepareReserveUtilities(in: &state)
-        }
-
-        try advanceThroughStrategyPhase(&state, phase: .recovery)
-        guard state.progression?.strategy?.recoveryResolution == resolution else {
-            throw FixtureError.unexpectedState
-        }
-
-        if resolution == .commercialTaxRelief {
-            state.taxRate = 0.10
-        }
-        try prepareCharterCapacity(in: &state, jobs: jobs)
-        state.taxRate = 0.10
-        try advanceUntil(&state, maximumCycles: 430) {
-            $0.progression?.townCharterAwarded == true
-        }
-        return state
-    }
-
-    private func prepareReserveUtilities(in state: inout CityGameState) throws {
-        for kind in [BuildingKind.powerPlant, .waterTower] {
-            while CityAnalytics(state: state).count(kind) < 2 {
-                try advanceUntil(&state, maximumCycles: 160) {
-                    $0.treasury >= kind.buildCost
+    private func undoableBuild(
+        in state: CityGameState
+    ) throws -> (BuildingKind, GridCoordinate) {
+        for kind in [
+            BuildingKind.road,
+            .commercial,
+            .industrial,
+            .residential,
+            .park,
+        ] where state.treasury >= kind.buildCost {
+            for tile in state.tiles where tile.kind == .empty {
+                if case .success = CitySimulation.validateBuild(
+                    kind,
+                    at: tile.coordinate,
+                    in: state
+                ) {
+                    return (kind, tile.coordinate)
                 }
-                guard state.status == .playing, state.treasury >= kind.buildCost else {
-                    throw FixtureError.unexpectedState
-                }
-                try buildFirstValid(kind, in: &state)
-                advanceOneCycle(&state)
-            }
-        }
-    }
-
-    private func prepareCharterCapacity(
-        in state: inout CityGameState,
-        jobs: BuildingKind
-    ) throws {
-        try prepareReserveUtilities(in: &state)
-        while CityAnalytics(state: state).jobCapacity < 350 {
-            try advanceUntil(&state, maximumCycles: 160) {
-                $0.treasury >= jobs.buildCost
-            }
-            guard state.status == .playing, state.treasury >= jobs.buildCost else {
-                throw FixtureError.unexpectedState
-            }
-            try buildFirstValid(jobs, in: &state)
-            advanceOneCycle(&state)
-        }
-    }
-
-    private func buildFirstValid(
-        _ kind: BuildingKind,
-        in state: inout CityGameState
-    ) throws {
-        for tile in state.tiles where tile.kind == .empty {
-            if case .success = CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) {
-                guard case .success = CitySimulation.build(kind, at: tile.coordinate, in: &state) else {
-                    throw FixtureError.commandRejected
-                }
-                return
             }
         }
         throw FixtureError.commandRejected
     }
 
-    private func advanceThroughStrategyPhase(
-        _ state: inout CityGameState,
-        phase: CityStrategyPhase
-    ) throws {
-        guard state.progression?.strategy?.currentPhase == phase,
-              let scheduledTick = state.progression?.strategy?.nextScheduledTick else {
-            throw FixtureError.unexpectedState
-        }
-        try advanceToTick(&state, tick: scheduledTick)
-    }
-
-    private func advanceToTick(
-        _ state: inout CityGameState,
-        tick: Int
-    ) throws {
-        guard state.tick <= tick else { throw FixtureError.unexpectedState }
-        while state.tick < tick {
-            guard state.status == .playing else { throw FixtureError.unexpectedState }
-            CitySimulation.step(&state)
-        }
-    }
-
-    private func advanceUntil(
-        _ state: inout CityGameState,
-        maximumCycles: Int,
-        condition: (CityGameState) -> Bool
-    ) throws {
-        for _ in 0..<maximumCycles {
-            advanceOneCycle(&state)
-            if condition(state) { return }
-        }
-        throw FixtureError.conditionNotReached
-    }
-
-    private func advanceOneCycle(_ state: inout CityGameState) {
-        for _ in 0..<4 { CitySimulation.step(&state) }
-    }
-
     private func withTemporaryRoot(_ body: (URL) throws -> Void) throws {
         let root = FileManager.default.temporaryDirectory
-            .appending(path: "citysim-play046-\(UUID().uuidString)", directoryHint: .isDirectory)
+            .appending(path: "citysim-play069-\(UUID().uuidString)", directoryHint: .isDirectory)
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
     }
@@ -408,7 +341,7 @@ final class TerminalVictoryPlatformTests: XCTestCase {
     ) throws {
         guard resolution == .commercialTaxRelief,
               let rootPath = ProcessInfo.processInfo.environment[
-                  "CITYSIM_PLAY046_EXPORT_ROOT"
+                  "CITYSIM_PLAY069_EXPORT_ROOT"
               ],
               !rootPath.isEmpty else {
             return
@@ -426,7 +359,7 @@ final class TerminalVictoryPlatformTests: XCTestCase {
             try Data(contentsOf: service.backupURL)
         )
         print(
-            "PLAY046_STAGED_EXPORT root=\(rootPath) " +
+            "PLAY069_STAGED_EXPORT root=\(rootPath) " +
             "resolution=\(resolution.rawValue) digest=\(fingerprint.digest) " +
             "bytes=\(secondWrite.byteCount)"
         )
@@ -442,7 +375,5 @@ final class TerminalVictoryPlatformTests: XCTestCase {
 
     private enum FixtureError: Error {
         case commandRejected
-        case conditionNotReached
-        case unexpectedState
     }
 }

@@ -421,29 +421,12 @@ final class SessionPlatformTests: XCTestCase {
             .applied
         )
 
-        let industryVictory = industry
-        let commerceVictory = commerce
-        for _ in 0..<13 {
-            XCTAssertEqual(
-                CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &industry),
-                .rejected(.simulationNotPlaying)
-            )
-            XCTAssertEqual(industry, industryVictory)
-        }
-        for _ in 0..<11 {
-            XCTAssertEqual(
-                CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &commerce),
-                .rejected(.simulationNotPlaying)
-            )
-            XCTAssertEqual(commerce, commerceVictory)
-        }
-
-        printCheckpoint("accepted-industrial", state: industry)
-        printCheckpoint("accepted-commercial", state: commerce)
+        printCheckpoint("accepted-industrial-charter-midpoint", state: industry)
+        printCheckpoint("accepted-commercial-charter-midpoint", state: commerce)
         XCTAssertEqual(industry.tick, 844)
         XCTAssertEqual(commerce.tick, 844)
-        XCTAssertEqual(industry.status, .won)
-        XCTAssertEqual(commerce.status, .won)
+        XCTAssertEqual(industry.status, .playing)
+        XCTAssertEqual(commerce.status, .playing)
         XCTAssertEqual(industry.treasury, 52_405.55, accuracy: 0.001)
         XCTAssertEqual(commerce.treasury, 54_501.17, accuracy: 0.001)
         XCTAssertEqual(CityAnalytics(state: industry).projectedBalance, 268.55, accuracy: 0.001)
@@ -464,26 +447,34 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertNil(industry.progression?.strategy?.nextScheduledTick)
         XCTAssertEqual(industry.progression?.strategy?.recoveryResolution, .industrialUtilityExpansion)
         XCTAssertEqual(CityAnalytics(state: industry).strategyRecoveryResolution, .industrialUtilityExpansion)
+        XCTAssertEqual(industry.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(industry.progression?.secondAct?.nextScheduledTick, 908)
+        XCTAssertEqual(industry.progression?.secondAct?.qualifyingCycles, 0)
+        XCTAssertFalse(industry.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(commerce.progression?.strategy?.committedStrategy, .commercialStewardship)
         XCTAssertEqual(commerce.progression?.strategy?.currentPhase, .completed)
         XCTAssertNil(commerce.progression?.strategy?.nextScheduledTick)
         XCTAssertNil(commerce.progression?.strategy?.recoveryResolution)
         XCTAssertNil(CityAnalytics(state: commerce).strategyRecoveryResolution)
+        XCTAssertEqual(commerce.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(commerce.progression?.secondAct?.nextScheduledTick, 908)
+        XCTAssertEqual(commerce.progression?.secondAct?.qualifyingCycles, 0)
+        XCTAssertFalse(commerce.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "b79feac6f0f9de85201f4605de76d97401361e5cb3140ac11e86811c903a5d16"
+            "47bdea6f144e146d6ad06411535da899d7958cfbae540e55ce35fad17c5dc380"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "663f1f4b32660ba8e478e1f75edc9e599464530e2494c26f743d35dfde83ba12"
+            "0d3879dde50aa44d18052dcf17790f50f03d9e3badfb032f443fb699a9ac54d8"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["b79feac6f0f9de85201f4605de76d97401361e5cb3140ac11e86811c903a5d16"])
+            Set(["47bdea6f144e146d6ad06411535da899d7958cfbae540e55ce35fad17c5dc380"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["663f1f4b32660ba8e478e1f75edc9e599464530e2494c26f743d35dfde83ba12"])
+            Set(["0d3879dde50aa44d18052dcf17790f50f03d9e3badfb032f443fb699a9ac54d8"])
         )
     }
 

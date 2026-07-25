@@ -92,11 +92,13 @@ final class LotRenderer {
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
     private let lifecycleRenderer: LotLifecycleRenderer
+    private let contextRenderer: LotContextRenderer
 
     init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
         self.style = style
         self.assets = assets
         self.lifecycleRenderer = LotLifecycleRenderer(style: style)
+        self.contextRenderer = LotContextRenderer(style: style)
     }
 
     func makeLot(
@@ -145,7 +147,16 @@ final class LotRenderer {
             to: neighborhoodLayer
         )
         if presentation.construction == .complete || presentation.construction == .finishing {
-            addNeighborhoodPublicRealm(for: tile.kind, to: neighborhoodLayer)
+            contextRenderer.addContext(
+                for: tile,
+                adjacentRoads: adjacentRoads,
+                selectedFrontage: residentialIdentity?.frontage
+                    ?? commercialIdentity?.frontage
+                    ?? industrialL1Identity?.frontage,
+                city: cityLayer,
+                neighborhood: neighborhoodLayer,
+                block: blockLayer
+            )
         }
         if presentation.construction == .complete {
             addBlockInspectionDetail(

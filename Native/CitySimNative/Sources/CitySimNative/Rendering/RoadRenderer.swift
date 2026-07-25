@@ -648,23 +648,49 @@ final class RoadRenderer {
             y: endpoint.y * 0.55 + perpendicular.y * 7 * side
         )
 
-        let post = SKShapeNode(rectOf: CGSize(width: 1.4, height: 8), cornerRadius: 0.5)
-        post.name = "road.public-realm.lamp"
-        post.fillColor = NSColor(calibratedWhite: 0.23, alpha: 1)
-        post.strokeColor = .clear
-        post.position = CGPoint(x: anchor.x, y: anchor.y + 4)
-        post.zPosition = 12
-        let lamp = SKShapeNode(circleOfRadius: 2.2)
-        lamp.fillColor = style.palette.warmWindow
-        lamp.strokeColor = NSColor.white.withAlphaComponent(0.35)
-        lamp.position.y = 4.4
-        post.addChild(lamp)
-        layer.addChild(post)
+        let fixturePath = CGMutablePath()
+        fixturePath.addRect(CGRect(x: -0.55, y: 0, width: 1.1, height: 8))
+        fixturePath.addPath(WorldGeometryCache.polygon([
+            CGPoint(x: -2.4, y: 8),
+            CGPoint(x: -1.1, y: 9.5),
+            CGPoint(x: 1.9, y: 9.1),
+            CGPoint(x: 2.5, y: 7.7),
+            CGPoint(x: 0.8, y: 7.0),
+            CGPoint(x: -1.7, y: 7.1),
+        ]))
+        let fixture = SKShapeNode(path: fixturePath)
+        fixture.name = "road.public-realm.lamp"
+        fixture.fillColor = style.palette.roofDark
+        fixture.strokeColor = style.palette.concreteLight.withAlphaComponent(0.12)
+        fixture.lineWidth = 0.35
+        fixture.position = anchor
+        fixture.zPosition = 12
+        let glow = SKShapeNode(path: style.diamondPath(width: 2.7, height: 1.3))
+        glow.name = "road.public-realm.lamp.warm-light"
+        glow.fillColor = style.palette.warmWindow.withAlphaComponent(0.80)
+        glow.strokeColor = .clear
+        glow.position = CGPoint(x: 0.25, y: 7.8)
+        fixture.addChild(glow)
+        layer.addChild(fixture)
 
-        let hydrant = SKShapeNode(rectOf: CGSize(width: 3.6, height: 4.2), cornerRadius: 1)
+        let hydrantPath = CGMutablePath()
+        hydrantPath.addPath(WorldGeometryCache.polygon([
+            CGPoint(x: -1.6, y: -2),
+            CGPoint(x: 1.6, y: -2),
+            CGPoint(x: 1.4, y: 1.5),
+            CGPoint(x: -1.4, y: 1.5),
+        ]))
+        hydrantPath.addPath(WorldGeometryCache.polygon([
+            CGPoint(x: -2.1, y: 1.4),
+            CGPoint(x: -1.0, y: 2.6),
+            CGPoint(x: 1.0, y: 2.6),
+            CGPoint(x: 2.1, y: 1.4),
+        ]))
+        let hydrant = SKShapeNode(path: hydrantPath)
         hydrant.name = "road.public-realm.hydrant"
-        hydrant.fillColor = NSColor(calibratedRed: 0.62, green: 0.25, blue: 0.18, alpha: 1)
-        hydrant.strokeColor = NSColor.white.withAlphaComponent(0.16)
+        hydrant.fillColor = NSColor(calibratedRed: 0.48, green: 0.20, blue: 0.15, alpha: 1)
+        hydrant.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.62)
+        hydrant.lineWidth = 0.45
         hydrant.position = CGPoint(x: anchor.x + 5, y: anchor.y - 1)
         hydrant.zPosition = 11
         layer.addChild(hydrant)

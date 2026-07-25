@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "calibrationID": "commercial-l01-variant-0-directional-v03",
+  "calibrationID": "commercial-l01-variant-0-directional-v04",
   "directionOrder": ["north", "east", "south", "west"],
   "layout": {"columns": 2, "rows": 2, "rowMajor": ["north", "east", "south", "west"]},
   "sourceScale": {"panelPixels": [1536, 1024], "sheetPixels": [3072, 2048], "labels": false},
@@ -21,6 +21,6 @@
     "correspondingRawSourceCrop": [512, 450, 512, 446],
     "source": "existing deterministic normalized-alpha block LOD"
   },
-  "reviewManifest": "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V03-CONTACT-SHEET-ORDER-REVIEW-CANDIDATE.json",
+  "reviewManifest": "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-CONTACT-SHEET-ORDER-REVIEW-CANDIDATE.json",
   "productionSelected": false
 }

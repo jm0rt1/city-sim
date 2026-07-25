@@ -2285,7 +2285,138 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
     }
 }
 
-func writePNG(_ image: CGImage, to url: URL) throws {
+func validatedRenderedNodeBounds(
+    _ scene: SCNScene,
+    descriptor: SceneDescriptor
+) throws -> [String: Any] {
+    let bounds = scene.rootNode.boundingBox
+    let minimum = bounds.min
+    let maximum = bounds.max
+    guard
+        maximum.x > minimum.x,
+        maximum.y > minimum.y,
+        maximum.z > minimum.z
+    else {
+        throw OfflineRendererError.rendering(
+            "complete rendered-node bounds unavailable"
+        )
+    }
+    let halfWidth = descriptor.building.width / 2
+    let halfDepth = descriptor.building.depth / 2
+    let minimumRequiredHeight =
+        descriptor.building.foundationHeight
+        + descriptor.building.wallHeight
+    let complete =
+        Double(minimum.x) <= -halfWidth
+        && Double(maximum.x) >= halfWidth
+        && Double(minimum.z) <= -halfDepth
+        && Double(maximum.z) >= halfDepth
+        && Double(minimum.y) <= 0
+        && Double(maximum.y) >= minimumRequiredHeight
+    guard complete else {
+        throw OfflineRendererError.rendering(
+            "rendered-node bounds do not contain the complete building volume"
+        )
+    }
+    return [
+        "minimumWorld": [
+            Double(minimum.x),
+            Double(minimum.y),
+            Double(minimum.z),
+        ],
+        "maximumWorld": [
+            Double(maximum.x),
+            Double(maximum.y),
+            Double(maximum.z),
+        ],
+        "requiredFootprintHalfExtents": [halfWidth, halfDepth],
+        "minimumRequiredHeight": minimumRequiredHeight,
+        "completeBuildingVolumePassed": true,
+    ]
+}
+
+func validatedRawOccupancy(
+    _ image: CGImage
+) throws -> [String: Any] {
+    let width = image.width
+    let height = image.height
+    var bytes = [UInt8](repeating: 0, count: width * height * 4)
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+    let created = bytes.withUnsafeMutableBytes { storage -> Bool in
+        guard let context = CGContext(
+            data: storage.baseAddress,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: width * 4,
+            space: colorSpace,
+            bitmapInfo:
+                CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.byteOrder32Big.rawValue
+        ) else {
+            return false
+        }
+        context.interpolationQuality = .none
+        context.draw(
+            image,
+            in: CGRect(x: 0, y: 0, width: width, height: height)
+        )
+        return true
+    }
+    guard created else {
+        throw OfflineRendererError.rendering(
+            "could not inspect raw occupied area"
+        )
+    }
+
+    var occupiedPixelCount = 0
+    var minimumX = width
+    var minimumY = height
+    var maximumX = -1
+    var maximumY = -1
+    for y in 0..<height {
+        for x in 0..<width {
+            let index = (y * width + x) * 4
+            let chroma =
+                bytes[index] == 255
+                && bytes[index + 1] == 0
+                && bytes[index + 2] == 255
+                && bytes[index + 3] == 255
+            if !chroma {
+                occupiedPixelCount += 1
+                minimumX = min(minimumX, x)
+                minimumY = min(minimumY, y)
+                maximumX = max(maximumX, x)
+                maximumY = max(maximumY, y)
+            }
+        }
+    }
+    let occupiedWidth = maximumX >= 0 ? maximumX - minimumX + 1 : 0
+    let occupiedHeight = maximumY >= 0 ? maximumY - minimumY + 1 : 0
+    let passed =
+        occupiedPixelCount >= 50_000
+        && occupiedWidth >= 400
+        && occupiedHeight >= 260
+    guard passed else {
+        throw OfflineRendererError.rendering(
+            "raw occupied area cannot contain a complete building, footprint, and shadow"
+        )
+    }
+    return [
+        "nonChromaPixelCount": occupiedPixelCount,
+        "nonChromaBounds": [
+            minimumX,
+            minimumY,
+            maximumX + 1,
+            maximumY + 1,
+        ],
+        "minimumNonChromaPixelCount": 50_000,
+        "minimumBoundsPixels": [400, 260],
+        "completeOccupiedAreaPassed": true,
+    ]
+}
+
+func writeImageIOPNG(_ image: CGImage, to url: URL) throws {
     try FileManager.default.createDirectory(
         at: url.deletingLastPathComponent(),
         withIntermediateDirectories: true
@@ -2314,6 +2445,44 @@ func writePNG(_ image: CGImage, to url: URL) throws {
     )
     guard CGImageDestinationFinalize(destination) else {
         throw OfflineRendererError.rendering("PNG finalization failed")
+    }
+}
+
+func writePNG(_ image: CGImage, to url: URL) throws {
+    let intermediateURL = url.deletingLastPathComponent()
+        .appendingPathComponent(
+            "." + url.lastPathComponent + ".imageio-intermediate.png"
+        )
+    if FileManager.default.fileExists(atPath: intermediateURL.path) {
+        try FileManager.default.removeItem(at: intermediateURL)
+    }
+    defer {
+        try? FileManager.default.removeItem(at: intermediateURL)
+    }
+    try writeImageIOPNG(image, to: intermediateURL)
+
+    // `/usr/bin/sips` is a macOS-native ImageIO front end. Re-encoding the
+    // already canonical pixels through it removes the direction-dependent PNG
+    // presentation seen in the review decoder while preserving exact pixels.
+    // The fixed host/toolchain makes this final byte encoding deterministic.
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/sips")
+    process.arguments = [
+        "-s",
+        "format",
+        "png",
+        intermediateURL.path,
+        "--out",
+        url.path,
+    ]
+    process.standardOutput = FileHandle.nullDevice
+    process.standardError = FileHandle.nullDevice
+    try process.run()
+    process.waitUntilExit()
+    guard process.terminationStatus == 0 else {
+        throw OfflineRendererError.rendering(
+            "native PNG canonicalization failed"
+        )
     }
 }
 
@@ -2373,6 +2542,10 @@ enum OfflineSceneRendererMain {
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
+        let renderedNodeBounds = try validatedRenderedNodeBounds(
+            scene,
+            descriptor: descriptor
+        )
         let oversampled = try NativeSourceRenderer().renderSource(
             scene: scene,
             descriptor: descriptor
@@ -2381,6 +2554,7 @@ enum OfflineSceneRendererMain {
             renderedImage: oversampled,
             descriptor: descriptor
         )
+        let rawOccupancy = try validatedRawOccupancy(source)
         try writePNG(source, to: outputURL)
 
         let sourceFiles = [
@@ -2431,6 +2605,12 @@ enum OfflineSceneRendererMain {
                 repositoryRoot: repositoryRoot
             ),
             "rawSourceSHA256": try rendererSHA256(outputURL),
+            "renderedNodeBounds": renderedNodeBounds,
+            "rawOccupancy": rawOccupancy,
+            "nativePNGCanonicalizer": [
+                "path": "/usr/bin/sips",
+                "role": "deterministic review-decoder-safe final PNG encoding",
+            ],
             "rawSourcePixels":
                 descriptor.camera.renderViewportPixels,
             "oversamplingFactor":

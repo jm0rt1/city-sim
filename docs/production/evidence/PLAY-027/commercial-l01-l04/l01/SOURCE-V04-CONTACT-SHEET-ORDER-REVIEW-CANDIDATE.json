@@ -1,0 +1,206 @@
+{
+  "calibrationID" : "commercial-l01-variant-0-directional-v04",
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "grayscaleRecognition" : {
+    "conversion" : "Core Graphics deterministic Rec.709 integer luma",
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-NATIVE-2X-GRAYSCALE-REVIEW-CANDIDATE.png",
+    "sha256" : "01b76c4eeff541584c7b21989ce51c55e37061f7c10afc40759dce0fa68c32f0",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "inputs" : [
+    {
+      "direction" : "north",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/north/source-v04.png",
+      "sha256" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+    },
+    {
+      "direction" : "east",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/east/source-v04.png",
+      "sha256" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+    },
+    {
+      "direction" : "south",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/south/source-v04.png",
+      "sha256" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+    },
+    {
+      "direction" : "west",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/west/source-v04.png",
+      "sha256" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+    }
+  ],
+  "layout" : {
+    "columns" : 2,
+    "labels" : false,
+    "rowMajor" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "rows" : 2
+  },
+  "native2xActualScale" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-NATIVE-2X-NORMALIZED-ALPHA-REVIEW-CANDIDATE.png",
+    "panelPixels" : [
+      432,
+      288
+    ],
+    "presentation" : "existing deterministic normalized-alpha block output on neutral background",
+    "scale" : 0.421875,
+    "sha256" : "8809fb070be2be6e9d7dac282512444bcd92abbf652e5e5ea8454773c076bfa8",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "normalizedAlphaInputs" : [
+    {
+      "direction" : "north",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/north/source-v04/generated_v4_commercial_l01_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "a172b049427a88e688cbcb1e21bc3ad090692fb84e45d6141ac6f1200030af9b"
+    },
+    {
+      "direction" : "east",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/east/source-v04/generated_v4_commercial_l01_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "555e813f5b24fea0bd3df70183f34caaf6defc1ca8951baf4f63092536414406"
+    },
+    {
+      "direction" : "south",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/south/source-v04/generated_v4_commercial_l01_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "cbad9d06c2aaa63f19f3059e6e4f68af724a94c886938794f0bac043a3265fba"
+    },
+    {
+      "direction" : "west",
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/west/source-v04/generated_v4_commercial_l01_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "682ed34ad346ca4537898bd0a2628ff148db7ac6f71d6cec510e7c3af7626c0a"
+    }
+  ],
+  "previewAlphaIsNormalizedOutput" : true,
+  "productionSelected" : false,
+  "registeredFootprintActualScale" : {
+    "correspondingRawSourceCrop" : [
+      512,
+      450,
+      513,
+      455
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-FOOTPRINT-NATIVE-2X-NORMALIZED-ALPHA-REVIEW-CANDIDATE.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      300,
+      342,
+      303
+    ],
+    "panelPixels" : [
+      144,
+      128
+    ],
+    "presentation" : "fixed descriptor-derived normalized-alpha tile and vertical sprite envelope at native-2x scale",
+    "scale" : 0.421875,
+    "sha256" : "0b803a543dd9259db01793a44e6156dda051b179ae5b00ccd7a4cfa4e70ae412",
+    "sheetPixels" : [
+      288,
+      256
+    ]
+  },
+  "registeredFootprintGrayscale" : {
+    "conversion" : "Core Graphics deterministic Rec.709 integer luma",
+    "correspondingRawSourceCrop" : [
+      512,
+      450,
+      513,
+      455
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-FOOTPRINT-NATIVE-2X-GRAYSCALE-REVIEW-CANDIDATE.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      300,
+      342,
+      303
+    ],
+    "panelPixels" : [
+      144,
+      128
+    ],
+    "scale" : 0.421875,
+    "sha256" : "3ffeebe5f1817b4b3f230a93f16572245380833c5fb0526c83e10beafbf0dd28",
+    "sheetPixels" : [
+      288,
+      256
+    ]
+  },
+  "registeredFootprintZoom" : {
+    "correspondingRawSourceCrop" : [
+      512,
+      450,
+      513,
+      455
+    ],
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-ZOOM-NORMALIZED-ALPHA-REVIEW-CANDIDATE.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      300,
+      342,
+      303
+    ],
+    "panelPixels" : [
+      512,
+      454
+    ],
+    "presentation" : "fixed descriptor-derived normalized-alpha envelope enlarged with nearest-neighbor review scaling",
+    "scale" : 1.4970760233918128,
+    "sha256" : "d8c813fd91c4b372015f3a6a0587fb716601c4facf6bcc6c4c3ca16ab5fd89f1",
+    "sheetPixels" : [
+      1024,
+      908
+    ]
+  },
+  "reviewStatus" : "pending-independent-source-art-review",
+  "schema" : 1,
+  "sourceScale" : {
+    "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-SOURCE-SCALE-REVIEW-CANDIDATE.png",
+    "panelPixels" : [
+      1536,
+      1024
+    ],
+    "presentation" : "unaltered raw #ff00ff inspection",
+    "sha256" : "4afdf8554ea5dc69964a49511110e530686b2a7e968f983799a5187e4d145420",
+    "sheetPixels" : [
+      3072,
+      2048
+    ]
+  },
+  "task" : "PLAY-027"
+}

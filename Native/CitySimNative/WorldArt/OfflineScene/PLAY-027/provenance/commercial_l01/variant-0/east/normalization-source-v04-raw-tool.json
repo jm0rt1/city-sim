@@ -1,0 +1,67 @@
+{
+  "asset_id": "commercial_l01",
+  "source_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/east/source-v04.png",
+  "source_sha256": "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2",
+  "cleanup_command": "normalize_calibration_asset.py --asset-id commercial_l01 --input Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/commercial_l01/variant-0/east/source-v04.png --output-dir Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/east/source-v04 --record Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/provenance/commercial_l01/variant-0/east/normalization-source-v04-raw-tool.json",
+  "normalization": "8-bit sRGB RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; Lanczos explicit LOD exports",
+  "registration": {
+    "mode": "uniform-object-registration",
+    "source_bbox": [
+      668,
+      639,
+      868,
+      818
+    ],
+    "target_size": [
+      410,
+      367
+    ],
+    "target_ground_pivot": [
+      768,
+      896
+    ],
+    "target_origin": [
+      563,
+      529
+    ]
+  },
+  "source_bbox": [
+    563,
+    529,
+    973,
+    896
+  ],
+  "ground_pivot_source": [
+    768,
+    896
+  ],
+  "outputs": [
+    {
+      "lod": "block",
+      "file": "generated_v4_commercial_l01_block.png",
+      "pixels": [
+        1024,
+        683
+      ],
+      "sha256": "555e813f5b24fea0bd3df70183f34caaf6defc1ca8951baf4f63092536414406"
+    },
+    {
+      "lod": "neighborhood",
+      "file": "generated_v4_commercial_l01_neighborhood.png",
+      "pixels": [
+        512,
+        342
+      ],
+      "sha256": "78958e37f17f25d651cdbf2deb21b65fdf2b898c9799071430a024f215fc9be4"
+    },
+    {
+      "lod": "city",
+      "file": "generated_v4_commercial_l01_city.png",
+      "pixels": [
+        256,
+        171
+      ],
+      "sha256": "2c1fd5e262d00d6333fff672fe391be52d9092a7450959c31070467a9481454f"
+    }
+  ]
+}

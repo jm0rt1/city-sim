@@ -204,7 +204,7 @@
   "materialLibrarySHA256" : "ebe723369cf5b01ef471e3ef7bedb286d1eee8e4752c9d6237838fea5a634205",
   "passed" : true,
   "previewPlanFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/preview-plans/commercial-l01-v0.json",
-  "previewPlanSHA256" : "546b5f19baa7e9dac5dd8b3079f20aa987327f8edade1d841d6ec382f9093924",
+  "previewPlanSHA256" : "d6a2a7dc8272563fb992a688fe65795b1730e6a4d8cb8a414a427ec2a8703c0f",
   "productionSelected" : false,
   "schema" : 1,
   "schemaFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/schema/scene.schema.json",

@@ -1,8 +1,11 @@
-# PLAY-027 Commercial L1 source-v04 rejection
+# PLAY-027 Commercial L1 source-v04 disposition history
 
-**Disposition:** technically stable but visually rejected
+**Current disposition:** integration-approved Commercial L1 source candidate
+after normalized-packet visual review; production selection remains false
 
 **Production selected:** no
+
+## Initial rejection
 
 Source-v04 passes three-process byte identity, four-view source uniqueness,
 scene-node bounds, and the first non-chroma occupied-area thresholds.
@@ -44,5 +47,23 @@ direction reports:
 shows complete N/E/S/W buildings, footprint plates, southeast shadows, and
 frontages from the exact retained bytes. This evidence narrows the prior
 direct-view discrepancy to the uncropped review presentation path rather than
-hidden RGB in the retained PNG. Source-v04 nevertheless remains rejected and
-unnormalized until integration independently reviews this exact diagnostic.
+hidden RGB in the retained PNG.
+
+## Revised integration disposition
+
+Integration independently reviewed the exact RGBA occupied-crop sheet and
+accepted the stronger retained-byte evidence as resolving the full-canvas
+viewer discrepancy. Source-v04 is approved to proceed only through unchanged
+deterministic normalization and Commercial L1 review-candidate packaging.
+
+Integration then inspected the normalized-alpha native-2x footprint color and
+grayscale sheets and found all four directions complete, coherent,
+directionally distinct, commercially readable, and family-consistent.
+Commercial L1 may be frozen by the exact clean candidate commit once all
+technical evidence is present.
+
+The initial discrepancy, rejection rationale, and all failed-probe evidence
+above remain part of the durable trail. This revised disposition is not
+production selection or renderer ingestion. Commercial L2 becomes the only
+next authorized art level after the clean L1 checkpoint; Commercial L3/L4
+remain blocked pending separate L2 review.

@@ -173,36 +173,48 @@ func reviewAlphaImage(_ image: CGImage) throws -> CGImage {
 }
 
 func grayscaleImage(_ image: CGImage) throws -> CGImage {
-    let context = CIContext(options: [
-        .useSoftwareRenderer: true,
-        .cacheIntermediates: false,
-        .workingColorSpace: CGColorSpace(
-            name: CGColorSpace.extendedSRGB
-        )!,
-        .outputColorSpace: CGColorSpace(name: CGColorSpace.sRGB)!,
-    ])
-    guard let filter = CIFilter(name: "CIColorControls") else {
-        throw ReviewSheetError.invalid("CIColorControls unavailable")
-    }
-    filter.setValue(CIImage(cgImage: image), forKey: kCIInputImageKey)
-    filter.setValue(0, forKey: kCIInputSaturationKey)
-    filter.setValue(1, forKey: kCIInputContrastKey)
-    filter.setValue(0, forKey: kCIInputBrightnessKey)
-    guard
-        let output = filter.outputImage,
-        let result = context.createCGImage(
-            output,
-            from: CGRect(
-                x: 0,
-                y: 0,
-                width: image.width,
-                height: image.height
+    let width = image.width
+    let height = image.height
+    var bytes = [UInt8](repeating: 0, count: width * height * 4)
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+    return try bytes.withUnsafeMutableBytes { storage in
+        guard let context = CGContext(
+            data: storage.baseAddress,
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bytesPerRow: width * 4,
+            space: colorSpace,
+            bitmapInfo:
+                CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.byteOrder32Big.rawValue
+        ) else {
+            throw ReviewSheetError.invalid(
+                "could not allocate grayscale context"
             )
+        }
+        context.draw(
+            image,
+            in: CGRect(x: 0, y: 0, width: width, height: height)
         )
-    else {
-        throw ReviewSheetError.invalid("grayscale conversion failed")
+        for pixel in stride(from: 0, to: storage.count, by: 4) {
+            let red = Int(storage[pixel])
+            let green = Int(storage[pixel + 1])
+            let blue = Int(storage[pixel + 2])
+            let luma = UInt8(
+                min(255, (54 * red + 183 * green + 19 * blue + 128) >> 8)
+            )
+            storage[pixel] = luma
+            storage[pixel + 1] = luma
+            storage[pixel + 2] = luma
+        }
+        guard let output = context.makeImage() else {
+            throw ReviewSheetError.invalid(
+                "could not create grayscale image"
+            )
+        }
+        return output
     }
-    return result
 }
 
 func buildSheet(
@@ -492,7 +504,7 @@ enum BuildReviewSheetsMain {
                 "sha256": try sheetSHA256(grayscaleSheetURL),
                 "sheetPixels": [864, 576],
                 "conversion":
-                    "Core Image CIColorControls saturation=0",
+                    "Core Graphics deterministic Rec.709 integer luma",
             ],
             "registeredFootprintActualScale": [
                 "file": sheetRelativePath(
@@ -556,7 +568,7 @@ enum BuildReviewSheetsMain {
                 "scale": actualScale,
                 "interpolation": "none",
                 "conversion":
-                    "Core Image CIColorControls saturation=0",
+                    "Core Graphics deterministic Rec.709 integer luma",
             ],
             "registeredFootprintZoom": [
                 "file": sheetRelativePath(

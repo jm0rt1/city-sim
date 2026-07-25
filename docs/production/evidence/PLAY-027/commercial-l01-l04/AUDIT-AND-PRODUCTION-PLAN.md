@@ -41,3 +41,12 @@ normalized-alpha, grayscale, registered-footprint, and zoom panels.
 
 After two direction failures within one level, production stops for local
 template/anchor redesign rather than continuing prompt or geometry churn.
+
+## Current controlled checkpoint
+
+Commercial L1 `source-v04` is the integration-approved normalized source
+candidate. Its exact clean packet is documented in
+`l01/SOURCE-V04-REVIEW-CANDIDATE.md`; `productionSelected` remains false.
+After that checkpoint, Commercial L2 is the only authorized next level.
+Commercial L3/L4 remain blocked until L2 is separately frozen and visually
+reviewed.

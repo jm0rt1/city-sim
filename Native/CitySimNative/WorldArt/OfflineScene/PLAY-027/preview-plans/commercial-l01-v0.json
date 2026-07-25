@@ -13,12 +13,12 @@
   },
   "grayscaleRecognition": {
     "source": "native2xActualScale",
-    "conversion": "Core Image CIColorControls saturation=0",
+    "conversion": "Core Graphics deterministic Rec.709 integer luma",
     "labels": false
   },
   "registeredFootprint": {
-    "normalizedBlockCrop": [341, 300, 342, 297],
-    "correspondingRawSourceCrop": [512, 450, 512, 446],
+    "normalizedBlockCrop": [341, 300, 342, 303],
+    "correspondingRawSourceCrop": [512, 450, 513, 455],
     "source": "existing deterministic normalized-alpha block LOD"
   },
   "reviewManifest": "docs/production/evidence/PLAY-027/commercial-l01-l04/l01/SOURCE-V04-CONTACT-SHEET-ORDER-REVIEW-CANDIDATE.json",

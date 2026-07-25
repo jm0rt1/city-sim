@@ -8,11 +8,24 @@ enum StageCaptureSummaryError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: summarize-renderer-stage-captures --repository-root <path> --capture-root <diagnostics-dir> --report <json>"
+            return "usage: summarize-renderer-stage-captures --repository-root <path> --capture-root <diagnostics-dir> --report <json> [--expected-coordinate <x,y> --expected-run-count <n> --classification-mode first-divergence]"
         case let .invalid(message):
             return message
         }
     }
+}
+
+func stageSummaryOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
 }
 
 func stageSummaryArgument(
@@ -73,13 +86,61 @@ enum SummarizeRendererStageCapturesMain {
                 in: arguments
             )
         ).standardizedFileURL
+        let expectedCoordinate: [Int] = {
+            guard
+                let raw = stageSummaryOptionalArgument(
+                    "--expected-coordinate",
+                    in: arguments
+                )
+            else {
+                return [732, 778]
+            }
+            let parts = raw.split(
+                separator: ",",
+                omittingEmptySubsequences: false
+            )
+            guard
+                parts.count == 2,
+                let x = Int(parts[0]),
+                let y = Int(parts[1])
+            else {
+                return []
+            }
+            return [x, y]
+        }()
+        let expectedRunCount = stageSummaryOptionalArgument(
+            "--expected-run-count",
+            in: arguments
+        ).flatMap(Int.init)
+        let classificationMode = stageSummaryOptionalArgument(
+            "--classification-mode",
+            in: arguments
+        ) ?? "legacy-v2-residual"
         guard
             captureRoot.path.contains("/diagnostics/"),
-            reportURL.path.contains("/diagnostics/")
+            reportURL.path.contains("/diagnostics/"),
+            expectedCoordinate.count == 2,
+            ["legacy-v2-residual", "first-divergence"]
+                .contains(classificationMode)
         else {
             throw StageCaptureSummaryError.invalid(
                 "capture input and report must remain under diagnostics"
             )
+        }
+        if classificationMode == "first-divergence" {
+            let requiredSuffix =
+                "/docs/production/evidence/PLAY-027/industrial-l02/l02/"
+                + "source-v05-stage-capture/diagnostics/east-707x687"
+            guard
+                expectedCoordinate == [707, 687],
+                expectedRunCount == 3,
+                captureRoot.path.hasSuffix(requiredSuffix),
+                reportURL.path.hasPrefix(captureRoot.path + "/")
+            else {
+                throw StageCaptureSummaryError.invalid(
+                    "first-divergence mode is bound to the exact East 707,687 three-run packet"
+                )
+            }
         }
         let manager = FileManager.default
         guard
@@ -167,7 +228,7 @@ enum SummarizeRendererStageCapturesMain {
                 let stages = capture["stages"] as? [[String: Any]],
                 let targetCoordinate =
                     capture["targetCoordinate"] as? [Int],
-                targetCoordinate == [732, 778],
+                targetCoordinate == expectedCoordinate,
                 let evaluations =
                     capture["postMajorityTargetEvaluations"]
                     as? [[String: Any]],
@@ -295,19 +356,29 @@ enum SummarizeRendererStageCapturesMain {
         } ?? "none"
         let finalDistribution =
             hashesByStage["final-sips-decoded"]!
-        let status =
-            finalFileHashes.count >= 2
-                && allStageIdentityPassed
-                && exactStageThatReintroducesTarget
-                    == "post-majority-in-memory"
-            ? "stage-boundary-isolated"
-            : "incomplete"
+        let status: String = {
+            if classificationMode == "first-divergence" {
+                return runRecords.count == expectedRunCount
+                        && allStageIdentityPassed
+                    ? "stage-boundary-classified"
+                    : "incomplete"
+            }
+            return finalFileHashes.count >= 2
+                    && allStageIdentityPassed
+                    && exactStageThatReintroducesTarget
+                        == "post-majority-in-memory"
+                ? "stage-boundary-isolated"
+                : "incomplete"
+        }()
         let report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
             "purpose":
                 "residual-stage-isolation-no-authority",
-            "targetCoordinate": [732, 778],
+            "targetCoordinate": expectedCoordinate,
+            "expectedRunCount":
+                expectedRunCount.map { $0 as Any } ?? NSNull(),
+            "classificationMode": classificationMode,
             "coordinateSystem":
                 "top-left decoded RGBA source pixel",
             "runCount": runRecords.count,

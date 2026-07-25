@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -3211,6 +3211,10 @@ enum OfflineSceneRendererMain {
             "--diagnostic-contract",
             in: arguments
         )
+        let diagnosticStageContractID = rendererOptionalArgument(
+            "--diagnostic-stage-contract",
+            in: arguments
+        )
         guard
             diagnosticAntialiasingRaw == nil
                 || DiagnosticAntialiasing(
@@ -3299,7 +3303,7 @@ enum OfflineSceneRendererMain {
         let descriptorSampling = try DescriptorSamplingResolver.resolve(
             descriptor: descriptor
         )
-        let diagnosticIsolationRecord =
+        let diagnosticMSAAIsolationRecord =
             try IndustrialL2V5MSAAIsolationContract.validate(
                 requestedContractID: diagnosticContractID,
                 repositoryRoot: repositoryRoot,
@@ -3320,6 +3324,44 @@ enum OfflineSceneRendererMain {
                 descriptorSceneKitShadows:
                     descriptorSampling.sceneKitShadows
             )
+        let diagnosticStageIsolationRecord =
+            try IndustrialL2V5EastStageCaptureContract.validate(
+                requestedContractID: diagnosticStageContractID,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                materialsURL: materialsURL,
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                logicalBuildingID: descriptor.logicalBuildingID,
+                variantID: descriptor.variantID,
+                sourceRevision: descriptor.sourceRevision,
+                viewDirection: descriptor.viewDirection,
+                productionSelected: descriptor.productionSelected,
+                descriptorSceneKitAntialiasing:
+                    descriptorSampling.sceneKitAntialiasing,
+                descriptorSceneKitShadows:
+                    descriptorSampling.sceneKitShadows
+            )
+        guard
+            diagnosticMSAAIsolationRecord == nil
+                || diagnosticStageIsolationRecord == nil
+        else {
+            throw OfflineRendererError.invalid(
+                "only one diagnostic isolation contract may be active"
+            )
+        }
+        let diagnosticIsolationRecord =
+            diagnosticMSAAIsolationRecord?.value
+            ?? diagnosticStageIsolationRecord?.value
         if descriptorSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3652,6 +3694,8 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5MSAAIsolationContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -3729,7 +3773,7 @@ enum OfflineSceneRendererMain {
                     } ?? "not-requested",
             ],
             "diagnosticIsolationContract":
-                diagnosticIsolationRecord?.value ?? [
+                diagnosticIsolationRecord ?? [
                     "contractID": "none",
                     "sourceAuthority": false,
                     "productionSelected": false,

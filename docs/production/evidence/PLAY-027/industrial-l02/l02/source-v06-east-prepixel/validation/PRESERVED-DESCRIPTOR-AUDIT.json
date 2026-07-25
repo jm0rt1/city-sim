@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "status": "PASS-NEW-VISIBLE-OWNER-RULE",
+  "validatorScope": "all current accepted directional descriptors plus retained Industrial L2 source-v01 through source-v05",
+  "rule": "reject multiple mass-block material owners on a camera-visible coincident X or Z plane",
+  "repairedEast": {
+    "sourceRevision": "source-v06",
+    "visibleOutwardMaterialOwnerCount": 0,
+    "coincidentStructuralYBoundaryCount": 0,
+    "passed": true
+  },
+  "currentAcceptedDescriptors": [
+    {
+      "logicalBuildingID": "residential_l01",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 0
+    },
+    {
+      "logicalBuildingID": "residential_l02",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 28
+    },
+    {
+      "logicalBuildingID": "residential_l03",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 20
+    },
+    {
+      "logicalBuildingID": "residential_l04",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 16
+    },
+    {
+      "logicalBuildingID": "commercial_l01",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 8
+    },
+    {
+      "logicalBuildingID": "commercial_l02",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 24
+    },
+    {
+      "logicalBuildingID": "commercial_l03",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 24
+    },
+    {
+      "logicalBuildingID": "commercial_l04",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 0
+    },
+    {
+      "logicalBuildingID": "industrial_l01",
+      "visibleOutwardMaterialOwnerCount": 0,
+      "legacyCoincidentYBoundaryCount": 0
+    }
+  ],
+  "currentUnacceptedIndustrialL2": {
+    "descriptorSet": "source-v05 North/South/West plus source-v06 East",
+    "visibleOutwardMaterialOwnerCount": 3,
+    "eastVisibleOutwardMaterialOwnerCount": 0,
+    "note": "North/South/West are frozen outside the authorized East-only repair and are not mutated by this checkpoint."
+  },
+  "retainedRejectedIndustrialL2": [
+    {
+      "sourceRevision": "source-v01",
+      "sourceCommit": "6a06316",
+      "visibleOutwardMaterialOwnerCount": 4,
+      "legacyCoincidentYBoundaryCount": 16
+    },
+    {
+      "sourceRevision": "source-v02",
+      "sourceCommit": "b13f0dd",
+      "visibleOutwardMaterialOwnerCount": 4,
+      "legacyCoincidentYBoundaryCount": 4
+    },
+    {
+      "sourceRevision": "source-v03",
+      "sourceCommit": "c0ae6ed",
+      "visibleOutwardMaterialOwnerCount": 4,
+      "legacyCoincidentYBoundaryCount": 0
+    },
+    {
+      "sourceRevision": "source-v04",
+      "sourceCommit": "02ae04d",
+      "visibleOutwardMaterialOwnerCount": 4,
+      "legacyCoincidentYBoundaryCount": 0
+    },
+    {
+      "sourceRevision": "source-v05",
+      "sourceCommit": "299fdd4",
+      "visibleOutwardMaterialOwnerCount": 4,
+      "legacyCoincidentYBoundaryCount": 0
+    }
+  ],
+  "reportRoots": {
+    "current": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-east-prepixel/validation/preserved-descriptors/current",
+    "retainedRejected": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-east-prepixel/validation/preserved-descriptors/rejected"
+  },
+  "acceptedSourceBytesMutated": false,
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

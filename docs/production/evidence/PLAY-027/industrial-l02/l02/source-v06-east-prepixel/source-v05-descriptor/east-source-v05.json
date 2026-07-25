@@ -22,44 +22,16 @@
     "massBlocks" : [
       {
         "dimensions" : [
-          2,
+          38,
           42,
           38
         ],
-        "id" : "i02-east-high-assembly-hall-left-strip",
+        "id" : "i02-east-high-assembly-hall",
         "materialID" : "i02-v05-corrugated-northwest",
         "positionWorld" : [
-          -24,
+          -6,
           23,
           6
-        ]
-      },
-      {
-        "dimensions" : [
-          20,
-          42,
-          38
-        ],
-        "id" : "i02-east-high-assembly-hall-right-strip",
-        "materialID" : "i02-v05-corrugated-northwest",
-        "positionWorld" : [
-          3,
-          23,
-          6
-        ]
-      },
-      {
-        "dimensions" : [
-          16,
-          42,
-          24
-        ],
-        "id" : "i02-east-high-assembly-hall-rear-block",
-        "materialID" : "i02-v05-corrugated-northwest",
-        "positionWorld" : [
-          -15,
-          23,
-          -1
         ]
       },
       {
@@ -925,11 +897,11 @@
     "sceneKitAntialiasing" : "none",
     "sceneKitLightingMode" : "authored-constant-v1",
     "sceneKitShadows" : "disabled",
-    "sourceRevisionBinding" : "source-v06"
+    "sourceRevisionBinding" : "source-v05"
   },
-  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v4",
+  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v3",
   "schema" : 2,
-  "sourceRevision" : "source-v06",
+  "sourceRevision" : "source-v05",
   "styleAnchor" : {
     "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
     "role" : "immutable-appearance-only-global-style-anchor",
@@ -937,9 +909,9 @@
   },
   "task" : "PLAY-027",
   "toolchainFingerprint" : {
-    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v06-east.json",
-    "role" : "frozen-schema-2-v3-authored-constant-east-noncoplanar-offline-host-and-frameworks",
-    "sha256" : "8fca3da76664f90c868f1c604e0d65e3dc681c4f0e7bad1295376e4d8f4afb15"
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v05.json",
+    "role" : "frozen-schema-2-v3-authored-constant-offline-host-and-frameworks",
+    "sha256" : "81bf644b41612c83d124c9b1e51ceade6b2931772402849ef71e16bee4545531"
   },
   "variantID" : "variant-0",
   "viewDirection" : "east"

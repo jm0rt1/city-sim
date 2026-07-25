@@ -1,0 +1,1117 @@
+{
+  "directions" : [
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-upper-market-hall",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-projecting-corner-bay",
+          "sharedYWorld" : 3
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-main-flat-coping",
+          "sharedYWorld" : 51
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-projecting-corner-bay",
+          "secondID" : "c02-corner-bay-crown",
+          "sharedYWorld" : 53
+        }
+      ],
+      "coincidentBoundaryCount" : 6,
+      "passed" : false,
+      "primitiveCount" : 12,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              3,
+              15
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-rusticated-market-base",
+          "kind" : "mass-block",
+          "materialID" : "stone-commercial-sand"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25,
+              25
+            ],
+            "y" : [
+              15,
+              51
+            ],
+            "z" : [
+              -25,
+              25
+            ]
+          },
+          "id" : "c02-upper-market-hall",
+          "kind" : "mass-block",
+          "materialID" : "brick-commercial-burgundy"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -12
+            ],
+            "y" : [
+              3,
+              53
+            ],
+            "z" : [
+              -26,
+              -12
+            ]
+          },
+          "id" : "c02-projecting-corner-bay",
+          "kind" : "mass-block",
+          "materialID" : "terracotta-commercial"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              51,
+              56
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-main-flat-coping",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -11
+            ],
+            "y" : [
+              53,
+              57
+            ],
+            "z" : [
+              -27,
+              -11
+            ]
+          },
+          "id" : "c02-corner-bay-crown",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              15,
+              16.399999999999999
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-base-cornice",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              19.300000000000001,
+              20.699999999999999
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-arcade-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              34.5,
+              35.5
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-upper-string",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              50.599999999999994,
+              52
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-roof-coping-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              12.5,
+              15.5
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              10.5,
+              13.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5,
+              15
+            ],
+            "y" : [
+              55.5,
+              62.5
+            ],
+            "z" : [
+              3.5,
+              12.5
+            ]
+          },
+          "id" : "north-market-hvac-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -12,
+              -4
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              8.5,
+              15.5
+            ]
+          },
+          "id" : "north-market-hvac-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l02/variant-0/north/scene.json",
+      "sceneGeometryID" : "commercial-l02-v0-north-market-arcade-geometry-v1",
+      "sourceRevision" : "source-v01",
+      "viewDirection" : "north",
+      "visibleOutwardMaterialOwnerCount" : 0,
+      "visibleOutwardMaterialOwners" : [
+
+      ]
+    },
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-upper-market-hall",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-projecting-corner-bay",
+          "sharedYWorld" : 3
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-main-flat-coping",
+          "sharedYWorld" : 51
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-projecting-corner-bay",
+          "secondID" : "c02-corner-bay-crown",
+          "sharedYWorld" : 53
+        }
+      ],
+      "coincidentBoundaryCount" : 6,
+      "passed" : false,
+      "primitiveCount" : 12,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              3,
+              15
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-rusticated-market-base",
+          "kind" : "mass-block",
+          "materialID" : "stone-commercial-sand"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25,
+              25
+            ],
+            "y" : [
+              15,
+              51
+            ],
+            "z" : [
+              -25,
+              25
+            ]
+          },
+          "id" : "c02-upper-market-hall",
+          "kind" : "mass-block",
+          "materialID" : "brick-commercial-burgundy"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -12
+            ],
+            "y" : [
+              3,
+              53
+            ],
+            "z" : [
+              -26,
+              -12
+            ]
+          },
+          "id" : "c02-projecting-corner-bay",
+          "kind" : "mass-block",
+          "materialID" : "terracotta-commercial"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              51,
+              56
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-main-flat-coping",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -11
+            ],
+            "y" : [
+              53,
+              57
+            ],
+            "z" : [
+              -27,
+              -11
+            ]
+          },
+          "id" : "c02-corner-bay-crown",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              15,
+              16.399999999999999
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-base-cornice",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              19.300000000000001,
+              20.699999999999999
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-arcade-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              34.5,
+              35.5
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-upper-string",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              50.599999999999994,
+              52
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-roof-coping-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              12.5,
+              15.5
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              10.5,
+              13.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -13,
+              -3
+            ],
+            "y" : [
+              55.5,
+              62.5
+            ],
+            "z" : [
+              -14.5,
+              -5.5
+            ]
+          },
+          "id" : "east-market-hvac-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -16,
+              -8
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              4.5,
+              11.5
+            ]
+          },
+          "id" : "east-market-hvac-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l02/variant-0/east/scene.json",
+      "sceneGeometryID" : "commercial-l02-v0-east-market-arcade-geometry-v1",
+      "sourceRevision" : "source-v01",
+      "viewDirection" : "east",
+      "visibleOutwardMaterialOwnerCount" : 0,
+      "visibleOutwardMaterialOwners" : [
+
+      ]
+    },
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-upper-market-hall",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-projecting-corner-bay",
+          "sharedYWorld" : 3
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-main-flat-coping",
+          "sharedYWorld" : 51
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-projecting-corner-bay",
+          "secondID" : "c02-corner-bay-crown",
+          "sharedYWorld" : 53
+        }
+      ],
+      "coincidentBoundaryCount" : 6,
+      "passed" : false,
+      "primitiveCount" : 12,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              3,
+              15
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-rusticated-market-base",
+          "kind" : "mass-block",
+          "materialID" : "stone-commercial-sand"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25,
+              25
+            ],
+            "y" : [
+              15,
+              51
+            ],
+            "z" : [
+              -25,
+              25
+            ]
+          },
+          "id" : "c02-upper-market-hall",
+          "kind" : "mass-block",
+          "materialID" : "brick-commercial-burgundy"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -12
+            ],
+            "y" : [
+              3,
+              53
+            ],
+            "z" : [
+              -26,
+              -12
+            ]
+          },
+          "id" : "c02-projecting-corner-bay",
+          "kind" : "mass-block",
+          "materialID" : "terracotta-commercial"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              51,
+              56
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-main-flat-coping",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -11
+            ],
+            "y" : [
+              53,
+              57
+            ],
+            "z" : [
+              -27,
+              -11
+            ]
+          },
+          "id" : "c02-corner-bay-crown",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              15,
+              16.399999999999999
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-base-cornice",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              19.300000000000001,
+              20.699999999999999
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-arcade-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              34.5,
+              35.5
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-upper-string",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              50.599999999999994,
+              52
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-roof-coping-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              12.5,
+              15.5
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              10.5,
+              13.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -15,
+              -5
+            ],
+            "y" : [
+              55.5,
+              62.5
+            ],
+            "z" : [
+              -12.5,
+              -3.5
+            ]
+          },
+          "id" : "south-market-hvac-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              6,
+              14
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              -15.5,
+              -8.5
+            ]
+          },
+          "id" : "south-market-hvac-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l02/variant-0/south/scene.json",
+      "sceneGeometryID" : "commercial-l02-v0-south-market-arcade-geometry-v1",
+      "sourceRevision" : "source-v01",
+      "viewDirection" : "south",
+      "visibleOutwardMaterialOwnerCount" : 0,
+      "visibleOutwardMaterialOwners" : [
+
+      ]
+    },
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-upper-market-hall",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-projecting-corner-bay",
+          "sharedYWorld" : 3
+        },
+        {
+          "firstID" : "c02-rusticated-market-base",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-main-flat-coping",
+          "sharedYWorld" : 51
+        },
+        {
+          "firstID" : "c02-upper-market-hall",
+          "secondID" : "c02-base-cornice",
+          "sharedYWorld" : 15
+        },
+        {
+          "firstID" : "c02-projecting-corner-bay",
+          "secondID" : "c02-corner-bay-crown",
+          "sharedYWorld" : 53
+        }
+      ],
+      "coincidentBoundaryCount" : 6,
+      "passed" : false,
+      "primitiveCount" : 12,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              3,
+              15
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-rusticated-market-base",
+          "kind" : "mass-block",
+          "materialID" : "stone-commercial-sand"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25,
+              25
+            ],
+            "y" : [
+              15,
+              51
+            ],
+            "z" : [
+              -25,
+              25
+            ]
+          },
+          "id" : "c02-upper-market-hall",
+          "kind" : "mass-block",
+          "materialID" : "brick-commercial-burgundy"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -12
+            ],
+            "y" : [
+              3,
+              53
+            ],
+            "z" : [
+              -26,
+              -12
+            ]
+          },
+          "id" : "c02-projecting-corner-bay",
+          "kind" : "mass-block",
+          "materialID" : "terracotta-commercial"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              26
+            ],
+            "y" : [
+              51,
+              56
+            ],
+            "z" : [
+              -26,
+              26
+            ]
+          },
+          "id" : "c02-main-flat-coping",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -11
+            ],
+            "y" : [
+              53,
+              57
+            ],
+            "z" : [
+              -27,
+              -11
+            ]
+          },
+          "id" : "c02-corner-bay-crown",
+          "kind" : "roof-envelope",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              15,
+              16.399999999999999
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-base-cornice",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              19.300000000000001,
+              20.699999999999999
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-arcade-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.5,
+              25.5
+            ],
+            "y" : [
+              34.5,
+              35.5
+            ],
+            "z" : [
+              -25.5,
+              25.5
+            ]
+          },
+          "id" : "c02-upper-string",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              26.5
+            ],
+            "y" : [
+              50.599999999999994,
+              52
+            ],
+            "z" : [
+              -26.5,
+              26.5
+            ]
+          },
+          "id" : "c02-roof-coping-band",
+          "kind" : "trim-band",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              12.5,
+              15.5
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              10.5,
+              13.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              3,
+              13
+            ],
+            "y" : [
+              55.5,
+              62.5
+            ],
+            "z" : [
+              5.5,
+              14.5
+            ]
+          },
+          "id" : "west-market-hvac-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              8,
+              16
+            ],
+            "y" : [
+              55,
+              61
+            ],
+            "z" : [
+              -11.5,
+              -4.5
+            ]
+          },
+          "id" : "west-market-hvac-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l02/variant-0/west/scene.json",
+      "sceneGeometryID" : "commercial-l02-v0-west-market-arcade-geometry-v1",
+      "sourceRevision" : "source-v01",
+      "viewDirection" : "west",
+      "visibleOutwardMaterialOwnerCount" : 0,
+      "visibleOutwardMaterialOwners" : [
+
+      ]
+    }
+  ],
+  "failures" : [
+    "north: 6 coincident structural Y boundaries",
+    "east: 6 coincident structural Y boundaries",
+    "south: 6 coincident structural Y boundaries",
+    "west: 6 coincident structural Y boundaries"
+  ],
+  "logicalBuildingID" : "commercial_l02",
+  "passed" : false,
+  "productionSelected" : false,
+  "purpose" : "reject exact shared structural Y planes and multiple material owners on a camera-visible coincident mass-block plane",
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "toleranceWorld" : 9.9999999999999995e-07
+}

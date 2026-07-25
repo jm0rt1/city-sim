@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "status": "PASS",
+  "toolingAuthority": "a2514832ad2b20e13c7f7bfe7cb9b5069fb71e90",
+  "compiledWithWarningsAsErrors": true,
+  "tools": [
+    {
+      "tool": "advance-industrial-l2-v6-east",
+      "binarySHA256": "fe87dbe180db488eb273de66d92cb0af06424966f9c6797b370aeff56637cd3a",
+      "result": "PASS"
+    },
+    {
+      "tool": "validate-structural-boundaries",
+      "binarySHA256": "566056482518e6e2e2138d620f9645ba8d1dca4f6a5fe44ccb1d2eb062880b89",
+      "sourceV05EastExpectedRejection": "PASS",
+      "sourceV06East": "PASS"
+    },
+    {
+      "tool": "validate-industrial-l2-frontages",
+      "binarySHA256": "a0b1515a726d29a871c6412b3c2de3afa53bb89e464406a61014e279703aff1e",
+      "mixedSourceV05AndEastSourceV06Result": "PASS"
+    },
+    {
+      "tool": "offline-scene-renderer",
+      "binarySHA256": "9ae8f2d0ec22225f3cfdfbfe5cf0d988a90e5b19f87f1f2a836f8d992f904b29",
+      "compileResult": "PASS"
+    }
+  ],
+  "resolverAndSchema": {
+    "legacySchema1Reproduction": "PASS",
+    "sourceV04LambertReproduction": "PASS",
+    "sourceV05AuthoredConstantReproduction": "PASS",
+    "sourceV06EastAuthoredConstant": "PASS",
+    "sourceV06NorthRejected": "PASS",
+    "crossFamilyAuthoredConstantRejected": "PASS",
+    "diagnosticAuthorityRejected": "PASS"
+  },
+  "toolchainFingerprint": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v06-east.json",
+    "sha256": "8fca3da76664f90c868f1c604e0d65e3dc681c4f0e7bad1295376e4d8f4afb15"
+  },
+  "sourceV06EastDescriptorSHA256": "70b36a0e76581524e64d40f19e364659eed6a53d7f7ab8d8924c51ba5d0951dd",
+  "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "rawPixelsCreated": false,
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

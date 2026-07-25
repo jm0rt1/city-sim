@@ -29,10 +29,25 @@ enum ObjectiveSurfacePresentation: Equatable {
 }
 
 @MainActor
-final class CityFocusPointerShieldView: NSView {
-    var action: () -> Void
+struct CityFocusPointerSnapshot: Equatable {
+    let coordinate: GridCoordinate?
+}
 
-    init(action: @escaping () -> Void) {
+@MainActor
+final class CityFocusPointerShieldView: NSView {
+    var capture: () -> CityFocusPointerSnapshot
+    var restore: (CityFocusPointerSnapshot) -> Void
+    var action: (CityFocusPointerSnapshot) -> Void
+    private var pointerSnapshot: CityFocusPointerSnapshot?
+    private var trackingArea: NSTrackingArea?
+
+    init(
+        capture: @escaping () -> CityFocusPointerSnapshot,
+        restore: @escaping (CityFocusPointerSnapshot) -> Void,
+        action: @escaping (CityFocusPointerSnapshot) -> Void
+    ) {
+        self.capture = capture
+        self.restore = restore
         self.action = action
         super.init(frame: .zero)
         setAccessibilityElement(false)
@@ -47,32 +62,102 @@ final class CityFocusPointerShieldView: NSView {
         true
     }
 
+    override func updateTrackingAreas() {
+        if let trackingArea {
+            removeTrackingArea(trackingArea)
+        }
+        let replacement = NSTrackingArea(
+            rect: .zero,
+            options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited, .mouseMoved],
+            owner: self,
+            userInfo: nil
+        )
+        addTrackingArea(replacement)
+        trackingArea = replacement
+        super.updateTrackingAreas()
+    }
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        guard bounds.contains(point) else { return nil }
+        beginPointerSequenceIfNeeded()
+        return self
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        beginPointerSequenceIfNeeded()
+    }
+
+    override func mouseMoved(with event: NSEvent) {
+        restorePointerSnapshot()
+    }
+
     override func mouseDown(with event: NSEvent) {
-        // Deliberately consume mouse-down above SpriteKit. The command executes
-        // on mouse-up, matching native button activation semantics.
+        beginPointerSequenceIfNeeded()
+        restorePointerSnapshot()
     }
 
     override func mouseDragged(with event: NSEvent) {
-        // Continue owning the pointer sequence without invoking the command.
+        restorePointerSnapshot()
     }
 
     override func mouseUp(with event: NSEvent) {
         let location = convert(event.locationInWindow, from: nil)
-        guard bounds.contains(location) else { return }
-        action()
+        guard let pointerSnapshot else { return }
+        defer { self.pointerSnapshot = nil }
+        if bounds.contains(location) {
+            action(pointerSnapshot)
+        } else {
+            restore(pointerSnapshot)
+        }
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        restorePointerSnapshot()
+        pointerSnapshot = nil
+    }
+
+    private func beginPointerSequenceIfNeeded() {
+        if pointerSnapshot == nil {
+            pointerSnapshot = capture()
+        }
+    }
+
+    private func restorePointerSnapshot() {
+        if let pointerSnapshot {
+            restore(pointerSnapshot)
+        }
     }
 }
 
 @MainActor
 struct CityFocusPointerShield: NSViewRepresentable {
-    let action: () -> Void
+    let store: CityGameStore
 
     func makeNSView(context: Context) -> CityFocusPointerShieldView {
-        CityFocusPointerShieldView(action: action)
+        makePointerShieldView()
     }
 
     func updateNSView(_ nsView: CityFocusPointerShieldView, context: Context) {
-        nsView.action = action
+        let replacement = makePointerShieldView()
+        nsView.capture = replacement.capture
+        nsView.restore = replacement.restore
+        nsView.action = replacement.action
+    }
+
+    private func makePointerShieldView() -> CityFocusPointerShieldView {
+        CityFocusPointerShieldView(
+            capture: { [weak store] in
+                CityFocusPointerSnapshot(coordinate: store?.selectedCoordinate)
+            },
+            restore: { [weak store] snapshot in
+                store?.selectedCoordinate = snapshot.coordinate
+            },
+            action: { [weak store] snapshot in
+                guard let store else { return }
+                store.selectedCoordinate = snapshot.coordinate
+                _ = store.perform(.toggleCityFocus)
+            }
+        )
     }
 }
 

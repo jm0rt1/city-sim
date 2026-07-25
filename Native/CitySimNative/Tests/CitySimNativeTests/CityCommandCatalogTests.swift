@@ -725,9 +725,18 @@ final class CityCommandCatalogTests: XCTestCase {
         let target = try XCTUnwrap(store.activeMapActionTargetPresentation)
         let focusGeneration = store.mapFocusRequestGeneration
 
-        let shield = CityFocusPointerShieldView {
-            _ = store.perform(.toggleCityFocus)
-        }
+        let shield = CityFocusPointerShieldView(
+            capture: {
+                CityFocusPointerSnapshot(coordinate: store.selectedCoordinate)
+            },
+            restore: { snapshot in
+                store.selectedCoordinate = snapshot.coordinate
+            },
+            action: { snapshot in
+                store.selectedCoordinate = snapshot.coordinate
+                _ = store.perform(.toggleCityFocus)
+            }
+        )
         shield.frame = CGRect(x: 0, y: 0, width: 120, height: 44)
         let mouseDown = try XCTUnwrap(
             NSEvent.mouseEvent(
@@ -782,12 +791,24 @@ final class CityCommandCatalogTests: XCTestCase {
             )
         )
 
+        XCTAssertTrue(shield.hitTest(NSPoint(x: 60, y: 22)) === shield)
+        let pointerCoordinate = GridCoordinate(x: 15, y: 13)
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(pointerCoordinate))
+        XCTAssertEqual(store.selectedCoordinate, pointerCoordinate)
+
         shield.mouseDown(with: mouseDown)
+        XCTAssertEqual(store.selectedCoordinate, coordinate)
+
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(pointerCoordinate))
         shield.mouseDragged(with: mouseDraggedOutside)
+        XCTAssertEqual(store.selectedCoordinate, coordinate)
         shield.mouseUp(with: mouseUpOutside)
         XCTAssertFalse(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
+        XCTAssertEqual(store.selectedCoordinate, coordinate)
 
+        XCTAssertTrue(shield.hitTest(NSPoint(x: 60, y: 22)) === shield)
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(pointerCoordinate))
         shield.mouseDown(with: mouseDown)
         shield.mouseUp(with: mouseUp)
         XCTAssertTrue(store.isCityFocusModeEnabled)
@@ -796,6 +817,8 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.selectedCoordinate, coordinate)
         XCTAssertEqual(store.activeMapActionTargetPresentation, target)
 
+        XCTAssertTrue(shield.hitTest(NSPoint(x: 60, y: 22)) === shield)
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(pointerCoordinate))
         shield.mouseDown(with: mouseDown)
         XCTAssertTrue(store.isCityFocusModeEnabled)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)

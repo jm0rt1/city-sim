@@ -29,17 +29,14 @@ enum ObjectiveSurfacePresentation: Equatable {
 }
 
 @MainActor
-final class CityFocusPointerShieldView: NSView {
-    var traceLabel: String
-    var action: () -> Void
+final class CityFocusPointerTransitionView: NSView {
+    let pointerTransitionGate: CityMapPointerTransitionGate
     private(set) var monitorIsInstalled = false
     private var localMonitor: Any?
     private var ownsPointerSequence = false
-    private var pointerDraggedOutside = false
 
-    init(traceLabel: String, action: @escaping () -> Void) {
-        self.traceLabel = traceLabel
-        self.action = action
+    init(pointerTransitionGate: CityMapPointerTransitionGate) {
+        self.pointerTransitionGate = pointerTransitionGate
         super.init(frame: .zero)
         setAccessibilityElement(false)
     }
@@ -66,12 +63,6 @@ final class CityFocusPointerShieldView: NSView {
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
         startMonitoringIfNeeded()
-        trace(phase: "viewDidMoveToWindow")
-    }
-
-    override func layout() {
-        super.layout()
-        trace(phase: "layout")
     }
 
     func startMonitoringIfNeeded() {
@@ -82,130 +73,82 @@ final class CityFocusPointerShieldView: NSView {
             self?.handleLocalPointerEvent(event) ?? event
         }
         monitorIsInstalled = localMonitor != nil
-        trace(phase: "monitorInstalled")
     }
 
     func stopMonitoring() {
+        if ownsPointerSequence {
+            pointerTransitionGate.cancel()
+        }
         if let localMonitor {
             NSEvent.removeMonitor(localMonitor)
         }
         localMonitor = nil
         monitorIsInstalled = false
         ownsPointerSequence = false
-        pointerDraggedOutside = false
     }
 
     func handleLocalPointerEvent(_ event: NSEvent) -> NSEvent? {
-        trace(phase: "callback.pre", event: event)
         if ownsPointerSequence {
             switch event.type {
             case .leftMouseDragged:
                 if !contains(event) {
-                    pointerDraggedOutside = true
+                    ownsPointerSequence = false
+                    pointerTransitionGate.cancel()
                 }
-                trace(phase: "callback.post.consumeDrag", event: event)
-                return nil
+                return event
             case .leftMouseUp:
-                let shouldPerform = !pointerDraggedOutside && contains(event)
-                ownsPointerSequence = false
-                pointerDraggedOutside = false
-                trace(
-                    phase: shouldPerform ? "callback.post.perform" : "callback.post.cancel",
-                    event: event
-                )
-                if shouldPerform {
-                    action()
+                if !contains(event) {
+                    pointerTransitionGate.cancel()
                 }
-                return nil
+                ownsPointerSequence = false
+                return event
             case .leftMouseDown:
-                trace(phase: "callback.post.consumeRepeatedDown", event: event)
-                return nil
+                return event
             default:
-                trace(phase: "callback.post.passUnexpected", event: event)
                 return event
             }
         }
 
-        let exactWindow = event.window === window
-        let isInside = contains(event)
-        guard event.type == .leftMouseDown, exactWindow, isInside else {
-            trace(phase: "callback.post.pass", event: event)
-            return event
-        }
+        guard event.type == .leftMouseDown,
+              let window,
+              eventMatchesWindow(event, window: window),
+              contains(event) else { return event }
         ownsPointerSequence = true
-        pointerDraggedOutside = false
-        trace(phase: "callback.post.own", event: event)
-        return nil
+        pointerTransitionGate.begin(window: window, anchor: event.locationInWindow)
+        return event
     }
 
     private func contains(_ event: NSEvent) -> Bool {
-        guard event.window === window else { return false }
+        guard let window, eventMatchesWindow(event, window: window) else { return false }
         return bounds.contains(convert(event.locationInWindow, from: nil))
     }
 
-    #if DEBUG
-    private func trace(phase: String, event: NSEvent? = nil) {
-        guard let path = ProcessInfo.processInfo.environment["CITYSIM_FOCUS_POINTER_TRACE_PATH"],
-              !path.isEmpty else { return }
-        let eventPoint = event.map { convert($0.locationInWindow, from: nil) }
-        let eventWindowObject = event?.window?.windowNumber ?? -1
-        let line = [
-            "label=\(traceLabel)",
-            "phase=\(phase)",
-            "eventType=\(event.map { String(describing: $0.type) } ?? "none")",
-            "eventWindowNumber=\(event?.windowNumber ?? -1)",
-            "eventWindowObject=\(eventWindowObject)",
-            "viewWindowNumber=\(window?.windowNumber ?? -1)",
-            "eventLocationInWindow=\(event.map { NSStringFromPoint($0.locationInWindow) } ?? "none")",
-            "convertedPoint=\(eventPoint.map(NSStringFromPoint) ?? "none")",
-            "bounds=\(NSStringFromRect(bounds))",
-            "frame=\(NSStringFromRect(frame))",
-            "windowRect=\(NSStringFromRect(convert(bounds, to: nil)))",
-            "windowFrame=\(NSStringFromRect(window?.frame ?? .zero))",
-            "contains=\(event.map(contains) ?? false)",
-            "owned=\(ownsPointerSequence)",
-            "draggedOutside=\(pointerDraggedOutside)",
-            "monitorInstalled=\(monitorIsInstalled)"
-        ].joined(separator: " ")
-        let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: path) {
-            fileManager.createFile(atPath: path, contents: nil)
+    private func eventMatchesWindow(_ event: NSEvent, window: NSWindow) -> Bool {
+        if let eventWindow = event.window {
+            return eventWindow === window || eventWindow.windowNumber == window.windowNumber
         }
-        guard let handle = FileHandle(forWritingAtPath: path) else { return }
-        defer { try? handle.close() }
-        do {
-            try handle.seekToEnd()
-            try handle.write(contentsOf: Data((line + "\n").utf8))
-        } catch {
-            // The trace is task-owned diagnostics only and must never affect input.
-        }
+        return event.windowNumber == window.windowNumber
     }
-    #else
-    private func trace(phase: String, event: NSEvent? = nil) {}
-    #endif
 }
 
 @MainActor
-struct CityFocusPointerShield: NSViewRepresentable {
-    let traceLabel: String
-    let action: () -> Void
+struct CityFocusPointerTransitionMonitor: NSViewRepresentable {
+    let pointerTransitionGate: CityMapPointerTransitionGate
 
-    func makeNSView(context: Context) -> CityFocusPointerShieldView {
-        CityFocusPointerShieldView(traceLabel: traceLabel, action: action)
+    func makeNSView(context: Context) -> CityFocusPointerTransitionView {
+        CityFocusPointerTransitionView(pointerTransitionGate: pointerTransitionGate)
     }
 
-    func updateNSView(_ nsView: CityFocusPointerShieldView, context: Context) {
-        nsView.traceLabel = traceLabel
-        nsView.action = action
-    }
+    func updateNSView(_ nsView: CityFocusPointerTransitionView, context: Context) {}
 
-    static func dismantleNSView(_ nsView: CityFocusPointerShieldView, coordinator: ()) {
+    static func dismantleNSView(_ nsView: CityFocusPointerTransitionView, coordinator: ()) {
         nsView.stopMonitoring()
     }
 }
 
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
+    @StateObject private var pointerTransitionGate = CityMapPointerTransitionGate()
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
@@ -398,11 +341,20 @@ struct ContentView: View {
                 bottomChromeIsVisible: !hudChromeFrames.bottom.isEmpty
             )
             ZStack {
-                CitySceneView(store: store, viewportInsets: viewportInsets).ignoresSafeArea()
+                CitySceneView(
+                    store: store,
+                    viewportInsets: viewportInsets,
+                    pointerTransitionGate: pointerTransitionGate
+                )
+                .ignoresSafeArea()
 
                 VStack(spacing: compact ? 8 : 10) {
                     if store.isCityFocusModeEnabled {
-                        FocusCityHUDView(store: store, compact: compact)
+                        FocusCityHUDView(
+                            store: store,
+                            compact: compact,
+                            pointerTransitionGate: pointerTransitionGate
+                        )
                             .background(chromeFrameReader(.top))
                             .transition(.opacity)
                     } else {
@@ -464,7 +416,11 @@ struct ContentView: View {
                     }
 
                     if !store.isCityFocusModeEnabled {
-                        BuildToolbarView(store: store, compact: compact)
+                        BuildToolbarView(
+                            store: store,
+                            compact: compact,
+                            pointerTransitionGate: pointerTransitionGate
+                        )
                             .frame(maxWidth: compact ? .infinity : 1_120)
                             .background(chromeFrameReader(.bottom))
                             .transition(.opacity)
@@ -488,6 +444,9 @@ struct ContentView: View {
                 if !store.isCityFocusModeEnabled, !updated.bottom.isEmpty {
                     retainedFocusCityViewportInsets = nil
                 }
+            }
+            .onDisappear {
+                pointerTransitionGate.cancel()
             }
         }
     }

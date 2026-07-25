@@ -3,6 +3,7 @@ import SwiftUI
 struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
+    let pointerTransitionGate: CityMapPointerTransitionGate
 
     // The low command rail preserves the world aperture; details remain
     // reachable in a visibly scrolling region instead of growing over the map.
@@ -226,9 +227,7 @@ struct BuildToolbarView: View {
         .buttonStyle(.plain)
         .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
         .overlay {
-            CityFocusPointerShield(traceLabel: "enter") {
-                store.perform(.toggleCityFocus)
-            }
+            CityFocusPointerTransitionMonitor(pointerTransitionGate: pointerTransitionGate)
                 .accessibilityHidden(true)
         }
         .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")

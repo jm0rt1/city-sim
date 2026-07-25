@@ -715,8 +715,9 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testFocusCityPointerMonitorInstallsOnlyWhileVisibleAndLeavesButtonSemanticsExposed() {
+    func testFocusCityPointerMonitorLifecyclePreservesTransitionGateAfterCompletedClick() throws {
         _ = NSApplication.shared
+        let gate = CityMapPointerTransitionGate()
         let window = NSWindow(
             contentRect: CGRect(x: 0, y: 0, width: 320, height: 200),
             styleMask: [.borderless],
@@ -725,8 +726,35 @@ final class CityCommandCatalogTests: XCTestCase {
         )
         let content = NSView(frame: window.contentView?.bounds ?? .zero)
         window.contentView = content
-        let monitor = CityFocusPointerShieldView(traceLabel: "lifecycle") {}
+        window.orderFront(nil)
+        let monitor = CityFocusPointerTransitionView(pointerTransitionGate: gate)
         monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
+        let down = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseDown,
+                location: NSPoint(x: 100, y: 62),
+                modifierFlags: [],
+                timestamp: 1,
+                windowNumber: window.windowNumber,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 1
+            )
+        )
+        let up = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: NSPoint(x: 100, y: 62),
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: window.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
 
         content.addSubview(monitor)
         XCTAssertTrue(monitor.monitorIsInstalled)
@@ -735,8 +763,98 @@ final class CityCommandCatalogTests: XCTestCase {
             "The AppKit boundary must not replace or cover the SwiftUI Button semantic action"
         )
 
+        XCTAssertTrue(monitor.handleLocalPointerEvent(down) === down)
+        XCTAssertTrue(gate.isActive)
         monitor.removeFromSuperview()
         XCTAssertFalse(monitor.monitorIsInstalled)
+        XCTAssertFalse(gate.isActive)
+
+        let completedMonitor = CityFocusPointerTransitionView(pointerTransitionGate: gate)
+        completedMonitor.frame = monitor.frame
+        content.addSubview(completedMonitor)
+        XCTAssertTrue(completedMonitor.handleLocalPointerEvent(down) === down)
+        XCTAssertTrue(completedMonitor.handleLocalPointerEvent(up) === up)
+        completedMonitor.removeFromSuperview()
+        XCTAssertTrue(
+            gate.isActive,
+            "SwiftUI replacing the originating control after its click must not reopen the map"
+        )
+        gate.cancel()
+        window.orderOut(nil)
+    }
+
+    @MainActor
+    func testFocusCityPointerTransitionGateIgnoresZeroDeltaAndClearsAfterRealMovement() async throws {
+        _ = NSApplication.shared
+        let window = NSWindow(
+            contentRect: CGRect(x: 0, y: 0, width: 320, height: 200),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        window.orderFront(nil)
+
+        func mouseEvent(
+            _ type: NSEvent.EventType,
+            location: NSPoint,
+            eventNumber: Int
+        ) throws -> NSEvent {
+            try XCTUnwrap(
+                NSEvent.mouseEvent(
+                    with: type,
+                    location: location,
+                    modifierFlags: [],
+                    timestamp: TimeInterval(eventNumber),
+                    windowNumber: window.windowNumber,
+                    context: nil,
+                    eventNumber: eventNumber,
+                    clickCount: 1,
+                    pressure: type == .leftMouseUp ? 0 : 1
+                )
+            )
+        }
+
+        let gate = CityMapPointerTransitionGate()
+        let anchor = NSPoint(x: 100, y: 62)
+        gate.begin(window: window, anchor: anchor)
+        XCTAssertTrue(gate.isActive)
+        XCTAssertTrue(gate.blocksPointerInput(in: window))
+
+        XCTAssertFalse(
+            gate.observeMovement(try mouseEvent(.mouseMoved, location: anchor, eventNumber: 1))
+        )
+        XCTAssertTrue(gate.isActive, "Synthetic hover at the stationary anchor must not reopen the map")
+
+        let threshold = CityMapPointerTransitionGate.movementThreshold
+        XCTAssertFalse(
+            gate.observeMovement(
+                try mouseEvent(
+                    .mouseMoved,
+                    location: NSPoint(x: anchor.x + threshold, y: anchor.y),
+                    eventNumber: 2
+                )
+            )
+        )
+        XCTAssertTrue(gate.isActive, "Only movement exceeding the fixed threshold may reopen the map")
+
+        XCTAssertTrue(
+            gate.observeMovement(
+                try mouseEvent(
+                    .mouseMoved,
+                    location: NSPoint(x: anchor.x + threshold + 0.5, y: anchor.y),
+                    eventNumber: 3
+                )
+            )
+        )
+        XCTAssertFalse(gate.isActive)
+        XCTAssertFalse(gate.blocksPointerInput(in: window))
+
+        gate.begin(window: window, anchor: anchor)
+        XCTAssertTrue(gate.isActive)
+        NotificationCenter.default.post(name: NSWindow.willCloseNotification, object: window)
+        await Task.yield()
+        XCTAssertFalse(gate.isActive, "Window removal must safely cancel the transition gate")
+        window.orderOut(nil)
     }
 
     @MainActor
@@ -749,6 +867,8 @@ final class CityCommandCatalogTests: XCTestCase {
             defer: false
         )
         let content = NSView(frame: window.contentView?.bounds ?? .zero)
+        let mapView = CityMapSKView(frame: content.bounds)
+        content.addSubview(mapView)
         window.contentView = content
         window.orderFront(nil)
 
@@ -792,17 +912,27 @@ final class CityCommandCatalogTests: XCTestCase {
             store.showInspector = true
             let state = store.state
             let digest = try CityStateFingerprinter.fingerprint(state).digest
-            let coordinate = store.selectedCoordinate
+            let coordinate = try XCTUnwrap(store.selectedCoordinate)
             let target = try XCTUnwrap(store.activeMapActionTargetPresentation)
             let focusGeneration = store.mapFocusRequestGeneration
             let undoAvailable = store.canUndo
+            let undoDepth = try XCTUnwrap(
+                Mirror(reflecting: store).children.first { $0.label == "undoStates" }?.value
+                    as? [CityGameState]
+            ).count
             let treasury = store.state.treasury
-            var actionCount = 0
+            let gate = CityMapPointerTransitionGate()
+            let coordinator = CitySceneView.Coordinator(
+                store: store,
+                pointerTransitionGate: gate
+            )
+            let scene = CityScene(size: CGSize(width: 320, height: 200))
+            scene.configureProofCamera(detail: .block, centeredOn: coordinate)
+            coordinator.scene = scene
+            let cameraPosition = scene.cameraPositionForTesting
+            let cameraScale = scene.cameraScaleForTesting
 
-            let monitor = CityFocusPointerShieldView(traceLabel: "mode") {
-                actionCount += 1
-                _ = store.perform(.toggleCityFocus)
-            }
+            let monitor = CityFocusPointerTransitionView(pointerTransitionGate: gate)
             monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
             content.addSubview(monitor)
             XCTAssertTrue(monitor.monitorIsInstalled)
@@ -812,22 +942,33 @@ final class CityCommandCatalogTests: XCTestCase {
                 "Pointer events beginning outside the exact control bounds must remain untouched"
             )
 
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDownInside))
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDraggedOutside))
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseUpInside))
-            XCTAssertEqual(actionCount, 0, "A drag outside must cancel even if mouse-up returns inside")
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseDownInside) === mouseDownInside)
+            XCTAssertTrue(gate.isActive)
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseDraggedOutside) === mouseDraggedOutside)
+            XCTAssertFalse(gate.isActive)
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseUpInside) === mouseUpInside)
             XCTAssertFalse(store.isCityFocusModeEnabled)
 
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDownInside))
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseUpInside))
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseDownInside) === mouseDownInside)
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseUpInside) === mouseUpInside)
+            XCTAssertTrue(gate.isActive)
+            XCTAssertNil(coordinator.acceptPointerMapActionCandidate(GridCoordinate(x: 18, y: 14), in: mapView))
+            XCTAssertFalse(coordinator.performPointerPrimaryAction(at: coordinate, in: mapView))
+            XCTAssertFalse(coordinator.performPointerSecondaryAction(at: coordinate, in: mapView))
+            XCTAssertTrue(store.perform(.toggleCityFocus), "The existing SwiftUI Button route executes once")
             XCTAssertTrue(store.isCityFocusModeEnabled)
-            XCTAssertEqual(actionCount, 1)
             XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
 
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseDownInside))
-            XCTAssertNil(monitor.handleLocalPointerEvent(mouseUpInside))
+            XCTAssertFalse(
+                gate.observeMovement(
+                    try mouseEvent(.mouseMoved, location: inside, eventNumber: 5)
+                )
+            )
+            XCTAssertTrue(gate.isActive)
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseDownInside) === mouseDownInside)
+            XCTAssertTrue(monitor.handleLocalPointerEvent(mouseUpInside) === mouseUpInside)
+            XCTAssertTrue(store.perform(.toggleCityFocus), "The existing SwiftUI Button exit route executes once")
             XCTAssertFalse(store.isCityFocusModeEnabled)
-            XCTAssertEqual(actionCount, 2)
             XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
             XCTAssertEqual(store.state, state)
             XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state).digest, digest)
@@ -837,11 +978,22 @@ final class CityCommandCatalogTests: XCTestCase {
             XCTAssertEqual(store.interactionMode, mode)
             XCTAssertEqual(store.selectedTool, .commercial)
             XCTAssertEqual(store.canUndo, undoAvailable)
+            XCTAssertEqual(
+                try XCTUnwrap(
+                    Mirror(reflecting: store).children.first { $0.label == "undoStates" }?.value
+                        as? [CityGameState]
+                ).count,
+                undoDepth
+            )
             XCTAssertTrue(store.showInspector)
             XCTAssertTrue(store.showObjectives)
+            XCTAssertEqual(scene.cameraPositionForTesting, cameraPosition)
+            XCTAssertEqual(scene.cameraScaleForTesting, cameraScale)
 
             monitor.removeFromSuperview()
             XCTAssertFalse(monitor.monitorIsInstalled)
+            XCTAssertTrue(gate.isActive, "Removing transitioned chrome must not reopen a stationary pointer")
+            gate.cancel()
         }
 
         window.orderOut(nil)
@@ -862,7 +1014,8 @@ final class CityCommandCatalogTests: XCTestCase {
             backing: .buffered,
             defer: false
         )
-        let monitor = CityFocusPointerShieldView(traceLabel: "window") {}
+        let gate = CityMapPointerTransitionGate()
+        let monitor = CityFocusPointerTransitionView(pointerTransitionGate: gate)
         monitor.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
         owningWindow.contentView?.addSubview(monitor)
         owningWindow.orderFront(nil)
@@ -882,6 +1035,28 @@ final class CityCommandCatalogTests: XCTestCase {
             )
         )
         XCTAssertTrue(monitor.handleLocalPointerEvent(foreignDown) === foreignDown)
+        XCTAssertFalse(gate.isActive)
+
+        let unrelatedRightDown = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .rightMouseDown,
+                location: NSPoint(x: 100, y: 62),
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: owningWindow.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 1
+            )
+        )
+        XCTAssertTrue(monitor.handleLocalPointerEvent(unrelatedRightDown) === unrelatedRightDown)
+        XCTAssertFalse(gate.isActive, "The transition boundary must not own unrelated pointer input")
+
+        gate.begin(window: owningWindow, anchor: NSPoint(x: 100, y: 62))
+        XCTAssertTrue(gate.blocksPointerInput(in: owningWindow))
+        XCTAssertFalse(gate.blocksPointerInput(in: otherWindow))
+        XCTAssertFalse(gate.isActive, "A different map window must safely cancel the stale window-local gate")
         monitor.removeFromSuperview()
         owningWindow.orderOut(nil)
         otherWindow.orderOut(nil)

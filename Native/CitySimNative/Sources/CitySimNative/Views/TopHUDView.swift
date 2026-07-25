@@ -343,6 +343,7 @@ struct FocusCityNoticeUrgencyPresentation: Equatable {
 struct FocusCityHUDView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
+    let pointerTransitionGate: CityMapPointerTransitionGate
 
     static let compactMaximumHeight: CGFloat = 98
     static let regularMaximumHeight: CGFloat = 68
@@ -560,9 +561,7 @@ struct FocusCityHUDView: View {
         .foregroundStyle(Color.black)
         .background(GameTheme.accent, in: RoundedRectangle(cornerRadius: 9))
         .overlay {
-            CityFocusPointerShield(traceLabel: "exit") {
-                store.perform(.toggleCityFocus)
-            }
+            CityFocusPointerTransitionMonitor(pointerTransitionGate: pointerTransitionGate)
                 .accessibilityHidden(true)
         }
         .help("Return to the full command surface · \(descriptor.shortcut?.display ?? "")")

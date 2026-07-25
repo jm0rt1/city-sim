@@ -6,12 +6,14 @@
 
 **Integration branch:** `master`
 
-**Accepted product tip:** `1799fbc2810f14d85511b74a8808bbee1928eef7`
-(independently accepted directional Residential and Commercial product)
+**Accepted product candidate:** `f928696a84676032b20c6306b14d943592e219fb`
+(independently accepted directional Residential, Commercial, and Industrial
+L1 product)
 
-**Independent evidence:** `0497eb0bd48903faecaeb086e4638e33f06e1f48`
+**Independent evidence and published tip:**
+`1b883ca684b07ba38c5c755b616723bde0cd2230`
 
-**Integration evidence merge:** `597abbcdee608b56e8bf2758aa50e03168eb912c`
+**Industrial L1 product commit:** `02612e414912fdabcab858b0ca97e1f5edbc2757`
 
 **Accepted Industrial L1 source authority:** `79668c347e58d602f9627c73cb09e3272a83ef57`
 
@@ -40,10 +42,11 @@
   Commercial L1–L4 N/E/S/W identities and 48 unique normalized LOD payloads.
   PLAY-061 independently approved the exact combined product 20/20 with every
   category 4/4, zero P0/P1 defects, and zero automatic rejects.
-- Industrial L1 source authority now contains four separately authored,
-  repeat-identical N/E/S/W factory identities and 12 unique repeat-identical
-  normalized LOD payloads. These are integrated as non-shipping inputs;
-  production selection is exclusively owned by PLAY-062.
+- Industrial L1 now ships as four separately authored, repeat-identical
+  N/E/S/W factory identities and 12 unique normalized LOD payloads. Runtime
+  selection uses authoritative road frontage with no transform, alias,
+  fallback, or cross-family substitution. PLAY-063 independently approved the
+  exact combined candidate 20/20 with every category 4/4.
 - The readable command surface uses responsive HUD composition with 11-point
   critical/action typography, 10-point decision-support typography, complete
   compact Overview and Journal content, and a world-first 60.2% closed /
@@ -51,8 +54,8 @@
 - Independent PLAY-055 scored the exact accepted product 20/20, with every
   category at 4/4, zero P0/P1 defects, zero automatic rejects, and material
   preference over the frozen baseline in both regular and compact layouts.
-- The complete native suite passes with 223 tests and no failures. The accepted
-  renderer passes 52 focused tests, reports zero fallback assets and zero
+- The complete native suite passes with 226 tests and no failures. The accepted
+  renderer passes 55 focused tests, reports zero fallback assets and zero
   geometry collisions, uses four pages with a stable 41,943,040-byte
   repeated-cycle high-water, and remains within declared render and RSS
   ceilings.
@@ -64,10 +67,10 @@
 - Accepted PLAY-055 RSS remained bounded below the 333.8 MiB ceiling:
   194.52 MiB regular, 175.83 MiB compact, and 194.25 MiB Reduce Motion.
   Continued profiling remains release work.
-- Industrial directional breadth remains incomplete. Industrial L1 source art
-  is independently accepted but not yet production selected; PLAY-062/063 own
-  shipping and its independent gate. Industrial L2 source authoring is
-  authorized next, while L3/L4 remain blocked behind level-by-level review.
+- Industrial directional breadth above L1 remains incomplete. Industrial L2
+  source authoring is under a level-by-level deterministic review gate, while
+  L3/L4 remain blocked. No higher level may enter the shipping pack before
+  independent source review and a separate renderer/quality gate.
 - Spoken VoiceOver audio was not recorded for PLAY-055. Live AX actions, AX
   trees, and Full Keyboard Access were exercised successfully.
 - Deeper game identity, content breadth, audio, delight, progression beyond
@@ -93,6 +96,11 @@
   residency, zero fallback, zero geometry collisions, staged regular and exact
   compact pointer/keyboard/FKA/AX/Reduce Motion/save-load/undo journeys, and
   independent PLAY-061 approval at 20/20.
+- Exact Industrial L1 combined candidate `f928696` passed 226/226 native
+  tests, 55/55 renderer tests, deterministic four-page pack parity, zero
+  fallback and geometry collisions, regular/compact/Reduce Motion
+  pointer-keyboard-AX-save-undo journeys, and independent PLAY-063 approval at
+  20/20 with zero P0/P1 defects and zero automatic rejects.
 - Non-shipping Industrial L1 source authority `79668c3` passed four-direction
   three-process raw identity, 12/12 unique two-run normalized LOD identity,
   registration/frontage/alpha/chroma/padding checks, accepted-source byte
@@ -124,3 +132,5 @@ Wave 006 remains the governing world-excellence program under
 `docs/production/WAVE-006-WORLD-EXCELLENCE.md`. PLAY-028/054/055 are now
 accepted in the product baseline. PLAY-027/CONTRACT-011 remains the active
 visual-breadth continuation for Commercial and Industrial source production.
+Wave 008 is the active combined product program under
+`docs/production/WAVE-008-CITY-WITH-A-SECOND-ACT.md`.

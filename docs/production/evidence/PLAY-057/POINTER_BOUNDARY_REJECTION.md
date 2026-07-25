@@ -2,6 +2,12 @@
 
 Status: **BLOCKED — no candidate is offered for integration**
 
+Latest diagnostic: `rejected-diagnostic-2642ec5-monitor-reached-shared-boundary/DIAGNOSTIC.md`.
+It proves the overlay has live `89 x 44` bounds, the exact-window monitor owns
+and consumes the derived-center down/up sequence, and the SpriteKit-backed
+target still mutates while Focus briefly enters then immediately exits. This
+meets the integration stop condition for a shared input-boundary ruling.
+
 ## Exact rejected history
 
 - `5165615f63775f6f67bfba0f1643d8f2679e4374`: accepted Focus City composition, later rejected for pointer pass-through.

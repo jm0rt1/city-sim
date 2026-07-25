@@ -3064,14 +3064,14 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.32296520471572876),
-                CGSize(width: 0.7238124428047685, height: 1.244466063092227)
+                CGFloat(0.312796950340271),
+                CGSize(width: 0.7473417931726477, height: 1.147784095197565)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
-                CGFloat(0.576345682144165),
-                CGSize(width: 0.5796985019395197, height: 1.653910863258327)
+                CGFloat(0.5447090268135071),
+                CGSize(width: 0.6133673430983396, height: 1.5631997999942033)
             ),
         ] {
             let scene = CityScene(size: size)

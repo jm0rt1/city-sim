@@ -190,6 +190,7 @@ final class CityScene: SKScene {
     private var generatedResidencyDetail: CameraDetailLevel?
     private var viewportInsets: CityMapViewportInsets = .zero
     private var hasUserAdjustedCamera = false
+    private var needsSettledInitialCameraFit = true
     private(set) var occupiedDevelopedVisualBoundsForTesting: CGRect = .null
     private(set) var cameraPriorityVisualBoundsForTesting: CGRect = .null
     private(set) var networkOpportunityVisualBoundsForTesting: CGRect = .null
@@ -347,6 +348,15 @@ final class CityScene: SKScene {
         let state = snapshot.state
         if isFirstRender {
             applyDevelopedCoreCamera(state)
+        } else if needsSettledInitialCameraFit {
+            // The first SwiftUI representable update can precede AppKit's
+            // settled map aperture. Refit once on the first authoritative
+            // pulse after launch, while the camera is still untouched, so the
+            // shipping opening cannot retain that provisional wide scale.
+            if !hasUserAdjustedCamera, selection == nil {
+                applyDevelopedCoreCamera(state)
+            }
+            needsSettledInitialCameraFit = false
         }
         let resolvedDetail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         if resolvedDetail != currentCameraDetailLevel {

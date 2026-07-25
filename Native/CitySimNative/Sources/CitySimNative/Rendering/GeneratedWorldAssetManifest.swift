@@ -17,6 +17,8 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
         let paddingPixels: Int
         let extrusionPixels: Int
         let decodedByteEstimate: Int
+        let normalizedFile: String?
+        let normalizedSHA256: String?
 
         enum CodingKeys: String, CodingKey {
             case file, page, pixels, sha256, anchor
@@ -30,11 +32,16 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
             case paddingPixels = "padding_pixels"
             case extrusionPixels = "extrusion_pixels"
             case decodedByteEstimate = "decoded_byte_estimate"
+            case normalizedFile = "normalized_file"
+            case normalizedSHA256 = "normalized_sha256"
         }
     }
 
     struct Asset: Decodable, Sendable {
         let logicalID: String
+        let sourceKey: String?
+        let sourceRevision: String?
+        let viewDirection: String?
         let family: String
         let variant: Int
         let level: Int
@@ -58,9 +65,19 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
         let residencyID: String
         let decodedByteEstimate: Int
         let lods: [String: LOD]
+        let sourceSHA256: String?
+        let provenanceFile: String?
+        let provenanceSHA256: String?
+        let normalizationRecordFile: String?
+        let normalizationRecordSHA256: String?
+        let sceneDescriptorFile: String?
+        let sceneDescriptorSHA256: String?
 
         enum CodingKeys: String, CodingKey {
             case logicalID = "logical_id"
+            case sourceKey = "source_key"
+            case sourceRevision = "source_revision"
+            case viewDirection = "view_direction"
             case family, variant, level, state, lods
             case authoringTemplate = "authoring_template"
             case sourceCanvasPixels = "source_canvas_pixels"
@@ -80,6 +97,13 @@ struct GeneratedWorldAssetManifest: Decodable, Sendable {
             case depthRoles = "depth_roles"
             case residencyID = "residency_id"
             case decodedByteEstimate = "decoded_byte_estimate"
+            case sourceSHA256 = "source_sha256"
+            case provenanceFile = "provenance_file"
+            case provenanceSHA256 = "provenance_sha256"
+            case normalizationRecordFile = "normalization_record_file"
+            case normalizationRecordSHA256 = "normalization_record_sha256"
+            case sceneDescriptorFile = "scene_descriptor_file"
+            case sceneDescriptorSHA256 = "scene_descriptor_sha256"
         }
     }
 

@@ -1,0 +1,454 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "treatmentID": "play-027-rci-reference-treatment-v3",
+  "purpose": "target-face-dominant non-shipping ImageGen references",
+  "diagnosis": {
+    "v2NearFacePrivileged": true,
+    "v2PainterOrder": [
+      "north",
+      "west",
+      "east",
+      "south"
+    ],
+    "fullFamilyAnchorNearEntrancePrivileged": true,
+    "repair": "draw target face last and replace full family anchor with deterministic material and scale swatches"
+  },
+  "projection": "orthographic 2:1 isometric",
+  "canvasPixels": [
+    1536,
+    1024
+  ],
+  "footprintTiles": [
+    1,
+    1
+  ],
+  "groundPivotSource": [
+    768,
+    896
+  ],
+  "materialScaleBoard": {
+    "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/anchors/residential-v3/material-scale-board.png",
+    "sha256": "850d91d071dc7ce490c1af99d20d697158d2eaf33492609999dc633ad21b8437",
+    "sourceFamilyAnchorFile": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+    "sourceFamilyAnchorSHA256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+    "cameraCompositionAuthority": false,
+    "registrationAuthority": false,
+    "orientationTransform": "none",
+    "crops": [
+      {
+        "name": "charcoal slate roof",
+        "sourceCropPixels": [
+          620,
+          190,
+          930,
+          390
+        ],
+        "boardPanelPixels": [
+          56,
+          176,
+          272,
+          560
+        ]
+      },
+      {
+        "name": "warm brick wall",
+        "sourceCropPixels": [
+          790,
+          390,
+          1010,
+          630
+        ],
+        "boardPanelPixels": [
+          348,
+          176,
+          272,
+          560
+        ]
+      },
+      {
+        "name": "limestone trim",
+        "sourceCropPixels": [
+          520,
+          390,
+          690,
+          640
+        ],
+        "boardPanelPixels": [
+          640,
+          176,
+          272,
+          560
+        ]
+      },
+      {
+        "name": "door and stoop scale",
+        "sourceCropPixels": [
+          650,
+          560,
+          850,
+          850
+        ],
+        "boardPanelPixels": [
+          932,
+          176,
+          272,
+          560
+        ]
+      },
+      {
+        "name": "divided-light window scale",
+        "sourceCropPixels": [
+          520,
+          390,
+          800,
+          650
+        ],
+        "boardPanelPixels": [
+          1224,
+          176,
+          272,
+          560
+        ]
+      }
+    ],
+    "productionSelected": false
+  },
+  "generatedPixelsAreGeometryAuthority": false,
+  "rejectedPixelsUsed": false,
+  "productionSelected": false,
+  "templates": [
+    {
+      "viewDirection": "north",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/registration-north.png",
+      "sha256": "1f673ba686e11e06d1f41de55f779ef477bc0d45ae0cf25344a6af823570872e",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "targetFacePolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          1024,
+          408
+        ],
+        [
+          768,
+          280
+        ]
+      ],
+      "frontageEdgeSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        896,
+        704
+      ],
+      "doorBaseSource": [
+        [
+          858,
+          685
+        ],
+        [
+          934,
+          723
+        ]
+      ],
+      "targetEdgePixelSample": [
+        803,
+        657
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    },
+    {
+      "viewDirection": "east",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/registration-east.png",
+      "sha256": "d5a9da59c1ded82981908565fe3bee59339e35225b0e87b7918db61853f222fb",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "targetFacePolygonSource": [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          768,
+          536
+        ],
+        [
+          1024,
+          408
+        ]
+      ],
+      "frontageEdgeSource": [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ]
+      ],
+      "frontageSocketSource": [
+        896,
+        832
+      ],
+      "doorBaseSource": [
+        [
+          934,
+          813
+        ],
+        [
+          858,
+          851
+        ]
+      ],
+      "targetEdgePixelSample": [
+        989,
+        785
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    },
+    {
+      "viewDirection": "south",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/registration-south.png",
+      "sha256": "ce9058ca529c5f188a7dabaa3f35975e756ecc77ed2742468892e820abbb1c21",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "targetFacePolygonSource": [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ],
+        [
+          512,
+          408
+        ],
+        [
+          768,
+          536
+        ]
+      ],
+      "frontageEdgeSource": [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "doorBaseSource": [
+        [
+          678,
+          851
+        ],
+        [
+          602,
+          813
+        ]
+      ],
+      "targetEdgePixelSample": [
+        733,
+        879
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    },
+    {
+      "viewDirection": "west",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/registration-west.png",
+      "sha256": "a218e79ea87608c0cc3a983bbbad833996695bbc48aa6035235487d3b0511a49",
+      "canvasPixels": [
+        1536,
+        1024
+      ],
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "targetFacePolygonSource": [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ],
+        [
+          768,
+          280
+        ],
+        [
+          512,
+          408
+        ]
+      ],
+      "frontageEdgeSource": [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        704
+      ],
+      "doorBaseSource": [
+        [
+          602,
+          723
+        ],
+        [
+          678,
+          685
+        ]
+      ],
+      "targetEdgePixelSample": [
+        547,
+        751
+      ],
+      "orientationTransform": "none",
+      "productionSelected": false
+    }
+  ]
+}

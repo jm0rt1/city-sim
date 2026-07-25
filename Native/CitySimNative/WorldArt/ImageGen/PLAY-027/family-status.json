@@ -4,7 +4,7 @@
   "updatedDate": "2026-07-24",
   "families": {
     "residential": {
-      "status": "frozen-after-v2-frontage-registration-failure",
+      "status": "frozen-reference-treatment-v3-validated",
       "consecutiveDirectionalDriftFailures": 2,
       "failedSourceKeys": [
         "residential_l01/variant-0/north/source-v01",
@@ -19,7 +19,10 @@
       "postRepairFailedSourceKeys": [
         "residential_l01/variant-0/north/source-v02"
       ],
-      "nextAuthorizedAction": "repair the residential family anchor treatment as a constrained edit target before any further ImageGen call"
+      "referenceTreatmentInputsFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs-v3.json",
+      "referenceTreatmentID": "play-027-rci-reference-treatment-v3",
+      "referenceTreatmentValidationPassed": true,
+      "nextAuthorizedAction": "after committing the v3 repair checkpoint, make exactly one north source-v03 ImageGen probe and review it before any sibling call"
     },
     "commercial": {
       "status": "not-started",

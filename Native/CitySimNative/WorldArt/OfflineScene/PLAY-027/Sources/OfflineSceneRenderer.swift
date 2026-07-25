@@ -1937,11 +1937,12 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 image,
                 in: CGRect(x: 0, y: 0, width: width, height: height)
             )
-            // SceneKit's Metal snapshot can alternate a shaded sample by one
-            // 8-bit quantization interval across otherwise identical process
-            // invocations. Canonicalize each 32-value bucket to its midpoint:
-            // this absorbs the bounded 8-value drift while retaining eight
-            // stable levels per channel for the small-scale authored palette.
+            // SceneKit's Metal snapshot can alternate a shaded sample across
+            // an exact floor-bucket boundary in otherwise identical process
+            // invocations. Round to the nearest 32-value palette entry so the
+            // observed 191/192 boundary pair converges to the same value while
+            // retaining nine stable levels per channel for the small-scale
+            // authored palette.
             let step = 32
             for pixel in stride(from: 0, to: storage.count, by: 4) {
                 if
@@ -1956,7 +1957,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                     let value = Int(storage[pixel + channel])
                     let quantized = min(
                         255,
-                        (value / step) * step + step / 2
+                        ((value + step / 2) / step) * step
                     )
                     storage[pixel + channel] = UInt8(quantized)
                 }

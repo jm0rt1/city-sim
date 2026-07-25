@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "status": "PASS-CAUSAL-CLASSIFICATION",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "normalizationPerformed": false,
+  "sourceRevisionCreated": false,
+  "question": "Does the recurring facade-band divergence exist in the SceneKit 4x support window or first appear after software Lanczos?",
+  "answer": "The divergence already exists in the contributing SceneKit 4x support window.",
+  "classification": "scene-kit-draw-coverage",
+  "evidence": {
+    "processCount": 3,
+    "supportWindowDistinctIdentityCount": 2,
+    "runAWindowDiffersFromRunBAndRunC": true,
+    "runBWindowEqualsRunC": true,
+    "runAComparedPixelCount": 1089,
+    "runAComparedDifferingPixelCount": 141,
+    "runAComparedDifferingChannelCount": 422,
+    "runAComparedAlphaDifferenceCount": 0,
+    "postLanczosLocal3x3FollowsSupportIdentity": true,
+    "softwareLanczosFirstIntroducesTargetSplit": false,
+    "postMajorityTargetEligibleInAnyRun": false,
+    "postMajorityTargetMutatedInAnyRun": false,
+    "postMajorityEqualsImageIODecodeWithinEveryRun": true,
+    "imageIODecodeEqualsFinalSipsDecodeWithinEveryRun": true
+  },
+  "materialOwnerEvidence": {
+    "sharedVisiblePlaneWorldZ": 25,
+    "runABrickRGBA8": [128, 77, 51, 255],
+    "runBAndCCorrugatedRGBA8": [117, 138, 117, 255],
+    "ownerPair": [
+      "i02-east-process-tower",
+      "i02-east-high-assembly-hall"
+    ]
+  },
+  "notCausalForThisTargetSplit": [
+    "software CILanczosScaleTransform",
+    "step32-midpoint-offset8-v1 quantizer",
+    "opaque-isolated-one-quantum-majority-3x3-v3 canonicalizer",
+    "ImageIO PNG encoding/decoding",
+    "sips PNG canonicalization"
+  ],
+  "preservedTrees": {
+    "sourceV05Prepixel": "963e774a7a94693c88b33987aef742a98fb60d9b",
+    "sourceV05RejectedRawGate": "b575801c6862f9354b9ad356d155fa1a1f887942",
+    "sourceV05PriorDiagnostics": "d51bf035bff82175f53a6b79be75698068e869b4",
+    "sourceV05PriorStageCapture": "6780cd12c9b3b522cb831135d1b84974daed1622"
+  },
+  "stopDisposition": "Stop after classification; no source revision, normalization, or production selection."
+}

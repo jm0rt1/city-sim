@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "source": "unchanged Industrial L2 source-v05 East descriptor",
+  "cameraPositionWorld": [180, 146.9693845669907, 180],
+  "visiblePlane": "positive-z facade",
+  "nodes": [
+    {
+      "id": "i02-east-high-assembly-hall",
+      "materialID": "i02-v05-corrugated-northwest",
+      "materialBaseColorRGBA": [0.46, 0.54, 0.46, 1],
+      "dimensions": [38, 42, 38],
+      "positionWorld": [-6, 23, 6],
+      "boundsWorld": {
+        "x": [-25, 13],
+        "y": [2, 44],
+        "z": [-13, 25]
+      }
+    },
+    {
+      "id": "i02-east-process-tower",
+      "materialID": "i02-v05-brick-northwest",
+      "materialBaseColorRGBA": [0.50, 0.30, 0.20, 1],
+      "dimensions": [16, 48, 14],
+      "positionWorld": [-15, 26.5, 18],
+      "boundsWorld": {
+        "x": [-23, -7],
+        "y": [2.5, 50.5],
+        "z": [11, 25]
+      }
+    }
+  ],
+  "exactCoincidentVisibleBoundary": {
+    "axis": "z",
+    "value": 25,
+    "overlapX": [-23, -7],
+    "overlapY": [2.5, 44],
+    "twoOutwardMaterialOwners": true
+  },
+  "pixelMaterialMatch": {
+    "brickNorthwestRGBA8": [128, 77, 51, 255],
+    "corrugatedNorthwestRGBA8": [117, 138, 117, 255],
+    "runAObservedWinner": "i02-v05-brick-northwest",
+    "runBAndCObservedWinner": "i02-v05-corrugated-northwest"
+  },
+  "classification": "SceneKit alternates the visible material owner on an exact coplanar positive-z facade intersection.",
+  "descriptorChanged": false,
+  "productionSelected": false
+}

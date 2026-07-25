@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "attemptCount": 3,
+  "retainedRunFileCount": 12,
+  "runs": [
+    {
+      "run": "run-a",
+      "files": [
+        ["run-a/STAGE-CAPTURE.json", "e4cc9c0a69db00cc27360ab46170c62cc24b82798fc10807166b93006c176a5e"],
+        ["run-a/final-sips.png", "5e37aff05bb5bd5f49abf45e4189e36244b376819e4a107847d6f6b60c8ec611"],
+        ["run-a/imageio-pre-sips.png", "ee8499ffcb3428cb8c564a5b791b8155983aa040444ca86cb5afcac63b5e1d28"],
+        ["run-a/provenance.json", "5494726d72cfd86e56523312eae2d06fa2f483ebd60c0d34aa740764b1a576f4"]
+      ]
+    },
+    {
+      "run": "run-b",
+      "files": [
+        ["run-b/STAGE-CAPTURE.json", "1c8ce213891ad9d3d2eebdc51d38cc87ab6c3a7eef076707e1f45ab30cf5f947"],
+        ["run-b/final-sips.png", "deba3413d9363c87d02de4a64f44996e041ad4bf4fdfcaad1e6f38edef8c9818"],
+        ["run-b/imageio-pre-sips.png", "77c0ce8d9ac7e733f71275e396b8ad26e7852e062cda33261060c1a586ec5803"],
+        ["run-b/provenance.json", "2c50365ac0c93ab7b51658d49d518237fb17550654e19e732da3f03069909727"]
+      ]
+    },
+    {
+      "run": "run-c",
+      "files": [
+        ["run-c/STAGE-CAPTURE.json", "b9df294a1c3d84c1cd902bd832b48bea88da3aa6200eeacb7ad680748c7e1a78"],
+        ["run-c/final-sips.png", "8d33e76ec6dd14adca72db51c56e3bed4b50a02f2b122e8f217ee13c67b86f2c"],
+        ["run-c/imageio-pre-sips.png", "64da4b8ba022cac23e7a11f66cdb10840d874284cd2f005277074d6ee75d3e4f"],
+        ["run-c/provenance.json", "2ed221ce719edb6277c7d9e94beb88e2f67764813a84e07da171fa3ee9250ed9"]
+      ]
+    }
+  ],
+  "identityDisposition": {
+    "threeProcessRawIdentityPassed": false,
+    "supportWindowCausalClassificationPassed": true,
+    "normalizationAuthorized": false
+  },
+  "productionSelected": false
+}

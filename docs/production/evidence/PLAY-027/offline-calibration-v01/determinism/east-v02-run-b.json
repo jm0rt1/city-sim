@@ -1,0 +1,110 @@
+{
+  "authoredIndependently" : true,
+  "cameraProjection" : "orthographic-2:1",
+  "chromaKeyRGBA" : [
+    255,
+    0,
+    255,
+    255
+  ],
+  "contactPolygonWorld" : [
+    [
+      -28,
+      -28
+    ],
+    [
+      28,
+      -28
+    ],
+    [
+      28,
+      28
+    ],
+    [
+      -28,
+      28
+    ]
+  ],
+  "doorBaseSource" : [
+    [
+      934,
+      813
+    ],
+    [
+      858,
+      851
+    ]
+  ],
+  "family" : "residential",
+  "frameworks" : [
+    "SceneKit",
+    "ModelIO",
+    "CoreImage",
+    "CoreGraphics"
+  ],
+  "frontageEdgeSource" : [
+    [
+      1024,
+      768
+    ],
+    [
+      768,
+      896
+    ]
+  ],
+  "frontageSocketSource" : [
+    896,
+    832
+  ],
+  "generatedPixelsAreGeometryAuthority" : false,
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "level" : 1,
+  "logicalBuildingID" : "residential_l01",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l01-v0-materials.json",
+  "materialLibrarySHA256" : "2bb75980dc934faf952ceec665db0072d84d1ddfb5fc1c2481be84f928671117",
+  "northwestKeyOriginWorld" : [
+    -120,
+    180,
+    -120
+  ],
+  "orientationTransform" : "none",
+  "oversamplingFactor" : 2,
+  "productionSelected" : false,
+  "rawSourceFile" : "docs/production/evidence/PLAY-027/offline-calibration-v01/determinism/east-v02-run-b.png",
+  "rawSourcePixels" : [
+    1536,
+    1024
+  ],
+  "rawSourceSHA256" : "9909a51ba7329313231139ec964dfed34ca084c4e3ff974b62e26895f9e6ce37",
+  "rendererSourceCommit" : "c6ad12750f3e7c21325a21c557030c964c9a47dd",
+  "rendererSources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256" : "d0ef1fd3070a4cdb5250e9520a2ec243699b7ac450c8c4d70dc7848fd5827772"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "da9992c4d628809867278b24105399850f1fa2b3796034563c648287bdd69620"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "925e5a444f69c60469c825cfd53f9bd9e0ecba783493dbea691c1dd706ebd4da"
+    }
+  ],
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json",
+  "sceneDescriptorSHA256" : "389b167943058925c948aad556d2861e2d6fcc94362d30feff41de1782efa7f3",
+  "schema" : 1,
+  "sourceKey" : "residential_l01/variant-0/east/source-v02",
+  "sourceRevision" : "source-v02",
+  "southeastShadowVectorSource" : [
+    2,
+    1
+  ],
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source renderer",
+  "variantID" : "variant-0",
+  "viewDirection" : "east"
+}

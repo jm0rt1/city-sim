@@ -1,0 +1,110 @@
+{
+  "authoredIndependently" : true,
+  "cameraProjection" : "orthographic-2:1",
+  "chromaKeyRGBA" : [
+    255,
+    0,
+    255,
+    255
+  ],
+  "contactPolygonWorld" : [
+    [
+      -28,
+      -28
+    ],
+    [
+      28,
+      -28
+    ],
+    [
+      28,
+      28
+    ],
+    [
+      -28,
+      28
+    ]
+  ],
+  "doorBaseSource" : [
+    [
+      602,
+      723
+    ],
+    [
+      678,
+      685
+    ]
+  ],
+  "family" : "commercial",
+  "frameworks" : [
+    "SceneKit",
+    "ModelIO",
+    "CoreImage",
+    "CoreGraphics"
+  ],
+  "frontageEdgeSource" : [
+    [
+      512,
+      768
+    ],
+    [
+      768,
+      640
+    ]
+  ],
+  "frontageSocketSource" : [
+    640,
+    704
+  ],
+  "generatedPixelsAreGeometryAuthority" : false,
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "level" : 1,
+  "logicalBuildingID" : "commercial_l01",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/commercial-l01-l04-v0-materials.json",
+  "materialLibrarySHA256" : "ebe723369cf5b01ef471e3ef7bedb286d1eee8e4752c9d6237838fea5a634205",
+  "northwestKeyOriginWorld" : [
+    -120,
+    180,
+    -120
+  ],
+  "orientationTransform" : "none",
+  "oversamplingFactor" : 2,
+  "productionSelected" : false,
+  "rawSourceFile" : "/private/tmp/play027-commercial-l01-repeat/west/source-v01.png",
+  "rawSourcePixels" : [
+    1536,
+    1024
+  ],
+  "rawSourceSHA256" : "5aea27ebdfa972edf73c010ef3c11385b4ded8a2e10e360a1ea9624cc3e3f5bf",
+  "rendererSourceCommit" : "2f4b69f",
+  "rendererSources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256" : "3485c7e336eb12bf497b415788d55c180724a992553866ccb92b3d00fbb93333"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "da9992c4d628809867278b24105399850f1fa2b3796034563c648287bdd69620"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "fa52b4d40fec32e64b70056b8b04253e1484002ce295b7501d2473c4e712699e"
+    }
+  ],
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/commercial_l01/variant-0/west/scene.json",
+  "sceneDescriptorSHA256" : "cbded9bdddf543d2b880781c23e3578b040f4d10cab004ce446d066cfa3b6c58",
+  "schema" : 1,
+  "sourceKey" : "commercial_l01/variant-0/west/source-v01",
+  "sourceRevision" : "source-v01",
+  "southeastShadowVectorSource" : [
+    2,
+    1
+  ],
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source renderer",
+  "variantID" : "variant-0",
+  "viewDirection" : "west"
+}

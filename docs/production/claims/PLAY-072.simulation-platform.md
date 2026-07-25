@@ -4,11 +4,11 @@
 - **Lane:** Simulation platform
 - **Branch:** `codex/citysim-simulation-platform`
 - **Worktree:** `/Users/James/.codex/worktrees/e909/city-sim`
-- **Base authority:** Published Wave 008 product candidate `87e1e682566b68d20deb1a9e2028e2b885e0423a`
+- **Base authority:** Original matrix authority `e38059e721dae05c8df421754e3cb63ddf3fa153`; final accepted PLAY-071 handoff `5cb532cb515a911ff8f47f4d509a50a5071d369f`
 - **Planned surfaces:** platform-owned deterministic fixtures, manifests, snapshots, digests, replay/undo/save/backup validation, performance evidence, and `docs/production/evidence/PLAY-072/`
 - **Dependencies:** accepted PLAY-065 and PLAY-069 product; existing spatial consequence and activity snapshot contracts
 - **Validation/proof:** vacant/construction/active/pressured/recovering/upgraded/terminal matrices for both strategies; two-build identity; legacy corpus preservation; exact fingerprints; full suite; time/memory budgets
-- **Status:** authorized on the exact published product candidate
+- **Status:** platform adoption complete and ready for integration; one exact renderer camera-golden blocker disclosed
 
 Freeze the authoritative state matrix that gameplay, renderer, UI, and quality
 will use to prove visible city evolution. Reuse existing state and snapshot

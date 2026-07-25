@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sceneGeometryID": "residential-l02-v0-north-walkup-geometry-v1",
+  "logicalBuildingID": "residential_l02",
+  "family": "residential",
+  "level": 2,
+  "variantID": "variant-0",
+  "viewDirection": "north",
+  "sourceRevision": "source-v01",
+  "authoredIndependently": true,
+  "productionSelected": false,
+  "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},
+  "toolchainFingerprint": {
+    "role": "frozen-offline-host-and-frameworks",
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain.json",
+    "sha256": "f94a79643255f486f3841b436f4c974918bfb83c8a5fa73d538c9a48afdf20a1"
+  },
+  "styleAnchor": {
+    "role": "immutable-appearance-only-global-style-anchor",
+    "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "materialLibrary": {
+    "role": "shared-residential-density-material-library",
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/residential-l02-l04-v0-materials.json",
+    "sha256": "5b24216f7f9bf996d5e818d64bfd49a56e18cc1d9782b7d2d10e26661fe6d9f1"
+  },
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "sceneFootprintUnits": [72, 72],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotSource": [768, 896],
+    "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "frontageEdgeSource": [[768, 640], [1024, 768]],
+    "frontageSocketSource": [896, 704],
+    "doorBaseSource": [[858, 685], [934, 723]],
+    "presentationEnvelopeSource": [256, 64, 1280, 896],
+    "shadowEnvelopeSource": [768, 512, 1456, 976],
+    "orientationTransform": "none"
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "yawDegrees": 45,
+    "elevationDegrees": 30,
+    "orthographicScale": 203.64675298172568,
+    "renderViewportPixels": [1536, 1024],
+    "oversamplingFactor": 2,
+    "positionWorld": [180, 146.9693845669907, 180],
+    "targetWorld": [0, 0, 0],
+    "sourceGroundCenter": [768, 768],
+    "postProjectionOffsetPixels": [0, 256]
+  },
+  "light": {
+    "keyOrigin": [-120, 180, -120],
+    "keyIntensity": 1000,
+    "keyColorRGBA": [1.0, 0.86, 0.68, 1.0],
+    "ambientIntensity": 0.5,
+    "ambientColorRGBA": [0.50, 0.46, 0.38, 1.0],
+    "shadowVectorSource": [2, 1],
+    "shadowOpacity": 0.34,
+    "shadowBlurSourcePixels": 18,
+    "shadowReceiver": "task-owned-transparent-ground-plane"
+  },
+  "building": {
+    "width": 56,
+    "depth": 56,
+    "foundationHeight": 3,
+    "floorHeight": 12.5,
+    "floors": 3,
+    "wallHeight": 47,
+    "roofHeight": 9,
+    "roofOverhang": 1.5,
+    "wallMaterialID": "brick-ochre",
+    "trimMaterialID": "limestone-warm",
+    "roofMaterialID": "roof-green",
+    "foundationMaterialID": "foundation-stone",
+    "chimney": {"positionWorld": [-15, 52, 12], "dimensions": [5, 11, 5], "materialID": "chimney-terracotta"},
+    "massingProfile": "compact-cross-gabled-corner-walkup",
+    "usesLegacyDomesticDetails": false,
+    "massBlocks": [
+      {"id": "l02-main-walkup-mass", "dimensions": [50, 39, 50], "positionWorld": [0, 22.5, 0], "materialID": "brick-ochre"},
+      {"id": "l02-corner-stair-bay", "dimensions": [15, 47, 15], "positionWorld": [20, 26.5, -20], "materialID": "brick-warm-red"}
+    ],
+    "roofVolumes": [
+      {"id": "l02-long-cross-roof", "shape": "hip", "dimensions": [54, 8, 30], "positionWorld": [0, 46, -4], "materialID": "roof-green", "trimMaterialID": "limestone-warm"},
+      {"id": "l02-transverse-cross-roof", "shape": "hip", "dimensions": [30, 9, 54], "positionWorld": [8, 46.5, 0], "materialID": "slate-charcoal", "trimMaterialID": "limestone-warm"},
+      {"id": "l02-stair-bay-roof", "shape": "hip", "dimensions": [18, 8, 18], "positionWorld": [20, 54, -20], "materialID": "roof-green", "trimMaterialID": "limestone-warm"}
+    ],
+    "trimBands": [
+      {"id": "l02-ground-string", "dimensions": [51, 1, 51], "positionWorld": [0, 15.5, 0], "materialID": "limestone-warm"},
+      {"id": "l02-middle-string", "dimensions": [51, 0.9, 51], "positionWorld": [0, 28, 0], "materialID": "limestone-warm"},
+      {"id": "l02-eave-string", "dimensions": [51, 1.2, 51], "positionWorld": [0, 41.5, 0], "materialID": "limestone-warm"}
+    ]
+  },
+  "facades": [
+    {
+      "id": "north-facade", "direction": "north", "edgeWorld": [[-28, -28], [28, -28]], "materialID": "brick-ochre", "hasEntrance": true, "windowBays": [],
+      "windowRhythms": [
+        {"id": "n-f1-pairs", "centersWorld": [[-16, 10.5, -25.2], [16, 10.5, -25.2]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 1, "materialID": "window-warm"},
+        {"id": "n-f2-triplet", "centersWorld": [[-16, 23, -25.2], [0, 23, -25.2], [16, 23, -25.2]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 2, "materialID": "window-warm"},
+        {"id": "n-f3-triplet", "centersWorld": [[-16, 35.5, -25.2], [0, 35.5, -25.2], [16, 35.5, -25.2]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 3, "materialID": "window-warm"}
+      ]
+    },
+    {
+      "id": "east-facade", "direction": "east", "edgeWorld": [[28, -28], [28, 28]], "materialID": "brick-ochre", "hasEntrance": false, "windowBays": [],
+      "windowRhythms": [
+        {"id": "e-f1-triplet", "centersWorld": [[25.2, 10.5, -16], [25.2, 10.5, 0], [25.2, 10.5, 16]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 1, "materialID": "window-warm"},
+        {"id": "e-f2-triplet", "centersWorld": [[25.2, 23, -16], [25.2, 23, 0], [25.2, 23, 16]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 2, "materialID": "window-warm"},
+        {"id": "e-f3-triplet", "centersWorld": [[25.2, 35.5, -16], [25.2, 35.5, 0], [25.2, 35.5, 16]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 3, "materialID": "window-warm"}
+      ]
+    },
+    {
+      "id": "south-facade", "direction": "south", "edgeWorld": [[28, 28], [-28, 28]], "materialID": "brick-ochre", "hasEntrance": false, "windowBays": [],
+      "windowRhythms": [
+        {"id": "s-f1-triplet", "centersWorld": [[-16, 10.5, 25.2], [0, 10.5, 25.2], [16, 10.5, 25.2]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 1, "materialID": "window-warm"},
+        {"id": "s-f2-triplet", "centersWorld": [[-16, 23, 25.2], [0, 23, 25.2], [16, 23, 25.2]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 2, "materialID": "window-warm"},
+        {"id": "s-f3-triplet", "centersWorld": [[-16, 35.5, 25.2], [0, 35.5, 25.2], [16, 35.5, 25.2]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 3, "materialID": "window-warm"}
+      ]
+    },
+    {
+      "id": "west-facade", "direction": "west", "edgeWorld": [[-28, 28], [-28, -28]], "materialID": "brick-ochre", "hasEntrance": false, "windowBays": [],
+      "windowRhythms": [
+        {"id": "w-f1-triplet", "centersWorld": [[-25.2, 10.5, 16], [-25.2, 10.5, 0], [-25.2, 10.5, -16]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 1, "materialID": "window-warm"},
+        {"id": "w-f2-triplet", "centersWorld": [[-25.2, 23, 16], [-25.2, 23, 0], [-25.2, 23, -16]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 2, "materialID": "window-warm"},
+        {"id": "w-f3-triplet", "centersWorld": [[-25.2, 35.5, 16], [-25.2, 35.5, 0], [-25.2, 35.5, -16]], "width": 7, "height": 8.5, "sillHeight": 4, "floor": 3, "materialID": "window-warm"}
+      ]
+    }
+  ],
+  "entrance": {
+    "facadeID": "north-facade", "baseWorld": [0, 3, -28], "width": 10, "height": 13, "depth": 2,
+    "doorMaterialID": "door-deep-green", "surroundMaterialID": "limestone-warm", "stepCount": 5, "stepRun": 2.2,
+    "canopyDepth": 18, "hingeSide": "right", "pavilionWidth": 20, "pavilionDepth": 7, "pavilionHeight": 21,
+    "pavilionRoofHeight": 5, "pavilionMaterialID": "brick-warm-red", "porchWidth": 24, "porchColumnWidth": 1.5,
+    "porchLateralOffset": 10, "style": "walkup-stoop"
+  },
+  "props": [
+    {"id": "north-south-balconies", "kind": "balcony-stack", "positionWorld": [0, 25, 27], "dimensions": [16, 30, 4], "materialID": "stone-honey"},
+    {"id": "north-front-shrubs", "kind": "shrub-cluster", "positionWorld": [-19, 2, -30], "dimensions": [5, 4, 4], "materialID": "planting-evergreen"}
+  ],
+  "occlusionExclusions": [
+    {"id": "north-walkup-clearance", "purpose": "protect grounded north stoop return and declared frontage socket", "polygonWorld": [[-14, -50], [20, -50], [20, -22], [-14, -22]]}
+  ]
+}

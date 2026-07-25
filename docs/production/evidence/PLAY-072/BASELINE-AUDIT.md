@@ -48,8 +48,12 @@ four-route terminal coverage.
 Pressure and recovery currently do not mutate `CityTile.condition`; production
 simulation only initializes condition. Their honest visible truth is the
 strategy phase plus existing spatial diagnostics and local-activity channels.
-PLAY-072 must freeze that current behavior rather than fabricate a condition
-scar or anticipate gameplay tuning.
+Likewise, current automatic upgrades select Residential places rather than the
+strategy's Commercial or Industrial focus place. The upgraded and terminal
+matrix rows therefore focus an actually upgraded Residential coordinate while
+the earlier rows retain the strategy place. PLAY-072 must freeze that current
+behavior rather than fabricate a condition scar, claim a false strategy-place
+upgrade, or anticipate gameplay tuning.
 
 ## Compatibility and stop boundary
 

@@ -1,0 +1,3757 @@
+{
+  "directions" : [
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "n-hall-east",
+          "secondID" : "n-rear-process",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "n-hall-east",
+          "secondID" : "n-admin-bar",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "n-admin-bar",
+          "secondID" : "n-admin-step",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "n-admin-bar",
+          "secondID" : "n-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "n-admin-bar",
+          "secondID" : "n-dock-seal-c",
+          "sharedYWorld" : 1.5
+        }
+      ],
+      "coincidentBoundaryCount" : 5,
+      "passed" : false,
+      "primitiveCount" : 45,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -6
+            ],
+            "y" : [
+              1.5,
+              36.5
+            ],
+            "z" : [
+              -15,
+              21
+            ]
+          },
+          "id" : "n-hall-west",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              6,
+              27
+            ],
+            "y" : [
+              1.5,
+              36.5
+            ],
+            "z" : [
+              -15,
+              21
+            ]
+          },
+          "id" : "n-hall-east",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              10,
+              26
+            ],
+            "y" : [
+              1.5,
+              48.5
+            ],
+            "z" : [
+              10,
+              26
+            ]
+          },
+          "id" : "n-rear-process",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              7,
+              27
+            ],
+            "y" : [
+              1.5,
+              21.5
+            ],
+            "z" : [
+              -26,
+              -10
+            ]
+          },
+          "id" : "n-admin-bar",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-side"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              1,
+              11
+            ],
+            "y" : [
+              1.5,
+              12.5
+            ],
+            "z" : [
+              -26,
+              -18
+            ]
+          },
+          "id" : "n-admin-step",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -12.5,
+              12.5
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -16.600000000000001,
+              -15
+            ]
+          },
+          "id" : "n-loading-recess",
+          "kind" : "mass-block",
+          "materialID" : "deep-loading-recess"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -11,
+              -5
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -17.300000000000001,
+              -16.300000000000001
+            ]
+          },
+          "id" : "n-dock-door-a",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -3,
+              3
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -17.300000000000001,
+              -16.300000000000001
+            ]
+          },
+          "id" : "n-dock-door-b",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5,
+              11
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -17.300000000000001,
+              -16.300000000000001
+            ]
+          },
+          "id" : "n-dock-door-c",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -12,
+              -4
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -17.899999999999999,
+              -17.100000000000001
+            ]
+          },
+          "id" : "n-dock-seal-a",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -4,
+              4
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -17.899999999999999,
+              -17.100000000000001
+            ]
+          },
+          "id" : "n-dock-seal-b",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              4,
+              12
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -17.899999999999999,
+              -17.100000000000001
+            ]
+          },
+          "id" : "n-dock-seal-c",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -14.5,
+              14.5
+            ],
+            "y" : [
+              15.9,
+              18.100000000000001
+            ],
+            "z" : [
+              -26,
+              -16
+            ]
+          },
+          "id" : "n-canopy",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -13.699999999999999,
+              -12.300000000000001
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              -25.199999999999999,
+              -23.800000000000001
+            ]
+          },
+          "id" : "n-canopy-post-west",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              12.300000000000001,
+              13.699999999999999
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              -25.199999999999999,
+              -23.800000000000001
+            ]
+          },
+          "id" : "n-canopy-post-east",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -9,
+              -7
+            ],
+            "y" : [
+              14,
+              44
+            ],
+            "z" : [
+              -19,
+              -17
+            ]
+          },
+          "id" : "n-portal-post-west",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              7,
+              9
+            ],
+            "y" : [
+              14,
+              44
+            ],
+            "z" : [
+              -19,
+              -17
+            ]
+          },
+          "id" : "n-portal-post-east",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -9,
+              9
+            ],
+            "y" : [
+              42.5,
+              45.5
+            ],
+            "z" : [
+              -19.5,
+              -16.5
+            ]
+          },
+          "id" : "n-portal-header",
+          "kind" : "mass-block",
+          "materialID" : "safety-yellow"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -15,
+              15
+            ],
+            "y" : [
+              0.20000000000000007,
+              1.3999999999999999
+            ],
+            "z" : [
+              -28,
+              -22
+            ]
+          },
+          "id" : "n-apron",
+          "kind" : "mass-block",
+          "materialID" : "service-apron-concrete"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -8.3000000000000007,
+              -7.7000000000000002
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              -28,
+              -22
+            ]
+          },
+          "id" : "n-apron-joint-a",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              7.7000000000000002,
+              8.3000000000000007
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              -28,
+              -22
+            ]
+          },
+          "id" : "n-apron-joint-b",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27.5,
+              -5.5
+            ],
+            "y" : [
+              35.899999999999999,
+              38.100000000000001
+            ],
+            "z" : [
+              -15.5,
+              21.5
+            ]
+          },
+          "id" : "n-hall-roof-west",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5.5,
+              27.5
+            ],
+            "y" : [
+              35.899999999999999,
+              38.100000000000001
+            ],
+            "z" : [
+              -15.5,
+              21.5
+            ]
+          },
+          "id" : "n-hall-roof-east",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -10.5,
+              14.5
+            ],
+            "y" : [
+              47.899999999999999,
+              50.100000000000001
+            ],
+            "z" : [
+              9.5,
+              26.5
+            ]
+          },
+          "id" : "n-process-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -23,
+              -9
+            ],
+            "y" : [
+              37.5,
+              44.5
+            ],
+            "z" : [
+              1,
+              7
+            ]
+          },
+          "id" : "n-roof-monitor-west",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              9,
+              21
+            ],
+            "y" : [
+              37.5,
+              45.5
+            ],
+            "z" : [
+              -1,
+              5
+            ]
+          },
+          "id" : "n-roof-monitor-east",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              10.5,
+              23.5
+            ],
+            "y" : [
+              9.5,
+              16.5
+            ],
+            "z" : [
+              -26.599999999999998,
+              -25.800000000000001
+            ]
+          },
+          "id" : "n-admin-glazing",
+          "kind" : "mass-block",
+          "materialID" : "industrial-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.800000000000001,
+              27.599999999999998
+            ],
+            "y" : [
+              9.5,
+              16.5
+            ],
+            "z" : [
+              -23,
+              -13
+            ]
+          },
+          "id" : "n-admin-return-glazing",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              4.25,
+              7.75
+            ],
+            "y" : [
+              1.5,
+              8.5
+            ],
+            "z" : [
+              -26.799999999999997,
+              -26
+            ]
+          },
+          "id" : "n-staff-door",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              2,
+              10
+            ],
+            "y" : [
+              8.9000000000000004,
+              10.1
+            ],
+            "z" : [
+              -27,
+              -23
+            ]
+          },
+          "id" : "n-admin-canopy",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              16,
+              24
+            ],
+            "y" : [
+              38.5,
+              43.5
+            ],
+            "z" : [
+              4,
+              10
+            ]
+          },
+          "id" : "n-hvac-b",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -20,
+              0
+            ],
+            "y" : [
+              28,
+              30
+            ],
+            "z" : [
+              17,
+              19
+            ]
+          },
+          "id" : "n-pipe-bridge",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5,
+              27
+            ],
+            "y" : [
+              37,
+              38
+            ],
+            "z" : [
+              21.399999999999999,
+              22.600000000000001
+            ]
+          },
+          "id" : "n-gutter",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              7.4000000000000004,
+              8.5999999999999996
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              21,
+              21.600000000000001
+            ]
+          },
+          "id" : "n-panel-seam-a",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              15.4,
+              16.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              21,
+              21.600000000000001
+            ]
+          },
+          "id" : "n-panel-seam-b",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              23.399999999999999,
+              24.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              21,
+              21.600000000000001
+            ]
+          },
+          "id" : "n-panel-seam-c",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -13.5,
+              13.5
+            ],
+            "y" : [
+              19,
+              20
+            ],
+            "z" : [
+              -25.300000000000001,
+              -24.300000000000001
+            ]
+          },
+          "id" : "n-guardrail",
+          "kind" : "mass-block",
+          "materialID" : "safety-yellow"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -0.5,
+              0.5
+            ],
+            "y" : [
+              0.5,
+              1.5
+            ],
+            "z" : [
+              -0.5,
+              0.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -21.5,
+              -16.5
+            ],
+            "y" : [
+              39,
+              45
+            ],
+            "z" : [
+              5.5,
+              10.5
+            ]
+          },
+          "id" : "n-hvac-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -5,
+              -1
+            ],
+            "y" : [
+              50,
+              64
+            ],
+            "z" : [
+              17,
+              21
+            ]
+          },
+          "id" : "n-exhaust-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              3.5,
+              6.5
+            ],
+            "y" : [
+              49.5,
+              60.5
+            ],
+            "z" : [
+              17.5,
+              20.5
+            ]
+          },
+          "id" : "n-exhaust-b",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25,
+              -17
+            ],
+            "y" : [
+              2,
+              18
+            ],
+            "z" : [
+              15,
+              23
+            ]
+          },
+          "id" : "n-tank",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.399999999999999,
+              27.600000000000001
+            ],
+            "y" : [
+              2.5,
+              31.5
+            ],
+            "z" : [
+              11.4,
+              12.6
+            ]
+          },
+          "id" : "n-downpipe",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -12.6,
+              -11.4
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              -26.600000000000001,
+              -25.399999999999999
+            ]
+          },
+          "id" : "n-bollard-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              11.4,
+              12.6
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              -26.600000000000001,
+              -25.399999999999999
+            ]
+          },
+          "id" : "n-bollard-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/source-authority/quality-reset-v01/scenes/industrial_l02/variant-0/north/scene.json",
+      "sceneGeometryID" : "industrial-l02-quality-reset-north-geometry-v01",
+      "sourceRevision" : "source-v09",
+      "viewDirection" : "north",
+      "visibleOutwardMaterialOwnerCount" : 4,
+      "visibleOutwardMaterialOwners" : [
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "n-hall-east",
+          "firstMaterialID" : "blue-gray-painted-steel",
+          "overlapWorld" : {
+            "y" : 20,
+            "z" : 5
+          },
+          "secondID" : "n-admin-bar",
+          "secondMaterialID" : "warm-concrete-side",
+          "sharedPlaneWorld" : 27
+        },
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "n-portal-post-east",
+          "firstMaterialID" : "painted-structural-steel",
+          "overlapWorld" : {
+            "y" : 1.5,
+            "z" : 2
+          },
+          "secondID" : "n-portal-header",
+          "secondMaterialID" : "safety-yellow",
+          "sharedPlaneWorld" : 9
+        },
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "n-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "x" : 0.60000000000000053,
+            "y" : 0.074999999999999956
+          },
+          "secondID" : "n-apron-joint-a",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : -22
+        },
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "n-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "x" : 0.60000000000000053,
+            "y" : 0.074999999999999956
+          },
+          "secondID" : "n-apron-joint-b",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : -22
+        }
+      ]
+    },
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "e-main-hall",
+          "secondID" : "e-north-process",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-main-hall",
+          "secondID" : "e-south-fabrication",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-main-hall",
+          "secondID" : "e-admin-corner",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-main-hall",
+          "secondID" : "chimney",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-admin-corner",
+          "secondID" : "e-stair-tower",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-admin-corner",
+          "secondID" : "e-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-stair-tower",
+          "secondID" : "e-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "e-stair-tower",
+          "secondID" : "e-dock-seal-c",
+          "sharedYWorld" : 1.5
+        }
+      ],
+      "coincidentBoundaryCount" : 8,
+      "passed" : false,
+      "primitiveCount" : 43,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -24,
+              14
+            ],
+            "y" : [
+              1.5,
+              38.5
+            ],
+            "z" : [
+              -21,
+              23
+            ]
+          },
+          "id" : "e-main-hall",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -8
+            ],
+            "y" : [
+              1.5,
+              52.5
+            ],
+            "z" : [
+              -25,
+              -7
+            ]
+          },
+          "id" : "e-north-process",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -24.5,
+              0.5
+            ],
+            "y" : [
+              1.5,
+              28.5
+            ],
+            "z" : [
+              13,
+              27
+            ]
+          },
+          "id" : "e-south-fabrication",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-side"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              8,
+              26
+            ],
+            "y" : [
+              1.5,
+              22.5
+            ],
+            "z" : [
+              9,
+              27
+            ]
+          },
+          "id" : "e-admin-corner",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              15,
+              25
+            ],
+            "y" : [
+              1.5,
+              34.5
+            ],
+            "z" : [
+              3,
+              11
+            ]
+          },
+          "id" : "e-stair-tower",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              19.600000000000001,
+              21.399999999999999
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -20.5,
+              10.5
+            ]
+          },
+          "id" : "e-loading-recess",
+          "kind" : "mass-block",
+          "materialID" : "deep-loading-recess"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              21.199999999999999,
+              22.199999999999999
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -18,
+              -12
+            ]
+          },
+          "id" : "e-dock-door-a",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              21.199999999999999,
+              22.199999999999999
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -8,
+              -2
+            ]
+          },
+          "id" : "e-dock-door-b",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              21.199999999999999,
+              22.199999999999999
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              2,
+              8
+            ]
+          },
+          "id" : "e-dock-door-c",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              22.799999999999997
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -19,
+              -11
+            ]
+          },
+          "id" : "e-dock-seal-a",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              22.799999999999997
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -9,
+              -1
+            ]
+          },
+          "id" : "e-dock-seal-b",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              22.799999999999997
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              1,
+              9
+            ]
+          },
+          "id" : "e-dock-seal-c",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              28
+            ],
+            "y" : [
+              15.9,
+              18.100000000000001
+            ],
+            "z" : [
+              -22.5,
+              12.5
+            ]
+          },
+          "id" : "e-canopy",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.300000000000001,
+              27.699999999999999
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              -21.699999999999999,
+              -20.300000000000001
+            ]
+          },
+          "id" : "e-canopy-post-north",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.300000000000001,
+              27.699999999999999
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              10.300000000000001,
+              11.699999999999999
+            ]
+          },
+          "id" : "e-canopy-post-south",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              28
+            ],
+            "y" : [
+              0.20000000000000007,
+              1.3999999999999999
+            ],
+            "z" : [
+              -24,
+              14
+            ]
+          },
+          "id" : "e-apron",
+          "kind" : "mass-block",
+          "materialID" : "service-apron-concrete"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              28
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              -11.300000000000001,
+              -10.699999999999999
+            ]
+          },
+          "id" : "e-apron-joint-a",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22,
+              28
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              0.69999999999999996,
+              1.3
+            ]
+          },
+          "id" : "e-apron-joint-b",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -24.5,
+              14.5
+            ],
+            "y" : [
+              37.899999999999999,
+              40.100000000000001
+            ],
+            "z" : [
+              -21.5,
+              23.5
+            ]
+          },
+          "id" : "e-main-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              -7.5
+            ],
+            "y" : [
+              51.899999999999999,
+              54.100000000000001
+            ],
+            "z" : [
+              -25.5,
+              -6.5
+            ]
+          },
+          "id" : "e-process-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25,
+              1
+            ],
+            "y" : [
+              28.399999999999999,
+              30.600000000000001
+            ],
+            "z" : [
+              12.5,
+              27.5
+            ]
+          },
+          "id" : "e-fabrication-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17,
+              5
+            ],
+            "y" : [
+              39.5,
+              46.5
+            ],
+            "z" : [
+              -13,
+              -7
+            ]
+          },
+          "id" : "e-clerestory-a",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -9,
+              9
+            ],
+            "y" : [
+              39,
+              45
+            ],
+            "z" : [
+              6,
+              12
+            ]
+          },
+          "id" : "e-clerestory-b",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              25.900000000000002,
+              26.699999999999999
+            ],
+            "y" : [
+              9,
+              17
+            ],
+            "z" : [
+              12,
+              24
+            ]
+          },
+          "id" : "e-admin-glazing-east",
+          "kind" : "mass-block",
+          "materialID" : "industrial-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              25,
+              25.799999999999997
+            ],
+            "y" : [
+              8.5,
+              31.5
+            ],
+            "z" : [
+              4.5,
+              9.5
+            ]
+          },
+          "id" : "e-stair-glazing",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.100000000000001,
+              26.899999999999999
+            ],
+            "y" : [
+              1.5,
+              8.5
+            ],
+            "z" : [
+              20.25,
+              23.75
+            ]
+          },
+          "id" : "e-person-door",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              24,
+              28
+            ],
+            "y" : [
+              8.9000000000000004,
+              10.1
+            ],
+            "z" : [
+              18,
+              26
+            ]
+          },
+          "id" : "e-person-canopy",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -9.5,
+              -0.5
+            ],
+            "y" : [
+              41,
+              47
+            ],
+            "z" : [
+              -1.5,
+              5.5
+            ]
+          },
+          "id" : "e-hvac-a",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5.5,
+              12.5
+            ],
+            "y" : [
+              40.5,
+              45.5
+            ],
+            "z" : [
+              -9,
+              -3
+            ]
+          },
+          "id" : "e-hvac-b",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -18,
+              -16
+            ],
+            "y" : [
+              33,
+              35
+            ],
+            "z" : [
+              -12,
+              16
+            ]
+          },
+          "id" : "e-pipe-run",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              13.4,
+              14.6
+            ],
+            "y" : [
+              39,
+              40
+            ],
+            "z" : [
+              -20.5,
+              22.5
+            ]
+          },
+          "id" : "e-gutter",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              14,
+              14.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              -12.6,
+              -11.4
+            ]
+          },
+          "id" : "e-panel-seam-a",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              14,
+              14.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              -0.59999999999999998,
+              0.59999999999999998
+            ]
+          },
+          "id" : "e-panel-seam-b",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              14,
+              14.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              11.4,
+              12.6
+            ]
+          },
+          "id" : "e-panel-seam-c",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.699999999999999,
+              27.699999999999999
+            ],
+            "y" : [
+              19,
+              20
+            ],
+            "z" : [
+              -21.5,
+              11.5
+            ]
+          },
+          "id" : "e-guardrail",
+          "kind" : "mass-block",
+          "materialID" : "safety-yellow"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -0.5,
+              0.5
+            ],
+            "y" : [
+              0.5,
+              1.5
+            ],
+            "z" : [
+              -0.5,
+              0.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -21,
+              -17
+            ],
+            "y" : [
+              54,
+              70
+            ],
+            "z" : [
+              -19,
+              -15
+            ]
+          },
+          "id" : "e-exhaust-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -14.5,
+              -11.5
+            ],
+            "y" : [
+              53.5,
+              64.5
+            ],
+            "z" : [
+              -15.5,
+              -12.5
+            ]
+          },
+          "id" : "e-exhaust-b",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -18
+            ],
+            "y" : [
+              2,
+              18
+            ],
+            "z" : [
+              16,
+              24
+            ]
+          },
+          "id" : "e-tank-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -16,
+              -10
+            ],
+            "y" : [
+              2,
+              14
+            ],
+            "z" : [
+              20,
+              26
+            ]
+          },
+          "id" : "e-tank-b",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              13.4,
+              14.6
+            ],
+            "y" : [
+              2.5,
+              33.5
+            ],
+            "z" : [
+              -21.600000000000001,
+              -20.399999999999999
+            ]
+          },
+          "id" : "e-downpipe",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.399999999999999,
+              27.600000000000001
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              -23.600000000000001,
+              -22.399999999999999
+            ]
+          },
+          "id" : "e-bollard-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              26.399999999999999,
+              27.600000000000001
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              12.4,
+              13.6
+            ]
+          },
+          "id" : "e-bollard-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/source-authority/quality-reset-v01/scenes/industrial_l02/variant-0/east/scene.json",
+      "sceneGeometryID" : "industrial-l02-quality-reset-east-geometry-v01",
+      "sourceRevision" : "source-v09",
+      "viewDirection" : "east",
+      "visibleOutwardMaterialOwnerCount" : 3,
+      "visibleOutwardMaterialOwners" : [
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "e-north-process",
+          "firstMaterialID" : "galvanized-corrugated-northwest",
+          "overlapWorld" : {
+            "x" : 9,
+            "y" : 7
+          },
+          "secondID" : "e-clerestory-a",
+          "secondMaterialID" : "galvanized-corrugated-northwest",
+          "sharedPlaneWorld" : -7
+        },
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "e-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "y" : 0.074999999999999956,
+            "z" : 0.60000000000000142
+          },
+          "secondID" : "e-apron-joint-a",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : 28
+        },
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "e-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "y" : 0.074999999999999956,
+            "z" : 0.60000000000000009
+          },
+          "secondID" : "e-apron-joint-b",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : 28
+        }
+      ]
+    },
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "s-main-hall",
+          "secondID" : "s-process-east",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-main-hall",
+          "secondID" : "s-fabrication-west",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-main-hall",
+          "secondID" : "s-admin-west",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-main-hall",
+          "secondID" : "chimney",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-process-east",
+          "secondID" : "s-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-process-east",
+          "secondID" : "s-dock-seal-b",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-process-east",
+          "secondID" : "s-dock-seal-c",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-admin-west",
+          "secondID" : "s-admin-step",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "s-admin-step",
+          "secondID" : "s-dock-seal-a",
+          "sharedYWorld" : 1.5
+        }
+      ],
+      "coincidentBoundaryCount" : 9,
+      "passed" : false,
+      "primitiveCount" : 41,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -19,
+              23
+            ],
+            "y" : [
+              1.5,
+              36.5
+            ],
+            "z" : [
+              -24,
+              14
+            ]
+          },
+          "id" : "s-main-hall",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              10,
+              26
+            ],
+            "y" : [
+              1.5,
+              48.5
+            ],
+            "z" : [
+              -2,
+              20
+            ]
+          },
+          "id" : "s-process-east",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -14
+            ],
+            "y" : [
+              1.5,
+              26.5
+            ],
+            "z" : [
+              -24,
+              8
+            ]
+          },
+          "id" : "s-fabrication-west",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-side"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -2
+            ],
+            "y" : [
+              1.5,
+              21.5
+            ],
+            "z" : [
+              11,
+              27
+            ]
+          },
+          "id" : "s-admin-west",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -5,
+              5
+            ],
+            "y" : [
+              1.5,
+              12.5
+            ],
+            "z" : [
+              19,
+              27
+            ]
+          },
+          "id" : "s-admin-step",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-side"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -2,
+              22
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              16.600000000000001,
+              18.399999999999999
+            ]
+          },
+          "id" : "s-loading-recess",
+          "kind" : "mass-block",
+          "materialID" : "deep-loading-recess"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -1,
+              5
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              18.199999999999999,
+              19.199999999999999
+            ]
+          },
+          "id" : "s-dock-door-a",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              7,
+              13
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              18.199999999999999,
+              19.199999999999999
+            ]
+          },
+          "id" : "s-dock-door-b",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              15,
+              21
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              18.199999999999999,
+              19.199999999999999
+            ]
+          },
+          "id" : "s-dock-door-c",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -2,
+              6
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              19,
+              19.799999999999997
+            ]
+          },
+          "id" : "s-dock-seal-a",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              6,
+              14
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              19,
+              19.799999999999997
+            ]
+          },
+          "id" : "s-dock-seal-b",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              14,
+              22
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              19,
+              19.799999999999997
+            ]
+          },
+          "id" : "s-dock-seal-c",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -4,
+              24
+            ],
+            "y" : [
+              15.9,
+              18.100000000000001
+            ],
+            "z" : [
+              18.5,
+              27.5
+            ]
+          },
+          "id" : "s-canopy",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -3.7000000000000002,
+              -2.2999999999999998
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              25.800000000000001,
+              27.199999999999999
+            ]
+          },
+          "id" : "s-canopy-post-west",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              22.300000000000001,
+              23.699999999999999
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              25.800000000000001,
+              27.199999999999999
+            ]
+          },
+          "id" : "s-canopy-post-east",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -5,
+              25
+            ],
+            "y" : [
+              0.20000000000000007,
+              1.3999999999999999
+            ],
+            "z" : [
+              22,
+              28
+            ]
+          },
+          "id" : "s-apron",
+          "kind" : "mass-block",
+          "materialID" : "service-apron-concrete"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              1.7,
+              2.2999999999999998
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              22,
+              28
+            ]
+          },
+          "id" : "s-apron-joint-a",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              17.699999999999999,
+              18.300000000000001
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              22,
+              28
+            ]
+          },
+          "id" : "s-apron-joint-b",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -19.5,
+              23.5
+            ],
+            "y" : [
+              35.899999999999999,
+              38.100000000000001
+            ],
+            "z" : [
+              -24.5,
+              14.5
+            ]
+          },
+          "id" : "s-main-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              9.5,
+              26.5
+            ],
+            "y" : [
+              47.899999999999999,
+              50.100000000000001
+            ],
+            "z" : [
+              -2.5,
+              20.5
+            ]
+          },
+          "id" : "s-process-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.5,
+              -13.5
+            ],
+            "y" : [
+              26.399999999999999,
+              28.600000000000001
+            ],
+            "z" : [
+              -24.5,
+              8.5
+            ]
+          },
+          "id" : "s-fabrication-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -15,
+              -1
+            ],
+            "y" : [
+              37.5,
+              44.5
+            ],
+            "z" : [
+              -11.5,
+              -4.5
+            ]
+          },
+          "id" : "s-sawlight-a",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              1,
+              15
+            ],
+            "y" : [
+              37.5,
+              46.5
+            ],
+            "z" : [
+              -11.5,
+              -4.5
+            ]
+          },
+          "id" : "s-sawlight-b",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -21.5,
+              -6.5
+            ],
+            "y" : [
+              9.5,
+              16.5
+            ],
+            "z" : [
+              26.900000000000002,
+              27.699999999999999
+            ]
+          },
+          "id" : "s-admin-glazing",
+          "kind" : "mass-block",
+          "materialID" : "industrial-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -1.75,
+              1.75
+            ],
+            "y" : [
+              1.5,
+              8.5
+            ],
+            "z" : [
+              27.100000000000001,
+              27.899999999999999
+            ]
+          },
+          "id" : "s-person-door",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -4,
+              4
+            ],
+            "y" : [
+              8.9000000000000004,
+              10.1
+            ],
+            "z" : [
+              24,
+              28
+            ]
+          },
+          "id" : "s-person-canopy",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -9.5,
+              -0.5
+            ],
+            "y" : [
+              40,
+              46
+            ],
+            "z" : [
+              -4.5,
+              2.5
+            ]
+          },
+          "id" : "s-hvac-a",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5.5,
+              12.5
+            ],
+            "y" : [
+              39.5,
+              44.5
+            ],
+            "z" : [
+              -17,
+              -11
+            ]
+          },
+          "id" : "s-hvac-b",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              12,
+              14
+            ],
+            "y" : [
+              30,
+              32
+            ],
+            "z" : [
+              -8,
+              16
+            ]
+          },
+          "id" : "s-pipe-bridge",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -18.5,
+              22.5
+            ],
+            "y" : [
+              37,
+              38
+            ],
+            "z" : [
+              -24.600000000000001,
+              -23.399999999999999
+            ]
+          },
+          "id" : "s-gutter",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -10.6,
+              -9.4000000000000004
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              14,
+              14.600000000000001
+            ]
+          },
+          "id" : "s-panel-seam-a",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              1.3999999999999999,
+              2.6000000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              14,
+              14.600000000000001
+            ]
+          },
+          "id" : "s-panel-seam-b",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              13.4,
+              14.6
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              14,
+              14.600000000000001
+            ]
+          },
+          "id" : "s-panel-seam-c",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -3.5,
+              23.5
+            ],
+            "y" : [
+              19,
+              20
+            ],
+            "z" : [
+              26.300000000000001,
+              27.300000000000001
+            ]
+          },
+          "id" : "s-guardrail",
+          "kind" : "mass-block",
+          "materialID" : "safety-yellow"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -0.5,
+              0.5
+            ],
+            "y" : [
+              0.5,
+              1.5
+            ],
+            "z" : [
+              -0.5,
+              0.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              15,
+              19
+            ],
+            "y" : [
+              50.5,
+              65.5
+            ],
+            "z" : [
+              6,
+              10
+            ]
+          },
+          "id" : "s-exhaust-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              20.5,
+              23.5
+            ],
+            "y" : [
+              49.5,
+              60.5
+            ],
+            "z" : [
+              10.5,
+              13.5
+            ]
+          },
+          "id" : "s-exhaust-b",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -18
+            ],
+            "y" : [
+              2,
+              18
+            ],
+            "z" : [
+              10,
+              18
+            ]
+          },
+          "id" : "s-tank-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -19.600000000000001,
+              -18.399999999999999
+            ],
+            "y" : [
+              2.5,
+              31.5
+            ],
+            "z" : [
+              -24.600000000000001,
+              -23.399999999999999
+            ]
+          },
+          "id" : "s-downpipe",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -4.5999999999999996,
+              -3.3999999999999999
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              25.399999999999999,
+              26.600000000000001
+            ]
+          },
+          "id" : "s-bollard-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              23.399999999999999,
+              24.600000000000001
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              25.399999999999999,
+              26.600000000000001
+            ]
+          },
+          "id" : "s-bollard-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/source-authority/quality-reset-v01/scenes/industrial_l02/variant-0/south/scene.json",
+      "sceneGeometryID" : "industrial-l02-quality-reset-south-geometry-v01",
+      "sourceRevision" : "source-v09",
+      "viewDirection" : "south",
+      "visibleOutwardMaterialOwnerCount" : 4,
+      "visibleOutwardMaterialOwners" : [
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "s-admin-west",
+          "firstMaterialID" : "warm-concrete-northwest",
+          "overlapWorld" : {
+            "x" : 3,
+            "y" : 11
+          },
+          "secondID" : "s-admin-step",
+          "secondMaterialID" : "warm-concrete-side",
+          "sharedPlaneWorld" : 27
+        },
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "s-admin-step",
+          "firstMaterialID" : "warm-concrete-side",
+          "overlapWorld" : {
+            "y" : 10,
+            "z" : 0.19999999999999929
+          },
+          "secondID" : "s-dock-door-a",
+          "secondMaterialID" : "sectional-loading-door",
+          "sharedPlaneWorld" : 5
+        },
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "s-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "x" : 0.59999999999999987,
+            "y" : 0.074999999999999956
+          },
+          "secondID" : "s-apron-joint-a",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : 28
+        },
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "s-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "x" : 0.60000000000000142,
+            "y" : 0.074999999999999956
+          },
+          "secondID" : "s-apron-joint-b",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : 28
+        }
+      ]
+    },
+    {
+      "coincidentBoundaries" : [
+        {
+          "firstID" : "w-hall-north",
+          "secondID" : "w-rear-process",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-north",
+          "secondID" : "w-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-north",
+          "secondID" : "w-dock-seal-a",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-north",
+          "secondID" : "w-dock-seal-b",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-south",
+          "secondID" : "w-admin-south",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-south",
+          "secondID" : "w-admin-step",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-south",
+          "secondID" : "w-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-hall-south",
+          "secondID" : "w-dock-seal-c",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-admin-south",
+          "secondID" : "w-admin-step",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-admin-south",
+          "secondID" : "w-loading-recess",
+          "sharedYWorld" : 1.5
+        },
+        {
+          "firstID" : "w-admin-south",
+          "secondID" : "w-dock-seal-c",
+          "sharedYWorld" : 1.5
+        }
+      ],
+      "coincidentBoundaryCount" : 11,
+      "passed" : false,
+      "primitiveCount" : 46,
+      "primitives" : [
+        {
+          "boundsWorld" : {
+            "x" : [
+              -22,
+              16
+            ],
+            "y" : [
+              1.5,
+              38.5
+            ],
+            "z" : [
+              -26.5,
+              -5.5
+            ]
+          },
+          "id" : "w-hall-north",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -22,
+              16
+            ],
+            "y" : [
+              1.5,
+              38.5
+            ],
+            "z" : [
+              5.5,
+              26.5
+            ]
+          },
+          "id" : "w-hall-south",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              5,
+              25
+            ],
+            "y" : [
+              1.5,
+              50.5
+            ],
+            "z" : [
+              -26,
+              -8
+            ]
+          },
+          "id" : "w-rear-process",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-side"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -9
+            ],
+            "y" : [
+              1.5,
+              21.5
+            ],
+            "z" : [
+              7,
+              27
+            ]
+          },
+          "id" : "w-admin-south",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27,
+              -19
+            ],
+            "y" : [
+              1.5,
+              12.5
+            ],
+            "z" : [
+              0,
+              10
+            ]
+          },
+          "id" : "w-admin-step",
+          "kind" : "mass-block",
+          "materialID" : "warm-concrete-side"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -16.600000000000001,
+              -15
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -16.5,
+              8.5
+            ]
+          },
+          "id" : "w-loading-recess",
+          "kind" : "mass-block",
+          "materialID" : "deep-loading-recess"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17.300000000000001,
+              -16.300000000000001
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -15,
+              -9
+            ]
+          },
+          "id" : "w-dock-door-a",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17.300000000000001,
+              -16.300000000000001
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              -7,
+              -1
+            ]
+          },
+          "id" : "w-dock-door-b",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17.300000000000001,
+              -16.300000000000001
+            ],
+            "y" : [
+              2.5,
+              14.5
+            ],
+            "z" : [
+              1,
+              7
+            ]
+          },
+          "id" : "w-dock-door-c",
+          "kind" : "mass-block",
+          "materialID" : "sectional-loading-door"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17.899999999999999,
+              -17.100000000000001
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -16,
+              -8
+            ]
+          },
+          "id" : "w-dock-seal-a",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17.899999999999999,
+              -17.100000000000001
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              -8,
+              0
+            ]
+          },
+          "id" : "w-dock-seal-b",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17.899999999999999,
+              -17.100000000000001
+            ],
+            "y" : [
+              1.5,
+              16.5
+            ],
+            "z" : [
+              0,
+              8
+            ]
+          },
+          "id" : "w-dock-seal-c",
+          "kind" : "mass-block",
+          "materialID" : "dock-seal-charcoal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26,
+              -16
+            ],
+            "y" : [
+              15.9,
+              18.100000000000001
+            ],
+            "z" : [
+              -18.5,
+              10.5
+            ]
+          },
+          "id" : "w-canopy",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.199999999999999,
+              -23.800000000000001
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              -17.699999999999999,
+              -16.300000000000001
+            ]
+          },
+          "id" : "w-canopy-post-north",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.199999999999999,
+              -23.800000000000001
+            ],
+            "y" : [
+              0,
+              17
+            ],
+            "z" : [
+              8.3000000000000007,
+              9.6999999999999993
+            ]
+          },
+          "id" : "w-canopy-post-south",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -19,
+              -17
+            ],
+            "y" : [
+              14,
+              44
+            ],
+            "z" : [
+              -9,
+              -7
+            ]
+          },
+          "id" : "w-portal-post-north",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -19,
+              -17
+            ],
+            "y" : [
+              14,
+              44
+            ],
+            "z" : [
+              7,
+              9
+            ]
+          },
+          "id" : "w-portal-post-south",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -19.5,
+              -16.5
+            ],
+            "y" : [
+              42.5,
+              45.5
+            ],
+            "z" : [
+              -9,
+              9
+            ]
+          },
+          "id" : "w-portal-header",
+          "kind" : "mass-block",
+          "materialID" : "safety-yellow"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -28,
+              -22
+            ],
+            "y" : [
+              0.20000000000000007,
+              1.3999999999999999
+            ],
+            "z" : [
+              -19,
+              11
+            ]
+          },
+          "id" : "w-apron",
+          "kind" : "mass-block",
+          "materialID" : "service-apron-concrete"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -28,
+              -22
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              -12.300000000000001,
+              -11.699999999999999
+            ]
+          },
+          "id" : "w-apron-joint-a",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -28,
+              -22
+            ],
+            "y" : [
+              1.325,
+              1.575
+            ],
+            "z" : [
+              3.7000000000000002,
+              4.2999999999999998
+            ]
+          },
+          "id" : "w-apron-joint-b",
+          "kind" : "mass-block",
+          "materialID" : "apron-joint"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -22.5,
+              16.5
+            ],
+            "y" : [
+              37.899999999999999,
+              40.100000000000001
+            ],
+            "z" : [
+              -27,
+              -5
+            ]
+          },
+          "id" : "w-hall-roof-north",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -22.5,
+              16.5
+            ],
+            "y" : [
+              37.899999999999999,
+              40.100000000000001
+            ],
+            "z" : [
+              5,
+              27
+            ]
+          },
+          "id" : "w-hall-roof-south",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              4.5,
+              25.5
+            ],
+            "y" : [
+              49.899999999999999,
+              52.100000000000001
+            ],
+            "z" : [
+              -14.5,
+              10.5
+            ]
+          },
+          "id" : "w-process-roof",
+          "kind" : "mass-block",
+          "materialID" : "dark-roof-membrane"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -14,
+              4
+            ],
+            "y" : [
+              39.5,
+              46.5
+            ],
+            "z" : [
+              -19.5,
+              -12.5
+            ]
+          },
+          "id" : "w-roof-monitor-north",
+          "kind" : "mass-block",
+          "materialID" : "blue-gray-painted-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -5,
+              9
+            ],
+            "y" : [
+              39,
+              45
+            ],
+            "z" : [
+              12.5,
+              19.5
+            ]
+          },
+          "id" : "w-roof-monitor-south",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-corrugated-northwest"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27.699999999999999,
+              -26.900000000000002
+            ],
+            "y" : [
+              9.5,
+              16.5
+            ],
+            "z" : [
+              10.5,
+              23.5
+            ]
+          },
+          "id" : "w-admin-glazing",
+          "kind" : "mass-block",
+          "materialID" : "industrial-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -23,
+              -13
+            ],
+            "y" : [
+              9.5,
+              16.5
+            ],
+            "z" : [
+              26.800000000000001,
+              27.599999999999998
+            ]
+          },
+          "id" : "w-admin-return-glazing",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -27.899999999999999,
+              -27.100000000000001
+            ],
+            "y" : [
+              1.5,
+              8.5
+            ],
+            "z" : [
+              3.25,
+              6.75
+            ]
+          },
+          "id" : "w-person-door",
+          "kind" : "mass-block",
+          "materialID" : "warm-interior-glazing"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -28,
+              -24
+            ],
+            "y" : [
+              8.9000000000000004,
+              10.1
+            ],
+            "z" : [
+              1,
+              9
+            ]
+          },
+          "id" : "w-person-canopy",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -12.5,
+              -3.5
+            ],
+            "y" : [
+              41,
+              47
+            ],
+            "z" : [
+              -14.5,
+              -7.5
+            ]
+          },
+          "id" : "w-hvac-a",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -4.5,
+              2.5
+            ],
+            "y" : [
+              40.5,
+              45.5
+            ],
+            "z" : [
+              14,
+              20
+            ]
+          },
+          "id" : "w-hvac-b",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -17,
+              7
+            ],
+            "y" : [
+              30,
+              32
+            ],
+            "z" : [
+              -3,
+              -1
+            ]
+          },
+          "id" : "w-pipe-bridge",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -21.5,
+              15.5
+            ],
+            "y" : [
+              39,
+              40
+            ],
+            "z" : [
+              26.399999999999999,
+              27.600000000000001
+            ]
+          },
+          "id" : "w-gutter",
+          "kind" : "mass-block",
+          "materialID" : "galvanized-service-metal"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              16,
+              16.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              7.4000000000000004,
+              8.5999999999999996
+            ]
+          },
+          "id" : "w-panel-seam-a",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              16,
+              16.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              15.4,
+              16.600000000000001
+            ]
+          },
+          "id" : "w-panel-seam-b",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              16,
+              16.600000000000001
+            ],
+            "y" : [
+              4,
+              34
+            ],
+            "z" : [
+              23.399999999999999,
+              24.600000000000001
+            ]
+          },
+          "id" : "w-panel-seam-c",
+          "kind" : "mass-block",
+          "materialID" : "painted-structural-steel"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -25.300000000000001,
+              -24.300000000000001
+            ],
+            "y" : [
+              19,
+              20
+            ],
+            "z" : [
+              -17.5,
+              9.5
+            ]
+          },
+          "id" : "w-guardrail",
+          "kind" : "mass-block",
+          "materialID" : "safety-yellow"
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -0.5,
+              0.5
+            ],
+            "y" : [
+              0.5,
+              1.5
+            ],
+            "z" : [
+              -0.5,
+              0.5
+            ]
+          },
+          "id" : "chimney",
+          "kind" : "chimney",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              15,
+              19
+            ],
+            "y" : [
+              52,
+              68
+            ],
+            "z" : [
+              -6,
+              -2
+            ]
+          },
+          "id" : "w-exhaust-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              8.5,
+              11.5
+            ],
+            "y" : [
+              51.5,
+              62.5
+            ],
+            "z" : [
+              0.5,
+              3.5
+            ]
+          },
+          "id" : "w-exhaust-b",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              16,
+              24
+            ],
+            "y" : [
+              2,
+              18
+            ],
+            "z" : [
+              13,
+              21
+            ]
+          },
+          "id" : "w-tank-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              9,
+              15
+            ],
+            "y" : [
+              2,
+              14
+            ],
+            "z" : [
+              19,
+              25
+            ]
+          },
+          "id" : "w-tank-b",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              15.4,
+              16.600000000000001
+            ],
+            "y" : [
+              2.5,
+              33.5
+            ],
+            "z" : [
+              26.399999999999999,
+              27.600000000000001
+            ]
+          },
+          "id" : "w-downpipe",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.600000000000001,
+              -25.399999999999999
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              -18.600000000000001,
+              -17.399999999999999
+            ]
+          },
+          "id" : "w-bollard-a",
+          "kind" : "prop",
+          "materialID" : null
+        },
+        {
+          "boundsWorld" : {
+            "x" : [
+              -26.600000000000001,
+              -25.399999999999999
+            ],
+            "y" : [
+              0.5,
+              5.5
+            ],
+            "z" : [
+              9.4000000000000004,
+              10.6
+            ]
+          },
+          "id" : "w-bollard-b",
+          "kind" : "prop",
+          "materialID" : null
+        }
+      ],
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/source-authority/quality-reset-v01/scenes/industrial_l02/variant-0/west/scene.json",
+      "sceneGeometryID" : "industrial-l02-quality-reset-west-geometry-v01",
+      "sourceRevision" : "source-v09",
+      "viewDirection" : "west",
+      "visibleOutwardMaterialOwnerCount" : 3,
+      "visibleOutwardMaterialOwners" : [
+        {
+          "axis" : "z",
+          "cameraVisibleFace" : "positive-z",
+          "firstID" : "w-portal-post-south",
+          "firstMaterialID" : "painted-structural-steel",
+          "overlapWorld" : {
+            "x" : 2,
+            "y" : 1.5
+          },
+          "secondID" : "w-portal-header",
+          "secondMaterialID" : "safety-yellow",
+          "sharedPlaneWorld" : 9
+        },
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "w-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "y" : 0.074999999999999956,
+            "z" : 0.60000000000000142
+          },
+          "secondID" : "w-apron-joint-a",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : -22
+        },
+        {
+          "axis" : "x",
+          "cameraVisibleFace" : "positive-x",
+          "firstID" : "w-apron",
+          "firstMaterialID" : "service-apron-concrete",
+          "overlapWorld" : {
+            "y" : 0.074999999999999956,
+            "z" : 0.59999999999999964
+          },
+          "secondID" : "w-apron-joint-b",
+          "secondMaterialID" : "apron-joint",
+          "sharedPlaneWorld" : -22
+        }
+      ]
+    }
+  ],
+  "failures" : [
+    "north: 5 coincident structural Y boundaries",
+    "north: 4 camera-visible coincident material-owner planes",
+    "east: 8 coincident structural Y boundaries",
+    "east: 3 camera-visible coincident material-owner planes",
+    "south: 9 coincident structural Y boundaries",
+    "south: 4 camera-visible coincident material-owner planes",
+    "west: 11 coincident structural Y boundaries",
+    "west: 3 camera-visible coincident material-owner planes"
+  ],
+  "logicalBuildingID" : "industrial_l02",
+  "passed" : false,
+  "productionSelected" : false,
+  "purpose" : "reject exact shared structural Y planes and multiple material owners on a camera-visible coincident mass-block plane",
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "toleranceWorld" : 9.9999999999999995e-07
+}

@@ -26,3 +26,23 @@ PNG bytes through the standard image path, mask chroma, compare occupied
 bounds/area against ratios derived from complete north/south and accepted
 Residential sources, and emit an occupied-pixel crop contact sheet from those
 exact bytes.
+
+## Post-rejection retained-byte diagnostic
+
+`SOURCE-V04-EXACT-RGBA-VISIBILITY.json` now performs that check through
+`CGImageSource` immediate RGBA decode and the decoded provider bytes. Every
+direction reports:
+
+- straight RGBA decode;
+- alpha-visible / non-magenta RGB occupancy ratio `1.0`;
+- zero hidden non-magenta pixels;
+- exact RGB/alpha-visible occupied-bounds equality;
+- occupied-count ratios from `0.9979` through `1.0281` against the complete
+  N/S plus accepted Residential reference floor.
+
+`SOURCE-V04-EXACT-RGBA-OCCUPIED-CROPS.png` masks only exact flat chroma and
+shows complete N/E/S/W buildings, footprint plates, southeast shadows, and
+frontages from the exact retained bytes. This evidence narrows the prior
+direct-view discrepancy to the uncropped review presentation path rather than
+hidden RGB in the retained PNG. Source-v04 nevertheless remains rejected and
+unnormalized until integration independently reviews this exact diagnostic.

@@ -211,6 +211,14 @@ final class CityScene: SKScene {
             ) && !$0.contains(".generated-v4.")
         }
     }
+    var ambientEnvironmentNamesForTesting: [String] {
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: ambientLayer).filter {
+            $0.hasPrefix("world.environment.") || $0.hasPrefix("district.ground.")
+        }
+    }
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
@@ -869,6 +877,7 @@ final class CityScene: SKScene {
         guard signature != ambientCorridorSignature else { return false }
         ambientRebuildCountForTesting += 1
         ambientLayer.removeAllChildren()
+        ambientLayer.addChild(terrainRenderer.makeDevelopedDistrictGround(in: snapshot.state))
         ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
             in: snapshot.state,
             consequences: snapshot.spatialConsequences,
@@ -1974,7 +1983,7 @@ final class CityScene: SKScene {
         // one-cross fixture. Give that real vertical mass the same under-chrome
         // breathing room as its horizontal frontage so the new district does
         // not regress to a smaller default composition.
-        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.36
+        let allowedHeightOccupancy: CGFloat = isCompact ? 1.34 : 1.12
         var scale = max(
             cameraBounds.width / (safeWidth * targetWidthOccupancy),
             cameraBounds.height / (safeHeight * allowedHeightOccupancy)
@@ -2016,9 +2025,14 @@ final class CityScene: SKScene {
             x: (viewportInsets.leading - viewportInsets.trailing) * scale / 2,
             y: (viewportInsets.bottom - viewportInsets.top) * scale / 2
         )
+        // The isometric district's tallest roofs sit northwest while utility
+        // shadows extend southeast. A small window-class composition bias keeps
+        // both ends clear of the persistent HUD without changing scale, bounds,
+        // hit geometry, or which authoritative coordinates define the camera.
+        let verticalCompositionBias: CGFloat = isCompact ? 9 : 16
         cameraNode.position = CGPoint(
             x: cameraBounds.midX - safeCenterOffset.x,
-            y: cameraBounds.midY - safeCenterOffset.y
+            y: cameraBounds.midY - safeCenterOffset.y + verticalCompositionBias
         )
     }
 

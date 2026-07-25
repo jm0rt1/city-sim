@@ -75,12 +75,7 @@ final class LotContextRenderer {
             ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
                 where: adjacentRoads.contains
             )
-        let variant = WorldVisualSeed.variant(
-            count: 4,
-            for: tile.coordinate,
-            kind: tile.kind,
-            salt: 0x6600
-        )
+        let variant = Self.districtMaterialVariant(for: tile)
         let key = TemplateKey(
             family: family.rawValue,
             variant: variant,
@@ -285,6 +280,25 @@ final class LotContextRenderer {
         templates.count
     }
 
+    /// Four-neighbor parcels never receive the same immediate site treatment.
+    /// A family salt keeps the sequence from aligning across uses while the
+    /// coordinate terms guarantee that moving one tile east/west changes the
+    /// identity by one and moving north/south changes it by two. This is a
+    /// renderer-owned material choice only; it never changes building identity,
+    /// occupancy, frontage, or gameplay state.
+    static func districtMaterialVariant(for tile: CityTile) -> Int {
+        let familyOffset: Int = switch tile.kind {
+        case .residential: 0
+        case .commercial: 1
+        case .industrial, .powerPlant, .waterTower: 2
+        case .cityHall, .fireStation, .policeStation, .school: 3
+        case .park: 1
+        case .empty, .road: 0
+        }
+        let value = tile.coordinate.x + tile.coordinate.y * 2 + familyOffset
+        return ((value % 4) + 4) % 4
+    }
+
     private func family(for kind: BuildingKind) -> Family? {
         switch kind {
         case .residential:
@@ -310,8 +324,8 @@ final class LotContextRenderer {
         let rhythm = SKShapeNode(path: style.diamondPath(width: 64, height: 32))
         rhythm.name = "lot.context.city.\(family.rawValue).material.\(variant)"
         rhythm.fillColor = .clear
-        rhythm.strokeColor = boundaryColor(for: family).withAlphaComponent(0.30)
-        rhythm.lineWidth = family == .industrial ? 1.25 : 0.9
+        rhythm.strokeColor = boundaryColor(for: family).withAlphaComponent(0.16)
+        rhythm.lineWidth = family == .industrial ? 0.85 : 0.65
         rhythm.zPosition = -3.1
         node.addChild(rhythm)
     }
@@ -344,8 +358,8 @@ final class LotContextRenderer {
         }
         let boundary = SKShapeNode(path: edgePath)
         boundary.name = "lot.lod.neighborhood.public-realm.\(family.rawValue)"
-        boundary.strokeColor = boundaryColor(for: family)
-        boundary.lineWidth = boundaryWidth(for: family)
+        boundary.strokeColor = boundaryColor(for: family).withAlphaComponent(0.72)
+        boundary.lineWidth = boundaryWidth(for: family) * 0.78
         boundary.lineCap = .round
         boundary.zPosition = 3.9
         node.addChild(boundary)

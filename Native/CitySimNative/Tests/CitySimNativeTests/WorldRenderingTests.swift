@@ -1933,11 +1933,11 @@ final class WorldRenderingTests: XCTestCase {
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
             if size.width <= 900 {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
-                XCTAssertLessThanOrEqual(occupied.width, 0.63)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.57)
+                XCTAssertLessThanOrEqual(occupied.width, 0.60)
             } else {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.73)
-                XCTAssertLessThanOrEqual(occupied.width, 0.78)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.64)
+                XCTAssertLessThanOrEqual(occupied.width, 0.68)
             }
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
             XCTAssertNotEqual(
@@ -2673,6 +2673,20 @@ final class WorldRenderingTests: XCTestCase {
             LotContextRenderer.cachedTemplateCountForTesting,
             5 * 4 * 5
         )
+
+        let adjacentTiles = [
+            CityTile(coordinate: GridCoordinate(x: 8, y: 8), kind: .residential),
+            CityTile(coordinate: GridCoordinate(x: 9, y: 8), kind: .residential),
+            CityTile(coordinate: GridCoordinate(x: 8, y: 9), kind: .residential),
+        ]
+        let adjacentVariants = adjacentTiles.map(LotContextRenderer.districtMaterialVariant)
+        XCTAssertNotEqual(adjacentVariants[0], adjacentVariants[1])
+        XCTAssertNotEqual(adjacentVariants[0], adjacentVariants[2])
+        XCTAssertEqual(
+            adjacentVariants,
+            adjacentTiles.map(LotContextRenderer.districtMaterialVariant),
+            "District material identity must be deterministic across pulses"
+        )
     }
 
     @MainActor
@@ -2818,6 +2832,15 @@ final class WorldRenderingTests: XCTestCase {
             backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
             10
         )
+        var maximumMaterialPatchSize = CGSize.zero
+        backdrop.enumerateChildNodes(withName: "//terrain.macro.material.patch.*") { node, _ in
+            guard let shape = node as? SKShapeNode,
+                  let bounds = shape.path?.boundingBoxOfPath else { return }
+            maximumMaterialPatchSize.width = max(maximumMaterialPatchSize.width, bounds.width)
+            maximumMaterialPatchSize.height = max(maximumMaterialPatchSize.height, bounds.height)
+        }
+        XCTAssertLessThanOrEqual(maximumMaterialPatchSize.width, 72 * 1.8)
+        XCTAssertLessThanOrEqual(maximumMaterialPatchSize.height, 36 * 1.5)
         var furrowNodes: [SKShapeNode] = []
         backdrop.enumerateChildNodes(withName: "//terrain.macro.furrows.*") { node, _ in
             if let shape = node as? SKShapeNode { furrowNodes.append(shape) }
@@ -2851,6 +2874,18 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })
         XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
+
+        let districtGround = renderer.makeDevelopedDistrictGround(in: state)
+        let districtNames = descendantNames(in: districtGround)
+        XCTAssertTrue(districtNames.contains("district.ground.shared-contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.authoritative-public-realm"))
+        XCTAssertTrue(districtNames.contains { $0.hasPrefix("district.ground.authoritative-parcels.") })
+        XCTAssertEqual(recursiveActiveActionCount(districtGround), 0)
+        XCTAssertTrue(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "world.environment.developed-district-ground"
+            )
+        )
     }
 
     @MainActor
@@ -2863,8 +2898,8 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.73)
-        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.78)
+        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.64)
+        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.68)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 192.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -2877,8 +2912,8 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.60)
-        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.63)
+        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.57)
+        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.60)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
@@ -2891,7 +2926,7 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.y,
-            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
+            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y + 16,
             accuracy: 0.001
         )
         XCTAssertGreaterThan(
@@ -2919,7 +2954,10 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.block"))
         let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(cityVisible.contains("lot.lod.city.mass.cityHall"))
-        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
+        XCTAssertTrue(
+            cityVisible.contains { $0.hasPrefix("lot.frontage.") },
+            "Authoritative parcel-to-road frontage is strategic city structure, not block-only decoration"
+        )
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.neighborhood.public-realm.") })
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
@@ -2994,7 +3032,7 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.y,
-            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
+            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y + 16,
             accuracy: 0.001
         )
     }
@@ -3017,8 +3055,8 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.32296520471572876),
-                CGSize(width: 0.7238124428047685, height: 1.244466063092227)
+                CGFloat(0.39217203855514526),
+                CGSize(width: 0.5960808287798487, height: 1.0248543937735182)
             ),
             (
                 CGSize(width: 900, height: 600),

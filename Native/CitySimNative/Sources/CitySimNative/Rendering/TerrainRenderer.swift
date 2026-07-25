@@ -117,18 +117,125 @@ final class TerrainRenderer {
         return root
     }
 
+    /// A state-bound ground plane for the real developed fabric. It unions only
+    /// completed occupied parcels and authoritative roads within one cell of
+    /// them, so transparent margins between building, frontage, sidewalk, and
+    /// curb read as one district without painting a new road or occupied lot.
+    func makeDevelopedDistrictGround(in state: CityGameState) -> SKNode {
+        let root = SKNode()
+        root.name = "world.environment.developed-district-ground"
+        root.zPosition = -10_000
+
+        let completed = state.tiles.filter {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        }
+        guard !completed.isEmpty else { return root }
+        let developedCoordinates = completed.map(\.coordinate)
+        let developedRoads = state.tiles.filter { tile in
+            guard tile.kind == .road else { return false }
+            return developedCoordinates.contains { developed in
+                max(
+                    abs(developed.x - tile.coordinate.x),
+                    abs(developed.y - tile.coordinate.y)
+                ) <= 1
+            }
+        }
+
+        let sharedCoordinates = completed.map(\.coordinate) + developedRoads.map(\.coordinate)
+        let shadowPath = combinedDiamondPath(
+            coordinates: sharedCoordinates,
+            width: style.tileWidth - 1,
+            height: style.tileHeight - 0.5,
+            offset: CGPoint(x: 1.6, y: -1.4)
+        )
+        let shadow = SKShapeNode(path: shadowPath)
+        shadow.name = "district.ground.shared-contact"
+        shadow.fillColor = NSColor.black.withAlphaComponent(0.11)
+        shadow.strokeColor = .clear
+        root.addChild(shadow)
+
+        let roadPath = combinedDiamondPath(
+            coordinates: developedRoads.map(\.coordinate),
+            width: style.tileWidth - 1.5,
+            height: style.tileHeight - 0.75
+        )
+        let publicRealm = SKShapeNode(path: roadPath)
+        publicRealm.name = "district.ground.authoritative-public-realm"
+        publicRealm.fillColor = style.palette.sidewalk.blended(
+            withFraction: 0.36,
+            of: style.palette.lotGrass
+        )?.withAlphaComponent(0.90) ?? style.palette.sidewalk.withAlphaComponent(0.90)
+        publicRealm.strokeColor = .clear
+        publicRealm.zPosition = 1
+        root.addChild(publicRealm)
+
+        let familyGroups = Dictionary(grouping: completed, by: \.kind)
+        for (kind, tiles) in familyGroups {
+            let parcel = SKShapeNode(path: combinedDiamondPath(
+                coordinates: tiles.map(\.coordinate),
+                width: style.tileWidth - 3,
+                height: style.tileHeight - 1.5
+            ))
+            parcel.name = "district.ground.authoritative-parcels.\(kind.rawValue)"
+            parcel.fillColor = districtGroundColor(for: kind)
+            parcel.strokeColor = .clear
+            parcel.zPosition = 2
+            root.addChild(parcel)
+        }
+        return root
+    }
+
+    private func combinedDiamondPath(
+        coordinates: [GridCoordinate],
+        width: CGFloat,
+        height: CGFloat,
+        offset: CGPoint = .zero
+    ) -> CGPath {
+        let path = CGMutablePath()
+        let diamond = style.diamondPath(width: width, height: height)
+        for coordinate in coordinates {
+            let position = style.isoPosition(coordinate)
+            var transform = CGAffineTransform(
+                translationX: position.x + offset.x,
+                y: position.y + offset.y
+            )
+            if let translated = diamond.copy(using: &transform) {
+                path.addPath(translated)
+            }
+        }
+        return path
+    }
+
+    private func districtGroundColor(for kind: BuildingKind) -> NSColor {
+        switch kind {
+        case .residential:
+            style.palette.lotGrass.withAlphaComponent(0.88)
+        case .commercial, .cityHall, .fireStation, .policeStation, .school:
+            style.palette.concrete.withAlphaComponent(0.90)
+        case .industrial, .powerPlant, .waterTower:
+            style.palette.soil.blended(
+                withFraction: 0.40,
+                of: style.palette.concrete
+            )?.withAlphaComponent(0.90) ?? style.palette.soil.withAlphaComponent(0.90)
+        case .park:
+            style.palette.parkGrass.withAlphaComponent(0.92)
+        case .empty, .road:
+            .clear
+        }
+    }
+
     private func macroFieldColor(variant: Int) -> NSColor {
         switch variant {
         case 0:
-            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.12)
+            NSColor(calibratedRed: 0.16, green: 0.31, blue: 0.19, alpha: 0.075)
         case 1:
-            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.08)
+            NSColor(calibratedRed: 0.48, green: 0.50, blue: 0.24, alpha: 0.060)
         case 2:
-            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.10)
+            NSColor(calibratedRed: 0.20, green: 0.38, blue: 0.25, alpha: 0.070)
         case 3:
-            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.09)
+            NSColor(calibratedRed: 0.36, green: 0.42, blue: 0.20, alpha: 0.065)
         default:
-            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.07)
+            NSColor(calibratedRed: 0.34, green: 0.28, blue: 0.16, alpha: 0.055)
         }
     }
 
@@ -149,20 +256,28 @@ final class TerrainRenderer {
         for y in stride(from: 2, to: gridHeight - 1, by: materialSpan) {
             for x in stride(from: 2, to: gridWidth - 1, by: materialSpan) {
                 let anchor = GridCoordinate(x: x, y: y)
-                let center = style.isoPosition(anchor)
+                let baseCenter = style.isoPosition(anchor)
+                let center = CGPoint(
+                    x: baseCenter.x + (
+                        WorldVisualSeed.unit(for: anchor, kind: .empty, salt: 0x7E18) - 0.5
+                    ) * style.tileWidth * 1.45,
+                    y: baseCenter.y + (
+                        WorldVisualSeed.unit(for: anchor, kind: .empty, salt: 0x7E19) - 0.5
+                    ) * style.tileHeight * 1.10
+                )
                 let radiusX = style.tileWidth * (
-                    1.08 + WorldVisualSeed.unit(
+                    0.38 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E22
-                    ) * 0.42
+                    ) * 0.16
                 )
                 let radiusY = style.tileHeight * (
-                    0.78 + WorldVisualSeed.unit(
+                    0.30 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E23
-                    ) * 0.34
+                    ) * 0.12
                 )
                 let variant = WorldVisualSeed.variant(
                     count: 5,
@@ -170,7 +285,7 @@ final class TerrainRenderer {
                     kind: .empty,
                     salt: 0x7E21
                 )
-                let material = SKShapeNode(path: organicSwatchPath(
+                let material = SKShapeNode(path: terrainTexturePath(
                     center: center,
                     anchor: anchor,
                     radiusX: radiusX,
@@ -182,7 +297,7 @@ final class TerrainRenderer {
                 city.addChild(material)
 
                 if (materialIndex + variant).isMultiple(of: 2) {
-                    let meadow = SKShapeNode(path: organicSwatchPath(
+                    let meadow = SKShapeNode(path: terrainTexturePath(
                         center: CGPoint(
                             x: center.x + radiusX * 0.08,
                             y: center.y - radiusY * 0.06
@@ -197,7 +312,7 @@ final class TerrainRenderer {
                         calibratedRed: 0.54,
                         green: 0.58,
                         blue: 0.29,
-                        alpha: 0.055
+                        alpha: 0.052
                     )
                     meadow.strokeColor = .clear
                     neighborhood.addChild(meadow)
@@ -219,27 +334,26 @@ final class TerrainRenderer {
         }
     }
 
-    private func organicSwatchPath(
+    private func terrainTexturePath(
         center: CGPoint,
         anchor: GridCoordinate,
         radiusX: CGFloat,
         radiusY: CGFloat,
         saltOffset: UInt64 = 0
     ) -> CGPath {
-        let pointCount = 10
+        let pointCount = 12
         let points = (0..<pointCount).map { index in
             let angle = CGFloat(index) / CGFloat(pointCount) * .pi * 2
-            let radialVariation = 0.84 + WorldVisualSeed.unit(
+            let radialVariation = 0.78 + WorldVisualSeed.unit(
                 for: anchor,
                 kind: .empty,
                 salt: 0x7E30 + saltOffset + UInt64(index)
-            ) * 0.22
+            ) * 0.28
             return CGPoint(
                 x: center.x + cos(angle) * radiusX * radialVariation,
                 y: center.y + sin(angle) * radiusY * radialVariation
             )
         }
-
         let path = CGMutablePath()
         path.move(to: CGPoint(
             x: (points[pointCount - 1].x + points[0].x) / 2,

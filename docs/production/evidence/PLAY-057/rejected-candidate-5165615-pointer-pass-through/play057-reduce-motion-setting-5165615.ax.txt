@@ -1,0 +1,23 @@
+Window: "CitySim [UI wdbeadac6e0bd] Settings", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim [UI wdbeadac6e0bd] Settings, ID: com_apple_SwiftUI_Settings_window, Secondary Actions: Raise
+	1 scroll area
+		2 container
+			3 switch Sound effects, Value: on
+			4 switch Reduce ambient animation, Value: on
+			5 text Renderer, Value: SpriteKit · 60 FPS
+			6 text Save location, Value: Application Support/CitySimNative
+	7 close button
+	8 zoom button (disabled)
+	9 text CitySim [UI wdbeadac6e0bd] Settings
+10 menu bar
+	11 CitySim [UI wdbeadac6e0bd]
+	12 File
+	13 Edit
+	14 View
+	15 Simulation
+	16 Tools
+	17 City Data
+	18 Window
+	19 Help
+
+The focused UI element is 3 switch on

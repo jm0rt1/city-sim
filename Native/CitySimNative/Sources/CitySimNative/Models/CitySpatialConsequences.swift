@@ -44,6 +44,31 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
     let pollutionBand: CityConsequenceBand
     let vitalityScore: Double
     let vitality: CityLocationVitality
+    let landValueIndex: Double?
+    let localHappinessIndex: Double?
+    let trafficPressure: Double?
+
+    init(
+        coordinate: GridCoordinate,
+        utility: CityLocationUtilityService,
+        pollutionExposure: Double,
+        pollutionBand: CityConsequenceBand,
+        vitalityScore: Double,
+        vitality: CityLocationVitality,
+        landValueIndex: Double? = nil,
+        localHappinessIndex: Double? = nil,
+        trafficPressure: Double? = nil
+    ) {
+        self.coordinate = coordinate
+        self.utility = utility
+        self.pollutionExposure = pollutionExposure
+        self.pollutionBand = pollutionBand
+        self.vitalityScore = vitalityScore
+        self.vitality = vitality
+        self.landValueIndex = landValueIndex
+        self.localHappinessIndex = localHappinessIndex
+        self.trafficPressure = trafficPressure
+    }
 }
 
 struct CitySpatialConsequenceMap: Equatable, Sendable {
@@ -115,7 +140,10 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
 
             let vitalityScore: Double
             let vitality: CityLocationVitality
-            if tile.kind == .empty || tile.kind == .road || tile.constructionProgress < 1 {
+            let isCompletedDevelopment = tile.kind != .empty
+                && tile.kind != .road
+                && tile.constructionProgress >= 1
+            if !isCompletedDevelopment {
                 vitalityScore = 0
                 vitality = .notApplicable
             } else {
@@ -137,13 +165,50 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                 }
             }
 
+            let parkProximity = Self.proximityInfluence(
+                from: tile.coordinate,
+                distances: parkDistances,
+                radius: 3
+            )
+            let landValueIndex: Double?
+            let localHappinessIndex: Double?
+            if isCompletedDevelopment {
+                let roadAccess = state.neighbors(of: tile.coordinate).contains {
+                    $0.kind == .road
+                } ? 1.0 : 0.0
+                let condition = Self.clamp(tile.condition)
+                let pollutionSafety = 1 - pollutionExposure
+                landValueIndex = Self.clamp(
+                    roadAccess * 0.20
+                        + combined * 0.25
+                        + condition * 0.25
+                        + pollutionSafety * 0.20
+                        + parkProximity * 0.10
+                )
+                localHappinessIndex = Self.clamp(
+                    Self.clamp(state.happiness / 100) * 0.40
+                        + combined * 0.20
+                        + condition * 0.15
+                        + pollutionSafety * 0.15
+                        + parkProximity * 0.10
+                )
+            } else {
+                landValueIndex = nil
+                localHappinessIndex = nil
+            }
+
             return CitySpatialConsequence(
                 coordinate: tile.coordinate,
                 utility: utility,
                 pollutionExposure: pollutionExposure,
                 pollutionBand: Self.pollutionBand(pollutionExposure),
                 vitalityScore: vitalityScore,
-                vitality: vitality
+                vitality: vitality,
+                landValueIndex: landValueIndex,
+                localHappinessIndex: localHappinessIndex,
+                trafficPressure: tile.kind == .road
+                    ? Self.trafficPressure(at: tile.coordinate, in: state)
+                    : nil
             )
         }
     }
@@ -196,6 +261,47 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
             return 1
         }
         return clamp(Double(tile.occupancy) / Double(max(1, capacity)))
+    }
+
+    private static func trafficPressure(
+        at coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> Double {
+        let roadConnections = state.neighbors(of: coordinate).filter {
+            $0.kind == .road
+        }.count
+        let topologyPressure = Double(roadConnections) / 4
+
+        var nearbyActivity = 0.0
+        for yOffset in -3...3 {
+            for xOffset in -3...3 {
+                let distance = abs(xOffset) + abs(yOffset)
+                guard distance > 0, distance <= 3,
+                      let tile = state.tile(at: GridCoordinate(
+                          x: coordinate.x + xOffset,
+                          y: coordinate.y + yOffset
+                      )),
+                      tile.constructionProgress >= 1 else {
+                    continue
+                }
+
+                let demandFactor: Double
+                switch tile.kind {
+                case .residential:
+                    demandFactor = 1
+                case .commercial:
+                    demandFactor = 0.5 + Self.clamp(state.demand.commercial) * 0.5
+                case .industrial:
+                    demandFactor = 0.5 + Self.clamp(state.demand.industrial) * 0.5
+                default:
+                    continue
+                }
+                let distanceWeight = 1 - Double(distance) / 4
+                nearbyActivity += Self.utilization(of: tile) * demandFactor * distanceWeight
+            }
+        }
+        let activityPressure = Self.clamp(nearbyActivity / 4)
+        return Self.clamp(topologyPressure * 0.25 + activityPressure * 0.75)
     }
 
     private static func proximityInfluence(

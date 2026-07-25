@@ -9,7 +9,7 @@
 - **Planned surfaces:** `CitySpatialConsequences`, immutable presentation snapshot tests, focused deterministic/performance evidence, and `docs/production/evidence/PLAY-059/`
 - **Dependencies:** accepted existing spatial consequence platform; CONTRACT-013; exact published claim baseline
 - **Validation/proof:** exact repeat samples for story states; applicability and monotonicity fixtures; snapshot/save/fingerprint compatibility; focused and full native suites; measured construction budget
-- **Status:** dispatched after the claim baseline is published; acceptance belongs to integration
+- **Status:** ready for integration at the exact completion candidate reported by the simulation-platform handoff; acceptance belongs to integration
 
 Add only the three optional transient channels approved by CONTRACT-013:
 developed-tile Land Value, developed-tile Local Happiness, and road-tile

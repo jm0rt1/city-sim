@@ -35,6 +35,19 @@ private func rawReviewArgument(
     return arguments[index + 1]
 }
 
+private func rawReviewOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
+    }
+    return arguments[index + 1]
+}
+
 private func rawReviewSHA256(_ url: URL) throws -> String {
     SHA256.hash(data: try Data(contentsOf: url)).map {
         String(format: "%02x", $0)
@@ -344,15 +357,25 @@ enum BuildIndustrialL2V5RawReviewMain {
                 in: arguments
             )
         ).standardizedFileURL
+        let candidateStem =
+            rawReviewOptionalArgument(
+                "--candidate-stem",
+                in: arguments
+            ) ?? "source-v05"
+        let candidateRevision =
+            rawReviewOptionalArgument(
+                "--candidate-revision",
+                in: arguments
+            ) ?? "source-v05"
         let offlineRoot = root.appendingPathComponent(
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027"
         )
         let directions = ["north", "east", "south", "west"]
         let candidates = try directions.map { direction in
             try rawReviewLoad(
-                id: "industrial-l02-source-v05-\(direction)",
+                id: "industrial-l02-\(candidateRevision)-\(direction)",
                 url: offlineRoot.appendingPathComponent(
-                    "raw/industrial_l02/variant-0/\(direction)/source-v05.png"
+                    "raw/industrial_l02/variant-0/\(direction)/\(candidateStem).png"
                 )
             )
         }
@@ -408,6 +431,39 @@ enum BuildIndustrialL2V5RawReviewMain {
         let lightingGrayscaleURL = outputDirectory.appendingPathComponent(
             "EAST-V05-VS-V04-VS-FLATTENED-GRAYSCALE.png"
         )
+        let northTripletArguments = [
+            rawReviewOptionalArgument(
+                "--north-primary",
+                in: arguments
+            ),
+            rawReviewOptionalArgument(
+                "--north-repeat-b",
+                in: arguments
+            ),
+            rawReviewOptionalArgument(
+                "--north-repeat-c",
+                in: arguments
+            ),
+        ]
+        let northTriplet: [RawReviewImage]? =
+            northTripletArguments.allSatisfy { $0 != nil }
+            ? try zip(
+                ["north-primary", "north-repeat-b", "north-repeat-c"],
+                northTripletArguments.compactMap { $0 }
+            ).map { id, path in
+                try rawReviewLoad(
+                    id: id,
+                    url: URL(fileURLWithPath: path).standardizedFileURL
+                )
+            }
+            : nil
+        let northTripletColorURL = outputDirectory.appendingPathComponent(
+            "NORTH-A-B-C-NATIVE-2X-COLOR.png"
+        )
+        let northTripletGrayscaleURL =
+            outputDirectory.appendingPathComponent(
+                "NORTH-A-B-C-NATIVE-2X-GRAYSCALE.png"
+            )
         try rawReviewWrite(
             try rawReviewSheet(
                 images: candidates.map(\.image),
@@ -481,8 +537,32 @@ enum BuildIndustrialL2V5RawReviewMain {
             ),
             to: lightingGrayscaleURL
         )
+        if let northTriplet {
+            let northTripletCrops = try northTriplet.map {
+                try rawReviewCrop(
+                    try rawReviewMasked($0),
+                    rect: registeredCrop
+                )
+            }
+            try rawReviewWrite(
+                try rawReviewSheet(
+                    images: northTripletCrops,
+                    columns: 3,
+                    panel: nativePanel
+                ),
+                to: northTripletColorURL
+            )
+            try rawReviewWrite(
+                try rawReviewSheet(
+                    images: try northTripletCrops.map(rawReviewGrayscale),
+                    columns: 3,
+                    panel: nativePanel
+                ),
+                to: northTripletGrayscaleURL
+            )
+        }
 
-        let files = [
+        var files = [
             ("sourceScale", sourceScaleURL),
             ("native2xColor", nativeColorURL),
             ("native2xGrayscale", nativeGrayscaleURL),
@@ -491,11 +571,19 @@ enum BuildIndustrialL2V5RawReviewMain {
             ("eastLightingComparisonColor", lightingColorURL),
             ("eastLightingComparisonGrayscale", lightingGrayscaleURL),
         ]
+        if northTriplet != nil {
+            files.append(
+                ("northABCNative2xColor", northTripletColorURL)
+            )
+            files.append(
+                ("northABCNative2xGrayscale", northTripletGrayscaleURL)
+            )
+        }
         let report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
             "logicalBuildingID": "industrial_l02",
-            "sourceRevision": "source-v05",
+            "sourceRevision": candidateRevision,
             "purpose":
                 "review-only raw-gate panels after deterministic identity failure; no normalization",
             "directionOrder": directions,
@@ -514,17 +602,30 @@ enum BuildIndustrialL2V5RawReviewMain {
             "familyComparisonLayout": [
                 "columns": [
                     "accepted Industrial L1 source-v05",
-                    "rejected Industrial L2 source-v05 raw attempt",
+                    "rejected Industrial L2 \(candidateRevision) raw attempt",
                 ],
                 "rows": directions,
             ],
             "lightingComparisonLayout": [
                 "columns": [
-                    "Industrial L2 source-v05 East",
+                    "Industrial L2 \(candidateRevision) East",
                     "rejected Industrial L2 source-v04 East current lighting",
                     "rejected Industrial L2 source-v04 East flattened constant-unlit diagnostic",
                 ],
             ],
+            "northABCLayout": northTriplet == nil
+                ? NSNull()
+                : [
+                    "columns": [
+                        "North primary",
+                        "North repeat B",
+                        "North repeat C",
+                    ],
+                    "registeredRawCrop": [512, 270, 513, 695],
+                    "panelPixels": [144, 195],
+                    "presentation":
+                        "exact retained PNG decoded through ImageIO, exact chroma masked transparent, alpha retained, native-2x scale on neutral field",
+                ],
             "valueEvidence": (
                 candidates
                 + [rejectedCurrentEast, rejectedFlatEast]

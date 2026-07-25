@@ -4,6 +4,9 @@ import SpriteKit
 enum WorldOverlayPattern: String, Sendable {
     case utilityEdge
     case pollutionHatch
+    case landValueContour
+    case trafficPressureTicks
+    case happinessRipples
 }
 
 struct WorldOverlaySample {
@@ -45,6 +48,12 @@ final class WorldOverlayRenderer {
             emphasis = makeUtilityEdge(color: sample.color, severity: severity, detail: minimumDetail)
         case .pollutionHatch:
             emphasis = makePollutionHatch(color: sample.color, severity: severity, detail: minimumDetail)
+        case .landValueContour:
+            emphasis = makeLandValueContour(color: sample.color, severity: severity, detail: minimumDetail)
+        case .trafficPressureTicks:
+            emphasis = makeTrafficPressureTicks(color: sample.color, severity: severity, detail: minimumDetail)
+        case .happinessRipples:
+            emphasis = makeHappinessRipples(color: sample.color, severity: severity, detail: minimumDetail)
         }
         emphasis.name = "overlay.pattern.\(sample.pattern.rawValue)"
         emphasis.zPosition = 30
@@ -69,20 +78,37 @@ final class WorldOverlayRenderer {
         consequence: CitySpatialConsequence?,
         overlay: DataOverlay
     ) -> WorldOverlaySample? {
-        guard isDeveloped(tile),
-              let consequence,
+        guard let consequence,
               consequence.coordinate == tile.coordinate else {
             return nil
         }
 
         switch overlay {
         case .utilities:
+            guard isDeveloped(tile) else { return nil }
             return makeSample(consequence.utility.combined, pattern: .utilityEdge)
         case .pollution:
+            guard isDeveloped(tile) else { return nil }
             return makeSample(1 - consequence.pollutionExposure, pattern: .pollutionHatch)
-        case .none, .landValue, .traffic, .happiness:
-            // These modes do not yet have approved coordinate-scoped analytics. Rendering
-            // an inferred value here would turn presentation code into gameplay authority.
+        case .landValue:
+            guard isCompletedDevelopment(tile), let value = consequence.landValueIndex else {
+                return nil
+            }
+            return makeSample(value, pattern: .landValueContour)
+        case .traffic:
+            guard tile.kind == .road, let pressure = consequence.trafficPressure else {
+                return nil
+            }
+            // The renderer's heat scale is health-oriented. Invert the typed
+            // pressure channel for color/severity only; do not infer traffic
+            // from occupancy, topology, vehicles, or state here.
+            return makeSample(1 - pressure, pattern: .trafficPressureTicks)
+        case .happiness:
+            guard isCompletedDevelopment(tile), let value = consequence.localHappinessIndex else {
+                return nil
+            }
+            return makeSample(value, pattern: .happinessRipples)
+        case .none:
             return nil
         }
     }
@@ -168,6 +194,92 @@ final class WorldOverlayRenderer {
         return root
     }
 
+    private func makeLandValueContour(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
+        let root = SKNode()
+        let ink = color.withAlphaComponent(detail == .city ? 0.76 : 0.62)
+        let contourCount = severityMarkCount(severity)
+        let baseY = -style.tileHeight * 0.38
+        for index in 0..<contourCount {
+            let inset = CGFloat(index) * 2
+            let halfWidth = style.tileWidth * 0.18 - inset
+            let rise = 2 + CGFloat(index) * 0.6
+            let contour = CGMutablePath()
+            contour.move(to: CGPoint(x: -halfWidth, y: baseY + inset * 0.35))
+            contour.addLine(to: CGPoint(x: 0, y: baseY - rise))
+            contour.addLine(to: CGPoint(x: halfWidth, y: baseY + inset * 0.35))
+            let line = SKShapeNode(path: contour)
+            line.name = "overlay.land-value.ground-contour"
+            line.fillColor = .clear
+            line.strokeColor = ink
+            line.lineWidth = detail == .city ? 1.25 : 0.9
+            line.lineCap = .round
+            line.lineJoin = .round
+            root.addChild(line)
+        }
+        return root
+    }
+
+    private func makeTrafficPressureTicks(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
+        let root = SKNode()
+        let ink = color.withAlphaComponent(detail == .city ? 0.80 : 0.66)
+        let pairCount = severityMarkCount(severity)
+        let shoulderY = -style.tileHeight * 0.32
+        for index in 0..<pairCount {
+            let offset = CGFloat(index - (pairCount - 1) / 2) * 7
+            for side: CGFloat in [-1, 1] {
+                let x = side * (style.tileWidth * 0.14) + offset * 0.20
+                let tick = SKShapeNode(path: WorldGeometryCache.line(
+                    from: CGPoint(x: x - 2.5, y: shoulderY - 2),
+                    to: CGPoint(x: x + 2.5, y: shoulderY + 1)
+                ))
+                tick.name = "overlay.traffic.pressure-tick"
+                tick.fillColor = .clear
+                tick.strokeColor = ink
+                tick.lineWidth = detail == .city ? 1.5 : 1.05
+                tick.lineCap = .round
+                root.addChild(tick)
+            }
+        }
+        return root
+    }
+
+    private func makeHappinessRipples(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
+        let root = SKNode()
+        let ink = color.withAlphaComponent(detail == .city ? 0.74 : 0.60)
+        let rippleCount = severityMarkCount(severity)
+        let baseY = -style.tileHeight * 0.36
+        for index in 0..<rippleCount {
+            let halfWidth = 4 + CGFloat(index) * 3.2
+            let depth = 1.8 + CGFloat(index) * 0.8
+            let ripple = CGMutablePath()
+            ripple.move(to: CGPoint(x: -halfWidth, y: baseY))
+            ripple.addQuadCurve(
+                to: CGPoint(x: halfWidth, y: baseY),
+                control: CGPoint(x: 0, y: baseY - depth)
+            )
+            let line = SKShapeNode(path: ripple)
+            line.name = "overlay.happiness.ground-ripple"
+            line.fillColor = .clear
+            line.strokeColor = ink
+            line.lineWidth = detail == .city ? 1.35 : 0.95
+            line.lineCap = .round
+            root.addChild(line)
+        }
+        return root
+    }
+
     private func minimumDetail(for severity: Double) -> CameraDetailLevel? {
         switch severity {
         case 0.50...:
@@ -194,6 +306,10 @@ final class WorldOverlayRenderer {
 
     private func isDeveloped(_ tile: CityTile) -> Bool {
         tile.kind != .empty && tile.kind != .road
+    }
+
+    private func isCompletedDevelopment(_ tile: CityTile) -> Bool {
+        isDeveloped(tile) && tile.constructionProgress >= 1
     }
 }
 

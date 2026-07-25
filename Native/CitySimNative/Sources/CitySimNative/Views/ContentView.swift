@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct CityHUDChromeFrames: Equatable {
@@ -27,12 +28,132 @@ enum ObjectiveSurfacePresentation: Equatable {
     case compactSummary
 }
 
+@MainActor
+final class CityFocusPointerTransitionView: NSView {
+    let pointerTransitionGate: CityMapPointerTransitionGate
+    private(set) var monitorIsInstalled = false
+    private var localMonitor: Any?
+    private var ownsPointerSequence = false
+
+    init(pointerTransitionGate: CityMapPointerTransitionGate) {
+        self.pointerTransitionGate = pointerTransitionGate
+        super.init(frame: .zero)
+        setAccessibilityElement(false)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        // The SwiftUI Button remains the semantic, FKA, focus-ring, and AX
+        // control. This view exists only to install the window-scoped pointer
+        // event boundary.
+        nil
+    }
+
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+        if newWindow !== window {
+            stopMonitoring()
+        }
+        super.viewWillMove(toWindow: newWindow)
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        startMonitoringIfNeeded()
+    }
+
+    func startMonitoringIfNeeded() {
+        guard window != nil, localMonitor == nil else { return }
+        localMonitor = NSEvent.addLocalMonitorForEvents(
+            matching: [.leftMouseDown, .leftMouseDragged, .leftMouseUp]
+        ) { [weak self] event in
+            self?.handleLocalPointerEvent(event) ?? event
+        }
+        monitorIsInstalled = localMonitor != nil
+    }
+
+    func stopMonitoring() {
+        if ownsPointerSequence {
+            pointerTransitionGate.cancel()
+        }
+        if let localMonitor {
+            NSEvent.removeMonitor(localMonitor)
+        }
+        localMonitor = nil
+        monitorIsInstalled = false
+        ownsPointerSequence = false
+    }
+
+    func handleLocalPointerEvent(_ event: NSEvent) -> NSEvent? {
+        if ownsPointerSequence {
+            switch event.type {
+            case .leftMouseDragged:
+                if !contains(event) {
+                    ownsPointerSequence = false
+                    pointerTransitionGate.cancel()
+                }
+                return event
+            case .leftMouseUp:
+                if !contains(event) {
+                    pointerTransitionGate.cancel()
+                }
+                ownsPointerSequence = false
+                return event
+            case .leftMouseDown:
+                return event
+            default:
+                return event
+            }
+        }
+
+        guard event.type == .leftMouseDown,
+              let window,
+              eventMatchesWindow(event, window: window),
+              contains(event) else { return event }
+        ownsPointerSequence = true
+        pointerTransitionGate.begin(window: window, anchor: event.locationInWindow)
+        return event
+    }
+
+    private func contains(_ event: NSEvent) -> Bool {
+        guard let window, eventMatchesWindow(event, window: window) else { return false }
+        return bounds.contains(convert(event.locationInWindow, from: nil))
+    }
+
+    private func eventMatchesWindow(_ event: NSEvent, window: NSWindow) -> Bool {
+        if let eventWindow = event.window {
+            return eventWindow === window || eventWindow.windowNumber == window.windowNumber
+        }
+        return event.windowNumber == window.windowNumber
+    }
+}
+
+@MainActor
+struct CityFocusPointerTransitionMonitor: NSViewRepresentable {
+    let pointerTransitionGate: CityMapPointerTransitionGate
+
+    func makeNSView(context: Context) -> CityFocusPointerTransitionView {
+        CityFocusPointerTransitionView(pointerTransitionGate: pointerTransitionGate)
+    }
+
+    func updateNSView(_ nsView: CityFocusPointerTransitionView, context: Context) {}
+
+    static func dismantleNSView(_ nsView: CityFocusPointerTransitionView, coordinator: ()) {
+        nsView.stopMonitoring()
+    }
+}
+
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
+    @StateObject private var pointerTransitionGate = CityMapPointerTransitionGate()
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @State private var hudChromeFrames = CityHUDChromeFrames()
+    @State private var retainedFocusCityViewportInsets: CityMapViewportInsets?
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -46,26 +167,34 @@ struct ContentView: View {
         .toolbar {
             if !Self.suppressesGameSurface(for: store.commandPolicy, status: store.state.status) {
                 ToolbarItemGroup(placement: .primaryAction) {
-                    Button {
-                        withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                            _ = store.perform(.toggleObjectives)
+                    if store.isCityFocusModeEnabled {
+                        Button { store.perform(.toggleCityFocus) } label: {
+                            Label("Exit Focus City", systemImage: "viewfinder.circle")
                         }
-                    } label: {
-                        Label("Objectives", systemImage: "flag.checkered")
+                        .help("Restore the full command surface without changing the active target")
+                        .accessibilityIdentifier("toolbar.focus-city.exit")
+                    } else {
+                        Button {
+                            withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
+                                _ = store.perform(.toggleObjectives)
+                            }
+                        } label: {
+                            Label("Objectives", systemImage: "flag.checkered")
+                        }
+                        Button { store.perform(.toggleCommandCenter) } label: {
+                            Label("Command Center", systemImage: "rectangle.bottomthird.inset.filled")
+                        }
+                        Button { store.perform(.openCommandGuide) } label: {
+                            Label("Commands", systemImage: "command.square")
+                        }
+                        Button { store.perform(.saveCity) } label: {
+                            Label("Save", systemImage: "square.and.arrow.down")
+                        }
+                        Button { store.perform(.undo) } label: {
+                            Label("Undo", systemImage: "arrow.uturn.backward")
+                        }
+                        .disabled(!store.canPerform(.undo))
                     }
-                    Button { store.perform(.toggleCommandCenter) } label: {
-                        Label("Command Center", systemImage: "rectangle.bottomthird.inset.filled")
-                    }
-                    Button { store.perform(.openCommandGuide) } label: {
-                        Label("Commands", systemImage: "command.square")
-                    }
-                    Button { store.perform(.saveCity) } label: {
-                        Label("Save", systemImage: "square.and.arrow.down")
-                    }
-                    Button { store.perform(.undo) } label: {
-                        Label("Undo", systemImage: "arrow.uturn.backward")
-                    }
-                    .disabled(!store.canPerform(.undo))
                 }
             }
         }
@@ -106,8 +235,8 @@ struct ContentView: View {
         chromeFrames: CityHUDChromeFrames
     ) -> CityMapViewportInsets {
         let edgePadding = compact ? GameTheme.compactPadding : GameTheme.regularPadding
-        let fallbackTop: CGFloat = compact ? 136 : 136
-        let fallbackBottom: CGFloat = compact ? 116 : 116
+        let fallbackTop: CGFloat = 136
+        let fallbackBottom: CGFloat = 116
         let measuredTop = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY + 10
         let measuredBottom = chromeFrames.bottom.isEmpty ? 0 : windowSize.height - chromeFrames.bottom.minY + 10
         return CityMapViewportInsets(
@@ -125,6 +254,19 @@ struct ContentView: View {
         let topBoundary = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY
         let bottomBoundary = chromeFrames.bottom.isEmpty ? windowHeight : chromeFrames.bottom.minY
         return max(0, bottomBoundary - topBoundary)
+    }
+
+    static func resolvedMapViewportInsets(
+        measured: CityMapViewportInsets,
+        retainedForFocusCity: CityMapViewportInsets?,
+        focusCity: Bool,
+        bottomChromeIsVisible: Bool
+    ) -> CityMapViewportInsets {
+        guard let retainedForFocusCity,
+              focusCity || !bottomChromeIsVisible else {
+            return measured
+        }
+        return retainedForFocusCity
     }
 
     static func objectiveSurfacePresentation(
@@ -181,90 +323,130 @@ struct ContentView: View {
         }
         .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showInspector)
         .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.showObjectives)
+        .animation(GameTheme.animation(reduceMotion: reduceMotion), value: store.isCityFocusModeEnabled)
     }
 
     @ViewBuilder
     private func gameSurface(compact: Bool) -> some View {
         GeometryReader { mapProxy in
-            let viewportInsets = Self.mapViewportInsets(
+            let measuredViewportInsets = Self.mapViewportInsets(
                 windowSize: mapProxy.size,
                 compact: compact,
                 chromeFrames: hudChromeFrames
             )
+            let viewportInsets = Self.resolvedMapViewportInsets(
+                measured: measuredViewportInsets,
+                retainedForFocusCity: retainedFocusCityViewportInsets,
+                focusCity: store.isCityFocusModeEnabled,
+                bottomChromeIsVisible: !hudChromeFrames.bottom.isEmpty
+            )
             ZStack {
-                CitySceneView(store: store, viewportInsets: viewportInsets).ignoresSafeArea()
+                CitySceneView(
+                    store: store,
+                    viewportInsets: viewportInsets,
+                    pointerTransitionGate: pointerTransitionGate
+                )
+                .ignoresSafeArea()
 
                 VStack(spacing: compact ? 8 : 10) {
-                    TopHUDView(store: store, compact: compact)
-                        .background(chromeFrameReader(.top))
+                    if store.isCityFocusModeEnabled {
+                        FocusCityHUDView(
+                            store: store,
+                            compact: compact,
+                            pointerTransitionGate: pointerTransitionGate
+                        )
+                            .background(chromeFrameReader(.top))
+                            .transition(.opacity)
+                    } else {
+                        TopHUDView(store: store, compact: compact)
+                            .background(chromeFrameReader(.top))
 
-                HStack(alignment: .top) {
-                    switch Self.objectiveSurfacePresentation(
-                        compact: compact,
-                        showObjectives: store.showObjectives,
-                        showInspector: store.showInspector
-                    ) {
-                    case .hidden:
-                        EmptyView()
-                    case .expanded:
-                        ObjectivesView(store: store)
-                            .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
-                    case .compactSummary:
-                        ObjectiveSummaryView(store: store)
-                            .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
-                            .accessibilityHint("Close command-center details to expand all objectives")
-                    }
-                    Spacer(minLength: 8)
-                    EventFeedView(store: store, compact: compact)
-                }
-
-                Spacer(minLength: 8)
-
-                if let feedback = store.lastFeedback {
-                    HStack(spacing: 9) {
-                        Image(systemName: feedbackSymbol)
-                            .foregroundStyle(feedbackColor)
-                        Text(feedback).font(.callout.weight(.semibold))
-                        Button { store.perform(.dismissFeedback) } label: {
-                            Image(systemName: "xmark")
-                                .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
+                        HStack(alignment: .top) {
+                            switch Self.objectiveSurfacePresentation(
+                                compact: compact,
+                                showObjectives: store.showObjectives,
+                                showInspector: store.showInspector
+                            ) {
+                            case .hidden:
+                                EmptyView()
+                            case .expanded:
+                                ObjectivesView(store: store)
+                                    .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                            case .compactSummary:
+                                ObjectiveSummaryView(store: store)
+                                    .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                                    .accessibilityHint("Close command-center details to expand all objectives")
+                            }
+                            Spacer(minLength: 8)
+                            EventFeedView(store: store, compact: compact)
                         }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(.secondary)
-                        .accessibilityLabel("Dismiss action message")
                     }
-                    .padding(.leading, 14)
-                    .padding(.trailing, 4)
-                    .background(.thickMaterial, in: Capsule())
-                    .shadow(color: .black.opacity(0.3), radius: 12, y: 5)
-                    .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(store.lastFeedbackTone == .caution ? "Action blocked" : "Action update")
-                    .accessibilityValue(feedback)
-                }
 
-                if store.overlay != .none {
-                    HStack {
-                        Spacer()
-                        OverlayLegendView(overlay: store.overlay)
+                    Spacer(minLength: 8)
+
+                    if let feedback = store.lastFeedback {
+                        HStack(spacing: 9) {
+                            Image(systemName: feedbackSymbol)
+                                .foregroundStyle(feedbackColor)
+                            Text(feedback).font(.callout.weight(.semibold))
+                            Button { store.perform(.dismissFeedback) } label: {
+                                Image(systemName: "xmark")
+                                    .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
+                            }
+                            .buttonStyle(.plain)
+                            .foregroundStyle(.secondary)
+                            .accessibilityLabel("Dismiss action message")
+                        }
+                        .padding(.leading, 14)
+                        .padding(.trailing, 4)
+                        .background(.thickMaterial, in: Capsule())
+                        .shadow(color: .black.opacity(0.3), radius: 12, y: 5)
+                        .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(store.lastFeedbackTone == .caution ? "Action blocked" : "Action update")
+                        .accessibilityValue(feedback)
                     }
-                    .transition(.opacity)
-                }
 
-                    BuildToolbarView(store: store, compact: compact)
-                        .frame(maxWidth: compact ? .infinity : 1_120)
-                        .background(chromeFrameReader(.bottom))
+                    if store.overlay != .none {
+                        HStack {
+                            Spacer()
+                            OverlayLegendView(overlay: store.overlay)
+                        }
+                        .transition(.opacity)
+                    }
+
+                    if !store.isCityFocusModeEnabled {
+                        BuildToolbarView(
+                            store: store,
+                            compact: compact,
+                            pointerTransitionGate: pointerTransitionGate
+                        )
+                            .frame(maxWidth: compact ? .infinity : 1_120)
+                            .background(chromeFrameReader(.bottom))
+                            .transition(.opacity)
+                    }
                 }
                 .padding(compact ? GameTheme.compactPadding : GameTheme.regularPadding)
 
             }
             .coordinateSpace(name: "city.game.surface")
+            .onChange(of: store.isCityFocusModeEnabled) { _, enabled in
+                if enabled {
+                    retainedFocusCityViewportInsets = measuredViewportInsets
+                }
+            }
             .onPreferenceChange(CityHUDChromeFramePreference.self) { frames in
                 let updated = CityHUDChromeFrames(
                     top: frames[.top] ?? .zero,
                     bottom: frames[.bottom] ?? .zero
                 )
                 if updated != hudChromeFrames { hudChromeFrames = updated }
+                if !store.isCityFocusModeEnabled, !updated.bottom.isEmpty {
+                    retainedFocusCityViewportInsets = nil
+                }
+            }
+            .onDisappear {
+                pointerTransitionGate.cancel()
             }
         }
     }

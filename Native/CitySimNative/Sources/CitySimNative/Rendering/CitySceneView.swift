@@ -40,10 +40,13 @@ struct CitySceneView: NSViewRepresentable {
 
     @ObservedObject var store: CityGameStore
     var viewportInsets: CityMapViewportInsets = .zero
+    let pointerTransitionGate: CityMapPointerTransitionGate
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @AppStorage("reduceGameMotion") private var reduceGameMotion = false
 
-    func makeCoordinator() -> Coordinator { Coordinator(store: store) }
+    func makeCoordinator() -> Coordinator {
+        Coordinator(store: store, pointerTransitionGate: pointerTransitionGate)
+    }
 
     func makeNSView(context: Context) -> CityMapSKView {
         let view = CityMapSKView(frame: .zero)
@@ -62,19 +65,17 @@ struct CitySceneView: NSViewRepresentable {
         view.showsDrawCount = diagnosticsEnabled
         let scene = CityScene(size: CGSize(width: 1280, height: 800))
         scene.onActiveActionTargetCandidate = { [weak coordinator = context.coordinator, weak view] coordinate in
-            guard let coordinator, let view,
-                  coordinator.allowsPointerMapActionCandidate(in: view) else { return nil }
-            return coordinator.store.acceptPointerMapActionCandidate(coordinate)
+            guard let coordinator, let view else { return nil }
+            return coordinator.acceptPointerMapActionCandidate(coordinate, in: view)
         }
-        scene.onPrimaryAction = { [weak coordinator = context.coordinator] coordinate in
-            guard let coordinator else { return }
-            if coordinator.store.interactionMode == .inspect {
-                coordinator.store.primaryAction(at: coordinate)
-            } else if coordinator.store.selectedCoordinate == coordinate {
-                coordinator.store.performMapCommand(.mapPrimaryAction)
-            }
+        scene.onPrimaryAction = { [weak coordinator = context.coordinator, weak view] coordinate in
+            guard let coordinator, let view else { return }
+            coordinator.performPointerPrimaryAction(at: coordinate, in: view)
         }
-        scene.onSecondaryAction = { [weak coordinator = context.coordinator] coordinate in coordinator?.store.secondaryAction(at: coordinate) }
+        scene.onSecondaryAction = { [weak coordinator = context.coordinator, weak view] coordinate in
+            guard let coordinator, let view else { return }
+            coordinator.performPointerSecondaryAction(at: coordinate, in: view)
+        }
         scene.onCommandAction = { [weak coordinator = context.coordinator] command in
             guard let coordinator else { return }
             if CityCommandCatalog.mapFocusedCommands.contains(command) {
@@ -107,6 +108,7 @@ struct CitySceneView: NSViewRepresentable {
     func updateNSView(_ view: CityMapSKView, context: Context) {
         context.coordinator.store = store
         context.coordinator.viewportInsets = viewportInsets
+        context.coordinator.pointerTransitionGate = pointerTransitionGate
         view.window?.acceptsMouseMovedEvents = true
         context.coordinator.synchronizeCommandPolicy(store.commandPolicy, in: view)
         context.coordinator.synchronizeMapFocusRequest(store.mapFocusRequestGeneration, in: view)
@@ -148,6 +150,7 @@ struct CitySceneView: NSViewRepresentable {
 
         var store: CityGameStore
         var viewportInsets: CityMapViewportInsets = .zero
+        var pointerTransitionGate: CityMapPointerTransitionGate
         weak var scene: CityScene?
         private(set) var previousCommandPolicy: CityCommandPolicy
         var hasFramedInitialState = false
@@ -159,11 +162,13 @@ struct CitySceneView: NSViewRepresentable {
 
         init(
             store: CityGameStore,
+            pointerTransitionGate: CityMapPointerTransitionGate = CityMapPointerTransitionGate(),
             enqueueOnMain: @escaping MainLoopEnqueuer = { action in
                 DispatchQueue.main.async(execute: action)
             }
         ) {
             self.store = store
+            self.pointerTransitionGate = pointerTransitionGate
             previousCommandPolicy = store.commandPolicy
             observedMapFocusRequestGeneration = store.mapFocusRequestGeneration
             self.enqueueOnMain = enqueueOnMain
@@ -260,8 +265,41 @@ struct CitySceneView: NSViewRepresentable {
 
         func allowsPointerMapActionCandidate(in view: CityMapSKView) -> Bool {
             guard store.commandPolicy == .enabled else { return false }
+            guard !pointerTransitionGate.blocksPointerInput(in: view.window) else { return false }
             let responder = view.window?.firstResponder
             return !(responder is NSTextView) && !(responder is NSTextField)
+        }
+
+        func acceptPointerMapActionCandidate(
+            _ coordinate: GridCoordinate,
+            in view: CityMapSKView
+        ) -> CityMapActionTargetPresentation? {
+            guard allowsPointerMapActionCandidate(in: view) else { return nil }
+            return store.acceptPointerMapActionCandidate(coordinate)
+        }
+
+        @discardableResult
+        func performPointerPrimaryAction(
+            at coordinate: GridCoordinate,
+            in view: CityMapSKView
+        ) -> Bool {
+            guard !pointerTransitionGate.blocksPointerInput(in: view.window) else { return false }
+            if store.interactionMode == .inspect {
+                store.primaryAction(at: coordinate)
+                return true
+            }
+            guard store.selectedCoordinate == coordinate else { return false }
+            return store.performMapCommand(.mapPrimaryAction)
+        }
+
+        @discardableResult
+        func performPointerSecondaryAction(
+            at coordinate: GridCoordinate,
+            in view: CityMapSKView
+        ) -> Bool {
+            guard !pointerTransitionGate.blocksPointerInput(in: view.window) else { return false }
+            store.secondaryAction(at: coordinate)
+            return true
         }
 
         private func enqueueFocusHandoff(in view: CityMapSKView) -> Bool {

@@ -374,10 +374,15 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(overlayDiagnostics.updatedTileCount, 0)
         XCTAssertEqual(overlayDiagnostics.reusedTileCount, state.tiles.count)
         XCTAssertEqual(overlayDiagnostics.overlayUpdateCount, state.tiles.count)
-        XCTAssertEqual(
+        XCTAssertGreaterThan(
             overlayDiagnostics.nodeCount,
             initialNodeCount,
-            "Land value must abstain until coordinate-scoped analytics are approved"
+            "Accepted coordinate-scoped Land Value truth must be visible without rebuilding base tiles"
+        )
+        XCTAssertLessThanOrEqual(
+            overlayDiagnostics.nodeCount - initialNodeCount,
+            state.tiles.count,
+            "Sparse overlay presentation must remain bounded to at most one aggregate node per map tile"
         )
 
         scene.configureProofCamera(detail: .city, centeredOn: center)
@@ -396,7 +401,16 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(blockDiagnostics.createdTileCount, 0)
         XCTAssertEqual(blockDiagnostics.updatedTileCount, 0)
         XCTAssertEqual(blockDiagnostics.reusedTileCount, state.tiles.count)
-        XCTAssertEqual(blockDiagnostics.nodeCount, cityDiagnostics.nodeCount)
+        XCTAssertGreaterThan(
+            blockDiagnostics.nodeCount,
+            cityDiagnostics.nodeCount,
+            "Block LOD must reveal more typed overlay detail than the strategic city view"
+        )
+        XCTAssertLessThanOrEqual(
+            blockDiagnostics.nodeCount - cityDiagnostics.nodeCount,
+            state.tiles.count,
+            "LOD overlay detail must remain bounded by the authoritative map"
+        )
         print(
             "CITYSIM_OVERLAY_DIAGNOSTICS overlay_updates=\(overlayDiagnostics.overlayUpdateCount) " +
             "overlay_nodes=\(overlayDiagnostics.nodeCount) city_nodes=\(cityDiagnostics.nodeCount) " +
@@ -694,6 +708,8 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 168)
         XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 54)
         XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 64)
+        XCTAssertLessThanOrEqual(FocusCityHUDView.compactMaximumHeight, 98)
+        XCTAssertLessThanOrEqual(FocusCityHUDView.regularMaximumHeight, 68)
         XCTAssertGreaterThanOrEqual(GameTheme.hudCriticalTextSize, 11)
         XCTAssertGreaterThanOrEqual(GameTheme.hudSupportTextSize, 10)
         XCTAssertGreaterThanOrEqual(MetricCard.criticalTextSize, 11)
@@ -716,6 +732,14 @@ final class CitySimulationTests: XCTestCase {
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactDetailsChrome) / 600,
             0.45
         )
+        let compactFocusChrome = CityHUDChromeFrames(
+            top: CGRect(x: 8, y: 8, width: 884, height: 98),
+            bottom: .zero
+        )
+        XCTAssertGreaterThanOrEqual(
+            ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactFocusChrome) / 600,
+            0.80
+        )
         let compactInsets = ContentView.mapViewportInsets(
             windowSize: CGSize(width: 900, height: 600),
             compact: true,
@@ -723,6 +747,40 @@ final class CitySimulationTests: XCTestCase {
         )
         XCTAssertEqual(compactInsets.top, 136)
         XCTAssertEqual(compactInsets.bottom, 126)
+        let compactFocusInsets = ContentView.mapViewportInsets(
+            windowSize: CGSize(width: 900, height: 600),
+            compact: true,
+            chromeFrames: compactFocusChrome
+        )
+        XCTAssertEqual(
+            ContentView.resolvedMapViewportInsets(
+                measured: compactFocusInsets,
+                retainedForFocusCity: compactInsets,
+                focusCity: true,
+                bottomChromeIsVisible: false
+            ),
+            compactInsets,
+            "Focus City must increase visible aperture without changing the renderer camera geometry"
+        )
+        XCTAssertEqual(
+            ContentView.resolvedMapViewportInsets(
+                measured: compactFocusInsets,
+                retainedForFocusCity: compactInsets,
+                focusCity: false,
+                bottomChromeIsVisible: false
+            ),
+            compactInsets,
+            "The exit transition must retain geometry until full chrome is measured again"
+        )
+        XCTAssertEqual(
+            ContentView.resolvedMapViewportInsets(
+                measured: compactInsets,
+                retainedForFocusCity: compactInsets,
+                focusCity: false,
+                bottomChromeIsVisible: true
+            ),
+            compactInsets
+        )
         XCTAssertNil(GameTheme.animation(reduceMotion: true))
         XCTAssertEqual(
             TopHUDView.simulationState(for: .paused),
@@ -913,6 +971,56 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertGreaterThan(build.pixelsHigh, 550)
         if let path = ProcessInfo.processInfo.environment["CITYSIM_HUD_COMPACT_BUILD_PROOF"] {
             let data = try XCTUnwrap(build.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+
+        var focusState = CityGameState.newCity(seed: 42)
+        focusState.messages = [
+            CityMessage(
+                tick: focusState.tick,
+                severity: .critical,
+                title: "Severe Storm",
+                detail: "A critical authored notice must remain visible in Focus City."
+            )
+        ]
+        let focusStore = CityGameStore(state: focusState)
+        focusStore.speed = .paused
+        focusStore.selectTool(.commercial)
+        focusStore.selectedCoordinate = GridCoordinate(x: 12, y: 12)
+        focusStore.showObjectives = true
+        focusStore.openInspector(.utilities)
+        XCTAssertTrue(focusStore.perform(.toggleCityFocus))
+        let focus = try hudBitmap(size: CGSize(width: 900, height: 600), store: focusStore)
+        XCTAssertGreaterThan(focus.pixelsWide, 850)
+        XCTAssertGreaterThan(focus.pixelsHigh, 550)
+        XCTAssertTrue(focusStore.isCityFocusModeEnabled)
+        XCTAssertTrue(focusStore.showObjectives)
+        XCTAssertTrue(focusStore.showInspector)
+        XCTAssertEqual(focusStore.inspectorSection, .utilities)
+        XCTAssertEqual(focusStore.selectedCoordinate, GridCoordinate(x: 12, y: 12))
+        XCTAssertEqual(focusStore.interactionMode, .build(.commercial))
+        XCTAssertEqual(focusStore.alertCount, 1)
+        XCTAssertEqual(focusStore.highestAlertSeverity, .critical)
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_FOCUS_CITY_COMPACT_PROOF"] {
+            let data = try XCTUnwrap(focus.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+
+        let regularFocusStore = CityGameStore(state: focusState)
+        regularFocusStore.speed = .paused
+        regularFocusStore.selectTool(.commercial)
+        regularFocusStore.selectedCoordinate = GridCoordinate(x: 12, y: 12)
+        XCTAssertTrue(regularFocusStore.perform(.toggleCityFocus))
+        let regularFocus = try hudBitmap(
+            size: CGSize(width: 1_278, height: 768),
+            store: regularFocusStore
+        )
+        XCTAssertGreaterThan(regularFocus.pixelsWide, 1_200)
+        XCTAssertGreaterThan(regularFocus.pixelsHigh, 700)
+        XCTAssertEqual(regularFocusStore.alertCount, 1)
+        XCTAssertEqual(regularFocusStore.highestAlertSeverity, .critical)
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_FOCUS_CITY_REGULAR_PROOF"] {
+            let data = try XCTUnwrap(regularFocus.representation(using: .png, properties: [:]))
             try data.write(to: URL(fileURLWithPath: path), options: .atomic)
         }
     }

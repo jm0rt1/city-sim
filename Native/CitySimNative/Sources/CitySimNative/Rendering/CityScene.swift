@@ -1012,7 +1012,7 @@ final class CityScene: SKScene {
                 completedDevelopment.insert(tile.coordinate)
             }
             guard tile.constructionProgress >= 0.75,
-                  let logicalID = generatedLogicalID(for: tile.kind) else { continue }
+                  let logicalID = generatedLogicalID(for: tile, in: state) else { continue }
             logicalIDs.insert(logicalID)
         }
         let hasDevelopedRoad = roadCoordinates.contains { coordinate in
@@ -1947,11 +1947,13 @@ final class CityScene: SKScene {
 
         let occupiedBounds = visualBounds(
             for: developed,
-            adjoiningRoads: nearbyRoads
+            adjoiningRoads: nearbyRoads,
+            state: state
         )
         let cameraPriorityBounds = visualBounds(
             for: cameraPriorityDevelopment,
-            adjoiningRoads: cameraPriorityRoads
+            adjoiningRoads: cameraPriorityRoads,
+            state: state
         )
 
         var networkBounds = CGRect.null
@@ -2014,13 +2016,14 @@ final class CityScene: SKScene {
 
     private func visualBounds(
         for developed: [CityTile],
-        adjoiningRoads: [CityTile]
+        adjoiningRoads: [CityTile],
+        state: CityGameState
     ) -> CGRect {
         var bounds = CGRect.null
         for tile in developed {
             let position = style.isoPosition(tile.coordinate)
             bounds = bounds.union(tileGroundBounds(at: position))
-            if let logicalID = generatedLogicalID(for: tile.kind),
+            if let logicalID = generatedLogicalID(for: tile, in: state),
                let asset = assets.generatedAsset(logicalID: logicalID),
                asset.opaqueBoundsWorld.count == 4 {
                 let physical = asset.opaqueBoundsWorld
@@ -2068,6 +2071,22 @@ final class CityScene: SKScene {
         case .school: "residential_l01"
         default: nil
         }
+    }
+
+    private func generatedLogicalID(
+        for tile: CityTile,
+        in state: CityGameState
+    ) -> String? {
+        if tile.kind == .residential {
+            return ResidentialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: RoadConnectionMask.resolving(
+                    at: tile.coordinate,
+                    in: state
+                )
+            )?.logicalID
+        }
+        return generatedLogicalID(for: tile.kind)
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {

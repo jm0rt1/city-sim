@@ -478,12 +478,213 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(manifest?.schema, 4)
         XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
         XCTAssertEqual(manifest?.productionSelection, true)
-        XCTAssertEqual(manifest?.assets.count, 12)
+        XCTAssertEqual(manifest?.assets.count, 28)
         for asset in manifest?.assets ?? [] {
             for detail in CameraDetailLevel.allCases {
                 XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
             }
         }
+    }
+
+    @MainActor
+    func testDirectionalResidentialProductionSelectionCoversEveryLevelAndAuthoritativeFrontage() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let expectedSockets: [RoadConnectionMask: [Double]] = [
+            .north: [18, 9],
+            .east: [18, -9],
+            .south: [-18, -9],
+            .west: [-18, 9],
+        ]
+        var logicalIDs: Set<String> = []
+        var sourceKeys: Set<String> = []
+        var sourceHashes: Set<String> = []
+        var normalizedHashes: Set<String> = []
+
+        for level in 1...4 {
+            for edge in RoadConnectionMask.cardinalEdges {
+                let identity = try XCTUnwrap(
+                    ResidentialGeneratedAssetIdentity(level: level, adjacentRoads: edge)
+                )
+                logicalIDs.insert(identity.logicalID)
+                let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
+                XCTAssertEqual(asset.family, "residential")
+                XCTAssertEqual(asset.level, level)
+                XCTAssertEqual(asset.variant, 0)
+                XCTAssertEqual(asset.frontageEdge, identity.direction)
+                XCTAssertEqual(asset.viewDirection, identity.direction)
+                XCTAssertEqual(asset.entranceSocketWorld, expectedSockets[edge])
+                XCTAssertEqual(asset.supportedOrientation, "\(identity.direction)-facing-authored")
+                sourceKeys.insert(try XCTUnwrap(asset.sourceKey))
+                sourceHashes.insert(try XCTUnwrap(asset.sourceSHA256))
+
+                for detail in CameraDetailLevel.allCases {
+                    let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                    normalizedHashes.insert(try XCTUnwrap(lod.normalizedSHA256))
+                    let tile = CityTile(
+                        coordinate: GridCoordinate(x: level + 4, y: Int(edge.rawValue) + 5),
+                        kind: .residential,
+                        level: level,
+                        condition: 1,
+                        constructionProgress: 1
+                    )
+                    let lot = renderer.makeLot(
+                        for: tile,
+                        adjacentRoads: edge,
+                        detail: detail,
+                        reducedMotion: true
+                    )
+                    let names = descendantNames(in: lot)
+                    XCTAssertEqual(
+                        names.filter {
+                            $0 == "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)"
+                        }.count,
+                        1
+                    )
+                    XCTAssertTrue(
+                        names.contains("lot.frontage.residential.\(edge.rawValue)")
+                    )
+                    XCTAssertFalse(names.contains { $0 == "lot.generated-v4.residential_l01.\(detail.assetSuffix)" })
+                    XCTAssertFalse(names.contains { $0.hasPrefix("lot.place.") })
+                }
+            }
+        }
+
+        XCTAssertEqual(logicalIDs.count, 16)
+        XCTAssertEqual(sourceKeys.count, 16)
+        XCTAssertEqual(sourceHashes.count, 16)
+        XCTAssertEqual(normalizedHashes.count, 48)
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+    }
+
+    @MainActor
+    func testResidentialFrontagePriorityIsStableAndRoadlessLotsFailExplicitly() throws {
+        let all = try XCTUnwrap(
+            ResidentialGeneratedAssetIdentity(level: 9, adjacentRoads: .all)
+        )
+        XCTAssertEqual(all.level, 4)
+        XCTAssertEqual(all.frontage, .south)
+        XCTAssertEqual(all.logicalID, "residential_l04_v0_south")
+        XCTAssertEqual(
+            ResidentialGeneratedAssetIdentity(
+                level: 1,
+                adjacentRoads: [.north, .east, .west]
+            )?.frontage,
+            .north
+        )
+        XCTAssertEqual(
+            ResidentialGeneratedAssetIdentity(
+                level: 1,
+                adjacentRoads: [.east, .west]
+            )?.frontage,
+            .east
+        )
+        XCTAssertNil(ResidentialGeneratedAssetIdentity(level: 1, adjacentRoads: []))
+
+        let catalog = WorldAssetCatalog()
+        XCTAssertNil(catalog.generatedResidentialPresentation(
+            level: 2,
+            adjacentRoads: [],
+            detail: .block
+        ))
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 1)
+        XCTAssertEqual(
+            catalog.residencySnapshot().fallbackDiagnostics,
+            ["residential level 2 has no authoritative adjacent road"]
+        )
+    }
+
+    @MainActor
+    func testDirectionalResidentialIdentitySurvivesPulseSaveLoadUndoCameraAndLOD() throws {
+        let original = CityGameState.newCity(seed: 42)
+        let tile = try XCTUnwrap(original.tiles.first {
+            $0.kind == .residential
+                && !RoadConnectionMask.resolving(at: $0.coordinate, in: original).isEmpty
+        })
+        let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: original)
+        let originalIdentity = try XCTUnwrap(
+            ResidentialGeneratedAssetIdentity(level: tile.level, adjacentRoads: roads)
+        )
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: original,
+            overlay: .none,
+            selection: tile.coordinate,
+            interactionMode: .inspect
+        )
+        let initialRoot = scene.tileRootIdentifier(at: tile.coordinate)
+        XCTAssertTrue(
+            scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
+                "lot.generated-v4.\(originalIdentity.logicalID).block"
+            )
+        )
+
+        scene.render(
+            state: original,
+            overlay: .none,
+            selection: tile.coordinate,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(scene.tileRootIdentifier(at: tile.coordinate), initialRoot)
+        XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
+
+        for detail in CameraDetailLevel.allCases {
+            scene.configureProofCamera(detail: detail, centeredOn: tile.coordinate)
+            XCTAssertEqual(scene.tileRootIdentifier(at: tile.coordinate), initialRoot)
+            XCTAssertTrue(
+                scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
+                    "lot.generated-v4.\(originalIdentity.logicalID).\(detail.assetSuffix)"
+                )
+            )
+        }
+
+        let encoded = try JSONEncoder().encode(original)
+        let loaded = try JSONDecoder().decode(CityGameState.self, from: encoded)
+        scene.render(
+            state: loaded,
+            overlay: .none,
+            selection: tile.coordinate,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(scene.tileRootIdentifier(at: tile.coordinate), initialRoot)
+        XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)
+
+        var advanced = original
+        advanced.updateTile(at: tile.coordinate) {
+            $0.level = min(4, max(1, tile.level + 1))
+        }
+        let advancedTile = try XCTUnwrap(advanced.tile(at: tile.coordinate))
+        let advancedIdentity = try XCTUnwrap(
+            ResidentialGeneratedAssetIdentity(level: advancedTile.level, adjacentRoads: roads)
+        )
+        scene.render(
+            state: advanced,
+            overlay: .none,
+            selection: tile.coordinate,
+            interactionMode: .inspect
+        )
+        let advancedRoot = scene.tileRootIdentifier(at: tile.coordinate)
+        XCTAssertNotEqual(advancedRoot, initialRoot)
+        XCTAssertTrue(scene.diagnosticsSnapshot.updatedCoordinates.contains(tile.coordinate))
+        XCTAssertTrue(
+            scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
+                "lot.generated-v4.\(advancedIdentity.logicalID).\(scene.currentCameraDetailLevel.assetSuffix)"
+            )
+        )
+
+        scene.render(
+            state: original,
+            overlay: .none,
+            selection: tile.coordinate,
+            interactionMode: .inspect
+        )
+        XCTAssertNotEqual(scene.tileRootIdentifier(at: tile.coordinate), advancedRoot)
+        XCTAssertTrue(
+            scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
+                "lot.generated-v4.\(originalIdentity.logicalID).\(scene.currentCameraDetailLevel.assetSuffix)"
+            )
+        )
     }
 
     @MainActor
@@ -924,8 +1125,8 @@ final class WorldRenderingTests: XCTestCase {
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
             if size.width <= 900 {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.54)
-                XCTAssertLessThanOrEqual(occupied.width, 0.58)
+                XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
+                XCTAssertLessThanOrEqual(occupied.width, 0.63)
             } else {
                 XCTAssertGreaterThanOrEqual(occupied.width, 0.73)
                 XCTAssertLessThanOrEqual(occupied.width, 0.78)
@@ -957,7 +1158,6 @@ final class WorldRenderingTests: XCTestCase {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
         let visibleSet: [(BuildingKind, String)] = [
-            (.residential, "residential_l01"),
             (.commercial, "commercial_l01"),
             (.industrial, "industrial_l01"),
             (.park, "park_l01"),
@@ -968,6 +1168,24 @@ final class WorldRenderingTests: XCTestCase {
             (.school, "residential_l01"),
             (.cityHall, "city_hall_l01"),
         ]
+
+        for tier in 1...4 {
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: tier + 1, y: tier + 3),
+                kind: .residential,
+                level: tier,
+                condition: 1,
+                constructionProgress: 1
+            )
+            let root = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let expectedName = "lot.generated-v4.residential_l0\(tier)_v0_south.block"
+            XCTAssertEqual(descendantNames(in: root).filter { $0 == expectedName }.count, 1)
+        }
 
         for (index, entry) in visibleSet.enumerated() {
             let (kind, generatedID) = entry
@@ -1237,7 +1455,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.73)
         XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.78)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 206.7188, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 192.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.height, 342, accuracy: 0.001)
 
@@ -1248,8 +1466,8 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.54)
-        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.58)
+        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.60)
+        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.63)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
@@ -1388,14 +1606,14 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.312796950340271),
-                CGSize(width: 0.7473417931726477, height: 1.2329704703499522)
+                CGFloat(0.32296520471572876),
+                CGSize(width: 0.7238124428047685, height: 1.244466063092227)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
                 CGFloat(0.576345682144165),
-                CGSize(width: 0.5796985019395197, height: 1.58704226315938)
+                CGSize(width: 0.5796985019395197, height: 1.653910863258327)
             ),
         ] {
             let scene = CityScene(size: size)

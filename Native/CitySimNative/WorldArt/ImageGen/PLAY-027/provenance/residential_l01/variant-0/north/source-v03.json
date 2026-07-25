@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceKey": "residential_l01/variant-0/north/source-v03",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variant": 0,
+  "viewDirection": "north",
+  "sourceRevision": 3,
+  "tool": "OpenAI built-in ImageGen",
+  "model": "built-in/model-not-exposed",
+  "generatedDate": "2026-07-24",
+  "toolArtifactID": "call_2wYSzfwm93hB1HP8qIDnFt1g",
+  "promptFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/prompts/residential_l01/variant-0/north-source-v03.md",
+  "promptSHA256": "e38e1e120790867e60f9ef1aff1f74f16811246388f74d88339e776c14399ccb",
+  "completePromptRetainedVerbatim": true,
+  "frozenInputsFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/frozen-inputs-v3.json",
+  "frozenInputsSHA256": "eeb7800ec57a2f437460fa1254330c7f0112dadc104d57105c3e50014d64ad97",
+  "references": [
+    {
+      "role": "immutable-appearance-only-global-style-anchor",
+      "file": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "authoritative-north-registration-and-spatial-assignment",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/templates/directional-v3/registration-north.png",
+      "sha256": "1f673ba686e11e06d1f41de55f779ef477bc0d45ae0cf25344a6af823570872e"
+    },
+    {
+      "role": "approved-residential-material-and-scale-board",
+      "file": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/anchors/residential-v3/material-scale-board.png",
+      "sha256": "850d91d071dc7ce490c1af99d20d697158d2eaf33492609999dc633ad21b8437",
+      "sourceFamilyAnchorSHA256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+      "cameraCompositionAuthority": false,
+      "registrationAuthority": false
+    }
+  ],
+  "rawSourceFile": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/raw/residential_l01/variant-0/north/source-v03.png",
+  "rawSourceSHA256": "1e6d596f1ef607d881936cb2bd630d69619f1eca9472d8b360f14d1bac45882e",
+  "rawSourcePixels": [
+    1536,
+    1024
+  ],
+  "rawSourceHashUniqueAmongRetainedPLAY027Attempts": true,
+  "chromaKey": "#ff00ff",
+  "registration": {
+    "geometryTemplateID": "play-027-rci-reference-treatment-v3",
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "frontageSocketName": "north",
+    "frontageEdgeSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageSocketSource": [
+      896,
+      704
+    ],
+    "orientationTransform": "none"
+  },
+  "contactSheetRecordFile": "docs/production/evidence/PLAY-027/north-source-v03-contact-sheet-record.json",
+  "contactSheetRecordSHA256": "55aaa62f73894282e425f346375618fd25e2401f24d7184a83c1c4954fc7ac7c",
+  "sourceScaleContactSheetSHA256": "e8ac50eeec3f2eebb153c9de30f62423e849591935431e1c9591f7dc5567e915",
+  "actualScaleContactSheetSHA256": "c01665d76f5a345cf110514b550ec4caee460aff395c59e23896934c1b1b3f61",
+  "normalizedSourceFile": null,
+  "normalizedSourceSHA256": null,
+  "intendedGameplayMeaning": "completed maintained level-one residential building with north road-facing frontage",
+  "generatedPixelsAreGeometryAuthority": false,
+  "productionSelected": false,
+  "reviewer": "world-art generation cell target-face capability probe review",
+  "disposition": "rejected-before-normalization",
+  "rejectionReasons": [
+    "frontage failure: the only primary entry and stoop appear on the lower near south-facing facade rather than the template's dominant green north plane",
+    "registration failure: the visible entry base cannot reconcile with the north socket at 896x704",
+    "chroma failure: all eight retained background samples differ from flat #ff00ff"
+  ],
+  "repairOutcome": {
+    "projectionCorrected": true,
+    "targetFaceDominanceProvided": true,
+    "fullBuildingFamilyCompositionRemoved": true,
+    "frontageRegistrationCorrected": false,
+    "flatChromaCorrected": false
+  },
+  "builtInImageGenCapabilityLimitReached": true,
+  "eligibleAsSiblingReference": false
+}

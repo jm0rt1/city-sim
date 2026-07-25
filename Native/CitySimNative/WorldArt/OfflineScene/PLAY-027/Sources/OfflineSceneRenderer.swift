@@ -2023,7 +2023,14 @@ final class NativeSourceRenderer: OfflineSourceRendering {
         descriptor: SceneDescriptor
     ) throws -> CGImage {
         let renderer = SCNRenderer(device: nil, options: nil)
+        // SceneKit can otherwise expose a process-dependent first snapshot:
+        // descriptor nodes exist, but their presentation tree or prepared
+        // material state is incomplete. Flush authored transactions and hold
+        // the offline scene at one fixed time before synchronous preparation.
+        SCNTransaction.flush()
+        scene.isPaused = true
         renderer.scene = scene
+        renderer.sceneTime = 0
         guard let camera = scene.rootNode.childNode(
             withName: "contract-camera",
             recursively: false
@@ -2045,6 +2052,20 @@ final class NativeSourceRenderer: OfflineSourceRendering {
         let size = CGSize(
             width: descriptor.camera.renderViewportPixels[0] * scale,
             height: descriptor.camera.renderViewportPixels[1] * scale
+        )
+        // The first two snapshots are explicit native-pipeline warmups. They
+        // force camera/frustum state, the complete node presentation tree,
+        // and prepared materials through the same fixed frame without making
+        // either warmup a source-art authority.
+        _ = renderer.snapshot(
+            atTime: 0,
+            with: size,
+            antialiasingMode: .multisampling4X
+        )
+        _ = renderer.snapshot(
+            atTime: 0,
+            with: size,
+            antialiasingMode: .multisampling4X
         )
         let snapshot = renderer.snapshot(
             atTime: 0,

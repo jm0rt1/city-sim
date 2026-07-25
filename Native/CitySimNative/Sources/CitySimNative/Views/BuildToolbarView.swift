@@ -226,7 +226,7 @@ struct BuildToolbarView: View {
         .buttonStyle(.plain)
         .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
         .overlay {
-            CityFocusPointerShield(store: store)
+            CityFocusPointerShield { store.perform(.toggleCityFocus) }
                 .accessibilityHidden(true)
         }
         .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")

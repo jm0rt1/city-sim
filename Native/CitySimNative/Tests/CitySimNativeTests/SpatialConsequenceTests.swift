@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 import XCTest
 @testable import CitySimNative
@@ -25,6 +26,294 @@ final class SpatialConsequenceTests: XCTestCase {
             try CityPresentationSnapshot(state: state).spatialConsequences,
             snapshot.spatialConsequences
         )
+    }
+
+    func testDiagnosticChannelsAreOptionalBoundedRepeatableAndRowMajor() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let original = state
+        let first = try CityPresentationSnapshot(state: state)
+        let second = try CityPresentationSnapshot(state: state)
+
+        XCTAssertEqual(first.spatialConsequences, second.spatialConsequences)
+        XCTAssertEqual(state, original)
+        for (index, sample) in first.spatialConsequences.samples.enumerated() {
+            XCTAssertEqual(
+                sample.coordinate,
+                GridCoordinate(x: index % state.gridWidth, y: index / state.gridWidth)
+            )
+            for value in [
+                sample.landValueIndex,
+                sample.localHappinessIndex,
+                sample.trafficPressure
+            ].compactMap({ $0 }) {
+                XCTAssertTrue((0...1).contains(value), "\(sample.coordinate): \(value)")
+            }
+        }
+
+        let completedDevelopmentCount = state.tiles.filter {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        }.count
+        let roadCount = state.tiles.filter { $0.kind == .road }.count
+        XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.landValueIndex).count,
+            completedDevelopmentCount
+        )
+        XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.localHappinessIndex).count,
+            completedDevelopmentCount
+        )
+        XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.trafficPressure).count,
+            roadCount
+        )
+
+        let developed = try XCTUnwrap(
+            first.spatialConsequences[GridCoordinate(x: 10, y: 11)]
+        )
+        XCTAssertNotNil(developed.landValueIndex)
+        XCTAssertNotNil(developed.localHappinessIndex)
+        XCTAssertNil(developed.trafficPressure)
+
+        let road = try XCTUnwrap(
+            first.spatialConsequences[GridCoordinate(x: 10, y: 12)]
+        )
+        XCTAssertNil(road.landValueIndex)
+        XCTAssertNil(road.localHappinessIndex)
+        XCTAssertNotNil(road.trafficPressure)
+
+        let empty = try XCTUnwrap(
+            first.spatialConsequences[GridCoordinate(x: 0, y: 0)]
+        )
+        XCTAssertNil(empty.landValueIndex)
+        XCTAssertNil(empty.localHappinessIndex)
+        XCTAssertNil(empty.trafficPressure)
+
+        state.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.constructionProgress = 0.75
+        }
+        let incomplete = try XCTUnwrap(
+            CityPresentationSnapshot(state: state)
+                .spatialConsequences[GridCoordinate(x: 10, y: 11)]
+        )
+        XCTAssertNil(incomplete.landValueIndex)
+        XCTAssertNil(incomplete.localHappinessIndex)
+        XCTAssertNil(incomplete.trafficPressure)
+
+        var extreme = state
+        extreme.happiness = 10_000
+        extreme.demand.commercial = 100
+        extreme.demand.industrial = 100
+        extreme.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.constructionProgress = 1
+            $0.condition = 100
+            $0.occupancy = Int.max
+        }
+        for coordinate in [
+            GridCoordinate(x: 10, y: 11),
+            GridCoordinate(x: 10, y: 12)
+        ] {
+            let sample = try diagnosticSample(in: extreme, at: coordinate)
+            for value in [
+                sample.landValueIndex,
+                sample.localHappinessIndex,
+                sample.trafficPressure
+            ].compactMap({ $0 }) {
+                XCTAssertTrue((0...1).contains(value), "\(coordinate): \(value)")
+            }
+        }
+    }
+
+    func testLandValueAndLocalHappinessAreLocallyMonotonic() throws {
+        let coordinate = GridCoordinate(x: 10, y: 11)
+        let base = CityGameState.newCity(seed: 42)
+
+        var poorCondition = base
+        poorCondition.updateTile(at: coordinate) { $0.condition = 0 }
+        var soundCondition = poorCondition
+        soundCondition.updateTile(at: coordinate) { $0.condition = 1 }
+        try assertDiagnosticIncrease(
+            from: poorCondition,
+            to: soundCondition,
+            at: coordinate,
+            landValue: true,
+            localHappiness: true
+        )
+
+        var unserved = base
+        unserved.updateTile(at: GridCoordinate(x: 13, y: 13)) { $0.kind = .empty }
+        unserved.updateTile(at: GridCoordinate(x: 15, y: 13)) { $0.kind = .empty }
+        try assertDiagnosticIncrease(
+            from: unserved,
+            to: base,
+            at: coordinate,
+            landValue: true,
+            localHappiness: true
+        )
+
+        var clean = base
+        clean.updateTile(at: GridCoordinate(x: 14, y: 11)) { $0.kind = .empty }
+        try assertDiagnosticIncrease(
+            from: base,
+            to: clean,
+            at: coordinate,
+            landValue: true,
+            localHappiness: true
+        )
+
+        var withoutPark = base
+        withoutPark.updateTile(at: GridCoordinate(x: 11, y: 13)) { $0.kind = .empty }
+        var withNearbyPark = withoutPark
+        withNearbyPark.updateTile(at: GridCoordinate(x: 10, y: 10)) {
+            $0.kind = .park
+        }
+        try assertDiagnosticIncrease(
+            from: withoutPark,
+            to: withNearbyPark,
+            at: coordinate,
+            landValue: true,
+            localHappiness: true
+        )
+
+        var withoutRoadAccess = base
+        withoutRoadAccess.updateTile(at: GridCoordinate(x: 10, y: 12)) {
+            $0.kind = .empty
+        }
+        try assertDiagnosticIncrease(
+            from: withoutRoadAccess,
+            to: base,
+            at: coordinate,
+            landValue: true,
+            localHappiness: false
+        )
+
+        var unhappy = base
+        unhappy.happiness = 0
+        var happy = base
+        happy.happiness = 100
+        let unhappySample = try diagnosticSample(in: unhappy, at: coordinate)
+        let happySample = try diagnosticSample(in: happy, at: coordinate)
+        XCTAssertGreaterThan(
+            try XCTUnwrap(happySample.localHappinessIndex),
+            try XCTUnwrap(unhappySample.localHappinessIndex)
+        )
+        XCTAssertEqual(happySample.landValueIndex, unhappySample.landValueIndex)
+    }
+
+    func testTrafficPressureIsRoadOnlyAndMonotonicForTopologyOccupancyAndDemand() throws {
+        let coordinate = GridCoordinate(x: 10, y: 10)
+        var sparse = CityGameState.newCity(seed: 42)
+        for index in sparse.tiles.indices {
+            sparse.tiles[index] = CityTile(
+                coordinate: sparse.tiles[index].coordinate,
+                kind: .empty
+            )
+        }
+        sparse.updateTile(at: coordinate) { $0.kind = .road }
+
+        let sparseSample = try diagnosticSample(in: sparse, at: coordinate)
+        XCTAssertEqual(try XCTUnwrap(sparseSample.trafficPressure), 0)
+        XCTAssertNil(sparseSample.landValueIndex)
+        XCTAssertNil(sparseSample.localHappinessIndex)
+
+        var connected = sparse
+        connected.updateTile(at: GridCoordinate(x: 10, y: 9)) { $0.kind = .road }
+        XCTAssertGreaterThan(
+            try XCTUnwrap(
+                diagnosticSample(in: connected, at: coordinate).trafficPressure
+            ),
+            try XCTUnwrap(sparseSample.trafficPressure)
+        )
+
+        var occupied = sparse
+        occupied.updateTile(at: GridCoordinate(x: 11, y: 10)) {
+            $0.kind = .residential
+            $0.occupancy = 280
+        }
+        XCTAssertGreaterThan(
+            try XCTUnwrap(
+                diagnosticSample(in: occupied, at: coordinate).trafficPressure
+            ),
+            try XCTUnwrap(sparseSample.trafficPressure)
+        )
+
+        var lowJobDemand = sparse
+        lowJobDemand.demand.commercial = 0
+        lowJobDemand.updateTile(at: GridCoordinate(x: 10, y: 12)) {
+            $0.kind = .commercial
+            $0.occupancy = CitySimulation.commercialJobCapacity
+        }
+        var highJobDemand = lowJobDemand
+        highJobDemand.demand.commercial = 1
+        XCTAssertGreaterThan(
+            try XCTUnwrap(
+                diagnosticSample(in: highJobDemand, at: coordinate).trafficPressure
+            ),
+            try XCTUnwrap(
+                diagnosticSample(in: lowJobDemand, at: coordinate).trafficPressure
+            )
+        )
+
+        var incomplete = occupied
+        incomplete.updateTile(at: GridCoordinate(x: 11, y: 10)) {
+            $0.constructionProgress = 0.75
+        }
+        XCTAssertEqual(
+            try XCTUnwrap(
+                diagnosticSample(in: incomplete, at: coordinate).trafficPressure
+            ),
+            try XCTUnwrap(sparseSample.trafficPressure)
+        )
+        XCTAssertNil(
+            try diagnosticSample(
+                in: occupied,
+                at: GridCoordinate(x: 11, y: 10)
+            ).trafficPressure
+        )
+    }
+
+    func testStoryFixturesFreezeDiagnosticChannelIdentityWithoutChangingStateFingerprints() throws {
+        let corpus = try ProductionStoryFixtureCorpus.build()
+        let expectedDiagnosticDigests = [
+            "commercial-opening-v1":
+                "aee4d9a138d5a207091879c1c71250e44a8aeae4143beaa9eff2f0aeaf572b47",
+            "commercial-complication-v1":
+                "73455e6d36a7bb989adad95d2e3368663dd9c907f47a5286bda54152df1275a7",
+            "commercial-recovery-v1":
+                "a00476df33257fbb7a729c0ee60417a9e2f06be644c426defccbea1e13042406",
+            "commercial-charter-victory-v1":
+                "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
+            "industrial-opening-v1":
+                "afb5a8084e6400e49226a55527fc1382be2e8092ff285e3a9f25182040eaa50a",
+            "industrial-complication-v1":
+                "e89291b1d8606325e4e8e4ee3197f7c111a3865c55fbacd903f7f171dbef64e5",
+            "industrial-recovery-v1":
+                "09e8d88251ae5a63e135ccd9ecb1a71630bd960311b567e44a475281e96f23a3",
+            "industrial-charter-victory-v1":
+                "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
+        ]
+
+        for artifact in corpus.artifacts {
+            let first = try CityPresentationSnapshot(state: artifact.state)
+            let second = try CityPresentationSnapshot(state: artifact.state)
+            let diagnosticDigest = diagnosticChannelsDigest(
+                first.spatialConsequences
+            )
+            print(
+                "CITYSIM_PLAY059_FIXTURE id=\(artifact.definition.id) " +
+                "state=\(artifact.fingerprint.digest) diagnostics=\(diagnosticDigest)"
+            )
+            XCTAssertEqual(first.spatialConsequences, second.spatialConsequences)
+            XCTAssertEqual(
+                try CityStateFingerprinter.fingerprint(artifact.state),
+                artifact.fingerprint,
+                artifact.definition.id
+            )
+            XCTAssertEqual(
+                diagnosticDigest,
+                expectedDiagnosticDigests[artifact.definition.id],
+                artifact.definition.id
+            )
+        }
     }
 
     func testUtilityPublishesIndependentBandsFromFullyActiveSources() throws {
@@ -278,12 +567,18 @@ final class SpatialConsequenceTests: XCTestCase {
         ]
 
         var derivationMilliseconds: [Double] = []
+        var snapshotMilliseconds: [Double] = []
         for state in states {
             _ = CitySpatialConsequenceMap(state: state)
             let start = ProcessInfo.processInfo.systemUptime
             let map = CitySpatialConsequenceMap(state: state)
             derivationMilliseconds.append(elapsedMilliseconds(since: start))
             XCTAssertEqual(map.samples.count, 576)
+
+            _ = try CityPresentationSnapshot(state: state)
+            let snapshotStart = ProcessInfo.processInfo.systemUptime
+            _ = try CityPresentationSnapshot(state: state)
+            snapshotMilliseconds.append(elapsedMilliseconds(since: snapshotStart))
         }
 
         let previous = try CityPresentationSnapshot(state: strainedState())
@@ -295,6 +590,11 @@ final class SpatialConsequenceTests: XCTestCase {
 
         XCTAssertLessThanOrEqual(derivationMilliseconds.reduce(0, +) / Double(states.count), 5)
         XCTAssertLessThanOrEqual(try XCTUnwrap(derivationMilliseconds.max()), 10)
+        XCTAssertLessThanOrEqual(
+            snapshotMilliseconds.reduce(0, +) / Double(states.count),
+            25
+        )
+        XCTAssertLessThanOrEqual(try XCTUnwrap(snapshotMilliseconds.max()), 50)
         XCTAssertLessThanOrEqual(diffMilliseconds, 5)
         XCTAssertLessThanOrEqual(events.count, 1_728)
         XCTAssertLessThanOrEqual(retainedBytes, 128 * 1_024)
@@ -305,12 +605,69 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertEqual(rendererInput, uiInput)
 
         print(
-            "CITYSIM_PLAY041_SPATIAL_DIAGNOSTICS fixtures=\(states.count) " +
+            "CITYSIM_PLAY059_SPATIAL_DIAGNOSTICS fixtures=\(states.count) " +
             "average_ms=\(metric(derivationMilliseconds.reduce(0, +) / Double(states.count))) " +
             "max_ms=\(metric(try XCTUnwrap(derivationMilliseconds.max()))) " +
+            "snapshot_average_ms=\(metric(snapshotMilliseconds.reduce(0, +) / Double(states.count))) " +
+            "snapshot_max_ms=\(metric(try XCTUnwrap(snapshotMilliseconds.max()))) " +
             "diff_ms=\(metric(diffMilliseconds)) events=\(events.count) " +
             "retained_sample_bytes=\(retainedBytes)"
         )
+    }
+
+    private func assertDiagnosticIncrease(
+        from lowerState: CityGameState,
+        to higherState: CityGameState,
+        at coordinate: GridCoordinate,
+        landValue: Bool,
+        localHappiness: Bool
+    ) throws {
+        let lower = try diagnosticSample(in: lowerState, at: coordinate)
+        let higher = try diagnosticSample(in: higherState, at: coordinate)
+        if landValue {
+            XCTAssertGreaterThan(
+                try XCTUnwrap(higher.landValueIndex),
+                try XCTUnwrap(lower.landValueIndex)
+            )
+        }
+        if localHappiness {
+            XCTAssertGreaterThan(
+                try XCTUnwrap(higher.localHappinessIndex),
+                try XCTUnwrap(lower.localHappinessIndex)
+            )
+        }
+    }
+
+    private func diagnosticSample(
+        in state: CityGameState,
+        at coordinate: GridCoordinate
+    ) throws -> CitySpatialConsequence {
+        try XCTUnwrap(
+            CityPresentationSnapshot(state: state).spatialConsequences[coordinate]
+        )
+    }
+
+    private func diagnosticChannelsDigest(
+        _ map: CitySpatialConsequenceMap
+    ) -> String {
+        var canonical = "spatial-diagnostics-v1|\(map.width)|\(map.height)\n"
+        for sample in map.samples {
+            canonical += [
+                String(sample.coordinate.x),
+                String(sample.coordinate.y),
+                optionalBitPattern(sample.landValueIndex),
+                optionalBitPattern(sample.localHappinessIndex),
+                optionalBitPattern(sample.trafficPressure),
+            ].joined(separator: ",")
+            canonical += "\n"
+        }
+        return SHA256.hash(data: Data(canonical.utf8))
+            .map { String(format: "%02x", $0) }
+            .joined()
+    }
+
+    private func optionalBitPattern(_ value: Double?) -> String {
+        value.map { String($0.bitPattern) } ?? "nil"
     }
 
     private func eventIDOrder(_ lhs: String, _ rhs: String) -> Bool {

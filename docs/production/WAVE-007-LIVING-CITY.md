@@ -28,12 +28,23 @@ PLAY-055. They define a materially higher successor outcome.
 
 ## Work order
 
+### PLAY-059 — Authoritative local diagnostics
+
+Simulation platform first supplies the three missing presentation-only
+channels approved by CONTRACT-013: developed-tile Land Value, developed-tile
+Local Happiness, and road-tile Traffic Pressure. These values are transient,
+deterministic, typed, and cannot affect gameplay or persistence.
+
 ### PLAY-056 — Living public realm
 
 World rendering owns the space between buildings: authored parks, varied
 vegetation, curbside/street props, restrained ambient life, and world-visible
 data layers. Every choice must remain deterministic, collision-safe,
 truth-safe, and readable at city, neighborhood, and block LOD.
+
+Park, vegetation, furniture, and ambient work may proceed independently.
+Land Value, Traffic, and Happiness adoption waits for accepted PLAY-059;
+Utilities and Pollution continue using their existing spatial truth.
 
 This slice does not ingest pending Commercial or Industrial directional art.
 Those source catalogs retain their own governed acceptance and shipping tasks.

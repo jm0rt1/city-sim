@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://play-027/offline-directional-scene-v1",
+  "title": "PLAY-027 offline directional scene descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task",
+    "sceneGeometryID",
+    "logicalBuildingID",
+    "family",
+    "level",
+    "variantID",
+    "viewDirection",
+    "sourceRevision",
+    "authoredIndependently",
+    "productionSelected",
+    "derivation",
+    "toolchainFingerprint",
+    "styleAnchor",
+    "materialLibrary",
+    "registration",
+    "camera",
+    "light",
+    "building",
+    "facades",
+    "entrance",
+    "props",
+    "occlusionExclusions"
+  ],
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "task": {
+      "const": "PLAY-027"
+    },
+    "sceneGeometryID": {
+      "type": "string",
+      "minLength": 1
+    },
+    "logicalBuildingID": {
+      "const": "residential_l01"
+    },
+    "family": {
+      "const": "residential"
+    },
+    "level": {
+      "const": 1
+    },
+    "variantID": {
+      "const": "variant-0"
+    },
+    "viewDirection": {
+      "enum": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ]
+    },
+    "sourceRevision": {
+      "const": "source-v01"
+    },
+    "authoredIndependently": {
+      "const": true
+    },
+    "productionSelected": {
+      "const": false
+    },
+    "derivation": {
+      "$ref": "#/$defs/derivation"
+    },
+    "toolchainFingerprint": {
+      "$ref": "#/$defs/fileReference"
+    },
+    "styleAnchor": {
+      "$ref": "#/$defs/fileReference"
+    },
+    "materialLibrary": {
+      "$ref": "#/$defs/fileReference"
+    },
+    "registration": {
+      "$ref": "#/$defs/registration"
+    },
+    "camera": {
+      "$ref": "#/$defs/camera"
+    },
+    "light": {
+      "$ref": "#/$defs/light"
+    },
+    "building": {
+      "$ref": "#/$defs/building"
+    },
+    "facades": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/facade"
+      }
+    },
+    "entrance": {
+      "$ref": "#/$defs/entrance"
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/prop"
+      }
+    },
+    "occlusionExclusions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/exclusion"
+      }
+    }
+  },
+  "$defs": {
+    "fileReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "file",
+        "sha256"
+      ],
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "derivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceKind",
+        "siblingSource",
+        "mirror",
+        "rotationDegrees",
+        "transform"
+      ],
+      "properties": {
+        "sourceKind": {
+          "const": "independent-scene-description"
+        },
+        "siblingSource": {
+          "type": "null"
+        },
+        "mirror": {
+          "const": false
+        },
+        "rotationDegrees": {
+          "const": 0
+        },
+        "transform": {
+          "const": "none"
+        }
+      }
+    },
+    "registration": {
+      "type": "object",
+      "required": [
+        "tileBasisPoints",
+        "sceneFootprintUnits",
+        "footprintPolygonSource",
+        "groundPivotSource",
+        "contactPolygonWorld",
+        "frontageEdgeSource",
+        "frontageSocketSource",
+        "doorBaseSource",
+        "presentationEnvelopeSource",
+        "shadowEnvelopeSource",
+        "orientationTransform"
+      ]
+    },
+    "camera": {
+      "type": "object",
+      "required": [
+        "projection",
+        "yawDegrees",
+        "elevationDegrees",
+        "orthographicScale",
+        "renderViewportPixels",
+        "oversamplingFactor",
+        "sourceGroundCenter",
+        "postProjectionOffsetPixels"
+      ]
+    },
+    "light": {
+      "type": "object",
+      "required": [
+        "keyOrigin",
+        "keyIntensity",
+        "ambientIntensity",
+        "shadowVectorSource",
+        "shadowReceiver"
+      ]
+    },
+    "building": {
+      "type": "object",
+      "required": [
+        "width",
+        "depth",
+        "foundationHeight",
+        "floorHeight",
+        "floors",
+        "wallHeight",
+        "roofHeight",
+        "roofOverhang",
+        "chimney"
+      ]
+    },
+    "facade": {
+      "type": "object",
+      "required": [
+        "id",
+        "direction",
+        "edgeWorld",
+        "materialID",
+        "hasEntrance",
+        "windowBays"
+      ]
+    },
+    "entrance": {
+      "type": "object",
+      "required": [
+        "facadeID",
+        "baseWorld",
+        "width",
+        "height",
+        "depth",
+        "doorMaterialID",
+        "surroundMaterialID",
+        "stepCount",
+        "stepRun",
+        "canopyDepth",
+        "hingeSide"
+      ]
+    },
+    "prop": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "positionWorld",
+        "dimensions",
+        "materialID"
+      ]
+    },
+    "exclusion": {
+      "type": "object",
+      "required": [
+        "id",
+        "purpose",
+        "polygonWorld"
+      ]
+    }
+  }
+}

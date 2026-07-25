@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "calibrationID": "residential-l01-variant-0-directional-v01",
+  "directionOrder": [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "layout": {
+    "columns": 2,
+    "rows": 2,
+    "rowMajor": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ]
+  },
+  "sourceScale": {
+    "panelPixels": [
+      1536,
+      1024
+    ],
+    "sheetPixels": [
+      3072,
+      2048
+    ],
+    "labels": false,
+    "file": "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-source-scale.png"
+  },
+  "native2xActualScale": {
+    "authoritativeSourceDiamondPixels": [
+      512,
+      256
+    ],
+    "native2xTileDiamondPixels": [
+      144,
+      72
+    ],
+    "scale": 0.28125,
+    "panelPixels": [
+      432,
+      288
+    ],
+    "sheetPixels": [
+      864,
+      576
+    ],
+    "labels": false,
+    "file": "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-native2x.png"
+  },
+  "grayscaleRecognition": {
+    "source": "native2xActualScale",
+    "conversion": "Core Image CIColorControls saturation=0 with fixed extended-sRGB output",
+    "labels": false,
+    "sheetPixels": [
+      864,
+      576
+    ],
+    "file": "docs/production/evidence/PLAY-027/offline-calibration-v01/contact-sheets/residential-l01-v0-native2x-grayscale.png"
+  },
+  "reviewManifest": "docs/production/evidence/PLAY-027/offline-calibration-v01/CONTACT-SHEET-ORDER.json",
+  "productionSelected": false
+}

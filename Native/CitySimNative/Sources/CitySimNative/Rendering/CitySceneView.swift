@@ -116,6 +116,10 @@ struct CitySceneView: NSViewRepresentable {
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
         scene.updateViewportInsets(viewportInsets)
+        context.coordinator.synchronizeCityFocusCamera(
+            isEnabled: store.isCityFocusModeEnabled,
+            selectedCoordinate: store.selectedCoordinate
+        )
         let proofReducedMotion: Bool
 #if DEBUG
         proofReducedMotion = ProcessInfo.processInfo.environment["CITYSIM_REDUCE_MOTION_PROOF"] == "1"
@@ -157,6 +161,7 @@ struct CitySceneView: NSViewRepresentable {
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
         private(set) var observedMapFocusRequestGeneration: UInt
+        private var previousCityFocusModeEnabled: Bool
         private var cachedPresentationSnapshot: CityPresentationSnapshot?
         private let enqueueOnMain: MainLoopEnqueuer
 
@@ -171,7 +176,22 @@ struct CitySceneView: NSViewRepresentable {
             self.pointerTransitionGate = pointerTransitionGate
             previousCommandPolicy = store.commandPolicy
             observedMapFocusRequestGeneration = store.mapFocusRequestGeneration
+            previousCityFocusModeEnabled = store.isCityFocusModeEnabled
             self.enqueueOnMain = enqueueOnMain
+        }
+
+        @discardableResult
+        func synchronizeCityFocusCamera(
+            isEnabled: Bool,
+            selectedCoordinate: GridCoordinate?
+        ) -> Bool {
+            let enteredFocusCity = isEnabled && !previousCityFocusModeEnabled
+            previousCityFocusModeEnabled = isEnabled
+            guard enteredFocusCity, selectedCoordinate == nil, let scene else {
+                return false
+            }
+            scene.frameCity()
+            return true
         }
 
         @discardableResult

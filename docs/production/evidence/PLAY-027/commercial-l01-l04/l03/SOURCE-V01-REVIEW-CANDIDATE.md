@@ -16,7 +16,7 @@ The branch synchronized published baseline
 `72adc7770a87af6b7877a47343bf6f5faa978147`. Commercial L2 accepted authority
 `a224937e6aaae9c4824566403ead8c6087d646d9` is an ancestor. The four L3 scenes
 were frozen before pixels at
-`22ee0caa6d877170f34c0b87d9e27956437fb1fb`.
+`22ee0ca5f3d53d72250b395a04af64d261f45932`.
 
 A path-scoped comparison against `a224937e6aaae9c4824566403ead8c6087d646d9`
 passes for every accepted Residential L1-L4 and Commercial L1-L2 scene, raw,

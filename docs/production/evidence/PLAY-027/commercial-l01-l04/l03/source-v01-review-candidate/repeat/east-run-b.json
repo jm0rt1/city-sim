@@ -116,7 +116,7 @@
       28
     ]
   },
-  "rendererSourceCommit" : "22ee0caa6d877170f34c0b87d9e27956437fb1fb",
+  "rendererSourceCommit" : "22ee0ca5f3d53d72250b395a04af64d261f45932",
   "rendererSources" : [
     {
       "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",

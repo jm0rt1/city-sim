@@ -593,6 +593,23 @@ enum BuildIndustrialL2EastV04RawProbeReviewMain {
                 == v04ReviewAlphaContractSHA256,
             provenance["validatorReplaySHA256"] as? String
                 == v04ReviewValidationReplaySHA256,
+            let compositor =
+                provenance["taskOwnedFlatChromaCompositor"]
+                as? [String: Any],
+            compositor["contractID"] as? String
+                == "industrial-l02-east-v04-straight-alpha-flat-chroma-v1",
+            let fullInputAlphaSHA256 =
+                compositor["inputAlphaSHA256"] as? String,
+            !fullInputAlphaSHA256.isEmpty,
+            let fullOutputAlphaSHA256 =
+                compositor["outputAlphaSHA256"] as? String,
+            !fullOutputAlphaSHA256.isEmpty,
+            let foregroundInputAlphaSHA256 =
+                compositor["foregroundInputAlphaSHA256"] as? String,
+            compositor["foregroundOutputAlphaSHA256"] as? String
+                == foregroundInputAlphaSHA256,
+            (compositor["zeroToChromaPixelCount"] as? Int ?? 0) > 0,
+            compositor["alphaRelationViolationCount"] as? Int == 0,
             provenance["productionSelected"] as? Bool == false
         else {
             throw IndustrialL2EastV04ReviewError.invalid(

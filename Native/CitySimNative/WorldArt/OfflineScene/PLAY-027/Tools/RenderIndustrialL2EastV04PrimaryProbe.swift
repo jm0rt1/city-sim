@@ -44,8 +44,20 @@ private let v04ProbeV03RejectionSHA256 =
     "3ccefb83cded63bf0958c4b28eabf00af8ccf4551dd4191d3675c4641110a877"
 private let v04ProbeV03MetricsSHA256 =
     "cd55e28517b2e2ca5896d433f5a0646840786b8684a45c2f3ef0bd931f69c1c9"
+private let v04ProbeRejectedToolFreezeSHA256 =
+    "749e4ffdf68aec197fcb7a99993014cc00f0af55895ee58d620669b71f128e3a"
+private let v04ProbeRejectedInventorySHA256 =
+    "ede91428c6f2e88253b7165dbe9db16314da9190afdfe5a3594ce3934f9f7ec8"
+private let v04ProbeRejectedFailureSHA256 =
+    "16ded1f76af96415d57033f7bb1dcfd97d991c9d47216e5cc70271c381959154"
+private let v04ProbeRejectedTextSHA256 =
+    "791a6effab74ca6ff7abedd250908ccf752c22db521b315c3e20100e01b325d3"
 private let v04ProbeOutputSuffix =
     "/docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/raw-probe/diagnostics/east-primary"
+private let v04ProbeRelationEvidenceSuffix =
+    "/docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/alpha-relation-repair/prepixel/ALPHA-RELATION-SYNTHETIC-PROOF.json"
+private let v04ProbeRelationReplayPath =
+    "/private/tmp/play027-industrial-l2-east-v04-alpha-relation-replay.json"
 
 private func v04ProbeArgument(
     _ name: String,
@@ -310,11 +322,230 @@ private struct V04StraightAlphaResult {
     let image: CGImage
     let inputAlphaSHA256: String
     let outputAlphaSHA256: String
+    let foregroundInputAlphaSHA256: String
+    let foregroundOutputAlphaSHA256: String
     let foregroundPixelCount: Int
     let partialAlphaPixelCount: Int
     let exactChromaPixelCount: Int
+    let zeroToChromaPixelCount: Int
+    let alphaRelationViolationCount: Int
     let opaqueNearMagentaForegroundPixelCount: Int
     let postQuantizationMutationCount: Int
+}
+
+private struct V04AlphaRelationReport {
+    let inputAlphaSHA256: String
+    let outputAlphaSHA256: String
+    let foregroundInputAlphaSHA256: String
+    let foregroundOutputAlphaSHA256: String
+    let inputPixelCount: Int
+    let foregroundPixelCount: Int
+    let zeroToChromaPixelCount: Int
+    let relationViolationCount: Int
+
+    var record: [String: Any] {
+        [
+            "inputAlphaSHA256": inputAlphaSHA256,
+            "outputAlphaSHA256": outputAlphaSHA256,
+            "foregroundInputAlphaSHA256":
+                foregroundInputAlphaSHA256,
+            "foregroundOutputAlphaSHA256":
+                foregroundOutputAlphaSHA256,
+            "inputPixelCount": inputPixelCount,
+            "foregroundPixelCount": foregroundPixelCount,
+            "zeroToChromaPixelCount": zeroToChromaPixelCount,
+            "relationViolationCount": relationViolationCount,
+        ]
+    }
+}
+
+private func v04ProbeAlphaRelationReport(
+    inputRGBA: [UInt8],
+    outputRGBA: [UInt8]
+) throws -> V04AlphaRelationReport {
+    guard
+        inputRGBA.count == outputRGBA.count,
+        inputRGBA.count.isMultiple(of: 4)
+    else {
+        throw IndustrialL2EastV04ProbeError.invalid(
+            "v04 alpha relation dimensions mismatch"
+        )
+    }
+    var inputAlpha: [UInt8] = []
+    var outputAlpha: [UInt8] = []
+    var foregroundInputAlpha: [UInt8] = []
+    var foregroundOutputAlpha: [UInt8] = []
+    inputAlpha.reserveCapacity(inputRGBA.count / 4)
+    outputAlpha.reserveCapacity(outputRGBA.count / 4)
+    foregroundInputAlpha.reserveCapacity(inputRGBA.count / 4)
+    foregroundOutputAlpha.reserveCapacity(outputRGBA.count / 4)
+    var zeroToChroma = 0
+    var violations = 0
+    for pixel in stride(from: 0, to: inputRGBA.count, by: 4) {
+        let input = Array(inputRGBA[pixel..<(pixel + 4)])
+        let output = Array(outputRGBA[pixel..<(pixel + 4)])
+        inputAlpha.append(input[3])
+        outputAlpha.append(output[3])
+        if input[3] == 0 {
+            if output == [255, 0, 255, 255] {
+                zeroToChroma += 1
+            } else {
+                violations += 1
+            }
+        } else {
+            foregroundInputAlpha.append(input[3])
+            foregroundOutputAlpha.append(output[3])
+            if output[3] != input[3] {
+                violations += 1
+            }
+        }
+    }
+    return V04AlphaRelationReport(
+        inputAlphaSHA256: v04ProbeSHA256(Data(inputAlpha)),
+        outputAlphaSHA256: v04ProbeSHA256(Data(outputAlpha)),
+        foregroundInputAlphaSHA256:
+            v04ProbeSHA256(Data(foregroundInputAlpha)),
+        foregroundOutputAlphaSHA256:
+            v04ProbeSHA256(Data(foregroundOutputAlpha)),
+        inputPixelCount: inputAlpha.count,
+        foregroundPixelCount: foregroundInputAlpha.count,
+        zeroToChromaPixelCount: zeroToChroma,
+        relationViolationCount: violations
+    )
+}
+
+@discardableResult
+private func v04ProbeRequireAlphaRelation(
+    inputRGBA: [UInt8],
+    outputRGBA: [UInt8]
+) throws -> V04AlphaRelationReport {
+    let report = try v04ProbeAlphaRelationReport(
+        inputRGBA: inputRGBA,
+        outputRGBA: outputRGBA
+    )
+    guard report.relationViolationCount == 0 else {
+        throw IndustrialL2EastV04ProbeError.invalid(
+            "v04 alpha relation failed closed with "
+                + "\(report.relationViolationCount) violation(s)"
+        )
+    }
+    return report
+}
+
+private func v04ProbeSyntheticAlphaRelationProof() throws -> [String: Any] {
+    let alphaCases = [0, 1, 64, 128, 254, 255]
+    let input = alphaCases.flatMap { alpha -> [UInt8] in
+        if alpha == 0 {
+            return [17, 22, 31, 0]
+        }
+        let value = UInt8(min(alpha, 192))
+        return [value / 2, value / 3, value / 4, UInt8(alpha)]
+    }
+    let validOutput = alphaCases.flatMap { alpha -> [UInt8] in
+        if alpha == 0 {
+            return [255, 0, 255, 255]
+        }
+        return [80, 112, 144, UInt8(alpha)]
+    }
+    let validReport = try v04ProbeRequireAlphaRelation(
+        inputRGBA: input,
+        outputRGBA: validOutput
+    )
+    let invalidCases: [(String, [UInt8], [UInt8])] = [
+        (
+            "zero-alpha-rgb-not-exact-chroma",
+            [17, 22, 31, 0],
+            [254, 0, 255, 255]
+        ),
+        (
+            "zero-alpha-output-not-opaque",
+            [17, 22, 31, 0],
+            [255, 0, 255, 0]
+        ),
+        (
+            "foreground-alpha-changed",
+            [40, 60, 80, 128],
+            [80, 120, 160, 127]
+        ),
+        (
+            "post-quantizer-alpha-mutation",
+            [80, 96, 112, 254],
+            [80, 112, 144, 255]
+        ),
+    ]
+    let invalidRecords = try invalidCases.map {
+        name,
+        invalidInput,
+        invalidOutput -> [String: Any] in
+        let report = try v04ProbeAlphaRelationReport(
+            inputRGBA: invalidInput,
+            outputRGBA: invalidOutput
+        )
+        var rejected = false
+        do {
+            _ = try v04ProbeRequireAlphaRelation(
+                inputRGBA: invalidInput,
+                outputRGBA: invalidOutput
+            )
+        } catch {
+            rejected = true
+        }
+        guard
+            rejected,
+            report.relationViolationCount > 0
+        else {
+            throw IndustrialL2EastV04ProbeError.invalid(
+                "synthetic invalid alpha relation did not fail closed"
+            )
+        }
+        return [
+            "name": name,
+            "inputRGBA": invalidInput,
+            "outputRGBA": invalidOutput,
+            "rejected": rejected,
+            "report": report.record,
+        ]
+    }
+    return [
+        "schema": 1,
+        "task": "PLAY-027",
+        "type":
+            "industrial-l02-east-v04-alpha-relation-synthetic-proof",
+        "authorityCommit":
+            "8fac58b22c7785eb277c80a7c96d133e1eaa5865",
+        "contractID":
+            "industrial-l02-east-v04-straight-alpha-flat-chroma-v1",
+        "relation": [
+            "inputAlphaEqualsZero":
+                "output RGBA must equal [255,0,255,255]",
+            "inputAlphaGreaterThanZero":
+                "output alpha must equal input alpha",
+            "foregroundAlphaMutationAllowed": false,
+        ],
+        "valid": [
+            "inputAlphaCases": alphaCases,
+            "inputRGBA": input,
+            "outputRGBA": validOutput,
+            "report": validReport.record,
+            "passed": true,
+        ],
+        "invalid": invalidRecords,
+        "preservedRejectedPacket": [
+            "toolFreezeSHA256":
+                v04ProbeRejectedToolFreezeSHA256,
+            "inventorySHA256":
+                v04ProbeRejectedInventorySHA256,
+            "primaryFailureSHA256":
+                v04ProbeRejectedFailureSHA256,
+            "rejectionTextSHA256":
+                v04ProbeRejectedTextSHA256,
+        ],
+        "passed": true,
+        "capabilityPreflightInvoked": false,
+        "sceneKitSnapshotInvoked": false,
+        "pixelFilesCreated": 0,
+        "productionSelected": false,
+    ]
 }
 
 private func v04ProbePremultipliedRGBA(
@@ -362,15 +593,12 @@ private func v04ProbeQuantizedStraightAlphaFlatChroma(
 ) throws -> V04StraightAlphaResult {
     let premultiplied = try v04ProbePremultipliedRGBA(preChroma)
     var straight = [UInt8](repeating: 0, count: premultiplied.count)
-    var inputAlpha = [UInt8]()
-    inputAlpha.reserveCapacity(preChroma.width * preChroma.height)
     var foreground = 0
     var partial = 0
     var exactChroma = 0
     var opaqueNearMagenta = 0
     for pixel in stride(from: 0, to: premultiplied.count, by: 4) {
         let alpha = premultiplied[pixel + 3]
-        inputAlpha.append(alpha)
         if alpha == 0 {
             straight[pixel] = 255
             straight[pixel + 1] = 0
@@ -446,27 +674,29 @@ private func v04ProbeQuantizedStraightAlphaFlatChroma(
         straight = result.rgba
         mutationCount = result.mutations.count
     }
-    var outputAlpha = [UInt8]()
-    outputAlpha.reserveCapacity(preChroma.width * preChroma.height)
-    for pixel in stride(from: 0, to: straight.count, by: 4) {
-        outputAlpha.append(straight[pixel + 3])
-    }
-    guard inputAlpha == outputAlpha else {
-        throw IndustrialL2EastV04ProbeError.invalid(
-            "v04 compositor changed pre-chroma alpha"
-        )
-    }
+    let alphaRelation = try v04ProbeRequireAlphaRelation(
+        inputRGBA: premultiplied,
+        outputRGBA: straight
+    )
     return V04StraightAlphaResult(
         image: try v04ProbeStraightAlphaImage(
             rgba: straight,
             width: preChroma.width,
             height: preChroma.height
         ),
-        inputAlphaSHA256: v04ProbeSHA256(Data(inputAlpha)),
-        outputAlphaSHA256: v04ProbeSHA256(Data(outputAlpha)),
+        inputAlphaSHA256: alphaRelation.inputAlphaSHA256,
+        outputAlphaSHA256: alphaRelation.outputAlphaSHA256,
+        foregroundInputAlphaSHA256:
+            alphaRelation.foregroundInputAlphaSHA256,
+        foregroundOutputAlphaSHA256:
+            alphaRelation.foregroundOutputAlphaSHA256,
         foregroundPixelCount: foreground,
         partialAlphaPixelCount: partial,
         exactChromaPixelCount: exactChroma,
+        zeroToChromaPixelCount:
+            alphaRelation.zeroToChromaPixelCount,
+        alphaRelationViolationCount:
+            alphaRelation.relationViolationCount,
         opaqueNearMagentaForegroundPixelCount: opaqueNearMagenta,
         postQuantizationMutationCount: mutationCount
     )
@@ -505,6 +735,71 @@ private func v04ProbeImageRecord(
 enum RenderIndustrialL2EastV04PrimaryProbeMain {
     static func main() throws {
         let arguments = Array(CommandLine.arguments.dropFirst())
+        if arguments.contains("--alpha-relation-proof-output") {
+            let root = URL(
+                fileURLWithPath: try v04ProbeArgument(
+                    "--repository-root",
+                    in: arguments
+                )
+            ).standardizedFileURL
+            let output = URL(
+                fileURLWithPath: try v04ProbeArgument(
+                    "--alpha-relation-proof-output",
+                    in: arguments
+                )
+            ).standardizedFileURL
+            let rejectedRoot = root.appendingPathComponent(
+                "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/raw-probe"
+            )
+            let preserved: [(String, String)] = [
+                (
+                    "preflight/TOOL-FREEZE.json",
+                    v04ProbeRejectedToolFreezeSHA256
+                ),
+                (
+                    "rejection/INVENTORY.json",
+                    v04ProbeRejectedInventorySHA256
+                ),
+                (
+                    "rejection/PRIMARY-FAILURE.json",
+                    v04ProbeRejectedFailureSHA256
+                ),
+                (
+                    "rejection/REJECTION.md",
+                    v04ProbeRejectedTextSHA256
+                ),
+            ]
+            let preservationPassed = try preserved.allSatisfy {
+                item in
+                try v04ProbeSHA256(
+                    rejectedRoot.appendingPathComponent(item.0)
+                ) == item.1
+            }
+            guard
+                output.path
+                    == root.path + v04ProbeRelationEvidenceSuffix
+                    || output.path == v04ProbeRelationReplayPath,
+                !FileManager.default.fileExists(atPath: output.path),
+                preservationPassed
+            else {
+                throw IndustrialL2EastV04ProbeError.invalid(
+                    "v04 alpha-relation proof path or preservation guard failed"
+                )
+            }
+            try FileManager.default.createDirectory(
+                at: output.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            try v04ProbeWriteJSON(
+                try v04ProbeSyntheticAlphaRelationProof(),
+                to: output
+            )
+            print(
+                "PLAY-027 v04 alpha relation proof "
+                    + "\(try v04ProbeSHA256(output))"
+            )
+            return
+        }
         let root = URL(
             fileURLWithPath: try v04ProbeArgument(
                 "--repository-root",
@@ -848,12 +1143,20 @@ enum RenderIndustrialL2EastV04PrimaryProbeMain {
                 "scope": "v04-probe-only",
                 "inputAlphaSHA256": governed.inputAlphaSHA256,
                 "outputAlphaSHA256": governed.outputAlphaSHA256,
+                "foregroundInputAlphaSHA256":
+                    governed.foregroundInputAlphaSHA256,
+                "foregroundOutputAlphaSHA256":
+                    governed.foregroundOutputAlphaSHA256,
                 "foregroundPixelCount":
                     governed.foregroundPixelCount,
                 "partialAlphaPixelCount":
                     governed.partialAlphaPixelCount,
                 "exactChromaPixelCount":
                     governed.exactChromaPixelCount,
+                "zeroToChromaPixelCount":
+                    governed.zeroToChromaPixelCount,
+                "alphaRelationViolationCount":
+                    governed.alphaRelationViolationCount,
                 "opaqueNearMagentaForegroundPixelCount":
                     governed.opaqueNearMagentaForegroundPixelCount,
                 "postQuantizationMutationCount":

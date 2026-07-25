@@ -1,0 +1,4 @@
+interface:
+  display_name: "Produce CitySim World Art"
+  short_description: "Generate governed directional building assets"
+  default_prompt: "Use $produce-citysim-world-art to author and validate the next claimed directional CitySim building batch."

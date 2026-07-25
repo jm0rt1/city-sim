@@ -42,13 +42,15 @@ When sources conflict, use this order:
 
 ## 3. Repository topology
 
-The system has one integration command center and five specialist worktrees.
+The system has one integration command center, five product specialist
+worktrees, and one isolated world-art generation cell.
 
 | Lane | Branch | Default worktree path | Mission |
 |---|---|---|---|
 | Integration | `master` | Main repository checkout | Own accepted builds, allocation, integration, conflict resolution, release proof, and rollback |
 | Gameplay loop | `codex/citysim-gameplay-loop` | `/Users/James/.codex/worktrees/citysim/gameplay-loop` | Make decisions consequential and the session paced, legible, recoverable, and worth replaying |
 | World rendering | `codex/citysim-world-rendering` | `/Users/James/.codex/worktrees/citysim/world-rendering` | Make the city readable, alive, performant, and visually compelling |
+| World art | `codex/citysim-world-art` | `/Users/James/.codex/worktrees/citysim/world-art` | Author governed high-fidelity directional source art without changing renderer or gameplay authority |
 | UI and input | `codex/citysim-ui-input` | `/Users/James/.codex/worktrees/citysim/ui-input` | Make every command discoverable, responsive, accessible, and keyboard-operable |
 | Simulation platform | `codex/citysim-simulation-platform` | `/Users/James/.codex/worktrees/citysim/simulation-platform` | Own deterministic state, persistence, performance, diagnostics, and system contracts |
 | Playtest quality | `codex/citysim-playtest-quality` | `/Users/James/.codex/worktrees/citysim/playtest-quality` | Prove or disprove playability with golden cities, journeys, visual evidence, balance findings, and regressions |
@@ -164,6 +166,28 @@ Default surfaces:
 - audit and verification records.
 
 This lane is read-mostly against feature code. It should return product defects to the owning lane rather than casually repairing cross-cutting implementation.
+
+### 4.7 World art generation cell
+
+Primary ownership:
+
+- ImageGen prompts, raw masters, provenance, rejection records, and source-art
+  contact sheets for an integration-approved asset batch;
+- deterministic normalization inputs and source-level geometry reports;
+- authored directional-view consistency, family recognition, material quality,
+  and visual-style adherence.
+
+Default surfaces:
+
+- `Native/CitySimNative/WorldArt/ImageGen/`;
+- task-owned source catalog additions outside the shipping production selection;
+- source-art validators, contact sheets, and `PLAY-027` evidence.
+
+The cell does not edit `Rendering/`, the shipping atlas pages or production
+selection, package topology, gameplay/simulation/UI code, or shared manifests.
+Only integration may approve a manifest contract; the renderer lead later
+reviews and ingests accepted source batches. This cell must never run
+concurrently as a second writer on the world-rendering worktree.
 
 ## 5. Shared surfaces and contract locks
 

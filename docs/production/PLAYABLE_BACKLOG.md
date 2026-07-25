@@ -177,6 +177,16 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Zero manifest fallbacks and legacy texture loads; exact staged A/B evidence wins independent review; all interactions, accessibility, Reduce Motion, frame/memory budgets, full tests, and rollback verification pass.
 - **Stop conditions:** Any visible legacy art, special-case starting-state substitution, missing buildable/state coverage, staged/built digest mismatch, user visual rejection, or incomplete proof.
 
+### [ ] PLAY-027: Author the four-direction production building catalog
+
+- **Player outcome:** Residential, commercial, industrial, civic, service, and utility buildings are materially distinct, face their real road frontage, and retain coherent projection, pivots, shadows, and identity from every supported direction.
+- **Owning lane:** World art generation cell.
+- **Dependencies:** Approved CONTRACT-006 and CONTRACT-010; accepted generated-v4 style anchors. Source production may proceed while PLAY-024 is independently gated, but ingestion and shipping selection depend on accepted PLAY-024 and renderer-lead review.
+- **In scope:** Audit and eliminate cross-type source aliasing; author N/E/S/W masters without runtime mirroring or rotation; complete the first 48-source R/C/I variant-zero directional batch, then extend the governed catalog toward three material/massing variants for every built identity; retain prompts, references, provenance, rejection reasons, geometry registration, and actual-scale contact sheets.
+- **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
+- **Acceptance:** Every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
+- **Stop conditions:** Reuse across building types, recolor-only variants, runtime mirroring/rotation, perspective or light drift, invented roads or ground truth, geometry/pivot/frontage mismatch, missing provenance, direct edits to live renderer/shipping selection, or generation continuing after two rejected direction siblings without anchor review.
+
 ### [ ] PLAY-032: Turn diagnosis into direct action
 
 - **Player outcome:** Important warnings reveal cause, consequence, and legitimate remedies, and keyboard-only players can navigate and act spatially without falling out of the governed command system.

@@ -517,8 +517,8 @@ final class CitySimulationTests: XCTestCase {
         scene.keyDown(with: try keyEvent(characters: "0", keyCode: 29))
         XCTAssertEqual(
             scene.currentCameraDetailLevel,
-            .neighborhood,
-            "Framing a compact city should preserve the neighborhood LOD and its tighter texture budget"
+            .block,
+            "Framing must retain block detail when the occupied-mass fit requires it at compact size"
         )
         XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
         XCTAssertEqual(scene.diagnosticsSnapshot.updatedTileCount, 0)

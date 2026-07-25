@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "sceneGeometryID": "commercial-l04-v0-north-premium-tower-geometry-v1",
+  "sceneGeometryID": "commercial-l04-v0-north-premium-tower-geometry-v2",
   "logicalBuildingID": "commercial_l04",
   "family": "commercial",
   "level": 4,
   "variantID": "variant-0",
   "viewDirection": "north",
-  "sourceRevision": "source-v01",
+  "sourceRevision": "source-v02",
   "authoredIndependently": true,
   "productionSelected": false,
   "derivation": {"sourceKind": "independent-scene-description", "siblingSource": null, "mirror": false, "rotationDegrees": 0, "transform": "none"},
@@ -29,30 +29,30 @@
     "wallHeight": 132, "roofHeight": 6, "roofOverhang": 1,
     "wallMaterialID": "limestone-warm", "trimMaterialID": "roof-copper",
     "roofMaterialID": "slate-charcoal", "foundationMaterialID": "foundation-stone",
-    "chimney": {"positionWorld": [13, 153, 12], "dimensions": [3, 7, 3], "materialID": "chimney-metal"},
+    "chimney": {"positionWorld": [13, 150.95, 12], "dimensions": [3, 7, 3], "materialID": "chimney-metal"},
     "massingProfile": "eight-floor-premium-commercial-tower-with-stepped-curtain-wall-shaft-and-copper-crown", "usesLegacyDomesticDetails": false,
     "massBlocks": [
       {"id": "c04-premium-retail-lobby-podium", "dimensions": [54, 18, 54], "positionWorld": [0, 12, 0], "materialID": "stone-commercial-sand"},
-      {"id": "c04-limestone-lower-office-shaft", "dimensions": [48, 48, 48], "positionWorld": [0, 45, 0], "materialID": "limestone-warm"},
-      {"id": "c04-burgundy-upper-office-shaft", "dimensions": [40, 48, 40], "positionWorld": [0, 93, 0], "materialID": "brick-commercial-burgundy"},
-      {"id": "c04-copper-executive-crown-story", "dimensions": [30, 18, 30], "positionWorld": [0, 126, 0], "materialID": "roof-copper"}
+      {"id": "c04-limestone-lower-office-shaft", "dimensions": [48, 48, 48], "positionWorld": [0, 44.75, 0], "materialID": "limestone-warm"},
+      {"id": "c04-burgundy-upper-office-shaft", "dimensions": [40, 48, 40], "positionWorld": [0, 92.55, 0], "materialID": "brick-commercial-burgundy"},
+      {"id": "c04-copper-executive-crown-story", "dimensions": [30, 18, 30], "positionWorld": [0, 125.25, 0], "materialID": "roof-copper"}
     ],
     "roofVolumes": [
-      {"id": "c04-podium-terrace-coping", "shape": "flat-parapet", "dimensions": [56, 3, 56], "positionWorld": [0, 22.5, 0], "materialID": "slate-charcoal", "trimMaterialID": "roof-copper"},
-      {"id": "c04-lower-shaft-transfer-crown", "shape": "flat-parapet", "dimensions": [50, 3, 50], "positionWorld": [0, 70.5, 0], "materialID": "roof-copper", "trimMaterialID": "limestone-warm"},
-      {"id": "c04-upper-tower-crown-slab", "shape": "flat-parapet", "dimensions": [42, 4, 42], "positionWorld": [0, 119, 0], "materialID": "slate-charcoal", "trimMaterialID": "roof-copper"},
-      {"id": "c04-executive-lantern-crown", "shape": "flat-parapet", "dimensions": [32, 6, 32], "positionWorld": [0, 138, 0], "materialID": "roof-copper", "trimMaterialID": "limestone-warm"},
-      {"id": "c04-screened-mechanical-penthouse", "shape": "flat-parapet", "dimensions": [22, 8, 20], "positionWorld": [0, 145, 0], "materialID": "rooftop-metal", "trimMaterialID": "slate-charcoal"}
+      {"id": "c04-podium-terrace-coping", "shape": "flat-parapet", "dimensions": [56, 3, 56], "positionWorld": [0, 22.35, 0], "materialID": "slate-charcoal", "trimMaterialID": "roof-copper"},
+      {"id": "c04-lower-shaft-transfer-crown", "shape": "flat-parapet", "dimensions": [50, 3, 50], "positionWorld": [0, 70.15, 0], "materialID": "roof-copper", "trimMaterialID": "limestone-warm"},
+      {"id": "c04-upper-tower-crown-slab", "shape": "flat-parapet", "dimensions": [42, 4, 42], "positionWorld": [0, 118.35, 0], "materialID": "slate-charcoal", "trimMaterialID": "roof-copper"},
+      {"id": "c04-executive-lantern-crown", "shape": "flat-parapet", "dimensions": [32, 6, 32], "positionWorld": [0, 137.35, 0], "materialID": "roof-copper", "trimMaterialID": "limestone-warm"},
+      {"id": "c04-screened-mechanical-penthouse", "shape": "flat-parapet", "dimensions": [22, 8, 20], "positionWorld": [0, 144.25, 0], "materialID": "rooftop-metal", "trimMaterialID": "slate-charcoal"}
     ],
     "trimBands": [
-      {"id": "c04-podium-cornice", "dimensions": [55, 2, 55], "positionWorld": [0, 21, 0], "materialID": "roof-copper"},
+      {"id": "c04-podium-cornice", "dimensions": [55, 2, 55], "positionWorld": [0, 20.85, 0], "materialID": "roof-copper"},
       {"id": "c04-lower-shaft-band-a", "dimensions": [49, 1.2, 49], "positionWorld": [0, 38.5, 0], "materialID": "awning-deep-teal"},
       {"id": "c04-lower-shaft-band-b", "dimensions": [49, 1.2, 49], "positionWorld": [0, 54.5, 0], "materialID": "awning-deep-teal"},
-      {"id": "c04-transfer-cornice", "dimensions": [50, 1.6, 50], "positionWorld": [0, 69, 0], "materialID": "roof-copper"},
+      {"id": "c04-transfer-cornice", "dimensions": [50, 1.6, 50], "positionWorld": [0, 68.85, 0], "materialID": "roof-copper"},
       {"id": "c04-upper-shaft-band-a", "dimensions": [41, 1.2, 41], "positionWorld": [0, 86.5, 0], "materialID": "limestone-warm"},
       {"id": "c04-upper-shaft-band-b", "dimensions": [41, 1.2, 41], "positionWorld": [0, 102.5, 0], "materialID": "limestone-warm"},
-      {"id": "c04-upper-crown-cornice", "dimensions": [42, 1.6, 42], "positionWorld": [0, 117, 0], "materialID": "roof-copper"},
-      {"id": "c04-executive-crown-band", "dimensions": [32, 1.6, 32], "positionWorld": [0, 134, 0], "materialID": "limestone-warm"}
+      {"id": "c04-upper-crown-cornice", "dimensions": [42, 1.6, 42], "positionWorld": [0, 116.65, 0], "materialID": "roof-copper"},
+      {"id": "c04-executive-crown-band", "dimensions": [32, 1.6, 32], "positionWorld": [0, 134.45, 0], "materialID": "limestone-warm"}
     ]
   },
   "facades": [
@@ -95,9 +95,9 @@
   ],
   "entrance": {"facadeID": "north-facade", "baseWorld": [0, 3, -28], "width": 16, "height": 20, "depth": 2, "doorMaterialID": "door-commercial-brass", "surroundMaterialID": "limestone-warm", "stepCount": 2, "stepRun": 2, "canopyDepth": 20, "hingeSide": "right", "pavilionWidth": 30, "pavilionDepth": 10, "pavilionHeight": 28, "pavilionRoofHeight": 4, "pavilionMaterialID": "roof-copper", "porchWidth": 34, "porchColumnWidth": 2.5, "porchLateralOffset": 13, "style": "tower-lobby"},
   "props": [
-    {"id": "north-tower-hvac-a", "kind": "rooftop-hvac", "positionWorld": [8, 153, 5], "dimensions": [12, 8, 10], "materialID": "rooftop-metal"},
-    {"id": "north-tower-hvac-b", "kind": "rooftop-hvac", "positionWorld": [-8, 152, 7], "dimensions": [9, 7, 8], "materialID": "rooftop-metal"},
-    {"id": "north-tower-hvac-c", "kind": "rooftop-hvac", "positionWorld": [0, 154, -5], "dimensions": [6, 6, 6], "materialID": "rooftop-metal"}
+    {"id": "north-tower-hvac-a", "kind": "rooftop-hvac", "positionWorld": [8, 151.15, 5], "dimensions": [12, 8, 10], "materialID": "rooftop-metal"},
+    {"id": "north-tower-hvac-b", "kind": "rooftop-hvac", "positionWorld": [-8, 150.6, 7], "dimensions": [9, 7, 8], "materialID": "rooftop-metal"},
+    {"id": "north-tower-hvac-c", "kind": "rooftop-hvac", "positionWorld": [0, 150.35, -5], "dimensions": [6, 6, 6], "materialID": "rooftop-metal"}
   ],
   "occlusionExclusions": [{"id": "north-premium-tower-lobby-clearance", "purpose": "protect grounded north tower lobby, premium retail returns, and declared commercial frontage socket", "polygonWorld": [[-25, -54], [29, -54], [29, -19], [-25, -19]]}]
 }

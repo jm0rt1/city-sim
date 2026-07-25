@@ -87,6 +87,19 @@ env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
 No committed binary, new package target, build-script hook, or product
 dependency is permitted.
 
+The structural-boundary validator compiles from the same task-owned descriptor
+model and rejects exact shared Y planes between overlapping authored mass,
+roof, trim, chimney, and rooftop-prop volumes:
+
+```bash
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Sources/SceneDescriptor.swift \
+  Tools/ValidateStructuralBoundaries.swift \
+  -o /private/tmp/play027-offline-tools/validate-structural-boundaries
+```
+
 The task-owned native source normalizer compiles independently as well:
 
 ```bash

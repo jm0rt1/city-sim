@@ -2,17 +2,25 @@
 
 ## Integration disposition
 
-The combined PLAY-023 generated-v4 pipeline and PLAY-033 command-center HUD are
-technically sound: the integrated native suite passes 194/194, the exact staged
-bundle launches in default and compact layouts, keyboard map navigation exposes
-authoritative selection truth, and the command guide makes the action inventory
-discoverable.
+**Wave 006 accepted.** The initial integrated candidate was correctly rejected,
+then the returned PLAY-024 repair was merged as exact product
+`ad2f35314bb471a07923c41653374b05ace51ee3`.
 
-That is not the visual finish line. A hands-on review of exact integrated
-candidate `7943b9031f2ad00759dc5aa7ce234b8b152e5fc2` rejects the current world as
-the target quality level.
+Independent PLAY-053 evidence
+`2e83570eda92e14fcf39bca78b9152ff3c7b8411` approved that exact staged product
+at 19/20: composition 4/4, projection/material/light/street coherence 4/4,
+useful LOD/depth/variety/life 3/4, state/consequence/interaction clarity 4/4,
+and shipping/HUD/accessibility/performance 4/4. No category fell below 3, both
+governed comparisons were materially preferred, and no automatic reject
+remained.
 
-## What the player sees today
+The exact packet is
+`docs/production/evidence/PLAY-053/rescore-ad2f353/`. The remaining lost point
+is narrow building-family and directional-view breadth; PLAY-027 and
+CONTRACT-011 own that next source-art system, and no incomplete art is
+production-selected.
+
+## Defects that drove the accepted repair
 
 1. The world reads as a small crossroads diorama, not a growing city.
 2. Long roads end abruptly inside the frame and make the network feel like

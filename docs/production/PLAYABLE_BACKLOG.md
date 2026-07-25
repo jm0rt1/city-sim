@@ -146,7 +146,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** Absolute development paths, raw tool output in shipping resources, silent fallback, unbounded cache, nondeterministic pack bytes, or shared-package changes without integration approval.
 - **Accepted integration:** Product `32f3099`, evidence `64a2c7d`, and completion `e5590a3`. The integrated generated-v4 runtime loads four deterministic atlas pages, retains all 84 accepted pixel digests, bounds three-LOD residency, exposes explicit rollback/failure diagnostics, and passed the integrated 194/194 suite. PLAY-023 deliberately preserved the accepted pixels; visible excellence continues under PLAY-024.
 
-### [ ] PLAY-024: Replace terrain, streets, and environmental structure
+### [x] PLAY-024: Replace terrain, streets, and environmental structure
 
 - **Player outcome:** The city sits on cohesive terrain and connected streets with curbs, sidewalks, crossings, frontages, vegetation, and props instead of visible tile strips and empty green board space.
 - **Owning lane:** World rendering.
@@ -155,7 +155,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Full density breadth, lifecycle states, simulation rules, and HUD layout.
 - **Acceptance:** All ten buildable kinds share projection/light/scale; reciprocal roads and 3 x 3 terrain mosaics have no visible seams; golden-row and live default/compact frames pass independent review.
 - **Stop conditions:** Image-generated connectivity, endpoint drift, toy-island framing, mixed projection/light, unreviewed source provenance, or fixture-only proof.
-- **Current status:** Returned to world rendering by independent PLAY-053 evidence commit `6803f61`. Exact integrated candidate `91438bf` scored 14/20 and triggered automatic rejects for a mostly empty industrial-strain frame dominated by green board space plus conspicuous macro-terrain seams/mixed environmental fidelity. PLAY-024 remains active under `docs/production/claims/PLAY-024.world-rendering.md`; repair must preserve the accepted HUD, topology, interaction, determinism, and performance results while clearing the exact blocking frame in `docs/production/evidence/PLAY-053/final-91438bf/`.
+- **Accepted integration:** Returned candidate `ad2f35314bb471a07923c41653374b05ace51ee3` repaired the retained 14/20 rejection without changing gameplay topology, saves, commands, or HUD contracts. Independent PLAY-053 evidence `2e83570eda92e14fcf39bca78b9152ff3c7b8411` scored it 19/20: composition 4/4, coherence 4/4, LOD/life 3/4, state/interaction 4/4, shipping/HUD/accessibility/performance 4/4, no category below 3, and zero automatic rejects. The exact proof is `docs/production/evidence/PLAY-053/rescore-ad2f353/`. Building-family and directional breadth remains explicitly owned by PLAY-027/CONTRACT-011 and does not reopen this accepted environment/street-system slice.
 
 ### [ ] PLAY-025: Replace every building and lifecycle family
 
@@ -181,7 +181,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 
 - **Player outcome:** Residential, commercial, industrial, civic, service, and utility buildings are materially distinct, face their real road frontage, and retain coherent projection, pivots, shadows, and identity from every supported direction.
 - **Owning lane:** World art generation cell.
-- **Dependencies:** Approved CONTRACT-006, CONTRACT-010, and CONTRACT-011; accepted generated-v4 style anchors. Source production may proceed while PLAY-024 is independently gated, but ingestion and shipping selection depend on accepted PLAY-024 and renderer-lead review.
+- **Dependencies:** Approved CONTRACT-006, CONTRACT-010, and CONTRACT-011; accepted generated-v4 style anchors and accepted PLAY-024. Source production may proceed through the calibration gate, but ingestion and shipping selection require independent source-art acceptance and renderer-lead review.
 - **In scope:** Audit and eliminate cross-type source aliasing; author N/E/S/W masters without runtime mirroring or rotation; first pass the CONTRACT-011 residential L1 four-scene calibration gate, then complete the first 48-source R/C/I variant-zero directional batch and extend the governed catalog toward three material/massing variants for every built identity; retain scene sources, tools, material prompts/references, provenance, rejection reasons, geometry registration, and actual-scale contact sheets.
 - **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
 - **Acceptance:** The CONTRACT-011 residential L1 N/E/S/W calibration set passes before batch expansion; every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all scene/tool/source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
@@ -428,7 +428,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Accepted integration:** Contract `e28fdd2` and final evidence `7943b90`. Independent default Commercial and exact-compact Industrial no-coaching routes reached Charter in 8:34 and 4:42; save/relaunch/load, backup-only recovery, four durable recovery routes, pointer/keyboard/AX replay, and the integrated suite passed. The preserved 17/20 renderer score is a Wave 005 floor, not the Wave 006 excellence target.
 - **Stop conditions:** Any P1 contradiction, hidden coaching, stale bundle, missing hashes/PID cleanup, save failure, pointer-only compact operation, nondurable choice, or misleading visual evidence.
 
-### [ ] PLAY-053: Gate world and HUD excellence
+### [x] PLAY-053: Gate world and HUD excellence
 
 - **Player outcome:** Independent evidence proves that the integrated city is not merely functional but visually cohesive, spatially believable, easy to read, and materially preferable in both default and compact play.
 - **Owning lane:** Playtest quality.
@@ -437,4 +437,4 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, fixture-only acceptance, candidate substitution, author self-scoring, or preserving the old 17/20 threshold.
 - **Acceptance:** At least 19/20 overall; 4/4 in composition/map occupancy and projection/material/light/street coherence; no category below 3; zero automatic rejects; the new candidate must be materially preferred to the frozen Wave 005 frame in an explicit side-by-side finding.
 - **Stop conditions:** Toy-island framing, unexplained road stubs, large undifferentiated green voids, sprite overlap, mixed fidelity/projection/light, obscured priority or selection, stale identity, coached success, missing compact proof, or misleading crop/zoom.
-- **Current status:** Exact candidate `91438bf` independently **REJECTED** at 14/20 by evidence commit `6803f61`: composition 2, coherence 2, LOD/life 3, interaction clarity 3, shipping quality 4. Both comparisons were materially preferred to Wave 005, but dominant empty green space and visible macro-terrain seams triggered automatic rejects. Final scoring resumes only after a new integrated PLAY-024 repair candidate.
+- **Current status:** Exact returned candidate `ad2f35314bb471a07923c41653374b05ace51ee3` independently **APPROVED** at 19/20 by evidence commit `2e83570eda92e14fcf39bca78b9152ff3c7b8411`: composition 4, coherence 4, LOD/life 3, interaction clarity 4, shipping quality 4. Both governed comparisons are materially preferred, no category is below 3, and no automatic reject remains; integration review remains separate.

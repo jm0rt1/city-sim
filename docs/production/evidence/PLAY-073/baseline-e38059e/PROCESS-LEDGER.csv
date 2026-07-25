@@ -1,0 +1,8 @@
+route,pid,window,camera_scale,data_root,result
+staged-verify,26582,default,default,dist/test-data/world-rendering-w5f893ad1da1b,verified-then-terminated
+regular-city,32816,regular,0.85,/private/tmp/citysim-play073-baseline-e38059e.jeZUgU/regular-city,captured-then-terminated
+regular-neighborhood,33897,regular,0.65,/private/tmp/citysim-play073-baseline-e38059e.jeZUgU/regular-neighborhood,captured-then-terminated
+regular-block,34214,regular,0.50,/private/tmp/citysim-play073-baseline-e38059e.jeZUgU/regular-block,captured-then-terminated
+compact-city,34904,compact,0.576345682144165,/private/tmp/citysim-play073-baseline-e38059e.jeZUgU/compact-city,captured-then-terminated
+compact-neighborhood,35652,compact,0.52,/private/tmp/citysim-play073-baseline-e38059e.jeZUgU/compact-neighborhood,captured-then-terminated
+compact-block,37075,compact,0.45,/private/tmp/citysim-play073-baseline-e38059e.jeZUgU/compact-block,captured-then-terminated

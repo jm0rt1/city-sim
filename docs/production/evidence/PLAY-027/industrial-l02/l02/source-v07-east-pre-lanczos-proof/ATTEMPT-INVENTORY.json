@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceKey": "industrial_l02/variant-0/east/source-v07",
+  "attemptCount": 3,
+  "attempts": [
+    {
+      "id": "run-a",
+      "process": "fresh Metal-visible process",
+      "files": [
+        {
+          "path": "diagnostics/east-707x687/run-a/STAGE-CAPTURE.json",
+          "sha256": "f1ac902fb38c7a16ca6f043b617a965ba9eafe4b96f2cda38811729139190d93"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-a/imageio-pre-sips.png",
+          "sha256": "62aab993ff2670d10f50c554675020d7a90bb6e5354880efe29fbc887d3d9424"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-a/final-sips.png",
+          "sha256": "c70bbd2bdf71ab0bc2c1a2c529ea51e1618d90dd50d8b10bc3ee1dcf3ec771eb"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-a/provenance.json",
+          "sha256": "5a1a07e108713961271b0137ebf23e80940e78fb05b11df3432046df911aa323"
+        }
+      ]
+    },
+    {
+      "id": "run-b",
+      "process": "fresh Metal-visible process",
+      "files": [
+        {
+          "path": "diagnostics/east-707x687/run-b/STAGE-CAPTURE.json",
+          "sha256": "fd8613157a003cdcc2cf94731cbc3366493cc8b83bdecce7c53ad4ea17f78d6d"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-b/imageio-pre-sips.png",
+          "sha256": "62aab993ff2670d10f50c554675020d7a90bb6e5354880efe29fbc887d3d9424"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-b/final-sips.png",
+          "sha256": "c70bbd2bdf71ab0bc2c1a2c529ea51e1618d90dd50d8b10bc3ee1dcf3ec771eb"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-b/provenance.json",
+          "sha256": "0476fc65dde4d4efee1a3ca5556022492c83bb9ab0682fb15c0f3ae5e16d4fe4"
+        }
+      ]
+    },
+    {
+      "id": "run-c",
+      "process": "fresh Metal-visible process",
+      "files": [
+        {
+          "path": "diagnostics/east-707x687/run-c/STAGE-CAPTURE.json",
+          "sha256": "846171d1455f0b03289cc34d98d520713dd693d2c4b13aad336b0923d5557ded"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-c/imageio-pre-sips.png",
+          "sha256": "62aab993ff2670d10f50c554675020d7a90bb6e5354880efe29fbc887d3d9424"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-c/final-sips.png",
+          "sha256": "c70bbd2bdf71ab0bc2c1a2c529ea51e1618d90dd50d8b10bc3ee1dcf3ec771eb"
+        },
+        {
+          "path": "diagnostics/east-707x687/run-c/provenance.json",
+          "sha256": "81440c87534a29717db8ca7fcdba7ef6f197d68e44b2539b5269f576a2b66b2e"
+        }
+      ]
+    }
+  ],
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

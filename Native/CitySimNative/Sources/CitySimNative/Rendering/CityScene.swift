@@ -2052,10 +2052,9 @@ final class CityScene: SKScene {
             // through pan; they do not define the deterministic reset view.
             let compactWidthScale = cameraPriorityBounds.width / (safeWidth * 0.64)
             scale = max(scale, min(compactWidthScale, 0.62))
-            // Compact framing intentionally resolves to neighborhood LOD even
-            // for unusually tight fixtures; block textures are reserved for an
-            // explicit player zoom and carry a larger active residency. Map the
-            // semantic thresholds into this window's compressed camera range.
+            // Map the semantic thresholds into this window's compressed camera
+            // range before the occupied-mass cap below decides whether the
+            // authored district needs block detail to remain legible.
             let compactNeighborhoodMinimum = actualCameraScale(
                 forCanonicalScale: CameraDetailLevel.blockMaximumCameraScale + 0.01
             )
@@ -2067,6 +2066,14 @@ final class CityScene: SKScene {
                 max(scale, compactNeighborhoodMinimum)
             )
         }
+        // A frontage-serving camera is only successful when the actual
+        // authoritative occupied mass—not the surrounding opportunity loop—
+        // remains legible. This cap preserves one complete road-accessible
+        // expansion band in `cameraBounds` while preventing tall utility art or
+        // a long connected road component from shrinking the lived district
+        // below the Wave 009 width admission bar.
+        let developedWidthScale = occupiedBounds.width / (safeWidth * 0.60)
+        scale = min(scale, developedWidthScale)
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
             .flatMap(Double.init) {
@@ -2123,7 +2130,8 @@ final class CityScene: SKScene {
         }
         let cameraPriorityRoads = connectedAuthoritativeRoads(
             from: Set(cameraPriorityFrontageRoads.map(\.coordinate)),
-            in: state
+            in: state,
+            maximumRoadDistance: 2
         )
         let expansionSockets = state.tiles.filter { tile in
             guard tile.kind == .empty else { return false }
@@ -2141,11 +2149,33 @@ final class CityScene: SKScene {
             adjoiningRoads: nearbyRoads,
             state: state
         )
-        let cameraPriorityBounds = visualBounds(
+        var cameraPriorityBounds = visualBounds(
             for: cameraPriorityDevelopment,
             adjoiningRoads: cameraPriorityRoads,
             state: state
         )
+        let cameraRoadCoordinates = Set(cameraPriorityRoads.map(\.coordinate))
+        let cameraExpansionBand = expansionSockets.filter { tile in
+            let servesPriorityRoad = RoadConnectionMask.cardinalEdges.contains { edge in
+                let delta = edge.coordinateDelta
+                return cameraRoadCoordinates.contains(GridCoordinate(
+                    x: tile.coordinate.x + delta.x,
+                    y: tile.coordinate.y + delta.y
+                ))
+            }
+            guard servesPriorityRoad else { return false }
+            return cameraPriorityCoordinates.contains { developed in
+                max(
+                    abs(developed.x - tile.coordinate.x),
+                    abs(developed.y - tile.coordinate.y)
+                ) <= 3
+            }
+        }
+        for tile in cameraExpansionBand {
+            cameraPriorityBounds = cameraPriorityBounds.union(
+                tileGroundBounds(at: style.isoPosition(tile.coordinate))
+            )
+        }
 
         var networkBounds = CGRect.null
         let contextTiles = state.tiles.filter { $0.kind == .road } + expansionSockets
@@ -2166,7 +2196,8 @@ final class CityScene: SKScene {
     /// disconnected opportunity stubs or remote empty acreage to shrink it.
     private func connectedAuthoritativeRoads(
         from origins: Set<GridCoordinate>,
-        in state: CityGameState
+        in state: CityGameState,
+        maximumRoadDistance: Int
     ) -> [CityTile] {
         let roadsByCoordinate = Dictionary(
             uniqueKeysWithValues: state.tiles.filter { $0.kind == .road }.map {
@@ -2175,10 +2206,12 @@ final class CityScene: SKScene {
         )
         var pending = origins.filter { roadsByCoordinate[$0] != nil }
             .sorted(by: coordinateComesBefore)
+            .map { ($0, 0) }
         var connected = Set<GridCoordinate>()
         while !pending.isEmpty {
-            let coordinate = pending.removeFirst()
+            let (coordinate, distance) = pending.removeFirst()
             guard connected.insert(coordinate).inserted else { continue }
+            guard distance < maximumRoadDistance else { continue }
             for edge in RoadConnectionMask.cardinalEdges {
                 let delta = edge.coordinateDelta
                 let neighbor = GridCoordinate(
@@ -2186,7 +2219,7 @@ final class CityScene: SKScene {
                     y: coordinate.y + delta.y
                 )
                 if roadsByCoordinate[neighbor] != nil && !connected.contains(neighbor) {
-                    pending.append(neighbor)
+                    pending.append((neighbor, distance + 1))
                 }
             }
         }

@@ -279,6 +279,11 @@ final class RoadRenderer {
             authoredRoad.name = "road.generated-v4.\(connections.rawValue).\(detail.assetSuffix)"
             corridor.addChild(authoredRoad)
         }
+        addCorridorMaterialGrade(
+            for: topology,
+            emphasis: emphasis,
+            to: corridor
+        )
         if topology.classification == .end, let connectedEdge = topology.mask.edges.first {
             addAuthoredTerminus(
                 onUnconnectedSideOf: connectedEdge,
@@ -296,6 +301,40 @@ final class RoadRenderer {
             )
         }
         return root
+    }
+
+    private func addCorridorMaterialGrade(
+        for topology: RoadTopology,
+        emphasis: ContextEmphasis,
+        to node: SKNode
+    ) {
+        guard topology.classification != .isolated else { return }
+        let segments = CGMutablePath()
+        for edge in topology.mask.edges {
+            segments.addPath(WorldGeometryCache.line(
+                from: .zero,
+                to: style.roadSocket(for: edge, overreach: 1.1)
+            ))
+        }
+        let grade = SKShapeNode(path: segments)
+        grade.name = "road.material.unified-grade.\(topology.mask.rawValue)"
+        grade.strokeColor = style.palette.asphaltLight.withAlphaComponent(
+            emphasis == .developed ? 0.34 : 0.22
+        )
+        grade.lineWidth = 16.5
+        grade.lineCap = .butt
+        grade.lineJoin = .round
+        grade.zPosition = 2.5
+        node.addChild(grade)
+
+        let center = SKShapeNode(path: style.diamondPath(width: 18, height: 9))
+        center.name = "road.material.unified-junction.\(topology.mask.rawValue)"
+        center.fillColor = style.palette.asphaltLight.withAlphaComponent(
+            emphasis == .developed ? 0.26 : 0.16
+        )
+        center.strokeColor = .clear
+        center.zPosition = 2.5
+        node.addChild(center)
     }
 
     private func contextDistance(

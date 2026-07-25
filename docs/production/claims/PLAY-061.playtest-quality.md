@@ -9,7 +9,7 @@
 - **Planned surfaces:** quality-owned preregistration, frozen `64dd475` product baseline, exact-candidate manifests, uncropped comparisons, interaction/AX/performance ledgers, defect returns, and independent disposition under `docs/production/evidence/PLAY-061/`
 - **Dependencies:** preregistration may begin from the published claim baseline; scoring requires a clean PLAY-060 handoff and an integration-provided exact candidate
 - **Validation/proof:** 16-identity direction/level matrix; Commercial-versus-Residential and L1–L4 comparisons; regular and exact 900 x 600; city/neighborhood/block LODs; construction/condition/selection/preview/undo/save-load; pointer/keyboard/menu/FKA/AX/Reduce Motion; staged resource parity; pack/residency/RSS/frame budgets; explicit same-state preference
-- **Status:** ready for preregistration after publication; product repair is forbidden
+- **Status:** ready for integration; exact candidate `1799fbc2810f14d85511b74a8808bbee1928eef7` independently approved 20/20 with evidence commit `cca42813ebbced1201bcb3c4fb3f6c568c0307ec`
 
 Freeze the exact published baseline and a 20-point rubric before receiving the
 PLAY-060 candidate. Independently prove that all sixteen Commercial

@@ -535,7 +535,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** All 16 Commercial identities ship from exact accepted source bytes; no Residential or cross-level alias appears; N/E/S/W frontage is correct; L1–L4 remain distinct at all LODs; pack identity and residency are bounded; full suite and staged real-app proof pass; PLAY-061 independently approves the exact integrated candidate.
 - **Claim:** `docs/production/claims/PLAY-060.world-rendering.md`.
 
-### [ ] PLAY-061: Gate the directional commercial skyline
+### [x] PLAY-061: Gate the directional commercial skyline
 
 - **Player outcome:** Independent real-app evidence proves Commercial density progression is beautiful, coherent, correctly oriented, and meaningfully more varied without destabilizing the accepted living-city experience.
 - **Owning lane:** Playtest quality.
@@ -544,3 +544,4 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, candidate substitution, author scoring, fixture-only acceptance, or accepting a hero frame over systemic coverage.
 - **Acceptance:** At least 19/20; Commercial identity/direction and world/HUD cohesion both 4/4; zero alias, fallback, wrong frontage, overlap, P0/P1, or automatic reject; explicit material preference at regular and compact sizes.
 - **Claim:** `docs/production/claims/PLAY-061.playtest-quality.md`.
+- **Accepted quality gate:** Exact combined candidate `1799fbc` independently scored 20/20 with every category 4/4, zero P0/P1, zero automatic rejects, and evidence commit `cca4281`.

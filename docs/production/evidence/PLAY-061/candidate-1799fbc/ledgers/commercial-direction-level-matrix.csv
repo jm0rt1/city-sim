@@ -1,0 +1,17 @@
+level,frontage,expected_identity,independent_result,proof
+L1,N,commercial_l01_v0_north,PASS distinct grounded north-facing storefront,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L1,E,commercial_l01_v0_east,PASS distinct grounded east-facing storefront,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L1,S,commercial_l01_v0_south,PASS distinct grounded south-facing storefront,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L1,W,commercial_l01_v0_west,PASS distinct grounded west-facing storefront,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L2,N,commercial_l02_v0_north,PASS distinct L2 market block with north frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L2,E,commercial_l02_v0_east,PASS distinct L2 market block with east frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L2,S,commercial_l02_v0_south,PASS distinct L2 market block with south frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L2,W,commercial_l02_v0_west,PASS distinct L2 market block with west frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L3,N,commercial_l03_v0_north,PASS distinct stepped office block with north frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L3,E,commercial_l03_v0_east,PASS distinct stepped office block with east frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L3,S,commercial_l03_v0_south,PASS distinct stepped office block with south frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L3,W,commercial_l03_v0_west,PASS distinct stepped office block with west frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L4,N,commercial_l04_v0_north,PASS distinct premium tower with north frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L4,E,commercial_l04_v0_east,PASS distinct premium tower with east frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L4,S,commercial_l04_v0_south,PASS distinct premium tower with south frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json
+L4,W,commercial_l04_v0_west,PASS distinct premium tower with west frontage,matrix/commercial-production-4x4.png and validation/asset-pack-validation.json

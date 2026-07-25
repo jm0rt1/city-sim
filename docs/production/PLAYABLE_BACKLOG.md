@@ -155,7 +155,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Full density breadth, lifecycle states, simulation rules, and HUD layout.
 - **Acceptance:** All ten buildable kinds share projection/light/scale; reciprocal roads and 3 x 3 terrain mosaics have no visible seams; golden-row and live default/compact frames pass independent review.
 - **Stop conditions:** Image-generated connectivity, endpoint drift, toy-island framing, mixed projection/light, unreviewed source provenance, or fixture-only proof.
-- **Current status:** Authorized by `docs/production/claims/PLAY-024.world-rendering.md` on the published Wave 006 baseline. The stricter player-visible bar and automatic rejection conditions are defined in `docs/production/WAVE-006-WORLD-EXCELLENCE.md`.
+- **Current status:** Returned to world rendering by independent PLAY-053 evidence commit `6803f61`. Exact integrated candidate `91438bf` scored 14/20 and triggered automatic rejects for a mostly empty industrial-strain frame dominated by green board space plus conspicuous macro-terrain seams/mixed environmental fidelity. PLAY-024 remains active under `docs/production/claims/PLAY-024.world-rendering.md`; repair must preserve the accepted HUD, topology, interaction, determinism, and performance results while clearing the exact blocking frame in `docs/production/evidence/PLAY-053/final-91438bf/`.
 
 ### [ ] PLAY-025: Replace every building and lifecycle family
 
@@ -427,4 +427,4 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, fixture-only acceptance, candidate substitution, author self-scoring, or preserving the old 17/20 threshold.
 - **Acceptance:** At least 19/20 overall; 4/4 in composition/map occupancy and projection/material/light/street coherence; no category below 3; zero automatic rejects; the new candidate must be materially preferred to the frozen Wave 005 frame in an explicit side-by-side finding.
 - **Stop conditions:** Toy-island framing, unexplained road stubs, large undifferentiated green voids, sprite overlap, mixed fidelity/projection/light, obscured priority or selection, stale identity, coached success, missing compact proof, or misleading crop/zoom.
-- **Current status:** Authorized to preregister and inspect the published baseline under `docs/production/claims/PLAY-053.playtest-quality.md`; final scoring waits for the exact integrated PLAY-024/039 handoff.
+- **Current status:** Exact candidate `91438bf` independently **REJECTED** at 14/20 by evidence commit `6803f61`: composition 2, coherence 2, LOD/life 3, interaction clarity 3, shipping quality 4. Both comparisons were materially preferred to Wave 005, but dominant empty green space and visible macro-terrain seams triggered automatic rejects. Final scoring resumes only after a new integrated PLAY-024 repair candidate.

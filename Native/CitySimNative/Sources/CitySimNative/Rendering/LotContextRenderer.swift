@@ -34,6 +34,28 @@ final class LotContextRenderer {
         case park
     }
 
+    private struct TemplateKey: Hashable {
+        let family: String
+        let variant: Int
+        let frontage: UInt8
+        let tileWidthHundredths: Int
+        let tileHeightHundredths: Int
+    }
+
+    private struct ContextTemplate {
+        let cityChildren: [SKNode]
+        let neighborhoodChildren: [SKNode]
+        let blockChildren: [SKNode]
+    }
+
+    /// Context geometry is immutable for one bounded
+    /// family/variant/frontage/physical-grid identity. Keep prototypes rather
+    /// than rebuilding the same paths, palette blends, and SpriteKit subtree
+    /// for every scene and pulse. Callers receive deep copies, so visibility
+    /// and later node mutation cannot affect the cached source.
+    private static var templates: [TemplateKey: ContextTemplate] = [:]
+    private static let maximumTemplateCount = 5 * 4 * 5
+
     private let style: WorldVisualStyle
 
     init(style: WorldVisualStyle) {
@@ -59,31 +81,29 @@ final class LotContextRenderer {
             kind: tile.kind,
             salt: 0x6600
         )
-
-        addCityLotRhythm(family: family, variant: variant, to: city)
-        addBoundary(
-            family: family,
-            frontage: frontage,
+        let key = TemplateKey(
+            family: family.rawValue,
             variant: variant,
-            to: neighborhood
+            frontage: frontage?.rawValue ?? 0,
+            tileWidthHundredths: Int((style.tileWidth * 100).rounded()),
+            tileHeightHundredths: Int((style.tileHeight * 100).rounded())
         )
-
-        let placements = placementLedger(
-            for: tile,
-            adjacentRoads: adjacentRoads,
-            selectedFrontage: frontage
-        )
-        for (index, placement) in placements.enumerated() {
-            let destination = placement.groundOnly ? neighborhood : block
-            add(
-                placement: placement,
-                index: index,
+        let template: ContextTemplate
+        if let cached = Self.templates[key] {
+            template = cached
+        } else {
+            template = makeTemplate(
                 family: family,
                 variant: variant,
-                frontage: frontage,
-                to: destination
+                frontage: frontage
             )
+            if Self.templates.count < Self.maximumTemplateCount {
+                Self.templates[key] = template
+            }
         }
+        addCopies(of: template.cityChildren, to: city)
+        addCopies(of: template.neighborhoodChildren, to: neighborhood)
+        addCopies(of: template.blockChildren, to: block)
     }
 
     func placementLedger(
@@ -97,7 +117,13 @@ final class LotContextRenderer {
                 where: adjacentRoads.contains
             )
         guard let frontage else { return [] }
+        return placementLedger(family: family, frontage: frontage)
+    }
 
+    private func placementLedger(
+        family: Family,
+        frontage: RoadConnectionMask
+    ) -> [Placement] {
         let front = normalized(style.roadSocket(for: frontage))
         let across = CGPoint(x: -front.y, y: front.x)
         func point(along: CGFloat, across side: CGFloat = 0) -> CGPoint {
@@ -202,6 +228,61 @@ final class LotContextRenderer {
                 ),
             ]
         }
+    }
+
+    private func makeTemplate(
+        family: Family,
+        variant: Int,
+        frontage: RoadConnectionMask?
+    ) -> ContextTemplate {
+        let city = SKNode()
+        let neighborhood = SKNode()
+        let block = SKNode()
+        addCityLotRhythm(family: family, variant: variant, to: city)
+        addBoundary(
+            family: family,
+            frontage: frontage,
+            variant: variant,
+            to: neighborhood
+        )
+        if let frontage {
+            let placements = placementLedger(family: family, frontage: frontage)
+            for (index, placement) in placements.enumerated() {
+                let destination = placement.groundOnly ? neighborhood : block
+                add(
+                    placement: placement,
+                    index: index,
+                    family: family,
+                    variant: variant,
+                    frontage: frontage,
+                    to: destination
+                )
+            }
+        }
+        return ContextTemplate(
+            cityChildren: detachedChildren(of: city),
+            neighborhoodChildren: detachedChildren(of: neighborhood),
+            blockChildren: detachedChildren(of: block)
+        )
+    }
+
+    private func detachedChildren(of root: SKNode) -> [SKNode] {
+        let children = root.children
+        for child in children {
+            child.removeFromParent()
+        }
+        return children
+    }
+
+    private func addCopies(of prototypes: [SKNode], to destination: SKNode) {
+        for prototype in prototypes {
+            guard let copy = prototype.copy() as? SKNode else { continue }
+            destination.addChild(copy)
+        }
+    }
+
+    static var cachedTemplateCountForTesting: Int {
+        templates.count
     }
 
     private func family(for kind: BuildingKind) -> Family? {

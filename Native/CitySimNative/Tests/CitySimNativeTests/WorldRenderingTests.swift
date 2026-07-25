@@ -2621,6 +2621,58 @@ final class WorldRenderingTests: XCTestCase {
                 "Road-facing parking, yards, lamps, and signage must not invent a frontage"
             )
         }
+
+        let tile = CityTile(
+            coordinate: GridCoordinate(x: 15, y: 12),
+            kind: .industrial,
+            level: 1,
+            constructionProgress: 1
+        )
+        let beforeCount = LotContextRenderer.cachedTemplateCountForTesting
+        let firstCity = SKNode()
+        let firstNeighborhood = SKNode()
+        let firstBlock = SKNode()
+        renderer.addContext(
+            for: tile,
+            adjacentRoads: [.south],
+            selectedFrontage: .south,
+            city: firstCity,
+            neighborhood: firstNeighborhood,
+            block: firstBlock
+        )
+        let afterFirstCount = LotContextRenderer.cachedTemplateCountForTesting
+
+        let secondCity = SKNode()
+        let secondNeighborhood = SKNode()
+        let secondBlock = SKNode()
+        renderer.addContext(
+            for: tile,
+            adjacentRoads: [.south],
+            selectedFrontage: .south,
+            city: secondCity,
+            neighborhood: secondNeighborhood,
+            block: secondBlock
+        )
+
+        XCTAssertGreaterThanOrEqual(afterFirstCount, beforeCount)
+        XCTAssertLessThanOrEqual(afterFirstCount - beforeCount, 1)
+        XCTAssertEqual(LotContextRenderer.cachedTemplateCountForTesting, afterFirstCount)
+        XCTAssertEqual(firstCity.children.map(\.name), secondCity.children.map(\.name))
+        XCTAssertEqual(
+            firstNeighborhood.children.map(\.name),
+            secondNeighborhood.children.map(\.name)
+        )
+        XCTAssertEqual(firstBlock.children.map(\.name), secondBlock.children.map(\.name))
+        XCTAssertFalse(firstCity.children.isEmpty)
+        XCTAssertFalse(firstNeighborhood.children.isEmpty)
+        XCTAssertFalse(firstBlock.children.isEmpty)
+        XCTAssertFalse(firstCity.children[0] === secondCity.children[0])
+        firstCity.children[0].alpha = 0
+        XCTAssertEqual(secondCity.children[0].alpha, 1)
+        XCTAssertLessThanOrEqual(
+            LotContextRenderer.cachedTemplateCountForTesting,
+            5 * 4 * 5
+        )
     }
 
     @MainActor

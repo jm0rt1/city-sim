@@ -52,6 +52,28 @@ contract. Never push, integrate, or self-accept.
 After two consecutive directional drift failures, stop that family and return
 to its geometry template and anchor. Do not keep adding prompt adjectives.
 
+## Use the approved offline-scene fallback
+
+When CONTRACT-011 is present and the retained capability-limit record closes
+whole-building ImageGen:
+
+- do not make another whole-building ImageGen call;
+- use ImageGen only for non-compositional material swatches within the
+  CONTRACT-011 boundary;
+- author one explicit task-owned offline scene descriptor per direction using
+  the approved macOS-native source toolchain;
+- declare direction-specific facade and entrance geometry in every scene;
+- never derive a sibling scene or raster by mirror, rotation, or transform;
+- freeze tool/framework versions, scene/material hashes, render settings,
+  camera, pivot, socket, light, shadow, and flat chroma field;
+- prove repeat-run determinism before judging appearance;
+- stop after the residential L1 N/E/S/W calibration set until independent art
+  review and integration authorize batch expansion.
+
+The offline renderer remains a source-authoring tool. It may not become a
+shipping dependency or edit `Package.swift`, `Rendering/`, atlas selection, or
+the application runtime.
+
 ## Enforce four-direction and family quality
 
 - Author north, east, south, and west separately; never mirror or rotate.

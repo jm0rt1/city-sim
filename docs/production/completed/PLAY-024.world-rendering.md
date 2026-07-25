@@ -2,8 +2,8 @@
 
 - **Lane:** World rendering
 - **Branch:** `codex/citysim-world-rendering`
-- **Status:** combined renderer/gameplay/platform candidate complete and clean
-  for integration; not pushed, self-integrated, or self-scored
+- **Status:** accepted and published by integration after independent PLAY-053
+  approval
 - **Authority:** `e3ba50cd478f185265c9ddaad1e319ddb9475942`
 - **Platform adoption checkpoint:** `60bf0c066cd7a5d75e399b518ae697fbd73690eb`
 - **World/platform merge:** `f4ebca3c2fb9558a7d5ff83189319ca9ef39d9e6`
@@ -16,7 +16,8 @@
 - **Returned evidence:** `5a2926e1e53a32be6250cf346ec6621dd54e0d27`
 - **Candidate identity:** `world-rendering-w5f893ad1da1b`
 - **Bundle identifier:** `com.jfmortensen.citysim.world-rendering.w5f893ad1da1b`
-- **Final Wave acceptance:** pending independent PLAY-053 scoring
+- **Final Wave acceptance:** exact integrated product `ad2f353` independently
+  approved 19/20 by PLAY-053 evidence `2e83570`
 
 ## Ordered task commits
 
@@ -130,17 +131,17 @@ packet and hashes are under
 - Unchanged-pulse soak: stable node identity with no accumulation and two
   bounded actions.
 
-## Integration and quality handoff
+## Historical integration and quality handoff
 
 Integrate the ordered commits above and hand the exact combined candidate to
 independent PLAY-053. The renderer consumes generic `CityGameState` topology
 through all 16 masks and contains no special case for either the retired cross
 or the accepted starter district.
 
-Same-state engineering proof and authoritative fresh-start Comparison B proof
-are complete, but final Wave acceptance is intentionally not claimed. The
-binding 19/20 score, 4/4 composition and coherence, and zero automatic rejects
-remain open.
+At that handoff, same-state engineering proof and authoritative fresh-start
+Comparison B proof were complete, but final Wave acceptance was intentionally
+not claimed. The later binding disposition is recorded under Final independent
+acceptance below.
 
 No shared-contract proposal is required.
 
@@ -172,8 +173,8 @@ renderer tests passed 43/43, the complete native suite passed 201/201, staged
 verification passed, source/staged pack identity passed, geometry reported
 zero collisions, total cold render measured 5.190 ms with zero decode loads,
 and settled RSS after three real LOD cycles measured 117,712 KiB
-(114.95 MiB). Independent PLAY-053 must still score the candidate; this record
-does not claim visual acceptance.
+(114.95 MiB). Independent PLAY-053 scoring was still required at that repair
+handoff; the accepted result is recorded below.
 
 ## Deferred asset-family requirement
 
@@ -185,3 +186,22 @@ so future player rotation can show all four sides without runtime raster
 mirroring. This is deliberately deferred to the next separately published
 world-rendering claim and any required manifest-orientation contract. No
 PLAY-025/026 product or asset work is included in this PLAY-024 handoff.
+
+## Final independent acceptance
+
+Independent quality approved exact integrated product
+`ad2f35314bb471a07923c41653374b05ace51ee3` at 19/20:
+
+- composition and map occupancy: 4/4;
+- projection, material, light, and street coherence: 4/4;
+- useful LOD, depth, variety, and district life: 3/4;
+- state, consequence, and interaction clarity: 4/4; and
+- shipping credibility, HUD, accessibility, and performance: 4/4.
+
+No category fell below 3 and no automatic reject remained. The exact
+checksummed packet is
+`docs/production/evidence/PLAY-053/rescore-ad2f353/`, and the completion
+record is `docs/production/completed/PLAY-053.playtest-quality.md`.
+
+The lost variety point is the explicit input to PLAY-027/CONTRACT-011. It does
+not invalidate or broaden this accepted environment and street-system slice.

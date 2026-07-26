@@ -34,7 +34,7 @@ final class CitySimulationTests: XCTestCase {
 
     func testBuildingChargesTreasuryAndStartsConstruction() {
         var state = CityGameState.newCity()
-        let coordinate = GridCoordinate(x: 8, y: 11)
+        let coordinate = GridCoordinate(x: 4, y: 8)
         let startingTreasury = state.treasury
         guard case .success = CitySimulation.build(.residential, at: coordinate, in: &state) else {
             return XCTFail("Expected construction to succeed")
@@ -46,7 +46,7 @@ final class CitySimulationTests: XCTestCase {
 
     func testConstructionCompletesAndPopulationResponds() {
         var state = CityGameState.newCity()
-        let coordinate = GridCoordinate(x: 8, y: 11)
+        let coordinate = GridCoordinate(x: 4, y: 8)
         _ = CitySimulation.build(.residential, at: coordinate, in: &state)
         for _ in 0..<8 { CitySimulation.step(&state) }
         XCTAssertEqual(state.tile(at: coordinate)?.constructionProgress, 1)
@@ -563,7 +563,7 @@ final class CitySimulationTests: XCTestCase {
 
     @MainActor
     func testBuildAndBulldozeActionsRestoreExactStateThroughUndo() {
-        let buildCoordinate = GridCoordinate(x: 8, y: 11)
+        let buildCoordinate = GridCoordinate(x: 4, y: 8)
         let demolitionCoordinate = GridCoordinate(x: 10, y: 11)
         let store = CityGameStore(state: .newCity(seed: 42))
 

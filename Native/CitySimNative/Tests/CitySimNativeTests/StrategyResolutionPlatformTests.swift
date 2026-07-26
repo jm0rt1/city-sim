@@ -12,10 +12,10 @@ final class StrategyResolutionPlatformTests: XCTestCase {
 
     func testFourResolutionFingerprintsRoundTripAndMeetPersistenceBudgets() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
-            .commercialTaxRelief: "c3de5a0ca66e1e22766d44963e32b997b8f8e8425be92b3b1bb9ef8e4671ed1e",
-            .commercialPublicRealmInvestment: "f4fa7eed2ebb3ed3cf1481e0b32e69493f2a7273b20ee308244762d52051c9ce",
-            .industrialUtilityExpansion: "1b107f95d9ccf65c178f23d25212bb5b266faa452babf98a4c6de5183dee15b3",
-            .industrialGreenBuffer: "232d962b7c66d1306ffd357de91a5cc745ac543b6887decadbcb0611dbdcbff9",
+            .commercialTaxRelief: "c4c9a5ef8df43ec4f15ca7cf64879b6247ae6eca62933dce951d110785f20309",
+            .commercialPublicRealmInvestment: "177d049bbcd2fe91dd576f9e5c4ccf8e0aa1db8982ae09eb5831ca1ea68acb05",
+            .industrialUtilityExpansion: "d4690fe1097a48738df5a3af13f1c40003e0f6fdc323b4952dc8d3243a533181",
+            .industrialGreenBuffer: "c26a2c09678efe0d351a3b482b777b0841a00903da38db38b494b5015ca7cb98",
         ]
 
         for resolution in resolutions {
@@ -224,7 +224,7 @@ final class StrategyResolutionPlatformTests: XCTestCase {
 
                 let store = CityGameStore(state: .newCity(seed: 42), saveService: service)
                 store.selectTool(.commercial)
-                store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+                store.primaryAction(at: GridCoordinate(x: 4, y: 8))
                 XCTAssertTrue(store.canUndo, resolution.rawValue)
                 store.speed = .fastest
 
@@ -282,7 +282,7 @@ final class StrategyResolutionPlatformTests: XCTestCase {
         let store = CityGameStore(state: setback)
 
         store.selectTool(.park)
-        store.primaryAction(at: GridCoordinate(x: 6, y: 11))
+        store.primaryAction(at: GridCoordinate(x: 6, y: 8))
         XCTAssertTrue(store.canUndo)
         advanceTicks(64, state: &store.state)
         XCTAssertEqual(
@@ -319,10 +319,10 @@ final class StrategyResolutionPlatformTests: XCTestCase {
         case .commercialTaxRelief:
             try apply(.setTaxRate(0.09), to: &state)
         case .commercialPublicRealmInvestment, .industrialGreenBuffer:
-            try apply(.build(kind: .park, coordinate: GridCoordinate(x: 6, y: 11)), to: &state)
+            try apply(.build(kind: .park, coordinate: GridCoordinate(x: 6, y: 8)), to: &state)
         case .industrialUtilityExpansion:
-            try apply(.build(kind: .powerPlant, coordinate: GridCoordinate(x: 6, y: 11)), to: &state)
-            try apply(.build(kind: .waterTower, coordinate: GridCoordinate(x: 5, y: 11)), to: &state)
+            try apply(.build(kind: .powerPlant, coordinate: GridCoordinate(x: 6, y: 8)), to: &state)
+            try apply(.build(kind: .waterTower, coordinate: GridCoordinate(x: 7, y: 8)), to: &state)
         }
         XCTAssertNil(state.progression?.strategy?.recoveryResolution)
         return state
@@ -331,8 +331,8 @@ final class StrategyResolutionPlatformTests: XCTestCase {
     private func strategyAtSetback(_ strategy: CityStrategy) throws -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         let kind: BuildingKind = strategy == .commercialStewardship ? .commercial : .industrial
-        try apply(.build(kind: kind, coordinate: GridCoordinate(x: 8, y: 11)), to: &state)
-        try apply(.build(kind: kind, coordinate: GridCoordinate(x: 7, y: 11)), to: &state)
+        try apply(.build(kind: kind, coordinate: GridCoordinate(x: 4, y: 8)), to: &state)
+        try apply(.build(kind: kind, coordinate: GridCoordinate(x: 5, y: 8)), to: &state)
         advanceTicks(4, state: &state)
         XCTAssertEqual(state.progression?.strategy?.committedStrategy, strategy)
         advanceTicks(64, state: &state)

@@ -3729,13 +3729,13 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertTrue(scene.selectionIsHiddenForTesting)
             XCTAssertTrue(scene.hoverIsHiddenForTesting)
 
-            // A nearby intended target in the regular aperture already fits
-            // the composed district and must not trigger the remote-target
-            // zoom-out path. The compact aperture is intentionally too shallow
-            // to fully contain any authoritative road center at its opening
+            // A nearby intended target in an already-safe regular camera must
+            // not trigger the remote-target zoom-out path. Configure that
+            // pre-fit camera explicitly instead of assuming the shipping
+            // opening exposes a complete valid target and road diamond. The
+            // compact aperture is intentionally too shallow at its opening
             // fit, so its typed target correctly exercises the contextual fit.
             if label == "regular" {
-                let openingSafeRect = scene.safeViewportRectForTesting(insets)
                 let roadCoordinates = state.tiles
                     .filter { $0.kind == .road }
                     .map(\.coordinate)
@@ -3758,26 +3758,41 @@ final class WorldRenderingTests: XCTestCase {
                     }
                     return $0.coordinate.x < $1.coordinate.x
                 }
+                let validChoices = [BuildingKind.commercial, .road].flatMap { kind in
+                    orderedTiles.compactMap { tile -> (kind: BuildingKind, tile: CityTile)? in
+                        guard tile.kind == .empty,
+                              case .success = CitySimulation.validateBuild(
+                                kind,
+                                at: tile.coordinate,
+                                in: state
+                              ),
+                              nearestRoad(to: tile.coordinate) != nil else {
+                            return nil
+                        }
+                        return (kind: kind, tile: tile)
+                    }
+                }
+                let districtCenter = CGPoint(
+                    x: scene.cameraPriorityVisualBoundsForTesting.midX,
+                    y: scene.cameraPriorityVisualBoundsForTesting.midY
+                )
                 let normalChoice = try XCTUnwrap(
-                    [BuildingKind.commercial, .road].lazy.compactMap { kind in
-                        orderedTiles.first { tile in
-                            guard tile.kind == .empty,
-                                  case .success = CitySimulation.validateBuild(
-                                    kind,
-                                    at: tile.coordinate,
-                                    in: state
-                                  ),
-                                  let nearestRoad = nearestRoad(to: tile.coordinate) else {
-                                return false
-                            }
-                            return openingSafeRect.contains(
-                                scene.tileGroundBoundsForTesting(at: tile.coordinate)
-                            ) && openingSafeRect.contains(
-                                scene.tileGroundBoundsForTesting(at: nearestRoad)
-                            )
-                        }.map { (kind: kind, tile: $0) }
-                    }.first,
-                    "Regular opening must expose at least one fully visible valid Commercial or Road target"
+                    validChoices.min { lhs, rhs in
+                        let lhsPoint = scene.scenePointForTesting(at: lhs.tile.coordinate)
+                        let rhsPoint = scene.scenePointForTesting(at: rhs.tile.coordinate)
+                        let lhsDistance = pow(lhsPoint.x - districtCenter.x, 2)
+                            + pow(lhsPoint.y - districtCenter.y, 2)
+                        let rhsDistance = pow(rhsPoint.x - districtCenter.x, 2)
+                            + pow(rhsPoint.y - districtCenter.y, 2)
+                        if lhsDistance != rhsDistance {
+                            return lhsDistance < rhsDistance
+                        }
+                        if lhs.tile.coordinate.y != rhs.tile.coordinate.y {
+                            return lhs.tile.coordinate.y < rhs.tile.coordinate.y
+                        }
+                        return lhs.tile.coordinate.x < rhs.tile.coordinate.x
+                    },
+                    "Regular state must provide a valid Commercial or Road target for the safe pre-fit regression"
                 )
                 XCTAssertEqual(normalChoice.tile.kind, .empty)
                 let normalTarget = CityMapActionTargetPresentation(
@@ -3792,16 +3807,34 @@ final class WorldRenderingTests: XCTestCase {
                 let normalRoad = try XCTUnwrap(
                     nearestRoad(to: normalChoice.tile.coordinate)
                 )
+                scene.configureProofCamera(
+                    detail: .neighborhood,
+                    centeredOn: normalChoice.tile.coordinate
+                )
+                let prefitSafeRect = scene.safeViewportRectForTesting(insets)
                 XCTAssertTrue(
-                    openingSafeRect.contains(
+                    prefitSafeRect.contains(
                         scene.tileGroundBoundsForTesting(at: normalChoice.tile.coordinate)
                     )
                 )
                 XCTAssertTrue(
-                    openingSafeRect.contains(
+                    prefitSafeRect.contains(
                         scene.tileGroundBoundsForTesting(at: normalRoad)
                     )
                 )
+                let prefitDistrict = prefitSafeRect.intersection(
+                    scene.cameraPriorityVisualBoundsForTesting
+                )
+                XCTAssertGreaterThanOrEqual(
+                    prefitDistrict.width / prefitSafeRect.width,
+                    0.25
+                )
+                XCTAssertGreaterThanOrEqual(
+                    prefitDistrict.height / prefitSafeRect.height,
+                    0.25
+                )
+                let prefitScale = scene.cameraScaleForTesting
+                let prefitPosition = scene.cameraPositionForTesting
                 scene.render(
                     state: state,
                     overlay: .none,
@@ -3809,14 +3842,15 @@ final class WorldRenderingTests: XCTestCase {
                     interactionMode: .build(normalChoice.kind),
                     activeActionTarget: normalTarget
                 )
-                XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
-                XCTAssertEqual(scene.cameraPositionForTesting.x, openingPosition.x, accuracy: 0.000_001)
-                XCTAssertEqual(scene.cameraPositionForTesting.y, openingPosition.y, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraScaleForTesting, prefitScale, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraPositionForTesting.x, prefitPosition.x, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraPositionForTesting.y, prefitPosition.y, accuracy: 0.000_001)
 
                 // A center-only containment check is insufficient: a target
                 // close to the safe edge can have both centers visible while
                 // clipping one of the two authoritative ground diamonds.
                 scene.frameCity()
+                let openingSafeRect = scene.safeViewportRectForTesting(insets)
                 let clippedChoice = try XCTUnwrap(
                     [BuildingKind.commercial, .road].lazy.compactMap { kind in
                         orderedTiles.first { tile in

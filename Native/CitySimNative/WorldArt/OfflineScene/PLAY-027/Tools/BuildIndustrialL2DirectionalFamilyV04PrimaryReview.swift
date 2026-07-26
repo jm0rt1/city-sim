@@ -471,8 +471,14 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
             ? "north-primary-v02"
             : "north-primary-v01"
         let westAttempt = "west-primary-v01"
+        let includeSouth = arguments.contains("--include-south")
+        guard !includeSouth || candidateFamily == "v07" else {
+            throw IndustrialL2DirectionalPrimaryReviewError.invalid(
+                "--include-south is authorized only for candidate family v07"
+            )
+        }
 
-        let directions = [
+        var directions = [
             DirectionInput(
                 id: "north-\(candidateFamily)-primary",
                 rawPath:
@@ -495,6 +501,23 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 expectedDoorBases: [[934, 813], [858, 851]],
                 requiresFullyOpaqueRaw: false
             ),
+        ]
+        if includeSouth {
+            directions.append(
+                DirectionInput(
+                    id: "south-v07-primary",
+                    rawPath:
+                        "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/primary-calibration/diagnostics/south-primary-v01/raw.png",
+                    provenancePath:
+                        "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/primary-calibration/diagnostics/south-primary-v01/provenance.json",
+                    expectedPivot: [768, 896],
+                    expectedSocket: [640, 832],
+                    expectedDoorBases: [[678, 851], [602, 813]],
+                    requiresFullyOpaqueRaw: true
+                )
+            )
+        }
+        directions.append(
             DirectionInput(
                 id: "west-\(candidateFamily)-primary",
                 rawPath:
@@ -505,8 +528,8 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 expectedSocket: [640, 704],
                 expectedDoorBases: [[602, 723], [678, 685]],
                 requiresFullyOpaqueRaw: true
-            ),
-        ]
+            )
+        )
         var rasters: [ReviewRaster] = []
         var records: [[String: Any]] = []
         var allTechnicalPassed = true
@@ -613,53 +636,57 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 height: $0.height
             )
         }
-        let labels = [
+        var labels = [
             "NORTH \(candidateFamily.uppercased()) PRIMARY",
             "EAST V05 IMMUTABLE",
-            "WEST \(candidateFamily.uppercased()) PRIMARY",
         ]
+        if includeSouth {
+            labels.append("SOUTH V07 PRIMARY")
+        }
+        labels.append("WEST \(candidateFamily.uppercased()) PRIMARY")
         let sourceRect = CGRect(x: 481, y: 433, width: 576, height: 501)
         let footprintRect = CGRect(x: 480, y: 584, width: 576, height: 350)
+        let directionSuffix = includeSouth ? "N-E-S-W" : "N-E-W"
         let panelSpecifications: [
             (String, [CGImage], CGRect, CGSize, CGInterpolationQuality)
         ] = [
             (
-                "SOURCE-SCALE-COLOR-N-E-W.png",
+                "SOURCE-SCALE-COLOR-\(directionSuffix).png",
                 neutralImages,
                 sourceRect,
                 CGSize(width: 576, height: 501),
                 .none
             ),
             (
-                "SOURCE-SCALE-GRAYSCALE-N-E-W.png",
+                "SOURCE-SCALE-GRAYSCALE-\(directionSuffix).png",
                 grayscaleImages,
                 sourceRect,
                 CGSize(width: 576, height: 501),
                 .none
             ),
             (
-                "NATIVE-2X-COLOR-N-E-W.png",
+                "NATIVE-2X-COLOR-\(directionSuffix).png",
                 neutralImages,
                 sourceRect,
                 CGSize(width: 162, height: 141),
                 .high
             ),
             (
-                "NATIVE-2X-GRAYSCALE-N-E-W.png",
+                "NATIVE-2X-GRAYSCALE-\(directionSuffix).png",
                 grayscaleImages,
                 sourceRect,
                 CGSize(width: 162, height: 141),
                 .high
             ),
             (
-                "FOOTPRINT-NATIVE-2X-COLOR-N-E-W.png",
+                "FOOTPRINT-NATIVE-2X-COLOR-\(directionSuffix).png",
                 neutralImages,
                 footprintRect,
                 CGSize(width: 162, height: 98),
                 .high
             ),
             (
-                "FOOTPRINT-NATIVE-2X-GRAYSCALE-N-E-W.png",
+                "FOOTPRINT-NATIVE-2X-GRAYSCALE-\(directionSuffix).png",
                 grayscaleImages,
                 footprintRect,
                 CGSize(width: 162, height: 98),
@@ -727,7 +754,9 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
             "schema": 1,
             "task": "PLAY-027",
             "checkpoint":
-                "Industrial L2 \(candidateFamily.uppercased()) N/E/W raw review",
+                includeSouth
+                ? "Industrial L2 V07 N/E/S/W raw family review"
+                : "Industrial L2 \(candidateFamily.uppercased()) N/E/W raw review",
             "candidateFamily": candidateFamily,
             "rendererSourceCommit": rendererSourceCommit,
             "rendererBinarySHA256": rendererBinarySHA256,
@@ -739,7 +768,7 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 "northCandidatePrimary": 1,
                 "eastV05AnchorInherited": 1,
                 "westCandidatePrimary": 1,
-                "south": 0,
+                "south": includeSouth ? 1 : 0,
                 "repeatProcesses": 0,
             ],
             "normalizerProcessCount": 0,
@@ -761,10 +790,31 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 "rawFilesRemainImmutable": true,
                 "panels": panelRecords,
             ],
+            "southDescriptorLineage":
+                includeSouth
+                ? [
+                    "familyDisposition":
+                        "V07 South inherits the independently authored V04 South descriptor unchanged because the governed V07 semantic repair has southMutationCount 0",
+                    "descriptorFile":
+                        "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-directional-family-v04/scenes/industrial_l02/variant-0/south/scene.json",
+                    "sourceRevision": "source-v07",
+                ]
+                : [:],
+            "familyCohesionReview":
+                includeSouth
+                ? [
+                    "eastHeavierOutlineMismatchDisclosed": true,
+                    "observation":
+                        "Immutable East V05 retains visibly heavier dark exterior outlines and contact shadow than North/South/West; final family cohesion disposition remains with independent review",
+                    "noEastMutation": true,
+                ]
+                : [:],
             "technicalPassed": allTechnicalPassed,
             "visualDisposition": "PENDING_INDEPENDENT_REVIEW",
             "nextAuthorityRequired":
-                "South primary, repeats, and normalization remain blocked",
+                includeSouth
+                ? "Repeats, normalization, source authority, production selection, and renderer ingestion remain blocked"
+                : "South primary, repeats, and normalization remain blocked",
         ]
         let reportData = try JSONSerialization.data(
             withJSONObject: report,

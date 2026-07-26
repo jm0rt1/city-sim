@@ -198,7 +198,10 @@ private func loadRaster(id: String, url: URL) throws -> ReviewRaster {
     )
 }
 
-private func neutralReviewRGBA(_ raster: ReviewRaster) -> [UInt8] {
+private func neutralReviewRGBA(
+    _ raster: ReviewRaster,
+    replaceAllExactChroma: Bool
+) -> [UInt8] {
     var output = raster.rgba
     var visited = [Bool](
         repeating: false,
@@ -251,6 +254,20 @@ private func neutralReviewRGBA(_ raster: ReviewRaster) -> [UInt8] {
         if x + 1 < raster.width { enqueue(x + 1, y) }
         if y > 0 { enqueue(x, y - 1) }
         if y + 1 < raster.height { enqueue(x, y + 1) }
+    }
+    if replaceAllExactChroma {
+        for offset in stride(from: 0, to: output.count, by: 4) {
+            if
+                output[offset] == 255,
+                output[offset + 1] == 0,
+                output[offset + 2] == 255
+            {
+                output[offset] = 226
+                output[offset + 1] = 228
+                output[offset + 2] = 224
+                output[offset + 3] = 255
+            }
+        }
     }
     return output
 }
@@ -427,14 +444,39 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
             at: outputDirectory,
             withIntermediateDirectories: true
         )
+        let candidateFamily: String
+        if let familyIndex = arguments.firstIndex(of: "--candidate-family") {
+            guard familyIndex + 1 < arguments.count else {
+                throw IndustrialL2DirectionalPrimaryReviewError.invalid(
+                    "missing --candidate-family value"
+                )
+            }
+            candidateFamily = arguments[familyIndex + 1]
+        } else {
+            candidateFamily = "v04"
+        }
+        guard candidateFamily == "v04" || candidateFamily == "v05" else {
+            throw IndustrialL2DirectionalPrimaryReviewError.invalid(
+                "candidate family must be v04 or v05"
+            )
+        }
+        let candidateEvidenceFamily =
+            candidateFamily == "v05"
+            ? "directional-family-v05"
+            : "directional-family-v04"
+        let northAttempt =
+            candidateFamily == "v05"
+            ? "north-primary-v01"
+            : "north-primary-v02"
+        let westAttempt = "west-primary-v01"
 
         let directions = [
             DirectionInput(
-                id: "north-v04-primary",
+                id: "north-\(candidateFamily)-primary",
                 rawPath:
-                    "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v04/primary-calibration/diagnostics/north-primary-v02/raw.png",
+                    "docs/production/evidence/PLAY-027/industrial-l02/l02/\(candidateEvidenceFamily)/primary-calibration/diagnostics/\(northAttempt)/raw.png",
                 provenancePath:
-                    "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v04/primary-calibration/diagnostics/north-primary-v02/provenance.json",
+                    "docs/production/evidence/PLAY-027/industrial-l02/l02/\(candidateEvidenceFamily)/primary-calibration/diagnostics/\(northAttempt)/provenance.json",
                 expectedPivot: [768, 896],
                 expectedSocket: [896, 704],
                 expectedDoorBases: [[858, 685], [934, 723]],
@@ -452,11 +494,11 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 requiresFullyOpaqueRaw: false
             ),
             DirectionInput(
-                id: "west-v04-primary",
+                id: "west-\(candidateFamily)-primary",
                 rawPath:
-                    "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v04/primary-calibration/diagnostics/west-primary-v01/raw.png",
+                    "docs/production/evidence/PLAY-027/industrial-l02/l02/\(candidateEvidenceFamily)/primary-calibration/diagnostics/\(westAttempt)/raw.png",
                 provenancePath:
-                    "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v04/primary-calibration/diagnostics/west-primary-v01/provenance.json",
+                    "docs/production/evidence/PLAY-027/industrial-l02/l02/\(candidateEvidenceFamily)/primary-calibration/diagnostics/\(westAttempt)/provenance.json",
                 expectedPivot: [768, 896],
                 expectedSocket: [640, 704],
                 expectedDoorBases: [[602, 723], [678, 685]],
@@ -549,22 +591,30 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
 
         let neutralImages = try rasters.map {
             try image(
-                rgba: neutralReviewRGBA($0),
+                rgba: neutralReviewRGBA(
+                    $0,
+                    replaceAllExactChroma: candidateFamily == "v05"
+                ),
                 width: $0.width,
                 height: $0.height
             )
         }
         let grayscaleImages = try rasters.map {
             try image(
-                rgba: grayscale(neutralReviewRGBA($0)),
+                rgba: grayscale(
+                    neutralReviewRGBA(
+                        $0,
+                        replaceAllExactChroma: candidateFamily == "v05"
+                    )
+                ),
                 width: $0.width,
                 height: $0.height
             )
         }
         let labels = [
-            "NORTH V04 PRIMARY",
+            "NORTH \(candidateFamily.uppercased()) PRIMARY",
             "EAST V05 IMMUTABLE",
-            "WEST V04 PRIMARY",
+            "WEST \(candidateFamily.uppercased()) PRIMARY",
         ]
         let sourceRect = CGRect(x: 481, y: 433, width: 576, height: 501)
         let footprintRect = CGRect(x: 480, y: 584, width: 576, height: 350)
@@ -641,7 +691,9 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
         let report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
-            "checkpoint": "Industrial L2 Pixel Gate 1 N/E/W raw review",
+            "checkpoint":
+                "Industrial L2 \(candidateFamily.uppercased()) N/E/W raw review",
+            "candidateFamily": candidateFamily,
             "rendererSourceCommit":
                 "ba0c233722535db06d5a0000438740b720a4222e",
             "rendererBinarySHA256":
@@ -670,7 +722,9 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 "native2xScale": 0.28125,
                 "footprintCrop": [480, 584, 576, 350],
                 "backgroundTreatment":
-                    "review-only border-connected flat-chroma family replacement with neutral RGB 226/228/224",
+                    candidateFamily == "v05"
+                    ? "review-only global exact-chroma replacement plus border-connected chroma-family replacement with neutral RGB 226/228/224"
+                    : "review-only border-connected flat-chroma family replacement with neutral RGB 226/228/224",
                 "rawFilesRemainImmutable": true,
                 "panels": panelRecords,
             ],

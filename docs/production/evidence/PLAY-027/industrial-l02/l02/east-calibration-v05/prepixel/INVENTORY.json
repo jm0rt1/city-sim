@@ -1,0 +1,42 @@
+{
+  "artInputs": {
+    "descriptorSHA256": "1c2a2bd26ab4bb686284709cc367c56724f65b561c1e3ceccf846f89aaaddffe",
+    "materialLibrarySHA256": "28a56b032dfb6e6a9c8a9986591269d2dd988b152d3a59a4eb35a24bb3d3b9c1"
+  },
+  "binarySHA256": {
+    "calibrationBuilder": "feb2b8ccb4962c051e0dedc8b73446f7bc0dfc37c5c2fedc07f7663c2c99103b",
+    "panelBuilder": "d8966665b16e7f7ab97c26779ebf8a0795a87397e7fcbad1df6a31cda73dd30a",
+    "structuralValidator": "1664a589f2d79e2bfe27fc99d930f893042d10c2da7eee756e9cba660f13e925"
+  },
+  "deterministicReplay": {
+    "artTreeByteIdentical": true,
+    "evidenceTreeByteIdentical": true,
+    "metalProcesses": 0,
+    "replayRoot": "/private/tmp/play027-v05-replay-root"
+  },
+  "evidenceSHA256": {
+    "contract": "66ec038a5a8443fdc66f06879f7c1ed11a632f1593c5928077300ce52f6f1a11",
+    "prepixelReviewRequest": "c5dfcb71c42702ad0c94637d38cb119e907c6a91e45c128e9c6eec58b0bb7092",
+    "prepixelValidation": "614970c87d3e14c295668c6561087ebcb0303d1641e596c6dec6df30e7d3b4a3",
+    "structuralBoundaryValidation": "f1d521a01b171ebf14830fc3a52f4d0c34c47994c64986e36fd69bd5966dffac"
+  },
+  "panels": {
+    "PREPIXEL-FOOTPRINT-ACTUAL-SCALE-COLOR-COMPARISON.png": "d22bd0e9bdf5fafde32bb0f691242939d1223599298682760c7535043d86e912",
+    "PREPIXEL-FOOTPRINT-ACTUAL-SCALE-GRAYSCALE-COMPARISON.png": "172adae1aa54318a11ecada699b3b0a7b3e26d3b00405c93a2f83048e2dbaae6",
+    "PREPIXEL-MATERIAL-VALUE-LADDER.png": "f94dfb656e2703aeaf9c423d5816b1040c69d2b0c146bae5aa875d17bccc99c9",
+    "PREPIXEL-NATIVE-2X-COLOR-COMPARISON.png": "5f691ce739d381af41b6720232bf9a2348dccbed6bc9ef4b70348d5e2b906287",
+    "PREPIXEL-NATIVE-2X-GRAYSCALE-COMPARISON.png": "f678a41d6f4a4fc69cbfe6dff3a3bb87cb4cdd513bb288d7303c8579b0f1fa35",
+    "PREPIXEL-SOURCE-SCALE-COLOR-NONAUTHORITY.png": "f6ab9b0cafd4b581d63502d5ecb11b65e52b8c56a1b8ee1c95b2e430a78e7599",
+    "PREPIXEL-SOURCE-SCALE-GRAYSCALE-NONAUTHORITY.png": "76c4f9467874c6b611353ad8092f88bd8f32341c0828ce89e052ec4df444f3d9"
+  },
+  "productionSelected": false,
+  "schema": 1,
+  "sourceAuthorityPixels": false,
+  "sourceSHA256": {
+    "calibrationBuilder": "3c746627d25e9af4a7591268a36e30b86e886226d05ee6dd98bdfdc0102d3051",
+    "panelBuilder": "13dc0b79c71593fbd1ea5f79b7bbda756a967381ad6e01bdb4ffc2515aedbeb0",
+    "structuralValidator": "8fa0fcff81b7876cdfa217acf579bbb414a438303c568b742e45dac7a2a9475e"
+  },
+  "task": "PLAY-027",
+  "type": "industrial-l02-east-v05-prepixel-inventory"
+}

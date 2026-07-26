@@ -760,3 +760,47 @@ This is the authoritative first-wave task source. The shared target is one coher
   targeting; road-access recovery selected a valid adjacent road and required
   confirmation. Integration evidence is retained under
   `docs/production/evidence/PLAY-077/integration-897c191/`.
+
+### [ ] PLAY-078: Adopt the starter town without rewriting history
+
+- **Player outcome:** The richer three-block opening remains deterministic,
+  saveable, replayable, observable, and fixture-backed without pretending the
+  former eight-place city is still the current game.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-003, REL-001, REL-002, ART-002.
+- **Dependencies:** Frozen PLAY-076 gameplay product
+  `de6f477ca1a21d9dc9e825de0c7eba18055e3b7b`; published claim authority;
+  accepted PLAY-072 historical fixture corpus.
+- **In scope:** Additive StoryStates v4 and VisibleCityStates v3 fixture
+  generations and manifests; current golden fingerprints; invalid
+  fixed-coordinate test targets; deterministic platform, spatial, replay,
+  save/load/backup/Undo, snapshot, and terminal expectations; task evidence
+  and completion.
+- **Out of scope:** Any PLAY-076 gameplay-rule change; StoryStates v1-v3 or
+  VisibleCityStates v1-v2 rewrite; save schema or fingerprint version change;
+  renderer camera/reference/performance changes; UI, art, shipping resources,
+  package/build scripts, public contracts, or legacy Python.
+- **Work checklist:** Preserve every historical fixture byte; generate Story
+  v4 and Visible v3 twice in independent roots and require recursive byte
+  identity; bind current manifests to the exact combined product authority;
+  move obsolete `(8,11)` and `(6,11)` test commands to the published
+  row-major `(4,8)` through `(7,8)` sequence; regenerate only current golden
+  fingerprints and digests; re-prove legacy load, schema-one round trip,
+  recovery, replay, immutable snapshots, terminal freeze, and performance.
+- **Acceptance:** Historical preservation gates pass byte-exactly; new
+  manifests and all generated files repeat byte-identically; no schema,
+  migration, or fingerprint-version pressure; all simulation/platform and
+  non-renderer native tests pass on the exact PLAY-076 product; renderer-owned
+  failures remain explicitly returned rather than re-blessed.
+- **Validation:** Focused fixture/platform matrix; independent generation
+  roots; complete non-renderer native suite; full-suite classification;
+  `git diff --check`; script syntax; exact staged verify; size/time/memory
+  comparisons.
+- **Proof:** Generation inventories, preservation hashes, manifest linkage,
+  before/after fingerprints, command-coordinate ledger, compatibility and
+  rollback record under `docs/production/evidence/PLAY-078/`.
+- **Stop conditions:** Any historical byte changes; gameplay or renderer
+  mutation becomes necessary; unexplained digest drift; save/public shape or
+  version change; non-deterministic generation; performance regression outside
+  the published budget.
+- **Claim:** `docs/production/claims/PLAY-078.simulation-platform.md`.

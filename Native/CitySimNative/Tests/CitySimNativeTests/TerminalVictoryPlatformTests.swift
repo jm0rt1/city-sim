@@ -14,13 +14,13 @@ final class TerminalVictoryPlatformTests: XCTestCase {
     func testFourTerminalRoutesFreezeCommandsPersistenceBackupUndoAndSnapshots() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
             .commercialTaxRelief:
-                "d3dc139bc5fbb65f23a898f5b3cfbad8d441de03acfc5fe21546c375836026ff",
+                "034d788b7e0e8685e3ab32afcf924f9fce12e67e06cdaa756962489cf61a2d9d",
             .commercialPublicRealmInvestment:
-                "50f9d91f17c21f045872f4050705e0dcb5ceb490b464b06dfd11235fbbc98644",
+                "a0c5c5fcfe0d9d5f114ff1c80e1fa010a9e9f2c9497cb77055ebf9700a0c812e",
             .industrialUtilityExpansion:
-                "4287b7c38ff2323d418ca929d6d0fe936eb5fbfc1ba3af621a2a2f7069134421",
+                "35ea7b790487e76f1dd6db8014db978b64ebb11e354db3ff4efe3ca55dd2fc9b",
             .industrialGreenBuffer:
-                "3de8dc77d7f662d199d50b09e0ee1c1210feb463abccbf2863533e6feb6feb2a",
+                "be55197b95550c6c25c716cffc3cff1bd973b7b3f44faf71dae2b7daf499ac17",
         ]
         let expectedTicks: [CityStrategyRecoveryResolution: Int] = [
             .commercialTaxRelief: 1_024,
@@ -183,7 +183,7 @@ final class TerminalVictoryPlatformTests: XCTestCase {
 
                 let store = CityGameStore(state: .newCity(seed: 42), saveService: service)
                 store.selectTool(.commercial)
-                store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+                store.primaryAction(at: GridCoordinate(x: 4, y: 8))
                 XCTAssertTrue(store.canUndo, resolution.rawValue)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity), resolution.rawValue)

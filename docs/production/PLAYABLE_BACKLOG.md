@@ -726,3 +726,18 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Proof:** Exact topology/frontage ledger, balance ledger, strategy/recovery/progression matrix, regular/compact color and grayscale frames, staged identity, performance observation, additive fixture-adoption packet, and independent combined renderer disposition under `docs/production/evidence/PLAY-076/`.
 - **Stop conditions:** A second starting Commercial/Industrial/park/utility becomes necessary; either strategy or recovery path becomes nonviable; a public/save/schema/global-economy change is required; fixture history must be rewritten; the town remains visually sparse after truthful expansion; or any renderer/UI/art surface would need gameplay-local mutation.
 - **Claim:** `docs/production/claims/PLAY-076.gameplay-loop.md`.
+
+### [ ] PLAY-077: Keep command chrome from targeting the map
+
+- **Player outcome:** Choosing a build tool never accidentally targets the map, and a road-access remedy leads to a truthful adjacent road step without consuming the intended building parcel.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** PRD-004, UX-003, UX-004, UX-006, UX-009, REL-001.
+- **Dependencies:** Accepted PLAY-074; CONTRACT-014; approved CONTRACT-017; next published clean integration baseline.
+- **In scope:** Compact catalog pointer-transition quarantine through the existing gate; deterministic adjacent-road recovery through private store/map intent; pointer, keyboard, menu, guide, FKA, AX, Escape, focus, and Undo parity; regular/compact staged evidence.
+- **Out of scope:** New commands, renderer/camera workarounds, simulation rule changes, a second active target, auto-build, persistence, package topology, art, shipping resources, or legacy Python.
+- **Work checklist:** Prove pointer-versus-keyboard differential; extend the single gate for pointer-originated compact catalog selection; block candidate/primary/secondary map bridges through popup dismissal; preserve all non-pointer activation paths; replace same-parcel Road recovery with one deterministic validated adjacent target; retain exact interaction and state evidence.
+- **Acceptance:** Pointer Catalog → Commercial dispatches once while selection remains nil and camera/state/treasury/fingerprint/Undo remain unchanged; stationary and synthetic events cannot reach the map; intentional movement re-enables targeting; Road recovery selects a real adjacent block, never the Commercial parcel; one confirmed road makes the original parcel eligible; pointer/Return/FKA/AX commit once; Escape and Undo are exact at regular and 900 x 600.
+- **Validation:** Focused pointer-gate and command/store tests; modal/text-focus regressions; full native suite; exact staged verify; real regular/compact pointer and keyboard journeys with AX and Reduce Motion.
+- **Proof:** Before/after pointer-versus-keyboard frames and event ledger; road-recovery topology and validation ledger; state/fingerprint/treasury/Undo identities; regular/compact screenshots and AX; staged executable identity under `docs/production/evidence/PLAY-077/`.
+- **Stop conditions:** A second gate, public command/store contract, renderer mutation, coordinate restoration, auto-build, simulation-rule change, dual target, false READY state, input-parity regression, or failed staged journey becomes necessary.
+- **Claim:** `docs/production/claims/PLAY-077.ui-input.md`.

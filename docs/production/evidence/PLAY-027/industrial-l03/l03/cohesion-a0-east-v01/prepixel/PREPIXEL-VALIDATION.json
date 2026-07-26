@@ -1,0 +1,405 @@
+{
+  "acceptedSourceV02SamplingReproduction" : true,
+  "authoredIndependently" : true,
+  "baseDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v02/scenes/industrial_l03/variant-0/east/scene.json",
+  "baseDescriptorSHA256" : "dbe0dd260d28d848864d4194826f5147ec91314cf75b95bff9349bbfe466342c",
+  "baseImmutableRawFile" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/east/run-a/raw.png",
+  "baseImmutableRawSHA256" : "5dd2999ad2916a8ccddcf91954e54d1dfcf1139f78977d05d738c3dbfff4b9af",
+  "baseMaterialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v02/materials/industrial-l03-v02.json",
+  "baseMaterialLibrarySHA256" : "3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e",
+  "batch" : "industrial-l03-cohesion-east-v01",
+  "builderSourceFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL3CohesionEast.swift",
+  "builderSourceSHA256" : "7be5030ec9d7df374b9b78e1d2cbd862862f903e452b7be02c98441a73e3976a",
+  "cameraIdentity" : true,
+  "compactStagedFrame" : {
+    "externalFile" : "/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-073/r2-industrial-l3-a6000d1/live/compact-industrial-l3-selected.png",
+    "sha256" : "b2be098b11f1fe74a46938efa559e5b68dacc7758f0fdc6bf4a40611885978f4"
+  },
+  "firstPixelGate" : "exactly one fresh East source-v04 process, then two no-Metal normalizations and source/native2x/compact/grayscale/composed-city review",
+  "frontagePivotSocketShadowIdentity" : true,
+  "geometryRegistrationCanonicalIdentity" : true,
+  "geometryRegistrationCanonicalSHA256" : "800d641a0ea3d09d411c571576a0d6b8abd6b288cd6bc187ee4dae2e4214c790",
+  "imageGenCalls" : 0,
+  "materialReferenceValidation" : "pass",
+  "materialTreatmentCount" : 19,
+  "materialTreatmentLedger" : [
+    {
+      "baseColorRGBA" : [
+        0.20999999999999999,
+        0.22,
+        0.20000000000000001,
+        1
+      ],
+      "newID" : "l3c-charcoal-foundation",
+      "oldID" : "l3-foundation",
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        14,
+        14
+      ],
+      "predictedLuma" : 55,
+      "predictedStep32Luma" : 32,
+      "role" : "dark ground-contact foundation"
+    },
+    {
+      "baseColorRGBA" : [
+        0.089999999999999997,
+        0.12,
+        0.13,
+        1
+      ],
+      "newID" : "l3c-charcoal-outline-steel",
+      "oldID" : "l3-dark-steel",
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 29,
+      "predictedStep32Luma" : 32,
+      "role" : "structural outline and frame steel"
+    },
+    {
+      "baseColorRGBA" : [
+        0.070000000000000007,
+        0.089999999999999997,
+        0.10000000000000001,
+        1
+      ],
+      "newID" : "l3c-deep-recess",
+      "oldID" : "l3-recess",
+      "pattern" : "solid-depth-cavity",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 22,
+      "predictedStep32Luma" : 0,
+      "role" : "deep dock and service cavity"
+    },
+    {
+      "baseColorRGBA" : [
+        0.52000000000000002,
+        0.51000000000000001,
+        0.44,
+        1
+      ],
+      "newID" : "l3c-dull-duct-metal",
+      "oldID" : "l3-duct-metal",
+      "pattern" : "fine-galvanized",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 129,
+      "predictedStep32Luma" : 128,
+      "role" : "dull galvanized ductwork"
+    },
+    {
+      "baseColorRGBA" : [
+        0.44,
+        0.45000000000000001,
+        0.39000000000000001,
+        1
+      ],
+      "newID" : "l3c-dull-pipe",
+      "oldID" : "l3-pipe",
+      "pattern" : "fine-galvanized",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 113,
+      "predictedStep32Luma" : 96,
+      "role" : "dull process pipe"
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.23000000000000001,
+        0.23999999999999999,
+        1
+      ],
+      "newID" : "l3c-heavy-dock-door",
+      "oldID" : "l3-dock-door",
+      "pattern" : "horizontal-section-joints",
+      "physicalScaleWorld" : [
+        10,
+        10
+      ],
+      "predictedLuma" : 56,
+      "predictedStep32Luma" : 64,
+      "role" : "heavy sectional loading door"
+    },
+    {
+      "baseColorRGBA" : [
+        0.12,
+        0.16,
+        0.17000000000000001,
+        1
+      ],
+      "newID" : "l3c-heavy-roof-outline",
+      "oldID" : "l3-roof-dark",
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 38,
+      "predictedStep32Luma" : 32,
+      "role" : "heavy roof and parapet edge"
+    },
+    {
+      "baseColorRGBA" : [
+        0.48999999999999999,
+        0.34999999999999998,
+        0.23999999999999999,
+        1
+      ],
+      "newID" : "l3c-oxidized-process-metal",
+      "oldID" : "l3-process-metal",
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 94,
+      "predictedStep32Luma" : 96,
+      "role" : "oxidized process tower metal"
+    },
+    {
+      "baseColorRGBA" : [
+        0.47999999999999998,
+        0.27000000000000002,
+        0.16,
+        1
+      ],
+      "newID" : "l3c-oxidized-tank",
+      "oldID" : "l3-tank-oxide",
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 78,
+      "predictedStep32Luma" : 64,
+      "role" : "oxidized tank and process vessel"
+    },
+    {
+      "baseColorRGBA" : [
+        0.73999999999999999,
+        0.38,
+        0.080000000000000002,
+        1
+      ],
+      "newID" : "l3c-restrained-safety",
+      "oldID" : "l3-safety",
+      "pattern" : "solid-safety-paint",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 110,
+      "predictedStep32Luma" : 96,
+      "role" : "restrained safety accent"
+    },
+    {
+      "baseColorRGBA" : [
+        0.12,
+        0.23999999999999999,
+        0.27000000000000002,
+        1
+      ],
+      "newID" : "l3c-smoky-industrial-glazing",
+      "oldID" : "l3-glazing",
+      "pattern" : "muted-mullion-grid",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 55,
+      "predictedStep32Luma" : 32,
+      "role" : "smoky industrial glazing"
+    },
+    {
+      "baseColorRGBA" : [
+        0.71999999999999997,
+        0.46999999999999997,
+        0.19,
+        1
+      ],
+      "newID" : "l3c-warm-control-glazing",
+      "oldID" : "l3-warm-glazing",
+      "pattern" : "muted-warm-glazing",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 128,
+      "predictedStep32Luma" : 128,
+      "role" : "warm occupied control entrance"
+    },
+    {
+      "baseColorRGBA" : [
+        0.64000000000000001,
+        0.56000000000000005,
+        0.42999999999999999,
+        1
+      ],
+      "newID" : "l3c-warm-formed-concrete",
+      "oldID" : "l3-admin-concrete",
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 144,
+      "predictedStep32Luma" : 128,
+      "role" : "warm control and administration concrete"
+    },
+    {
+      "baseColorRGBA" : [
+        0.40000000000000002,
+        0.34000000000000002,
+        0.27000000000000002,
+        1
+      ],
+      "newID" : "l3c-warm-rusticated-plinth",
+      "oldID" : "l3-plinth",
+      "pattern" : "rusticated-block",
+      "physicalScaleWorld" : [
+        14,
+        12
+      ],
+      "predictedLuma" : 88,
+      "predictedStep32Luma" : 96,
+      "role" : "grounded warm concrete plinth"
+    },
+    {
+      "baseColorRGBA" : [
+        0.5,
+        0.46999999999999997,
+        0.40000000000000002,
+        1
+      ],
+      "newID" : "l3c-warm-scored-apron",
+      "oldID" : "l3-apron",
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        16,
+        16
+      ],
+      "predictedLuma" : 120,
+      "predictedStep32Luma" : 128,
+      "role" : "warm neutral loading apron"
+    },
+    {
+      "baseColorRGBA" : [
+        0.73999999999999999,
+        0.66000000000000003,
+        0.5,
+        1
+      ],
+      "newID" : "l3c-warm-trim",
+      "oldID" : "l3-light-trim",
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 169,
+      "predictedStep32Luma" : 160,
+      "role" : "warm readable dock and entrance trim"
+    },
+    {
+      "baseColorRGBA" : [
+        0.31,
+        0.42999999999999999,
+        0.46000000000000002,
+        1
+      ],
+      "newID" : "l3c-weathered-blue-steel",
+      "oldID" : "l3-hall-blue",
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        12,
+        10
+      ],
+      "predictedLuma" : 103,
+      "predictedStep32Luma" : 96,
+      "role" : "weathered production-hall steel"
+    },
+    {
+      "baseColorRGBA" : [
+        0.42999999999999999,
+        0.53000000000000003,
+        0.53000000000000003,
+        1
+      ],
+      "newID" : "l3c-weathered-blue-steel-light",
+      "oldID" : "l3-hall-light",
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        12,
+        10
+      ],
+      "predictedLuma" : 129,
+      "predictedStep32Luma" : 128,
+      "role" : "northwest-lit production steel"
+    },
+    {
+      "baseColorRGBA" : [
+        0.5,
+        0.48999999999999999,
+        0.41999999999999998,
+        1
+      ],
+      "newID" : "l3c-weathered-roof-membrane",
+      "oldID" : "l3-roof",
+      "pattern" : "rolled-membrane-seams",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "predictedLuma" : 124,
+      "predictedStep32Luma" : 128,
+      "role" : "weathered low-glare roof membrane"
+    }
+  ],
+  "normalizerProcesses" : 0,
+  "orientationTransform" : "none",
+  "postProcessTintOrRecolorAlias" : false,
+  "predictedStep32LumaBins" : [
+    0,
+    32,
+    64,
+    96,
+    128,
+    160
+  ],
+  "productionDecoderDryDecode" : "pass",
+  "productionSelected" : false,
+  "program" : "Wave-011-A0",
+  "regularStagedFrame" : {
+    "externalFile" : "/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-073/r2-industrial-l3-a6000d1/live/regular-industrial-l3-selected.png",
+    "sha256" : "d45dfaa8fe8e4c985c86a32814de5c4339ad1de7256de12f00dd0e103b28e977"
+  },
+  "rendererArchitectureFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+  "rendererArchitectureSHA256" : "05ef8e17bf27f49e566f805f3fc183cdfca8847ba84703ac1104b269b18d2c2a",
+  "repairedDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
+  "repairedDescriptorSHA256" : "1e5c69a03a6298f64f4d4d13bb0f523690729b82d5565343f40aaa8278aa3b6d",
+  "repairedMaterialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+  "repairedMaterialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+  "reviewAuthority" : "single-direction-source-review-not-family-or-production-acceptance",
+  "samplingFailClosedResults" : {
+    "wrongDirection" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03 N/E/S/W, or Industrial L3 source-v04 East v3 source-authority descriptors",
+    "wrongLogicalBuildingID" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03 N/E/S/W, or Industrial L3 source-v04 East v3 source-authority descriptors",
+    "wrongPurpose" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03 N/E/S/W, or Industrial L3 source-v04 East v3 source-authority descriptors",
+    "wrongRevision" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03 N/E/S/W, or Industrial L3 source-v04 East v3 source-authority descriptors"
+  },
+  "samplingResolver" : "schema-2-v3-east-only-pass",
+  "sourceAuthority" : false,
+  "sourceProcesses" : 0,
+  "task" : "PLAY-027",
+  "treatmentScope" : "new material IDs, patterns, physical scales, roughness, metalness, value hierarchy and structural edge roles on frozen geometry"
+}

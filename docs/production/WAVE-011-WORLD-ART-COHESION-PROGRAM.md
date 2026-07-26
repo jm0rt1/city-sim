@@ -95,6 +95,43 @@ Reject a source batch if any of the following is true:
 8. The lane edits renderer, shipping atlas, production selection, package,
    gameplay, simulation, UI, save, or shared-manifest surfaces.
 
+## Gameplay-scale measurable closeout
+
+Source correctness is necessary but not sufficient. The accepted catalog and
+composed staged city must also satisfy these review thresholds:
+
+- **One visual system:** comparable facade value ranges substantially overlap;
+  saturated accent material occupies less than 10 percent of opaque building
+  pixels; neighborhood-LOD outline weight differs by no more than one screen
+  pixel between families; and every family uses the same northwest-light,
+  southeast-shadow direction with comparable contact-shadow density.
+- **Real opening diversity:** frequently repeated opening family/levels provide
+  at least three materially different architectural silhouettes. No
+  edge-adjacent occupied pair may repeat the same silhouette, roof, frontage,
+  and lot treatment; no one visible identity may appear more than twice in the
+  opening; and candidate silhouette-mask overlap must remain below 80 percent.
+- **Frontage survives play:** the road-facing entrance or loading face remains
+  at least eight pixels wide in exact compact neighborhood proof, retains at
+  least 15 grayscale-value points of contrast, and lands within two pixels of
+  its authoritative road socket. A higher level changes at least 20 percent of
+  the prior level's silhouette boundary instead of merely becoming taller or
+  brighter.
+- **Special places are places:** parks, civic sites, utilities, and service
+  yards have continuous parcel ground and visible road-facing access. Exposed
+  plate edges occupy less than 10 percent of the parcel perimeter, native-scale
+  ground/contact gaps are at most two pixels, and landmark hierarchy is
+  deliberate rather than accidental.
+- **The city owns the frame:** authored developed district and public-realm
+  pixels occupy at least 60 percent of the safe aperture at regular and compact
+  sizes; the largest plain-terrain component is at most 25 percent; and road,
+  curb, parcel, and building material scales remain within a 0.75–1.33 ratio.
+  City LOD preserves district silhouettes, neighborhood LOD preserves
+  frontage/access, and block LOD adds entrances and material detail without
+  changing ground contact.
+
+An independently authored direction, unique hash, passing registration report,
+or green renderer test cannot waive any of these composed-frame requirements.
+
 ## Fast source cadence
 
 1. Freeze one pre-pixel architecture and material/value target.

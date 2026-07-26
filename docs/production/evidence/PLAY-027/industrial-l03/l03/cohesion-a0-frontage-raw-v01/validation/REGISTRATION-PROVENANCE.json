@@ -1,0 +1,49 @@
+{
+  "directions": {
+    "north": {
+      "doorBaseSource": [
+        [858, 685],
+        [934, 723]
+      ],
+      "frontageEdgeSource": [
+        [768, 640],
+        [1024, 768]
+      ],
+      "frontageSocketSource": [896, 704],
+      "groundPivotSource": [768, 896],
+      "rawOccupancy": {
+        "completeOccupiedAreaPassed": true,
+        "nonChromaBounds": [509, 387, 1027, 896],
+        "nonChromaPixelCount": 159510
+      },
+      "repeatCount": 3,
+      "repeatValuesIdentical": true,
+      "southeastShadowVectorSource": [2, 1]
+    },
+    "west": {
+      "doorBaseSource": [
+        [602, 723],
+        [678, 685]
+      ],
+      "frontageEdgeSource": [
+        [512, 768],
+        [768, 640]
+      ],
+      "frontageSocketSource": [640, 704],
+      "groundPivotSource": [768, 896],
+      "rawOccupancy": {
+        "completeOccupiedAreaPassed": true,
+        "nonChromaBounds": [509, 387, 1027, 896],
+        "nonChromaPixelCount": 159510
+      },
+      "repeatCount": 3,
+      "repeatValuesIdentical": true,
+      "southeastShadowVectorSource": [2, 1]
+    }
+  },
+  "passed": true,
+  "productionSelected": false,
+  "rendererSourceCommit": "f7e67031f5fcd222e2755a75270685c54b4bd038",
+  "schema": 1,
+  "task": "PLAY-027"
+}

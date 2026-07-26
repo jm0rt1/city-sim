@@ -1,0 +1,189 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "fileExpectationPassed" : true,
+  "identityExpectationPassed" : true,
+  "pixelExpectation" : "unique",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 4,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-raw-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "fileSHA256" : "5ca557dae856b492cf80d5074c89d1f9c1563ed9f90f9f8fb13efc498869fced",
+      "id" : "north-v05",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1413354,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          509,
+          387,
+          1027,
+          896
+        ],
+        "nonChromaBoundsPixels" : [
+          518,
+          509
+        ],
+        "nonChromaPixelCount" : 159510,
+        "paddingPixels" : [
+          509,
+          387,
+          509,
+          128
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "986772c6e57a5aa4ded75c531621ce840baf7fef8079a08fb31c17f38de094cb",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
+      "fileSHA256" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
+      "id" : "east-v04",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1394817,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          509,
+          381,
+          1027,
+          896
+        ],
+        "nonChromaBoundsPixels" : [
+          518,
+          515
+        ],
+        "nonChromaPixelCount" : 178047,
+        "paddingPixels" : [
+          509,
+          381,
+          509,
+          128
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "4d3b980ef0c641cc7010172c4d6ffd22d59b023195eaef50dbcf8c67b66ec222",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
+      "fileSHA256" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
+      "id" : "south-v04",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1394490,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          509,
+          395,
+          1027,
+          896
+        ],
+        "nonChromaBoundsPixels" : [
+          518,
+          501
+        ],
+        "nonChromaPixelCount" : 178374,
+        "paddingPixels" : [
+          509,
+          395,
+          509,
+          128
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "85308c293986c7f46c90404e2a2b478487fdac4b892223aff2b01625831da7dd",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-raw-v01/diagnostics/raw-repeat/west/run-a/raw.png",
+      "fileSHA256" : "15eb5944d57fbf95beccac61729861a6648c0541df0a0103cafd2e649d4fbb0c",
+      "id" : "west-v05",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1413354,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          509,
+          387,
+          1027,
+          896
+        ],
+        "nonChromaBoundsPixels" : [
+          518,
+          509
+        ],
+        "nonChromaPixelCount" : 159510,
+        "paddingPixels" : [
+          509,
+          387,
+          509,
+          128
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "51210d170d7e293abc213ac3bcb21ea275a89b442da5211564796f3a98860737",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniqueFileHashCount" : 4,
+  "uniquePixelHashCount" : 4,
+  "validationPassed" : true
+}

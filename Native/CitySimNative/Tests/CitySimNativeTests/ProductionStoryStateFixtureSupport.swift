@@ -60,7 +60,7 @@ struct ProductionStoryFixtureManifest: Codable, Equatable, Sendable {
     }
 }
 
-// PLAY-069 v2 and PLAY-072 v3 intentionally share this test-manifest shape.
+// PLAY-069 v2, PLAY-072 v3, and PLAY-078 v4 intentionally share this shape.
 struct ProductionStoryFixtureManifestV2: Codable, Equatable, Sendable {
     let fixtureSet: String
     let schemaVersion: Int
@@ -95,8 +95,8 @@ struct ProductionStoryFixtureArtifact: Equatable, Sendable {
 }
 
 struct ProductionStoryFixtureCorpus: Equatable, Sendable {
-    static let fixtureSet = "PLAY-072 post-PLAY-071 production story states"
-    static let manifestFile = "story-states-manifest-v3.json"
+    static let fixtureSet = "PLAY-078 post-PLAY-076 production story states"
+    static let manifestFile = "story-states-manifest-v4.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1
     static let seed: UInt64 = 42
@@ -195,7 +195,7 @@ struct ProductionStoryFixtureCorpus: Equatable, Sendable {
 
     private static func schemaOneBytes(for state: CityGameState, id: String) throws -> Data {
         let root = FileManager.default.temporaryDirectory.appending(
-            path: "citysim-play072-story-\(id)-\(UUID().uuidString)",
+            path: "citysim-play078-story-\(id)-\(UUID().uuidString)",
             directoryHint: .isDirectory
         )
         defer { try? FileManager.default.removeItem(at: root) }
@@ -556,7 +556,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Main Street Crossroads"
                 : "Freight Contract Watch"
-            suffix = "opening-v3"
+            suffix = "opening-v4"
             moment = .opening
         case .complication:
             resolution = nil
@@ -566,7 +566,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Market Weekend"
                 : "Regional Freight Contract"
-            suffix = "complication-v3"
+            suffix = "complication-v4"
             moment = .complication
         case .recovery:
             resolution = defaultResolution(for: strategy)
@@ -576,7 +576,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Storefront Slump Avoided"
                 : "Industrial Load Absorbed"
-            suffix = "recovery-v3"
+            suffix = "recovery-v4"
             moment = .recovery
         case .charterMidpoint:
             resolution = defaultResolution(for: strategy)
@@ -584,7 +584,7 @@ struct ProductionStoryStateBuilder {
             secondActPhase = .mandate
             status = .playing
             messageTitle = "Town Charter Awarded"
-            suffix = "charter-midpoint-v3"
+            suffix = "charter-midpoint-v4"
             moment = .charterVictory
         case .regionalCapital:
             let route = suppliedResolution ?? defaultResolution(for: strategy)
@@ -593,7 +593,7 @@ struct ProductionStoryStateBuilder {
             secondActPhase = .completed
             status = .won
             messageTitle = "Regional Capital Recognized"
-            suffix = "\(route.fixtureName)-regional-capital-v3"
+            suffix = "\(route.fixtureName)-regional-capital-v4"
             moment = .charterVictory
         }
 

@@ -70,12 +70,12 @@ struct VisibleCityFixtureArtifact: Equatable, Sendable {
 }
 
 struct VisibleCityFixtureCorpus: Equatable, Sendable {
-    static let fixtureSet = "PLAY-072 post-PLAY-071 visible-city states"
+    static let fixtureSet = "PLAY-078 post-PLAY-076 visible-city states"
     static let authorityCommit =
-        "5cb532cb515a911ff8f47f4d509a50a5071d369f"
+        "85b8963193fde123be6e3e9321860c19aa61969c"
     static let sourceStoryManifestSHA256 =
-        "bb27da325a259eb4186c54a749e6eb0391731a7f277860103099813ded7fba69"
-    static let manifestFile = "visible-city-states-manifest-v2.json"
+        "cfbff099a9064f83cbf1a279987722191ec23acc1f03b915bba816169543003a"
+    static let manifestFile = "visible-city-states-manifest-v3.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1
     static let seed: UInt64 = 42
@@ -197,7 +197,7 @@ struct VisibleCityFixtureCorpus: Equatable, Sendable {
         id: String
     ) throws -> Data {
         let root = FileManager.default.temporaryDirectory.appending(
-            path: "citysim-play072-visible-\(id)-\(UUID().uuidString)",
+            path: "citysim-play078-visible-\(id)-\(UUID().uuidString)",
             directoryHint: .isDirectory
         )
         defer { try? FileManager.default.removeItem(at: root) }
@@ -323,7 +323,7 @@ struct VisibleCityStateBuilder {
         let prefix = strategy == .commercialStewardship
             ? "commercial"
             : "industrial"
-        let id = "\(prefix)-\(lifecycle.rawValue)-district-v2"
+        let id = "\(prefix)-\(lifecycle.rawValue)-district-v3"
         return VisibleCityFixtureState(
             definition: VisibleCityFixtureDefinition(
                 id: id,

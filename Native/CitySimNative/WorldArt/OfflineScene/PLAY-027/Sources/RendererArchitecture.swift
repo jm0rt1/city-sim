@@ -159,9 +159,19 @@ enum DescriptorSamplingResolver {
             )
             && sampling.purpose == "source-authority"
             && isV3
+        let isIndustrialL3SourceV03 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.variantID == "variant-0"
+            && descriptor.sourceRevision == "source-v03"
+            && ["north", "east", "south", "west"].contains(
+                descriptor.viewDirection
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
         let isAuthoredConstantSource =
             isIndustrialL2AuthoredConstant
             || isIndustrialL3SourceV02
+            || isIndustrialL3SourceV03
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -210,7 +220,7 @@ enum DescriptorSamplingResolver {
                     && sceneKitShadows == "current")
         else {
             throw SamplingContractError.invalid(
-                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02 N/E/S/W v3 source-authority descriptors"
+                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
             )
         }
         guard
@@ -224,10 +234,10 @@ enum DescriptorSamplingResolver {
                 )
         else {
             throw SamplingContractError.invalid(
-                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions or Industrial L3 source-v02 N/E/S/W v3 source-authority descriptors"
+                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
             )
         }
-        if isIndustrialL2SourceV07East {
+        if isIndustrialL2SourceV07East || isIndustrialL3SourceV03 {
             guard
                 let preLanczos =
                     sampling.preLanczosCanonicalizer,
@@ -249,12 +259,12 @@ enum DescriptorSamplingResolver {
                 preLanczos.crossRunState == "none"
             else {
                 throw SamplingContractError.invalid(
-                    "Industrial L2 source-v07 East pre-Lanczos canonicalizer mismatch"
+                    "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
                 )
             }
         } else if sampling.preLanczosCanonicalizer != nil {
             throw SamplingContractError.invalid(
-                "pre-Lanczos canonicalization is authorized only for Industrial L2 source-v07 East"
+                "pre-Lanczos canonicalization is authorized only for Industrial L2 source-v07 East or Industrial L3 variant-0 source-v03 N/E/S/W"
             )
         }
         if isV1, sampling.postQuantizationCanonicalizer != nil {

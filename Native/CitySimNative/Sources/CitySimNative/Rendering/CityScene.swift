@@ -725,7 +725,9 @@ final class CityScene: SKScene {
         _ coordinate: GridCoordinate,
         viewportInsets: CityMapViewportInsets = .zero
     ) {
-        if renderedInteractionMode != .inspect, renderedState != nil {
+        if renderedInteractionMode != .inspect,
+           renderedState != nil,
+           renderedActiveActionTarget?.coordinate == coordinate {
             revealActionTargetContext(coordinate, viewportInsets: viewportInsets)
             return
         }

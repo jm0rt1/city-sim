@@ -3978,6 +3978,49 @@ final class WorldRenderingTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testSelectionOnlyBuildStateCannotSynthesizeTypedTargetContext() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let selectedCoordinate = GridCoordinate(x: 19, y: 17)
+        let mismatchedCoordinate = GridCoordinate(x: 18, y: 17)
+        let mismatchedTile = try XCTUnwrap(state.tile(at: mismatchedCoordinate))
+        let mismatchedTarget = CityMapActionTargetPresentation(
+            coordinate: mismatchedCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.commercial),
+                tile: mismatchedTile,
+                state: state
+            )
+        )
+
+        for activeTarget in [
+            Optional<CityMapActionTargetPresentation>.none,
+            mismatchedTarget,
+        ] {
+            let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+            scene.reducedMotion = true
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let openingScale = scene.cameraScaleForTesting
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: selectedCoordinate,
+                interactionMode: .build(.commercial),
+                activeActionTarget: activeTarget
+            )
+
+            XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.isNull)
+            XCTAssertNil(scene.activeTargetRoadFrontierForTesting)
+            XCTAssertFalse(scene.selectionIsHiddenForTesting)
+        }
+    }
+
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {
         var tile = CityTile(
             coordinate: GridCoordinate(x: 4, y: 7),

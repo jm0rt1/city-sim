@@ -11,7 +11,7 @@ enum NormalizeOfflineSourceError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: normalize-offline-source --asset-id <id> --input <png> --output-dir <path> --record <json> --object-width <pixels> --reference-width <source-pixels>"
+            return "usage: normalize-offline-source --asset-id <id> --input <png> --output-dir <path> --record <json> --object-width <pixels> --reference-width <source-pixels> [--strict-chroma-contract play027-zero-nonzero-alpha-chroma-premultiplied-v1]"
         case let .invalid(message):
             return message
         }
@@ -32,6 +32,17 @@ func normalizeArgument(
         let index = arguments.firstIndex(of: name),
         index + 1 < arguments.count
     else {
+        throw NormalizeOfflineSourceError.arguments
+    }
+    return arguments[index + 1]
+}
+
+func normalizeOptionalArgument(
+    _ name: String,
+    in arguments: [String]
+) throws -> String? {
+    guard let index = arguments.firstIndex(of: name) else { return nil }
+    guard index + 1 < arguments.count else {
         throw NormalizeOfflineSourceError.arguments
     }
     return arguments[index + 1]
@@ -388,6 +399,19 @@ enum NormalizeOfflineSourceMain {
         else {
             throw NormalizeOfflineSourceError.arguments
         }
+        let strictChromaContract = try normalizeOptionalArgument(
+            "--strict-chroma-contract",
+            in: arguments
+        )
+        guard
+            strictChromaContract == nil
+                || strictChromaContract
+                    == StrictNonzeroAlphaChromaCanonicalizer.contractID
+        else {
+            throw NormalizeOfflineSourceError.invalid(
+                "unknown strict chroma contract"
+            )
+        }
         let decoded = try decodeRGBA(input)
         guard decoded.width == 1536, decoded.height == 1024 else {
             throw NormalizeOfflineSourceError.invalid(
@@ -408,23 +432,40 @@ enum NormalizeOfflineSourceMain {
         ]
         var outputs: [[String: Any]] = []
         for (lod, width, height) in lods {
-            let image = try resizeRGBA(
+            var image = try resizeRGBA(
                 registered,
                 width: width,
                 height: height
             )
+            var strictChromaMetrics: [String: Any]?
+            if strictChromaContract != nil {
+                let canonicalized =
+                    try StrictNonzeroAlphaChromaCanonicalizer.canonicalize(
+                        image.pixels
+                    )
+                image = RGBAImage(
+                    width: image.width,
+                    height: image.height,
+                    pixels: canonicalized.pixels
+                )
+                strictChromaMetrics = canonicalized.metrics.json
+            }
             let url = outputDirectory.appendingPathComponent(
                 "generated_v4_\(assetID)_\(lod).png"
             )
             try writeNormalizePNG(image, to: url)
-            outputs.append([
+            var output: [String: Any] = [
                 "lod": lod,
                 "file": url.lastPathComponent,
                 "pixels": [width, height],
                 "sha256": try normalizeSHA256(url),
-            ])
+            ]
+            if let strictChromaMetrics {
+                output["strictNonzeroAlphaChroma"] = strictChromaMetrics
+            }
+            outputs.append(output)
         }
-        let payload: [String: Any] = [
+        var payload: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
             "tool": "PLAY-027 macOS-native offline source normalizer",
@@ -432,7 +473,12 @@ enum NormalizeOfflineSourceMain {
             "source_file": input.path,
             "source_sha256": try normalizeSHA256(input),
             "normalization":
-                "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports",
+                "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports"
+                + (
+                    strictChromaContract == nil
+                    ? ""
+                    : "; post-resize strict zero exact/near chroma at every nonzero alpha"
+                ),
             "registration": registration,
             "source_bbox": sourceBounds,
             "ground_pivot_source": [768, 896],
@@ -441,6 +487,9 @@ enum NormalizeOfflineSourceMain {
             "outputs": outputs,
             "productionSelected": false,
         ]
+        if let strictChromaContract {
+            payload["strict_chroma_contract"] = strictChromaContract
+        }
         try FileManager.default.createDirectory(
             at: record.deletingLastPathComponent(),
             withIntermediateDirectories: true

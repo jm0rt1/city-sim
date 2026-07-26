@@ -16,9 +16,9 @@ final class CityMapPointerTransitionGate: ObservableObject {
     private(set) var originatingWindowNumber: Int?
     private(set) var anchor: NSPoint?
     private var origin: Origin?
+    private(set) var compactCatalogIsTracking = false
     private var pendingCompactCatalogPointerLocation: NSPoint?
     private var pendingCompactCatalogPointerUptime: TimeInterval?
-    private var compactCatalogCaptureGeneration: UInt = 0
     private var movementMonitor: Any?
     private var windowCloseObserver: NSObjectProtocol?
     private var generation: UInt = 0
@@ -34,12 +34,24 @@ final class CityMapPointerTransitionGate: ObservableObject {
     func unbindCompactCatalogWindow(_ window: NSWindow?) {
         guard compactCatalogWindow === window else { return }
         compactCatalogWindow = nil
+        compactCatalogIsTracking = false
+        resetCompactCatalogPointerCapture()
+    }
+
+    func beginCompactCatalogTracking() {
+        resetCompactCatalogPointerCapture()
+        compactCatalogIsTracking = true
+    }
+
+    func endCompactCatalogTracking() {
+        compactCatalogIsTracking = false
         resetCompactCatalogPointerCapture()
     }
 
     func observeCompactCatalogInput(_ event: NSEvent, controlView: NSView) {
         guard let contentWindow = compactCatalogWindow,
-              controlView.window === contentWindow else {
+              controlView.window === contentWindow,
+              compactCatalogIsTracking else {
             resetCompactCatalogPointerCapture()
             return
         }
@@ -50,29 +62,13 @@ final class CityMapPointerTransitionGate: ObservableObject {
         }
         guard event.type == .leftMouseDown || event.type == .leftMouseUp else { return }
 
-        let eventWindow = event.window
-            ?? NSApplication.shared.window(withWindowNumber: event.windowNumber)
-        let isContentWindowEvent = eventWindow === contentWindow
-            || eventWindow?.windowNumber == contentWindow.windowNumber
-        if isContentWindowEvent {
-            resetCompactCatalogPointerCapture()
-            return
-        }
-
         if event.type == .leftMouseDown {
             resetCompactCatalogPointerCapture()
             return
         }
         guard event.type == .leftMouseUp else { return }
-        compactCatalogCaptureGeneration &+= 1
-        let capturedGeneration = compactCatalogCaptureGeneration
         pendingCompactCatalogPointerLocation = screenLocation(for: event)
         pendingCompactCatalogPointerUptime = ProcessInfo.processInfo.systemUptime
-        Task { @MainActor [weak self] in
-            await Task.yield()
-            guard self?.compactCatalogCaptureGeneration == capturedGeneration else { return }
-            self?.resetCompactCatalogPointerCapture()
-        }
     }
 
     @discardableResult
@@ -207,7 +203,6 @@ final class CityMapPointerTransitionGate: ObservableObject {
     }
 
     private func resetCompactCatalogPointerCapture() {
-        compactCatalogCaptureGeneration &+= 1
         pendingCompactCatalogPointerLocation = nil
         pendingCompactCatalogPointerUptime = nil
     }

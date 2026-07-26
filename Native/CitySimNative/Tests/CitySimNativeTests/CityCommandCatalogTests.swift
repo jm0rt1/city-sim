@@ -1253,7 +1253,7 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testCompactCatalogItemPointerCaptureIsImmediateAndCanceledMenusExpire() async throws {
+    func testCompactCatalogItemPointerCaptureIsImmediateAndCanceledMenusExpire() throws {
         _ = NSApplication.shared
         let contentWindow = NSWindow(
             contentRect: CGRect(x: 100, y: 120, width: 900, height: 600),
@@ -1273,6 +1273,16 @@ final class CityCommandCatalogTests: XCTestCase {
         contentWindow.contentView?.addSubview(binding)
         contentWindow.orderFront(nil)
         popupWindow.orderFront(nil)
+        let catalogMenu = NSMenu()
+        for kind in BuildingKind.allCases {
+            catalogMenu.addItem(
+                NSMenuItem(
+                    title: "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                    action: nil,
+                    keyEquivalent: ""
+                )
+            )
+        }
 
         let openingLocation = NSPoint(x: 100, y: 62)
         let openingUp = try XCTUnwrap(
@@ -1334,6 +1344,11 @@ final class CityCommandCatalogTests: XCTestCase {
             try keyEvent(characters: "\r", keyCode: 36),
             controlView: binding
         )
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
+        XCTAssertTrue(gate.compactCatalogIsTracking)
         gate.observeCompactCatalogInput(selectionDown, controlView: binding)
         gate.observeCompactCatalogInput(selectionUp, controlView: binding)
         XCTAssertTrue(
@@ -1353,8 +1368,17 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(gateAnchor.y, expectedAnchor.y, accuracy: 0.001)
         XCTAssertNil(store.selectedCoordinate)
         XCTAssertEqual(store.interactionMode, .build(.commercial))
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
+        XCTAssertFalse(gate.compactCatalogIsTracking)
 
         gate.cancel()
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
         gate.observeCompactCatalogInput(openingUp, controlView: binding)
         gate.observeCompactCatalogInput(selectionDown, controlView: binding)
         gate.observeCompactCatalogInput(selectionUp, controlView: binding)
@@ -1367,8 +1391,16 @@ final class CityCommandCatalogTests: XCTestCase {
             )
         )
         XCTAssertTrue(gate.isActive, "Pointer-open and pointer-selected items use the same item capture")
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
         gate.cancel()
 
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
         gate.observeCompactCatalogInput(selectionDown, controlView: binding)
         gate.observeCompactCatalogInput(selectionUp, controlView: binding)
         gate.observeCompactCatalogInput(
@@ -1386,14 +1418,20 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertFalse(gate.isActive, "Keyboard selection must clear pointer capture and stay immediate")
         XCTAssertNil(store.selectedCoordinate)
         XCTAssertEqual(store.interactionMode, .build(.industrial))
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
 
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
         gate.observeCompactCatalogInput(selectionDown, controlView: binding)
         gate.observeCompactCatalogInput(selectionUp, controlView: binding)
-        try await Task.sleep(
-            nanoseconds: UInt64(
-                (CityMapPointerTransitionGate.compactCatalogCaptureLifetime + 0.1)
-                    * 1_000_000_000
-            )
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
         )
         XCTAssertTrue(
             BuildToolbarView.performCompactCatalogSelection(

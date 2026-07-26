@@ -5,6 +5,7 @@ import SwiftUI
 final class CityBuildCatalogWindowBindingView: NSView {
     let pointerTransitionGate: CityMapPointerTransitionGate
     private var inputMonitor: Any?
+    private weak var trackedCatalogMenu: NSMenu?
 
     init(pointerTransitionGate: CityMapPointerTransitionGate) {
         self.pointerTransitionGate = pointerTransitionGate
@@ -42,6 +43,18 @@ final class CityBuildCatalogWindowBindingView: NSView {
 
     private func startMonitoring() {
         guard window != nil, inputMonitor == nil else { return }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(menuDidBeginTracking(_:)),
+            name: NSMenu.didBeginTrackingNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(menuDidEndTracking(_:)),
+            name: NSMenu.didEndTrackingNotification,
+            object: nil
+        )
         inputMonitor = NSEvent.addLocalMonitorForEvents(
             matching: [.leftMouseDown, .leftMouseUp, .keyDown]
         ) { [weak self] event in
@@ -52,9 +65,35 @@ final class CityBuildCatalogWindowBindingView: NSView {
     }
 
     private func stopMonitoring() {
-        guard let inputMonitor else { return }
-        NSEvent.removeMonitor(inputMonitor)
-        self.inputMonitor = nil
+        if let inputMonitor {
+            NSEvent.removeMonitor(inputMonitor)
+            self.inputMonitor = nil
+        }
+        NotificationCenter.default.removeObserver(self)
+        trackedCatalogMenu = nil
+        pointerTransitionGate.endCompactCatalogTracking()
+    }
+
+    @objc
+    private func menuDidBeginTracking(_ notification: Notification) {
+        guard let menu = notification.object as? NSMenu,
+              Self.isBuildCatalogMenu(menu) else { return }
+        trackedCatalogMenu = menu
+        pointerTransitionGate.beginCompactCatalogTracking()
+    }
+
+    @objc
+    private func menuDidEndTracking(_ notification: Notification) {
+        guard let menu = notification.object as? NSMenu,
+              menu === trackedCatalogMenu else { return }
+        trackedCatalogMenu = nil
+        pointerTransitionGate.endCompactCatalogTracking()
+    }
+
+    private static func isBuildCatalogMenu(_ menu: NSMenu) -> Bool {
+        BuildingKind.allCases.allSatisfy { kind in
+            menu.items.contains { $0.title.hasPrefix("\(kind.title) ·") }
+        }
     }
 }
 

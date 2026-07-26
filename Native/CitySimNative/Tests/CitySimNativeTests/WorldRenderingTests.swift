@@ -2656,6 +2656,9 @@ final class WorldRenderingTests: XCTestCase {
         ))
         let initialRebuildCount = scene.ambientRebuildCountForTesting
         let initialGroundRebuildCount = scene.ambientGroundRebuildCountForTesting
+        let initialCorridorIdentifier = try XCTUnwrap(
+            scene.ambientCorridorIdentifierForTesting
+        )
         let initialName = "world.activity.street.local-activity."
             + "\(firstSource.x).\(firstSource.y)"
         XCTAssertEqual(scene.renderedActivityNamesForTesting, [initialName])
@@ -2675,6 +2678,11 @@ final class WorldRenderingTests: XCTestCase {
         let switchedName = "world.activity.street.local-activity."
             + "\(secondSource.x).\(secondSource.y)"
         XCTAssertEqual(scene.renderedActivityNamesForTesting, [switchedName])
+        XCTAssertEqual(
+            scene.ambientCorridorIdentifierForTesting,
+            initialCorridorIdentifier,
+            "Activity-only changes must preserve the static ambient corridor"
+        )
         XCTAssertEqual(
             scene.ambientRebuildCountForTesting - initialRebuildCount,
             1,

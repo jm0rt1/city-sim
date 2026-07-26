@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "baseline": "1717c3abee2a20265d8c03801fbc648320faadb2",
+  "purpose": "prove the source-authority freeze did not modify accepted Residential, Commercial, or Industrial L1 source art and did not rewrite the frozen Industrial L2 source-v03 through source-v08 trail",
+  "acceptedSources": {
+    "scope": [
+      "Residential L1-L4 scene/raw/normalized/provenance",
+      "Commercial L1-L4 scene/raw/normalized/provenance",
+      "Industrial L1 scene/raw/normalized/provenance"
+    ],
+    "command": "git diff --quiet 1717c3abee2a20265d8c03801fbc648320faadb2 -- <explicit accepted source paths>",
+    "exitCode": 0,
+    "bytePreserved": true
+  },
+  "frozenIndustrialL2": {
+    "scope": [
+      "primary Industrial L2 scene/raw/normalized/provenance paths",
+      "source-v03 through source-v08 retained evidence roots"
+    ],
+    "command": "git diff --quiet 1717c3abee2a20265d8c03801fbc648320faadb2 -- <explicit frozen Industrial L2 paths>",
+    "exitCode": 0,
+    "bytePreserved": true
+  },
+  "newSourceAuthorityRoot": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/source-authority/quality-reset-v01",
+  "productionSelected": false,
+  "shippingRuntimePackageSharedManifestMutated": false,
+  "passed": true
+}

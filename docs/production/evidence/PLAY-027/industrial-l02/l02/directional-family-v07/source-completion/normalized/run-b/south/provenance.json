@@ -1,0 +1,74 @@
+{
+  "asset_id" : "industrial_l02_south_source_v07",
+  "ground_pivot_source" : [
+    768,
+    896
+  ],
+  "normalization" : "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports",
+  "object_width" : 410,
+  "outputs" : [
+    {
+      "file" : "generated_v4_industrial_l02_south_source_v07_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "c98e9b56a5705613a482b4ca249b4cb2b23a74fd6123638fc8282e7e8e5ba6f7"
+    },
+    {
+      "file" : "generated_v4_industrial_l02_south_source_v07_neighborhood.png",
+      "lod" : "neighborhood",
+      "pixels" : [
+        512,
+        342
+      ],
+      "sha256" : "976b998aa14adb1f040651616b31c5bc2e0ead77fb388054d7bf04b1d863dceb"
+    },
+    {
+      "file" : "generated_v4_industrial_l02_south_source_v07_city.png",
+      "lod" : "city",
+      "pixels" : [
+        256,
+        171
+      ],
+      "sha256" : "b70085caaef5045df7289364d34f983054bc3b80d991ddb9507e9654ac1abbc3"
+    }
+  ],
+  "productionSelected" : false,
+  "reference_subject_width" : 512,
+  "registration" : {
+    "mode" : "uniform-object-registration",
+    "reference_subject_width" : 512,
+    "source_bbox" : [
+      512,
+      500,
+      1024,
+      896
+    ],
+    "target_ground_pivot" : [
+      768,
+      896
+    ],
+    "target_origin" : [
+      563,
+      579
+    ],
+    "target_size" : [
+      410,
+      317
+    ],
+    "uniform_scale" : 0.80078125
+  },
+  "schema" : 1,
+  "source_bbox" : [
+    563,
+    579,
+    973,
+    896
+  ],
+  "source_file" : "\/Users\/James\/.codex\/worktrees\/0648\/city-sim\/docs\/production\/evidence\/PLAY-027\/industrial-l02\/l02\/directional-family-v07\/source-completion\/diagnostics\/raw-repeat\/south\/run-a\/raw.png",
+  "source_sha256" : "b3cafd821e29980a86a6d74f562a2ad97d5f877b4106f746aaa88bc19d9922a5",
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source normalizer"
+}

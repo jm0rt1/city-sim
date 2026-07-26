@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-sampling-pipeline <id>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -68,13 +68,55 @@ enum DiagnosticSceneShadows: String {
     case disabled
 }
 
+enum DiagnosticMaterialLighting: String {
+    case current
+    case constantUnlit = "constant-unlit"
+}
+
 struct RendererDiagnosticConfiguration {
     let antialiasingOverride: DiagnosticAntialiasing?
     let sceneShadows: DiagnosticSceneShadows
+    let materialLighting: DiagnosticMaterialLighting
 
     var hasOverride: Bool {
-        antialiasingOverride != nil || sceneShadows != .current
+        antialiasingOverride != nil
+            || sceneShadows != .current
+            || materialLighting != .current
     }
+}
+
+struct DiagnosticMaterialLightingApplication {
+    let uniqueMaterialCount: Int
+    let sceneLightCount: Int
+}
+
+func applyDiagnosticMaterialLighting(
+    _ mode: DiagnosticMaterialLighting,
+    to scene: SCNScene
+) -> DiagnosticMaterialLightingApplication {
+    guard mode == .constantUnlit else {
+        return DiagnosticMaterialLightingApplication(
+            uniqueMaterialCount: 0,
+            sceneLightCount: 0
+        )
+    }
+    var materialIdentities = Set<ObjectIdentifier>()
+    var sceneLightCount = 0
+    scene.rootNode.enumerateChildNodes { node, _ in
+        if let light = node.light {
+            light.intensity = 0
+            light.castsShadow = false
+            sceneLightCount += 1
+        }
+        for material in node.geometry?.materials ?? [] {
+            material.lightingModel = .constant
+            materialIdentities.insert(ObjectIdentifier(material))
+        }
+    }
+    return DiagnosticMaterialLightingApplication(
+        uniqueMaterialCount: materialIdentities.count,
+        sceneLightCount: sceneLightCount
+    )
 }
 
 func rendererSHA256(_ url: URL) throws -> String {
@@ -184,12 +226,18 @@ func color(_ components: [Double]) throws -> NSColor {
 
 final class NativeMaterialLibrary {
     private let specifications: [String: MaterialDescriptor]
+    private let repositoryRoot: URL
     private var sceneKitMaterials: [String: SCNMaterial] = [:]
+    private var sourceTextureImages: [String: CGImage] = [:]
 
-    init(descriptor: MaterialLibraryDescriptor) {
+    init(
+        descriptor: MaterialLibraryDescriptor,
+        repositoryRoot: URL
+    ) {
         specifications = Dictionary(
             uniqueKeysWithValues: descriptor.materials.map { ($0.id, $0) }
         )
+        self.repositoryRoot = repositoryRoot.standardizedFileURL
     }
 
     func material(_ id: String) throws -> SCNMaterial {
@@ -205,9 +253,7 @@ final class NativeMaterialLibrary {
         // not runtime PBR. Lambert retains the authored northwest key and
         // ambient hierarchy without SceneKit's stochastic PBR shading drift.
         material.lightingModel = .lambert
-        material.diffuse.contents = specification.pattern == "solid"
-            ? try color(specification.baseColorRGBA)
-            : try patternImage(specification)
+        material.diffuse.contents = try diffuseContents(specification)
         material.roughness.contents = NSNumber(
             value: specification.roughness
         )
@@ -225,6 +271,109 @@ final class NativeMaterialLibrary {
         material.isDoubleSided = false
         sceneKitMaterials[id] = material
         return material
+    }
+
+    func boxMaterials(
+        _ id: String,
+        dimensions: [Double]
+    ) throws -> [SCNMaterial] {
+        guard let specification = specifications[id] else {
+            throw OfflineRendererError.invalid("unknown material: \(id)")
+        }
+        guard let mapping = specification.textureMapping else {
+            return [try material(id)]
+        }
+        guard
+            mapping.mode == "world-scale-box-face-repeat-v1",
+            mapping.wrapS == "repeat",
+            mapping.wrapT == "repeat",
+            mapping.minificationFilter == "linear",
+            mapping.magnificationFilter == "linear",
+            mapping.mipFilter == "linear",
+            specification.physicalScaleWorld.count == 2,
+            specification.physicalScaleWorld.allSatisfy({ $0 > 0 }),
+            dimensions.count == 3,
+            dimensions.allSatisfy({ $0 > 0 })
+        else {
+            throw OfflineRendererError.invalid(
+                "invalid world-scale texture mapping for material: \(id)"
+            )
+        }
+        let faceSizes = [
+            [dimensions[0], dimensions[1]],
+            [dimensions[2], dimensions[1]],
+            [dimensions[0], dimensions[1]],
+            [dimensions[2], dimensions[1]],
+            [dimensions[0], dimensions[2]],
+            [dimensions[0], dimensions[2]],
+        ]
+        return try faceSizes.enumerated().map { index, faceSize in
+            guard
+                let faceMaterial = try material(id).copy()
+                    as? SCNMaterial
+            else {
+                throw OfflineRendererError.rendering(
+                    "could not copy mapped material: \(id)"
+                )
+            }
+            faceMaterial.name = "\(id)-box-face-\(index)"
+            let repeatX = max(
+                1,
+                faceSize[0] / specification.physicalScaleWorld[0]
+            )
+            let repeatY = max(
+                1,
+                faceSize[1] / specification.physicalScaleWorld[1]
+            )
+            faceMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(
+                CGFloat(repeatX),
+                CGFloat(repeatY),
+                1
+            )
+            return faceMaterial
+        }
+    }
+
+    private func diffuseContents(
+        _ specification: MaterialDescriptor
+    ) throws -> Any {
+        if let sourceTexture = specification.sourceTexture {
+            return try sourceTextureImage(sourceTexture)
+        }
+        return specification.pattern == "solid"
+            ? try color(specification.baseColorRGBA)
+            : try patternImage(specification)
+    }
+
+    private func sourceTextureImage(
+        _ reference: FileReference
+    ) throws -> CGImage {
+        if let cached = sourceTextureImages[reference.sha256] {
+            return cached
+        }
+        let url = repositoryRoot.appendingPathComponent(
+            reference.file
+        ).standardizedFileURL
+        let repositoryPrefix = repositoryRoot.path + "/"
+        guard
+            url.path.hasPrefix(repositoryPrefix),
+            try rendererSHA256(url) == reference.sha256,
+            let imageSource = CGImageSourceCreateWithURL(
+                url as CFURL,
+                nil
+            ),
+            let image = CGImageSourceCreateImageAtIndex(
+                imageSource,
+                0,
+                nil
+            )
+        else {
+            throw OfflineRendererError.invalid(
+                "material source texture hash/decode failed: \(reference.file)"
+            )
+        }
+        sourceTextureImages[reference.sha256] = image
+        return image
     }
 
     private func patternImage(
@@ -332,6 +481,69 @@ final class NativeMaterialLibrary {
                     )
                 )
             }
+        case "procedural-formed-concrete":
+            context.setLineWidth(1.5)
+            for coordinate in stride(from: 0, through: size, by: 64) {
+                context.move(to: CGPoint(x: coordinate, y: 0))
+                context.addLine(to: CGPoint(x: coordinate, y: size))
+                context.move(to: CGPoint(x: 0, y: coordinate))
+                context.addLine(to: CGPoint(x: size, y: coordinate))
+            }
+            context.strokePath()
+            context.setFillColor(lineColor.cgColor)
+            for y in stride(from: 32, through: size, by: 64) {
+                for x in stride(from: 32, through: size, by: 64) {
+                    context.fillEllipse(
+                        in: CGRect(x: x - 2, y: y - 2, width: 4, height: 4)
+                    )
+                }
+            }
+        case "procedural-vertical-corrugation":
+            for x in stride(from: 0, through: size, by: 12) {
+                context.setLineWidth((x / 12).isMultiple(of: 2) ? 3 : 1)
+                context.move(to: CGPoint(x: x, y: 0))
+                context.addLine(to: CGPoint(x: x, y: size))
+            }
+        case "horizontal-section-joints":
+            for y in stride(from: 0, through: size, by: 42) {
+                context.move(to: CGPoint(x: 0, y: y))
+                context.addLine(to: CGPoint(x: size, y: y))
+            }
+        case "large-scored-slabs":
+            for coordinate in stride(from: 0, through: size, by: 96) {
+                context.move(to: CGPoint(x: coordinate, y: 0))
+                context.addLine(to: CGPoint(x: coordinate, y: size))
+                context.move(to: CGPoint(x: 0, y: coordinate))
+                context.addLine(to: CGPoint(x: size, y: coordinate))
+            }
+        case "muted-mullion-grid", "muted-warm-glazing":
+            for coordinate in stride(from: 0, through: size, by: 64) {
+                context.move(to: CGPoint(x: coordinate, y: 0))
+                context.addLine(to: CGPoint(x: coordinate, y: size))
+                context.move(to: CGPoint(x: 0, y: coordinate))
+                context.addLine(to: CGPoint(x: size, y: coordinate))
+            }
+        case "fine-galvanized", "painted-steel":
+            for x in stride(from: 0, through: size, by: 24) {
+                context.move(to: CGPoint(x: x, y: 0))
+                context.addLine(to: CGPoint(x: x, y: size))
+            }
+        case "rolled-membrane-seams":
+            for x in stride(from: 0, through: size, by: 72) {
+                context.move(to: CGPoint(x: x, y: 0))
+                context.addLine(to: CGPoint(x: x, y: size))
+            }
+        case "compressible-seal":
+            context.setLineWidth(8)
+            context.stroke(CGRect(x: 18, y: 18, width: 220, height: 220))
+        case "restrained-oxide":
+            context.setLineWidth(5)
+            for offset in stride(from: -size, through: size, by: 48) {
+                context.move(to: CGPoint(x: offset, y: 0))
+                context.addLine(to: CGPoint(x: offset + size, y: size))
+            }
+        case "joint-line", "solid-depth-cavity", "solid-safety-paint":
+            break
         default:
             break
         }
@@ -358,16 +570,20 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 
         let foundation = try boxNode(
             name: "foundation",
-            dimensions: [
-                descriptor.building.width,
-                descriptor.building.foundationHeight,
-                descriptor.building.depth,
-            ],
-            position: [
-                0,
-                descriptor.building.foundationHeight / 2,
-                0,
-            ],
+            dimensions:
+                descriptor.building.foundationDimensions
+                ?? [
+                    descriptor.building.width,
+                    descriptor.building.foundationHeight,
+                    descriptor.building.depth,
+                ],
+            position:
+                descriptor.building.foundationPositionWorld
+                ?? [
+                    0,
+                    descriptor.building.foundationHeight / 2,
+                    0,
+                ],
             materialID: descriptor.building.foundationMaterialID
         )
         scene.rootNode.addChildNode(foundation)
@@ -421,37 +637,41 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             try addRoof(descriptor, to: scene)
             try addDormer(descriptor, to: scene)
         }
-        try addChimney(descriptor, to: scene)
+        if descriptor.building.usesExplicitComponentGeometry != true {
+            try addChimney(descriptor, to: scene)
+        }
 
-        for facade in descriptor.facades {
-            for bay in facade.windowBays {
-                try addWindow(
-                    bay,
-                    facade: facade.direction,
-                    family: descriptor.family,
-                    to: scene
-                )
-            }
-            for rhythm in facade.windowRhythms ?? [] {
-                for (index, center) in rhythm.centersWorld.enumerated() {
+        if descriptor.building.usesExplicitComponentGeometry != true {
+            for facade in descriptor.facades {
+                for bay in facade.windowBays {
                     try addWindow(
-                        WindowBayDescriptor(
-                            id: rhythm.id + "-\(index)",
-                            centerWorld: center,
-                            width: rhythm.width,
-                            height: rhythm.height,
-                            sillHeight: rhythm.sillHeight,
-                            floor: rhythm.floor,
-                            materialID: rhythm.materialID
-                        ),
+                        bay,
                         facade: facade.direction,
                         family: descriptor.family,
                         to: scene
                     )
                 }
+                for rhythm in facade.windowRhythms ?? [] {
+                    for (index, center) in rhythm.centersWorld.enumerated() {
+                        try addWindow(
+                            WindowBayDescriptor(
+                                id: rhythm.id + "-\(index)",
+                                centerWorld: center,
+                                width: rhythm.width,
+                                height: rhythm.height,
+                                sillHeight: rhythm.sillHeight,
+                                floor: rhythm.floor,
+                                materialID: rhythm.materialID
+                            ),
+                            facade: facade.direction,
+                            family: descriptor.family,
+                            to: scene
+                        )
+                    }
+                }
             }
+            try addEntrance(descriptor, to: scene)
         }
-        try addEntrance(descriptor, to: scene)
         for prop in descriptor.props {
             try addProp(prop, to: scene)
         }
@@ -584,7 +804,10 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             allocator: nil
         )
         let geometry = SCNGeometry(mdlMesh: mesh)
-        geometry.firstMaterial = try materials.material(materialID)
+        geometry.materials = try materials.boxMaterials(
+            materialID,
+            dimensions: dimensions
+        )
         let node = SCNNode(geometry: geometry)
         node.name = name
         node.position = SCNVector3(
@@ -1563,6 +1786,7 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
             descriptor.sourceRevision != "source-v03",
             descriptor.sourceRevision != "source-v04",
             descriptor.sourceRevision != "source-v05",
+            descriptor.sourceRevision != "source-v06",
             abs(entrance.porchLateralOffset) >= 10
         {
             let returnNormal: [Double]
@@ -2134,6 +2358,45 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
     ) throws {
         let material = try materials.material(prop.materialID)
         switch prop.kind {
+        case "explicit-box":
+            guard
+                prop.dimensions.count == 3,
+                prop.dimensions.allSatisfy({ $0 > 0 })
+            else {
+                throw OfflineRendererError.invalid(
+                    "explicit box dimensions must contain three positive values"
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id,
+                    dimensions: prop.dimensions,
+                    position: prop.positionWorld,
+                    materialID: prop.materialID
+                )
+            )
+        case "explicit-cylinder":
+            guard prop.dimensions.count == 3 else {
+                throw OfflineRendererError.invalid(
+                    "explicit cylinder dimensions must contain diameter, height, diameter"
+                )
+            }
+            let diameter = min(prop.dimensions[0], prop.dimensions[2])
+            let cylinder = SCNCylinder(
+                radius: CGFloat(diameter / 2),
+                height: CGFloat(prop.dimensions[1])
+            )
+            cylinder.radialSegmentCount = 32
+            cylinder.firstMaterial = material
+            let cylinderNode = SCNNode(geometry: cylinder)
+            cylinderNode.name = prop.id
+            cylinderNode.position = SCNVector3(
+                prop.positionWorld[0],
+                prop.positionWorld[1],
+                prop.positionWorld[2]
+            )
+            cylinderNode.castsShadow = true
+            scene.rootNode.addChildNode(cylinderNode)
         case "shrub-cluster":
             let offsets: [(Double, Double, Double)] = [
                 (-0.24, 0.0, -0.16),
@@ -2502,13 +2765,16 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
 }
 
 final class NativeSourceRenderer: OfflineSourceRendering {
+    private let renderer: SCNRenderer
     private let antialiasingMode: SCNAntialiasingMode
     private let linearOversamplingFactor: Int
 
     init(
+        renderer: SCNRenderer,
         antialiasingMode: SCNAntialiasingMode,
         linearOversamplingFactor: Int
     ) {
+        self.renderer = renderer
         self.antialiasingMode = antialiasingMode
         self.linearOversamplingFactor = linearOversamplingFactor
     }
@@ -2517,7 +2783,6 @@ final class NativeSourceRenderer: OfflineSourceRendering {
         scene: SCNScene,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
-        let renderer = SCNRenderer(device: nil, options: nil)
         // SceneKit can otherwise expose a process-dependent first snapshot:
         // descriptor nodes exist, but their presentation tree or prepared
         // material state is incomplete. Flush authored transactions and hold
@@ -2590,7 +2855,6 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 final class NativeSourceCompositor: OfflineSourceCompositing {
     private let sampling: EffectiveSamplingContract
     private let stageTraceCoordinate: [Int]?
-    private let ciContext: CIContext
     private(set) var prequantizedImage: CGImage?
     private(set) var prequantizedRGBA: [UInt8]?
     private(set) var quantizedBeforeMajorityRGBA: [UInt8]?
@@ -2606,48 +2870,20 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
     ) {
         self.sampling = sampling
         self.stageTraceCoordinate = stageTraceCoordinate
-        ciContext = CIContext(options: [
-            .useSoftwareRenderer: sampling.ciUseSoftwareRenderer,
-            .cacheIntermediates: sampling.ciCacheIntermediates,
-            .workingColorSpace: CGColorSpace(
-                name: CGColorSpace.extendedSRGB
-            )!,
-            .outputColorSpace: CGColorSpace(
-                name: CGColorSpace.sRGB
-            )!,
-        ])
     }
 
     func compositeRegisteredSource(
         renderedImage: CGImage,
         descriptor: SceneDescriptor
     ) throws -> CGImage {
-        let scale = CGFloat(sampling.downsampleScale)
-        let input = CIImage(cgImage: renderedImage)
-        guard let filter = CIFilter(name: sampling.downsampleFilter) else {
-            throw OfflineRendererError.rendering(
-                "CILanczosScaleTransform unavailable"
-            )
-        }
-        filter.setValue(input, forKey: kCIInputImageKey)
-        filter.setValue(scale, forKey: kCIInputScaleKey)
-        filter.setValue(
-            sampling.downsampleAspectRatio,
-            forKey: kCIInputAspectRatioKey
-        )
-        guard let downsampled = filter.outputImage else {
-            throw OfflineRendererError.rendering("downsample failed")
-        }
         let width = descriptor.camera.renderViewportPixels[0]
         let height = descriptor.camera.renderViewportPixels[1]
-        guard let source = ciContext.createCGImage(
-            downsampled,
-            from: CGRect(x: 0, y: 0, width: width, height: height)
-        ) else {
-            throw OfflineRendererError.rendering(
-                "Core Image could not create downsampled source"
-            )
-        }
+        let source = try FrozenSoftwareLanczos.downsample(
+            renderedImage,
+            sampling: sampling,
+            outputWidth: width,
+            outputHeight: height
+        )
         let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
         guard let context = CGContext(
             data: nil,
@@ -3082,6 +3318,7 @@ func writePNG(
     )
 }
 
+#if !PLAY027_SCENE_PREP_DIAGNOSTIC
 @main
 enum OfflineSceneRendererMain {
     static func main() throws {
@@ -3107,6 +3344,12 @@ enum OfflineSceneRendererMain {
         let recordURL = URL(
             fileURLWithPath: try rendererArgument("--record", in: arguments)
         ).standardizedFileURL
+        let backendCapabilityRecordURL = rendererOptionalArgument(
+            "--backend-capability-record",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
         let sourceCommit = try rendererArgument(
             "--renderer-source-commit",
             in: arguments
@@ -3148,16 +3391,50 @@ enum OfflineSceneRendererMain {
             "--diagnostic-antialiasing",
             in: arguments
         )
+        let diagnosticSceneShadowsRaw = rendererOptionalArgument(
+            "--diagnostic-scene-shadows",
+            in: arguments
+        )
+        let diagnosticMaterialLightingRaw = rendererOptionalArgument(
+            "--diagnostic-material-lighting",
+            in: arguments
+        )
+        let diagnosticSamplingPipelineID = rendererOptionalArgument(
+            "--diagnostic-sampling-pipeline",
+            in: arguments
+        )
+        let diagnosticContractID = rendererOptionalArgument(
+            "--diagnostic-contract",
+            in: arguments
+        )
+        let diagnosticStageContractID = rendererOptionalArgument(
+            "--diagnostic-stage-contract",
+            in: arguments
+        )
+        if let diagnosticStageContractID {
+            guard [
+                IndustrialL2V5EastStageCaptureContract.contractID,
+                IndustrialL2V5EastSceneKitLanczosContract.contractID,
+                IndustrialL2V6EastSceneKitCaptureContract.contractID,
+                IndustrialL2V7EastPreLanczosCaptureContract.contractID,
+                IndustrialL2V6EastFullFrameCaptureContract.contractID,
+                IndustrialL2V8EastFiniteEquivalenceContract.contractID,
+            ].contains(diagnosticStageContractID) else {
+                throw OfflineRendererError.invalid(
+                    "unknown diagnostic stage contract"
+                )
+            }
+        }
         guard
             diagnosticAntialiasingRaw == nil
                 || DiagnosticAntialiasing(
                     rawValue: diagnosticAntialiasingRaw!
                 ) != nil,
             let diagnosticSceneShadows = DiagnosticSceneShadows(
-                rawValue: rendererOptionalArgument(
-                    "--diagnostic-scene-shadows",
-                    in: arguments
-                ) ?? "current"
+                rawValue: diagnosticSceneShadowsRaw ?? "current"
+            ),
+            let diagnosticMaterialLighting = DiagnosticMaterialLighting(
+                rawValue: diagnosticMaterialLightingRaw ?? "current"
             )
         else {
             throw OfflineRendererError.arguments
@@ -3166,8 +3443,22 @@ enum OfflineSceneRendererMain {
             antialiasingOverride: diagnosticAntialiasingRaw.flatMap(
                 DiagnosticAntialiasing.init(rawValue:)
             ),
-            sceneShadows: diagnosticSceneShadows
+            sceneShadows: diagnosticSceneShadows,
+            materialLighting: diagnosticMaterialLighting
         )
+        if let backendCapabilityRecordURL {
+            guard
+                backendCapabilityRecordURL.path.contains("/diagnostics/"),
+                backendCapabilityRecordURL.pathExtension == "json",
+                !FileManager.default.fileExists(
+                    atPath: backendCapabilityRecordURL.path
+                )
+            else {
+                throw OfflineRendererError.invalid(
+                    "backend capability record must be a new JSON under a diagnostics path"
+                )
+            }
+        }
         if diagnosticConfiguration.hasOverride {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3222,7 +3513,244 @@ enum OfflineSceneRendererMain {
         let descriptorSampling = try DescriptorSamplingResolver.resolve(
             descriptor: descriptor
         )
-        if descriptorSampling.purpose == "diagnostic-regression" {
+        let diagnosticSamplingResolution =
+            try DiagnosticSamplingPipelineContract.resolve(
+                requestedContractID: diagnosticSamplingPipelineID,
+                repositoryRoot: repositoryRoot,
+                outputURL: outputURL,
+                recordURL: recordURL,
+                descriptorSHA256: try rendererSHA256(sceneURL),
+                rendererSourceCommit: sourceCommit,
+                productionSelected: descriptor.productionSelected,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                diagnosticContractID: diagnosticContractID,
+                diagnosticStageContractID:
+                    diagnosticStageContractID,
+                descriptorSampling: descriptorSampling
+            )
+        let effectiveSampling =
+            diagnosticSamplingResolution?.effectiveSampling
+            ?? descriptorSampling
+        let diagnosticMSAAIsolationRecord =
+            try IndustrialL2V5MSAAIsolationContract.validate(
+                requestedContractID: diagnosticContractID,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                materialsURL: materialsURL,
+                outputURL: outputURL,
+                recordURL: recordURL,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting: diagnosticMaterialLightingRaw,
+                logicalBuildingID: descriptor.logicalBuildingID,
+                variantID: descriptor.variantID,
+                sourceRevision: descriptor.sourceRevision,
+                viewDirection: descriptor.viewDirection,
+                productionSelected: descriptor.productionSelected,
+                descriptorSceneKitAntialiasing:
+                    descriptorSampling.sceneKitAntialiasing,
+                descriptorSceneKitShadows:
+                    descriptorSampling.sceneKitShadows
+            )
+        let diagnosticStageIsolationRecord =
+            try IndustrialL2V5EastStageCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V5EastStageCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                materialsURL: materialsURL,
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                logicalBuildingID: descriptor.logicalBuildingID,
+                variantID: descriptor.variantID,
+                sourceRevision: descriptor.sourceRevision,
+                viewDirection: descriptor.viewDirection,
+                productionSelected: descriptor.productionSelected,
+                descriptorSceneKitAntialiasing:
+                    descriptorSampling.sceneKitAntialiasing,
+                descriptorSceneKitShadows:
+                    descriptorSampling.sceneKitShadows
+            )
+        let diagnosticSceneKitLanczosRecord =
+            try IndustrialL2V5EastSceneKitLanczosContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V5EastSceneKitLanczosContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
+        let diagnosticSourceV06EastCaptureRecord =
+            try IndustrialL2V6EastSceneKitCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V6EastSceneKitCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
+        let diagnosticSourceV07EastCaptureRecord =
+            try IndustrialL2V7EastPreLanczosCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V7EastPreLanczosCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
+        let diagnosticSourceV06FullFrameCaptureRecord =
+            try IndustrialL2V6EastFullFrameCaptureContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V6EastFullFrameCaptureContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                prequantizedOutputRequested:
+                    diagnosticPrequantizedOutput != nil,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
+        let diagnosticSourceV08FiniteEquivalenceRecord =
+            try IndustrialL2V8EastFiniteEquivalenceContract.validate(
+                requestedContractID:
+                    diagnosticStageContractID
+                        == IndustrialL2V8EastFiniteEquivalenceContract
+                        .contractID
+                    ? diagnosticStageContractID
+                    : nil,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneFileSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialFileSHA256:
+                    try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                stageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                stageCoordinate: diagnosticStageCoordinate,
+                diagnosticPrequantizedOutput:
+                    diagnosticPrequantizedOutput,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting:
+                    diagnosticMaterialLightingRaw,
+                descriptor: descriptor,
+                sampling: descriptorSampling
+            )
+        guard
+            [
+                diagnosticMSAAIsolationRecord != nil,
+                diagnosticStageIsolationRecord != nil,
+                diagnosticSceneKitLanczosRecord != nil,
+                diagnosticSourceV06EastCaptureRecord != nil,
+                diagnosticSourceV07EastCaptureRecord != nil,
+                diagnosticSourceV06FullFrameCaptureRecord != nil,
+                diagnosticSourceV08FiniteEquivalenceRecord != nil,
+            ].filter({ $0 }).count <= 1
+        else {
+            throw OfflineRendererError.invalid(
+                "only one diagnostic isolation contract may be active"
+            )
+        }
+        let diagnosticIsolationRecord =
+            diagnosticMSAAIsolationRecord?.value
+            ?? diagnosticStageIsolationRecord?.value
+            ?? diagnosticSceneKitLanczosRecord?.value
+            ?? diagnosticSourceV06EastCaptureRecord?.value
+            ?? diagnosticSourceV07EastCaptureRecord?.value
+            ?? diagnosticSourceV06FullFrameCaptureRecord?.value
+            ?? diagnosticSourceV08FiniteEquivalenceRecord?.value
+        if effectiveSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
                 recordURL.path.contains("/diagnostics/")
@@ -3248,13 +3776,98 @@ enum OfflineSceneRendererMain {
                 "non-shipping/no-sibling contract failed"
             )
         }
+        let capabilityContext = RendererCapabilityPreflight.capture()
+        let resolvedCapabilityRecordURL: URL? = {
+            if let backendCapabilityRecordURL {
+                return backendCapabilityRecordURL
+            }
+            guard !capabilityContext.snapshot.available else {
+                return nil
+            }
+            return recordURL.deletingPathExtension().appendingPathExtension(
+                "backend-unavailable.json"
+            )
+        }()
+        if let resolvedCapabilityRecordURL {
+            guard !FileManager.default.fileExists(
+                atPath: resolvedCapabilityRecordURL.path
+            ) else {
+                throw OfflineRendererError.invalid(
+                    "backend capability record already exists"
+                )
+            }
+            let fingerprintURL = repositoryRoot.appendingPathComponent(
+                descriptor.toolchainFingerprint.file
+            )
+            try rendererWriteCapabilityRecord(
+                [
+                    "schema": 1,
+                    "task": "PLAY-027",
+                    "type": capabilityContext.snapshot.result,
+                    "capability": capabilityContext.snapshot.record,
+                    "rendererSourceCommit": sourceCommit,
+                    "sceneDescriptorFile": rendererRelativePath(
+                        sceneURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "sceneDescriptorSHA256":
+                        try rendererSHA256(sceneURL),
+                    "materialLibraryFile": rendererRelativePath(
+                        materialsURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "materialLibrarySHA256":
+                        try rendererSHA256(materialsURL),
+                    "toolchainFingerprintFile":
+                        descriptor.toolchainFingerprint.file,
+                    "toolchainFingerprintDeclaredSHA256":
+                        descriptor.toolchainFingerprint.sha256,
+                    "toolchainFingerprintActualSHA256":
+                        try rendererSHA256(fingerprintURL),
+                    "requestedRawSourceFile": rendererRelativePath(
+                        outputURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "requestedProvenanceFile": rendererRelativePath(
+                        recordURL,
+                        repositoryRoot: repositoryRoot
+                    ),
+                    "candidateOutputWritten": false,
+                    "candidateFailureClassified": false,
+                    "sceneConstructionStarted": false,
+                    "scenePreparationStarted": false,
+                    "productionSelected": false,
+                ],
+                to: resolvedCapabilityRecordURL
+            )
+        }
+        guard capabilityContext.snapshot.available else {
+            let recordPath = resolvedCapabilityRecordURL?.path
+                ?? "capability-record-unavailable"
+            print("renderer-backend-unavailable \(recordPath)")
+            return
+        }
         let materialLibrary = NativeMaterialLibrary(
-            descriptor: materialDescriptor
+            descriptor: materialDescriptor,
+            repositoryRoot: repositoryRoot
         )
         let scene = try ContractSceneBuilder(
             materials: materialLibrary
         ).buildScene(from: descriptor)
-        if diagnosticConfiguration.sceneShadows == .disabled {
+        let effectiveSceneKitLightingMode =
+            diagnosticConfiguration.materialLighting == .constantUnlit
+            ? "authored-constant-v1"
+            : effectiveSampling.sceneKitLightingMode
+        let sceneKitLightingApplication =
+            applyDiagnosticMaterialLighting(
+                effectiveSceneKitLightingMode == "authored-constant-v1"
+                    ? .constantUnlit
+                    : .current,
+                to: scene
+            )
+        if effectiveSampling.sceneKitShadows == "disabled"
+            || diagnosticConfiguration.sceneShadows == .disabled
+        {
             scene.rootNode.enumerateChildNodes { node, _ in
                 node.light?.castsShadow = false
             }
@@ -3266,17 +3879,139 @@ enum OfflineSceneRendererMain {
         let effectiveAntialiasing =
             diagnosticConfiguration.antialiasingOverride?.sceneKitMode
             ?? (
-                descriptorSampling.sceneKitAntialiasing == "none"
+                effectiveSampling.sceneKitAntialiasing == "none"
                     ? SCNAntialiasingMode.none
                     : SCNAntialiasingMode.multisampling4X
             )
-        let oversampled = try NativeSourceRenderer(
+        let rawOversampled = try NativeSourceRenderer(
+            renderer: capabilityContext.renderer,
             antialiasingMode: effectiveAntialiasing,
             linearOversamplingFactor:
-                descriptorSampling.linearOversamplingFactor
+                effectiveSampling.linearOversamplingFactor
         ).renderSource(scene: scene, descriptor: descriptor)
+        let rawOversampledFrameRecord =
+            try (
+                diagnosticSourceV07EastCaptureRecord
+                    ?? diagnosticSourceV06FullFrameCaptureRecord
+                    ?? diagnosticSourceV08FiniteEquivalenceRecord
+            ).map { _ in
+                try rendererFullFrameRecord(
+                    image: rawOversampled,
+                    stage: "scenekit-4x-before-pre-lanczos-canonicalization"
+                )
+            }
+        let persistedPreCanonicalFrameRecord =
+            try diagnosticSourceV06FullFrameCaptureRecord.map { _ in
+                guard let diagnosticStageCaptureDirectory else {
+                    throw OfflineRendererError.invalid(
+                        "full-frame capture directory missing after contract validation"
+                    )
+                }
+                return try rendererPersistCompleteRGBAFrame(
+                    image: rawOversampled,
+                    to: diagnosticStageCaptureDirectory
+                        .appendingPathComponent(
+                            "PRE-CANONICAL-4X.png"
+                        ),
+                    repositoryRoot: repositoryRoot,
+                    stage:
+                        "scenekit-4x-before-pre-lanczos-canonicalization"
+                )
+            }
+        let finiteEquivalenceApplication =
+            try diagnosticSourceV08FiniteEquivalenceRecord.map { _ in
+                let tableURL = repositoryRoot.appendingPathComponent(
+                    IndustrialL2V8EastFiniteEquivalenceContract.tablePath
+                )
+                let table =
+                    try IndustrialL2V8EastFiniteEquivalenceContract
+                    .loadValidatedTable(
+                        data: Data(contentsOf: tableURL)
+                    )
+                let inputRGBA = try rendererCanonicalRGBA(
+                    image: rawOversampled
+                )
+                return try IndustrialL2V8EastFiniteEquivalenceContract
+                    .apply(
+                        image: rawOversampled,
+                        table: table,
+                        expectedInputDecodedRGBASHA256:
+                            rendererStageSHA256(Data(inputRGBA))
+                    )
+            }
+        let persistedFiniteEquivalenceInputRecord =
+            try diagnosticSourceV08FiniteEquivalenceRecord.map { _ in
+                guard let diagnosticStageCaptureDirectory else {
+                    throw OfflineRendererError.invalid(
+                        "finite equivalence validation directory missing after contract validation"
+                    )
+                }
+                return try rendererPersistCompleteRGBAFrame(
+                    image: rawOversampled,
+                    to: diagnosticStageCaptureDirectory
+                        .appendingPathComponent("PRE-MAP-4X.png"),
+                    repositoryRoot: repositoryRoot,
+                    stage: "scenekit-4x-before-finite-equivalence-map",
+                    requiredFileName: "PRE-MAP-4X.png"
+                )
+            }
+        let persistedFiniteEquivalenceMappedRecord =
+            try finiteEquivalenceApplication.map { application in
+                guard let diagnosticStageCaptureDirectory else {
+                    throw OfflineRendererError.invalid(
+                        "finite equivalence validation directory missing after contract validation"
+                    )
+                }
+                return try rendererPersistCompleteRGBAFrame(
+                    image: application.image,
+                    to: diagnosticStageCaptureDirectory
+                        .appendingPathComponent(
+                            "MAPPED-PRE-LANCZOS-4X.png"
+                        ),
+                    repositoryRoot: repositoryRoot,
+                    stage: "finite-equivalence-mapped-pre-lanczos-4x",
+                    requiredFileName:
+                        "MAPPED-PRE-LANCZOS-4X.png"
+                )
+            }
+        let preLanczosInput =
+            finiteEquivalenceApplication?.image ?? rawOversampled
+        let preLanczosCanonicalization =
+            try effectiveSampling.preLanczosCanonicalizer.map {
+                try canonicalizePreLanczosFrameImage(
+                    preLanczosInput,
+                    contract: $0
+                )
+            }
+        let oversampled =
+            preLanczosCanonicalization?.image ?? preLanczosInput
+        let canonicalizedOversampledFrameRecord =
+            try diagnosticSourceV07EastCaptureRecord.map { _ in
+                try rendererFullFrameRecord(
+                    image: oversampled,
+                    stage: "pre-lanczos-canonicalized-4x"
+                )
+            }
+        let oversampledSupportWindow =
+            try (
+                diagnosticSceneKitLanczosRecord
+                    ?? diagnosticSourceV06EastCaptureRecord
+                    ?? diagnosticSourceV07EastCaptureRecord
+                    ?? diagnosticSourceV06FullFrameCaptureRecord
+                    ?? diagnosticSourceV08FiniteEquivalenceRecord
+            ).map {
+                var record = try rendererOversampledSupportWindowRecord(
+                    image: oversampled,
+                    geometry: $0.supportGeometry
+                )
+                if diagnosticSourceV07EastCaptureRecord != nil {
+                    record["stage"] =
+                        "pre-lanczos-canonicalized-4x-support-window"
+                }
+                return record
+            }
         let compositor = NativeSourceCompositor(
-            sampling: descriptorSampling,
+            sampling: effectiveSampling,
             stageTraceCoordinate: diagnosticStageCoordinate
         )
         let source = try compositor.compositeRegisteredSource(
@@ -3397,7 +4132,7 @@ enum OfflineSceneRendererMain {
                 pngWriteDiagnostics.finalSips[
                     "decodedRGBASHA256"
                 ] as? String
-            let capture: [String: Any] = [
+            var capture: [String: Any] = [
                 "schema": 1,
                 "task": "PLAY-027",
                 "purpose":
@@ -3442,10 +4177,90 @@ enum OfflineSceneRendererMain {
                         imageIOSHA != nil && imageIOSHA == finalSHA,
                 ],
                 "descriptorSamplingContractID":
-                    descriptorSampling.contractID,
+                    effectiveSampling.contractID,
                 "repairThresholdsChanged": false,
                 "productionSelected": false,
             ]
+            if let oversampledSupportWindow {
+                capture["oversampledSupportWindow"] =
+                    oversampledSupportWindow
+            }
+            if let rawOversampledFrameRecord {
+                capture["rawSceneKit4xFrame"] =
+                    rawOversampledFrameRecord
+            }
+            if let persistedPreCanonicalFrameRecord {
+                capture["persistedPreCanonical4xFrame"] =
+                    persistedPreCanonicalFrameRecord
+            }
+            if
+                let application = finiteEquivalenceApplication,
+                let persistedFiniteEquivalenceInputRecord,
+                let persistedFiniteEquivalenceMappedRecord
+            {
+                capture["finiteEquivalenceValidation"] = [
+                    "contractID":
+                        IndustrialL2V8EastFiniteEquivalenceContract
+                        .contractID,
+                    "tableSHA256":
+                        IndustrialL2V8EastFiniteEquivalenceContract
+                        .tableSHA256,
+                    "inputDecodedRGBASHA256":
+                        application.inputDecodedRGBASHA256,
+                    "mappedDecodedRGBASHA256":
+                        application.mappedDecodedRGBASHA256,
+                    "governedCoordinateCount":
+                        IndustrialL2V8EastFiniteEquivalenceContract
+                        .expectedCoordinateCount,
+                    "mutationCount": application.mutations.count,
+                    "mutations": application.mutations.map {
+                        [
+                            "coordinate4x": [$0.x, $0.y],
+                            "classID": $0.classID,
+                            "originalRGB": $0.originalRGB,
+                            "representativeRGB":
+                                $0.representativeRGB,
+                        ] as [String: Any]
+                    },
+                    "onlyGovernedCoordinatesMayChange": true,
+                    "unknownTuplePolicy": "reject",
+                    "crossRunState": "none",
+                    "alphaWrites": false,
+                    "chromaWrites": false,
+                    "productionSelected": false,
+                ]
+                capture["persistedFiniteEquivalenceInput4xFrame"] =
+                    persistedFiniteEquivalenceInputRecord
+                capture["persistedFiniteEquivalenceMapped4xFrame"] =
+                    persistedFiniteEquivalenceMappedRecord
+            }
+            if
+                let canonicalizedOversampledFrameRecord,
+                let result = preLanczosCanonicalization?.result
+            {
+                capture["preLanczosCanonicalized4xFrame"] =
+                    canonicalizedOversampledFrameRecord
+                capture["preLanczosCanonicalization"] = [
+                    "algorithm":
+                        effectiveSampling
+                        .preLanczosCanonicalizer?.algorithm
+                        ?? "missing",
+                    "version":
+                        effectiveSampling
+                        .preLanczosCanonicalizer?.version
+                        ?? -1,
+                    "changedChannelCount":
+                        result.changedChannelCount,
+                    "changedPixelCount": result.changedPixelCount,
+                    "opaquePixelCount": result.opaquePixelCount,
+                    "transparentPixelCount":
+                        result.transparentPixelCount,
+                    "chromaBypassPixelCount":
+                        result.chromaBypassPixelCount,
+                    "alphaChanged": false,
+                    "crossRunState": "none",
+                ]
+            }
             var captureData = try JSONSerialization.data(
                 withJSONObject: capture,
                 options: [
@@ -3468,6 +4283,16 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DiagnosticSamplingPipeline.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5MSAAIsolationContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastSceneKitCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V7EastPreLanczosCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastFullFrameCaptureContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V8EastFiniteEquivalenceContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -3486,7 +4311,7 @@ enum OfflineSceneRendererMain {
             }
         let postQuantizationContract =
             rendererPostQuantizationContractRecord(
-                descriptorSampling.postQuantizationCanonicalizer
+                effectiveSampling.postQuantizationCanonicalizer
             )
         let record: [String: Any] = [
             "schema": 1,
@@ -3506,12 +4331,86 @@ enum OfflineSceneRendererMain {
                 "CoreGraphics",
             ],
             "rendererSourceCommit": sourceCommit,
+            "rendererCapability": capabilityContext.snapshot.record,
+            "preLanczosCanonicalization":
+                preLanczosCanonicalization.map {
+                    [
+                        "algorithm":
+                            effectiveSampling
+                            .preLanczosCanonicalizer?.algorithm
+                            ?? "missing",
+                        "version":
+                            effectiveSampling
+                            .preLanczosCanonicalizer?.version
+                            ?? -1,
+                        "changedChannelCount":
+                            $0.result.changedChannelCount,
+                        "changedPixelCount":
+                            $0.result.changedPixelCount,
+                        "opaquePixelCount":
+                            $0.result.opaquePixelCount,
+                        "transparentPixelCount":
+                            $0.result.transparentPixelCount,
+                        "chromaBypassPixelCount":
+                            $0.result.chromaBypassPixelCount,
+                        "alphaChanged": false,
+                        "crossRunState": "none",
+                    ] as [String: Any]
+                } ?? [
+                    "algorithm": "none",
+                    "sourceChanged": false,
+                ],
+            "finiteRGBEquivalence":
+                finiteEquivalenceApplication.map {
+                    [
+                        "contractID":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .contractID,
+                        "tableFile":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .tablePath,
+                        "tableSHA256":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .tableSHA256,
+                        "inputDecodedRGBASHA256":
+                            $0.inputDecodedRGBASHA256,
+                        "mappedDecodedRGBASHA256":
+                            $0.mappedDecodedRGBASHA256,
+                        "governedCoordinateCount":
+                            IndustrialL2V8EastFiniteEquivalenceContract
+                            .expectedCoordinateCount,
+                        "mutationCount": $0.mutations.count,
+                        "onlyGovernedCoordinatesMayChange": true,
+                        "unknownTuplePolicy": "reject",
+                        "crossRunState": "none",
+                        "alphaWrites": false,
+                        "chromaWrites": false,
+                        "productionSelected": false,
+                    ] as [String: Any]
+                } ?? [
+                    "algorithm": "none",
+                    "sourceChanged": false,
+                ],
             "diagnosticConfiguration": [
                 "antialiasingOverride":
                     diagnosticConfiguration.antialiasingOverride?.rawValue
                     ?? "none",
                 "sceneShadows":
                     diagnosticConfiguration.sceneShadows.rawValue,
+                "materialLighting":
+                    diagnosticConfiguration.materialLighting.rawValue,
+                "materialLightingApplication": [
+                    "uniqueMaterialCount":
+                        sceneKitLightingApplication
+                        .uniqueMaterialCount,
+                    "sceneLightCount":
+                        sceneKitLightingApplication.sceneLightCount,
+                    "sceneLightsDisabled":
+                        effectiveSceneKitLightingMode
+                        == "authored-constant-v1",
+                    "materialColorsChanged": false,
+                    "descriptorChanged": false,
+                ],
                 "descriptorGeometryChanged": false,
                 "sourceAuthority": false,
                 "prequantizedOutput":
@@ -3529,43 +4428,77 @@ enum OfflineSceneRendererMain {
                         )
                     } ?? "not-requested",
             ],
+            "diagnosticIsolationContract":
+                diagnosticIsolationRecord ?? [
+                    "contractID": "none",
+                    "sourceAuthority": false,
+                    "productionSelected": false,
+                ],
+            "diagnosticSamplingPipeline":
+                diagnosticSamplingResolution?.provenance ?? [
+                    "contractID": "none",
+                    "sourceAuthority": false,
+                    "productionSelected": false,
+                ],
             "descriptorSamplingContract": [
-                "contractID": descriptorSampling.contractID,
-                "descriptorSchema": descriptorSampling.descriptorSchema,
-                "purpose": descriptorSampling.purpose,
+                "contractID": effectiveSampling.contractID,
+                "declaredDescriptorContractID":
+                    descriptorSampling.contractID,
+                "descriptorSchema": effectiveSampling.descriptorSchema,
+                "purpose": effectiveSampling.purpose,
                 "sceneKitAntialiasing":
-                    descriptorSampling.sceneKitAntialiasing,
+                    effectiveSampling.sceneKitAntialiasing,
                 "effectiveSceneKitAntialiasing":
                     diagnosticConfiguration.antialiasingOverride?.rawValue
-                    ?? descriptorSampling.sceneKitAntialiasing,
+                    ?? effectiveSampling.sceneKitAntialiasing,
+                "sceneKitShadows":
+                    effectiveSampling.sceneKitShadows,
+                "effectiveSceneKitShadows":
+                    diagnosticConfiguration.sceneShadows == .disabled
+                    ? "disabled"
+                    : effectiveSampling.sceneKitShadows,
+                "sceneKitLightingMode":
+                    effectiveSampling.sceneKitLightingMode,
+                "effectiveSceneKitLightingMode":
+                    effectiveSceneKitLightingMode,
+                "sceneKitMaterialLightingModel":
+                    effectiveSceneKitLightingMode
+                        == "authored-constant-v1"
+                    ? "constant"
+                    : "lambert",
+                "sceneLights":
+                    effectiveSceneKitLightingMode
+                        == "authored-constant-v1"
+                    ? "disabled-zero-intensity-no-shadow"
+                    : "descriptor-authored",
                 "linearOversamplingFactor":
-                    descriptorSampling.linearOversamplingFactor,
+                    effectiveSampling.linearOversamplingFactor,
                 "downsampleFilter":
-                    descriptorSampling.downsampleFilter,
+                    effectiveSampling.downsampleFilter,
                 "downsampleScale":
-                    descriptorSampling.downsampleScale,
+                    effectiveSampling.downsampleScale,
                 "downsampleAspectRatio":
-                    descriptorSampling.downsampleAspectRatio,
+                    effectiveSampling.downsampleAspectRatio,
                 "ciUseSoftwareRenderer":
-                    descriptorSampling.ciUseSoftwareRenderer,
+                    effectiveSampling.ciUseSoftwareRenderer,
                 "ciCacheIntermediates":
-                    descriptorSampling.ciCacheIntermediates,
+                    effectiveSampling.ciCacheIntermediates,
                 "ciWorkingColorSpace":
-                    descriptorSampling.ciWorkingColorSpace,
+                    effectiveSampling.ciWorkingColorSpace,
                 "ciOutputColorSpace":
-                    descriptorSampling.ciOutputColorSpace,
-                "quantizerID": descriptorSampling.quantizerID,
-                "quantizerStep": descriptorSampling.quantizerStep,
+                    effectiveSampling.ciOutputColorSpace,
+                "quantizerID": effectiveSampling.quantizerID,
+                "quantizerStep": effectiveSampling.quantizerStep,
                 "quantizerMidpointOffset":
-                    descriptorSampling.quantizerMidpointOffset,
+                    effectiveSampling.quantizerMidpointOffset,
                 "canonicalizerID":
-                    descriptorSampling.canonicalizerID,
+                    effectiveSampling.canonicalizerID,
                 "canonicalizerEncoder":
-                    descriptorSampling.canonicalizerEncoder,
+                    effectiveSampling.canonicalizerEncoder,
                 "canonicalizerPostEncoder":
-                    descriptorSampling.canonicalizerPostEncoder,
+                    effectiveSampling.canonicalizerPostEncoder,
                 "canonicalizerFormat":
-                    descriptorSampling.canonicalizerFormat,
+                    effectiveSampling.canonicalizerFormat,
                 "postQuantizationCanonicalizer":
                     postQuantizationContract,
                 "postQuantizationMutationCount":
@@ -3614,6 +4547,8 @@ enum OfflineSceneRendererMain {
             "rawSourcePixels":
                 descriptor.camera.renderViewportPixels,
             "oversamplingFactor":
+                effectiveSampling.linearOversamplingFactor,
+            "descriptorOversamplingFactor":
                 descriptor.camera.oversamplingFactor,
             "cameraProjection": descriptor.camera.projection,
             "groundPivotSource":
@@ -3649,3 +4584,4 @@ enum OfflineSceneRendererMain {
         try terminated.write(to: recordURL, options: .atomic)
     }
 }
+#endif

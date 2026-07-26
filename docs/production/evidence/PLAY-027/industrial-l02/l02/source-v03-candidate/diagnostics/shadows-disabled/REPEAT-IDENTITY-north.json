@@ -1,0 +1,143 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "pixelExpectation" : "identical",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/north-run-a.png",
+      "fileSHA256" : "f4bcd27762f966057f2c544991bddc28e7b1e6d77fcaad49363880adf502d853",
+      "id" : "run-a",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1503446,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          578,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          328
+        ],
+        "nonChromaPixelCount" : 69418,
+        "paddingPixels" : [
+          619,
+          578,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "3e4055f747c2ba828dc4a85ae288a1af485842fc573c5fac6e45692ba6930cb6",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/north-run-b.png",
+      "fileSHA256" : "f4bcd27762f966057f2c544991bddc28e7b1e6d77fcaad49363880adf502d853",
+      "id" : "run-b",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1503446,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          578,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          328
+        ],
+        "nonChromaPixelCount" : 69418,
+        "paddingPixels" : [
+          619,
+          578,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "3e4055f747c2ba828dc4a85ae288a1af485842fc573c5fac6e45692ba6930cb6",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/north-run-c.png",
+      "fileSHA256" : "f4bcd27762f966057f2c544991bddc28e7b1e6d77fcaad49363880adf502d853",
+      "id" : "run-c",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1503446,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          619,
+          578,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          410,
+          328
+        ],
+        "nonChromaPixelCount" : 69418,
+        "paddingPixels" : [
+          619,
+          578,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "3e4055f747c2ba828dc4a85ae288a1af485842fc573c5fac6e45692ba6930cb6",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

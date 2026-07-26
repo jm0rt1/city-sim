@@ -1,0 +1,233 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "industrial-l02-v0-source-v05-authored-constant-materials-v1",
+  "source": "source-v05-only authored constant-lighting roles calibrated from the accepted Industrial L1 family anchor and retained Industrial L2 source-v04 geometry",
+  "styleAnchorFile": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "familyAnchorFile": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "familyAnchorSHA256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "imageGenMaterialSwatchesUsed": false,
+  "colorSpace": "extended-sRGB",
+  "authoredValueHierarchy": {
+    "lightingMode": "authored-constant-v1",
+    "northwestLightDirectionPreserved": true,
+    "sceneLightsDisabled": true,
+    "materialRoleCount": 21,
+    "ladderOrder": [
+      "i02-v05-loading-throat",
+      "slate-charcoal",
+      "i02-v05-roof-flat",
+      "i02-v05-recess-sage",
+      "i02-v05-brick-side",
+      "exhaust-dark",
+      "i02-v05-roof-sawtooth",
+      "i02-v05-mechanical",
+      "i02-v05-glazing-side",
+      "tank-oxide",
+      "i02-v05-brick-northwest",
+      "i02-v05-corrugated-side",
+      "rooftop-metal",
+      "i02-v05-hazard-recess",
+      "i02-v05-glazing-northwest",
+      "i02-v05-trim-side",
+      "i02-v05-corrugated-northwest",
+      "i02-v05-loading-door",
+      "i02-v05-foundation",
+      "hazard-yellow",
+      "limestone-warm"
+    ]
+  },
+  "materials": [
+    {
+      "id": "i02-v05-corrugated-northwest",
+      "baseColorRGBA": [0.46, 0.54, 0.46, 1.0],
+      "roughness": 0.72,
+      "metalness": 0.34,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 1.0]
+    },
+    {
+      "id": "i02-v05-corrugated-side",
+      "baseColorRGBA": [0.32, 0.39, 0.34, 1.0],
+      "roughness": 0.74,
+      "metalness": 0.32,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 1.0]
+    },
+    {
+      "id": "i02-v05-recess-sage",
+      "baseColorRGBA": [0.15, 0.20, 0.18, 1.0],
+      "roughness": 0.80,
+      "metalness": 0.28,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 1.0]
+    },
+    {
+      "id": "i02-v05-brick-northwest",
+      "baseColorRGBA": [0.50, 0.30, 0.20, 1.0],
+      "roughness": 0.88,
+      "metalness": 0.0,
+      "emissionRGBA": null,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.9, 0.7]
+    },
+    {
+      "id": "i02-v05-brick-side",
+      "baseColorRGBA": [0.35, 0.19, 0.14, 1.0],
+      "roughness": 0.90,
+      "metalness": 0.0,
+      "emissionRGBA": null,
+      "pattern": "running-bond-relief",
+      "physicalScaleWorld": [1.9, 0.7]
+    },
+    {
+      "id": "i02-v05-roof-sawtooth",
+      "baseColorRGBA": [0.20, 0.27, 0.29, 1.0],
+      "roughness": 0.68,
+      "metalness": 0.42,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.5, 1.2]
+    },
+    {
+      "id": "i02-v05-roof-flat",
+      "baseColorRGBA": [0.14, 0.18, 0.20, 1.0],
+      "roughness": 0.72,
+      "metalness": 0.38,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.5, 1.2]
+    },
+    {
+      "id": "limestone-warm",
+      "baseColorRGBA": [0.72, 0.68, 0.58, 1.0],
+      "roughness": 0.86,
+      "metalness": 0.0,
+      "emissionRGBA": null,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [3.0, 1.2]
+    },
+    {
+      "id": "i02-v05-trim-side",
+      "baseColorRGBA": [0.53, 0.49, 0.42, 1.0],
+      "roughness": 0.88,
+      "metalness": 0.0,
+      "emissionRGBA": null,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [3.0, 1.2]
+    },
+    {
+      "id": "i02-v05-glazing-northwest",
+      "baseColorRGBA": [0.30, 0.52, 0.56, 1.0],
+      "roughness": 0.20,
+      "metalness": 0.08,
+      "emissionRGBA": null,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [7.0, 6.0]
+    },
+    {
+      "id": "i02-v05-glazing-side",
+      "baseColorRGBA": [0.18, 0.34, 0.39, 1.0],
+      "roughness": 0.24,
+      "metalness": 0.08,
+      "emissionRGBA": null,
+      "pattern": "divided-light",
+      "physicalScaleWorld": [7.0, 6.0]
+    },
+    {
+      "id": "i02-v05-loading-throat",
+      "baseColorRGBA": [0.09, 0.13, 0.14, 1.0],
+      "roughness": 0.74,
+      "metalness": 0.40,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [2.0, 2.0]
+    },
+    {
+      "id": "i02-v05-loading-door",
+      "baseColorRGBA": [0.48, 0.56, 0.53, 1.0],
+      "roughness": 0.58,
+      "metalness": 0.55,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 1.0]
+    },
+    {
+      "id": "hazard-yellow",
+      "baseColorRGBA": [0.92, 0.65, 0.14, 1.0],
+      "roughness": 0.60,
+      "metalness": 0.10,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    },
+    {
+      "id": "i02-v05-hazard-recess",
+      "baseColorRGBA": [0.68, 0.42, 0.08, 1.0],
+      "roughness": 0.64,
+      "metalness": 0.08,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    },
+    {
+      "id": "i02-v05-foundation",
+      "baseColorRGBA": [0.60, 0.55, 0.47, 1.0],
+      "roughness": 0.94,
+      "metalness": 0.0,
+      "emissionRGBA": null,
+      "pattern": "cut-stone",
+      "physicalScaleWorld": [4.0, 2.0]
+    },
+    {
+      "id": "i02-v05-mechanical",
+      "baseColorRGBA": [0.26, 0.31, 0.31, 1.0],
+      "roughness": 0.60,
+      "metalness": 0.54,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    },
+    {
+      "id": "rooftop-metal",
+      "baseColorRGBA": [0.36, 0.43, 0.42, 1.0],
+      "roughness": 0.60,
+      "metalness": 0.50,
+      "emissionRGBA": null,
+      "pattern": "recessed-panel",
+      "physicalScaleWorld": [3.0, 3.0]
+    },
+    {
+      "id": "exhaust-dark",
+      "baseColorRGBA": [0.20, 0.24, 0.24, 1.0],
+      "roughness": 0.58,
+      "metalness": 0.60,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.0, 1.0]
+    },
+    {
+      "id": "tank-oxide",
+      "baseColorRGBA": [0.52, 0.28, 0.18, 1.0],
+      "roughness": 0.74,
+      "metalness": 0.44,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [2.0, 2.0]
+    },
+    {
+      "id": "slate-charcoal",
+      "baseColorRGBA": [0.12, 0.16, 0.18, 1.0],
+      "roughness": 0.68,
+      "metalness": 0.18,
+      "emissionRGBA": null,
+      "pattern": "solid",
+      "physicalScaleWorld": [1.5, 0.75]
+    }
+  ],
+  "productionSelected": false
+}

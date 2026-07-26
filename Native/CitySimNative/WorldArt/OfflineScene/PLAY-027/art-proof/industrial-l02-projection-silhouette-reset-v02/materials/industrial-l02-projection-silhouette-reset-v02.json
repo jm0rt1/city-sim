@@ -1,0 +1,407 @@
+{
+  "colorSpace" : "extended-sRGB",
+  "imageGenMaterialSwatchesUsed" : false,
+  "libraryID" : "industrial-l02-projection-silhouette-reset-v02",
+  "materials" : [
+    {
+      "baseColorRGBA" : [
+        0.31,
+        0.32000000000000001,
+        0.34000000000000002,
+        1
+      ],
+      "id" : "v02-deep-recess",
+      "metalness" : 0,
+      "pattern" : "solid-depth-cavity",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.95999999999999996,
+      "targetPostLightStep32Bin" : 80,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "recess"
+    },
+    {
+      "baseColorRGBA" : [
+        0.40000000000000002,
+        0.41999999999999998,
+        0.44,
+        1
+      ],
+      "id" : "v02-roof-membrane",
+      "metalness" : 0,
+      "pattern" : "rolled-membrane-seams",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.93999999999999995,
+      "targetPostLightStep32Bin" : 96,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "roof"
+    },
+    {
+      "baseColorRGBA" : [
+        0.47999999999999998,
+        0.51000000000000001,
+        0.54000000000000004,
+        1
+      ],
+      "id" : "v02-loading-door",
+      "metalness" : 0.16,
+      "pattern" : "horizontal-section-joints",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.78000000000000003,
+      "targetPostLightStep32Bin" : 128,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "load-bay"
+    },
+    {
+      "baseColorRGBA" : [
+        0.56000000000000005,
+        0.62,
+        0.66000000000000003,
+        1
+      ],
+      "id" : "v02-painted-steel",
+      "metalness" : 0.23999999999999999,
+      "pattern" : "procedural-wide-corrugation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.75,
+      "targetPostLightStep32Bin" : 160,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "steel"
+    },
+    {
+      "baseColorRGBA" : [
+        0.69999999999999996,
+        0.68000000000000005,
+        0.62,
+        1
+      ],
+      "id" : "v02-formed-concrete",
+      "metalness" : 0,
+      "pattern" : "procedural-large-formed-panels",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.94999999999999996,
+      "targetPostLightStep32Bin" : 176,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "concrete"
+    },
+    {
+      "baseColorRGBA" : [
+        0.62,
+        0.62,
+        0.57999999999999996,
+        1
+      ],
+      "id" : "v02-neutral-apron",
+      "metalness" : 0,
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.97999999999999998,
+      "targetPostLightStep32Bin" : 160,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "apron"
+    },
+    {
+      "baseColorRGBA" : [
+        0.78000000000000003,
+        0.71999999999999997,
+        0.60999999999999999,
+        1
+      ],
+      "id" : "v02-warm-concrete",
+      "metalness" : 0,
+      "pattern" : "procedural-large-formed-panels",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.92000000000000004,
+      "targetPostLightStep32Bin" : 192,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "administration"
+    },
+    {
+      "baseColorRGBA" : [
+        0.29999999999999999,
+        0.52000000000000002,
+        0.66000000000000003,
+        1
+      ],
+      "id" : "v02-industrial-glazing",
+      "metalness" : 0.080000000000000002,
+      "pattern" : "broad-mullion-grid",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.40000000000000002,
+      "targetPostLightStep32Bin" : 128,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "glazing"
+    },
+    {
+      "baseColorRGBA" : [
+        0.71999999999999997,
+        0.76000000000000001,
+        0.77000000000000002,
+        1
+      ],
+      "id" : "v02-galvanized",
+      "metalness" : 0.56000000000000005,
+      "pattern" : "procedural-wide-corrugation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.67000000000000004,
+      "targetPostLightStep32Bin" : 192,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "service"
+    },
+    {
+      "baseColorRGBA" : [
+        0.83999999999999997,
+        0.82999999999999996,
+        0.76000000000000001,
+        1
+      ],
+      "id" : "v02-structural-trim",
+      "metalness" : 0.41999999999999998,
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.66000000000000003,
+      "targetPostLightStep32Bin" : 224,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "trim"
+    },
+    {
+      "baseColorRGBA" : [
+        0.63,
+        0.39000000000000001,
+        0.25,
+        1
+      ],
+      "id" : "v02-oxide-process",
+      "metalness" : 0.44,
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.79000000000000004,
+      "targetPostLightStep32Bin" : 128,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "process"
+    },
+    {
+      "baseColorRGBA" : [
+        0.92000000000000004,
+        0.72999999999999998,
+        0.40000000000000002,
+        1
+      ],
+      "id" : "v02-warm-glazing",
+      "metalness" : 0.059999999999999998,
+      "pattern" : "muted-warm-glazing",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.34999999999999998,
+      "targetPostLightStep32Bin" : 192,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "staff-entrance"
+    },
+    {
+      "baseColorRGBA" : [
+        0.97999999999999998,
+        0.81999999999999995,
+        0.25,
+        1
+      ],
+      "id" : "v02-safety-trim",
+      "metalness" : 0.32000000000000001,
+      "pattern" : "painted-safety-steel",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.62,
+      "targetPostLightStep32Bin" : 224,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "safety"
+    }
+  ],
+  "predeclaredDistributionTargets" : {
+    "authority" : "later-pixel-rejection-target-not-a-prepixel-pass-claim",
+    "majorFacadeBinAllocation" : [
+      {
+        "roles" : [
+          "recess"
+        ],
+        "share" : 0.17999999999999999,
+        "step32Bin" : 80
+      },
+      {
+        "roles" : [
+          "load-bay",
+          "glazing",
+          "process"
+        ],
+        "share" : 0.20000000000000001,
+        "step32Bin" : 128
+      },
+      {
+        "roles" : [
+          "steel",
+          "apron"
+        ],
+        "share" : 0.31,
+        "step32Bin" : 160
+      },
+      {
+        "roles" : [
+          "concrete"
+        ],
+        "share" : 0.22,
+        "step32Bin" : 176
+      },
+      {
+        "roles" : [
+          "administration",
+          "service",
+          "staff-entrance"
+        ],
+        "share" : 0.050000000000000003,
+        "step32Bin" : 192
+      },
+      {
+        "roles" : [
+          "trim",
+          "safety"
+        ],
+        "share" : 0.040000000000000001,
+        "step32Bin" : 224
+      }
+    ],
+    "maximumSingleMajorFacadeBinShare" : 0.34999999999999998,
+    "minimumOccupiedStep32Bins" : 5,
+    "p25Minimum" : 80,
+    "p75MinusP25Minimum" : 48,
+    "p95Minimum" : 192
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "source" : "offline-only numerical role/value reset; no ImageGen and no raster swatch",
+  "task" : "PLAY-027"
+}

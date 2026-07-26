@@ -1,0 +1,53 @@
+{
+  "candidateFailureClassified" : false,
+  "candidateOutputWritten" : false,
+  "capability" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-raster-survival-v01/materials/industrial-l02-raster-survival-art-proof-v01.json",
+  "materialLibrarySHA256" : "4ca54f2c10c9cc89d9432d2ac921e8cfb7ac88f14141e5446e9657b6533132d9",
+  "productionSelected" : false,
+  "rendererSourceCommit" : "920af3bb18fdd699b2fe51f66f9c3d79fbcff29a",
+  "requestedProvenanceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/provenance.json",
+  "requestedRawSourceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/raw.png",
+  "sceneConstructionStarted" : false,
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-raster-survival-v01/scenes/industrial_l02/variant-0/east/scene.json",
+  "sceneDescriptorSHA256" : "2af1e6488ea5ff8e799bf44482d4061b1efa1a190a360a34a4bdef0dc6d849c2",
+  "scenePreparationStarted" : false,
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "toolchainFingerprintActualSHA256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "toolchainFingerprintDeclaredSHA256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-quality-reset-source-v09.json",
+  "type" : "renderer-backend-available"
+}

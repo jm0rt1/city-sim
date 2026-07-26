@@ -1,0 +1,70 @@
+{
+  "authorityCommit": "8fac58b22c7785eb277c80a7c96d133e1eaa5865",
+  "compile": {
+    "probeBinarySHA256": "f3bc49f44fe21d167b216a42c916086a1733b08e687034ba9460e18c0f4bca5c",
+    "probeToolSHA256": "3376bd5a8ce7617715ed569410615f5984ffac31b65adf0b96a813cf44b91169",
+    "probeWarningsAsErrorsPassed": true,
+    "reviewBinarySHA256": "ecfcd72a543bacfdc6f5b2b3bf8b22808809e1a6d36b6f7b1de81a5611d88812",
+    "reviewToolSHA256": "44ce28dc9f10346cd91e2c9c1af9e48dc2b9ac6829303ba8aeb3e2a036e7241c",
+    "reviewWarningsAsErrorsPassed": true
+  },
+  "disposition": "PENDING_INDEPENDENT_PREPIXEL_REVIEW",
+  "guards": {
+    "existingProofOutputRejectedExit": 133,
+    "unapprovedProofPathRejectedExit": 133
+  },
+  "historicalRejectionPreservation": {
+    "inventorySHA256": "ede91428c6f2e88253b7165dbe9db16314da9190afdfe5a3594ce3934f9f7ec8",
+    "passed": true,
+    "primaryFailureSHA256": "16ded1f76af96415d57033f7bb1dcfd97d991c9d47216e5cc70271c381959154",
+    "rejectionTextSHA256": "791a6effab74ca6ff7abedd250908ccf752c22db521b315c3e20100e01b325d3",
+    "toolFreezeSHA256": "749e4ffdf68aec197fcb7a99993014cc00f0af55895ee58d620669b71f128e3a"
+  },
+  "noPixelBoundary": {
+    "capabilityPreflightInvoked": false,
+    "metalProcessesConsumed": 0,
+    "normalizationRuns": 0,
+    "pngFileCountUnderV04": 0,
+    "reviewPacketGenerated": false,
+    "sceneKitSnapshotsCreated": 0
+  },
+  "passed": true,
+  "productionSelected": false,
+  "relation": {
+    "foregroundInputAlphaSHA256": "1d9f0b17f37c831c107adfe105ea24ae84ec8fb754d16f3255457088e9e46ce6",
+    "foregroundOutputAlphaSHA256": "1d9f0b17f37c831c107adfe105ea24ae84ec8fb754d16f3255457088e9e46ce6",
+    "fullInputAlphaSHA256": "1551e86d51e5832cad2a3cdc1bbfa0afd408c33524c1287ee18678eca629a561",
+    "fullOutputAlphaSHA256": "dd038027a372897617b0bf6494192daf73be709909cefe7a066f98521a3604a1",
+    "inputAlphaCases": [
+      0,
+      1,
+      64,
+      128,
+      254,
+      255
+    ],
+    "relationViolationCount": 0,
+    "zeroToChromaPixelCount": 1
+  },
+  "replay": {
+    "byteIdentical": true,
+    "comparisonExit": 0,
+    "firstSHA256": "8e259ddf68e830aebfa31127e89f63eb3716dbe9d8068e6c2cc25ce663efb326",
+    "invalidCasesFailClosed": 4,
+    "secondSHA256": "8e259ddf68e830aebfa31127e89f63eb3716dbe9d8068e6c2cc25ce663efb326",
+    "syntheticProofFile": "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/alpha-relation-repair/prepixel/ALPHA-RELATION-SYNTHETIC-PROOF.json"
+  },
+  "schema": 1,
+  "sourceArtClassified": false,
+  "task": "PLAY-027",
+  "type": "industrial-l02-east-v04-alpha-relation-prepixel-validation",
+  "unrunGates": [
+    "renderer capability preflight",
+    "Metal-visible SceneKit snapshot",
+    "governed raw PNG",
+    "raw technical and visual review",
+    "repeat determinism",
+    "normalization and LOD",
+    "source-art acceptance"
+  ]
+}

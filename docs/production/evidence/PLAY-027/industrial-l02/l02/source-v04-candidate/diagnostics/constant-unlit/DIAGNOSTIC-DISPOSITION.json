@@ -1,0 +1,82 @@
+{
+  "causalDisposition": {
+    "conclusion": "The dynamic SceneKit material-light interaction is the isolated nondeterministic stage for the retained Industrial L2 East source-v04 descriptor.",
+    "constantUnlitDeterministic": true,
+    "currentLightingDeterministic": false,
+    "separatesLambertFromIndividualSceneLight": false
+  },
+  "comparison": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/diagnostics/constant-unlit/CONSTANT-UNLIT-VS-CURRENT-OCCUPIED-COMPARISON.png",
+    "fileSHA256": "e95891cd22361ca61c3e9f72215fd9b5a84208a1d0868e9477ee70d79cc288e8",
+    "order": [
+      "constant-unlit",
+      "current-source-v04"
+    ],
+    "record": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/diagnostics/constant-unlit/CONSTANT-UNLIT-VS-CURRENT-RGBA.json",
+    "recordSHA256": "e4c68b610f828e01f7d1c4571e8e1ac656eabbcd4c2a566fe0ca4f76e593052c"
+  },
+  "fixedInputs": {
+    "authoredContactShadow": true,
+    "descriptorSHA256": "08f17a9478d417f5f30d14ec231af02fb4c74a36108ab49ce5dd33940db0b6af",
+    "geometryChanged": false,
+    "materialColorsChanged": false,
+    "materialLibrarySHA256": "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef",
+    "registrationChanged": false,
+    "sampling": {
+      "canonicalizerVersion": 3,
+      "ciUseSoftwareRenderer": true,
+      "downsampleFilter": "CILanczosScaleTransform",
+      "downsampleScale": 0.25,
+      "linearOversamplingFactor": 4,
+      "postQuantizationMutationCount": 811,
+      "quantizerID": "step32-midpoint-offset8-v1",
+      "sceneKitAntialiasing": "none",
+      "sceneKitShadows": "disabled"
+    }
+  },
+  "metal": {
+    "device": "Apple M5 Pro",
+    "registryIDDecimal": "4294968844",
+    "visibleDeviceCount": 1
+  },
+  "normalizationPerformed": false,
+  "productionSelected": false,
+  "proposalImplemented": false,
+  "rendererSourceCommit": "46d88a452c17c7f61f8377422d914dee38524ef5",
+  "repeatGate": {
+    "fileSHA256": "6b54c6c4cee3eafd0529bd987c246e30adbb2fc56c19447def2c6fd0bc89f6bc",
+    "pixelSHA256": "e34c4715fa317bbcca5f39508c83284c2f4447361ff16f840ee61d3697ffaa66",
+    "processCount": 3,
+    "uniqueFileHashCount": 1,
+    "uniquePixelHashCount": 1,
+    "validationPassed": true
+  },
+  "rgbaCompleteness": {
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      619,
+      597,
+      1029,
+      906
+    ],
+    "boundsPixels": [
+      410,
+      309
+    ],
+    "flatChromaCorners": true,
+    "hiddenNonMagentaPixelCount": 0,
+    "nonChromaPixelCount": 67598,
+    "rgbAndAlphaVisibleBoundsMatch": true,
+    "validationPassed": true
+  },
+  "schema": 1,
+  "sourceRevision": "source-v04",
+  "status": "PASS_CAUSAL_DIAGNOSTIC_ONLY",
+  "task": "PLAY-027",
+  "touchedDirections": [
+    "east"
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "directions" : [
+    {
+      "descriptorSHA256" : "7ec5e7fbfedc7b8aabbe3fcd379f0d1d574aad21e8de37bb9fce2e1c87eff924",
+      "entranceBaseWorld" : [
+        0,
+        2,
+        -28
+      ],
+      "failures" : [
+
+      ],
+      "frontageCrownCount" : 2,
+      "frontageHeaderCount" : 2,
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "gantryPostCount" : 3,
+      "massBlockCount" : 9,
+      "maximumStructuralTopWorld" : 76,
+      "passed" : true,
+      "roofVolumeCount" : 6,
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/north/scene.json",
+      "sceneGeometryID" : "industrial-l02-v0-north-integrated-logistics-geometry-v2",
+      "serviceApronDimensions" : [
+        50,
+        0.80000000000000004,
+        20
+      ],
+      "serviceApronPositionWorld" : [
+        0,
+        2.75,
+        -23
+      ],
+      "trimBandCount" : 10,
+      "viewDirection" : "north",
+      "windowCount" : 11
+    },
+    {
+      "descriptorSHA256" : "e50e768e9eee349f4354f175a99697057b38e0f20ceed237e273409f2a986ba8",
+      "entranceBaseWorld" : [
+        28,
+        2,
+        0
+      ],
+      "failures" : [
+
+      ],
+      "frontageCrownCount" : 2,
+      "frontageHeaderCount" : 2,
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "gantryPostCount" : 3,
+      "massBlockCount" : 9,
+      "maximumStructuralTopWorld" : 76,
+      "passed" : true,
+      "roofVolumeCount" : 6,
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/east/scene.json",
+      "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v2",
+      "serviceApronDimensions" : [
+        20,
+        0.80000000000000004,
+        50
+      ],
+      "serviceApronPositionWorld" : [
+        23,
+        2.75,
+        0
+      ],
+      "trimBandCount" : 10,
+      "viewDirection" : "east",
+      "windowCount" : 11
+    },
+    {
+      "descriptorSHA256" : "e09cd04ace53d43f151b25a34a3dd1940630046416b9f93ff0fc933760a0a2c5",
+      "entranceBaseWorld" : [
+        0,
+        2,
+        28
+      ],
+      "failures" : [
+
+      ],
+      "frontageCrownCount" : 2,
+      "frontageHeaderCount" : 2,
+      "frontageSocketSource" : [
+        640,
+        832
+      ],
+      "gantryPostCount" : 3,
+      "massBlockCount" : 9,
+      "maximumStructuralTopWorld" : 76,
+      "passed" : true,
+      "roofVolumeCount" : 6,
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/south/scene.json",
+      "sceneGeometryID" : "industrial-l02-v0-south-integrated-logistics-geometry-v2",
+      "serviceApronDimensions" : [
+        50,
+        0.80000000000000004,
+        20
+      ],
+      "serviceApronPositionWorld" : [
+        0,
+        2.75,
+        23
+      ],
+      "trimBandCount" : 10,
+      "viewDirection" : "south",
+      "windowCount" : 11
+    },
+    {
+      "descriptorSHA256" : "2018b8f413ce63c6172bf2602c88aac139ce8f2c5168e708b2580e173f8cfaa3",
+      "entranceBaseWorld" : [
+        -28,
+        2,
+        0
+      ],
+      "failures" : [
+
+      ],
+      "frontageCrownCount" : 2,
+      "frontageHeaderCount" : 2,
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "gantryPostCount" : 3,
+      "massBlockCount" : 9,
+      "maximumStructuralTopWorld" : 76,
+      "passed" : true,
+      "roofVolumeCount" : 6,
+      "sceneFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/west/scene.json",
+      "sceneGeometryID" : "industrial-l02-v0-west-integrated-logistics-geometry-v2",
+      "serviceApronDimensions" : [
+        20,
+        0.80000000000000004,
+        50
+      ],
+      "serviceApronPositionWorld" : [
+        -23,
+        2.75,
+        0
+      ],
+      "trimBandCount" : 10,
+      "viewDirection" : "west",
+      "windowCount" : 11
+    }
+  ],
+  "failures" : [
+
+  ],
+  "l1ToL2Progression" : {
+    "l1Floors" : 2,
+    "l1MassingProfile" : "directional-loading-throat-gantry-v5",
+    "l1MaximumStructuralTopWorld" : 59.799999999999997,
+    "l1WallHeight" : 28,
+    "l2Floors" : 3,
+    "l2MassingProfile" : "dual-bay-logistics-foundry-v1",
+    "l2MaximumStructuralTopWorld" : 76,
+    "l2WallHeight" : 42,
+    "passed" : true
+  },
+  "logicalBuildingID" : "industrial_l02",
+  "passed" : true,
+  "productionSelected" : false,
+  "purpose" : "freeze Industrial L2 loading-logistics frontage, independent direction authorship, and non-aliasing progression beyond accepted Industrial L1",
+  "schema" : 1,
+  "sourceRevision" : "source-v02",
+  "task" : "PLAY-027",
+  "uniqueDescriptorHashCount" : 4,
+  "uniqueSceneGeometryIDCount" : 4
+}

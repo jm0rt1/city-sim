@@ -1,0 +1,305 @@
+{
+  "actualProductionPlumbing" : {
+    "cameraImplementation" : "SCNNode.look(at:up:localFront:) plus SCNCamera vertical orthographic projection",
+    "downsampleCropPixels" : [
+      1536,
+      1024
+    ],
+    "downsampleFilter" : "CILanczosScaleTransform",
+    "downsampleScale" : 0.25,
+    "finalSourcePixels" : [
+      1536,
+      1024
+    ],
+    "linearOversamplingFactor" : 4,
+    "overscanPixels" : [
+      0,
+      0
+    ],
+    "postProjectionOffsetPixels" : [
+      0,
+      256
+    ],
+    "safetyScale" : 1,
+    "sceneKitMSAA" : "none",
+    "sceneKitVerticalWorldSpan" : "2 * orthographicScale",
+    "snapshotPixels" : [
+      6144,
+      4096
+    ]
+  },
+  "authority" : "prepixel-no-render-process",
+  "immutableInputs" : {
+    "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-raster-survival-v01/scenes/industrial_l02/variant-0/east/scene.json",
+    "descriptorSHA256" : "2af1e6488ea5ff8e799bf44482d4061b1efa1a190a360a34a4bdef0dc6d849c2",
+    "metricsFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/RASTER-SURVIVAL-METRICS.json",
+    "metricsSHA256" : "d06995080e99ae587b378eac70926433693b712d6af52f0f8e828667761f941d",
+    "prepixelCommit" : "920af3b8730a556c564daa56d9a0c9a4d451cf18",
+    "rawFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/diagnostics/east-primary/raw.png",
+    "rawSHA256" : "77d47f3feef50c584dfd60177e41ab6793247a6772c536270806a0c3196db5b8",
+    "rejectionCommit" : "3794912daa96e9b6c92d1baa5f56ae7888ab0d1c"
+  },
+  "oldPath" : {
+    "cameraVerticalWorldSpan" : 316.78383797157329,
+    "cornerRecords" : [
+      {
+        "cameraLocal" : [
+          5.0282715164939873e-06,
+          19.799003601074219,
+          -328.23159790039062
+        ],
+        "downsampledSceneKit" : [
+          768.00001625382811,
+          447.99995562488482
+        ],
+        "oversampledSceneKit" : [
+          3072.0000650153124,
+          1791.9998224995393
+        ],
+        "registeredSource" : [
+          768.00001625382811,
+          703.99995562488482
+        ],
+        "world" : [
+          -28,
+          0,
+          -28
+        ]
+      },
+      {
+        "cameraLocal" : [
+          39.597980499267578,
+          8.7682537923683412e-06,
+          -293.93875122070312
+        ],
+        "downsampledSceneKit" : [
+          896.00000243348472,
+          511.99997165672357
+        ],
+        "oversampledSceneKit" : [
+          3584.0000097339389,
+          2047.9998866268943
+        ],
+        "registeredSource" : [
+          896.00000243348472,
+          767.99997165672357
+        ],
+        "world" : [
+          28,
+          0,
+          -28
+        ]
+      },
+      {
+        "cameraLocal" : [
+          2.6440857254783623e-06,
+          -19.798976898193359,
+          -259.64590454101562
+        ],
+        "downsampledSceneKit" : [
+          768.00000854697578,
+          575.99995805836943
+        ],
+        "oversampledSceneKit" : [
+          3072.0000341879031,
+          2303.9998322334777
+        ],
+        "registeredSource" : [
+          768.00000854697578,
+          831.99995805836943
+        ],
+        "world" : [
+          28,
+          0,
+          28
+        ]
+      },
+      {
+        "cameraLocal" : [
+          -39.597972869873047,
+          1.8543414626037702e-05,
+          -293.93875122070312
+        ],
+        "downsampledSceneKit" : [
+          640.00002222844273,
+          511.99994005863209
+        ],
+        "oversampledSceneKit" : [
+          2560.0000889137709,
+          2047.9997602345284
+        ],
+        "registeredSource" : [
+          640.00002222844273,
+          767.99994005863209
+        ],
+        "world" : [
+          -28,
+          0,
+          28
+        ]
+      }
+    ],
+    "incorrectAnalyticAssumption" : "treated orthographicScale as the full vertical world span instead of the half-span",
+    "orthographicScale" : 158.39191898578665,
+    "projectedFootprintHeight" : 128.00000243348461,
+    "projectedFootprintWidth" : 255.99998020504199,
+    "retainedBuildingOnlyWidth" : 254,
+    "retainedBuildingVsProjectionDifferencePixels" : 1.999980205041993
+  },
+  "passed" : true,
+  "productionSelected" : false,
+  "rawRenderProcessesConsumed" : 0,
+  "retainedPlateExplanation" : {
+    "blurAndRasterExpansionPixels" : 11.777777777777828,
+    "cameraIndependent" : true,
+    "compositorFormula" : "768 + (x-z)*256/72, 768 + (x+z)*128/72; then southeast offset and blur",
+    "explanation" : "56/72 produces a 398.2222-pixel core; blur/raster support expands it to 410, yielding 410/512 = 0.80078125. The plate measurement never tested SceneKit camera scale.",
+    "registrationBasisWorldUnits" : [
+      72,
+      72
+    ],
+    "retainedBlurredPlateBoundsInclusive" : [
+      619,
+      506,
+      1028,
+      905
+    ],
+    "retainedBlurredPlateWidth" : 410,
+    "retainedPlateWidthOver512" : 0.80078125,
+    "unblurredShadowCorePoints" : [
+      [
+        824,
+        696.44444444444446
+      ],
+      [
+        1023.1111111111111,
+        796
+      ],
+      [
+        824,
+        895.55555555555554
+      ],
+      [
+        624.88888888888891,
+        796
+      ]
+    ],
+    "unblurredShadowCoreWidth" : 398.22222222222217,
+    "worldFootprintUnits" : [
+      56,
+      56
+    ]
+  },
+  "schema" : 1,
+  "solvedPath" : {
+    "cameraVerticalWorldSpan" : 158.39190673828119,
+    "cornerRecords" : [
+      {
+        "cameraLocal" : [
+          5.0282715164939873e-06,
+          19.799003601074219,
+          -328.23159790039062
+        ],
+        "downsampledSceneKit" : [
+          768.0000325076586,
+          383.9999013522829
+        ],
+        "oversampledSceneKit" : [
+          3072.0001300306344,
+          1535.9996054091316
+        ],
+        "registeredSource" : [
+          768.0000325076586,
+          639.9999013522829
+        ],
+        "world" : [
+          -28,
+          0,
+          -28
+        ]
+      },
+      {
+        "cameraLocal" : [
+          39.597980499267578,
+          8.7682537923683412e-06,
+          -293.93875122070312
+        ],
+        "downsampledSceneKit" : [
+          1024.0000246619293,
+          511.99994331344277
+        ],
+        "oversampledSceneKit" : [
+          4096.0000986477171,
+          2047.9997732537711
+        ],
+        "registeredSource" : [
+          1024.0000246619293,
+          767.99994331344283
+        ],
+        "world" : [
+          28,
+          0,
+          -28
+        ]
+      },
+      {
+        "cameraLocal" : [
+          2.6440857254783623e-06,
+          -19.798976898193359,
+          -259.64590454101562
+        ],
+        "downsampledSceneKit" : [
+          768.00001709395281,
+          639.99992601421229
+        ],
+        "oversampledSceneKit" : [
+          3072.0000683758112,
+          2559.9997040568492
+        ],
+        "registeredSource" : [
+          768.00001709395281,
+          895.99992601421229
+        ],
+        "world" : [
+          28,
+          0,
+          28
+        ]
+      },
+      {
+        "cameraLocal" : [
+          -39.597972869873047,
+          1.8543414626037702e-05,
+          -293.93875122070312
+        ],
+        "downsampledSceneKit" : [
+          512.00002466192916,
+          511.99988011725492
+        ],
+        "oversampledSceneKit" : [
+          2048.0000986477166,
+          2047.9995204690197
+        ],
+        "registeredSource" : [
+          512.00002466192916,
+          767.99988011725486
+        ],
+        "world" : [
+          -28,
+          0,
+          28
+        ]
+      }
+    ],
+    "maximumRegistrationCoordinateErrorPixels" : 0.00011988274513896613,
+    "orthographicScale" : 79.195953369140597,
+    "projectedFootprintHeight" : 256.00002466192939,
+    "projectedFootprintWidth" : 512.00000000000011,
+    "targetFootprintPixels" : [
+      512,
+      256
+    ]
+  },
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-actual-camera-projection-calibration-v02"
+}

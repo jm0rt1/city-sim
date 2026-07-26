@@ -47,7 +47,7 @@ func preservationGit(
     )
 }
 
-func isAcceptedResidentialOrCommercialSource(_ path: String) -> Bool {
+func isAcceptedWorldArtSource(_ path: String) -> Bool {
     guard path.hasPrefix(
         "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/"
     ) else {
@@ -59,6 +59,8 @@ func isAcceptedResidentialOrCommercialSource(_ path: String) -> Bool {
         || normalized.contains("commercial_l0")
         || normalized.contains("residential-l0")
         || normalized.contains("commercial-l0")
+        || normalized.contains("industrial_l01")
+        || normalized.contains("industrial-l01")
 }
 
 @main
@@ -126,7 +128,7 @@ enum ValidateAcceptedWorldArtPreservationMain {
         let changedAcceptedPaths = changed.output
             .split(whereSeparator: \.isNewline)
             .map(String.init)
-            .filter(isAcceptedResidentialOrCommercialSource)
+            .filter(isAcceptedWorldArtSource)
         let untrackedAcceptedPaths = status.output
             .split(whereSeparator: \.isNewline)
             .compactMap { line -> String? in
@@ -136,7 +138,7 @@ enum ValidateAcceptedWorldArtPreservationMain {
                 }
                 return String(text.dropFirst(3))
             }
-            .filter(isAcceptedResidentialOrCommercialSource)
+            .filter(isAcceptedWorldArtSource)
         let failures =
             changedAcceptedPaths.map {
                 "accepted tracked source changed: \($0)"
@@ -161,7 +163,7 @@ enum ValidateAcceptedWorldArtPreservationMain {
                 in: .whitespacesAndNewlines
             ),
             "scope":
-                "all task-owned OfflineScene PLAY-027 paths whose names bind accepted Residential L1-L4 or Commercial L1-L4 sources, descriptors, materials, raw, normalized, or provenance",
+                "all task-owned OfflineScene PLAY-027 paths whose names bind accepted Residential L1-L4, Commercial L1-L4, or Industrial L1 sources, descriptors, materials, raw, normalized, or provenance",
             "trackedAcceptedChangedPaths": changedAcceptedPaths,
             "untrackedAcceptedPaths": untrackedAcceptedPaths,
             "acceptedSourceMutationCount": failures.count,

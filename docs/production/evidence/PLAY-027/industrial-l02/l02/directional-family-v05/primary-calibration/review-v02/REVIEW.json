@@ -1,0 +1,225 @@
+{
+  "candidateFamily" : "v05",
+  "checkpoint" : "Industrial L2 V05 N/E/W raw review",
+  "metalProcesses" : {
+    "eastV05AnchorInherited" : 1,
+    "northV04Primary" : 1,
+    "repeatProcesses" : 0,
+    "south" : 0,
+    "westV04Primary" : 1
+  },
+  "nextAuthorityRequired" : "South primary, repeats, and normalization remain blocked",
+  "normalizerProcessCount" : 0,
+  "productionSelected" : false,
+  "rawSourceCount" : 3,
+  "rawUniquenessPassed" : true,
+  "rendererBinarySHA256" : "f36e9c0c693b3738c9ac4e9fb91866271dbb4eda0589fb62fab4b247bc2052ea",
+  "rendererSourceCommit" : "ba0c233722535db06d5a0000438740b720a4222e",
+  "reviewPresentation" : {
+    "backgroundTreatment" : "review-only global exact-chroma replacement plus border-connected chroma-family replacement with neutral RGB 226/228/224",
+    "footprintCrop" : [
+      480,
+      584,
+      576,
+      350
+    ],
+    "native2xScale" : 0.28125,
+    "panels" : [
+      {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/review-v02/SOURCE-SCALE-COLOR-N-E-W.png",
+        "fileSHA256" : "bc2c58e5be36f6d87327bf51dd582e2667178f2d65873e5a11dd142a4f9cb9b2",
+        "panelAuthority" : "actual retained source pixels; review-only border-connected chroma matte replacement; no source mutation"
+      },
+      {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/review-v02/SOURCE-SCALE-GRAYSCALE-N-E-W.png",
+        "fileSHA256" : "73d0e94198ce586264d6b421208bf9d5abbda73c58eda4875ecb49afd9207276",
+        "panelAuthority" : "actual retained source pixels; review-only border-connected chroma matte replacement; no source mutation"
+      },
+      {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/review-v02/NATIVE-2X-COLOR-N-E-W.png",
+        "fileSHA256" : "50d01242d4e9f93b4367126ef189195d1a7acdb3527ee3f0c123306cc409ba65",
+        "panelAuthority" : "actual retained source pixels; review-only border-connected chroma matte replacement; no source mutation"
+      },
+      {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/review-v02/NATIVE-2X-GRAYSCALE-N-E-W.png",
+        "fileSHA256" : "c2e4510ba76e0e91928759dad3bb95b55f2b56da85c4865c5e75c048740a45cb",
+        "panelAuthority" : "actual retained source pixels; review-only border-connected chroma matte replacement; no source mutation"
+      },
+      {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/review-v02/FOOTPRINT-NATIVE-2X-COLOR-N-E-W.png",
+        "fileSHA256" : "b27ba8ffdd4c9c4d91b4abe3ff5d2af5a3ae2ce455886a154c39e0cebe266203",
+        "panelAuthority" : "actual retained source pixels; review-only border-connected chroma matte replacement; no source mutation"
+      },
+      {
+        "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/review-v02/FOOTPRINT-NATIVE-2X-GRAYSCALE-N-E-W.png",
+        "fileSHA256" : "a0caa2871a8eff51d641fbc373d02843971e8ab002ea4e75b48e94e6fd65c788",
+        "panelAuthority" : "actual retained source pixels; review-only border-connected chroma matte replacement; no source mutation"
+      }
+    ],
+    "rawFilesRemainImmutable" : true,
+    "sourceScaleCrop" : [
+      481,
+      433,
+      576,
+      501
+    ]
+  },
+  "reviewToolBinarySHA256" : "e8ecc443c2576f04dc07c314d5d87fdd9057ed96eb6233ae2c26267b3cfea163",
+  "reviewToolFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL2DirectionalFamilyV04PrimaryReview.swift",
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "sources" : [
+    {
+      "alphaContract" : "flat-chroma raw is fully opaque",
+      "alphaRange" : [
+        255,
+        255
+      ],
+      "decodedRGBASHA256" : "57b1843d3876f10dac8f697f19ca125bb02c9f86834b1faafbba47b599d1c582",
+      "doorBaseSource" : [
+        [
+          858,
+          685
+        ],
+        [
+          934,
+          723
+        ]
+      ],
+      "flatOpaqueChromaCorners" : true,
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "id" : "north-v05-primary",
+      "nonChromaBounds" : [
+        509,
+        465,
+        1029,
+        906
+      ],
+      "nonChromaBoundsPixels" : [
+        520,
+        441
+      ],
+      "nonChromaPixelCount" : 147051,
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "provenanceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/diagnostics/north-primary-v01/provenance.json",
+      "provenanceFileSHA256" : "273b7412edf6fa091802ef4d92468a59ed8c01cb4ec74e964732de974a0147da",
+      "rawFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/diagnostics/north-primary-v01/raw.png",
+      "rawFileSHA256" : "0f487d6eddb8c315a419f0730342b3b60dbd872c0b37ca865bebb7236ef37069",
+      "registrationPassed" : true,
+      "sourceChecksPassed" : true
+    },
+    {
+      "alphaContract" : "immutable East v05 alpha-correct raw retains positive edge alpha",
+      "alphaRange" : [
+        1,
+        255
+      ],
+      "decodedRGBASHA256" : "555f35d466326783a038ff842f76e8cdeff8284a4b26bb901d6d20428ad88bcc",
+      "doorBaseSource" : [
+        [
+          934,
+          813
+        ],
+        [
+          858,
+          851
+        ]
+      ],
+      "flatOpaqueChromaCorners" : true,
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "id" : "east-v05-immutable-anchor",
+      "nonChromaBounds" : [
+        509,
+        488,
+        1029,
+        906
+      ],
+      "nonChromaBoundsPixels" : [
+        520,
+        418
+      ],
+      "nonChromaPixelCount" : 147343,
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "provenanceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/provenance.json",
+      "provenanceFileSHA256" : "c67e61224957890199a745f292327a6fd2f75739492af0a3d74d3d19e24c7f27",
+      "rawFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/raw.png",
+      "rawFileSHA256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+      "registrationPassed" : true,
+      "sourceChecksPassed" : true
+    },
+    {
+      "alphaContract" : "flat-chroma raw is fully opaque",
+      "alphaRange" : [
+        255,
+        255
+      ],
+      "decodedRGBASHA256" : "72fe441bf9f0ee52e27e1c9bc65213de5530991ffe285f8a318a30b608313ffa",
+      "doorBaseSource" : [
+        [
+          602,
+          723
+        ],
+        [
+          678,
+          685
+        ]
+      ],
+      "flatOpaqueChromaCorners" : true,
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "groundPivotSource" : [
+        768,
+        896
+      ],
+      "id" : "west-v05-primary",
+      "nonChromaBounds" : [
+        509,
+        465,
+        1029,
+        906
+      ],
+      "nonChromaBoundsPixels" : [
+        520,
+        441
+      ],
+      "nonChromaPixelCount" : 146166,
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "provenanceFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/diagnostics/west-primary-v01/provenance.json",
+      "provenanceFileSHA256" : "746e002c37bc116b4c1df5664ca3d77f27740d3e4caa0d7417cc13a4a8ae4495",
+      "rawFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v05/primary-calibration/diagnostics/west-primary-v01/raw.png",
+      "rawFileSHA256" : "fdaac392c51f4fad9d0b4f73d0a025c344ad553fc004647f8905f3864ad0e5aa",
+      "registrationPassed" : true,
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "technicalPassed" : true,
+  "uniqueDecodedPixelHashCount" : 3,
+  "uniqueRawFileHashCount" : 3,
+  "visualDisposition" : "PENDING_INDEPENDENT_REVIEW"
+}

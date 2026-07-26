@@ -1,0 +1,225 @@
+{
+  "calibrationID" : "industrial-l02-variant-0-directional-v02",
+  "directions" : [
+    {
+      "doorBaseSource" : [
+        [
+          858,
+          685
+        ],
+        [
+          934,
+          723
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        2,
+        -28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/north/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        704
+      ],
+      "propIDs" : [
+        "i02-north-rooftop-hvac",
+        "i02-north-exhaust-stack",
+        "i02-north-service-tank"
+      ],
+      "sceneGeometryID" : "industrial-l02-v0-north-integrated-logistics-geometry-v2",
+      "sha256" : "7ec5e7fbfedc7b8aabbe3fcd379f0d1d574aad21e8de37bb9fce2e1c87eff924",
+      "viewDirection" : "north",
+      "windowBayCount" : 11
+    },
+    {
+      "doorBaseSource" : [
+        [
+          934,
+          813
+        ],
+        [
+          858,
+          851
+        ]
+      ],
+      "entranceBaseWorld" : [
+        28,
+        2,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/east/scene.json",
+      "frontageEdgeSource" : [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ]
+      ],
+      "frontageSocketSource" : [
+        896,
+        832
+      ],
+      "propIDs" : [
+        "i02-east-rooftop-hvac",
+        "i02-east-exhaust-stack",
+        "i02-east-service-tank"
+      ],
+      "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v2",
+      "sha256" : "e50e768e9eee349f4354f175a99697057b38e0f20ceed237e273409f2a986ba8",
+      "viewDirection" : "east",
+      "windowBayCount" : 11
+    },
+    {
+      "doorBaseSource" : [
+        [
+          678,
+          851
+        ],
+        [
+          602,
+          813
+        ]
+      ],
+      "entranceBaseWorld" : [
+        0,
+        2,
+        28
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/south/scene.json",
+      "frontageEdgeSource" : [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        832
+      ],
+      "propIDs" : [
+        "i02-south-rooftop-hvac",
+        "i02-south-exhaust-stack",
+        "i02-south-service-tank"
+      ],
+      "sceneGeometryID" : "industrial-l02-v0-south-integrated-logistics-geometry-v2",
+      "sha256" : "e09cd04ace53d43f151b25a34a3dd1940630046416b9f93ff0fc933760a0a2c5",
+      "viewDirection" : "south",
+      "windowBayCount" : 11
+    },
+    {
+      "doorBaseSource" : [
+        [
+          602,
+          723
+        ],
+        [
+          678,
+          685
+        ]
+      ],
+      "entranceBaseWorld" : [
+        -28,
+        2,
+        0
+      ],
+      "facadeIDs" : [
+        "north-facade",
+        "east-facade",
+        "south-facade",
+        "west-facade"
+      ],
+      "failures" : [
+
+      ],
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/west/scene.json",
+      "frontageEdgeSource" : [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ]
+      ],
+      "frontageSocketSource" : [
+        640,
+        704
+      ],
+      "propIDs" : [
+        "i02-west-rooftop-hvac",
+        "i02-west-exhaust-stack",
+        "i02-west-service-tank"
+      ],
+      "sceneGeometryID" : "industrial-l02-v0-west-integrated-logistics-geometry-v2",
+      "sha256" : "2018b8f413ce63c6172bf2602c88aac139ce8f2c5168e708b2580e173f8cfaa3",
+      "viewDirection" : "west",
+      "windowBayCount" : 11
+    }
+  ],
+  "failures" : [
+
+  ],
+  "family" : "industrial",
+  "level" : 2,
+  "logicalBuildingID" : "industrial_l02",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+  "materialLibrarySHA256" : "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef",
+  "passed" : true,
+  "previewPlanFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/preview-plans/industrial-l02-v0.json",
+  "previewPlanSHA256" : "147ade1645ed98c167facff747951f30b144500d25aac4cc7090dfbcca261073",
+  "productionSelected" : false,
+  "schema" : 1,
+  "schemaFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/schema/scene-v2.schema.json",
+  "schemaSHA256" : "ce6d0f4aca83c8c8aee39d59771fb65ec35d682ed04f215482b049d9b4cf0303",
+  "task" : "PLAY-027",
+  "toolchainFingerprintFile" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/schema2-sampling-regression-v03/TOOLCHAIN-FINGERPRINT.json",
+  "toolchainFingerprintSHA256" : "201ef1a1bdc54fb048f7bb00708e97c1605c0ca48814ba28c8dc6fdc65d3fccd",
+  "uniqueDescriptorHashes" : 4,
+  "uniqueSceneGeometryIDs" : 4
+}

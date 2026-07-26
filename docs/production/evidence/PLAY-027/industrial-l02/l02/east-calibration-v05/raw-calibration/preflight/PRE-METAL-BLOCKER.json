@@ -1,0 +1,17 @@
+{
+  "capabilityPreflightReached": false,
+  "command": "/private/tmp/play027-v05-render-build/render-industrial-l2-east-v05-calibration --repository-root /Users/James/.codex/worktrees/0648/city-sim --output-root /Users/James/.codex/worktrees/0648/city-sim/docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary --renderer-source-commit 08e9f3ab669caf41af24f910e3d673d96cbb2cd9",
+  "error": "schema 2 sampling block does not match the frozen deterministic contract",
+  "freshMetalProcessesConsumed": 0,
+  "outputCreated": false,
+  "productionSelected": false,
+  "repair": {
+    "descriptorField": "sampling.purpose",
+    "from": "diagnostic-calibration",
+    "to": "diagnostic-regression",
+    "reason": "DescriptorSamplingResolver accepts only the frozen diagnostic-regression or source-authority schema-2 purposes."
+  },
+  "schema": 1,
+  "task": "PLAY-027",
+  "type": "industrial-l02-east-v05-pre-metal-sampler-purpose-blocker"
+}

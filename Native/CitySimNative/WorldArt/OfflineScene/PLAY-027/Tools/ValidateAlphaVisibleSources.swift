@@ -485,6 +485,7 @@ enum ValidateAlphaVisibleSourcesMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "fileSHA256": candidate.fileSHA256,
+                "decodedRGBASHA256": digest(candidate.rgba),
                 "decodedAlphaInfo": candidate.image.alphaInfo.rawValue,
                 "decodedBitsPerPixel": candidate.image.bitsPerPixel,
                 "rgbOccupiedPixelCount":

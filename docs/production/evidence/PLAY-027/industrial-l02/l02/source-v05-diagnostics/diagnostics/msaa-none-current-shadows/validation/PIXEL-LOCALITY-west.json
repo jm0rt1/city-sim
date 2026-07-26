@@ -1,0 +1,83 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/review/PIXEL-LOCALITY-west.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l02-source-v05-explicit-none-current-west",
+  "differenceBoundsSource" : [
+    811,
+    712,
+    812,
+    713
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        811,
+        712
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/west-run-a.png",
+    "fileSHA256" : "5f8b6d7156cbb2bd31f24e7729bfd2d4393e87dc2bc3a74ab8f99e0844fdd54f"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 1,
+    "differingPixelCount" : 1
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2,
+    "differingPixelCount" : 2
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/west-run-b.png",
+    "fileSHA256" : "24fd9fc2179f079703909ffa9ae622b2ca27894bdf92c31092664f29f8e008e0"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 1,
+    "differingPixelCount" : 1
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/west-run-c.png",
+    "fileSHA256" : "3281ebe2b347d1ef8e5f74e5d141ee8656c16973a9446938c91bab864b60eac1"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

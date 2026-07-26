@@ -1,0 +1,89 @@
+{
+  "alphaRampValues" : [
+    0,
+    1,
+    8,
+    9,
+    64,
+    128,
+    254,
+    255
+  ],
+  "binarySHA256" : "77528e4839a8138358bb0813a7fa576dc2cffff81acc84f77467e139673c0661",
+  "crossRunState" : "none",
+  "defaultRegression" : {
+    "contractID" : "play027-legacy-schema1-factor2-msaa4x-v1",
+    "defaultOptionResolution" : "nil-no-op",
+    "helperDecodedRGBASHA256" : "b7579c63c3df70c79a44e909f24daa5eb4ad7b993dd0b3edafd22fc037417fb5",
+    "pixelByteIdentical" : true,
+    "reference" : "pre-change inline software Core Image Lanczos",
+    "referenceDecodedRGBASHA256" : "b7579c63c3df70c79a44e909f24daa5eb4ad7b993dd0b3edafd22fc037417fb5"
+  },
+  "finalDecodedRGBASHA256" : "3a6022e9d99ead0a8e28bbfba83a7a5cf2f05d16f3eb26bdbf0fcd65310143f9",
+  "finalFileSHA256" : "7d50b372ae0f2917334c7a6267c425b63f1bf077a2296681f1d2346ce53d9219",
+  "hostToolchain" : {
+    "cacheIntermediates" : false,
+    "coreImageContext" : "software",
+    "operatingSystem" : "Version 26.4.1 (Build 25E253)",
+    "outputColorSpace" : "srgb",
+    "workingColorSpace" : "extended-srgb"
+  },
+  "inputDecodedRGBASHA256" : "cbf37b0d6d78cb085c1e3546b71045f704f114ebdcd851971d0367225a624147",
+  "inputFileSHA256" : "b60774801602749fe85a2271560884e436d26c4fba30cc086b2c37aa899d8b79",
+  "lanczosDecodedRGBASHA256" : "9fd19ed29c1eb9e6f35f4e1212b81261f083d3f0ffe23b0797616e908309f56f",
+  "lanczosFileSHA256" : "6f3fba2741e9d46411dc7d3d2daeca9577674da9d038fd61f3ce6d2daf709bb9",
+  "patternCount" : 8,
+  "pipeline" : {
+    "aspectRatio" : 1,
+    "borderPolicy" : "crop-to-final-1536x1024-extent-without-clamp-or-wrap",
+    "canonicalizerID" : "imageio-sips-png-v1",
+    "ciCacheIntermediates" : false,
+    "ciContextMode" : "software",
+    "contractID" : "play027-diagnostics-4x-no-msaa-software-lanczos-v1",
+    "crossRunState" : "none",
+    "descriptorChanged" : false,
+    "descriptorSHA256" : "464e71ea8ee89f7be25c06337a0d1dee9ba8bc6e629422796df211b018fe6988",
+    "filter" : "CILanczosScaleTransform",
+    "finalRegistrationPixels" : [
+      1536,
+      1024
+    ],
+    "kernel" : "CoreImage.CILanczosScaleTransform",
+    "linearOversamplingFactor" : 4,
+    "originalSamplingContractID" : "play027-legacy-schema1-factor2-msaa4x-v1",
+    "outputColorSpace" : "srgb",
+    "pipelineName" : "PLAY-027 offline diagnostic supersampling",
+    "productionSelected" : false,
+    "quantizerID" : "step32-midpoint-offset8-v1",
+    "rendererSourceCommit" : "67646d5",
+    "scale" : 0.25,
+    "sceneKitAntialiasing" : "none",
+    "sourceAuthority" : false,
+    "version" : 1,
+    "workingColorSpace" : "extended-srgb"
+  },
+  "productionSelected" : false,
+  "sceneKitOrMetalInvoked" : false,
+  "schema" : 1,
+  "sourceHashes" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DiagnosticSamplingPipeline.swift",
+      "sha256" : "ff14d485fe4790a2436db985675bdf8e7200fdf971cb8c9b4ce2f801febbbb4b"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "b712784c25bff79d3032755f4dde6e251ebee9a7bc7250361e0c7deea483f5b0"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "e0943590ee01f8518fbd3a230fa126e607b6aa130c6fcc422e250eb9467b76af"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RunDiagnosticSamplingSyntheticCalibration.swift",
+      "sha256" : "6a600ecf6b6a649a958f4d6fcae8a45e6822df1ed93f79d42f61150e6e38b1b0"
+    }
+  ],
+  "syntheticDescriptorSHA256" : "464e71ea8ee89f7be25c06337a0d1dee9ba8bc6e629422796df211b018fe6988",
+  "task" : "PLAY-027",
+  "type" : "diagnostic-sampling-synthetic-calibration"
+}

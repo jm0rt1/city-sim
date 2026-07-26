@@ -1,0 +1,74 @@
+{
+  "asset_id" : "industrial_l02_west_source_v07",
+  "ground_pivot_source" : [
+    768,
+    896
+  ],
+  "normalization" : "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports",
+  "object_width" : 410,
+  "outputs" : [
+    {
+      "file" : "generated_v4_industrial_l02_west_source_v07_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "4c66e3d326606838bb484beef0a685cbf73d38d2e127572bd19be8e0c83077dd"
+    },
+    {
+      "file" : "generated_v4_industrial_l02_west_source_v07_neighborhood.png",
+      "lod" : "neighborhood",
+      "pixels" : [
+        512,
+        342
+      ],
+      "sha256" : "f0a3732a12672f91c023126bdc55b09c11acd2735930900b17c1106216858823"
+    },
+    {
+      "file" : "generated_v4_industrial_l02_west_source_v07_city.png",
+      "lod" : "city",
+      "pixels" : [
+        256,
+        171
+      ],
+      "sha256" : "3853833738f2d2660ad9abe01cdee98f35ce6a80aa0a21f8afcd3f837fed9f8b"
+    }
+  ],
+  "productionSelected" : false,
+  "reference_subject_width" : 512,
+  "registration" : {
+    "mode" : "uniform-object-registration",
+    "reference_subject_width" : 512,
+    "source_bbox" : [
+      512,
+      514,
+      1024,
+      896
+    ],
+    "target_ground_pivot" : [
+      768,
+      896
+    ],
+    "target_origin" : [
+      563,
+      590
+    ],
+    "target_size" : [
+      410,
+      306
+    ],
+    "uniform_scale" : 0.80078125
+  },
+  "schema" : 1,
+  "source_bbox" : [
+    563,
+    590,
+    973,
+    896
+  ],
+  "source_file" : "\/Users\/James\/.codex\/worktrees\/0648\/city-sim\/docs\/production\/evidence\/PLAY-027\/industrial-l02\/l02\/directional-family-v07\/source-completion\/diagnostics\/raw-repeat\/west\/run-a\/raw.png",
+  "source_sha256" : "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d",
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source normalizer"
+}

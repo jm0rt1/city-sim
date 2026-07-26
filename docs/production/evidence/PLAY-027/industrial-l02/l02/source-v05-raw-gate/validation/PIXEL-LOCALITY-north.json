@@ -1,0 +1,110 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/review/PIXEL-LOCALITY-north.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l02-source-v05-north-raw-gate-failure",
+  "differenceBoundsSource" : [
+    756,
+    728,
+    780,
+    729
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        756,
+        728
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        779,
+        728
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/north/source-v05.png",
+    "fileSHA256" : "a7d1ebc3b5d89c8f90aa50f26da308781cfc79c1bece58416b779893cb8d2158"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2,
+    "differingPixelCount" : 2
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/north-run-b.png",
+    "fileSHA256" : "4c82a32ef4124cc8188cce93810c45b6e963fc41a9724068950c7388c6a734d5"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2,
+    "differingPixelCount" : 2
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-raw-gate/repeat/north-run-c.png",
+    "fileSHA256" : "a7d1ebc3b5d89c8f90aa50f26da308781cfc79c1bece58416b779893cb8d2158"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

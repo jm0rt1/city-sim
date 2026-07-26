@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceRevision": "source-v04",
+  "implementationAuthority": "fc55f2a8000375589488e79de22e41fa48b65a00",
+  "compiler": "xcrun swiftc -parse-as-library",
+  "moduleCaches": {
+    "clang": "/private/tmp/play027-industrial-l02-v04/module-cache/clang",
+    "swift": "/private/tmp/play027-industrial-l02-v04/module-cache/swift"
+  },
+  "compiledTools": [
+    {
+      "tool": "offline-scene-renderer",
+      "sha256": "5e68dd9985786edda1543eb9036b163cd71b1f1930b99ea0dd03a5db20dffef9",
+      "passed": true
+    },
+    {
+      "tool": "toolchain-fingerprint",
+      "sha256": "a6e382d22aae7fa3de9df6b75848eb5490675f377bd906b09a5a7912deee8b90",
+      "passed": true
+    },
+    {
+      "tool": "test-industrial-l2-v4-sampling",
+      "sha256": "2a8305db6e32c8529958f84ecd0b4885e51d6990c3d992d1399137c2886710ab",
+      "passed": true
+    },
+    {
+      "tool": "advance-industrial-l2-v4-descriptors",
+      "sha256": "a109ba745816b4de15bc9cf4c3d48b1d63ab1dfcd2a2de28b9070bf00e7ed714",
+      "passed": true
+    },
+    {
+      "tool": "validate-scenes",
+      "sha256": "582382862d763e0418216735ef8bde8f0851d1ee8b7ef285b0d616e41c4c579b",
+      "passed": true
+    },
+    {
+      "tool": "validate-industrial-l2-frontages",
+      "sha256": "3771dabd0652ebb9890e4a741d9c34363907ece03c7d9a12ff2fa404cfd741d7",
+      "passed": true
+    },
+    {
+      "tool": "validate-structural-boundaries",
+      "sha256": "6b41813fde60f13fd859d5a4673189e454ee1e3e32c1123cd76aba49ecfa9646",
+      "passed": true
+    },
+    {
+      "tool": "validate-accepted-world-art-preservation",
+      "sha256": "c3c15e36b9d0ca3552bd44487611d6e4413a4ae752e7c0238a4fafe6100ad4e2",
+      "passed": true
+    }
+  ],
+  "focusedSamplingTest": {
+    "result": "PASS",
+    "assertions": [
+      "source-v03 without sceneKitShadows retains current shadows",
+      "source-v03 cannot bind disabled shadows",
+      "source-v04 must explicitly bind disabled shadows",
+      "another logical building cannot bind disabled shadows",
+      "Industrial L2 source-v04 retains schema-2 v3 no-MSAA, factor-4, software-Lanczos, quantizer, and canonicalizer"
+    ]
+  },
+  "rawPixelsCreated": false,
+  "normalizationPerformed": false,
+  "productionSelected": false,
+  "passed": true
+}

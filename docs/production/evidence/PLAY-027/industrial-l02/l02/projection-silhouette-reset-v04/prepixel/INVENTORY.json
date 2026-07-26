@@ -1,0 +1,20 @@
+{
+  "alphaCompositorContractSHA256" : "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9",
+  "authorityCommit" : "af6b35bee6732d8ad9b16e7353083258c48e5607",
+  "descriptorSHA256" : "fdb92d39acb8847178a95d1e0f6315332a93eda01df71388e54582fe1e6f12bf",
+  "diagnosisSHA256" : "2c07696e2d6fc14e554ee1715a84bc741f70fcb1d110d927c5892ce67dfde48a",
+  "disposition" : "PENDING_INDEPENDENT_PREPIXEL_REVIEW",
+  "materialLibrarySHA256" : "31f500488b7d143e88015bf71b53db4d1a4b19076563dc3d774d61f00c8b83a3",
+  "materialLightContractSHA256" : "96d51f18e8a7eef98eba3bdd1d3af74c0be90e648257602fa844cf43f090ba15",
+  "metalProcessesConsumed" : 0,
+  "normalizationRuns" : 0,
+  "predictedValueLedgerSHA256" : "60da32f89de16cd4706675dac83dc6dbd0395305acbb5a9cd1ee0f2ef67cb77e",
+  "productionSelected" : false,
+  "rawAttempts" : 0,
+  "schema" : 1,
+  "sourceDirection" : "east",
+  "sourceRevision" : "projection-silhouette-reset-art-proof-v04",
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-v04-prepixel-inventory",
+  "validationSHA256" : "bd53c10abbe0393555333b5498db25f6973a775248a981bf523d408ad2bbb17a"
+}

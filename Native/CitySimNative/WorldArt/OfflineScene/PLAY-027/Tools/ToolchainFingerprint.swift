@@ -12,7 +12,7 @@ enum FingerprintError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2|v3]"
+            return "usage: toolchain-fingerprint --source-authority <sha> --output <json> [--sampling-contract v2|v3] [--scene-shadows current|disabled] [--scene-kit-lighting-mode lambert-scene-lights|authored-constant-v1 --material-role-count <count> --scene-light-count <count>]"
         case let .command(command, status, error):
             return "\(command) failed with status \(status): \(error)"
         case let .framework(name):
@@ -93,9 +93,64 @@ enum ToolchainFingerprintMain {
             }
             return arguments[index + 1]
         }()
+        let sceneShadows: String = {
+            guard
+                let index = arguments.firstIndex(of: "--scene-shadows"),
+                index + 1 < arguments.count
+            else {
+                return "current"
+            }
+            return arguments[index + 1]
+        }()
+        let sceneKitLightingMode: String = {
+            guard
+                let index = arguments.firstIndex(
+                    of: "--scene-kit-lighting-mode"
+                ),
+                index + 1 < arguments.count
+            else {
+                return "lambert-scene-lights"
+            }
+            return arguments[index + 1]
+        }()
+        let materialRoleCount: Int? = {
+            guard
+                let index = arguments.firstIndex(of: "--material-role-count"),
+                index + 1 < arguments.count
+            else {
+                return nil
+            }
+            return Int(arguments[index + 1])
+        }()
+        let sceneLightCount: Int? = {
+            guard
+                let index = arguments.firstIndex(of: "--scene-light-count"),
+                index + 1 < arguments.count
+            else {
+                return nil
+            }
+            return Int(arguments[index + 1])
+        }()
         guard
             samplingContract == nil
-                || ["v2", "v3"].contains(samplingContract!)
+                || ["v2", "v3"].contains(samplingContract!),
+            ["current", "disabled"].contains(sceneShadows),
+            [
+                "lambert-scene-lights",
+                "authored-constant-v1",
+            ].contains(sceneKitLightingMode),
+            samplingContract != nil || sceneShadows == "current",
+            samplingContract != nil
+                || sceneKitLightingMode == "lambert-scene-lights",
+            sceneKitLightingMode != "authored-constant-v1"
+                || (
+                    samplingContract == "v3"
+                    && sceneShadows == "disabled"
+                    && (materialRoleCount ?? 0) > 0
+                    && (sceneLightCount ?? 0) > 0
+                ),
+            sceneKitLightingMode == "authored-constant-v1"
+                || (materialRoleCount == nil && sceneLightCount == nil)
         else {
             throw FingerprintError.arguments
         }
@@ -205,10 +260,12 @@ enum ToolchainFingerprintMain {
                     "recordsBoundaryVoteReason": true,
                 ]
             }
-            object["descriptorSamplingContract"] = [
+            var descriptorSamplingContract: [String: Any] = [
                 "contractID":
                     "play027-deterministic-4x-no-msaa-lanczos-\(samplingContract)",
                 "sceneKitAntialiasing": "none",
+                "sceneKitShadows": sceneShadows,
+                "sceneKitLightingMode": sceneKitLightingMode,
                 "linearOversamplingFactor": 4,
                 "downsample": [
                     "filter": "CILanczosScaleTransform",
@@ -234,6 +291,18 @@ enum ToolchainFingerprintMain {
                     "format": "png",
                 ],
             ]
+            if sceneKitLightingMode == "authored-constant-v1" {
+                descriptorSamplingContract["sceneKitLighting"] = [
+                    "materialLightingModel": "constant",
+                    "sceneLights": "disabled-zero-intensity-no-shadow",
+                    "materialRoleCount": materialRoleCount!,
+                    "sceneLightCount": sceneLightCount!,
+                    "diagnosticCLIProducesSourceAuthority": false,
+                    "authoredContactShadowPreserved": true,
+                ]
+            }
+            object["descriptorSamplingContract"] =
+                descriptorSamplingContract
         }
         let data = try JSONSerialization.data(
             withJSONObject: object,

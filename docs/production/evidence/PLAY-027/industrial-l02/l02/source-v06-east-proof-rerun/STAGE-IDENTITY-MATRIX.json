@@ -1,0 +1,136 @@
+{
+  "task": "PLAY-027",
+  "sourceKey": "industrial_l02/variant-0/east/source-v06",
+  "rendererSourceCommit": "69c16f90cecfcf66f9c302eed301bdf9f2044c82",
+  "rendererBinarySHA256": "421def6f19a285d4af1f3f087920df9fdda588092f62d3307efd933de7287a4d",
+  "sceneDescriptorSHA256": "70b36a0e76581524e64d40f19e364659eed6a53d7f7ab8d8924c51ba5d0951dd",
+  "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "diagnosticContractID": "industrial-l02-source-v06-east-scene-kit-vs-lanczos-707x687-v1",
+  "processCount": 3,
+  "runs": [
+    {
+      "id": "run-a",
+      "stageCaptureFileSHA256": "3d9c9f23e63c67b0a5d3a918ee03ff6d65f7a716133f3ea0c1204b28d6e1a785",
+      "provenanceFileSHA256": "cf639076785c2516c3cd6ca3f1bcc7ea7a87c98ce90e9cabc786793bde25061b",
+      "sceneKit4xFullFrameDecodedRGBASHA256": "7fed5d8b3b4c0dca20cd18726ca10223617182471e3dc646567032f575fb625a",
+      "supportWindowRGBASHA256": "89fd1705e77fc07f964f247b90c87a3aacd261dd40f11536d02db5247b4e9e80",
+      "prequantizedDecodedRGBASHA256": "721ff016bfb16d45ced6f190084a400bbf42106a67d5cbcc2e9d2f4b47f1cb32",
+      "quantizedBeforeMajorityDecodedRGBASHA256": "67bf1aa595a27b573cf7bb18fc708e5f6c76246a0f47d852b24830845f4bd9e8",
+      "postMajorityDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+      "imageIOPreSipsFileSHA256": "6de05eeab4dff93c98e1d0915a0ebd8de44f3923a73a42422a2bcdbc577344d9",
+      "finalDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+      "finalFileSHA256": "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503"
+    },
+    {
+      "id": "run-b",
+      "stageCaptureFileSHA256": "11e2323141cedbabdaded5d664ed9c1b8f696927361751972a58f2efb45e386c",
+      "provenanceFileSHA256": "33836e598285566eee84caf83e53bba2314a07e5897d71c963f93c4c300c3c99",
+      "sceneKit4xFullFrameDecodedRGBASHA256": "0a6750ef0331474de97815785f71cc78cdcfb2cb1dde956de3748caa9271b9ee",
+      "supportWindowRGBASHA256": "89fd1705e77fc07f964f247b90c87a3aacd261dd40f11536d02db5247b4e9e80",
+      "prequantizedDecodedRGBASHA256": "6e0f3edf133079f740798bf286d8b5000c0e1b093de677ad5b5ce700ba8f6338",
+      "quantizedBeforeMajorityDecodedRGBASHA256": "67bf1aa595a27b573cf7bb18fc708e5f6c76246a0f47d852b24830845f4bd9e8",
+      "postMajorityDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+      "imageIOPreSipsFileSHA256": "6de05eeab4dff93c98e1d0915a0ebd8de44f3923a73a42422a2bcdbc577344d9",
+      "finalDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+      "finalFileSHA256": "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503"
+    },
+    {
+      "id": "run-c",
+      "stageCaptureFileSHA256": "899f4b077d092a585c3f4be23492c95d9396ae9ee7f15a278bcde46d37a0389e",
+      "provenanceFileSHA256": "5befaf304e3cb62fc6724305aa0879934e4d9fc26518530e2ec346129283cc89",
+      "sceneKit4xFullFrameDecodedRGBASHA256": "df21962d8c0e135aa67104aaf68fe0bb07acca57eb675cbc9bd2772584d88c25",
+      "supportWindowRGBASHA256": "89fd1705e77fc07f964f247b90c87a3aacd261dd40f11536d02db5247b4e9e80",
+      "prequantizedDecodedRGBASHA256": "6e0f3edf133079f740798bf286d8b5000c0e1b093de677ad5b5ce700ba8f6338",
+      "quantizedBeforeMajorityDecodedRGBASHA256": "67bf1aa595a27b573cf7bb18fc708e5f6c76246a0f47d852b24830845f4bd9e8",
+      "postMajorityDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+      "imageIOPreSipsFileSHA256": "6de05eeab4dff93c98e1d0915a0ebd8de44f3923a73a42422a2bcdbc577344d9",
+      "finalDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+      "finalFileSHA256": "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503"
+    }
+  ],
+  "identity": {
+    "sceneKit4xFullFrame": {
+      "uniqueCount": 3,
+      "requiredUniqueCount": 1,
+      "result": "FAIL"
+    },
+    "supportWindow33x33": {
+      "uniqueCount": 1,
+      "requiredUniqueCount": 1,
+      "result": "PASS"
+    },
+    "prequantizedFullFrame": {
+      "uniqueCount": 2,
+      "requiredUniqueCount": 1,
+      "result": "FAIL"
+    },
+    "quantizedBeforeMajorityFullFrame": {
+      "uniqueCount": 1,
+      "requiredUniqueCount": 1,
+      "result": "PASS"
+    },
+    "postMajorityFullFrame": {
+      "uniqueCount": 1,
+      "requiredUniqueCount": 1,
+      "result": "PASS"
+    },
+    "imageIOPreSipsFile": {
+      "uniqueCount": 1,
+      "requiredUniqueCount": 1,
+      "result": "PASS"
+    },
+    "finalDecodedPixels": {
+      "uniqueCount": 1,
+      "requiredUniqueCount": 1,
+      "result": "PASS"
+    },
+    "finalPNGFile": {
+      "uniqueCount": 1,
+      "requiredUniqueCount": 1,
+      "result": "PASS"
+    }
+  },
+  "supportWindow": {
+    "sourceCoordinate": [
+      707,
+      687
+    ],
+    "pixels": [
+      33,
+      33
+    ],
+    "byteCount": 4356,
+    "boundsExclusiveIn4xFrame": [
+      2813,
+      1709,
+      2846,
+      1742
+    ]
+  },
+  "rgbaAndRegistration": {
+    "finalMatchesFrozenSourceV06SHA256": true,
+    "frozenSourceV06SHA256": "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503",
+    "alphaVisibilityRatio": 1,
+    "hiddenNonMagentaPixelCount": 0,
+    "rgbAndAlphaVisibleBoundsMatch": true,
+    "occupiedBounds": [
+      619,
+      597,
+      1029,
+      906
+    ],
+    "occupiedPixelCount": 67598,
+    "completeOccupiedAreaPassed": true,
+    "frozenValidationEvidence": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-east-raw-gate/validation/EXACT-RGBA-VISIBILITY-AND-SILHOUETTE.json",
+    "frozenValidationEvidenceSHA256": "c0b083b6ce8b8774c2e396fd741006af445d1004739a82f39799d7b8cfdbd918",
+    "frozenVisualComparison": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-east-raw-gate/review/SOURCE-V06-VS-FROZEN-V05-OCCUPIED-COLOR.png",
+    "frozenVisualComparisonSHA256": "ecd20bb302eef72ee731dbcd17212799a0ca542c90f0524852d9e038ce259927"
+  },
+  "gate": {
+    "required": "all three SceneKit 4x captures, 33x33 support windows, and final raws exact",
+    "result": "FAIL",
+    "firstFailedStage": "SceneKit 4x full frame",
+    "normalizationAuthorized": false,
+    "productionSelected": false
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "fileExpectationPassed" : true,
+  "identityExpectationPassed" : true,
+  "pixelExpectation" : "unique",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 3,
+  "sourceKind" : "normalized",
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/4x-no-msaa-software-lanczos-v1/normalized-calibration/run-a/generated_v4_commercial_l04_block.png",
+      "fileSHA256" : "7ea6e2b0fd3d5693073244ac5cdb22ab9ae29ab22a2f433f8820c611a0341115",
+      "id" : "block",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          372,
+          133,
+          653,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 82907,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          372,
+          133,
+          371,
+          85
+        ],
+        "transparentPixelCount" : 616485,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        1024,
+        683
+      ],
+      "pixelSHA256" : "b83aab2c78334591af1a3fec2cf59b12313b6d561428a2110023ad8b32dbf6d9",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/4x-no-msaa-software-lanczos-v1/normalized-calibration/run-a/generated_v4_commercial_l04_neighborhood.png",
+      "fileSHA256" : "066a93388b1704de13e0d937508f82c149da25372a3c7408f7bbd674a8227fad",
+      "id" : "neighborhood",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          186,
+          66,
+          327,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 20931,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          186,
+          66,
+          185,
+          42
+        ],
+        "transparentPixelCount" : 154173,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        512,
+        342
+      ],
+      "pixelSHA256" : "f8c3d3eadffadbf143b8f5673c61ba55dbc45281a017032724e9fd3290653b0e",
+      "sourceChecksPassed" : true
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/commercial-l01-l04/l04/diagnostics/4x-no-msaa-software-lanczos-v1/normalized-calibration/run-a/generated_v4_commercial_l04_city.png",
+      "fileSHA256" : "10e9cc6658b0a1e829065f46fa9bf8d2d0304efc746902aaaaf404b96a8f0f06",
+      "id" : "city",
+      "inspection" : {
+        "alphaAndChromaPassed" : true,
+        "alphaBounds" : [
+          93,
+          33,
+          164,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "hiddenRGBPassed" : true,
+        "hiddenRGBPixelCount" : 0,
+        "nonTransparentPixelCount" : 5348,
+        "opaqueChromaPixelCount" : 0,
+        "paddingPassed" : true,
+        "paddingPixels" : [
+          93,
+          33,
+          92,
+          21
+        ],
+        "transparentPixelCount" : 38428,
+        "visibleMagentaSpillPassed" : true,
+        "visibleMagentaSpillPixelCount" : 0
+      },
+      "pixels" : [
+        256,
+        171
+      ],
+      "pixelSHA256" : "2f62e2bec9469a4ff9184d0975d35abd0fd4206b6fd38626826bbfbe822738e6",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniqueFileHashCount" : 3,
+  "uniquePixelHashCount" : 3,
+  "validationPassed" : true
+}

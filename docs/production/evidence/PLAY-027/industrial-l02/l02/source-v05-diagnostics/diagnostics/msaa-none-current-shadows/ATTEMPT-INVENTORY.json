@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "diagnosticContractID": "industrial-l02-source-v05-msaa-none-current-shadows-v1",
+  "root": "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw",
+  "directionOrder": ["north", "east", "south", "west"],
+  "runOrder": ["a", "b", "c"],
+  "rawPNGCount": 12,
+  "provenanceJSONCount": 12,
+  "freshMetalProcessCount": 12,
+  "allAttemptsRetained": true,
+  "normalizationPerformed": false,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

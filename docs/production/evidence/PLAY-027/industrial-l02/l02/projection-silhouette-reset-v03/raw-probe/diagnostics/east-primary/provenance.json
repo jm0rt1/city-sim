@@ -1,0 +1,245 @@
+{
+  "approvedPrepixelCommit" : "aaa431e867a635d78f70e422caa756efe71d07e8",
+  "diagnosticCLIOverrides" : "none",
+  "disposition" : "PENDING_RAW_REVIEW",
+  "freshMetalProcessCount" : 1,
+  "governedRawMutationFromFrozenPipeline" : false,
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v02/materials/industrial-l02-projection-silhouette-reset-v02.json",
+  "materialLibrarySHA256" : "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6",
+  "outputs" : [
+    {
+      "decodedRGBASHA256" : "6748347ef60f9a40fcc0e2faa52564c3fe7b6968260b65715f75a4ac7fea1d83",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/raw.png",
+      "fileSHA256" : "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "governed-flat-chroma-raw-existing-compositor-quantizer-canonicalizer"
+    },
+    {
+      "decodedRGBASHA256" : "2e145efeb2524835070fe0e46c30abe945ab9d070db9fefbb04085a253eb940c",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/pre-chroma-downsampled.png",
+      "fileSHA256" : "7b6f5381776c2aab55d49a42dab7d910f91117334b964c1e7681c4d4c1eec390",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "genuine-post-lanczos-pre-chroma-unregistered-alpha"
+    },
+    {
+      "decodedRGBASHA256" : "bc23dab090077cc884fcc95934012db998cb90b392db284c2502b2e055a93fbb",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/pre-chroma-registered-building.png",
+      "fileSHA256" : "b571b6bbabf5c1d1c2a60167af076d05ece13d379d323368c6150f79e2e119c6",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "proof-only-registered-building-alpha-without-authored-shadow"
+    },
+    {
+      "decodedRGBASHA256" : "f018cca929d176c325ae5db7978b25632576a01849770cf3eaedab10314cc50a",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/pre-chroma-registered-alpha.png",
+      "fileSHA256" : "f6cdf5833011cf2842e2f4245216d8224de760c63ede8ec4473b259667afeafc",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "proof-only-registered-building-alpha-plus-authored-shadow"
+    },
+    {
+      "decodedRGBASHA256" : "b34477663b0f226c6676353756edfd07863f2c62054bf0f1c91a97d6881c7c68",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/diagnostics/east-primary/neutral-alpha-composite.png",
+      "fileSHA256" : "89fcc84601214345e35c2ac07cd0fc4475aa99b038e03553ca515bfcfbc7506c",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "proof-only-neutral-alpha-respecting-composite"
+    }
+  ],
+  "prepixelValidationSHA256" : "f73a0a077e058845a03ed8cf273babebbab11fec6bd87dce34444ccd20d42a47",
+  "preservedV02AttemptSHA256" : "919ba04ee5a76d3f628ee2bb64732a7125c2b0986a8fe8c42aedbcf5ce239b2f",
+  "preservedV02RejectionSHA256" : "7ca9a9dcdbf0552872baecb311eb5459c54d4c186e65ae8f3fa66015020cf4f5",
+  "probeToolFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RenderIndustrialL2EastV03PrimaryProbe.swift",
+  "probeToolSHA256" : "2cc0aa1eafd3fcbf987bce25f4ab6ef8e2f54cae2fb2974951a990e83c104ece",
+  "productionSelected" : false,
+  "rawOccupancy" : {
+    "completeOccupiedAreaPassed" : true,
+    "minimumBoundsPixels" : [
+      400,
+      260
+    ],
+    "minimumNonChromaPixelCount" : 50000,
+    "nonChromaBounds" : [
+      509,
+      488,
+      1029,
+      906
+    ],
+    "nonChromaPixelCount" : 146141
+  },
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      832
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "southeastShadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "renderedNodeBounds" : {
+    "completeBuildingVolumePassed" : true,
+    "maximumWorld" : [
+      28,
+      35.650001525878906,
+      28
+    ],
+    "minimumRequiredHeight" : 35.649999999999999,
+    "minimumWorld" : [
+      -28,
+      0,
+      -28
+    ],
+    "requiredFootprintHalfExtents" : [
+      28,
+      28
+    ]
+  },
+  "rendererBinarySHA256" : "34fad40cb6064d36c953eb1b857084eac36757396f47adddeeae1f5911e05815",
+  "rendererCapability" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "rendererSourceCommit" : "aaa431e867a635d78f70e422caa756efe71d07e8",
+  "rendererSources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256" : "4e404d255c19cbeb39445e1b41e5fbbe6d87aece22c757a2ea1102052f1d7957"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "e0943590ee01f8518fbd3a230fa126e607b6aa130c6fcc422e250eb9467b76af"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+      "sha256" : "160f2361f096b2a06b56b075486b0d9f4c791f9c754664813ce27d6cee57edfd"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+      "sha256" : "c68643e1dc224b621922db8d3729b6ceb908df826f1799ed478c49f077b9e76a"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+      "sha256" : "27c5766d08b3fbeb316fe77d66c071b1913de92a0e0fe838d065751bcd0fdbc1"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "ecd51c8da196f285d2e1b43673f47a9b3b5655cfc405ec071b3deb8dc773df09"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RenderIndustrialL2EastV03PrimaryProbe.swift",
+      "sha256" : "2cc0aa1eafd3fcbf987bce25f4ab6ef8e2f54cae2fb2974951a990e83c104ece"
+    }
+  ],
+  "sampling" : {
+    "canonicalizerID" : "imageio-sips-png-v1",
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsampleFilter" : "CILanczosScaleTransform",
+    "downsampleScale" : 0.25,
+    "linearOversamplingFactor" : 4,
+    "quantizerID" : "step32-midpoint-offset8-v1",
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "lambert-scene-lights",
+    "sceneKitShadows" : "current"
+  },
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v03/scenes/industrial_l02/variant-0/east/scene.json",
+  "sceneDescriptorSHA256" : "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca",
+  "schema" : 1,
+  "sourceKey" : "industrial_l02/variant-0/east/projection-silhouette-reset-art-proof-v03",
+  "task" : "PLAY-027",
+  "toolchainFingerprintActualSHA256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "toolchainFingerprintDeclaredSHA256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-quality-reset-source-v09.json",
+  "type" : "industrial-l02-east-v03-single-primary-raw-probe"
+}

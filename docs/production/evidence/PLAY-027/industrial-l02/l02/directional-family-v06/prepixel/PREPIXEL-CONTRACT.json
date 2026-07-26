@@ -1,0 +1,110 @@
+{
+  "directions" : [
+    {
+      "direction" : "north",
+      "dockFaceWorldDimensions" : [
+        [
+          10,
+          12,
+          1.2
+        ],
+        [
+          10,
+          12,
+          1.2
+        ],
+        [
+          10,
+          12,
+          1.2
+        ]
+      ],
+      "inputDescriptorSHA256" : "4b980d5f02fd8bb1bd7f8ef2f734c17387e4c42845723430be318ad96be9e852",
+      "materialReferencesPassed" : true,
+      "outputDescriptorSHA256" : "6a51cf80436a5e0626ce869e9178c80844e979758419b8c509da0a651af4b390",
+      "pivotSocketCameraLightPreserved" : true,
+      "productionDecodePassed" : true,
+      "productionSelected" : false,
+      "semanticTargetsDeclared" : [
+        "n-dock-door-a",
+        "n-dock-door-b",
+        "n-dock-door-c",
+        "n-staff-door"
+      ],
+      "sourceAuthority" : false,
+      "staffDoorWorldDimensions" : [
+        1.2,
+        9,
+        6
+      ]
+    },
+    {
+      "direction" : "west",
+      "dockFaceWorldDimensions" : [
+        [
+          1.2,
+          12,
+          10
+        ],
+        [
+          1.2,
+          12,
+          10
+        ],
+        [
+          1.2,
+          12,
+          10
+        ]
+      ],
+      "inputDescriptorSHA256" : "912ebc29cc1a5c3241d89a94e62dc0ecfbf053317c99fbfe1884781ca8eb49dc",
+      "materialReferencesPassed" : true,
+      "outputDescriptorSHA256" : "2ef1b01ddb5eee3eda3f0e859d7e9bec5572dddce53a6f6502c202504b345fd5",
+      "pivotSocketCameraLightPreserved" : true,
+      "productionDecodePassed" : true,
+      "productionSelected" : false,
+      "semanticTargetsDeclared" : [
+        "w-dock-door-a",
+        "w-dock-door-b",
+        "w-dock-door-c",
+        "w-staff-door"
+      ],
+      "sourceAuthority" : false,
+      "staffDoorWorldDimensions" : [
+        6,
+        9,
+        1.2
+      ]
+    }
+  ],
+  "immutableEastDescriptorSHA256" : "a7732ba762b4569b50a1dc19291d42b2c4030cf21509a242caad49eea339b517",
+  "immutableEastRawSHA256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+  "immutableMaterialsSHA256" : "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb",
+  "inputVisualRejectionCommit" : "d647ea5591c7b982f34481ce83bab416bef549c5",
+  "metalProcessCount" : 0,
+  "normalizerProcessCount" : 0,
+  "passed" : true,
+  "productionSelected" : false,
+  "rawSourcePixelCount" : 0,
+  "sceneKitProcessCount" : 0,
+  "schema" : 1,
+  "semanticGate" : {
+    "minimumDockSiblingSeparationPixels" : 2,
+    "minimumTargetBoundsPixels" : [
+      6,
+      8
+    ],
+    "native2xCanvasPixels" : [
+      432,
+      288
+    ],
+    "native2xScale" : 0.28125,
+    "renderer" : "exact production ContractSceneBuilder camera and geometry; diagnostic constant semantic materials",
+    "sourceAuthority" : false,
+    "targetsPerDirection" : 4
+  },
+  "sourceAuthority" : false,
+  "southMutationCount" : 0,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-directional-family-v06-frontage-first-prepixel-contract"
+}

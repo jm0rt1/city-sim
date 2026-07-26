@@ -1,0 +1,89 @@
+{
+  "absoluteChannelDeltaSums" : {
+    "alpha" : 0,
+    "blue" : 0,
+    "green" : 0,
+    "red" : 0
+  },
+  "baseline" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/east/source-v06.png",
+    "fileSHA256" : "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503",
+    "occupiedBounds" : [
+      619,
+      597,
+      1029,
+      906
+    ]
+  },
+  "candidate" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-finite-equivalence-diagnostic/proposal/application/run-a/final-sips.png",
+    "fileSHA256" : "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503",
+    "occupiedBounds" : [
+      619,
+      597,
+      1029,
+      906
+    ]
+  },
+  "changedChannelCounts" : {
+    "alpha" : 0,
+    "blue" : 0,
+    "green" : 0,
+    "red" : 0
+  },
+  "changedPixelCount" : 0,
+  "changedPixelRatio" : 0,
+  "comparison" : "frozen-source-v06-vs-finite-equivalence-proposal",
+  "differenceBoundsSource" : [
+
+  ],
+  "differenceRendering" : "absolute decoded RGB delta multiplied by 8 and clamped",
+  "files" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-finite-equivalence-diagnostic/proposal/review/NATIVE-2X-COLOR-FROZEN-V06-VS-PROPOSAL.png",
+      "role" : "native2xColor",
+      "sha256" : "081160748d9062062110ad8f40f3ac4d9ff83ee60a3091056c54a2049df6258b"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-finite-equivalence-diagnostic/proposal/review/NATIVE-2X-GRAYSCALE-FROZEN-V06-VS-PROPOSAL.png",
+      "role" : "native2xGrayscale",
+      "sha256" : "3706940711f47412071e46c1a56d46a79da01f4ace5892185cc5e15091c9afc0"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-finite-equivalence-diagnostic/proposal/review/NATIVE-2X-DIFFERENCE-X8.png",
+      "role" : "native2xDifferenceAmplified8x",
+      "sha256" : "d5bccce9704a4ea933a09f20d7d596190523307d2ab96b2e53da9e870e5a0e36"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-finite-equivalence-diagnostic/proposal/review/SOURCE-SCALE-FROZEN-V06-VS-PROPOSAL-DIFFERENCE-X8.png",
+      "role" : "sourceScaleComparison",
+      "sha256" : "d5cf51f03d39b43cb027649b0ef40cbc1960eb616aecfdd2057b00151de9da04"
+    }
+  ],
+  "maximumChannelDelta" : {
+    "alpha" : 0,
+    "blue" : 0,
+    "green" : 0,
+    "red" : 0
+  },
+  "native2xPanelPixelsPerImage" : [
+    144,
+    195
+  ],
+  "native2xScale" : 0.28125,
+  "normalizationPerformed" : false,
+  "panelOrder" : [
+    "frozen source-v06",
+    "finite equivalence proposal",
+    "amplified absolute RGB difference where present"
+  ],
+  "productionSelected" : false,
+  "registeredCrop" : [
+    512,
+    270,
+    513,
+    695
+  ],
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

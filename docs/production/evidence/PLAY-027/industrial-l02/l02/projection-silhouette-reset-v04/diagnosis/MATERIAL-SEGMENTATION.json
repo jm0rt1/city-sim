@@ -1,0 +1,939 @@
+{
+  "authorityCommit" : "af6b35bee6732d8ad9b16e7353083258c48e5607",
+  "chromaEdge" : {
+    "classification" : "opaque-magenta compositing contaminates the genuine partial-alpha support; neutral alpha composition is clean",
+    "nearMagentaAtOpaquePreChromaAlpha" : 0,
+    "nearMagentaAtPartialPreChromaAlpha" : 8460,
+    "nearMagentaAtZeroPreChromaAlpha" : 0,
+    "nearMagentaOpaqueRawPixels" : 8460,
+    "neutralCompositeMagentaFamilyPixels" : 0,
+    "partialPreChromaAlphaPixels" : 13149
+  },
+  "coverage" : {
+    "attributedAlphaPixels" : 134776,
+    "attributedAlphaRatio" : 0.99232796831053316,
+    "attributedOpaquePixels" : 134083,
+    "attributedOpaqueRatio" : 0.99822812516285619,
+    "preChromaAlphaPixels" : 135818,
+    "preChromaOpaquePixels" : 134321
+  },
+  "globalStageDistributions" : {
+    "declaredBaseLumaWeightedByVisibleOpaqueCoverage" : {
+      "count" : 134083,
+      "maximum" : 211,
+      "median" : 156,
+      "minimum" : 81,
+      "p10" : 106,
+      "p25" : 106,
+      "p75" : 173,
+      "p90" : 192,
+      "p95" : 207
+    },
+    "preChromaLitLuma" : {
+      "count" : 134083,
+      "maximum" : 187,
+      "median" : 62,
+      "minimum" : 8,
+      "p10" : 36,
+      "p25" : 48,
+      "p75" : 85,
+      "p90" : 119,
+      "p95" : 141
+    },
+    "rawAfterQuantizerCompositorCanonicalizer" : {
+      "count" : 134083,
+      "maximum" : 184,
+      "median" : 78,
+      "minimum" : 16,
+      "p10" : 48,
+      "p25" : 48,
+      "p75" : 87,
+      "p90" : 121,
+      "p95" : 148
+    }
+  },
+  "inputs" : {
+    "descriptorSHA256" : "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca",
+    "materialLibrarySHA256" : "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6",
+    "metricsSHA256" : "cd55e28517b2e2ca5896d433f5a0646840786b8684a45c2f3ef0bd931f69c1c9",
+    "neutralCompositeSHA256" : "89fcc84601214345e35c2ac07cd0fc4475aa99b038e03553ca515bfcfbc7506c",
+    "preChromaAlphaSHA256" : "f6cdf5833011cf2842e2f4245216d8224de760c63ede8ec4473b259667afeafc",
+    "preChromaBuildingSHA256" : "b571b6bbabf5c1d1c2a60167af076d05ece13d379d323368c6150f79e2e119c6",
+    "rawSHA256" : "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba",
+    "rejectionSHA256" : "3ccefb83cded63bf0958c4b28eabf00af8ccf4551dd4191d3675c4641110a877",
+    "rendererSourceSHA256" : "ecd51c8da196f285d2e1b43673f47a9b3b5655cfc405ec071b3deb8dc773df09"
+  },
+  "materials" : [
+    {
+      "components" : [
+        "v02-dock-throat-a",
+        "v02-dock-throat-b",
+        "v02-dock-throat-c",
+        "v02-personnel-recess"
+      ],
+      "coverage" : {
+        "alphaPixels" : 1508,
+        "edgePixels" : 0,
+        "opaqueInteriorPixels" : 1508,
+        "shareOfAttributedOpaque" : 0.01124676506343086
+      },
+      "declaredBaseColorRGBA" : [
+        0.31,
+        0.32000000000000001,
+        0.34000000000000002,
+        1
+      ],
+      "declaredBaseLuma" : 81,
+      "materialID" : "v02-deep-recess",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.25925925925925924,
+      "observedPreChromaLuma" : {
+        "count" : 1508,
+        "maximum" : 183,
+        "median" : 21,
+        "minimum" : 8,
+        "p10" : 19,
+        "p25" : 21,
+        "p75" : 22,
+        "p90" : 50,
+        "p95" : 68
+      },
+      "observedRawLuma" : {
+        "count" : 1508,
+        "maximum" : 180,
+        "median" : 16,
+        "minimum" : 16,
+        "p10" : 16,
+        "p25" : 16,
+        "p75" : 23,
+        "p90" : 52,
+        "p95" : 82
+      },
+      "pattern" : "solid-depth-cavity",
+      "quantizerLumaDelta" : {
+        "count" : 1508,
+        "maximum" : 22,
+        "median" : -5,
+        "minimum" : -7,
+        "p10" : -5,
+        "p25" : -5,
+        "p75" : 1,
+        "p90" : 13,
+        "p95" : 14
+      },
+      "rawStep32Bins" : {
+        "16" : 1198,
+        "48" : 206,
+        "80" : 59,
+        "112" : 4,
+        "144" : 4,
+        "176" : 37
+      },
+      "rendererPatternImplemented" : true,
+      "valueRole" : "recess",
+      "visibleFacePixelCounts" : {
+        "+x" : 360,
+        "+z" : 1148
+      }
+    },
+    {
+      "components" : [
+        "foundation",
+        "v02-main-production-hall"
+      ],
+      "coverage" : {
+        "alphaPixels" : 23522,
+        "edgePixels" : 222,
+        "opaqueInteriorPixels" : 23300,
+        "shareOfAttributedOpaque" : 0.17377296152383226
+      },
+      "declaredBaseColorRGBA" : [
+        0.69999999999999996,
+        0.68000000000000005,
+        0.62,
+        1
+      ],
+      "declaredBaseLuma" : 173,
+      "materialID" : "v02-formed-concrete",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.31791907514450868,
+      "observedPreChromaLuma" : {
+        "count" : 23300,
+        "maximum" : 155,
+        "median" : 55,
+        "minimum" : 32,
+        "p10" : 54,
+        "p25" : 55,
+        "p75" : 140,
+        "p90" : 141,
+        "p95" : 141
+      },
+      "observedRawLuma" : {
+        "count" : 23300,
+        "maximum" : 171,
+        "median" : 55,
+        "minimum" : 46,
+        "p10" : 55,
+        "p25" : 55,
+        "p75" : 148,
+        "p90" : 148,
+        "p95" : 148
+      },
+      "pattern" : "procedural-large-formed-panels",
+      "quantizerLumaDelta" : {
+        "count" : 23300,
+        "maximum" : 22,
+        "median" : 0,
+        "minimum" : -5,
+        "p10" : 0,
+        "p25" : 0,
+        "p75" : 7,
+        "p90" : 7,
+        "p95" : 12
+      },
+      "rawStep32Bins" : {
+        "48" : 14981,
+        "80" : 1224,
+        "112" : 351,
+        "144" : 6742,
+        "176" : 2
+      },
+      "rendererPatternImplemented" : false,
+      "valueRole" : "concrete",
+      "visibleFacePixelCounts" : {
+        "+x" : 2207,
+        "+y" : 7667,
+        "+z" : 13648
+      }
+    },
+    {
+      "components" : [
+        "v02-dock-header",
+        "v02-hvac-bank",
+        "v02-process-monitor"
+      ],
+      "coverage" : {
+        "alphaPixels" : 9005,
+        "edgePixels" : 18,
+        "opaqueInteriorPixels" : 8987,
+        "shareOfAttributedOpaque" : 0.067025648292475551
+      },
+      "declaredBaseColorRGBA" : [
+        0.71999999999999997,
+        0.76000000000000001,
+        0.77000000000000002,
+        1
+      ],
+      "declaredBaseLuma" : 192,
+      "materialID" : "v02-galvanized",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.32291666666666669,
+      "observedPreChromaLuma" : {
+        "count" : 8987,
+        "maximum" : 170,
+        "median" : 62,
+        "minimum" : 20,
+        "p10" : 61,
+        "p25" : 62,
+        "p75" : 156,
+        "p90" : 156,
+        "p95" : 156
+      },
+      "observedRawLuma" : {
+        "count" : 8987,
+        "maximum" : 180,
+        "median" : 78,
+        "minimum" : 23,
+        "p10" : 78,
+        "p25" : 78,
+        "p75" : 174,
+        "p90" : 174,
+        "p95" : 174
+      },
+      "pattern" : "procedural-wide-corrugation",
+      "quantizerLumaDelta" : {
+        "count" : 8987,
+        "maximum" : 32,
+        "median" : 16,
+        "minimum" : -6,
+        "p10" : 14,
+        "p25" : 16,
+        "p75" : 18,
+        "p90" : 18,
+        "p95" : 19
+      },
+      "rawStep32Bins" : {
+        "16" : 93,
+        "48" : 439,
+        "80" : 4591,
+        "112" : 33,
+        "144" : 157,
+        "176" : 3674
+      },
+      "rendererPatternImplemented" : false,
+      "valueRole" : "service",
+      "visibleFacePixelCounts" : {
+        "+x" : 2101,
+        "+y" : 3850,
+        "+z" : 3054
+      }
+    },
+    {
+      "components" : [
+        "v02-admin-glazing",
+        "v03-hall-clerestory-envelope"
+      ],
+      "coverage" : {
+        "alphaPixels" : 6914,
+        "edgePixels" : 0,
+        "opaqueInteriorPixels" : 6914,
+        "shareOfAttributedOpaque" : 0.05156507536376722
+      },
+      "declaredBaseColorRGBA" : [
+        0.29999999999999999,
+        0.52000000000000002,
+        0.66000000000000003,
+        1
+      ],
+      "declaredBaseLuma" : 123,
+      "materialID" : "v02-industrial-glazing",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.29268292682926828,
+      "observedPreChromaLuma" : {
+        "count" : 6914,
+        "maximum" : 105,
+        "median" : 36,
+        "minimum" : 27,
+        "p10" : 36,
+        "p25" : 36,
+        "p75" : 98,
+        "p90" : 98,
+        "p95" : 98
+      },
+      "observedRawLuma" : {
+        "count" : 6914,
+        "maximum" : 105,
+        "median" : 41,
+        "minimum" : 41,
+        "p10" : 41,
+        "p25" : 41,
+        "p75" : 105,
+        "p90" : 105,
+        "p95" : 105
+      },
+      "pattern" : "broad-mullion-grid",
+      "quantizerLumaDelta" : {
+        "count" : 6914,
+        "maximum" : 22,
+        "median" : 5,
+        "minimum" : -3,
+        "p10" : 5,
+        "p25" : 5,
+        "p75" : 7,
+        "p90" : 7,
+        "p95" : 8
+      },
+      "rawStep32Bins" : {
+        "48" : 4513,
+        "80" : 115,
+        "112" : 2286
+      },
+      "rendererPatternImplemented" : false,
+      "valueRole" : "glazing",
+      "visibleFacePixelCounts" : {
+        "+x" : 1457,
+        "+y" : 2314,
+        "+z" : 3143
+      }
+    },
+    {
+      "components" : [
+        "v02-dock-door-a",
+        "v02-dock-door-b",
+        "v02-dock-door-c"
+      ],
+      "coverage" : {
+        "alphaPixels" : 10790,
+        "edgePixels" : 2,
+        "opaqueInteriorPixels" : 10788,
+        "shareOfAttributedOpaque" : 0.080457626992236159
+      },
+      "declaredBaseColorRGBA" : [
+        0.47999999999999998,
+        0.51000000000000001,
+        0.54000000000000004,
+        1
+      ],
+      "declaredBaseLuma" : 129,
+      "materialID" : "v02-loading-door",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.30232558139534882,
+      "observedPreChromaLuma" : {
+        "count" : 10788,
+        "maximum" : 183,
+        "median" : 39,
+        "minimum" : 24,
+        "p10" : 35,
+        "p25" : 38,
+        "p75" : 39,
+        "p90" : 40,
+        "p95" : 68
+      },
+      "observedRawLuma" : {
+        "count" : 10788,
+        "maximum" : 184,
+        "median" : 48,
+        "minimum" : 39,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 48,
+        "p90" : 48,
+        "p95" : 80
+      },
+      "pattern" : "horizontal-section-joints",
+      "quantizerLumaDelta" : {
+        "count" : 10788,
+        "maximum" : 22,
+        "median" : 9,
+        "minimum" : -3,
+        "p10" : 8,
+        "p25" : 9,
+        "p75" : 10,
+        "p90" : 13,
+        "p95" : 14
+      },
+      "rawStep32Bins" : {
+        "48" : 10227,
+        "80" : 186,
+        "112" : 360,
+        "144" : 3,
+        "176" : 12
+      },
+      "rendererPatternImplemented" : true,
+      "valueRole" : "load-bay",
+      "visibleFacePixelCounts" : {
+        "+x" : 9648,
+        "+y" : 504,
+        "+z" : 638
+      }
+    },
+    {
+      "components" : [
+        "v02-loading-apron"
+      ],
+      "coverage" : {
+        "alphaPixels" : 1378,
+        "edgePixels" : 83,
+        "opaqueInteriorPixels" : 1295,
+        "shareOfAttributedOpaque" : 0.0096581967885563426
+      },
+      "declaredBaseColorRGBA" : [
+        0.62,
+        0.62,
+        0.57999999999999996,
+        1
+      ],
+      "declaredBaseLuma" : 157,
+      "materialID" : "v02-neutral-apron",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.31210191082802546,
+      "observedPreChromaLuma" : {
+        "count" : 1295,
+        "maximum" : 52,
+        "median" : 49,
+        "minimum" : 32,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 49,
+        "p90" : 51,
+        "p95" : 52
+      },
+      "observedRawLuma" : {
+        "count" : 1295,
+        "maximum" : 55,
+        "median" : 48,
+        "minimum" : 46,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 48,
+        "p90" : 55,
+        "p95" : 55
+      },
+      "pattern" : "large-scored-slabs",
+      "quantizerLumaDelta" : {
+        "count" : 1295,
+        "maximum" : 16,
+        "median" : 0,
+        "minimum" : -2,
+        "p10" : -1,
+        "p25" : -1,
+        "p75" : 3,
+        "p90" : 6,
+        "p95" : 7
+      },
+      "rawStep32Bins" : {
+        "48" : 1295
+      },
+      "rendererPatternImplemented" : true,
+      "valueRole" : "apron",
+      "visibleFacePixelCounts" : {
+        "+x" : 1378
+      }
+    },
+    {
+      "components" : [
+        "v02-loading-spine",
+        "v02-process-base"
+      ],
+      "coverage" : {
+        "alphaPixels" : 13963,
+        "edgePixels" : 93,
+        "opaqueInteriorPixels" : 13870,
+        "shareOfAttributedOpaque" : 0.10344338954229843
+      },
+      "declaredBaseColorRGBA" : [
+        0.56000000000000005,
+        0.62,
+        0.66000000000000003,
+        1
+      ],
+      "declaredBaseLuma" : 156,
+      "materialID" : "v02-painted-steel",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.30769230769230771,
+      "observedPreChromaLuma" : {
+        "count" : 13870,
+        "maximum" : 139,
+        "median" : 48,
+        "minimum" : 18,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 48,
+        "p90" : 49,
+        "p95" : 109
+      },
+      "observedRawLuma" : {
+        "count" : 13870,
+        "maximum" : 142,
+        "median" : 48,
+        "minimum" : 23,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 48,
+        "p90" : 48,
+        "p95" : 112
+      },
+      "pattern" : "procedural-wide-corrugation",
+      "quantizerLumaDelta" : {
+        "count" : 13870,
+        "maximum" : 23,
+        "median" : 0,
+        "minimum" : -7,
+        "p10" : 0,
+        "p25" : 0,
+        "p75" : 0,
+        "p90" : 0,
+        "p95" : 14
+      },
+      "rawStep32Bins" : {
+        "16" : 33,
+        "48" : 12926,
+        "80" : 174,
+        "112" : 77,
+        "144" : 660
+      },
+      "rendererPatternImplemented" : false,
+      "valueRole" : "steel",
+      "visibleFacePixelCounts" : {
+        "+x" : 5995,
+        "+y" : 911,
+        "+z" : 7057
+      }
+    },
+    {
+      "components" : [
+        "v02-admin-roof",
+        "v02-hall-roof",
+        "v02-loading-roof"
+      ],
+      "coverage" : {
+        "alphaPixels" : 47256,
+        "edgePixels" : 246,
+        "opaqueInteriorPixels" : 47010,
+        "shareOfAttributedOpaque" : 0.3506037305251225
+      },
+      "declaredBaseColorRGBA" : [
+        0.40000000000000002,
+        0.41999999999999998,
+        0.44,
+        1
+      ],
+      "declaredBaseLuma" : 106,
+      "materialID" : "v02-roof-membrane",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.80188679245283023,
+      "observedPreChromaLuma" : {
+        "count" : 47010,
+        "maximum" : 108,
+        "median" : 85,
+        "minimum" : 9,
+        "p10" : 30,
+        "p25" : 81,
+        "p75" : 85,
+        "p90" : 86,
+        "p95" : 86
+      },
+      "observedRawLuma" : {
+        "count" : 47010,
+        "maximum" : 110,
+        "median" : 87,
+        "minimum" : 16,
+        "p10" : 48,
+        "p25" : 87,
+        "p75" : 87,
+        "p90" : 87,
+        "p95" : 87
+      },
+      "pattern" : "rolled-membrane-seams",
+      "quantizerLumaDelta" : {
+        "count" : 47010,
+        "maximum" : 24,
+        "median" : 2,
+        "minimum" : -7,
+        "p10" : 1,
+        "p25" : 2,
+        "p75" : 5,
+        "p90" : 18,
+        "p95" : 18
+      },
+      "rawStep32Bins" : {
+        "16" : 107,
+        "48" : 8247,
+        "80" : 38383,
+        "112" : 273
+      },
+      "rendererPatternImplemented" : true,
+      "valueRole" : "roof",
+      "visibleFacePixelCounts" : {
+        "+x" : 4020,
+        "+y" : 38784,
+        "+z" : 4452
+      }
+    },
+    {
+      "components" : [
+        "v02-hazard-header",
+        "v02-personnel-canopy"
+      ],
+      "coverage" : {
+        "alphaPixels" : 8135,
+        "edgePixels" : 7,
+        "opaqueInteriorPixels" : 8128,
+        "shareOfAttributedOpaque" : 0.060619168723850154
+      },
+      "declaredBaseColorRGBA" : [
+        0.97999999999999998,
+        0.81999999999999995,
+        0.25,
+        1
+      ],
+      "declaredBaseLuma" : 207,
+      "materialID" : "v02-safety-trim",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.32850241545893721,
+      "observedPreChromaLuma" : {
+        "count" : 8128,
+        "maximum" : 187,
+        "median" : 68,
+        "minimum" : 47,
+        "p10" : 68,
+        "p25" : 68,
+        "p75" : 118,
+        "p90" : 171,
+        "p95" : 171
+      },
+      "observedRawLuma" : {
+        "count" : 8128,
+        "maximum" : 184,
+        "median" : 82,
+        "minimum" : 52,
+        "p10" : 82,
+        "p25" : 82,
+        "p75" : 119,
+        "p90" : 180,
+        "p95" : 180
+      },
+      "pattern" : "painted-safety-steel",
+      "quantizerLumaDelta" : {
+        "count" : 8128,
+        "maximum" : 20,
+        "median" : 14,
+        "minimum" : -5,
+        "p10" : 9,
+        "p25" : 11,
+        "p75" : 14,
+        "p90" : 14,
+        "p95" : 14
+      },
+      "rawStep32Bins" : {
+        "48" : 7,
+        "80" : 6070,
+        "112" : 203,
+        "144" : 40,
+        "176" : 1808
+      },
+      "rendererPatternImplemented" : false,
+      "valueRole" : "safety",
+      "visibleFacePixelCounts" : {
+        "+x" : 5824,
+        "+y" : 1947,
+        "+z" : 364
+      }
+    },
+    {
+      "components" : [
+        "v02-dock-canopy-a",
+        "v02-dock-canopy-b",
+        "v02-dock-canopy-c"
+      ],
+      "coverage" : {
+        "alphaPixels" : 3335,
+        "edgePixels" : 22,
+        "opaqueInteriorPixels" : 3313,
+        "shareOfAttributedOpaque" : 0.024708576031264216
+      },
+      "declaredBaseColorRGBA" : [
+        0.83999999999999997,
+        0.82999999999999996,
+        0.76000000000000001,
+        1
+      ],
+      "declaredBaseLuma" : 211,
+      "materialID" : "v02-structural-trim",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.32701421800947866,
+      "observedPreChromaLuma" : {
+        "count" : 3313,
+        "maximum" : 182,
+        "median" : 69,
+        "minimum" : 43,
+        "p10" : 61,
+        "p25" : 65,
+        "p75" : 70,
+        "p90" : 72,
+        "p95" : 111
+      },
+      "observedRawLuma" : {
+        "count" : 3313,
+        "maximum" : 180,
+        "median" : 78,
+        "minimum" : 48,
+        "p10" : 78,
+        "p25" : 78,
+        "p75" : 78,
+        "p90" : 78,
+        "p95" : 116
+      },
+      "pattern" : "painted-steel",
+      "quantizerLumaDelta" : {
+        "count" : 3313,
+        "maximum" : 23,
+        "median" : 9,
+        "minimum" : -20,
+        "p10" : 6,
+        "p25" : 8,
+        "p75" : 13,
+        "p90" : 16,
+        "p95" : 18
+      },
+      "rawStep32Bins" : {
+        "48" : 45,
+        "80" : 3079,
+        "112" : 160,
+        "144" : 6,
+        "176" : 23
+      },
+      "rendererPatternImplemented" : true,
+      "valueRole" : "trim",
+      "visibleFacePixelCounts" : {
+        "+x" : 2722,
+        "+y" : 191,
+        "+z" : 422
+      }
+    },
+    {
+      "components" : [
+        "v02-administration-wing"
+      ],
+      "coverage" : {
+        "alphaPixels" : 7879,
+        "edgePixels" : 0,
+        "opaqueInteriorPixels" : 7879,
+        "shareOfAttributedOpaque" : 0.058762110036320786
+      },
+      "declaredBaseColorRGBA" : [
+        0.78000000000000003,
+        0.71999999999999997,
+        0.60999999999999999,
+        1
+      ],
+      "declaredBaseLuma" : 185,
+      "materialID" : "v02-warm-concrete",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.31891891891891894,
+      "observedPreChromaLuma" : {
+        "count" : 7879,
+        "maximum" : 180,
+        "median" : 59,
+        "minimum" : 35,
+        "p10" : 59,
+        "p25" : 59,
+        "p75" : 59,
+        "p90" : 59,
+        "p95" : 68
+      },
+      "observedRawLuma" : {
+        "count" : 7879,
+        "maximum" : 180,
+        "median" : 78,
+        "minimum" : 48,
+        "p10" : 78,
+        "p25" : 78,
+        "p75" : 78,
+        "p90" : 78,
+        "p95" : 82
+      },
+      "pattern" : "procedural-large-formed-panels",
+      "quantizerLumaDelta" : {
+        "count" : 7879,
+        "maximum" : 25,
+        "median" : 19,
+        "minimum" : -5,
+        "p10" : 17,
+        "p25" : 19,
+        "p75" : 19,
+        "p90" : 19,
+        "p95" : 19
+      },
+      "rawStep32Bins" : {
+        "48" : 203,
+        "80" : 7529,
+        "112" : 39,
+        "144" : 16,
+        "176" : 92
+      },
+      "rendererPatternImplemented" : false,
+      "valueRole" : "administration",
+      "visibleFacePixelCounts" : {
+        "+x" : 1163,
+        "+z" : 6716
+      }
+    },
+    {
+      "components" : [
+        "v02-personnel-door"
+      ],
+      "coverage" : {
+        "alphaPixels" : 1091,
+        "edgePixels" : 0,
+        "opaqueInteriorPixels" : 1091,
+        "shareOfAttributedOpaque" : 0.0081367511168455361
+      },
+      "declaredBaseColorRGBA" : [
+        0.92000000000000004,
+        0.72999999999999998,
+        0.40000000000000002,
+        1
+      ],
+      "declaredBaseLuma" : 190,
+      "materialID" : "v02-warm-glazing",
+      "medianPreChromaRetentionFromDeclaredBase" : 0.32631578947368423,
+      "observedPreChromaLuma" : {
+        "count" : 1091,
+        "maximum" : 181,
+        "median" : 62,
+        "minimum" : 43,
+        "p10" : 57,
+        "p25" : 60,
+        "p75" : 68,
+        "p90" : 69,
+        "p95" : 152
+      },
+      "observedRawLuma" : {
+        "count" : 1091,
+        "maximum" : 183,
+        "median" : 75,
+        "minimum" : 52,
+        "p10" : 52,
+        "p25" : 75,
+        "p75" : 82,
+        "p90" : 82,
+        "p95" : 151
+      },
+      "pattern" : "muted-warm-glazing",
+      "quantizerLumaDelta" : {
+        "count" : 1091,
+        "maximum" : 23,
+        "median" : 13,
+        "minimum" : -6,
+        "p10" : 1,
+        "p25" : 12,
+        "p75" : 14,
+        "p90" : 15,
+        "p95" : 17
+      },
+      "rawStep32Bins" : {
+        "48" : 120,
+        "80" : 886,
+        "112" : 17,
+        "144" : 17,
+        "176" : 51
+      },
+      "rendererPatternImplemented" : true,
+      "valueRole" : "staff-entrance",
+      "visibleFacePixelCounts" : {
+        "+x" : 991,
+        "+y" : 10,
+        "+z" : 90
+      }
+    }
+  ],
+  "method" : {
+    "camera" : "frozen SceneKit camera transform; CPU projection only",
+    "id" : "cpu-orthographic-visible-box-face-depth-raster-v1",
+    "newPixels" : false,
+    "newSceneKitRenderer" : false,
+    "newSnapshot" : false,
+    "occlusion" : "front-facing box faces resolved by interpolated camera-local depth",
+    "opaqueInteriorThreshold" : 250,
+    "sourceAlphaThreshold" : 8
+  },
+  "patternDispatch" : {
+    "fallbackBehavior" : "patternImage fills base color, unrecognized switch case adds no relief strokes",
+    "implementedPatterns" : [
+      "compressible-seal",
+      "cut-stone",
+      "divided-light",
+      "fine-galvanized",
+      "foliage-cluster",
+      "horizontal-section-joints",
+      "joint-line",
+      "large-scored-slabs",
+      "muted-mullion-grid",
+      "muted-warm-glazing",
+      "painted-steel",
+      "procedural-formed-concrete",
+      "procedural-vertical-corrugation",
+      "recessed-panel",
+      "restrained-oxide",
+      "rolled-membrane-seams",
+      "running-bond-relief",
+      "rusticated-block",
+      "solid",
+      "solid-depth-cavity",
+      "solid-safety-paint",
+      "stacked-brick",
+      "staggered-slate"
+    ],
+    "unsupportedReferencedPatterns" : [
+      "v02-formed-concrete:procedural-large-formed-panels",
+      "v02-galvanized:procedural-wide-corrugation",
+      "v02-industrial-glazing:broad-mullion-grid",
+      "v02-painted-steel:procedural-wide-corrugation",
+      "v02-safety-trim:painted-safety-steel",
+      "v02-warm-concrete:procedural-large-formed-panels"
+    ]
+  },
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-v03-retained-material-segmentation"
+}

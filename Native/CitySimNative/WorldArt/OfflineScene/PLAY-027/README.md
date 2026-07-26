@@ -42,10 +42,13 @@ The schema-2 v3 sampling contract was independently approved at
 at `a337a4f8b56c849f15d6be5833d1d22553f58d69`. Exactly one Commercial L4
 `source-v03` N/E/S/W set was authored on that contract and independently
 accepted through clean source candidate
-`bf3e24b2b465870f131ac0a01a2327ac4969d5d5`. Published authority
-`91f885925fd601786fa95dbb969b71fefef5ddcd` now authorizes exactly Industrial
-L1 variant-zero N/E/S/W under the same schema-2 v3 contract and one-level
-independent-review gate. Industrial L2-L4 remain unauthorized.
+`bf3e24b2b465870f131ac0a01a2327ac4969d5d5`. Industrial L1 variant-zero
+N/E/S/W source-v05 was independently accepted at
+`79668c347e58d602f9627c73cb09e3272a83ef57` and is the shipping Industrial L1
+source through PLAY-062. Industrial L2 source-v03 through source-v08 and their
+raw, repeat, locality, lighting, canonicalization, and finite-equivalence
+diagnostic trails are rejected and frozen. No Industrial L2 source is
+accepted. Industrial L3-L4 remain blocked.
 
 Every direction has its own complete `scene.json`. Each descriptor explicitly
 defines all four facade planes, window bays, its one direction-specific
@@ -82,19 +85,34 @@ rotating a camera, a scene, or a sibling raster.
 
 ## Renderer diagnostic isolation
 
-Rejected retained raws may be investigated with two non-authority controls:
+Rejected retained raws may be investigated with task-owned non-authority
+controls:
 
 ```text
 --diagnostic-antialiasing current|none
 --diagnostic-scene-shadows current|disabled
+--diagnostic-material-lighting current|constant-unlit
 ```
 
-The defaults preserve the existing 4x SceneKit MSAA and scene-shadow settings.
+The defaults preserve the existing SceneKit antialiasing, shadow, Lambert
+material-lighting, and scene-light settings. The constant/unlit control
+preserves authored material colors and geometry while changing SceneKit
+materials to `.constant` and disabling scene lights for causal isolation.
 Any non-default diagnostic is rejected unless both its PNG and provenance
 record are written under a `diagnostics/` path. Diagnostic records explicitly
 state that descriptor geometry is unchanged and the output is not source-art
 authority. The deterministic registered southeast footprint shadow remains
 fixed when SceneKit self/cast shadows are isolated.
+
+The additive schema-2 `sceneKitLightingMode` field defaults to
+`lambert-scene-lights` when omitted, preserving every legacy and accepted
+descriptor. The resolver accepts `authored-constant-v1` only for an Industrial
+L2 `source-v05` source-authority descriptor or the approved East-only
+`source-v06` topology repair. That mode is descriptor-bound:
+all SceneKit materials use `.constant`, both descriptor-authored scene lights
+are zero-intensity and non-shadowing, and the authored southeast contact shadow
+remains geometry. A diagnostic CLI override still cannot write source
+authority.
 
 ## Descriptor-bound sampling compatibility
 
@@ -109,6 +127,12 @@ block. Its frozen contract is:
 ```text
 contractID: play027-deterministic-4x-no-msaa-lanczos-v1, -v2, or -v3
 sceneKitAntialiasing: none
+sceneKitShadows: current (default when omitted), or disabled only for
+  industrial_l02/source-v04, source-v05, or East-only
+  source-v06/source-authority
+sceneKitLightingMode: lambert-scene-lights (default when omitted), or
+  authored-constant-v1 only for industrial_l02/source-v05 or East-only
+  source-v06/source-authority
 linearOversamplingFactor: 4
 downsample: CILanczosScaleTransform, scale 0.25, aspect 1
 CI context: software, no intermediate cache, extended-sRGB -> sRGB
@@ -164,8 +188,11 @@ No committed binary, new package target, build-script hook, or product
 dependency is permitted.
 
 The structural-boundary validator compiles from the same task-owned descriptor
-model and rejects exact shared Y planes between overlapping authored mass,
-roof, trim, chimney, and rooftop-prop volumes:
+model. It rejects exact shared Y planes between overlapping authored mass,
+roof, trim, chimney, and rooftop-prop volumes. It also rejects multiple
+mass-block material owners on the camera-visible positive or negative X/Z
+plane. `--directions` may narrow a governed one-direction repair without
+mutating frozen siblings:
 
 ```bash
 env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
@@ -174,6 +201,21 @@ env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
   Sources/SceneDescriptor.swift \
   Tools/ValidateStructuralBoundaries.swift \
   -o /private/tmp/play027-offline-tools/validate-structural-boundaries
+```
+
+The Industrial L2 East source-v06 topology repair is frozen by a standalone
+task-owned descriptor tool. It requires the exact source-v05 N/E/S/W and
+material hashes, archives source-v05 East byte-for-byte, changes only the
+approved hall decomposition and revision bindings, and emits a preservation
+report:
+
+```bash
+env CLANG_MODULE_CACHE_PATH=/private/tmp/play027-module-cache/clang \
+  SWIFT_MODULECACHE_PATH=/private/tmp/play027-module-cache/swift \
+  xcrun swiftc -parse-as-library \
+  Tools/AdvanceIndustrialL2V6EastDescriptor.swift \
+  -framework CryptoKit \
+  -o /private/tmp/play027-offline-tools/advance-industrial-l2-v6-east
 ```
 
 Retained raw failures can be localized without changing source art using the
@@ -271,7 +313,8 @@ payload. It never edits an accepted descriptor or source record.
 
 Residential L1 and Residential L2-L4 have passed their independent source-art
 gates. Commercial L1-L4 are accepted as non-shipping source-art authority.
-Industrial L1 `source-v01` alone is authorized on the independently approved
-schema-2 v3 sampling contract for governed source production and independent
-review. Industrial L2-L4, additional variants, renderer ingestion, packaging,
-and production selection remain blocked without further integration authority.
+Industrial L1 `source-v05` is accepted and shipping through PLAY-062.
+Industrial L2 source-v03 through source-v08 are rejected and frozen; no
+Industrial L2 source is accepted. Industrial L3-L4, additional variants,
+renderer ingestion, packaging, and production selection remain blocked
+without further integration authority.

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "baseline": "25c3c2a3f1cc52a958b83089d66af311a6b1553e",
+  "sourceRevision": "source-v10",
+  "frozenSourceDescriptorsMutatedAfterFreeze": false,
+  "frozenMaterialLibraryMutated": false,
+  "sourceV09AndPriorRejectionTrailsMutated": false,
+  "acceptedResidentialCommercialIndustrialL1TrackedBytesMutated": false,
+  "shippingRuntimeSharedPackageBuildMutated": false,
+  "normalizationPerformed": false,
+  "productionSelected": false,
+  "passed": true
+}

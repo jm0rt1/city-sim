@@ -302,6 +302,7 @@ enum ValidateRenderedSourcesMain {
             in: arguments
         )
         var records: [[String: Any]] = []
+        var fileHashes: [String] = []
         var pixelHashes: [String] = []
         var basicChecksPassed = true
 
@@ -319,6 +320,8 @@ enum ValidateRenderedSourcesMain {
                 ? candidateURL
                 : repositoryRoot.appendingPathComponent(parts[1])
             let fileData = try Data(contentsOf: sourceURL)
+            let fileHash = sha256(fileData)
+            fileHashes.append(fileHash)
             let pixels = try loadCanonicalPixels(from: sourceURL)
             let inspection = kind == "raw"
                 ? inspect(pixels)
@@ -355,7 +358,7 @@ enum ValidateRenderedSourcesMain {
                     sourceURL,
                     repositoryRoot: repositoryRoot
                 ),
-                "fileSHA256": sha256(fileData),
+                "fileSHA256": fileHash,
                 "pixelSHA256": pixelHash,
                 "pixels": [pixels.width, pixels.height],
                 "inspection": inspection,
@@ -363,10 +366,16 @@ enum ValidateRenderedSourcesMain {
             ])
         }
 
+        let uniqueFileHashCount = Set(fileHashes).count
         let uniquePixelHashCount = Set(pixelHashes).count
-        let expectationPassed = expectation == "identical"
+        let fileExpectationPassed = expectation == "identical"
+            ? uniqueFileHashCount == 1
+            : uniqueFileHashCount == fileHashes.count
+        let pixelExpectationPassed = expectation == "identical"
             ? uniquePixelHashCount == 1
             : uniquePixelHashCount == pixelHashes.count
+        let expectationPassed =
+            fileExpectationPassed && pixelExpectationPassed
         let report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
@@ -374,7 +383,10 @@ enum ValidateRenderedSourcesMain {
             "sourceKind": kind,
             "canonicalPixelFormat": "8-bit sRGB premultiplied RGBA",
             "pixelExpectation": expectation,
-            "pixelExpectationPassed": expectationPassed,
+            "fileExpectationPassed": fileExpectationPassed,
+            "pixelExpectationPassed": pixelExpectationPassed,
+            "identityExpectationPassed": expectationPassed,
+            "uniqueFileHashCount": uniqueFileHashCount,
             "uniquePixelHashCount": uniquePixelHashCount,
             "sourceCount": records.count,
             "sources": records,

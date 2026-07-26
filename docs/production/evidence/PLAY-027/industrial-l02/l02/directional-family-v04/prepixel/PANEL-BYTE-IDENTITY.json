@@ -1,0 +1,22 @@
+{
+  "analyticDependencyExclusion": {
+    "panelBuilderReadsEntrance": false,
+    "v04CompatibilityFieldsAreEntranceOnly": true
+  },
+  "deterministicReplayProcessCount": 2,
+  "panelBuilderBinarySHA256": "27d2d9384fe229681f2af5ebaf4701a22f3bf349dd86d03266251b06e0f8f3db",
+  "panelBuilderSourceSHA256": "07625630e25dc33e4546aae5ffec4180a70198cab3fd882a8c66aec5ab883823",
+  "panels": {
+    "INDUSTRIAL-L01-VS-L02-FOOTPRINT-PREPIXEL-COLOR.png": "207bff16e29a9d1deb09422b141617801dd60ee6fb41508b84954e08f638b509",
+    "INDUSTRIAL-L01-VS-L02-FOOTPRINT-PREPIXEL-GRAYSCALE.png": "daa4a8d72ea36b5c550d2239efb116f668461fecd9cce509e210bf5838964fd9",
+    "INDUSTRIAL-L02-DIRECTION-TURNTABLE-PREPIXEL.png": "88a93fb2acd9ced5eef6b2d25e0711e3a9d2835b6a7f4e27a0f480e25d8c336e",
+    "INDUSTRIAL-L02-FAR-EDGE-FRONTAGE-NORTH-WEST-PREPIXEL.png": "29fe445e89a3810f929b20b1bf9b8796d26da4561a2192170baca7fbd56755f7"
+  },
+  "productionSelected": false,
+  "replayAEqualsCommittedV02Panels": true,
+  "replayAEqualsReplayB": true,
+  "schema": 1,
+  "sourceAuthority": false,
+  "task": "PLAY-027",
+  "type": "industrial-l02-directional-family-v04-prepixel-panel-byte-identity"
+}

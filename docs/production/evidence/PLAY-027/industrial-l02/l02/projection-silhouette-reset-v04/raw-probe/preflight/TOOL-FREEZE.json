@@ -1,0 +1,48 @@
+{
+  "approvedPrepixelCommit": "f35bddcdab0b0ac6c4ed0fd6635c840ae7c4cc5b",
+  "alphaCompositorContractSHA256": "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9",
+  "canonicalGeometrySHA256": "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3",
+  "compile": {
+    "probeBinarySHA256": "41945bd380f96e07dd513b4c961121511c5aa4061dbb4d38880829a6c1a20f14",
+    "probeWarningsAsErrorsPassed": true,
+    "reviewBinarySHA256": "8cf285f434144d320489af1375c2b295868cad541d44fe292f5584506366bfda",
+    "reviewWarningsAsErrorsPassed": true
+  },
+  "descriptorSHA256": "fdb92d39acb8847178a95d1e0f6315332a93eda01df71388e54582fe1e6f12bf",
+  "guards": {
+    "mismatchedCommitExit": 133,
+    "mismatchedCommitRejectedBeforeMetal": true,
+    "mismatchedOutputExit": 133,
+    "mismatchedOutputRejectedBeforeMetal": true,
+    "reviewMismatchedPathsExit": 133,
+    "reviewMismatchedPathsRejected": true
+  },
+  "materialLibrarySHA256": "31f500488b7d143e88015bf71b53db4d1a4b19076563dc3d774d61f00c8b83a3",
+  "operatingSystem": {
+    "buildVersion": "25E253",
+    "productName": "macOS",
+    "productVersion": "26.4.1"
+  },
+  "preservedV03": {
+    "handoffSHA256": "d1bf816ec8267b68d780fc4ab7b02d123a011d19fe3727994236c20ace9b9015",
+    "metricsSHA256": "cd55e28517b2e2ca5896d433f5a0646840786b8684a45c2f3ef0bd931f69c1c9",
+    "provenanceSHA256": "a8feb0b164d7d67c047de32e8291e4c4d16c220a8f72b6f46ef931b22a7b4db7",
+    "rawSHA256": "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba",
+    "rejectionSHA256": "3ccefb83cded63bf0958c4b28eabf00af8ccf4551dd4191d3675c4641110a877"
+  },
+  "probeToolSHA256": "33894c8329c4e87c36edfd5d4b08c1f3907b3afaa0aea7543ab6358aa2d8eab2",
+  "productionSelected": false,
+  "reviewToolSHA256": "0a8143da6901224ebd8460337e9cdc8895cd24979b1a1902df423f1b1eec508d",
+  "schema": 1,
+  "sourceRevision": "projection-silhouette-reset-art-proof-v04",
+  "swift": {
+    "appleSwiftVersion": "6.3.3",
+    "clangVersion": "2100.1.1.101",
+    "swiftDriverVersion": "1.148.6",
+    "target": "arm64-apple-macosx26.0"
+  },
+  "task": "PLAY-027",
+  "toolchainFingerprintSHA256": "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "type": "industrial-l02-east-v04-probe-tool-freeze",
+  "validatorReplaySHA256": "09c659428e3cb5a24b2cb3f83d996f3509d77897f0dc51f15b06af0eda7c608a"
+}

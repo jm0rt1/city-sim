@@ -1,0 +1,44 @@
+{
+  "attemptedProcesses": 4,
+  "directions": [
+    {
+      "direction": "north",
+      "exitCode": 133,
+      "outputEmitted": false,
+      "process": "primary-A",
+      "provenanceEmitted": false
+    },
+    {
+      "direction": "east",
+      "exitCode": 133,
+      "outputEmitted": false,
+      "process": "primary-A",
+      "provenanceEmitted": false
+    },
+    {
+      "direction": "south",
+      "exitCode": 133,
+      "outputEmitted": false,
+      "process": "primary-A",
+      "provenanceEmitted": false
+    },
+    {
+      "direction": "west",
+      "exitCode": 133,
+      "outputEmitted": false,
+      "process": "primary-A",
+      "provenanceEmitted": false
+    }
+  ],
+  "error": "SceneKit could not prepare the complete scene graph",
+  "failedStage": "SCNRenderer.prepare(scene, shouldAbortBlock:)",
+  "logicalBuildingID": "industrial_l02",
+  "normalizationStarted": false,
+  "passed": false,
+  "productionSelected": false,
+  "rendererSourceCommit": "e2690f524dbf468255605cfe77a236404a015fa9",
+  "repeatProcessesStarted": false,
+  "schema": 1,
+  "sourceRevision": "source-v03",
+  "task": "PLAY-027"
+}

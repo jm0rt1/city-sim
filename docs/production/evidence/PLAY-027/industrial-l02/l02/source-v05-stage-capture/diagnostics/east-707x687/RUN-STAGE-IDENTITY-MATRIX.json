@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "coordinate": [
+    707,
+    687
+  ],
+  "coordinateSystem": "top-left decoded RGBA source pixel",
+  "comparisonKind": "full decoded RGBA SHA-256, local 3x3 SHA-256, and target RGBA",
+  "runs": [
+    {
+      "run": "run-a",
+      "stages": [
+        ["prequantized-in-memory", "860a9416acae92a2dc240c35abfbc630434eadbb0775ed2d9ad67e5df580d65e", "66373606ef9d42666f90b715a9f7cd206d73d7e9918e70513d2640029871d8a9", [126, 76, 50, 255]],
+        ["quantized-before-majority-in-memory", "a32f3c701275e32efcbfddb3c50eb29ebd66ec02cf0e22c318d9d697443fc868", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]],
+        ["post-majority-in-memory", "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]],
+        ["imageio-pre-sips-decoded", "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]],
+        ["final-sips-decoded", "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]]
+      ]
+    },
+    {
+      "run": "run-b",
+      "stages": [
+        ["prequantized-in-memory", "626fdc4280734616636676e5772a5b72a63bbf8cf0c79f1c2c893d5b1e4ecd7e", "ceb0ad8298513942c09e8a0011d6acfdfd2bfb28c0b66b0b4693807ac4041ad1", [124, 93, 68, 255]],
+        ["quantized-before-majority-in-memory", "6eeea5c6d10559261a36cef712a9858181ab48cbe52a1c85a2d0d63377b93b66", "53c525c0104ceaf10140d4f8e57943ff25d5d68ac4e713cd98f5a8058bc03567", [144, 112, 80, 255]],
+        ["post-majority-in-memory", "a8f4c79b67f172d01f0398c0bdb9493686b2c301b575b232e6f2906a990c6a6c", "6dea7d5a76105e46749fe125c8c7f3ff80dc4e2ed6421f8c95b99604ce1d7d8d", [144, 112, 80, 255]],
+        ["imageio-pre-sips-decoded", "a8f4c79b67f172d01f0398c0bdb9493686b2c301b575b232e6f2906a990c6a6c", "6dea7d5a76105e46749fe125c8c7f3ff80dc4e2ed6421f8c95b99604ce1d7d8d", [144, 112, 80, 255]],
+        ["final-sips-decoded", "a8f4c79b67f172d01f0398c0bdb9493686b2c301b575b232e6f2906a990c6a6c", "6dea7d5a76105e46749fe125c8c7f3ff80dc4e2ed6421f8c95b99604ce1d7d8d", [144, 112, 80, 255]]
+      ]
+    },
+    {
+      "run": "run-c",
+      "stages": [
+        ["prequantized-in-memory", "860a9416acae92a2dc240c35abfbc630434eadbb0775ed2d9ad67e5df580d65e", "66373606ef9d42666f90b715a9f7cd206d73d7e9918e70513d2640029871d8a9", [126, 76, 50, 255]],
+        ["quantized-before-majority-in-memory", "a32f3c701275e32efcbfddb3c50eb29ebd66ec02cf0e22c318d9d697443fc868", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]],
+        ["post-majority-in-memory", "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]],
+        ["imageio-pre-sips-decoded", "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]],
+        ["final-sips-decoded", "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519", "3012c97d8aef708c6acae004d50481aed5188ef1fc5b114d6d9e84dd55f77680", [144, 80, 48, 255]]
+      ]
+    }
+  ],
+  "crossRunResult": {
+    "runAEqualsRunCAtEveryStage": true,
+    "runBDiffersFromRunAAndRunCAtEveryStage": true,
+    "earliestFullFrameDivergentStage": "prequantized-in-memory",
+    "earliestLocal3x3DivergentStage": "prequantized-in-memory",
+    "earliestTargetRGBADivergentStage": "prequantized-in-memory"
+  },
+  "postMajorityTarget": {
+    "runA": {
+      "eligible": false,
+      "mutated": false,
+      "channelReasons": [
+        "no-adjacent-bin-boundary",
+        "no-adjacent-bin-boundary",
+        "no-adjacent-bin-boundary"
+      ]
+    },
+    "runB": {
+      "eligible": false,
+      "mutated": false,
+      "channelReasons": [
+        "no-adjacent-bin-boundary",
+        "no-adjacent-bin-boundary",
+        "no-adjacent-bin-boundary"
+      ]
+    },
+    "runC": {
+      "eligible": false,
+      "mutated": false,
+      "channelReasons": [
+        "no-adjacent-bin-boundary",
+        "no-adjacent-bin-boundary",
+        "no-adjacent-bin-boundary"
+      ]
+    }
+  },
+  "productionSelected": false
+}

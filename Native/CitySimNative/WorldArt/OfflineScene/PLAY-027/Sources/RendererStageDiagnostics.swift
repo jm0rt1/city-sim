@@ -2,6 +2,7 @@ import CoreGraphics
 import CryptoKit
 import Foundation
 import ImageIO
+import UniformTypeIdentifiers
 
 enum RendererStageDiagnosticsError: Error, CustomStringConvertible {
     case invalid(String)
@@ -69,6 +70,48 @@ func rendererPackedRGBA(
                     )
             }
         }
+    }
+    return rgba
+}
+
+func rendererCanonicalRGBA(
+    image: CGImage
+) throws -> [UInt8] {
+    var rgba = [UInt8](
+        repeating: 0,
+        count: image.width * image.height * 4
+    )
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+    let rendered = rgba.withUnsafeMutableBytes { storage -> Bool in
+        guard let context = CGContext(
+            data: storage.baseAddress,
+            width: image.width,
+            height: image.height,
+            bitsPerComponent: 8,
+            bytesPerRow: image.width * 4,
+            space: colorSpace,
+            bitmapInfo:
+                CGImageAlphaInfo.premultipliedLast.rawValue
+                | CGBitmapInfo.byteOrder32Big.rawValue
+        ) else {
+            return false
+        }
+        context.interpolationQuality = .none
+        context.draw(
+            image,
+            in: CGRect(
+                x: 0,
+                y: 0,
+                width: image.width,
+                height: image.height
+            )
+        )
+        return true
+    }
+    guard rendered else {
+        throw RendererStageDiagnosticsError.invalid(
+            "could not decode stage image as canonical sRGB RGBA8"
+        )
     }
     return rgba
 }
@@ -158,6 +201,242 @@ func rendererRGBAStageRecord(
             target: target
         ),
     ]
+}
+
+func rendererOversampledSupportWindowRecord(
+    image: CGImage,
+    geometry: OversampledSupportGeometry
+) throws -> [String: Any] {
+    let rgba = try rendererCanonicalRGBA(image: image)
+    let bounds = geometry.highResolutionWindowBoundsExclusive
+    guard
+        bounds.count == 4,
+        bounds[0] >= 0,
+        bounds[1] >= 0,
+        bounds[2] <= image.width,
+        bounds[3] <= image.height,
+        bounds[0] < bounds[2],
+        bounds[1] < bounds[3],
+        image.width
+            == 1536 * geometry.linearOversamplingFactor,
+        image.height
+            == 1024 * geometry.linearOversamplingFactor
+    else {
+        throw RendererStageDiagnosticsError.invalid(
+            "oversampled support geometry does not match the 4x frame"
+        )
+    }
+    var windowRGBA: [UInt8] = []
+    windowRGBA.reserveCapacity(
+        geometry.highResolutionWindowPixels[0]
+            * geometry.highResolutionWindowPixels[1] * 4
+    )
+    for y in bounds[1]..<bounds[3] {
+        let start = (y * image.width + bounds[0]) * 4
+        let end = (y * image.width + bounds[2]) * 4
+        windowRGBA.append(contentsOf: rgba[start..<end])
+    }
+    let expectedByteCount =
+        geometry.highResolutionWindowPixels[0]
+        * geometry.highResolutionWindowPixels[1] * 4
+    guard windowRGBA.count == expectedByteCount else {
+        throw RendererStageDiagnosticsError.invalid(
+            "oversampled support window byte count mismatch"
+        )
+    }
+    return [
+        "stage": "scenekit-4x-in-memory",
+        "coordinateSystem":
+            "top-left immutable decoded RGBA",
+        "sourceCGImageColorSpace":
+            image.colorSpace?.name.map { $0 as String }
+            ?? "not-declared",
+        "decodedColorSpace": "sRGB",
+        "decodedPixelFormat":
+            "rgba8-premultiplied-last-byte-order-32-big",
+        "decodeInterpolation": "none",
+        "fullFramePixels": [image.width, image.height],
+        "fullFrameDecodedRGBASHA256":
+            rendererStageSHA256(Data(rgba)),
+        "outputTargetCoordinate":
+            geometry.outputTargetCoordinate,
+        "downsampledInputCoordinate":
+            geometry.downsampledInputCoordinate,
+        "inversePixelCenterMapping":
+            "(outputPixel + 0.5) * 4 - 0.5",
+        "highResolutionCenterTwice":
+            geometry.highResolutionCenterTwice,
+        "highResolutionCenterDenominator": 2,
+        "supportWindowBoundsExclusive":
+            geometry.highResolutionWindowBoundsExclusive,
+        "supportWindowPixels":
+            geometry.highResolutionWindowPixels,
+        "supportWindowCapturedRadiusInputPixels":
+            geometry.capturedRadiusInputPixels,
+        "supportWindowBorderPolicy":
+            "reject-if-window-crosses-4x-frame",
+        "supportWindowPurpose":
+            "conservative CILanczosScaleTransform input support capture",
+        "supportWindowPixelLayout": "row-major-rgba8",
+        "supportWindowByteCount": windowRGBA.count,
+        "supportWindowRGBASHA256":
+            rendererStageSHA256(Data(windowRGBA)),
+        "supportWindowRGBA": windowRGBA,
+    ]
+}
+
+func rendererFullFrameRecord(
+    image: CGImage,
+    stage: String
+) throws -> [String: Any] {
+    let rgba = try rendererCanonicalRGBA(image: image)
+    return [
+        "stage": stage,
+        "pixels": [image.width, image.height],
+        "decodedColorSpace": "sRGB",
+        "decodedPixelFormat":
+            "rgba8-premultiplied-last-byte-order-32-big",
+        "decodedRGBAByteCount": rgba.count,
+        "decodedRGBASHA256":
+            rendererStageSHA256(Data(rgba)),
+    ]
+}
+
+func rendererPersistCompleteRGBAFrame(
+    image: CGImage,
+    to url: URL,
+    repositoryRoot: URL,
+    stage: String,
+    requiredFileName: String = "PRE-CANONICAL-4X.png"
+) throws -> [String: Any] {
+    guard
+        url.path.contains("/diagnostics/"),
+        url.lastPathComponent == requiredFileName,
+        !FileManager.default.fileExists(atPath: url.path)
+    else {
+        throw RendererStageDiagnosticsError.invalid(
+            "complete RGBA frame must use one new diagnostics \(requiredFileName) path"
+        )
+    }
+    let rgba = try rendererCanonicalRGBA(image: image)
+    var storage = rgba
+    let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
+    let outputImage = try storage.withUnsafeMutableBytes {
+        bytes -> CGImage in
+        guard
+            let context = CGContext(
+                data: bytes.baseAddress,
+                width: image.width,
+                height: image.height,
+                bitsPerComponent: 8,
+                bytesPerRow: image.width * 4,
+                space: colorSpace,
+                bitmapInfo:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ),
+            let output = context.makeImage()
+        else {
+            throw RendererStageDiagnosticsError.invalid(
+                "could not create complete RGBA diagnostic frame"
+            )
+        }
+        return output
+    }
+    try FileManager.default.createDirectory(
+        at: url.deletingLastPathComponent(),
+        withIntermediateDirectories: true
+    )
+    guard let destination = CGImageDestinationCreateWithURL(
+        url as CFURL,
+        UTType.png.identifier as CFString,
+        1,
+        nil
+    ) else {
+        throw RendererStageDiagnosticsError.invalid(
+            "could not create complete RGBA diagnostic destination"
+        )
+    }
+    CGImageDestinationAddImage(destination, outputImage, [
+        kCGImagePropertyPNGInterlaceType: 0,
+    ] as CFDictionary)
+    guard CGImageDestinationFinalize(destination) else {
+        throw RendererStageDiagnosticsError.invalid(
+            "could not finalize complete RGBA diagnostic PNG"
+        )
+    }
+    let decoded = try rendererDecodePNG(url)
+    guard
+        decoded.width == image.width,
+        decoded.height == image.height,
+        decoded.rgba == rgba
+    else {
+        throw RendererStageDiagnosticsError.invalid(
+            "persisted complete RGBA diagnostic frame does not reproduce the in-memory frame"
+        )
+    }
+    return [
+        "stage": stage,
+        "file": rendererRelativePath(
+            url,
+            repositoryRoot: repositoryRoot
+        ),
+        "fileSHA256": try rendererSHA256(url),
+        "pixels": [image.width, image.height],
+        "decodedColorSpace": "sRGB",
+        "decodedPixelFormat":
+            "rgba8-premultiplied-last-byte-order-32-big",
+        "decodedRGBAByteCount": rgba.count,
+        "inMemoryDecodedRGBASHA256":
+            rendererStageSHA256(Data(rgba)),
+        "persistedDecodedRGBASHA256":
+            rendererStageSHA256(Data(decoded.rgba)),
+        "persistedDecodeEqualsInMemory": true,
+        "productionSelected": false,
+    ]
+}
+
+func canonicalizePreLanczosFrameImage(
+    _ image: CGImage,
+    contract: SamplingPreLanczosCanonicalizerDescriptor
+) throws -> (
+    image: CGImage,
+    result: PreLanczosFrameCanonicalizationResult
+) {
+    let rgba = try rendererCanonicalRGBA(image: image)
+    let result = try canonicalizePreLanczosFrameRGBA(
+        sourceRGBA: rgba,
+        width: image.width,
+        height: image.height,
+        contract: contract
+    )
+    guard
+        let provider = CGDataProvider(
+            data: Data(result.rgba) as CFData
+        ),
+        let output = CGImage(
+            width: image.width,
+            height: image.height,
+            bitsPerComponent: 8,
+            bitsPerPixel: 32,
+            bytesPerRow: image.width * 4,
+            space: CGColorSpace(name: CGColorSpace.sRGB)!,
+            bitmapInfo: CGBitmapInfo(
+                rawValue:
+                    CGImageAlphaInfo.premultipliedLast.rawValue
+                    | CGBitmapInfo.byteOrder32Big.rawValue
+            ),
+            provider: provider,
+            decode: nil,
+            shouldInterpolate: false,
+            intent: .defaultIntent
+        )
+    else {
+        throw PreLanczosFrameCanonicalizerError.invalid(
+            "could not create canonicalized pre-Lanczos image"
+        )
+    }
+    return (output, result)
 }
 
 func rendererPNGStageRecord(

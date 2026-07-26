@@ -1,0 +1,74 @@
+{
+  "asset_id" : "commercial_l04",
+  "ground_pivot_source" : [
+    768,
+    896
+  ],
+  "normalization" : "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports",
+  "object_width" : 410,
+  "outputs" : [
+    {
+      "file" : "generated_v4_commercial_l04_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "7ea6e2b0fd3d5693073244ac5cdb22ab9ae29ab22a2f433f8820c611a0341115"
+    },
+    {
+      "file" : "generated_v4_commercial_l04_neighborhood.png",
+      "lod" : "neighborhood",
+      "pixels" : [
+        512,
+        342
+      ],
+      "sha256" : "066a93388b1704de13e0d937508f82c149da25372a3c7408f7bbd674a8227fad"
+    },
+    {
+      "file" : "generated_v4_commercial_l04_city.png",
+      "lod" : "city",
+      "pixels" : [
+        256,
+        171
+      ],
+      "sha256" : "10e9cc6658b0a1e829065f46fa9bf8d2d0304efc746902aaaaf404b96a8f0f06"
+    }
+  ],
+  "productionSelected" : false,
+  "reference_subject_width" : 234,
+  "registration" : {
+    "mode" : "uniform-object-registration",
+    "reference_subject_width" : 234,
+    "source_bbox" : [
+      630,
+      421,
+      869,
+      818
+    ],
+    "target_ground_pivot" : [
+      768,
+      896
+    ],
+    "target_origin" : [
+      559,
+      200
+    ],
+    "target_size" : [
+      419,
+      696
+    ],
+    "uniform_scale" : 1.7521367521367521
+  },
+  "schema" : 1,
+  "source_bbox" : [
+    559,
+    200,
+    978,
+    896
+  ],
+  "source_file" : "\/Users\/James\/.codex\/worktrees\/0648\/city-sim\/docs\/production\/evidence\/PLAY-027\/commercial-l01-l04\/l04\/diagnostics\/4x-no-msaa-software-lanczos-v1\/west-run-a.png",
+  "source_sha256" : "889de4bfb6eda7ae1eed79669918ca5089590a80672eff6ce6a63a3b2126832a",
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source normalizer"
+}

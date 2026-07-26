@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "status": "proposal-only",
+  "recommendation": "authorize one separate three-process Industrial L2 East validation triplet using the frozen coordinate-scoped finite equivalence table",
+  "captureToolingCommit": "310f748b4475051522585178d146281af934ffd2",
+  "inputs": {
+    "freshMetalProcessCount": 3,
+    "uniquePreCanonical4xIdentityCount": 3,
+    "unstableCoordinateCount": 57,
+    "unstableBounds4x": [
+      2727,
+      1575,
+      3297,
+      1954
+    ],
+    "unstableAlphaCoordinateCount": 0,
+    "unstableChromaCoordinateCount": 0
+  },
+  "mapping": {
+    "tableSHA256": "7c2d5940b8fca22d1e2cb15fa248ab678e8b8266fb3ed453332d82474284ed31",
+    "classCount": 2,
+    "tupleCount": 15,
+    "coordinateCount": 57,
+    "scope": "exact proven unstable coordinates only",
+    "crossRunStateAtApplication": "none",
+    "outsideCoordinatePolicy": "leave byte-exact",
+    "unknownTupleAtGovernedCoordinatePolicy": "reject",
+    "ambiguousClassPolicy": "reject",
+    "hashDriftPolicy": "reject"
+  },
+  "tools": {
+    "derivationSourceSHA256": "4d461392a9467e16f5325e80b89c7fbee515744ef56866e4b77ffa2ce8be771c",
+    "derivationBinarySHA256": "30fddb775291c614e6d1ff5f802d6e5d9a2a60a0ae5c4b06a97af879598318e3",
+    "reviewSourceSHA256": "9f7965971de3fd6a416257ff927a86e2f9073e82968f351d65ab968b4d1d0ece",
+    "reviewBinarySHA256": "16070fb15f2cafd57d8ec465234253605663ee30ebc9271b8dcd181f2891e82f"
+  },
+  "application": {
+    "mapped4xUniqueDecodedIdentityCount": 1,
+    "mapped4xDecodedRGBASHA256": "fa69deb012fd6b4d6aecbfa8846db17692c000aa39bafc8173065757bbecef38",
+    "changedPixelsByRun": {
+      "run-a": 34,
+      "run-b": 46,
+      "run-c": 34
+    },
+    "changedRGBChannelsByRun": {
+      "run-a": 97,
+      "run-b": 119,
+      "run-c": 97
+    },
+    "alphaChanged": false,
+    "chromaChanged": false
+  },
+  "comparisonToFrozenSourceV06": {
+    "finalUniqueFileIdentityCount": 1,
+    "finalFileSHA256": "f59566ff0dad474e499fbfd2d719e54fae3c432133b5e17b158ded8ebc609503",
+    "finalDecodedRGBASHA256": "dd0fe1b05c3c8d65a10ca2cfa8fac0bb368117acd0db750dbea160115787d249",
+    "changedPixelCount": 0,
+    "changedChannelCount": 0,
+    "occupiedBounds": [
+      619,
+      597,
+      1029,
+      906
+    ],
+    "native2xColorDifference": 0,
+    "native2xGrayscaleDifference": 0
+  },
+  "validationTripletConsumed": false,
+  "sourceV08Created": false,
+  "normalizationPerformed": false,
+  "productionSelected": false
+}

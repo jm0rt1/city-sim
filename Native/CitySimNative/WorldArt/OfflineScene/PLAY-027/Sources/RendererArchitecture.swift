@@ -43,6 +43,8 @@ struct EffectiveSamplingContract: Equatable {
     let contractID: String
     let descriptorSchema: Int
     let sceneKitAntialiasing: String
+    let sceneKitShadows: String
+    let sceneKitLightingMode: String
     let linearOversamplingFactor: Int
     let downsampleFilter: String
     let downsampleScale: Double
@@ -59,6 +61,8 @@ struct EffectiveSamplingContract: Equatable {
     let canonicalizerEncoder: String
     let canonicalizerPostEncoder: String
     let canonicalizerFormat: String
+    let preLanczosCanonicalizer:
+        SamplingPreLanczosCanonicalizerDescriptor?
     let postQuantizationCanonicalizer:
         SamplingPostQuantizationCanonicalizerDescriptor?
     let purpose: String
@@ -69,6 +73,8 @@ enum DescriptorSamplingResolver {
         contractID: "play027-legacy-schema1-factor2-msaa4x-v1",
         descriptorSchema: 1,
         sceneKitAntialiasing: "multisampling4X",
+        sceneKitShadows: "current",
+        sceneKitLightingMode: "lambert-scene-lights",
         linearOversamplingFactor: 2,
         downsampleFilter: "CILanczosScaleTransform",
         downsampleScale: 0.5,
@@ -85,6 +91,7 @@ enum DescriptorSamplingResolver {
         canonicalizerEncoder: "ImageIO",
         canonicalizerPostEncoder: "/usr/bin/sips",
         canonicalizerFormat: "png",
+        preLanczosCanonicalizer: nil,
         postQuantizationCanonicalizer: nil,
         purpose: "accepted-legacy-reproduction"
     )
@@ -119,6 +126,31 @@ enum DescriptorSamplingResolver {
         let isV1 = sampling.contractID == schema2ContractV1ID
         let isV2 = sampling.contractID == schema2ContractV2ID
         let isV3 = sampling.contractID == schema2ContractV3ID
+        let sceneKitShadows = sampling.sceneKitShadows ?? "current"
+        let sceneKitLightingMode =
+            sampling.sceneKitLightingMode ?? "lambert-scene-lights"
+        let isIndustrialL2SourceV04 =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v04"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV05 =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v05"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV06East =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v06"
+            && descriptor.viewDirection == "east"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV07East =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v07"
+            && descriptor.viewDirection == "east"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2AuthoredConstant =
+            isIndustrialL2SourceV05
+            || isIndustrialL2SourceV06East
+            || isIndustrialL2SourceV07East
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -126,6 +158,11 @@ enum DescriptorSamplingResolver {
                 sampling.purpose
             ),
             sampling.sceneKitAntialiasing == "none",
+            ["current", "disabled"].contains(sceneKitShadows),
+            [
+                "lambert-scene-lights",
+                "authored-constant-v1",
+            ].contains(sceneKitLightingMode),
             sampling.linearOversamplingFactor == 4,
             descriptor.camera.oversamplingFactor == 4,
             sampling.downsample.filter == "CILanczosScaleTransform",
@@ -146,6 +183,67 @@ enum DescriptorSamplingResolver {
         else {
             throw SamplingContractError.invalid(
                 "schema 2 sampling block does not match the frozen deterministic contract"
+            )
+        }
+        guard
+            (
+                (
+                    isIndustrialL2SourceV04
+                        || isIndustrialL2AuthoredConstant
+                )
+                    && sceneKitShadows == "disabled"
+            )
+                || (
+                    !isIndustrialL2SourceV04
+                    && !isIndustrialL2AuthoredConstant
+                    && sceneKitShadows == "current")
+        else {
+            throw SamplingContractError.invalid(
+                "SceneKit shadows may be disabled only by Industrial L2 source-v04/source-v05 or source-v06/source-v07 East source-authority descriptors"
+            )
+        }
+        guard
+            (
+                isIndustrialL2AuthoredConstant
+                    && sceneKitLightingMode == "authored-constant-v1"
+            )
+                || (
+                    !isIndustrialL2AuthoredConstant
+                    && sceneKitLightingMode == "lambert-scene-lights"
+                )
+        else {
+            throw SamplingContractError.invalid(
+                "authored-constant-v1 may be selected only by Industrial L2 source-v05 or source-v06/source-v07 East source-authority descriptors"
+            )
+        }
+        if isIndustrialL2SourceV07East {
+            guard
+                let preLanczos =
+                    sampling.preLanczosCanonicalizer,
+                preLanczos.algorithm
+                    == "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+                preLanczos.version == 1,
+                preLanczos.quantizationStep == 32,
+                preLanczos.midpointOffset == 8,
+                preLanczos.chromaBypassRGBA == [255, 0, 255, 255],
+                preLanczos.channels == "rgb-only",
+                preLanczos.opaquePixelPolicy
+                    == "quantize-each-rgb-channel",
+                preLanczos.transparentPixelPolicy
+                    == "zero-hidden-rgb",
+                preLanczos.partialAlphaPolicy == "reject",
+                preLanczos.preservesAlpha,
+                preLanczos.preservesChroma,
+                preLanczos.immutableSourceBuffer,
+                preLanczos.crossRunState == "none"
+            else {
+                throw SamplingContractError.invalid(
+                    "Industrial L2 source-v07 East pre-Lanczos canonicalizer mismatch"
+                )
+            }
+        } else if sampling.preLanczosCanonicalizer != nil {
+            throw SamplingContractError.invalid(
+                "pre-Lanczos canonicalization is authorized only for Industrial L2 source-v07 East"
             )
         }
         if isV1, sampling.postQuantizationCanonicalizer != nil {
@@ -219,6 +317,8 @@ enum DescriptorSamplingResolver {
             contractID: sampling.contractID,
             descriptorSchema: descriptor.schema,
             sceneKitAntialiasing: sampling.sceneKitAntialiasing,
+            sceneKitShadows: sceneKitShadows,
+            sceneKitLightingMode: sceneKitLightingMode,
             linearOversamplingFactor: sampling.linearOversamplingFactor,
             downsampleFilter: sampling.downsample.filter,
             downsampleScale: sampling.downsample.scale,
@@ -242,6 +342,8 @@ enum DescriptorSamplingResolver {
             canonicalizerPostEncoder:
                 sampling.canonicalizer.postEncoder,
             canonicalizerFormat: sampling.canonicalizer.format,
+            preLanczosCanonicalizer:
+                sampling.preLanczosCanonicalizer,
             postQuantizationCanonicalizer:
                 sampling.postQuantizationCanonicalizer,
             purpose: sampling.purpose

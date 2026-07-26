@@ -1,0 +1,121 @@
+{
+  "changedDescriptorPaths" : [
+    "sourceRevision",
+    "sceneGeometryID",
+    "sampling.sourceRevisionBinding",
+    "toolchainFingerprint",
+    "building.massBlocks[source-v05-hall -> source-v06-left/right/rear]"
+  ],
+  "logicalBuildingID" : "industrial_l02",
+  "materialLibrary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l02-v0-source-v05-materials.json",
+    "sha256" : "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815"
+  },
+  "normalizationPerformed" : false,
+  "preservationPayloadSHA256" : "584c1ae7b61cb1529e7d5551944366f1f7da21cbc904e54c7936204f6bfcf6b8",
+  "preservedSourceV05DirectionHashes" : {
+    "east" : "aa4ec6dba5eb89c23c7e475f725a8181fc5954f1503cca4b5a700c399f565b44",
+    "north" : "f776d7486efd04766816019960f38b46119e46cf31b72c3f22ab48294d6452f5",
+    "south" : "5a40700a9b25574cc2886120932ae41e05a7210959ae6a9bd1a67072a1e4875a",
+    "west" : "7b7afb7eed54558f73a7e5123d67b2b13c8876114c6684b0314b260c0db10433"
+  },
+  "productionSelected" : false,
+  "renderingAuthorizedByThisTool" : false,
+  "sceneGeometryID" : "industrial-l02-v0-east-integrated-logistics-geometry-v4",
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "sourceRevision" : "source-v06",
+  "sourceV05Descriptor" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v06-east-prepixel/source-v05-descriptor/east-source-v05.json",
+    "sha256" : "aa4ec6dba5eb89c23c7e475f725a8181fc5954f1503cca4b5a700c399f565b44"
+  },
+  "sourceV06Descriptor" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/industrial_l02/variant-0/east/scene.json",
+    "sha256" : "70b36a0e76581524e64d40f19e364659eed6a53d7f7ab8d8924c51ba5d0951dd"
+  },
+  "status" : "PREPIXEL-ONLY",
+  "task" : "PLAY-027",
+  "toolchainFingerprint" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v06-east.json",
+    "sha256" : "8fca3da76664f90c868f1c604e0d65e3dc681c4f0e7bad1295376e4d8f4afb15"
+  },
+  "topologyRepair" : {
+    "added" : [
+      {
+        "dimensions" : [
+          2,
+          42,
+          38
+        ],
+        "id" : "i02-east-high-assembly-hall-left-strip",
+        "materialID" : "i02-v05-corrugated-northwest",
+        "positionWorld" : [
+          -24,
+          23,
+          6
+        ]
+      },
+      {
+        "dimensions" : [
+          20,
+          42,
+          38
+        ],
+        "id" : "i02-east-high-assembly-hall-right-strip",
+        "materialID" : "i02-v05-corrugated-northwest",
+        "positionWorld" : [
+          3,
+          23,
+          6
+        ]
+      },
+      {
+        "dimensions" : [
+          16,
+          42,
+          24
+        ],
+        "id" : "i02-east-high-assembly-hall-rear-block",
+        "materialID" : "i02-v05-corrugated-northwest",
+        "positionWorld" : [
+          -15,
+          23,
+          -1
+        ]
+      }
+    ],
+    "externalUnionBoundsWorld" : {
+      "x" : [
+        -25,
+        13
+      ],
+      "y" : [
+        2,
+        44
+      ],
+      "z" : [
+        -13,
+        25
+      ]
+    },
+    "processTowerUnchanged" : {
+      "dimensions" : [
+        16,
+        48,
+        14
+      ],
+      "id" : "i02-east-process-tower",
+      "materialID" : "i02-v05-brick-northwest",
+      "positionWorld" : [
+        -15,
+        26.5,
+        18
+      ]
+    },
+    "removed" : [
+      "i02-east-high-assembly-hall"
+    ],
+    "visiblePositiveZMaterialOwner" : "i02-east-process-tower"
+  },
+  "viewDirection" : "east"
+}

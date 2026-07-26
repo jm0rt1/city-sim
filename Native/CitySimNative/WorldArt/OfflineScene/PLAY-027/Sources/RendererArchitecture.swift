@@ -151,6 +151,17 @@ enum DescriptorSamplingResolver {
             isIndustrialL2SourceV05
             || isIndustrialL2SourceV06East
             || isIndustrialL2SourceV07East
+        let isIndustrialL3SourceV02 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.sourceRevision == "source-v02"
+            && ["north", "east", "south", "west"].contains(
+                descriptor.viewDirection
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+        let isAuthoredConstantSource =
+            isIndustrialL2AuthoredConstant
+            || isIndustrialL3SourceV02
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -189,31 +200,31 @@ enum DescriptorSamplingResolver {
             (
                 (
                     isIndustrialL2SourceV04
-                        || isIndustrialL2AuthoredConstant
+                        || isAuthoredConstantSource
                 )
                     && sceneKitShadows == "disabled"
             )
                 || (
                     !isIndustrialL2SourceV04
-                    && !isIndustrialL2AuthoredConstant
+                    && !isAuthoredConstantSource
                     && sceneKitShadows == "current")
         else {
             throw SamplingContractError.invalid(
-                "SceneKit shadows may be disabled only by Industrial L2 source-v04/source-v05 or source-v06/source-v07 East source-authority descriptors"
+                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02 N/E/S/W v3 source-authority descriptors"
             )
         }
         guard
             (
-                isIndustrialL2AuthoredConstant
+                isAuthoredConstantSource
                     && sceneKitLightingMode == "authored-constant-v1"
             )
                 || (
-                    !isIndustrialL2AuthoredConstant
+                    !isAuthoredConstantSource
                     && sceneKitLightingMode == "lambert-scene-lights"
                 )
         else {
             throw SamplingContractError.invalid(
-                "authored-constant-v1 may be selected only by Industrial L2 source-v05 or source-v06/source-v07 East source-authority descriptors"
+                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions or Industrial L3 source-v02 N/E/S/W v3 source-authority descriptors"
             )
         }
         if isIndustrialL2SourceV07East {

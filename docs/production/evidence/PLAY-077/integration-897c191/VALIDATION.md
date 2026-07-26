@@ -14,8 +14,11 @@
   `docs/production/evidence/PLAY-077/candidate-b04f4e2/VALIDATION.md`
 
 The six ordered lane commits were cherry-picked without conflict onto clean
-master. The lane candidate and all six submitted commits are ancestors of the
-integrated product.
+master. Their master commits are patch-equivalent to the submitted lane
+commits; the original lane hashes are not literal ancestors because
+cherry-picking created new commit identities. `git range-diff` marks all six
+pairs as exact equivalents. Lane closure therefore requires a normal
+non-rewriting merge from published master rather than a fast-forward.
 
 ## Integration validation
 

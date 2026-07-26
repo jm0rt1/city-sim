@@ -686,6 +686,11 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Invented simulation truth, unaccepted art, mirroring/rotation/aliasing, gameplay/UI/persistence changes, or hero-frame-only work.
 - **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
+- **Art-first queue:** Wave 010 freezes the clean renderer boundary through
+  `bfcd46c`/published `4e5d79f`. The lane's next production mutation is the R1
+  ingestion window for one independently approved PLAY-027 Industrial L2
+  N/E/S/W family; broader composition resumes after that batch is published or
+  independently rejected.
 
 ### [x] PLAY-074: Make building and recovery obvious on the map
 
@@ -711,6 +716,9 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Product repair, coaching, candidate substitution, rubric changes, fixture-only acceptance, or author scoring.
 - **Acceptance:** 20/20 with every category 4/4, zero P0/P1 and zero automatic rejects, plus material preference over `87e1e68` at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-075.playtest-quality.md`.
+- **Art-first queue:** PLAY-075 performs one focused exact-candidate staged-app
+  disposition for each Wave 010 art ingestion. These narrow passes do not
+  replace or pre-score the final 20/20 release gate.
 
 ### [ ] PLAY-076: Grow the opening into a believable starter town
 

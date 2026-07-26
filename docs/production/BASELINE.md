@@ -134,3 +134,8 @@ accepted in the product baseline. PLAY-027/CONTRACT-011 remains the active
 visual-breadth continuation for Commercial and Industrial source production.
 Wave 008 is the active combined product program under
 `docs/production/WAVE-008-CITY-WITH-A-SECOND-ACT.md`.
+Wave 009 remains the final city-not-board quality bar. Wave 010, defined by
+`docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`, temporarily fixes the
+renderer queue around small independently accepted art batches: Industrial L2
+is first, followed by separately authorized L3/L4 families, then PLAY-073
+composition closeout against the truthful PLAY-076 opening.

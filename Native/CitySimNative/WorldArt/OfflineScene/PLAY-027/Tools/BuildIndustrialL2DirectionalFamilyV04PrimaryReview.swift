@@ -455,19 +455,21 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
         } else {
             candidateFamily = "v04"
         }
-        guard candidateFamily == "v04" || candidateFamily == "v05" else {
+        guard
+            candidateFamily == "v04"
+                || candidateFamily == "v05"
+                || candidateFamily == "v07"
+        else {
             throw IndustrialL2DirectionalPrimaryReviewError.invalid(
-                "candidate family must be v04 or v05"
+                "candidate family must be v04, v05, or v07"
             )
         }
         let candidateEvidenceFamily =
-            candidateFamily == "v05"
-            ? "directional-family-v05"
-            : "directional-family-v04"
+            "directional-family-\(candidateFamily)"
         let northAttempt =
-            candidateFamily == "v05"
-            ? "north-primary-v01"
-            : "north-primary-v02"
+            candidateFamily == "v04"
+            ? "north-primary-v02"
+            : "north-primary-v01"
         let westAttempt = "west-primary-v01"
 
         let directions = [
@@ -593,7 +595,7 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
             try image(
                 rgba: neutralReviewRGBA(
                     $0,
-                    replaceAllExactChroma: candidateFamily == "v05"
+                    replaceAllExactChroma: candidateFamily != "v04"
                 ),
                 width: $0.width,
                 height: $0.height
@@ -604,7 +606,7 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 rgba: grayscale(
                     neutralReviewRGBA(
                         $0,
-                        replaceAllExactChroma: candidateFamily == "v05"
+                        replaceAllExactChroma: candidateFamily != "v04"
                     )
                 ),
                 width: $0.width,
@@ -688,24 +690,55 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
         let executableURL = URL(
             fileURLWithPath: CommandLine.arguments[0]
         ).standardizedFileURL
+        let rendererSourceCommit =
+            candidateFamily == "v07"
+            ? "4ae0f3cb38867260685a5eecfed881bda71bde24"
+            : "ba0c233722535db06d5a0000438740b720a4222e"
+        let rendererBinarySHA256 =
+            candidateFamily == "v07"
+            ? "2283632f7445b467632fae414e23e6ebd31b7a89fa2dbacbd934051eb3aa301f"
+            : "f36e9c0c693b3738c9ac4e9fb91866271dbb4eda0589fb62fab4b247bc2052ea"
+        let rawTechnicalReport: [String: Any] = [
+            "schema": 1,
+            "task": "PLAY-027",
+            "candidateFamily": candidateFamily,
+            "sources": records,
+            "sourceCount": records.count,
+            "uniqueRawFileHashCount": uniqueFiles,
+            "uniqueDecodedPixelHashCount": uniquePixels,
+            "rawUniquenessPassed": uniquenessPassed,
+            "technicalPassed": allTechnicalPassed,
+            "sourceAuthority": false,
+            "productionSelected": false,
+        ]
+        let rawTechnicalData = try JSONSerialization.data(
+            withJSONObject: rawTechnicalReport,
+            options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        )
+        var terminatedRawTechnical = rawTechnicalData
+        terminatedRawTechnical.append(0x0a)
+        try terminatedRawTechnical.write(
+            to: outputDirectory.appendingPathComponent(
+                "RAW-TECHNICAL-UNIQUENESS.json"
+            ),
+            options: .atomic
+        )
         let report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
             "checkpoint":
                 "Industrial L2 \(candidateFamily.uppercased()) N/E/W raw review",
             "candidateFamily": candidateFamily,
-            "rendererSourceCommit":
-                "ba0c233722535db06d5a0000438740b720a4222e",
-            "rendererBinarySHA256":
-                "f36e9c0c693b3738c9ac4e9fb91866271dbb4eda0589fb62fab4b247bc2052ea",
+            "rendererSourceCommit": rendererSourceCommit,
+            "rendererBinarySHA256": rendererBinarySHA256,
             "reviewToolFile":
                 "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL2DirectionalFamilyV04PrimaryReview.swift",
             "reviewToolBinarySHA256":
                 digest(try Data(contentsOf: executableURL)),
             "metalProcesses": [
-                "northV04Primary": 1,
+                "northCandidatePrimary": 1,
                 "eastV05AnchorInherited": 1,
-                "westV04Primary": 1,
+                "westCandidatePrimary": 1,
                 "south": 0,
                 "repeatProcesses": 0,
             ],
@@ -722,7 +755,7 @@ enum BuildIndustrialL2DirectionalFamilyV04PrimaryReviewMain {
                 "native2xScale": 0.28125,
                 "footprintCrop": [480, 584, 576, 350],
                 "backgroundTreatment":
-                    candidateFamily == "v05"
+                    candidateFamily != "v04"
                     ? "review-only global exact-chroma replacement plus border-connected chroma-family replacement with neutral RGB 226/228/224"
                     : "review-only border-connected flat-chroma family replacement with neutral RGB 226/228/224",
                 "rawFilesRemainImmutable": true,

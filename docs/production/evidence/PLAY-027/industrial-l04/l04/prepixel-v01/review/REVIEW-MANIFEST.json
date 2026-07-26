@@ -1,0 +1,67 @@
+{
+  "authority" : "analytic-prepixel-only-not-source-pixels-or-acceptance",
+  "batch" : "industrial-l04-variant-0-prepixel-v01",
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "files" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/ANALYTIC-SOURCE-SCALE-COLOR.png",
+      "sha256" : "953272f25f5c04fc5eb1e9aae13d3bc8047d39ef8f98a90aa3f81e3d92828eb4"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/ANALYTIC-SOURCE-SCALE-GRAYSCALE.png",
+      "sha256" : "1a0da24afb70c634f061476d6b2168d22f472abaed647343e104352846e32c37"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/ANALYTIC-NATIVE-2X-COLOR.png",
+      "sha256" : "6464ca63907ccf6a85e397e12dcfeedfbc06c02139f8da6eea99f2e195fb73af"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/ANALYTIC-NATIVE-2X-GRAYSCALE.png",
+      "sha256" : "b53f11a044500f7462d2413cc13047b4f1c673a35673fa9e556805e7ae37af69"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/ANALYTIC-CLAY-MASSING.png",
+      "sha256" : "ec92512d499661a41fe1acd7ea1a42e495bc16c1dd56376452dc6b7e198bb919"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/MATERIAL-VALUE-LADDER.png",
+      "sha256" : "e69dd41195d089262d793d2b4dee0772f8509223fc94f0fdbf9380a4b0160699"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/INDUSTRIAL-L1-L4-PROGRESSION-COLOR.png",
+      "sha256" : "a5d95ea4491123283c158495d1b62d30da1afe60290abdee29b98d7ebb6b322d"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/INDUSTRIAL-L1-L4-PROGRESSION-GRAYSCALE.png",
+      "sha256" : "324eef3ceabab29f3648f2e102f4ae7df2d27e1f22e0499e649373758c5f6df3"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/CROSS-FAMILY-L4-COLOR.png",
+      "sha256" : "b548277da3bfaa642a7be8d0777045b185989d5ecf2b42c748ec7a03f70d1c35"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/CROSS-FAMILY-L4-GRAYSCALE.png",
+      "sha256" : "ec2c2a6f04d106d634b225b26ad60a55de6e253c91b54825a7e7a4f212664ca4"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/R2-STAGED-VALUE-SYSTEM-COMPARISON.png",
+      "sha256" : "3e9b40772808c7e10bddfb739eff723843a03a3e21da9cad0dfd4db8c07054bf"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/GAMEPLAY-CITY-SIZE-L2-L4-COLOR.png",
+      "sha256" : "b2255e34551271c400ba0bb9c07a0d96ca92bd3d64cee17ef38cc45df1413a9d"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/prepixel-v01/review/GAMEPLAY-CITY-SIZE-L2-L4-GRAYSCALE.png",
+      "sha256" : "ffe678fc333d8a77a5b67c3d7fb9c5fbf3330ce43535ffdd6440fb98c36d3b83"
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027"
+}

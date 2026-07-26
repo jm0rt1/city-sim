@@ -1,0 +1,543 @@
+{
+  "acceptedIndustrialL3Continuity" : "5e019c3e7b7992cabeae179641a0f6748a971666",
+  "acceptedReferenceInputs" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_block.png",
+      "id" : "industrial-l01-east-block",
+      "sha256" : "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/east/generated_v4_industrial_l02_east_source_v05_block.png",
+      "id" : "industrial-l02-east-block",
+      "sha256" : "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/east/generated_v4_industrial_l02_east_source_v05_city.png",
+      "id" : "industrial-l02-east-city",
+      "sha256" : "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/normalized/run-a/east/generated_v4_industrial_l03_east_source_v02_block.png",
+      "id" : "industrial-l03-east-block",
+      "sha256" : "f6504e6a86e80cba3d2b95838bee7721aba293257a8dc8040558944724046140"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/normalized/run-a/east/generated_v4_industrial_l03_east_source_v02_city.png",
+      "id" : "industrial-l03-east-city",
+      "sha256" : "267a46e9b9b37267df8afb502d29f9974658c96b35d1f643f27697af80baf8bf"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/east/run-a/raw.png",
+      "id" : "industrial-l03-east-raw",
+      "sha256" : "5dd2999ad2916a8ccddcf91954e54d1dfcf1139f78977d05d738c3dbfff4b9af"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l04/variant-0/east/source-v01/generated_v4_residential_l04_block.png",
+      "id" : "residential-l04-east-block",
+      "sha256" : "542aa6964b0aa7a624bac6f4c381054d4b9ae129a5172889df6cca74389e5acd"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l04/variant-0/east/source-v03/generated_v4_commercial_l04_block.png",
+      "id" : "commercial-l04-east-block",
+      "sha256" : "b0f6232dbd40802320611cd93da455b193b98bcd1525bd0b7374532b22daec55"
+    }
+  ],
+  "artDirection" : {
+    "capacityStep" : "five-bay advanced manufacturing campus above accepted four-bay L3",
+    "familyNonAlias" : "no residential tower/roof grammar, no commercial floorplate/storefront rhythm, no L1-L3 geometry reuse",
+    "frontage" : "five loading bays plus a separate control/staff entrance on every named road edge",
+    "materials" : "weathered blue steel, warm concrete, oxide process metal, charcoal depth, light membrane roof and restrained ochre",
+    "r2Response" : "adds warm and dark midtone structure to the pale L3 while preserving the shared northwest-value hierarchy",
+    "silhouette" : "broad high-bay and assembly steps, control wing, process crown, twin stacks, roof plant and tank group"
+  },
+  "batch" : "industrial-l04-variant-0-prepixel-v01",
+  "cameraVisibleCoincidentMaterialOwnerPlanes" : "0/4",
+  "canonicalGeometryUniqueness" : "4/4",
+  "descriptorUniqueness" : "4/4",
+  "directions" : [
+    {
+      "authoredIndependently" : true,
+      "cameraVisibleCoincidentMaterialOwnerPlanes" : 0,
+      "canonicalGeometrySHA256" : "3aec8361ac49f9bba18180ef7c13de84908fa3f4ec7320828188101bd9fcb892",
+      "controlEntranceCount" : 1,
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-directional-family-v01/scenes/industrial_l04/variant-0/north/scene.json",
+      "descriptorSHA256" : "c7cb5acbbf32e5a17340a3f2f8e09e8dba6d14385fc7adca2f48394aa9138dfd",
+      "direction" : "north",
+      "loadingDoorCount" : 5,
+      "massBlockCount" : 37,
+      "materialReferences" : [
+        "l4-apron",
+        "l4-blue-steel-light",
+        "l4-charcoal-steel",
+        "l4-concrete-shadow",
+        "l4-control-glazing",
+        "l4-dock-door",
+        "l4-duct-metal",
+        "l4-foundation",
+        "l4-light-trim",
+        "l4-oxide",
+        "l4-process-metal",
+        "l4-recess",
+        "l4-roof-membrane",
+        "l4-safety-ochre",
+        "l4-warm-concrete",
+        "l4-warm-glazing",
+        "l4-weathered-blue-steel"
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "propCount" : 6,
+      "roofVolumeCount" : 3,
+      "rootBoundsWorld" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          76,
+          28
+        ]
+      ],
+      "sceneGeometryID" : "industrial-l04-north-v01-centered-loading-court-campus",
+      "trimBandCount" : 3
+    },
+    {
+      "authoredIndependently" : true,
+      "cameraVisibleCoincidentMaterialOwnerPlanes" : 0,
+      "canonicalGeometrySHA256" : "7fa33a465b6cdd68cba7481cd7e06e3de61f94f9ed2a6c273c2b0d567d9ba041",
+      "controlEntranceCount" : 1,
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-directional-family-v01/scenes/industrial_l04/variant-0/east/scene.json",
+      "descriptorSHA256" : "d8f5c656fab755a80bdf9b16bcdbc5eeba273da46c228244b0f2f0977eff31e2",
+      "direction" : "east",
+      "loadingDoorCount" : 5,
+      "massBlockCount" : 26,
+      "materialReferences" : [
+        "l4-apron",
+        "l4-blue-steel-light",
+        "l4-charcoal-steel",
+        "l4-control-glazing",
+        "l4-dock-door",
+        "l4-duct-metal",
+        "l4-foundation",
+        "l4-light-trim",
+        "l4-oxide",
+        "l4-process-metal",
+        "l4-recess",
+        "l4-roof-membrane",
+        "l4-safety-ochre",
+        "l4-warm-concrete",
+        "l4-warm-glazing",
+        "l4-weathered-blue-steel"
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "propCount" : 6,
+      "roofVolumeCount" : 3,
+      "rootBoundsWorld" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          74.200000000000003,
+          28
+        ]
+      ],
+      "sceneGeometryID" : "industrial-l04-east-v01-five-bay-control-process-campus",
+      "trimBandCount" : 3
+    },
+    {
+      "authoredIndependently" : true,
+      "cameraVisibleCoincidentMaterialOwnerPlanes" : 0,
+      "canonicalGeometrySHA256" : "b94f53752657740c5fa19f331a1a4eb684cb9ee3631a23a7d626f0a60b9e1555",
+      "controlEntranceCount" : 1,
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-directional-family-v01/scenes/industrial_l04/variant-0/south/scene.json",
+      "descriptorSHA256" : "334e95ca009197117eb98145b2a5a81cfad87429a1121f93cb2c1dbfdf7b8798",
+      "direction" : "south",
+      "loadingDoorCount" : 5,
+      "massBlockCount" : 26,
+      "materialReferences" : [
+        "l4-apron",
+        "l4-blue-steel-light",
+        "l4-charcoal-steel",
+        "l4-control-glazing",
+        "l4-dock-door",
+        "l4-duct-metal",
+        "l4-foundation",
+        "l4-light-trim",
+        "l4-oxide",
+        "l4-process-metal",
+        "l4-recess",
+        "l4-roof-membrane",
+        "l4-safety-ochre",
+        "l4-warm-concrete",
+        "l4-warm-glazing",
+        "l4-weathered-blue-steel"
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "propCount" : 6,
+      "roofVolumeCount" : 3,
+      "rootBoundsWorld" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          72.200000000000003,
+          28
+        ]
+      ],
+      "sceneGeometryID" : "industrial-l04-south-v01-stepped-fabrication-tank-campus",
+      "trimBandCount" : 3
+    },
+    {
+      "authoredIndependently" : true,
+      "cameraVisibleCoincidentMaterialOwnerPlanes" : 0,
+      "canonicalGeometrySHA256" : "c819a283388fe87efd0631110eaca0893c94a8a84a479c16559d974a2e07d629",
+      "controlEntranceCount" : 1,
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-directional-family-v01/scenes/industrial_l04/variant-0/west/scene.json",
+      "descriptorSHA256" : "fe7109a6301d7eefdcb936fb2d8cd3be8d5791df689b2b6b1e2d475dbd3759f0",
+      "direction" : "west",
+      "loadingDoorCount" : 5,
+      "massBlockCount" : 37,
+      "materialReferences" : [
+        "l4-apron",
+        "l4-blue-steel-light",
+        "l4-charcoal-steel",
+        "l4-concrete-shadow",
+        "l4-control-glazing",
+        "l4-dock-door",
+        "l4-duct-metal",
+        "l4-foundation",
+        "l4-light-trim",
+        "l4-oxide",
+        "l4-process-metal",
+        "l4-recess",
+        "l4-roof-membrane",
+        "l4-safety-ochre",
+        "l4-warm-concrete",
+        "l4-warm-glazing",
+        "l4-weathered-blue-steel"
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "propCount" : 6,
+      "roofVolumeCount" : 3,
+      "rootBoundsWorld" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          76,
+          28
+        ]
+      ],
+      "sceneGeometryID" : "industrial-l04-west-v01-centered-loading-court-campus",
+      "trimBandCount" : 3
+    }
+  ],
+  "footprintPivotSocketShadowContract" : "4/4 pass",
+  "gameplayScaleMeasurableCloseoutTargets" : {
+    "analyticDirectionMetrics" : [
+      {
+        "occupiedAnalyticPixels" : 149767,
+        "safetyAccentPixels" : 3220,
+        "safetyAccentShare" : 0.021500063431864162
+      },
+      {
+        "occupiedAnalyticPixels" : 200996,
+        "safetyAccentPixels" : 7476,
+        "safetyAccentShare" : 0.037194770045175025
+      },
+      {
+        "occupiedAnalyticPixels" : 194442,
+        "safetyAccentPixels" : 7476,
+        "safetyAccentShare" : 0.038448483352362145
+      },
+      {
+        "occupiedAnalyticPixels" : 149767,
+        "safetyAccentPixels" : 3220,
+        "safetyAccentShare" : 0.021500063431864162
+      }
+    ],
+    "cityFrameOccupancy" : "integration-owned composed-frame metric; exact R2 frames bound read-only and no L4 staged claim made",
+    "dockToFacadeStep32LumaContrast" : 96,
+    "frontageMinimumGrayscaleContrast" : 15,
+    "frontageMinimumPixels" : 8,
+    "frontageSpanNative2xPixels" : 55.63920645618483,
+    "industrialL3ToL4Silhouette" : {
+      "acceptedL3OccupiedPixels" : 178047,
+      "analyticL4OccupiedPixels" : 200996,
+      "silhouetteBoundaryChangeShare" : 0.99710264900662249,
+      "silhouetteMaskIntersectionOverUnion" : 0.78950871991464211
+    },
+    "maximumSafetyAccentShare" : 0.038448483352362145,
+    "maximumSafetyAccentShareLimit" : 0.10000000000000001,
+    "maximumSilhouetteMaskOverlap" : 0.80000000000000004,
+    "minimumBoundaryChangeShare" : 0.20000000000000001,
+    "outlineAndContactShadow" : "frozen shared northwest-light and southeast authored-contact language; exact pixel proof deferred to first raw gate"
+  },
+  "identityFeatureMinimumNative2xPixels" : 9.0913736039517694,
+  "imageGenCalls" : 0,
+  "materialCount" : 18,
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-directional-family-v01/materials/industrial-l04-v01.json",
+  "materialLibrarySHA256" : "c8318538b98e9dec020907d47769a81b73970ec40fb1b5b732bcec85354fcc29",
+  "materialReferenceValidation" : "4/4 pass",
+  "materialValueLedger" : [
+    {
+      "baseColorRGBA" : [
+        0.059999999999999998,
+        0.080000000000000002,
+        0.089999999999999997,
+        1
+      ],
+      "materialID" : "l4-recess",
+      "predictedStep32Luma" : 8
+    },
+    {
+      "baseColorRGBA" : [
+        0.23000000000000001,
+        0.34000000000000002,
+        0.38,
+        1
+      ],
+      "materialID" : "l4-dock-door",
+      "predictedStep32Luma" : 72
+    },
+    {
+      "baseColorRGBA" : [
+        0.35999999999999999,
+        0.5,
+        0.56000000000000005,
+        1
+      ],
+      "materialID" : "l4-weathered-blue-steel",
+      "predictedStep32Luma" : 136
+    },
+    {
+      "baseColorRGBA" : [
+        0.51000000000000001,
+        0.62,
+        0.64000000000000001,
+        1
+      ],
+      "materialID" : "l4-blue-steel-light",
+      "predictedStep32Luma" : 168
+    },
+    {
+      "baseColorRGBA" : [
+        0.71999999999999997,
+        0.62,
+        0.5,
+        1
+      ],
+      "materialID" : "l4-warm-concrete",
+      "predictedStep32Luma" : 168
+    },
+    {
+      "baseColorRGBA" : [
+        0.45000000000000001,
+        0.40000000000000002,
+        0.34000000000000002,
+        1
+      ],
+      "materialID" : "l4-concrete-shadow",
+      "predictedStep32Luma" : 104
+    },
+    {
+      "baseColorRGBA" : [
+        0.31,
+        0.33000000000000002,
+        0.31,
+        1
+      ],
+      "materialID" : "l4-foundation",
+      "predictedStep32Luma" : 72
+    },
+    {
+      "baseColorRGBA" : [
+        0.60999999999999999,
+        0.58999999999999997,
+        0.52000000000000002,
+        1
+      ],
+      "materialID" : "l4-apron",
+      "predictedStep32Luma" : 136
+    },
+    {
+      "baseColorRGBA" : [
+        0.67000000000000004,
+        0.68999999999999995,
+        0.65000000000000002,
+        1
+      ],
+      "materialID" : "l4-roof-membrane",
+      "predictedStep32Luma" : 168
+    },
+    {
+      "baseColorRGBA" : [
+        0.17000000000000001,
+        0.22,
+        0.23999999999999999,
+        1
+      ],
+      "materialID" : "l4-charcoal-steel",
+      "predictedStep32Luma" : 40
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.41999999999999998,
+        0.47999999999999998,
+        1
+      ],
+      "materialID" : "l4-control-glazing",
+      "predictedStep32Luma" : 104
+    },
+    {
+      "baseColorRGBA" : [
+        0.72999999999999998,
+        0.51000000000000001,
+        0.27000000000000002,
+        1
+      ],
+      "materialID" : "l4-warm-glazing",
+      "predictedStep32Luma" : 136
+    },
+    {
+      "baseColorRGBA" : [
+        0.51000000000000001,
+        0.57999999999999996,
+        0.56999999999999995,
+        1
+      ],
+      "materialID" : "l4-process-metal",
+      "predictedStep32Luma" : 136
+    },
+    {
+      "baseColorRGBA" : [
+        0.63,
+        0.66000000000000003,
+        0.60999999999999999,
+        1
+      ],
+      "materialID" : "l4-duct-metal",
+      "predictedStep32Luma" : 168
+    },
+    {
+      "baseColorRGBA" : [
+        0.81999999999999995,
+        0.75,
+        0.59999999999999998,
+        1
+      ],
+      "materialID" : "l4-light-trim",
+      "predictedStep32Luma" : 200
+    },
+    {
+      "baseColorRGBA" : [
+        0.81999999999999995,
+        0.46000000000000002,
+        0.10000000000000001,
+        1
+      ],
+      "materialID" : "l4-safety-ochre",
+      "predictedStep32Luma" : 136
+    },
+    {
+      "baseColorRGBA" : [
+        0.58999999999999997,
+        0.33000000000000002,
+        0.20000000000000001,
+        1
+      ],
+      "materialID" : "l4-oxide",
+      "predictedStep32Luma" : 104
+    },
+    {
+      "baseColorRGBA" : [
+        0.55000000000000004,
+        0.58999999999999997,
+        0.55000000000000004,
+        1
+      ],
+      "materialID" : "l4-pipe",
+      "predictedStep32Luma" : 136
+    }
+  ],
+  "mergeBoundary" : "62115e0f0034fabd9f5120191678bac9c5f5d615",
+  "normalizerProcesses" : 0,
+  "predictedStep32LumaBinCount" : 7,
+  "predictedStep32LumaBins" : [
+    8,
+    40,
+    72,
+    104,
+    136,
+    168,
+    200
+  ],
+  "productionDecoderDryDecode" : "4/4 pass",
+  "productionSelected" : false,
+  "publishedAuthority" : "f45b16cacfe1e518ef16752cd87ea9156afcc5c0",
+  "r2StagedFrames" : [
+    {
+      "externalFile" : "/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-073/r2-industrial-l3-a6000d1/live/regular-industrial-l3-selected.png",
+      "role" : "regular-current-staged-value-system",
+      "sha256" : "d45dfaa8fe8e4c985c86a32814de5c4339ad1de7256de12f00dd0e103b28e977"
+    },
+    {
+      "externalFile" : "/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-073/r2-industrial-l3-a6000d1/live/compact-industrial-l3-selected.png",
+      "role" : "compact-current-staged-value-system",
+      "sha256" : "b2be098b11f1fe74a46938efa559e5b68dacc7758f0fdc6bf4a40611885978f4"
+    }
+  ],
+  "reviewAuthority" : "analytic-prepixel-only-not-source-pixels-or-acceptance",
+  "schema" : 1,
+  "semanticFeatureLedger" : [
+    {
+      "feature" : "loading-door-width",
+      "native2xPixels" : 10.545993380584052,
+      "worldUnits" : 5.7999999999999998
+    },
+    {
+      "feature" : "loading-door-height",
+      "native2xPixels" : 21.819296649484244,
+      "worldUnits" : 12
+    },
+    {
+      "feature" : "control-door-width",
+      "native2xPixels" : 10.000510964346946,
+      "worldUnits" : 5.5
+    },
+    {
+      "feature" : "stack-diameter",
+      "native2xPixels" : 9.0913736039517694,
+      "worldUnits" : 5
+    },
+    {
+      "feature" : "tank-diameter",
+      "native2xPixels" : 12.727923045532476,
+      "worldUnits" : 7
+    }
+  ],
+  "sourceAuthority" : false,
+  "sourceProcesses" : 0,
+  "task" : "PLAY-027",
+  "toolchainFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l04-source-v01.json",
+  "toolchainSHA256" : "e7dc7c56952a322e34a3824bc8014aade61776e52ca557a97f263e2f22910143"
+}

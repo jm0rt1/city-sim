@@ -3827,6 +3827,88 @@ final class WorldRenderingTests: XCTestCase {
                 XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
                 XCTAssertEqual(scene.cameraPositionForTesting.x, openingPosition.x, accuracy: 0.000_001)
                 XCTAssertEqual(scene.cameraPositionForTesting.y, openingPosition.y, accuracy: 0.000_001)
+
+                // A center-only containment check is insufficient: a target
+                // close to the safe edge can have both centers visible while
+                // clipping one of the two authoritative ground diamonds.
+                scene.frameCity()
+                let clippedChoice = try XCTUnwrap(
+                    [BuildingKind.commercial, .road].lazy.compactMap { kind in
+                        orderedTiles.first { tile in
+                            guard tile.kind == .empty,
+                                  case .success = CitySimulation.validateBuild(
+                                    kind,
+                                    at: tile.coordinate,
+                                    in: state
+                                  ),
+                                  let nearestRoad = nearestRoad(to: tile.coordinate) else {
+                                return false
+                            }
+                            let targetCenterIsVisible = openingSafeRect.contains(
+                                scene.scenePointForTesting(at: tile.coordinate)
+                            )
+                            let roadCenterIsVisible = openingSafeRect.contains(
+                                scene.scenePointForTesting(at: nearestRoad)
+                            )
+                            let targetGroundIsVisible = openingSafeRect.contains(
+                                scene.tileGroundBoundsForTesting(at: tile.coordinate)
+                            )
+                            let roadGroundIsVisible = openingSafeRect.contains(
+                                scene.tileGroundBoundsForTesting(at: nearestRoad)
+                            )
+                            return targetCenterIsVisible
+                                && roadCenterIsVisible
+                                && (!targetGroundIsVisible || !roadGroundIsVisible)
+                        }.map { (kind: kind, tile: $0) }
+                    }.first,
+                    "Regular opening must retain a center-visible clipped-edge regression target"
+                )
+                let clippedRoad = try XCTUnwrap(
+                    nearestRoad(to: clippedChoice.tile.coordinate)
+                )
+                XCTAssertTrue(
+                    openingSafeRect.contains(
+                        scene.scenePointForTesting(at: clippedChoice.tile.coordinate)
+                    )
+                )
+                XCTAssertTrue(
+                    openingSafeRect.contains(scene.scenePointForTesting(at: clippedRoad))
+                )
+                XCTAssertFalse(
+                    openingSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedChoice.tile.coordinate)
+                    ) && openingSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedRoad)
+                    )
+                )
+                let clippedTarget = CityMapActionTargetPresentation(
+                    coordinate: clippedChoice.tile.coordinate,
+                    primaryAction: CityMapPrimaryActionPresentation.make(
+                        interactionMode: .build(clippedChoice.kind),
+                        tile: clippedChoice.tile,
+                        state: state
+                    )
+                )
+                XCTAssertTrue(clippedTarget.primaryAction.isAvailable)
+                scene.render(
+                    state: state,
+                    overlay: .none,
+                    selection: clippedChoice.tile.coordinate,
+                    interactionMode: .build(clippedChoice.kind),
+                    activeActionTarget: clippedTarget
+                )
+                XCTAssertGreaterThan(scene.cameraScaleForTesting, openingScale)
+                let reframedSafeRect = scene.safeViewportRectForTesting(insets)
+                XCTAssertTrue(
+                    reframedSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedChoice.tile.coordinate)
+                    )
+                )
+                XCTAssertTrue(
+                    reframedSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedRoad)
+                    )
+                )
             }
 
             // Re-establish a no-target opening camera before proving the remote

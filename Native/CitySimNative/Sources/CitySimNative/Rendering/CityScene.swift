@@ -792,11 +792,9 @@ final class CityScene: SKScene {
         // interaction mode changed. Remote targets receive the contextual fit
         // below only when the present aperture cannot fully show both target
         // and its real road frontier with a meaningful amount of the district.
-        let currentTargetIsVisible = currentSafeRect.contains(
-            style.isoPosition(coordinate)
-        )
-        let currentRoadFrontierIsVisible = roadFrontier.map {
-            currentSafeRect.contains(style.isoPosition($0))
+        let currentTargetIsVisible = currentSafeRect.contains(targetBounds)
+        let currentRoadFrontierIsVisible = roadFrontierBounds.map {
+            currentSafeRect.contains($0)
         } ?? true
         if currentTargetIsVisible,
            currentRoadFrontierIsVisible,

@@ -21,6 +21,7 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[2]
 GENERATED = ROOT / "GeneratedV4"
 PACKAGE = ROOT.parent
+REPOSITORY = PACKAGE.parent.parent
 ATLAS = PACKAGE / "Sources" / "CitySimNative" / "Resources" / "WorldAssets.atlas"
 MANIFEST = ATLAS / "generated-v4-manifest.json"
 DETAILS = ("city", "neighborhood", "block")
@@ -63,6 +64,14 @@ HARD_ACTIVE_BYTES = 128 * 1024 * 1024
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def repository_path(relative: str) -> Path:
+    for root in (PACKAGE.parent, REPOSITORY):
+        path = root / relative
+        if path.is_file():
+            return path
+    return REPOSITORY / relative
 
 
 def png_dimensions(path: Path) -> tuple[int, int]:
@@ -575,7 +584,7 @@ def main() -> None:
                 if inventory_item is None:
                     failures.append(f"{logical_id}.{detail} page is absent from inventory: {page_file}")
             normalized_relative = lod.get("normalized_file")
-            normalized_file = PACKAGE.parent / str(normalized_relative)
+            normalized_file = repository_path(str(normalized_relative))
             if not normalized_file.exists():
                 failures.append(f"{logical_id}.{detail} normalized source file is missing")
             else:

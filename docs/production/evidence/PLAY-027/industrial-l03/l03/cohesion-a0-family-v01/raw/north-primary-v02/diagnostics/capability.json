@@ -1,0 +1,53 @@
+{
+  "candidateFailureClassified" : false,
+  "candidateOutputWritten" : false,
+  "capability" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+  "materialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+  "productionSelected" : false,
+  "rendererSourceCommit" : "627e46575ef234baa13b9e2df82b63b851c2415f",
+  "requestedProvenanceFile" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/north-primary-v02/provenance.json",
+  "requestedRawSourceFile" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/north-primary-v02/raw.png",
+  "sceneConstructionStarted" : false,
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/north/scene.json",
+  "sceneDescriptorSHA256" : "1afaefb06e8e6a91f3e3e6215e9721f1ce8de224cc790e1599c33f956afa12be",
+  "scenePreparationStarted" : false,
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "toolchainFingerprintActualSHA256" : "5010b2b809cc21fe26366f49f3620724d39c5c35eae2e5a196d2e7c5ebc91301",
+  "toolchainFingerprintDeclaredSHA256" : "5010b2b809cc21fe26366f49f3620724d39c5c35eae2e5a196d2e7c5ebc91301",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l03-source-v01.json",
+  "type" : "renderer-backend-available"
+}

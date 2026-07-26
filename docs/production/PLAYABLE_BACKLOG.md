@@ -186,7 +186,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
 - **Acceptance:** The CONTRACT-011 residential L1 N/E/S/W calibration set passes before batch expansion; every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all scene/tool/source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
 - **Stop conditions:** Reuse across building types, recolor-only variants, runtime mirroring/rotation, perspective or light drift, invented roads or ground truth, geometry/pivot/frontage mismatch, missing provenance, direct edits to live renderer/shipping selection, or generation continuing after two rejected direction siblings without anchor review.
-- **Current disposition:** Residential L1–L4 source authority is accepted and ships through PLAY-028. Commercial L1–L4 source authority `bf3e24b2b465870f131ac0a01a2327ac4969d5d5` ships through independently approved PLAY-060/061. Industrial L1 ships through PLAY-062/063. Industrial L2 exact source candidate `e2a6144448707c67792e6e0619d5e8dee1ba10bb` ships through R1 renderer product `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075 approval `74f2164da506a246af9335cab2d3a9e977624097`. Industrial L3 exact source candidate `5e019c3e7b7992cabeae179641a0f6748a971666` has independent source authority and is the only authorized input to the active R2 renderer-ingestion window. Industrial L4 source production is authorized under `WAVE-011-WORLD-ART-COHESION-PROGRAM.md`, but R3 ingestion and all production selection beyond L2 remain blocked pending R2 disposition.
+- **Current disposition:** Residential L1–L4 source authority is accepted and ships through PLAY-028. Commercial L1–L4 source authority `bf3e24b2b465870f131ac0a01a2327ac4969d5d5` ships through independently approved PLAY-060/061. Industrial L1 ships through PLAY-062/063. Industrial L2 exact source candidate `e2a6144448707c67792e6e0619d5e8dee1ba10bb` ships through R1 renderer product `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075 approval `74f2164da506a246af9335cab2d3a9e977624097`. Industrial L3 source candidate `5e019c3e7b7992cabeae179641a0f6748a971666` retains technical source authority, but exact R2 renderer candidate `b4191d98ee7c526bc08a6fe272521588572e27fd` was returned before publication because its chalky white/cyan, thin-outline language fails composed-game cohesion. A narrow L3 material/value/outline repair is now required before a replacement R2 window. Industrial L4 may advance only through a clean pre-pixel checkpoint until repaired R2 publication; R3 ingestion and all production selection beyond L2 remain blocked.
 
 ### [x] PLAY-028: Ship the directional residential skyline
 
@@ -687,12 +687,13 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
 - **Art-first queue:** Wave 010 R1 Industrial L2 is accepted at exact renderer
-  product `d41c2c68` with focused PLAY-075 approval `74f2164`. The lane's next
-  production mutation is the reserved R2 ingestion window after integration
-  accepts one PLAY-027 Industrial L3 N/E/S/W family. Broader composition
-  remains paused through R2/R3. Exact Industrial L3 source candidate
-  `5e019c3e7b7992cabeae179641a0f6748a971666` is independently accepted, so R2
-  is now the active renderer slot.
+  product `d41c2c68` with focused PLAY-075 approval `74f2164`. Exact R2
+  candidate `b4191d98ee7c526bc08a6fe272521588572e27fd` remains preserved and passed
+  271/271 integration tests, but integration returned it before publication
+  under the mixed-fidelity stop. The next renderer mutation is one replacement
+  R2 ingestion window after independent source review accepts a cohesive
+  PLAY-027 Industrial L3 N/E/S/W repair. Broader composition and R3 remain
+  paused.
 
 ### [x] PLAY-074: Make building and recovery obvious on the map
 
@@ -721,8 +722,10 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Art-first queue:** PLAY-075 performs one focused exact-candidate staged-app
   disposition for each Wave 010 art ingestion. These narrow passes do not
   replace or pre-score the final 20/20 release gate. R1 exact candidate
-  `d41c2c68` was approved at focused evidence commit `74f2164`; R2 awaits an
-  integration-supplied Industrial L3 renderer candidate.
+  `d41c2c68` was approved at focused evidence commit `74f2164`. R2 candidate
+  `b4191d9` was returned by integration before independent live disposition;
+  its preregistration/admission evidence is preserved, and no score is implied.
+  PLAY-075 now awaits a repaired integration-supplied Industrial L3 candidate.
 
 ### [ ] PLAY-076: Grow the opening into a believable starter town
 

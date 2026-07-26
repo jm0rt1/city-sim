@@ -21,10 +21,12 @@
   Wave 010 R1 Industrial L2 is accepted at exact renderer product
   `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075 approval
   `74f2164da506a246af9335cab2d3a9e977624097`. Further composition mutation
-  remains paused. Integration independently accepted exact PLAY-027 Industrial
-  L3 source candidate `5e019c3e7b7992cabeae179641a0f6748a971666`,
-  opening the reserved R2 ingestion window as the lane's next production
-  mutation.
+  remains paused. Exact R2 candidate
+  `b4191d98ee7c526bc08a6fe272521588572e27fd` is clean and preserved and passed
+  the 271-test integration gate, but integration returned it before publication
+  because the L3 material/value/outline language fails the mixed-fidelity stop.
+  The lane now waits for independently accepted cohesive Industrial L3
+  N/E/S/W repair authority before one replacement R2 ingestion window.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

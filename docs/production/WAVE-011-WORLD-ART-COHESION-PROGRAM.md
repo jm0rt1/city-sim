@@ -31,6 +31,24 @@ The art lane must now optimize for the composed game frame:
 
 ## Production order
 
+### A0 — Industrial L3 cohesion repair
+
+Exact R2 renderer candidate
+`b4191d98ee7c526bc08a6fe272521588572e27fd` is technically clean but returned
+before publication. Its chalky white/cyan, thin-outline L3 language reads as an
+imported asset beside the accepted warm brick, dark-roof, civic, utility, and
+terrain systems. Preserve its complete evidence and the exact accepted source
+lineage; do not integrate it.
+
+After the active L4 pre-pixel architecture reaches one clean checkpoint, pause
+L4 raw-pixel production and author a narrow Industrial L3 material/value/
+outline repair. Preserve the accepted L3 geometry, frontage, pivot, sockets,
+shadow direction, and four independently authored directions. Freeze and
+review one repaired direction at source, native-2x, compact, grayscale, and
+composed-city scale before completing its siblings. R2 receives one new
+renderer-ingestion window only after independent source review accepts the
+repaired N/E/S/W family.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.
@@ -48,8 +66,9 @@ variant-zero R/C/I spine and establishes the stronger art bar:
 - explicit comparison against Industrial L1/L2/L3 plus Residential and
   Commercial L4.
 
-R3 ingestion remains gated on R2 publication and independent source review.
-Source work may run ahead; shipping work may not.
+R3 ingestion remains gated on the repaired R2 publication and independent
+source review. Source work may run ahead only through the clean L4 pre-pixel
+checkpoint; L4 raw pixels and shipping work may not.
 
 ### A2 — Opening diversity kit
 

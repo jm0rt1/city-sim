@@ -89,7 +89,13 @@ a separate staff entrance, preserve exact registration and governed bounds,
 and report zero coincident boundaries or competing visible planes.
 Integration authorizes three fresh raw processes per revised direction under
 `docs/production/evidence/PLAY-027/INDUSTRIAL-L03-NORTH-WEST-RAW-AUTHORITY-9d32ec2.md`.
-Normalization remains blocked until actual SceneKit pixels pass.
+The first raw attempt stopped correctly before SceneKit because the offline
+sampling resolver did not yet enumerate the new source-v05 revision.
+Integration approves a hash-bound North/West-only resolver addition under
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-SOURCE-V05-RESOLVER-AUTHORITY-9d32ec2.md`.
+After its fail-closed and legacy-reproduction tests pass in one clean
+checkpoint, the six-process raw authority resumes without another scheduling
+wait. Normalization remains blocked until actual SceneKit pixels pass.
 
 ### A1 — Industrial L4 hero family
 

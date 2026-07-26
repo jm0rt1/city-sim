@@ -49,6 +49,18 @@ composed-city scale before completing its siblings. R2 receives one new
 renderer-ingestion window only after independent source review accepts the
 repaired N/E/S/W family.
 
+East calibration candidate
+`232e37476d32e81b4fbd08b3d548895e78d9ea4a` passes independent treatment
+review for sibling authoring only. It preserves accepted geometry and
+registration, replaces the clinical source-v02 treatment with role-specific
+weathered steel, warm concrete, oxide, charcoal edge, dock-depth, and
+restrained safety-ochre materials, raises raw luma IQR from 37 to 57, keeps
+saturated accent share at 3.0–3.4 percent, and reproduces all normalized LODs
+byte- and pixel-identically across two runs. North, South, and West may now
+apply the same authored material-role system to their unchanged directional
+geometry. This is not source-family authority, renderer ingestion, or
+production selection.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

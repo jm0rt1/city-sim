@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-018",
+  "batch": "industrial-l03-source-v02-immutable-master-continuation",
+  "authorityCommit": "ea0650400fc4f49a36ce3196e04585833595c57d",
+  "publishedDispositionCommit": "0d5919941359bf0458d5325f666d2c27996fa812",
+  "disposition": "REJECTED_WEST_REPEAT_IDENTITY",
+  "directionAttempted": "west",
+  "sceneKitMetalProcessCount": 3,
+  "westNormalizerProcessCount": 0,
+  "familySourceAuthority": false,
+  "productionSelected": false,
+  "inputs": {
+    "rendererSourceCommit": "4096741c7fe64404408e8ea39df116c32f5f2623",
+    "rendererBinarySHA256": "cbbbf9bb3c73d68dba495707fc1c222d21c63407587beb214044cebf352aa7f2",
+    "descriptorSHA256": "bc0812eb16008bb0a544873fb3d24c4b01c470c405b4f6051a36a400c68856ce",
+    "materialLibrarySHA256": "3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e",
+    "sourceRevision": "source-v02",
+    "samplingContract": "play027-deterministic-4x-no-msaa-lanczos-v3"
+  },
+  "attempts": [
+    {
+      "run": "a",
+      "fileSHA256": "6d99f9436c11294f97359b3ed35203658ea178caa092f0ffea7d63982baa2151",
+      "decodedRGBASHA256": "b47b211174e77d53ffad023af06734c1467403cd612af46c4e49dcef0e2921df"
+    },
+    {
+      "run": "b",
+      "fileSHA256": "6d99f9436c11294f97359b3ed35203658ea178caa092f0ffea7d63982baa2151",
+      "decodedRGBASHA256": "b47b211174e77d53ffad023af06734c1467403cd612af46c4e49dcef0e2921df"
+    },
+    {
+      "run": "c",
+      "fileSHA256": "88633a8bc604f27b5a431943d99725fbacaf828e00ae6959a469c7f722686b0e",
+      "decodedRGBASHA256": "21c13a587b4e978b46e0ceddb35370733a7735275d4e16c5ab67a61c83524faf"
+    }
+  ],
+  "repeatComparison": {
+    "primaryVsRepeatB": {
+      "differingPixelCount": 0,
+      "differingChannelCount": 0,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatC": {
+      "differingPixelCount": 2,
+      "differingChannelCount": 2,
+      "alphaDifferingPixelCount": 0
+    },
+    "repeatBVsRepeatC": {
+      "differingPixelCount": 2,
+      "differingChannelCount": 2,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatCDifferenceBoundsSource": [
+      640,
+      657,
+      643,
+      658
+    ],
+    "localityReport": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/rejection/west-repeat/WEST-A-C-LOCALITY.json",
+    "localitySheet": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/rejection/west-repeat/WEST-A-C-LOCALITY.png",
+    "localityToolInputOrder": "primary=run-a, repeat-b-input=run-c, repeat-c-input=run-b; exact file paths in the locality report are authoritative"
+  },
+  "stableTechnicalEvidence": {
+    "completeOccupiedAreaPassedCount": 3,
+    "completeBuildingVolumePassedCount": 3,
+    "rgbaVisibilityPassedCount": 3,
+    "nonChromaBounds": [
+      509,
+      387,
+      1027,
+      896
+    ],
+    "nonChromaPixelCount": 159577,
+    "alphaDifferingPixelCount": 0,
+    "hiddenNonMagentaPixelCount": 0,
+    "registrationStable": true,
+    "visualCompleteness": "pass; full West industrial campus and road-facing far-edge frontage remain visible in all retained attempts"
+  },
+  "northImmutableMasterPreserved": true,
+  "eastImmutableMasterPreserved": true,
+  "southImmutableMasterPreserved": true,
+  "sourceV03Authority": false,
+  "stopCondition": "West run C failed exact emitted-file and canonical decoded-RGBA repeat identity. Per published authority, no sampling repair is requested; West normalization and family source-authority assembly were not attempted."
+}

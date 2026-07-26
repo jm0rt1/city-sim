@@ -4,6 +4,7 @@ import SwiftUI
 @MainActor
 final class CityBuildCatalogWindowBindingView: NSView {
     let pointerTransitionGate: CityMapPointerTransitionGate
+    private var inputMonitor: Any?
 
     init(pointerTransitionGate: CityMapPointerTransitionGate) {
         self.pointerTransitionGate = pointerTransitionGate
@@ -22,6 +23,7 @@ final class CityBuildCatalogWindowBindingView: NSView {
 
     override func viewWillMove(toWindow newWindow: NSWindow?) {
         if newWindow !== window {
+            stopMonitoring()
             pointerTransitionGate.unbindCompactCatalogWindow(window)
         }
         super.viewWillMove(toWindow: newWindow)
@@ -30,10 +32,29 @@ final class CityBuildCatalogWindowBindingView: NSView {
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
         pointerTransitionGate.bindCompactCatalogWindow(window)
+        startMonitoring()
     }
 
     func dismantle() {
+        stopMonitoring()
         pointerTransitionGate.unbindCompactCatalogWindow(window)
+    }
+
+    private func startMonitoring() {
+        guard window != nil, inputMonitor == nil else { return }
+        inputMonitor = NSEvent.addLocalMonitorForEvents(
+            matching: [.leftMouseDown, .leftMouseUp, .keyDown]
+        ) { [weak self] event in
+            guard let self else { return event }
+            pointerTransitionGate.observeCompactCatalogInput(event, controlView: self)
+            return event
+        }
+    }
+
+    private func stopMonitoring() {
+        guard let inputMonitor else { return }
+        NSEvent.removeMonitor(inputMonitor)
+        self.inputMonitor = nil
     }
 }
 

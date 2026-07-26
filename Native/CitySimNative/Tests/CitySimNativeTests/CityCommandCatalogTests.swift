@@ -1253,6 +1253,165 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactCatalogItemPointerCaptureIsImmediateAndCanceledMenusExpire() async throws {
+        _ = NSApplication.shared
+        let contentWindow = NSWindow(
+            contentRect: CGRect(x: 100, y: 120, width: 900, height: 600),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let popupWindow = NSWindow(
+            contentRect: CGRect(x: 360, y: 330, width: 260, height: 320),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let gate = CityMapPointerTransitionGate()
+        let binding = CityBuildCatalogWindowBindingView(pointerTransitionGate: gate)
+        binding.frame = CGRect(x: 40, y: 40, width: 140, height: 44)
+        contentWindow.contentView?.addSubview(binding)
+        contentWindow.orderFront(nil)
+        popupWindow.orderFront(nil)
+
+        let openingLocation = NSPoint(x: 100, y: 62)
+        let openingUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: openingLocation,
+                modifierFlags: [],
+                timestamp: 1,
+                windowNumber: contentWindow.windowNumber,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let popupLocation = NSPoint(x: 80, y: 96)
+        let selectionDown = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseDown,
+                location: popupLocation,
+                modifierFlags: [],
+                timestamp: 1.9,
+                windowNumber: popupWindow.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let selectionUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: popupLocation,
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: popupWindow.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let semanticActionEvent = try XCTUnwrap(
+            NSEvent.otherEvent(
+                with: .applicationDefined,
+                location: .zero,
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: 0,
+                context: nil,
+                subtype: 0,
+                data1: 0,
+                data2: 0
+            )
+        )
+        let store = CityGameStore(state: .newCity(seed: 42))
+
+        gate.observeCompactCatalogInput(
+            try keyEvent(characters: "\r", keyCode: 36),
+            controlView: binding
+        )
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .commercial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertTrue(gate.isActive)
+        let expectedAnchor = contentWindow.convertPoint(
+            fromScreen: popupWindow.convertPoint(toScreen: popupLocation)
+        )
+        let gateAnchor = try XCTUnwrap(gate.anchor)
+        XCTAssertEqual(gateAnchor.x, expectedAnchor.x, accuracy: 0.001)
+        XCTAssertEqual(gateAnchor.y, expectedAnchor.y, accuracy: 0.001)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+
+        gate.cancel()
+        gate.observeCompactCatalogInput(openingUp, controlView: binding)
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .residential,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertTrue(gate.isActive, "Pointer-open and pointer-selected items use the same item capture")
+        gate.cancel()
+
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        gate.observeCompactCatalogInput(
+            try keyEvent(characters: "\r", keyCode: 36),
+            controlView: binding
+        )
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .industrial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertFalse(gate.isActive, "Keyboard selection must clear pointer capture and stay immediate")
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.interactionMode, .build(.industrial))
+
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        try await Task.sleep(
+            nanoseconds: UInt64(
+                (CityMapPointerTransitionGate.compactCatalogCaptureLifetime + 0.1)
+                    * 1_000_000_000
+            )
+        )
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .road,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertFalse(gate.isActive, "A canceled menu cannot leak pointer capture into a later action")
+        XCTAssertNil(store.selectedCoordinate)
+
+        binding.removeFromSuperview()
+        popupWindow.orderOut(nil)
+        contentWindow.orderOut(nil)
+    }
+
+    @MainActor
     func testCompactCatalogWindowBindingAndNonPointerRoutesRemainSemanticAndImmediate() throws {
         _ = NSApplication.shared
         let contentWindow = NSWindow(

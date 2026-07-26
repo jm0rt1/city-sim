@@ -4,6 +4,7 @@ import Combine
 @MainActor
 final class CityMapPointerTransitionGate: ObservableObject {
     static let movementThreshold: CGFloat = 4
+    static let compactCatalogCaptureLifetime: TimeInterval = 0.5
 
     private enum Origin {
         case focusCity
@@ -15,6 +16,9 @@ final class CityMapPointerTransitionGate: ObservableObject {
     private(set) var originatingWindowNumber: Int?
     private(set) var anchor: NSPoint?
     private var origin: Origin?
+    private var pendingCompactCatalogPointerLocation: NSPoint?
+    private var pendingCompactCatalogPointerUptime: TimeInterval?
+    private var compactCatalogCaptureGeneration: UInt = 0
     private var movementMonitor: Any?
     private var windowCloseObserver: NSObjectProtocol?
     private var generation: UInt = 0
@@ -30,26 +34,72 @@ final class CityMapPointerTransitionGate: ObservableObject {
     func unbindCompactCatalogWindow(_ window: NSWindow?) {
         guard compactCatalogWindow === window else { return }
         compactCatalogWindow = nil
+        resetCompactCatalogPointerCapture()
+    }
+
+    func observeCompactCatalogInput(_ event: NSEvent, controlView: NSView) {
+        guard let contentWindow = compactCatalogWindow,
+              controlView.window === contentWindow else {
+            resetCompactCatalogPointerCapture()
+            return
+        }
+
+        if event.type == .keyDown {
+            resetCompactCatalogPointerCapture()
+            return
+        }
+        guard event.type == .leftMouseDown || event.type == .leftMouseUp else { return }
+
+        let eventWindow = event.window
+            ?? NSApplication.shared.window(withWindowNumber: event.windowNumber)
+        let isContentWindowEvent = eventWindow === contentWindow
+            || eventWindow?.windowNumber == contentWindow.windowNumber
+        if isContentWindowEvent {
+            resetCompactCatalogPointerCapture()
+            return
+        }
+
+        if event.type == .leftMouseDown {
+            resetCompactCatalogPointerCapture()
+            return
+        }
+        guard event.type == .leftMouseUp else { return }
+        compactCatalogCaptureGeneration &+= 1
+        let capturedGeneration = compactCatalogCaptureGeneration
+        pendingCompactCatalogPointerLocation = screenLocation(for: event)
+        pendingCompactCatalogPointerUptime = ProcessInfo.processInfo.systemUptime
+        Task { @MainActor [weak self] in
+            await Task.yield()
+            guard self?.compactCatalogCaptureGeneration == capturedGeneration else { return }
+            self?.resetCompactCatalogPointerCapture()
+        }
     }
 
     @discardableResult
     func beginCompactCatalogSelection(event: NSEvent?) -> Bool {
-        guard let event,
-              event.type == .leftMouseDown || event.type == .leftMouseUp,
-              let contentWindow = compactCatalogWindow else {
+        guard let contentWindow = compactCatalogWindow else {
+            resetCompactCatalogPointerCapture()
             return false
         }
 
-        let screenLocation: NSPoint
-        if let eventWindow = event.window
-            ?? NSApplication.shared.window(withWindowNumber: event.windowNumber) {
-            screenLocation = eventWindow.convertPoint(toScreen: event.locationInWindow)
+        let pointerLocation: NSPoint?
+        if let event,
+           event.type == .leftMouseDown || event.type == .leftMouseUp {
+            pointerLocation = screenLocation(for: event)
+        } else if let pendingCompactCatalogPointerLocation,
+                  let pendingCompactCatalogPointerUptime,
+                  ProcessInfo.processInfo.systemUptime - pendingCompactCatalogPointerUptime
+                    <= Self.compactCatalogCaptureLifetime {
+            pointerLocation = pendingCompactCatalogPointerLocation
         } else {
-            screenLocation = NSEvent.mouseLocation
+            pointerLocation = nil
         }
+        resetCompactCatalogPointerCapture()
+        guard let pointerLocation else { return false }
+
         begin(
             window: contentWindow,
-            anchor: contentWindow.convertPoint(fromScreen: screenLocation),
+            anchor: contentWindow.convertPoint(fromScreen: pointerLocation),
             origin: .compactCatalog
         )
         return true
@@ -146,5 +196,19 @@ final class CityMapPointerTransitionGate: ObservableObject {
                 || eventWindow.windowNumber == originatingWindowNumber
         }
         return event.windowNumber == originatingWindowNumber
+    }
+
+    private func screenLocation(for event: NSEvent) -> NSPoint {
+        if let eventWindow = event.window
+            ?? NSApplication.shared.window(withWindowNumber: event.windowNumber) {
+            return eventWindow.convertPoint(toScreen: event.locationInWindow)
+        }
+        return NSEvent.mouseLocation
+    }
+
+    private func resetCompactCatalogPointerCapture() {
+        compactCatalogCaptureGeneration &+= 1
+        pendingCompactCatalogPointerLocation = nil
+        pendingCompactCatalogPointerUptime = nil
     }
 }

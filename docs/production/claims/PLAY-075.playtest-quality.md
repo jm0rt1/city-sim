@@ -12,10 +12,13 @@
 - **Validation/proof:** every requirement and automatic reject in `WAVE-009-CITY-NOT-BOARD.md`
 - **Status:** Wave 010 R1 exact renderer candidate `d41c2c68` received focused
   independent approval at evidence commit `74f2164`; this permits Industrial
-  L2 publication but does not pre-score the final release. R2 reserves one
-  focused independent staged-app disposition after integration supplies an
-  exact Industrial L3 renderer candidate. The final 20/20 Wave 009 release
-  gate remains open.
+  L2 publication but does not pre-score the final release. Exact R2 candidate
+  `b4191d98ee7c526bc08a6fe272521588572e27fd` was preregistered and admitted,
+  but Computer Use remained approval-blocked and integration returned the
+  candidate under the mixed-fidelity stop before an independent live
+  disposition completed. This implies no PLAY-075 score. One focused R2 slot
+  remains reserved for a repaired exact Industrial L3 renderer candidate. The
+  final 20/20 Wave 009 release gate remains open.
 
 Independently prove or reject the city-not-board release. Acceptance requires
 20/20, every category 4/4, zero P0/P1, zero automatic rejects, and material

@@ -31,6 +31,24 @@ The art lane must now optimize for the composed game frame:
 
 ## Production order
 
+### A0 — Industrial L3 cohesion repair
+
+Exact R2 renderer candidate
+`b4191d98ee7c526bc08a6fe272521588572e27fd` is technically clean but returned
+before publication. Its chalky white/cyan, thin-outline L3 language reads as an
+imported asset beside the accepted warm brick, dark-roof, civic, utility, and
+terrain systems. Preserve its complete evidence and the exact accepted source
+lineage; do not integrate it.
+
+After the active L4 pre-pixel architecture reaches one clean checkpoint, pause
+L4 raw-pixel production and author a narrow Industrial L3 material/value/
+outline repair. Preserve the accepted L3 geometry, frontage, pivot, sockets,
+shadow direction, and four independently authored directions. Freeze and
+review one repaired direction at source, native-2x, compact, grayscale, and
+composed-city scale before completing its siblings. R2 receives one new
+renderer-ingestion window only after independent source review accepts the
+repaired N/E/S/W family.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.
@@ -48,8 +66,9 @@ variant-zero R/C/I spine and establishes the stronger art bar:
 - explicit comparison against Industrial L1/L2/L3 plus Residential and
   Commercial L4.
 
-R3 ingestion remains gated on R2 publication and independent source review.
-Source work may run ahead; shipping work may not.
+R3 ingestion remains gated on the repaired R2 publication and independent
+source review. Source work may run ahead only through the clean L4 pre-pixel
+checkpoint; L4 raw pixels and shipping work may not.
 
 ### A2 — Opening diversity kit
 
@@ -94,6 +113,43 @@ Reject a source batch if any of the following is true:
    frames against the current staged baseline.
 8. The lane edits renderer, shipping atlas, production selection, package,
    gameplay, simulation, UI, save, or shared-manifest surfaces.
+
+## Gameplay-scale measurable closeout
+
+Source correctness is necessary but not sufficient. The accepted catalog and
+composed staged city must also satisfy these review thresholds:
+
+- **One visual system:** comparable facade value ranges substantially overlap;
+  saturated accent material occupies less than 10 percent of opaque building
+  pixels; neighborhood-LOD outline weight differs by no more than one screen
+  pixel between families; and every family uses the same northwest-light,
+  southeast-shadow direction with comparable contact-shadow density.
+- **Real opening diversity:** frequently repeated opening family/levels provide
+  at least three materially different architectural silhouettes. No
+  edge-adjacent occupied pair may repeat the same silhouette, roof, frontage,
+  and lot treatment; no one visible identity may appear more than twice in the
+  opening; and candidate silhouette-mask overlap must remain below 80 percent.
+- **Frontage survives play:** the road-facing entrance or loading face remains
+  at least eight pixels wide in exact compact neighborhood proof, retains at
+  least 15 grayscale-value points of contrast, and lands within two pixels of
+  its authoritative road socket. A higher level changes at least 20 percent of
+  the prior level's silhouette boundary instead of merely becoming taller or
+  brighter.
+- **Special places are places:** parks, civic sites, utilities, and service
+  yards have continuous parcel ground and visible road-facing access. Exposed
+  plate edges occupy less than 10 percent of the parcel perimeter, native-scale
+  ground/contact gaps are at most two pixels, and landmark hierarchy is
+  deliberate rather than accidental.
+- **The city owns the frame:** authored developed district and public-realm
+  pixels occupy at least 60 percent of the safe aperture at regular and compact
+  sizes; the largest plain-terrain component is at most 25 percent; and road,
+  curb, parcel, and building material scales remain within a 0.75–1.33 ratio.
+  City LOD preserves district silhouettes, neighborhood LOD preserves
+  frontage/access, and block LOD adds entrances and material detail without
+  changing ground contact.
+
+An independently authored direction, unique hash, passing registration report,
+or green renderer test cannot waive any of these composed-frame requirements.
 
 ## Fast source cadence
 

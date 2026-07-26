@@ -11,19 +11,19 @@ and QA to become competing writers.
 - **First scheduled ingestion:** R1 — Industrial L2. The renderer begins
   immediately after integration independently approves one clean N/E/S/W
   source-family candidate; no other renderer mutation may take that slot.
-- **Renderer boundary:** `codex/citysim-world-rendering` remains clean and
-  frozen at `bfcd46cc361f04f38c35c7c463b8a42dfb000351`. This is not the blocker;
-  preserving it prevents a second writer and makes R1 predictable.
-- **Current source blocker:** the first North/West V04 primary packet passed
-  identity, registration, and raw uniqueness, but integration rejected its
-  gameplay-scale visual disposition because the named far-edge loading
-  frontages were not legible beside the accepted East anchor. World Art is
-  preserving that technical packet and repairing only the North/West authored
-  descriptor composition before South, repeat renders, or normalization.
-- **Parallel work:** PLAY-078 may adopt the denser PLAY-076 opening into
-  additive simulation fixtures while source art is repaired. It does not own
-  renderer, pack, or production-selection surfaces and therefore does not
-  delay R1.
+- **Renderer boundary:** `codex/citysim-world-rendering` is clean and frozen
+  at accepted Phase A candidate `41ad1eee9d1431a4962a7af6ed4fa85ceea0fedd`
+  with 271/271 tests passing and 0.747 ms pulse time under the unchanged
+  2.1 ms ceiling. It is ready for R1 and is not the blocker.
+- **Current source blocker:** the Industrial L2 V07 N/E/S/W art direction is
+  independently approved at `9d641ed`; North is repeat-identical, while East
+  exposed two host-Metal raster identities isolated to 97 lower contact pixels.
+  CONTRACT-018 now authorizes the exact approved East raw as an immutable
+  master. World Art must still prove North/South/West repeat identity and
+  deterministic normalization from all four frozen raw masters before R1.
+- **Parallel work:** PLAY-078 completed its additive denser-opening adoption
+  at `53ab9de79b923c588f9d6cd82788ec4f11cc4d80` and is included in the accepted
+  renderer Phase A candidate. No simulation writer delays R1.
 - **Reprioritized:** PLAY-073 composition remains behind R1; Industrial L3/L4
   remain behind their reserved R2/R3 gates; expanded duplicate worker-side
   full-suite and staged journeys remain replaced by the focused cadence below.
@@ -62,7 +62,9 @@ passes.
 
 1. **Source freeze:** World Art returns one clean exact family candidate,
    immutable hashes, provenance, registration, color/grayscale actual-scale
-   sheets, and an independent source disposition.
+   sheets, and an independent source disposition. A direction covered by
+   CONTRACT-018 uses its exact frozen raw master instead of rerendering; all
+   downstream normalization and packing remain deterministic.
 2. **Ingestion window:** World Rendering synchronizes to the current published
    master, ingests only the accepted family, runs focused pack/runtime tests,
    builds once, and returns one clean candidate.

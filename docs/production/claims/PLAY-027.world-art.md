@@ -7,9 +7,9 @@
 - **Base commit:** Published integration authority containing CONTRACT-010 and this claim
 - **Claimed:** July 24, 2026
 - **Planned surfaces:** `Native/CitySimNative/WorldArt/ImageGen/`, task-owned non-shipping source catalog records, source validators, contact sheets, and `docs/production/evidence/PLAY-027/`
-- **Dependencies:** CONTRACT-006, CONTRACT-010, CONTRACT-011, frozen generated-v4 style/family anchors; shipping ingestion waits for accepted PLAY-024
+- **Dependencies:** CONTRACT-006, CONTRACT-010, CONTRACT-011, CONTRACT-018, frozen generated-v4 style/family anchors; shipping ingestion waits for accepted PLAY-024
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Residential L1–L4 and Commercial L1–L4 are independently accepted and integrated; Commercial ships through PLAY-060/061. Industrial L1 variant-zero N/E/S/W source-v05 is independently accepted through clean candidate `79668c347e58d602f9627c73cb09e3272a83ef57`; production selection belongs to PLAY-062. Industrial L2 source authoring is now authorized under the same one-level-at-a-time independent-review gate. Industrial L3/L4 and production selection beyond L1 remain blocked.
+- **Status:** Residential L1–L4 and Commercial L1–L4 are independently accepted and integrated; Commercial ships through PLAY-060/061. Industrial L1 variant-zero N/E/S/W source-v05 is independently accepted through clean candidate `79668c347e58d602f9627c73cb09e3272a83ef57`; production selection belongs to PLAY-062. Industrial L2 source authoring is now authorized under the same one-level-at-a-time independent-review gate. CONTRACT-018 permits the exact independently reviewed Industrial L2 East raw anchor to advance as an immutable master while preserving its failed repeat-render evidence; North, South, and West still require normal repeat identity. Industrial L3/L4 and production selection beyond L1 remain blocked.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

@@ -1,0 +1,460 @@
+{
+  "finalDisposition" : "PENDING_INDEPENDENT_VISUAL_REVIEW",
+  "immutableRawInputSHA256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+  "lods" : [
+    {
+      "acceptedL1" : {
+        "alphaBounds" : [
+          388,
+          358,
+          636,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "ccf31c02376fdfb5d790c256e3e9ae64e7b193f88449c912077037e5a6c9fead",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 25,
+        "lumaP50" : 48,
+        "lumaP75" : 52,
+        "lumaP95" : 116,
+        "paddingPixels" : [
+          388,
+          358,
+          388,
+          85
+        ],
+        "pixels" : [
+          1024,
+          683
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 663895,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 35497
+      },
+      "exactFileAndDecodedPixelIdentity" : true,
+      "lod" : "block",
+      "repeatDifference" : {
+        "differingChannelCount" : 0,
+        "differingPixelCount" : 0,
+        "maximumChannelDelta" : 0
+      },
+      "runA" : {
+        "alphaBounds" : [
+          373,
+          374,
+          651,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "7be0edbcf79f9fcf0504e8b794f3c4ebe21ca834d4f5f69929a60b90797fd622",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 112,
+        "lumaP50" : 137,
+        "lumaP75" : 178,
+        "lumaP95" : 209,
+        "paddingPixels" : [
+          373,
+          374,
+          373,
+          85
+        ],
+        "pixels" : [
+          1024,
+          683
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 656916,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 42476
+      },
+      "runB" : {
+        "alphaBounds" : [
+          373,
+          374,
+          651,
+          598
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "7be0edbcf79f9fcf0504e8b794f3c4ebe21ca834d4f5f69929a60b90797fd622",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 112,
+        "lumaP50" : 137,
+        "lumaP75" : 178,
+        "lumaP95" : 209,
+        "paddingPixels" : [
+          373,
+          374,
+          373,
+          85
+        ],
+        "pixels" : [
+          1024,
+          683
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 656916,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 42476
+      },
+      "technicalPassed" : true
+    },
+    {
+      "acceptedL1" : {
+        "alphaBounds" : [
+          194,
+          179,
+          318,
+          300
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "f666a9b052cb5fb45d76381abe508bb4c2de451d5d0ecdf6f9a60ff1f9648228",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "35803e7aa979aa9afecb134e457040e23fa58fdd51be18db4c4e010e3f470607",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 25,
+        "lumaP50" : 48,
+        "lumaP75" : 52,
+        "lumaP95" : 116,
+        "paddingPixels" : [
+          194,
+          179,
+          194,
+          42
+        ],
+        "pixels" : [
+          512,
+          342
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 166122,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 8982
+      },
+      "exactFileAndDecodedPixelIdentity" : true,
+      "lod" : "neighborhood",
+      "repeatDifference" : {
+        "differingChannelCount" : 0,
+        "differingPixelCount" : 0,
+        "maximumChannelDelta" : 0
+      },
+      "runA" : {
+        "alphaBounds" : [
+          186,
+          187,
+          325,
+          299
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "9570a2edacfcfab26eb7d6437321f9b237fff8d0311a818263efd952ac41ff93",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "c229dfa0759fa7232786eee92fcdd6786cd1d13728fb09b8aa9b39b30d49ed93",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 111,
+        "lumaP50" : 136,
+        "lumaP75" : 178,
+        "lumaP95" : 211,
+        "paddingPixels" : [
+          186,
+          187,
+          187,
+          43
+        ],
+        "pixels" : [
+          512,
+          342
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 164391,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 10713
+      },
+      "runB" : {
+        "alphaBounds" : [
+          186,
+          187,
+          325,
+          299
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "9570a2edacfcfab26eb7d6437321f9b237fff8d0311a818263efd952ac41ff93",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "c229dfa0759fa7232786eee92fcdd6786cd1d13728fb09b8aa9b39b30d49ed93",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 111,
+        "lumaP50" : 136,
+        "lumaP75" : 178,
+        "lumaP95" : 211,
+        "paddingPixels" : [
+          186,
+          187,
+          187,
+          43
+        ],
+        "pixels" : [
+          512,
+          342
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 164391,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 10713
+      },
+      "technicalPassed" : true
+    },
+    {
+      "acceptedL1" : {
+        "alphaBounds" : [
+          97,
+          89,
+          159,
+          150
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "8356e8865318de991ff47817f4413ba778de22d3b3a86cd3eb1ff92325c7af34",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "a04aceca4ba2cd47b0b2fcbecb00d4dbf48fca8129c779bf6d27c825d8876d81",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 24,
+        "lumaP50" : 48,
+        "lumaP75" : 55,
+        "lumaP95" : 112,
+        "paddingPixels" : [
+          97,
+          89,
+          97,
+          21
+        ],
+        "pixels" : [
+          256,
+          171
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 41472,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 2304
+      },
+      "exactFileAndDecodedPixelIdentity" : true,
+      "lod" : "city",
+      "repeatDifference" : {
+        "differingChannelCount" : 0,
+        "differingPixelCount" : 0,
+        "maximumChannelDelta" : 0
+      },
+      "runA" : {
+        "alphaBounds" : [
+          93,
+          93,
+          163,
+          149
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "2d4783920105303fbf3463f6d1c99fd2d32283b8715f45b2f1bc92f3567001ab",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 111,
+        "lumaP50" : 133,
+        "lumaP75" : 176,
+        "lumaP95" : 212,
+        "paddingPixels" : [
+          93,
+          93,
+          93,
+          22
+        ],
+        "pixels" : [
+          256,
+          171
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 41066,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 2710
+      },
+      "runB" : {
+        "alphaBounds" : [
+          93,
+          93,
+          163,
+          149
+        ],
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "decodedRGBASHA256" : "2d4783920105303fbf3463f6d1c99fd2d32283b8715f45b2f1bc92f3567001ab",
+        "exactChromaPixelCount" : 0,
+        "fileSHA256" : "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c",
+        "hiddenRGBPixelCount" : 0,
+        "lumaP25" : 111,
+        "lumaP50" : 133,
+        "lumaP75" : 176,
+        "lumaP95" : 212,
+        "paddingPixels" : [
+          93,
+          93,
+          93,
+          22
+        ],
+        "pixels" : [
+          256,
+          171
+        ],
+        "technicalPassed" : true,
+        "transparentPixelCount" : 41066,
+        "visibleMagentaSpillPixelCount" : 0,
+        "visiblePixelCount" : 2710
+      },
+      "technicalPassed" : true
+    }
+  ],
+  "normalizationParameters" : {
+    "objectWidth" : 410,
+    "referenceBasis" : "frozen 512-source-pixel registration diamond",
+    "referenceWidth" : 512
+  },
+  "normalizedRegistrationPassed" : true,
+  "normalizerBinarySHA256" : "e5a8d2cf8ee9dbeb8f3845f232268f8d60ba9b91215df3ebc48a1b830e71a266",
+  "normalizerProcessCount" : 2,
+  "normalizerSourceSHA256" : "e4ef0afc870c90f8bf4f24ef0fe91d3d1d94b1d86edfbfe51cc596864d452c02",
+  "panelAuthority" : "bound actual-pixel review evidence; not source or production acceptance",
+  "panels" : [
+    {
+      "file" : "BLOCK-ACTUAL-L1-V05-COLOR-GRAYSCALE.png",
+      "lod" : "block",
+      "sha256" : "af7738b257568be1a1a1cd5a0d9e0cef8fa30440822ba990c5caaf220c2547d5"
+    },
+    {
+      "file" : "BLOCK-ZOOM-L1-V05-COLOR-GRAYSCALE.png",
+      "lod" : "block",
+      "sha256" : "6a9e988a498f51f5861d433a244095db310639a97d835f3d574fbc9e7fb40408"
+    },
+    {
+      "file" : "NEIGHBORHOOD-ACTUAL-L1-V05-COLOR-GRAYSCALE.png",
+      "lod" : "neighborhood",
+      "sha256" : "4ca88350cd79421c070032f3cfa1861ca2de3d604703310e98a543a89f50613f"
+    },
+    {
+      "file" : "NEIGHBORHOOD-ZOOM-L1-V05-COLOR-GRAYSCALE.png",
+      "lod" : "neighborhood",
+      "sha256" : "47413e3cba999569672d98751b71424803e97c997441224664c3bf9b4b4f68fe"
+    },
+    {
+      "file" : "CITY-ACTUAL-L1-V05-COLOR-GRAYSCALE.png",
+      "lod" : "city",
+      "sha256" : "1bd0471f11edb13292d7ebb9259409d525433de7840634da73ade6f22e21f793"
+    },
+    {
+      "file" : "CITY-ZOOM-L1-V05-COLOR-GRAYSCALE.png",
+      "lod" : "city",
+      "sha256" : "0eb893ec3c2191d0bfce7b2a21cba8b843017fb9b3f75fd43cfc2b586519fa07"
+    },
+    {
+      "file" : "SOURCE-SCALE-L1-V04-V05-COLOR.png",
+      "lod" : "source-and-native2x",
+      "sha256" : "de3dd2bd95e2e0c56f84029f8cb5ecf2ab6971f206293ba15fffb0a7e007bc56"
+    },
+    {
+      "file" : "SOURCE-SCALE-L1-V04-V05-GRAYSCALE.png",
+      "lod" : "source-and-native2x",
+      "sha256" : "332f2e215b70b3e79bb79149df25cb5bb7cb560758be28e22a0c8a3511d31bdd"
+    },
+    {
+      "file" : "FOOTPRINT-NATIVE-2X-L1-V04-V05-COLOR.png",
+      "lod" : "source-and-native2x",
+      "sha256" : "66133cb6e0a91a0264e4a9d0b5194d6169d42d407104355668904c302a440ffc"
+    },
+    {
+      "file" : "FOOTPRINT-NATIVE-2X-L1-V04-V05-GRAYSCALE.png",
+      "lod" : "source-and-native2x",
+      "sha256" : "7a8fc14ea95a749a68b779d899a0f5bdc1d7faa31670742d0e972e5a7fa24be8"
+    },
+    {
+      "file" : "FOOTPRINT-ZOOM-L1-V04-V05-COLOR.png",
+      "lod" : "source-and-native2x",
+      "sha256" : "aad89a7b1ea6fa5cbb57c4a9e75c848f027fb6eed23551396a83a9968ed45504"
+    },
+    {
+      "file" : "FOOTPRINT-ZOOM-L1-V04-V05-GRAYSCALE.png",
+      "lod" : "source-and-native2x",
+      "sha256" : "f5aac0c39342681c70e85797389a308f4c5fa139eefc4833f8ab70f215a867a3"
+    }
+  ],
+  "productionSelected" : false,
+  "raw" : {
+    "alphaOneThroughEightPixelCount" : 4852,
+    "alphaPositiveBounds" : [
+      509,
+      488,
+      1029,
+      906
+    ],
+    "alphaPositivePixelCount" : 147343,
+    "hiddenNonMagentaPixelCount" : 0,
+    "nearMagentaForegroundPixelCount" : 0,
+    "rawDecodedRGBASHA256" : "555f35d466326783a038ff842f76e8cdeff8284a4b26bb901d6d20428ad88bcc",
+    "rawFileSHA256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+    "rawNonChromaBounds" : [
+      509,
+      488,
+      1029,
+      906
+    ],
+    "rawNonChromaPixelCount" : 147343,
+    "rawSupportMatchesGenuineAlphaPositiveSupport" : true,
+    "registeredAlphaDecodedRGBASHA256" : "e5ddb827d0c5b101ccffd67d948a91fbf228eb87d8610c37859d54d4809a60c8",
+    "registeredAlphaFileSHA256" : "1235196abdd02f77f8b50a83985ea72c1931f862f4caf428452cb38e4a2dc721",
+    "technicalPassed" : true
+  },
+  "rawRegistrationPassed" : true,
+  "repeatProvenanceByteIdentical" : true,
+  "retainedFreshMetalProcessCount" : 1,
+  "reviewToolSourceSHA256" : "90d9190b1280244fee5a7462c8e6ae7b329a8f8d3fe31f492f5245228d8f66a8",
+  "sceneKitMetalProcessCount" : 0,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "task" : "PLAY-027",
+  "technicalPassed" : true,
+  "type" : "industrial-l02-east-v05-normalized-calibration-review",
+  "uniqueLODDecodedPixelIdentities" : true,
+  "uniqueLODFileIdentities" : true,
+  "visualReviewChecklist" : [
+    "three dock bays and canopies remain separately readable at native-2x",
+    "staff entrance does not alias a fourth dock",
+    "safety orange remains subordinate",
+    "far-side mass does not occlude East frontage",
+    "v05 remains superior to accepted Industrial L1 and retained v04 in color and grayscale",
+    "no edge loss, halos, stair steps, footprint loss, or material identity drift"
+  ]
+}

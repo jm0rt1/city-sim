@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "type": "industrial-l02-east-v05-normalization-repeat-identity",
+  "immutableRawInputSHA256": "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+  "normalizerProcessCount": 2,
+  "normalizerSourceSHA256": "e4ef0afc870c90f8bf4f24ef0fe91d3d1d94b1d86edfbfe51cc596864d452c02",
+  "normalizerBinarySHA256": "e5a8d2cf8ee9dbeb8f3845f232268f8d60ba9b91215df3ebc48a1b830e71a266",
+  "normalizationParameters": {
+    "objectWidth": 410,
+    "referenceWidth": 512,
+    "referenceBasis": "frozen 512-source-pixel registration diamond"
+  },
+  "runProvenanceSHA256": {
+    "runA": "d279cc662817c17dc42c354607e59e74b39d6450991a2821eff74c97a34bb599",
+    "runB": "d279cc662817c17dc42c354607e59e74b39d6450991a2821eff74c97a34bb599"
+  },
+  "lods": [
+    {
+      "lod": "block",
+      "fileSHA256": "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086",
+      "decodedRGBASHA256": "7be0edbcf79f9fcf0504e8b794f3c4ebe21ca834d4f5f69929a60b90797fd622",
+      "differingPixels": 0,
+      "differingChannels": 0
+    },
+    {
+      "lod": "neighborhood",
+      "fileSHA256": "c229dfa0759fa7232786eee92fcdd6786cd1d13728fb09b8aa9b39b30d49ed93",
+      "decodedRGBASHA256": "9570a2edacfcfab26eb7d6437321f9b237fff8d0311a818263efd952ac41ff93",
+      "differingPixels": 0,
+      "differingChannels": 0
+    },
+    {
+      "lod": "city",
+      "fileSHA256": "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c",
+      "decodedRGBASHA256": "2d4783920105303fbf3463f6d1c99fd2d32283b8715f45b2f1bc92f3567001ab",
+      "differingPixels": 0,
+      "differingChannels": 0
+    }
+  ],
+  "uniqueLODFileIdentities": true,
+  "uniqueLODDecodedPixelIdentities": true,
+  "reviewReplayProcessCount": 2,
+  "reviewReplayByteIdentical": true,
+  "productionSelected": false,
+  "passed": true
+}

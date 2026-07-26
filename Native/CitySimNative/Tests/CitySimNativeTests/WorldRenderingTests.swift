@@ -1241,7 +1241,7 @@ final class WorldRenderingTests: XCTestCase {
         let initialRoot = scene.tileRootIdentifier(at: tile.coordinate)
         XCTAssertTrue(
             scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
-                "lot.generated-v4.\(originalIdentity.logicalID).block"
+                "lot.generated-v4.\(originalIdentity.logicalID).\(scene.currentCameraDetailLevel.assetSuffix)"
             )
         )
 
@@ -1334,7 +1334,7 @@ final class WorldRenderingTests: XCTestCase {
         let initialRoot = scene.tileRootIdentifier(at: tile.coordinate)
         XCTAssertTrue(
             scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
-                "lot.generated-v4.\(originalIdentity.logicalID).block"
+                "lot.generated-v4.\(originalIdentity.logicalID).\(scene.currentCameraDetailLevel.assetSuffix)"
             )
         )
 
@@ -1428,7 +1428,7 @@ final class WorldRenderingTests: XCTestCase {
         let initialRoot = scene.tileRootIdentifier(at: tile.coordinate)
         XCTAssertTrue(
             scene.tileDescendantNamesForTesting(at: tile.coordinate).contains(
-                "lot.generated-v4.\(identity.logicalID).block"
+                "lot.generated-v4.\(identity.logicalID).\(scene.currentCameraDetailLevel.assetSuffix)"
             )
         )
 
@@ -1632,6 +1632,53 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testGeneratedResidencyPreloadTracksOnlyAssetIdentityTopologyAndLOD() {
+        var state = CityGameState.newCity(seed: 42)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(scene.generatedResidencyPreloadCountForTesting, 1)
+
+        state.updateTile(at: GridCoordinate(x: 11, y: 11)) {
+            $0.occupancy += 1
+            $0.condition = 0.58
+        }
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(
+            scene.generatedResidencyPreloadCountForTesting,
+            1,
+            "Occupancy, condition, and spatial-only pulses must not rescan generated-v4 residency"
+        )
+
+        state.updateTile(at: GridCoordinate(x: 11, y: 11)) {
+            $0.level = 2
+        }
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(scene.generatedResidencyPreloadCountForTesting, 2)
+
+        scene.configureProofCamera(
+            detail: scene.currentCameraDetailLevel == .city ? .block : .city,
+            centeredOn: GridCoordinate(x: 11, y: 11)
+        )
+        XCTAssertEqual(scene.generatedResidencyPreloadCountForTesting, 3)
+    }
+
+    @MainActor
     func testGeneratedWorldPreloadsOneAdjacentLODWithinPageBudget() throws {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)
@@ -1735,6 +1782,14 @@ final class WorldRenderingTests: XCTestCase {
             let names = descendantNames(in: root)
             XCTAssertTrue(names.contains("road.production-corridor.developed.\(mask.rawValue)"))
             XCTAssertTrue(names.contains("road.generated-v4.\(mask.rawValue).block"))
+            if mask.isEmpty {
+                XCTAssertFalse(names.contains { $0.hasPrefix("road.socket-seam-blend.") })
+            } else {
+                XCTAssertTrue(
+                    names.contains("road.socket-seam-blend.\(mask.rawValue)"),
+                    "One batched node may cover only the reciprocal socket seams"
+                )
+            }
             if mask.edges.count == 1 {
                 XCTAssertTrue(names.contains("road.terminus.paved-apron"))
                 XCTAssertTrue(names.contains("road.terminus.authenticated-barrier"))
@@ -1832,8 +1887,24 @@ final class WorldRenderingTests: XCTestCase {
             let sprite = road.childNode(
                 withName: "//road.generated-v4.\(mask.rawValue).block"
             ) as? SKSpriteNode
-            XCTAssertEqual(sprite?.alpha ?? -1, 1, accuracy: 0.001)
-            XCTAssertEqual(sprite?.colorBlendFactor ?? -1, 0, accuracy: 0.001)
+            XCTAssertEqual(
+                sprite?.alpha ?? -1,
+                1,
+                accuracy: 0.001
+            )
+            XCTAssertEqual(
+                sprite?.colorBlendFactor ?? -1,
+                isDevelopedContext ? 0.16 : 0.18,
+                accuracy: 0.001
+            )
+            XCTAssertFalse(
+                names.contains { $0.hasPrefix("road.material.") },
+                "The generated-v4 road is the only visible road material layer"
+            )
+            XCTAssertEqual(
+                names.filter { $0.hasPrefix("road.socket-seam-blend.") }.count,
+                1
+            )
 
             let terrain = TerrainRenderer(style: WorldVisualStyle()).makeGround(
                 for: roadTile,
@@ -1932,13 +2003,13 @@ final class WorldRenderingTests: XCTestCase {
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
-            if size.width <= 900 {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
-                XCTAssertLessThanOrEqual(occupied.width, 0.63)
-            } else {
-                XCTAssertGreaterThanOrEqual(occupied.width, 0.73)
-                XCTAssertLessThanOrEqual(occupied.width, 0.78)
-            }
+            let priority = scene.cameraPriorityViewportOccupancyForTesting()
+            XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
+            XCTAssertLessThanOrEqual(occupied.width, 0.61)
+            XCTAssertGreaterThanOrEqual(priority.width, 1.04)
+            XCTAssertLessThanOrEqual(priority.width, 1.06)
+            XCTAssertGreaterThan(priority.width, occupied.width)
+            XCTAssertGreaterThan(priority.height, occupied.height)
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
             XCTAssertNotEqual(
                 scene.occupiedDevelopedVisualBoundsForTesting,
@@ -2076,6 +2147,35 @@ final class WorldRenderingTests: XCTestCase {
         ))
         XCTAssertTrue(powerPlantNames.contains("lot.generated-v4.industrial_l01.block"))
         XCTAssertTrue(powerPlantNames.contains("lot.generated-role.powerPlant"))
+
+        let powerPlantRoot = renderer.makeLot(
+            for: powerPlant,
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        )
+        let powerPlantSprite = powerPlantRoot.childNode(
+            withName: "//lot.generated-v4.industrial_l01.block"
+        ) as? SKSpriteNode
+        XCTAssertEqual(powerPlantSprite?.xScale ?? -1, 0.88, accuracy: 0.001)
+        XCTAssertEqual(powerPlantSprite?.yScale ?? -1, 0.88, accuracy: 0.001)
+
+        let waterTower = CityTile(
+            coordinate: GridCoordinate(x: 11, y: 14),
+            kind: .waterTower,
+            constructionProgress: 1
+        )
+        let waterTowerRoot = renderer.makeLot(
+            for: waterTower,
+            adjacentRoads: .north,
+            detail: .block,
+            reducedMotion: true
+        )
+        let waterTowerSprite = waterTowerRoot.childNode(
+            withName: "//lot.generated-v4.water_tower_l01.block"
+        ) as? SKSpriteNode
+        XCTAssertEqual(waterTowerSprite?.xScale ?? -1, 0.64, accuracy: 0.001)
+        XCTAssertEqual(waterTowerSprite?.yScale ?? -1, 0.64, accuracy: 0.001)
     }
 
     @MainActor
@@ -2103,7 +2203,25 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertGreaterThan(authored.zPosition, foundation.zPosition)
         XCTAssertNotNil(authored.texture)
         XCTAssertGreaterThan(authored.frame.width, 60)
-        XCTAssertGreaterThan(authored.frame.height, 32)
+        XCTAssertGreaterThan(authored.frame.height, 31)
+        XCTAssertEqual(authored.xScale, 0.96, accuracy: 0.001)
+        XCTAssertEqual(authored.yScale, 0.96, accuracy: 0.001)
+        let fullTextureSize = try XCTUnwrap(authored.texture?.size())
+        XCTAssertGreaterThan(fullTextureSize.width, 60)
+        XCTAssertGreaterThan(fullTextureSize.height, 32)
+        XCTAssertGreaterThan(authored.size.width, 60)
+        XCTAssertGreaterThan(authored.size.height, 32)
+        XCTAssertGreaterThanOrEqual(
+            authored.frame.width,
+            authored.size.width * authored.xScale
+        )
+        XCTAssertGreaterThanOrEqual(
+            authored.frame.height,
+            authored.size.height * authored.yScale
+        )
+        XCTAssertFalse(containsCropNode(in: root))
+        XCTAssertNil(root.childNode(withName: "//lot.park.source-edge-mask"))
+        XCTAssertNil(root.childNode(withName: "//lot.park.source-edge-ground-blend"))
         XCTAssertFalse(descendantNames(in: root).contains { $0.hasPrefix("lot.place.") })
     }
 
@@ -2143,23 +2261,28 @@ final class WorldRenderingTests: XCTestCase {
         let style = WorldVisualStyle()
         let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())
         let state = CityGameState.newCity(seed: 42)
+        let snapshot = try! CityPresentationSnapshot(state: state)
         let animated = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .block,
             reducedMotion: false
         )
         let reduced = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .block,
             reducedMotion: true
         )
         let repeated = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .block,
             reducedMotion: true
         )
         let city = renderer.makeCorridorLife(
             in: state,
+            consequences: snapshot.spatialConsequences,
             detail: .city,
             reducedMotion: true
         )
@@ -2168,15 +2291,17 @@ final class WorldRenderingTests: XCTestCase {
         let reducedNames = descendantNames(in: reduced)
         XCTAssertEqual(reducedNames, descendantNames(in: repeated))
         for names in [animatedNames, reducedNames] {
-            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 4)
-            XCTAssertEqual(
-                names.filter {
-                    $0 == "world.ambient.pedestrian-pair.0"
-                        || $0 == "world.ambient.pedestrian-pair.1"
-                }.count,
-                2
-            )
-            XCTAssertEqual(names.filter { $0 == "world.ambient.parked-service-object" }.count, 1)
+            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 3)
+            XCTAssertEqual(names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 6
+                    && $0.hasPrefix("world.activity.street.local-activity.")
+            }.count, 2)
+            XCTAssertEqual(names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 6
+                    && $0.hasPrefix("world.activity.place.local-activity.")
+            }.count, 1)
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.vegetation-cluster.0"
@@ -2368,14 +2493,391 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
         XCTAssertFalse(animatedNames.contains { $0.contains(".banner") || $0.contains(".windsock") })
         XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 2)
-        let pedestrian = animated.childNode(withName: "//world.ambient.pedestrian-pair.0")
-        let stroll = pedestrian?.action(forKey: "ambient.corridor.walk")
+        let pedestrian = animated.childNode(withName: "//world.activity.street.local-activity.*")
+        let stroll = pedestrian?.action(forKey: "ambient.local-activity")
         XCTAssertNotNil(stroll)
         XCTAssertGreaterThanOrEqual(stroll?.duration ?? 0, 14.4)
         XCTAssertLessThanOrEqual(stroll?.duration ?? .infinity, 15.2)
         XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
         XCTAssertTrue(descendantLabels(in: animated).isEmpty)
         XCTAssertTrue(descendantLabels(in: reduced).isEmpty)
+    }
+
+    @MainActor
+    func testTypedLocalActivityIsDeterministicBoundedTruthSafeAndSuppressesNilOrZero() {
+        let style = WorldVisualStyle()
+        let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try! CityPresentationSnapshot(state: state)
+        let block = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block
+        )
+        let repeated = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block
+        )
+        let city = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .city
+        )
+
+        XCTAssertEqual(block, repeated)
+        XCTAssertLessThanOrEqual(block.count, 3)
+        XCTAssertLessThanOrEqual(city.count, 2)
+        XCTAssertEqual(block.filter { $0.domain == .street }.count, 2)
+        XCTAssertEqual(block.filter { $0.domain == .place }.count, 1)
+        XCTAssertEqual(Set(block.map(\.surfaceCoordinate)).count, block.count)
+        for placement in block {
+            XCTAssertGreaterThan(placement.intensity, 0)
+            XCTAssertLessThanOrEqual(placement.intensity, 1)
+            XCTAssertEqual(state.tile(at: placement.surfaceCoordinate)?.kind, .road)
+            let roadCenter = style.isoPosition(placement.surfaceCoordinate)
+            let local = CGPoint(
+                x: placement.position.x - roadCenter.x,
+                y: placement.position.y - roadCenter.y
+            )
+            let normalizedX = abs(local.x) / (style.tileWidth / 2)
+            let normalizedY = abs(local.y) / (style.tileHeight / 2)
+            XCTAssertLessThanOrEqual(normalizedX + normalizedY, 0.96)
+            let connections = RoadConnectionMask.resolving(
+                at: placement.surfaceCoordinate,
+                in: state
+            )
+            XCTAssertFalse(connections.isEmpty)
+            XCTAssertGreaterThanOrEqual(
+                connections.edges.map {
+                    pointSegmentDistanceForTesting(local, end: style.roadSocket(for: $0))
+                }.min() ?? 0,
+                9.1
+            )
+            if placement.domain == .place {
+                let source = try! XCTUnwrap(state.tile(at: placement.sourceCoordinate))
+                XCTAssertNotEqual(source.kind, .empty)
+                XCTAssertNotEqual(source.kind, .road)
+                XCTAssertGreaterThanOrEqual(source.constructionProgress, 1)
+            }
+        }
+
+        for value: Double? in [nil, 0] {
+            let suppressed = renderer.activityPlacements(
+                in: state,
+                detail: .block,
+                streetActivityIndex: { _ in value },
+                placeActivityIndex: { _ in value }
+            )
+            XCTAssertTrue(suppressed.isEmpty)
+        }
+    }
+
+    @MainActor
+    func testTypedLocalActivityReusesAmbientTreeUntilItsVisibleBandChanges() {
+        var state = CityGameState.newCity(seed: 42)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        let initialRebuildCount = scene.ambientRebuildCountForTesting
+
+        for _ in 0..<10 {
+            CitySimulation.step(&state)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        }
+
+        XCTAssertLessThanOrEqual(
+            scene.ambientRebuildCountForTesting - initialRebuildCount,
+            1,
+            "Raw activity-index drift must not rebuild the bounded ambient tree"
+        )
+    }
+
+    @MainActor
+    func testTypedLocalActivitySwitchesToCurrentHighestBandSourceExactlyOnce() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let renderer = AmbientLifeRenderer(
+            style: WorldVisualStyle(),
+            assets: WorldAssetCatalog()
+        )
+        let eligible = renderer.activityPlacements(
+            in: state,
+            detail: .block,
+            streetActivityIndex: { coordinate in
+                state.tile(at: coordinate)?.kind == .road ? 0.5 : nil
+            },
+            placeActivityIndex: { _ in nil }
+        )
+        let firstSource = try XCTUnwrap(eligible.first?.sourceCoordinate)
+        let secondSource = try XCTUnwrap(
+            eligible.first(where: { $0.sourceCoordinate != firstSource })?.sourceCoordinate
+        )
+        let initial = renderer.activityPlacements(
+            in: state,
+            detail: .city,
+            streetActivityIndex: { coordinate in
+                if coordinate == firstSource { return 0.9 }
+                if coordinate == secondSource { return 0.5 }
+                return nil
+            },
+            placeActivityIndex: { _ in nil }
+        )
+        let switched = renderer.activityPlacements(
+            in: state,
+            detail: .city,
+            streetActivityIndex: { coordinate in
+                if coordinate == firstSource { return 0.5 }
+                if coordinate == secondSource { return 0.9 }
+                return nil
+            },
+            placeActivityIndex: { _ in nil }
+        )
+        XCTAssertEqual(initial.map(\.sourceCoordinate), [firstSource])
+        XCTAssertEqual(switched.map(\.sourceCoordinate), [secondSource])
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        XCTAssertTrue(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: initial
+        ))
+        let initialRebuildCount = scene.ambientRebuildCountForTesting
+        let initialGroundRebuildCount = scene.ambientGroundRebuildCountForTesting
+        let initialName = "world.activity.street.local-activity."
+            + "\(firstSource.x).\(firstSource.y)"
+        XCTAssertEqual(scene.renderedActivityNamesForTesting, [initialName])
+
+        XCTAssertFalse(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: initial
+        ))
+        XCTAssertTrue(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: switched
+        ))
+        XCTAssertFalse(scene.reconcileAmbientActivityForTesting(
+            snapshot: snapshot,
+            placements: switched
+        ))
+        let switchedName = "world.activity.street.local-activity."
+            + "\(secondSource.x).\(secondSource.y)"
+        XCTAssertEqual(scene.renderedActivityNamesForTesting, [switchedName])
+        XCTAssertEqual(
+            scene.ambientRebuildCountForTesting - initialRebuildCount,
+            1,
+            "A changed authoritative highest-band source must replace the rendered actor once"
+        )
+        XCTAssertEqual(
+            scene.ambientGroundRebuildCountForTesting,
+            initialGroundRebuildCount,
+            "Activity-only changes must reuse the identical developed-ground tree"
+        )
+    }
+
+    @MainActor
+    func testLotContextIsDeterministicTruthBoundedAndProtectsFrontage() {
+        let style = WorldVisualStyle()
+        let renderer = LotContextRenderer(style: style)
+        let cases: [(BuildingKind, RoadConnectionMask, Set<LotContextRenderer.PlacementRole>)] = [
+            (.residential, .north, [.plantingBed, .lamp]),
+            (.commercial, .east, [.parkingBay, .wayfinding]),
+            (.industrial, .south, [.serviceYard, .serviceProp, .lamp]),
+            (.cityHall, .west, [.civicForecourt, .lamp, .wayfinding]),
+            (.park, .south, [.parkTerrace, .bench, .wayfinding]),
+        ]
+
+        for (index, entry) in cases.enumerated() {
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: 8 + index, y: 10 + index),
+                kind: entry.0,
+                level: 1
+            )
+            let first = renderer.placementLedger(
+                for: tile,
+                adjacentRoads: entry.1,
+                selectedFrontage: entry.1
+            )
+            let repeated = renderer.placementLedger(
+                for: tile,
+                adjacentRoads: entry.1,
+                selectedFrontage: entry.1
+            )
+            XCTAssertEqual(first, repeated)
+            XCTAssertEqual(Set(first.map(\.role)), entry.2)
+
+            let socket = style.roadSocket(for: entry.1)
+            let entrance = CGPoint(x: 0, y: -13.5)
+            for placement in first {
+                XCTAssertLessThanOrEqual(
+                    abs(placement.center.x) / (style.tileWidth / 2)
+                        + abs(placement.center.y) / (style.tileHeight / 2),
+                    0.93,
+                    "\(entry.0) \(placement.role) must remain inside the authoritative lot"
+                )
+                XCTAssertLessThanOrEqual(placement.size.width, 29)
+                XCTAssertLessThanOrEqual(placement.size.height, 9)
+                if !placement.groundOnly {
+                    XCTAssertGreaterThanOrEqual(
+                        pointSegmentDistanceForTesting(
+                            CGPoint(
+                                x: placement.center.x - entrance.x,
+                                y: placement.center.y - entrance.y
+                            ),
+                            end: CGPoint(
+                                x: socket.x - entrance.x,
+                                y: socket.y - entrance.y
+                            )
+                        ),
+                        4.5,
+                        "\(entry.0) \(placement.role) must not obstruct the entrance/frontage path"
+                    )
+                }
+            }
+
+            let roadless = renderer.placementLedger(
+                for: tile,
+                adjacentRoads: [],
+                selectedFrontage: nil
+            )
+            XCTAssertTrue(
+                roadless.isEmpty,
+                "Road-facing parking, yards, lamps, and signage must not invent a frontage"
+            )
+        }
+
+        let tile = CityTile(
+            coordinate: GridCoordinate(x: 15, y: 12),
+            kind: .industrial,
+            level: 1,
+            constructionProgress: 1
+        )
+        let beforeCount = LotContextRenderer.cachedTemplateCountForTesting
+        let firstCity = SKNode()
+        let firstNeighborhood = SKNode()
+        let firstBlock = SKNode()
+        renderer.addContext(
+            for: tile,
+            adjacentRoads: [.south],
+            selectedFrontage: .south,
+            city: firstCity,
+            neighborhood: firstNeighborhood,
+            block: firstBlock
+        )
+        let afterFirstCount = LotContextRenderer.cachedTemplateCountForTesting
+
+        let secondCity = SKNode()
+        let secondNeighborhood = SKNode()
+        let secondBlock = SKNode()
+        renderer.addContext(
+            for: tile,
+            adjacentRoads: [.south],
+            selectedFrontage: .south,
+            city: secondCity,
+            neighborhood: secondNeighborhood,
+            block: secondBlock
+        )
+
+        XCTAssertGreaterThanOrEqual(afterFirstCount, beforeCount)
+        XCTAssertLessThanOrEqual(afterFirstCount - beforeCount, 1)
+        XCTAssertEqual(LotContextRenderer.cachedTemplateCountForTesting, afterFirstCount)
+        XCTAssertEqual(firstCity.children.map(\.name), secondCity.children.map(\.name))
+        XCTAssertEqual(
+            firstNeighborhood.children.map(\.name),
+            secondNeighborhood.children.map(\.name)
+        )
+        XCTAssertEqual(firstBlock.children.map(\.name), secondBlock.children.map(\.name))
+        XCTAssertFalse(firstCity.children.isEmpty)
+        XCTAssertFalse(firstNeighborhood.children.isEmpty)
+        XCTAssertFalse(firstBlock.children.isEmpty)
+        XCTAssertFalse(firstCity.children[0] === secondCity.children[0])
+        firstCity.children[0].alpha = 0
+        XCTAssertEqual(secondCity.children[0].alpha, 1)
+        XCTAssertLessThanOrEqual(
+            LotContextRenderer.cachedTemplateCountForTesting,
+            5 * 4 * 5
+        )
+    }
+
+    @MainActor
+    func testCompletedLotsExposeDistinctCityNeighborhoodAndBlockContextWithoutLabelsOrActions() {
+        let style = WorldVisualStyle()
+        let renderer = LotRenderer(style: style, assets: WorldAssetCatalog())
+        let cases: [(BuildingKind, String, String)] = [
+            (.residential, "residential", "planting-bed"),
+            (.commercial, "commercial", "parking-bay"),
+            (.industrial, "industrial", "service-yard"),
+            (.cityHall, "civic", "civic-forecourt"),
+            (.park, "park", "park-terrace"),
+        ]
+
+        for (index, entry) in cases.enumerated() {
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: 6 + index, y: 8),
+                kind: entry.0,
+                level: 1,
+                constructionProgress: 1
+            )
+            let block = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let repeated = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let city = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .city,
+                reducedMotion: true
+            )
+            let blockNames = descendantNames(in: block)
+            XCTAssertEqual(blockNames, descendantNames(in: repeated))
+            XCTAssertTrue(
+                blockNames.contains {
+                    $0.hasPrefix("lot.context.city.\(entry.1).material.")
+                }
+            )
+            XCTAssertTrue(
+                blockNames.contains {
+                    $0 == "lot.lod.neighborhood.public-realm.\(entry.1)"
+                }
+            )
+            XCTAssertTrue(
+                blockNames.contains {
+                    $0.contains("lot.context.\(entry.1).\(entry.2)")
+                }
+            )
+            XCTAssertTrue(
+                descendantNames(in: city).contains {
+                    $0.hasPrefix("lot.context.city.\(entry.1).material.")
+                }
+            )
+            XCTAssertTrue(descendantLabels(in: block).isEmpty)
+            XCTAssertEqual(recursiveActiveActionCount(block), 0)
+        }
+
+        let underConstruction = renderer.makeLot(
+            for: CityTile(
+                coordinate: GridCoordinate(x: 4, y: 5),
+                kind: .industrial,
+                constructionProgress: 0.5
+            ),
+            adjacentRoads: .south,
+            detail: .block,
+            reducedMotion: true
+        )
+        XCTAssertFalse(
+            descendantNames(in: underConstruction).contains {
+                $0.hasPrefix("lot.context.")
+            },
+            "Completed-lot parking and service context must not appear during active construction"
+        )
     }
 
     @MainActor
@@ -2430,7 +2932,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
         XCTAssertEqual(
             backdropNames.filter { $0.hasPrefix("terrain.macro.material.patch.") }.count,
-            49
+            121
         )
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
@@ -2440,6 +2942,15 @@ final class WorldRenderingTests: XCTestCase {
             backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
             10
         )
+        var maximumMaterialPatchSize = CGSize.zero
+        backdrop.enumerateChildNodes(withName: "//terrain.macro.material.patch.*") { node, _ in
+            guard let shape = node as? SKShapeNode,
+                  let bounds = shape.path?.boundingBoxOfPath else { return }
+            maximumMaterialPatchSize.width = max(maximumMaterialPatchSize.width, bounds.width)
+            maximumMaterialPatchSize.height = max(maximumMaterialPatchSize.height, bounds.height)
+        }
+        XCTAssertLessThanOrEqual(maximumMaterialPatchSize.width, 72 * 3.2)
+        XCTAssertLessThanOrEqual(maximumMaterialPatchSize.height, 36 * 2.1)
         var furrowNodes: [SKShapeNode] = []
         backdrop.enumerateChildNodes(withName: "//terrain.macro.furrows.*") { node, _ in
             if let shape = node as? SKShapeNode { furrowNodes.append(shape) }
@@ -2473,6 +2984,220 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(backdropNames.contains { $0.hasPrefix("terrain.macro.boundary.") })
         XCTAssertFalse(backdrop.children.contains { $0 is SKCropNode })
         XCTAssertEqual(recursiveActiveActionCount(backdrop), 0)
+
+        let districtGround = renderer.makeDevelopedDistrictGround(in: state)
+        let districtNames = descendantNames(in: districtGround)
+        XCTAssertTrue(districtNames.contains("district.ground.shared-contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.authoritative-public-realm"))
+        XCTAssertTrue(districtNames.contains("district.ground.frontage-links.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.frontage-links.material"))
+        XCTAssertTrue(districtNames.contains("district.ground.park-access.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.park-access.material"))
+        XCTAssertTrue(districtNames.contains("district.ground.service-access.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.service-access.material"))
+        XCTAssertTrue(districtNames.contains { $0.hasPrefix("district.ground.authoritative-parcels.") })
+        XCTAssertTrue(
+            districtNames.contains {
+                $0.hasPrefix(
+                    "district.ground.authoritative-parcels.park.internal-material."
+                )
+            }
+        )
+        XCTAssertTrue(
+            districtNames.contains {
+                $0.hasPrefix(
+                    "district.ground.authoritative-parcels.park.surrounding-ground."
+                )
+            }
+        )
+        XCTAssertTrue(
+            districtNames.contains {
+                $0.hasPrefix(
+                    "district.ground.service-campus.internal-material"
+                )
+            }
+        )
+        XCTAssertTrue(districtNames.contains("district.ground.service-campus.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.service-campus.material"))
+        XCTAssertEqual(recursiveActiveActionCount(districtGround), 0)
+        XCTAssertTrue(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "world.environment.developed-district-ground"
+            )
+        )
+    }
+
+    @MainActor
+    func testRoadEnclosedCommonsStayVacantAndJoinTheAuthoritativeFrontageNetwork() {
+        let state = CityGameState.newCity(seed: 42)
+        let renderer = TerrainRenderer(style: WorldVisualStyle())
+        let authoritativeRoads = Set(
+            state.tiles.filter { $0.kind == .road }.map(\.coordinate)
+        )
+        let frontageRoads = renderer.connectedFrontageRoadCoordinatesForTesting(in: state)
+        XCTAssertEqual(frontageRoads, authoritativeRoads)
+        XCTAssertEqual(frontageRoads.count, 32)
+
+        let commons = renderer.enclosedVacantCoordinatesForTesting(in: state)
+        XCTAssertEqual(commons.count, 15)
+        XCTAssertTrue(commons.allSatisfy { state.tile(at: $0)?.kind == .empty })
+        XCTAssertFalse(commons.contains(GridCoordinate(x: 11, y: 11)))
+        XCTAssertFalse(commons.contains(GridCoordinate(x: 13, y: 11)))
+
+        let city = renderer.makeDevelopedDistrictGround(in: state, detail: .city)
+        let cityNames = descendantNames(in: city)
+        XCTAssertEqual(
+            cityNames.filter { $0.hasPrefix("district.commons.natural-meadow.") }.count,
+            2
+        )
+        XCTAssertEqual(
+            cityNames.filter { $0.hasPrefix("district.commons.natural-texture.") }.count,
+            3
+        )
+        XCTAssertEqual(
+            cityNames.filter { $0.hasPrefix("district.commons.existing-foliage.") }.count,
+            1
+        )
+        XCTAssertFalse(cityNames.contains { $0.contains("plaza") })
+        XCTAssertFalse(cityNames.contains { $0.contains("path") })
+        XCTAssertFalse(cityNames.contains { $0.contains("bench") })
+        XCTAssertFalse(cityNames.contains { $0.contains("road") })
+        XCTAssertFalse(cityNames.contains { $0.contains("building") })
+        XCTAssertTrue(city.childNode(withName: "detail.city")?.isHidden == false)
+        XCTAssertTrue(city.childNode(withName: "detail.neighborhood")?.isHidden == true)
+        XCTAssertTrue(city.childNode(withName: "detail.block")?.isHidden == true)
+
+        let neighborhood = renderer.makeDevelopedDistrictGround(
+            in: state,
+            detail: .neighborhood
+        )
+        XCTAssertTrue(
+            descendantNames(in: neighborhood).contains {
+                $0.hasPrefix("district.commons.natural-texture.")
+            }
+        )
+        XCTAssertTrue(neighborhood.childNode(withName: "detail.city")?.isHidden == false)
+        XCTAssertTrue(neighborhood.childNode(withName: "detail.neighborhood")?.isHidden == false)
+        XCTAssertTrue(neighborhood.childNode(withName: "detail.block")?.isHidden == true)
+
+        let block = renderer.makeDevelopedDistrictGround(in: state, detail: .block)
+        XCTAssertEqual(recursiveActiveActionCount(block), 0)
+        XCTAssertTrue(descendantLabels(in: block).isEmpty)
+        XCTAssertLessThan(block.calculateAccumulatedFrame().width, 1_000)
+        XCTAssertLessThan(block.calculateAccumulatedFrame().height, 600)
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let buildableCoordinate = try? XCTUnwrap(
+            commons.sorted { ($0.y, $0.x) < ($1.y, $1.x) }.first {
+                guard case .success = CitySimulation.validateBuild(
+                    .residential,
+                    at: $0,
+                    in: state
+                ) else {
+                    return false
+                }
+                return scene.resolvedCoordinateForTesting(
+                    at: scene.scenePointForTesting(at: $0)
+                ) == $0
+            }
+        )
+        XCTAssertNotNil(buildableCoordinate)
+        if let buildableCoordinate,
+           let tile = state.tile(at: buildableCoordinate) {
+            let originalRoot = scene.tileRootIdentifier(at: buildableCoordinate)
+            XCTAssertEqual(
+                scene.resolvedCoordinateForTesting(
+                    at: scene.scenePointForTesting(at: buildableCoordinate)
+                ),
+                buildableCoordinate
+            )
+
+            scene.render(
+                state: state,
+                overlay: .pollution,
+                selection: buildableCoordinate,
+                interactionMode: .inspect
+            )
+            XCTAssertEqual(scene.tileRootIdentifier(at: buildableCoordinate), originalRoot)
+            XCTAssertFalse(scene.selectionIsHiddenForTesting)
+
+            let target = CityMapActionTargetPresentation(
+                coordinate: buildableCoordinate,
+                primaryAction: CityMapPrimaryActionPresentation.make(
+                    interactionMode: .build(.residential),
+                    tile: tile,
+                    state: state
+                )
+            )
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: buildableCoordinate,
+                interactionMode: .build(.residential),
+                activeActionTarget: target
+            )
+            XCTAssertEqual(scene.tileRootIdentifier(at: buildableCoordinate), originalRoot)
+            XCTAssertEqual(
+                scene.interactionNamesForTesting.filter {
+                    $0 == "interaction.placementGhost"
+                }.count,
+                1
+            )
+        }
+    }
+
+    @MainActor
+    func testStarterUtilityCampusGroundBridgesRealAnchorsAndAccessWithoutChangingBuildTruth() {
+        let state = CityGameState.newCity(seed: 42)
+        let renderer = TerrainRenderer(style: WorldVisualStyle())
+        let campus = renderer.serviceCampusGroundCoordinatesForTesting(in: state)
+        XCTAssertEqual(campus, Set([
+            GridCoordinate(x: 14, y: 11),
+            GridCoordinate(x: 13, y: 12),
+            GridCoordinate(x: 14, y: 12),
+            GridCoordinate(x: 15, y: 12),
+            GridCoordinate(x: 13, y: 13),
+            GridCoordinate(x: 14, y: 13),
+            GridCoordinate(x: 15, y: 13),
+        ]))
+
+        var visited = Set<GridCoordinate>()
+        var pending = [GridCoordinate(x: 13, y: 13)]
+        while let coordinate = pending.popLast() {
+            guard campus.contains(coordinate),
+                  visited.insert(coordinate).inserted else { continue }
+            pending.append(contentsOf: [
+                GridCoordinate(x: coordinate.x + 1, y: coordinate.y),
+                GridCoordinate(x: coordinate.x - 1, y: coordinate.y),
+                GridCoordinate(x: coordinate.x, y: coordinate.y + 1),
+                GridCoordinate(x: coordinate.x, y: coordinate.y - 1),
+            ])
+        }
+        XCTAssertEqual(visited, campus)
+
+        let bridge = GridCoordinate(x: 14, y: 13)
+        XCTAssertEqual(state.tile(at: bridge)?.kind, .empty)
+        if case .failure(let reason) = CitySimulation.validateBuild(
+            .residential,
+            at: bridge,
+            in: state
+        ) {
+            XCTFail("Renderer-only campus bridge must preserve buildability: \(reason)")
+        }
+
+        let ground = renderer.makeDevelopedDistrictGround(in: state)
+        let names = descendantNames(in: ground)
+        XCTAssertTrue(names.contains("district.ground.service-campus.contact"))
+        XCTAssertTrue(names.contains("district.ground.service-campus.material"))
+        XCTAssertTrue(names.contains("district.ground.service-campus.internal-material"))
+        XCTAssertEqual(recursiveActiveActionCount(ground), 0)
     }
 
     @MainActor
@@ -2485,8 +3210,11 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.73)
-        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.78)
+        let defaultPriorityOccupancy = defaultScene.cameraPriorityViewportOccupancyForTesting()
+        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.60)
+        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.61)
+        XCTAssertGreaterThanOrEqual(defaultPriorityOccupancy.width, 1.04)
+        XCTAssertLessThanOrEqual(defaultPriorityOccupancy.width, 1.06)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 192.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -2497,10 +3225,13 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.reducedMotion = true
         compactScene.updateViewportInsets(compactInsets)
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
+        XCTAssertEqual(compactScene.currentCameraDetailLevel, .block)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
+        let compactPriorityOccupancy = compactScene.cameraPriorityViewportOccupancyForTesting()
         XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.60)
-        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.63)
+        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.61)
+        XCTAssertGreaterThanOrEqual(compactPriorityOccupancy.width, 1.04)
+        XCTAssertLessThanOrEqual(compactPriorityOccupancy.width, 1.06)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
@@ -2508,12 +3239,12 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.x,
-            defaultScene.occupiedDevelopedVisualBoundsForTesting.midX - defaultOffset.x,
+            defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
             accuracy: 0.001
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.y,
-            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
+            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y,
             accuracy: 0.001
         )
         XCTAssertGreaterThan(
@@ -2534,7 +3265,10 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         let defaultCityScale = defaultScene.cameraScaleForTesting
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
-        XCTAssertGreaterThanOrEqual(defaultScene.occupiedDevelopedViewportOccupancyForTesting().width, 0.47)
+        XCTAssertGreaterThanOrEqual(
+            defaultScene.cameraPriorityViewportOccupancyForTesting().width,
+            0.67
+        )
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.city"))
         XCTAssertFalse(defaultScene.tileDescendantNamesForTesting(at: cityHall)
@@ -2587,7 +3321,10 @@ final class WorldRenderingTests: XCTestCase {
         let compactCityHallRoot = compactScene.tileRootIdentifier(at: cityHall)
         compactScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .city)
-        XCTAssertGreaterThanOrEqual(compactScene.occupiedDevelopedViewportOccupancyForTesting().width, 0.47)
+        XCTAssertGreaterThanOrEqual(
+            compactScene.cameraPriorityViewportOccupancyForTesting().width,
+            0.78
+        )
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.city"))
         XCTAssertEqual(compactScene.resolvedCoordinateForTesting(at: compactScene.scenePointForTesting(at: cityHall)), cityHall)
@@ -2611,14 +3348,48 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.x,
-            defaultScene.occupiedDevelopedVisualBoundsForTesting.midX - defaultOffset.x,
+            defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
             accuracy: 0.001
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.y,
-            defaultScene.occupiedDevelopedVisualBoundsForTesting.midY - defaultOffset.y,
+            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y,
             accuracy: 0.001
         )
+    }
+
+    @MainActor
+    func testOpeningCameraRefitsOnceAfterTheShippingViewportSettles() {
+        let insets = CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
+        let scene = CityScene(size: CGSize(width: 420, height: 260))
+        scene.reducedMotion = true
+        scene.updateViewportInsets(insets)
+        let opening = CityGameState.newCity(seed: 42)
+        scene.render(state: opening, overlay: .none, selection: nil, interactionMode: .inspect)
+        let provisionalScale = scene.cameraScaleForTesting
+
+        // Model AppKit settling the SpriteKit viewport after the first
+        // representable update without routing a player camera gesture.
+        scene.size = CGSize(width: 1_280, height: 800)
+        var firstPulse = opening
+        firstPulse.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.occupancy += 1
+        }
+        scene.render(state: firstPulse, overlay: .none, selection: nil, interactionMode: .inspect)
+        let settledScale = scene.cameraScaleForTesting
+        XCTAssertLessThan(settledScale, provisionalScale)
+        XCTAssertEqual(settledScale, 0.3896103799343109, accuracy: 0.001)
+        XCTAssertGreaterThanOrEqual(
+            scene.occupiedDevelopedViewportOccupancyForTesting().width,
+            0.60
+        )
+
+        var secondPulse = firstPulse
+        secondPulse.updateTile(at: GridCoordinate(x: 10, y: 11)) {
+            $0.occupancy += 1
+        }
+        scene.render(state: secondPulse, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.cameraScaleForTesting, settledScale, accuracy: 0.001)
     }
 
     @MainActor
@@ -2639,14 +3410,14 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.32296520471572876),
-                CGSize(width: 0.7238124428047685, height: 1.244466063092227)
+                CGFloat(0.48701298236846924),
+                CGSize(width: 0.8400000080108644, height: 0.8964179189966687)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
-                CGFloat(0.576345682144165),
-                CGSize(width: 0.5796985019395197, height: 1.653910863258327)
+                CGFloat(0.6549999713897705),
+                CGSize(width: 0.8926516037877291, height: 1.5807607256708744)
             ),
         ] {
             let scene = CityScene(size: size)
@@ -2658,7 +3429,7 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertFalse(scene.cameraPriorityCoordinatesForTesting.contains(remoteIndustry))
             XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralResidential))
             XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralWaterTower))
-            XCTAssertLessThan(
+            XCTAssertGreaterThan(
                 scene.cameraPriorityVisualBoundsForTesting.width,
                 scene.occupiedDevelopedVisualBoundsForTesting.width
             )
@@ -2674,14 +3445,6 @@ final class WorldRenderingTests: XCTestCase {
                 expectedPriorityOccupancy.height,
                 accuracy: 0.000_001
             )
-            print(
-                "PLAY024_RETURN_CAMERA " +
-                    "size=\(Int(size.width))x\(Int(size.height)) " +
-                    "scale=\(scene.cameraScaleForTesting) " +
-                    "priority_width=\(priorityOccupancy.width) " +
-                    "priority_height=\(priorityOccupancy.height)"
-            )
-
             // The remote authoritative industrial lot remains a normal
             // semantic object and an exact inverse-isometric hit target. The
             // camera prioritization changes no world geometry.
@@ -2736,8 +3499,12 @@ final class WorldRenderingTests: XCTestCase {
         realDevelopment.updateTile(at: GridCoordinate(x: 8, y: 11)) { $0.kind = .residential }
         let developed = metrics(for: realDevelopment)
         XCTAssertNotEqual(developed.occupied, baseline.occupied)
-        XCTAssertNotEqual(developed.scale, baseline.scale)
-        XCTAssertNotEqual(developed.position, baseline.position)
+        // Real development changes the truthful occupied bounds, so the
+        // developed-mass fit deliberately retunes while remote opportunity
+        // and numeric occupancy remain camera-neutral above.
+        XCTAssertGreaterThan(developed.scale, baseline.scale)
+        XCTAssertLessThan(developed.position.x, baseline.position.x)
+        XCTAssertGreaterThan(developed.position.y, baseline.position.y)
     }
 
     @MainActor
@@ -2881,6 +3648,419 @@ final class WorldRenderingTests: XCTestCase {
 
         XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(scene.scenePointForTesting(at: active)))
         XCTAssertFalse(scene.selectionIsHiddenForTesting)
+    }
+
+    @MainActor
+    func testTypedPlacementTargetKeepsMeaningfulDistrictAndRoadContextAtBothShippingSizes() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let targetCoordinate = GridCoordinate(x: 19, y: 17)
+        let targetTile = try XCTUnwrap(state.tile(at: targetCoordinate))
+        XCTAssertEqual(targetTile.kind, .empty)
+        let blockedCommercial = CityMapActionTargetPresentation(
+            coordinate: targetCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.commercial),
+                tile: targetTile,
+                state: state
+            )
+        )
+        XCTAssertFalse(blockedCommercial.primaryAction.isAvailable)
+        XCTAssertTrue(
+            blockedCommercial.primaryAction.disclosure.contains(
+                BuildRejection.roadAccessRequired.message
+            )
+        )
+        let roadRecovery = CityMapActionTargetPresentation(
+            coordinate: targetCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.road),
+                tile: targetTile,
+                state: state
+            )
+        )
+
+        for (label, size, insets, expectedScale, expectedDistrictWidthRatio, expectedDistrictHeightRatio) in [
+            (
+                "regular",
+                CGSize(width: 1_280, height: 800),
+                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
+                CGFloat(0.8172323107719421),
+                CGFloat(0.6095568301831683),
+                CGFloat(0.5833820573567386)
+            ),
+            (
+                "compact",
+                CGSize(width: 900, height: 600),
+                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
+                CGFloat(1.938214659690857),
+                CGFloat(0.33808688941132353),
+                CGFloat(0.583382016416033)
+            ),
+        ] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(insets)
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let openingScale = scene.cameraScaleForTesting
+            let openingPosition = scene.cameraPositionForTesting
+            XCTAssertGreaterThanOrEqual(
+                scene.occupiedDevelopedViewportOccupancyForTesting().width,
+                0.60
+            )
+
+            // Selecting a build tool alone carries no coordinate intent.
+            // Renderer state and camera remain exact until the store publishes
+            // a typed active target.
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .build(.commercial)
+            )
+            XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.x, openingPosition.x, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.y, openingPosition.y, accuracy: 0.000_001)
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.isNull)
+            XCTAssertTrue(scene.selectionIsHiddenForTesting)
+            XCTAssertTrue(scene.hoverIsHiddenForTesting)
+
+            // A nearby intended target in an already-safe regular camera must
+            // not trigger the remote-target zoom-out path. Configure that
+            // pre-fit camera explicitly instead of assuming the shipping
+            // opening exposes a complete valid target and road diamond. The
+            // compact aperture is intentionally too shallow at its opening
+            // fit, so its typed target correctly exercises the contextual fit.
+            if label == "regular" {
+                let roadCoordinates = state.tiles
+                    .filter { $0.kind == .road }
+                    .map(\.coordinate)
+                func nearestRoad(to coordinate: GridCoordinate) -> GridCoordinate? {
+                    roadCoordinates.min { lhs, rhs in
+                        let lhsDistance = abs(lhs.x - coordinate.x)
+                            + abs(lhs.y - coordinate.y)
+                        let rhsDistance = abs(rhs.x - coordinate.x)
+                            + abs(rhs.y - coordinate.y)
+                        if lhsDistance != rhsDistance {
+                            return lhsDistance < rhsDistance
+                        }
+                        if lhs.y != rhs.y { return lhs.y < rhs.y }
+                        return lhs.x < rhs.x
+                    }
+                }
+                let orderedTiles = state.tiles.sorted {
+                    if $0.coordinate.y != $1.coordinate.y {
+                        return $0.coordinate.y < $1.coordinate.y
+                    }
+                    return $0.coordinate.x < $1.coordinate.x
+                }
+                let validChoices = [BuildingKind.commercial, .road].flatMap { kind in
+                    orderedTiles.compactMap { tile -> (kind: BuildingKind, tile: CityTile)? in
+                        guard tile.kind == .empty,
+                              case .success = CitySimulation.validateBuild(
+                                kind,
+                                at: tile.coordinate,
+                                in: state
+                              ),
+                              nearestRoad(to: tile.coordinate) != nil else {
+                            return nil
+                        }
+                        return (kind: kind, tile: tile)
+                    }
+                }
+                let districtCenter = CGPoint(
+                    x: scene.cameraPriorityVisualBoundsForTesting.midX,
+                    y: scene.cameraPriorityVisualBoundsForTesting.midY
+                )
+                let normalChoice = try XCTUnwrap(
+                    validChoices.min { lhs, rhs in
+                        let lhsPoint = scene.scenePointForTesting(at: lhs.tile.coordinate)
+                        let rhsPoint = scene.scenePointForTesting(at: rhs.tile.coordinate)
+                        let lhsDistance = pow(lhsPoint.x - districtCenter.x, 2)
+                            + pow(lhsPoint.y - districtCenter.y, 2)
+                        let rhsDistance = pow(rhsPoint.x - districtCenter.x, 2)
+                            + pow(rhsPoint.y - districtCenter.y, 2)
+                        if lhsDistance != rhsDistance {
+                            return lhsDistance < rhsDistance
+                        }
+                        if lhs.tile.coordinate.y != rhs.tile.coordinate.y {
+                            return lhs.tile.coordinate.y < rhs.tile.coordinate.y
+                        }
+                        return lhs.tile.coordinate.x < rhs.tile.coordinate.x
+                    },
+                    "Regular state must provide a valid Commercial or Road target for the safe pre-fit regression"
+                )
+                XCTAssertEqual(normalChoice.tile.kind, .empty)
+                let normalTarget = CityMapActionTargetPresentation(
+                    coordinate: normalChoice.tile.coordinate,
+                    primaryAction: CityMapPrimaryActionPresentation.make(
+                        interactionMode: .build(normalChoice.kind),
+                        tile: normalChoice.tile,
+                        state: state
+                    )
+                )
+                XCTAssertTrue(normalTarget.primaryAction.isAvailable)
+                let normalRoad = try XCTUnwrap(
+                    nearestRoad(to: normalChoice.tile.coordinate)
+                )
+                scene.configureProofCamera(
+                    detail: .neighborhood,
+                    centeredOn: normalChoice.tile.coordinate
+                )
+                let prefitSafeRect = scene.safeViewportRectForTesting(insets)
+                XCTAssertTrue(
+                    prefitSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: normalChoice.tile.coordinate)
+                    )
+                )
+                XCTAssertTrue(
+                    prefitSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: normalRoad)
+                    )
+                )
+                let prefitDistrict = prefitSafeRect.intersection(
+                    scene.cameraPriorityVisualBoundsForTesting
+                )
+                XCTAssertGreaterThanOrEqual(
+                    prefitDistrict.width / prefitSafeRect.width,
+                    0.25
+                )
+                XCTAssertGreaterThanOrEqual(
+                    prefitDistrict.height / prefitSafeRect.height,
+                    0.25
+                )
+                let prefitScale = scene.cameraScaleForTesting
+                let prefitPosition = scene.cameraPositionForTesting
+                scene.render(
+                    state: state,
+                    overlay: .none,
+                    selection: normalChoice.tile.coordinate,
+                    interactionMode: .build(normalChoice.kind),
+                    activeActionTarget: normalTarget
+                )
+                XCTAssertEqual(scene.cameraScaleForTesting, prefitScale, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraPositionForTesting.x, prefitPosition.x, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraPositionForTesting.y, prefitPosition.y, accuracy: 0.000_001)
+
+                // A center-only containment check is insufficient: a target
+                // close to the safe edge can have both centers visible while
+                // clipping one of the two authoritative ground diamonds.
+                scene.frameCity()
+                let openingSafeRect = scene.safeViewportRectForTesting(insets)
+                let clippedChoice = try XCTUnwrap(
+                    [BuildingKind.commercial, .road].lazy.compactMap { kind in
+                        orderedTiles.first { tile in
+                            guard tile.kind == .empty,
+                                  case .success = CitySimulation.validateBuild(
+                                    kind,
+                                    at: tile.coordinate,
+                                    in: state
+                                  ),
+                                  let nearestRoad = nearestRoad(to: tile.coordinate) else {
+                                return false
+                            }
+                            let targetCenterIsVisible = openingSafeRect.contains(
+                                scene.scenePointForTesting(at: tile.coordinate)
+                            )
+                            let roadCenterIsVisible = openingSafeRect.contains(
+                                scene.scenePointForTesting(at: nearestRoad)
+                            )
+                            let targetGroundIsVisible = openingSafeRect.contains(
+                                scene.tileGroundBoundsForTesting(at: tile.coordinate)
+                            )
+                            let roadGroundIsVisible = openingSafeRect.contains(
+                                scene.tileGroundBoundsForTesting(at: nearestRoad)
+                            )
+                            return targetCenterIsVisible
+                                && roadCenterIsVisible
+                                && (!targetGroundIsVisible || !roadGroundIsVisible)
+                        }.map { (kind: kind, tile: $0) }
+                    }.first,
+                    "Regular opening must retain a center-visible clipped-edge regression target"
+                )
+                let clippedRoad = try XCTUnwrap(
+                    nearestRoad(to: clippedChoice.tile.coordinate)
+                )
+                XCTAssertTrue(
+                    openingSafeRect.contains(
+                        scene.scenePointForTesting(at: clippedChoice.tile.coordinate)
+                    )
+                )
+                XCTAssertTrue(
+                    openingSafeRect.contains(scene.scenePointForTesting(at: clippedRoad))
+                )
+                XCTAssertFalse(
+                    openingSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedChoice.tile.coordinate)
+                    ) && openingSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedRoad)
+                    )
+                )
+                let clippedTarget = CityMapActionTargetPresentation(
+                    coordinate: clippedChoice.tile.coordinate,
+                    primaryAction: CityMapPrimaryActionPresentation.make(
+                        interactionMode: .build(clippedChoice.kind),
+                        tile: clippedChoice.tile,
+                        state: state
+                    )
+                )
+                XCTAssertTrue(clippedTarget.primaryAction.isAvailable)
+                scene.render(
+                    state: state,
+                    overlay: .none,
+                    selection: clippedChoice.tile.coordinate,
+                    interactionMode: .build(clippedChoice.kind),
+                    activeActionTarget: clippedTarget
+                )
+                XCTAssertGreaterThan(scene.cameraScaleForTesting, openingScale)
+                let reframedSafeRect = scene.safeViewportRectForTesting(insets)
+                XCTAssertTrue(
+                    reframedSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedChoice.tile.coordinate)
+                    )
+                )
+                XCTAssertTrue(
+                    reframedSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: clippedRoad)
+                    )
+                )
+            }
+
+            // Re-establish a no-target opening camera before proving the remote
+            // but legitimate player target.
+            scene.frameCity()
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: targetCoordinate,
+                interactionMode: .build(.commercial),
+                activeActionTarget: blockedCommercial
+            )
+
+            let safeRect = scene.safeViewportRectForTesting(insets)
+            let targetBounds = scene.tileGroundBoundsForTesting(at: targetCoordinate)
+            let roadFrontier = try XCTUnwrap(scene.activeTargetRoadFrontierForTesting)
+            let roadBounds = scene.tileGroundBoundsForTesting(at: roadFrontier)
+            XCTAssertEqual(state.tile(at: roadFrontier)?.kind, .road)
+            XCTAssertFalse(RoadConnectionMask.resolving(at: roadFrontier, in: state).isEmpty)
+            XCTAssertTrue(
+                safeRect.contains(targetBounds),
+                "\(label) target=\(targetBounds) safe=\(safeRect) scale=\(scene.cameraScaleForTesting)"
+            )
+            XCTAssertTrue(
+                safeRect.contains(roadBounds),
+                "\(label) road=\(roadBounds) safe=\(safeRect) scale=\(scene.cameraScaleForTesting)"
+            )
+
+            let visibleDistrict = safeRect.intersection(
+                scene.cameraPriorityVisualBoundsForTesting
+            )
+            let districtSafeWidthRatio = visibleDistrict.width / safeRect.width
+            let districtSafeHeightRatio = visibleDistrict.height / safeRect.height
+            XCTAssertEqual(
+                scene.cameraScaleForTesting,
+                expectedScale,
+                accuracy: 0.000_001,
+                "\(label) contextual scale drifted"
+            )
+            XCTAssertEqual(
+                districtSafeWidthRatio,
+                expectedDistrictWidthRatio,
+                accuracy: 0.000_001,
+                "\(label) district safe-width occupancy drifted"
+            )
+            XCTAssertEqual(
+                districtSafeHeightRatio,
+                expectedDistrictHeightRatio,
+                accuracy: 0.000_001,
+                "\(label) district safe-height occupancy drifted"
+            )
+            XCTAssertGreaterThanOrEqual(
+                districtSafeWidthRatio,
+                label == "compact" ? 0.33 : 0.50,
+                "\(label) district safe-width ratio=\(districtSafeWidthRatio)"
+            )
+            XCTAssertGreaterThanOrEqual(
+                districtSafeHeightRatio,
+                0.50,
+                "\(label) district safe-height ratio=\(districtSafeHeightRatio)"
+            )
+            XCTAssertLessThan(
+                scene.cameraScaleForTesting,
+                2.0,
+                "\(label) remote target must retain readable district context"
+            )
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.contains(targetBounds))
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.contains(roadBounds))
+            XCTAssertGreaterThan(scene.cameraScaleForTesting, openingScale)
+            XCTAssertFalse(scene.selectionIsHiddenForTesting)
+            XCTAssertFalse(scene.hoverIsHiddenForTesting)
+            XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.placementGhost"))
+            XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.invalidHatch"))
+
+            let contextScale = scene.cameraScaleForTesting
+            let contextPosition = scene.cameraPositionForTesting
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: targetCoordinate,
+                interactionMode: .build(.road),
+                activeActionTarget: roadRecovery
+            )
+            XCTAssertEqual(scene.cameraScaleForTesting, contextScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.x, contextPosition.x, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.y, contextPosition.y, accuracy: 0.000_001)
+            XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(targetBounds))
+            XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(roadBounds))
+            XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.placementGhost"))
+        }
+    }
+
+    @MainActor
+    func testSelectionOnlyBuildStateCannotSynthesizeTypedTargetContext() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let selectedCoordinate = GridCoordinate(x: 19, y: 17)
+        let mismatchedCoordinate = GridCoordinate(x: 18, y: 17)
+        let mismatchedTile = try XCTUnwrap(state.tile(at: mismatchedCoordinate))
+        let mismatchedTarget = CityMapActionTargetPresentation(
+            coordinate: mismatchedCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.commercial),
+                tile: mismatchedTile,
+                state: state
+            )
+        )
+
+        for activeTarget in [
+            Optional<CityMapActionTargetPresentation>.none,
+            mismatchedTarget,
+        ] {
+            let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+            scene.reducedMotion = true
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let openingScale = scene.cameraScaleForTesting
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: selectedCoordinate,
+                interactionMode: .build(.commercial),
+                activeActionTarget: activeTarget
+            )
+
+            XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.isNull)
+            XCTAssertNil(scene.activeTargetRoadFrontierForTesting)
+            XCTAssertFalse(scene.selectionIsHiddenForTesting)
+        }
     }
 
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {
@@ -3501,13 +4681,13 @@ final class WorldRenderingTests: XCTestCase {
             selection: nil,
             interactionMode: .inspect
         )
+        scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 11))
         scene.render(
             snapshot: try CityPresentationSnapshot(state: state),
             overlay: .none,
             selection: GridCoordinate(x: 10, y: 11),
             interactionMode: .inspect
         )
-        scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 11))
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
         let texture = try XCTUnwrap(view.texture(from: scene))
         let representation = NSBitmapImageRep(cgImage: texture.cgImage())
@@ -3580,6 +4760,11 @@ final class WorldRenderingTests: XCTestCase {
     private func recursiveActiveActionCount(_ node: SKNode) -> Int {
         let localCount = node.hasActions() ? 1 : 0
         return node.children.reduce(localCount) { $0 + recursiveActiveActionCount($1) }
+    }
+
+    @MainActor
+    private func containsCropNode(in node: SKNode) -> Bool {
+        node is SKCropNode || node.children.contains(where: containsCropNode(in:))
     }
 
     private func pointSegmentDistanceForTesting(_ point: CGPoint, end: CGPoint) -> CGFloat {

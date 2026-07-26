@@ -3,9 +3,10 @@ import XCTest
 @testable import CitySimNative
 
 final class SessionPlatformTests: XCTestCase {
-    private static let play016DenseTerminalFixtureName = "dense-24x24-terminal-wave6-starter-v6"
-    private static let play016DenseTerminalFixtureDigest =
-        "113cce93fcbef4327d3e39665690dbf2fc6613683db6e1d362af8fa99c88b296"
+    private static let play071DenseTerminalFixtureName =
+        "dense-24x24-terminal-post-play071-v7"
+    private static let play071DenseTerminalFixtureDigest =
+        "65e5f505f7b1c4532de2dc20401222e11121b21b2be0def8333a203b6f6daeaa"
 
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
@@ -381,35 +382,35 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerceBeforeVictory.progression?.townCharterQualifyingCycles, 11)
         XCTAssertFalse(industryBeforeVictory.progression?.townCharterAwarded ?? true)
         XCTAssertFalse(commerceBeforeVictory.progression?.townCharterAwarded ?? true)
-        XCTAssertEqual(industryBeforeVictory.treasury, 52_137, accuracy: 0.001)
-        XCTAssertEqual(commerceBeforeVictory.treasury, 54_131.10, accuracy: 0.001)
+        XCTAssertEqual(industryBeforeVictory.treasury, 76_487.40, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.treasury, 67_506.90, accuracy: 0.001)
         XCTAssertEqual(industryBeforeVictory.population, 510)
         XCTAssertEqual(commerceBeforeVictory.population, 510)
         XCTAssertEqual(industryBeforeVictory.jobs, 356)
-        XCTAssertEqual(commerceBeforeVictory.jobs, 350)
-        XCTAssertEqual(industryBeforeVictory.happiness, 54.5, accuracy: 0.001)
-        XCTAssertEqual(commerceBeforeVictory.happiness, 55.713, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.jobs, 356)
+        XCTAssertEqual(industryBeforeVictory.happiness, 53.0, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.happiness, 55.9, accuracy: 0.001)
         XCTAssertEqual(
             CityAnalytics(state: industryBeforeVictory).projectedBalance,
-            267.25,
+            404.05,
             accuracy: 0.001
         )
         XCTAssertEqual(
             CityAnalytics(state: commerceBeforeVictory).projectedBalance,
-            369.65,
+            480.65,
             accuracy: 0.001
         )
         XCTAssertEqual(
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(industryBeforeVictory).digest
             }),
-            Set(["29c10ada386a509c5c88db8d6390f94bb3c048da220f07cd04707151990102e1"])
+            Set(["dcd18ec4870de1c67613aa5ab3ebe28ba7bb38d8859068099847b5113dbf330c"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(commerceBeforeVictory).digest
             }),
-            Set(["7484cc20bb484b8c2b039341017a35cf302d98e33102f308718896a7d1bc17b2"])
+            Set(["9815a24299634aecf90347586832be51c10af6e445d5875f30bd9b708fe51854"])
         )
 
         XCTAssertEqual(
@@ -421,36 +422,19 @@ final class SessionPlatformTests: XCTestCase {
             .applied
         )
 
-        let industryVictory = industry
-        let commerceVictory = commerce
-        for _ in 0..<13 {
-            XCTAssertEqual(
-                CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &industry),
-                .rejected(.simulationNotPlaying)
-            )
-            XCTAssertEqual(industry, industryVictory)
-        }
-        for _ in 0..<11 {
-            XCTAssertEqual(
-                CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &commerce),
-                .rejected(.simulationNotPlaying)
-            )
-            XCTAssertEqual(commerce, commerceVictory)
-        }
-
-        printCheckpoint("accepted-industrial", state: industry)
-        printCheckpoint("accepted-commercial", state: commerce)
+        printCheckpoint("accepted-industrial-charter-midpoint", state: industry)
+        printCheckpoint("accepted-commercial-charter-midpoint", state: commerce)
         XCTAssertEqual(industry.tick, 844)
         XCTAssertEqual(commerce.tick, 844)
-        XCTAssertEqual(industry.status, .won)
-        XCTAssertEqual(commerce.status, .won)
-        XCTAssertEqual(industry.treasury, 52_405.55, accuracy: 0.001)
-        XCTAssertEqual(commerce.treasury, 54_501.17, accuracy: 0.001)
-        XCTAssertEqual(CityAnalytics(state: industry).projectedBalance, 268.55, accuracy: 0.001)
-        XCTAssertEqual(CityAnalytics(state: commerce).projectedBalance, 370.07, accuracy: 0.001)
+        XCTAssertEqual(industry.status, .playing)
+        XCTAssertEqual(commerce.status, .playing)
+        XCTAssertEqual(industry.treasury, 76_892.75, accuracy: 0.001)
+        XCTAssertEqual(commerce.treasury, 67_989.37, accuracy: 0.001)
+        XCTAssertEqual(CityAnalytics(state: industry).projectedBalance, 405.35, accuracy: 0.001)
+        XCTAssertEqual(CityAnalytics(state: commerce).projectedBalance, 482.47, accuracy: 0.001)
         XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
-        XCTAssertTrue(industry.messages.contains { $0.title == "Town Charter Standards" })
+        XCTAssertTrue(industry.messages.contains { $0.title == "Neighborhood Upgraded" })
         XCTAssertTrue(commerce.messages.contains { $0.title == "Town Charter Standards" })
         XCTAssertTrue(industry.messages.contains { $0.title == "Industrial Load Absorbed" })
         XCTAssertTrue(industry.messages.contains { $0.title == "Freight Load Forecast" })
@@ -464,36 +448,44 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertNil(industry.progression?.strategy?.nextScheduledTick)
         XCTAssertEqual(industry.progression?.strategy?.recoveryResolution, .industrialUtilityExpansion)
         XCTAssertEqual(CityAnalytics(state: industry).strategyRecoveryResolution, .industrialUtilityExpansion)
+        XCTAssertEqual(industry.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(industry.progression?.secondAct?.nextScheduledTick, 908)
+        XCTAssertEqual(industry.progression?.secondAct?.qualifyingCycles, 0)
+        XCTAssertFalse(industry.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(commerce.progression?.strategy?.committedStrategy, .commercialStewardship)
         XCTAssertEqual(commerce.progression?.strategy?.currentPhase, .completed)
         XCTAssertNil(commerce.progression?.strategy?.nextScheduledTick)
         XCTAssertNil(commerce.progression?.strategy?.recoveryResolution)
         XCTAssertNil(CityAnalytics(state: commerce).strategyRecoveryResolution)
+        XCTAssertEqual(commerce.progression?.secondAct?.phase, .mandate)
+        XCTAssertEqual(commerce.progression?.secondAct?.nextScheduledTick, 908)
+        XCTAssertEqual(commerce.progression?.secondAct?.qualifyingCycles, 0)
+        XCTAssertFalse(commerce.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "b79feac6f0f9de85201f4605de76d97401361e5cb3140ac11e86811c903a5d16"
+            "78cabfde8dabf2a9efc63518d3adeb6e06ccf64745dbe85135b9145c20dcc0f2"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "663f1f4b32660ba8e478e1f75edc9e599464530e2494c26f743d35dfde83ba12"
+            "fca0e6ba03b420369d3b75215fc6dda8b0656bcd08cad36b2a283cf5bd8d3401"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["b79feac6f0f9de85201f4605de76d97401361e5cb3140ac11e86811c903a5d16"])
+            Set(["78cabfde8dabf2a9efc63518d3adeb6e06ccf64745dbe85135b9145c20dcc0f2"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["663f1f4b32660ba8e478e1f75edc9e599464530e2494c26f743d35dfde83ba12"])
+            Set(["fca0e6ba03b420369d3b75215fc6dda8b0656bcd08cad36b2a283cf5bd8d3401"])
         )
     }
 
     func testStrategyPhaseFingerprintsAreFrozen() throws {
         let expected = [
             "commercialStewardship.opportunity": "9fd06662bef502189614d05a1f3d2f711ccbbb5b73bb4053b96d2a968db1a1f8",
-            "commercialStewardship.complication": "0789341a2bfcdd4b10b358744ac35fd8ae80303c26441e884a840d8b1970c4bf",
-            "commercialStewardship.setback": "64f13d55464a6e65062861faa306b1f1cccdb828febfeb852feb81c4f35bbfac",
-            "commercialStewardship.recovery": "bf36d78346f44932fcc759c4a227702a50887ead16eb3add38b1acbe27d40c3e",
-            "commercialStewardship.completed": "e47199e1328ab10817b5bda3647753b585b8005ce0c14eca161d2f3336637da6",
+            "commercialStewardship.complication": "9ccb03a811ca0719bb3ecebff9d9e2d7b5a569317b8c6bacddda454949c3b4bc",
+            "commercialStewardship.setback": "436f8d4bc8f3f4c980e39d19fe0bdff42663c67022ac7efc10f1729b92b504c8",
+            "commercialStewardship.recovery": "666547e90e9e8077a638db31213c2d929def4796e87e76581bc319c6fb37b118",
+            "commercialStewardship.completed": "ff8152a444b4ab386b9dfc9aca05bdc0358a439a51a55b7e5147af2fd453cf90",
             "industrialExpansion.opportunity": "2188b29bf14b4948e9dbf7fed81257247ba145d5e63d1ca42b1c8791b4212b16",
             "industrialExpansion.complication": "bb7ca9a0e7a58d0c12b007c709bdc5a541f90615aa958f1721c69359abde506b",
             "industrialExpansion.setback": "dc95ec8e596d30a44072f0d524f8b51004bcfaaf2119b799aa4fdd3e2832847c",
@@ -536,7 +528,7 @@ final class SessionPlatformTests: XCTestCase {
 
     func testDenseSessionSimulationAndPersistencePerformance() throws {
         try withTemporaryRoot { root in
-            var state = play016DenseTerminalFixtureV6()
+            var state = play071DenseTerminalFixtureV7()
             let simulationStart = ProcessInfo.processInfo.systemUptime
             for _ in 0..<400 { CitySimulation.step(&state) }
             let simulationMilliseconds = elapsedMilliseconds(since: simulationStart)
@@ -563,7 +555,7 @@ final class SessionPlatformTests: XCTestCase {
             printCheckpoint("dense-terminal", state: state)
             XCTAssertEqual(state.tick, 44)
             XCTAssertEqual(state.status, .lost)
-            XCTAssertEqual(state.treasury, 6_642_892.90, accuracy: 0.001)
+            XCTAssertEqual(state.treasury, 6_853_267.90, accuracy: 0.001)
             XCTAssertEqual(state.population, 46_459)
             XCTAssertEqual(state.jobs, 32_739)
             XCTAssertEqual(
@@ -577,7 +569,7 @@ final class SessionPlatformTests: XCTestCase {
                 )
             )
             XCTAssertTrue(state.messages.contains { $0.title == "Town Charter Standards" })
-            XCTAssertEqual(fingerprint.digest, Self.play016DenseTerminalFixtureDigest)
+            XCTAssertEqual(fingerprint.digest, Self.play071DenseTerminalFixtureDigest)
             XCTAssertEqual(snapshot.fingerprint, fingerprint)
             XCTAssertEqual(snapshot.analytics.committedStrategy, .industrialExpansion)
             XCTAssertEqual(snapshot.analytics.strategyPhase, .opportunity)
@@ -593,7 +585,7 @@ final class SessionPlatformTests: XCTestCase {
             XCTAssertLessThanOrEqual(retainedSampleBytes, 128 * 1_024)
 
             print(
-                "CITYSIM_SESSION_PERFORMANCE fixture=\(Self.play016DenseTerminalFixtureName) " +
+                "CITYSIM_SESSION_PERFORMANCE fixture=\(Self.play071DenseTerminalFixtureName) " +
                 "step_attempts=400 final_tick=\(state.tick) status=\(state.status.rawValue) " +
                 "simulation_ms=\(metric(simulationMilliseconds)) " +
                 "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
@@ -666,7 +658,7 @@ final class SessionPlatformTests: XCTestCase {
 
     // V6 runs the unchanged dense generator from PLAY-016's richer authoritative
     // starter district. The industrial majority still commits at tick 4.
-    private func play016DenseTerminalFixtureV6() -> CityGameState {
+    private func play071DenseTerminalFixtureV7() -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         let kinds: [BuildingKind] = [
             .residential, .commercial, .industrial, .park,

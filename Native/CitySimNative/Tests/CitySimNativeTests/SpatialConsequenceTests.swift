@@ -44,7 +44,9 @@ final class SpatialConsequenceTests: XCTestCase {
             for value in [
                 sample.landValueIndex,
                 sample.localHappinessIndex,
-                sample.trafficPressure
+                sample.trafficPressure,
+                sample.streetActivityIndex,
+                sample.placeActivityIndex
             ].compactMap({ $0 }) {
                 XCTAssertTrue((0...1).contains(value), "\(sample.coordinate): \(value)")
             }
@@ -66,6 +68,14 @@ final class SpatialConsequenceTests: XCTestCase {
             first.spatialConsequences.samples.compactMap(\.trafficPressure).count,
             roadCount
         )
+        XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.streetActivityIndex).count,
+            roadCount
+        )
+        XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.placeActivityIndex).count,
+            completedDevelopmentCount
+        )
 
         let developed = try XCTUnwrap(
             first.spatialConsequences[GridCoordinate(x: 10, y: 11)]
@@ -73,6 +83,8 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNotNil(developed.landValueIndex)
         XCTAssertNotNil(developed.localHappinessIndex)
         XCTAssertNil(developed.trafficPressure)
+        XCTAssertNil(developed.streetActivityIndex)
+        XCTAssertNotNil(developed.placeActivityIndex)
 
         let road = try XCTUnwrap(
             first.spatialConsequences[GridCoordinate(x: 10, y: 12)]
@@ -80,6 +92,8 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(road.landValueIndex)
         XCTAssertNil(road.localHappinessIndex)
         XCTAssertNotNil(road.trafficPressure)
+        XCTAssertNotNil(road.streetActivityIndex)
+        XCTAssertNil(road.placeActivityIndex)
 
         let empty = try XCTUnwrap(
             first.spatialConsequences[GridCoordinate(x: 0, y: 0)]
@@ -87,6 +101,8 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(empty.landValueIndex)
         XCTAssertNil(empty.localHappinessIndex)
         XCTAssertNil(empty.trafficPressure)
+        XCTAssertNil(empty.streetActivityIndex)
+        XCTAssertNil(empty.placeActivityIndex)
 
         state.updateTile(at: GridCoordinate(x: 10, y: 11)) {
             $0.constructionProgress = 0.75
@@ -98,6 +114,8 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(incomplete.landValueIndex)
         XCTAssertNil(incomplete.localHappinessIndex)
         XCTAssertNil(incomplete.trafficPressure)
+        XCTAssertNil(incomplete.streetActivityIndex)
+        XCTAssertNil(incomplete.placeActivityIndex)
 
         var extreme = state
         extreme.happiness = 10_000
@@ -116,7 +134,9 @@ final class SpatialConsequenceTests: XCTestCase {
             for value in [
                 sample.landValueIndex,
                 sample.localHappinessIndex,
-                sample.trafficPressure
+                sample.trafficPressure,
+                sample.streetActivityIndex,
+                sample.placeActivityIndex
             ].compactMap({ $0 }) {
                 XCTAssertTrue((0...1).contains(value), "\(coordinate): \(value)")
             }
@@ -271,25 +291,177 @@ final class SpatialConsequenceTests: XCTestCase {
         )
     }
 
+    func testLocalActivityApplicabilityCoversEveryTileFamilyAndMakesZeroExplicit() throws {
+        let coordinate = GridCoordinate(x: 10, y: 10)
+
+        for kind in BuildingKind.allCases {
+            var state = emptyState()
+            state.updateTile(at: coordinate) {
+                $0.kind = kind
+                $0.constructionProgress = 1
+            }
+            let sample = try diagnosticSample(in: state, at: coordinate)
+
+            switch kind {
+            case .empty:
+                XCTAssertNil(sample.streetActivityIndex, kind.rawValue)
+                XCTAssertNil(sample.placeActivityIndex, kind.rawValue)
+            case .road:
+                XCTAssertEqual(try XCTUnwrap(sample.streetActivityIndex), 0, kind.rawValue)
+                XCTAssertNil(sample.placeActivityIndex, kind.rawValue)
+            case .residential, .commercial, .industrial, .park, .powerPlant,
+                 .waterTower, .fireStation, .policeStation, .school, .cityHall:
+                XCTAssertNil(sample.streetActivityIndex, kind.rawValue)
+                XCTAssertNotNil(sample.placeActivityIndex, kind.rawValue)
+            }
+
+            if ![BuildingKind.empty, .road].contains(kind) {
+                state.updateTile(at: coordinate) { $0.constructionProgress = 0.75 }
+                let incomplete = try diagnosticSample(in: state, at: coordinate)
+                XCTAssertNil(incomplete.streetActivityIndex, kind.rawValue)
+                XCTAssertNil(incomplete.placeActivityIndex, kind.rawValue)
+            }
+        }
+    }
+
+    func testLocalActivityIsMonotonicForConnectionOccupancyConditionServiceAndRecovery() throws {
+        let place = GridCoordinate(x: 10, y: 10)
+        let street = GridCoordinate(x: 10, y: 11)
+
+        var disconnected = emptyState()
+        disconnected.updateTile(at: place) {
+            $0.kind = .residential
+            $0.occupancy = 0
+        }
+        var connected = disconnected
+        connected.updateTile(at: street) { $0.kind = .road }
+        XCTAssertGreaterThan(
+            try XCTUnwrap(diagnosticSample(in: connected, at: place).placeActivityIndex),
+            try XCTUnwrap(diagnosticSample(in: disconnected, at: place).placeActivityIndex)
+        )
+
+        var unoccupied = connected
+        unoccupied.updateTile(at: place) { $0.occupancy = 0 }
+        var occupied = unoccupied
+        occupied.updateTile(at: place) { $0.occupancy = 280 }
+        try assertActivityIncrease(
+            from: unoccupied,
+            to: occupied,
+            place: place,
+            street: street
+        )
+
+        var poorCondition = occupied
+        poorCondition.updateTile(at: place) { $0.condition = 0 }
+        var soundCondition = poorCondition
+        soundCondition.updateTile(at: place) { $0.condition = 1 }
+        try assertActivityIncrease(
+            from: poorCondition,
+            to: soundCondition,
+            place: place,
+            street: street
+        )
+
+        let unserved = soundCondition
+        var served = unserved
+        served.updateTile(at: GridCoordinate(x: 13, y: 13)) {
+            $0.kind = .powerPlant
+        }
+        served.updateTile(at: GridCoordinate(x: 15, y: 13)) {
+            $0.kind = .waterTower
+        }
+        try assertActivityIncrease(
+            from: unserved,
+            to: served,
+            place: place,
+            street: street
+        )
+
+        var failed = served
+        failed.happiness = 0
+        failed.powerCapacity = 0
+        failed.waterCapacity = 0
+        failed.updateTile(at: place) {
+            $0.condition = 0
+            $0.occupancy = 0
+        }
+        var recovered = failed
+        recovered.happiness = 100
+        recovered.powerCapacity = 300
+        recovered.waterCapacity = 270
+        recovered.updateTile(at: place) {
+            $0.condition = 1
+            $0.occupancy = 280
+        }
+        try assertActivityIncrease(
+            from: failed,
+            to: recovered,
+            place: place,
+            street: street
+        )
+    }
+
     func testStoryFixturesFreezeDiagnosticChannelIdentityWithoutChangingStateFingerprints() throws {
         let corpus = try ProductionStoryFixtureCorpus.build()
         let expectedDiagnosticDigests = [
-            "commercial-opening-v1":
-                "aee4d9a138d5a207091879c1c71250e44a8aeae4143beaa9eff2f0aeaf572b47",
-            "commercial-complication-v1":
-                "73455e6d36a7bb989adad95d2e3368663dd9c907f47a5286bda54152df1275a7",
-            "commercial-recovery-v1":
-                "a00476df33257fbb7a729c0ee60417a9e2f06be644c426defccbea1e13042406",
+            "commercial-opening-v3":
+                "1d68a4218943f8f8bf1e4959d2731994e88a5adcc3466a66d01cc04255798e98",
+            "commercial-complication-v3":
+                "e848cf922e762e03a53abbf8b42c4f83f5f6f83ddc2d43f4885e068dbe78a76b",
+            "commercial-recovery-v3":
+                "0091590c1554125160ea04e784b688af1fe1fdf7051c638f0cf2be18bf8770b6",
+            "commercial-charter-midpoint-v3":
+                "6226d9037cbc8aee871b408b92440217b4b415f201b9bb4835a79471f05295b9",
+            "commercial-tax-relief-regional-capital-v3":
+                "38f759fbf0b04b67b9b07261d7c09f1dc22c8b5ed73fb21ea914274190d63850",
+            "commercial-public-realm-regional-capital-v3":
+                "9eb0e73c1474f7182a8caa5c16d4f552970a14572292db06ac0df7add4e6b63f",
             "commercial-charter-victory-v1":
                 "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
-            "industrial-opening-v1":
-                "afb5a8084e6400e49226a55527fc1382be2e8092ff285e3a9f25182040eaa50a",
-            "industrial-complication-v1":
-                "e89291b1d8606325e4e8e4ee3197f7c111a3865c55fbacd903f7f171dbef64e5",
-            "industrial-recovery-v1":
-                "09e8d88251ae5a63e135ccd9ecb1a71630bd960311b567e44a475281e96f23a3",
+            "industrial-opening-v3":
+                "ad825abf41405fb2864ae5bb800ceebdf6eb9560fca0f820582504940837a9c3",
+            "industrial-complication-v3":
+                "4877a909eadfaefa862631adee0d1f4ed38073121db01e6bdc643a6a0c5622ef",
+            "industrial-recovery-v3":
+                "dda222e3c3d14e724f4cc841f4a414a45365141f967c58802455f69de9431414",
+            "industrial-charter-midpoint-v3":
+                "258276ebb3343f46bee74a72444edc662f764d0a1e7b9432502cf7b02c302893",
+            "industrial-utility-expansion-regional-capital-v3":
+                "450f6caef57cf3501ebfa863c9aa418eeacafc6eb86be5df2aa6e45ef3846354",
+            "industrial-green-buffer-regional-capital-v3":
+                "8bb17688dcc1c61d904db131200988001bfb1252d9ebd97aa23e2d9893398194",
             "industrial-charter-victory-v1":
                 "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
+        ]
+        let expectedActivityDigests = [
+            "commercial-opening-v3":
+                "7aabdf91130f15a63faad21b107944a263fff00060fb74120a2d530fb1ae8dba",
+            "commercial-complication-v3":
+                "22c7346580424e8d09682f7b3b0264606ac2c743869c95a612a53a9df550710e",
+            "commercial-recovery-v3":
+                "5cccefea9b9a8235baa0f7c92a8ee1c6fe28ae9afa056142bd5112e9c6070651",
+            "commercial-charter-midpoint-v3":
+                "783cc75ae88f7dbac769390baaa861cbb6757e499c7aea1b58c8d7dc2620ed80",
+            "commercial-tax-relief-regional-capital-v3":
+                "97277a2a9cbd23c1c6eccaa37c63b862ffc3d949db9bed5e447070ae5fd7b0bc",
+            "commercial-public-realm-regional-capital-v3":
+                "4b55fe14a985fbae26a350367247a302ece0e97df04e80bbe99e8a139b863611",
+            "commercial-charter-victory-v1":
+                "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
+            "industrial-opening-v3":
+                "3cec89d4698e4f986f5ad1a49de7575170ada9175a9eb04172d4c2169b71e1ca",
+            "industrial-complication-v3":
+                "5bad93ab73998e6c7345627d50f874912cd7b205a101407aff0e92b2c226aff7",
+            "industrial-recovery-v3":
+                "3596b6a54bbe57fe0d2c61ad8923477ada7206dd0dea0ebca897a81c063d1614",
+            "industrial-charter-midpoint-v3":
+                "1f274175e2c169b0109d6742b4b7be2928ec127ca84fc12e7b7c1a8ff014adc1",
+            "industrial-utility-expansion-regional-capital-v3":
+                "84ae4028741a29f28fb85d2eeb2274812450575cb2ec4542616c3db25a07a9b1",
+            "industrial-green-buffer-regional-capital-v3":
+                "996fc4156139cf1422b59d98708de32d00d4174ac4007a106d4d8715873bdc4e",
+            "industrial-charter-victory-v1":
+                "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
         ]
 
         for artifact in corpus.artifacts {
@@ -298,9 +470,11 @@ final class SpatialConsequenceTests: XCTestCase {
             let diagnosticDigest = diagnosticChannelsDigest(
                 first.spatialConsequences
             )
+            let activityDigest = localActivityDigest(first.spatialConsequences)
             print(
                 "CITYSIM_PLAY059_FIXTURE id=\(artifact.definition.id) " +
-                "state=\(artifact.fingerprint.digest) diagnostics=\(diagnosticDigest)"
+                "state=\(artifact.fingerprint.digest) diagnostics=\(diagnosticDigest) " +
+                "CITYSIM_PLAY065_ACTIVITY=\(activityDigest)"
             )
             XCTAssertEqual(first.spatialConsequences, second.spatialConsequences)
             XCTAssertEqual(
@@ -313,6 +487,45 @@ final class SpatialConsequenceTests: XCTestCase {
                 expectedDiagnosticDigests[artifact.definition.id],
                 artifact.definition.id
             )
+            XCTAssertEqual(
+                activityDigest,
+                expectedActivityDigests[artifact.definition.id],
+                artifact.definition.id
+            )
+        }
+
+        for legacy in [
+            (
+                id: "commercial-charter-victory-v1",
+                file: "story-commercial-charter-victory-v1.json"
+            ),
+            (
+                id: "industrial-charter-victory-v1",
+                file: "story-industrial-charter-victory-v1.json"
+            ),
+        ] {
+            let bytes = try storyFixtureData(file: legacy.file)
+            try withTemporaryRoot { root in
+                let service = SaveGameService(rootURL: root)
+                try FileManager.default.createDirectory(
+                    at: root,
+                    withIntermediateDirectories: true
+                )
+                try bytes.write(to: service.saveURL, options: .atomic)
+                let state = try service.load().state
+                XCTAssertNil(state.progression?.secondAct, legacy.id)
+                let snapshot = try CityPresentationSnapshot(state: state)
+                XCTAssertEqual(
+                    diagnosticChannelsDigest(snapshot.spatialConsequences),
+                    expectedDiagnosticDigests[legacy.id],
+                    legacy.id
+                )
+                XCTAssertEqual(
+                    localActivityDigest(snapshot.spatialConsequences),
+                    expectedActivityDigests[legacy.id],
+                    legacy.id
+                )
+            }
         }
     }
 
@@ -638,6 +851,22 @@ final class SpatialConsequenceTests: XCTestCase {
         }
     }
 
+    private func assertActivityIncrease(
+        from lowerState: CityGameState,
+        to higherState: CityGameState,
+        place: GridCoordinate,
+        street: GridCoordinate
+    ) throws {
+        XCTAssertGreaterThan(
+            try XCTUnwrap(diagnosticSample(in: higherState, at: place).placeActivityIndex),
+            try XCTUnwrap(diagnosticSample(in: lowerState, at: place).placeActivityIndex)
+        )
+        XCTAssertGreaterThan(
+            try XCTUnwrap(diagnosticSample(in: higherState, at: street).streetActivityIndex),
+            try XCTUnwrap(diagnosticSample(in: lowerState, at: street).streetActivityIndex)
+        )
+    }
+
     private func diagnosticSample(
         in state: CityGameState,
         at coordinate: GridCoordinate
@@ -664,6 +893,36 @@ final class SpatialConsequenceTests: XCTestCase {
         return SHA256.hash(data: Data(canonical.utf8))
             .map { String(format: "%02x", $0) }
             .joined()
+    }
+
+    private func localActivityDigest(
+        _ map: CitySpatialConsequenceMap
+    ) -> String {
+        var canonical = "local-activity-v1|\(map.width)|\(map.height)\n"
+        for sample in map.samples {
+            canonical += [
+                String(sample.coordinate.x),
+                String(sample.coordinate.y),
+                optionalBitPattern(sample.streetActivityIndex),
+                optionalBitPattern(sample.placeActivityIndex),
+            ].joined(separator: ",")
+            canonical += "\n"
+        }
+        return SHA256.hash(data: Data(canonical.utf8))
+            .map { String(format: "%02x", $0) }
+            .joined()
+    }
+
+    private func storyFixtureData(file: String) throws -> Data {
+        let name = String(file.dropLast(".json".count))
+        let url = try XCTUnwrap(
+            Bundle.module.url(
+                forResource: name,
+                withExtension: "json",
+                subdirectory: "Fixtures/StoryStates"
+            )
+        )
+        return try Data(contentsOf: url)
     }
 
     private func optionalBitPattern(_ value: Double?) -> String {
@@ -736,6 +995,17 @@ final class SpatialConsequenceTests: XCTestCase {
         }
         state.population = 50_000
         state.treasury = 8_000_000
+        return state
+    }
+
+    private func emptyState() -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        for index in state.tiles.indices {
+            state.tiles[index] = CityTile(
+                coordinate: state.tiles[index].coordinate,
+                kind: .empty
+            )
+        }
         return state
     }
 

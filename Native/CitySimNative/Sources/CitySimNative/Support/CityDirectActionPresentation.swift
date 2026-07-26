@@ -1,9 +1,79 @@
 import Foundation
 
+struct CityDirectResponse: Identifiable, Hashable, Sendable {
+    let title: String
+    let command: CityCommandID
+    let explanation: String
+    let focusesMap: Bool
+
+    var id: String { "\(command.rawValue)|\(title)" }
+}
+
+struct CityBuildDecisionPresentation: Equatable, Sendable {
+    let buildingTitle: String
+    let buildingSymbol: String
+    let target: String
+    let footprint: String
+    let cost: String
+    let availability: String
+    let disabledReason: String?
+    let likelyConsequence: String
+    let cancellation: String
+    let recovery: CityDirectResponse?
+
+    var accessibilitySummary: String {
+        [
+            "\(buildingTitle) placement",
+            "Target \(target)",
+            "Footprint \(footprint)",
+            cost,
+            availability,
+            disabledReason,
+            "Likely consequence: \(likelyConsequence)",
+            cancellation,
+            recovery.map { "Recovery: \($0.title). \($0.explanation)" },
+        ]
+        .compactMap { $0 }
+        .joined(separator: ". ")
+    }
+
+    static func make(
+        kind: BuildingKind,
+        tile: CityTile,
+        rejection: BuildRejection?
+    ) -> CityBuildDecisionPresentation {
+        CityBuildDecisionPresentation(
+            buildingTitle: kind.title,
+            buildingSymbol: kind.symbol,
+            target: "Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)",
+            footprint: "1 × 1 block",
+            cost: "Cost \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) / cycle",
+            availability: rejection == nil ? "Ready to build" : "Blocked",
+            disabledReason: rejection?.message,
+            likelyConsequence: kind.buildConsequenceSummary,
+            cancellation: "Escape cancels without changing the city",
+            recovery: rejection?.buildRecovery
+        )
+    }
+}
+
 struct CityMapPrimaryActionPresentation: Equatable, Sendable {
     let name: String
     let disclosure: String
     let isAvailable: Bool
+    let buildDecision: CityBuildDecisionPresentation?
+
+    init(
+        name: String,
+        disclosure: String,
+        isAvailable: Bool,
+        buildDecision: CityBuildDecisionPresentation? = nil
+    ) {
+        self.name = name
+        self.disclosure = disclosure
+        self.isAvailable = isAvailable
+        self.buildDecision = buildDecision
+    }
 
     static func make(
         interactionMode: CityInteractionMode,
@@ -24,13 +94,15 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
                 return .init(
                     name: "Build \(kind.title) at \(block)",
                     disclosure: "Available. Costs \(kind.buildCost.currencyText) and \(kind.upkeep.currencyText) upkeep per cycle.",
-                    isAvailable: true
+                    isAvailable: true,
+                    buildDecision: .make(kind: kind, tile: tile, rejection: nil)
                 )
             case .failure(let rejection):
                 return .init(
                     name: "Build \(kind.title) at \(block)",
                     disclosure: "Unavailable. \(rejection.message)",
-                    isAvailable: false
+                    isAvailable: false,
+                    buildDecision: .make(kind: kind, tile: tile, rejection: rejection)
                 )
             }
         case .bulldoze:
@@ -60,15 +132,6 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
 struct CityMapActionTargetPresentation: Equatable, Sendable {
     let coordinate: GridCoordinate
     let primaryAction: CityMapPrimaryActionPresentation
-}
-
-struct CityDirectResponse: Identifiable, Hashable, Sendable {
-    let title: String
-    let command: CityCommandID
-    let explanation: String
-    let focusesMap: Bool
-
-    var id: String { "\(command.rawValue)|\(title)" }
 }
 
 struct CitySelectedLocationDiagnosis: Equatable, Sendable {
@@ -161,7 +224,8 @@ enum CityNoticeActionCatalog {
         "Industrial Load Absorbed", "Main Street Crossroads", "Storefront Slump",
         "Main Street Recovery Delayed", "Freight Contract Watch", "Industrial Load Surge",
         "Freight Recovery Delayed", "Budget Gap", "Utility Reserve Tight", "Utility Shortfall",
-        "Hiring Bottleneck", "Severe Storm"
+        "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
+        "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload"
     ]
 
     static func actions(for title: String) -> [CityDirectResponse] {
@@ -171,12 +235,16 @@ enum CityNoticeActionCatalog {
                 .init(title: "Build commercial", command: .buildCommercial, explanation: "Add cleaner taxable activity and jobs with a slower payoff.", focusesMap: true),
                 .init(title: "Build industrial", command: .buildIndustrial, explanation: "Add jobs and revenue faster while accepting more pollution and utility load.", focusesMap: true)
             ]
-        case "Chain Store Rumor", "Main Street Crossroads", "Storefront Slump", "Main Street Recovery Delayed":
+        case "Chain Store Rumor", "Main Street Crossroads", "Storefront Slump",
+             "Main Street Recovery Delayed", "Regional Retail Challenge",
+             "Regional Retail Pressure":
             return [
                 .init(title: "Review tax policy", command: .inspectorFinances, explanation: "Tax relief may support demand but reduces revenue.", focusesMap: false),
                 .init(title: "Build a park", command: .buildPark, explanation: "Placemaking costs capital and upkeep; it does not guarantee recovery.", focusesMap: true)
             ]
-        case "Freight Load Forecast", "Freight Contract Watch", "Industrial Load Surge", "Freight Recovery Delayed":
+        case "Freight Load Forecast", "Freight Contract Watch", "Industrial Load Surge",
+             "Freight Recovery Delayed", "Regional Grid Mandate",
+             "Regional Freight Overload":
             return [
                 .init(title: "Add power", command: .buildPowerPlant, explanation: "Add power capacity and upkeep where service can reach demand.", focusesMap: true),
                 .init(title: "Add water", command: .buildWaterTower, explanation: "Add water capacity and upkeep where service can reach demand.", focusesMap: true),
@@ -211,6 +279,70 @@ private extension CityConsequenceBand {
         case .severe: "severe"
         case .strained: "strained"
         case .healthy: "healthy"
+        }
+    }
+}
+
+private extension BuildingKind {
+    var buildConsequenceSummary: String {
+        switch self {
+        case .empty:
+            "No construction effect"
+        case .road:
+            "Connects adjacent blocks for development"
+        case .residential:
+            "Adds 280 homes after construction"
+        case .commercial:
+            "Adds up to \(CitySimulation.commercialJobCapacity) jobs and taxable activity"
+        case .industrial:
+            "Adds up to \(CitySimulation.industrialJobCapacity) jobs with heavier utility and pollution pressure"
+        case .park:
+            "Can reduce nearby pollution exposure and support livability"
+        case .powerPlant:
+            "Adds \(CitySimulation.powerCapacityPerPlant) citywide power capacity after construction"
+        case .waterTower:
+            "Adds \(CitySimulation.waterCapacityPerTower) citywide water capacity after construction"
+        case .fireStation, .policeStation, .school:
+            "Adds a civic-service contribution after construction"
+        case .cityHall:
+            "Adds a protected civic landmark"
+        }
+    }
+}
+
+private extension BuildRejection {
+    var buildRecovery: CityDirectResponse? {
+        switch self {
+        case .outsideMap:
+            nil
+        case .occupied:
+            CityDirectResponse(
+                title: "Bulldoze",
+                command: .bulldozeMode,
+                explanation: "Inspect the demolition cost before removing the existing structure.",
+                focusesMap: true
+            )
+        case .insufficientFunds:
+            CityDirectResponse(
+                title: "Review finances",
+                command: .inspectorFinances,
+                explanation: "Review revenue, upkeep, and tax policy before committing more spending.",
+                focusesMap: false
+            )
+        case .roadAccessRequired:
+            CityDirectResponse(
+                title: "Target adjacent road",
+                command: .buildRoad,
+                explanation: "Select one validated open block beside this parcel, then confirm Road construction.",
+                focusesMap: true
+            )
+        case .uniqueBuildingExists:
+            CityDirectResponse(
+                title: "City overview",
+                command: .inspectorOverview,
+                explanation: "Review the existing City Hall before choosing another project.",
+                focusesMap: false
+            )
         }
     }
 }

@@ -1,0 +1,34 @@
+Window: "CitySim", App: CitySim [UI wdbeadac6e0bd].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container Description: Focus City status rail, Details: Focus City active, ID: hud.focus-city.rail
+			3 unknown Description: New Arcadia, Details: Day 6. Paused, ID: hud.focus-city.identity
+			4 unknown Description: Treasury, Details: $31,554, -$82 per cycle, ID: hud.focus-city.treasury
+			5 unknown Description: Strategy priority: Choose a growth engine, ID: hud.focus-city.urgency, Details: DECISION READY. Commercial is steadier; Industrial pays faster with heavier utility and pollution pressure.
+			6 button Description: Open city notices, Help: Exit Focus City and open the existing notice journal, Value: 5 notices, highest severity warning, ID: hud.focus-city.notices
+			7 button Description: Exit Focus City, Help: Restore the full command surface without changing the active city target, Value: ⇧⌘F, ID: hud.focus-city.exit
+			8 unknown Description: Inspect Road at block 13, 12, Help: Return uses the announced primary action on the focused city map, Details: Available. Opens details for the selected target., ID: hud.focus-city.selected-context
+			9 container Focus City simulation speed
+				10 button Description: Pause simulation, Value: Selected, ID: hud.focus-city.speed.0
+				11 button Description: Set simulation speed to 1x, Value: Not selected, ID: hud.focus-city.speed.1
+				12 button Description: Set simulation speed to 2x, Value: Not selected, ID: hud.focus-city.speed.2
+				13 button Description: Set simulation speed to 3x, Value: Not selected, ID: hud.focus-city.speed.3
+		14 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Road at block 13, 12, Value: Selected Road, block 13, 12. Primary action: Inspect Road at block 13, 12. Available. Opens details for the selected target.
+	15 toolbar
+		16 button Description: Exit Focus City, ID: toolbar.focus-city.exit, Secondary Actions: Increment, Decrement, Delete, Cancel, Remove from toolbar
+	17 close button
+	18 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	19 minimize button
+	20 text CitySim
+21 menu bar
+	22 CitySim [UI wdbeadac6e0bd]
+	23 File
+	24 Edit
+	25 View
+	26 Simulation
+	27 Tools
+	28 City Data
+	29 Window
+	30 Help
+
+The focused UI element is 14 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Road at block 13, 12, Value: Selected Road, block 13, 12. Primary action: Inspect Road at block 13, 12. Available. Opens details for the selected target.

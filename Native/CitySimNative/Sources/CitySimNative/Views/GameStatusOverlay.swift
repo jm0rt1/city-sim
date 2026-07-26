@@ -18,6 +18,8 @@ struct CityVictoryPresentation: Equatable {
     let eyebrow: String
     let title: String
     let summary: String
+    let storyHeading: String
+    let accessibilityLabel: String
     let metrics: [CityVictoryMetric]
     let strategy: CityVictoryStory?
     let recovery: CityVictoryStory?
@@ -34,10 +36,17 @@ struct CityVictoryPresentation: Equatable {
     }
 
     static func make(state: CityGameState, analytics: CityAnalytics) -> CityVictoryPresentation {
-        CityVictoryPresentation(
-            eyebrow: "Town Charter Secured",
-            title: "\(state.cityName) Earned Its Town Charter",
-            summary: "Your \(state.population.formatted()) residents sustained a solvent, fully served town. The Charter records how you grew and how you recovered.",
+        let isRegionalCapital = analytics.regionalCapitalAwarded
+        return CityVictoryPresentation(
+            eyebrow: isRegionalCapital ? "Regional Capital Recognized" : "Town Charter Secured",
+            title: isRegionalCapital
+                ? "\(state.cityName) Became a Regional Capital"
+                : "\(state.cityName) Earned Its Town Charter",
+            summary: isRegionalCapital
+                ? "Your \(state.population.formatted()) residents sustained a healthy, growing city through regional pressure and recovery. Regional Capital recognition records the strategy that carried the city forward."
+                : "Your \(state.population.formatted()) residents sustained a solvent, fully served town. The Charter records how you grew and how you recovered.",
+            storyHeading: isRegionalCapital ? "Your Regional Capital Story" : "Your Charter Story",
+            accessibilityLabel: isRegionalCapital ? "Regional Capital victory" : "Town Charter victory",
             metrics: [
                 CityVictoryMetric(label: "Residents", value: state.population.formatted(), symbol: "person.3.fill"),
                 CityVictoryMetric(label: "Treasury", value: state.treasury.currencyText, symbol: "banknote.fill"),
@@ -148,7 +157,7 @@ struct GameStatusOverlay: View {
                 .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(0.16)))
                 .shadow(color: .black.opacity(0.45), radius: 36, y: 18)
                 .accessibilityElement(children: .contain)
-                .accessibilityLabel(store.state.status == .won ? "Town Charter victory" : "City crisis")
+                .accessibilityLabel(blockingAccessibilityLabel)
                 .accessibilityValue(accessibilitySummary)
             }
         }
@@ -228,7 +237,7 @@ struct GameStatusOverlay: View {
 
             if presentation.strategy != nil || presentation.recovery != nil {
                 VStack(alignment: .leading, spacing: 10) {
-                    Label("Your Charter Story", systemImage: "book.closed.fill")
+                    Label(presentation.storyHeading, systemImage: "book.closed.fill")
                         .font(.headline)
                         .foregroundStyle(GameTheme.warning)
                     if let strategy = presentation.strategy {
@@ -309,6 +318,12 @@ struct GameStatusOverlay: View {
                 .accessibilitySummary
         }
         return "New Arcadia can no longer meet its obligations."
+    }
+
+    private var blockingAccessibilityLabel: String {
+        guard store.state.status == .won else { return "City crisis" }
+        return CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
+            .accessibilityLabel
     }
 
     private func startNewRegion() {

@@ -12,8 +12,8 @@ struct TopHUDView: View {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
 
-    static let compactMaximumHeight: CGFloat = 116
-    static let regularMaximumHeight: CGFloat = 136
+    static let compactMaximumHeight: CGFloat = 104
+    static let regularMaximumHeight: CGFloat = 118
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 

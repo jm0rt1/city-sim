@@ -23,8 +23,7 @@ struct CityStrategyHUDPresentation: Equatable {
 
     static func make(analytics: CityAnalytics) -> CityStrategyHUDPresentation {
         guard !analytics.awaitingStrategyChoice,
-              let strategy = analytics.committedStrategy,
-              let phase = analytics.strategyPhase else {
+              let strategy = analytics.committedStrategy else {
             return CityStrategyHUDPresentation(
                 eyebrow: "CITY PRIORITY",
                 title: "Choose a growth engine",
@@ -49,6 +48,27 @@ struct CityStrategyHUDPresentation: Equatable {
             )
         }
 
+        if let secondActPhase = analytics.secondActPhase {
+            return regional(
+                strategy: strategy,
+                phase: secondActPhase,
+                days: analytics.secondActDaysUntilConsequence,
+                statusText: analytics.regionalCapitalStatusText
+            )
+        }
+
+        guard let phase = analytics.strategyPhase else {
+            return CityStrategyHUDPresentation(
+                eyebrow: "CITY PRIORITY",
+                title: "Review the current objective",
+                status: "CITY ACTIVE",
+                summary: analytics.townCharterStatusText,
+                tone: .active,
+                diagnostic: nil,
+                actions: []
+            )
+        }
+
         return switch strategy {
         case .commercialStewardship:
             commercial(
@@ -61,6 +81,112 @@ struct CityStrategyHUDPresentation: Equatable {
                 phase: phase,
                 days: analytics.strategyDaysUntilConsequence,
                 resolution: analytics.strategyRecoveryResolution
+            )
+        }
+    }
+
+    private static func regional(
+        strategy: CityStrategy,
+        phase: CitySecondActPhase,
+        days: Int?,
+        statusText: String
+    ) -> CityStrategyHUDPresentation {
+        let commercial = strategy == .commercialStewardship
+        let diagnostic = CityDirectResponse(
+            title: commercial ? "Tax policy & cashflow" : "Utility capacity",
+            command: commercial ? .inspectorFinances : .inspectorUtilities,
+            explanation: commercial
+                ? "Review current tax policy, revenue, and upkeep through the existing Command Center."
+                : "Review current power, water, coverage, and reserve through the existing Command Center.",
+            focusesMap: false
+        )
+        let actions: [CityDirectResponse] = commercial
+            ? [
+                CityDirectResponse(
+                    title: "Review tax policy",
+                    command: .inspectorFinances,
+                    explanation: "Tax relief may support demand but reduces revenue.",
+                    focusesMap: false
+                ),
+                CityDirectResponse(
+                    title: "Build a park",
+                    command: .buildPark,
+                    explanation: "Select Park and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+            ]
+            : [
+                CityDirectResponse(
+                    title: "Add power",
+                    command: .buildPowerPlant,
+                    explanation: "Select Power Plant and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+                CityDirectResponse(
+                    title: "Add water",
+                    command: .buildWaterTower,
+                    explanation: "Select Water Tower and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+                CityDirectResponse(
+                    title: "Add green buffer",
+                    command: .buildPark,
+                    explanation: "Select Park and return focus to the map; placement does not guarantee recovery.",
+                    focusesMap: true
+                ),
+            ]
+        let eyebrow = commercial ? "REGIONAL MAIN STREET" : "REGIONAL FREIGHT"
+
+        return switch phase {
+        case .mandate:
+            .init(
+                eyebrow: eyebrow,
+                title: "Regional Capital mandate",
+                status: timedStatus("MANDATE", days: days),
+                summary: statusText,
+                tone: .active,
+                diagnostic: diagnostic,
+                actions: actions
+            )
+        case .warnedPressure:
+            .init(
+                eyebrow: eyebrow,
+                title: commercial ? "Protect regional retail" : "Protect the regional grid",
+                status: timedStatus("PRESSURE", days: days),
+                summary: statusText,
+                tone: .urgent,
+                diagnostic: diagnostic,
+                actions: actions
+            )
+        case .recovery:
+            .init(
+                eyebrow: eyebrow,
+                title: commercial ? "Restore regional retail" : "Recover regional freight",
+                status: "RECOVERY",
+                summary: statusText,
+                tone: .recovery,
+                diagnostic: diagnostic,
+                actions: actions
+            )
+        case .qualification:
+            .init(
+                eyebrow: eyebrow,
+                title: "Sustain Regional Capital standards",
+                status: "QUALIFYING",
+                summary: statusText,
+                tone: .active,
+                diagnostic: diagnostic,
+                actions: []
+            )
+        case .completed:
+            .init(
+                eyebrow: commercial ? "REGIONAL MAIN STREET CAPITAL" : "REGIONAL FREIGHT CAPITAL",
+                title: "Regional Capital secured",
+                status: "RECOGNIZED",
+                summary: statusText,
+                tone: .resolved,
+                diagnostic: diagnostic,
+                actions: []
             )
         }
     }
@@ -258,11 +384,15 @@ struct StrategyCommandCenterView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
-    static let compactMaximumHeight: CGFloat = 54
-    static let regularMaximumHeight: CGFloat = 64
+    static let compactMaximumHeight: CGFloat = 48
+    static let regularMaximumHeight: CGFloat = 52
 
     private var presentation: CityStrategyHUDPresentation {
         CityStrategyHUDPresentation.make(analytics: store.analytics)
+    }
+
+    private var trajectory: CityTrajectoryHUDPresentation {
+        CityTrajectoryHUDPresentation.make(projectedBalance: store.analytics.projectedBalance)
     }
 
     var body: some View {
@@ -291,16 +421,31 @@ struct StrategyCommandCenterView: View {
                     Text(presentation.title)
                         .font(.system(size: 13, weight: .bold, design: .rounded))
                         .lineLimit(1)
-                    Text(presentation.summary)
-                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                    if !compact {
+                        Text(presentation.summary)
+                            .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
                 }
             }
 
             Spacer(minLength: 2)
 
             HStack(spacing: 4) {
+                Label(trajectory.label, systemImage: trajectory.symbol)
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded).monospacedDigit())
+                    .foregroundStyle(trajectory.isPositive ? GameTheme.accent : GameTheme.danger)
+                    .lineLimit(1)
+                    .padding(.horizontal, 7)
+                    .frame(minHeight: GameTheme.controlMinimum)
+                    .background(
+                        (trajectory.isPositive ? GameTheme.accent : GameTheme.danger).opacity(0.13),
+                        in: RoundedRectangle(cornerRadius: 8)
+                    )
+                    .accessibilityLabel("City trajectory")
+                    .accessibilityValue(trajectory.accessibilityValue)
+                    .accessibilityIdentifier("hud.city.trajectory")
                 if let diagnostic = presentation.diagnostic {
                     responseButton(diagnostic)
                 }
@@ -396,5 +541,37 @@ struct StrategyCommandCenterView: View {
         case .recovery: GameTheme.accent
         case .resolved: GameTheme.accent
         }
+    }
+}
+
+struct CityTrajectoryHUDPresentation: Equatable {
+    let label: String
+    let symbol: String
+    let accessibilityValue: String
+    let isPositive: Bool
+
+    static func make(projectedBalance: Double) -> Self {
+        if projectedBalance > 0 {
+            return Self(
+                label: "\(projectedBalance.signedCurrencyText) / cycle",
+                symbol: "arrow.up.right",
+                accessibilityValue: "Growing by \(projectedBalance.currencyText) per cycle",
+                isPositive: true
+            )
+        }
+        if projectedBalance < 0 {
+            return Self(
+                label: "\(projectedBalance.signedCurrencyText) / cycle",
+                symbol: "arrow.down.right",
+                accessibilityValue: "Losing \(abs(projectedBalance).currencyText) per cycle",
+                isPositive: false
+            )
+        }
+        return Self(
+            label: "$0 / cycle",
+            symbol: "arrow.right",
+            accessibilityValue: "Holding steady",
+            isPositive: true
+        )
     }
 }

@@ -75,6 +75,34 @@ final class CityGameStore: ObservableObject {
         let charterProgress = metrics.townCharterAwarded
             ? 1
             : Double(metrics.townCharterQualifyingCycles) / Double(CitySimulation.townCharterQualificationCycles)
+        if metrics.townCharterAwarded, state.progression?.secondAct != nil {
+            let regionalProgress: Double = switch metrics.secondActPhase {
+            case .mandate: 0.10
+            case .warnedPressure: 0.25
+            case .recovery: 0.45
+            case .qualification:
+                0.55 + 0.45 * Double(metrics.regionalCapitalQualifyingCycles)
+                    / Double(CitySimulation.regionalCapitalQualificationCycles)
+            case .completed: 1
+            case nil: 0
+            }
+            return [
+                CityObjective(
+                    id: "town-charter",
+                    title: "Town Charter Secured",
+                    detail: "Permanent first-act achievement",
+                    progress: 1,
+                    remaining: "The Charter opened a Regional Capital mandate"
+                ),
+                CityObjective(
+                    id: "regional-capital",
+                    title: "Earn Regional Capital",
+                    detail: "Survive regional pressure, recover, and sustain the strategy",
+                    progress: regionalProgress,
+                    remaining: metrics.regionalCapitalStatusText
+                ),
+            ]
+        }
         return [
             CityObjective(
                 id: "stabilize",
@@ -378,12 +406,96 @@ final class CityGameStore: ObservableObject {
     @discardableResult
     func performMapFocused(_ command: CityCommandID) -> Bool {
         let approved: Set<CityCommandID> = [
-            .buildCommercial, .buildIndustrial, .buildPark, .buildPowerPlant, .buildWaterTower,
+            .buildRoad, .buildCommercial, .buildIndustrial, .buildPark, .buildPowerPlant, .buildWaterTower,
+            .bulldozeMode,
             .overlayUtilities, .overlayPollution, .overlayCity
         ]
         guard approved.contains(command), perform(command) else { return false }
         mapFocusRequestGeneration &+= 1
         return true
+    }
+
+    @discardableResult
+    func performBuildRecovery(_ recovery: CityDirectResponse) -> Bool {
+        if recovery.command == .buildRoad,
+           case .build(let blockedKind) = interactionMode,
+           blockedKind.requiresRoad,
+           let blockedCoordinate = selectedCoordinate,
+           case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+               blockedKind,
+               at: blockedCoordinate,
+               in: state
+           ) {
+            return beginRoadAccessRecovery(
+                for: blockedKind,
+                blockedCoordinate: blockedCoordinate
+            )
+        }
+        return recovery.focusesMap
+            ? performMapFocused(recovery.command)
+            : perform(recovery.command)
+    }
+
+    private func beginRoadAccessRecovery(
+        for blockedKind: BuildingKind,
+        blockedCoordinate: GridCoordinate
+    ) -> Bool {
+        guard let roadCoordinate = roadAccessRecoveryCoordinate(adjacentTo: blockedCoordinate) else {
+            showFeedback(
+                "No open road block borders \(blockedKind.title) at block "
+                    + "\(blockedCoordinate.x + 1), \(blockedCoordinate.y + 1). "
+                    + "\(blockedKind.title) remains selected — choose another parcel.",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+            return false
+        }
+        guard perform(.buildRoad) else { return false }
+        selectedCoordinate = roadCoordinate
+        hudContextScope = .selection
+        requestMapFocus()
+        showFeedback(
+            "Road target block \(roadCoordinate.x + 1), \(roadCoordinate.y + 1) borders "
+                + "\(blockedKind.title) block \(blockedCoordinate.x + 1), \(blockedCoordinate.y + 1). "
+                + "Confirm construction or press Escape.",
+            autoDismissAfter: nil
+        )
+        return true
+    }
+
+    private func roadAccessRecoveryCoordinate(
+        adjacentTo blockedCoordinate: GridCoordinate
+    ) -> GridCoordinate? {
+        let roadCoordinates = state.tiles.lazy
+            .filter { $0.kind == .road }
+            .map(\.coordinate)
+        let candidates = state.neighbors(of: blockedCoordinate).filter {
+            guard $0.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.road, at: $0.coordinate, in: state) {
+                return true
+            }
+            return false
+        }
+        return candidates.sorted { lhs, rhs in
+            let lhsExtendsRoad = state.neighbors(of: lhs.coordinate).contains { $0.kind == .road }
+            let rhsExtendsRoad = state.neighbors(of: rhs.coordinate).contains { $0.kind == .road }
+            if lhsExtendsRoad != rhsExtendsRoad {
+                return lhsExtendsRoad
+            }
+            let lhsDistance = roadCoordinates.map {
+                abs($0.x - lhs.coordinate.x) + abs($0.y - lhs.coordinate.y)
+            }.min() ?? Int.max
+            let rhsDistance = roadCoordinates.map {
+                abs($0.x - rhs.coordinate.x) + abs($0.y - rhs.coordinate.y)
+            }.min() ?? Int.max
+            if lhsDistance != rhsDistance {
+                return lhsDistance < rhsDistance
+            }
+            if lhs.coordinate.y != rhs.coordinate.y {
+                return lhs.coordinate.y < rhs.coordinate.y
+            }
+            return lhs.coordinate.x < rhs.coordinate.x
+        }.first?.coordinate
     }
 
     private func initialMapSelectionCoordinate() -> GridCoordinate {
@@ -597,7 +709,7 @@ final class CityGameStore: ObservableObject {
         switch objective.id {
         case "stabilize": openInspector(.finances)
         case "capacity": openInspector(.utilities)
-        case "town-charter":
+        case "town-charter", "regional-capital":
             showObjectives = true
             openInspector(.overview)
         default: openInspector(.overview)
@@ -627,6 +739,15 @@ final class CityGameStore: ObservableObject {
         case "State Growth Grant":
             openInspector(.finances)
         case "Town Charter Awarded":
+            showObjectives = true
+            openInspector(.overview)
+        case "Regional Retail Challenge", "Regional Retail Pressure":
+            overlay = .happiness
+            openInspector(.demand)
+        case "Regional Grid Mandate", "Regional Freight Overload":
+            overlay = .utilities
+            openInspector(.utilities)
+        case "Regional Main Street Recovery", "Regional Freight Recovery", "Regional Capital Recognized":
             showObjectives = true
             openInspector(.overview)
         default:

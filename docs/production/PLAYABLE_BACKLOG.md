@@ -547,7 +547,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Claim:** `docs/production/claims/PLAY-061.playtest-quality.md`.
 - **Accepted quality gate:** Exact combined candidate `1799fbc` independently scored 20/20 with every category 4/4, zero P0/P1, zero automatic rejects, and evidence commit `cca4281`.
 
-### [ ] PLAY-062: Ship the directional Industrial L1 works
+### [x] PLAY-062: Ship the directional Industrial L1 works
 
 - **Player outcome:** The first Industrial commitment reads immediately as a grounded working factory, faces its authoritative road frontage from every direction, and remains unmistakably different from homes and shops at every camera detail level.
 - **Owning lane:** World rendering.
@@ -558,8 +558,9 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** All four Industrial L1 directions ship from exact accepted source bytes with zero alias, mirror, rotation, fallback, crop, wrong frontage, or cross-family substitution; the factory/gantry/service-apron hierarchy remains legible in color and grayscale at city, neighborhood, and block LODs; interaction and state truth remain exact; resource budgets, full suite, staged journeys, and PLAY-063 independent approval pass.
 - **Stop conditions:** Any source repair inside the renderer lane, family substitution, frontage inferred from camera, runtime pixel transform, loss of public-realm/HUD readability, unbounded pack or memory growth, fixture-only proof, or author self-acceptance.
 - **Claim:** `docs/production/claims/PLAY-062.world-rendering.md`.
+- **Accepted integration:** Renderer product `02612e4`, exact combined candidate `f928696a84676032b20c6306b14d943592e219fb`, and independent PLAY-063 approval `1b883ca684b07ba38c5c755b616723bde0cd2230` are published. The gate passed 20/20 with zero P0/P1 defects and zero automatic rejects.
 
-### [ ] PLAY-063: Gate the directional Industrial L1 works
+### [x] PLAY-063: Gate the directional Industrial L1 works
 
 - **Player outcome:** Independent evidence proves the new working-factory identity is beautiful, coherent, correctly road-facing, readable beside Residential and Commercial, and materially better than the previous generic Industrial presentation.
 - **Owning lane:** Playtest quality.
@@ -570,3 +571,236 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** At least 19/20; Industrial identity/frontage and world/HUD cohesion both 4/4; zero family alias, fallback, wrong frontage, overlap, cropped gantry, P0/P1 defect, or automatic reject; explicit material preference at regular and compact sizes.
 - **Stop conditions:** Ambiguous candidate/process/data root, altered rubric after nomination, missing real-app route, unretained proof, author evidence substituted for independent evidence, or any automatic reject.
 - **Claim:** `docs/production/claims/PLAY-063.playtest-quality.md`.
+- **Accepted quality gate:** Exact combined candidate `f928696a84676032b20c6306b14d943592e219fb` independently scored 20/20 at `1b883ca684b07ba38c5c755b616723bde0cd2230`, with every category 4/4, zero P0/P1 defects, zero automatic rejects, and retained staged evidence.
+
+### [ ] PLAY-064: Make the Town Charter the midpoint
+
+- **Player outcome:** The permanent Town Charter opens a warned, recoverable strategy-specific second act ending in Regional Capital recognition instead of terminating the city.
+- **Owning lane:** Gameplay loop.
+- **Dependencies:** Accepted PLAY-010–016 and CONTRACT-015; published Wave 008 authority.
+- **In scope:** Optional durable second-act progression, Commercial and Industrial regional pressure/recovery/qualification/payoff, existing objective/message mappings, legacy compatibility, deterministic tests, and staged journey evidence.
+- **Out of scope:** SwiftUI composition, command-catalog ownership, platform fixture adoption, renderer behavior, save-schema changes, or legacy Python.
+- **Acceptance:** Both strategies and all four durable recovery identities warn before pressure, remain recoverable, qualify only on 12 consecutive daily checks, round-trip/save/replay/undo exactly, preserve missing-field legacy behavior, and reach Regional Capital inside the governed 20-minute horizon.
+- **Claim:** `docs/production/claims/PLAY-064.gameplay-loop.md`.
+
+### [x] PLAY-065: Give the world authoritative local activity
+
+- **Player outcome:** Streets and completed places expose deterministic snapshot-only activity truth that rendering can show without inventing agents, trips, congestion, or prosperity.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** CONTRACT-016 and the published Wave 008 authority.
+- **In scope:** Optional transient `streetActivityIndex` and `placeActivityIndex` fields, deterministic derivation, applicability/monotonicity, compatibility, performance, and immutable snapshot proof.
+- **Out of scope:** Persistence, gameplay effects, agent simulation, renderer/UI implementation, or schema/fingerprint changes.
+- **Acceptance:** Nil/zero semantics are exact; derivation is deterministic, bounded, row-major stable, non-mutating, and leaves save/fingerprint/undo/replay truth unchanged.
+- **Claim:** `docs/production/claims/PLAY-065.simulation-platform.md`.
+- **Accepted integration:** Product `aadbc3e4b0192d1c8aec1a753817c57ca5ff0f01` and evidence/completion `7c5ed467f05a49e3a62f67dcdf7921382c4c475b` are published through master `1f6312927a84d84a03e59bea9672717b25e26862`.
+
+### [ ] PLAY-066: Finish the space between the buildings
+
+- **Player outcome:** Streets, lots, parks, civic space, public furniture, and restrained local activity carry the same authored care as the directional buildings at every LOD.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-024/056/062 and PLAY-065 typed activity truth; CONTRACT-016.
+- **In scope:** Deterministic lot context, frontage-safe props, public-realm detail, bounded activity adoption, Reduce Motion, collision/identity ledgers, performance, and real-app comparisons.
+- **Out of scope:** Invented simulation truth, Industrial L2–L4 ingestion, gameplay/UI rules, package topology, or source-art repair.
+- **Acceptance:** Same-state city/neighborhood/block and regular/compact comparisons are materially richer; nil/zero activity disappears; visible activity follows current authoritative winners; props do not overlap entrances, roads, lots, or each other; timing/RSS/resources remain bounded.
+- **Claim:** `docs/production/claims/PLAY-066.world-rendering.md`.
+
+### [ ] PLAY-067: Make the HUD breathe with the city
+
+- **Player outcome:** The city trajectory, current priority, selected-target truth, and next action are immediately legible while materially more of the city remains visible at regular and exact 900 x 600 layouts.
+- **Owning lane:** UI and input.
+- **Dependencies:** Accepted PLAY-039/054/057 and the published Wave 008 authority.
+- **In scope:** Situational HUD composition, trajectory presentation, progressive map-preserving Details, aperture, pointer/keyboard/guide/menu/Escape/FKA/AX/Reduce Motion parity, and retained exact-size proof.
+- **Out of scope:** Gameplay rules, renderer art, new commands, persisted layout state, or a parallel truth source.
+- **Acceptance:** Closed/open aperture improves without hiding urgent truth; Details exposes a complete actionable section; target/focus/input identity remains exact; every command route and accessibility path remains operable.
+- **Claim:** `docs/production/claims/PLAY-067.ui-input.md`.
+
+### [x] PLAY-068: Gate the city with a second act
+
+- **Player outcome:** Independent candidate-blind evidence proves the combined second act, public realm, local activity, and situational HUD are materially better, truthful, operable, and production-ready.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** Frozen preregistration at `0b798c8083cefc3e5ac057effddd4c0158346ee3`; exact combined PLAY-064/066/067/069/070 candidate supplied by integration.
+- **In scope:** Both strategy routes, no-coaching journey, same-state regular/compact and LOD comparisons, activity rise/fall/disappearance, overlaps, pointer/keyboard/menu/guide/Escape/FKA/AX/Reduce Motion, saves, resources, timing/RSS, and independent scoring.
+- **Out of scope:** Product repair, coaching, candidate substitution, rubric changes, fixture-only acceptance, or author scoring.
+- **Acceptance:** At least 19/20; mandatory 4/4 in world/public-realm coherence and game/HUD cohesion; no category below 3; zero P0/P1 defects or automatic rejects; explicit material preference over the frozen baseline.
+- **Claim:** `docs/production/claims/PLAY-068.playtest-quality.md`.
+- **Closed disposition:** REJECTED and superseded. Exact Wave 008 candidate
+  `87e1e682566b68d20deb1a9e2028e2b885e0423a` did not clear the combined
+  gate; the preserved quality checkpoint is
+  `776cc9b7dfd9532bbf9eee09aca3359373b875a7`. Wave 009 replaces this release
+  attempt and must pass the stricter independent PLAY-075 gate; this closure is
+  not product acceptance.
+
+### [ ] PLAY-069: Adopt Regional Capital into runtime trust
+
+- **Player outcome:** Current games treat the Charter as a midpoint and Regional Capital as the exact terminal identity across saves, replay, undo, snapshots, and fixtures, while authentic legacy Charter-terminal bytes remain valid.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** Integrated PLAY-064 exact product; CONTRACT-015; accepted PLAY-042/046/047/065.
+- **In scope:** Preserve the v1 legacy corpus byte-for-byte; add current Charter-midpoint and four-route Regional Capital terminal fixtures; update platform checkpoints, fingerprints, spatial/activity digests, backup/replay/undo/snapshot expectations, budgets, and completion evidence.
+- **Out of scope:** Gameplay balance/rules, SwiftUI copy, renderer behavior, schema/fingerprint version changes, or rewriting authentic legacy files.
+- **Acceptance:** Missing-`secondAct` schema-0/schema-1 fixtures retain exact hashes and boundary normalization; current midpoint and all four terminal routes repeat byte-identically through two independent builds; save/load/backup/replay/undo/snapshots and post-terminal rejection pass within existing budgets.
+- **Stop conditions:** Legacy bytes are regenerated, a version changes, platform code invents progression defaults, unexplained digest drift remains, or the lane changes gameplay behavior.
+
+### [ ] PLAY-070: Make Regional Capital victory actionable and truthful
+
+- **Player outcome:** Every Regional warning offers honest direct remedies, and the terminal surface unmistakably celebrates Regional Capital rather than mislabeling the final win as only a Town Charter.
+- **Owning lane:** UI and input.
+- **Dependencies:** Integrated PLAY-064 and PLAY-069; CONTRACT-015; completion of PLAY-067.
+- **In scope:** Four new warning/critical title dispositions in the existing typed action catalog, Regional Capital terminal copy/story/accessibility identity, legacy Charter victory preservation, focused tests, regular/compact staged proof, and pointer/keyboard/FKA/AX replay actions.
+- **Out of scope:** New commands, gameplay rules, save state, renderer changes, fixture generation, or a second progression authority.
+- **Acceptance:** Retail notices expose tax/park remedies; grid/freight notices expose power/water/park remedies; legacy missing-secondAct wins retain Charter copy; current Regional wins use Regional Capital copy in visible and AX output; replay actions remain exact at regular and compact sizes.
+- **Stop conditions:** Title routing has no action, copy contradicts durable state, view code re-derives rules, command/input parity drifts, or legacy victories are relabeled.
+
+### [x] PLAY-071: Make growth visibly transform the city
+
+- **Player outcome:** A successful or recovered 20-minute city visibly becomes denser, more varied, and more developed instead of changing counters on a sparse board.
+- **Owning lane:** Gameplay loop.
+- **Dependencies:** Accepted PLAY-064 product; current building lifecycle contracts; reconcile any contradictory PLAY-068 gameplay defect.
+- **In scope:** Growth/upgrade/reward/pressure/recovery tuning, multiple building levels, objective/message truth, both strategies, deterministic scenarios, persistence, and staged journeys.
+- **Out of scope:** Renderer art, SwiftUI composition, commands, packages, legacy Python, or weakening Regional Capital.
+- **Acceptance:** Both strategies create visibly different, non-dominant, recoverable districts with multiple levels inside 20 minutes while daily progression, undo, save/load/backup/replay, and live input remain exact.
+- **Claim:** `docs/production/claims/PLAY-071.gameplay-loop.md`.
+- **Accepted integration:** Product and retained evidence merged through
+  `42e5e8e`; exact integrated build `fbbff0c` passed the 257-test native gate
+  and staged verification. Release-level visual acceptance remains owned by
+  open PLAY-073 and PLAY-075.
+
+### [x] PLAY-072: Prove the visible-city state matrix
+
+- **Player outcome:** Every visible lifecycle state used by the product has deterministic, replayable, performance-bounded authoritative truth.
+- **Owning lane:** Simulation platform.
+- **Dependencies:** Accepted PLAY-065/069 product and existing spatial/activity contracts.
+- **In scope:** Vacant/construction/active/pressured/recovering/upgraded/terminal fixtures for both strategies, manifests, snapshots, digests, persistence, undo, replay, and budgets.
+- **Out of scope:** New gameplay outcomes, persisted presentation state, renderer/UI work, or schema/fingerprint version changes.
+- **Acceptance:** Two independent builds reproduce the complete state matrix and preserve legacy bytes, fingerprints, save/backup/replay/undo, snapshot truth, and performance.
+- **Claim:** `docs/production/claims/PLAY-072.simulation-platform.md`.
+- **Accepted integration:** Current additive matrices, story truth, and
+  reconciliation merged through `8da71cb`; exact integrated build `fbbff0c`
+  passed the 257-test native gate and staged verification.
+
+### [ ] PLAY-073: Replace the board with an authored district
+
+- **Player outcome:** The world reads as one coherent, populated district rather than isolated buildings on a broad green board.
+- **Owning lane:** World rendering.
+- **Dependencies:** Accepted PLAY-024/062/065/066 product; PLAY-072 fixtures when available; only separately accepted PLAY-027 art.
+- **In scope:** Camera composition, terrain, roads, curbs, sidewalks, parcels, entrances, parks, service yards, vegetation, props, activity, lighting/shadow/material harmonization, repetition control, interactions, LOD, and performance.
+- **Out of scope:** Invented simulation truth, unaccepted art, mirroring/rotation/aliasing, gameplay/UI/persistence changes, or hero-frame-only work.
+- **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
+- **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
+- **Art-first queue:** Wave 010 freezes the clean renderer boundary through
+  `bfcd46c`/published `4e5d79f`. The lane's next production mutation is the R1
+  ingestion window for one independently approved PLAY-027 Industrial L2
+  N/E/S/W family; broader composition resumes after that batch is published or
+  independently rejected.
+
+### [x] PLAY-074: Make building and recovery obvious on the map
+
+- **Player outcome:** Construction, invalid placement, diagnosis, and recovery are understandable and operable directly on the map without panel archaeology.
+- **Owning lane:** UI and input.
+- **Dependencies:** Accepted PLAY-067/070 product and existing typed command/store contracts.
+- **In scope:** Pre-commit target/footprint/cost/availability/consequence/cancel truth; durable invalid reasons; selected-place recovery; compact map aperture; complete input/accessibility parity.
+- **Out of scope:** New gameplay rules, renderer art, persistence changes, pointer-only actions, or a second truth source.
+- **Acceptance:** Regular and compact pointer/keyboard/menu/guide/Escape/FKA/AX/VoiceOver/Reduce Motion journeys mutate the identical target once and preserve map, focus, undo, and save/load truth.
+- **Claim:** `docs/production/claims/PLAY-074.ui-input.md`.
+- **Accepted integration:** Map-first build/recovery, settled viewport, and
+  restored Focus City continuity merged through `b259187`. Exact integrated
+  build `fbbff0c` passed the 257-test native gate and staged verification;
+  integration also reconfirmed Road `Return` commit plus exact Undo on the
+  staged app.
+
+### [ ] PLAY-075: Gate the city-not-board release
+
+- **Player outcome:** Independent evidence proves the combined city is beautiful, cohesive, visibly evolving, direct to operate, and production-ready at every governed state and scale.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** PLAY-068 closure; clean PLAY-071/072/073/074 handoffs; exact integration candidate.
+- **In scope:** Candidate-blind Wave 009 rubric, full same-state matrix, fresh 20-minute journey, construction/recovery/accessibility/persistence/performance gates, and independent disposition.
+- **Out of scope:** Product repair, coaching, candidate substitution, rubric changes, fixture-only acceptance, or author scoring.
+- **Acceptance:** 20/20 with every category 4/4, zero P0/P1 and zero automatic rejects, plus material preference over `87e1e68` at both widths and all LODs.
+- **Claim:** `docs/production/claims/PLAY-075.playtest-quality.md`.
+- **Art-first queue:** PLAY-075 performs one focused exact-candidate staged-app
+  disposition for each Wave 010 art ingestion. These narrow passes do not
+  replace or pre-score the final 20/20 release gate.
+
+### [ ] PLAY-076: Grow the opening into a believable starter town
+
+- **Player outcome:** A fresh city opens as a populated three-block town with enough truthful building fabric to support a compelling composition while preserving the player’s first consequential Commercial-versus-Industrial choice.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** PRD-001, PRD-003, PRD-004, ECO-003, ECO-004, POP-003, ART-002, UX-003, REL-001.
+- **Dependencies:** Accepted PLAY-071 gameplay product; the exact current starter-state and PLAY-073 real-app finding that renderer-owned composition cannot honestly turn seven visible buildings into a populated town; next published clean integration baseline.
+- **In scope:** Fresh-city road/lot topology, starting demand and opening
+  message, private two-axis Industrial employment pressure and prospective
+  utility-reserve forecasting, deterministic
+  opening/strategy/recovery/progression tests, task evidence, and additive
+  downstream fixture handoff.
+- **Out of scope:** Renderer decoration or camera changes, new building kinds, preselected Commercial/Industrial/park/utility recovery choices, global economy redesign, public/store/save/schema changes, fixture rewrites, UI/input changes, art selection, packages, build scripts, or legacy Python.
+- **Work checklist:** Implement the corrected machine-checked topology: add roads `(8,10)` and `(8,11)`, relocate Residential `(9,11)` to `(9,10)`, and add Residential `(6,10)` north, `(6,11)` south, `(3,10)` east, and `(17,10)` west. Prove 34 roads, 12 occupied places, 40 growth frontages, three blocks, zero dead ends, and zero adjacent Residential source aliases; keep Residential vacancy literal; derive Industrial pressure from real employment and job-capacity utilization; use the 64-tick next-milestone population forecast only for prospective utility reserve; freeze exact Day 1/11 balance for no-choice and both strategies; preserve warning, recovery, Charter, Regional Capital, PLAY-071 mature behavior, replay, undo, and save behavior; retain regular/compact pointer and keyboard proof; publish additive fixture adoption notes.
+- **Acceptance:** The fresh state has exactly 34 connected non-dead-end roads, 12 road-adjacent occupied places, 40 valid empty growth frontages, and three developed blocks with at least two useful internal parcels each. Commercial and Industrial remain distinct, viable, recoverable, non-dominant choices; the opening remains treasury-negative with 54 power and 48 water spare; all recovery identities and both progression routes remain exact inside tick 2,800. Staged Day 1 and Day 11 evidence at regular and exact 900 x 600 must show at least 60% developed-town safe-width occupancy without hiding buildable context or producing adjacent source-alias reads.
+- **Validation:** Focused starter/gameplay suites; deterministic Day 1/11/pressure/recovery/Charter/Regional fixtures; replay/Codable/legacy/save/load/backup/undo checks; full native suite; exact lane-staged verification; real pointer and keyboard strategy journeys at regular and compact widths.
+- **Proof:** Exact topology/frontage ledger, balance ledger, strategy/recovery/progression matrix, regular/compact color and grayscale frames, staged identity, performance observation, additive fixture-adoption packet, and independent combined renderer disposition under `docs/production/evidence/PLAY-076/`.
+- **Stop conditions:** A second starting Commercial/Industrial/park/utility becomes necessary; either strategy or recovery path becomes nonviable or dominant; scarcity disappears; forecast population enters demand; generic upgrade guards or starting statistics must change; a public/save/schema/global-economy change is required; fixture history must be rewritten; the town remains visually sparse after truthful expansion; or any renderer/UI/art surface would need gameplay-local mutation.
+- **Claim:** `docs/production/claims/PLAY-076.gameplay-loop.md`.
+
+### [x] PLAY-077: Keep command chrome from targeting the map
+
+- **Player outcome:** Choosing a build tool never accidentally targets the map, and a road-access remedy leads to a truthful adjacent road step without consuming the intended building parcel.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** PRD-004, UX-003, UX-004, UX-006, UX-009, REL-001.
+- **Dependencies:** Accepted PLAY-074; CONTRACT-014; approved CONTRACT-017; next published clean integration baseline.
+- **In scope:** Compact catalog pointer-transition quarantine through the existing gate; deterministic adjacent-road recovery through private store/map intent; pointer, keyboard, menu, guide, FKA, AX, Escape, focus, and Undo parity; regular/compact staged evidence.
+- **Out of scope:** New commands, renderer/camera workarounds, simulation rule changes, a second active target, auto-build, persistence, package topology, art, shipping resources, or legacy Python.
+- **Work checklist:** Prove pointer-versus-keyboard differential; extend the single gate for pointer-originated compact catalog selection; block candidate/primary/secondary map bridges through popup dismissal; preserve all non-pointer activation paths; replace same-parcel Road recovery with one deterministic validated adjacent target; retain exact interaction and state evidence.
+- **Acceptance:** Pointer Catalog → Commercial dispatches once while selection remains nil and camera/state/treasury/fingerprint/Undo remain unchanged; stationary and synthetic events cannot reach the map; intentional movement re-enables targeting; Road recovery selects a real adjacent block, never the Commercial parcel; one confirmed road makes the original parcel eligible; pointer/Return/FKA/AX commit once; Escape and Undo are exact at regular and 900 x 600.
+- **Validation:** Focused pointer-gate and command/store tests; modal/text-focus regressions; full native suite; exact staged verify; real regular/compact pointer and keyboard journeys with AX and Reduce Motion.
+- **Proof:** Before/after pointer-versus-keyboard frames and event ledger; road-recovery topology and validation ledger; state/fingerprint/treasury/Undo identities; regular/compact screenshots and AX; staged executable identity under `docs/production/evidence/PLAY-077/`.
+- **Stop conditions:** A second gate, public command/store contract, renderer mutation, coordinate restoration, auto-build, simulation-rule change, dual target, false READY state, input-parity regression, or failed staged journey becomes necessary.
+- **Claim:** `docs/production/claims/PLAY-077.ui-input.md`.
+- **Accepted integration:** Exact master product
+  `897c191355d2fcb18ecc2e8d7358b44e9cae7cd4` passed 266/266 native tests,
+  verified staging, and hands-on default/compact pointer and keyboard journeys.
+  Catalog selection preserved no map target; intentional movement restored
+  targeting; road-access recovery selected a valid adjacent road and required
+  confirmation. Integration evidence is retained under
+  `docs/production/evidence/PLAY-077/integration-897c191/`.
+
+### [ ] PLAY-078: Adopt the starter town without rewriting history
+
+- **Player outcome:** The richer three-block opening remains deterministic,
+  saveable, replayable, observable, and fixture-backed without pretending the
+  former eight-place city is still the current game.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-003, REL-001, REL-002, ART-002.
+- **Dependencies:** Frozen PLAY-076 gameplay product
+  `de6f477ca1a21d9dc9e825de0c7eba18055e3b7b`; published claim authority;
+  accepted PLAY-072 historical fixture corpus.
+- **In scope:** Additive StoryStates v4 and VisibleCityStates v3 fixture
+  generations and manifests; current golden fingerprints; invalid
+  fixed-coordinate test targets; deterministic platform, spatial, replay,
+  save/load/backup/Undo, snapshot, and terminal expectations; task evidence
+  and completion.
+- **Out of scope:** Any PLAY-076 gameplay-rule change; StoryStates v1-v3 or
+  VisibleCityStates v1-v2 rewrite; save schema or fingerprint version change;
+  renderer camera/reference/performance changes; UI, art, shipping resources,
+  package/build scripts, public contracts, or legacy Python.
+- **Work checklist:** Preserve every historical fixture byte; generate Story
+  v4 and Visible v3 twice in independent roots and require recursive byte
+  identity; bind current manifests to the exact combined product authority;
+  move obsolete `(8,11)` and `(6,11)` test commands to the published
+  row-major `(4,8)` through `(7,8)` sequence; regenerate only current golden
+  fingerprints and digests; re-prove legacy load, schema-one round trip,
+  recovery, replay, immutable snapshots, terminal freeze, and performance.
+- **Acceptance:** Historical preservation gates pass byte-exactly; new
+  manifests and all generated files repeat byte-identically; no schema,
+  migration, or fingerprint-version pressure; all simulation/platform and
+  non-renderer native tests pass on the exact PLAY-076 product; renderer-owned
+  failures remain explicitly returned rather than re-blessed.
+- **Validation:** Focused fixture/platform matrix; independent generation
+  roots; complete non-renderer native suite; full-suite classification;
+  `git diff --check`; script syntax; exact staged verify; size/time/memory
+  comparisons.
+- **Proof:** Generation inventories, preservation hashes, manifest linkage,
+  before/after fingerprints, command-coordinate ledger, compatibility and
+  rollback record under `docs/production/evidence/PLAY-078/`.
+- **Stop conditions:** Any historical byte changes; gameplay or renderer
+  mutation becomes necessary; unexplained digest drift; save/public shape or
+  version change; non-deterministic generation; performance regression outside
+  the published budget.
+- **Claim:** `docs/production/claims/PLAY-078.simulation-platform.md`.

@@ -83,13 +83,34 @@ private struct InteractionPreviewSignature: Equatable {
     let selectedCoordinate: GridCoordinate?
 }
 
-private struct AmbientCorridorSignature: Equatable {
-    let developedCoordinates: [GridCoordinate]
-    let roadCoordinates: [GridCoordinate]
-    let vacantCoordinates: [GridCoordinate]
+private struct AmbientContextSignature: Equatable {
+    let layoutRoles: [UInt8]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
     let motionEnabled: Bool
+}
+
+private struct AmbientActivitySignature: Equatable {
+    let domain: AmbientLifeRenderer.ActivityDomain
+    let sourceCoordinate: GridCoordinate
+    let surfaceCoordinate: GridCoordinate
+    let presentationBand: UInt8
+}
+
+private struct AmbientCorridorSignature: Equatable {
+    let context: AmbientContextSignature
+    let activitySamples: [AmbientActivitySignature]
+}
+
+private struct AmbientGroundSignature: Equatable {
+    let layoutRoles: [UInt8]
+    let detail: CameraDetailLevel
+}
+
+private struct GeneratedResidencyTileSignature: Equatable {
+    let kind: BuildingKind
+    let level: Int
+    let constructionBand: UInt8
 }
 
 private struct CityVisualCompositionBounds {
@@ -125,7 +146,7 @@ private final class TileRenderRecord {
 final class CityScene: SKScene {
     private static let minimumCameraScale: CGFloat = 0.30
     private static let canonicalCityCameraScale: CGFloat = 0.74
-    private static let cityOccupiedWidthTarget: CGFloat = 0.52
+    private static let cityOccupiedWidthTarget: CGFloat = 0.68
 
     var onPrimaryAction: ((GridCoordinate) -> Void)?
     var onSecondaryAction: ((GridCoordinate) -> Void)?
@@ -146,6 +167,8 @@ final class CityScene: SKScene {
     private let backdropLayer = SKNode()
     private let tileLayer = SKNode()
     private let ambientLayer = SKNode()
+    private let ambientGroundLayer = SKNode()
+    private let ambientLifeLayer = SKNode()
     private let cameraNode = SKCameraNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
@@ -162,12 +185,26 @@ final class CityScene: SKScene {
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
     private var ambientCorridorSignature: AmbientCorridorSignature?
+    private var ambientGroundSignature: AmbientGroundSignature?
+    private var ambientLayoutRoles: [UInt8] = []
+    private var ambientActivityExcludedRoadCoordinates: Set<GridCoordinate> = []
+    private var ambientActivityCandidates = AmbientLifeRenderer.ActivityCandidates(
+        streets: [],
+        places: [],
+        reservedSurfaces: []
+    )
+    private var generatedResidencyGridSize: CGSize?
+    private var generatedResidencyTileSignatures: [GeneratedResidencyTileSignature] = []
+    private var generatedResidencyDetail: CameraDetailLevel?
     private var viewportInsets: CityMapViewportInsets = .zero
     private var hasUserAdjustedCamera = false
+    private var needsSettledInitialCameraFit = true
     private(set) var occupiedDevelopedVisualBoundsForTesting: CGRect = .null
     private(set) var cameraPriorityVisualBoundsForTesting: CGRect = .null
     private(set) var networkOpportunityVisualBoundsForTesting: CGRect = .null
     private(set) var cameraPriorityCoordinatesForTesting: Set<GridCoordinate> = []
+    private(set) var activeTargetContextBoundsForTesting: CGRect = .null
+    private(set) var activeTargetRoadFrontierForTesting: GridCoordinate?
     var developedVisualBoundsForTesting: CGRect { occupiedDevelopedVisualBoundsForTesting }
     private var tileRecords: [GridCoordinate: TileRenderRecord] = [:]
     private var lastDragLocation: CGPoint?
@@ -182,6 +219,29 @@ final class CityScene: SKScene {
     var cityScaleLimitForTesting: CGFloat { cityScaleLimit }
     var ambientActionCountForTesting: Int { runtimeTreeMetrics(ambientLayer).actions }
     var ambientMotionEnabledForTesting: Bool { ambientMotionEnabled }
+    private(set) var ambientRebuildCountForTesting = 0
+    private(set) var ambientGroundRebuildCountForTesting = 0
+    private(set) var generatedResidencyPreloadCountForTesting = 0
+    var renderedActivityNamesForTesting: [String] {
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: ambientLayer).filter {
+            (
+                $0.hasPrefix("world.activity.street.local-activity.")
+                    || $0.hasPrefix("world.activity.place.local-activity.")
+            ) && !$0.contains(".generated-v4.")
+        }
+    }
+    var ambientEnvironmentNamesForTesting: [String] {
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: ambientLayer).filter {
+            $0.hasPrefix("world.environment.")
+                || $0.hasPrefix("district.ground.")
+        }
+    }
     var consumedConsequenceEventIDCountForTesting: Int { presentedConsequenceEventTicks.count }
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
@@ -200,6 +260,10 @@ final class CityScene: SKScene {
 
     func scenePointForTesting(at coordinate: GridCoordinate) -> CGPoint {
         style.isoPosition(coordinate)
+    }
+
+    func tileGroundBoundsForTesting(at coordinate: GridCoordinate) -> CGRect {
+        tileGroundBounds(at: style.isoPosition(coordinate))
     }
 
     func resolvedCoordinateForTesting(at scenePoint: CGPoint) -> GridCoordinate? {
@@ -226,6 +290,10 @@ final class CityScene: SKScene {
         worldLayer.addChild(backdropLayer)
         worldLayer.addChild(tileLayer)
         ambientLayer.name = "world.ambient.layer"
+        ambientGroundLayer.name = "world.ambient.ground-layer"
+        ambientLifeLayer.name = "world.ambient.life-layer"
+        ambientLayer.addChild(ambientGroundLayer)
+        ambientLayer.addChild(ambientLifeLayer)
         worldLayer.addChild(ambientLayer)
         addChild(cameraNode)
         camera = cameraNode
@@ -286,6 +354,8 @@ final class CityScene: SKScene {
         let previousSnapshot = renderedSnapshot
         let previousOverlay = renderedOverlay
         let previousSelection = renderedSelection
+        let previousActiveActionTarget = renderedActiveActionTarget
+        let previousInteractionMode = renderedInteractionMode
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -300,6 +370,15 @@ final class CityScene: SKScene {
         let state = snapshot.state
         if isFirstRender {
             applyDevelopedCoreCamera(state)
+        } else if needsSettledInitialCameraFit {
+            // The first SwiftUI representable update can precede AppKit's
+            // settled map aperture. Refit once on the first authoritative
+            // pulse after launch, while the camera is still untouched, so the
+            // shipping opening cannot retain that provisional wide scale.
+            if !hasUserAdjustedCamera, selection == nil {
+                applyDevelopedCoreCamera(state)
+            }
+            needsSettledInitialCameraFit = false
         }
         let resolvedDetail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         if resolvedDetail != currentCameraDetailLevel {
@@ -309,11 +388,7 @@ final class CityScene: SKScene {
             }
             lastPreviewSignature = nil
         }
-        assets.preloadGeneratedResidency(
-            for: resolvedDetail,
-            logicalIDs: generatedLogicalIDsNeeded(for: state),
-            roadMasks: generatedRoadMasksNeeded(for: state)
-        )
+        preloadGeneratedResidencyIfNeeded(for: resolvedDetail, state: state)
         renderedState = state
         renderedSnapshot = snapshot
         renderedOverlay = overlay
@@ -328,7 +403,7 @@ final class CityScene: SKScene {
             previousOverlay: previousOverlay,
             defersRuntimeMetricsToFullRecount: isFirstRender
         )
-        let ambientChanged = updateAmbientCorridor(in: state)
+        let ambientChanged = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
@@ -336,6 +411,17 @@ final class CityScene: SKScene {
         refreshInteractionPreview()
         if previousSelection != selection, let selection {
             revealSelection(selection, viewportInsets: viewportInsets)
+        } else if let activeActionTarget,
+                  activeActionTarget.coordinate == selection,
+                  renderedInteractionMode != .inspect,
+                  (
+                    previousInteractionMode != interactionMode
+                        || previousActiveActionTarget?.coordinate != activeActionTarget.coordinate
+                  ) {
+            revealActionTargetContext(
+                activeActionTarget.coordinate,
+                viewportInsets: viewportInsets
+            )
         }
         let worldChanged = diagnosticsSnapshot.createdTileCount > 0
             || diagnosticsSnapshot.updatedTileCount > 0
@@ -413,7 +499,9 @@ final class CityScene: SKScene {
             if !hasUserAdjustedCamera {
                 focusDevelopedCore(state)
             }
-            _ = updateAmbientCorridor(in: state)
+            if let renderedSnapshot {
+                _ = updateAmbientCorridor(snapshot: renderedSnapshot)
+            }
         }
     }
 
@@ -637,6 +725,21 @@ final class CityScene: SKScene {
         _ coordinate: GridCoordinate,
         viewportInsets: CityMapViewportInsets = .zero
     ) {
+        if renderedInteractionMode != .inspect,
+           renderedState != nil,
+           renderedActiveActionTarget?.coordinate == coordinate {
+            revealActionTargetContext(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+        revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+    }
+
+    private func revealCoordinateOnly(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets
+    ) {
+        activeTargetContextBoundsForTesting = .null
+        activeTargetRoadFrontierForTesting = nil
         let target = style.isoPosition(coordinate)
         let safeRect = safeViewportRect(viewportInsets)
         let revealMargin: CGFloat = 0.5
@@ -655,6 +758,122 @@ final class CityScene: SKScene {
             cameraNode.position.y += target.y - safeRect.maxY + verticalMargin
         }
         refreshForCameraChange()
+    }
+
+    /// Keeps a typed player target legible without turning it into a detached
+    /// hero frame. The context is derived only from the current authoritative
+    /// state: the selected coordinate, the nearest real road cell, and the
+    /// already-approved developed-district composition. No target, road,
+    /// placement rule, or recovery route is synthesized here.
+    private func revealActionTargetContext(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets
+    ) {
+        guard let state = renderedState else {
+            revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+        let composition = visualCompositionBounds(in: state)
+        guard !composition.cameraPriority.isNull,
+              !composition.cameraPriority.isEmpty else {
+            revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+
+        let targetBounds = tileGroundBounds(at: style.isoPosition(coordinate))
+        let roadFrontier = nearestAuthoritativeRoad(to: coordinate, in: state)
+        let roadFrontierBounds = roadFrontier.map {
+            tileGroundBounds(at: style.isoPosition($0))
+        }
+        let currentSafeRect = safeViewportRect(viewportInsets)
+        let visibleDistrict = currentSafeRect.intersection(composition.cameraPriority)
+        let currentDistrictWidthShare = visibleDistrict.width / max(1, currentSafeRect.width)
+        let currentDistrictHeightShare = visibleDistrict.height / max(1, currentSafeRect.height)
+
+        // Intended nearby targets already live inside the composed district.
+        // Keep their exact camera rather than zooming out merely because the
+        // interaction mode changed. Remote targets receive the contextual fit
+        // below only when the present aperture cannot fully show both target
+        // and its real road frontier with a meaningful amount of the district.
+        let currentTargetIsVisible = currentSafeRect.contains(targetBounds)
+        let currentRoadFrontierIsVisible = roadFrontierBounds.map {
+            currentSafeRect.contains($0)
+        } ?? true
+        if currentTargetIsVisible,
+           currentRoadFrontierIsVisible,
+           currentDistrictWidthShare >= 0.25,
+           currentDistrictHeightShare >= 0.25 {
+            activeTargetContextBoundsForTesting = composition.cameraPriority
+                .union(targetBounds)
+                .union(roadFrontierBounds ?? .null)
+            activeTargetRoadFrontierForTesting = roadFrontier
+            return
+        }
+
+        // Fit the occupied district mass rather than every remote road extent.
+        // A remote target needs a meaningful district anchor, not every far
+        // roof edge. Trim less than one tile from the district edge opposite
+        // the target; the intervening authoritative network remains rendered.
+        var districtContextBounds = composition.occupiedDeveloped
+        let farEdgeTrim = min(
+            tileHeight * 0.9,
+            districtContextBounds.height * 0.2
+        )
+        if targetBounds.midY < districtContextBounds.midY {
+            districtContextBounds.size.height -= farEdgeTrim
+        } else {
+            districtContextBounds.origin.y += farEdgeTrim
+            districtContextBounds.size.height -= farEdgeTrim
+        }
+        var contextBounds = districtContextBounds.union(targetBounds)
+        if let roadFrontierBounds {
+            contextBounds = contextBounds.union(roadFrontierBounds)
+        }
+
+        let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
+        let safeHeight = max(1, size.height - viewportInsets.top - viewportInsets.bottom)
+        // Account exactly for the safe-viewport tile guard. Both ground
+        // diamonds are already part of `contextBounds`, so adding more world
+        // margin here would only miniaturize the district.
+        let horizontalWorldPadding = tileWidth * 1.25 * 2 + 8
+        let verticalWorldPadding = tileHeight * 1.75 * 2 + 8
+        let requiredScale = max(
+            (contextBounds.width + horizontalWorldPadding) / safeWidth,
+            (contextBounds.height + verticalWorldPadding) / safeHeight
+        )
+        // A compact placement aperture can be extremely shallow beneath HUD
+        // chrome. Stay below the full-board fallback ceiling: the contextual
+        // fit must keep the target visible without shrinking the connected
+        // district into an unreadable edge sliver.
+        let scale = min(2.18, max(cameraNode.xScale, requiredScale))
+        cameraNode.setScale(scale)
+
+        let safeCenterOffset = CGPoint(
+            x: (viewportInsets.leading - viewportInsets.trailing) * scale / 2,
+            y: (viewportInsets.bottom - viewportInsets.top) * scale / 2
+        )
+        cameraNode.position = CGPoint(
+            x: contextBounds.midX - safeCenterOffset.x,
+            y: contextBounds.midY - safeCenterOffset.y
+        )
+        activeTargetContextBoundsForTesting = contextBounds
+        activeTargetRoadFrontierForTesting = roadFrontier
+        refreshForCameraChange()
+    }
+
+    private func nearestAuthoritativeRoad(
+        to coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> GridCoordinate? {
+        state.tiles
+            .filter { $0.kind == .road }
+            .map(\.coordinate)
+            .min { lhs, rhs in
+                let lhsDistance = abs(lhs.x - coordinate.x) + abs(lhs.y - coordinate.y)
+                let rhsDistance = abs(rhs.x - coordinate.x) + abs(rhs.y - coordinate.y)
+                if lhsDistance != rhsDistance { return lhsDistance < rhsDistance }
+                return coordinateComesBefore(lhs, rhs)
+            }
     }
 
     private func safeViewportRect(_ viewportInsets: CityMapViewportInsets) -> CGRect {
@@ -762,28 +981,133 @@ final class CityScene: SKScene {
     }
 
     @discardableResult
-    private func updateAmbientCorridor(in state: CityGameState) -> Bool {
-        let signature = AmbientCorridorSignature(
-            developedCoordinates: state.tiles.compactMap { tile in
-                tile.kind != .empty && tile.kind != .road && tile.constructionProgress >= 1
-                    ? tile.coordinate
-                    : nil
-            },
-            roadCoordinates: state.tiles.compactMap { $0.kind == .road ? $0.coordinate : nil },
-            vacantCoordinates: state.tiles.compactMap { $0.kind == .empty ? $0.coordinate : nil },
-            detail: currentCameraDetailLevel,
+    private func updateAmbientCorridor(snapshot: CityPresentationSnapshot) -> Bool {
+        let state = snapshot.state
+        let context = ambientContextSignature(
+            for: state,
+            changedCoordinates: diagnosticsSnapshot.updatedCoordinates
+        )
+        if ambientCorridorSignature?.context != context {
+            ambientActivityExcludedRoadCoordinates =
+                ambientLifeRenderer.activityExcludedRoadCoordinates(
+                    in: state,
+                    detail: currentCameraDetailLevel
+                )
+            ambientActivityCandidates = ambientLifeRenderer.activityCandidates(
+                in: state,
+                excluding: ambientActivityExcludedRoadCoordinates
+            )
+        }
+        let placements = ambientLifeRenderer.activityPlacements(
+            in: state,
+            candidates: ambientActivityCandidates,
+            consequences: snapshot.spatialConsequences,
+            detail: currentCameraDetailLevel
+        )
+        return reconcileAmbientCorridor(
+            snapshot: snapshot,
+            context: context,
+            placements: placements
+        )
+    }
+
+    private func ambientContextSignature(
+        for state: CityGameState,
+        changedCoordinates: Set<GridCoordinate>? = nil
+    ) -> AmbientContextSignature {
+        let detail = currentCameraDetailLevel
+        let motionEnabled = ambientMotionEnabled
+        if ambientLayoutRoles.count != state.tiles.count || changedCoordinates == nil {
+            ambientLayoutRoles = state.tiles.map(ambientLayoutRole)
+        } else if let changedCoordinates {
+            for coordinate in changedCoordinates {
+                let index = coordinate.y * state.gridWidth + coordinate.x
+                guard ambientLayoutRoles.indices.contains(index),
+                      let tile = state.tile(at: coordinate) else { continue }
+                let role = ambientLayoutRole(for: tile)
+                if ambientLayoutRoles[index] != role {
+                    ambientLayoutRoles[index] = role
+                }
+            }
+        }
+        return AmbientContextSignature(
+            layoutRoles: ambientLayoutRoles,
+            detail: detail,
             reducedMotion: reducedMotion,
-            motionEnabled: ambientMotionEnabled
+            motionEnabled: motionEnabled
+        )
+    }
+
+    private func ambientLayoutRole(for tile: CityTile) -> UInt8 {
+        if tile.kind == .empty { return 0 }
+        if tile.kind == .road { return 1 }
+        return tile.constructionProgress >= 1 ? 2 : 3
+    }
+
+    @discardableResult
+    private func reconcileAmbientCorridor(
+        snapshot: CityPresentationSnapshot,
+        context: AmbientContextSignature,
+        placements: [AmbientLifeRenderer.ActivityPlacement]
+    ) -> Bool {
+        let signature = AmbientCorridorSignature(
+            context: context,
+            activitySamples: activitySignature(placements)
         )
         guard signature != ambientCorridorSignature else { return false }
-        ambientCorridorSignature = signature
-        ambientLayer.removeAllChildren()
-        ambientLayer.addChild(ambientLifeRenderer.makeCorridorLife(
-            in: state,
+        ambientRebuildCountForTesting += 1
+        let groundSignature = AmbientGroundSignature(
+            layoutRoles: context.layoutRoles,
+            detail: context.detail
+        )
+        if groundSignature != ambientGroundSignature {
+            ambientGroundLayer.removeAllChildren()
+            ambientGroundLayer.addChild(terrainRenderer.makeDevelopedDistrictGround(
+                in: snapshot.state,
+                detail: currentCameraDetailLevel
+            ))
+            ambientGroundSignature = groundSignature
+            ambientGroundRebuildCountForTesting += 1
+        }
+        ambientLifeLayer.removeAllChildren()
+        ambientLifeLayer.addChild(ambientLifeRenderer.makeCorridorLife(
+            in: snapshot.state,
+            consequences: snapshot.spatialConsequences,
             detail: currentCameraDetailLevel,
-            reducedMotion: !ambientMotionEnabled
+            reducedMotion: !ambientMotionEnabled,
+            resolvedActivityPlacements: placements
         ))
+        ambientCorridorSignature = signature
         return true
+    }
+
+    @discardableResult
+    func reconcileAmbientActivityForTesting(
+        snapshot: CityPresentationSnapshot,
+        placements: [AmbientLifeRenderer.ActivityPlacement]
+    ) -> Bool {
+        let context = ambientContextSignature(
+            for: snapshot.state,
+            changedCoordinates: nil
+        )
+        return reconcileAmbientCorridor(
+            snapshot: snapshot,
+            context: context,
+            placements: placements
+        )
+    }
+
+    private func activitySignature(
+        _ placements: [AmbientLifeRenderer.ActivityPlacement]
+    ) -> [AmbientActivitySignature] {
+        placements.map { placement in
+            AmbientActivitySignature(
+                domain: placement.domain,
+                sourceCoordinate: placement.sourceCoordinate,
+                surfaceCoordinate: placement.surfaceCoordinate,
+                presentationBand: UInt8((placement.intensity * 3).rounded())
+            )
+        }
     }
 
     /// Compact windows retain the complete ambient semantic set but keep it
@@ -1032,6 +1356,64 @@ final class CityScene: SKScene {
             ])
         }
         return logicalIDs
+    }
+
+    private func generatedResidencyTileSignature(
+        for tile: CityTile
+    ) -> GeneratedResidencyTileSignature {
+        let constructionBand: UInt8
+        if tile.constructionProgress >= 1 {
+            constructionBand = 2
+        } else if tile.constructionProgress >= 0.75 {
+            constructionBand = 1
+        } else {
+            constructionBand = 0
+        }
+        return GeneratedResidencyTileSignature(
+            kind: tile.kind,
+            level: tile.level,
+            constructionBand: constructionBand
+        )
+    }
+
+    private func generatedResidencyStateChanged(_ state: CityGameState) -> Bool {
+        let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
+        guard generatedResidencyGridSize == gridSize,
+              generatedResidencyTileSignatures.count == state.tiles.count else {
+            return true
+        }
+        for index in state.tiles.indices
+        where generatedResidencyTileSignatures[index]
+            != generatedResidencyTileSignature(for: state.tiles[index]) {
+            return true
+        }
+        return false
+    }
+
+    private func preloadGeneratedResidencyIfNeeded(
+        for detail: CameraDetailLevel,
+        state: CityGameState
+    ) {
+        let stateChanged = generatedResidencyStateChanged(state)
+        guard stateChanged || detail != generatedResidencyDetail else {
+            return
+        }
+        assets.preloadGeneratedResidency(
+            for: detail,
+            logicalIDs: generatedLogicalIDsNeeded(for: state),
+            roadMasks: generatedRoadMasksNeeded(for: state)
+        )
+        if stateChanged {
+            generatedResidencyGridSize = CGSize(
+                width: state.gridWidth,
+                height: state.gridHeight
+            )
+            generatedResidencyTileSignatures = state.tiles.map {
+                generatedResidencyTileSignature(for: $0)
+            }
+        }
+        generatedResidencyDetail = detail
+        generatedResidencyPreloadCountForTesting += 1
     }
 
     private func generatedRoadMasksNeeded(for state: CityGameState) -> Set<UInt8> {
@@ -1514,11 +1896,7 @@ final class CityScene: SKScene {
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
         if let renderedState {
-            assets.preloadGeneratedResidency(
-                for: detail,
-                logicalIDs: generatedLogicalIDsNeeded(for: renderedState),
-                roadMasks: generatedRoadMasksNeeded(for: renderedState)
-            )
+            preloadGeneratedResidencyIfNeeded(for: detail, state: renderedState)
         } else {
             assets.prepareGeneratedResidency(for: detail)
         }
@@ -1527,7 +1905,7 @@ final class CityScene: SKScene {
             style.updateDetailVisibility(in: record.root, detail: detail)
         }
         style.updateDetailVisibility(in: backdropLayer, detail: detail)
-        let ambientChanged = renderedState.map { updateAmbientCorridor(in: $0) } ?? false
+        let ambientChanged = renderedSnapshot.map { updateAmbientCorridor(snapshot: $0) } ?? false
         if preservingUpdateDiagnostics {
             diagnosticsSnapshot.detailLevel = detail
         } else {
@@ -1817,6 +2195,8 @@ final class CityScene: SKScene {
     }
 
     private func applyDevelopedCoreCamera(_ state: CityGameState) {
+        activeTargetContextBoundsForTesting = .null
+        activeTargetRoadFrontierForTesting = nil
         let composition = visualCompositionBounds(in: state)
         let occupiedBounds = composition.occupiedDeveloped
         let cameraPriorityBounds = composition.cameraPriority
@@ -1865,10 +2245,9 @@ final class CityScene: SKScene {
             // through pan; they do not define the deterministic reset view.
             let compactWidthScale = cameraPriorityBounds.width / (safeWidth * 0.64)
             scale = max(scale, min(compactWidthScale, 0.62))
-            // Compact framing intentionally resolves to neighborhood LOD even
-            // for unusually tight fixtures; block textures are reserved for an
-            // explicit player zoom and carry a larger active residency. Map the
-            // semantic thresholds into this window's compressed camera range.
+            // Map the semantic thresholds into this window's compressed camera
+            // range before the occupied-mass cap below decides whether the
+            // authored district needs block detail to remain legible.
             let compactNeighborhoodMinimum = actualCameraScale(
                 forCanonicalScale: CameraDetailLevel.blockMaximumCameraScale + 0.01
             )
@@ -1880,6 +2259,14 @@ final class CityScene: SKScene {
                 max(scale, compactNeighborhoodMinimum)
             )
         }
+        // A frontage-serving camera is only successful when the actual
+        // authoritative occupied mass—not the surrounding opportunity loop—
+        // remains legible. This cap preserves one complete road-accessible
+        // expansion band in `cameraBounds` while preventing tall utility art or
+        // a long connected road component from shrinking the lived district
+        // below the Wave 009 width admission bar.
+        let developedWidthScale = occupiedBounds.width / (safeWidth * 0.60)
+        scale = min(scale, developedWidthScale)
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
             .flatMap(Double.init) {
@@ -1925,7 +2312,7 @@ final class CityScene: SKScene {
                 ))
             }
         }
-        let cameraPriorityRoads = nearbyRoads.filter { tile in
+        let cameraPriorityFrontageRoads = nearbyRoads.filter { tile in
             RoadConnectionMask.cardinalEdges.contains { edge in
                 let delta = edge.coordinateDelta
                 return cameraPriorityCoordinates.contains(GridCoordinate(
@@ -1934,6 +2321,11 @@ final class CityScene: SKScene {
                 ))
             }
         }
+        let cameraPriorityRoads = connectedAuthoritativeRoads(
+            from: Set(cameraPriorityFrontageRoads.map(\.coordinate)),
+            in: state,
+            maximumRoadDistance: 2
+        )
         let expansionSockets = state.tiles.filter { tile in
             guard tile.kind == .empty else { return false }
             return RoadConnectionMask.cardinalEdges.contains { edge in
@@ -1950,11 +2342,33 @@ final class CityScene: SKScene {
             adjoiningRoads: nearbyRoads,
             state: state
         )
-        let cameraPriorityBounds = visualBounds(
+        var cameraPriorityBounds = visualBounds(
             for: cameraPriorityDevelopment,
             adjoiningRoads: cameraPriorityRoads,
             state: state
         )
+        let cameraRoadCoordinates = Set(cameraPriorityRoads.map(\.coordinate))
+        let cameraExpansionBand = expansionSockets.filter { tile in
+            let servesPriorityRoad = RoadConnectionMask.cardinalEdges.contains { edge in
+                let delta = edge.coordinateDelta
+                return cameraRoadCoordinates.contains(GridCoordinate(
+                    x: tile.coordinate.x + delta.x,
+                    y: tile.coordinate.y + delta.y
+                ))
+            }
+            guard servesPriorityRoad else { return false }
+            return cameraPriorityCoordinates.contains { developed in
+                max(
+                    abs(developed.x - tile.coordinate.x),
+                    abs(developed.y - tile.coordinate.y)
+                ) <= 3
+            }
+        }
+        for tile in cameraExpansionBand {
+            cameraPriorityBounds = cameraPriorityBounds.union(
+                tileGroundBounds(at: style.isoPosition(tile.coordinate))
+            )
+        }
 
         var networkBounds = CGRect.null
         let contextTiles = state.tiles.filter { $0.kind == .road } + expansionSockets
@@ -1967,6 +2381,44 @@ final class CityScene: SKScene {
             networkOpportunity: networkBounds,
             cameraPriorityCoordinates: cameraPriorityCoordinates
         )
+    }
+
+    /// Returns only real road cells in the component that serves the dominant
+    /// developed frontages. The camera can therefore frame one continuous
+    /// lived district—including its road-enclosed commons—without allowing
+    /// disconnected opportunity stubs or remote empty acreage to shrink it.
+    private func connectedAuthoritativeRoads(
+        from origins: Set<GridCoordinate>,
+        in state: CityGameState,
+        maximumRoadDistance: Int
+    ) -> [CityTile] {
+        let roadsByCoordinate = Dictionary(
+            uniqueKeysWithValues: state.tiles.filter { $0.kind == .road }.map {
+                ($0.coordinate, $0)
+            }
+        )
+        var pending = origins.filter { roadsByCoordinate[$0] != nil }
+            .sorted(by: coordinateComesBefore)
+            .map { ($0, 0) }
+        var connected = Set<GridCoordinate>()
+        while !pending.isEmpty {
+            let (coordinate, distance) = pending.removeFirst()
+            guard connected.insert(coordinate).inserted else { continue }
+            guard distance < maximumRoadDistance else { continue }
+            for edge in RoadConnectionMask.cardinalEdges {
+                let delta = edge.coordinateDelta
+                let neighbor = GridCoordinate(
+                    x: coordinate.x + delta.x,
+                    y: coordinate.y + delta.y
+                )
+                if roadsByCoordinate[neighbor] != nil && !connected.contains(neighbor) {
+                    pending.append((neighbor, distance + 1))
+                }
+            }
+        }
+        return connected.sorted(by: coordinateComesBefore).compactMap {
+            roadsByCoordinate[$0]
+        }
     }
 
     /// Selects the largest spatially coherent developed district without using

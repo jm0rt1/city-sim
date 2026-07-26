@@ -1,8 +1,8 @@
 {
   "canonicalGeometrySHA256" : "6c727c4b7053d69578e97c2f73cf3054cd2dda106bf06625e0dac12a356798fb",
   "componentCount" : 39,
-  "contractSHA256" : "7ea99879ba5ef9757d90a56affe73979a7f7e3997e09f7fe1adf11e322e13612",
-  "descriptorSHA256" : "9f9e0a61a2fd0a1fbe18304a1b32a803447b7aa4f03d22d27f349cd2b7088ad6",
+  "contractSHA256" : "fec4bdea5a8852d0ec4ffefc6947113c89a142e06cf0e9cfe1b956f3f15c1038",
+  "descriptorSHA256" : "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0",
   "dockCanopyCount" : 3,
   "dockDoorCount" : 3,
   "materialCount" : 15,

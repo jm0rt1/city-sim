@@ -1,18 +1,12 @@
 {
   "artInputs": {
-    "descriptorSHA256": "9f9e0a61a2fd0a1fbe18304a1b32a803447b7aa4f03d22d27f349cd2b7088ad6",
+    "descriptorSHA256": "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0",
     "materialLibrarySHA256": "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
   },
   "binarySHA256": {
-    "calibrationBuilder": "8da786f0042916c5328f5e6a9073b333db410e3000c57f8ff3d32bbf242592cd",
-    "panelBuilder": "8a1d5b4d85ff2e11f81e87f85e55e3e475c60986aac32280449168b72e170d78",
+    "calibrationBuilder": "a5a15bc79e87ddd8d7ab9c981a973cf132368dacdb9d711df519549cdfb598f9",
+    "panelBuilder": "cb6cacad6803eda3464a0c41f647793932d9f5680c3146a8d983460d678c7769",
     "structuralValidator": "1664a589f2d79e2bfe27fc99d930f893042d10c2da7eee756e9cba660f13e925"
-  },
-  "decoderCompletenessRepair": {
-    "geometryChanged": false,
-    "materialValuesChanged": false,
-    "requiredFamilyAnchorPresent": true,
-    "requiredStyleAnchorPresent": true
   },
   "deterministicPatternBindings": {
     "allMaterialPatternsRecognizedByOfflineRenderer": true,
@@ -25,26 +19,19 @@
     "replayRoot": "/private/tmp/play027-v05-replay-root"
   },
   "evidenceSHA256": {
-    "contract": "7ea99879ba5ef9757d90a56affe73979a7f7e3997e09f7fe1adf11e322e13612",
+    "contract": "fec4bdea5a8852d0ec4ffefc6947113c89a142e06cf0e9cfe1b956f3f15c1038",
     "prepixelReviewRequest": "c5dfcb71c42702ad0c94637d38cb119e907c6a91e45c128e9c6eec58b0bb7092",
-    "prepixelValidation": "07c2b605520898abd547e53fae2582d75e04957e56ab699484c372ec512d6072",
+    "prepixelValidation": "4d7da7268dc39e5bf6b35671f4ec4df73c0991cd8c496ae79a7f50a313449e2a",
     "structuralBoundaryValidation": "f1d521a01b171ebf14830fc3a52f4d0c34c47994c64986e36fd69bd5966dffac"
   },
-  "panels": {
-    "PREPIXEL-FOOTPRINT-ACTUAL-SCALE-COLOR-COMPARISON.png": "d22bd0e9bdf5fafde32bb0f691242939d1223599298682760c7535043d86e912",
-    "PREPIXEL-FOOTPRINT-ACTUAL-SCALE-GRAYSCALE-COMPARISON.png": "172adae1aa54318a11ecada699b3b0a7b3e26d3b00405c93a2f83048e2dbaae6",
-    "PREPIXEL-MATERIAL-VALUE-LADDER.png": "f94dfb656e2703aeaf9c423d5816b1040c69d2b0c146bae5aa875d17bccc99c9",
-    "PREPIXEL-NATIVE-2X-COLOR-COMPARISON.png": "5f691ce739d381af41b6720232bf9a2348dccbed6bc9ef4b70348d5e2b906287",
-    "PREPIXEL-NATIVE-2X-GRAYSCALE-COMPARISON.png": "f678a41d6f4a4fc69cbfe6dff3a3bb87cb4cdd513bb288d7303c8579b0f1fa35",
-    "PREPIXEL-SOURCE-SCALE-COLOR-NONAUTHORITY.png": "f6ab9b0cafd4b581d63502d5ecb11b65e52b8c56a1b8ee1c95b2e430a78e7599",
-    "PREPIXEL-SOURCE-SCALE-GRAYSCALE-NONAUTHORITY.png": "76c4f9467874c6b611353ad8092f88bd8f32341c0828ce89e052ec4df444f3d9"
-  },
+  "panelsBytePreservedFromIndependentReview": true,
   "productionSelected": false,
+  "samplerPurpose": "diagnostic-regression",
   "schema": 1,
   "sourceAuthorityPixels": false,
   "sourceSHA256": {
-    "calibrationBuilder": "9226da4c0ce180bb2d18ae81285d274c27b02d4e10f3f7fac44a197605bf6ff1",
-    "panelBuilder": "0941e0c9daa3906021d81f29538acc47bde562fb6166694dbb5cc305f32706dd",
+    "calibrationBuilder": "31d4f01125c384abf8d0cc4713f90eff29c92e110f3bb90c205999eb0c6f01bb",
+    "panelBuilder": "abcb54b841c930842987360bb19fb988b6bfaaaed487ab7d4f2d95cbc9932979",
     "structuralValidator": "8fa0fcff81b7876cdfa217acf579bbb414a438303c568b742e45dac7a2a9475e"
   },
   "task": "PLAY-027",

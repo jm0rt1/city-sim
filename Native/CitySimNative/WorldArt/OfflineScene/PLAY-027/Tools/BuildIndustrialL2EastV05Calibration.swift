@@ -751,7 +751,7 @@ enum BuildIndustrialL2EastV05CalibrationMain {
         ]
         sampling["sourceRevisionBinding"] =
             "east-quality-calibration-art-proof-v05"
-        sampling["purpose"] = "diagnostic-calibration"
+        sampling["purpose"] = "diagnostic-regression"
         sampling["sceneKitAntialiasing"] = "none"
         sampling["linearOversamplingFactor"] = 4
         sampling["downsample"] = [

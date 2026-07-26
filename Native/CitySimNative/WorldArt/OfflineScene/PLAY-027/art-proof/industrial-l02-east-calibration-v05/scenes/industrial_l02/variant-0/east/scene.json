@@ -1071,7 +1071,7 @@
       "requiresFullyOpaqueNeighborhood" : true,
       "version" : 3
     },
-    "purpose" : "diagnostic-calibration",
+    "purpose" : "diagnostic-regression",
     "quantizer" : {
       "chromaBypassRGBA" : [
         255,

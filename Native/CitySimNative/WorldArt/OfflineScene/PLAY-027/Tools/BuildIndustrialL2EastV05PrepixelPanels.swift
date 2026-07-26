@@ -33,7 +33,7 @@ private struct V05PanelFace {
 }
 
 private let v05PanelDescriptorSHA256 =
-    "9f9e0a61a2fd0a1fbe18304a1b32a803447b7aa4f03d22d27f349cd2b7088ad6"
+    "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0"
 private let v05PanelMaterialsSHA256 =
     "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
 private let v05PanelAcceptedL1SHA256 =

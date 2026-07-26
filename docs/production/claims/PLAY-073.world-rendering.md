@@ -21,8 +21,10 @@
   Wave 010 R1 Industrial L2 is accepted at exact renderer product
   `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075 approval
   `74f2164da506a246af9335cab2d3a9e977624097`. Further composition mutation
-  remains paused; the lane's next production mutation is reserved for R2 after
-  integration independently accepts one PLAY-027 Industrial L3 N/E/S/W family.
+  remains paused. Integration independently accepted exact PLAY-027 Industrial
+  L3 source candidate `5e019c3e7b7992cabeae179641a0f6748a971666`,
+  opening the reserved R2 ingestion window as the lane's next production
+  mutation.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,
@@ -82,12 +84,18 @@ technical green as visual acceptance.
 Follow `docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`. Preserve exact
 R1 product `d41c2c68` until synchronized to the next published baseline. Do not
 begin a second composition iteration while World Art authors Industrial L3.
-When integration supplies one clean, independently approved N/E/S/W L3 source
-candidate from PLAY-027, use the R2 window to ingest only that exact family.
-Source repair remains World Art-owned.
+Use the R2 window to ingest only exact independently approved PLAY-027 source
+candidate `5e019c3e7b7992cabeae179641a0f6748a971666`. Source repair remains World
+Art-owned.
 
 For R2, run focused pack/runtime/frontage/LOD/resource checks and one staged
 candidate build. Integration owns the single full-suite and staged-identity
 gate; PLAY-075 owns the single focused independent real-app disposition.
 Industrial L4, unaccepted source work, gameplay changes, UI repair, and broad
 composition mutation are not authorized by this claim.
+
+After the accepted Industrial batches publish or are explicitly deferred, R4
+is governed by `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. Its
+rendered-pixel composition, terrain-mass, ground-contact, cross-fidelity,
+repetition, LOD, interaction, and resource criteria replace vague polish
+language and require the full independent PLAY-075 20/20 disposition.

@@ -331,9 +331,9 @@ private extension BuildRejection {
             )
         case .roadAccessRequired:
             CityDirectResponse(
-                title: "Place road",
+                title: "Target adjacent road",
                 command: .buildRoad,
-                explanation: "Select the existing Road tool and keep this block as the active target.",
+                explanation: "Select one validated open block beside this parcel, then confirm Road construction.",
                 focusesMap: true
             )
         case .uniqueBuildingExists:

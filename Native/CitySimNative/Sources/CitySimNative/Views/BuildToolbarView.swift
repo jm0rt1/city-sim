@@ -1,4 +1,119 @@
+import AppKit
 import SwiftUI
+
+@MainActor
+final class CityBuildCatalogWindowBindingView: NSView {
+    let pointerTransitionGate: CityMapPointerTransitionGate
+    private var inputMonitor: Any?
+    private weak var trackedCatalogMenu: NSMenu?
+
+    init(pointerTransitionGate: CityMapPointerTransitionGate) {
+        self.pointerTransitionGate = pointerTransitionGate
+        super.init(frame: .zero)
+        setAccessibilityElement(false)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        nil
+    }
+
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+        if newWindow !== window {
+            stopMonitoring()
+            pointerTransitionGate.unbindCompactCatalogWindow(window)
+        }
+        super.viewWillMove(toWindow: newWindow)
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        pointerTransitionGate.bindCompactCatalogWindow(window)
+        startMonitoring()
+    }
+
+    func dismantle() {
+        stopMonitoring()
+        pointerTransitionGate.unbindCompactCatalogWindow(window)
+    }
+
+    private func startMonitoring() {
+        guard window != nil, inputMonitor == nil else { return }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(menuDidBeginTracking(_:)),
+            name: NSMenu.didBeginTrackingNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(menuDidEndTracking(_:)),
+            name: NSMenu.didEndTrackingNotification,
+            object: nil
+        )
+        inputMonitor = NSEvent.addLocalMonitorForEvents(
+            matching: [.leftMouseDown, .leftMouseUp, .keyDown]
+        ) { [weak self] event in
+            guard let self else { return event }
+            pointerTransitionGate.observeCompactCatalogInput(event, controlView: self)
+            return event
+        }
+    }
+
+    private func stopMonitoring() {
+        if let inputMonitor {
+            NSEvent.removeMonitor(inputMonitor)
+            self.inputMonitor = nil
+        }
+        NotificationCenter.default.removeObserver(self)
+        trackedCatalogMenu = nil
+        pointerTransitionGate.endCompactCatalogTracking()
+    }
+
+    @objc
+    private func menuDidBeginTracking(_ notification: Notification) {
+        guard let menu = notification.object as? NSMenu,
+              Self.isBuildCatalogMenu(menu) else { return }
+        trackedCatalogMenu = menu
+        pointerTransitionGate.beginCompactCatalogTracking()
+    }
+
+    @objc
+    private func menuDidEndTracking(_ notification: Notification) {
+        guard let menu = notification.object as? NSMenu,
+              menu === trackedCatalogMenu else { return }
+        trackedCatalogMenu = nil
+        pointerTransitionGate.endCompactCatalogTracking()
+    }
+
+    private static func isBuildCatalogMenu(_ menu: NSMenu) -> Bool {
+        BuildingKind.allCases.allSatisfy { kind in
+            menu.items.contains { $0.title.hasPrefix("\(kind.title) ·") }
+        }
+    }
+}
+
+@MainActor
+struct CityBuildCatalogWindowBinder: NSViewRepresentable {
+    let pointerTransitionGate: CityMapPointerTransitionGate
+
+    func makeNSView(context: Context) -> CityBuildCatalogWindowBindingView {
+        CityBuildCatalogWindowBindingView(pointerTransitionGate: pointerTransitionGate)
+    }
+
+    func updateNSView(_ nsView: CityBuildCatalogWindowBindingView, context: Context) {}
+
+    static func dismantleNSView(
+        _ nsView: CityBuildCatalogWindowBindingView,
+        coordinator: ()
+    ) {
+        nsView.dismantle()
+    }
+}
 
 struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
@@ -460,7 +575,14 @@ struct BuildToolbarView: View {
             ForEach(BuildCategory.allCases) { category in
                 Section(category.title) {
                     ForEach(category.buildingKinds) { kind in
-                        Button { store.perform(CityCommandCatalog.id(for: kind)) } label: {
+                        Button {
+                            Self.performCompactCatalogSelection(
+                                kind,
+                                store: store,
+                                pointerTransitionGate: pointerTransitionGate,
+                                event: NSApp.currentEvent
+                            )
+                        } label: {
                             Label(
                                 "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
                                 systemImage: kind.symbol
@@ -477,8 +599,27 @@ struct BuildToolbarView: View {
         }
         .menuStyle(.borderlessButton)
         .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .overlay {
+            CityBuildCatalogWindowBinder(pointerTransitionGate: pointerTransitionGate)
+                .accessibilityHidden(true)
+        }
         .accessibilityLabel("Open categorized build catalog")
         .accessibilityValue("Selected \(store.selectedTool.title)")
+    }
+
+    @discardableResult
+    static func performCompactCatalogSelection(
+        _ kind: BuildingKind,
+        store: CityGameStore,
+        pointerTransitionGate: CityMapPointerTransitionGate,
+        event: NSEvent?
+    ) -> Bool {
+        let beganPointerTransition = pointerTransitionGate.beginCompactCatalogSelection(event: event)
+        let performed = store.perform(CityCommandCatalog.id(for: kind))
+        if beganPointerTransition, !performed {
+            pointerTransitionGate.cancel()
+        }
+        return performed
     }
 
     private func modeButton(
@@ -560,11 +701,7 @@ struct BuildToolbarView: View {
     }
 
     private func performBuildRecovery(_ recovery: CityDirectResponse) {
-        if recovery.focusesMap {
-            store.performMapFocused(recovery.command)
-        } else {
-            store.perform(recovery.command)
-        }
+        store.performBuildRecovery(recovery)
     }
 
     private var compactModeTitle: String {

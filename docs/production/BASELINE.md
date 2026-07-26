@@ -2,13 +2,13 @@
 
 **Status:** BASELINE READY
 
-**Published:** July 25, 2026
+**Published:** July 26, 2026
 
 **Integration branch:** `master`
 
-**Accepted product candidate:** `f928696a84676032b20c6306b14d943592e219fb`
-(independently accepted directional Residential, Commercial, and Industrial
-L1 product)
+**Accepted product candidate:** `897c191355d2fcb18ecc2e8d7358b44e9cae7cd4`
+(the independently accepted directional Residential, Commercial, and
+Industrial L1 product plus accepted PLAY-077 input truth)
 
 **Independent evidence and published tip:**
 `1b883ca684b07ba38c5c755b616723bde0cd2230`
@@ -51,10 +51,14 @@ L1 product)
   critical/action typography, 10-point decision-support typography, complete
   compact Overview and Journal content, and a world-first 60.2% closed /
   45.2% open map aperture.
+- Compact catalog pointer selection now changes the build tool without
+  inventing a map target. Intentional movement restores targeting, and
+  road-access recovery selects a truthful adjacent Road block while retaining
+  one active target and requiring confirmation.
 - Independent PLAY-055 scored the exact accepted product 20/20, with every
   category at 4/4, zero P0/P1 defects, zero automatic rejects, and material
   preference over the frozen baseline in both regular and compact layouts.
-- The complete native suite passes with 226 tests and no failures. The accepted
+- The complete native suite passes with 266 tests and no failures. The accepted
   renderer passes 55 focused tests, reports zero fallback assets and zero
   geometry collisions, uses four pages with a stable 41,943,040-byte
   repeated-cycle high-water, and remains within declared render and RSS
@@ -101,6 +105,13 @@ L1 product)
   fallback and geometry collisions, regular/compact/Reduce Motion
   pointer-keyboard-AX-save-undo journeys, and independent PLAY-063 approval at
   20/20 with zero P0/P1 defects and zero automatic rejects.
+- Exact integrated PLAY-077 product `897c191` passed 266/266 native tests,
+  `git diff --check`, repository shell syntax, exact staged verification, and
+  hands-on default/compact pointer and keyboard journeys. The integration gate
+  confirmed no target after catalog selection, movement-based targeting
+  recovery, truthful adjacent-road targeting, explicit confirmation, Escape,
+  and clean process exit. This is integration acceptance, not a new
+  independent PLAY-075 quality score.
 - Non-shipping Industrial L1 source authority `79668c3` passed four-direction
   three-process raw identity, 12/12 unique two-run normalized LOD identity,
   registration/frontage/alpha/chroma/padding checks, accepted-source byte
@@ -134,3 +145,8 @@ accepted in the product baseline. PLAY-027/CONTRACT-011 remains the active
 visual-breadth continuation for Commercial and Industrial source production.
 Wave 008 is the active combined product program under
 `docs/production/WAVE-008-CITY-WITH-A-SECOND-ACT.md`.
+Wave 009 remains the final city-not-board quality bar. Wave 010, defined by
+`docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`, temporarily fixes the
+renderer queue around small independently accepted art batches: Industrial L2
+is first, followed by separately authorized L3/L4 families, then PLAY-073
+composition closeout against the truthful PLAY-076 opening.

@@ -1109,6 +1109,408 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactCatalogPointerSelectionQuarantinesEveryMapBridgeUntilIntentionalMovement() throws {
+        _ = NSApplication.shared
+        let contentWindow = NSWindow(
+            contentRect: CGRect(x: 120, y: 140, width: 900, height: 600),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let popupWindow = NSWindow(
+            contentRect: CGRect(x: 420, y: 360, width: 240, height: 300),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let mapView = CityMapSKView(frame: contentWindow.contentView?.bounds ?? .zero)
+        contentWindow.contentView = mapView
+        contentWindow.orderFront(nil)
+        popupWindow.orderFront(nil)
+
+        let gate = CityMapPointerTransitionGate()
+        gate.bindCompactCatalogWindow(contentWindow)
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.clearFeedback()
+        let coordinator = CitySceneView.Coordinator(
+            store: store,
+            pointerTransitionGate: gate
+        )
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        let cameraCoordinate = GridCoordinate(x: 12, y: 12)
+        scene.configureProofCamera(detail: .block, centeredOn: cameraCoordinate)
+        coordinator.scene = scene
+
+        let state = store.state
+        let fingerprint = try CityStateFingerprinter.fingerprint(state).digest
+        let treasury = store.state.treasury
+        let undoAvailable = store.canUndo
+        let cameraPosition = scene.cameraPositionForTesting
+        let cameraScale = scene.cameraScaleForTesting
+        let popupLocation = NSPoint(x: 72, y: 88)
+        let pointerUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: popupLocation,
+                modifierFlags: [],
+                timestamp: 1,
+                windowNumber: popupWindow.windowNumber,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let expectedAnchor = contentWindow.convertPoint(
+            fromScreen: popupWindow.convertPoint(toScreen: popupLocation)
+        )
+
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .commercial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: pointerUp
+            )
+        )
+        XCTAssertTrue(gate.isActive)
+        XCTAssertEqual(gate.originatingWindowNumber, contentWindow.windowNumber)
+        let gateAnchor = try XCTUnwrap(gate.anchor)
+        XCTAssertEqual(gateAnchor.x, expectedAnchor.x, accuracy: 0.001)
+        XCTAssertEqual(gateAnchor.y, expectedAnchor.y, accuracy: 0.001)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedTool, .commercial)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state).digest, fingerprint)
+        XCTAssertEqual(store.state.treasury, treasury)
+        XCTAssertEqual(store.canUndo, undoAvailable)
+        XCTAssertEqual(scene.cameraPositionForTesting, cameraPosition)
+        XCTAssertEqual(scene.cameraScaleForTesting, cameraScale)
+
+        let mapCoordinate = GridCoordinate(x: 19, y: 17)
+        XCTAssertNil(coordinator.acceptPointerMapActionCandidate(mapCoordinate, in: mapView))
+        XCTAssertFalse(coordinator.performPointerPrimaryAction(at: mapCoordinate, in: mapView))
+        XCTAssertFalse(coordinator.performPointerSecondaryAction(at: mapCoordinate, in: mapView))
+        XCTAssertNil(store.selectedCoordinate)
+
+        let otherWindowMovement = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .mouseMoved,
+                location: NSPoint(x: popupLocation.x + 40, y: popupLocation.y + 40),
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: popupWindow.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 0,
+                pressure: 0
+            )
+        )
+        XCTAssertFalse(gate.observeMovement(otherWindowMovement))
+        XCTAssertTrue(gate.isActive, "Transient popup events must not reopen the map")
+
+        let stationary = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .mouseMoved,
+                location: expectedAnchor,
+                modifierFlags: [],
+                timestamp: 3,
+                windowNumber: contentWindow.windowNumber,
+                context: nil,
+                eventNumber: 3,
+                clickCount: 0,
+                pressure: 0
+            )
+        )
+        XCTAssertFalse(gate.observeMovement(stationary))
+        XCTAssertTrue(gate.isActive)
+
+        let intentionalMovement = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .mouseMoved,
+                location: NSPoint(
+                    x: expectedAnchor.x + CityMapPointerTransitionGate.movementThreshold + 1,
+                    y: expectedAnchor.y
+                ),
+                modifierFlags: [],
+                timestamp: 4,
+                windowNumber: contentWindow.windowNumber,
+                context: nil,
+                eventNumber: 4,
+                clickCount: 0,
+                pressure: 0
+            )
+        )
+        XCTAssertTrue(gate.observeMovement(intentionalMovement))
+        XCTAssertFalse(gate.isActive)
+        XCTAssertNotNil(coordinator.acceptPointerMapActionCandidate(mapCoordinate, in: mapView))
+        XCTAssertEqual(store.selectedCoordinate, mapCoordinate)
+
+        gate.cancel()
+        popupWindow.orderOut(nil)
+        contentWindow.orderOut(nil)
+    }
+
+    @MainActor
+    func testCompactCatalogItemPointerCaptureIsImmediateAndCanceledMenusExpire() throws {
+        _ = NSApplication.shared
+        let contentWindow = NSWindow(
+            contentRect: CGRect(x: 100, y: 120, width: 900, height: 600),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let popupWindow = NSWindow(
+            contentRect: CGRect(x: 360, y: 330, width: 260, height: 320),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let gate = CityMapPointerTransitionGate()
+        let binding = CityBuildCatalogWindowBindingView(pointerTransitionGate: gate)
+        binding.frame = CGRect(x: 40, y: 40, width: 140, height: 44)
+        contentWindow.contentView?.addSubview(binding)
+        contentWindow.orderFront(nil)
+        popupWindow.orderFront(nil)
+        let catalogMenu = NSMenu()
+        for kind in BuildingKind.allCases {
+            catalogMenu.addItem(
+                NSMenuItem(
+                    title: "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                    action: nil,
+                    keyEquivalent: ""
+                )
+            )
+        }
+
+        let openingLocation = NSPoint(x: 100, y: 62)
+        let openingUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: openingLocation,
+                modifierFlags: [],
+                timestamp: 1,
+                windowNumber: contentWindow.windowNumber,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let popupLocation = NSPoint(x: 80, y: 96)
+        let selectionDown = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseDown,
+                location: popupLocation,
+                modifierFlags: [],
+                timestamp: 1.9,
+                windowNumber: popupWindow.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let selectionUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: popupLocation,
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: popupWindow.windowNumber,
+                context: nil,
+                eventNumber: 2,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        let semanticActionEvent = try XCTUnwrap(
+            NSEvent.otherEvent(
+                with: .applicationDefined,
+                location: .zero,
+                modifierFlags: [],
+                timestamp: 2,
+                windowNumber: 0,
+                context: nil,
+                subtype: 0,
+                data1: 0,
+                data2: 0
+            )
+        )
+        let store = CityGameStore(state: .newCity(seed: 42))
+
+        gate.observeCompactCatalogInput(
+            try keyEvent(characters: "\r", keyCode: 36),
+            controlView: binding
+        )
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
+        XCTAssertTrue(gate.compactCatalogIsTracking)
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .commercial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertTrue(gate.isActive)
+        let expectedAnchor = contentWindow.convertPoint(
+            fromScreen: popupWindow.convertPoint(toScreen: popupLocation)
+        )
+        let gateAnchor = try XCTUnwrap(gate.anchor)
+        XCTAssertEqual(gateAnchor.x, expectedAnchor.x, accuracy: 0.001)
+        XCTAssertEqual(gateAnchor.y, expectedAnchor.y, accuracy: 0.001)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
+        XCTAssertFalse(gate.compactCatalogIsTracking)
+
+        gate.cancel()
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
+        gate.observeCompactCatalogInput(openingUp, controlView: binding)
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .residential,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertTrue(gate.isActive, "Pointer-open and pointer-selected items use the same item capture")
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
+        gate.cancel()
+
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        gate.observeCompactCatalogInput(
+            try keyEvent(characters: "\r", keyCode: 36),
+            controlView: binding
+        )
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .industrial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertFalse(gate.isActive, "Keyboard selection must clear pointer capture and stay immediate")
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.interactionMode, .build(.industrial))
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
+
+        NotificationCenter.default.post(
+            name: NSMenu.didBeginTrackingNotification,
+            object: catalogMenu
+        )
+        gate.observeCompactCatalogInput(selectionDown, controlView: binding)
+        gate.observeCompactCatalogInput(selectionUp, controlView: binding)
+        NotificationCenter.default.post(
+            name: NSMenu.didEndTrackingNotification,
+            object: catalogMenu
+        )
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .road,
+                store: store,
+                pointerTransitionGate: gate,
+                event: semanticActionEvent
+            )
+        )
+        XCTAssertFalse(gate.isActive, "A canceled menu cannot leak pointer capture into a later action")
+        XCTAssertNil(store.selectedCoordinate)
+
+        binding.removeFromSuperview()
+        popupWindow.orderOut(nil)
+        contentWindow.orderOut(nil)
+    }
+
+    @MainActor
+    func testCompactCatalogWindowBindingAndNonPointerRoutesRemainSemanticAndImmediate() throws {
+        _ = NSApplication.shared
+        let contentWindow = NSWindow(
+            contentRect: CGRect(x: 0, y: 0, width: 900, height: 600),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        let gate = CityMapPointerTransitionGate()
+        let binding = CityBuildCatalogWindowBindingView(pointerTransitionGate: gate)
+        binding.frame = CGRect(x: 40, y: 40, width: 120, height: 44)
+        contentWindow.contentView?.addSubview(binding)
+        contentWindow.orderFront(nil)
+        XCTAssertNil(binding.hitTest(NSPoint(x: 60, y: 22)))
+
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let keyboardEvent = try keyEvent(characters: "c", keyCode: 8)
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .commercial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: keyboardEvent
+            )
+        )
+        XCTAssertFalse(gate.isActive)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+
+        XCTAssertTrue(
+            BuildToolbarView.performCompactCatalogSelection(
+                .industrial,
+                store: store,
+                pointerTransitionGate: gate,
+                event: nil
+            ),
+            "FKA and accessibility activation remain on the semantic SwiftUI route"
+        )
+        XCTAssertFalse(gate.isActive)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.interactionMode, .build(.industrial))
+
+        binding.removeFromSuperview()
+        let pointerUp = try XCTUnwrap(
+            NSEvent.mouseEvent(
+                with: .leftMouseUp,
+                location: .zero,
+                modifierFlags: [],
+                timestamp: 1,
+                windowNumber: contentWindow.windowNumber,
+                context: nil,
+                eventNumber: 1,
+                clickCount: 1,
+                pressure: 0
+            )
+        )
+        XCTAssertFalse(gate.beginCompactCatalogSelection(event: pointerUp))
+        contentWindow.orderOut(nil)
+    }
+
+    @MainActor
     func testFocusCityPointerMonitorCancelsDragOutAndPreservesEveryModeExactlyOnce() throws {
         _ = NSApplication.shared
         let window = NSWindow(
@@ -2079,13 +2481,60 @@ final class CityCommandCatalogTests: XCTestCase {
         roadRecovery.clearFeedback()
         let roadRecoveryState = roadRecovery.state
         let roadRecoveryFocus = roadRecovery.mapFocusRequestGeneration
-        XCTAssertTrue(roadRecovery.performMapFocused(try XCTUnwrap(roadDecision.recovery?.command)))
+        let roadRecoveryTreasury = roadRecovery.state.treasury
+        XCTAssertTrue(roadRecovery.performBuildRecovery(try XCTUnwrap(roadDecision.recovery)))
         XCTAssertEqual(roadRecovery.interactionMode, .build(.road))
         XCTAssertEqual(roadRecovery.selectedTool, .road)
-        XCTAssertEqual(roadRecovery.selectedCoordinate, roadless.coordinate)
+        let roadCoordinate = try XCTUnwrap(roadRecovery.selectedCoordinate)
+        XCTAssertNotEqual(roadCoordinate, roadless.coordinate)
+        XCTAssertTrue(
+            roadRecovery.state.neighbors(of: roadless.coordinate).contains {
+                $0.coordinate == roadCoordinate
+            }
+        )
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .road,
+            at: roadCoordinate,
+            in: roadRecovery.state
+        ) {
+            XCTFail("Road recovery must select a valid adjacent block, got \(rejection)")
+        }
         XCTAssertEqual(roadRecovery.hudContextScope, .selection)
         XCTAssertEqual(roadRecovery.state, roadRecoveryState)
         XCTAssertEqual(roadRecovery.mapFocusRequestGeneration, roadRecoveryFocus + 1)
+        XCTAssertFalse(roadRecovery.canUndo, "Recovery selects a target but never auto-builds")
+
+        XCTAssertTrue(roadRecovery.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(roadRecovery.state.tile(at: roadCoordinate)?.kind, .road)
+        XCTAssertEqual(
+            roadRecovery.state.treasury,
+            roadRecoveryTreasury - BuildingKind.road.buildCost
+        )
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .residential,
+            at: roadless.coordinate,
+            in: roadRecovery.state
+        ) {
+            XCTFail("One confirmed adjacent road must make the original parcel eligible, got \(rejection)")
+        }
+        XCTAssertTrue(roadRecovery.canUndo)
+        XCTAssertTrue(roadRecovery.perform(.undo))
+        XCTAssertEqual(roadRecovery.state, roadRecoveryState)
+        XCTAssertEqual(roadRecovery.state.treasury, roadRecoveryTreasury)
+        XCTAssertNil(roadRecovery.selectedCoordinate)
+        XCTAssertFalse(roadRecovery.canUndo)
+
+        let cancelledRecovery = CityGameStore(state: authored)
+        cancelledRecovery.selectTool(.residential)
+        cancelledRecovery.selectedCoordinate = roadless.coordinate
+        cancelledRecovery.clearFeedback()
+        XCTAssertTrue(cancelledRecovery.performBuildRecovery(try XCTUnwrap(roadDecision.recovery)))
+        XCTAssertNotEqual(cancelledRecovery.selectedCoordinate, roadless.coordinate)
+        XCTAssertTrue(cancelledRecovery.perform(.cancelInteraction))
+        XCTAssertEqual(cancelledRecovery.state, authored)
+        XCTAssertNil(cancelledRecovery.selectedCoordinate)
+        XCTAssertEqual(cancelledRecovery.interactionMode, .inspect)
+        XCTAssertFalse(cancelledRecovery.canUndo)
 
         let occupiedDecision = try XCTUnwrap(
             CityMapPrimaryActionPresentation.make(
@@ -2125,6 +2574,99 @@ final class CityCommandCatalogTests: XCTestCase {
                 hasBuildDecision: true
             ),
             BuildToolbarView.compactBuildDecisionMaximumHeight
+        )
+    }
+
+    @MainActor
+    func testRoadAccessRecoveryPreservesBlockedIntentWhenNoAdjacentRoadTargetExists() throws {
+        var authored = CityGameState.newCity(seed: 42)
+        let blockedCoordinate = GridCoordinate(x: 0, y: 0)
+        authored.updateTile(at: blockedCoordinate) { $0 = CityTile(coordinate: blockedCoordinate, kind: .empty) }
+        for neighbor in authored.neighbors(of: blockedCoordinate) {
+            authored.updateTile(at: neighbor.coordinate) {
+                $0 = CityTile(coordinate: neighbor.coordinate, kind: .residential)
+            }
+        }
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = blockedCoordinate
+        store.clearFeedback()
+        let state = store.state
+        let focusGeneration = store.mapFocusRequestGeneration
+        let decision = try XCTUnwrap(store.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+        let recovery = try XCTUnwrap(decision.recovery)
+
+        XCTAssertFalse(store.performBuildRecovery(recovery))
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedTool, .commercial)
+        XCTAssertEqual(store.selectedCoordinate, blockedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
+        XCTAssertFalse(store.canUndo)
+        XCTAssertTrue(store.lastFeedback?.contains("choose another parcel") == true)
+        XCTAssertEqual(
+            store.activeMapActionTargetPresentation?.primaryAction.isAvailable,
+            false
+        )
+    }
+
+    @MainActor
+    func testRoadAccessRecoveryPrefersARealRoadExtensionAndAXConfirmsExactlyOnce() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let fixture = try XCTUnwrap(authored.tiles.lazy.compactMap { blocked -> (CityTile, CityTile)? in
+            guard blocked.kind == .empty,
+                  case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                      .commercial,
+                      at: blocked.coordinate,
+                      in: authored
+                  )
+            else { return nil }
+            let extendingCandidates = authored.neighbors(of: blocked.coordinate).filter { candidate in
+                guard candidate.kind == .empty,
+                      case .success = CitySimulation.validateBuild(
+                          .road,
+                          at: candidate.coordinate,
+                          in: authored
+                      )
+                else { return false }
+                return authored.neighbors(of: candidate.coordinate).contains { $0.kind == .road }
+            }
+            guard extendingCandidates.count == 1 else { return nil }
+            return (blocked, extendingCandidates[0])
+        }.first)
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = fixture.0.coordinate
+        store.clearFeedback()
+        let recovery = try XCTUnwrap(
+            store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.recovery
+        )
+        let treasury = store.state.treasury
+
+        XCTAssertTrue(store.performBuildRecovery(recovery))
+        XCTAssertEqual(store.selectedCoordinate, fixture.1.coordinate)
+        XCTAssertEqual(store.interactionMode, .build(.road))
+        XCTAssertEqual(store.state, authored)
+        XCTAssertEqual(store.state.treasury, treasury)
+        XCTAssertFalse(store.canUndo)
+
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        coordinator.configureMapAccessibility(in: mapView)
+        let action = try XCTUnwrap(
+            mapView.accessibilityCustomActions()?.first {
+                $0.name == store.activeMapActionTargetPresentation?.primaryAction.name
+            }
+        )
+        XCTAssertTrue(action.handler?() == true)
+        XCTAssertEqual(store.state.tile(at: fixture.1.coordinate)?.kind, .road)
+        XCTAssertEqual(store.state.treasury, treasury - BuildingKind.road.buildCost)
+        XCTAssertTrue(store.canUndo)
+
+        coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertFalse(
+            mapView.accessibilityCustomActions()?.contains { $0.name.hasPrefix("Build Road") } ?? true,
+            "The occupied road target must not advertise a second build action"
         )
     }
 

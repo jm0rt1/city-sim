@@ -8,6 +8,7 @@ struct BuildToolbarView: View {
     // The low command rail preserves the world aperture; details remain
     // reachable in a visibly scrolling region instead of growing over the map.
     static let compactClosedMaximumHeight: CGFloat = 64
+    static let compactBuildDecisionMaximumHeight: CGFloat = 118
     static let regularClosedMaximumHeight: CGFloat = 108
     static let regularSituationalMaximumHeight: CGFloat = 64
     static let compactOpenMaximumHeight: CGFloat = 176
@@ -20,6 +21,8 @@ struct BuildToolbarView: View {
             commandRow
             if store.showInspector {
                 inspectorDetails
+            } else if let decision = activeBuildDecision {
+                buildDecisionRow(decision)
             } else if !compact, isBuildMode {
                 operationalRow
             }
@@ -28,7 +31,11 @@ struct BuildToolbarView: View {
         .frame(
             maxHeight: store.showInspector
                 ? (compact ? Self.compactOpenMaximumHeight : Self.regularOpenMaximumHeight)
-                : Self.closedMaximumHeight(compact: compact, isBuildMode: isBuildMode)
+                : Self.closedMaximumHeight(
+                    compact: compact,
+                    isBuildMode: isBuildMode,
+                    hasBuildDecision: activeBuildDecision != nil
+                )
         )
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
@@ -92,7 +99,7 @@ struct BuildToolbarView: View {
                 }
             }
 
-            if !store.showInspector {
+            if !store.showInspector, activeBuildDecision == nil {
                 selectedToolSummary
                     .frame(maxWidth: compact ? 184 : 260, alignment: .trailing)
             }
@@ -105,9 +112,132 @@ struct BuildToolbarView: View {
         }
     }
 
-    static func closedMaximumHeight(compact: Bool, isBuildMode: Bool) -> CGFloat {
-        if compact { return compactClosedMaximumHeight }
+    static func closedMaximumHeight(
+        compact: Bool,
+        isBuildMode: Bool,
+        hasBuildDecision: Bool = false
+    ) -> CGFloat {
+        if compact {
+            return hasBuildDecision ? compactBuildDecisionMaximumHeight : compactClosedMaximumHeight
+        }
         return isBuildMode ? regularClosedMaximumHeight : regularSituationalMaximumHeight
+    }
+
+    private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
+        HStack(spacing: compact ? 8 : 12) {
+            VStack(alignment: .leading, spacing: 3) {
+                Label("PLACE \(decision.buildingTitle.uppercased())", systemImage: decision.buildingSymbol)
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                    .foregroundStyle(GameTheme.accent)
+                    .lineLimit(1)
+                Text("\(decision.target) · \(decision.footprint) · \(decision.cost)")
+                    .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(compact ? 2 : 1)
+            }
+            .frame(width: compact ? 230 : 280, alignment: .leading)
+            .layoutPriority(3)
+
+            Divider().frame(height: 36)
+
+            VStack(alignment: .leading, spacing: 3) {
+                Label(
+                    decision.availability.uppercased(),
+                    systemImage: decision.disabledReason == nil
+                        ? "checkmark.circle.fill"
+                        : "exclamationmark.triangle.fill"
+                )
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                .foregroundStyle(decision.disabledReason == nil ? GameTheme.accent : GameTheme.warning)
+                .lineLimit(1)
+
+                Text(decision.disabledReason ?? decision.likelyConsequence)
+                    .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+
+                if decision.disabledReason != nil {
+                    Text("Likely: \(decision.likelyConsequence)")
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .layoutPriority(2)
+
+            if let recovery = decision.recovery {
+                Button {
+                    performBuildRecovery(recovery)
+                } label: {
+                    HStack(spacing: 5) {
+                        Image(systemName: "arrow.uturn.forward.circle.fill")
+                        Text(recovery.title)
+                    }
+                        .font(.caption.weight(.bold))
+                        .padding(.horizontal, compact ? 7 : 10)
+                        .frame(
+                            minWidth: compact ? 86 : 104,
+                            minHeight: GameTheme.controlMinimum
+                        )
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(GameTheme.warning)
+                .disabled(!store.canPerform(recovery.command))
+                .help(recovery.explanation)
+                .accessibilityHint(recovery.explanation)
+                .accessibilityIdentifier("hud.build.recovery")
+            } else {
+                Button {
+                    store.performMapCommand(.mapPrimaryAction)
+                } label: {
+                    HStack(spacing: 5) {
+                        Image(systemName: "hammer.circle.fill")
+                        Text("Build here")
+                    }
+                        .font(.caption.weight(.bold))
+                        .padding(.horizontal, compact ? 7 : 10)
+                        .frame(
+                            minWidth: compact ? 86 : 104,
+                            minHeight: GameTheme.controlMinimum
+                        )
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(GameTheme.accent)
+                .disabled(!store.canPerformMapCommand(.mapPrimaryAction))
+                .help("Commit \(decision.buildingTitle) at \(decision.target) exactly once")
+                .accessibilityHint("Uses the same primary map action as Return and the city map action")
+                .accessibilityIdentifier("hud.build.commit")
+            }
+
+            Button {
+                store.perform(.cancelInteraction)
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "xmark")
+                    Text("Cancel")
+                }
+                    .font(.caption.weight(.bold))
+                    .padding(.horizontal, compact ? 5 : 8)
+                    .frame(
+                        minWidth: compact ? 64 : 72,
+                        minHeight: GameTheme.controlMinimum
+                    )
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.bordered)
+            .help(decision.cancellation)
+            .accessibilityHint(decision.cancellation)
+            .accessibilityIdentifier("hud.build.cancel")
+        }
+        .frame(minHeight: 44)
+        .padding(.horizontal, 3)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Build decision")
+        .accessibilityValue(decision.accessibilitySummary)
+        .accessibilityIdentifier("hud.build.decision")
     }
 
     @ViewBuilder
@@ -422,6 +552,19 @@ struct BuildToolbarView: View {
     private var isBuildMode: Bool {
         if case .build = store.interactionMode { return true }
         return false
+    }
+
+    private var activeBuildDecision: CityBuildDecisionPresentation? {
+        guard case .build = store.interactionMode else { return nil }
+        return store.activeMapActionTargetPresentation?.primaryAction.buildDecision
+    }
+
+    private func performBuildRecovery(_ recovery: CityDirectResponse) {
+        if recovery.focusesMap {
+            store.performMapFocused(recovery.command)
+        } else {
+            store.perform(recovery.command)
+        }
     }
 
     private var compactModeTitle: String {

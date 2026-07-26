@@ -8,7 +8,9 @@
 - **Planned surfaces:** platform-owned deterministic fixtures, manifests, snapshots, digests, replay/undo/save/backup validation, performance evidence, and `docs/production/evidence/PLAY-072/`
 - **Dependencies:** accepted PLAY-065 and PLAY-069 product; existing spatial consequence and activity snapshot contracts
 - **Validation/proof:** vacant/construction/active/pressured/recovering/upgraded/terminal matrices for both strategies; two-build identity; legacy corpus preservation; exact fingerprints; full suite; time/memory budgets
-- **Status:** platform adoption complete and ready for integration; one exact renderer camera-golden blocker disclosed
+- **Status:** accepted into integration through merge `8da71cb`; its disclosed
+  renderer camera reconciliation is integrated, and exact integrated build
+  `fbbff0c` passed 257/257 plus staged verification
 
 Freeze the authoritative state matrix that gameplay, renderer, UI, and quality
 will use to prove visible city evolution. Reuse existing state and snapshot

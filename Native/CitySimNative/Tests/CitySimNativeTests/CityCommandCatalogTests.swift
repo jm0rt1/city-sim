@@ -721,6 +721,251 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testFocusCityFramesDevelopedCityAfterSelectionClearsButPreservesRealTargetCamera() throws {
+        _ = NSApplication.shared
+        for size in [
+            CGSize(width: 1_278, height: 768),
+            CGSize(width: 900, height: 600),
+        ] {
+            let store = CityGameStore(state: .newCity(seed: 42))
+            store.speed = .paused
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.render(
+                state: store.state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let coordinator = CitySceneView.Coordinator(store: store)
+            coordinator.scene = scene
+
+            let retainedTarget = try XCTUnwrap(store.state.tiles.first {
+                $0.kind == .cityHall
+            }?.coordinate)
+            store.selectedCoordinate = retainedTarget
+            scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 0, y: 0))
+            let retainedScale = scene.cameraScale
+            let retainedPosition = scene.camera?.position
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            XCTAssertFalse(
+                coordinator.synchronizeCityFocusCamera(
+                    isEnabled: store.isCityFocusModeEnabled,
+                    selectedCoordinate: store.selectedCoordinate
+                )
+            )
+            XCTAssertEqual(scene.cameraScale, retainedScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.camera?.position, retainedPosition)
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            XCTAssertFalse(
+                coordinator.synchronizeCityFocusCamera(
+                    isEnabled: store.isCityFocusModeEnabled,
+                    selectedCoordinate: store.selectedCoordinate
+                )
+            )
+
+            store.cancelInteraction()
+            XCTAssertNil(store.selectedCoordinate, "Escape cancellation leaves no active target")
+            scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 0, y: 0))
+            let escapedScale = scene.cameraScale
+            let escapedPosition = scene.camera?.position
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            XCTAssertTrue(
+                coordinator.synchronizeCityFocusCamera(
+                    isEnabled: store.isCityFocusModeEnabled,
+                    selectedCoordinate: store.selectedCoordinate
+                )
+            )
+            XCTAssertNotEqual(scene.cameraScale, escapedScale)
+            XCTAssertNotEqual(scene.camera?.position, escapedPosition)
+            let framedScale = scene.cameraScale
+            let framedPosition = scene.camera?.position
+            XCTAssertFalse(
+                coordinator.synchronizeCityFocusCamera(
+                    isEnabled: store.isCityFocusModeEnabled,
+                    selectedCoordinate: store.selectedCoordinate
+                ),
+                "A settled Focus City update must not repeatedly reset the camera"
+            )
+            XCTAssertEqual(scene.cameraScale, framedScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.camera?.position, framedPosition)
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            XCTAssertFalse(
+                coordinator.synchronizeCityFocusCamera(
+                    isEnabled: store.isCityFocusModeEnabled,
+                    selectedCoordinate: store.selectedCoordinate
+                )
+            )
+
+            let buildTarget = try XCTUnwrap(store.state.tiles.first { tile in
+                guard tile.kind == .empty else { return false }
+                if case .success = CitySimulation.validateBuild(
+                    .road,
+                    at: tile.coordinate,
+                    in: store.state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate)
+            store.selectTool(.road)
+            store.selectedCoordinate = buildTarget
+            let treasury = store.state.treasury
+            store.primaryAction(at: buildTarget)
+            XCTAssertEqual(store.state.treasury, treasury - BuildingKind.road.buildCost)
+            store.undoLastAction()
+            XCTAssertEqual(store.state.treasury, treasury)
+            XCTAssertNil(store.selectedCoordinate, "Undo intentionally clears the reverted build target")
+            scene.configureProofCamera(detail: .block, centeredOn: buildTarget)
+            let undoScale = scene.cameraScale
+            let undoPosition = scene.camera?.position
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            XCTAssertTrue(
+                coordinator.synchronizeCityFocusCamera(
+                    isEnabled: store.isCityFocusModeEnabled,
+                    selectedCoordinate: store.selectedCoordinate
+                )
+            )
+            XCTAssertNotEqual(scene.cameraScale, undoScale)
+            XCTAssertNotEqual(scene.camera?.position, undoPosition)
+            XCTAssertEqual(store.state.treasury, treasury)
+            XCTAssertNil(store.selectedCoordinate)
+        }
+    }
+
+    @MainActor
+    func testHostedFocusCityRendersRestoredUndoSnapshotBeforeReframing() throws {
+        _ = NSApplication.shared
+        let defaults = UserDefaults.standard
+        let welcomeKey = "hasSeenCitySimWelcome"
+        let priorWelcome = defaults.object(forKey: welcomeKey)
+        defaults.set(true, forKey: welcomeKey)
+        defer {
+            if let priorWelcome {
+                defaults.set(priorWelcome, forKey: welcomeKey)
+            } else {
+                defaults.removeObject(forKey: welcomeKey)
+            }
+        }
+
+        let cases: [(size: CGSize, compact: Bool, chrome: CityHUDChromeFrames)] = [
+            (
+                CGSize(width: 1_278, height: 768),
+                false,
+                CityHUDChromeFrames(
+                    top: CGRect(x: 16, y: 16, width: 1_246, height: 118),
+                    bottom: CGRect(x: 79, y: 688, width: 1_120, height: 64)
+                )
+            ),
+            (
+                CGSize(width: 900, height: 600),
+                true,
+                CityHUDChromeFrames(
+                    top: CGRect(x: 8, y: 8, width: 884, height: 104),
+                    bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
+                )
+            ),
+        ]
+
+        for testCase in cases {
+            let store = CityGameStore(state: .newCity(seed: 42))
+            store.speed = .paused
+            let host = NSHostingView(
+                rootView: ContentView(store: store)
+                    .frame(width: testCase.size.width, height: testCase.size.height)
+            )
+            host.frame = CGRect(origin: .zero, size: testCase.size)
+            let window = NSWindow(
+                contentRect: host.frame,
+                styleMask: [.titled],
+                backing: .buffered,
+                defer: false
+            )
+            window.contentView = host
+            host.layoutSubtreeIfNeeded()
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+
+            let mapView = try XCTUnwrap(firstDescendant(of: CityMapSKView.self, in: host))
+            let scene = try XCTUnwrap(mapView.scene as? CityScene)
+            let target = try XCTUnwrap(store.state.tiles.first { tile in
+                if case .success = CitySimulation.validateBuild(
+                    .commercial,
+                    at: tile.coordinate,
+                    in: store.state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate)
+            let restoredState = store.state
+            let restoredTreasury = store.state.treasury
+
+            store.selectTool(.commercial)
+            store.selectedCoordinate = target
+            store.primaryAction(at: target)
+            XCTAssertNotEqual(store.state, restoredState)
+            scene.render(
+                state: store.state,
+                overlay: store.overlay,
+                selection: store.selectedCoordinate,
+                interactionMode: store.interactionMode
+            )
+
+            store.undoLastAction()
+            XCTAssertEqual(store.state, restoredState)
+            XCTAssertEqual(store.state.treasury, restoredTreasury)
+            XCTAssertNil(store.selectedCoordinate)
+            scene.configureProofCamera(detail: .block, centeredOn: target)
+            let staleCameraPosition = scene.cameraPositionForTesting
+
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+            host.layoutSubtreeIfNeeded()
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+
+            let expectedInsets = ContentView.mapViewportInsets(
+                windowSize: testCase.size,
+                compact: testCase.compact,
+                chromeFrames: testCase.chrome
+            )
+            let expectedScene = CityScene(size: testCase.size)
+            expectedScene.reducedMotion = true
+            expectedScene.updateViewportInsets(expectedInsets)
+            expectedScene.render(
+                state: restoredState,
+                overlay: store.overlay,
+                selection: nil,
+                interactionMode: store.interactionMode
+            )
+            expectedScene.frameCity()
+
+            XCTAssertTrue(store.isCityFocusModeEnabled)
+            XCTAssertNil(store.selectedCoordinate)
+            XCTAssertNotEqual(scene.cameraPositionForTesting, staleCameraPosition)
+            XCTAssertEqual(scene.cameraScale, expectedScene.cameraScale, accuracy: 0.000_001)
+            XCTAssertEqual(
+                scene.cameraPositionForTesting.x,
+                expectedScene.cameraPositionForTesting.x,
+                accuracy: 0.5
+            )
+            XCTAssertEqual(
+                scene.cameraPositionForTesting.y,
+                expectedScene.cameraPositionForTesting.y,
+                accuracy: 0.5
+            )
+            XCTAssertEqual(
+                scene.cameraPriorityCoordinatesForTesting,
+                expectedScene.cameraPriorityCoordinatesForTesting,
+                "Focus City must frame the restored snapshot's developed district"
+            )
+        }
+    }
+
+    @MainActor
     func testFocusCityPointerMonitorLifecyclePreservesTransitionGateAfterCompletedClick() throws {
         _ = NSApplication.shared
         let gate = CityMapPointerTransitionGate()
@@ -1760,6 +2005,156 @@ final class CityCommandCatalogTests: XCTestCase {
             buildPresentation.isAvailable
         )
         XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains(buildPresentation.disclosure) == true)
+    }
+
+    @MainActor
+    func testBuildDecisionPresentsEveryCommitFactAndRoutesOneTruthfulRecovery() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let occupied = try XCTUnwrap(authored.tiles.first { $0.kind != .empty })
+        let roadless = try XCTUnwrap(authored.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                .residential,
+                at: tile.coordinate,
+                in: authored
+            ) {
+                return true
+            }
+            return false
+        })
+        let valid = try XCTUnwrap(authored.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.residential, at: tile.coordinate, in: authored) {
+                return true
+            }
+            return false
+        })
+
+        for kind in BuildingKind.buildPalette {
+            let decision = try XCTUnwrap(
+                CityMapPrimaryActionPresentation.make(
+                    interactionMode: .build(kind),
+                    tile: occupied,
+                    state: authored
+                ).buildDecision
+            )
+            XCTAssertEqual(decision.target, "Block \(occupied.coordinate.x + 1), \(occupied.coordinate.y + 1)")
+            XCTAssertEqual(decision.footprint, "1 × 1 block")
+            XCTAssertTrue(decision.cost.contains(kind.buildCost.currencyText))
+            XCTAssertTrue(decision.cost.contains(kind.upkeep.currencyText))
+            XCTAssertFalse(decision.likelyConsequence.isEmpty)
+            XCTAssertTrue(decision.cancellation.contains("Escape"))
+            XCTAssertTrue(decision.accessibilitySummary.contains("Likely consequence"))
+            XCTAssertTrue(decision.accessibilitySummary.contains("without changing the city"))
+        }
+
+        let validDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: valid,
+                state: authored
+            ).buildDecision
+        )
+        XCTAssertEqual(validDecision.availability, "Ready to build")
+        XCTAssertNil(validDecision.disabledReason)
+        XCTAssertNil(validDecision.recovery)
+        XCTAssertTrue(validDecision.likelyConsequence.contains("280 homes"))
+
+        let roadDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: roadless,
+                state: authored
+            ).buildDecision
+        )
+        XCTAssertEqual(roadDecision.availability, "Blocked")
+        XCTAssertEqual(roadDecision.disabledReason, BuildRejection.roadAccessRequired.message)
+        XCTAssertEqual(roadDecision.recovery?.command, .buildRoad)
+        XCTAssertTrue(roadDecision.recovery?.focusesMap == true)
+
+        let roadRecovery = CityGameStore(state: authored)
+        roadRecovery.selectTool(.residential)
+        roadRecovery.selectedCoordinate = roadless.coordinate
+        roadRecovery.hudContextScope = .selection
+        roadRecovery.clearFeedback()
+        let roadRecoveryState = roadRecovery.state
+        let roadRecoveryFocus = roadRecovery.mapFocusRequestGeneration
+        XCTAssertTrue(roadRecovery.performMapFocused(try XCTUnwrap(roadDecision.recovery?.command)))
+        XCTAssertEqual(roadRecovery.interactionMode, .build(.road))
+        XCTAssertEqual(roadRecovery.selectedTool, .road)
+        XCTAssertEqual(roadRecovery.selectedCoordinate, roadless.coordinate)
+        XCTAssertEqual(roadRecovery.hudContextScope, .selection)
+        XCTAssertEqual(roadRecovery.state, roadRecoveryState)
+        XCTAssertEqual(roadRecovery.mapFocusRequestGeneration, roadRecoveryFocus + 1)
+
+        let occupiedDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: occupied,
+                state: authored
+            ).buildDecision
+        )
+        XCTAssertEqual(occupiedDecision.recovery?.command, .bulldozeMode)
+        let occupiedRecovery = CityGameStore(state: authored)
+        occupiedRecovery.selectTool(.residential)
+        occupiedRecovery.selectedCoordinate = occupied.coordinate
+        occupiedRecovery.clearFeedback()
+        let occupiedState = occupiedRecovery.state
+        XCTAssertTrue(occupiedRecovery.performMapFocused(try XCTUnwrap(occupiedDecision.recovery?.command)))
+        XCTAssertEqual(occupiedRecovery.interactionMode, .bulldoze)
+        XCTAssertEqual(occupiedRecovery.selectedCoordinate, occupied.coordinate)
+        XCTAssertEqual(occupiedRecovery.state, occupiedState)
+
+        var unfunded = authored
+        unfunded.treasury = 0
+        let unfundedDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: valid,
+                state: unfunded
+            ).buildDecision
+        )
+        XCTAssertEqual(unfundedDecision.disabledReason, BuildRejection.insufficientFunds.message)
+        XCTAssertEqual(unfundedDecision.recovery?.command, .inspectorFinances)
+        XCTAssertFalse(unfundedDecision.recovery?.focusesMap ?? true)
+
+        XCTAssertEqual(
+            BuildToolbarView.closedMaximumHeight(
+                compact: true,
+                isBuildMode: true,
+                hasBuildDecision: true
+            ),
+            BuildToolbarView.compactBuildDecisionMaximumHeight
+        )
+    }
+
+    @MainActor
+    func testBuildDecisionCommitUsesTheExistingPrimaryMapIntentExactlyOnce() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let valid = try XCTUnwrap(store.state.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.commercial, at: tile.coordinate, in: store.state) {
+                return true
+            }
+            return false
+        })
+        store.selectTool(.commercial)
+        store.selectedCoordinate = valid.coordinate
+        store.hudContextScope = .selection
+        store.clearFeedback()
+        let stateBefore = store.state
+        let treasuryBefore = store.state.treasury
+
+        XCTAssertTrue(store.canPerformMapCommand(.mapPrimaryAction))
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: valid.coordinate)?.kind, .commercial)
+        XCTAssertEqual(store.state.treasury, treasuryBefore - BuildingKind.commercial.buildCost)
+        XCTAssertEqual(store.selectedCoordinate, valid.coordinate)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertTrue(store.canUndo)
+
+        XCTAssertTrue(store.perform(.undo))
+        XCTAssertEqual(store.state, stateBefore)
     }
 
     @MainActor

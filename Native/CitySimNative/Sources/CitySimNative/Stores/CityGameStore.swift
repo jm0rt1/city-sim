@@ -406,7 +406,8 @@ final class CityGameStore: ObservableObject {
     @discardableResult
     func performMapFocused(_ command: CityCommandID) -> Bool {
         let approved: Set<CityCommandID> = [
-            .buildCommercial, .buildIndustrial, .buildPark, .buildPowerPlant, .buildWaterTower,
+            .buildRoad, .buildCommercial, .buildIndustrial, .buildPark, .buildPowerPlant, .buildWaterTower,
+            .bulldozeMode,
             .overlayUtilities, .overlayPollution, .overlayCity
         ]
         guard approved.contains(command), perform(command) else { return false }

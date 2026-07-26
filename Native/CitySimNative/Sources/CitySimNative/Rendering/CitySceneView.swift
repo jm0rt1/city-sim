@@ -131,6 +131,10 @@ struct CitySceneView: NSViewRepresentable {
             interactionMode: store.interactionMode,
             activeActionTarget: store.activeMapActionTargetPresentation
         )
+        context.coordinator.synchronizeCityFocusCamera(
+            isEnabled: store.isCityFocusModeEnabled,
+            selectedCoordinate: store.selectedCoordinate
+        )
         // The representable's first update can render before AppKit has
         // delivered its final map aperture. Reapply the same authoritative
         // developed-bounds camera once after that initial render so a cold
@@ -157,6 +161,7 @@ struct CitySceneView: NSViewRepresentable {
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
         private(set) var observedMapFocusRequestGeneration: UInt
+        private var previousCityFocusModeEnabled: Bool
         private var cachedPresentationSnapshot: CityPresentationSnapshot?
         private let enqueueOnMain: MainLoopEnqueuer
 
@@ -171,7 +176,22 @@ struct CitySceneView: NSViewRepresentable {
             self.pointerTransitionGate = pointerTransitionGate
             previousCommandPolicy = store.commandPolicy
             observedMapFocusRequestGeneration = store.mapFocusRequestGeneration
+            previousCityFocusModeEnabled = store.isCityFocusModeEnabled
             self.enqueueOnMain = enqueueOnMain
+        }
+
+        @discardableResult
+        func synchronizeCityFocusCamera(
+            isEnabled: Bool,
+            selectedCoordinate: GridCoordinate?
+        ) -> Bool {
+            let enteredFocusCity = isEnabled && !previousCityFocusModeEnabled
+            previousCityFocusModeEnabled = isEnabled
+            guard enteredFocusCity, selectedCoordinate == nil, let scene else {
+                return false
+            }
+            scene.frameCity()
+            return true
         }
 
         @discardableResult

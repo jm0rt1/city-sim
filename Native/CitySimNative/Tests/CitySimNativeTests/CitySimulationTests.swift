@@ -761,8 +761,8 @@ final class CitySimulationTests: XCTestCase {
             compact: true,
             chromeFrames: compactClosedChrome
         )
-        XCTAssertEqual(compactInsets.top, 136)
-        XCTAssertEqual(compactInsets.bottom, 116)
+        XCTAssertEqual(compactInsets.top, 122)
+        XCTAssertEqual(compactInsets.bottom, 82)
         let compactFocusInsets = ContentView.mapViewportInsets(
             windowSize: CGSize(width: 900, height: 600),
             compact: true,
@@ -832,6 +832,128 @@ final class CitySimulationTests: XCTestCase {
             CityTrajectoryHUDPresentation.make(projectedBalance: 0).accessibilityValue,
             "Holding steady"
         )
+    }
+
+    @MainActor
+    func testViewportInsetsTrackSettledChromeAcrossClosedDecisionDetailsAndPostCloseLayouts() {
+        XCTAssertEqual(
+            ContentView.mapViewportInsets(
+                windowSize: CGSize(width: 900, height: 600),
+                compact: true,
+                chromeFrames: CityHUDChromeFrames()
+            ),
+            CityMapViewportInsets(top: 136, leading: 19, bottom: 116, trailing: 19),
+            "Fallback protection applies only before SwiftUI publishes valid chrome geometry"
+        )
+
+        struct Scenario {
+            let name: String
+            let window: CGSize
+            let compact: Bool
+            let top: CGRect
+            let closedBottom: CGRect
+            let decisionBottom: CGRect
+            let detailsBottom: CGRect
+            let expectedTopInset: CGFloat
+            let expectedClosedBottomInset: CGFloat
+            let expectedDecisionBottomInset: CGFloat
+            let expectedDetailsBottomInset: CGFloat
+            let expectedClosedMapHeight: CGFloat
+            let expectedDecisionMapHeight: CGFloat
+            let expectedDetailsMapHeight: CGFloat
+        }
+
+        let scenarios = [
+            Scenario(
+                name: "compact",
+                window: CGSize(width: 900, height: 600),
+                compact: true,
+                top: CGRect(x: 8, y: 8, width: 884, height: 104),
+                closedBottom: CGRect(x: 8, y: 528, width: 884, height: 64),
+                decisionBottom: CGRect(x: 8, y: 474, width: 884, height: 118),
+                detailsBottom: CGRect(x: 8, y: 416, width: 884, height: 176),
+                expectedTopInset: 122,
+                expectedClosedBottomInset: 82,
+                expectedDecisionBottomInset: 136,
+                expectedDetailsBottomInset: 194,
+                expectedClosedMapHeight: 416,
+                expectedDecisionMapHeight: 362,
+                expectedDetailsMapHeight: 304
+            ),
+            Scenario(
+                name: "regular",
+                window: CGSize(width: 1_278, height: 768),
+                compact: false,
+                top: CGRect(x: 16, y: 16, width: 1_246, height: 118),
+                closedBottom: CGRect(x: 79, y: 688, width: 1_120, height: 64),
+                decisionBottom: CGRect(x: 79, y: 644, width: 1_120, height: 108),
+                detailsBottom: CGRect(x: 79, y: 544, width: 1_120, height: 208),
+                expectedTopInset: 144,
+                expectedClosedBottomInset: 90,
+                expectedDecisionBottomInset: 134,
+                expectedDetailsBottomInset: 234,
+                expectedClosedMapHeight: 554,
+                expectedDecisionMapHeight: 510,
+                expectedDetailsMapHeight: 410
+            )
+        ]
+
+        for scenario in scenarios {
+            var settled = CityHUDChromeFrames(top: scenario.top, bottom: scenario.closedBottom)
+
+            func assertLayout(
+                _ name: String,
+                bottomInset: CGFloat,
+                mapHeight: CGFloat,
+                file: StaticString = #filePath,
+                line: UInt = #line
+            ) {
+                let insets = ContentView.mapViewportInsets(
+                    windowSize: scenario.window,
+                    compact: scenario.compact,
+                    chromeFrames: settled
+                )
+                XCTAssertEqual(insets.top, scenario.expectedTopInset, "\(scenario.name) \(name)", file: file, line: line)
+                XCTAssertEqual(insets.bottom, bottomInset, "\(scenario.name) \(name)", file: file, line: line)
+                XCTAssertEqual(
+                    ContentView.interactiveMapHeight(
+                        windowHeight: scenario.window.height,
+                        chromeFrames: settled
+                    ),
+                    mapHeight,
+                    "\(scenario.name) \(name)",
+                    file: file,
+                    line: line
+                )
+            }
+
+            assertLayout(
+                "closed",
+                bottomInset: scenario.expectedClosedBottomInset,
+                mapHeight: scenario.expectedClosedMapHeight
+            )
+
+            settled.bottom = scenario.decisionBottom
+            assertLayout(
+                "active decision",
+                bottomInset: scenario.expectedDecisionBottomInset,
+                mapHeight: scenario.expectedDecisionMapHeight
+            )
+
+            settled.bottom = scenario.detailsBottom
+            assertLayout(
+                "details",
+                bottomInset: scenario.expectedDetailsBottomInset,
+                mapHeight: scenario.expectedDetailsMapHeight
+            )
+
+            settled.bottom = scenario.closedBottom
+            assertLayout(
+                "post-close settlement",
+                bottomInset: scenario.expectedClosedBottomInset,
+                mapHeight: scenario.expectedClosedMapHeight
+            )
+        }
     }
 
     @MainActor

@@ -919,15 +919,7 @@ final class TerrainRenderer {
         for y in stride(from: 2, to: gridHeight - 1, by: materialSpan) {
             for x in stride(from: 2, to: gridWidth - 1, by: materialSpan) {
                 let anchor = GridCoordinate(x: x, y: y)
-                let baseCenter = style.isoPosition(anchor)
-                let center = CGPoint(
-                    x: baseCenter.x + (
-                        WorldVisualSeed.unit(for: anchor, kind: .empty, salt: 0x7E18) - 0.5
-                    ) * style.tileWidth * 1.45,
-                    y: baseCenter.y + (
-                        WorldVisualSeed.unit(for: anchor, kind: .empty, salt: 0x7E19) - 0.5
-                    ) * style.tileHeight * 1.10
-                )
+                let center = style.isoPosition(anchor)
                 let radiusX = style.tileWidth * (
                     1.18 + WorldVisualSeed.unit(
                         for: anchor,
@@ -948,7 +940,7 @@ final class TerrainRenderer {
                     kind: .empty,
                     salt: 0x7E21
                 )
-                let material = SKShapeNode(path: terrainTexturePath(
+                let material = SKShapeNode(path: organicSwatchPath(
                     center: center,
                     anchor: anchor,
                     radiusX: radiusX,
@@ -960,7 +952,7 @@ final class TerrainRenderer {
                 city.addChild(material)
 
                 if (materialIndex + variant).isMultiple(of: 2) {
-                    let meadow = SKShapeNode(path: terrainTexturePath(
+                    let meadow = SKShapeNode(path: organicSwatchPath(
                         center: CGPoint(
                             x: center.x + radiusX * 0.08,
                             y: center.y - radiusY * 0.06
@@ -995,6 +987,47 @@ final class TerrainRenderer {
                 materialIndex += 1
             }
         }
+    }
+
+    private func organicSwatchPath(
+        center: CGPoint,
+        anchor: GridCoordinate,
+        radiusX: CGFloat,
+        radiusY: CGFloat,
+        saltOffset: UInt64 = 0
+    ) -> CGPath {
+        let pointCount = 10
+        let points = (0..<pointCount).map { index in
+            let angle = CGFloat(index) / CGFloat(pointCount) * .pi * 2
+            let radialVariation = 0.84 + WorldVisualSeed.unit(
+                for: anchor,
+                kind: .empty,
+                salt: 0x7E30 + saltOffset + UInt64(index)
+            ) * 0.22
+            return CGPoint(
+                x: center.x + cos(angle) * radiusX * radialVariation,
+                y: center.y + sin(angle) * radiusY * radialVariation
+            )
+        }
+
+        let path = CGMutablePath()
+        path.move(to: CGPoint(
+            x: (points[pointCount - 1].x + points[0].x) / 2,
+            y: (points[pointCount - 1].y + points[0].y) / 2
+        ))
+        for index in 0..<pointCount {
+            let current = points[index]
+            let next = points[(index + 1) % pointCount]
+            path.addQuadCurve(
+                to: CGPoint(
+                    x: (current.x + next.x) / 2,
+                    y: (current.y + next.y) / 2
+                ),
+                control: current
+            )
+        }
+        path.closeSubpath()
+        return path
     }
 
     private func terrainTexturePath(

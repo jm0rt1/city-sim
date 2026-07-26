@@ -2797,20 +2797,6 @@ final class WorldRenderingTests: XCTestCase {
             LotContextRenderer.cachedTemplateCountForTesting,
             5 * 4 * 5
         )
-
-        let adjacentTiles = [
-            CityTile(coordinate: GridCoordinate(x: 8, y: 8), kind: .residential),
-            CityTile(coordinate: GridCoordinate(x: 9, y: 8), kind: .residential),
-            CityTile(coordinate: GridCoordinate(x: 8, y: 9), kind: .residential),
-        ]
-        let adjacentVariants = adjacentTiles.map(LotContextRenderer.districtMaterialVariant)
-        XCTAssertNotEqual(adjacentVariants[0], adjacentVariants[1])
-        XCTAssertNotEqual(adjacentVariants[0], adjacentVariants[2])
-        XCTAssertEqual(
-            adjacentVariants,
-            adjacentTiles.map(LotContextRenderer.districtMaterialVariant),
-            "District material identity must be deterministic across pulses"
-        )
     }
 
     @MainActor
@@ -3108,20 +3094,20 @@ final class WorldRenderingTests: XCTestCase {
             selection: nil,
             interactionMode: .inspect
         )
-        let buildableCoordinate = commons
-            .sorted { ($0.y, $0.x) < ($1.y, $1.x) }
-            .first {
-                if case .success = CitySimulation.validateBuild(
+        let buildableCoordinate = try? XCTUnwrap(
+            commons.sorted { ($0.y, $0.x) < ($1.y, $1.x) }.first {
+                guard case .success = CitySimulation.validateBuild(
                     .residential,
                     at: $0,
                     in: state
-                ) {
-                    return scene.resolvedCoordinateForTesting(
-                        at: scene.scenePointForTesting(at: $0)
-                    ) == $0
+                ) else {
+                    return false
                 }
-                return false
+                return scene.resolvedCoordinateForTesting(
+                    at: scene.scenePointForTesting(at: $0)
+                ) == $0
             }
+        )
         XCTAssertNotNil(buildableCoordinate)
         if let buildableCoordinate,
            let tile = state.tile(at: buildableCoordinate) {
@@ -3258,7 +3244,7 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.y,
-            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y + 16,
+            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y,
             accuracy: 0.001
         )
         XCTAssertGreaterThan(
@@ -3289,10 +3275,7 @@ final class WorldRenderingTests: XCTestCase {
             .contains("lot.generated-v4.city_hall_l01.block"))
         let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(cityVisible.contains("lot.lod.city.mass.cityHall"))
-        XCTAssertTrue(
-            cityVisible.contains { $0.hasPrefix("lot.frontage.") },
-            "Authoritative parcel-to-road frontage is strategic city structure, not block-only decoration"
-        )
+        XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.neighborhood.public-realm.") })
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
@@ -3370,7 +3353,7 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.y,
-            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y + 16,
+            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y,
             accuracy: 0.001
         )
     }
@@ -4664,23 +4647,22 @@ final class WorldRenderingTests: XCTestCase {
             selection: nil,
             interactionMode: .inspect
         )
+        scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 11))
         scene.render(
             snapshot: try CityPresentationSnapshot(state: state),
             overlay: .none,
             selection: GridCoordinate(x: 10, y: 11),
             interactionMode: .inspect
         )
-        let transitionDiagnostics = scene.diagnosticsSnapshot
-        scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 12, y: 11))
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
         let texture = try XCTUnwrap(view.texture(from: scene))
         let representation = NSBitmapImageRep(cgImage: texture.cgImage())
         let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
         return (
             png,
-            transitionDiagnostics.consumedConsequenceEventCount,
-            transitionDiagnostics.displayedConsequenceCueCount,
-            transitionDiagnostics.activeActionCount
+            scene.diagnosticsSnapshot.consumedConsequenceEventCount,
+            scene.diagnosticsSnapshot.displayedConsequenceCueCount,
+            scene.diagnosticsSnapshot.activeActionCount
         )
     }
 

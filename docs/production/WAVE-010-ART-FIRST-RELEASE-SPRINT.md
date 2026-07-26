@@ -1,10 +1,32 @@
 # Wave 010 — Art-First Release Sprint
 
-**Published product base:** `4e5d79f43c8213e86d58a9cfe0c0bc1f98c8b3c1`
+**Current published authority:** `e6ba5ef7018030dcb3419b79ec19104a1c70e8e2`
 
 **Priority:** Move complete, independently reviewed art families into the
 staged game quickly without allowing source production, renderer ingestion,
 and QA to become competing writers.
+
+## Live dispatch status — July 26, 2026
+
+- **First scheduled ingestion:** R1 — Industrial L2. The renderer begins
+  immediately after integration independently approves one clean N/E/S/W
+  source-family candidate; no other renderer mutation may take that slot.
+- **Renderer boundary:** `codex/citysim-world-rendering` remains clean and
+  frozen at `bfcd46cc361f04f38c35c7c463b8a42dfb000351`. This is not the blocker;
+  preserving it prevents a second writer and makes R1 predictable.
+- **Current source blocker:** the first North/West V04 primary packet passed
+  identity, registration, and raw uniqueness, but integration rejected its
+  gameplay-scale visual disposition because the named far-edge loading
+  frontages were not legible beside the accepted East anchor. World Art is
+  preserving that technical packet and repairing only the North/West authored
+  descriptor composition before South, repeat renders, or normalization.
+- **Parallel work:** PLAY-078 may adopt the denser PLAY-076 opening into
+  additive simulation fixtures while source art is repaired. It does not own
+  renderer, pack, or production-selection surfaces and therefore does not
+  delay R1.
+- **Reprioritized:** PLAY-073 composition remains behind R1; Industrial L3/L4
+  remain behind their reserved R2/R3 gates; expanded duplicate worker-side
+  full-suite and staged journeys remain replaced by the focused cadence below.
 
 ## Frozen boundaries
 

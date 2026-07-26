@@ -1,0 +1,735 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/rejection/NORTH-RAW-LOCALITY.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l03-source-v03-north-repeat-stop",
+  "differenceBoundsSource" : [
+    885,
+    591,
+    933,
+    679
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        240,
+        144,
+        80,
+        255
+      ],
+      "repeatBRGBA" : [
+        240,
+        144,
+        48,
+        255
+      ],
+      "repeatCRGBA" : [
+        240,
+        144,
+        80,
+        255
+      ],
+      "sourceCoordinate" : [
+        885,
+        591
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        918,
+        606
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        919,
+        606
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        895,
+        657
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        932,
+        657
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        930,
+        658
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        176,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        176,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        928,
+        659
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        893,
+        660
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        916,
+        665
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        176,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        176,
+        176,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        176,
+        176,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        911,
+        667
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        912,
+        667
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        909,
+        668
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        910,
+        668
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        907,
+        669
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        908,
+        669
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        905,
+        670
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        906,
+        670
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        903,
+        671
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        904,
+        671
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        902,
+        672
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        900,
+        673
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        898,
+        674
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        896,
+        675
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        176,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        896,
+        677
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        176,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        896,
+        678
+      ]
+    }
+  ],
+  "primary" : {
+    "decodedRGBASHA256" : "81257782424c7318f8b770cd999997c61b62af4430decf6b154889eb80ce4361",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/diagnostics/raw-repeat/north/run-a/raw.png",
+    "fileSHA256" : "c2c0c45a3550d76c8e8fb5ed26a5fa0429bc9700c39a171703413e8ef2567750"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 26,
+    "differingPixelCount" : 25
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 21,
+    "differingPixelCount" : 20
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "decodedRGBASHA256" : "fd0e6debc6556f340062f6c4a2eaa97f6abb2b57df05dab49d4c322d06c561f4",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/diagnostics/raw-repeat/north/run-b/raw.png",
+    "fileSHA256" : "60f9e925e03b9fc8ccd9834ac8d01bc97c02a19a4c0fff1a86bebf0592c80a49"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 5,
+    "differingPixelCount" : 5
+  },
+  "repeatC" : {
+    "decodedRGBASHA256" : "21886393a0ade89a8920c1f59c01ab5d02969a3730f7878ba2697afa20d5f845",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/diagnostics/raw-repeat/north/run-c/raw.png",
+    "fileSHA256" : "78bdea312e5f144da83bece204a66d43341cf7f76f156afe84e346837267cfc6"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

@@ -66,6 +66,15 @@ variant-zero R/C/I spine and establishes the stronger art bar:
 - explicit comparison against Industrial L1/L2/L3 plus Residential and
   Commercial L4.
 
+Exact pre-pixel checkpoint
+`d5ba53412a5e993d677d8c25920d1e471df06191` passed its analytic geometry,
+direction, socket, shadow, and coincident-plane validators but failed
+independent visual review. Its compact orthogonal tower, pale blue-white
+palette, skeletal North/West reads, and weak operations identity do not deliver
+the broad, warm, credible advanced-manufacturing campus required here. Preserve
+that checkpoint as rejected tooling evidence; authorize no raw pixels and do
+not iterate L4 again until repaired R2 publishes.
+
 R3 ingestion remains gated on the repaired R2 publication and independent
 source review. Source work may run ahead only through the clean L4 pre-pixel
 checkpoint; L4 raw pixels and shipping work may not.

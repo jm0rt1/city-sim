@@ -40,7 +40,7 @@
       ],
       "id" : "v05-dock-door",
       "metalness" : 0.16,
-      "pattern" : "broad-horizontal-section-joints",
+      "pattern" : "horizontal-section-joints",
       "physicalScaleWorld" : [
         8,
         8
@@ -66,7 +66,7 @@
       ],
       "id" : "v05-hall-metal",
       "metalness" : 0.22,
-      "pattern" : "large-scale-vertical-corrugation",
+      "pattern" : "procedural-vertical-corrugation",
       "physicalScaleWorld" : [
         8,
         8
@@ -92,7 +92,7 @@
       ],
       "id" : "v05-hall-plinth",
       "metalness" : 0,
-      "pattern" : "large-formed-concrete-bays",
+      "pattern" : "procedural-formed-concrete",
       "physicalScaleWorld" : [
         8,
         8
@@ -118,7 +118,7 @@
       ],
       "id" : "v05-admin-concrete",
       "metalness" : 0,
-      "pattern" : "deep-jointed-formed-concrete",
+      "pattern" : "procedural-formed-concrete",
       "physicalScaleWorld" : [
         8,
         8
@@ -144,7 +144,7 @@
       ],
       "id" : "v05-roof",
       "metalness" : 0,
-      "pattern" : "broad-rolled-membrane-seams",
+      "pattern" : "rolled-membrane-seams",
       "physicalScaleWorld" : [
         8,
         8
@@ -170,7 +170,7 @@
       ],
       "id" : "v05-apron",
       "metalness" : 0,
-      "pattern" : "large-scored-service-slabs",
+      "pattern" : "large-scored-slabs",
       "physicalScaleWorld" : [
         8,
         8
@@ -196,7 +196,7 @@
       ],
       "id" : "v05-glazing",
       "metalness" : 0.080000000000000002,
-      "pattern" : "large-mullion-rhythm",
+      "pattern" : "muted-mullion-grid",
       "physicalScaleWorld" : [
         8,
         8
@@ -222,7 +222,7 @@
       ],
       "id" : "v05-warm-glazing",
       "metalness" : 0.059999999999999998,
-      "pattern" : "warm-entry-glazing",
+      "pattern" : "muted-warm-glazing",
       "physicalScaleWorld" : [
         8,
         8
@@ -248,7 +248,7 @@
       ],
       "id" : "v05-process-metal",
       "metalness" : 0.46000000000000002,
-      "pattern" : "large-galvanized-panels",
+      "pattern" : "fine-galvanized",
       "physicalScaleWorld" : [
         8,
         8
@@ -274,7 +274,7 @@
       ],
       "id" : "v05-duct-metal",
       "metalness" : 0.52000000000000002,
-      "pattern" : "galvanized-duct-seams",
+      "pattern" : "fine-galvanized",
       "physicalScaleWorld" : [
         8,
         8
@@ -300,7 +300,7 @@
       ],
       "id" : "v05-dark-steel",
       "metalness" : 0.38,
-      "pattern" : "painted-structural-steel",
+      "pattern" : "painted-steel",
       "physicalScaleWorld" : [
         8,
         8
@@ -378,7 +378,7 @@
       ],
       "id" : "v05-foundation",
       "metalness" : 0,
-      "pattern" : "coarse-formed-concrete",
+      "pattern" : "procedural-formed-concrete",
       "physicalScaleWorld" : [
         8,
         8

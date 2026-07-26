@@ -187,7 +187,7 @@ private let v05Materials: [[String: Any]] = [
         target: 144,
         roughness: 0.76,
         metalness: 0.16,
-        pattern: "broad-horizontal-section-joints"
+        pattern: "horizontal-section-joints"
     ),
     v05Material(
         "v05-hall-metal",
@@ -196,7 +196,7 @@ private let v05Materials: [[String: Any]] = [
         target: 176,
         roughness: 0.76,
         metalness: 0.22,
-        pattern: "large-scale-vertical-corrugation"
+        pattern: "procedural-vertical-corrugation"
     ),
     v05Material(
         "v05-hall-plinth",
@@ -205,7 +205,7 @@ private let v05Materials: [[String: Any]] = [
         target: 176,
         roughness: 0.96,
         metalness: 0.0,
-        pattern: "large-formed-concrete-bays"
+        pattern: "procedural-formed-concrete"
     ),
     v05Material(
         "v05-admin-concrete",
@@ -214,7 +214,7 @@ private let v05Materials: [[String: Any]] = [
         target: 208,
         roughness: 0.92,
         metalness: 0.0,
-        pattern: "deep-jointed-formed-concrete"
+        pattern: "procedural-formed-concrete"
     ),
     v05Material(
         "v05-roof",
@@ -223,7 +223,7 @@ private let v05Materials: [[String: Any]] = [
         target: 208,
         roughness: 0.94,
         metalness: 0.0,
-        pattern: "broad-rolled-membrane-seams"
+        pattern: "rolled-membrane-seams"
     ),
     v05Material(
         "v05-apron",
@@ -232,7 +232,7 @@ private let v05Materials: [[String: Any]] = [
         target: 192,
         roughness: 0.98,
         metalness: 0.0,
-        pattern: "large-scored-service-slabs"
+        pattern: "large-scored-slabs"
     ),
     v05Material(
         "v05-glazing",
@@ -241,7 +241,7 @@ private let v05Materials: [[String: Any]] = [
         target: 144,
         roughness: 0.38,
         metalness: 0.08,
-        pattern: "large-mullion-rhythm"
+        pattern: "muted-mullion-grid"
     ),
     v05Material(
         "v05-warm-glazing",
@@ -250,7 +250,7 @@ private let v05Materials: [[String: Any]] = [
         target: 208,
         roughness: 0.36,
         metalness: 0.06,
-        pattern: "warm-entry-glazing"
+        pattern: "muted-warm-glazing"
     ),
     v05Material(
         "v05-process-metal",
@@ -259,7 +259,7 @@ private let v05Materials: [[String: Any]] = [
         target: 176,
         roughness: 0.66,
         metalness: 0.46,
-        pattern: "large-galvanized-panels"
+        pattern: "fine-galvanized"
     ),
     v05Material(
         "v05-duct-metal",
@@ -268,7 +268,7 @@ private let v05Materials: [[String: Any]] = [
         target: 208,
         roughness: 0.62,
         metalness: 0.52,
-        pattern: "galvanized-duct-seams"
+        pattern: "fine-galvanized"
     ),
     v05Material(
         "v05-dark-steel",
@@ -277,7 +277,7 @@ private let v05Materials: [[String: Any]] = [
         target: 112,
         roughness: 0.70,
         metalness: 0.38,
-        pattern: "painted-structural-steel"
+        pattern: "painted-steel"
     ),
     v05Material(
         "v05-light-trim",
@@ -304,7 +304,7 @@ private let v05Materials: [[String: Any]] = [
         target: 160,
         roughness: 0.98,
         metalness: 0.0,
-        pattern: "coarse-formed-concrete"
+        pattern: "procedural-formed-concrete"
     ),
 ]
 

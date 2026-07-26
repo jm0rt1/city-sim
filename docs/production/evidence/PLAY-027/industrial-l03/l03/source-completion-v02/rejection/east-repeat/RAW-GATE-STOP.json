@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-018",
+  "batch": "industrial-l03-source-v02-immutable-master-continuation",
+  "authorityCommit": "f7ea41dd474ad29ec39904b465f00646eee20630",
+  "publishedDispositionCommit": "4e6e7b50dc0e8e483e375883399c3159e972c729",
+  "disposition": "REJECTED_EAST_REPEAT_IDENTITY",
+  "directionAttempted": "east",
+  "sceneKitMetalProcessCount": 3,
+  "southProcessCount": 0,
+  "westProcessCount": 0,
+  "eastNormalizerProcessCount": 0,
+  "familySourceAuthority": false,
+  "productionSelected": false,
+  "inputs": {
+    "rendererSourceCommit": "4096741c7fe64404408e8ea39df116c32f5f2623",
+    "rendererBinarySHA256": "cbbbf9bb3c73d68dba495707fc1c222d21c63407587beb214044cebf352aa7f2",
+    "descriptorSHA256": "dbe0dd260d28d848864d4194826f5147ec91314cf75b95bff9349bbfe466342c",
+    "materialLibrarySHA256": "3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e",
+    "sourceRevision": "source-v02",
+    "samplingContract": "play027-deterministic-4x-no-msaa-lanczos-v3"
+  },
+  "attempts": [
+    {
+      "run": "a",
+      "fileSHA256": "5dd2999ad2916a8ccddcf91954e54d1dfcf1139f78977d05d738c3dbfff4b9af",
+      "decodedRGBASHA256": "29b0f59bad27c4c8e9918e5544ab712d4e35d5acb056a31be2f2e0d71081f4d6"
+    },
+    {
+      "run": "b",
+      "fileSHA256": "b0ec3cb4973c4a4c496b14dd1f0c15a0af0222187ea5a0e784bcfd4a656e4878",
+      "decodedRGBASHA256": "975c498a7edce95b29d09312d477374d775a502581211101974f616814bdca49"
+    },
+    {
+      "run": "c",
+      "fileSHA256": "2ba235aea35b2c6b23273eca3a42357b3e123836d8235aef0401ccf8fdffee90",
+      "decodedRGBASHA256": "320893ad177081bc12bd1b0c95b2b68a517b151ce1760d4a17ae8ad213e04d63"
+    }
+  ],
+  "repeatComparison": {
+    "firstDivergentRetainedStage": "emitted raw PNG and canonical decoded RGBA",
+    "primaryVsRepeatB": {
+      "differingPixelCount": 1038,
+      "differingChannelCount": 2745,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatC": {
+      "differingPixelCount": 5,
+      "differingChannelCount": 5,
+      "alphaDifferingPixelCount": 0
+    },
+    "repeatBVsRepeatC": {
+      "differingPixelCount": 1043,
+      "differingChannelCount": 2750,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatBDifferenceBoundsSource": [
+      777,
+      734,
+      1016,
+      858
+    ],
+    "localityReport": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/rejection/east-repeat/EAST-RAW-LOCALITY.json",
+    "localitySheet": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/rejection/east-repeat/EAST-RAW-LOCALITY.png"
+  },
+  "stableTechnicalEvidence": {
+    "completeOccupiedAreaPassedCount": 3,
+    "rgbaVisibilityPassedCount": 3,
+    "nonChromaBounds": [
+      509,
+      381,
+      1027,
+      896
+    ],
+    "nonChromaPixelCount": 178047,
+    "alphaDifferingPixelCount": 0,
+    "hiddenNonMagentaPixelCount": 0,
+    "registrationStable": true,
+    "visualCompleteness": "pass; full East industrial campus and road-facing four-bay frontage remain visible in all retained attempts"
+  },
+  "northImmutableMasterPreserved": true,
+  "sourceV03Authority": false,
+  "stopCondition": "East failed exact emitted-file and canonical decoded-RGBA repeat identity. Per published authority, no sampling repair is requested; South, West, East normalization, and family source-authority assembly were not attempted."
+}

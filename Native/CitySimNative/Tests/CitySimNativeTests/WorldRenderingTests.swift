@@ -632,7 +632,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(manifest?.schema, 4)
         XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
         XCTAssertEqual(manifest?.productionSelection, true)
-        XCTAssertEqual(manifest?.assets.count, 48)
+        XCTAssertEqual(manifest?.assets.count, 52)
         for asset in manifest?.assets ?? [] {
             for detail in CameraDetailLevel.allCases {
                 XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
@@ -825,7 +825,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testDirectionalIndustrialL1ProductionSelectionCoversEveryAuthoritativeFrontageAndLOD() throws {
+    func testDirectionalIndustrialL1AndL2ProductionSelectionCoversEveryAuthoritativeFrontageAndLOD() throws {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
         let expectedSockets: [RoadConnectionMask: [Double]] = [
@@ -833,6 +833,34 @@ final class WorldRenderingTests: XCTestCase {
             .east: [18, -9],
             .south: [-18, -9],
             .west: [-18, 9],
+        ]
+        let acceptedL2RawHashes = [
+            "north": "095267c78f333eb43c3fd0e14c4e9bb14bb83a787188ddecfa9c94dd92ab88e3",
+            "east": "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+            "south": "b3cafd821e29980a86a6d74f562a2ad97d5f877b4106f746aaa88bc19d9922a5",
+            "west": "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d",
+        ]
+        let acceptedL2NormalizedHashes = [
+            "north": [
+                "block": "c539f4478296e929fb77250ad8476572e7b8155ad96abd2ebebe3170b052debc",
+                "neighborhood": "76d1d302d8b1dfaa41ca799bbce5bf5ae4bee9754091e08a31eb1c0c0c6c7736",
+                "city": "60969ffb594fee16efa1114e75edf6dcb5e57c4041c1c8019c1796d7a7ff8b0a",
+            ],
+            "east": [
+                "block": "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086",
+                "neighborhood": "c229dfa0759fa7232786eee92fcdd6786cd1d13728fb09b8aa9b39b30d49ed93",
+                "city": "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c",
+            ],
+            "south": [
+                "block": "c98e9b56a5705613a482b4ca249b4cb2b23a74fd6123638fc8282e7e8e5ba6f7",
+                "neighborhood": "976b998aa14adb1f040651616b31c5bc2e0ead77fb388054d7bf04b1d863dceb",
+                "city": "b70085caaef5045df7289364d34f983054bc3b80d991ddb9507e9654ac1abbc3",
+            ],
+            "west": [
+                "block": "4c66e3d326606838bb484beef0a685cbf73d38d2e127572bd19be8e0c83077dd",
+                "neighborhood": "f0a3732a12672f91c023126bdc55b09c11acd2735930900b17c1106216858823",
+                "city": "3853833738f2d2660ad9abe01cdee98f35ce6a80aa0a21f8afcd3f837fed9f8b",
+            ],
         ]
         let otherFamilyHashes = Set(
             (catalog.generatedManifest?.assets ?? [])
@@ -847,76 +875,109 @@ final class WorldRenderingTests: XCTestCase {
         var sourceHashes: Set<String> = []
         var normalizedHashes: Set<String> = []
 
-        for edge in RoadConnectionMask.cardinalEdges {
-            let identity = try XCTUnwrap(
-                IndustrialL1GeneratedAssetIdentity(level: 1, adjacentRoads: edge)
-            )
-            logicalIDs.insert(identity.logicalID)
-            let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
-            XCTAssertEqual(asset.family, "industrial")
-            XCTAssertEqual(asset.level, 1)
-            XCTAssertEqual(asset.variant, 0)
-            XCTAssertEqual(asset.sourceRevision, "source-v05")
-            XCTAssertEqual(asset.frontageEdge, identity.direction)
-            XCTAssertEqual(asset.viewDirection, identity.direction)
-            XCTAssertEqual(asset.entranceSocketWorld, expectedSockets[edge])
-            XCTAssertEqual(asset.supportedOrientation, "\(identity.direction)-facing-authored")
-            XCTAssertEqual(asset.roadSetbackPoints, 0)
-            XCTAssertEqual(asset.allowedOverhangWorld.count, 4)
-            XCTAssertLessThanOrEqual(asset.allowedOverhangWorld[2], 0.51)
-            XCTAssertEqual(asset.propExclusionRectsWorld.count, 1)
-            let exclusion = try XCTUnwrap(asset.propExclusionRectsWorld.first)
-            XCTAssertEqual(exclusion.count, 4)
-            XCTAssertGreaterThanOrEqual(asset.entranceSocketWorld[0], exclusion[0])
-            XCTAssertLessThanOrEqual(
-                asset.entranceSocketWorld[0],
-                exclusion[0] + exclusion[2]
-            )
-            XCTAssertGreaterThanOrEqual(asset.entranceSocketWorld[1], exclusion[1])
-            XCTAssertLessThanOrEqual(
-                asset.entranceSocketWorld[1],
-                exclusion[1] + exclusion[3]
-            )
-            sourceKeys.insert(try XCTUnwrap(asset.sourceKey))
-            sourceHashes.insert(try XCTUnwrap(asset.sourceSHA256))
-
-            for detail in CameraDetailLevel.allCases {
-                let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
-                normalizedHashes.insert(try XCTUnwrap(lod.normalizedSHA256))
-                let tile = CityTile(
-                    coordinate: GridCoordinate(x: 7, y: Int(edge.rawValue) + 5),
-                    kind: .industrial,
-                    level: 1,
-                    condition: 1,
-                    constructionProgress: 1
+        for level in 1...2 {
+            for edge in RoadConnectionMask.cardinalEdges {
+                let identity = try XCTUnwrap(
+                    IndustrialGeneratedAssetIdentity(level: level, adjacentRoads: edge)
                 )
-                let lot = renderer.makeLot(
-                    for: tile,
-                    adjacentRoads: edge,
-                    detail: detail,
-                    reducedMotion: true
+                logicalIDs.insert(identity.logicalID)
+                let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
+                XCTAssertEqual(asset.family, "industrial")
+                XCTAssertEqual(asset.level, level)
+                XCTAssertEqual(asset.variant, 0)
+                XCTAssertEqual(asset.frontageEdge, identity.direction)
+                XCTAssertEqual(asset.viewDirection, identity.direction)
+                XCTAssertEqual(asset.entranceSocketWorld, expectedSockets[edge])
+                XCTAssertEqual(asset.supportedOrientation, "\(identity.direction)-facing-authored")
+                XCTAssertEqual(asset.roadSetbackPoints, 0)
+                XCTAssertEqual(asset.allowedOverhangWorld.count, 4)
+                XCTAssertLessThanOrEqual(asset.allowedOverhangWorld[2], 0.51)
+                XCTAssertEqual(asset.propExclusionRectsWorld.count, 1)
+                let exclusion = try XCTUnwrap(asset.propExclusionRectsWorld.first)
+                XCTAssertEqual(exclusion.count, 4)
+                XCTAssertGreaterThanOrEqual(asset.entranceSocketWorld[0], exclusion[0])
+                XCTAssertLessThanOrEqual(
+                    asset.entranceSocketWorld[0],
+                    exclusion[0] + exclusion[2]
                 )
-                let names = descendantNames(in: lot)
-                XCTAssertEqual(
-                    names.filter {
-                        $0 == "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)"
-                    }.count,
-                    1
+                XCTAssertGreaterThanOrEqual(asset.entranceSocketWorld[1], exclusion[1])
+                XCTAssertLessThanOrEqual(
+                    asset.entranceSocketWorld[1],
+                    exclusion[1] + exclusion[3]
                 )
-                XCTAssertTrue(names.contains("lot.frontage.industrial.\(edge.rawValue)"))
-                XCTAssertFalse(
-                    names.contains {
-                        $0 == "lot.generated-v4.industrial_l01.\(detail.assetSuffix)"
+                sourceKeys.insert(try XCTUnwrap(asset.sourceKey))
+                sourceHashes.insert(try XCTUnwrap(asset.sourceSHA256))
+                if level == 2 {
+                    XCTAssertEqual(asset.sourceSHA256, acceptedL2RawHashes[identity.direction])
+                    XCTAssertEqual(
+                        asset.provenanceFile,
+                        "docs/production/evidence/PLAY-027/industrial-l02/l02/" +
+                            "directional-family-v07/source-completion/final-family/FAMILY-MANIFEST.json"
+                    )
+                    XCTAssertEqual(
+                        asset.normalizationRecordFile,
+                        "docs/production/evidence/PLAY-027/industrial-l02/l02/" +
+                            "directional-family-v07/source-completion/normalized/run-a/" +
+                            "\(identity.direction)/provenance.json"
+                    )
+                    if identity.direction == "east" {
+                        XCTAssertEqual(
+                            asset.sourceKey,
+                            "industrial_l02/variant-0/east/source-v05-contract-018"
+                        )
                     }
-                )
-                XCTAssertFalse(names.contains { $0.hasPrefix("lot.place.") })
+                }
+
+                for detail in CameraDetailLevel.allCases {
+                    let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                    normalizedHashes.insert(try XCTUnwrap(lod.normalizedSHA256))
+                    if level == 2 {
+                        XCTAssertEqual(
+                            lod.normalizedSHA256,
+                            acceptedL2NormalizedHashes[identity.direction]?[detail.assetSuffix]
+                        )
+                        XCTAssertTrue(
+                            try XCTUnwrap(lod.normalizedFile).contains(
+                                "source-completion/normalized/run-a/\(identity.direction)/"
+                            )
+                        )
+                    }
+                    let tile = CityTile(
+                        coordinate: GridCoordinate(x: 7 + level, y: Int(edge.rawValue) + 5),
+                        kind: .industrial,
+                        level: level,
+                        condition: 1,
+                        constructionProgress: 1
+                    )
+                    let lot = renderer.makeLot(
+                        for: tile,
+                        adjacentRoads: edge,
+                        detail: detail,
+                        reducedMotion: true
+                    )
+                    let names = descendantNames(in: lot)
+                    XCTAssertEqual(
+                        names.filter {
+                            $0 == "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)"
+                        }.count,
+                        1
+                    )
+                    XCTAssertTrue(names.contains("lot.frontage.industrial.\(edge.rawValue)"))
+                    XCTAssertFalse(
+                        names.contains {
+                            $0 == "lot.generated-v4.industrial_l01.\(detail.assetSuffix)"
+                                || $0 == "lot.generated-v4.industrial_l02.\(detail.assetSuffix)"
+                        }
+                    )
+                    XCTAssertFalse(names.contains { $0.hasPrefix("lot.place.") })
+                }
             }
         }
 
-        XCTAssertEqual(logicalIDs.count, 4)
-        XCTAssertEqual(sourceKeys.count, 4)
-        XCTAssertEqual(sourceHashes.count, 4)
-        XCTAssertEqual(normalizedHashes.count, 12)
+        XCTAssertEqual(logicalIDs.count, 8)
+        XCTAssertEqual(sourceKeys.count, 8)
+        XCTAssertEqual(sourceHashes.count, 8)
+        XCTAssertEqual(normalizedHashes.count, 24)
         XCTAssertTrue(sourceHashes.isDisjoint(with: otherFamilyHashes))
         XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
     }
@@ -1182,40 +1243,44 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testIndustrialL1FrontagePriorityIsStableAndRoadlessOrHigherLevelsFailExplicitly() throws {
+    func testIndustrialL1AndL2FrontagePriorityIsStableAndRoadlessOrHigherLevelsFailExplicitly() throws {
         let all = try XCTUnwrap(
-            IndustrialL1GeneratedAssetIdentity(level: 1, adjacentRoads: .all)
+            IndustrialGeneratedAssetIdentity(level: 1, adjacentRoads: .all)
         )
         XCTAssertEqual(all.level, 1)
         XCTAssertEqual(all.frontage, .south)
         XCTAssertEqual(all.logicalID, "industrial_l01_v0_south")
         XCTAssertEqual(
-            IndustrialL1GeneratedAssetIdentity(
+            IndustrialGeneratedAssetIdentity(
                 level: 1,
                 adjacentRoads: [.north, .east, .west]
             )?.frontage,
             .north
         )
         XCTAssertEqual(
-            IndustrialL1GeneratedAssetIdentity(
+            IndustrialGeneratedAssetIdentity(
                 level: 1,
                 adjacentRoads: [.east, .west]
             )?.frontage,
             .east
         )
-        XCTAssertNil(IndustrialL1GeneratedAssetIdentity(level: 1, adjacentRoads: []))
-        XCTAssertNil(IndustrialL1GeneratedAssetIdentity(level: 2, adjacentRoads: .south))
+        XCTAssertEqual(
+            IndustrialGeneratedAssetIdentity(level: 2, adjacentRoads: .south)?.logicalID,
+            "industrial_l02_v0_south"
+        )
+        XCTAssertNil(IndustrialGeneratedAssetIdentity(level: 1, adjacentRoads: []))
+        XCTAssertNil(IndustrialGeneratedAssetIdentity(level: 3, adjacentRoads: .south))
 
         let catalog = WorldAssetCatalog()
-        XCTAssertNil(catalog.generatedIndustrialL1Presentation(
-            level: 1,
+        XCTAssertNil(catalog.generatedIndustrialPresentation(
+            level: 2,
             adjacentRoads: [],
             detail: .block
         ))
         XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 1)
         XCTAssertEqual(
             catalog.residencySnapshot().fallbackDiagnostics,
-            ["industrial L1 has no authoritative adjacent road or requested level is not L1"]
+            ["industrial level 2 has no accepted directional source or authoritative adjacent road"]
         )
     }
 
@@ -1406,17 +1471,19 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testDirectionalIndustrialL1IdentitySurvivesPulseSaveLoadUndoCameraAndLOD() throws {
-        let original = CityGameState.newCity(seed: 42)
-        let tile = try XCTUnwrap(original.tiles.first {
+    func testDirectionalIndustrialL2IdentitySurvivesPulseSaveLoadUndoCameraAndLOD() throws {
+        var original = CityGameState.newCity(seed: 42)
+        let coordinate = try XCTUnwrap(original.tiles.first {
             $0.kind == .industrial
-                && $0.level == 1
                 && !RoadConnectionMask.resolving(at: $0.coordinate, in: original).isEmpty
-        })
+        }?.coordinate)
+        original.updateTile(at: coordinate) { $0.level = 2 }
+        let tile = try XCTUnwrap(original.tile(at: coordinate))
         let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: original)
         let identity = try XCTUnwrap(
-            IndustrialL1GeneratedAssetIdentity(level: tile.level, adjacentRoads: roads)
+            IndustrialGeneratedAssetIdentity(level: tile.level, adjacentRoads: roads)
         )
+        XCTAssertEqual(identity.level, 2)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(

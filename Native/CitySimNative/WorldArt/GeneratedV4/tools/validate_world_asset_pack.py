@@ -98,7 +98,7 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
     family_levels = {
         "residential": range(1, 5),
         "commercial": range(1, 5),
-        "industrial": range(1, 2),
+        "industrial": range(1, 3),
     }
     for family, levels in family_levels.items():
         family_assets = [

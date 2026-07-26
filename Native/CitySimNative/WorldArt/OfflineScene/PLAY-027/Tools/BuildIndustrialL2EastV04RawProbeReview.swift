@@ -634,7 +634,7 @@ enum BuildIndustrialL2EastV04RawProbeReviewMain {
         let alphaBounds = v04ReviewBounds(
             width: alpha.width,
             height: alpha.height
-        ) { alpha.rgba[$0 + 3] > 8 }
+        ) { alpha.rgba[$0 + 3] > 0 }
 
         var hiddenRGB = 0
         var exactChromaCount = 0

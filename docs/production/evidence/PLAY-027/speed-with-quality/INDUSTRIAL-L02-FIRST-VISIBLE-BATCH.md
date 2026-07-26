@@ -46,7 +46,78 @@ actually present in the staged journey. An upgraded-state proof can be captured
 earlier from an exact save/fixture once the renderer-owned ingestion is
 authorized.
 
-## Frozen short cadence
+## Frozen short cadence and acceleration overlay
+
+After integration publishes the exact continuation authority, two task-owned
+workstreams run together. They do not require or authorize edits to renderer,
+build, package, atlas, shared manifest, gameplay, simulation, UI, or save
+surfaces.
+
+### Source workstream
+
+1. Freeze North, South, and West independently in one pre-pixel checkpoint.
+2. Review North and West first as the far-edge frontage-risk pair; stop both if
+   their loading throats, aprons, or gantries do not read at native-2x.
+3. Review South as the near-edge countercheck while East v05 remains immutable.
+4. After the four primaries pass together, run direction-local B/C repeats and
+   two normalization processes. A failed direction stops only its repair path;
+   it does not permit a transformed sibling or mutation of East.
+
+### Integration-preparation workstream
+
+In parallel with descriptor and primary work, World Art may prepare only
+task-owned handoff evidence:
+
+- stable logical IDs and exact source/LOD inventory;
+- source, descriptor, material, geometry, provenance, and toolchain hashes;
+- alias/coverage expectations and accepted-art preservation operands;
+- a renderer-consumption checklist that names but does not edit the future
+  atlas/selection surfaces;
+- the exact upgraded-state staged fixture request, camera/viewport coordinates,
+  before/after shot list, and independent-review questions;
+- empty/fail-closed panel and report templates that cannot be mistaken for
+  product proof before real pixels exist.
+
+This workstream makes the future renderer handoff reviewable immediately after
+source acceptance. It does not pre-approve ingestion or claim staged behavior.
+
+### Earliest first visual artifact
+
+The first post-authority checkpoint publishes:
+
+`INDUSTRIAL-L02-DIRECTION-TURNTABLE-PREPIXEL.png`
+
+It is one labeled, deterministic contact sheet containing:
+
+- the actual governed East v05 source and native-2x color/grayscale panels;
+- analytic, non-authority North/South/West material-look previews from the
+  frozen descriptors;
+- a common registered footprint, pivot, socket, door-base, and shadow overlay;
+- unlabeled family-recognition crops beside accepted Industrial L1;
+- a prominent `PRE-PIXEL / NOT SOURCE AUTHORITY / NOT STAGED APP` legend.
+
+The companion
+`INDUSTRIAL-L02-FAR-EDGE-FRONTAGE-NORTH-WEST-PREPIXEL.png` shows North and
+West loading throats, gantries, aprons, and native-2x feature budgets without
+zoom coaching. These panels require no renderer release and are expected in
+the same checkpoint as the three descriptor freezes.
+
+The next visual artifact is the governed four-primary N/E/S/W source/native-2x
+contact sheet. It is published before B/C repeat or normalization work, so a
+weak direction is visible and rejectable early.
+
+### Smallest reviewable batch sequence
+
+| Batch | Contents | Review decision |
+|---|---|---|
+| 0 | East v05 immutable anchor plus N/S/W descriptors and analytic turntable | Art direction, registration, and feature-budget approval |
+| 1 | North/West primaries plus far-edge actual-scale sheet | Loading frontage and occlusion approval |
+| 2 | South primary plus four-view primary contact sheet | Whole-family directional coherence approval |
+| 3 | N/S/W B/C repeats, four-view two-run normalization, final panels | Independent four-direction source-candidate disposition |
+| 4 | Renderer-owned ingestion and staged before/after | Independent product disposition |
+
+Batch boundaries are durability commits. A rejected batch is preserved and the
+next batch does not start.
 
 ### Checkpoint A — authority and pre-pixel freeze
 
@@ -174,8 +245,9 @@ plan does not modify either lane or any shared renderer/build/package contract.
 Work stops before new source pixels because three exact authorities are
 missing:
 
-1. an integration-published PLAY-027 claim authorizing Industrial L2
-   North/South/West from a named synchronized baseline;
+1. an integration-published PLAY-027 continuation that reconciles the broad
+   Industrial L2 claim with the later East-only disposition, explicitly
+   authorizes North/South/West, and names a synchronized baseline;
 2. independent four-direction source-art acceptance before product ingestion;
 3. a separate renderer-owned ingestion claim and staged-app slot that does not
    collide with active PLAY-073 work.

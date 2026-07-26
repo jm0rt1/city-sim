@@ -1,0 +1,23 @@
+{
+  "descriptorSHA256" : {
+    "north" : "57dd375469958d77186d952d34353335e91bcab9399941d0a61e7550a80f19d5",
+    "south" : "4c9e423236a77f668907d693582efb27122b77f3b2c9cc0fb23767c0c2a9f394",
+    "west" : "9d31e29abcb232f406441b3660b00d0150cf7745dfacd3c22bcbb597c434162e"
+  },
+  "eastDescriptorSHA256" : "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0",
+  "eastNeutralReferenceSHA256" : "673d0719921ded3420f732cdaf95ef9850d53da3ac8e88d07832e2b9bd87d2da",
+  "materialLibrarySHA256" : "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb",
+  "panelAuthority" : "analytic prepixel evidence only; East governed v05 reference is labeled; not source authority or staged app proof",
+  "panelCount" : 4,
+  "panels" : {
+    "INDUSTRIAL-L01-VS-L02-FOOTPRINT-PREPIXEL-COLOR.png" : "207bff16e29a9d1deb09422b141617801dd60ee6fb41508b84954e08f638b509",
+    "INDUSTRIAL-L01-VS-L02-FOOTPRINT-PREPIXEL-GRAYSCALE.png" : "daa4a8d72ea36b5c550d2239efb116f668461fecd9cce509e210bf5838964fd9",
+    "INDUSTRIAL-L02-DIRECTION-TURNTABLE-PREPIXEL.png" : "88a93fb2acd9ced5eef6b2d25e0711e3a9d2835b6a7f4e27a0f480e25d8c336e",
+    "INDUSTRIAL-L02-FAR-EDGE-FRONTAGE-NORTH-WEST-PREPIXEL.png" : "29fe445e89a3810f929b20b1bf9b8796d26da4561a2192170baca7fbd56755f7"
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-directional-family-v02-prepixel-panel-inventory"
+}

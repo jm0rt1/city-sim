@@ -1,0 +1,7 @@
+data_root=/Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376
+file=/Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376/quicksave.backup.json
+  133229 /Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376/quicksave.backup.json
+45e98dda7a13e432bb842f81adb34719549f7c68a35dcfb778518d3d4393597a  /Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376/quicksave.backup.json
+file=/Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376/quicksave.json
+  131083 /Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376/quicksave.json
+fbde9a41ccaf5eafa1852e45070ba9c3a29f3d37f72a2652a42b2bc4b841c129  /Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376/quicksave.json

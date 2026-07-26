@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "sourceAuthorityBase": "9290d7f53e7ea75d5011c19c48388084e2cbe6af",
+  "host": {
+    "productName": "macOS",
+    "productVersion": "26.4.1",
+    "buildVersion": "25E253",
+    "architecture": "arm64"
+  },
+  "swift": {
+    "version": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)",
+    "target": "arm64-apple-macosx26.0"
+  },
+  "xcode": {
+    "version": "26.6",
+    "buildVersion": "17F113"
+  },
+  "sdk": {
+    "version": "26.5",
+    "path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+  },
+  "frameworks": [
+    "SceneKit",
+    "ModelIO",
+    "CoreImage",
+    "CoreGraphics",
+    "ImageIO"
+  ],
+  "samplingContract": {
+    "id": "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "sceneKitAntialiasing": "none",
+    "sceneKitShadows": "disabled",
+    "sceneKitLightingMode": "authored-constant-v1",
+    "linearOversamplingFactor": 4,
+    "downsample": {
+      "filter": "CILanczosScaleTransform",
+      "scale": 0.25,
+      "aspectRatio": 1
+    },
+    "quantizer": {
+      "id": "step32-midpoint-offset8-v1",
+      "step": 32,
+      "midpointOffset": 8
+    },
+    "canonicalizer": "opaque-isolated-one-quantum-majority-3x3-v3"
+  },
+  "sourceHashes": {
+    "OfflineSceneRenderer.swift": "4fe620e3368f73997bdca7ed5834172e4e0b341e2840a553fcf3c3c48183787f",
+    "RendererArchitecture.swift": "e0943590ee01f8518fbd3a230fa126e607b6aa130c6fcc422e250eb9467b76af",
+    "SceneDescriptor.swift": "4e404d255c19cbeb39445e1b41e5fbbe6d87aece22c757a2ea1102052f1d7957",
+    "DeterministicPixelCanonicalizer.swift": "160f2361f096b2a06b56b075486b0d9f4c791f9c754664813ce27d6cee57edfd",
+    "NormalizeOfflineSource.swift": "e4ef0afc870c90f8bf4f24ef0fe91d3d1d94b1d86edfbfe51cc596864d452c02"
+  },
+  "newProductRuntimeDependency": false,
+  "packageManifestChanged": false,
+  "productionSelected": false
+}

@@ -72,6 +72,16 @@ and socket overlay proving the actual loading face. The binding return is
 `docs/production/evidence/PLAY-027/INDUSTRIAL-L03-A0-FAMILY-DISPOSITION-03b0ffc.md`.
 Repair normalization and proof only; preserve raw masters and geometry.
 
+Checkpoint `e5613a3faa34b35c15385e465e4e47f17cf88b5e` closes the strict
+normalization return with twelve unique, two-run-exact LODs and zero exact or
+near chroma at every nonzero alpha. Its literal road/socket overlay proves that
+North and West have an actual art defect: correct sockets point to occluded
+loading faces, while East and South retain complete loading bays. Integration
+therefore authorizes a North/West-only pre-pixel frontage redesign under
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-NORTH-WEST-FRONTAGE-AUTHORITY-e5613a3.md`.
+No raw pixels are authorized until the revised compact frontage passes
+independent review.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

@@ -95,10 +95,16 @@ struct CityGameState: Codable, Equatable, Sendable {
             set(12, y, .road)
             set(16, y, .road)
         }
+        set(8, 10, .road)
+        set(8, 11, .road)
 
         set(11, 11, .cityHall)
         set(10, 11, .residential)
-        set(9, 11, .residential)
+        set(9, 10, .residential)
+        set(6, 10, .residential)
+        set(6, 11, .residential)
+        set(3, 10, .residential)
+        set(17, 10, .residential)
         set(13, 11, .commercial)
         set(14, 11, .industrial)
         set(11, 13, .park)
@@ -113,7 +119,7 @@ struct CityGameState: Codable, Equatable, Sendable {
             demand: DemandLevels(residential: 0.72, commercial: 0.68, industrial: 0.56),
             messages: [CityMessage(tick: 0, severity: .information,
                                    title: "A Town at the Crossroads",
-                                   detail: "New Arcadia's two-block starter district runs a $90 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.")],
+                                   detail: "New Arcadia's three-block starter town runs a $126 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.")],
             progression: CityProgressionState(), status: .playing, seed: seed
         )
     }

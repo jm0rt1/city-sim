@@ -244,8 +244,17 @@ enum CitySimulation {
         state.approval += ((state.happiness - 50) * 0.08 - max(0, -state.treasury / 80_000))
         state.approval = min(100, max(0, state.approval))
 
-        let housingVacancy = max(0, Double(residentialCapacity - state.population) / Double(max(1, residentialCapacity)))
+        let housingVacancy = max(
+            0,
+            Double(residentialCapacity - state.population)
+                / Double(max(1, residentialCapacity))
+        )
         let employmentGap = max(0, 1 - employment)
+        let jobCapacityUtilization = min(
+            1,
+            Double(state.jobs) / Double(max(1, jobCapacity))
+        )
+        let industrialEmploymentPressure = employment * jobCapacityUtilization
         state.demand.residential = clamp(
             0.50 + employment * 0.28 + (state.happiness - 50) / 140
                 + min(0.15, utilityReserve * 0.45) - housingVacancy * 0.35
@@ -257,7 +266,7 @@ enum CitySimulation {
                 - max(0, state.taxRate - 0.10) * 2
         )
         state.demand.industrial = clamp(
-            0.36 + (1 - housingVacancy) * 0.35 + employmentGap * 0.65
+            0.36 + industrialEmploymentPressure * 0.35 + employmentGap * 0.65
                 - pollution / 140 - max(0, state.taxRate - 0.10)
         )
 
@@ -416,6 +425,34 @@ enum CitySimulation {
         }
     }
 
+    private static func nearTermPopulationPotential(
+        in state: CityGameState,
+        additionalJobCapacity: Int = 0
+    ) -> Int {
+        let milestonePopulation = (state.progression?.townCharterAwarded ?? false) ? 525 : 500
+        let employmentReach = max(
+            120,
+            (jobCapacity(in: state) + additionalJobCapacity) * 2
+        )
+        let reachablePopulation = min(housingCapacity(in: state), employmentReach)
+        var horizonPopulation = state.population
+        for _ in 0..<(strategyMinimumWarningTicks / 4)
+            where horizonPopulation < reachablePopulation {
+            let growth = max(
+                1,
+                Int(
+                    Double(horizonPopulation)
+                        * (0.0015 + state.demand.residential * 0.0015)
+                )
+            )
+            horizonPopulation = min(reachablePopulation, horizonPopulation + growth)
+        }
+        return max(
+            state.population,
+            min(reachablePopulation, max(milestonePopulation, horizonPopulation))
+        )
+    }
+
     private static func preservesProgressionUtilityReserve(
         afterDeveloping kind: BuildingKind,
         in state: CityGameState
@@ -434,13 +471,11 @@ enum CitySimulation {
             addedWater = 0
         }
 
-        let milestonePopulation = (state.progression?.townCharterAwarded ?? false) ? 525 : 500
         let addedJobCapacity = jobCapacity(for: kind)
-        let reachablePopulation = min(
-            housingCapacity(in: state),
-            max(120, (jobCapacity(in: state) + addedJobCapacity) * 2)
+        let targetPopulation = nearTermPopulationPotential(
+            in: state,
+            additionalJobCapacity: addedJobCapacity
         )
-        let targetPopulation = max(milestonePopulation, reachablePopulation)
         let nonPopulationPower = state.powerUsed - Int(Double(state.population) * 0.82)
         let nonPopulationWater = state.waterUsed - Int(Double(state.population) * 0.74)
         let active = activeTiles(in: state)

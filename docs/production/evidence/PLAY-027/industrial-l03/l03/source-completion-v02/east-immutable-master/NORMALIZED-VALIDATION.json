@@ -1,0 +1,90 @@
+{
+  "assetID" : "industrial_l03_east_source_v02",
+  "family" : "industrial_l03",
+  "lods" : [
+    {
+      "alphaBounds" : [
+        375,
+        338,
+        649,
+        598
+      ],
+      "cleanlinessPassed" : true,
+      "decodedRGBASHA256" : "049f9161d955d7ddce9f58f208356abf61316622a8ae9d0603fd6b3f41ac2b7b",
+      "dimensionsPassed" : true,
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "f6504e6a86e80cba3d2b95838bee7721aba293257a8dc8040558944724046140",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "block",
+      "paddingPassed" : true,
+      "pixels" : [
+        1024,
+        683
+      ],
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "validationPassed" : true,
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 47618
+    },
+    {
+      "alphaBounds" : [
+        187,
+        169,
+        325,
+        300
+      ],
+      "cleanlinessPassed" : true,
+      "decodedRGBASHA256" : "2f318bda522994bf95efdcd0d9c4de59a83946720dba74a33f29bb27918bbdd1",
+      "dimensionsPassed" : true,
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "8c2cd50934e76b2783c56a3592d33023141741f492dae464e82ebc8636975222",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "neighborhood",
+      "paddingPassed" : true,
+      "pixels" : [
+        512,
+        342
+      ],
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "validationPassed" : true,
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 12026
+    },
+    {
+      "alphaBounds" : [
+        93,
+        84,
+        163,
+        150
+      ],
+      "cleanlinessPassed" : true,
+      "decodedRGBASHA256" : "b4409982deea2cee32772b994a555ee12e31728ab11dfa19b068e12eccf0803d",
+      "dimensionsPassed" : true,
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "267a46e9b9b37267df8afb502d29f9974658c96b35d1f643f27697af80baf8bf",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "city",
+      "paddingPassed" : true,
+      "pixels" : [
+        256,
+        171
+      ],
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "validationPassed" : true,
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 3064
+    }
+  ],
+  "productionSelected" : false,
+  "repeatIdentityPassed" : true,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "task" : "PLAY-027",
+  "uniqueLODDecodedPixelIdentityCount" : 3,
+  "uniqueLODFileIdentityCount" : 3,
+  "uniqueLODIdentityPassed" : true,
+  "validationPassed" : true
+}

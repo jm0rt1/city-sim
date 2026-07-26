@@ -82,6 +82,15 @@ therefore authorizes a North/West-only pre-pixel frontage redesign under
 No raw pixels are authorized until the revised compact frontage passes
 independent review.
 
+North/West pre-pixel candidate
+`9d32ec2df9b3b7eb7cee0205970e3cc6580d7d68` passes independent descriptor
+review. Both directions expose at least two complete compact loading bays plus
+a separate staff entrance, preserve exact registration and governed bounds,
+and report zero coincident boundaries or competing visible planes.
+Integration authorizes three fresh raw processes per revised direction under
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-NORTH-WEST-RAW-AUTHORITY-9d32ec2.md`.
+Normalization remains blocked until actual SceneKit pixels pass.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

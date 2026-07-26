@@ -49,6 +49,18 @@ composed-city scale before completing its siblings. R2 receives one new
 renderer-ingestion window only after independent source review accepts the
 repaired N/E/S/W family.
 
+East calibration candidate
+`232e37476d32e81b4fbd08b3d548895e78d9ea4a` passes independent treatment
+review for sibling authoring only. It preserves accepted geometry and
+registration, replaces the clinical source-v02 treatment with role-specific
+weathered steel, warm concrete, oxide, charcoal edge, dock-depth, and
+restrained safety-ochre materials, raises raw luma IQR from 37 to 57, keeps
+saturated accent share at 3.0–3.4 percent, and reproduces all normalized LODs
+byte- and pixel-identically across two runs. North, South, and West may now
+apply the same authored material-role system to their unchanged directional
+geometry. This is not source-family authority, renderer ingestion, or
+production selection.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.
@@ -65,6 +77,15 @@ variant-zero R/C/I spine and establishes the stronger art bar:
   neighborhood, and city scales; and
 - explicit comparison against Industrial L1/L2/L3 plus Residential and
   Commercial L4.
+
+Exact pre-pixel checkpoint
+`d5ba53412a5e993d677d8c25920d1e471df06191` passed its analytic geometry,
+direction, socket, shadow, and coincident-plane validators but failed
+independent visual review. Its compact orthogonal tower, pale blue-white
+palette, skeletal North/West reads, and weak operations identity do not deliver
+the broad, warm, credible advanced-manufacturing campus required here. Preserve
+that checkpoint as rejected tooling evidence; authorize no raw pixels and do
+not iterate L4 again until repaired R2 publishes.
 
 R3 ingestion remains gated on the repaired R2 publication and independent
 source review. Source work may run ahead only through the clean L4 pre-pixel

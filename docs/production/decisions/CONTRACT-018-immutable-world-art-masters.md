@@ -145,6 +145,31 @@ Art may normalize South twice only from the exact master above and continue
 the frozen v02 West raw gate. The three exceptions do not accept the
 four-direction family or broaden any other authority.
 
+After South normalization reproduced exactly, West completed three fresh v02
+processes at clean checkpoint
+`e594259c1705320973ecb0067f7398ddbb2d6886`. Runs A and B were byte- and
+pixel-identical. Run C differed by two opaque RGB pixels while every alpha,
+occupancy, bounds, registration, complete-volume, and far-edge frontage check
+remained identical. Integration independently reviewed the retained West
+candidate and names the already twice-reproduced run A as its immutable
+master:
+
+- source file:
+  `docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/west/run-a/raw.png`
+- file SHA-256:
+  `6d99f9436c11294f97359b3ed35203658ea178caa092f0ffea7d63982baa2151`
+- decoded RGBA SHA-256:
+  `b47b211174e77d53ffad023af06734c1467403cd612af46c4e49dcef0e2921df`
+- frozen scene descriptor SHA-256:
+  `bc0812eb16008bb0a544873fb3d24c4b01c470c405b4f6051a36a400c68856ce`
+- frozen material library SHA-256:
+  `3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e`
+
+World Art may now normalize West twice only from the exact master above and
+assemble the complete Industrial L3 four-direction source candidate. All four
+directional masters remain non-shipping until the family passes cross-direction
+and cross-family review and receives a separate integration disposition.
+
 ## Stop conditions
 
 Stop on any raw-master hash drift, missing provenance, changed visual

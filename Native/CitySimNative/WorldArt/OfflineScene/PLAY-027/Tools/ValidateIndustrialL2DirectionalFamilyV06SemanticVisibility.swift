@@ -38,11 +38,24 @@ private struct SemanticComponent {
     let bounds: PixelBounds
 }
 
-private let semanticDescriptorHashes = [
+private struct SemanticProfile {
+    let revision: String
+    let artDirectory: String
+    let reportType: String
+    let descriptorHashes: [String: String]
+}
+
+private let semanticV06DescriptorHashes = [
     "north":
         "6a51cf80436a5e0626ce869e9178c80844e979758419b8c509da0a651af4b390",
     "west":
         "2ef1b01ddb5eee3eda3f0e859d7e9bec5572dddce53a6f6502c202504b345fd5",
+]
+private let semanticV07DescriptorHashes = [
+    "north":
+        "361a2ce80066d4493c2d746f42808f516ec0e5d9abe177791d1f75e4205e2357",
+    "west":
+        "7fe7f851a036461820b4a98bb29da6e57176c9794b991bee6be80a153fa74244",
 ]
 private let semanticMaterialsSHA256 =
     "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
@@ -72,6 +85,41 @@ private func semanticArgument(
         )
     }
     return arguments[index + 1]
+}
+
+private func semanticProfile(
+    arguments: [String]
+) throws -> SemanticProfile {
+    guard
+        let revisionIndex = arguments.firstIndex(
+            of: "--descriptor-revision"
+        )
+    else {
+        return SemanticProfile(
+            revision: "v06",
+            artDirectory:
+                "industrial-l02-directional-family-v06",
+            reportType:
+                "industrial-l02-directional-family-v06-semantic-visibility-gate",
+            descriptorHashes: semanticV06DescriptorHashes
+        )
+    }
+    guard
+        revisionIndex + 1 < arguments.count,
+        arguments[revisionIndex + 1] == "v07"
+    else {
+        throw IndustrialL2V06SemanticError.invalid(
+            "unsupported semantic descriptor revision"
+        )
+    }
+    return SemanticProfile(
+        revision: "v07",
+        artDirectory:
+            "industrial-l02-directional-family-v07",
+        reportType:
+            "industrial-l02-directional-family-v07-semantic-visibility-gate",
+        descriptorHashes: semanticV07DescriptorHashes
+    )
 }
 
 private func semanticRGBA(_ image: CGImage) throws -> [UInt8] {
@@ -467,6 +515,7 @@ private func semanticLabeledMask(
 enum ValidateIndustrialL2DirectionalFamilyV06SemanticVisibilityMain {
     static func main() throws {
         let arguments = Array(CommandLine.arguments.dropFirst())
+        let profile = try semanticProfile(arguments: arguments)
         let root = URL(
             fileURLWithPath: try semanticArgument(
                 "--repository-root",
@@ -521,11 +570,11 @@ enum ValidateIndustrialL2DirectionalFamilyV06SemanticVisibilityMain {
         var allPassed = true
         for direction in ["north", "west"] {
             let descriptorURL = root.appendingPathComponent(
-                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-directional-family-v06/scenes/industrial_l02/variant-0/\(direction)/scene.json"
+                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/\(profile.artDirectory)/scenes/industrial_l02/variant-0/\(direction)/scene.json"
             )
             guard
                 try semanticSHA256(descriptorURL)
-                    == semanticDescriptorHashes[direction]
+                    == profile.descriptorHashes[direction]
             else {
                 throw IndustrialL2V06SemanticError.invalid(
                     "\(direction) descriptor drift"
@@ -643,7 +692,7 @@ enum ValidateIndustrialL2DirectionalFamilyV06SemanticVisibilityMain {
             directionRecords.append([
                 "direction": direction,
                 "descriptorSHA256":
-                    semanticDescriptorHashes[direction]!,
+                    profile.descriptorHashes[direction]!,
                 "sourceSemanticPNG":
                     sourceURL.path.replacingOccurrences(
                         of: root.path + "/",
@@ -670,11 +719,10 @@ enum ValidateIndustrialL2DirectionalFamilyV06SemanticVisibilityMain {
         let executableURL = URL(
             fileURLWithPath: CommandLine.arguments[0]
         ).standardizedFileURL
-        let report: [String: Any] = [
+        var report: [String: Any] = [
             "schema": 1,
             "task": "PLAY-027",
-            "type":
-                "industrial-l02-directional-family-v06-semantic-visibility-gate",
+            "type": profile.reportType,
             "classification":
                 "diagnostic-only pre-pixel semantic visibility; no source authority",
             "renderer":
@@ -696,6 +744,9 @@ enum ValidateIndustrialL2DirectionalFamilyV06SemanticVisibilityMain {
             "productionSelected": false,
             "passed": allPassed,
         ]
+        if profile.revision != "v06" {
+            report["descriptorRevision"] = profile.revision
+        }
         let reportData = try JSONSerialization.data(
             withJSONObject: report,
             options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]

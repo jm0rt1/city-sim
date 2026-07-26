@@ -1,0 +1,113 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/rejection/NORTH-RAW-LOCALITY.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l03-source-v02-north-repeat-stop",
+  "differenceBoundsSource" : [
+    656,
+    468,
+    886,
+    591
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        48,
+        80,
+        80,
+        255
+      ],
+      "repeatBRGBA" : [
+        48,
+        48,
+        80,
+        255
+      ],
+      "repeatCRGBA" : [
+        48,
+        48,
+        80,
+        255
+      ],
+      "sourceCoordinate" : [
+        656,
+        468
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        240,
+        144,
+        48,
+        255
+      ],
+      "repeatBRGBA" : [
+        240,
+        144,
+        16,
+        255
+      ],
+      "repeatCRGBA" : [
+        240,
+        144,
+        48,
+        255
+      ],
+      "sourceCoordinate" : [
+        885,
+        590
+      ]
+    }
+  ],
+  "primary" : {
+    "decodedRGBASHA256" : "5d1858ff3676156b7b2084f492e3a227a70b65177d1f4bf436885d8e4237eb9f",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/diagnostics/raw-repeat/north/run-a/raw.png",
+    "fileSHA256" : "05d97a621d466b8943d3fcd30ee934e91b9733cc7715d832534771eaeb2b6888"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 2,
+    "differingPixelCount" : 2
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 66,
+    "differingPixelCount" : 61
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "decodedRGBASHA256" : "573bed12f780bd7bd43625561b6364d34891b700def893b70214db8a64b11066",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/diagnostics/raw-repeat/north/run-b/raw.png",
+    "fileSHA256" : "f32f5715fae247a3f2ec72ba11b5d575058648b8ac4cc76e44acd1ebb503a839"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 66,
+    "differingPixelCount" : 61
+  },
+  "repeatC" : {
+    "decodedRGBASHA256" : "5520fa1690450bf665d43bd0ff038056ee14d4eb1a2b80b3272b3693cc2c3039",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/diagnostics/raw-repeat/north/run-c/raw.png",
+    "fileSHA256" : "07899c8edbab7c1ded5bb7ca48fdb69ca071171a74903d0ca1e5da19e8630618"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

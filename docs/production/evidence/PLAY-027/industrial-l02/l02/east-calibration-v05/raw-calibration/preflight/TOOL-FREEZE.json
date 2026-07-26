@@ -1,0 +1,23 @@
+{
+  "approvedPrepixelCommit": "08e9f3ab669caf41af24f910e3d673d96cbb2cd9",
+  "binarySHA256": "7b38bd19ec6b5b983e13de508b2222a3a01dd2a4fcbccb5469d5813ca26d9b9b",
+  "descriptorSHA256": "9f9e0a61a2fd0a1fbe18304a1b32a803447b7aa4f03d22d27f349cd2b7088ad6",
+  "failClosedChecks": {
+    "alphaRelationProofModeRejected": true,
+    "invalidOutputPathRejected": true,
+    "noForbiddenOutputCreated": true
+  },
+  "materialLibrarySHA256": "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb",
+  "oneProcessAuthority": {
+    "direction": "east",
+    "freshMetalProcesses": 1,
+    "outputSuffix": "/docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary"
+  },
+  "productionSelected": false,
+  "schema": 1,
+  "sourceAuthorityPixels": false,
+  "task": "PLAY-027",
+  "toolSHA256": "35180996ab9e4a443e4aa871ec4af13e9a387fa24c5f96aaaadebfb394461056",
+  "type": "industrial-l02-east-v05-calibration-tool-freeze",
+  "warningsAsErrorsCompilationPassed": true
+}

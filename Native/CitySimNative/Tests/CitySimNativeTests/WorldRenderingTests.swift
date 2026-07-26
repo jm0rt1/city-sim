@@ -3650,6 +3650,252 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(scene.selectionIsHiddenForTesting)
     }
 
+    @MainActor
+    func testTypedPlacementTargetKeepsMeaningfulDistrictAndRoadContextAtBothShippingSizes() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let targetCoordinate = GridCoordinate(x: 19, y: 17)
+        let targetTile = try XCTUnwrap(state.tile(at: targetCoordinate))
+        XCTAssertEqual(targetTile.kind, .empty)
+        let blockedCommercial = CityMapActionTargetPresentation(
+            coordinate: targetCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.commercial),
+                tile: targetTile,
+                state: state
+            )
+        )
+        XCTAssertFalse(blockedCommercial.primaryAction.isAvailable)
+        XCTAssertTrue(
+            blockedCommercial.primaryAction.disclosure.contains(
+                BuildRejection.roadAccessRequired.message
+            )
+        )
+        let roadRecovery = CityMapActionTargetPresentation(
+            coordinate: targetCoordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.road),
+                tile: targetTile,
+                state: state
+            )
+        )
+
+        for (label, size, insets, expectedDistrictWidthRatio, expectedDistrictHeightRatio) in [
+            (
+                "regular",
+                CGSize(width: 1_280, height: 800),
+                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
+                CGFloat(0.5175330893191646),
+                CGFloat(0.6223404050116202)
+            ),
+            (
+                "compact",
+                CGSize(width: 900, height: 600),
+                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
+                CGFloat(0.2966171419591169),
+                CGFloat(0.6381585861569213)
+            ),
+        ] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(insets)
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let openingScale = scene.cameraScaleForTesting
+            let openingPosition = scene.cameraPositionForTesting
+            XCTAssertGreaterThanOrEqual(
+                scene.occupiedDevelopedViewportOccupancyForTesting().width,
+                0.60
+            )
+
+            // Selecting a build tool alone carries no coordinate intent.
+            // Renderer state and camera remain exact until the store publishes
+            // a typed active target.
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .build(.commercial)
+            )
+            XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.x, openingPosition.x, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.y, openingPosition.y, accuracy: 0.000_001)
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.isNull)
+            XCTAssertTrue(scene.selectionIsHiddenForTesting)
+            XCTAssertTrue(scene.hoverIsHiddenForTesting)
+
+            // A nearby intended target in the regular aperture already fits
+            // the composed district and must not trigger the remote-target
+            // zoom-out path. The compact aperture is intentionally too shallow
+            // to fully contain any authoritative road center at its opening
+            // fit, so its typed target correctly exercises the contextual fit.
+            if label == "regular" {
+                let openingSafeRect = scene.safeViewportRectForTesting(insets)
+                let roadCoordinates = state.tiles
+                    .filter { $0.kind == .road }
+                    .map(\.coordinate)
+                func nearestRoad(to coordinate: GridCoordinate) -> GridCoordinate? {
+                    roadCoordinates.min { lhs, rhs in
+                        let lhsDistance = abs(lhs.x - coordinate.x)
+                            + abs(lhs.y - coordinate.y)
+                        let rhsDistance = abs(rhs.x - coordinate.x)
+                            + abs(rhs.y - coordinate.y)
+                        if lhsDistance != rhsDistance {
+                            return lhsDistance < rhsDistance
+                        }
+                        if lhs.y != rhs.y { return lhs.y < rhs.y }
+                        return lhs.x < rhs.x
+                    }
+                }
+                let orderedTiles = state.tiles.sorted {
+                    if $0.coordinate.y != $1.coordinate.y {
+                        return $0.coordinate.y < $1.coordinate.y
+                    }
+                    return $0.coordinate.x < $1.coordinate.x
+                }
+                let normalChoice = try XCTUnwrap(
+                    [BuildingKind.commercial, .road].lazy.compactMap { kind in
+                        orderedTiles.first { tile in
+                            guard tile.kind == .empty,
+                                  case .success = CitySimulation.validateBuild(
+                                    kind,
+                                    at: tile.coordinate,
+                                    in: state
+                                  ),
+                                  let nearestRoad = nearestRoad(to: tile.coordinate) else {
+                                return false
+                            }
+                            return openingSafeRect.contains(
+                                scene.tileGroundBoundsForTesting(at: tile.coordinate)
+                            ) && openingSafeRect.contains(
+                                scene.tileGroundBoundsForTesting(at: nearestRoad)
+                            )
+                        }.map { (kind: kind, tile: $0) }
+                    }.first,
+                    "Regular opening must expose at least one fully visible valid Commercial or Road target"
+                )
+                XCTAssertEqual(normalChoice.tile.kind, .empty)
+                let normalTarget = CityMapActionTargetPresentation(
+                    coordinate: normalChoice.tile.coordinate,
+                    primaryAction: CityMapPrimaryActionPresentation.make(
+                        interactionMode: .build(normalChoice.kind),
+                        tile: normalChoice.tile,
+                        state: state
+                    )
+                )
+                XCTAssertTrue(normalTarget.primaryAction.isAvailable)
+                let normalRoad = try XCTUnwrap(
+                    nearestRoad(to: normalChoice.tile.coordinate)
+                )
+                XCTAssertTrue(
+                    openingSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: normalChoice.tile.coordinate)
+                    )
+                )
+                XCTAssertTrue(
+                    openingSafeRect.contains(
+                        scene.tileGroundBoundsForTesting(at: normalRoad)
+                    )
+                )
+                scene.render(
+                    state: state,
+                    overlay: .none,
+                    selection: normalChoice.tile.coordinate,
+                    interactionMode: .build(normalChoice.kind),
+                    activeActionTarget: normalTarget
+                )
+                XCTAssertEqual(scene.cameraScaleForTesting, openingScale, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraPositionForTesting.x, openingPosition.x, accuracy: 0.000_001)
+                XCTAssertEqual(scene.cameraPositionForTesting.y, openingPosition.y, accuracy: 0.000_001)
+            }
+
+            // Re-establish a no-target opening camera before proving the remote
+            // but legitimate player target.
+            scene.frameCity()
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: targetCoordinate,
+                interactionMode: .build(.commercial),
+                activeActionTarget: blockedCommercial
+            )
+
+            let safeRect = scene.safeViewportRectForTesting(insets)
+            let targetBounds = scene.tileGroundBoundsForTesting(at: targetCoordinate)
+            let roadFrontier = try XCTUnwrap(scene.activeTargetRoadFrontierForTesting)
+            let roadBounds = scene.tileGroundBoundsForTesting(at: roadFrontier)
+            XCTAssertEqual(state.tile(at: roadFrontier)?.kind, .road)
+            XCTAssertFalse(RoadConnectionMask.resolving(at: roadFrontier, in: state).isEmpty)
+            XCTAssertTrue(
+                safeRect.contains(targetBounds),
+                "\(label) target=\(targetBounds) safe=\(safeRect) scale=\(scene.cameraScaleForTesting)"
+            )
+            XCTAssertTrue(
+                safeRect.contains(roadBounds),
+                "\(label) road=\(roadBounds) safe=\(safeRect) scale=\(scene.cameraScaleForTesting)"
+            )
+
+            let visibleDistrict = safeRect.intersection(
+                scene.cameraPriorityVisualBoundsForTesting
+            )
+            let districtSafeWidthRatio = visibleDistrict.width / safeRect.width
+            let districtSafeHeightRatio = visibleDistrict.height / safeRect.height
+            XCTAssertEqual(
+                districtSafeWidthRatio,
+                expectedDistrictWidthRatio,
+                accuracy: 0.000_001,
+                "\(label) district safe-width occupancy drifted"
+            )
+            XCTAssertEqual(
+                districtSafeHeightRatio,
+                expectedDistrictHeightRatio,
+                accuracy: 0.000_001,
+                "\(label) district safe-height occupancy drifted"
+            )
+            XCTAssertGreaterThanOrEqual(
+                districtSafeWidthRatio,
+                0.25,
+                "\(label) district safe-width ratio=\(districtSafeWidthRatio)"
+            )
+            XCTAssertGreaterThanOrEqual(
+                districtSafeHeightRatio,
+                0.25,
+                "\(label) district safe-height ratio=\(districtSafeHeightRatio)"
+            )
+            XCTAssertLessThan(
+                scene.cameraScaleForTesting,
+                2.2,
+                "\(label) remote target must retain readable district context"
+            )
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.contains(targetBounds))
+            XCTAssertTrue(scene.activeTargetContextBoundsForTesting.contains(roadBounds))
+            XCTAssertGreaterThan(scene.cameraScaleForTesting, openingScale)
+            XCTAssertFalse(scene.selectionIsHiddenForTesting)
+            XCTAssertFalse(scene.hoverIsHiddenForTesting)
+            XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.placementGhost"))
+            XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.invalidHatch"))
+
+            let contextScale = scene.cameraScaleForTesting
+            let contextPosition = scene.cameraPositionForTesting
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: targetCoordinate,
+                interactionMode: .build(.road),
+                activeActionTarget: roadRecovery
+            )
+            XCTAssertEqual(scene.cameraScaleForTesting, contextScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.x, contextPosition.x, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.y, contextPosition.y, accuracy: 0.000_001)
+            XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(targetBounds))
+            XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(roadBounds))
+            XCTAssertTrue(scene.interactionNamesForTesting.contains("interaction.placementGhost"))
+        }
+    }
+
     func testLotConsequencePresentationMapsOnlyAuthoritativeTileFields() {
         var tile = CityTile(
             coordinate: GridCoordinate(x: 4, y: 7),

@@ -203,6 +203,8 @@ final class CityScene: SKScene {
     private(set) var cameraPriorityVisualBoundsForTesting: CGRect = .null
     private(set) var networkOpportunityVisualBoundsForTesting: CGRect = .null
     private(set) var cameraPriorityCoordinatesForTesting: Set<GridCoordinate> = []
+    private(set) var activeTargetContextBoundsForTesting: CGRect = .null
+    private(set) var activeTargetRoadFrontierForTesting: GridCoordinate?
     var developedVisualBoundsForTesting: CGRect { occupiedDevelopedVisualBoundsForTesting }
     private var tileRecords: [GridCoordinate: TileRenderRecord] = [:]
     private var lastDragLocation: CGPoint?
@@ -258,6 +260,10 @@ final class CityScene: SKScene {
 
     func scenePointForTesting(at coordinate: GridCoordinate) -> CGPoint {
         style.isoPosition(coordinate)
+    }
+
+    func tileGroundBoundsForTesting(at coordinate: GridCoordinate) -> CGRect {
+        tileGroundBounds(at: style.isoPosition(coordinate))
     }
 
     func resolvedCoordinateForTesting(at scenePoint: CGPoint) -> GridCoordinate? {
@@ -348,6 +354,8 @@ final class CityScene: SKScene {
         let previousSnapshot = renderedSnapshot
         let previousOverlay = renderedOverlay
         let previousSelection = renderedSelection
+        let previousActiveActionTarget = renderedActiveActionTarget
+        let previousInteractionMode = renderedInteractionMode
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -403,6 +411,17 @@ final class CityScene: SKScene {
         refreshInteractionPreview()
         if previousSelection != selection, let selection {
             revealSelection(selection, viewportInsets: viewportInsets)
+        } else if let activeActionTarget,
+                  activeActionTarget.coordinate == selection,
+                  renderedInteractionMode != .inspect,
+                  (
+                    previousInteractionMode != interactionMode
+                        || previousActiveActionTarget?.coordinate != activeActionTarget.coordinate
+                  ) {
+            revealActionTargetContext(
+                activeActionTarget.coordinate,
+                viewportInsets: viewportInsets
+            )
         }
         let worldChanged = diagnosticsSnapshot.createdTileCount > 0
             || diagnosticsSnapshot.updatedTileCount > 0
@@ -706,6 +725,19 @@ final class CityScene: SKScene {
         _ coordinate: GridCoordinate,
         viewportInsets: CityMapViewportInsets = .zero
     ) {
+        if renderedInteractionMode != .inspect, renderedState != nil {
+            revealActionTargetContext(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+        revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+    }
+
+    private func revealCoordinateOnly(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets
+    ) {
+        activeTargetContextBoundsForTesting = .null
+        activeTargetRoadFrontierForTesting = nil
         let target = style.isoPosition(coordinate)
         let safeRect = safeViewportRect(viewportInsets)
         let revealMargin: CGFloat = 0.5
@@ -724,6 +756,106 @@ final class CityScene: SKScene {
             cameraNode.position.y += target.y - safeRect.maxY + verticalMargin
         }
         refreshForCameraChange()
+    }
+
+    /// Keeps a typed player target legible without turning it into a detached
+    /// hero frame. The context is derived only from the current authoritative
+    /// state: the selected coordinate, the nearest real road cell, and the
+    /// already-approved developed-district composition. No target, road,
+    /// placement rule, or recovery route is synthesized here.
+    private func revealActionTargetContext(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets
+    ) {
+        guard let state = renderedState else {
+            revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+        let composition = visualCompositionBounds(in: state)
+        guard !composition.cameraPriority.isNull,
+              !composition.cameraPriority.isEmpty else {
+            revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+
+        let targetBounds = tileGroundBounds(at: style.isoPosition(coordinate))
+        let roadFrontier = nearestAuthoritativeRoad(to: coordinate, in: state)
+        let roadFrontierBounds = roadFrontier.map {
+            tileGroundBounds(at: style.isoPosition($0))
+        }
+        let currentSafeRect = safeViewportRect(viewportInsets)
+        let visibleDistrict = currentSafeRect.intersection(composition.cameraPriority)
+        let currentDistrictWidthShare = visibleDistrict.width / max(1, currentSafeRect.width)
+        let currentDistrictHeightShare = visibleDistrict.height / max(1, currentSafeRect.height)
+
+        // Intended nearby targets already live inside the composed district.
+        // Keep their exact camera rather than zooming out merely because the
+        // interaction mode changed. Remote targets receive the contextual fit
+        // below only when the present aperture cannot fully show both target
+        // and its real road frontier with a meaningful amount of the district.
+        let currentTargetIsVisible = currentSafeRect.contains(
+            style.isoPosition(coordinate)
+        )
+        let currentRoadFrontierIsVisible = roadFrontier.map {
+            currentSafeRect.contains(style.isoPosition($0))
+        } ?? true
+        if currentTargetIsVisible,
+           currentRoadFrontierIsVisible,
+           currentDistrictWidthShare >= 0.25,
+           currentDistrictHeightShare >= 0.25 {
+            activeTargetContextBoundsForTesting = composition.cameraPriority
+                .union(targetBounds)
+                .union(roadFrontierBounds ?? .null)
+            activeTargetRoadFrontierForTesting = roadFrontier
+            return
+        }
+
+        var contextBounds = composition.cameraPriority.union(targetBounds)
+        if let roadFrontierBounds {
+            contextBounds = contextBounds.union(roadFrontierBounds)
+        }
+
+        let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
+        let safeHeight = max(1, size.height - viewportInsets.top - viewportInsets.bottom)
+        let horizontalWorldPadding = tileWidth * 1.25 * 2 + 20
+        let verticalWorldPadding = tileHeight * 1.75 * 2 + 16
+        let requiredScale = max(
+            (contextBounds.width + horizontalWorldPadding) / safeWidth,
+            (contextBounds.height + verticalWorldPadding) / safeHeight
+        )
+        // A compact placement aperture can be extremely shallow beneath HUD
+        // chrome. Stay below the full-board fallback ceiling: the contextual
+        // fit must keep the target visible without shrinking the connected
+        // district into an unreadable edge sliver.
+        let scale = min(2.18, max(cameraNode.xScale, requiredScale))
+        cameraNode.setScale(scale)
+
+        let safeCenterOffset = CGPoint(
+            x: (viewportInsets.leading - viewportInsets.trailing) * scale / 2,
+            y: (viewportInsets.bottom - viewportInsets.top) * scale / 2
+        )
+        cameraNode.position = CGPoint(
+            x: contextBounds.midX - safeCenterOffset.x,
+            y: contextBounds.midY - safeCenterOffset.y
+        )
+        activeTargetContextBoundsForTesting = contextBounds
+        activeTargetRoadFrontierForTesting = roadFrontier
+        refreshForCameraChange()
+    }
+
+    private func nearestAuthoritativeRoad(
+        to coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> GridCoordinate? {
+        state.tiles
+            .filter { $0.kind == .road }
+            .map(\.coordinate)
+            .min { lhs, rhs in
+                let lhsDistance = abs(lhs.x - coordinate.x) + abs(lhs.y - coordinate.y)
+                let rhsDistance = abs(rhs.x - coordinate.x) + abs(rhs.y - coordinate.y)
+                if lhsDistance != rhsDistance { return lhsDistance < rhsDistance }
+                return coordinateComesBefore(lhs, rhs)
+            }
     }
 
     private func safeViewportRect(_ viewportInsets: CityMapViewportInsets) -> CGRect {
@@ -2045,6 +2177,8 @@ final class CityScene: SKScene {
     }
 
     private func applyDevelopedCoreCamera(_ state: CityGameState) {
+        activeTargetContextBoundsForTesting = .null
+        activeTargetRoadFrontierForTesting = nil
         let composition = visualCompositionBounds(in: state)
         let occupiedBounds = composition.occupiedDeveloped
         let cameraPriorityBounds = composition.cameraPriority

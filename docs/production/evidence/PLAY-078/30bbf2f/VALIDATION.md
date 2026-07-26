@@ -3,7 +3,7 @@
 - **Published authority:** `e6ba5ef7018030dcb3419b79ec19104a1c70e8e2`
 - **Frozen gameplay source:** `de6f477ca1a21d9dc9e825de0c7eba18055e3b7b`
 - **Unmodified local gameplay commit:** `85b8963193fde123be6e3e9321860c19aa61969c`
-- **Platform checkpoint adoption:** `05c129149b6d45957d8de7890aac822350422c71`
+- **Platform checkpoint adoption:** `05c1291866d047cfc995c82fb69a465210561119`
 - **Fixture/test checkpoint:** `30bbf2fefea4868b65fb9fa5a280873912d7b525`
 - **Lane:** `codex/citysim-simulation-platform`
 - **Date:** July 26, 2026

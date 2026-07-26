@@ -1,4 +1,59 @@
+import AppKit
 import SwiftUI
+
+@MainActor
+final class CityBuildCatalogWindowBindingView: NSView {
+    let pointerTransitionGate: CityMapPointerTransitionGate
+
+    init(pointerTransitionGate: CityMapPointerTransitionGate) {
+        self.pointerTransitionGate = pointerTransitionGate
+        super.init(frame: .zero)
+        setAccessibilityElement(false)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        nil
+    }
+
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+        if newWindow !== window {
+            pointerTransitionGate.unbindCompactCatalogWindow(window)
+        }
+        super.viewWillMove(toWindow: newWindow)
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        pointerTransitionGate.bindCompactCatalogWindow(window)
+    }
+
+    func dismantle() {
+        pointerTransitionGate.unbindCompactCatalogWindow(window)
+    }
+}
+
+@MainActor
+struct CityBuildCatalogWindowBinder: NSViewRepresentable {
+    let pointerTransitionGate: CityMapPointerTransitionGate
+
+    func makeNSView(context: Context) -> CityBuildCatalogWindowBindingView {
+        CityBuildCatalogWindowBindingView(pointerTransitionGate: pointerTransitionGate)
+    }
+
+    func updateNSView(_ nsView: CityBuildCatalogWindowBindingView, context: Context) {}
+
+    static func dismantleNSView(
+        _ nsView: CityBuildCatalogWindowBindingView,
+        coordinator: ()
+    ) {
+        nsView.dismantle()
+    }
+}
 
 struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
@@ -460,7 +515,14 @@ struct BuildToolbarView: View {
             ForEach(BuildCategory.allCases) { category in
                 Section(category.title) {
                     ForEach(category.buildingKinds) { kind in
-                        Button { store.perform(CityCommandCatalog.id(for: kind)) } label: {
+                        Button {
+                            Self.performCompactCatalogSelection(
+                                kind,
+                                store: store,
+                                pointerTransitionGate: pointerTransitionGate,
+                                event: NSApp.currentEvent
+                            )
+                        } label: {
                             Label(
                                 "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
                                 systemImage: kind.symbol
@@ -477,8 +539,27 @@ struct BuildToolbarView: View {
         }
         .menuStyle(.borderlessButton)
         .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .overlay {
+            CityBuildCatalogWindowBinder(pointerTransitionGate: pointerTransitionGate)
+                .accessibilityHidden(true)
+        }
         .accessibilityLabel("Open categorized build catalog")
         .accessibilityValue("Selected \(store.selectedTool.title)")
+    }
+
+    @discardableResult
+    static func performCompactCatalogSelection(
+        _ kind: BuildingKind,
+        store: CityGameStore,
+        pointerTransitionGate: CityMapPointerTransitionGate,
+        event: NSEvent?
+    ) -> Bool {
+        let beganPointerTransition = pointerTransitionGate.beginCompactCatalogSelection(event: event)
+        let performed = store.perform(CityCommandCatalog.id(for: kind))
+        if beganPointerTransition, !performed {
+            pointerTransitionGate.cancel()
+        }
+        return performed
     }
 
     private func modeButton(

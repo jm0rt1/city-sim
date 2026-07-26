@@ -2,7 +2,7 @@
 
 - **Lane:** UI and input
 - **Branch:** `codex/citysim-ui-input`
-- **Status:** ready-for-independent-quality-review
+- **Status:** accepted-and-integrated
 - **Published baseline:**
   `bd9dc14d9d4b5f26f5f1dca153725f8ee919438f`
 - **Product candidate:**
@@ -11,6 +11,10 @@
   `59e59e19c751506b44d15b54e380ed2e0cf98b14`
 - **Evidence root:**
   `docs/production/evidence/PLAY-077/candidate-b04f4e2/`
+- **Integrated master product:**
+  `897c191355d2fcb18ecc2e8d7358b44e9cae7cd4`
+- **Integration evidence:**
+  `docs/production/evidence/PLAY-077/integration-897c191/VALIDATION.md`
 
 The completion commit containing this record is reported in the lane handoff
 because a commit cannot embed its own identity.

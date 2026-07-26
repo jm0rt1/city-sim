@@ -735,7 +735,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** A second starting Commercial/Industrial/park/utility becomes necessary; either strategy or recovery path becomes nonviable; a public/save/schema/global-economy change is required; fixture history must be rewritten; the town remains visually sparse after truthful expansion; or any renderer/UI/art surface would need gameplay-local mutation.
 - **Claim:** `docs/production/claims/PLAY-076.gameplay-loop.md`.
 
-### [ ] PLAY-077: Keep command chrome from targeting the map
+### [x] PLAY-077: Keep command chrome from targeting the map
 
 - **Player outcome:** Choosing a build tool never accidentally targets the map, and a road-access remedy leads to a truthful adjacent road step without consuming the intended building parcel.
 - **Owning lane:** UI and input.
@@ -749,3 +749,10 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Proof:** Before/after pointer-versus-keyboard frames and event ledger; road-recovery topology and validation ledger; state/fingerprint/treasury/Undo identities; regular/compact screenshots and AX; staged executable identity under `docs/production/evidence/PLAY-077/`.
 - **Stop conditions:** A second gate, public command/store contract, renderer mutation, coordinate restoration, auto-build, simulation-rule change, dual target, false READY state, input-parity regression, or failed staged journey becomes necessary.
 - **Claim:** `docs/production/claims/PLAY-077.ui-input.md`.
+- **Accepted integration:** Exact master product
+  `897c191355d2fcb18ecc2e8d7358b44e9cae7cd4` passed 266/266 native tests,
+  verified staging, and hands-on default/compact pointer and keyboard journeys.
+  Catalog selection preserved no map target; intentional movement restored
+  targeting; road-access recovery selected a valid adjacent road and required
+  confirmation. Integration evidence is retained under
+  `docs/production/evidence/PLAY-077/integration-897c191/`.

@@ -19,9 +19,11 @@
   adjacent-road recovery; pointer/Return/FKA/AX commit; Escape and exact Undo;
   regular and exact 900 x 600 staged proof; full native suite and verified
   staged bundle
-- **Status:** Prepared by integration from exact compact real-app proof and a
-  clean read-only UI/input audit; implementation is blocked until integration
-  publishes and dispatches the named baseline
+- **Status:** Accepted and integrated on exact master product
+  `897c191355d2fcb18ecc2e8d7358b44e9cae7cd4`. The lane candidate, retained
+  evidence, full-suite result, staged bundle, and hands-on default/compact
+  journeys are bound by
+  `docs/production/evidence/PLAY-077/integration-897c191/VALIDATION.md`.
 
 Do not sync or mutate before the exact baseline dispatch. Once dispatched,
 extend the one existing pointer-transition gate only as authorized by

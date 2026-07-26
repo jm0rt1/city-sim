@@ -2358,6 +2358,23 @@ final class ContractSceneBuilder: OfflineSceneBuilding {
     ) throws {
         let material = try materials.material(prop.materialID)
         switch prop.kind {
+        case "explicit-box":
+            guard
+                prop.dimensions.count == 3,
+                prop.dimensions.allSatisfy({ $0 > 0 })
+            else {
+                throw OfflineRendererError.invalid(
+                    "explicit box dimensions must contain three positive values"
+                )
+            }
+            scene.rootNode.addChildNode(
+                try boxNode(
+                    name: prop.id,
+                    dimensions: prop.dimensions,
+                    position: prop.positionWorld,
+                    materialID: prop.materialID
+                )
+            )
         case "explicit-cylinder":
             guard prop.dimensions.count == 3 else {
                 throw OfflineRendererError.invalid(

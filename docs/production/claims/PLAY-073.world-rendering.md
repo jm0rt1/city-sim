@@ -18,9 +18,11 @@
   `bfcd46cc361f04f38c35c7c463b8a42dfb000351`, with its accepted integration
   repair published through `4e5d79f43c8213e86d58a9cfe0c0bc1f98c8b3c1`.
   The task remains open because the production opening is still visibly sparse.
-  Under Wave 010, further composition mutation is paused and the lane's next
-  production mutation is reserved for the independently accepted PLAY-027
-  Industrial L2 N/E/S/W family.
+  Wave 010 R1 Industrial L2 is accepted at exact renderer product
+  `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075 approval
+  `74f2164da506a246af9335cab2d3a9e977624097`. Further composition mutation
+  remains paused; the lane's next production mutation is reserved for R2 after
+  integration independently accepts one PLAY-027 Industrial L3 N/E/S/W family.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,
@@ -77,15 +79,15 @@ technical green as visual acceptance.
 
 ## Wave 010 art-first ingestion authority
 
-Follow `docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`. Preserve the
-clean PLAY-073 boundary above. Do not begin a second composition iteration
-while World Art authors Industrial L2. When integration supplies one clean,
-independently approved N/E/S/W source candidate from PLAY-027, synchronize to
-the named published master and use the R1 window to ingest only that exact
-family. Source repair remains World Art-owned.
+Follow `docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`. Preserve exact
+R1 product `d41c2c68` until synchronized to the next published baseline. Do not
+begin a second composition iteration while World Art authors Industrial L3.
+When integration supplies one clean, independently approved N/E/S/W L3 source
+candidate from PLAY-027, use the R2 window to ingest only that exact family.
+Source repair remains World Art-owned.
 
-For R1, run focused pack/runtime/frontage/LOD/resource checks and one staged
+For R2, run focused pack/runtime/frontage/LOD/resource checks and one staged
 candidate build. Integration owns the single full-suite and staged-identity
 gate; PLAY-075 owns the single focused independent real-app disposition.
-Industrial L3/L4, unaccepted source work, gameplay density, and UI repair are
-not authorized by this claim.
+Industrial L4, unaccepted source work, gameplay changes, UI repair, and broad
+composition mutation are not authorized by this claim.

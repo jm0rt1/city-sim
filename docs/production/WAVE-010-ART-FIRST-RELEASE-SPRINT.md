@@ -1,6 +1,8 @@
 # Wave 010 — Art-First Release Sprint
 
-**Current published authority:** `e6ba5ef7018030dcb3419b79ec19104a1c70e8e2`
+**Accepted R1 product:** `d41c2c68d5584c990e271af06c0b93ab50722f5e`
+
+**Independent R1 disposition:** `74f2164da506a246af9335cab2d3a9e977624097`
 
 **Priority:** Move complete, independently reviewed art families into the
 staged game quickly without allowing source production, renderer ingestion,
@@ -8,25 +10,24 @@ and QA to become competing writers.
 
 ## Live dispatch status — July 26, 2026
 
-- **First scheduled ingestion:** R1 — Industrial L2. The renderer begins
-  immediately after integration independently approves one clean N/E/S/W
-  source-family candidate; no other renderer mutation may take that slot.
-- **Renderer boundary:** `codex/citysim-world-rendering` is clean and frozen
-  at accepted Phase A candidate `41ad1eee9d1431a4962a7af6ed4fa85ceea0fedd`
-  with 271/271 tests passing and 0.747 ms pulse time under the unchanged
-  2.1 ms ceiling. It is ready for R1 and is not the blocker.
-- **Current source blocker:** the Industrial L2 V07 N/E/S/W art direction is
-  independently approved at `9d641ed`; North is repeat-identical, while East
-  exposed two host-Metal raster identities isolated to 97 lower contact pixels.
-  CONTRACT-018 now authorizes the exact approved East raw as an immutable
-  master. World Art must still prove North/South/West repeat identity and
-  deterministic normalization from all four frozen raw masters before R1.
+- **R1 published:** Industrial L2 source candidate `e2a6144` was ingested as
+  exact renderer product `d41c2c68`. Independent PLAY-075 evidence `74f2164`
+  approved the focused staged-app gate, and integration accepted it through
+  `eb61182`.
+- **Next scheduled ingestion:** R2 — Industrial L3. World Art may author one
+  L3 N/E/S/W family immediately from the published baseline. The renderer
+  remains frozen until integration independently accepts that exact family.
+- **Current source priority:** Industrial L3 only. It must use separately
+  authored N/E/S/W masters, retain complete provenance and rejection history,
+  prove deterministic normalization, and pass independent source review before
+  renderer ingestion. Industrial L4 remains unauthorized.
 - **Parallel work:** PLAY-078 completed its additive denser-opening adoption
   at `53ab9de79b923c588f9d6cd82788ec4f11cc4d80` and is included in the accepted
-  renderer Phase A candidate. No simulation writer delays R1.
-- **Reprioritized:** PLAY-073 composition remains behind R1; Industrial L3/L4
-  remain behind their reserved R2/R3 gates; expanded duplicate worker-side
-  full-suite and staged journeys remain replaced by the focused cadence below.
+  R1 product. No simulation writer delays R2.
+- **Reprioritized:** PLAY-073 composition remains behind the reserved R2/R3
+  batches; Industrial L3 source production may run ahead now; Industrial L4
+  remains behind R2; expanded duplicate worker-side full-suite and staged
+  journeys remain replaced by the focused cadence below.
 
 ## Frozen boundaries
 
@@ -34,10 +35,10 @@ and QA to become competing writers.
   `bfcd46cc361f04f38c35c7c463b8a42dfb000351`; its accepted integration repair
   is published through `4e5d79f`. The broad composition task remains open
   because the live opening is still visibly sparse.
-- PLAY-027 World Art continues from clean acceleration authority
-  `4918b32f44f4d767203a02421f364e234eeebf10`.
-- Industrial L2 East v05 remains the immutable review anchor
-  `023407791bbebe81f882dd8c7a4b348b79c22e67`.
+- PLAY-027 World Art completed Industrial L2 at exact clean source candidate
+  `e2a6144448707c67792e6e0619d5e8dee1ba10bb`.
+- Industrial L2 remains immutable after R1 publication. Industrial L3 source
+  work begins from the accepted R1 baseline and may not rewrite L2 history.
 - Source work may run ahead in PLAY-027. It may not edit renderer, shipping
   pack, package, build, gameplay, simulation, UI, or save surfaces.
 - Only the World Rendering lane writes production selection, manifests,
@@ -52,11 +53,11 @@ and QA to become competing writers.
 | R3 — Industrial L4 | R2 is published and a separately authorized Industrial L4 family is independently approved | Repeat the same narrow ingestion contract for L4 only | One focused PLAY-075 pass |
 | R4 — Cohesion closeout | All accepted Industrial batches are published or explicitly deferred | Resume PLAY-073 public-realm, repetition, material, lighting, and composition closure against the denser PLAY-076 opening | Full PLAY-075 Wave 009 release gate |
 
-R1 is the next World Rendering mutation. Further PLAY-073 composition work is
-deferred until R1 publishes or its source family is independently rejected.
-R2 and R3 reserve queue position but do not authorize L3/L4 source production;
-integration must publish each source authorization after the preceding family
-passes.
+R1 is accepted. R2 is the next World Rendering mutation, and Industrial L3
+source production is authorized now so art can run ahead. Further PLAY-073
+composition work remains deferred through R2/R3. R3 reserves queue position
+but does not authorize Industrial L4 source production; integration must
+publish that authorization after R2 passes.
 
 ## Fast batch cadence
 
@@ -86,10 +87,10 @@ shared-contract ownership, performance limits, or independent QA.
 
 ## Work reprioritized
 
-- PLAY-073 iteration-three composition is paused at its clean boundary until
-  R1 completes.
-- PLAY-027 Industrial L2 N/S/W source production is the first art priority and
-  continues without waiting for the renderer.
+- PLAY-073 iteration-three composition remains paused through the R2/R3 art
+  batches.
+- PLAY-027 Industrial L3 N/E/S/W source production is the first art priority
+  and may run ahead of the renderer.
 - PLAY-076 remains the first gameplay priority because truthful opening
   density is required for art to be visible in the default journey.
 - PLAY-077 remains the first UI priority because compact pointer quarantine and

@@ -10,11 +10,12 @@
   `776cc9b7dfd9532bbf9eee09aca3359373b875a7`; clean PLAY-071/072/073/074
   handoffs; exact integration-provided candidate
 - **Validation/proof:** every requirement and automatic reject in `WAVE-009-CITY-NOT-BOARD.md`
-- **Status:** unblocked for candidate-blind preregistration; scoring waits for
-  an exact combined candidate that integration has not visually rejected.
-  Wave 010 additionally reserves one focused independent staged-app
-  disposition for each exact accepted art-ingestion candidate; these batch
-  gates do not replace or pre-score the final 20/20 release gate.
+- **Status:** Wave 010 R1 exact renderer candidate `d41c2c68` received focused
+  independent approval at evidence commit `74f2164`; this permits Industrial
+  L2 publication but does not pre-score the final release. R2 reserves one
+  focused independent staged-app disposition after integration supplies an
+  exact Industrial L3 renderer candidate. The final 20/20 Wave 009 release
+  gate remains open.
 
 Independently prove or reject the city-not-board release. Acceptance requires
 20/20, every category 4/4, zero P0/P1, zero automatic rejects, and material

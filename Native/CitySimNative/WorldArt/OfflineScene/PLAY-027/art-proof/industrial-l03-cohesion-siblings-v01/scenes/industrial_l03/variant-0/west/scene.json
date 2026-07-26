@@ -23,7 +23,7 @@
       56
     ],
     "foundationHeight" : 3,
-    "foundationMaterialID" : "l3-foundation",
+    "foundationMaterialID" : "l3c-charcoal-foundation",
     "foundationPositionWorld" : [
       0,
       1.2,
@@ -369,7 +369,7 @@
     ],
     "massingProfile" : "industrial-l03-high-capacity-stepped-manufacturing-campus",
     "roofHeight" : 6,
-    "roofMaterialID" : "l3-roof",
+    "roofMaterialID" : "l3c-weathered-roof-membrane",
     "roofOverhang" : 0.80000000000000004,
     "roofVolumes" : [
       {
@@ -386,7 +386,7 @@
           -21
         ],
         "shape" : "flat-parapet",
-        "trimMaterialID" : "l3-dark-steel"
+        "trimMaterialID" : "l3c-charcoal-outline-steel"
       },
       {
         "dimensions" : [
@@ -402,7 +402,7 @@
           17.5
         ],
         "shape" : "flat-parapet",
-        "trimMaterialID" : "l3-light-trim"
+        "trimMaterialID" : "l3c-warm-trim"
       },
       {
         "dimensions" : [
@@ -418,7 +418,7 @@
           23.5
         ],
         "shape" : "flat-parapet",
-        "trimMaterialID" : "l3-light-trim"
+        "trimMaterialID" : "l3c-warm-trim"
       }
     ],
     "trimBands" : [
@@ -465,11 +465,11 @@
         ]
       }
     ],
-    "trimMaterialID" : "l3-light-trim",
+    "trimMaterialID" : "l3c-warm-trim",
     "usesExplicitComponentGeometry" : true,
     "usesLegacyDomesticDetails" : false,
     "wallHeight" : 44,
-    "wallMaterialID" : "l3-hall-blue",
+    "wallMaterialID" : "l3c-weathered-blue-steel",
     "width" : 56
   },
   "camera" : {
@@ -516,13 +516,13 @@
     ],
     "canopyDepth" : 4,
     "depth" : 1,
-    "doorMaterialID" : "l3-warm-glazing",
+    "doorMaterialID" : "l3c-warm-control-glazing",
     "facadeID" : "l3-west-road-frontage",
     "height" : 9,
     "hingeSide" : "right",
     "pavilionDepth" : 10,
     "pavilionHeight" : 18,
-    "pavilionMaterialID" : "l3-admin-concrete",
+    "pavilionMaterialID" : "l3c-warm-formed-concrete",
     "pavilionRoofHeight" : 2.5,
     "pavilionWidth" : 11,
     "porchColumnWidth" : 1.2,
@@ -531,7 +531,7 @@
     "stepCount" : 1,
     "stepRun" : 1.2,
     "style" : "industrial-quality-lab-entry",
-    "surroundMaterialID" : "l3-light-trim",
+    "surroundMaterialID" : "l3c-warm-trim",
     "width" : 5.5
   },
   "facades" : [

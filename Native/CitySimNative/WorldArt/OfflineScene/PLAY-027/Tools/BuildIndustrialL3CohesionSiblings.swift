@@ -133,7 +133,9 @@ private func transformedValue(_ value: Any, reverse: Bool = false) throws -> Any
     if let dictionary = value as? [String: Any] {
         var result: [String: Any] = [:]
         for (key, child) in dictionary {
-            if key == "materialID", let materialID = child as? String {
+            if (key == "materialID" || key.hasSuffix("MaterialID")),
+                let materialID = child as? String
+            {
                 guard let replacement = replacements[materialID] else {
                     throw IndustrialL3CohesionSiblingsError.invalid(
                         "unmapped material reference \(materialID)"
@@ -156,7 +158,9 @@ private func materialReferenceIDs(in value: Any) -> Set<String> {
     if let dictionary = value as? [String: Any] {
         var result = Set<String>()
         for (key, child) in dictionary {
-            if key == "materialID", let materialID = child as? String {
+            if (key == "materialID" || key.hasSuffix("MaterialID")),
+                let materialID = child as? String
+            {
                 result.insert(materialID)
             }
             result.formUnion(materialReferenceIDs(in: child))

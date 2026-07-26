@@ -1,0 +1,15 @@
+branch=codex/citysim-playtest-quality-baseline
+commit=10c2ed8cacc6c14a748aa953365b5779c7e06ad5
+worktree_root=/private/tmp/citysim-play075-r1-10c2ed8-baseline-build
+worktree_token=wc87e837fe84d
+candidate_id=playtest-quality-baseline-wc87e837fe84d
+bundle_identifier=com.jfmortensen.citysim.playtest-quality-baseline.wc87e837fe84d
+preference_domain=com.jfmortensen.citysim.playtest-quality-baseline.wc87e837fe84d
+display_name=CitySim [playtest-quality-baseline wc87e837fe84d]
+data_root=/private/tmp/citysim-play075-r1-10c2ed8-baseline-build/dist/test-data/playtest-quality-baseline-wc87e837fe84d
+launch_time=2026-07-26T15:54:14Z
+staged_bundle_path=/private/tmp/citysim-play075-r1-10c2ed8-baseline-build/dist/CitySim-playtest-quality-baseline-wc87e837fe84d.app
+executable_path=/private/tmp/citysim-play075-r1-10c2ed8-baseline-build/dist/CitySim-playtest-quality-baseline-wc87e837fe84d.app/Contents/MacOS/CitySimNative-wc87e837fe84d
+resource_bundle_path=/private/tmp/citysim-play075-r1-10c2ed8-baseline-build/dist/CitySim-playtest-quality-baseline-wc87e837fe84d.app/CitySimNative_CitySimNative.bundle
+process_id=23548
+status=verified-running

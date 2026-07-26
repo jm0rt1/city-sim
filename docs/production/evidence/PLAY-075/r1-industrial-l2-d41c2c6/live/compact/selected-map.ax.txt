@@ -1,0 +1,6 @@
+The following is a diff from the previous accessibility tree for Window: "CitySim" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 54-73
+~		22 container City command deck
++			54 text Value: Inspecting Industrial at block 15, 12, ID: hud.selected.context
+~			30 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+The focused UI element is 32 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Industrial at block 15, 12, Value: Selected Industrial, block 15, 12. Completed, maintained condition. Power service is strained at 75%; Water service is strained at 75%; Pollution exposure is severe at 100%. This block is stable at 60% vitality.. Primary action: Inspect Industrial at block 15, 12. Available. Opens details for the selected target.

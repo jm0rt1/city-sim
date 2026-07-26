@@ -64,6 +64,37 @@ North, South, and West retain the normal CONTRACT-011 repeat-render gate.
 This authority does not itself accept the four-direction family, authorize
 normalization, select production art, or permit shipping ingestion.
 
+## Additional authority — Industrial L3 North
+
+Integration independently reviewed the retained Industrial L3 North v02 and
+v03 raw attempts after exact cross-process evidence localized the remaining
+drift to 2–61 opaque RGB pixels with stable alpha, occupancy, pivot, socket,
+frontage, contact, shadow, and registered volume. The v03 pre-Lanczos repair
+did not establish repeat identity and visibly flattened the v02 corrugated
+facade, rooftop, tank, and material detail. It is rejected as the visual
+authority.
+
+The exception is therefore granted only to the richer PLAY-027 Industrial L3
+variant-zero North v02 run-A master retained at clean checkpoint
+`81ef296de589b99b5617feeab9d92dffc98806f6`:
+
+- source file:
+  `docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/diagnostics/raw-repeat/north/run-a/raw.png`
+- file SHA-256:
+  `05d97a621d466b8943d3fcd30ee934e91b9733cc7715d832534771eaeb2b6888`
+- decoded RGBA SHA-256:
+  `5d1858ff3676156b7b2084f492e3a227a70b65177d1f4bf436885d8e4237eb9f`
+- frozen scene descriptor SHA-256:
+  `78803712a2b4118abef6ff90119444b1c4093f5cb442348f3cdb9b3e4bf1fe51`
+- frozen material library SHA-256:
+  `3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e`
+
+Industrial L3 East, South, and West retain the normal CONTRACT-011
+repeat-render gate. World Art may normalize North twice only from the exact
+master above and may continue the frozen v02 E/S/W raw gate. This authority
+does not accept the four-direction family, authorize Industrial L4, select
+production art, or permit shipping ingestion.
+
 ## Stop conditions
 
 Stop on any raw-master hash drift, missing provenance, changed visual

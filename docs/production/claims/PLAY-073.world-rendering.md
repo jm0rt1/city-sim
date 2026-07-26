@@ -91,3 +91,9 @@ candidate build. Integration owns the single full-suite and staged-identity
 gate; PLAY-075 owns the single focused independent real-app disposition.
 Industrial L4, unaccepted source work, gameplay changes, UI repair, and broad
 composition mutation are not authorized by this claim.
+
+After the accepted Industrial batches publish or are explicitly deferred, R4
+is governed by `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. Its
+rendered-pixel composition, terrain-mass, ground-contact, cross-fidelity,
+repetition, LOD, interaction, and resource criteria replace vague polish
+language and require the full independent PLAY-075 20/20 disposition.

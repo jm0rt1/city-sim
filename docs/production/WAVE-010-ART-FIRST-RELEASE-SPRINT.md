@@ -59,6 +59,13 @@ composition work remains deferred through R2/R3. R3 reserves queue position
 but does not authorize Industrial L4 source production; integration must
 publish that authorization after R2 passes.
 
+R4 admission is governed by
+`docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. The retained R1 app shows
+that late-game Industrial breadth alone cannot repair the authentic opening:
+regular-window composition, dominant plain terrain, ground contact,
+cross-family fidelity, repetition, and LOD meaning remain systemic renderer
+obligations.
+
 ## Fast batch cadence
 
 1. **Source freeze:** World Art returns one clean exact family candidate,

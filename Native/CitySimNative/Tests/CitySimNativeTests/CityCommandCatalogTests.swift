@@ -2284,13 +2284,60 @@ final class CityCommandCatalogTests: XCTestCase {
         roadRecovery.clearFeedback()
         let roadRecoveryState = roadRecovery.state
         let roadRecoveryFocus = roadRecovery.mapFocusRequestGeneration
-        XCTAssertTrue(roadRecovery.performMapFocused(try XCTUnwrap(roadDecision.recovery?.command)))
+        let roadRecoveryTreasury = roadRecovery.state.treasury
+        XCTAssertTrue(roadRecovery.performBuildRecovery(try XCTUnwrap(roadDecision.recovery)))
         XCTAssertEqual(roadRecovery.interactionMode, .build(.road))
         XCTAssertEqual(roadRecovery.selectedTool, .road)
-        XCTAssertEqual(roadRecovery.selectedCoordinate, roadless.coordinate)
+        let roadCoordinate = try XCTUnwrap(roadRecovery.selectedCoordinate)
+        XCTAssertNotEqual(roadCoordinate, roadless.coordinate)
+        XCTAssertTrue(
+            roadRecovery.state.neighbors(of: roadless.coordinate).contains {
+                $0.coordinate == roadCoordinate
+            }
+        )
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .road,
+            at: roadCoordinate,
+            in: roadRecovery.state
+        ) {
+            XCTFail("Road recovery must select a valid adjacent block, got \(rejection)")
+        }
         XCTAssertEqual(roadRecovery.hudContextScope, .selection)
         XCTAssertEqual(roadRecovery.state, roadRecoveryState)
         XCTAssertEqual(roadRecovery.mapFocusRequestGeneration, roadRecoveryFocus + 1)
+        XCTAssertFalse(roadRecovery.canUndo, "Recovery selects a target but never auto-builds")
+
+        XCTAssertTrue(roadRecovery.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(roadRecovery.state.tile(at: roadCoordinate)?.kind, .road)
+        XCTAssertEqual(
+            roadRecovery.state.treasury,
+            roadRecoveryTreasury - BuildingKind.road.buildCost
+        )
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .residential,
+            at: roadless.coordinate,
+            in: roadRecovery.state
+        ) {
+            XCTFail("One confirmed adjacent road must make the original parcel eligible, got \(rejection)")
+        }
+        XCTAssertTrue(roadRecovery.canUndo)
+        XCTAssertTrue(roadRecovery.perform(.undo))
+        XCTAssertEqual(roadRecovery.state, roadRecoveryState)
+        XCTAssertEqual(roadRecovery.state.treasury, roadRecoveryTreasury)
+        XCTAssertNil(roadRecovery.selectedCoordinate)
+        XCTAssertFalse(roadRecovery.canUndo)
+
+        let cancelledRecovery = CityGameStore(state: authored)
+        cancelledRecovery.selectTool(.residential)
+        cancelledRecovery.selectedCoordinate = roadless.coordinate
+        cancelledRecovery.clearFeedback()
+        XCTAssertTrue(cancelledRecovery.performBuildRecovery(try XCTUnwrap(roadDecision.recovery)))
+        XCTAssertNotEqual(cancelledRecovery.selectedCoordinate, roadless.coordinate)
+        XCTAssertTrue(cancelledRecovery.perform(.cancelInteraction))
+        XCTAssertEqual(cancelledRecovery.state, authored)
+        XCTAssertNil(cancelledRecovery.selectedCoordinate)
+        XCTAssertEqual(cancelledRecovery.interactionMode, .inspect)
+        XCTAssertFalse(cancelledRecovery.canUndo)
 
         let occupiedDecision = try XCTUnwrap(
             CityMapPrimaryActionPresentation.make(
@@ -2330,6 +2377,99 @@ final class CityCommandCatalogTests: XCTestCase {
                 hasBuildDecision: true
             ),
             BuildToolbarView.compactBuildDecisionMaximumHeight
+        )
+    }
+
+    @MainActor
+    func testRoadAccessRecoveryPreservesBlockedIntentWhenNoAdjacentRoadTargetExists() throws {
+        var authored = CityGameState.newCity(seed: 42)
+        let blockedCoordinate = GridCoordinate(x: 0, y: 0)
+        authored.updateTile(at: blockedCoordinate) { $0 = CityTile(coordinate: blockedCoordinate, kind: .empty) }
+        for neighbor in authored.neighbors(of: blockedCoordinate) {
+            authored.updateTile(at: neighbor.coordinate) {
+                $0 = CityTile(coordinate: neighbor.coordinate, kind: .residential)
+            }
+        }
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = blockedCoordinate
+        store.clearFeedback()
+        let state = store.state
+        let focusGeneration = store.mapFocusRequestGeneration
+        let decision = try XCTUnwrap(store.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+        let recovery = try XCTUnwrap(decision.recovery)
+
+        XCTAssertFalse(store.performBuildRecovery(recovery))
+        XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedTool, .commercial)
+        XCTAssertEqual(store.selectedCoordinate, blockedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
+        XCTAssertFalse(store.canUndo)
+        XCTAssertTrue(store.lastFeedback?.contains("choose another parcel") == true)
+        XCTAssertEqual(
+            store.activeMapActionTargetPresentation?.primaryAction.isAvailable,
+            false
+        )
+    }
+
+    @MainActor
+    func testRoadAccessRecoveryPrefersARealRoadExtensionAndAXConfirmsExactlyOnce() throws {
+        let authored = CityGameState.newCity(seed: 42)
+        let fixture = try XCTUnwrap(authored.tiles.lazy.compactMap { blocked -> (CityTile, CityTile)? in
+            guard blocked.kind == .empty,
+                  case .failure(.roadAccessRequired) = CitySimulation.validateBuild(
+                      .commercial,
+                      at: blocked.coordinate,
+                      in: authored
+                  )
+            else { return nil }
+            let extendingCandidates = authored.neighbors(of: blocked.coordinate).filter { candidate in
+                guard candidate.kind == .empty,
+                      case .success = CitySimulation.validateBuild(
+                          .road,
+                          at: candidate.coordinate,
+                          in: authored
+                      )
+                else { return false }
+                return authored.neighbors(of: candidate.coordinate).contains { $0.kind == .road }
+            }
+            guard extendingCandidates.count == 1 else { return nil }
+            return (blocked, extendingCandidates[0])
+        }.first)
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = fixture.0.coordinate
+        store.clearFeedback()
+        let recovery = try XCTUnwrap(
+            store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.recovery
+        )
+        let treasury = store.state.treasury
+
+        XCTAssertTrue(store.performBuildRecovery(recovery))
+        XCTAssertEqual(store.selectedCoordinate, fixture.1.coordinate)
+        XCTAssertEqual(store.interactionMode, .build(.road))
+        XCTAssertEqual(store.state, authored)
+        XCTAssertEqual(store.state.treasury, treasury)
+        XCTAssertFalse(store.canUndo)
+
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        coordinator.configureMapAccessibility(in: mapView)
+        let action = try XCTUnwrap(
+            mapView.accessibilityCustomActions()?.first {
+                $0.name == store.activeMapActionTargetPresentation?.primaryAction.name
+            }
+        )
+        XCTAssertTrue(action.handler?() == true)
+        XCTAssertEqual(store.state.tile(at: fixture.1.coordinate)?.kind, .road)
+        XCTAssertEqual(store.state.treasury, treasury - BuildingKind.road.buildCost)
+        XCTAssertTrue(store.canUndo)
+
+        coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertFalse(
+            mapView.accessibilityCustomActions()?.contains { $0.name.hasPrefix("Build Road") } ?? true,
+            "The occupied road target must not advertise a second build action"
         )
     }
 

@@ -641,11 +641,7 @@ struct BuildToolbarView: View {
     }
 
     private func performBuildRecovery(_ recovery: CityDirectResponse) {
-        if recovery.focusesMap {
-            store.performMapFocused(recovery.command)
-        } else {
-            store.perform(recovery.command)
-        }
+        store.performBuildRecovery(recovery)
     }
 
     private var compactModeTitle: String {

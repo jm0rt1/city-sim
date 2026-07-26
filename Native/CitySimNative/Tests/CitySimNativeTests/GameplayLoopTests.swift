@@ -128,11 +128,30 @@ final class GameplayLoopTests: XCTestCase {
 
         try prepareReserveUtilities(in: &commerce)
         try prepareReserveUtilities(in: &industry)
+        advanceToTick(&commerce, tick: 128)
+        advanceToTick(&industry, tick: 128)
+        XCTAssertFalse(
+            commerce.tiles.contains { $0.kind == .commercial && $0.level > 1 },
+            "Commercial density still needs its supporting recovery decision"
+        )
+        XCTAssertTrue(
+            industry.tiles.contains { $0.kind == .industrial && $0.level > 1 },
+            "Player-funded reserve utilities should let Industrial develop first at tick 128"
+        )
+        XCTAssertTrue(industry.messages.contains {
+            $0.title == "Neighborhood Upgraded" && $0.tick == 128
+        })
+
         advanceToTick(&commerce, tick: 256)
         advanceToTick(&industry, tick: 256)
+        XCTAssertFalse(
+            commerce.tiles.contains { $0.kind == .commercial && $0.level > 1 },
+            "Commercial should not develop at the obsolete tick-256 checkpoint"
+        )
+        advanceToTick(&commerce, tick: 384)
         XCTAssertTrue(
             commerce.tiles.contains { $0.kind == .commercial && $0.level > 1 },
-            "Commercial occupancy and demand should change an actual storefront: \(scenarioSummary(commerce))"
+            "Commercial occupancy, demand, and recovery should change an actual storefront at tick 384: \(scenarioSummary(commerce))"
         )
         XCTAssertTrue(
             industry.tiles.contains { $0.kind == .industrial && $0.level > 1 },
@@ -163,6 +182,63 @@ final class GameplayLoopTests: XCTestCase {
                     && $0.detail.contains("utility load")
             })
         }
+    }
+
+    func testIndustrialDemandUsesEmploymentPressureNotLatentHousing() throws {
+        var baseline = CityGameState.newCity(seed: 42)
+        var additionalHousing = baseline
+        let coordinate = try firstValidCoordinate(for: .residential, in: additionalHousing)
+        additionalHousing.updateTile(at: coordinate) {
+            $0.kind = .residential
+            $0.constructionProgress = 1
+            $0.level = 1
+            $0.condition = 1
+        }
+
+        CitySimulation.step(&baseline)
+        CitySimulation.step(&additionalHousing)
+
+        let jobCapacity = CitySimulation.jobCapacity(in: baseline)
+        let workforceTarget = max(1, baseline.population * 7 / 10)
+        let employment = min(1, Double(baseline.jobs) / Double(workforceTarget))
+        let utilization = min(
+            1,
+            Double(baseline.jobs) / Double(max(1, jobCapacity))
+        )
+        let active = CitySimulation.activeTiles(in: baseline)
+        let industrial = active.filter { $0.kind == .industrial }
+        let industrialLevelGrowth = industrial.reduce(0) {
+            $0 + max(0, $1.level - 1)
+        }
+        let pollution = min(
+            26,
+            Double(industrial.count) * 3.5
+                + Double(industrialLevelGrowth) * 0.5
+                + Double(active.filter { $0.kind == .powerPlant }.count) * 4
+        )
+        let expected = min(
+            1,
+            max(
+                0,
+                0.36 + employment * utilization * 0.35
+                    + max(0, 1 - employment) * 0.65
+                    - pollution / 140
+                    - max(0, baseline.taxRate - 0.10)
+            )
+        )
+
+        XCTAssertEqual(baseline.demand.industrial, expected, accuracy: 0.000_001)
+        XCTAssertEqual(
+            additionalHousing.demand.industrial,
+            baseline.demand.industrial,
+            accuracy: 0.000_001,
+            "Latent Residential capacity must not create Industrial labor demand"
+        )
+        XCTAssertLessThan(
+            additionalHousing.demand.residential,
+            baseline.demand.residential,
+            "Actual additional housing vacancy should still affect Residential demand"
+        )
     }
 
     func testDevelopedLevelsCarryUtilityUpkeepAndPollutionTradeoffs() throws {
@@ -203,9 +279,9 @@ final class GameplayLoopTests: XCTestCase {
     func testLiveCommercialRecoveryReachesACharterPathByDay128() throws {
         var state = CityGameState.newCity(seed: 42)
         advanceToTick(&state, tick: 60)
-        try build(.commercial, at: GridCoordinate(x: 8, y: 11), in: &state)
+        try buildFirstValid(.commercial, in: &state)
         advance(&state, cycles: 4)
-        try build(.powerPlant, at: GridCoordinate(x: 7, y: 11), in: &state)
+        try buildFirstValid(.powerPlant, in: &state)
         state.taxRate = 0.14
         advanceToTick(&state, tick: 509)
 
@@ -300,8 +376,8 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(analytics.employmentRate, 190.0 / 210.0, accuracy: 0.000_001)
         XCTAssertEqual(analytics.utilityReserve, 48.0 / 270.0, accuracy: 0.000_001)
         XCTAssertEqual(state.taxRate, 0.10, accuracy: 0.000_001)
-        XCTAssertEqual(analytics.projectedBalance, -90.2, accuracy: 0.001)
-        XCTAssertGreaterThan(analytics.operatingRunwayCycles ?? 0, 280)
+        XCTAssertEqual(analytics.projectedBalance, -126.2, accuracy: 0.001)
+        XCTAssertEqual(analytics.operatingRunwayCycles ?? 0, 253.57, accuracy: 0.01)
         XCTAssertGreaterThan(state.demand.residential, 0.7)
         XCTAssertTrue(state.messages.contains { $0.title == "A Town at the Crossroads" })
     }
@@ -320,9 +396,9 @@ final class GameplayLoopTests: XCTestCase {
 
         state.taxRate = 0.18
         advance(&state, cycles: 24)
-        try build(.powerPlant, at: GridCoordinate(x: 8, y: 11), in: &state)
-        try build(.waterTower, at: GridCoordinate(x: 7, y: 11), in: &state)
-        try build(.industrial, at: GridCoordinate(x: 6, y: 11), in: &state)
+        try buildFirstValid(.powerPlant, in: &state)
+        try buildFirstValid(.waterTower, in: &state)
+        try buildFirstValid(.industrial, in: &state)
         advance(&state, cycles: 8)
 
         let recovered = CityAnalytics(state: state)
@@ -337,16 +413,16 @@ final class GameplayLoopTests: XCTestCase {
     func testTwoStrategiesReachVictoryAndRemainTerminalThroughTheTwentyMinuteHorizon() throws {
         var industryFirst = try industrialStrategy()
         advance(&industryFirst, cycles: 4)
-        try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &industryFirst)
-        try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &industryFirst)
+        try buildFirstValid(.powerPlant, in: &industryFirst)
+        try buildFirstValid(.waterTower, in: &industryFirst)
         advanceStrategyToCompletion(&industryFirst)
 
         var commerceAndTax = try commercialStrategy()
         commerceAndTax.taxRate = 0.10
         advanceToTick(&commerceAndTax, tick: 4)
         advanceThroughStrategyPhase(&commerceAndTax, phase: .opportunity)
-        try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &commerceAndTax)
-        try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &commerceAndTax)
+        try buildFirstValid(.powerPlant, in: &commerceAndTax)
+        try buildFirstValid(.waterTower, in: &commerceAndTax)
         advanceThroughStrategyPhase(&commerceAndTax, phase: .complication)
         advanceThroughStrategyPhase(&commerceAndTax, phase: .setback)
         commerceAndTax.taxRate = 0.09
@@ -442,7 +518,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(taxRelief.status, .playing)
 
         var placemaking = pressured
-        try build(.park, at: GridCoordinate(x: 6, y: 11), in: &placemaking)
+        try buildFirstValid(.park, in: &placemaking)
         XCTAssertNil(placemaking.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&placemaking, phase: .recovery)
         let parkPayoff = try XCTUnwrap(placemaking.messages.first { $0.title == "Main Street Rebound" })
@@ -470,8 +546,8 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(pressured.status, .playing)
 
         var utilityReserve = pressured
-        try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &utilityReserve)
-        try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &utilityReserve)
+        try buildFirstValid(.powerPlant, in: &utilityReserve)
+        try buildFirstValid(.waterTower, in: &utilityReserve)
         XCTAssertNil(utilityReserve.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&utilityReserve, phase: .recovery)
         XCTAssertTrue(utilityReserve.messages.contains { $0.title == "Freight Network Secured" })
@@ -487,7 +563,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(utilityReserve.status, .playing)
 
         var greenBuffer = pressured
-        try build(.park, at: GridCoordinate(x: 6, y: 11), in: &greenBuffer)
+        try buildFirstValid(.park, in: &greenBuffer)
         XCTAssertNil(greenBuffer.progression?.strategy?.recoveryResolution)
         advanceThroughStrategyPhase(&greenBuffer, phase: .recovery)
         XCTAssertTrue(greenBuffer.messages.contains { $0.title == "Cleaner Industry Compact" })
@@ -516,7 +592,7 @@ final class GameplayLoopTests: XCTestCase {
         })
 
         state.taxRate = 0.10
-        try build(.park, at: GridCoordinate(x: 6, y: 11), in: &state)
+        try buildFirstValid(.park, in: &state)
         advanceThroughStrategyPhase(&state, phase: .recovery)
 
         XCTAssertEqual(state.progression?.strategy?.recoveryResolution, .commercialTaxRelief)
@@ -797,8 +873,8 @@ final class GameplayLoopTests: XCTestCase {
 
     @MainActor
     func testUndoBeforeAndAfterCommitRestoresExactAwaitingStrategyState() throws {
-        let coordinate = GridCoordinate(x: 8, y: 11)
         let opening = CityGameState.newCity(seed: 42)
+        let coordinate = try firstValidCoordinate(for: .commercial, in: opening)
 
         let beforeCommit = CityGameStore(state: opening)
         beforeCommit.selectTool(.commercial)
@@ -829,7 +905,7 @@ final class GameplayLoopTests: XCTestCase {
 
         let store = CityGameStore(state: state)
         store.selectTool(.park)
-        store.primaryAction(at: GridCoordinate(x: 6, y: 11))
+        store.primaryAction(at: try firstValidCoordinate(for: .park, in: state))
         XCTAssertTrue(store.canUndo)
         XCTAssertNil(store.state.progression?.strategy?.recoveryResolution)
 
@@ -1011,7 +1087,7 @@ final class GameplayLoopTests: XCTestCase {
     }
 
     @MainActor
-    func testUndoRestoresExactTownCharterProgression() {
+    func testUndoRestoresExactTownCharterProgression() throws {
         var state = CityGameState.newCity(seed: 42)
         state.progression = CityProgressionState(
             townCharterQualifyingCycles: 7,
@@ -1021,7 +1097,7 @@ final class GameplayLoopTests: XCTestCase {
         let beforeBuild = store.state
 
         store.selectTool(.residential)
-        store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+        store.primaryAction(at: try firstValidCoordinate(for: .residential, in: state))
         store.state.progression?.townCharterQualifyingCycles = 9
         store.undoLastAction()
 
@@ -1486,10 +1562,10 @@ final class GameplayLoopTests: XCTestCase {
     private func qualifyingTown() throws -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 50_000
-        try build(.industrial, at: GridCoordinate(x: 8, y: 11), in: &state)
-        try build(.industrial, at: GridCoordinate(x: 7, y: 11), in: &state)
-        try build(.powerPlant, at: GridCoordinate(x: 6, y: 11), in: &state)
-        try build(.waterTower, at: GridCoordinate(x: 5, y: 11), in: &state)
+        try buildFirstValid(.industrial, in: &state)
+        try buildFirstValid(.industrial, in: &state)
+        try buildFirstValid(.powerPlant, in: &state)
+        try buildFirstValid(.waterTower, in: &state)
         state.population = 500
         state.treasury = 50_000
         state.happiness = 60
@@ -1500,16 +1576,35 @@ final class GameplayLoopTests: XCTestCase {
 
     private func commercialStrategy() throws -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
-        try build(.commercial, at: GridCoordinate(x: 8, y: 11), in: &state)
-        try build(.commercial, at: GridCoordinate(x: 7, y: 11), in: &state)
+        try buildFirstValid(.commercial, in: &state)
+        try buildFirstValid(.commercial, in: &state)
         return state
     }
 
     private func industrialStrategy() throws -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
-        try build(.industrial, at: GridCoordinate(x: 8, y: 11), in: &state)
-        try build(.industrial, at: GridCoordinate(x: 7, y: 11), in: &state)
+        try buildFirstValid(.industrial, in: &state)
+        try buildFirstValid(.industrial, in: &state)
         return state
+    }
+
+    private func firstValidCoordinate(
+        for kind: BuildingKind,
+        in state: CityGameState
+    ) throws -> GridCoordinate {
+        try XCTUnwrap(
+            state.tiles.first { tile in
+                guard tile.kind == .empty else { return false }
+                if case .success = CitySimulation.validateBuild(
+                    kind,
+                    at: tile.coordinate,
+                    in: state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate
+        )
     }
 
     private func build(

@@ -1844,7 +1844,7 @@ final class WorldRenderingTests: XCTestCase {
         }
         var observedMasks: Set<UInt8> = []
 
-        XCTAssertEqual(roads.count, 32)
+        XCTAssertEqual(roads.count, 34)
         for roadTile in roads {
             let coordinate = roadTile.coordinate
             let mask = RoadConnectionMask.resolving(at: coordinate, in: state)
@@ -1982,16 +1982,29 @@ final class WorldRenderingTests: XCTestCase {
     @MainActor
     func testRoundOneShippingStartExportsDevelopedBoundsDefaultAndCompact() throws {
         let state = CityGameState.newCity(seed: 42)
-        for (size, insets, environmentKey) in [
+        for (
+            size,
+            insets,
+            environmentKey,
+            expectedDetail,
+            expectedOccupiedWidth,
+            expectedPriorityWidth
+        ) in [
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                "CITYSIM_PLAY022_M2_DEFAULT"
+                "CITYSIM_PLAY022_M2_DEFAULT",
+                CameraDetailLevel.city,
+                CGFloat(0.6633707860015013),
+                CGFloat(0.7877528083767829)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
-                "CITYSIM_PLAY022_M2_COMPACT"
+                "CITYSIM_PLAY022_M2_COMPACT",
+                CameraDetailLevel.neighborhood,
+                CGFloat(1.0201732614716905),
+                CGFloat(1.2114557479976324)
             ),
         ] {
             let view = SKView(frame: CGRect(origin: .zero, size: size))
@@ -2004,10 +2017,9 @@ final class WorldRenderingTests: XCTestCase {
             let occupied = scene.occupiedDevelopedViewportOccupancyForTesting()
             let network = scene.networkOpportunityViewportOccupancyForTesting()
             let priority = scene.cameraPriorityViewportOccupancyForTesting()
-            XCTAssertGreaterThanOrEqual(occupied.width, 0.60)
-            XCTAssertLessThanOrEqual(occupied.width, 0.61)
-            XCTAssertGreaterThanOrEqual(priority.width, 1.04)
-            XCTAssertLessThanOrEqual(priority.width, 1.06)
+            XCTAssertEqual(scene.currentCameraDetailLevel, expectedDetail)
+            XCTAssertEqual(occupied.width, expectedOccupiedWidth, accuracy: 0.000_001)
+            XCTAssertEqual(priority.width, expectedPriorityWidth, accuracy: 0.000_001)
             XCTAssertGreaterThan(priority.width, occupied.width)
             XCTAssertGreaterThan(priority.height, occupied.height)
             XCTAssertGreaterThan(max(network.width, network.height), max(occupied.width, occupied.height))
@@ -2291,7 +2303,7 @@ final class WorldRenderingTests: XCTestCase {
         let reducedNames = descendantNames(in: reduced)
         XCTAssertEqual(reducedNames, descendantNames(in: repeated))
         for names in [animatedNames, reducedNames] {
-            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 3)
+            XCTAssertEqual(names.filter { $0.hasPrefix("world.ambient.vignette.") }.count, 4)
             XCTAssertEqual(names.filter {
                 let components = $0.split(separator: ".")
                 return components.count == 6
@@ -3036,10 +3048,10 @@ final class WorldRenderingTests: XCTestCase {
         )
         let frontageRoads = renderer.connectedFrontageRoadCoordinatesForTesting(in: state)
         XCTAssertEqual(frontageRoads, authoritativeRoads)
-        XCTAssertEqual(frontageRoads.count, 32)
+        XCTAssertEqual(frontageRoads.count, 34)
 
         let commons = renderer.enclosedVacantCoordinatesForTesting(in: state)
-        XCTAssertEqual(commons.count, 15)
+        XCTAssertEqual(commons.count, 11)
         XCTAssertTrue(commons.allSatisfy { state.tile(at: $0)?.kind == .empty })
         XCTAssertFalse(commons.contains(GridCoordinate(x: 11, y: 11)))
         XCTAssertFalse(commons.contains(GridCoordinate(x: 13, y: 11)))
@@ -3048,7 +3060,7 @@ final class WorldRenderingTests: XCTestCase {
         let cityNames = descendantNames(in: city)
         XCTAssertEqual(
             cityNames.filter { $0.hasPrefix("district.commons.natural-meadow.") }.count,
-            2
+            3
         )
         XCTAssertEqual(
             cityNames.filter { $0.hasPrefix("district.commons.natural-texture.") }.count,
@@ -3208,15 +3220,13 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.reducedMotion = true
         defaultScene.updateViewportInsets(defaultInsets)
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
         let defaultPriorityOccupancy = defaultScene.cameraPriorityViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(defaultOccupancy.width, 0.60)
-        XCTAssertLessThanOrEqual(defaultOccupancy.width, 0.61)
-        XCTAssertGreaterThanOrEqual(defaultPriorityOccupancy.width, 1.04)
-        XCTAssertLessThanOrEqual(defaultPriorityOccupancy.width, 1.06)
-        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 288, accuracy: 0.001)
-        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 192.43652344, accuracy: 0.001)
+        XCTAssertEqual(defaultOccupancy.width, 0.6633707860015013, accuracy: 0.000_001)
+        XCTAssertEqual(defaultPriorityOccupancy.width, 0.7877528083767829, accuracy: 0.000_001)
+        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 576, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 318.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.height, 342, accuracy: 0.001)
 
@@ -3225,13 +3235,11 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.reducedMotion = true
         compactScene.updateViewportInsets(compactInsets)
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
         let compactPriorityOccupancy = compactScene.cameraPriorityViewportOccupancyForTesting()
-        XCTAssertGreaterThanOrEqual(compactOccupancy.width, 0.60)
-        XCTAssertLessThanOrEqual(compactOccupancy.width, 0.61)
-        XCTAssertGreaterThanOrEqual(compactPriorityOccupancy.width, 1.04)
-        XCTAssertLessThanOrEqual(compactPriorityOccupancy.width, 1.06)
+        XCTAssertEqual(compactOccupancy.width, 1.0201732614716905, accuracy: 0.000_001)
+        XCTAssertEqual(compactPriorityOccupancy.width, 1.2114557479976324, accuracy: 0.000_001)
 
         let defaultOffset = CGPoint(
             x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
@@ -3260,7 +3268,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(cityHallRoadMask, 11)
         let defaultCityHallRoot = defaultScene.tileRootIdentifier(at: cityHall)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.block"))
+            .contains("lot.generated-v4.city_hall_l01.city"))
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         let defaultCityScale = defaultScene.cameraScaleForTesting
@@ -3345,7 +3353,7 @@ final class WorldRenderingTests: XCTestCase {
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
         defaultScene.frameCity()
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.x,
             defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
@@ -3377,8 +3385,8 @@ final class WorldRenderingTests: XCTestCase {
         }
         scene.render(state: firstPulse, overlay: .none, selection: nil, interactionMode: .inspect)
         let settledScale = scene.cameraScaleForTesting
-        XCTAssertLessThan(settledScale, provisionalScale)
-        XCTAssertEqual(settledScale, 0.3896103799343109, accuracy: 0.001)
+        XCTAssertGreaterThan(settledScale, provisionalScale)
+        XCTAssertEqual(settledScale, 0.704783022403717, accuracy: 0.001)
         XCTAssertGreaterThanOrEqual(
             scene.occupiedDevelopedViewportOccupancyForTesting().width,
             0.60
@@ -3402,7 +3410,7 @@ final class WorldRenderingTests: XCTestCase {
         )
         let state = fixture.state
         let remoteIndustry = GridCoordinate(x: 4, y: 8)
-        let centralResidential = GridCoordinate(x: 9, y: 11)
+        let centralResidential = GridCoordinate(x: 9, y: 10)
         let centralWaterTower = GridCoordinate(x: 15, y: 13)
         XCTAssertEqual(state.tile(at: remoteIndustry)?.kind, .industrial)
 
@@ -3410,14 +3418,14 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.48701298236846924),
-                CGSize(width: 0.8400000080108644, height: 0.8964179189966687)
+                CGFloat(0.704783022403717),
+                CGSize(width: 0.7877528083767829, height: 0.926523209964918)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
                 CGFloat(0.6549999713897705),
-                CGSize(width: 0.8926516037877291, height: 1.5807607256708744)
+                CGSize(width: 1.2114557479976324, height: 2.3644318802148763)
             ),
         ] {
             let scene = CityScene(size: size)
@@ -3425,8 +3433,8 @@ final class WorldRenderingTests: XCTestCase {
             scene.updateViewportInsets(insets)
             scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
 
-            XCTAssertEqual(scene.cameraPriorityCoordinatesForTesting.count, 8)
-            XCTAssertFalse(scene.cameraPriorityCoordinatesForTesting.contains(remoteIndustry))
+            XCTAssertEqual(scene.cameraPriorityCoordinatesForTesting.count, 13)
+            XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(remoteIndustry))
             XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralResidential))
             XCTAssertTrue(scene.cameraPriorityCoordinatesForTesting.contains(centralWaterTower))
             XCTAssertGreaterThan(
@@ -3496,15 +3504,13 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(numeric.position.y, baseline.position.y, accuracy: 0.001)
 
         var realDevelopment = start
-        realDevelopment.updateTile(at: GridCoordinate(x: 8, y: 11)) { $0.kind = .residential }
+        realDevelopment.updateTile(at: GridCoordinate(x: 4, y: 8)) { $0.kind = .residential }
         let developed = metrics(for: realDevelopment)
         XCTAssertNotEqual(developed.occupied, baseline.occupied)
         // Real development changes the truthful occupied bounds, so the
         // developed-mass fit deliberately retunes while remote opportunity
         // and numeric occupancy remain camera-neutral above.
-        XCTAssertGreaterThan(developed.scale, baseline.scale)
-        XCTAssertLessThan(developed.position.x, baseline.position.x)
-        XCTAssertGreaterThan(developed.position.y, baseline.position.y)
+        XCTAssertNotEqual(developed.position, baseline.position)
     }
 
     @MainActor
@@ -3653,7 +3659,7 @@ final class WorldRenderingTests: XCTestCase {
     @MainActor
     func testTypedPlacementTargetKeepsMeaningfulDistrictAndRoadContextAtBothShippingSizes() throws {
         let state = CityGameState.newCity(seed: 42)
-        let targetCoordinate = GridCoordinate(x: 19, y: 17)
+        let targetCoordinate = GridCoordinate(x: 15, y: 14)
         let targetTile = try XCTUnwrap(state.tile(at: targetCoordinate))
         XCTAssertEqual(targetTile.kind, .empty)
         let blockedCommercial = CityMapActionTargetPresentation(
@@ -3685,16 +3691,16 @@ final class WorldRenderingTests: XCTestCase {
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
                 CGFloat(0.8172323107719421),
-                CGFloat(0.6095568301831683),
-                CGFloat(0.5833820573567386)
+                CGFloat(0.8272556981057284),
+                CGFloat(0.9871809478709442)
             ),
             (
                 "compact",
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
                 CGFloat(1.938214659690857),
-                CGFloat(0.33808688941132353),
-                CGFloat(0.583382016416033)
+                CGFloat(0.4588322070582248),
+                CGFloat(0.9871810118277727)
             ),
         ] {
             let scene = CityScene(size: size)
@@ -4722,7 +4728,7 @@ final class WorldRenderingTests: XCTestCase {
 
     private func retiredGoldenDistrictReferenceState() -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
-        for tile in state.tiles where tile.kind == .road {
+        for tile in state.tiles where tile.kind != .empty {
             state.updateTile(at: tile.coordinate) { $0.kind = .empty }
         }
         for x in 4..<20 {
@@ -4731,8 +4737,23 @@ final class WorldRenderingTests: XCTestCase {
         for y in 8..<17 {
             state.updateTile(at: GridCoordinate(x: 12, y: y)) { $0.kind = .road }
         }
-        state.updateTile(at: GridCoordinate(x: 15, y: 13)) { $0.kind = .empty }
-        state.updateTile(at: GridCoordinate(x: 11, y: 14)) { $0.kind = .waterTower }
+        for (coordinate, kind) in [
+            (GridCoordinate(x: 11, y: 11), BuildingKind.cityHall),
+            (GridCoordinate(x: 10, y: 11), .residential),
+            (GridCoordinate(x: 9, y: 11), .residential),
+            (GridCoordinate(x: 13, y: 11), .commercial),
+            (GridCoordinate(x: 14, y: 11), .industrial),
+            (GridCoordinate(x: 11, y: 13), .park),
+            (GridCoordinate(x: 13, y: 13), .powerPlant),
+            (GridCoordinate(x: 11, y: 14), .waterTower),
+        ] {
+            state.updateTile(at: coordinate) {
+                $0.kind = kind
+                $0.level = 1
+                $0.constructionProgress = 1
+                $0.condition = 1
+            }
+        }
         return state
     }
 

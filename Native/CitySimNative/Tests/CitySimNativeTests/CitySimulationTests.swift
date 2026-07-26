@@ -321,7 +321,7 @@ final class CitySimulationTests: XCTestCase {
     @MainActor
     func testRendererInvalidatesOnlyOneChangedBuildingTile() {
         var state = CityGameState.newCity(seed: 42)
-        let target = GridCoordinate(x: 8, y: 11)
+        let target = GridCoordinate(x: 2, y: 2)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
@@ -347,9 +347,9 @@ final class CitySimulationTests: XCTestCase {
     @MainActor
     func testRendererRoadMutationInvalidatesTargetConnectedRoadAndAdjacentFrontage() {
         var state = CityGameState.newCity(seed: 42)
-        let target = GridCoordinate(x: 8, y: 11)
-        let connectedRoad = GridCoordinate(x: 8, y: 12)
-        let adjacentFrontage = GridCoordinate(x: 9, y: 11)
+        let target = GridCoordinate(x: 3, y: 11)
+        let connectedRoad = GridCoordinate(x: 4, y: 11)
+        let adjacentFrontage = GridCoordinate(x: 3, y: 10)
         let expectedUpdates: Set<GridCoordinate> = [target, connectedRoad, adjacentFrontage]
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true

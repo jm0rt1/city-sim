@@ -97,6 +97,16 @@ After its fail-closed and legacy-reproduction tests pass in one clean
 checkpoint, the six-process raw authority resumes without another scheduling
 wait. Normalization remains blocked until actual SceneKit pixels pass.
 
+Resolver checkpoint `f7e67031f5fcd222e2755a75270685c54b4bd038`
+passed exactly, but raw checkpoint
+`baa444fb3e34f8aa72c6d9ae74955b8c591eea3d` remains rejected: North differs at
+two opaque red-channel pixels and West at one, each by one quantization
+quantum. All geometry, frontage, registration, occupancy, and art-readability
+evidence passes. Integration authorizes one six-process coordinate trace under
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-SOURCE-V05-TRACE-AUTHORITY-baa444f.md`
+to bind the unstable edge samples to exact authored material roles before any
+repair. Do not relax repeat identity or normalize the rejected raws.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

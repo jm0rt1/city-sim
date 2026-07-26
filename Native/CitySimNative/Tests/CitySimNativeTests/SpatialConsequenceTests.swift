@@ -404,62 +404,62 @@ final class SpatialConsequenceTests: XCTestCase {
     func testStoryFixturesFreezeDiagnosticChannelIdentityWithoutChangingStateFingerprints() throws {
         let corpus = try ProductionStoryFixtureCorpus.build()
         let expectedDiagnosticDigests = [
-            "commercial-opening-v3":
-                "1d68a4218943f8f8bf1e4959d2731994e88a5adcc3466a66d01cc04255798e98",
-            "commercial-complication-v3":
-                "e848cf922e762e03a53abbf8b42c4f83f5f6f83ddc2d43f4885e068dbe78a76b",
-            "commercial-recovery-v3":
-                "0091590c1554125160ea04e784b688af1fe1fdf7051c638f0cf2be18bf8770b6",
-            "commercial-charter-midpoint-v3":
-                "6226d9037cbc8aee871b408b92440217b4b415f201b9bb4835a79471f05295b9",
-            "commercial-tax-relief-regional-capital-v3":
-                "38f759fbf0b04b67b9b07261d7c09f1dc22c8b5ed73fb21ea914274190d63850",
-            "commercial-public-realm-regional-capital-v3":
-                "9eb0e73c1474f7182a8caa5c16d4f552970a14572292db06ac0df7add4e6b63f",
+            "commercial-opening-v4":
+                "362679c053057b7cce596b2ace390d3772875a492f5bee3cd48bf1997c4773a2",
+            "commercial-complication-v4":
+                "26ac048aa9c5003c247cd03f70423c74fa7cf2297a7d7085758bd6c834303ce5",
+            "commercial-recovery-v4":
+                "79add2062d6648b5d208f01bc4847897b71166923e8f6f8938de45f0dea576d1",
+            "commercial-charter-midpoint-v4":
+                "a688688cccc66f09c94c8d63024ba16982b0349adfb81942c9d974e35515dc3a",
+            "commercial-tax-relief-regional-capital-v4":
+                "731c99bdb65ce4b6b139686fe0c6df7288c808abf62cebc7ea7a389ef9ecef52",
+            "commercial-public-realm-regional-capital-v4":
+                "8536d04243be80a40cea277799e0c17f25568d5890a4d8235a76961703198260",
             "commercial-charter-victory-v1":
                 "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
-            "industrial-opening-v3":
-                "ad825abf41405fb2864ae5bb800ceebdf6eb9560fca0f820582504940837a9c3",
-            "industrial-complication-v3":
-                "4877a909eadfaefa862631adee0d1f4ed38073121db01e6bdc643a6a0c5622ef",
-            "industrial-recovery-v3":
-                "dda222e3c3d14e724f4cc841f4a414a45365141f967c58802455f69de9431414",
-            "industrial-charter-midpoint-v3":
-                "258276ebb3343f46bee74a72444edc662f764d0a1e7b9432502cf7b02c302893",
-            "industrial-utility-expansion-regional-capital-v3":
-                "450f6caef57cf3501ebfa863c9aa418eeacafc6eb86be5df2aa6e45ef3846354",
-            "industrial-green-buffer-regional-capital-v3":
-                "8bb17688dcc1c61d904db131200988001bfb1252d9ebd97aa23e2d9893398194",
+            "industrial-opening-v4":
+                "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
+            "industrial-complication-v4":
+                "3fb13431b5082079dde08cd0b367f874632fe5564b20cdf71c1bf82b85b4c25e",
+            "industrial-recovery-v4":
+                "5bfd3e9463034be29f54630fe1969262369888d3b01152596fcb35c6956cece6",
+            "industrial-charter-midpoint-v4":
+                "34aba895cdb311a53e238a72e9da1526045ff1cb2aca7fa550773c8019b58316",
+            "industrial-utility-expansion-regional-capital-v4":
+                "19658b83e3c86279f2ec952568b523760a1ee73720146ef7f6981067daf7c82b",
+            "industrial-green-buffer-regional-capital-v4":
+                "6852c414c76436f6b454d95c7511c15bbdba4bfecbf780daaa8ac3400fc14470",
             "industrial-charter-victory-v1":
                 "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
         ]
         let expectedActivityDigests = [
-            "commercial-opening-v3":
-                "7aabdf91130f15a63faad21b107944a263fff00060fb74120a2d530fb1ae8dba",
-            "commercial-complication-v3":
-                "22c7346580424e8d09682f7b3b0264606ac2c743869c95a612a53a9df550710e",
-            "commercial-recovery-v3":
-                "5cccefea9b9a8235baa0f7c92a8ee1c6fe28ae9afa056142bd5112e9c6070651",
-            "commercial-charter-midpoint-v3":
-                "783cc75ae88f7dbac769390baaa861cbb6757e499c7aea1b58c8d7dc2620ed80",
-            "commercial-tax-relief-regional-capital-v3":
-                "97277a2a9cbd23c1c6eccaa37c63b862ffc3d949db9bed5e447070ae5fd7b0bc",
-            "commercial-public-realm-regional-capital-v3":
-                "4b55fe14a985fbae26a350367247a302ece0e97df04e80bbe99e8a139b863611",
+            "commercial-opening-v4":
+                "409980357ab76a2f07d77855f3a37fd8568f5f6269524e1eb5e61ea5f1b0886a",
+            "commercial-complication-v4":
+                "dd617de9d484f44480224316c1cbe6b854d26a44f0466fd84cfbabb1f5e31a5a",
+            "commercial-recovery-v4":
+                "9033aca3cf076c09b724667a227f323cf1a5c411e160cfe159de9a815e05cbad",
+            "commercial-charter-midpoint-v4":
+                "70d41f14ed16079aaa93cd0fd9ed533747dea1fe6c1e01c3e8e67a2710ad224d",
+            "commercial-tax-relief-regional-capital-v4":
+                "5ac5c6bcc4c2587a7b0fc5dc1c8c67d789e9706635404796ecf5f5761eeebf39",
+            "commercial-public-realm-regional-capital-v4":
+                "c41c9b9084ed2e0c86ba13794c0828d44bd3fb0c86cf7227599cd67cee9e64fb",
             "commercial-charter-victory-v1":
                 "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
-            "industrial-opening-v3":
-                "3cec89d4698e4f986f5ad1a49de7575170ada9175a9eb04172d4c2169b71e1ca",
-            "industrial-complication-v3":
-                "5bad93ab73998e6c7345627d50f874912cd7b205a101407aff0e92b2c226aff7",
-            "industrial-recovery-v3":
-                "3596b6a54bbe57fe0d2c61ad8923477ada7206dd0dea0ebca897a81c063d1614",
-            "industrial-charter-midpoint-v3":
-                "1f274175e2c169b0109d6742b4b7be2928ec127ca84fc12e7b7c1a8ff014adc1",
-            "industrial-utility-expansion-regional-capital-v3":
-                "84ae4028741a29f28fb85d2eeb2274812450575cb2ec4542616c3db25a07a9b1",
-            "industrial-green-buffer-regional-capital-v3":
-                "996fc4156139cf1422b59d98708de32d00d4174ac4007a106d4d8715873bdc4e",
+            "industrial-opening-v4":
+                "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
+            "industrial-complication-v4":
+                "be62fcfe3e1d162e839f6cf753c11dec6585cdf09b48bb0c3303baea8e296d4e",
+            "industrial-recovery-v4":
+                "a7a1f04cfe4cf1d19b48cadf841209fa25a2bcb899cecddb93e503bef564eb6e",
+            "industrial-charter-midpoint-v4":
+                "f0dc8c72b05cb72d4d397cffc3ffc9950dca7c12bf81994c2cb4159ce6207a19",
+            "industrial-utility-expansion-regional-capital-v4":
+                "a2cf23660460609063a96ecc071cb276832eb0d1edd22c711eda2adeb0134dd7",
+            "industrial-green-buffer-regional-capital-v4":
+                "acbe8479d368a05596aa30a89f0df4bb820a2a7b9b71a18b6ec2758a6aebe7e6",
             "industrial-charter-victory-v1":
                 "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
         ]
@@ -743,7 +743,7 @@ final class SpatialConsequenceTests: XCTestCase {
         let beforeState = store.state
         let before = try CityPresentationSnapshot(state: beforeState)
         store.selectTool(.residential)
-        store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+        store.primaryAction(at: GridCoordinate(x: 4, y: 8))
         store.undoLastAction()
         let undoneState = store.state
         let undone = try CityPresentationSnapshot(state: undoneState)
@@ -947,7 +947,7 @@ final class SpatialConsequenceTests: XCTestCase {
 
     private func strategyState(kind: BuildingKind) -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
-        state.updateTile(at: GridCoordinate(x: 8, y: 11)) {
+        state.updateTile(at: GridCoordinate(x: 4, y: 8)) {
             $0.kind = kind
             $0.occupancy = CitySimulation.jobCapacity(for: kind)
         }

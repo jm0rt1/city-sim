@@ -4,12 +4,13 @@ import XCTest
 
 final class VisibleCityStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/VisibleCityStates"
-    private static let manifestFile = "visible-city-states-manifest-v2.json"
+    private static let manifestFile = "visible-city-states-manifest-v3.json"
+    private static let play072ManifestFile = "visible-city-states-manifest-v2.json"
     private static let e380ManifestFile = "visible-city-states-manifest-v1.json"
 
     func testWriteFixtureCorpusOnlyWhenExplicitlyRequested() throws {
         guard let rootPath = ProcessInfo.processInfo.environment[
-            "CITYSIM_PLAY072_WRITE_FIXTURES"
+            "CITYSIM_PLAY078_WRITE_FIXTURES"
         ],
         !rootPath.isEmpty else {
             return
@@ -20,7 +21,7 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         let root = URL(filePath: rootPath, directoryHint: .isDirectory)
         try first.write(to: root)
         print(
-            "PLAY072_FIXTURE_WRITE root=\(root.path) " +
+            "PLAY078_FIXTURE_WRITE root=\(root.path) " +
             "fixtures=\(first.artifacts.count) manifest=\(Self.manifestFile)"
         )
     }
@@ -38,8 +39,8 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         XCTAssertEqual(first.manifest.fixtures.count, 14)
         XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 14)
         XCTAssertTrue(first.artifacts.allSatisfy {
-            $0.definition.id.hasSuffix("-v2")
-                && $0.definition.file.hasSuffix("-v2.json")
+            $0.definition.id.hasSuffix("-v3")
+                && $0.definition.file.hasSuffix("-v3.json")
         })
         for strategy in [CityStrategy.commercialStewardship, .industrialExpansion] {
             XCTAssertEqual(
@@ -103,14 +104,14 @@ final class VisibleCityStateFixtureTests: XCTestCase {
                 entry.id
             )
             print(
-                "PLAY072_MATRIX id=\(entry.id) tick=\(entry.tick) " +
+                "PLAY078_MATRIX id=\(entry.id) tick=\(entry.tick) " +
                 "state=\(entry.expectedStateDigest) spatial=\(entry.spatialDigest) " +
                 "diagnostics=\(entry.diagnosticDigest) activity=\(entry.activityDigest) " +
                 "file=\(entry.fileSHA256) bytes=\(entry.byteCount)"
             )
         }
         print(
-            "PLAY072_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
+            "PLAY078_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
             "generation_two_ms=\(metric(secondMilliseconds)) fixtures=14"
         )
     }
@@ -136,6 +137,32 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         XCTAssertEqual(manifest.schemaVersion, 1)
         XCTAssertEqual(manifest.fingerprintVersion, 1)
         XCTAssertEqual(manifest.fixtures.count, 14)
+
+        for entry in manifest.fixtures {
+            let bytes = try resourceData(file: entry.file)
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                entry.fileSHA256,
+                entry.id
+            )
+            XCTAssertEqual(bytes.count, entry.byteCount, entry.id)
+        }
+    }
+
+    func testPlay072V2CorpusRemainsByteExact() throws {
+        let manifestData = try resourceData(file: Self.play072ManifestFile)
+        XCTAssertEqual(
+            ProductionStoryFixtureCorpus.sha256(manifestData),
+            "babc84514ccae064f3d1b856868ef14a4bc0d54e3477597b24e41349601a5eeb"
+        )
+        let manifest = try JSONDecoder().decode(
+            VisibleCityFixtureManifest.self,
+            from: manifestData
+        )
+        XCTAssertEqual(manifest.fixtures.count, 14)
+        XCTAssertEqual(manifest.schemaVersion, 1)
+        XCTAssertEqual(manifest.fingerprintVersion, 1)
+        XCTAssertEqual(manifest.seed, 42)
 
         for entry in manifest.fixtures {
             let bytes = try resourceData(file: entry.file)
@@ -416,7 +443,7 @@ final class VisibleCityStateFixtureTests: XCTestCase {
                 XCTAssertEqual(try Data(contentsOf: service.backupURL), bytes, entry.id)
 
                 print(
-                    "PLAY072_BUDGET id=\(entry.id) bytes=\(entry.byteCount) " +
+                    "PLAY078_BUDGET id=\(entry.id) bytes=\(entry.byteCount) " +
                     "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
                     "snapshot_ms=\(metric(snapshotMilliseconds)) " +
                     "save_ms=\(metric(saveMilliseconds)) " +
@@ -447,6 +474,16 @@ final class VisibleCityStateFixtureTests: XCTestCase {
                 subdirectory: "Fixtures/StoryStates",
                 file: "story-states-manifest-v2.json",
                 sha256: "a793dc9ea5cfc50b7482fb7f4bf4e7a3a3c5e9cfb1cad6e47722fc17cbf22153"
+            ),
+            (
+                subdirectory: "Fixtures/StoryStates",
+                file: "story-states-manifest-v3.json",
+                sha256: "bb27da325a259eb4186c54a749e6eb0391731a7f277860103099813ded7fba69"
+            ),
+            (
+                subdirectory: "Fixtures/StoryStates",
+                file: "story-states-manifest-v4.json",
+                sha256: "cfbff099a9064f83cbf1a279987722191ec23acc1f03b915bba816169543003a"
             ),
         ]
 
@@ -527,7 +564,7 @@ final class VisibleCityStateFixtureTests: XCTestCase {
             saveService: saveService
         )
         store.selectTool(.commercial)
-        store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+        store.primaryAction(at: GridCoordinate(x: 4, y: 8))
         return store
     }
 
@@ -578,7 +615,7 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         _ body: (URL) throws -> T
     ) throws -> T {
         let root = FileManager.default.temporaryDirectory.appending(
-            path: "citysim-play072-\(id)-\(UUID().uuidString)",
+            path: "citysim-play078-\(id)-\(UUID().uuidString)",
             directoryHint: .isDirectory
         )
         defer { try? FileManager.default.removeItem(at: root) }

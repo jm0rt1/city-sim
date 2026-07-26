@@ -4,7 +4,8 @@ import XCTest
 
 final class ProductionStoryStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/StoryStates"
-    private static let currentManifestFile = "story-states-manifest-v3.json"
+    private static let currentManifestFile = "story-states-manifest-v4.json"
+    private static let play072ManifestFile = "story-states-manifest-v3.json"
     private static let play069ManifestFile = "story-states-manifest-v2.json"
     private static let legacyManifestFile = "story-states-manifest-v1.json"
 
@@ -17,7 +18,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
 
     func testWriteCurrentFixtureCorpusOnlyWhenExplicitlyRequested() throws {
         guard let rootPath = ProcessInfo.processInfo.environment[
-            "CITYSIM_PLAY072_WRITE_STORY_FIXTURES"
+            "CITYSIM_PLAY078_WRITE_STORY_FIXTURES"
         ],
         !rootPath.isEmpty else {
             return
@@ -30,7 +31,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         let root = URL(filePath: rootPath, directoryHint: .isDirectory)
         try first.write(to: root)
         print(
-            "PLAY072_STORY_FIXTURE_WRITE root=\(root.path) fixtures=\(first.artifacts.count) " +
+            "PLAY078_STORY_FIXTURE_WRITE root=\(root.path) fixtures=\(first.artifacts.count) " +
             "manifest=\(Self.currentManifestFile)"
         )
     }
@@ -145,6 +146,32 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         }
     }
 
+    func testPlay072V3CorpusRemainsByteExact() throws {
+        let manifestData = try resourceData(file: Self.play072ManifestFile)
+        XCTAssertEqual(
+            ProductionStoryFixtureCorpus.sha256(manifestData),
+            "bb27da325a259eb4186c54a749e6eb0391731a7f277860103099813ded7fba69"
+        )
+        let manifest = try JSONDecoder().decode(
+            ProductionStoryFixtureManifestV2.self,
+            from: manifestData
+        )
+        XCTAssertEqual(manifest.fixtures.count, 12)
+        XCTAssertEqual(manifest.schemaVersion, 1)
+        XCTAssertEqual(manifest.fingerprintVersion, 1)
+        XCTAssertEqual(manifest.seed, 42)
+
+        for entry in manifest.fixtures {
+            let bytes = try resourceData(file: entry.file)
+            XCTAssertEqual(
+                ProductionStoryFixtureCorpus.sha256(bytes),
+                entry.fileSHA256,
+                entry.id
+            )
+            XCTAssertEqual(bytes.count, entry.byteCount, entry.id)
+        }
+    }
+
     func testCurrentCorpusMatchesTwoIndependentBuildsAndManifest() throws {
         let firstStart = ProcessInfo.processInfo.systemUptime
         let first = try ProductionStoryFixtureCorpus.build()
@@ -158,8 +185,8 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         XCTAssertEqual(first.manifest.fixtures.count, 12)
         XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 12)
         XCTAssertTrue(first.artifacts.allSatisfy {
-            $0.definition.id.hasSuffix("-v3")
-                && $0.definition.file.hasSuffix("-v3.json")
+            $0.definition.id.hasSuffix("-v4")
+                && $0.definition.file.hasSuffix("-v4.json")
         })
         XCTAssertEqual(
             first.artifacts.filter { $0.definition.stage == .charterMidpoint }.count,
@@ -219,7 +246,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         }
 
         print(
-            "PLAY072_STORY_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
+            "PLAY078_STORY_CORPUS generation_one_ms=\(metric(firstMilliseconds)) " +
             "generation_two_ms=\(metric(secondMilliseconds)) fixtures=12"
         )
     }
@@ -498,7 +525,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertLessThan(loadMilliseconds, 1_500, entry.id)
 
                 print(
-                    "PLAY072_STORY_FIXTURE id=\(entry.id) tick=\(entry.tick) " +
+                    "PLAY078_STORY_FIXTURE id=\(entry.id) tick=\(entry.tick) " +
                     "bytes=\(entry.byteCount) digest=\(entry.expectedStateDigest) " +
                     "spatial=\(entry.spatialDigest) " +
                     "fingerprint_ms=\(metric(fingerprintMilliseconds)) " +
@@ -587,7 +614,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
             saveService: saveService
         )
         store.selectTool(.commercial)
-        store.primaryAction(at: GridCoordinate(x: 8, y: 11))
+        store.primaryAction(at: GridCoordinate(x: 4, y: 8))
         return store
     }
 

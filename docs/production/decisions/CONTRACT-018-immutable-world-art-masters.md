@@ -95,6 +95,31 @@ master above and may continue the frozen v02 E/S/W raw gate. This authority
 does not accept the four-direction family, authorize Industrial L4, select
 production art, or permit shipping ingestion.
 
+After North normalization reproduced exactly, East completed three fresh v02
+processes at clean checkpoint
+`ebb0f49d81cc103203382626aef82aa6a70d9f34`. All retained complete volume,
+alpha, occupancy, registration, and four-bay road-facing frontage. Runs A and
+C differed by five opaque RGB pixels; the larger B variation remained confined
+to the registered campus edge and did not change geometry or visibility.
+Integration independently reviewed the full retained attempts and names East
+run A as the immutable master:
+
+- source file:
+  `docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/east/run-a/raw.png`
+- file SHA-256:
+  `5dd2999ad2916a8ccddcf91954e54d1dfcf1139f78977d05d738c3dbfff4b9af`
+- decoded RGBA SHA-256:
+  `29b0f59bad27c4c8e9918e5544ab712d4e35d5acb056a31be2f2e0d71081f4d6`
+- frozen scene descriptor SHA-256:
+  `dbe0dd260d28d848864d4194826f5147ec91314cf75b95bff9349bbfe466342c`
+- frozen material library SHA-256:
+  `3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e`
+
+Industrial L3 South and West retain the normal CONTRACT-011 repeat-render
+gate. World Art may normalize East twice only from the exact master above and
+continue the frozen v02 South/West raw gate. The North and East exceptions do
+not accept the four-direction family or broaden any other authority.
+
 ## Stop conditions
 
 Stop on any raw-master hash drift, missing provenance, changed visual

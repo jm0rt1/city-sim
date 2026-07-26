@@ -23,9 +23,9 @@ enum IndustrialL2EastV04ProbeError: Error, CustomStringConvertible {
 }
 
 private let v04ProbeApprovedCommit =
-    "08e9f3ab669caf41af24f910e3d673d96cbb2cd9"
+    "f3bcdb882ed00d5ca241840c77ae057f152a297f"
 private let v04ProbeDescriptorSHA256 =
-    "9f9e0a61a2fd0a1fbe18304a1b32a803447b7aa4f03d22d27f349cd2b7088ad6"
+    "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0"
 private let v04ProbeMaterialSHA256 =
     "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
 private let v04ProbeGeometrySHA256 =
@@ -33,7 +33,7 @@ private let v04ProbeGeometrySHA256 =
 private let v04ProbeAlphaContractSHA256 =
     "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9"
 private let v04ProbeValidationReplaySHA256 =
-    "07c2b605520898abd547e53fae2582d75e04957e56ab699484c372ec512d6072"
+    "4d7da7268dc39e5bf6b35671f4ec4df73c0991cd8c496ae79a7f50a313449e2a"
 private let v04ProbeV03RawSHA256 =
     "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba"
 private let v04ProbeV03ProvenanceSHA256 =

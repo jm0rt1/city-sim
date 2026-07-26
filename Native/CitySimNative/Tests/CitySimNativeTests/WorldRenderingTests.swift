@@ -3679,20 +3679,22 @@ final class WorldRenderingTests: XCTestCase {
             )
         )
 
-        for (label, size, insets, expectedDistrictWidthRatio, expectedDistrictHeightRatio) in [
+        for (label, size, insets, expectedScale, expectedDistrictWidthRatio, expectedDistrictHeightRatio) in [
             (
                 "regular",
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.5175330893191646),
-                CGFloat(0.6223404050116202)
+                CGFloat(0.8172323107719421),
+                CGFloat(0.6095568301831683),
+                CGFloat(0.5833820573567386)
             ),
             (
                 "compact",
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
-                CGFloat(0.2966171419591169),
-                CGFloat(0.6381585861569213)
+                CGFloat(1.938214659690857),
+                CGFloat(0.33808688941132353),
+                CGFloat(0.583382016416033)
             ),
         ] {
             let scene = CityScene(size: size)
@@ -3926,6 +3928,12 @@ final class WorldRenderingTests: XCTestCase {
             let districtSafeWidthRatio = visibleDistrict.width / safeRect.width
             let districtSafeHeightRatio = visibleDistrict.height / safeRect.height
             XCTAssertEqual(
+                scene.cameraScaleForTesting,
+                expectedScale,
+                accuracy: 0.000_001,
+                "\(label) contextual scale drifted"
+            )
+            XCTAssertEqual(
                 districtSafeWidthRatio,
                 expectedDistrictWidthRatio,
                 accuracy: 0.000_001,
@@ -3939,17 +3947,17 @@ final class WorldRenderingTests: XCTestCase {
             )
             XCTAssertGreaterThanOrEqual(
                 districtSafeWidthRatio,
-                0.25,
+                label == "compact" ? 0.33 : 0.50,
                 "\(label) district safe-width ratio=\(districtSafeWidthRatio)"
             )
             XCTAssertGreaterThanOrEqual(
                 districtSafeHeightRatio,
-                0.25,
+                0.50,
                 "\(label) district safe-height ratio=\(districtSafeHeightRatio)"
             )
             XCTAssertLessThan(
                 scene.cameraScaleForTesting,
-                2.2,
+                2.0,
                 "\(label) remote target must retain readable district context"
             )
             XCTAssertTrue(scene.activeTargetContextBoundsForTesting.contains(targetBounds))

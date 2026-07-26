@@ -810,15 +810,33 @@ final class CityScene: SKScene {
             return
         }
 
-        var contextBounds = composition.cameraPriority.union(targetBounds)
+        // Fit the occupied district mass rather than every remote road extent.
+        // A remote target needs a meaningful district anchor, not every far
+        // roof edge. Trim less than one tile from the district edge opposite
+        // the target; the intervening authoritative network remains rendered.
+        var districtContextBounds = composition.occupiedDeveloped
+        let farEdgeTrim = min(
+            tileHeight * 0.9,
+            districtContextBounds.height * 0.2
+        )
+        if targetBounds.midY < districtContextBounds.midY {
+            districtContextBounds.size.height -= farEdgeTrim
+        } else {
+            districtContextBounds.origin.y += farEdgeTrim
+            districtContextBounds.size.height -= farEdgeTrim
+        }
+        var contextBounds = districtContextBounds.union(targetBounds)
         if let roadFrontierBounds {
             contextBounds = contextBounds.union(roadFrontierBounds)
         }
 
         let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
         let safeHeight = max(1, size.height - viewportInsets.top - viewportInsets.bottom)
-        let horizontalWorldPadding = tileWidth * 1.25 * 2 + 20
-        let verticalWorldPadding = tileHeight * 1.75 * 2 + 16
+        // Account exactly for the safe-viewport tile guard. Both ground
+        // diamonds are already part of `contextBounds`, so adding more world
+        // margin here would only miniaturize the district.
+        let horizontalWorldPadding = tileWidth * 1.25 * 2 + 8
+        let verticalWorldPadding = tileHeight * 1.75 * 2 + 8
         let requiredScale = max(
             (contextBounds.width + horizontalWorldPadding) / safeWidth,
             (contextBounds.height + verticalWorldPadding) / safeHeight

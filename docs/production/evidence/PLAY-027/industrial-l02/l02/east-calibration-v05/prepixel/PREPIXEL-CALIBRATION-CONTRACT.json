@@ -12,8 +12,8 @@
   "disposition" : "PREPIXEL_REVIEW_CANDIDATE",
   "frozenIdentity" : {
     "canonicalGeometrySHA256" : "6c727c4b7053d69578e97c2f73cf3054cd2dda106bf06625e0dac12a356798fb",
-    "descriptorSHA256" : "1c2a2bd26ab4bb686284709cc367c56724f65b561c1e3ceccf846f89aaaddffe",
-    "materialLibrarySHA256" : "28a56b032dfb6e6a9c8a9986591269d2dd988b152d3a59a4eb35a24bb3d3b9c1",
+    "descriptorSHA256" : "473b8260ca6ce592c9a95cee4ce6ba576ec13902ea6badeac5fc6362b734f2e3",
+    "materialLibrarySHA256" : "b98a6d84126aa209dff8ed48a51e6edd27091448d979a096011f256e93d81e82",
     "orientationTransform" : "none",
     "sceneGeometryID" : "industrial-l02-east-wide-low-capable-campus-geometry-v05",
     "siblingSource" : false

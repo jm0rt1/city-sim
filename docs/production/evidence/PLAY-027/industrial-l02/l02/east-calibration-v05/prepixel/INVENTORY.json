@@ -1,12 +1,18 @@
 {
   "artInputs": {
-    "descriptorSHA256": "1c2a2bd26ab4bb686284709cc367c56724f65b561c1e3ceccf846f89aaaddffe",
-    "materialLibrarySHA256": "28a56b032dfb6e6a9c8a9986591269d2dd988b152d3a59a4eb35a24bb3d3b9c1"
+    "descriptorSHA256": "473b8260ca6ce592c9a95cee4ce6ba576ec13902ea6badeac5fc6362b734f2e3",
+    "materialLibrarySHA256": "b98a6d84126aa209dff8ed48a51e6edd27091448d979a096011f256e93d81e82"
   },
   "binarySHA256": {
-    "calibrationBuilder": "feb2b8ccb4962c051e0dedc8b73446f7bc0dfc37c5c2fedc07f7663c2c99103b",
-    "panelBuilder": "d8966665b16e7f7ab97c26779ebf8a0795a87397e7fcbad1df6a31cda73dd30a",
+    "calibrationBuilder": "5a652b00385a5de9ad1eb9a4fb74be80a7c19d13440286653c060ff26d2d948a",
+    "panelBuilder": "c69a6bf6113c34305437a9b13cfb6db6e64c8fdf1e5b6411a27e8ec8e3a4cb2e",
     "structuralValidator": "1664a589f2d79e2bfe27fc99d930f893042d10c2da7eee756e9cba660f13e925"
+  },
+  "decoderCompletenessRepair": {
+    "geometryChanged": false,
+    "materialValuesChanged": false,
+    "requiredFamilyAnchorPresent": true,
+    "requiredStyleAnchorPresent": true
   },
   "deterministicReplay": {
     "artTreeByteIdentical": true,
@@ -15,9 +21,9 @@
     "replayRoot": "/private/tmp/play027-v05-replay-root"
   },
   "evidenceSHA256": {
-    "contract": "66ec038a5a8443fdc66f06879f7c1ed11a632f1593c5928077300ce52f6f1a11",
+    "contract": "1ef696f159e22f2b7e27361c7434f608440a0830a9541ec07150caa24df3ce17",
     "prepixelReviewRequest": "c5dfcb71c42702ad0c94637d38cb119e907c6a91e45c128e9c6eec58b0bb7092",
-    "prepixelValidation": "614970c87d3e14c295668c6561087ebcb0303d1641e596c6dec6df30e7d3b4a3",
+    "prepixelValidation": "87285e46860fe6d97e8353b21b90ea692488421132835d82cc9baf03765b4738",
     "structuralBoundaryValidation": "f1d521a01b171ebf14830fc3a52f4d0c34c47994c64986e36fd69bd5966dffac"
   },
   "panels": {
@@ -33,8 +39,8 @@
   "schema": 1,
   "sourceAuthorityPixels": false,
   "sourceSHA256": {
-    "calibrationBuilder": "3c746627d25e9af4a7591268a36e30b86e886226d05ee6dd98bdfdc0102d3051",
-    "panelBuilder": "13dc0b79c71593fbd1ea5f79b7bbda756a967381ad6e01bdb4ffc2515aedbeb0",
+    "calibrationBuilder": "293b7e0b4183e99cf45076b52c33d6fefca20a8d3be99bb398bf552c673e0209",
+    "panelBuilder": "fe89836bc0ec80c27712843b107213513b3a499b6dccfc49b8092b95b81748d0",
     "structuralValidator": "8fa0fcff81b7876cdfa217acf579bbb414a438303c568b742e45dac7a2a9475e"
   },
   "task": "PLAY-027",

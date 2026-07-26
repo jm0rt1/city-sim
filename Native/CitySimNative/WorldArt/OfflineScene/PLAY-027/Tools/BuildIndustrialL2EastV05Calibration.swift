@@ -686,6 +686,14 @@ enum BuildIndustrialL2EastV05CalibrationMain {
             "colorSpace": "extended-sRGB",
             "source":
                 "task-owned numeric material hierarchy derived from v04; no ImageGen or raster swatch",
+            "styleAnchorFile":
+                "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+            "styleAnchorSHA256":
+                "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+            "familyAnchorFile":
+                "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+            "familyAnchorSHA256":
+                "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
             "imageGenMaterialSwatchesUsed": false,
             "productionSelected": false,
             "materials": v05Materials,

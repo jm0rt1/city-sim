@@ -746,7 +746,7 @@
   "materialLibrary" : {
     "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v05/materials/industrial-l02-east-calibration-v05.json",
     "role" : "industrial-l02-east-readable-logistics-and-manufacturing-v05",
-    "sha256" : "28a56b032dfb6e6a9c8a9986591269d2dd988b152d3a59a4eb35a24bb3d3b9c1"
+    "sha256" : "b98a6d84126aa209dff8ed48a51e6edd27091448d979a096011f256e93d81e82"
   },
   "occlusionExclusions" : [
     {

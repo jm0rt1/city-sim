@@ -136,29 +136,23 @@ final class LotRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        let selectedFrontage = residentialIdentity?.frontage
-            ?? commercialIdentity?.frontage
-            ?? industrialL1Identity?.frontage
-            ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
-                where: adjacentRoads.contains
-            )
-        addCityDensityFoundation(
-            for: tile,
-            selectedFrontage: selectedFrontage,
-            to: cityLayer
-        )
+        addCityDensityFoundation(for: tile.kind, to: cityLayer)
         addAuthoredFrontage(
-            for: tile,
+            for: tile.kind,
             adjacentRoads: adjacentRoads,
-            selectedEdge: selectedFrontage,
+            selectedEdge: residentialIdentity?.frontage
+                ?? commercialIdentity?.frontage
+                ?? industrialL1Identity?.frontage,
             detail: detail,
-            to: cityLayer
+            to: neighborhoodLayer
         )
         if presentation.construction == .complete || presentation.construction == .finishing {
             contextRenderer.addContext(
                 for: tile,
                 adjacentRoads: adjacentRoads,
-                selectedFrontage: selectedFrontage,
+                selectedFrontage: residentialIdentity?.frontage
+                    ?? commercialIdentity?.frontage
+                    ?? industrialL1Identity?.frontage,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
                 block: blockLayer
@@ -360,12 +354,7 @@ final class LotRenderer {
         if !identity.children.isEmpty { node.addChild(identity) }
     }
 
-    private func addCityDensityFoundation(
-        for tile: CityTile,
-        selectedFrontage: RoadConnectionMask?,
-        to node: SKNode
-    ) {
-        let kind = tile.kind
+    private func addCityDensityFoundation(for kind: BuildingKind, to node: SKNode) {
         let fill: NSColor
         let size: CGSize
         switch kind {
@@ -384,29 +373,14 @@ final class LotRenderer {
         case .empty, .road:
             return
         }
-        let materialVariant = LotContextRenderer.districtMaterialVariant(for: tile)
-        let shadow = SKShapeNode(path: style.diamondPath(
-            width: size.width + 1.5,
-            height: size.height + 0.75
-        ))
-        shadow.name = "lot.ground.contact.\(kind.rawValue).\(materialVariant)"
-        shadow.fillColor = NSColor.black.withAlphaComponent(0.16)
-        shadow.strokeColor = .clear
-        shadow.position = CGPoint(x: 1.5, y: -1.35)
-        shadow.zPosition = kind == .park ? -5.4 : -3.8
-        node.addChild(shadow)
-
         let foundation = SKShapeNode(path: style.diamondPath(
             width: size.width,
             height: size.height
         ))
         foundation.name = "lot.lod.city.mass.\(kind.rawValue)"
-        foundation.fillColor = fill.blended(
-            withFraction: CGFloat(materialVariant) * 0.035,
-            of: style.palette.concreteLight
-        )?.withAlphaComponent(0.90) ?? fill.withAlphaComponent(0.90)
-        foundation.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.18)
-        foundation.lineWidth = 0.55
+        foundation.fillColor = fill.withAlphaComponent(0.88)
+        foundation.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.42)
+        foundation.lineWidth = 0.9
         // The generated park is a ground-and-vegetation composition whose
         // authored depth role is intentionally below building structures.
         // Keeping the generic density plate above it hid the fountain,
@@ -415,42 +389,6 @@ final class LotRenderer {
         // composition; structure families retain their prior depth.
         foundation.zPosition = kind == .park ? -5.2 : -3.4
         node.addChild(foundation)
-
-        let rearEdge = parcelRearEdgePath(
-            width: size.width,
-            height: size.height,
-            excluding: selectedFrontage
-        )
-        let materialEdge = SKShapeNode(path: rearEdge)
-        materialEdge.name = "lot.ground.material-edge.\(kind.rawValue).\(materialVariant)"
-        materialEdge.strokeColor = style.palette.concreteLight.withAlphaComponent(0.20)
-        materialEdge.lineWidth = 0.75
-        materialEdge.lineCap = .round
-        materialEdge.zPosition = foundation.zPosition + 0.1
-        node.addChild(materialEdge)
-    }
-
-    private func parcelRearEdgePath(
-        width: CGFloat,
-        height: CGFloat,
-        excluding frontage: RoadConnectionMask?
-    ) -> CGPath {
-        let north = CGPoint(x: 0, y: height / 2)
-        let east = CGPoint(x: width / 2, y: 0)
-        let south = CGPoint(x: 0, y: -height / 2)
-        let west = CGPoint(x: -width / 2, y: 0)
-        let edges: [(RoadConnectionMask, CGPoint, CGPoint)] = [
-            (.north, west, north),
-            (.east, north, east),
-            (.south, east, south),
-            (.west, south, west),
-        ]
-        let path = CGMutablePath()
-        for (edge, start, end) in edges where edge != frontage {
-            path.move(to: start)
-            path.addLine(to: end)
-        }
-        return path
     }
 
     private func addStrategyGround(
@@ -467,13 +405,12 @@ final class LotRenderer {
     }
 
     private func addAuthoredFrontage(
-        for tile: CityTile,
+        for kind: BuildingKind,
         adjacentRoads: RoadConnectionMask,
         selectedEdge: RoadConnectionMask?,
         detail _: CameraDetailLevel,
         to node: SKNode
     ) {
-        let kind = tile.kind
         let family: String?
         switch kind {
         case .residential: family = "residential"
@@ -496,19 +433,7 @@ final class LotRenderer {
             return
         }
         let endpoint = style.roadSocket(for: edge, overreach: 0.75)
-        let entrance: CGPoint
-        switch kind {
-        case .residential, .commercial:
-            entrance = style.roadSocket(for: edge, overreach: -7.5)
-        case .industrial where tile.level == 1:
-            entrance = style.roadSocket(for: edge, overreach: -7.5)
-        default:
-            // The accepted civic, utility, park, and service sources retain a
-            // south-authored entrance socket. Their route may curve through the
-            // real parcel to any authoritative adjoining road, but the bitmap is
-            // never rotated, mirrored, or assigned a new frontage.
-            entrance = CGPoint(x: 0, y: -13.5)
-        }
+        let entrance = CGPoint(x: 0, y: -13.5)
         let path = CGMutablePath()
         path.move(to: entrance)
         path.addQuadCurve(

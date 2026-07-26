@@ -19,14 +19,16 @@ and QA to become competing writers.
   `5e019c3e7b7992cabeae179641a0f6748a971666`; the clean renderer lane may now
   synchronize and ingest only that exact N/E/S/W family.
 - **Current source priority:** Industrial L3 source production is complete.
-  Industrial L4 remains unauthorized until R2 publishes or is explicitly
-  deferred. World Art may prepare no L4 pixels in the interim.
+  User-authorized Industrial L4 source production may run ahead now under
+  `WAVE-011-WORLD-ART-COHESION-PROGRAM.md`; R3 shipping ingestion remains
+  blocked until R2 publishes or is explicitly deferred.
 - **Parallel work:** PLAY-078 completed its additive denser-opening adoption
   at `53ab9de79b923c588f9d6cd82788ec4f11cc4d80` and is included in the accepted
   R1 product. No simulation writer delays R2.
 - **Reprioritized:** PLAY-073 composition remains behind the reserved R2/R3
-  batches; Industrial L4 remains behind R2; expanded duplicate worker-side
-  full-suite and staged journeys remain replaced by the focused cadence below.
+  batches; Industrial L4 source work runs in parallel with R2, while its R3
+  ingestion remains behind R2; expanded duplicate worker-side full-suite and
+  staged journeys remain replaced by the focused cadence below.
 - **Current blocker:** none at source authority. R2 is blocked only by the
   renderer's exact ingestion candidate, followed by the reserved focused
   PLAY-075 disposition.
@@ -57,8 +59,9 @@ and QA to become competing writers.
 
 R1 is accepted. R2 is the active World Rendering mutation using exact source
 candidate `5e019c3`. Further PLAY-073 composition work remains deferred through
-R2/R3. R3 reserves queue position but does not authorize Industrial L4 source
-production; integration must publish that authorization after R2 passes.
+R2/R3. R3 reserves the next shipping-ingestion position. Industrial L4 source
+production is authorized to run ahead under Wave 011, but no L4 product bytes
+may enter the renderer until integration publishes R3 after R2 passes.
 
 R4 admission is governed by
 `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. The retained R1 app shows

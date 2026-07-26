@@ -61,6 +61,17 @@ apply the same authored material-role system to their unchanged directional
 geometry. This is not source-family authority, renderer ingestion, or
 production selection.
 
+Complete family candidate
+`03b0ffc1211eb8d4cbefa5676671b004cc03605c` confirms that the A0 treatment is
+the correct visual direction, with four authored directional identities,
+twelve unique deterministic normalized outputs, and materially stronger
+catalog fit. It remains narrowly returned before source-family authority:
+exact magenta survives at nonzero alpha in several normalized East, North, and
+West pixels, and North/West compact frontage needs an authoritative road-edge
+and socket overlay proving the actual loading face. The binding return is
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-A0-FAMILY-DISPOSITION-03b0ffc.md`.
+Repair normalization and proof only; preserve raw masters and geometry.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

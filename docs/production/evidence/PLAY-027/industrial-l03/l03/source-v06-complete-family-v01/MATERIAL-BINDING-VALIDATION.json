@@ -1,0 +1,362 @@
+{
+  "baselineCommit" : "0aefb804c59b4ff9b919dc81fdca907cd4b85c5e",
+  "descriptorManifestProvenanceRawMasterAgreementPassed" : true,
+  "descriptorRepairs" : [
+    {
+      "descriptorManifestProvenanceAgreement" : true,
+      "direction" : "north",
+      "exactByteIdentityExpected" : true,
+      "exactByteIdentityPassed" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "materialLibrarySHA256" : "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8",
+      "newSHA256" : "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9",
+      "oldSHA256" : "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9",
+      "structuralIdentityExcludingBinding" : true
+    },
+    {
+      "descriptorManifestProvenanceAgreement" : true,
+      "direction" : "east",
+      "exactByteIdentityExpected" : false,
+      "exactByteIdentityPassed" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
+      "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "materialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+      "newSHA256" : "047c8b86d770496b3fdcdfad11ad14db8b59694f1734231b3f2e3130f20de277",
+      "oldSHA256" : "1e5c69a03a6298f64f4d4d13bb0f523690729b82d5565343f40aaa8278aa3b6d",
+      "structuralIdentityExcludingBinding" : true
+    },
+    {
+      "descriptorManifestProvenanceAgreement" : true,
+      "direction" : "south",
+      "exactByteIdentityExpected" : false,
+      "exactByteIdentityPassed" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/south/scene.json",
+      "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "materialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+      "newSHA256" : "02545716facbd61640033c44758632fdb3d47793d51f1d3ee6b1fef8559ccf69",
+      "oldSHA256" : "31c7eef5e3f461b97b116288274baa8bc5980ef711d45401645e2925ac326a48",
+      "structuralIdentityExcludingBinding" : true
+    },
+    {
+      "descriptorManifestProvenanceAgreement" : true,
+      "direction" : "west",
+      "exactByteIdentityExpected" : true,
+      "exactByteIdentityPassed" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "materialLibrarySHA256" : "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf",
+      "newSHA256" : "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f",
+      "oldSHA256" : "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f",
+      "structuralIdentityExcludingBinding" : true
+    }
+  ],
+  "eastSouthStructuralIdentityExcludingBindingPassed" : true,
+  "family" : "industrial_l03",
+  "immutableMaterialAndProvenanceFiles" : [
+    {
+      "baselineByteIdentity" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "sha256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65"
+    },
+    {
+      "baselineByteIdentity" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "sha256" : "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8"
+    },
+    {
+      "baselineByteIdentity" : true,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "sha256" : "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf"
+    },
+    {
+      "baselineByteIdentity" : true,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/provenance.json",
+      "sha256" : "19af3c026f180d503a0fc78806c1691de4ad3eed012dff20eea5f1add496720f"
+    },
+    {
+      "baselineByteIdentity" : true,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/provenance.json",
+      "sha256" : "5eb777ccedf2fdc31e248f72f40a0bf8529471eb50c5003fe569d21396e8331c"
+    },
+    {
+      "baselineByteIdentity" : true,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/provenance.json",
+      "sha256" : "794654d92d20092c5b979240ad363df38182050299e55e3a243e140e260d401e"
+    },
+    {
+      "baselineByteIdentity" : true,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/provenance.json",
+      "sha256" : "aec680b26f4450628d395fae13873e31f6bd7bb2dddaf5d5570a66474c8ddcd8"
+    }
+  ],
+  "manifest" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/FAMILY-MANIFEST.json",
+  "manifestSHA256" : "78fef5beed40229d0637ba74e85737c939bbaa460f42a17b49f24769e92704a1",
+  "materialLibraryBytesChanged" : false,
+  "negativeTests" : {
+    "swappedValidLibraryRejected" : true,
+    "wrongHashRejected" : true
+  },
+  "normalizedGateReplay" : {
+    "allTwelveAcceptedGatesPassed" : true,
+    "outputCount" : 12,
+    "records" : [
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "8d7c547d121b5f6808b13532a5b3c144155328e8f606a8b1601731a4dd715e4f",
+        "direction" : "north",
+        "fileSHA256" : "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500",
+        "lod" : "block",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "2a70c32c5e8538cb5d0c3d452bd388c51fd641f399bee468ad45522a4558337b",
+        "direction" : "north",
+        "fileSHA256" : "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1",
+        "lod" : "neighborhood",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "d29df04ae5d3c330ffadb934cdca36a33c254c820490db42878b61f0e5a34455",
+        "direction" : "north",
+        "fileSHA256" : "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500",
+        "lod" : "city",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "bf7ff6370bfe4c63c22d96a2a6518b17b5cba38ce1b621e1bf2346e9dbccdf8d",
+        "direction" : "east",
+        "fileSHA256" : "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba",
+        "lod" : "block",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "f002e194b16d81c8568826f892207423ba1dfaa3e263baf8b74af9b5001b67c9",
+        "direction" : "east",
+        "fileSHA256" : "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342",
+        "lod" : "neighborhood",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "2f999794586abf5b7fbe11328bfdc18974d089345b9519c5242e72a2debdd74f",
+        "direction" : "east",
+        "fileSHA256" : "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e",
+        "lod" : "city",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "9e861613340dac6384b48d0b47f25f6f4eeb074c4057718e41299c76a6fd3dc3",
+        "direction" : "south",
+        "fileSHA256" : "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c",
+        "lod" : "block",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "8cbef74cfe9b3b984980f63d6f076f53e0a928805cedc1a7532e7775f2fc945d",
+        "direction" : "south",
+        "fileSHA256" : "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1",
+        "lod" : "neighborhood",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "7036363ef3aa5e0c5d0c093a37bd08a3e097ef39346f075524ac476937b6a031",
+        "direction" : "south",
+        "fileSHA256" : "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e",
+        "lod" : "city",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "526c474ba8b9f578fa1c4e4e45903e7359a4333012024bc97b2757aeb26c9dac",
+        "direction" : "west",
+        "fileSHA256" : "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8",
+        "lod" : "block",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "4971a923758155b37fe5c4457be3affa515cf2d16ab00b8e6d451fec47c9d4c4",
+        "direction" : "west",
+        "fileSHA256" : "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5",
+        "lod" : "neighborhood",
+        "repeatIdentity" : true
+      },
+      {
+        "alphaChromaPaddingRegistrationContactShadow" : "pass",
+        "decodedRGBASHA256" : "699bdcc84fd906d12491a7602074a98bd0519dabc1d87efb7124f3430e36a22f",
+        "direction" : "west",
+        "fileSHA256" : "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a",
+        "lod" : "city",
+        "repeatIdentity" : true
+      }
+    ],
+    "uniqueDecodedPixelIdentities" : 12,
+    "uniqueFileIdentities" : 12
+  },
+  "northWestDescriptorByteIdentityPassed" : true,
+  "pixelInventory" : {
+    "allByteIdenticalToBaseline" : true,
+    "files" : [
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
+        "sha256" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_block.png",
+        "sha256" : "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_city.png",
+        "sha256" : "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_neighborhood.png",
+        "sha256" : "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_block.png",
+        "sha256" : "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_city.png",
+        "sha256" : "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_neighborhood.png",
+        "sha256" : "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/east/generated_v4_industrial_l03_east_source_v04_block.png",
+        "sha256" : "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/east/generated_v4_industrial_l03_east_source_v04_city.png",
+        "sha256" : "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/east/generated_v4_industrial_l03_east_source_v04_neighborhood.png",
+        "sha256" : "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/south/generated_v4_industrial_l03_south_source_v04_block.png",
+        "sha256" : "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/south/generated_v4_industrial_l03_south_source_v04_city.png",
+        "sha256" : "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/south/generated_v4_industrial_l03_south_source_v04_neighborhood.png",
+        "sha256" : "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
+        "sha256" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_block.png",
+        "sha256" : "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_city.png",
+        "sha256" : "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_neighborhood.png",
+        "sha256" : "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_block.png",
+        "sha256" : "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_city.png",
+        "sha256" : "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_neighborhood.png",
+        "sha256" : "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/north/generated_v4_industrial_l03_north_source_v06_block.png",
+        "sha256" : "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/north/generated_v4_industrial_l03_north_source_v06_city.png",
+        "sha256" : "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/north/generated_v4_industrial_l03_north_source_v06_neighborhood.png",
+        "sha256" : "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/west/generated_v4_industrial_l03_west_source_v06_block.png",
+        "sha256" : "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/west/generated_v4_industrial_l03_west_source_v06_city.png",
+        "sha256" : "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/west/generated_v4_industrial_l03_west_source_v06_neighborhood.png",
+        "sha256" : "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+        "sha256" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea"
+      },
+      {
+        "baselineByteIdentity" : true,
+        "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/raw.png",
+        "sha256" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4"
+      }
+    ],
+    "normalizedPNGCount" : 24,
+    "rawPNGCount" : 4,
+    "totalPNGCount" : 28
+  },
+  "productionSelected" : false,
+  "rawOrNormalizedPixelsChanged" : false,
+  "rendererShippingPackageRuntimeChanged" : false,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "task" : "PLAY-027",
+  "validationPassed" : true,
+  "validatorSource" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/ValidateIndustrialL3MaterialBindingRepair.swift",
+  "validatorSourceSHA256" : "a24824a944e7acbb10e8591af43828c61ddbd090086b56971619f0c0bce6a7f6"
+}

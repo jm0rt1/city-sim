@@ -26,6 +26,16 @@
   },
   "family" : "industrial_l03",
   "familyAuthority" : false,
+  "materialBindingRepair" : {
+    "authority" : "docs/production/evidence/PLAY-027/INDUSTRIAL-L03-EAST-SOUTH-MATERIAL-BINDING-REPAIR-AUTHORITY-c3c727f.md",
+    "baselineCommit" : "0aefb804c59b4ff9b919dc81fdca907cd4b85c5e",
+    "directions" : [
+      "east",
+      "south"
+    ],
+    "receipt" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/MATERIAL-BINDING-REPAIR-RECEIPT.md",
+    "validation" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/MATERIAL-BINDING-VALIDATION.json"
+  },
   "newNormalizationDirections" : [
     "north",
     "west"
@@ -616,7 +626,7 @@
     {
       "decodedRGBASHA256" : "4d3b980ef0c641cc7010172c4d6ffd22d59b023195eaef50dbcf8c67b66ec222",
       "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
-      "descriptorSHA256" : "1e5c69a03a6298f64f4d4d13bb0f523690729b82d5565343f40aaa8278aa3b6d",
+      "descriptorSHA256" : "047c8b86d770496b3fdcdfad11ad14db8b59694f1734231b3f2e3130f20de277",
       "direction" : "east",
       "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
       "fileSHA256" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
@@ -664,7 +674,7 @@
     {
       "decodedRGBASHA256" : "85308c293986c7f46c90404e2a2b478487fdac4b892223aff2b01625831da7dd",
       "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/south/scene.json",
-      "descriptorSHA256" : "31c7eef5e3f461b97b116288274baa8bc5980ef711d45401645e2925ac326a48",
+      "descriptorSHA256" : "02545716facbd61640033c44758632fdb3d47793d51f1d3ee6b1fef8559ccf69",
       "direction" : "south",
       "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
       "fileSHA256" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
@@ -765,7 +775,7 @@
     "east",
     "south"
   ],
-  "reviewStatus" : "pending-independent-family-review",
+  "reviewStatus" : "pending-independent-material-binding-repair-review",
   "roadSocketOverlay" : [
     {
       "direction" : "north",

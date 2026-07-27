@@ -495,7 +495,7 @@ private func l4WestPlan() -> L4Plan {
             L4Prop(id: "w-stack-a", kind: "explicit-cylinder", dimensions: [5.5, 25, 5.5], position: [18, 62.5, 18], material: "l4-charcoal-steel"),
             L4Prop(id: "w-stack-b", kind: "explicit-cylinder", dimensions: [5, 21, 5], position: [19, 60.5, 9], material: "l4-oxide"),
             L4Prop(id: "w-silo-a", kind: "explicit-cylinder", dimensions: [9, 18, 9], position: [20, 12, -8], material: "l4-process-metal"),
-            L4Prop(id: "w-silo-b", kind: "explicit-cylinder", dimensions: [8, 15, 8], position: [21.5, 10.5, -18], material: "l4-oxide"),
+            L4Prop(id: "w-silo-b", kind: "explicit-cylinder", dimensions: [8, 15, 8], position: [21, 10.5, -18], material: "l4-oxide"),
             L4Prop(id: "w-roof-plant-a", kind: "explicit-box", dimensions: [8, 6, 9], position: [10, 55, 0], material: "l4-process-metal"),
             L4Prop(id: "w-roof-plant-b", kind: "explicit-box", dimensions: [8, 5, 8], position: [10, 34, -12], material: "l4-duct-metal"),
         ],

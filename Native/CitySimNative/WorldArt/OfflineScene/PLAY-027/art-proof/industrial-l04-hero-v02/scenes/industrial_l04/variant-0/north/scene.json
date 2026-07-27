@@ -634,7 +634,7 @@
   "materialLibrary" : {
     "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-hero-v02/materials/industrial-l04-hero-v02.json",
     "role" : "industrial-l04-material-library",
-    "sha256" : "58b0519f0f5beb68b020b723a8d0b4060701161fecc290408370f6415fee1aa4"
+    "sha256" : "329851c631d6b25e45c0a4a86b383bc23ae2591403ef259e13077cb57f34810e"
   },
   "occlusionExclusions" : [
     {

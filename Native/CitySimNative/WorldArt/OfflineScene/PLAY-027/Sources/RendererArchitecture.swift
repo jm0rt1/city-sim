@@ -229,12 +229,35 @@ enum DescriptorSamplingResolver {
             && sampling.sceneKitAntialiasing == "none"
             && sceneKitShadows == "disabled"
             && sceneKitLightingMode == "authored-constant-v1"
+        let isIndustrialL4TurbineV08North =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.variantID == "variant-0"
+            && descriptor.viewDirection == "n"
+            && descriptor.sourceRevision == "source-v08-prepixel"
+            && descriptor.sceneGeometryID
+                == "industrial-l04-turbine-v08-n-independent"
+            && descriptor.authoredIndependently
+            && !descriptor.productionSelected
+            && descriptor.registration.orientationTransform == "none"
+            && sampling.sourceRevisionBinding == "source-v08-prepixel"
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+            && descriptor.materialLibrary.file
+                == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-turbine-v08-prepixel/materials/industrial-l04-turbine-v08-prepixel.json"
+            && descriptor.materialLibrary.sha256
+                == "f8cf1d4ff9ab4446ec562fe949dd09c45399a32d9a763f7d6dd6380b66e52b94"
         let isIndustrialL3SourceV05 =
             descriptor.logicalBuildingID == "industrial_l03"
             && descriptor.sourceRevision == "source-v05"
         let isIndustrialL3SourceV06 =
             descriptor.logicalBuildingID == "industrial_l03"
             && descriptor.sourceRevision == "source-v06"
+        let isIndustrialL4SourceV08 =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.sourceRevision == "source-v08-prepixel"
         guard
             !isIndustrialL3SourceV05
                 || isIndustrialL3CohesionSourceV05NorthWest
@@ -251,6 +274,14 @@ enum DescriptorSamplingResolver {
                 "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
             )
         }
+        guard
+            !isIndustrialL4SourceV08
+                || isIndustrialL4TurbineV08North
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L4 source-v08-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
+            )
+        }
         let isAuthoredConstantSource =
             isIndustrialL2AuthoredConstant
             || isIndustrialL3SourceV02
@@ -258,6 +289,7 @@ enum DescriptorSamplingResolver {
             || isIndustrialL3CohesionSourceV04
             || isIndustrialL3CohesionSourceV05NorthWest
             || isIndustrialL3CohesionSourceV06NorthWest
+            || isIndustrialL4TurbineV08North
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -306,7 +338,7 @@ enum DescriptorSamplingResolver {
                     && sceneKitShadows == "current")
         else {
             throw SamplingContractError.invalid(
-                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05/source-v06 North/West v3 source-authority descriptors"
+                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03/source-v04 N/E/S/W, exact source-v05/source-v06 North/West, or exact Industrial L4 source-v08-prepixel North v3 source-authority descriptors"
             )
         }
         guard
@@ -320,7 +352,7 @@ enum DescriptorSamplingResolver {
                 )
         else {
             throw SamplingContractError.invalid(
-                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05/source-v06 North/West v3 source-authority descriptors"
+                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03/source-v04 N/E/S/W, exact source-v05/source-v06 North/West, or exact Industrial L4 source-v08-prepixel North v3 source-authority descriptors"
             )
         }
         if isIndustrialL2SourceV07East || isIndustrialL3SourceV03 {

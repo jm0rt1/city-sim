@@ -120,6 +120,15 @@ only the implicated material channels by `+2/255`. No raw pixels are
 authorized until the exact transformed descriptors and material library pass
 independent review.
 
+Attribution checkpoint `a235546ef0a7ddf31cc2e78d16dfba62f08f82fe`
+passes the two dark and North warm samples, but correctly stops source-v06
+because West `(786,524)` is a 66.95-percent concrete / 31.20-percent safety
+mixed edge. Integration therefore authorizes the four-row, twelve-process
+diagnostic swatch matrix in
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-SOURCE-V06-SENSITIVITY-AUTHORITY-a235546.md`.
+It tests only positive `2/255` channel moves in diagnostic copies and returns
+repeat evidence for integration selection; it cannot create source authority.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

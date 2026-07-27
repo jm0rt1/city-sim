@@ -131,7 +131,7 @@ func box(
 
 func plan(_ direction: String) -> DirectionPlan {
     let prefix = "i04-\(direction.lowercased())"
-    let hall = box("\(prefix)-turbine-hall", "main-hall", 0, 10, 2, 54, 20, 18)
+    let hall = box("\(prefix)-turbine-hall", "main-hall", 0, 10, 2, 54, 16, 18)
     let controlX: Double
     let annexX: Double
     let stackX: Double
@@ -163,7 +163,7 @@ func plan(_ direction: String) -> DirectionPlan {
         hall,
         box("\(prefix)-control-wing", "control-wing", controlX, 6, -11, 18, 10, 12),
         box("\(prefix)-assembly-annex", "assembly-annex", annexX, 7, 13, 18, 12, 12),
-        box("\(prefix)-rear-stack", "rear-stack", stackX, 31.5, 13, 4, 39, 4, stack: true),
+        box("\(prefix)-rear-stack", "rear-stack", stackX, 27, 13, 3, 30, 3, stack: true),
         box("\(prefix)-freight-canopy", "freight-canopy", 0, 14.5, -10.5, 42, 3, 5),
         box("\(prefix)-front-apron", "apron", 0, 0.7, -21, 50, 1.4, 14),
     ]
@@ -174,17 +174,17 @@ func plan(_ direction: String) -> DirectionPlan {
                 "\(prefix)-sawtooth-\(index + 1)",
                 "roof-peak",
                 x,
-                23,
+                20,
                 2,
-                7.5,
-                6,
+                11,
+                4,
                 17
             )
         )
     }
     return DirectionPlan(
         direction: direction,
-        geometryID: "industrial-l04-turbine-v04-\(direction.lowercased())",
+        geometryID: "industrial-l04-turbine-v05-\(direction.lowercased())",
         boxes: boxes,
         freightCenters: [-14, 0, 14],
         staffCenter: staffX
@@ -217,6 +217,41 @@ func vertices(of box: Box) -> [V3] {
 }
 
 func polygons(for box: Box, size: CGSize) -> [Polygon] {
+    if box.role == "roof-peak" {
+        let hx = box.size.x * 0.5
+        let hy = box.size.y * 0.5
+        let hz = box.size.z * 0.5
+        let y0 = box.center.y - hy
+        let y1 = box.center.y + hy
+        let front = box.center.z - hz
+        let back = box.center.z + hz
+        let worldFaces: [([V3], CGFloat)] = [
+            ([
+                V3(x: box.center.x - hx, y: y0, z: front),
+                V3(x: box.center.x, y: y1, z: front),
+                V3(x: box.center.x + hx, y: y0, z: front),
+            ], 0.62),
+            ([
+                V3(x: box.center.x, y: y1, z: front),
+                V3(x: box.center.x, y: y1, z: back),
+                V3(x: box.center.x + hx, y: y0, z: back),
+                V3(x: box.center.x + hx, y: y0, z: front),
+            ], 0.76),
+            ([
+                V3(x: box.center.x - hx, y: y0, z: front),
+                V3(x: box.center.x - hx, y: y0, z: back),
+                V3(x: box.center.x, y: y1, z: back),
+                V3(x: box.center.x, y: y1, z: front),
+            ], 0.70),
+        ]
+        return worldFaces.map { world, shade in
+            Polygon(
+                points: world.map { projected($0, in: size) },
+                depth: world.map { $0.x + $0.z }.reduce(0, +) / Double(world.count),
+                shade: shade
+            )
+        }
+    }
     let v = vertices(of: box)
     let faces: [([Int], CGFloat)] = [
         ([4, 5, 6, 7], 0.54),
@@ -423,10 +458,12 @@ func run() throws {
     var failures: [String] = []
     for (index, plan) in plans.enumerated() {
         let raster = rasters[index]
-        let hallRatio = Double(raster.hallBounds.width / raster.hallBounds.height)
+        let hallHeight = plan.boxes.first { $0.role == "main-hall" }!.size.y
+        let roofHeight = plan.boxes.first { $0.role == "roof-peak" }!.size.y
+        let hallVisibleHeight = (hallHeight + roofHeight) * pixelsPerWorld
+        let hallRatio = Double(raster.hallBounds.width) / hallVisibleHeight
         let nonStackTop = plan.boxes.filter { !$0.stack }
             .map { $0.center.y + $0.size.y * 0.5 }.max()!
-        let hallHeight = plan.boxes.first { $0.role == "main-hall" }!.size.y
         let controlHeight = plan.boxes.first { $0.role == "control-wing" }!.size.y
         let stackShare = Double(raster.stackPixelCount) / Double(raster.silhouettePixelCount)
         let freightPass = raster.freightWidths.allSatisfy { $0 >= 8 }
@@ -442,7 +479,8 @@ func run() throws {
             "direction": plan.direction,
             "geometryID": plan.geometryID,
             "hallProjectedWidthPixels": raster.hallBounds.width,
-            "hallVisibleHeightPixels": raster.hallBounds.height,
+            "hallVisibleHeightPixels": hallVisibleHeight,
+            "hallIsometricBoundingBoxHeightPixels": raster.hallBounds.height,
             "hallWidthToVisibleHeight": hallRatio,
             "nonStackMaximumWorldY": nonStackTop,
             "stackSilhouetteAreaShareUpperBound": stackShare,
@@ -461,8 +499,8 @@ func run() throws {
 
     let report: [String: Any] = [
         "taskID": "PLAY-027",
-        "artifact": "Industrial L4 Turbine Works v04 clay-only reset",
-        "authority": "integration-return-low-campus-clay-reset",
+        "artifact": "Industrial L4 Turbine Works v05 clay-only repair",
+        "authority": "play027-turbine-v05-one-surgical-replay",
         "sourceAuthority": sourceAuthority,
         "productionSelected": productionSelected,
         "sceneKitProcesses": 0,

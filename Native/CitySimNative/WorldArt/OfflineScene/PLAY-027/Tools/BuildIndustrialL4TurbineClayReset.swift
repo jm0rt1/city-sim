@@ -430,7 +430,7 @@ func sceneJSON(
         "occlusionExclusions": [[
             "id": "i04-v06-\(lower)-frontage-visibility",
             "purpose": "keep three freight voids and separate staff entrance visible",
-            "polygonWorld": [[-28, -28], [28, -28], [28, -7], [-28, -7]],
+            "polygonWorld": frontageVisibilityPolygon(direction),
         ]],
     ]
 }
@@ -671,6 +671,15 @@ func facadeEdge(_ direction: String) -> [[Double]] {
     }
 }
 
+func frontageVisibilityPolygon(_ direction: String) -> [[Double]] {
+    switch direction {
+    case "N": return [[-28, -28], [28, -28], [28, -7], [-28, -7]]
+    case "E": return [[28, -28], [28, 28], [7, 28], [7, -28]]
+    case "S": return [[28, 28], [-28, 28], [-28, 7], [28, 7]]
+    default: return [[-28, 28], [-28, -28], [-7, -28], [-7, 28]]
+    }
+}
+
 func projected(_ point: V3, in size: CGSize) -> P2 {
     P2(
         x: Double(size.width) * 0.5 + (point.x - point.z) * pixelsPerWorld,
@@ -762,6 +771,22 @@ func context(width: Int, height: Int) throws -> CGContext {
     }
     value.translateBy(x: 0, y: CGFloat(height))
     value.scaleBy(x: 1, y: -1)
+    value.setShouldAntialias(false)
+    return value
+}
+
+func imageContext(width: Int, height: Int) throws -> CGContext {
+    guard let value = CGContext(
+        data: nil,
+        width: width,
+        height: height,
+        bitsPerComponent: 8,
+        bytesPerRow: width * 4,
+        space: CGColorSpaceCreateDeviceRGB(),
+        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+    ) else {
+        throw ClayResetError.failed("cannot create image compositing context")
+    }
     value.setShouldAntialias(false)
     return value
 }
@@ -952,7 +977,7 @@ func renderColor(_ plan: DirectionPlan, size: CGSize) throws -> CGImage {
 func grayscale(_ image: CGImage) throws -> CGImage {
     let width = image.width
     let height = image.height
-    let ctx = try context(width: width, height: height)
+    let ctx = try imageContext(width: width, height: height)
     ctx.setBlendMode(.copy)
     ctx.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
     guard let data = ctx.data else {
@@ -975,7 +1000,7 @@ func grayscale(_ image: CGImage) throws -> CGImage {
 }
 
 func clayOverlay(color: CGImage, clay: CGImage) throws -> CGImage {
-    let ctx = try context(width: color.width, height: color.height)
+    let ctx = try imageContext(width: color.width, height: color.height)
     ctx.draw(color, in: CGRect(x: 0, y: 0, width: color.width, height: color.height))
     ctx.setAlpha(0.34)
     ctx.setBlendMode(.screen)
@@ -987,21 +1012,37 @@ func clayOverlay(color: CGImage, clay: CGImage) throws -> CGImage {
 }
 
 func registrationOverlay(_ image: CGImage, direction: String) throws -> CGImage {
-    let ctx = try context(width: image.width, height: image.height)
+    let ctx = try imageContext(width: image.width, height: image.height)
     ctx.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
     let value = registration(direction)
-    let edge = value["frontageEdgeSource"] as! [[Double]]
-    let socket = value["frontageSocketSource"] as! [Double]
-    let pivot = value["groundPivotSource"] as! [Double]
+    let edge = (value["frontageEdgeSource"] as! [[NSNumber]]).map {
+        $0.map(\.doubleValue)
+    }
+    let socket = (value["frontageSocketSource"] as! [NSNumber]).map(\.doubleValue)
+    let pivot = (value["groundPivotSource"] as! [NSNumber]).map(\.doubleValue)
     ctx.setStrokeColor(red: 0.95, green: 0.58, blue: 0.08, alpha: 1)
     ctx.setLineWidth(8)
-    ctx.move(to: CGPoint(x: edge[0][0], y: edge[0][1]))
-    ctx.addLine(to: CGPoint(x: edge[1][0], y: edge[1][1]))
+    ctx.move(to: CGPoint(x: edge[0][0], y: Double(image.height) - edge[0][1]))
+    ctx.addLine(to: CGPoint(x: edge[1][0], y: Double(image.height) - edge[1][1]))
     ctx.strokePath()
     ctx.setFillColor(red: 0.10, green: 0.85, blue: 0.45, alpha: 1)
-    ctx.fillEllipse(in: CGRect(x: socket[0] - 10, y: socket[1] - 10, width: 20, height: 20))
+    ctx.fillEllipse(
+        in: CGRect(
+            x: socket[0] - 10,
+            y: Double(image.height) - socket[1] - 10,
+            width: 20,
+            height: 20
+        )
+    )
     ctx.setFillColor(red: 0.85, green: 0.20, blue: 0.25, alpha: 1)
-    ctx.fillEllipse(in: CGRect(x: pivot[0] - 10, y: pivot[1] - 10, width: 20, height: 20))
+    ctx.fillEllipse(
+        in: CGRect(
+            x: pivot[0] - 10,
+            y: Double(image.height) - pivot[1] - 10,
+            width: 20,
+            height: 20
+        )
+    )
     guard let output = ctx.makeImage() else {
         throw ClayResetError.failed("cannot create registration overlay")
     }
@@ -1281,22 +1322,32 @@ func run() throws {
 
     var catalogDescriptorHashes = Set<String>()
     var catalogGeometryIDs = Set<String>()
-    let artProof = repository.appendingPathComponent(
-        "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof"
-    )
-    if let enumerator = FileManager.default.enumerator(
-        at: artProof,
-        includingPropertiesForKeys: nil
-    ) {
-        for case let file as URL in enumerator
-        where file.lastPathComponent == "scene.json" {
-            let data = try Data(contentsOf: file)
-            catalogDescriptorHashes.insert(sha256(data))
-            if
-                let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                let geometryID = object["sceneGeometryID"] as? String
+    let catalogRoots = [
+        repository.appendingPathComponent(
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof"
+        ),
+        repository.appendingPathComponent(
+            "docs/production/evidence/PLAY-027/industrial-l04"
+        ),
+    ]
+    for catalogRoot in catalogRoots {
+        if let enumerator = FileManager.default.enumerator(
+            at: catalogRoot,
+            includingPropertiesForKeys: nil
+        ) {
+            for case let file as URL in enumerator
+            where
+                file.lastPathComponent == "scene.json"
+                && !file.path.contains("industrial-l04-turbine-v06-prepixel")
             {
-                catalogGeometryIDs.insert(geometryID)
+                let data = try Data(contentsOf: file)
+                catalogDescriptorHashes.insert(sha256(data))
+                if
+                    let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                    let geometryID = object["sceneGeometryID"] as? String
+                {
+                    catalogGeometryIDs.insert(geometryID)
+                }
             }
         }
     }

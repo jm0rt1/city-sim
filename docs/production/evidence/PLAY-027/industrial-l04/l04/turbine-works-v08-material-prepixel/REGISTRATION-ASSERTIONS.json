@@ -1,0 +1,108 @@
+{
+  "artifact" : "Turbine v08 descriptor-derived registration",
+  "directions" : [
+    {
+      "descriptorGeometrySHA256" : "0d601ee417f445ed14b58a3bb7dfbca855704ffe8c94518d65a545e4246e71ac",
+      "direction" : "N",
+      "doorSegmentParameters" : [
+        0.11643220966117677,
+        0.20571793085082532
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 0,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "6af2ecae169b4a0c400d2f9946cf7c8cd0626ff43888cc880447bde3b430a9c5",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "descriptorGeometrySHA256" : "147d54182fb0061910fd5f192626048f57cfacce4ecc12ec2486c76b6a38686e",
+      "direction" : "E",
+      "doorSegmentParameters" : [
+        0.7592893558322078,
+        0.84857507702185653
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 0,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "c9ed3c4e65bf1e05d1cfbb6c0f272ce817326a5a532ea4b2effca1032f462ee5",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "descriptorGeometrySHA256" : "77a509f8248e940cea86b95101ef1912cc5e6a20ea7d0a61fe4dd93a82735bcc",
+      "direction" : "S",
+      "doorSegmentParameters" : [
+        0.13356777874021403,
+        0.22285349992986223
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 0,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "0e2dd8667d246be4cd02e16ef3c9544a47b440974f57f6e3f5ee823712c96d1d",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "descriptorGeometrySHA256" : "05da12e5eb9b3536dade2e9c35a0535deb44df74aba9827fe7ad7f4440cb8a38",
+      "direction" : "W",
+      "doorSegmentParameters" : [
+        0.15142487658370687,
+        0.24071059777335541
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 1.1368683772161603e-13,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "5e8b6ac628d2821111b984004b3b61689788b2ad07ba6ae6b5c6469dd5020293",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    }
+  ],
+  "productionSelected" : false,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027"
+}

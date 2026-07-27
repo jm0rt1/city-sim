@@ -193,7 +193,7 @@ func materialLibraryJSON() -> [String: Any] {
     return [
         "schema": 1,
         "task": "PLAY-027",
-        "libraryID": "industrial-l04-turbine-source-v07-prepixel",
+        "libraryID": "industrial-l04-turbine-source-v08-prepixel",
         "source": "task-owned numeric Turbine Works hierarchy; no ImageGen or raster swatch",
         "styleAnchorFile": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
         "styleAnchorSHA256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
@@ -209,7 +209,7 @@ func materialLibraryJSON() -> [String: Any] {
 func samplingJSON() -> [String: Any] {
     [
         "contractID": "play027-deterministic-4x-no-msaa-lanczos-v3",
-        "sourceRevisionBinding": "source-v07-prepixel",
+        "sourceRevisionBinding": "source-v08-prepixel",
         "purpose": "source-authority",
         "sceneKitAntialiasing": "none",
         "sceneKitShadows": "disabled",
@@ -277,84 +277,42 @@ func sceneJSON(
 ) -> [String: Any] {
     let direction = plan.direction
     let lower = direction.lowercased()
-    let farEdgeDirection = direction == "N" || direction == "W"
-    var authoredBoxes: [Box] = []
-    for item in plan.boxes
-    where item.role != "foundation" && item.role != "roof-peak" {
-        if farEdgeDirection && item.role == "main-hall" {
-            var ranges: [(Double, Double)] = []
-            var cursor = -27.0
-            for center in plan.freightCenters {
-                let cutMinimum = max(-27, center - 7.2)
-                let cutMaximum = min(27, center + 7.2)
-                if cutMinimum - cursor > 0.5 {
-                    ranges.append((cursor, cutMinimum))
-                }
-                cursor = max(cursor, cutMaximum)
-            }
-            if 27 - cursor > 0.5 {
-                ranges.append((cursor, 27))
-            }
-            for (index, range) in ranges.enumerated() {
-                authoredBoxes.append(
-                    box(
-                        "\(item.id)-pier-\(index + 1)",
-                        item.role,
-                        (range.0 + range.1) * 0.5,
-                        item.center.y,
-                        item.center.z,
-                        range.1 - range.0,
-                        item.size.y,
-                        item.size.z
-                    )
-                )
-            }
-        } else if farEdgeDirection && item.role == "control-wing" {
-            let minimum = item.center.x - item.size.x * 0.5
-            let maximum = item.center.x + item.size.x * 0.5
-            let cutMinimum = plan.staffCenter - 3
-            let cutMaximum = plan.staffCenter + 3
-            let ranges = [(minimum, cutMinimum), (cutMaximum, maximum)]
-            for (index, range) in ranges.enumerated()
-            where range.1 - range.0 > 0.5 {
-                authoredBoxes.append(
-                    box(
-                        "\(item.id)-staff-return-\(index + 1)",
-                        item.role,
-                        (range.0 + range.1) * 0.5,
-                        item.center.y,
-                        item.center.z,
-                        range.1 - range.0,
-                        item.size.y,
-                        item.size.z
-                    )
-                )
-            }
-        } else {
-            authoredBoxes.append(item)
-        }
+    let authoredBoxes = plan.boxes.filter {
+        $0.role != "foundation" && $0.role != "roof-peak"
     }
     let massBlocks: [[String: Any]] = authoredBoxes.map { item in
         let position = worldPoint(item.center, direction: direction)
         return [
-            "id": item.id.replacingOccurrences(of: "i04-", with: "i04-v07-"),
+            "id": item.id.replacingOccurrences(of: "i04-", with: "i04-v08-"),
             "dimensions": worldDimensions(item.size, direction: direction),
             "positionWorld": [position.x, position.y, position.z],
             "materialID": materialID(for: item.role),
         ]
     } + plan.freightCenters.enumerated().map { index, center in
-        let local = V3(
-            x: center,
-            y: 7.75,
-            z: farEdgeDirection ? 10.3 : -18
-        )
+        let local: V3
+        let dimensions: V3
+        if direction == "N" {
+            local = V3(
+                x: [26.0, 19.0, 12.0][index],
+                y: 7.75,
+                z: center
+            )
+            dimensions = V3(x: 1, y: 11.5, z: 14.4)
+        } else if direction == "W" {
+            local = V3(
+                x: [-26.0, -19.0, -12.0][index],
+                y: 7.75,
+                z: center
+            )
+            dimensions = V3(x: 1, y: 11.5, z: 14.4)
+        } else {
+            local = V3(x: center, y: 7.75, z: -18)
+            dimensions = V3(x: 14.4, y: 11.5, z: 1)
+        }
         let position = worldPoint(local, direction: direction)
         return [
-            "id": "i04-v07-\(lower)-freight-\(index + 1)-recess",
-            "dimensions": worldDimensions(
-                V3(x: 14.4, y: 11.5, z: 1.0),
-                direction: direction
-            ),
+            "id": "i04-v08-\(lower)-freight-\(index + 1)-recess",
+            "dimensions": worldDimensions(dimensions, direction: direction),
             "positionWorld": [position.x, position.y, position.z],
             "materialID": materialID(for: "freight-recess"),
         ]
@@ -363,9 +321,9 @@ func sceneJSON(
             let local = V3(x: plan.staffCenter, y: 5, z: -27.7)
             let position = worldPoint(local, direction: direction)
             return [
-                "id": "i04-v07-\(lower)-staff-entry",
+                "id": "i04-v08-\(lower)-staff-entry",
                 "dimensions": worldDimensions(
-                    V3(x: 4, y: 6, z: 0.6),
+                V3(x: 5, y: 6, z: 0.6),
                     direction: direction
                 ),
                 "positionWorld": [position.x, position.y, position.z],
@@ -378,7 +336,7 @@ func sceneJSON(
         .map { item in
             let position = worldPoint(item.center, direction: direction)
             return [
-                "id": item.id.replacingOccurrences(of: "i04-", with: "i04-v07-"),
+                "id": item.id.replacingOccurrences(of: "i04-", with: "i04-v08-"),
                 "shape": "hip",
                 "dimensions": worldDimensions(item.size, direction: direction),
                 "positionWorld": [position.x, position.y, position.z],
@@ -406,13 +364,13 @@ func sceneJSON(
     return [
         "schema": 2,
         "task": "PLAY-027",
-        "sceneGeometryID": "industrial-l04-turbine-v07-\(lower)-independent",
+        "sceneGeometryID": "industrial-l04-turbine-v08-\(lower)-independent",
         "logicalBuildingID": "industrial_l04",
         "family": "industrial",
         "level": 4,
         "variantID": "variant-0",
         "viewDirection": lower,
-        "sourceRevision": "source-v07-prepixel",
+        "sourceRevision": "source-v08-prepixel",
         "authoredIndependently": true,
         "productionSelected": false,
         "derivation": [
@@ -480,11 +438,11 @@ func sceneJSON(
                 "dimensions": [3, 30, 3],
                 "materialID": materialID(for: "rear-stack"),
             ],
-            "massingProfile": "turbine-works-v07-long-sawtooth-foundry-\(lower)",
+            "massingProfile": "turbine-works-v08-long-sawtooth-foundry-\(lower)",
             "massBlocks": massBlocks,
             "roofVolumes": roofVolumes,
             "trimBands": [[
-                "id": "i04-v07-\(lower)-process-heat-band",
+                "id": "i04-v08-\(lower)-process-heat-band",
                 "dimensions": [5, 2, 5],
                 "positionWorld": [heatPosition.x, heatPosition.y, heatPosition.z],
                 "materialID": materialID(for: "process-heat"),
@@ -495,7 +453,7 @@ func sceneJSON(
             "foundationPositionWorld": [0, 1, 0],
         ],
         "facades": [[
-            "id": "i04-v07-\(lower)-road-frontage",
+            "id": "i04-v08-\(lower)-road-frontage",
             "direction": lower,
             "edgeWorld": facadeEdge(direction),
             "materialID": materialID(for: "control-wing"),
@@ -504,9 +462,9 @@ func sceneJSON(
             "windowRhythms": [],
         ]],
         "entrance": [
-            "facadeID": "i04-v07-\(lower)-road-frontage",
+            "facadeID": "i04-v08-\(lower)-road-frontage",
             "baseWorld": [entranceWorld.x, entranceWorld.y, entranceWorld.z],
-            "width": 4,
+            "width": 5,
             "height": 6,
             "depth": 0.6,
             "doorMaterialID": materialID(for: "staff-entry"),
@@ -527,7 +485,7 @@ func sceneJSON(
         ],
         "props": [],
         "occlusionExclusions": [[
-            "id": "i04-v07-\(lower)-frontage-visibility",
+            "id": "i04-v08-\(lower)-frontage-visibility",
             "purpose": "keep three freight voids and separate staff entrance visible",
             "polygonWorld": frontageVisibilityPolygon(direction),
         ]],
@@ -557,6 +515,191 @@ func box(
 func plan(_ direction: String) -> DirectionPlan {
     let prefix = "i04-\(direction.lowercased())"
     let freightCenters = [-16.0, 0.0, 16.0]
+    if direction == "N" {
+        let northFreightCenters = [-12.0, 2.5, 17.0]
+        var boxes = [
+            box("\(prefix)-foundation", "foundation", 0, 1, 0, 56, 2, 56),
+            box(
+                "\(prefix)-turbine-hall-rear",
+                "main-hall",
+                -8.5,
+                10,
+                13,
+                37,
+                16,
+                26
+            ),
+            box(
+                "\(prefix)-turbine-hall-front-leg",
+                "main-hall",
+                -21,
+                10,
+                -12,
+                12,
+                16,
+                24
+            ),
+            box(
+                "\(prefix)-control-wing-west-return",
+                "control-wing",
+                -23.75,
+                6,
+                -25.4,
+                6.5,
+                8,
+                4
+            ),
+            box(
+                "\(prefix)-rear-stack",
+                "rear-stack",
+                -20,
+                27,
+                17,
+                3,
+                30,
+                3,
+                stack: true
+            ),
+            box(
+                "\(prefix)-front-apron",
+                "apron",
+                18.5,
+                0.7,
+                3,
+                17,
+                1.4,
+                50
+            ),
+        ]
+        for (index, center) in northFreightCenters.enumerated() {
+            boxes.append(
+                box(
+                    "\(prefix)-freight-canopy-\(index + 1)",
+                    "freight-canopy",
+                    [23.5, 16.5, 9.5][index],
+                    14.5,
+                    center,
+                    5,
+                    3,
+                    14.4
+                )
+            )
+        }
+        for index in 0..<4 {
+            boxes.append(
+                box(
+                    "\(prefix)-sawtooth-\(index + 1)",
+                    "roof-peak",
+                    -22 + Double(index) * 9,
+                    20,
+                    13,
+                    8,
+                    4,
+                    24
+                )
+            )
+        }
+        return DirectionPlan(
+            direction: direction,
+            geometryID: "industrial-l04-turbine-v08-n-courtyard",
+            boxes: boxes,
+            freightCenters: northFreightCenters,
+            staffCenter: -18
+        )
+    }
+    if direction == "W" {
+        let westFreightCenters = [-11.0, 3.5, 18.0]
+        var boxes = [
+            box("\(prefix)-foundation", "foundation", 0, 1, 0, 56, 2, 56),
+            box(
+                "\(prefix)-turbine-hall",
+                "main-hall",
+                8.5,
+                10,
+                1,
+                37,
+                16,
+                50
+            ),
+            box(
+                "\(prefix)-control-wing-south-return",
+                "control-wing",
+                -13,
+                6,
+                -25.4,
+                4,
+                8,
+                4
+            ),
+            box(
+                "\(prefix)-assembly-annex",
+                "assembly-annex",
+                -21,
+                7,
+                -13,
+                12,
+                12,
+                10
+            ),
+            box(
+                "\(prefix)-rear-stack",
+                "rear-stack",
+                20,
+                27,
+                17,
+                3,
+                30,
+                3,
+                stack: true
+            ),
+            box(
+                "\(prefix)-front-apron",
+                "apron",
+                -18.5,
+                0.7,
+                3,
+                17,
+                1.4,
+                50
+            ),
+        ]
+        for (index, center) in westFreightCenters.enumerated() {
+            boxes.append(
+                box(
+                    "\(prefix)-freight-canopy-\(index + 1)",
+                    "freight-canopy",
+                    [-23.5, -16.5, -9.5][index],
+                    14.5,
+                    center,
+                    5,
+                    3,
+                    14.4
+                )
+            )
+        }
+        for index in 0..<4 {
+            boxes.append(
+                box(
+                    "\(prefix)-sawtooth-\(index + 1)",
+                    "roof-peak",
+                    8.5,
+                    20,
+                    -18 + Double(index) * 12,
+                    37,
+                    4,
+                    10
+                )
+            )
+        }
+        return DirectionPlan(
+            direction: direction,
+            geometryID: "industrial-l04-turbine-v08-w-sidecourt",
+            boxes: boxes,
+            freightCenters: westFreightCenters,
+            staffCenter: -18
+        )
+    }
+
     let hall = box("\(prefix)-turbine-hall", "main-hall", 0, 10, 2, 54, 16, 18)
     let controlX: Double
     let annexX: Double
@@ -632,7 +775,7 @@ func plan(_ direction: String) -> DirectionPlan {
     }
     return DirectionPlan(
         direction: direction,
-        geometryID: "industrial-l04-turbine-v07-\(direction.lowercased())",
+        geometryID: "industrial-l04-turbine-v08-\(direction.lowercased())",
         boxes: boxes,
         freightCenters: freightCenters,
         staffCenter: staffX
@@ -698,7 +841,7 @@ let materialColors: [String: MaterialColor] = [
     ),
     "freight-recess": MaterialColor(
         id: "l4t-deep-freight-recess",
-        rgba: [0.04, 0.06, 0.06, 1],
+        rgba: [0.18, 0.20, 0.20, 1],
         roughness: 0.97,
         metalness: 0.02,
         pattern: "solid-depth-cavity"
@@ -854,7 +997,7 @@ func descriptorRenderPlan(
         throw ClayResetError.failed("foundation material missing")
     }
     try appendPrimitive(
-        id: "i04-v07-\(direction)-foundation",
+        id: "i04-v08-\(direction)-foundation",
         materialID: foundationMaterial,
         dimensions: building["foundationDimensions"],
         position: building["foundationPositionWorld"]
@@ -982,7 +1125,7 @@ func registration(_ direction: String) -> [String: Any] {
         socket = [640, 704]
     }
     let staffCenter = plan(direction).staffCenter
-    let door = [-2.0, 2.0].map {
+    let door = [-2.5, 2.5].map {
         registeredSourcePoint(
             worldPoint(
                 V3(x: staffCenter + $0, y: 2, z: -28),
@@ -1679,8 +1822,8 @@ func registrationOverlay(
         return [point.x, point.y]
     }
     let doorHalf = plan.direction == "N" || plan.direction == "S"
-        ? V3(x: 2, y: 0, z: 0)
-        : V3(x: 0, y: 0, z: 2)
+        ? V3(x: 2.5, y: 0, z: 0)
+        : V3(x: 0, y: 0, z: 2.5)
     let projectedDoor = [
         plan.entranceBaseWorld - doorHalf,
         plan.entranceBaseWorld + doorHalf,
@@ -1967,7 +2110,7 @@ func run() throws {
     var failures: [String] = []
     let sourceRoot = root.appendingPathComponent("source", isDirectory: true)
     let materialURL = sourceRoot.appendingPathComponent(
-        "materials/industrial-l04-turbine-v07-prepixel.json"
+        "materials/industrial-l04-turbine-v08-prepixel.json"
     )
     try FileManager.default.createDirectory(
         at: materialURL.deletingLastPathComponent(),
@@ -1977,8 +2120,8 @@ func run() throws {
     let materialSHA = try sha256(materialURL)
     let materialFile =
         "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/"
-        + "industrial-l04-turbine-v07-prepixel/materials/"
-        + "industrial-l04-turbine-v07-prepixel.json"
+        + "industrial-l04-turbine-v08-prepixel/materials/"
+        + "industrial-l04-turbine-v08-prepixel.json"
     let toolchainFile =
         "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/"
         + "toolchain-industrial-l03-source-v01.json"
@@ -2212,13 +2355,28 @@ func run() throws {
     for (index, renderPlan) in renderPlans.enumerated() {
         let clayPlan = plans[index]
         let raster = rasters[index]
-        let clayHall = clayPlan.boxes.first { $0.role == "main-hall" }!
-        let hallHeight = clayHall.size.y
+        let clayHallBoxes = clayPlan.boxes.filter { $0.role == "main-hall" }
+        let hallHeight = clayHallBoxes.map(\.size.y).max()!
+        let hallMinimumX = clayHallBoxes.map {
+            $0.center.x - $0.size.x * 0.5
+        }.min()!
+        let hallMaximumX = clayHallBoxes.map {
+            $0.center.x + $0.size.x * 0.5
+        }.max()!
+        let hallMinimumZ = clayHallBoxes.map {
+            $0.center.z - $0.size.z * 0.5
+        }.min()!
+        let hallMaximumZ = clayHallBoxes.map {
+            $0.center.z + $0.size.z * 0.5
+        }.max()!
         let roofHeight = clayPlan.boxes.first { $0.role == "roof-peak" }!.size.y
         let acceptedClayVisibleHeight =
             (hallHeight + roofHeight) * pixelsPerWorld
         let acceptedClayHallRatio =
-            (clayHall.size.x + clayHall.size.z) / (hallHeight + roofHeight)
+            (
+                hallMaximumX - hallMinimumX
+                    + hallMaximumZ - hallMinimumZ
+            ) / (hallHeight + roofHeight)
         let nonStackTop = clayPlan.boxes.filter { !$0.stack }
             .map { $0.center.y + $0.size.y * 0.5 }.max()!
         let controlHeight =
@@ -2350,7 +2508,7 @@ func run() throws {
     try writeJSON(
         [
             "taskID": "PLAY-027",
-            "artifact": "Turbine v07 descriptor-derived registration",
+            "artifact": "Turbine v08 descriptor-derived registration",
             "directions": registrationMetrics,
             "sourceAuthority": false,
             "productionSelected": false,
@@ -2376,7 +2534,7 @@ func run() throws {
             for case let file as URL in enumerator
             where
                 file.lastPathComponent == "scene.json"
-                && !file.path.contains("industrial-l04-turbine-v07-prepixel")
+                && !file.path.contains("industrial-l04-turbine-v08-prepixel")
             {
                 let data = try Data(contentsOf: file)
                 catalogDescriptorHashes.insert(sha256(data))
@@ -2424,7 +2582,7 @@ func run() throws {
     }
     let report: [String: Any] = [
         "taskID": "PLAY-027",
-        "artifact": "Industrial L4 Turbine Works v07 descriptor-bound material and registration pre-pixel",
+        "artifact": "Industrial L4 Turbine Works v08 descriptor-bound material and registration pre-pixel",
         "authorityCommit": "3c160e21a917adffd4bf148351a1657184154669",
         "acceptedClayCommit": "90f3c0e8d3c6eab62de2487b84ebf211a2403cd6",
         "rejectedProofCandidate": "104027f29fce44fb734c010625a4f8f8fc509c2c",

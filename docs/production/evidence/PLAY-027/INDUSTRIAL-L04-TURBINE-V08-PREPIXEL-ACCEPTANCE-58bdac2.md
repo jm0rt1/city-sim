@@ -71,6 +71,12 @@ No ImageGen call, shared manifest edit, package/runtime change, renderer
 mutation, normalization, push, integration, production selection, or
 self-acceptance is authorized in this raw slice.
 
+The exact North descriptor now has a hash-, geometry-, direction-, and
+material-bound offline resolver admission under
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L04-TURBINE-V08-NORTH-RESOLVER-AUTHORITY.md`.
+This admission does not authorize a sibling direction or confer source
+authority.
+
 ## Return conditions
 
 Return the North raw source if the staff entrance loses any usable width,

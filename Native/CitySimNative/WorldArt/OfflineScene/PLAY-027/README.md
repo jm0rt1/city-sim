@@ -106,13 +106,15 @@ fixed when SceneKit self/cast shadows are isolated.
 
 The additive schema-2 `sceneKitLightingMode` field defaults to
 `lambert-scene-lights` when omitted, preserving every legacy and accepted
-descriptor. The resolver accepts `authored-constant-v1` only for an Industrial
-L2 `source-v05` source-authority descriptor or the approved East-only
-`source-v06` topology repair. That mode is descriptor-bound:
-all SceneKit materials use `.constant`, both descriptor-authored scene lights
-are zero-intensity and non-shadowing, and the authored southeast contact shadow
-remains geometry. A diagnostic CLI override still cannot write source
-authority.
+descriptor. The resolver accepts `authored-constant-v1` only for enumerated,
+revision-bound Industrial source-authority descriptors. Industrial L4
+`source-v08-prepixel` is admitted only for the exact variant-zero North (`n`)
+geometry and material hash accepted by integration; East, South, West, aliases,
+other revisions, and generic fallback remain fail-closed. In this mode all
+SceneKit materials use `.constant`, descriptor-authored scene lights are
+zero-intensity and non-shadowing, and the authored southeast contact shadow
+remains deterministic geometry. A diagnostic CLI override still cannot write
+source authority.
 
 ## Descriptor-bound sampling compatibility
 
@@ -127,12 +129,10 @@ block. Its frozen contract is:
 ```text
 contractID: play027-deterministic-4x-no-msaa-lanczos-v1, -v2, or -v3
 sceneKitAntialiasing: none
-sceneKitShadows: current (default when omitted), or disabled only for
-  industrial_l02/source-v04, source-v05, or East-only
-  source-v06/source-authority
+sceneKitShadows: current (default when omitted), or disabled only for an
+  enumerated revision/direction/geometry/material-bound source authority
 sceneKitLightingMode: lambert-scene-lights (default when omitted), or
-  authored-constant-v1 only for industrial_l02/source-v05 or East-only
-  source-v06/source-authority
+  authored-constant-v1 only for an enumerated source authority
 linearOversamplingFactor: 4
 downsample: CILanczosScaleTransform, scale 0.25, aspect 1
 CI context: software, no intermediate cache, extended-sRGB -> sRGB
@@ -314,7 +314,11 @@ payload. It never edits an accepted descriptor or source record.
 Residential L1 and Residential L2-L4 have passed their independent source-art
 gates. Commercial L1-L4 are accepted as non-shipping source-art authority.
 Industrial L1 `source-v05` is accepted and shipping through PLAY-062.
-Industrial L2 source-v03 through source-v08 are rejected and frozen; no
-Industrial L2 source is accepted. Industrial L3-L4, additional variants,
-renderer ingestion, packaging, and production selection remain blocked
-without further integration authority.
+Industrial L2 has accepted source and shipping outcomes. Industrial L3 has
+accepted source authority; its replacement renderer ingestion remains subject
+to staged and independent QA. Industrial L4 Turbine v08 has accepted
+pre-pixel N/E/S/W architecture, but only its exact North descriptor has
+resolver admission for a three-process raw gate. Industrial L4 raw source,
+the other three directions, normalization, renderer ingestion, packaging,
+production selection, and additional variants remain blocked without their
+next explicit integration disposition.

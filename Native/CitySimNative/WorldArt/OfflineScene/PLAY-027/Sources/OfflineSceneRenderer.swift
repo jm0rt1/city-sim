@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-sampling-pipeline <id>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-sampling-pipeline <id>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>] [--diagnostic-l3-v5-trace-contract <id> --diagnostic-l3-v5-trace-dir <dir>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -2854,7 +2854,7 @@ final class NativeSourceRenderer: OfflineSourceRendering {
 
 final class NativeSourceCompositor: OfflineSourceCompositing {
     private let sampling: EffectiveSamplingContract
-    private let stageTraceCoordinate: [Int]?
+    private let stageTraceCoordinates: [[Int]]
     private(set) var prequantizedImage: CGImage?
     private(set) var prequantizedRGBA: [UInt8]?
     private(set) var quantizedBeforeMajorityRGBA: [UInt8]?
@@ -2866,10 +2866,14 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
 
     init(
         sampling: EffectiveSamplingContract,
-        stageTraceCoordinate: [Int]? = nil
+        stageTraceCoordinate: [Int]? = nil,
+        stageTraceCoordinates: [[Int]] = []
     ) {
         self.sampling = sampling
-        self.stageTraceCoordinate = stageTraceCoordinate
+        self.stageTraceCoordinates =
+            stageTraceCoordinates.isEmpty
+            ? stageTraceCoordinate.map { [$0] } ?? []
+            : stageTraceCoordinates
     }
 
     func compositeRegisteredSource(
@@ -2958,7 +2962,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
             )
         }
         let immutablePrequantizedBytes = bytes
-        if stageTraceCoordinate != nil {
+        if !stageTraceCoordinates.isEmpty {
             prequantizedRGBA = immutablePrequantizedBytes
         }
         bytes.withUnsafeMutableBytes { storage in
@@ -2989,7 +2993,7 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 }
             }
         }
-        if stageTraceCoordinate != nil {
+        if !stageTraceCoordinates.isEmpty {
             quantizedBeforeMajorityRGBA = bytes
         }
         if let repair = sampling.postQuantizationCanonicalizer {
@@ -2999,13 +3003,13 @@ final class NativeSourceCompositor: OfflineSourceCompositing {
                 width: width,
                 height: height,
                 contract: repair,
-                traceCoordinates: stageTraceCoordinate.map { [$0] } ?? []
+                traceCoordinates: stageTraceCoordinates
             )
             bytes = result.rgba
             postQuantizationMutations = result.mutations
             postQuantizationEvaluations = result.evaluations
         }
-        if stageTraceCoordinate != nil {
+        if !stageTraceCoordinates.isEmpty {
             postMajorityRGBA = bytes
         }
         return try bytes.withUnsafeMutableBytes { storage in
@@ -3370,6 +3374,16 @@ enum OfflineSceneRendererMain {
             "--diagnostic-stage-coordinate",
             in: arguments
         )
+        let diagnosticL3V5TraceContractID = rendererOptionalArgument(
+            "--diagnostic-l3-v5-trace-contract",
+            in: arguments
+        )
+        let diagnosticL3V5TraceDirectory = rendererOptionalArgument(
+            "--diagnostic-l3-v5-trace-dir",
+            in: arguments
+        ).map {
+            URL(fileURLWithPath: $0).standardizedFileURL
+        }
         let diagnosticStageCoordinate: [Int]? = {
             guard let diagnosticStageCoordinateRaw else {
                 return nil
@@ -3534,6 +3548,32 @@ enum OfflineSceneRendererMain {
         let effectiveSampling =
             diagnosticSamplingResolution?.effectiveSampling
             ?? descriptorSampling
+        let diagnosticL3V5TraceRecord =
+            try IndustrialL3V5NWCanonicalizerTraceContract.validate(
+                requestedContractID: diagnosticL3V5TraceContractID,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialSHA256: try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                traceDirectory: diagnosticL3V5TraceDirectory,
+                descriptor: descriptor,
+                sampling: descriptorSampling,
+                explicitAntialiasing: diagnosticAntialiasingRaw,
+                explicitSceneShadows: diagnosticSceneShadowsRaw,
+                explicitMaterialLighting: diagnosticMaterialLightingRaw,
+                diagnosticSamplingPipelineID:
+                    diagnosticSamplingPipelineID,
+                diagnosticContractID: diagnosticContractID,
+                diagnosticStageContractID: diagnosticStageContractID,
+                diagnosticStageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                diagnosticStageCoordinate: diagnosticStageCoordinate,
+                diagnosticPrequantizedOutput:
+                    diagnosticPrequantizedOutput
+            )
         let diagnosticMSAAIsolationRecord =
             try IndustrialL2V5MSAAIsolationContract.validate(
                 requestedContractID: diagnosticContractID,
@@ -3736,6 +3776,7 @@ enum OfflineSceneRendererMain {
                 diagnosticSourceV07EastCaptureRecord != nil,
                 diagnosticSourceV06FullFrameCaptureRecord != nil,
                 diagnosticSourceV08FiniteEquivalenceRecord != nil,
+                diagnosticL3V5TraceRecord != nil,
             ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
@@ -3750,6 +3791,7 @@ enum OfflineSceneRendererMain {
             ?? diagnosticSourceV07EastCaptureRecord?.value
             ?? diagnosticSourceV06FullFrameCaptureRecord?.value
             ?? diagnosticSourceV08FiniteEquivalenceRecord?.value
+            ?? diagnosticL3V5TraceRecord?.value
         if effectiveSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -4012,7 +4054,9 @@ enum OfflineSceneRendererMain {
             }
         let compositor = NativeSourceCompositor(
             sampling: effectiveSampling,
-            stageTraceCoordinate: diagnosticStageCoordinate
+            stageTraceCoordinate: diagnosticStageCoordinate,
+            stageTraceCoordinates:
+                diagnosticL3V5TraceRecord?.coordinates ?? []
         )
         let source = try compositor.compositeRegisteredSource(
             renderedImage: oversampled,
@@ -4020,6 +4064,12 @@ enum OfflineSceneRendererMain {
         )
         let rawOccupancy = try validatedRawOccupancy(source)
         var pngWriteDiagnostics: RendererPNGWriteDiagnostics?
+        if let diagnosticL3V5TraceDirectory {
+            try FileManager.default.createDirectory(
+                at: diagnosticL3V5TraceDirectory,
+                withIntermediateDirectories: true
+            )
+        }
         if
             let diagnosticStageCaptureDirectory,
             let diagnosticStageCoordinate
@@ -4278,6 +4328,115 @@ enum OfflineSceneRendererMain {
             )
         }
 
+        if
+            let diagnosticL3V5TraceDirectory,
+            let diagnosticL3V5TraceRecord,
+            let prequantizedRGBA = compositor.prequantizedRGBA,
+            let quantizedBeforeMajorityRGBA =
+                compositor.quantizedBeforeMajorityRGBA,
+            let postMajorityRGBA = compositor.postMajorityRGBA
+        {
+            let width = descriptor.camera.renderViewportPixels[0]
+            let height = descriptor.camera.renderViewportPixels[1]
+            let coordinateRecords = try diagnosticL3V5TraceRecord
+                .coordinates.map { coordinate -> [String: Any] in
+                    let evaluations = compositor
+                        .postQuantizationEvaluations.filter {
+                            $0.x == coordinate[0]
+                                && $0.y == coordinate[1]
+                        }.map {
+                            industrialL3V5TraceEvaluationRecord(
+                                $0,
+                                postMajorityRGBA: postMajorityRGBA,
+                                width: width
+                            )
+                        }
+                    return [
+                        "coordinate": coordinate,
+                        "prequantized5x5":
+                            try industrialL3V5TraceWindowRecord(
+                                stage: "prequantized-in-memory",
+                                rgba: prequantizedRGBA,
+                                width: width,
+                                height: height,
+                                target: coordinate,
+                                radius: 2
+                            ),
+                        "quantizedBeforeMajority3x3":
+                            try industrialL3V5TraceWindowRecord(
+                                stage:
+                                    "quantized-before-majority-in-memory",
+                                rgba: quantizedBeforeMajorityRGBA,
+                                width: width,
+                                height: height,
+                                target: coordinate,
+                                radius: 1
+                            ),
+                        "postMajority3x3":
+                            try industrialL3V5TraceWindowRecord(
+                                stage: "post-majority-in-memory",
+                                rgba: postMajorityRGBA,
+                                width: width,
+                                height: height,
+                                target: coordinate,
+                                radius: 1
+                            ),
+                        "channelEvaluations": evaluations,
+                        "materialNodePrimitiveIdentity": [
+                            "status":
+                                "unavailable-without-secondary-scene-evaluation",
+                            "reason":
+                                "the governed renderer exposes no passive per-fragment ownership buffer; hit-testing or semantic rerendering would alter evaluation scope",
+                        ],
+                    ]
+                }
+            let traceSourcePaths = [
+                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL3V5NWCanonicalizerTraceContract.swift",
+                "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+            ]
+            var traceRecord = diagnosticL3V5TraceRecord.value
+            traceRecord["schema"] = 1
+            traceRecord["task"] = "PLAY-027"
+            traceRecord["coordinateSystem"] =
+                "top-left decoded RGBA source pixel"
+            traceRecord["rendererSourceCommit"] = sourceCommit
+            traceRecord["rendererBinarySHA256"] = try rendererSHA256(
+                URL(fileURLWithPath: CommandLine.arguments[0])
+                    .standardizedFileURL
+            )
+            traceRecord["rendererSources"] = try traceSourcePaths.map {
+                [
+                    "file": $0,
+                    "sha256": try rendererSHA256(
+                        repositoryRoot.appendingPathComponent($0)
+                    ),
+                ]
+            }
+            traceRecord["rawSourceSHA256"] = try rendererSHA256(outputURL)
+            traceRecord["rawOccupancy"] = rawOccupancy
+            traceRecord["postQuantizationTotalMutationCount"] =
+                compositor.postQuantizationMutations.count
+            traceRecord["coordinates"] = coordinateRecords
+            var traceData = try JSONSerialization.data(
+                withJSONObject: traceRecord,
+                options: [
+                    .prettyPrinted,
+                    .sortedKeys,
+                    .withoutEscapingSlashes,
+                ]
+            )
+            traceData.append(0x0a)
+            try traceData.write(
+                to: diagnosticL3V5TraceDirectory.appendingPathComponent(
+                    "CANONICALIZER-TRACE.json"
+                ),
+                options: .atomic
+            )
+        }
+
         let sourceFiles = [
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
@@ -4293,6 +4452,7 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastFullFrameCaptureContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V8EastFiniteEquivalenceContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL3V5NWCanonicalizerTraceContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -4422,6 +4582,13 @@ enum OfflineSceneRendererMain {
                     } ?? "not-requested",
                 "stageCapture":
                     diagnosticStageCaptureDirectory.map {
+                        rendererRelativePath(
+                            $0,
+                            repositoryRoot: repositoryRoot
+                        )
+                    } ?? "not-requested",
+                "industrialL3V5Trace":
+                    diagnosticL3V5TraceDirectory.map {
                         rendererRelativePath(
                             $0,
                             repositoryRoot: repositoryRoot

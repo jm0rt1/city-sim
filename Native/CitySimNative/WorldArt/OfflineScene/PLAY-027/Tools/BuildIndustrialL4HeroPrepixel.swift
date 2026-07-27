@@ -483,7 +483,7 @@ private func l4WestPlan() -> L4Plan {
         blocks: blocks,
         roofs: [
             L4Roof(id: "w-high-bay-monitor-roof", dimensions: [23, 4, 39], position: [15, 49, 3], material: "l4-roof-membrane", trim: "l4-charcoal-steel"),
-            L4Roof(id: "w-assembly-roof", dimensions: [31, 3.5, 19], position: [11, 29.8, -19], material: "l4-roof-membrane", trim: "l4-light-trim"),
+            L4Roof(id: "w-assembly-roof", dimensions: [31, 3.5, 18], position: [11, 29.8, -19], material: "l4-roof-membrane", trim: "l4-light-trim"),
             L4Roof(id: "w-control-roof", dimensions: [15, 3, 15], position: [0, 24.5, -20], material: "l4-roof-membrane", trim: "l4-charcoal-steel"),
         ],
         trims: [

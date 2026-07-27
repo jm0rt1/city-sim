@@ -1,0 +1,454 @@
+{
+  "artDirection" : [
+    "warm weathered masonry and dark blue-green heavy steel",
+    "broad high-bay hall and lower control-assembly volume",
+    "three deep freight openings instead of storefront rhythm",
+    "oxidized plant metal, copper-bronze trim, and restrained ochre",
+    "gantry, pipe bridge, silos, roof plant, and paired-stack skyline"
+  ],
+  "colorSpace" : "extended-sRGB",
+  "familyAnchorFile" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/NEUTRAL-GROUND-NATIVE-2X-NESW-COLOR.png",
+  "familyAnchorSHA256" : "14ba96ea73f80de3d68e30388c9b56d6326698fa4a625822aa34e65a34de8fa7",
+  "imageGenMaterialSwatchesUsed" : false,
+  "libraryID" : "industrial-l04-hero-v02",
+  "materials" : [
+    {
+      "baseColorRGBA" : [
+        0.055,
+        0.059999999999999998,
+        0.058000000000000003,
+        1
+      ],
+      "id" : "l4-recess",
+      "metalness" : 0.040000000000000001,
+      "pattern" : "deep-service-cavity",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.94999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.16,
+        0.20000000000000001,
+        0.19,
+        1
+      ],
+      "id" : "l4-dock-door",
+      "metalness" : 0.29999999999999999,
+      "pattern" : "heavy-vertical-fold-door",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.81999999999999995,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.25,
+        0.34000000000000002,
+        0.34999999999999998,
+        1
+      ],
+      "id" : "l4-weathered-blue-steel",
+      "metalness" : 0.31,
+      "pattern" : "weathered-wide-corrugation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.83999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.38,
+        0.45000000000000001,
+        0.42999999999999999,
+        1
+      ],
+      "id" : "l4-blue-steel-light",
+      "metalness" : 0.23000000000000001,
+      "pattern" : "aged-assembly-steel-panels",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.85999999999999999,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.60999999999999999,
+        0.47999999999999998,
+        0.34000000000000002,
+        1
+      ],
+      "id" : "l4-warm-concrete",
+      "metalness" : 0,
+      "pattern" : "weathered-board-formed-concrete",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.93999999999999995,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.31,
+        0.25,
+        0.20000000000000001,
+        1
+      ],
+      "id" : "l4-concrete-shadow",
+      "metalness" : 0,
+      "pattern" : "oil-darkened-service-concrete",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.96999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.25,
+        0.25,
+        0.22,
+        1
+      ],
+      "id" : "l4-foundation",
+      "metalness" : 0,
+      "pattern" : "heavy-scored-foundation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.98999999999999999,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.48999999999999999,
+        0.42999999999999999,
+        0.34000000000000002,
+        1
+      ],
+      "id" : "l4-apron",
+      "metalness" : 0,
+      "pattern" : "worn-heavy-load-apron",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.98999999999999999,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.40999999999999998,
+        0.40000000000000002,
+        0.34000000000000002,
+        1
+      ],
+      "id" : "l4-roof-membrane",
+      "metalness" : 0.040000000000000001,
+      "pattern" : "weathered-dark-roof-seams",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.94999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.12,
+        0.14999999999999999,
+        0.14999999999999999,
+        1
+      ],
+      "id" : "l4-charcoal-steel",
+      "metalness" : 0.47999999999999998,
+      "pattern" : "charcoal-heavy-structural-steel",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.76000000000000001,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.16,
+        0.28999999999999998,
+        0.28000000000000003,
+        1
+      ],
+      "id" : "l4-control-glazing",
+      "metalness" : 0.12,
+      "pattern" : "deep-green-control-glazing",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.40000000000000002,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.67000000000000004,
+        0.41999999999999998,
+        0.19,
+        1
+      ],
+      "id" : "l4-warm-glazing",
+      "metalness" : 0.080000000000000002,
+      "pattern" : "warm-staff-entry-glazing",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.39000000000000001,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.45000000000000001,
+        0.41999999999999998,
+        0.34999999999999998,
+        1
+      ],
+      "id" : "l4-process-metal",
+      "metalness" : 0.55000000000000004,
+      "pattern" : "aged-process-alloy",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.69999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.55000000000000004,
+        0.48999999999999999,
+        0.37,
+        1
+      ],
+      "id" : "l4-duct-metal",
+      "metalness" : 0.59999999999999998,
+      "pattern" : "heat-stained-duct-metal",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.67000000000000004,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.68000000000000005,
+        0.55000000000000004,
+        0.35999999999999999,
+        1
+      ],
+      "id" : "l4-light-trim",
+      "metalness" : 0.28999999999999998,
+      "pattern" : "weathered-copper-bronze-trim",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.71999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.73999999999999999,
+        0.39000000000000001,
+        0.080000000000000002,
+        1
+      ],
+      "id" : "l4-safety-ochre",
+      "metalness" : 0.20000000000000001,
+      "pattern" : "restrained-ochre-safety-paint",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.69999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.51000000000000001,
+        0.25,
+        0.13,
+        1
+      ],
+      "id" : "l4-oxide",
+      "metalness" : 0.40999999999999998,
+      "pattern" : "layered-oxide-weathering",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.81999999999999995,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.41999999999999998,
+        0.39000000000000001,
+        0.31,
+        1
+      ],
+      "id" : "l4-pipe",
+      "metalness" : 0.64000000000000001,
+      "pattern" : "aged-pipework",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.65000000000000002,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "source" : "task-owned numeric Industrial L4 hero hierarchy; no ImageGen or raster swatch",
+  "styleAnchorFile" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "task" : "PLAY-027"
+}

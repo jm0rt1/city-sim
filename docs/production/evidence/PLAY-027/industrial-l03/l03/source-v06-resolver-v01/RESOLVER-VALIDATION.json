@@ -1,0 +1,177 @@
+{
+  "descriptorMutationCount" : 0,
+  "familyAuthority" : false,
+  "materialMutationCount" : 0,
+  "metalProcesses" : 0,
+  "negativeCases" : [
+    {
+      "failedClosed" : true,
+      "mutation" : "direction",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "variant",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "revision",
+      "resolverError" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05/source-v06 North/West v3 source-authority descriptors"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "binding",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "geometry",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "purpose",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "contract",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "lighting",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "shadows",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "antialiasing",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "material-path",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "material-hash",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "swapped-library",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "east",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "south",
+      "resolverError" : "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+    }
+  ],
+  "negativeCount" : 15,
+  "normalizerProcesses" : 0,
+  "passed" : true,
+  "positiveCases" : [
+    {
+      "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "descriptorSHA256" : "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9",
+      "direction" : "north",
+      "effectiveContractRecord" : {
+        "canonicalizerEncoder" : "ImageIO",
+        "canonicalizerFormat" : "png",
+        "canonicalizerID" : "imageio-sips-png-v1",
+        "canonicalizerPostEncoder" : "/usr/bin/sips",
+        "chromaBypassRGBA" : [
+          255,
+          0,
+          255,
+          255
+        ],
+        "ciCacheIntermediates" : false,
+        "ciOutputColorSpace" : "srgb",
+        "ciUseSoftwareRenderer" : true,
+        "ciWorkingColorSpace" : "extended-srgb",
+        "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+        "descriptorSchema" : 2,
+        "downsampleAspectRatio" : 1,
+        "downsampleFilter" : "CILanczosScaleTransform",
+        "downsampleScale" : 0.25,
+        "linearOversamplingFactor" : 4,
+        "purpose" : "source-authority",
+        "quantizerID" : "step32-midpoint-offset8-v1",
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "sceneKitAntialiasing" : "none",
+        "sceneKitLightingMode" : "authored-constant-v1",
+        "sceneKitShadows" : "disabled"
+      },
+      "effectiveContractRecordSHA256" : "361c814035dfb2cd9cdf0bda74deb42c3761cdf777d7a772b380913606c8e830",
+      "materialFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "materialSHA256" : "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8",
+      "passed" : true,
+      "sceneGeometryID" : "industrial-l03-north-v06-open-loading-court"
+    },
+    {
+      "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "descriptorSHA256" : "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f",
+      "direction" : "west",
+      "effectiveContractRecord" : {
+        "canonicalizerEncoder" : "ImageIO",
+        "canonicalizerFormat" : "png",
+        "canonicalizerID" : "imageio-sips-png-v1",
+        "canonicalizerPostEncoder" : "/usr/bin/sips",
+        "chromaBypassRGBA" : [
+          255,
+          0,
+          255,
+          255
+        ],
+        "ciCacheIntermediates" : false,
+        "ciOutputColorSpace" : "srgb",
+        "ciUseSoftwareRenderer" : true,
+        "ciWorkingColorSpace" : "extended-srgb",
+        "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+        "descriptorSchema" : 2,
+        "downsampleAspectRatio" : 1,
+        "downsampleFilter" : "CILanczosScaleTransform",
+        "downsampleScale" : 0.25,
+        "linearOversamplingFactor" : 4,
+        "purpose" : "source-authority",
+        "quantizerID" : "step32-midpoint-offset8-v1",
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "sceneKitAntialiasing" : "none",
+        "sceneKitLightingMode" : "authored-constant-v1",
+        "sceneKitShadows" : "disabled"
+      },
+      "effectiveContractRecordSHA256" : "361c814035dfb2cd9cdf0bda74deb42c3761cdf777d7a772b380913606c8e830",
+      "materialFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "materialSHA256" : "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf",
+      "passed" : true,
+      "sceneGeometryID" : "industrial-l03-west-v06-open-loading-court"
+    }
+  ],
+  "positiveCount" : 2,
+  "productionSelected" : false,
+  "rawRenderProcesses" : 0,
+  "sceneKitProcesses" : 0,
+  "schema" : 1,
+  "scope" : "hash-and-material-bound Industrial L3 source-v06 North/West resolver",
+  "sourceAuthority" : false,
+  "sourceV06EastRejected" : true,
+  "sourceV06SouthRejected" : true,
+  "swappedLibrariesRejected" : true,
+  "task" : "PLAY-027"
+}

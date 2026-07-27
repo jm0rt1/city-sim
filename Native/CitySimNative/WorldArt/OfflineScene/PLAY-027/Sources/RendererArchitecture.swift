@@ -199,9 +199,42 @@ enum DescriptorSamplingResolver {
             && sampling.sceneKitAntialiasing == "none"
             && sceneKitShadows == "disabled"
             && sceneKitLightingMode == "authored-constant-v1"
+        let isIndustrialL3CohesionSourceV06NorthWest =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.variantID == "variant-0"
+            && descriptor.sourceRevision == "source-v06"
+            && sampling.sourceRevisionBinding == "source-v06"
+            && (
+                (
+                    descriptor.viewDirection == "north"
+                    && descriptor.sceneGeometryID
+                        == "industrial-l03-north-v06-open-loading-court"
+                    && descriptor.materialLibrary.file
+                        == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json"
+                    && descriptor.materialLibrary.sha256
+                        == "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8"
+                )
+                    || (
+                        descriptor.viewDirection == "west"
+                        && descriptor.sceneGeometryID
+                            == "industrial-l03-west-v06-open-loading-court"
+                        && descriptor.materialLibrary.file
+                            == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json"
+                        && descriptor.materialLibrary.sha256
+                            == "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf"
+                    )
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
         let isIndustrialL3SourceV05 =
             descriptor.logicalBuildingID == "industrial_l03"
             && descriptor.sourceRevision == "source-v05"
+        let isIndustrialL3SourceV06 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.sourceRevision == "source-v06"
         guard
             !isIndustrialL3SourceV05
                 || isIndustrialL3CohesionSourceV05NorthWest
@@ -210,12 +243,21 @@ enum DescriptorSamplingResolver {
                 "Industrial L3 source-v05 is limited to the exact variant-0 North/West geometry-bound v3 source-authority contract"
             )
         }
+        guard
+            !isIndustrialL3SourceV06
+                || isIndustrialL3CohesionSourceV06NorthWest
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+            )
+        }
         let isAuthoredConstantSource =
             isIndustrialL2AuthoredConstant
             || isIndustrialL3SourceV02
             || isIndustrialL3SourceV03
             || isIndustrialL3CohesionSourceV04
             || isIndustrialL3CohesionSourceV05NorthWest
+            || isIndustrialL3CohesionSourceV06NorthWest
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -264,7 +306,7 @@ enum DescriptorSamplingResolver {
                     && sceneKitShadows == "current")
         else {
             throw SamplingContractError.invalid(
-                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05 North/West v3 source-authority descriptors"
+                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05/source-v06 North/West v3 source-authority descriptors"
             )
         }
         guard
@@ -278,7 +320,7 @@ enum DescriptorSamplingResolver {
                 )
         else {
             throw SamplingContractError.invalid(
-                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05 North/West v3 source-authority descriptors"
+                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05/source-v06 North/West v3 source-authority descriptors"
             )
         }
         if isIndustrialL2SourceV07East || isIndustrialL3SourceV03 {

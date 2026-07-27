@@ -1,0 +1,17 @@
+{
+  "artifactID": "call_0OFND7yFVBfLHd0fJHHDhqmJ",
+  "conceptID": "atlas-robotics-forge",
+  "disposition": "pending-independent-review",
+  "generatedAt": "2026-07-27T13:46:36-0400",
+  "generationMode": "built-in-imagegen",
+  "heightPixels": 1024,
+  "model": "built-in/model-not-exposed",
+  "productionSelected": false,
+  "promptFile": "prompt.txt",
+  "rawByteCount": 2778484,
+  "rawFile": "raw.png",
+  "rawSHA256": "9fb547a90e2eb33ed74077060b51a6fbb9a47e5e3e18fcd0c3f9ed7d0bcf15bd",
+  "rejectionNotes": [],
+  "sourceAuthority": false,
+  "widthPixels": 1536
+}

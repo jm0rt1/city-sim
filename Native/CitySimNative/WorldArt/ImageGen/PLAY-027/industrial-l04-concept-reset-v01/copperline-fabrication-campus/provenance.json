@@ -1,0 +1,19 @@
+{
+  "artifactID": "call_LaAZjgNKKsK6UzPJ80F0A4Rp",
+  "conceptID": "copperline-fabrication-campus",
+  "disposition": "pending-independent-review",
+  "generatedAt": "2026-07-27T13:45:23-0400",
+  "generationMode": "built-in-imagegen",
+  "heightPixels": 1024,
+  "model": "built-in/model-not-exposed",
+  "productionSelected": false,
+  "promptFile": "prompt.txt",
+  "rawByteCount": 2670923,
+  "rawFile": "raw.png",
+  "rawSHA256": "96c3ed28a777bfa307f8b4fa6c23686ea9b50e31efcd6b257c599b237a4cae18",
+  "rejectionNotes": [
+    "Small pseudo-letterlike marks appear above freight openings; they are concept-only noise and may not become authored text or source geometry."
+  ],
+  "sourceAuthority": false,
+  "widthPixels": 1536
+}

@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: non-authoritative CitySim Industrial L4 concept reference
+Primary request: Turbine Works — design a genuinely city-defining advanced foundry as premium high-fidelity isometric city-building game art. This must be a broad, grounded, clearly wider-than-tall industrial campus, never a compact tower. Organize it around one very long high-bay turbine hall with a strong sawtooth or monitor roof rhythm, a distinct rear furnace house with one powerful stack, an exposed overhead crane gantry crossing a freight apron, and a lower warm-masonry control wing with a separate staff entrance. Make two or three large heavy freight openings read immediately before any small detail.
+Scene/backdrop: isolated on a neutral matte ground field, generous padding, no road, no parcel markings, no city or landscape background.
+Style/medium: polished painterly 3D isometric strategy-game concept art, realistic architectural massing and premium material rendering, readable at small gameplay scale.
+Composition/framing: fixed three-quarter isometric view, entire campus visible, strong horizontal silhouette and deep grounded contact, operations legible before micro-detail.
+Lighting/mood: northwest key light, southeast contact shadow, warm industrious atmosphere.
+Color palette: weathered red-brown masonry and warm formed concrete, dark blue-green and charcoal steel, controlled oxide/copper/ochre accents, dark service recesses, believable muted glazing.
+Materials/textures: aging brick, stained concrete, weathered steel, roof seams, joints, soot and heat staining, industrial wear, credible roof plant and ducts without noisy greebles.
+Constraints: concept reference only; separate staff/control entrance; two or three large freight openings; broad foundry identity; no labels, no UI, no text, no people or vehicles.
+Avoid: dominant white, cyan, ice-blue, or cream planes; office tower; apartment; retail storefront; glossy science-fiction factory; miniature toy; generic cube stack; vertical high-rise grammar; commercial signage; city background; roads; excessive tiny detail; watermark.

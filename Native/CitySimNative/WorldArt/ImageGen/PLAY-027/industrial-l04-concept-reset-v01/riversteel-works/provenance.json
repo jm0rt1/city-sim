@@ -1,0 +1,17 @@
+{
+  "artifactID": "call_zZ9GPZhnMGY89IW5WYrD9vd0",
+  "conceptID": "riversteel-works",
+  "disposition": "pending-independent-review",
+  "generatedAt": "2026-07-27T13:47:47-0400",
+  "generationMode": "built-in-imagegen",
+  "heightPixels": 1024,
+  "model": "built-in/model-not-exposed",
+  "productionSelected": false,
+  "promptFile": "prompt.txt",
+  "rawByteCount": 2858322,
+  "rawFile": "raw.png",
+  "rawSHA256": "0261d08580629dae38885ed39a55da8d1940bd71ce0d3ee21dc7c194eb08e00e",
+  "rejectionNotes": [],
+  "sourceAuthority": false,
+  "widthPixels": 1536
+}

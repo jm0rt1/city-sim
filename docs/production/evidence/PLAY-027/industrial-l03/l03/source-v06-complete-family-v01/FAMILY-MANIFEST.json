@@ -1,0 +1,826 @@
+{
+  "acceptedCatalogs" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/GeneratedV4/catalog/play-028-residential-directions.json",
+      "sha256" : "bc3f1b54c4b771e9c815feaae50e86f1e5ac3b4c9fc52d4193a7d2e25fa583c3"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/GeneratedV4/catalog/play-060-commercial-directions.json",
+      "sha256" : "7a0b70c5cb3f7169cca3359932c48d85e39b5a248ee1e2066caf69034523dea3"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/GeneratedV4/catalog/play-062-industrial-l1-directions.json",
+      "sha256" : "b9d70083191c0b5d689cc5c875ab23c08b7816fe1dda8417d1a2543ae8050cc4"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/GeneratedV4/catalog/play-073-industrial-l2-directions.json",
+      "sha256" : "ab5a7bd7d6a1de3359167be732e32bb13f4b253ac11ef0fae1d81154d63fe2e2"
+    }
+  ],
+  "contract" : "CONTRACT-018",
+  "directionScopedRevisions" : {
+    "east" : "source-v04",
+    "north" : "source-v06",
+    "south" : "source-v04",
+    "west" : "source-v06"
+  },
+  "family" : "industrial_l03",
+  "familyAuthority" : false,
+  "newNormalizationDirections" : [
+    "north",
+    "west"
+  ],
+  "normalizationAuthority" : "docs/production/evidence/PLAY-027/INDUSTRIAL-L03-SOURCE-V06-NORMALIZATION-AUTHORITY-575ed9e.md",
+  "normalizationObjectWidth" : 410,
+  "normalizationReferenceWidth" : 512,
+  "normalizedOutputs" : [
+    {
+      "alphaBounds" : [
+        375,
+        341,
+        649,
+        598
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "8d7c547d121b5f6808b13532a5b3c144155328e8f606a8b1601731a4dd715e4f",
+      "direction" : "north",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "block",
+      "paddingPassed" : true,
+      "pixels" : [
+        1024,
+        683
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v06",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_block.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/north/generated_v4_industrial_l03_north_source_v06_block.png",
+      "valueMetrics" : {
+        "medianLuma" : 108,
+        "p95Luma" : 177,
+        "saturatedAccentPixelCount" : 2536,
+        "saturatedAccentShare" : 0.059735242851085883
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 42454
+    },
+    {
+      "alphaBounds" : [
+        187,
+        170,
+        325,
+        300
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "2a70c32c5e8538cb5d0c3d452bd388c51fd641f399bee468ad45522a4558337b",
+      "direction" : "north",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "neighborhood",
+      "paddingPassed" : true,
+      "pixels" : [
+        512,
+        342
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v06",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_neighborhood.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/north/generated_v4_industrial_l03_north_source_v06_neighborhood.png",
+      "valueMetrics" : {
+        "medianLuma" : 106,
+        "p95Luma" : 176,
+        "saturatedAccentPixelCount" : 663,
+        "saturatedAccentShare" : 0.061697375767727526
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 10746
+    },
+    {
+      "alphaBounds" : [
+        93,
+        85,
+        163,
+        150
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "d29df04ae5d3c330ffadb934cdca36a33c254c820490db42878b61f0e5a34455",
+      "direction" : "north",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "city",
+      "paddingPassed" : true,
+      "pixels" : [
+        256,
+        171
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v06",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_city.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/north/generated_v4_industrial_l03_north_source_v06_city.png",
+      "valueMetrics" : {
+        "medianLuma" : 108,
+        "p95Luma" : 172,
+        "saturatedAccentPixelCount" : 183,
+        "saturatedAccentShare" : 0.067353698932646297
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 2717
+    },
+    {
+      "alphaBounds" : [
+        375,
+        338,
+        649,
+        598
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "bf7ff6370bfe4c63c22d96a2a6518b17b5cba38ce1b621e1bf2346e9dbccdf8d",
+      "direction" : "east",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "block",
+      "paddingPassed" : true,
+      "pixels" : [
+        1024,
+        683
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v04",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_block.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/east/generated_v4_industrial_l03_east_source_v04_block.png",
+      "valueMetrics" : {
+        "medianLuma" : 105,
+        "p95Luma" : 177,
+        "saturatedAccentPixelCount" : 1891,
+        "saturatedAccentShare" : 0.039635296583525464
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 47710
+    },
+    {
+      "alphaBounds" : [
+        187,
+        169,
+        325,
+        300
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "f002e194b16d81c8568826f892207423ba1dfaa3e263baf8b74af9b5001b67c9",
+      "direction" : "east",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "neighborhood",
+      "paddingPassed" : true,
+      "pixels" : [
+        512,
+        342
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v04",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_neighborhood.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/east/generated_v4_industrial_l03_east_source_v04_neighborhood.png",
+      "valueMetrics" : {
+        "medianLuma" : 105,
+        "p95Luma" : 177,
+        "saturatedAccentPixelCount" : 484,
+        "saturatedAccentShare" : 0.040142655718669651
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 12057
+    },
+    {
+      "alphaBounds" : [
+        93,
+        84,
+        163,
+        150
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "2f999794586abf5b7fbe11328bfdc18974d089345b9519c5242e72a2debdd74f",
+      "direction" : "east",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "city",
+      "paddingPassed" : true,
+      "pixels" : [
+        256,
+        171
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v04",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_city.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/east/generated_v4_industrial_l03_east_source_v04_city.png",
+      "valueMetrics" : {
+        "medianLuma" : 105,
+        "p95Luma" : 177,
+        "saturatedAccentPixelCount" : 139,
+        "saturatedAccentShare" : 0.045380346065948415
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 3063
+    },
+    {
+      "alphaBounds" : [
+        375,
+        346,
+        649,
+        598
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "9e861613340dac6384b48d0b47f25f6f4eeb074c4057718e41299c76a6fd3dc3",
+      "direction" : "south",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "block",
+      "paddingPassed" : true,
+      "pixels" : [
+        1024,
+        683
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v04",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_block.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/south/generated_v4_industrial_l03_south_source_v04_block.png",
+      "valueMetrics" : {
+        "medianLuma" : 117,
+        "p95Luma" : 178,
+        "saturatedAccentPixelCount" : 1974,
+        "saturatedAccentShare" : 0.041385383034928086
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 47698
+    },
+    {
+      "alphaBounds" : [
+        187,
+        173,
+        325,
+        300
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "8cbef74cfe9b3b984980f63d6f076f53e0a928805cedc1a7532e7775f2fc945d",
+      "direction" : "south",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "neighborhood",
+      "paddingPassed" : true,
+      "pixels" : [
+        512,
+        342
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v04",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_neighborhood.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/south/generated_v4_industrial_l03_south_source_v04_neighborhood.png",
+      "valueMetrics" : {
+        "medianLuma" : 114,
+        "p95Luma" : 178,
+        "saturatedAccentPixelCount" : 490,
+        "saturatedAccentShare" : 0.040755219163270399
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 12023
+    },
+    {
+      "alphaBounds" : [
+        93,
+        86,
+        163,
+        150
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "7036363ef3aa5e0c5d0c093a37bd08a3e097ef39346f075524ac476937b6a031",
+      "direction" : "south",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "city",
+      "paddingPassed" : true,
+      "pixels" : [
+        256,
+        171
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v04",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_city.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-b/south/generated_v4_industrial_l03_south_source_v04_city.png",
+      "valueMetrics" : {
+        "medianLuma" : 110,
+        "p95Luma" : 178,
+        "saturatedAccentPixelCount" : 136,
+        "saturatedAccentShare" : 0.04460478845523122
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 3049
+    },
+    {
+      "alphaBounds" : [
+        375,
+        341,
+        649,
+        598
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "526c474ba8b9f578fa1c4e4e45903e7359a4333012024bc97b2757aeb26c9dac",
+      "direction" : "west",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "block",
+      "paddingPassed" : true,
+      "pixels" : [
+        1024,
+        683
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v06",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_block.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/west/generated_v4_industrial_l03_west_source_v06_block.png",
+      "valueMetrics" : {
+        "medianLuma" : 109,
+        "p95Luma" : 176,
+        "saturatedAccentPixelCount" : 2536,
+        "saturatedAccentShare" : 0.059738057099783283
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 42452
+    },
+    {
+      "alphaBounds" : [
+        187,
+        170,
+        325,
+        300
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "4971a923758155b37fe5c4457be3affa515cf2d16ab00b8e6d451fec47c9d4c4",
+      "direction" : "west",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "neighborhood",
+      "paddingPassed" : true,
+      "pixels" : [
+        512,
+        342
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v06",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_neighborhood.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/west/generated_v4_industrial_l03_west_source_v06_neighborhood.png",
+      "valueMetrics" : {
+        "medianLuma" : 106,
+        "p95Luma" : 175,
+        "saturatedAccentPixelCount" : 661,
+        "saturatedAccentShare" : 0.061511260003722312
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 10746
+    },
+    {
+      "alphaBounds" : [
+        93,
+        85,
+        163,
+        150
+      ],
+      "contactShadowSupportReachedGroundPivot" : true,
+      "decodedRGBASHA256" : "699bdcc84fd906d12491a7602074a98bd0519dabc1d87efb7124f3430e36a22f",
+      "direction" : "west",
+      "exactChromaPixelCount" : 0,
+      "fileSHA256" : "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a",
+      "hiddenRGBPixelCount" : 0,
+      "lod" : "city",
+      "paddingPassed" : true,
+      "pixels" : [
+        256,
+        171
+      ],
+      "registrationPassed" : true,
+      "repeatDecodedPixelIdentity" : true,
+      "repeatFileIdentity" : true,
+      "revision" : "source-v06",
+      "runA" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_city.png",
+      "runB" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-b/west/generated_v4_industrial_l03_west_source_v06_city.png",
+      "valueMetrics" : {
+        "medianLuma" : 108,
+        "p95Luma" : 172,
+        "saturatedAccentPixelCount" : 181,
+        "saturatedAccentShare" : 0.066617592933382402
+      },
+      "visibleMagentaSpillPixelCount" : 0,
+      "visiblePixelCount" : 2717
+    }
+  ],
+  "normalizerProcessesConsumed" : 4,
+  "panels" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/SOURCE-SCALE-NESW-COLOR.png",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "presentation" : "N/E/S/W exact frozen raws; review-only matte on neutral ground",
+      "sha256" : "db932e5f5e13ec427c0f7e046c50b9c4a862759f9711f2fd57dd9ed30b041305"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/SOURCE-SCALE-NESW-GRAYSCALE.png",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "presentation" : "N/E/S/W exact frozen raws in deterministic grayscale",
+      "sha256" : "9ac086d23f4b51eb40baf88a065bf09aa8fc92c4aac88d1e8a721167eff21d95"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/NEUTRAL-GROUND-NATIVE-2X-NESW-COLOR.png",
+      "pixels" : [
+        864,
+        576
+      ],
+      "presentation" : "N/E/S/W block LOD at native-2x review size on neutral ground",
+      "sha256" : "14ba96ea73f80de3d68e30388c9b56d6326698fa4a625822aa34e65a34de8fa7"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/NEUTRAL-GROUND-NATIVE-2X-NESW-GRAYSCALE.png",
+      "pixels" : [
+        864,
+        576
+      ],
+      "presentation" : "N/E/S/W block LOD at native-2x review size in grayscale",
+      "sha256" : "fefbee7518d1ff3cf0159b389f5742621ce9ab89979dc53cff2b1d1cf045b043"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/FOOTPRINT-NATIVE-2X-COLOR.png",
+      "pixels" : [
+        288,
+        216
+      ],
+      "presentation" : "fixed registered footprint crop N/E/S/W",
+      "sha256" : "0ebdf9db6632bb779fd0f072dcced260762cf1bf632947101342113774eca978"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/FOOTPRINT-NATIVE-2X-GRAYSCALE.png",
+      "pixels" : [
+        288,
+        216
+      ],
+      "presentation" : "fixed registered footprint crop N/E/S/W grayscale",
+      "sha256" : "7e8a92521446e33cc258aea7e901546be3805552be723be56df67f85c4673439"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/ZOOM-NESW-COLOR.png",
+      "pixels" : [
+        1024,
+        768
+      ],
+      "presentation" : "occupied-alpha zoom N/E/S/W",
+      "sha256" : "7801d2a77f71b19706fa9cf64d4229fb553f6168a5480edf001286269350c015"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/ZOOM-NESW-GRAYSCALE.png",
+      "pixels" : [
+        1024,
+        768
+      ],
+      "presentation" : "occupied-alpha zoom N/E/S/W grayscale",
+      "sha256" : "0507a42368524394e404d2e15b020cc25687e91a872d3a674136c6525a4b140b"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/BLOCK-ACTUAL-COLOR-GRAYSCALE.png",
+      "pixels" : [
+        1024,
+        342
+      ],
+      "presentation" : "top N/E/S/W block color; bottom grayscale",
+      "sha256" : "976c89fbe4552081f545e82e2ba60e1e1951bf7f6b334cc87646562c1c43bef1"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/NEIGHBORHOOD-ACTUAL-COLOR-GRAYSCALE.png",
+      "pixels" : [
+        1024,
+        342
+      ],
+      "presentation" : "top N/E/S/W neighborhood color; bottom grayscale",
+      "sha256" : "acaae2f7fbc655789b91b57356b23147e4e0f2d6b2718fc1244e741c8386f877"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/CITY-ACTUAL-COLOR-GRAYSCALE.png",
+      "pixels" : [
+        1024,
+        342
+      ],
+      "presentation" : "top N/E/S/W city color; bottom grayscale",
+      "sha256" : "88a6c95e318ef8199dee7cd9ec686fdbec08b7d81be66770d9b06b3022bdfeb8"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/ROAD-SOCKET-NEIGHBORHOOD-NESW.png",
+      "pixels" : [
+        1024,
+        684
+      ],
+      "presentation" : "cyan road edge, white door base, yellow authoritative socket",
+      "sha256" : "c9cece32a97ee94a7d9c576674fd67ec24647a8e6551a1a76b91f8870f566008"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/REJECTED-R2-VS-CANDIDATE-BLOCK-COLOR-GRAYSCALE.png",
+      "pixels" : [
+        1024,
+        684
+      ],
+      "presentation" : "rows rejected R2 color, cohesion candidate color, rejected R2 grayscale, cohesion candidate grayscale",
+      "sha256" : "b2331b57a4a132504596aaf6adb413712a5265f8449feee0514351abb906f137"
+    }
+  ],
+  "productionSelected" : false,
+  "rawMasters" : [
+    {
+      "decodedRGBASHA256" : "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af",
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "descriptorSHA256" : "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9",
+      "direction" : "north",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "fileSHA256" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+      "materialLibrary" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "materialLibrarySHA256" : "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "provenance" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/provenance.json",
+      "registration" : {
+        "doorBaseSource" : [
+          [
+            858,
+            685
+          ],
+          [
+            934,
+            723
+          ]
+        ],
+        "frontageEdgeSource" : [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ]
+        ],
+        "frontageSocketSource" : [
+          896,
+          704
+        ],
+        "groundPivotSource" : [
+          768,
+          896
+        ],
+        "southeastShadowVectorSource" : [
+          2,
+          1
+        ]
+      },
+      "revision" : "source-v06"
+    },
+    {
+      "decodedRGBASHA256" : "4d3b980ef0c641cc7010172c4d6ffd22d59b023195eaef50dbcf8c67b66ec222",
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
+      "descriptorSHA256" : "1e5c69a03a6298f64f4d4d13bb0f523690729b82d5565343f40aaa8278aa3b6d",
+      "direction" : "east",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
+      "fileSHA256" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
+      "materialLibrary" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "materialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "provenance" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/provenance.json",
+      "registration" : {
+        "doorBaseSource" : [
+          [
+            934,
+            813
+          ],
+          [
+            858,
+            851
+          ]
+        ],
+        "frontageEdgeSource" : [
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ]
+        ],
+        "frontageSocketSource" : [
+          896,
+          832
+        ],
+        "groundPivotSource" : [
+          768,
+          896
+        ],
+        "southeastShadowVectorSource" : [
+          2,
+          1
+        ]
+      },
+      "revision" : "source-v04"
+    },
+    {
+      "decodedRGBASHA256" : "85308c293986c7f46c90404e2a2b478487fdac4b892223aff2b01625831da7dd",
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/south/scene.json",
+      "descriptorSHA256" : "31c7eef5e3f461b97b116288274baa8bc5980ef711d45401645e2925ac326a48",
+      "direction" : "south",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
+      "fileSHA256" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
+      "materialLibrary" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "materialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "provenance" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/provenance.json",
+      "registration" : {
+        "doorBaseSource" : [
+          [
+            678,
+            851
+          ],
+          [
+            602,
+            813
+          ]
+        ],
+        "frontageEdgeSource" : [
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "frontageSocketSource" : [
+          640,
+          832
+        ],
+        "groundPivotSource" : [
+          768,
+          896
+        ],
+        "southeastShadowVectorSource" : [
+          2,
+          1
+        ]
+      },
+      "revision" : "source-v04"
+    },
+    {
+      "decodedRGBASHA256" : "f66b4fe3cde165e0c3852ce5aa0863ec7380824f46e81708804428b6717be310",
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "descriptorSHA256" : "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f",
+      "direction" : "west",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/raw.png",
+      "fileSHA256" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4",
+      "materialLibrary" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "materialLibrarySHA256" : "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf",
+      "orientationTransform" : "none",
+      "productionSelected" : false,
+      "provenance" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/provenance.json",
+      "registration" : {
+        "doorBaseSource" : [
+          [
+            602,
+            723
+          ],
+          [
+            678,
+            685
+          ]
+        ],
+        "frontageEdgeSource" : [
+          [
+            512,
+            768
+          ],
+          [
+            768,
+            640
+          ]
+        ],
+        "frontageSocketSource" : [
+          640,
+          704
+        ],
+        "groundPivotSource" : [
+          768,
+          896
+        ],
+        "southeastShadowVectorSource" : [
+          2,
+          1
+        ]
+      },
+      "revision" : "source-v06"
+    }
+  ],
+  "rejectedR2" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02",
+  "rejectedSourceV03" : "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/rejection",
+  "rendererOrShippingMutation" : false,
+  "retainedNormalizationDirections" : [
+    "east",
+    "south"
+  ],
+  "reviewStatus" : "pending-independent-family-review",
+  "roadSocketOverlay" : [
+    {
+      "direction" : "north",
+      "doorBaseColor" : "white",
+      "doorBaseMidpointToSocketPixels" : 5.6843418860808015e-14,
+      "doorBaseWidthPixels" : 22.689816593063664,
+      "frontageEdgeColor" : "cyan",
+      "frontageWidthAtLeastEightPixels" : true,
+      "socketColor" : "yellow-cross",
+      "socketRegistrationWithinTwoPixels" : true
+    },
+    {
+      "direction" : "east",
+      "doorBaseColor" : "white",
+      "doorBaseMidpointToSocketPixels" : 5.6843418860808015e-14,
+      "doorBaseWidthPixels" : 22.689816593063664,
+      "frontageEdgeColor" : "cyan",
+      "frontageWidthAtLeastEightPixels" : true,
+      "socketColor" : "yellow-cross",
+      "socketRegistrationWithinTwoPixels" : true
+    },
+    {
+      "direction" : "south",
+      "doorBaseColor" : "white",
+      "doorBaseMidpointToSocketPixels" : 2.8421709430404007e-14,
+      "doorBaseWidthPixels" : 22.689816593063689,
+      "frontageEdgeColor" : "cyan",
+      "frontageWidthAtLeastEightPixels" : true,
+      "socketColor" : "yellow-cross",
+      "socketRegistrationWithinTwoPixels" : true
+    },
+    {
+      "direction" : "west",
+      "doorBaseColor" : "white",
+      "doorBaseMidpointToSocketPixels" : 2.8421709430404007e-14,
+      "doorBaseWidthPixels" : 22.689816593063689,
+      "frontageEdgeColor" : "cyan",
+      "frontageWidthAtLeastEightPixels" : true,
+      "socketColor" : "yellow-cross",
+      "socketRegistrationWithinTwoPixels" : true
+    }
+  ],
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "sourceAuthorityProposal" : "pending-independent-review",
+  "strictChromaContract" : "play027-zero-nonzero-alpha-chroma-premultiplied-v1",
+  "task" : "PLAY-027",
+  "tooling" : {
+    "builder" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL3SourceV06FamilyReview.swift",
+    "builderBinarySHA256" : "179fa69b39720c3c3addff242c52f75743918d6678ab5530cd233408783cb5f2",
+    "builderSHA256" : "d81a9918a920ba48dc7ad78e19b9247a68d9bb5c872c0ed8ba3845bf236557a5",
+    "normalizer" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/NormalizeOfflineSource.swift",
+    "normalizerSHA256" : "c37012ca5dbf958f8b5c37df8ec712535865c1ddc769385e432792214dfb67ed",
+    "strictCanonicalizer" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/StrictNonzeroAlphaChromaCanonicalizer.swift",
+    "strictCanonicalizerSHA256" : "5e8feb9f559bf0f01ad69d5b88ff2692a7a71b4788c6d1718e2a1b265ab78d0f"
+  },
+  "variant" : 0
+}

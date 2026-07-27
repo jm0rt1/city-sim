@@ -456,6 +456,7 @@ func l3FinalRegistration(
     return result
 }
 
+#if !PLAY027_L3_SOURCE_V06_FAMILY_REVIEW
 @main
 enum BuildIndustrialL3FinalCandidateMain {
     static func main() throws {
@@ -1075,3 +1076,4 @@ enum BuildIndustrialL3FinalCandidateMain {
         )
     }
 }
+#endif

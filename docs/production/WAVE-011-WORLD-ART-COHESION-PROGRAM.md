@@ -107,6 +107,19 @@ evidence passes. Integration authorizes one six-process coordinate trace under
 to bind the unstable edge samples to exact authored material roles before any
 repair. Do not relax repeat identity or normalize the rejected raws.
 
+Trace checkpoint `722c8c5456f58716827adee598c48361d0ee0295`
+confirms the first split is post-Lanczos prequantized support, with unchanged
+quantizer/canonicalizer behavior. Independent analytical review maps the dark
+splits to `l3c-charcoal-outline-steel`, the North warm split to
+`l3c-warm-trim`, and the West warm split to
+`l3c-warm-formed-concrete`. Integration authorizes a North/West-only
+source-v06 pre-pixel repair under
+`docs/production/evidence/PLAY-027/INDUSTRIAL-L03-SOURCE-V06-MATERIAL-REPAIR-AUTHORITY-722c8c5.md`:
+analytically prove at least 80 percent positive-support ownership, then move
+only the implicated material channels by `+2/255`. No raw pixels are
+authorized until the exact transformed descriptors and material library pass
+independent review.
+
 ### A1 — Industrial L4 hero family
 
 Start immediately in parallel with the R2 Industrial L3 renderer window.

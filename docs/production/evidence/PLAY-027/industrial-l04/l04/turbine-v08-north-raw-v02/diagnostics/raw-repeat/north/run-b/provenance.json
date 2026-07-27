@@ -1,0 +1,2783 @@
+{
+  "authoredIndependently" : true,
+  "cameraProjection" : "orthographic-2-to-1",
+  "chromaKeyRGBA" : [
+    255,
+    0,
+    255,
+    255
+  ],
+  "contactPolygonWorld" : [
+    [
+      -28,
+      -28
+    ],
+    [
+      28,
+      -28
+    ],
+    [
+      28,
+      28
+    ],
+    [
+      -28,
+      28
+    ]
+  ],
+  "descriptorOversamplingFactor" : 4,
+  "descriptorSamplingContract" : {
+    "canonicalizerEncoder" : "ImageIO",
+    "canonicalizerFormat" : "png",
+    "canonicalizerID" : "imageio-sips-png-v1",
+    "canonicalizerPostEncoder" : "/usr/bin/sips",
+    "ciCacheIntermediates" : false,
+    "ciOutputColorSpace" : "srgb",
+    "ciUseSoftwareRenderer" : true,
+    "ciWorkingColorSpace" : "extended-srgb",
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "declaredDescriptorContractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "descriptorSchema" : 2,
+    "downsampleAspectRatio" : 1,
+    "downsampleFilter" : "CILanczosScaleTransform",
+    "downsampleScale" : 0.25,
+    "effectiveSceneKitAntialiasing" : "none",
+    "effectiveSceneKitLightingMode" : "authored-constant-v1",
+    "effectiveSceneKitShadows" : "disabled",
+    "linearOversamplingFactor" : 4,
+    "postQuantizationBoundaryAssistMutationCount" : 98,
+    "postQuantizationBoundaryAssistMutations" : [
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            608,
+            529
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          608,
+          528
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            590,
+            528
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          529
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            531
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          531
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            531
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          532
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            594,
+            538
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          593,
+          537
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            539
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          538
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            594,
+            538
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          538
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            594,
+            538
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          539
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            540
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          541
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            587,
+            543
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          544
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            611,
+            545
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          544
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            547
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          546
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            548
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          547
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            547
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          547
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            548
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          547
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            547
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          548
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            549
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          550
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            549
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          550
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            556
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          555
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            557
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          556
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            556
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          556
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            610,
+            557
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          556
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            556
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          557
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            610,
+            557
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          557
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            593,
+            558
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          593,
+          559
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            611,
+            562
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          561
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            564
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          565
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            570
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          569
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            590,
+            571
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          570
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            570
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          570
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            590,
+            571
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          571
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            594,
+            572
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          571
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            570
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          597,
+          571
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            590,
+            571
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          572
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            573
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          573
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            573
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          574
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            573
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          574
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            593,
+            579
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          593,
+          578
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            581
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          580
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            594,
+            580
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          581
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            582
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          583
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            587,
+            585
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          586
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            611,
+            587
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          586
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            590,
+            588
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          587
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            590
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          589
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            590
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          589
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            591,
+            589
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          590
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            590
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          590
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            590
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          591
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            591
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          592
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            598
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          597
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            599
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          598
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            598
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          598
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            610,
+            599
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          598
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            598
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          599
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            610,
+            599
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          610,
+          599
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            593,
+            600
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          593,
+          601
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            607
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          591,
+          606
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            608
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          607
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            607
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          607
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            608
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          607
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            608
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          608
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            607
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          608
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            608
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          608
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            608
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          609
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            608
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          597,
+          609
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            616
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          615
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            616
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          615
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            616
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          616
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            593,
+            617
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          593,
+          616
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            616
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          616
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            616
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          617
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            596,
+            616
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          617
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            594,
+            618
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          619
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            597,
+            621
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          596,
+          620
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            597,
+            621
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          597,
+          621
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            597,
+            621
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          597,
+          622
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            592,
+            624
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          592,
+          623
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            590,
+            626
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          590,
+          625
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            593,
+            625
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          593,
+          626
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            610,
+            627
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          611,
+          627
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            604,
+            629
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          604,
+          629
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            604,
+            629
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          605,
+          629
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            632
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          631
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            632
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          588,
+          632
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            588,
+            632
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          633
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            587,
+            635
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          586,
+          634
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            587,
+            635
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          587,
+          635
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            587,
+            635
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          587,
+          636
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            589,
+            637
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          589,
+          636
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            640
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          594,
+          639
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            640
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          640
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 112,
+        "originalValue" : 144,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            595,
+            640
+          ],
+          "prequantizedValue" : 120,
+          "quantizedValue" : 144
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          595,
+          641
+        ]
+      },
+      {
+        "channel" : 2,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 80,
+        "originalValue" : 48,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            55,
+            56
+          ],
+          "channel" : 2,
+          "coordinate" : [
+            688,
+            847
+          ],
+          "prequantizedValue" : 55,
+          "quantizedValue" : 48
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          688,
+          847
+        ]
+      },
+      {
+        "channel" : 0,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 80,
+        "originalValue" : 48,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            55,
+            56
+          ],
+          "channel" : 0,
+          "coordinate" : [
+            684,
+            852
+          ],
+          "prequantizedValue" : 55,
+          "quantizedValue" : 48
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          684,
+          851
+        ]
+      },
+      {
+        "channel" : 2,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 80,
+        "originalValue" : 48,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            55,
+            56
+          ],
+          "channel" : 2,
+          "coordinate" : [
+            708,
+            857
+          ],
+          "prequantizedValue" : 55,
+          "quantizedValue" : 48
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          708,
+          857
+        ]
+      },
+      {
+        "channel" : 1,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 1,
+          "coordinate" : [
+            706,
+            858
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          706,
+          859
+        ]
+      },
+      {
+        "channel" : 1,
+        "competingSupportAfterBoundaryReclassification" : 2,
+        "effectiveSupportCount" : 7,
+        "majorityValue" : 144,
+        "originalValue" : 112,
+        "prequantizedVote" : {
+          "boundaryPair" : [
+            119,
+            120
+          ],
+          "channel" : 1,
+          "coordinate" : [
+            727,
+            873
+          ],
+          "prequantizedValue" : 119,
+          "quantizedValue" : 112
+        },
+        "reason" : "one immutable same-channel prequantized boundary vote raises stable support from 6 to 7",
+        "target" : [
+          727,
+          873
+        ]
+      }
+    ],
+    "postQuantizationCanonicalizer" : {
+      "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
+      "boundaryAssist" : {
+        "algorithm" : "immutable-prequantized-one-value-boundary-6-plus-1",
+        "baseQuantizedMajorityCount" : 6,
+        "boundaryBandWidthValues" : 1,
+        "effectiveSupportCount" : 7,
+        "immutablePrequantizedBuffer" : true,
+        "maximumCompetingSupportAfterBoundaryReclassification" : 2,
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "recordsBoundaryVoteReason" : true,
+        "requiredBoundaryVoteCount" : 1,
+        "requiresSameChannelEvidence" : true,
+        "version" : 1
+      },
+      "channels" : "rgb-only",
+      "immutableSourceBuffer" : true,
+      "majorityThreshold" : 7,
+      "neighborhoodSize" : 3,
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationQuantum" : 32,
+      "requiresChromaFreeNeighborhood" : true,
+      "requiresFullyOpaqueNeighborhood" : true,
+      "version" : 3
+    },
+    "postQuantizationMutationCount" : 337,
+    "postQuantizationMutationCountsByChannel" : {
+      "blue" : 14,
+      "green" : 4,
+      "red" : 319
+    },
+    "purpose" : "source-authority",
+    "quantizerID" : "step32-midpoint-offset8-v1",
+    "quantizerMidpointOffset" : 8,
+    "quantizerStep" : 32,
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "authored-constant-v1",
+    "sceneKitMaterialLightingModel" : "constant",
+    "sceneKitShadows" : "disabled",
+    "sceneLights" : "disabled-zero-intensity-no-shadow"
+  },
+  "diagnosticConfiguration" : {
+    "antialiasingOverride" : "none",
+    "descriptorGeometryChanged" : false,
+    "industrialL3V5Trace" : "not-requested",
+    "materialLighting" : "current",
+    "materialLightingApplication" : {
+      "descriptorChanged" : false,
+      "materialColorsChanged" : false,
+      "sceneLightCount" : 2,
+      "sceneLightsDisabled" : true,
+      "uniqueMaterialCount" : 85
+    },
+    "prequantizedOutput" : "not-requested",
+    "sceneShadows" : "current",
+    "sourceAuthority" : false,
+    "stageCapture" : "not-requested"
+  },
+  "diagnosticIsolationContract" : {
+    "contractID" : "none",
+    "productionSelected" : false,
+    "sourceAuthority" : false
+  },
+  "diagnosticSamplingPipeline" : {
+    "contractID" : "none",
+    "productionSelected" : false,
+    "sourceAuthority" : false
+  },
+  "doorBaseSource" : [
+    [
+      802.28571693682488,
+      645.94518030950337
+    ],
+    [
+      825.14286156137496,
+      657.37375262177829
+    ]
+  ],
+  "family" : "industrial",
+  "finiteRGBEquivalence" : {
+    "algorithm" : "none",
+    "sourceChanged" : false
+  },
+  "frameworks" : [
+    "SceneKit",
+    "ModelIO",
+    "CoreImage",
+    "CoreGraphics"
+  ],
+  "frontageEdgeSource" : [
+    [
+      768,
+      640
+    ],
+    [
+      1024,
+      768
+    ]
+  ],
+  "frontageSocketSource" : [
+    896,
+    704
+  ],
+  "generatedPixelsAreGeometryAuthority" : false,
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "level" : 4,
+  "logicalBuildingID" : "industrial_l04",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-turbine-v08-prepixel/materials/industrial-l04-turbine-v08-prepixel.json",
+  "materialLibrarySHA256" : "f8cf1d4ff9ab4446ec562fe949dd09c45399a32d9a763f7d6dd6380b66e52b94",
+  "nativePNGCanonicalizer" : {
+    "path" : "/usr/bin/sips",
+    "role" : "deterministic review-decoder-safe final PNG encoding"
+  },
+  "northwestKeyOriginWorld" : [
+    -80,
+    120,
+    -80
+  ],
+  "orientationTransform" : "none",
+  "oversamplingFactor" : 4,
+  "preLanczosCanonicalization" : {
+    "algorithm" : "none",
+    "sourceChanged" : false
+  },
+  "productionSelected" : false,
+  "rawOccupancy" : {
+    "completeOccupiedAreaPassed" : true,
+    "minimumBoundsPixels" : [
+      400,
+      260
+    ],
+    "minimumNonChromaPixelCount" : 50000,
+    "nonChromaBounds" : [
+      509,
+      517,
+      1027,
+      898
+    ],
+    "nonChromaPixelCount" : 108020
+  },
+  "rawSourceFile" : "docs/production/evidence/PLAY-027/industrial-l04/l04/turbine-v08-north-raw-v02/diagnostics/raw-repeat/north/run-b/raw.png",
+  "rawSourcePixels" : [
+    1536,
+    1024
+  ],
+  "rawSourceSHA256" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e",
+  "renderedNodeBounds" : {
+    "completeBuildingVolumePassed" : true,
+    "maximumWorld" : [
+      28,
+      42,
+      28
+    ],
+    "minimumRequiredHeight" : 20,
+    "minimumWorld" : [
+      -28,
+      0,
+      -28
+    ],
+    "requiredFootprintHalfExtents" : [
+      28,
+      28
+    ]
+  },
+  "rendererCapability" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "rendererSourceCommit" : "98e3ba66af23dfca66101cd516ceda0b4bf67129",
+  "rendererSources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256" : "4e404d255c19cbeb39445e1b41e5fbbe6d87aece22c757a2ea1102052f1d7957"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "f1ed5f9fd45f1e95356f2767405cd970c4129426a951cbbb3db4930530c80d41"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+      "sha256" : "160f2361f096b2a06b56b075486b0d9f4c791f9c754664813ce27d6cee57edfd"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+      "sha256" : "c68643e1dc224b621922db8d3729b6ceb908df826f1799ed478c49f077b9e76a"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+      "sha256" : "27c5766d08b3fbeb316fe77d66c071b1913de92a0e0fe838d065751bcd0fdbc1"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DiagnosticSamplingPipeline.swift",
+      "sha256" : "ff14d485fe4790a2436db985675bdf8e7200fdf971cb8c9b4ce2f801febbbb4b"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5MSAAIsolationContract.swift",
+      "sha256" : "d218f515fcb3c84557096f3c0691c8367bf07ee8b21b52894395885dfd5c5c13"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastStageCaptureContract.swift",
+      "sha256" : "ef8354dfb94d0f9b75d0d2c757bb410eaee2966db5d566421300ce11b76bf2e0"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V5EastSceneKitLanczosContract.swift",
+      "sha256" : "7f0006a2b1567383c377fadaf3b1cdebc93a6e98f95b5afe9f71cac761fc39dd"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastSceneKitCaptureContract.swift",
+      "sha256" : "a509d1bb7ba52577bae8e871b92d8fc89b2cf10001c0b7539df0683c501d79cc"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V7EastPreLanczosCaptureContract.swift",
+      "sha256" : "2cf833d3a0652018a5a897230ace057b0b0b64b7e1d878c7e966c47a0ae11604"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V6EastFullFrameCaptureContract.swift",
+      "sha256" : "6fd43955acd05e2a89bde779cd531efbf5b3d676a5c621f74b72c8e5d04740c2"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V8EastFiniteEquivalenceContract.swift",
+      "sha256" : "63b83046f6690d66fde0a2b9584f04268bcbcca8e167ab10d38d25e8211a23c1"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
+      "sha256" : "61361c05ca16327cb75ff9f2b733a39785a37d2ac5934989690c8da4ec1d384d"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL3V5NWCanonicalizerTraceContract.swift",
+      "sha256" : "0105acd4a13158edb0c4d083c5ba7c0e63131c81a6aa8e96fd59714ab804fbbb"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "4c1335e7dca44774280e678b9ff21d0c58550a2a19d112871a0c8fddf67e8e2f"
+    }
+  ],
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-turbine-v08-prepixel/scenes/industrial_l04/variant-0/n/scene.json",
+  "sceneDescriptorSHA256" : "9f812479746ba031335aad53f89d562e1f03de0b868b5b533bf43007eb4a9472",
+  "schema" : 1,
+  "sourceKey" : "industrial_l04/variant-0/n/source-v08-prepixel",
+  "sourceRevision" : "source-v08-prepixel",
+  "southeastShadowVectorSource" : [
+    2,
+    1
+  ],
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source renderer",
+  "variantID" : "variant-0",
+  "viewDirection" : "n"
+}

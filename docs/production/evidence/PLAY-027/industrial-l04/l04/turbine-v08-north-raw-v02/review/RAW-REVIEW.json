@@ -1,0 +1,241 @@
+{
+  "alphaAndChroma" : {
+    "alphaNonzeroPixelCount" : 1572864,
+    "alphaZeroPixelCount" : 0,
+    "exactChromaPixelCount" : 1464844,
+    "hiddenRGBAtAlphaZeroPixelCount" : 0,
+    "nonExactNearChromaPixelCount" : 1703,
+    "rawFlatChromaContractPassed" : true,
+    "reviewMaskHiddenRGBPixelCount" : 0
+  },
+  "artifact" : "industrial-l04-turbine-v08-north-raw-v02",
+  "decodedRGBAIdentityPassed" : true,
+  "decodedRGBASHA256" : "b9bf1034639f0ca5858d24bc4f1dc23fa680fd1867db58960648158679ec7337",
+  "descriptorSHA256" : "9f812479746ba031335aad53f89d562e1f03de0b868b5b533bf43007eb4a9472",
+  "direction" : "north",
+  "disposition" : "PENDING_INDEPENDENT_RAW_REVIEW",
+  "doorBaseSource" : [
+    [
+      802.28571693682488,
+      645.94518030950337
+    ],
+    [
+      825.14286156137496,
+      657.37375262177829
+    ]
+  ],
+  "fileIdentityPassed" : true,
+  "frontageSocketSource" : [
+    896,
+    704
+  ],
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "luma" : {
+    "median" : 86,
+    "p25" : 73,
+    "p75" : 105,
+    "p95" : 105
+  },
+  "materialLibrarySHA256" : "f8cf1d4ff9ab4446ec562fe949dd09c45399a32d9a763f7d6dd6380b66e52b94",
+  "northwestKeyOriginWorld" : [
+    -80,
+    120,
+    -80
+  ],
+  "occupancy" : {
+    "minimumAreaPassed" : true,
+    "minimumBoundsPassed" : true,
+    "nonChromaBoundsHalfOpen" : [
+      509,
+      517,
+      1027,
+      898
+    ],
+    "nonChromaBoundsInclusive" : [
+      509,
+      517,
+      1026,
+      897
+    ],
+    "nonChromaPixelCount" : 108020
+  },
+  "panelSHA256" : {
+    "ALPHA-OCCUPANCY.png" : "cbab56603db6795e253ea1b9a24a5f444663b0ee8a18e414144d11721eca3a62",
+    "EXACT-192X128-COLOR.png" : "fe9dd75b23946ab7442d95de9337089c4769ed53a9f89432bca369aac76601b1",
+    "EXACT-192X128-GRAYSCALE.png" : "b905e0bda521e7110dbcbcc90439b5ed561cbe3e84d2f40dccfcf24e285a613a",
+    "FOOTPRINT-CONTACT.png" : "312a5e2e29beb5db5a35b118fd23b9688a0fd8b8ca0eeb1340e2cead84a07ad7",
+    "NATIVE-2X-COLOR.png" : "f5935cdd2eea663cfb337d1c4f57932c2d7a0c31bcda9fec6fc4aa288152aa02",
+    "NATIVE-2X-GRAYSCALE.png" : "b86276d00664fb18023f40e523ca019bcf12ea8731579a82b6a9aba6cb166c8d",
+    "OCCUPIED-CROP-COLOR.png" : "c3e6f077da2ad65f2e3e12b3860f496401b70552d182a7feac4c08c3f6fe37b5",
+    "SEMANTIC-VISIBILITY.png" : "04868c98c64997ee57da8ce126b231e9ae0da9e185adcb60df454ca5937d1502",
+    "SOURCE-SCALE-COLOR.png" : "83b4e7cb20f304a0b25485529731a5eb67de148122bac88fc812563ed184d3a2",
+    "SOURCE-SCALE-GRAYSCALE.png" : "5623ef20ed3eae208d79769c434b101d404a288ceec768793d8f4553875f7f99"
+  },
+  "processCount" : 3,
+  "productionSelected" : false,
+  "rawFileSHA256" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e",
+  "registrationPassed" : true,
+  "rendererSourceCommit" : "98e3ba66af23dfca66101cd516ceda0b4bf67129",
+  "runDecodedRGBASHA256" : {
+    "run-a" : "b9bf1034639f0ca5858d24bc4f1dc23fa680fd1867db58960648158679ec7337",
+    "run-b" : "b9bf1034639f0ca5858d24bc4f1dc23fa680fd1867db58960648158679ec7337",
+    "run-c" : "b9bf1034639f0ca5858d24bc4f1dc23fa680fd1867db58960648158679ec7337"
+  },
+  "runFileSHA256" : {
+    "run-a" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e",
+    "run-b" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e",
+    "run-c" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e"
+  },
+  "sawtoothRoofVolumeCount" : 4,
+  "sceneGeometryID" : "industrial-l04-turbine-v08-n-independent",
+  "semanticVisibility" : [
+    {
+      "actualCompactHeightPixels" : 13,
+      "actualCompactMaterialPixelBounds" : [
+        113,
+        88,
+        122,
+        100
+      ],
+      "actualCompactMaterialPixelCount" : 95,
+      "actualCompactWidthPixels" : 10,
+      "actualSourceMaterialPixelBounds" : [
+        906,
+        708,
+        976,
+        806
+      ],
+      "actualSourceMaterialPixelCount" : 6771,
+      "expectedCompactBounds" : [
+        113,
+        88,
+        122,
+        101
+      ],
+      "expectedSourceBounds" : [
+        906,
+        708,
+        976,
+        806
+      ],
+      "id" : "freight-1",
+      "kind" : "freight",
+      "minimumCompactWidthPixels" : 8,
+      "passed" : true
+    },
+    {
+      "actualCompactHeightPixels" : 14,
+      "actualCompactMaterialPixelBounds" : [
+        101,
+        90,
+        110,
+        103
+      ],
+      "actualCompactMaterialPixelCount" : 121,
+      "actualCompactWidthPixels" : 10,
+      "actualSourceMaterialPixelBounds" : [
+        808,
+        725,
+        878,
+        823
+      ],
+      "actualSourceMaterialPixelCount" : 7029,
+      "expectedCompactBounds" : [
+        101,
+        90,
+        110,
+        103
+      ],
+      "expectedSourceBounds" : [
+        808,
+        725,
+        878,
+        823
+      ],
+      "id" : "freight-2",
+      "kind" : "freight",
+      "minimumCompactWidthPixels" : 8,
+      "passed" : true
+    },
+    {
+      "actualCompactHeightPixels" : 14,
+      "actualCompactMaterialPixelBounds" : [
+        88,
+        92,
+        98,
+        105
+      ],
+      "actualCompactMaterialPixelCount" : 116,
+      "actualCompactWidthPixels" : 11,
+      "actualSourceMaterialPixelBounds" : [
+        709,
+        742,
+        780,
+        840
+      ],
+      "actualSourceMaterialPixelCount" : 6888,
+      "expectedCompactBounds" : [
+        88,
+        92,
+        98,
+        105
+      ],
+      "expectedSourceBounds" : [
+        709,
+        742,
+        780,
+        840
+      ],
+      "id" : "freight-3",
+      "kind" : "freight",
+      "minimumCompactWidthPixels" : 8,
+      "passed" : true
+    },
+    {
+      "actualCompactHeightPixels" : 4,
+      "actualCompactMaterialPixelBounds" : [
+        101,
+        78,
+        102,
+        81
+      ],
+      "actualCompactMaterialPixelCount" : 8,
+      "actualCompactWidthPixels" : 2,
+      "actualSourceMaterialPixelBounds" : [
+        810,
+        617,
+        824,
+        656
+      ],
+      "actualSourceMaterialPixelCount" : 531,
+      "expectedCompactBounds" : [
+        101,
+        77,
+        104,
+        82
+      ],
+      "expectedSourceBounds" : [
+        810,
+        616,
+        825,
+        656
+      ],
+      "id" : "staff-entry",
+      "kind" : "staff",
+      "minimumCompactWidthPixels" : 2,
+      "passed" : true
+    }
+  ],
+  "sourceAuthority" : false,
+  "southeastShadowVectorSource" : [
+    2,
+    1
+  ],
+  "subordinateStackNodeCount" : 1,
+  "task" : "PLAY-027",
+  "technicalPassed" : true,
+  "visualReviewRequired" : true
+}

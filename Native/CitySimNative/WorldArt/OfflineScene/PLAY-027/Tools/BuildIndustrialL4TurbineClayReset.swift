@@ -161,7 +161,7 @@ func plan(_ direction: String) -> DirectionPlan {
     var boxes = [
         box("\(prefix)-foundation", "foundation", 0, 1, 0, 56, 2, 56),
         hall,
-        box("\(prefix)-control-wing", "control-wing", controlX, 6, -11, 18, 10, 12),
+        box("\(prefix)-control-wing", "control-wing", controlX, 6, -11, 18, 8, 12),
         box("\(prefix)-assembly-annex", "assembly-annex", annexX, 7, 13, 18, 12, 12),
         box("\(prefix)-rear-stack", "rear-stack", stackX, 27, 13, 3, 30, 3, stack: true),
         box("\(prefix)-freight-canopy", "freight-canopy", 0, 14.5, -10.5, 42, 3, 5),
@@ -184,7 +184,7 @@ func plan(_ direction: String) -> DirectionPlan {
     }
     return DirectionPlan(
         direction: direction,
-        geometryID: "industrial-l04-turbine-v05-\(direction.lowercased())",
+        geometryID: "industrial-l04-turbine-v06-\(direction.lowercased())",
         boxes: boxes,
         freightCenters: [-14, 0, 14],
         staffCenter: staffX
@@ -449,8 +449,8 @@ func run() throws {
     let sourceSheet = try sheet(sourceImages, cell: CGSize(width: 768, height: 512))
     let compactSheet = try sheet(compactImages, cell: compactSize)
 
-    let sourceURL = root.appendingPathComponent("TURBINE-V04-CLAY-NESW-EQUAL-SCALE.png")
-    let compactURL = root.appendingPathComponent("TURBINE-V04-CLAY-NESW-192x128.png")
+    let sourceURL = root.appendingPathComponent("TURBINE-V06-CLAY-NESW-EQUAL-SCALE.png")
+    let compactURL = root.appendingPathComponent("TURBINE-V06-CLAY-NESW-192x128.png")
     try writePNG(sourceSheet, to: sourceURL)
     try writePNG(compactSheet, to: compactURL)
 
@@ -499,8 +499,8 @@ func run() throws {
 
     let report: [String: Any] = [
         "taskID": "PLAY-027",
-        "artifact": "Industrial L4 Turbine Works v05 clay-only repair",
-        "authority": "play027-turbine-v05-one-surgical-replay",
+        "artifact": "Industrial L4 Turbine Works v06 clay-only candidate",
+        "authority": "play027-turbine-v06-contract-arithmetic-repair",
         "sourceAuthority": sourceAuthority,
         "productionSelected": productionSelected,
         "sceneKitProcesses": 0,
@@ -518,7 +518,7 @@ func run() throws {
             compactURL.lastPathComponent: try sha256(compactURL),
         ],
     ]
-    try writeJSON(report, to: root.appendingPathComponent("CLAY-METRICS.json"))
+    try writeJSON(report, to: root.appendingPathComponent("TURBINE-V06-CLAY-METRICS.json"))
     guard failures.isEmpty else {
         throw ClayResetError.failed(failures.joined(separator: "; "))
     }

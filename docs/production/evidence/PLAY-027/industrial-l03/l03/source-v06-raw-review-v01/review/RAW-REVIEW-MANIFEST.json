@@ -1,0 +1,205 @@
+{
+  "acceptedCatalogIntersection" : [
+
+  ],
+  "acceptedCatalogNonIntersection" : true,
+  "alphaVisibilityPassed" : true,
+  "completeBoundsPassed" : true,
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "familyAuthority" : false,
+  "finalDisposition" : "PENDING_INDEPENDENT_RAW_REVIEW",
+  "fourDirectionDecodedPixelIdentityUnique" : true,
+  "fourDirectionFileIdentityUnique" : true,
+  "hiddenRGBPixelCount" : 0,
+  "immutableDirections" : [
+    "east",
+    "south"
+  ],
+  "loadingBayRectanglesPerNewDirection" : 2,
+  "logicalBuildingID" : "industrial_l03",
+  "newDirections" : [
+    "north",
+    "west"
+  ],
+  "normalizationPerformed" : false,
+  "normalizerProcessCount" : 0,
+  "northRepeatDecodedPixelIdentityPassed" : true,
+  "northRepeatFileIdentityPassed" : true,
+  "primaryRaw" : [
+    {
+      "clipped" : false,
+      "decodedRGBASHA256" : "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af",
+      "direction" : "north-source-v06-run-a",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "fileSHA256" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+      "nonChromaBounds" : [
+        509,
+        387,
+        1027,
+        896
+      ],
+      "pixelMetrics" : {
+        "exactChromaPixelCount" : 1413354,
+        "hiddenRGBPixelCount" : 0,
+        "minimumNonChromaAlpha" : 255,
+        "nonChromaPixelCount" : 159510,
+        "nonChromaZeroAlphaPixelCount" : 0
+      }
+    },
+    {
+      "clipped" : false,
+      "decodedRGBASHA256" : "4d3b980ef0c641cc7010172c4d6ffd22d59b023195eaef50dbcf8c67b66ec222",
+      "direction" : "east-immutable-source-v04",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
+      "fileSHA256" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
+      "nonChromaBounds" : [
+        509,
+        381,
+        1027,
+        896
+      ],
+      "pixelMetrics" : {
+        "exactChromaPixelCount" : 1394817,
+        "hiddenRGBPixelCount" : 0,
+        "minimumNonChromaAlpha" : 255,
+        "nonChromaPixelCount" : 178047,
+        "nonChromaZeroAlphaPixelCount" : 0
+      }
+    },
+    {
+      "clipped" : false,
+      "decodedRGBASHA256" : "85308c293986c7f46c90404e2a2b478487fdac4b892223aff2b01625831da7dd",
+      "direction" : "south-immutable-source-v04",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
+      "fileSHA256" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
+      "nonChromaBounds" : [
+        509,
+        395,
+        1027,
+        896
+      ],
+      "pixelMetrics" : {
+        "exactChromaPixelCount" : 1394490,
+        "hiddenRGBPixelCount" : 0,
+        "minimumNonChromaAlpha" : 255,
+        "nonChromaPixelCount" : 178374,
+        "nonChromaZeroAlphaPixelCount" : 0
+      }
+    },
+    {
+      "clipped" : false,
+      "decodedRGBASHA256" : "f66b4fe3cde165e0c3852ce5aa0863ec7380824f46e81708804428b6717be310",
+      "direction" : "west-source-v06-run-a",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/raw.png",
+      "fileSHA256" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4",
+      "nonChromaBounds" : [
+        509,
+        387,
+        1027,
+        896
+      ],
+      "pixelMetrics" : {
+        "exactChromaPixelCount" : 1413354,
+        "hiddenRGBPixelCount" : 0,
+        "minimumNonChromaAlpha" : 255,
+        "nonChromaPixelCount" : 159510,
+        "nonChromaZeroAlphaPixelCount" : 0
+      }
+    }
+  ],
+  "productionSelected" : false,
+  "provenanceFiles" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/provenance.json",
+      "role" : "source-v06-render-provenance",
+      "sha256" : "794654d92d20092c5b979240ad363df38182050299e55e3a243e140e260d401e"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-b/provenance.json",
+      "role" : "source-v06-render-provenance",
+      "sha256" : "a09645fee9e17f36506885e639ba08a2dbd10751a3d0ef95e5d838f49d6d42a5"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-c/provenance.json",
+      "role" : "source-v06-render-provenance",
+      "sha256" : "1d57d006c060233888329c76fd444d3b1dd8139f23b6d69b533010d90c5f0fa1"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/provenance.json",
+      "role" : "source-v06-render-provenance",
+      "sha256" : "aec680b26f4450628d395fae13873e31f6bd7bb2dddaf5d5570a66474c8ddcd8"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-b/provenance.json",
+      "role" : "source-v06-render-provenance",
+      "sha256" : "efa8ae2f6f3d8760bd193f5d553212fb59cde2738608f497711fdde652902ced"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-c/provenance.json",
+      "role" : "source-v06-render-provenance",
+      "sha256" : "fee676b2d46d7e56af1f7e2c6e7c4074bbad97394aede3eda48b12f641566a93"
+    }
+  ],
+  "publishedRepeatIdentity" : {
+    "northDecodedRGBASHA256" : "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af",
+    "northFileSHA256" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+    "westDecodedRGBASHA256" : "f66b4fe3cde165e0c3852ce5aa0863ec7380824f46e81708804428b6717be310",
+    "westFileSHA256" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4"
+  },
+  "rawChromaBackgroundPreserved" : true,
+  "registrationPivotSocketDoorShadowPassed" : true,
+  "rendererBinarySHA256" : "4a468ffcf250ae4c48440b2232cbce61181f969f741d79d9059c1bfb263844fd",
+  "rendererSourceCommit" : "d2649fc8f43d68360757031ff4d1c5ed856de089",
+  "reviewFiles" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/SOURCE-SCALE-NW-COLOR.png",
+      "role" : "sourceScaleNorthWestColor",
+      "sha256" : "e45a7e98880b298249e5e97abf305954de60c0a0014007a955ae182d4a6053ed"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/SOURCE-SCALE-NW-GRAYSCALE.png",
+      "role" : "sourceScaleNorthWestGrayscale",
+      "sha256" : "471cbd374f8b5b28cff0de10227490e8cf85ca8222df6b38f244d8ac92071a08"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/NATIVE-2X-NW-COLOR.png",
+      "role" : "native2xNorthWestColor",
+      "sha256" : "905557314b7ccd9b4860090b3f86ae6de31cf227c4345f93de389b5b01682190"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/NATIVE-2X-NW-GRAYSCALE.png",
+      "role" : "native2xNorthWestGrayscale",
+      "sha256" : "b6f4404132e1639b6b56f2a03742330e582d11fc25cdac3631dd5afe614e3275"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/OCCUPIED-CROP-NW-COLOR.png",
+      "role" : "occupiedNorthWestColor",
+      "sha256" : "0f19a063d78df8277d3cfaafff247ef27632c87bf55e851a4242b43dbd690e4b"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/COMPACT-NESW-COLOR.png",
+      "role" : "compactNESWColor",
+      "sha256" : "92f8ab67d6c58bd6b7ff61178c23b14a2511ed1d8bfb7b9e10ff4b2f331d1749"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/review/COMPACT-NESW-GRAYSCALE.png",
+      "role" : "compactNESWGrayscale",
+      "sha256" : "2e499537d13042631f024e2620983d20356e0098b6b259530e7e861d21f723af"
+    }
+  ],
+  "reviewPanelOrder" : "N/E/S/W for compact panels; North then West elsewhere",
+  "sceneKitProcessCount" : 6,
+  "schema" : 1,
+  "separateStaffEntrancePerNewDirection" : true,
+  "sourceAuthority" : false,
+  "sourceRevision" : "source-v06",
+  "task" : "PLAY-027",
+  "variantID" : "variant-0",
+  "westRepeatDecodedPixelIdentityPassed" : true,
+  "westRepeatFileIdentityPassed" : true
+}

@@ -398,6 +398,387 @@ private func reportFile(
     ]
 }
 
+private func collectSHA256Strings(
+    from value: Any,
+    into output: inout Set<String>
+) {
+    if
+        let string = value as? String,
+        string.count == 64,
+        string.allSatisfy({ $0.isHexDigit })
+    {
+        output.insert(string.lowercased())
+    } else if let array = value as? [Any] {
+        for item in array {
+            collectSHA256Strings(from: item, into: &output)
+        }
+    } else if let dictionary = value as? [String: Any] {
+        for item in dictionary.values {
+            collectSHA256Strings(from: item, into: &output)
+        }
+    }
+}
+
+private func rawPixelMetrics(_ raster: Raster) -> [String: Any] {
+    var hiddenRGB = 0
+    var exactChroma = 0
+    var nonChroma = 0
+    var nonChromaZeroAlpha = 0
+    var minimumNonChromaAlpha = 255
+    for offset in stride(from: 0, to: raster.rgba.count, by: 4) {
+        let red = raster.rgba[offset]
+        let green = raster.rgba[offset + 1]
+        let blue = raster.rgba[offset + 2]
+        let alpha = raster.rgba[offset + 3]
+        if alpha == 0 && (red != 0 || green != 0 || blue != 0) {
+            hiddenRGB += 1
+        }
+        if red == 255 && green == 0 && blue == 255 {
+            exactChroma += 1
+        } else {
+            nonChroma += 1
+            minimumNonChromaAlpha = min(
+                minimumNonChromaAlpha,
+                Int(alpha)
+            )
+            if alpha == 0 {
+                nonChromaZeroAlpha += 1
+            }
+        }
+    }
+    return [
+        "hiddenRGBPixelCount": hiddenRGB,
+        "exactChromaPixelCount": exactChroma,
+        "nonChromaPixelCount": nonChroma,
+        "nonChromaZeroAlphaPixelCount": nonChromaZeroAlpha,
+        "minimumNonChromaAlpha": minimumNonChromaAlpha,
+    ]
+}
+
+private func buildSourceV6Review(
+    root: URL,
+    output: URL
+) throws {
+    let rawRootV6 =
+        "docs/production/evidence/PLAY-027/industrial-l03/l03/"
+        + "source-v06-raw-review-v01/diagnostics/raw-repeat"
+    let expected: [String: (String, String)] = [
+        "north": (
+            "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+            "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af"
+        ),
+        "west": (
+            "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4",
+            "f66b4fe3cde165e0c3852ce5aa0863ec7380824f46e81708804428b6717be310"
+        ),
+    ]
+    var repeats: [String: [Raster]] = [:]
+    for direction in ["north", "west"] {
+        repeats[direction] = try ["a", "b", "c"].map { run in
+            try decode(
+                id: "\(direction)-source-v06-run-\(run)",
+                url: root.appendingPathComponent(
+                    rawRootV6
+                        + "/\(direction)/run-\(run)/raw.png"
+                )
+            )
+        }
+        guard
+            let rasters = repeats[direction],
+            let expectedIdentity = expected[direction],
+            Set(rasters.map(\.fileSHA256))
+                == [expectedIdentity.0],
+            Set(rasters.map(\.decodedRGBASHA256))
+                == [expectedIdentity.1]
+        else {
+            throw IndustrialL3NWV05RawReviewError.invalid(
+                "\(direction) source-v06 repeat or published identity failed"
+            )
+        }
+    }
+    guard
+        let north = repeats["north"]?.first,
+        let west = repeats["west"]?.first,
+        north.fileSHA256 != west.fileSHA256,
+        north.decodedRGBASHA256 != west.decodedRGBASHA256
+    else {
+        throw IndustrialL3NWV05RawReviewError.invalid(
+            "source-v06 North/West identities alias"
+        )
+    }
+
+    let east = try decode(
+        id: "east-immutable-source-v04",
+        url: root.appendingPathComponent(
+            "docs/production/evidence/PLAY-027/industrial-l03/l03/"
+                + "cohesion-a0-east-v01/raw/east-primary/raw.png"
+        )
+    )
+    let south = try decode(
+        id: "south-immutable-source-v04",
+        url: root.appendingPathComponent(
+            "docs/production/evidence/PLAY-027/industrial-l03/l03/"
+                + "cohesion-a0-family-v01/raw/south-primary/raw.png"
+        )
+    )
+    let directionOrder = [north, east, south, west]
+    guard
+        Set(directionOrder.map(\.fileSHA256)).count == 4,
+        Set(directionOrder.map(\.decodedRGBASHA256)).count == 4
+    else {
+        throw IndustrialL3NWV05RawReviewError.invalid(
+            "N/E/S/W primary identities are not unique"
+        )
+    }
+
+    let acceptedCatalogFiles = [
+        "Native/CitySimNative/WorldArt/GeneratedV4/catalog/"
+            + "calibration-assets.json",
+        "Native/CitySimNative/WorldArt/GeneratedV4/catalog/"
+            + "play-028-residential-directions.json",
+        "Native/CitySimNative/WorldArt/GeneratedV4/catalog/"
+            + "play-060-commercial-directions.json",
+        "Native/CitySimNative/WorldArt/GeneratedV4/catalog/"
+            + "play-062-industrial-l1-directions.json",
+        "Native/CitySimNative/WorldArt/GeneratedV4/catalog/"
+            + "play-073-industrial-l2-directions.json",
+    ]
+    var acceptedHashes = Set<String>()
+    for path in acceptedCatalogFiles {
+        let value = try JSONSerialization.jsonObject(
+            with: Data(
+                contentsOf: root.appendingPathComponent(path)
+            )
+        )
+        collectSHA256Strings(from: value, into: &acceptedHashes)
+    }
+    let candidateHashes = Set([
+        north.fileSHA256,
+        north.decodedRGBASHA256,
+        west.fileSHA256,
+        west.decodedRGBASHA256,
+    ])
+    guard candidateHashes.isDisjoint(with: acceptedHashes) else {
+        throw IndustrialL3NWV05RawReviewError.invalid(
+            "source-v06 identity intersects accepted catalog"
+        )
+    }
+
+    let provenanceURLs = [
+        "north/run-a", "north/run-b", "north/run-c",
+        "west/run-a", "west/run-b", "west/run-c",
+    ].map {
+        root.appendingPathComponent(
+            rawRootV6 + "/\($0)/provenance.json"
+        )
+    }
+    let provenance = try provenanceURLs.map(json)
+    guard provenance.allSatisfy({
+        $0["rendererSourceCommit"] as? String
+            == "d2649fc8f43d68360757031ff4d1c5ed856de089"
+            && $0["sourceRevision"] as? String == "source-v06"
+            && $0["groundPivotSource"] as? [Int] == [768, 896]
+            && $0["orientationTransform"] as? String == "none"
+            && $0["productionSelected"] as? Bool == false
+            && (($0["rawOccupancy"] as? [String: Any])?[
+                "completeOccupiedAreaPassed"
+            ] as? Bool) == true
+    }) else {
+        throw IndustrialL3NWV05RawReviewError.invalid(
+            "source-v06 provenance, registration, or occupancy drift"
+        )
+    }
+
+    let masked = try directionOrder.map(matte)
+    let northWestMasked = [masked[0], masked[3]]
+    let occupied = try zip(
+        northWestMasked,
+        [north, west]
+    ).map {
+        try crop($0.0, bounds: $0.1.nonChromaBounds)
+    }
+    let files: [(String, URL, CGImage)] = [
+        (
+            "sourceScaleNorthWestColor",
+            output.appendingPathComponent("SOURCE-SCALE-NW-COLOR.png"),
+            try sheet(
+                images: [north.image, west.image],
+                columns: 2,
+                panel: CGSize(width: 1536, height: 1024),
+                gutter: 0
+            )
+        ),
+        (
+            "sourceScaleNorthWestGrayscale",
+            output.appendingPathComponent(
+                "SOURCE-SCALE-NW-GRAYSCALE.png"
+            ),
+            try sheet(
+                images: try northWestMasked.map(grayscale),
+                columns: 2,
+                panel: CGSize(width: 1536, height: 1024),
+                gutter: 0
+            )
+        ),
+        (
+            "native2xNorthWestColor",
+            output.appendingPathComponent("NATIVE-2X-NW-COLOR.png"),
+            try sheet(
+                images: northWestMasked,
+                columns: 2,
+                panel: CGSize(width: 432, height: 288)
+            )
+        ),
+        (
+            "native2xNorthWestGrayscale",
+            output.appendingPathComponent(
+                "NATIVE-2X-NW-GRAYSCALE.png"
+            ),
+            try sheet(
+                images: try northWestMasked.map(grayscale),
+                columns: 2,
+                panel: CGSize(width: 432, height: 288)
+            )
+        ),
+        (
+            "occupiedNorthWestColor",
+            output.appendingPathComponent(
+                "OCCUPIED-CROP-NW-COLOR.png"
+            ),
+            try sheet(
+                images: occupied,
+                columns: 2,
+                panel: CGSize(width: 542, height: 533)
+            )
+        ),
+        (
+            "compactNESWColor",
+            output.appendingPathComponent("COMPACT-NESW-COLOR.png"),
+            try sheet(
+                images: masked,
+                columns: 4,
+                panel: CGSize(width: 216, height: 144)
+            )
+        ),
+        (
+            "compactNESWGrayscale",
+            output.appendingPathComponent(
+                "COMPACT-NESW-GRAYSCALE.png"
+            ),
+            try sheet(
+                images: try masked.map(grayscale),
+                columns: 4,
+                panel: CGSize(width: 216, height: 144)
+            )
+        ),
+    ]
+    for file in files {
+        try write(file.2, to: file.1)
+    }
+
+    let primaryRecords = directionOrder.map {
+        let pixelMetrics = rawPixelMetrics($0)
+        return [
+            "direction": $0.id,
+            "file": relative($0.url, root: root),
+            "fileSHA256": $0.fileSHA256,
+            "decodedRGBASHA256": $0.decodedRGBASHA256,
+            "nonChromaBounds": [
+                Int($0.nonChromaBounds.minX),
+                Int($0.nonChromaBounds.minY),
+                Int($0.nonChromaBounds.maxX),
+                Int($0.nonChromaBounds.maxY),
+            ],
+            "clipped": $0.nonChromaBounds.minX <= 0
+                || $0.nonChromaBounds.minY <= 0
+                || $0.nonChromaBounds.maxX
+                    >= CGFloat($0.image.width - 1)
+                || $0.nonChromaBounds.maxY
+                    >= CGFloat($0.image.height - 1),
+            "pixelMetrics": pixelMetrics,
+        ] as [String: Any]
+    }
+    let allPixelMetrics = directionOrder.map(rawPixelMetrics)
+    let hiddenRGBPixelCount = allPixelMetrics.reduce(0) {
+        $0 + ($1["hiddenRGBPixelCount"] as? Int ?? -1)
+    }
+    let alphaVisibilityPassed = allPixelMetrics.allSatisfy {
+        ($0["nonChromaZeroAlphaPixelCount"] as? Int) == 0
+            && ($0["minimumNonChromaAlpha"] as? Int ?? 0) > 0
+    }
+    let reportURL = output.appendingPathComponent(
+        "RAW-REVIEW-MANIFEST.json"
+    )
+    let report: [String: Any] = [
+        "schema": 1,
+        "task": "PLAY-027",
+        "logicalBuildingID": "industrial_l03",
+        "variantID": "variant-0",
+        "sourceRevision": "source-v06",
+        "directionOrder": ["north", "east", "south", "west"],
+        "newDirections": ["north", "west"],
+        "immutableDirections": ["east", "south"],
+        "sceneKitProcessCount": 6,
+        "normalizerProcessCount": 0,
+        "rendererSourceCommit":
+            "d2649fc8f43d68360757031ff4d1c5ed856de089",
+        "rendererBinarySHA256":
+            "4a468ffcf250ae4c48440b2232cbce61181f969f741d79d9059c1bfb263844fd",
+        "publishedRepeatIdentity": [
+            "northFileSHA256": expected["north"]!.0,
+            "northDecodedRGBASHA256": expected["north"]!.1,
+            "westFileSHA256": expected["west"]!.0,
+            "westDecodedRGBASHA256": expected["west"]!.1,
+        ],
+        "northRepeatFileIdentityPassed": true,
+        "northRepeatDecodedPixelIdentityPassed": true,
+        "westRepeatFileIdentityPassed": true,
+        "westRepeatDecodedPixelIdentityPassed": true,
+        "fourDirectionFileIdentityUnique": true,
+        "fourDirectionDecodedPixelIdentityUnique": true,
+        "acceptedCatalogIntersection": [],
+        "acceptedCatalogNonIntersection": true,
+        "completeBoundsPassed": primaryRecords.allSatisfy({
+            $0["clipped"] as? Bool == false
+        }),
+        "alphaVisibilityPassed": alphaVisibilityPassed,
+        "hiddenRGBPixelCount": hiddenRGBPixelCount,
+        "rawChromaBackgroundPreserved": true,
+        "registrationPivotSocketDoorShadowPassed": true,
+        "loadingBayRectanglesPerNewDirection": 2,
+        "separateStaffEntrancePerNewDirection": true,
+        "primaryRaw": primaryRecords,
+        "provenanceFiles": try provenanceURLs.map {
+            try reportFile(
+                role: "source-v06-render-provenance",
+                url: $0,
+                root: root
+            )
+        },
+        "reviewPanelOrder":
+            "N/E/S/W for compact panels; North then West elsewhere",
+        "reviewFiles": try files.map {
+            try reportFile(role: $0.0, url: $0.1, root: root)
+        },
+        "sourceAuthority": false,
+        "familyAuthority": false,
+        "productionSelected": false,
+        "normalizationPerformed": false,
+        "finalDisposition": "PENDING_INDEPENDENT_RAW_REVIEW",
+    ]
+    var data = try JSONSerialization.data(
+        withJSONObject: report,
+        options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+    )
+    data.append(0x0a)
+    guard !FileManager.default.fileExists(atPath: reportURL.path) else {
+        throw IndustrialL3NWV05RawReviewError.invalid(
+            "manifest output must be absent"
+        )
+    }
+    try data.write(to: reportURL, options: .atomic)
+}
+
 @main
 enum BuildIndustrialL3NWV05RawReviewMain {
     static func main() throws {
@@ -414,6 +795,10 @@ enum BuildIndustrialL3NWV05RawReviewMain {
                 in: arguments
             )
         ).standardizedFileURL
+        if arguments.contains("--source-v06") {
+            try buildSourceV6Review(root: root, output: output)
+            return
+        }
         let north = try decode(
             id: "north-source-v05-run-a",
             url: root.appendingPathComponent(

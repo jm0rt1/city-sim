@@ -1,0 +1,126 @@
+{
+  "baseGapsWorld" : [
+    0,
+    0,
+    0
+  ],
+  "cameraSHA256" : "f0eb7f7b270303c693f0fd512164bd7005ce735c3dc8e8c0a5e83d46ab587fec",
+  "canonicalGeometrySHA256" : "8c5844c8e9fb1ee7ccc8a3f9c939d3245b35bd5604e0be428f1503317ef50220",
+  "connectedRoofComponentCount192" : 1,
+  "connectedRoofPixelCount192" : 431,
+  "descriptorSHA256" : "418eabd9dde6c9bffde80334f40d1927d0702b95c1515c372ca4c5527c551fd1",
+  "disposition" : "PENDING_INDEPENDENT_PREPIXEL_REVIEW",
+  "fixedRegistration" : {
+    "footprintWorld" : [
+      56,
+      56
+    ],
+    "pivotSource" : [
+      768,
+      896
+    ],
+    "socketSource" : [
+      896,
+      704
+    ]
+  },
+  "freightCombinedBounds192" : [
+    88,
+    88,
+    35,
+    18
+  ],
+  "gates" : {
+    "footprint56x56" : true,
+    "fourMaxima" : true,
+    "freightOver8" : true,
+    "northwestSlopeAdvantageAtLeast12" : true,
+    "oneConnectedRoofComponent" : true,
+    "peakSpacingOver4" : true,
+    "pivotAndSocketExact" : true,
+    "productionSelectedFalse" : true,
+    "roofHallLumaAtLeast25" : true,
+    "sharedBaseNoGapOverOneCompactPixel" : true,
+    "sourceAuthorityFalse" : true,
+    "staffAtLeast5x7" : true,
+    "threeIntegratedValleys" : true,
+    "valleyDepthAtLeast2" : true,
+    "valleyWidthAtLeast2" : true
+  },
+  "generatedAt" : "2026-07-27T00:00:00Z",
+  "layoutAttempt" : 2,
+  "materialLibrarySHA256" : "7c761a4fb24247702b12893eccb1e6db10d1afd359cfac08274f7087259f63eb",
+  "normalizerProcesses" : 0,
+  "northwestSlopeAdvantage192" : 25,
+  "northwestSlopeMedianLuma192" : 82,
+  "peakPoints192" : [
+    [
+      75.785712722663618,
+      76.524925972166514
+    ],
+    [
+      81.071427417090803,
+      79.167783319380106
+    ],
+    [
+      86.357142111517987,
+      81.810640666593685
+    ],
+    [
+      91.642856805945158,
+      84.453498013807277
+    ]
+  ],
+  "peakSeparations192" : [
+    5.2857146944271847,
+    5.2857146944271847,
+    5.2857146944271705
+  ],
+  "productionSelected" : false,
+  "rawSourceProcesses" : 0,
+  "registrationSHA256" : "98efc46e77f08b8c86415c60b2f1f27b4d13a10b10f3045e94d010eb5b83d35c",
+  "revision" : "source-v10-prepixel",
+  "roofBayDepthWorld" : 18,
+  "roofHallAbsoluteMedianLumaSeparation192" : 31,
+  "roofHallMedianLuma192" : [
+    67,
+    98
+  ],
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "southeastSlopeMedianLuma192" : 57,
+  "staffEntranceBounds192" : [
+    102,
+    76,
+    5,
+    7
+  ],
+  "task" : "PLAY-027",
+  "v08RawSHA256" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e",
+  "v09DescriptorSHA256" : "f88980667df7875dea797bc5b1fa1ce299c151ba9d6a3f355118ee155c1cbddc",
+  "v09MaterialSHA256" : "d017322cfa08507a761ee4297dd19af30316c762db2e7a194fc4f7e4de57aa96",
+  "valleyDepths192" : [
+    8,
+    8,
+    8
+  ],
+  "valleyPoints192" : [
+    [
+      78.42857006987721,
+      84.844897309166655
+    ],
+    [
+      83.714284764304395,
+      87.487754656380247
+    ],
+    [
+      88.999999458731565,
+      90.130612003593839
+    ]
+  ],
+  "valleyWidths192" : [
+    2,
+    2,
+    2
+  ]
+}

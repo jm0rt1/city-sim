@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: non-authoritative CitySim Industrial L4 concept reference
+Primary request: Atlas Robotics Forge — design a genuinely city-defining modern heavy-manufacturing complex as premium high-fidelity isometric city-building game art. Build a broad, grounded, clearly wider-than-tall campus centered on several broad skylit production bays with a rhythmic industrial roofscape, one restrained low control tower used only as a secondary landmark, visible rooftop plant and large ducts, and two or three huge logistics doors plus a clearly separate staff/control entrance. The silhouette should express precision robotics manufacturing at city scale through large forms, not futuristic gloss or tiny gadgets.
+Scene/backdrop: isolated on a neutral matte ground field, generous padding, no road, no parcel markings, no city or landscape background.
+Style/medium: polished painterly 3D isometric strategy-game concept art, realistic architectural massing and premium aged materials, readable at small gameplay scale.
+Composition/framing: fixed three-quarter isometric view, entire complex visible, long horizontal bay rhythm with one modest asymmetric control marker, strongly grounded contact.
+Lighting/mood: northwest key light, southeast contact shadow, controlled warm industrial light.
+Color palette: warm formed concrete and restrained weathered brick, dark blue-green and charcoal steel, limited oxide/copper/ochre accents, deep loading shadows, believable desaturated glazing.
+Materials/textures: aged metal panels, skylight glazing, stained concrete, roof joints, service ducts, vents and rooftop plant, subtle streaking and wear; coherent large surfaces rather than noisy detail.
+Constraints: concept reference only; separate staff/control entrance; two or three large freight openings; production bays and roof plant must dominate; no labels, no UI, no text, no people or vehicles.
+Avoid: dominant white, cyan, ice-blue, or cream planes; tall office tower; apartment; retail storefront; glossy science-fiction factory; spaceship forms; miniature toy; generic cube stack; commercial campus; vertical high-rise grammar; city background; roads; excessive micro-greebles; watermark.

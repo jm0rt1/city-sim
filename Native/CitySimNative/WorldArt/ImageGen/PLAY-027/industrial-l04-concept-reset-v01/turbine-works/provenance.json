@@ -1,0 +1,17 @@
+{
+  "artifactID": "call_ioIHODhNwABHnPs1RQtEmMIO",
+  "conceptID": "turbine-works",
+  "disposition": "pending-independent-review",
+  "generatedAt": "2026-07-27T13:44:11-0400",
+  "generationMode": "built-in-imagegen",
+  "heightPixels": 1024,
+  "model": "built-in/model-not-exposed",
+  "productionSelected": false,
+  "promptFile": "prompt.txt",
+  "rawByteCount": 2875661,
+  "rawFile": "raw.png",
+  "rawSHA256": "df0aa1b7dd218ab6a46de01794d16bf4b2510d559aaeea0ead1b90540b09603f",
+  "rejectionNotes": [],
+  "sourceAuthority": false,
+  "widthPixels": 1536
+}

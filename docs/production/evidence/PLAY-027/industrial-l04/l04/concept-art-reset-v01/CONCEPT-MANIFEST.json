@@ -1,0 +1,103 @@
+{
+  "taskID": "PLAY-027",
+  "packetID": "industrial-l04-concept-art-reset-v01",
+  "authority": {
+    "path": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-CONCEPT-ART-RESET-AUTHORITY-b264e3e.md",
+    "sha256": "ce8ec14a1d1bb6bc50137a931f128a54f1047adf50a954192b9506e823a5e830"
+  },
+  "mergeBase": {
+    "mergeCommit": "b82dca4c35403e6ff1fac987c4c2d48ca855bad3",
+    "publishedAuthority": "e52a35d2b9620d8bf5ee08a488f33dd001e1913f",
+    "preservedLaneAncestor": "9928e85ad7ff7b51fcf32c91807691d948f90257"
+  },
+  "generation": {
+    "tool": "built-in-imagegen",
+    "separateCalls": 4,
+    "wholeBuildingConceptAuthority": false,
+    "sceneKitProcesses": 0,
+    "metalProcesses": 0,
+    "normalizerProcesses": 0
+  },
+  "concepts": [
+    {
+      "conceptID": "turbine-works",
+      "artifactID": "call_ioIHODhNwABHnPs1RQtEmMIO",
+      "generatedAt": "2026-07-27T13:44:11-0400",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/industrial-l04-concept-reset-v01/turbine-works/raw.png",
+      "rawSHA256": "df0aa1b7dd218ab6a46de01794d16bf4b2510d559aaeea0ead1b90540b09603f",
+      "rawByteCount": 2875661,
+      "widthPixels": 1536,
+      "heightPixels": 1024,
+      "promptSHA256": "7c380f9bb37380b3887e7049fcaa9572592af1c76dbc63250b0850aee99ddc78",
+      "provenanceSHA256": "287417e67f97229da851e13167250b3ff4cb4a85b1f9cf56a7beb2ca7646ae7e",
+      "rejectionNotes": []
+    },
+    {
+      "conceptID": "copperline-fabrication-campus",
+      "artifactID": "call_LaAZjgNKKsK6UzPJ80F0A4Rp",
+      "generatedAt": "2026-07-27T13:45:23-0400",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/industrial-l04-concept-reset-v01/copperline-fabrication-campus/raw.png",
+      "rawSHA256": "96c3ed28a777bfa307f8b4fa6c23686ea9b50e31efcd6b257c599b237a4cae18",
+      "rawByteCount": 2670923,
+      "widthPixels": 1536,
+      "heightPixels": 1024,
+      "promptSHA256": "440bdac324bc8b4ca6446aef63fd34eb1eaea045c32b874057615c4392a7b885",
+      "provenanceSHA256": "170f2d7e640fca37bf09c4a6968a5f6f3f9e63a9c93a6ff54562996a71e0ec58",
+      "rejectionNotes": [
+        "Small pseudo-letterlike marks above freight openings are concept-only noise and may not become authored text or source geometry."
+      ]
+    },
+    {
+      "conceptID": "atlas-robotics-forge",
+      "artifactID": "call_0OFND7yFVBfLHd0fJHHDhqmJ",
+      "generatedAt": "2026-07-27T13:46:36-0400",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/industrial-l04-concept-reset-v01/atlas-robotics-forge/raw.png",
+      "rawSHA256": "9fb547a90e2eb33ed74077060b51a6fbb9a47e5e3e18fcd0c3f9ed7d0bcf15bd",
+      "rawByteCount": 2778484,
+      "widthPixels": 1536,
+      "heightPixels": 1024,
+      "promptSHA256": "2e1a23c8b21b13599fbd43902b1239d7915960c68bee788830d92fd2ab9c86da",
+      "provenanceSHA256": "14bf2ebbce164ad09422e20f05aaad1651665f10b7dc12dfb35a3213ddbc9f4a",
+      "rejectionNotes": []
+    },
+    {
+      "conceptID": "riversteel-works",
+      "artifactID": "call_zZ9GPZhnMGY89IW5WYrD9vd0",
+      "generatedAt": "2026-07-27T13:47:47-0400",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGen/PLAY-027/industrial-l04-concept-reset-v01/riversteel-works/raw.png",
+      "rawSHA256": "0261d08580629dae38885ed39a55da8d1940bd71ce0d3ee21dc7c194eb08e00e",
+      "rawByteCount": 2858322,
+      "widthPixels": 1536,
+      "heightPixels": 1024,
+      "promptSHA256": "ec68a4220f9d616455cfe4771286680cfa0ca744598a68cac0d993acb5b4647b",
+      "provenanceSHA256": "b727ef8f38ad0940231571e6d11d5db4775ae7535a20cb598135c02182aba449",
+      "rejectionNotes": []
+    }
+  ],
+  "reviewSheets": [
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/concept-art-reset-v01/review/FOUR-CONCEPT-EQUAL-SCALE-COLOR.png",
+      "sha256": "13855eff56d2ab1a4e083e9f2f361f0270b61a0f079e3b145d6588afb8819ab7"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/concept-art-reset-v01/review/FOUR-CONCEPT-GRAYSCALE-SILHOUETTE.png",
+      "sha256": "31ae251c50f0e99301356b913cb42ad440abae26467303c38f42fdbb356ab540"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/concept-art-reset-v01/review/FOUR-CONCEPT-COMPACT-GAMEPLAY-SCALE.png",
+      "sha256": "eb954c2d5a1f4a32c83af0e1fb97626753abf9e210bdf21e21d211d24d7e9bac"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/concept-art-reset-v01/review/V01-V02-FOUR-CONCEPT-COMPARISON.png",
+      "sha256": "af33654b629e16db8175da4d912b6707021651dafb59a6fc283d089aceaf09da"
+    }
+  ],
+  "comparisonInputs": {
+    "rejectedV01SHA256": "953272f25f5c04fc5eb1e9aae13d3bc8047d39ef8f98a90aa3f81e3d92828eb4",
+    "returnedV02SHA256": "cf8095c39e6a23e9f352d9c2763673b7a0600074daad566dc30b177f18a12d93"
+  },
+  "disposition": "PENDING_INDEPENDENT_REVIEW",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "winnerSelected": false
+}

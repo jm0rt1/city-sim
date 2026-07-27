@@ -53,7 +53,7 @@
         "id" : "w-lower-assembly-wing",
         "materialID" : "l4-blue-steel-light",
         "positionWorld" : [
-          11,
+          10.5,
           15.5,
           -19
         ]
@@ -83,7 +83,7 @@
         "positionWorld" : [
           -9,
           3.7000000000000002,
-          1
+          0.5
         ]
       },
       {
@@ -193,7 +193,7 @@
         "id" : "w-process-headhouse",
         "materialID" : "l4-oxide",
         "positionWorld" : [
-          14,
+          13.5,
           56.5,
           14
         ]
@@ -717,7 +717,7 @@
       "kind" : "explicit-cylinder",
       "materialID" : "l4-oxide",
       "positionWorld" : [
-        22,
+        21.5,
         10.5,
         -18
       ]

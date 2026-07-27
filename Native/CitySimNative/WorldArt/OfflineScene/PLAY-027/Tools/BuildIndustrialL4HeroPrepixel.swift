@@ -459,9 +459,9 @@ private func l4WestPlan() -> L4Plan {
     let centers = [-13.0, 0.0, 13.0]
     var blocks: [L4Block] = [
         L4Block(id: "w-high-bay-forge-hall", dimensions: [22, 44, 38], position: [15, 25, 3], material: "l4-weathered-blue-steel"),
-        L4Block(id: "w-lower-assembly-wing", dimensions: [30, 25, 18], position: [11, 15.5, -19], material: "l4-blue-steel-light"),
+        L4Block(id: "w-lower-assembly-wing", dimensions: [30, 25, 18], position: [10.5, 15.5, -19], material: "l4-blue-steel-light"),
         L4Block(id: "w-heavy-loading-wall", dimensions: [4, 22, 40], position: [8, 14, 1], material: "l4-warm-concrete"),
-        L4Block(id: "w-open-freight-throat", dimensions: [34, 2.6, 42], position: [-9, 3.7, 1], material: "l4-concrete-shadow"),
+        L4Block(id: "w-open-freight-throat", dimensions: [34, 2.6, 42], position: [-9, 3.7, 0.5], material: "l4-concrete-shadow"),
         L4Block(id: "w-service-apron", dimensions: [12, 1.8, 44], position: [-22, 2.1, 1], material: "l4-apron"),
         L4Block(id: "w-control-laboratory-wing", dimensions: [14, 20, 14], position: [0, 13, -20], material: "l4-warm-concrete"),
         L4Block(id: "w-control-glazing", dimensions: [1.2, 7, 11], position: [7.6, 17, -20], material: "l4-control-glazing"),
@@ -469,7 +469,7 @@ private func l4WestPlan() -> L4Plan {
         L4Block(id: "w-staff-canopy", dimensions: [6, 3.5, 9], position: [10.5, 15.5, -20], material: "l4-light-trim"),
         L4Block(id: "w-overhead-gantry", dimensions: [5, 5, 40], position: [7, 42, 1], material: "l4-charcoal-steel"),
         L4Block(id: "w-pipe-bridge", dimensions: [4, 4, 30], position: [15, 51, 4], material: "l4-duct-metal"),
-        L4Block(id: "w-process-headhouse", dimensions: [11, 13, 12], position: [14, 56.5, 14], material: "l4-oxide"),
+        L4Block(id: "w-process-headhouse", dimensions: [11, 13, 12], position: [13.5, 56.5, 14], material: "l4-oxide"),
     ]
     blocks += l4FarEdgeDockBlocks(
         prefix: "w",
@@ -495,7 +495,7 @@ private func l4WestPlan() -> L4Plan {
             L4Prop(id: "w-stack-a", kind: "explicit-cylinder", dimensions: [5.5, 25, 5.5], position: [18, 62.5, 18], material: "l4-charcoal-steel"),
             L4Prop(id: "w-stack-b", kind: "explicit-cylinder", dimensions: [5, 21, 5], position: [19, 60.5, 9], material: "l4-oxide"),
             L4Prop(id: "w-silo-a", kind: "explicit-cylinder", dimensions: [9, 18, 9], position: [20, 12, -8], material: "l4-process-metal"),
-            L4Prop(id: "w-silo-b", kind: "explicit-cylinder", dimensions: [8, 15, 8], position: [22, 10.5, -18], material: "l4-oxide"),
+            L4Prop(id: "w-silo-b", kind: "explicit-cylinder", dimensions: [8, 15, 8], position: [21.5, 10.5, -18], material: "l4-oxide"),
             L4Prop(id: "w-roof-plant-a", kind: "explicit-box", dimensions: [8, 6, 9], position: [10, 55, 0], material: "l4-process-metal"),
             L4Prop(id: "w-roof-plant-b", kind: "explicit-box", dimensions: [8, 5, 8], position: [10, 34, -12], material: "l4-duct-metal"),
         ],

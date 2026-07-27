@@ -1,0 +1,113 @@
+{
+  "authorityCommit" : "42ca258f2e465699c6c589f6380e973d4592df61",
+  "authorizedDirections" : [
+    "north",
+    "west"
+  ],
+  "descriptors" : [
+    {
+      "direction" : "north",
+      "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "sceneGeometryID" : "industrial-l03-north-v06-open-loading-court",
+      "sha256" : "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9"
+    },
+    {
+      "direction" : "west",
+      "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "sceneGeometryID" : "industrial-l03-west-v06-open-loading-court",
+      "sha256" : "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f"
+    }
+  ],
+  "directionScopedLibrariesDistinct" : true,
+  "disposition" : "PREPIXEL_SOURCE_V06_PROMOTION_PASS",
+  "evidenceInventory" : [
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/SEMANTIC-DIFF.json",
+      "sha256" : "be9732b5ddfcabf328a5ba4fa2ab83f735199e035e8470bab210a96e938a83d3"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/REPLAY-VALIDATION.json",
+      "sha256" : "d73fde9ee95ddba9eb851667986955b1b5c7561f88c3aa78fe20d894cd8f07a7"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/SWAPPED-LIBRARY-NEGATIVE.json",
+      "sha256" : "5672227659bf4713edd8847650a4a322ab3d3a4079724762146951c68f790ec0"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/STRUCTURAL-BOUNDARIES.json",
+      "sha256" : "ef41a58504410145140422711302b6f732dae0a34b608b4db27b3649044a1901"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/INDEPENDENT-REVIEW-REQUEST.md",
+      "sha256" : "3090d6f88d242377cccf5a0e1606073d37489c54762755ff51e910472d15d0eb"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/NORTH-MATERIAL-SWATCH-ENLARGED-COLOR-GRAYSCALE.png",
+      "sha256" : "cc6cd22a58d24429b4a62ad8b289d0454af0885a5e6fd7141e777cbc7adc2733"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/NORTH-MATERIAL-SWATCH-NATIVE-COLOR-GRAYSCALE.png",
+      "sha256" : "7d495a804418407f62a4f39623f9647fda3abc0303248773656e9ea55993c0bb"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/WEST-MATERIAL-SWATCH-ENLARGED-COLOR-GRAYSCALE.png",
+      "sha256" : "2ed6da2910c5d6a613ceae62e6cbe7f77623c4ab7bf20696d3d6e18ba4e54772"
+    },
+    {
+      "path" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/WEST-MATERIAL-SWATCH-NATIVE-COLOR-GRAYSCALE.png",
+      "sha256" : "015c8bd525e16c515dadad8b171c45106e1d2d2a64d4b36a2b87169f22a02f03"
+    }
+  ],
+  "familyAuthority" : false,
+  "geometryFrontageRegistrationSamplingReplayPassed" : true,
+  "logicalBuildingID" : "industrial_l03",
+  "materials" : [
+    {
+      "direction" : "north",
+      "libraryID" : "industrial-l03-source-v06-north",
+      "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "sha256" : "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8"
+    },
+    {
+      "direction" : "west",
+      "libraryID" : "industrial-l03-source-v06-west",
+      "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "sha256" : "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf"
+    }
+  ],
+  "mergeCheckpoint" : "bc52d32fea1d17814e6bb7af736f2fe8884a4bc2",
+  "nextGate" : "independent pre-pixel integration review",
+  "normalizerProcesses" : 0,
+  "productionSelected" : false,
+  "rawProcesses" : 0,
+  "sceneKitProcesses" : 0,
+  "semanticDiffPassed" : true,
+  "sourceAuthority" : false,
+  "sourceRevision" : "source-v06",
+  "structuralBoundaryReplayPassed" : true,
+  "structuralReplay" : {
+    "candidateReport" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/STRUCTURAL-BOUNDARIES.json",
+    "candidateReportSHA256" : "ef41a58504410145140422711302b6f732dae0a34b608b4db27b3649044a1901",
+    "candidateSemanticSHA256" : "fe7ee6d0f4feeb67ab5667e14c1b82317b0c746aa1c0fe2e3f7181daf169d306",
+    "identityOnlyFieldsExcluded" : [
+      "sceneFile",
+      "sceneGeometryID",
+      "sourceRevision"
+    ],
+    "semanticReportIdentity" : true,
+    "sourceReport" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/STRUCTURAL-BOUNDARIES.json",
+    "sourceReportSHA256" : "532de935a36965f96871f5e703b626d57ddcdb498f16ba597c09e92a47cb97f3",
+    "sourceSemanticSHA256" : "fe7ee6d0f4feeb67ab5667e14c1b82317b0c746aa1c0fe2e3f7181daf169d306"
+  },
+  "swappedLibraryRejectionPassed" : true,
+  "task" : "PLAY-027",
+  "tooling" : {
+    "builderBinarySHA256" : "870c786007a7f724401a1df0a50da9f8b5af1b7df217d160c619ded5cad62eb8",
+    "builderSource" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL3V6PromotionPrepixel.swift",
+    "builderSourceSHA256" : "8c77940a94ec69072b4210c9b9371af4254f0fef81a951e0893aaeb21e307795",
+    "structuralValidatorBinarySHA256" : "1664a589f2d79e2bfe27fc99d930f893042d10c2da7eee756e9cba660f13e925",
+    "structuralValidatorSource" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/ValidateStructuralBoundaries.swift",
+    "structuralValidatorSourceSHA256" : "8fa0fcff81b7876cdfa217acf579bbb414a438303c568b742e45dac7a2a9475e"
+  },
+  "variantID" : "variant-0"
+}

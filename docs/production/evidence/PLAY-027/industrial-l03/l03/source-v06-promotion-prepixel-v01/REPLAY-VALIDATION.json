@@ -1,0 +1,165 @@
+{
+  "authorityCommit" : "42ca258f2e465699c6c589f6380e973d4592df61",
+  "directions" : [
+    {
+      "cameraLightShadowHashSourceV05" : "6c4353ce6e3e40ea5248ce7a61aec6bb9ad7aa4ea027f9c03b0d59f95c008e9d",
+      "cameraLightShadowHashSourceV06" : "6c4353ce6e3e40ea5248ce7a61aec6bb9ad7aa4ea027f9c03b0d59f95c008e9d",
+      "direction" : "north",
+      "frontageHashSourceV05" : "110da513bd5437fc479ec1550df00f786de39f3ba14a2d46d1b42ed7084eeca8",
+      "frontageHashSourceV06" : "110da513bd5437fc479ec1550df00f786de39f3ba14a2d46d1b42ed7084eeca8",
+      "geometryFrontageRegistrationSamplingReplay" : "pass",
+      "geometryHashSourceV05" : "d1433380fa9d3ba3d6328302674a7439f8908b5d2b09c5254f024d5b3011a7c9",
+      "geometryHashSourceV06" : "d1433380fa9d3ba3d6328302674a7439f8908b5d2b09c5254f024d5b3011a7c9",
+      "materialAssignmentHashSourceV05" : "f6c2a6c2486b1b4857d2eda48f5bb3ed2a9b78f6113a09d22fc20d7dbc6ac831",
+      "materialAssignmentHashSourceV06" : "f6c2a6c2486b1b4857d2eda48f5bb3ed2a9b78f6113a09d22fc20d7dbc6ac831",
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "registrationHashSourceV05" : "b1d9e0e831b40556c941758abba98342f7597fc9e644b50d190fc7c1fb223375",
+      "registrationHashSourceV06" : "b1d9e0e831b40556c941758abba98342f7597fc9e644b50d190fc7c1fb223375",
+      "rootBoundsWorldSourceV05" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          51,
+          28
+        ]
+      ],
+      "rootBoundsWorldSourceV06" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          51,
+          28
+        ]
+      ],
+      "samplingEffectiveHashSourceV05" : "91e675284fa71534e2496e27ebc46b8478a7f72b90695bdf19acece8d7c0d00f",
+      "samplingEffectiveHashSourceV06" : "91e675284fa71534e2496e27ebc46b8478a7f72b90695bdf19acece8d7c0d00f",
+      "sceneGeometryID" : "industrial-l03-north-v06-open-loading-court"
+    },
+    {
+      "cameraLightShadowHashSourceV05" : "6c4353ce6e3e40ea5248ce7a61aec6bb9ad7aa4ea027f9c03b0d59f95c008e9d",
+      "cameraLightShadowHashSourceV06" : "6c4353ce6e3e40ea5248ce7a61aec6bb9ad7aa4ea027f9c03b0d59f95c008e9d",
+      "direction" : "west",
+      "frontageHashSourceV05" : "63e754743078c2ee160db0a7b35337043d443d2ad20e59652aac2c60d2c3d28f",
+      "frontageHashSourceV06" : "63e754743078c2ee160db0a7b35337043d443d2ad20e59652aac2c60d2c3d28f",
+      "geometryFrontageRegistrationSamplingReplay" : "pass",
+      "geometryHashSourceV05" : "260a5802f1ffe704e992294093b6c342fa6e02b237a446e67bb95ae52dad2323",
+      "geometryHashSourceV06" : "260a5802f1ffe704e992294093b6c342fa6e02b237a446e67bb95ae52dad2323",
+      "materialAssignmentHashSourceV05" : "baf6d882856d85b036476e3c11749a9f1fe0d5a40c420fa342d02978e30e3f11",
+      "materialAssignmentHashSourceV06" : "baf6d882856d85b036476e3c11749a9f1fe0d5a40c420fa342d02978e30e3f11",
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "registrationHashSourceV05" : "55599ad51c65d51f184afb5a7ef605c1c1633a7b741ddd51d57e2f259e203f2c",
+      "registrationHashSourceV06" : "55599ad51c65d51f184afb5a7ef605c1c1633a7b741ddd51d57e2f259e203f2c",
+      "rootBoundsWorldSourceV05" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          51,
+          28
+        ]
+      ],
+      "rootBoundsWorldSourceV06" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          51,
+          28
+        ]
+      ],
+      "samplingEffectiveHashSourceV05" : "91e675284fa71534e2496e27ebc46b8478a7f72b90695bdf19acece8d7c0d00f",
+      "samplingEffectiveHashSourceV06" : "91e675284fa71534e2496e27ebc46b8478a7f72b90695bdf19acece8d7c0d00f",
+      "sceneGeometryID" : "industrial-l03-west-v06-open-loading-court"
+    }
+  ],
+  "directionScopedLibrariesDistinct" : true,
+  "familyAuthority" : false,
+  "normalizerProcesses" : 0,
+  "productionSelected" : false,
+  "rawProcesses" : 0,
+  "sceneKitProcesses" : 0,
+  "sourceAuthority" : false,
+  "swatches" : [
+    {
+      "columnOrBandOrder" : [
+        "color",
+        "grayscale"
+      ],
+      "direction" : "north",
+      "enlargedPanel" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/NORTH-MATERIAL-SWATCH-ENLARGED-COLOR-GRAYSCALE.png",
+      "enlargedPanelSHA256" : "cc6cd22a58d24429b4a62ad8b289d0454af0885a5e6fd7141e777cbc7adc2733",
+      "materialOrder" : [
+        "l3c-deep-recess",
+        "l3c-heavy-dock-door",
+        "l3c-weathered-blue-steel",
+        "l3c-weathered-blue-steel-light",
+        "l3c-warm-rusticated-plinth",
+        "l3c-warm-formed-concrete",
+        "l3c-charcoal-foundation",
+        "l3c-warm-scored-apron",
+        "l3c-weathered-roof-membrane",
+        "l3c-heavy-roof-outline",
+        "l3c-smoky-industrial-glazing",
+        "l3c-warm-control-glazing",
+        "l3c-oxidized-process-metal",
+        "l3c-dull-duct-metal",
+        "l3c-charcoal-outline-steel",
+        "l3c-warm-trim",
+        "l3c-restrained-safety",
+        "l3c-oxidized-tank",
+        "l3c-dull-pipe"
+      ],
+      "nativePanel" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/NORTH-MATERIAL-SWATCH-NATIVE-COLOR-GRAYSCALE.png",
+      "nativePanelSHA256" : "7d495a804418407f62a4f39623f9647fda3abc0303248773656e9ea55993c0bb"
+    },
+    {
+      "columnOrBandOrder" : [
+        "color",
+        "grayscale"
+      ],
+      "direction" : "west",
+      "enlargedPanel" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/WEST-MATERIAL-SWATCH-ENLARGED-COLOR-GRAYSCALE.png",
+      "enlargedPanelSHA256" : "2ed6da2910c5d6a613ceae62e6cbe7f77623c4ab7bf20696d3d6e18ba4e54772",
+      "materialOrder" : [
+        "l3c-deep-recess",
+        "l3c-heavy-dock-door",
+        "l3c-weathered-blue-steel",
+        "l3c-weathered-blue-steel-light",
+        "l3c-warm-rusticated-plinth",
+        "l3c-warm-formed-concrete",
+        "l3c-charcoal-foundation",
+        "l3c-warm-scored-apron",
+        "l3c-weathered-roof-membrane",
+        "l3c-heavy-roof-outline",
+        "l3c-smoky-industrial-glazing",
+        "l3c-warm-control-glazing",
+        "l3c-oxidized-process-metal",
+        "l3c-dull-duct-metal",
+        "l3c-charcoal-outline-steel",
+        "l3c-warm-trim",
+        "l3c-restrained-safety",
+        "l3c-oxidized-tank",
+        "l3c-dull-pipe"
+      ],
+      "nativePanel" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-promotion-prepixel-v01/review/WEST-MATERIAL-SWATCH-NATIVE-COLOR-GRAYSCALE.png",
+      "nativePanelSHA256" : "015c8bd525e16c515dadad8b171c45106e1d2d2a64d4b36a2b87169f22a02f03"
+    }
+  ],
+  "task" : "PLAY-027"
+}

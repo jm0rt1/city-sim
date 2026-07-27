@@ -15,7 +15,8 @@ enum IndustrialL3V5SensitivityReviewError: Error, CustomStringConvertible {
             usage: build-industrial-l3-v5-sensitivity-review \
               --repository-root <path> --matrix-root <path> \
               --output-root <absent-path> --renderer-binary <path> \
-              --renderer-source-commit <sha>
+              --renderer-source-commit <sha> \
+              [--sequence original|N2|N3]
             """
         case let .invalid(message):
             return message
@@ -100,7 +101,7 @@ private struct RowContract {
     let authorizedMaterials: Set<String>
 }
 
-private let rows = [
+private let originalRows = [
     RowContract(
         id: "N1",
         direction: "north",
@@ -136,6 +137,26 @@ private let rows = [
             "l3c-charcoal-outline-steel",
             "l3c-warm-formed-concrete",
             "l3c-restrained-safety",
+        ]
+    ),
+]
+private let northFinalRows = [
+    "N2": RowContract(
+        id: "N2",
+        direction: "north",
+        coordinates: [[796, 746], [795, 748], [688, 391]],
+        authorizedMaterials: [
+            "l3c-charcoal-outline-steel",
+            "l3c-warm-trim",
+        ]
+    ),
+    "N3": RowContract(
+        id: "N3",
+        direction: "north",
+        coordinates: [[796, 746], [795, 748], [688, 391]],
+        authorizedMaterials: [
+            "l3c-charcoal-outline-steel",
+            "l3c-warm-trim",
         ]
     ),
 ]
@@ -177,6 +198,19 @@ private func argument(_ name: String, in arguments: [String]) throws -> String {
         index + 1 < arguments.count
     else {
         throw IndustrialL3V5SensitivityReviewError.arguments
+    }
+    return arguments[index + 1]
+}
+
+private func optionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
     }
     return arguments[index + 1]
 }
@@ -992,6 +1026,23 @@ private enum IndustrialL3V5SensitivityReviewMain {
             "--renderer-source-commit",
             in: arguments
         )
+        let sequence =
+            optionalArgument("--sequence", in: arguments) ?? "original"
+        let selectedRows: [RowContract]
+        let authorityCommit: String
+        if sequence == "original" {
+            selectedRows = originalRows
+            authorityCommit =
+                "78aba5442c675cc8664deaebffa13422ac2100c1"
+        } else if let row = northFinalRows[sequence] {
+            selectedRows = [row]
+            authorityCommit =
+                "94fcbb7c73683782caae5bebf6c7bea7bdd6b3d0"
+        } else {
+            throw IndustrialL3V5SensitivityReviewError.invalid(
+                "sequence must be original, N2, or N3"
+            )
+        }
         guard
             matrixRoot.path.hasPrefix(repositoryRoot.path + "/"),
             matrixRoot.path.contains(
@@ -1016,9 +1067,14 @@ private enum IndustrialL3V5SensitivityReviewMain {
         let inputManifestURL =
             matrixRoot.appendingPathComponent("inputs/INPUT-MANIFEST.json")
         let inputManifest = try jsonObject(inputManifestURL)
+        let recordedSequence = inputManifest["sequence"] as? String
+        let sequenceMatches =
+            recordedSequence == sequence
+            || (sequence == "original" && recordedSequence == nil)
         guard
             inputManifest["authorityCommit"] as? String
-                == "78aba5442c675cc8664deaebffa13422ac2100c1",
+                == authorityCommit,
+            sequenceMatches,
             inputManifest["sceneKitProcessCount"] as? Int == 0
         else {
             throw IndustrialL3V5SensitivityReviewError.invalid(
@@ -1028,7 +1084,7 @@ private enum IndustrialL3V5SensitivityReviewMain {
         var rowRecords: [[String: Any]] = []
         var panelRows:
             [(RowContract, ImageBuffer, ImageBuffer, [Int])] = []
-        for row in rows {
+        for row in selectedRows {
             guard
                 let baselineRawPath = baselineRaw[row.direction],
                 let baselineProvenancePath =
@@ -1303,10 +1359,9 @@ private enum IndustrialL3V5SensitivityReviewMain {
                 ] as? Bool == true
             }
         }
-        let report: [String: Any] = [
+        var report: [String: Any] = [
             "task": "PLAY-027",
-            "authorityCommit":
-                "78aba5442c675cc8664deaebffa13422ac2100c1",
+            "authorityCommit": authorityCommit,
             "attributionCheckpoint":
                 "a235546ef0a7ddf31cc2e78d16dfba62f08f82fe",
             "rendererSourceCommit": rendererSourceCommit,
@@ -1317,15 +1372,15 @@ private enum IndustrialL3V5SensitivityReviewMain {
                     with: ""
                 ),
             "inputManifestSHA256": try sha256(inputManifestURL),
-            "sceneKitProcessCount": 12,
-            "rawProcessCount": 12,
+            "sceneKitProcessCount": selectedRows.count * runs.count,
+            "rawProcessCount": selectedRows.count * runs.count,
             "normalizerProcessCount": 0,
             "rows": rowRecords,
             "registrationSocketFrontageStructuralInvariancePassed":
                 allRegistrationPassed,
             "changedRegionOwnershipPassed": allOwnershipPassed,
             "panelContract": [
-                "rowOrder": rows.map(\.id),
+                "rowOrder": selectedRows.map(\.id),
                 "columnOrder":
                     ["exact-source-v05-run-a", "diagnostic-run-a"],
                 "rowMarkerColorsRGBA": [
@@ -1348,6 +1403,9 @@ private enum IndustrialL3V5SensitivityReviewMain {
             "sourceAuthority": false,
             "productionSelected": false,
         ]
+        if sequence != "original" {
+            report["sequence"] = sequence
+        }
         let manifestURL =
             outputRoot.appendingPathComponent("MATRIX-MANIFEST.json")
         try write(try jsonData(report), to: manifestURL)

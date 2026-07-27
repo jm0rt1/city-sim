@@ -10,7 +10,8 @@ enum IndustrialL3V5SensitivityInputError: Error, CustomStringConvertible {
         case .arguments:
             return """
             usage: build-industrial-l3-v5-sensitivity-inputs \
-              --repository-root <path> --output-root <diagnostics-path>
+              --repository-root <path> --output-root <diagnostics-path> \
+              [--sequence original|N2|N3]
             """
         case let .invalid(message):
             return message
@@ -21,7 +22,7 @@ enum IndustrialL3V5SensitivityInputError: Error, CustomStringConvertible {
 private struct MatrixRow {
     let id: String
     let direction: String
-    let changes: [(materialID: String, channel: Int)]
+    let changes: [(materialID: String, channel: Int, deltaUnits: Int)]
 }
 
 private let northScene =
@@ -44,39 +45,56 @@ private let expectedHashes = [
     materialsFile:
         "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
 ]
-private let delta = 2.0 / 255.0
-private let rows = [
+private let originalRows = [
     MatrixRow(
         id: "N1",
         direction: "north",
         changes: [
-            ("l3c-charcoal-outline-steel", 0),
-            ("l3c-warm-trim", 0),
+            ("l3c-charcoal-outline-steel", 0, 2),
+            ("l3c-warm-trim", 0, 2),
         ]
     ),
     MatrixRow(
         id: "W1",
         direction: "west",
         changes: [
-            ("l3c-charcoal-outline-steel", 0),
-            ("l3c-warm-formed-concrete", 2),
+            ("l3c-charcoal-outline-steel", 0, 2),
+            ("l3c-warm-formed-concrete", 2, 2),
         ]
     ),
     MatrixRow(
         id: "W2",
         direction: "west",
         changes: [
-            ("l3c-charcoal-outline-steel", 0),
-            ("l3c-restrained-safety", 2),
+            ("l3c-charcoal-outline-steel", 0, 2),
+            ("l3c-restrained-safety", 2, 2),
         ]
     ),
     MatrixRow(
         id: "W3",
         direction: "west",
         changes: [
-            ("l3c-charcoal-outline-steel", 0),
-            ("l3c-warm-formed-concrete", 2),
-            ("l3c-restrained-safety", 2),
+            ("l3c-charcoal-outline-steel", 0, 2),
+            ("l3c-warm-formed-concrete", 2, 2),
+            ("l3c-restrained-safety", 2, 2),
+        ]
+    ),
+]
+private let northFinalRows = [
+    "N2": MatrixRow(
+        id: "N2",
+        direction: "north",
+        changes: [
+            ("l3c-charcoal-outline-steel", 0, 2),
+            ("l3c-warm-trim", 0, 3),
+        ]
+    ),
+    "N3": MatrixRow(
+        id: "N3",
+        direction: "north",
+        changes: [
+            ("l3c-charcoal-outline-steel", 0, 2),
+            ("l3c-warm-trim", 0, 4),
         ]
     ),
 ]
@@ -87,6 +105,19 @@ private func argument(_ name: String, in arguments: [String]) throws -> String {
         index + 1 < arguments.count
     else {
         throw IndustrialL3V5SensitivityInputError.arguments
+    }
+    return arguments[index + 1]
+}
+
+private func optionalArgument(
+    _ name: String,
+    in arguments: [String]
+) -> String? {
+    guard
+        let index = arguments.firstIndex(of: name),
+        index + 1 < arguments.count
+    else {
+        return nil
     }
     return arguments[index + 1]
 }
@@ -145,6 +176,7 @@ private func validatedMaterialCopy(
     }
     var ledger: [[String: Any]] = []
     for change in row.changes {
+        let delta = Double(change.deltaUnits) / 255.0
         guard
             let index = materials.firstIndex(
                 where: { $0["id"] as? String == change.materialID }
@@ -168,11 +200,12 @@ private func validatedMaterialCopy(
             ) < 1e-15
         else {
             throw IndustrialL3V5SensitivityInputError.invalid(
-                "\(row.id) exact positive 2/255 delta failed"
+                "\(row.id) exact positive \(change.deltaUnits)/255 "
+                    + "delta failed"
             )
         }
         materials[index]["baseColorRGBA"] = after
-        ledger.append([
+        var changeRecord: [String: Any] = [
             "materialID": change.materialID,
             "channel": ["red", "green", "blue", "alpha"][change.channel],
             "channelIndex": change.channel,
@@ -180,7 +213,11 @@ private func validatedMaterialCopy(
             "after": after[change.channel],
             "delta": delta,
             "sign": "positive",
-        ])
+        ]
+        if northFinalRows[row.id] != nil {
+            changeRecord["deltaUnits"] = change.deltaUnits
+        }
+        ledger.append(changeRecord)
     }
     object["materials"] = materials
     let output = try jsonData(object)
@@ -193,8 +230,13 @@ private func validatedMaterialCopy(
             "\(row.id) material round trip failed"
         )
     }
-    let allowed = Set(
-        row.changes.map { "\($0.materialID)#\($0.channel)" }
+    let allowed = Dictionary(
+        uniqueKeysWithValues: row.changes.map {
+            (
+                "\($0.materialID)#\($0.channel)",
+                Double($0.deltaUnits) / 255.0
+            )
+        }
     )
     guard
         let sourceMaterials =
@@ -234,8 +276,8 @@ private func validatedMaterialCopy(
             let difference =
                 candidateColors[channel].doubleValue
                 - sourceColors[channel].doubleValue
-            if allowed.contains(key) {
-                guard abs(difference - delta) < 1e-15 else {
+            if let allowedDelta = allowed[key] {
+                guard abs(difference - allowedDelta) < 1e-15 else {
                     throw IndustrialL3V5SensitivityInputError.invalid(
                         "\(row.id) authorized delta drifted for \(key)"
                     )
@@ -265,6 +307,23 @@ private enum IndustrialL3V5SensitivityInputMain {
             fileURLWithPath: try argument("--output-root", in: arguments),
             isDirectory: true
         ).standardizedFileURL
+        let sequence =
+            optionalArgument("--sequence", in: arguments) ?? "original"
+        let selectedRows: [MatrixRow]
+        let authorityCommit: String
+        if sequence == "original" {
+            selectedRows = originalRows
+            authorityCommit =
+                "78aba5442c675cc8664deaebffa13422ac2100c1"
+        } else if let row = northFinalRows[sequence] {
+            selectedRows = [row]
+            authorityCommit =
+                "94fcbb7c73683782caae5bebf6c7bea7bdd6b3d0"
+        } else {
+            throw IndustrialL3V5SensitivityInputError.invalid(
+                "sequence must be original, N2, or N3"
+            )
+        }
         guard
             outputRoot.path.hasPrefix(repositoryRoot.path + "/"),
             outputRoot.path.contains(
@@ -294,7 +353,7 @@ private enum IndustrialL3V5SensitivityInputMain {
         let materialURL = repositoryRoot.appendingPathComponent(materialsFile)
         let sourceMaterialData = try Data(contentsOf: materialURL)
         var rowRecords: [[String: Any]] = []
-        for row in rows {
+        for row in selectedRows {
             guard let sceneURL = sceneURLs[row.direction] else {
                 throw IndustrialL3V5SensitivityInputError.invalid(
                     "\(row.id) direction unavailable"
@@ -340,17 +399,15 @@ private enum IndustrialL3V5SensitivityInputMain {
                 "productionSelected": false,
             ])
         }
-        let manifest: [String: Any] = [
+        var manifest: [String: Any] = [
             "task": "PLAY-027",
-            "authorityCommit":
-                "78aba5442c675cc8664deaebffa13422ac2100c1",
+            "authorityCommit": authorityCommit,
             "attributionCheckpoint":
                 "a235546ef0a7ddf31cc2e78d16dfba62f08f82fe",
             "sourceMaterialLibrary": [
                 "path": materialsFile,
                 "sha256": expectedHashes[materialsFile]!,
             ],
-            "delta": delta,
             "sign": "positive",
             "rows": rowRecords,
             "sceneKitProcessCount": 0,
@@ -359,10 +416,18 @@ private enum IndustrialL3V5SensitivityInputMain {
             "sourceAuthority": false,
             "productionSelected": false,
         ]
+        if sequence == "original" {
+            manifest["delta"] = 2.0 / 255.0
+        } else {
+            manifest["sequence"] = sequence
+        }
         try write(
             try jsonData(manifest),
             to: outputRoot.appendingPathComponent("INPUT-MANIFEST.json")
         )
-        print("PASS created four diagnostics-only matrix input rows")
+        print(
+            "PASS created \(selectedRows.count) diagnostics-only "
+                + "\(sequence) input row(s)"
+        )
     }
 }

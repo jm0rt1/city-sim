@@ -1,6 +1,13 @@
 # PLAY-027 Industrial L4 North v09 pre-pixel disposition
 
-`PENDING_INDEPENDENT_PREPIXEL_REVIEW`
+`RETURNED_BY_INDEPENDENT_RENDERER`
+
+Independent renderer and QA reviews returned exact candidate
+`03d444972668528cd602476552c86b981112e9f8`. The numeric gates remain valid,
+but the four `shape:"hip"` modules read as detached pyramidal rooflets on a
+flat hall rather than one premium Turbine Works sawtooth envelope. This return
+changes disposition only; the v09 descriptor, material library, generated
+panels, validation, and hashes remain immutable evidence.
 
 The third and final materially distinct v09 roof layout passes the tightened
 literal-192 gates. Four descriptor-camera-projected pyramid roof modules are

@@ -277,6 +277,15 @@ enum BuildBlenderCalibrationReview {
                 )
             )
         )
+        let r2Color = try neutralComposite(
+            decode(
+                root.appendingPathComponent(
+                    base
+                        + "blender-v18-north-calibration-v02/"
+                        + "diagnostics/run-a/raw.png"
+                )
+            )
+        )
         let sceneKitSemantic = try neutralComposite(
             decode(
                 root.appendingPathComponent(
@@ -301,6 +310,8 @@ enum BuildBlenderCalibrationReview {
         let nativeGray = grayscale(native)
         let compact = try resized(color, width: 192, height: 128)
         let compactGray = grayscale(compact)
+        let r2Compact = try resized(r2Color, width: 192, height: 128)
+        let r2CompactGray = grayscale(r2Compact)
         try writePNG(color, to: output.appendingPathComponent("SOURCE-COLOR.png"))
         try writePNG(
             gray,
@@ -350,6 +361,18 @@ enum BuildBlenderCalibrationReview {
             try sheet([grayscale(l3Compact), compactGray]),
             to: output.appendingPathComponent(
                 "ACCEPTED-L3-VS-BLENDER-GRAYSCALE.png"
+            )
+        )
+        try writePNG(
+            try sheet([r2Color, color]),
+            to: output.appendingPathComponent(
+                "R2-VS-R3-SOURCE-COLOR.png"
+            )
+        )
+        try writePNG(
+            try sheet([r2Compact, compact, r2CompactGray, compactGray]),
+            to: output.appendingPathComponent(
+                "R2-VS-R3-EXACT-192X128-COLOR-GRAYSCALE.png"
             )
         )
     }

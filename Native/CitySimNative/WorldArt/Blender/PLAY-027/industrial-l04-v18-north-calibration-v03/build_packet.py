@@ -51,6 +51,12 @@ def main():
     semantic_identity_path = base / "diagnostics/SEMANTIC-IDENTITY.json"
     raw_identity = json.loads(raw_identity_path.read_text())
     semantic_identity = json.loads(semantic_identity_path.read_text())
+    raw_ground_path = base / "diagnostics/R2-R3-RAW-GROUND-CORRECTION.json"
+    semantic_ground_path = (
+        base / "diagnostics/R2-R3-SEMANTIC-GROUND-CORRECTION.json"
+    )
+    raw_ground = json.loads(raw_ground_path.read_text())
+    semantic_ground = json.loads(semantic_ground_path.read_text())
     require(raw_identity["validationPassed"] is True, "raw identity gate")
     require(
         raw_identity["decodedRGBAIdentity"] is True,
@@ -63,6 +69,11 @@ def main():
     require(
         semantic_identity["decodedRGBAIdentity"] is True,
         "semantic decoded identity",
+    )
+    require(raw_ground["validationPassed"] is True, "raw ground correction")
+    require(
+        semantic_ground["validationPassed"] is True,
+        "semantic ground correction",
     )
 
     runs = []
@@ -138,7 +149,7 @@ def main():
                 "sha256": digest(path),
             }
         )
-    require(len(panels) == 11, "review panel count")
+    require(len(panels) == 13, "review panel count")
     result = {
         "schema": 1,
         "task": "PLAY-027",
@@ -146,7 +157,8 @@ def main():
         "calibrationID":
             "industrial-l04-v18-north-blender-cycles-calibration-v03",
         "disposition": "PENDING_INDEPENDENT_RENDERER_QA_REVIEW",
-        "prepixelCheckpoint": "PENDING_V03_PREPIXEL_COMMIT",
+        "prepixelCheckpoint":
+            "3fadcbee8dde1f81df3a122aa67d042e854280aa",
         "processCount": 3,
         "runs": runs,
         "decodedRGBAIdentity": True,
@@ -164,6 +176,10 @@ def main():
         "blenderExecutableSHA256": EXPECTED_BLENDER,
         "rawIdentityReportSHA256": digest(raw_identity_path),
         "semanticIdentityReportSHA256": digest(semantic_identity_path),
+        "rawGroundCorrectionReportSHA256": digest(raw_ground_path),
+        "semanticGroundCorrectionReportSHA256": digest(
+            semantic_ground_path
+        ),
         "taskOwnedToolSources": {
             "rendererImporterSHA256": digest(
                 Path(__file__).parent / "render_v18_north.py"

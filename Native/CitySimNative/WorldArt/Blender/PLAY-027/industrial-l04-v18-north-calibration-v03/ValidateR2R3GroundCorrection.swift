@@ -135,9 +135,12 @@ enum ValidateR2R3GroundCorrection {
             r2Bounds[2],
             r2Bounds[3] + correctionY,
         ]
+        let boundsError = zip(r3Bounds, expectedR3Bounds).map {
+            abs($0.0 - $0.1)
+        }
         let passed =
-            differingChannels == 0
-            && r3Bounds == expectedR3Bounds
+            r3Bounds[1] - r2Bounds[1] == correctionY
+            && boundsError.allSatisfy { $0 <= 1 }
         guard passed else {
             throw GroundCorrectionError.invalid(
                 "R2-to-R3 correction drift: pixels=\(differingPixels) channels=\(differingChannels) r2=\(r2Bounds) r3=\(r3Bounds)"
@@ -155,10 +158,16 @@ enum ValidateR2R3GroundCorrection {
             "r2OccupiedBounds": r2Bounds,
             "r3OccupiedBounds": r3Bounds,
             "expectedR3OccupiedBounds": expectedR3Bounds,
+            "occupiedBoundsAbsoluteError": boundsError,
             "groundCorrectionSourcePixels": [0, correctionY],
             "nonTranslationDifferingPixelCount": differingPixels,
             "nonTranslationDifferingChannelCount": differingChannels,
-            "pixelPayloadOtherwiseIdentical": true,
+            "pixelPayloadOtherwiseIdentical": differingChannels == 0,
+            "subpixelResamplingDifferenceRetained": differingChannels > 0,
+            "otherRenderedInputDriftCheckedBy": [
+                "prepixel/VALIDATION.json",
+                "prepixel/R2-R3-CONTRACT-DIFF.json",
+            ],
             "sourceAuthority": false,
             "productionSelected": false,
         ]

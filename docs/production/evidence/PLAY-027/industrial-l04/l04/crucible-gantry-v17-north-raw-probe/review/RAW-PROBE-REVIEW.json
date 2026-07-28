@@ -1,0 +1,200 @@
+{
+  "alphaChroma" : {
+    "alphaOpaquePixelCount" : 1572864,
+    "alphaPartialPixelCount" : 0,
+    "alphaZeroPixelCount" : 0,
+    "exactChromaPixelCount" : 1454143,
+    "flatChromaRawContractPassed" : true,
+    "hiddenRGBAtAlphaZeroPixelCount" : 0,
+    "nonExactNearChromaBounds" : [
+      509,
+      523,
+      1026,
+      897
+    ],
+    "nonExactNearChromaOccupiedPixelCount" : 1807,
+    "playerVisibleNearChromaGatePassed" : false
+  },
+  "artifact" : "industrial-l04-crucible-gantry-v17-north-raw-probe",
+  "authorizedRawProcessCount" : 1,
+  "backend" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "builderSHA256" : "50198ea5b18d9eb9da8948566f86fb2ec52b5d929555a25dda8bb07dae503ac2",
+  "comparisons" : {
+    "acceptedIndustrialL3" : {
+      "decodedRGBASHA256" : "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "fileSHA256" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea"
+    },
+    "rejectedV16Raw" : {
+      "decodedRGBASHA256" : "a20e26cf02afc4ba7a316251077fd844f5e2c7243d077259a1833d4fcf92499b",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/crucible-gantry-v16-north-raw-probe/diagnostics/north/run-a/raw.png",
+      "fileSHA256" : "25635578bc30e6a9de895161a6f33855866d456aa8a73eb307aff86793b55b03"
+    }
+  },
+  "consumedRawProcessCount" : 1,
+  "descriptorSHA256" : "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a",
+  "disposition" : "REJECTED_PLAYER_VISIBLE_NEAR_CHROMA",
+  "firstFailedGate" : "no player-visible magenta wedge or halo",
+  "firstFailedGateEvidence" : {
+    "nonExactNearChromaBounds" : [
+      509,
+      523,
+      1026,
+      897
+    ],
+    "nonExactNearChromaOccupiedPixelCount" : 1807,
+    "panels" : [
+      "EXACT-192X128-COLOR.png",
+      "NATIVE-2X-COLOR.png",
+      "OCCUPIED-CROP-COLOR.png"
+    ]
+  },
+  "geometryID" : "industrial-l04-crucible-gantry-v17-north-monumental-portal",
+  "materialSHA256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202",
+  "metalVisibleRawProcessCount" : 1,
+  "normalizerProcessCount" : 0,
+  "productionSelected" : false,
+  "raw" : {
+    "decodedRGBASHA256" : "0d9ca24f63de0f17c72cd36c38b742bd6fe6aca8aaee60c987a541af952e620f",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/crucible-gantry-v17-north-raw-probe/diagnostics/north/run-a/raw.png",
+    "fileSHA256" : "9aea278d4fe7640a4dd126c4393fd284f2849f80168b5e62d6e8dbe2cf75c5d7",
+    "occupiedPixelCount" : 118721,
+    "pixels" : [
+      1536,
+      1024
+    ],
+    "provenanceOccupancy" : {
+      "completeOccupiedAreaPassed" : true,
+      "minimumBoundsPixels" : [
+        400,
+        260
+      ],
+      "minimumNonChromaPixelCount" : 50000,
+      "nonChromaBounds" : [
+        509,
+        523,
+        1027,
+        898
+      ],
+      "nonChromaPixelCount" : 118721
+    },
+    "visibleBounds" : [
+      509,
+      523,
+      1026,
+      897
+    ]
+  },
+  "registration" : {
+    "doorBaseSource" : [
+      [
+        868.5714363480198,
+        690.28570827653016
+      ],
+      [
+        923.4285834469398,
+        717.71428182599004
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      704
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "northThroatAnalyticGatePassed" : true,
+    "northThroatCompactWidthAnalytic" : 7.6665193728056558,
+    "northThroatMinimumCompactWidth" : 7,
+    "orientationTransform" : "none",
+    "southeastShadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "rendererBinarySHA256" : "da2c8c420f4c4fe3ef8d2e0706cd2a640190c0b6fa89d79e8b89b843ab1b08e6",
+  "rendererSourceCommit" : "5ee718b0544064557f6b92695eb70edf5ccb0c8c",
+  "repeatProcessesRun" : 0,
+  "resolverFailClosedNegativeCount" : 20,
+  "resolverPositiveCount" : 1,
+  "resolverValidationSHA256" : "029e7acc08766160e5cd6ce23d617a9edca3080309fd6fc7dafd0f3f56531f4b",
+  "sampling" : {
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "orientationTransform" : "none",
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "authored-constant-v1",
+    "sceneKitShadows" : "disabled"
+  },
+  "sandboxPreflight" : {
+    "backend" : {
+      "available" : false,
+      "renderingAPIRawValue" : 0,
+      "result" : "renderer-backend-unavailable",
+      "sceneKitRendererDevice" : null,
+      "sceneKitRendererDevicePresent" : false,
+      "systemDefaultMetalDevice" : null,
+      "visibleMetalDeviceCount" : 0,
+      "visibleMetalDevices" : [
+
+      ]
+    },
+    "candidateOutputWritten" : false,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/crucible-gantry-v17-north-raw-probe/diagnostics/north/run-a/capability-sandbox-preflight.json",
+    "fileSHA256" : "29bda6eac97d2f5261caa411946d430f4ba2b7fcda8d25206e98f6b298eba15b",
+    "sceneConstructionStarted" : false,
+    "scenePreparationStarted" : false
+  },
+  "sandboxPreflightConsumedRawProcess" : false,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027",
+  "visualReviewDisposition" : "REJECTED_VISIBLE_MAGENTA_SILHOUETTE_AND_CONTACT_WEDGE",
+  "visualReviewRequired" : [
+    "monumental gate has visible jamb, header, and inset depth",
+    "warm hall, double-girder gantry, hot crucible, and stack survive",
+    "northwest value direction and southeast contact shadow cohere",
+    "road socket visibly connects to the North throat"
+  ]
+}

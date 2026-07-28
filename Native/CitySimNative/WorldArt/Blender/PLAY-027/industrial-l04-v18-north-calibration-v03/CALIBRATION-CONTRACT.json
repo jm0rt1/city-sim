@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-020",
+  "calibrationID": "industrial-l04-v18-north-blender-cycles-calibration-v03",
+  "direction": "north",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "versionFile": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-v18-north-calibration-v03/BLENDER-VERSION.txt",
+    "versionFileSHA256": "df120979d2fbf1b7ea0bef4d944250746cc6077f871b0ee98b782a863ec7d2f9",
+    "installedArchitecture": "x86_64-v2",
+    "hostArchitecture": "arm64",
+    "operatingSystem": "macOS 26.4.1 (25E253)",
+    "factoryStartup": true,
+    "autoexecDisabled": true,
+    "addons": [],
+    "networkAssets": false,
+    "gpu": false
+  },
+  "descriptor": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v18-north-prepixel/artifact/scenes/industrial_l04/variant-0/n/scene.json",
+    "sha256": "3696b813e6c3e0f46251e689582163bdbdcc5d84a3a9c1125bfbefba37da2630",
+    "sourceRevision": "source-v18-prepixel",
+    "sceneGeometryID": "industrial-l04-crucible-gantry-v18-north-single-foundation"
+  },
+  "materialLibrary": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v17-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json",
+    "sha256": "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+  },
+  "comparisons": {
+    "v18SceneKitSemantic": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/duplicate-foundation-repair-r3-v01/diagnostics/run-a/semantic.png",
+      "sha256": "39c5a71a3a185a125b3404a72a36deae5274833a3e6b81f01a063fb7f9db1ade",
+      "role": "exact-v18-scene-node-registration-reference"
+    },
+    "v17SceneKitActual": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/crucible-gantry-v17-north-raw-probe/diagnostics/north/run-a/raw.png",
+      "sha256": "9aea278d4fe7640a4dd126c4393fd284f2849f80168b5e62d6e8dbe2cf75c5d7",
+      "role": "closest-retained-actual-color-reference"
+    },
+    "acceptedIndustrialL3North": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "sha256": "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+      "decodedRGBASHA256": "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af"
+    }
+  },
+  "expected": {
+    "renderedComponentCount": 51,
+    "materialCount": 13,
+    "southJambNode": "v17-monumental-portal-jamb-south",
+    "southJambCompactMaximumVisibleWidthPixels": 3,
+    "groundPivotSource": [768, 896],
+    "frontageSocketSource": [896, 704],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "shadowVectorSource": [2, 1]
+  },
+  "cameraRegistrationRepair": {
+    "formula": "ortho_scale = 2 * SceneKit orthographicScale * (renderViewportPixels.width / renderViewportPixels.height)",
+    "sceneKitOrthographicScale": 79.1959533691406,
+    "aspect": 1.5,
+    "blenderOrthoScale": 237.5878601074218,
+    "shiftX": 0,
+    "shiftYFormula": "postProjectionOffsetPixels.y / renderViewportPixels.width",
+    "shiftY": 0.08333333333333333,
+    "groundPlaneCitySimY": 0,
+    "originSource": [768, 768],
+    "maximumProjectionErrorPixels": 1,
+    "edgeContactAllowed": false
+  },
+  "cycles": {
+    "device": "CPU",
+    "threads": 1,
+    "seed": 2704,
+    "samples": 16,
+    "adaptiveSampling": false,
+    "denoising": false,
+    "motionBlur": false,
+    "transparentFilm": true,
+    "resolution": [1536, 1024],
+    "resolutionPercentage": 100,
+    "pixelAspect": [1, 1],
+    "colorManagement": {
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "None",
+      "exposure": 0,
+      "gamma": 1
+    },
+    "worldStrength": 0.28,
+    "northwestSunEnergy": 2.2,
+    "northwestSunAngleRadians": 0.08,
+    "maxBounces": 4
+  },
+  "projectionProofCommandTemplate": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --disable-autoexec --threads 1 --python-exit-code 1 --python Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-v18-north-calibration-v03/render_v18_north.py -- --repository-root <repo> --config Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-v18-north-calibration-v03/CALIBRATION-CONTRACT.json --output-root <absent-output> --process-id PREPIXEL --projection-proof-only",
+  "commandTemplate": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --disable-autoexec --threads 1 --python-exit-code 1 --python Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-v18-north-calibration-v03/render_v18_north.py -- --repository-root <repo> --config Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-v18-north-calibration-v03/CALIBRATION-CONTRACT.json --output-root <absent-output> --process-id <A|B|C>"
+}

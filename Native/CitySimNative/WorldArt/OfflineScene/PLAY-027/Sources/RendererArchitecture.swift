@@ -269,6 +269,26 @@ enum DescriptorSamplingResolver {
                 == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v16-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json"
             && descriptor.materialLibrary.sha256
                 == "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+        let isIndustrialL4CrucibleGantryV17North =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.variantID == "variant-0"
+            && descriptor.viewDirection == "n"
+            && descriptor.sourceRevision == "source-v17-prepixel"
+            && descriptor.sceneGeometryID
+                == "industrial-l04-crucible-gantry-v17-north-monumental-portal"
+            && descriptor.authoredIndependently
+            && !descriptor.productionSelected
+            && descriptor.registration.orientationTransform == "none"
+            && sampling.sourceRevisionBinding == "source-v17-prepixel"
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+            && descriptor.materialLibrary.file
+                == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v17-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json"
+            && descriptor.materialLibrary.sha256
+                == "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
         let isIndustrialL3SourceV05 =
             descriptor.logicalBuildingID == "industrial_l03"
             && descriptor.sourceRevision == "source-v05"
@@ -281,6 +301,9 @@ enum DescriptorSamplingResolver {
         let isIndustrialL4SourceV16 =
             descriptor.logicalBuildingID == "industrial_l04"
             && descriptor.sourceRevision == "source-v16-prepixel"
+        let isIndustrialL4SourceV17 =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.sourceRevision == "source-v17-prepixel"
         guard
             !isIndustrialL3SourceV05
                 || isIndustrialL3CohesionSourceV05NorthWest
@@ -313,6 +336,14 @@ enum DescriptorSamplingResolver {
                 "Industrial L4 source-v16-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
             )
         }
+        guard
+            !isIndustrialL4SourceV17
+                || isIndustrialL4CrucibleGantryV17North
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L4 source-v17-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
+            )
+        }
         let isAuthoredConstantSource =
             isIndustrialL2AuthoredConstant
             || isIndustrialL3SourceV02
@@ -322,6 +353,7 @@ enum DescriptorSamplingResolver {
             || isIndustrialL3CohesionSourceV06NorthWest
             || isIndustrialL4TurbineV08North
             || isIndustrialL4CrucibleGantryV16North
+            || isIndustrialL4CrucibleGantryV17North
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,

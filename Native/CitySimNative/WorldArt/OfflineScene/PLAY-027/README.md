@@ -113,7 +113,10 @@ geometry and material hash accepted by integration; East, South, West, aliases,
 other revisions, and generic fallback remain fail-closed. Industrial L4
 `source-v16-prepixel` is separately admitted for exactly one A-only North raw
 probe under its hash-bound integration authority; it does not authorize
-repeats, siblings, normalization, or production selection. In this mode all
+repeats, siblings, normalization, or production selection. Industrial L4
+`source-v17-prepixel` is likewise admitted only for its exact independently
+approved one-process North raw probe; all downstream authority remains closed.
+In this mode all
 SceneKit materials use `.constant`, descriptor-authored scene lights are
 zero-intensity and non-shadowing, and the authored southeast contact shadow
 remains deterministic geometry. A diagnostic CLI override still cannot write

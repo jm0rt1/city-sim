@@ -1,0 +1,68 @@
+{
+  "artifact" : "industrial-l04-crucible-gantry-v16-north-raw-probe",
+  "files" : [
+    {
+      "file" : "ACCEPTED-L3-VS-V16-COLOR.png",
+      "sha256" : "a8915dba35d0a12ff3f1d196d7b42ad19013cf2cfb7313fea31deb9e01b4f0e9"
+    },
+    {
+      "file" : "ACCEPTED-L3-VS-V16-GRAYSCALE.png",
+      "sha256" : "5e0af859633d4e7b79a204c3266a3dfb8a40566e7afb82d73fb3303e525326af"
+    },
+    {
+      "file" : "ALPHA-OCCUPANCY.png",
+      "sha256" : "870135c244e30511cd0cb86a1bfd37a8af34209626b2ff390c35abe402925ba3"
+    },
+    {
+      "file" : "EXACT-192X128-COLOR.png",
+      "sha256" : "f439f0a5cb3acabca69736a678cdc5ad92b18e104e53784f3aa76f2d5f90c110"
+    },
+    {
+      "file" : "EXACT-192X128-GRAYSCALE.png",
+      "sha256" : "9c9f5a897ea1775735311a72ef2e55f6fbcfdf21a4777894a1ac61a8547d7bbb"
+    },
+    {
+      "file" : "FRONTAGE-REGISTRATION-CONTACT.png",
+      "sha256" : "2e7c45c8cf5ddc0040d5d65df56af190a1b40f5f4b49a7eaf7547780b50b7760"
+    },
+    {
+      "file" : "NATIVE-2X-COLOR.png",
+      "sha256" : "32d672a1cc7f7c915f49e5d9452b79b365e90f5c35b8328c6bc19efbd5b06a7f"
+    },
+    {
+      "file" : "NATIVE-2X-GRAYSCALE.png",
+      "sha256" : "367cdf4d069f6ae43ecbfa850179b22998d2281bf1eb8e9cd8363fd56588c4e6"
+    },
+    {
+      "file" : "OCCUPIED-CROP-COLOR.png",
+      "sha256" : "c36b103da6482ef6409013cc1eca4295eff49c8f0a1d3d9438c6c45c2a9b8bf9"
+    },
+    {
+      "file" : "OCCUPIED-CROP-GRAYSCALE.png",
+      "sha256" : "a5bb1d58a7864aa886407243ad624ad13deae0a8e7b2bcca2dfdb5fe26d4994d"
+    },
+    {
+      "file" : "RAW-PROBE-REVIEW.json",
+      "sha256" : "f59d8e317d658ba623292a29e2123fa0e444d50771dfdad3b058383637ba9a3e"
+    },
+    {
+      "file" : "SOURCE-COLOR.png",
+      "sha256" : "f161b4ac5b693ffe757b541fc817620cff886ea4ed5e13a1d78ae55483b9aa91"
+    },
+    {
+      "file" : "SOURCE-GRAYSCALE.png",
+      "sha256" : "62a23641882ffc803ed2dbe3f7c26dbc3eeaf7983f6e49b8c58fcdee6aef779e"
+    },
+    {
+      "file" : "V14-PREPIXEL-VS-V16-RAW-COLOR.png",
+      "sha256" : "877e3afbb90d3434a2820ab3578e0783a28e23ec2864b7d810b8e0f6e18c21ea"
+    },
+    {
+      "file" : "V14-PREPIXEL-VS-V16-RAW-GRAYSCALE.png",
+      "sha256" : "aeb4e21f84c9ad0ae2949f3af9157069d338a71e97d284e3495f8ffa5361ca2d"
+    }
+  ],
+  "productionSelected" : false,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027"
+}

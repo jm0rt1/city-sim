@@ -199,3 +199,52 @@ pass:
 This is a determinism repair only. Portal modeling remains blocked even if the
 repeat gate passes. Any remaining A/B split returns to integration with no
 further process.
+
+## R4 retained-output edge-locality attribution
+
+R3 removed the duplicate foundation and reduced the A/B split from `13,629`
+pixels to `143`, but repeat identity still fails. The residual bounds are
+`[558,688,731,743]`; `85` pixels transition between portal header and crucible
+semantic ownership, and the header falls from `1,275` to `1,175` source pixels
+and from `19` to `17` literal-192 pixels.
+
+Read-only Renderer review establishes:
+
+- header/lintel and crucible volumes are physically disjoint by more than
+  `18` world units on X;
+- semantic materials are fresh, opaque, constant-lit, and per-node;
+- MSAA is disabled;
+- the split changes underlying RGBA and component support, so it is not merely
+  a classification label; and
+- retained R3 outputs do not expose the native-4x/pre-Lanczos boundary needed
+  to distinguish SceneKit preparation from raster-edge/resolve behavior.
+
+PLAY-027 may add one task-owned no-Metal analyzer operating only on immutable
+R3 A/B PNGs, provenance, descriptor SHA `3696b813…`, and 51-node manifest
+`611d60db…`. Product, descriptor, material, renderer, resolver, and model
+mutations are zero. SceneKit, Metal, raw, normalizer, and sibling processes are
+zero.
+
+The analyzer must run twice with byte-identical output and report, for all
+`143` differing coordinates:
+
+- A/B RGBA and semantic transition;
+- distance to each run's relevant silhouette boundary;
+- connected-component thickness;
+- intersection with recorded post-quantization mutation sets; and
+- analytic world-AABB overlap/gap plus projected conservative bounds for
+  header, lintel, jambs, gantry, and crucible.
+
+Disposition is fail-closed:
+
+- `RASTER_RESOLVE_EDGE` only if all `85` header↔crucible pixels are within two
+  source pixels of a relevant A/B silhouette boundary, none lies in a stable
+  component interior, and post-quantization records explain none;
+- `PREPARATION_STATE_SPLIT` if any changed component contains a stable `3 × 3`
+  interior or lies more than two pixels from both relevant boundaries;
+- `POSTQUANTIZATION_SPLIT` only if every differing coordinate is explained by
+  differing recorded canonicalizer mutations; or
+- `MIXED_OR_UNCLASSIFIED`, which stops all further SceneKit processes and
+  modeling.
+
+This diagnostic does not accept v18 or reopen portal modeling.

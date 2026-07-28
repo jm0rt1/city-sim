@@ -1,0 +1,126 @@
+{
+  "builderSourceSHA256" : "15d88031e4b845060d2f66cef93f96a7d9b204fd2ecd9873f885924e8099c97d",
+  "compiledBinarySHA256" : "d46c30bde376f9f9f8c1a6cf6960afe38eb0b829e507e27ad4ba5a91cedc92ac",
+  "descriptorSHA256" : "bb4d38f44223083fe88b24f482b62a3061b0322e83e50836d8fb7b2d97b3c411",
+  "disposition" : "REJECTED_MACHINE_GATE",
+  "fixedFootprintWorld" : [
+    -28,
+    28,
+    -28,
+    28
+  ],
+  "geometryID" : "industrial-l04-crucible-gantry-v16-north-l-side-return",
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "materialSHA256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202",
+  "metalProcessCount" : 0,
+  "normalizerProcessCount" : 0,
+  "northSocketSource" : [
+    896,
+    704
+  ],
+  "northThroatCompactWidth" : 7.6665193728056558,
+  "northThroatMinimumPass" : true,
+  "openingGatePass" : false,
+  "openingReports" : [
+    {
+      "blockingOwners" : [
+        {
+          "distance" : 134.66263633283546,
+          "id" : "v16-gantry-girder-north"
+        },
+        {
+          "distance" : 141.03167386955764,
+          "id" : "v16-crane-trolley"
+        },
+        {
+          "distance" : 141.83401933280894,
+          "id" : "v16-gantry-lower-flange-south"
+        }
+      ],
+      "openingID" : "v16-side-freight-1",
+      "pass" : false,
+      "positiveSolidOverlapCount" : 0,
+      "positiveSolidOverlapOwners" : [
+
+      ],
+      "projectedCompactHeight" : 5.9552480765357387,
+      "projectedCompactWidth" : 4.0000003092962544,
+      "rayFirstEncounter" : "BLOCKED",
+      "raySecondEncounter" : "UNREACHED",
+      "role" : "freight1"
+    },
+    {
+      "blockingOwners" : [
+        {
+          "distance" : 142.33405357442433,
+          "id" : "v16-crucible-upper"
+        },
+        {
+          "distance" : 150.32170946979659,
+          "id" : "v16-gantry-pier-west"
+        }
+      ],
+      "openingID" : "v16-side-freight-2",
+      "pass" : false,
+      "positiveSolidOverlapCount" : 0,
+      "positiveSolidOverlapOwners" : [
+
+      ],
+      "projectedCompactHeight" : 5.2553938101963951,
+      "projectedCompactWidth" : 4.0000003092962402,
+      "rayFirstEncounter" : "BLOCKED",
+      "raySecondEncounter" : "UNREACHED",
+      "role" : "freight2"
+    },
+    {
+      "apertureEntryDistance" : 159.83960650569406,
+      "backPlaneDistance" : 164.94788258989666,
+      "openingID" : "v16-side-freight-3",
+      "pass" : true,
+      "positiveSolidOverlapCount" : 0,
+      "positiveSolidOverlapOwners" : [
+
+      ],
+      "projectedCompactHeight" : 5.2553938101963951,
+      "projectedCompactWidth" : 4.0000003092962402,
+      "rayFirstEncounter" : "EMPTY_APERTURE",
+      "raySecondEncounter" : "v16-side-freight-3-inset-back-plane",
+      "rayTarget" : [
+        -4.5,
+        3.7400000000000002,
+        7.5800000000000001
+      ],
+      "role" : "freight3"
+    },
+    {
+      "blockingOwners" : [
+        {
+          "distance" : 159.57959769183867,
+          "id" : "v16-staff-opening-wall-right"
+        }
+      ],
+      "openingID" : "v16-staff-opening",
+      "pass" : false,
+      "positiveSolidOverlapCount" : 0,
+      "positiveSolidOverlapOwners" : [
+
+      ],
+      "projectedCompactHeight" : 3.3131196682596737,
+      "projectedCompactWidth" : 2.2857144624549903,
+      "rayFirstEncounter" : "BLOCKED",
+      "raySecondEncounter" : "UNREACHED",
+      "role" : "staff"
+    }
+  ],
+  "orientationTransform" : "none",
+  "productionSelected" : false,
+  "rawProcessCount" : 0,
+  "revision" : "source-v16-prepixel",
+  "sceneKitProcessCount" : 0,
+  "sourceAuthority" : false,
+  "supportSourceSHA256" : "9761e3ee4172b1718f79410dfea89ee9899529717bb2b1905a553ad21c178fa5",
+  "taskID" : "PLAY-027"
+}

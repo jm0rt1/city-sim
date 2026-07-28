@@ -289,7 +289,7 @@ private func v16Geometry() throws -> (
         ),
         v16Mass(
             "v16-side-return-upper-band", "hall", "v14-warm-masonry",
-            (-2, 17.5, 0), (3, 4.5, 32)
+            (-2, 19, 0), (2, 2.5, 32)
         ),
         v16Mass(
             "v16-side-return-north-wall", "hall", "v14-warm-masonry",
@@ -301,7 +301,7 @@ private func v16Geometry() throws -> (
         ),
         v16Mass(
             "v16-staff-wall-east", "staff", "v14-warm-masonry",
-            (-9.5, 6.2, 26), (15, 12.4, 4)
+            (-6.5, 6.2, 26), (9, 12.4, 4)
         ),
         v16Mass(
             "v16-staff-upper-wall", "staff", "v14-warm-masonry",
@@ -325,43 +325,49 @@ private func v16Geometry() throws -> (
         ),
         v16Mass(
             "v16-gantry-pier-west", "gantry", "v14-dark-gantry-steel",
-            (8, 16, 14), (5, 29, 7)
+            (8, 16, 7.5), (5, 29, 7)
         ),
         v16Mass(
             "v16-gantry-pier-east", "gantry", "v14-dark-gantry-steel",
-            (26, 16, 14), (5, 29, 7)
+            (26, 16, 7.5), (5, 29, 7)
         ),
         v16Mass(
             "v16-gantry-west-foot", "gantry", "v14-dark-gantry-steel",
-            (8, 4, 14), (9, 7, 11)
+            (8, 4, 7.5), (9, 7, 11)
         ),
         v16Mass(
             "v16-gantry-east-foot", "gantry", "v14-dark-gantry-steel",
-            (26, 4, 14), (9, 7, 11)
+            (26, 4, 7.5), (9, 7, 11)
         ),
         v16Mass(
             "v16-gantry-girder-south", "gantry", "v14-dark-gantry-steel",
-            (17, 30, 10), (28, 5.5, 4)
+            (17, 30, 5), (28, 5.5, 3)
         ),
         v16Mass(
             "v16-gantry-girder-north", "gantry", "v14-dark-gantry-steel",
-            (17, 30, 18), (28, 5.5, 4)
+            (17, 30, 10), (28, 5.5, 3)
         ),
         v16Mass(
-            "v16-gantry-lower-flange", "gantry", "v14-structural-mid-steel",
-            (17, 27.2, 14), (28, 1.4, 12)
+            "v16-gantry-lower-flange-south", "gantry",
+            "v14-structural-mid-steel",
+            (17, 27.2, 5), (28, 1.4, 4)
+        ),
+        v16Mass(
+            "v16-gantry-lower-flange-north", "gantry",
+            "v14-structural-mid-steel",
+            (17, 27.2, 10), (28, 1.4, 4)
         ),
         v16Mass(
             "v16-crane-trolley", "gantry", "v14-oxidized-copper",
-            (17, 25.5, 14), (7, 5, 9)
+            (17, 25.5, 7.5), (7, 5, 8)
         ),
         v16Mass(
             "v16-lift-rail", "gantry", "v14-process-heat",
-            (17, 21, 14), (1.2, 8, 1.2)
+            (17, 21, 7.5), (1.2, 8, 1.2)
         ),
         v16Mass(
             "v16-boiler-block", "stack", "v14-restrained-green",
-            (-24, 8, 20), (8, 14, 10)
+            (-25, 8, 15), (6, 14, 8)
         ),
     ]
     var openings: [V16OpeningProof] = []
@@ -373,10 +379,10 @@ private func v16Geometry() throws -> (
             width: 9,
             height: index == 0 ? 13 : 12,
             wallX: -2,
-            wallDepth: 3,
+            wallDepth: 2,
             frameWidth: 0.8,
             frameTop: 2.5,
-            backset: 3,
+            backset: 1.5,
             wallMaterialID: "v14-warm-masonry",
             frameMaterialID: "v14-structural-mid-steel",
             backMaterialID: "v14-deep-freight-recess",
@@ -399,11 +405,11 @@ private func v16Geometry() throws -> (
         width: 6,
         height: 8,
         wallZ: 26,
-        wallDepth: 4,
+        wallDepth: 2,
         frameWidth: 1,
         frameTop: 2,
         sillHeight: 0,
-        backset: 3,
+        backset: 1.5,
         wallMaterialID: "v14-warm-masonry",
         frameMaterialID: "v14-concrete-trim",
         backMaterialID: "v14-warm-glazing",
@@ -449,11 +455,11 @@ private func v16Geometry() throws -> (
         ),
         v16Mass(
             "v16-stack", "stack", "v14-warm-masonry",
-            (-24, 23, 20), (5, 29, 5), shape: "cylinder"
+            (-24, 23, 18), (5, 29, 5), shape: "cylinder"
         ),
         v16Mass(
             "v16-stack-rim", "stack", "v14-dark-gantry-steel",
-            (-24, 38, 20), (6.5, 2, 6.5), shape: "cylinder"
+            (-24, 38, 18), (6.5, 2, 6.5), shape: "cylinder"
         ),
         v16Mass(
             "v16-service-pipe-a", "plant", "v14-oxidized-copper",

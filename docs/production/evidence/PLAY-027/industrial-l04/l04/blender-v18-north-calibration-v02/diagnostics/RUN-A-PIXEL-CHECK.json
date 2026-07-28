@@ -1,0 +1,52 @@
+{
+  "contract" : "CONTRACT-020",
+  "decodedRGBAIdentity" : true,
+  "expectation" : "unique",
+  "fileIdentity" : true,
+  "identityExpectationPassed" : true,
+  "productionSelected" : false,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "sourceCount" : 1,
+  "sources" : [
+    {
+      "decodedPremultipliedRGBASHA256" : "63a7b9239fda3e6dd753e76783af311fc1b8cfb01b8fbe34a80ef17a70bf6623",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-v18-north-calibration-v02/diagnostics/run-a/raw.png",
+      "fileSHA256" : "4fc309de74549fb197f65ae86520a6d0f5e3d0296d0a813e29faf86ba16bb2c4",
+      "id" : "a",
+      "metrics" : {
+        "alphaBounds" : [
+          439,
+          589,
+          1025,
+          997
+        ],
+        "alphaChromaHiddenRGBPassed" : true,
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "dimensions" : [
+          1536,
+          1024
+        ],
+        "exactChromaAtNonzeroAlphaPixelCount" : 0,
+        "hiddenRGBAtAlphaZeroPixelCount" : 0,
+        "nearChromaAtNonzeroAlphaPixelCount" : 0,
+        "nonTransparentPixelCount" : 130848,
+        "paddingPixels" : [
+          439,
+          589,
+          511,
+          27
+        ],
+        "registrationPaddingPassed" : true,
+        "sourceChecksPassed" : true,
+        "transparentPixelCount" : 1442016
+      }
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "task-owned Blender transparent-raw validator",
+  "validationPassed" : true
+}

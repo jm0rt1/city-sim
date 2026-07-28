@@ -3948,9 +3948,20 @@ enum OfflineSceneRendererMain {
                 node.light?.castsShadow = false
             }
         }
+        let r5ActualDepthOwnershipApplication =
+            try diagnosticSemanticRecord.flatMap { record in
+                record.appliesR5PortalJointDepthOwnership
+                    ? try PLAY027PortalJointDepthOwnershipR5
+                        .applyActualMaterials(to: scene)
+                    : nil
+            }
         let diagnosticSemanticApplication =
-            try diagnosticSemanticRecord.map { _ in
-                try PLAY027SemanticRendererV1.apply(to: scene)
+            try diagnosticSemanticRecord.map { record in
+                try PLAY027SemanticRendererV1.apply(
+                    to: scene,
+                    appliesR5PortalJointDepthOwnership:
+                        record.appliesR5PortalJointDepthOwnership
+                )
             }
         let renderedNodeBounds = try validatedRenderedNodeBounds(
             scene,
@@ -4491,6 +4502,8 @@ enum OfflineSceneRendererMain {
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL2V8EastFiniteEquivalenceContract.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PreLanczosFrameCanonicalizer.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/IndustrialL3V5NWCanonicalizerTraceContract.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SemanticVisibilityRendererV1.swift",
+            "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/PortalJointDepthOwnershipR5.swift",
             "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
         ]
         var sourceHashes: [[String: String]] = []
@@ -4652,6 +4665,11 @@ enum OfflineSceneRendererMain {
                             "diagnostic-only-sceneKit-metal-semantic",
                         "authoritativeRawProcessCount": 0,
                         "normalizerProcessCount": 0,
+                        "r5ActualDepthOwnership":
+                            r5ActualDepthOwnershipApplication?.record
+                            ?? NSNull(),
+                        "r5SemanticDepthOwnership":
+                            $0.r5SemanticDepthOwnership ?? NSNull(),
                     ] as [String: Any]
                 } ?? [
                     "contractID": "none",

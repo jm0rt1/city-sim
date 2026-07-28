@@ -26,13 +26,20 @@ struct PLAY027SemanticRendererV1Application {
 enum PLAY027SemanticRendererV1 {
     static let contractID =
         "play027-industrial-l04-v17-semantic-visibility-renderer-v1"
+    static let r3ContractID =
+        "play027-industrial-l04-v18-semantic-visibility-renderer-r3-v1"
     static let descriptorSHA256 =
         "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a"
+    static let r3DescriptorSHA256 =
+        "3696b813e6c3e0f46251e689582163bdbdcc5d84a3a9c1125bfbefba37da2630"
     static let materialSHA256 =
         "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
     static let evidenceRoot =
         "docs/production/evidence/PLAY-027/industrial-l04/l04/"
         + "semantic-visibility-renderer-v1/diagnostics"
+    static let r3EvidenceRoot =
+        "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+        + "duplicate-foundation-repair-r3-v01/diagnostics"
 
     static let semanticColors: [String: [Int]] = [
         "portal-jamb-south": [16, 16, 240, 255],
@@ -68,18 +75,28 @@ enum PLAY027SemanticRendererV1 {
         diagnosticMaterialLighting: String?
     ) throws -> PLAY027SemanticRendererV1Record? {
         guard let requestedContractID else { return nil }
-        guard requestedContractID == contractID else {
+        guard
+            [contractID, r3ContractID].contains(requestedContractID)
+        else {
             throw PLAY027SemanticRendererV1Error.rejected("contract ID")
         }
+        let isR3 = requestedContractID == r3ContractID
+        let expectedDescriptorSHA = isR3
+            ? r3DescriptorSHA256 : descriptorSHA256
+        let expectedRevision = isR3
+            ? "source-v18-prepixel" : "source-v17-prepixel"
+        let expectedGeometryID = isR3
+            ? "industrial-l04-crucible-gantry-v18-north-single-foundation"
+            : "industrial-l04-crucible-gantry-v17-north-monumental-portal"
+        let expectedEvidenceRoot = isR3 ? r3EvidenceRoot : evidenceRoot
         guard
-            sceneSHA256 == descriptorSHA256,
+            sceneSHA256 == expectedDescriptorSHA,
             materialSHA256 == self.materialSHA256,
             descriptor.logicalBuildingID == "industrial_l04",
             descriptor.variantID == "variant-0",
-            descriptor.sourceRevision == "source-v17-prepixel",
+            descriptor.sourceRevision == expectedRevision,
             descriptor.viewDirection == "n",
-            descriptor.sceneGeometryID
-                == "industrial-l04-crucible-gantry-v17-north-monumental-portal",
+            descriptor.sceneGeometryID == expectedGeometryID,
             descriptor.productionSelected == false,
             descriptor.derivation.siblingSource == nil,
             descriptor.derivation.mirror == false,
@@ -127,7 +144,7 @@ enum PLAY027SemanticRendererV1 {
 
         let rootPrefix = repositoryRoot.standardizedFileURL.path + "/"
         let expectedPrefix =
-            rootPrefix + evidenceRoot + "/"
+            rootPrefix + expectedEvidenceRoot + "/"
         let outputPath = outputURL.standardizedFileURL.path
         let recordPath = recordURL.standardizedFileURL.path
         let outputParent = outputURL.deletingLastPathComponent()
@@ -153,7 +170,7 @@ enum PLAY027SemanticRendererV1 {
         }
         return PLAY027SemanticRendererV1Record(
             value: [
-                "contractID": contractID,
+                "contractID": requestedContractID,
                 "diagnosticOnly": true,
                 "sourceAuthority": false,
                 "productionSelected": false,

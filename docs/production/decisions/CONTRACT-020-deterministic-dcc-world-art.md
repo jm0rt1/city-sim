@@ -1,6 +1,6 @@
 # CONTRACT-020: Deterministic DCC world-art rendering
 
-**Status:** Approved for PLAY-027 Industrial L4 calibration
+**Status:** DCC pipeline accepted; PLAY-027 Industrial L4 North art authorized
 
 **Date:** July 28, 2026
 
@@ -117,6 +117,12 @@ Authorization is initially limited to one Industrial L4 North transfer:
 Only after calibration passes may Integration authorize a Blender-native
 Industrial L4 North art revision. That revision must materially improve the
 full unlabelled literal-192 building, not merely a semantic mask.
+
+Calibration passed at integrated candidate
+`f63a504e336a62f93d90b03cbe14282aff1f181e`. The separately published
+`INDUSTRIAL-L04-BLENDER-NORTH-ART-V01-AUTHORITY.md` now governs the first
+North-only art revision. Sibling directions and production selection remain
+blocked.
 
 ## Quality bar after calibration
 

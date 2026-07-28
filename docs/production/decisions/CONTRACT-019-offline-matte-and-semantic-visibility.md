@@ -248,3 +248,47 @@ Disposition is fail-closed:
   modeling.
 
 This diagnostic does not accept v18 or reopen portal modeling.
+
+## R5 explicit portal-joint depth ownership
+
+R4 classifies the residual as `PREPARATION_STATE_SPLIT`, but Renderer review
+corrects the semantic label: the `85` pixels cannot be crucible-owned because
+the crucible's conservative projection begins beyond the differing region.
+They lie inside the intentionally overlapping portal lintel and north-jamb
+projections. Nearest-color classification mislabels one blended portal color
+as `crucible-occluder`.
+
+The lintel and north jamb physically overlap at their authored joint. Their
+depth ownership must be explicit. PLAY-027 may add one exact-candidate,
+shader-only camera-depth bias to:
+
+- `v17-monumental-portal-lintel`; and
+- `v17-monumental-portal-header-wall`.
+
+The bias is toward the camera by exactly:
+
+```text
+ceil_to_1/16(4 × (zFar − zNear) / 65,535) = 0.0625 world-depth units
+```
+
+It must apply identically to semantic and actual node-local material copies.
+It may not alter descriptor bytes, world transforms, projection, screen
+position, bounds, pivot, socket, hit geometry, camera, registration, sampling,
+or any other node. The nearest real crucible/lintel depth separation is
+`4.659`, so the bias is bounded far below separated geometry.
+
+Exactly two diagnostic-only SceneKit/Metal semantic processes are authorized.
+They must pass:
+
+- byte-identical PNG and decoded RGBA;
+- zero differing pixels and channels;
+- exact 51-node manifest;
+- decoded output identical to canonical R3 run A SHA `dab941…`;
+- portal counts unchanged at header `1,275/19`, north jamb `1,562/21`, inset
+  `3,388/57`, and south jamb `155/3`; and
+- no changed pixel outside the two header projections plus a two-pixel Lanczos
+  support band.
+
+Any failure rolls back the depth bias and yields `HARD_PIPELINE_LIMIT`. No
+further SceneKit tuning is authorized. A pass repairs determinism only; the
+portal remains rejected and modeling still requires a separate authority.

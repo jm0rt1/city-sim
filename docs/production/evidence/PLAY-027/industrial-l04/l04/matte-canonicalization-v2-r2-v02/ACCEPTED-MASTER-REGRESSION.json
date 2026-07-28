@@ -1,0 +1,627 @@
+{
+  "acceptedMasterCount" : 44,
+  "allAdmissionPathsInvoked" : true,
+  "allByteIdentical" : true,
+  "allRejectedByVersionGate" : true,
+  "contract" : "CONTRACT-019",
+  "masters" : [
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "f42741f64b30a8e34db5de1bbfa9163362134d923ffbddf648ab970a9c1737fd",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l01\/variant-0\/east\/source-v04.png",
+      "logicalID" : "commercial_l01_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l01_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2",
+      "sha256Before" : "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "a72cbac78f69ca65e441dfdc688ae7ec4133d6a238c872e3ff59034337d80c4f",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l01\/variant-0\/north\/source-v04.png",
+      "logicalID" : "commercial_l01_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l01_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d",
+      "sha256Before" : "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "bc4011690e0a4b4e97cddb00afa9351db287a810aae9913275f8eabd59ced4a1",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l01\/variant-0\/south\/source-v04.png",
+      "logicalID" : "commercial_l01_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l01_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e",
+      "sha256Before" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "6595555d85207551f5d3179f4d998095aad00bd01b73308afdadd943b713874a",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l01\/variant-0\/west\/source-v04.png",
+      "logicalID" : "commercial_l01_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l01_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e",
+      "sha256Before" : "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "1ff9889409b2a2ed15e2c95bb9dcb6cbafb700d31f2fda24bf71cca9b5819f84",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l02\/variant-0\/east\/source-v01.png",
+      "logicalID" : "commercial_l02_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l02_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a",
+      "sha256Before" : "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "52716692e60a660eb9063a1fb3ad9706330df754dc44c2552428e161bedd7063",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l02\/variant-0\/north\/source-v01.png",
+      "logicalID" : "commercial_l02_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l02_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47",
+      "sha256Before" : "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "5400316c9d00791f1df8f0b55c6c01386844659680b05eebf920ce61a621c48b",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l02\/variant-0\/south\/source-v01.png",
+      "logicalID" : "commercial_l02_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l02_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa",
+      "sha256Before" : "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "7c2aae4d26e9d086e4114bdf44ca0aad53a8dd3fabd5356261f6e1d877be3ee4",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l02\/variant-0\/west\/source-v01.png",
+      "logicalID" : "commercial_l02_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l02_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d",
+      "sha256Before" : "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "e79fe52692c4388fb1d5b2da009c7c406d7685baba130bb31808a4130a95b17f",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l03\/variant-0\/east\/source-v01.png",
+      "logicalID" : "commercial_l03_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l03_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363",
+      "sha256Before" : "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "d2f94104b8ae6ffe3669820cf22824fb786913bb68436880ab5d592668ebb382",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l03\/variant-0\/north\/source-v01.png",
+      "logicalID" : "commercial_l03_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l03_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e",
+      "sha256Before" : "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "7472636a3a3dee2dc1f8619091de36521dcb79a3aa945b7bd4e63c76a786031d",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l03\/variant-0\/south\/source-v01.png",
+      "logicalID" : "commercial_l03_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l03_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736",
+      "sha256Before" : "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "91a66fe788ae7a4cd16b4fb345bd4a6b9b0b1b8b08edcd8fec8760d48ee7b3c5",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l03\/variant-0\/west\/source-v01.png",
+      "logicalID" : "commercial_l03_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l03_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9",
+      "sha256Before" : "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "bc8fe549396cae05741895a46eaeeb519b1fc14d2dd79291c7a72c24b0149d1c",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l04\/variant-0\/east\/source-v03.png",
+      "logicalID" : "commercial_l04_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l04_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "a97d881325c22217e57807a2b63b9cdbd9218de37f155c1dd097cc67a52c617c",
+      "sha256Before" : "a97d881325c22217e57807a2b63b9cdbd9218de37f155c1dd097cc67a52c617c"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "e6c80615e1f9a9276e7d48580c22de75bb2071449026da35fe86f4968e6b68fe",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l04\/variant-0\/north\/source-v03.png",
+      "logicalID" : "commercial_l04_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l04_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "9e996eb088bddc197468c5f881c111cf64ab16fa5220de7641d876d0601b4cff",
+      "sha256Before" : "9e996eb088bddc197468c5f881c111cf64ab16fa5220de7641d876d0601b4cff"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "d87e5c6a00419a0d3fee7290be62c059aad2f93dad378bfbf4b4d360877c59b9",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l04\/variant-0\/south\/source-v03.png",
+      "logicalID" : "commercial_l04_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l04_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "985d2df5c5c852b4614609eec120bfc67e6ac4d1efb8376791ec8a5020d77122",
+      "sha256Before" : "985d2df5c5c852b4614609eec120bfc67e6ac4d1efb8376791ec8a5020d77122"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "13eb1191b3c7f31bd0e96808b0d0e55358320f2b8aea5e7aa5a083b3281708f2",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/commercial_l04\/variant-0\/west\/source-v03.png",
+      "logicalID" : "commercial_l04_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "commercial_l04_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "ac58ebd8c769fddd24d160f1ba4e4a5097d04f17ccab41bbb120672f5173433f",
+      "sha256Before" : "ac58ebd8c769fddd24d160f1ba4e4a5097d04f17ccab41bbb120672f5173433f"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "4e287c4f2afd7642a64660399d16e04a2c9d7e8d30ecf3e3cea0ae64b2d0bfa6",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/industrial_l01\/variant-0\/east\/source-v05.png",
+      "logicalID" : "industrial_l01_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l01_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "f20d78d6b4b43c7111250f231351166397e3444e3f7a7243f282dacd94592e4f",
+      "sha256Before" : "f20d78d6b4b43c7111250f231351166397e3444e3f7a7243f282dacd94592e4f"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "159ff8476fc7b06126dc2426c151668e73790e985cba00b746957b15e1bfc0fa",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/industrial_l01\/variant-0\/north\/source-v05.png",
+      "logicalID" : "industrial_l01_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l01_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "5ca93afa57157ddf686ef5740f1907da03f513906b9c703bc556ed75e2516728",
+      "sha256Before" : "5ca93afa57157ddf686ef5740f1907da03f513906b9c703bc556ed75e2516728"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "19c82cf3470bd70b54f8801fc873a3045da4ac81d1f9b6eec543e03a98131b38",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/industrial_l01\/variant-0\/south\/source-v05.png",
+      "logicalID" : "industrial_l01_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l01_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e",
+      "sha256Before" : "f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "0f995014b5df1742fdc42c5eb878f87db20b1081354cb02dd5a05ccaceecad05",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/industrial_l01\/variant-0\/west\/source-v05.png",
+      "logicalID" : "industrial_l01_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l01_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "9fa5759f88e2efd2f3eef36f66089f0e8e978dc4e052d08d919b9f1a40aa331a",
+      "sha256Before" : "9fa5759f88e2efd2f3eef36f66089f0e8e978dc4e052d08d919b9f1a40aa331a"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "555f35d466326783a038ff842f76e8cdeff8284a4b26bb901d6d20428ad88bcc",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l02\/l02\/east-calibration-v05\/raw-calibration\/diagnostics\/east-primary\/raw.png",
+      "logicalID" : "industrial_l02_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l02_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+      "sha256Before" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "04e735d9c5de76636d4a0f332f98705b023db9f08e73636fb5c90375a99dcb5a",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l02\/l02\/directional-family-v07\/source-completion\/diagnostics\/raw-repeat\/north\/run-a\/raw.png",
+      "logicalID" : "industrial_l02_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l02_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "095267c78f333eb43c3fd0e14c4e9bb14bb83a787188ddecfa9c94dd92ab88e3",
+      "sha256Before" : "095267c78f333eb43c3fd0e14c4e9bb14bb83a787188ddecfa9c94dd92ab88e3"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "84679739d6b100fe337f665bf6308d418dc231e1f99fc5fa5021455cfb2f5fe1",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l02\/l02\/directional-family-v07\/source-completion\/diagnostics\/raw-repeat\/south\/run-a\/raw.png",
+      "logicalID" : "industrial_l02_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l02_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "b3cafd821e29980a86a6d74f562a2ad97d5f877b4106f746aaa88bc19d9922a5",
+      "sha256Before" : "b3cafd821e29980a86a6d74f562a2ad97d5f877b4106f746aaa88bc19d9922a5"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "a0e5d038cb952a4b626c014e53005160e7168f6b438f9dec36d2a92f44bce4f3",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l02\/l02\/directional-family-v07\/source-completion\/diagnostics\/raw-repeat\/west\/run-a\/raw.png",
+      "logicalID" : "industrial_l02_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l02_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d",
+      "sha256Before" : "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "4d3b980ef0c641cc7010172c4d6ffd22d59b023195eaef50dbcf8c67b66ec222",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l03\/l03\/cohesion-a0-east-v01\/raw\/east-primary\/raw.png",
+      "logicalID" : "industrial_l03_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l03_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
+      "sha256Before" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l03\/l03\/source-v06-raw-review-v01\/diagnostics\/raw-repeat\/north\/run-a\/raw.png",
+      "logicalID" : "industrial_l03_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l03_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+      "sha256Before" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "85308c293986c7f46c90404e2a2b478487fdac4b892223aff2b01625831da7dd",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l03\/l03\/cohesion-a0-family-v01\/raw\/south-primary\/raw.png",
+      "logicalID" : "industrial_l03_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l03_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
+      "sha256Before" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "f66b4fe3cde165e0c3852ce5aa0863ec7380824f46e81708804428b6717be310",
+      "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l03\/l03\/source-v06-raw-review-v01\/diagnostics\/raw-repeat\/west\/run-a\/raw.png",
+      "logicalID" : "industrial_l03_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "industrial_l03_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4",
+      "sha256Before" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "915633a3dbb77500970950feaa5e33f190d8c4e603e1139344d5aecb35c75095",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l01\/variant-0\/east\/source-v08.png",
+      "logicalID" : "residential_l01_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l01_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2",
+      "sha256Before" : "f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "1d8e66bb8b166b9f7db3357a03b72044da6a854cf9df09763cb13f8efc5f9ef6",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l01\/variant-0\/north\/source-v12.png",
+      "logicalID" : "residential_l01_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l01_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02",
+      "sha256Before" : "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "ecb2a6b35451a48110123c9400af61500588975ca6ba302c8338d356be21f6d1",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l01\/variant-0\/south\/source-v08.png",
+      "logicalID" : "residential_l01_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l01_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1",
+      "sha256Before" : "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "bd4952a2377d621beba701673a16dd9f951ff767c12c5fc7a7e492a60e8775c4",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l01\/variant-0\/west\/source-v09.png",
+      "logicalID" : "residential_l01_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l01_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca",
+      "sha256Before" : "8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "e9487a6c454c038fd13ac001669af37cbe33987ff68dcdc70f1e4eeda8b698e5",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l02\/variant-0\/east\/source-v05.png",
+      "logicalID" : "residential_l02_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l02_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "d985175f7e31681343108df3e5360b11ddeb56eab6d101316f9ffd1b39591609",
+      "sha256Before" : "d985175f7e31681343108df3e5360b11ddeb56eab6d101316f9ffd1b39591609"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "5aad95765681dc93cced0525b4dde0934163c7275fba15f2890008fdd3f90c56",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l02\/variant-0\/north\/source-v05.png",
+      "logicalID" : "residential_l02_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l02_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "c79c5e0906c2e2b3c25682d6f79824d4e0d52e3be1821ba62f69fc6139656f6e",
+      "sha256Before" : "c79c5e0906c2e2b3c25682d6f79824d4e0d52e3be1821ba62f69fc6139656f6e"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "c0fdb7803dc78b37a254cb46fb401c716ae0564c58fcd27c73ed01f4857c333d",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l02\/variant-0\/south\/source-v05.png",
+      "logicalID" : "residential_l02_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l02_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "f0d7efcc05bbc9361cab8259daa9f8fd52f67f50baa1699217d9b41cbb714490",
+      "sha256Before" : "f0d7efcc05bbc9361cab8259daa9f8fd52f67f50baa1699217d9b41cbb714490"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "943347db32f0f0975d72b79442cb0c40031112546585097a4084af91cbecd991",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l02\/variant-0\/west\/source-v05.png",
+      "logicalID" : "residential_l02_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l02_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "3ecb2a3892283c4b012360aa2413a47e772dd41aeaf18a71fe20c0c0c08e9521",
+      "sha256Before" : "3ecb2a3892283c4b012360aa2413a47e772dd41aeaf18a71fe20c0c0c08e9521"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "6c85f3c216e7113610bfbdd6fa8c65e6284d07f9e2e0912ff06c7afaddb18af9",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l03\/variant-0\/east\/source-v01.png",
+      "logicalID" : "residential_l03_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l03_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "180e0cad4da66d5180b1fd3bd5df98d5e524e0924827002d3065a93811ec1e9c",
+      "sha256Before" : "180e0cad4da66d5180b1fd3bd5df98d5e524e0924827002d3065a93811ec1e9c"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "ff299c3c178c5157d070668a92f60f8e05402e70251e44334e84384351046f32",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l03\/variant-0\/north\/source-v01.png",
+      "logicalID" : "residential_l03_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l03_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "9a53c7ca04e363e0d023a667a84de6ad26a7a5af2deaeb7cf2eb123ce5f7f881",
+      "sha256Before" : "9a53c7ca04e363e0d023a667a84de6ad26a7a5af2deaeb7cf2eb123ce5f7f881"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "34c070e9adc07838867f651bd5652485901d07e41528e5f3715e34f2eb7c5873",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l03\/variant-0\/south\/source-v01.png",
+      "logicalID" : "residential_l03_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l03_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "b6f709d0e4d56c4e13c7e69293891bc599dc706d8ceadddf87b8377c8dac105c",
+      "sha256Before" : "b6f709d0e4d56c4e13c7e69293891bc599dc706d8ceadddf87b8377c8dac105c"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "5eab34a2746fc9838be5e39982d35bb7aa50d0c87e1a75ebad1d5e8a0a33eee7",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l03\/variant-0\/west\/source-v01.png",
+      "logicalID" : "residential_l03_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l03_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "dc5056b8cfdc9676e8db214293f15e86e1dfaf4dc3ee680c420260e2a7adce71",
+      "sha256Before" : "dc5056b8cfdc9676e8db214293f15e86e1dfaf4dc3ee680c420260e2a7adce71"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "adbf9f070ef90825b3c026e2aaf949e44278266dd3b37ff466192dc584f6f215",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l04\/variant-0\/east\/source-v01.png",
+      "logicalID" : "residential_l04_v0_east",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l04_v0_east",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "049ce1b85236c9e443571d925b6def3783cf4226a8b0b9794e47cc195400b5e4",
+      "sha256Before" : "049ce1b85236c9e443571d925b6def3783cf4226a8b0b9794e47cc195400b5e4"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "75acca4856cd5bc566423872dd5ca586472117e7bb70003c5385169cd03d6bb5",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l04\/variant-0\/north\/source-v01.png",
+      "logicalID" : "residential_l04_v0_north",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l04_v0_north",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "b6ed8aaf95e4600bb476934824fab0976cadffe1191f3253aeb19c96cfe2f6b1",
+      "sha256Before" : "b6ed8aaf95e4600bb476934824fab0976cadffe1191f3253aeb19c96cfe2f6b1"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "4bbf202d9acdb3b1a7a69725d76ec40607dcfa5b64fa434c8463b72f5fb69c49",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l04\/variant-0\/south\/source-v01.png",
+      "logicalID" : "residential_l04_v0_south",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l04_v0_south",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "cae30c6975f790b05a1de850649f2735a21079bb0c9321673106778f4ca98e34",
+      "sha256Before" : "cae30c6975f790b05a1de850649f2735a21079bb0c9321673106778f4ca98e34"
+    },
+    {
+      "byteIdentical" : true,
+      "decodedRGBASHA256" : "4b7fd57916e98db8c00ff9093ad3fa264069896a2ae6d0f119706a41865f80c7",
+      "file" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/raw\/residential_l04\/variant-0\/west\/source-v01.png",
+      "logicalID" : "residential_l04_v0_west",
+      "matteV2Admission" : {
+        "admissionInvoked" : true,
+        "name" : "residential_l04_v0_west",
+        "reason" : "matte-canonicalization-v2 rejected: decoded RGBA hash",
+        "rejected" : true
+      },
+      "sha256After" : "64b51a0bef79104132a508f53f8a1fa567de9bc87c35ecd44c19ef3cc2596646",
+      "sha256Before" : "64b51a0bef79104132a508f53f8a1fa567de9bc87c35ecd44c19ef3cc2596646"
+    }
+  ],
+  "pipeline" : "matte-canonicalization-v2",
+  "taskID" : "PLAY-027"
+}

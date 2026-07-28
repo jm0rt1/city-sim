@@ -264,44 +264,54 @@ private func alphaBounds(
 
 private func request(
     changing keyPath: WritableKeyPath<PLAY027MatteCanonicalizationV2Request, String>,
-    to value: String
+    to value: String,
+    descriptorData: Data,
+    materialLibraryData: Data
 ) -> PLAY027MatteCanonicalizationV2Request {
-    var candidate = validRequest()
+    var candidate = validRequest(
+        descriptorData: descriptorData,
+        materialLibraryData: materialLibraryData
+    )
     candidate[keyPath: keyPath] = value
     return candidate
 }
 
-private func validRequest() -> PLAY027MatteCanonicalizationV2Request {
+private func validRequest(
+    descriptorData: Data,
+    materialLibraryData: Data,
+    width: Int = PLAY027MatteCanonicalizationV2.width,
+    height: Int = PLAY027MatteCanonicalizationV2.height
+) -> PLAY027MatteCanonicalizationV2Request {
     PLAY027MatteCanonicalizationV2Request(
         pipelineName: PLAY027MatteCanonicalizationV2.pipelineName,
-        logicalBuildingID: PLAY027MatteCanonicalizationV2.logicalBuildingID,
-        variantID: PLAY027MatteCanonicalizationV2.variantID,
-        sourceRevision: PLAY027MatteCanonicalizationV2.sourceRevision,
-        direction: PLAY027MatteCanonicalizationV2.direction,
+        descriptorData: descriptorData,
+        materialLibraryData: materialLibraryData,
         descriptorSHA256: PLAY027MatteCanonicalizationV2.descriptorSHA256,
         materialLibrarySHA256:
             PLAY027MatteCanonicalizationV2.materialLibrarySHA256,
-        decodedRGBASHA256:
-            PLAY027MatteCanonicalizationV2.decodedRGBASHA256,
-        width: PLAY027MatteCanonicalizationV2.width,
-        height: PLAY027MatteCanonicalizationV2.height,
-        authoredPaletteAllowsMagenta: false
+        width: width,
+        height: height
     )
 }
 
 private func requireRejected(
     name: String,
     request: PLAY027MatteCanonicalizationV2Request,
-    rgbaCount: Int
+    rgba: [UInt8]
 ) throws -> [String: Any] {
     do {
-        try PLAY027MatteCanonicalizationV2.validate(
-            request: request,
-            rgbaCount: rgbaCount
+        _ = try PLAY027MatteCanonicalizationV2.canonicalize(
+            rgba: rgba,
+            request: request
         )
         throw ValidationError.invalid("negative case admitted: \(name)")
-    } catch is PLAY027MatteCanonicalizationV2Error {
-        return ["name": name, "rejected": true]
+    } catch let error as PLAY027MatteCanonicalizationV2Error {
+        return [
+            "name": name,
+            "admissionInvoked": true,
+            "rejected": true,
+            "reason": error.description,
+        ]
     }
 }
 
@@ -313,7 +323,9 @@ private func repositoryRelativeRawPath(_ manifestPath: String) -> String {
 }
 
 private func acceptedMasterInventory(
-    repositoryRoot: URL
+    repositoryRoot: URL,
+    descriptorData: Data,
+    materialLibraryData: Data
 ) throws -> [[String: Any]] {
     let shipping = try jsonObject(
         repositoryRoot.appendingPathComponent(shippingManifestRelativePath)
@@ -340,19 +352,32 @@ private func acceptedMasterInventory(
             continue
         }
         let file = repositoryRelativeRawPath(manifestFile)
-        let actualSHA = try digest(repositoryRoot.appendingPathComponent(file))
+        let fileURL = repositoryRoot.appendingPathComponent(file)
+        let actualSHA = try digest(fileURL)
         guard actualSHA == expectedSHA else {
             throw ValidationError.invalid(
                 "accepted master hash drift: \(logicalID)"
             )
         }
+        let acceptedRaster = try decode(fileURL)
+        let rejection = try requireRejected(
+            name: logicalID,
+            request: validRequest(
+                descriptorData: descriptorData,
+                materialLibraryData: materialLibraryData,
+                width: acceptedRaster.width,
+                height: acceptedRaster.height
+            ),
+            rgba: acceptedRaster.rgba
+        )
         inventory.append([
             "logicalID": logicalID,
             "file": file,
             "sha256Before": actualSHA,
             "sha256After": actualSHA,
             "byteIdentical": true,
-            "matteV2Admission": "REJECTED_UNSCOPED",
+            "decodedRGBASHA256": acceptedRaster.decodedRGBASHA256,
+            "matteV2Admission": rejection,
         ])
     }
     guard inventory.count == 40 else {
@@ -375,19 +400,32 @@ private func acceptedMasterInventory(
         else {
             throw ValidationError.invalid("Industrial L3 master malformed")
         }
-        let actualSHA = try digest(repositoryRoot.appendingPathComponent(file))
+        let fileURL = repositoryRoot.appendingPathComponent(file)
+        let actualSHA = try digest(fileURL)
         guard actualSHA == expectedSHA else {
             throw ValidationError.invalid(
                 "accepted Industrial L3 \(direction) hash drift"
             )
         }
+        let acceptedRaster = try decode(fileURL)
+        let rejection = try requireRejected(
+            name: "industrial_l03_v0_\(direction)",
+            request: validRequest(
+                descriptorData: descriptorData,
+                materialLibraryData: materialLibraryData,
+                width: acceptedRaster.width,
+                height: acceptedRaster.height
+            ),
+            rgba: acceptedRaster.rgba
+        )
         inventory.append([
             "logicalID": "industrial_l03_v0_\(direction)",
             "file": file,
             "sha256Before": actualSHA,
             "sha256After": actualSHA,
             "byteIdentical": true,
-            "matteV2Admission": "REJECTED_UNSCOPED",
+            "decodedRGBASHA256": acceptedRaster.decodedRGBASHA256,
+            "matteV2Admission": rejection,
         ])
     }
     guard inventory.count == 44 else {
@@ -425,36 +463,17 @@ private enum ValidateMatteCanonicalizationV2 {
         let materialURL = repositoryRoot.appendingPathComponent(
             materialRelativePath
         )
+        let descriptorData = try Data(contentsOf: descriptorURL)
+        let materialData = try Data(contentsOf: materialURL)
         let raster = try decode(rawURL)
         guard
             raster.fileSHA256 == expectedRawFileSHA,
-            raster.decodedRGBASHA256
-                == PLAY027MatteCanonicalizationV2.decodedRGBASHA256,
-            try digest(descriptorURL)
+            digest(descriptorData)
                 == PLAY027MatteCanonicalizationV2.descriptorSHA256,
-            try digest(materialURL)
+            digest(materialData)
                 == PLAY027MatteCanonicalizationV2.materialLibrarySHA256
         else {
             throw ValidationError.invalid("immutable v17 input binding drift")
-        }
-
-        let material = try jsonObject(materialURL)
-        guard let materials = material["materials"] as? [[String: Any]] else {
-            throw ValidationError.invalid("material library malformed")
-        }
-        let authoredMagenta = materials.contains { entry in
-            guard
-                let rgba = entry["baseColorRGBA"] as? [NSNumber],
-                rgba.count == 4
-            else {
-                return true
-            }
-            return rgba[0].doubleValue >= 0.70
-                && rgba[1].doubleValue <= 0.43
-                && rgba[2].doubleValue >= 0.59
-        }
-        guard !authoredMagenta else {
-            throw ValidationError.invalid("authored magenta-family material")
         }
 
         let nearCoordinates = nearChromaCoordinates(raster)
@@ -467,9 +486,19 @@ private enum ValidateMatteCanonicalizationV2 {
 
         let result = try PLAY027MatteCanonicalizationV2.canonicalize(
             rgba: raster.rgba,
-            request: validRequest()
+            request: validRequest(
+                descriptorData: descriptorData,
+                materialLibraryData: materialData
+            )
         )
-        guard digest(Data(result.rgba)) == expectedCleanedDecodedSHA else {
+        guard
+            result.binding.decodedRGBASHA256
+                == raster.decodedRGBASHA256,
+            result.binding.descriptorSHA256 == digest(descriptorData),
+            result.binding.materialLibrarySHA256 == digest(materialData),
+            !result.binding.authoredPaletteAllowsMagenta,
+            digest(Data(result.rgba)) == expectedCleanedDecodedSHA
+        else {
             throw ValidationError.invalid("canonical decoded output drift")
         }
 
@@ -542,14 +571,33 @@ private enum ValidateMatteCanonicalizationV2 {
         )
 
         let negativeCases: [(String, PLAY027MatteCanonicalizationV2Request)] = [
-            ("pipeline", request(changing: \.pipelineName, to: "matte-v1")),
-            ("logicalBuildingID", request(changing: \.logicalBuildingID, to: "industrial_l03")),
-            ("variantID", request(changing: \.variantID, to: "variant-1")),
-            ("sourceRevision", request(changing: \.sourceRevision, to: "source-v18-prepixel")),
-            ("direction", request(changing: \.direction, to: "east")),
-            ("descriptorSHA256", request(changing: \.descriptorSHA256, to: String(repeating: "0", count: 64))),
-            ("materialLibrarySHA256", request(changing: \.materialLibrarySHA256, to: String(repeating: "1", count: 64))),
-            ("decodedRGBASHA256", request(changing: \.decodedRGBASHA256, to: String(repeating: "2", count: 64))),
+            (
+                "pipeline",
+                request(
+                    changing: \.pipelineName,
+                    to: "matte-v1",
+                    descriptorData: descriptorData,
+                    materialLibraryData: materialData
+                )
+            ),
+            (
+                "descriptorSHA256",
+                request(
+                    changing: \.descriptorSHA256,
+                    to: String(repeating: "0", count: 64),
+                    descriptorData: descriptorData,
+                    materialLibraryData: materialData
+                )
+            ),
+            (
+                "materialLibrarySHA256",
+                request(
+                    changing: \.materialLibrarySHA256,
+                    to: String(repeating: "1", count: 64),
+                    descriptorData: descriptorData,
+                    materialLibraryData: materialData
+                )
+            ),
         ]
         var negativeResults: [[String: Any]] = []
         for item in negativeCases {
@@ -557,62 +605,79 @@ private enum ValidateMatteCanonicalizationV2 {
                 try requireRejected(
                     name: item.0,
                     request: item.1,
-                    rgbaCount: raster.rgba.count
+                    rgba: raster.rgba
                 )
             )
         }
-        var wrongDimensions = validRequest()
-        wrongDimensions = PLAY027MatteCanonicalizationV2Request(
-            pipelineName: wrongDimensions.pipelineName,
-            logicalBuildingID: wrongDimensions.logicalBuildingID,
-            variantID: wrongDimensions.variantID,
-            sourceRevision: wrongDimensions.sourceRevision,
-            direction: wrongDimensions.direction,
-            descriptorSHA256: wrongDimensions.descriptorSHA256,
-            materialLibrarySHA256: wrongDimensions.materialLibrarySHA256,
-            decodedRGBASHA256: wrongDimensions.decodedRGBASHA256,
+        let wrongDimensions = PLAY027MatteCanonicalizationV2Request(
+            pipelineName: PLAY027MatteCanonicalizationV2.pipelineName,
+            descriptorData: descriptorData,
+            materialLibraryData: materialData,
+            descriptorSHA256:
+                PLAY027MatteCanonicalizationV2.descriptorSHA256,
+            materialLibrarySHA256:
+                PLAY027MatteCanonicalizationV2.materialLibrarySHA256,
             width: 1_535,
-            height: wrongDimensions.height,
-            authoredPaletteAllowsMagenta: false
+            height: PLAY027MatteCanonicalizationV2.height
         )
         negativeResults.append(
             try requireRejected(
                 name: "dimensions",
                 request: wrongDimensions,
-                rgbaCount: raster.rgba.count
+                rgba: raster.rgba
             )
         )
-        var magentaAllowed = validRequest()
-        magentaAllowed = PLAY027MatteCanonicalizationV2Request(
-            pipelineName: magentaAllowed.pipelineName,
-            logicalBuildingID: magentaAllowed.logicalBuildingID,
-            variantID: magentaAllowed.variantID,
-            sourceRevision: magentaAllowed.sourceRevision,
-            direction: magentaAllowed.direction,
-            descriptorSHA256: magentaAllowed.descriptorSHA256,
-            materialLibrarySHA256: magentaAllowed.materialLibrarySHA256,
-            decodedRGBASHA256: magentaAllowed.decodedRGBASHA256,
-            width: magentaAllowed.width,
-            height: magentaAllowed.height,
-            authoredPaletteAllowsMagenta: true
-        )
+        var staleRGBA = raster.rgba
+        staleRGBA[0] ^= 1
         negativeResults.append(
             try requireRejected(
-                name: "authoredPaletteAllowsMagenta",
-                request: magentaAllowed,
-                rgbaCount: raster.rgba.count
+                name: "mutatedRGBAWithStaleMetadata",
+                request: validRequest(
+                    descriptorData: descriptorData,
+                    materialLibraryData: materialData
+                ),
+                rgba: staleRGBA
+            )
+        )
+        var staleDescriptorData = descriptorData
+        staleDescriptorData.append(0x20)
+        negativeResults.append(
+            try requireRejected(
+                name: "mutatedDescriptorBytesWithStaleMetadata",
+                request: validRequest(
+                    descriptorData: staleDescriptorData,
+                    materialLibraryData: materialData
+                ),
+                rgba: raster.rgba
+            )
+        )
+        var staleMaterialData = materialData
+        staleMaterialData.append(0x20)
+        negativeResults.append(
+            try requireRejected(
+                name: "mutatedMaterialBytesWithStaleMetadata",
+                request: validRequest(
+                    descriptorData: descriptorData,
+                    materialLibraryData: staleMaterialData
+                ),
+                rgba: raster.rgba
             )
         )
         negativeResults.append(
             try requireRejected(
                 name: "rgbaByteCount",
-                request: validRequest(),
-                rgbaCount: raster.rgba.count - 4
+                request: validRequest(
+                    descriptorData: descriptorData,
+                    materialLibraryData: materialData
+                ),
+                rgba: Array(raster.rgba.dropLast(4))
             )
         )
 
         let acceptedInventory = try acceptedMasterInventory(
-            repositoryRoot: repositoryRoot
+            repositoryRoot: repositoryRoot,
+            descriptorData: descriptorData,
+            materialLibraryData: materialData
         )
         try writeJSON(
             [
@@ -621,6 +686,7 @@ private enum ValidateMatteCanonicalizationV2 {
                 "pipeline": PLAY027MatteCanonicalizationV2.pipelineName,
                 "acceptedMasterCount": acceptedInventory.count,
                 "allByteIdentical": true,
+                "allAdmissionPathsInvoked": true,
                 "allRejectedByVersionGate": true,
                 "masters": acceptedInventory,
             ],
@@ -662,8 +728,10 @@ private enum ValidateMatteCanonicalizationV2 {
                     PLAY027MatteCanonicalizationV2.descriptorSHA256,
                 "materialLibrary": materialRelativePath,
                 "materialLibrarySHA256":
-                    PLAY027MatteCanonicalizationV2.materialLibrarySHA256,
-                "authoredPaletteAllowsMagenta": authoredMagenta,
+                    result.binding.materialLibrarySHA256,
+                "authoredPaletteAllowsMagenta":
+                    result.binding.authoredPaletteAllowsMagenta,
+                "bindingDerivedFromActualBytes": true,
             ],
             "output": [
                 "file": "V17-CANONICAL-TRANSPARENT.png",
@@ -693,6 +761,7 @@ private enum ValidateMatteCanonicalizationV2 {
             "acceptedMasterRegression": [
                 "count": acceptedInventory.count,
                 "allByteIdentical": true,
+                "allAdmissionPathsInvoked": true,
                 "allRejectedByVersionGate": true,
                 "file": "ACCEPTED-MASTER-REGRESSION.json",
             ],

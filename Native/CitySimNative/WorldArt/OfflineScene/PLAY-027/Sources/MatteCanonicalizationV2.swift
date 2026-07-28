@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 
 enum PLAY027MatteCanonicalizationV2Error: Error, CustomStringConvertible {
@@ -13,20 +14,24 @@ enum PLAY027MatteCanonicalizationV2Error: Error, CustomStringConvertible {
 
 struct PLAY027MatteCanonicalizationV2Request {
     var pipelineName: String
-    var logicalBuildingID: String
-    var variantID: String
-    var sourceRevision: String
-    var direction: String
+    var descriptorData: Data
+    var materialLibraryData: Data
     var descriptorSHA256: String
     var materialLibrarySHA256: String
-    var decodedRGBASHA256: String
     var width: Int
     var height: Int
-    var authoredPaletteAllowsMagenta: Bool
+}
+
+struct PLAY027MatteCanonicalizationV2Binding {
+    let decodedRGBASHA256: String
+    let descriptorSHA256: String
+    let materialLibrarySHA256: String
+    let authoredPaletteAllowsMagenta: Bool
 }
 
 struct PLAY027MatteCanonicalizationV2Result {
     let rgba: [UInt8]
+    let binding: PLAY027MatteCanonicalizationV2Binding
     let borderConnectedMatteMask: [Bool]
     let retainedDespillMask: [Bool]
     let changedMask: [Bool]
@@ -37,7 +42,9 @@ enum PLAY027MatteCanonicalizationV2 {
     static let logicalBuildingID = "industrial_l04"
     static let variantID = "variant-0"
     static let sourceRevision = "source-v17-prepixel"
-    static let direction = "north"
+    static let direction = "n"
+    static let sceneGeometryID =
+        "industrial-l04-crucible-gantry-v17-north-monumental-portal"
     static let descriptorSHA256 =
         "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a"
     static let materialLibrarySHA256 =
@@ -51,7 +58,7 @@ enum PLAY027MatteCanonicalizationV2 {
         rgba: [UInt8],
         request: PLAY027MatteCanonicalizationV2Request
     ) throws -> PLAY027MatteCanonicalizationV2Result {
-        try validate(request: request, rgbaCount: rgba.count)
+        let binding = try bind(rgba: rgba, request: request)
 
         let pixelCount = request.width * request.height
         var queued = [Bool](repeating: false, count: pixelCount)
@@ -138,51 +145,108 @@ enum PLAY027MatteCanonicalizationV2 {
 
         return PLAY027MatteCanonicalizationV2Result(
             rgba: output,
+            binding: binding,
             borderConnectedMatteMask: matte,
             retainedDespillMask: retainedDespill,
             changedMask: changed
         )
     }
 
-    static func validate(
+    static func bind(
+        rgba: [UInt8],
         request: PLAY027MatteCanonicalizationV2Request,
-        rgbaCount: Int
-    ) throws {
+    ) throws -> PLAY027MatteCanonicalizationV2Binding {
         guard request.pipelineName == pipelineName else {
             throw PLAY027MatteCanonicalizationV2Error.rejected("pipeline")
         }
-        guard request.logicalBuildingID == logicalBuildingID else {
-            throw PLAY027MatteCanonicalizationV2Error.rejected("logical building")
-        }
-        guard request.variantID == variantID else {
-            throw PLAY027MatteCanonicalizationV2Error.rejected("variant")
-        }
-        guard request.sourceRevision == sourceRevision else {
-            throw PLAY027MatteCanonicalizationV2Error.rejected("revision")
-        }
-        guard request.direction == direction else {
-            throw PLAY027MatteCanonicalizationV2Error.rejected("direction")
-        }
-        guard request.descriptorSHA256 == descriptorSHA256 else {
+        let actualDescriptorSHA = digest(request.descriptorData)
+        let actualMaterialSHA = digest(request.materialLibraryData)
+        let actualDecodedRGBASHA = digest(Data(rgba))
+        guard
+            request.descriptorSHA256 == descriptorSHA256,
+            actualDescriptorSHA == request.descriptorSHA256
+        else {
             throw PLAY027MatteCanonicalizationV2Error.rejected("descriptor hash")
         }
-        guard request.materialLibrarySHA256 == materialLibrarySHA256 else {
+        guard
+            request.materialLibrarySHA256 == materialLibrarySHA256,
+            actualMaterialSHA == request.materialLibrarySHA256
+        else {
             throw PLAY027MatteCanonicalizationV2Error.rejected("material hash")
         }
-        guard request.decodedRGBASHA256 == decodedRGBASHA256 else {
+        guard actualDecodedRGBASHA == decodedRGBASHA256 else {
             throw PLAY027MatteCanonicalizationV2Error.rejected("decoded RGBA hash")
         }
         guard request.width == width, request.height == height else {
             throw PLAY027MatteCanonicalizationV2Error.rejected("dimensions")
         }
-        guard rgbaCount == width * height * 4 else {
+        guard rgba.count == width * height * 4 else {
             throw PLAY027MatteCanonicalizationV2Error.rejected("RGBA byte count")
         }
-        guard !request.authoredPaletteAllowsMagenta else {
+
+        guard
+            let descriptor = try? JSONSerialization.jsonObject(
+                with: request.descriptorData
+            ) as? [String: Any],
+            descriptor["logicalBuildingID"] as? String == logicalBuildingID,
+            descriptor["variantID"] as? String == variantID,
+            descriptor["sourceRevision"] as? String == sourceRevision,
+            descriptor["viewDirection"] as? String == direction,
+            descriptor["sceneGeometryID"] as? String == sceneGeometryID,
+            let descriptorMaterial =
+                descriptor["materialLibrary"] as? [String: Any],
+            descriptorMaterial["sha256"] as? String == actualMaterialSHA
+        else {
+            throw PLAY027MatteCanonicalizationV2Error.rejected(
+                "descriptor byte binding"
+            )
+        }
+        guard
+            let materialObject = try? JSONSerialization.jsonObject(
+                with: request.materialLibraryData
+            ) as? [String: Any],
+            let materials = materialObject["materials"] as? [[String: Any]],
+            !materials.isEmpty
+        else {
+            throw PLAY027MatteCanonicalizationV2Error.rejected(
+                "material byte binding"
+            )
+        }
+        var authoredPaletteAllowsMagenta = false
+        for material in materials {
+            guard
+                let rgba = material["baseColorRGBA"] as? [NSNumber],
+                rgba.count == 4
+            else {
+                throw PLAY027MatteCanonicalizationV2Error.rejected(
+                    "material base color"
+                )
+            }
+            if
+                rgba[0].doubleValue >= 0.70,
+                rgba[1].doubleValue <= 0.43,
+                rgba[2].doubleValue >= 0.59
+            {
+                authoredPaletteAllowsMagenta = true
+            }
+        }
+        guard !authoredPaletteAllowsMagenta else {
             throw PLAY027MatteCanonicalizationV2Error.rejected(
                 "authored magenta-family palette"
             )
         }
+        return PLAY027MatteCanonicalizationV2Binding(
+            decodedRGBASHA256: actualDecodedRGBASHA,
+            descriptorSHA256: actualDescriptorSHA,
+            materialLibrarySHA256: actualMaterialSHA,
+            authoredPaletteAllowsMagenta: authoredPaletteAllowsMagenta
+        )
+    }
+
+    private static func digest(_ data: Data) -> String {
+        SHA256.hash(data: data)
+            .map { String(format: "%02x", $0) }
+            .joined()
     }
 
     private static func isPredicateBoundMatte(

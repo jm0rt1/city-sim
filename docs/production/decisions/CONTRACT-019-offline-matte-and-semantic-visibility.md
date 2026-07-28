@@ -164,3 +164,38 @@ the proof.
 
 No B/C repeats, siblings, normalization, renderer ingestion, shipping,
 production selection, or self-acceptance is authorized by this contract.
+
+## R3 duplicate-foundation repair
+
+The exact existing-renderer diagnostic at `a47215ea` failed A/B identity:
+`13,629` decoded pixels and `26,924` channels differ over
+`[524,710,1024,895]`. The descriptor and both processes share an identical
+52-node manifest. Renderer review localized `13,191` of those pixels to an
+`other → hall` swap across the foundation footprint.
+
+The cause is a redundant coplanar mass:
+
+- canonical `foundation` is `56 × 1.4 × 56` at `[0,0.7,0]`;
+- mass block `v16-foundation` has the same dimensions, transform, bounds, and
+  material; and
+- SceneKit receives both boxes, producing an undefined depth-ownership tie.
+
+PLAY-027 may create one new immutable North descriptor revision that removes
+only redundant `v16-foundation`. The repair must prove the removed node is
+exactly coincident with canonical `foundation` before mutation and must leave
+all other descriptor, material, camera, sampling, registration, socket,
+contact, shadow, and semantic bindings unchanged.
+
+Exactly two diagnostic-only SceneKit/Metal semantic processes are authorized
+for that new descriptor revision. They must produce a 51-node manifest and
+pass:
+
+- byte-identical PNG and decoded RGBA outputs;
+- zero differing pixels and channels;
+- identical descriptor/material/binary/node manifests; and
+- unchanged portal component counts relative to the v17 return, including the
+  still-failing three-pixel south jamb.
+
+This is a determinism repair only. Portal modeling remains blocked even if the
+repeat gate passes. Any remaining A/B split returns to integration with no
+further process.

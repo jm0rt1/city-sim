@@ -1,0 +1,43 @@
+{
+  "aggregateEquality": true,
+  "binarySHA256": "d36f10b49ada49f5380277ee3b4633fc6572a810679967bde2c8b1307191d07e",
+  "compileCommand": "xcrun swiftc -module-cache-path /tmp/play027-v15-capability-module-cache -parse-as-library -warnings-as-errors Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RecessedOpeningV15Support.swift Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/ProveIndustrialL4V15RecessedOpening.swift -o /tmp/prove-industrial-l4-v15-recessed-opening",
+  "files": [
+    {
+      "equal": true,
+      "path": "EXACT-192X128-COLOR.png",
+      "runASHA256": "3ecfe043040739e58856f29d4e0f5317ccff97c3feadb858931c5d5d8fe43614",
+      "runBSHA256": "3ecfe043040739e58856f29d4e0f5317ccff97c3feadb858931c5d5d8fe43614"
+    },
+    {
+      "equal": true,
+      "path": "EXACT-192X128-GRAYSCALE.png",
+      "runASHA256": "07d370b97a24ae1f44afb0e99fdf5c82c195aab2415ba915675df1bb04cea7bf",
+      "runBSHA256": "07d370b97a24ae1f44afb0e99fdf5c82c195aab2415ba915675df1bb04cea7bf"
+    },
+    {
+      "equal": true,
+      "path": "STRUCTURAL-VALIDATION.json",
+      "runASHA256": "37ff2a01af79c20e500403279f6b1920d80a063a31b2f7a20de4835d5c25622f",
+      "runBSHA256": "37ff2a01af79c20e500403279f6b1920d80a063a31b2f7a20de4835d5c25622f"
+    },
+    {
+      "equal": true,
+      "path": "scene.json",
+      "runASHA256": "3cfcd3cef9b405b31a156eb2b22ba1efbef91694e6c87e7b7331e0d88991c78d",
+      "runBSHA256": "3cfcd3cef9b405b31a156eb2b22ba1efbef91694e6c87e7b7331e0d88991c78d"
+    }
+  ],
+  "metalProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "productionSelected": false,
+  "rawProcessCount": 0,
+  "replayCount": 2,
+  "sceneDescriptorSourceSHA256": "4e404d255c19cbeb39445e1b41e5fbbe6d87aece22c757a2ea1102052f1d7957",
+  "sceneDescriptorSourceChanged": false,
+  "sceneKitProcessCount": 0,
+  "sourceAuthority": false,
+  "supportSourceSHA256": "9761e3ee4172b1718f79410dfea89ee9899529717bb2b1905a553ad21c178fa5",
+  "taskID": "PLAY-027",
+  "toolSourceSHA256": "6b0d43c2b027229324cb762bf227c1b061cf85278e7200cdabff2da177f184e7"
+}

@@ -52,7 +52,15 @@ The implementation order is:
    flat-chroma source; and
 6. continue through the existing deterministic quantizer and PNG writer.
 
-The repair must be fail-closed and versioned in provenance. It may not:
+The repair must be fail-closed and versioned in provenance. Admission must be
+derived from the bytes being mutated, not caller assertions:
+
+- the stage computes the decoded RGBA hash from its RGBA input;
+- descriptor and material bindings are constructed from their immutable bytes;
+- the no-authored-magenta rule is derived from the bound material bytes; and
+- changing input bytes while retaining old metadata must reject.
+
+It may not:
 
 - alter an authored non-matte pixel outside the proven border/despill
   predicate;
@@ -74,12 +82,40 @@ Before another authoritative raw, the implementation must pass:
 - regression checks proving the version gate leaves the accepted Residential,
   Commercial, and Industrial L1-L3 retained masters byte-identical.
 
+The admission path itself must be invoked for all accepted retained masters;
+an inventory that only compares their file hashes and labels them unscoped is
+insufficient.
+
 ## Semantic visibility v1
 
 Before another authoritative v17 raw, PLAY-027 must render a diagnostic-only
 semantic-ID pass from the exact candidate descriptor, exact camera, and exact
 SceneKit node construction. Each of the portal jambs, header, inset/void, hall,
 gantry, and crucible/occluder groups must receive a unique diagnostic ID.
+
+The first custom software-rasterizer attempt at checkpoint `3822fa4b` is
+rejected. It duplicated camera projection, Z buffering, sampling, mask
+composition, and scaling, then failed before producing any visibility proof.
+Its commit remains historical evidence but its implementation must not enter
+the accepted candidate.
+
+The authorized replacement is a narrow diagnostic mode inside the existing
+task-owned `OfflineSceneRenderer`:
+
+- bind the exact candidate descriptor, material library, camera, and toolchain;
+- after `ContractSceneBuilder` creates the scene, replace only named diagnostic
+  node materials with unique constant semantic IDs;
+- render through the existing `NativeSourceRenderer`, existing 4x SceneKit
+  snapshot, governed Lanczos stage, registration, and scaling path;
+- decode and measure emitted masks without re-projecting or rasterizing
+  geometry in the report tool; and
+- use exactly two fresh diagnostic-only SceneKit/Metal processes, A and B.
+
+These are semantic visibility processes, not authoritative raw-source
+processes. Raw, normalizer, source-authority, production-selection, and sibling
+process counts remain zero. This two-process exception supersedes only the
+earlier no-Metal semantic replay requirement; the matte-v2 replay remains
+no-Metal.
 
 The tool must emit, for source scale, native-2x, and literal 192:
 
@@ -88,7 +124,8 @@ The tool must emit, for source scale, native-2x, and literal 192:
 - pairwise adjacency and overlap/occlusion counts;
 - color and grayscale component masks;
 - a portal-only composite and an all-occluders composite; and
-- two byte-identical no-Metal replays.
+- byte-identical A/B inventories from the two diagnostic SceneKit/Metal
+  processes.
 
 The pre-pixel repair may advance only when the actual governed raster proves:
 
@@ -99,20 +136,31 @@ The pre-pixel repair may advance only when the actual governed raster proves:
 - stable support at native-2x and literal 192; and
 - an unaided literal-192 comparison that is unmistakably stronger than v16.
 
+At literal 192 the hard minimums are:
+
+- each jamb at least `4 × 5` visible pixels;
+- the header at least `8 × 3` visible pixels;
+- the inset at least `5 × 5` visible pixels and one connected component;
+- frame-to-wall and frame-to-gantry grayscale delta at least `12`; and
+- no fully occluded portal center.
+
 Analytic semantic panels alone are insufficient. The same SceneKit geometry,
 camera, materials, and downsampling path used for the next raw must produce
 the proof.
 
 ## Advancement order
 
-1. Commit the matte-v2 implementation and immutable regression packet.
-2. Commit the exact-v17 semantic-ID diagnostic and its measured disposition.
-3. If visibility fails, revise only the North portal value hierarchy,
+1. Commit the fail-closed matte-v2 repair and immutable regression packet.
+2. Delete the rejected custom semantic rasterizer from the candidate while
+   retaining checkpoint `3822fa4b` in branch history.
+3. Commit the exact-v17 existing-renderer semantic-ID diagnostic and its
+   measured disposition.
+4. If visibility fails, revise only the North portal value hierarchy,
    projection, and occlusion while preserving the court, hall, gantry,
    crucible, stack, footprint, pivot, socket, camera, light, and shadow.
-4. Obtain independent Renderer and QA approval of the actual native-2x and
+5. Obtain independent Renderer and QA approval of the actual native-2x and
    literal-192 proof.
-5. Integration may then authorize exactly one North A raw process.
+6. Integration may then authorize exactly one North A raw process.
 
 No B/C repeats, siblings, normalization, renderer ingestion, shipping,
 production selection, or self-acceptance is authorized by this contract.

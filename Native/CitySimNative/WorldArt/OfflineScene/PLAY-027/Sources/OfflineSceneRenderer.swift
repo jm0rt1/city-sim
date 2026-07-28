@@ -17,7 +17,7 @@ enum OfflineRendererError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .arguments:
-            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-sampling-pipeline <id>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>] [--diagnostic-l3-v5-trace-contract <id> --diagnostic-l3-v5-trace-dir <dir>]"
+            return "usage: offline-scene-renderer --repository-root <path> --scene <json> --materials <json> --output <png> --record <json> --renderer-source-commit <sha> [--backend-capability-record <json>] [--diagnostic-sampling-pipeline <id>] [--diagnostic-contract <id>] [--diagnostic-stage-contract <id>] [--diagnostic-semantic-contract <id>] [--diagnostic-antialiasing current|none] [--diagnostic-scene-shadows current|disabled] [--diagnostic-material-lighting current|constant-unlit] [--diagnostic-prequantized-output <png>] [--diagnostic-stage-capture-dir <dir> --diagnostic-stage-coordinate <x,y>] [--diagnostic-l3-v5-trace-contract <id> --diagnostic-l3-v5-trace-dir <dir>]"
         case let .invalid(message):
             return message
         case let .rendering(message):
@@ -3425,6 +3425,10 @@ enum OfflineSceneRendererMain {
             "--diagnostic-stage-contract",
             in: arguments
         )
+        let diagnosticSemanticContractID = rendererOptionalArgument(
+            "--diagnostic-semantic-contract",
+            in: arguments
+        )
         if let diagnosticStageContractID {
             guard [
                 IndustrialL2V5EastStageCaptureContract.contractID,
@@ -3548,6 +3552,34 @@ enum OfflineSceneRendererMain {
         let effectiveSampling =
             diagnosticSamplingResolution?.effectiveSampling
             ?? descriptorSampling
+        let diagnosticSemanticRecord =
+            try PLAY027SemanticRendererV1.validate(
+                requestedContractID: diagnosticSemanticContractID,
+                repositoryRoot: repositoryRoot,
+                sceneURL: sceneURL,
+                sceneSHA256: try rendererSHA256(sceneURL),
+                materialsURL: materialsURL,
+                materialSHA256: try rendererSHA256(materialsURL),
+                outputURL: outputURL,
+                recordURL: recordURL,
+                descriptor: descriptor,
+                sampling: descriptorSampling,
+                diagnosticSamplingPipelineID:
+                    diagnosticSamplingPipelineID,
+                diagnosticContractID: diagnosticContractID,
+                diagnosticStageContractID: diagnosticStageContractID,
+                diagnosticL3V5TraceContractID:
+                    diagnosticL3V5TraceContractID,
+                diagnosticStageCaptureDirectory:
+                    diagnosticStageCaptureDirectory,
+                diagnosticStageCoordinate: diagnosticStageCoordinate,
+                diagnosticPrequantizedOutput:
+                    diagnosticPrequantizedOutput,
+                diagnosticAntialiasing: diagnosticAntialiasingRaw,
+                diagnosticSceneShadows: diagnosticSceneShadowsRaw,
+                diagnosticMaterialLighting:
+                    diagnosticMaterialLightingRaw
+            )
         let diagnosticL3V5TraceRecord =
             try IndustrialL3V5NWCanonicalizerTraceContract.validate(
                 requestedContractID: diagnosticL3V5TraceContractID,
@@ -3777,6 +3809,7 @@ enum OfflineSceneRendererMain {
                 diagnosticSourceV06FullFrameCaptureRecord != nil,
                 diagnosticSourceV08FiniteEquivalenceRecord != nil,
                 diagnosticL3V5TraceRecord != nil,
+                diagnosticSemanticRecord != nil,
             ].filter({ $0 }).count <= 1
         else {
             throw OfflineRendererError.invalid(
@@ -3792,6 +3825,7 @@ enum OfflineSceneRendererMain {
             ?? diagnosticSourceV06FullFrameCaptureRecord?.value
             ?? diagnosticSourceV08FiniteEquivalenceRecord?.value
             ?? diagnosticL3V5TraceRecord?.value
+            ?? diagnosticSemanticRecord?.value
         if effectiveSampling.purpose == "diagnostic-regression" {
             guard
                 outputURL.path.contains("/diagnostics/"),
@@ -3914,6 +3948,10 @@ enum OfflineSceneRendererMain {
                 node.light?.castsShadow = false
             }
         }
+        let diagnosticSemanticApplication =
+            try diagnosticSemanticRecord.map { _ in
+                try PLAY027SemanticRendererV1.apply(to: scene)
+            }
         let renderedNodeBounds = try validatedRenderedNodeBounds(
             scene,
             descriptor: descriptor
@@ -4597,6 +4635,25 @@ enum OfflineSceneRendererMain {
             ],
             "diagnosticIsolationContract":
                 diagnosticIsolationRecord ?? [
+                    "contractID": "none",
+                    "sourceAuthority": false,
+                    "productionSelected": false,
+                ],
+            "diagnosticSemanticVisibility":
+                diagnosticSemanticApplication.map {
+                    [
+                        "contract":
+                            diagnosticSemanticRecord?.value ?? [:],
+                        "nodeCount": $0.nodeRecords.count,
+                        "nodeManifestSHA256":
+                            $0.nodeManifestSHA256,
+                        "nodes": $0.nodeRecords,
+                        "processKind":
+                            "diagnostic-only-sceneKit-metal-semantic",
+                        "authoritativeRawProcessCount": 0,
+                        "normalizerProcessCount": 0,
+                    ] as [String: Any]
+                } ?? [
                     "contractID": "none",
                     "sourceAuthority": false,
                     "productionSelected": false,

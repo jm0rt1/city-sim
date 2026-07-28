@@ -1,0 +1,13 @@
+Blender 4.5.12 LTS
+	build date: 2026-07-21
+	build time: 01:30:49
+	build commit date: 2026-07-20
+	build commit time: 13:37
+	build hash: 84afd5f785f7
+	build branch: blender-v4.5-release
+	build platform: Darwin
+	build type: Release
+	build c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -march=x86-64-v2 -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off
+	build c++ flags:  -Wall -Wc++20-designator -Wno-tautological-compare -Wno-unknown-pragmas -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024 -march=x86-64-v2  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off
+	build link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -liconv -Wl,-unexported_symbols_list,'/Users/blender/git/blender-v450/blender.git/source/creator/symbols_apple.map' -Wl,-ld_classic
+	build system: CMake

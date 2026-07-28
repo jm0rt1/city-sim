@@ -1,0 +1,193 @@
+{
+  "acceptedL3StackExcludedSilhouetteIoU192" : 0.6867749419953596,
+  "allBuildingTopComponentCount192" : 1,
+  "allBuildingTopPixelCount192" : 1878,
+  "cameraSHA256" : "f0eb7f7b270303c693f0fd512164bd7005ce735c3dc8e8c0a5e83d46ab587fec",
+  "canonicalGeometrySHA256" : "61b8319965a4ce464da7804251fa623356d6ba7d45d9a486dc9019ad3ddec5a0",
+  "courtNorthEdgeWorldZ" : -28,
+  "courtReachesNorthSocket" : true,
+  "crucibleGantryAbsoluteMedianLumaSeparation192" : 49,
+  "crucibleGantryMedianLuma192" : [
+    93,
+    44
+  ],
+  "crucibleMouthBounds192" : [
+    95,
+    76,
+    8,
+    5
+  ],
+  "crucibleSemanticBounds192" : [
+    81,
+    69,
+    25,
+    25
+  ],
+  "crucibleSupportSeparationPixels192" : 0,
+  "descriptorSHA256" : "592bca8998bfb929982d38b2a732cbae0c327eddb5b23c66f2890e7b4c482db7",
+  "disposition" : "REJECTED_PREPIXEL_GATE",
+  "fixedRegistration" : {
+    "footprintWorld" : [
+      56,
+      56
+    ],
+    "pivotSource" : [
+      768,
+      896
+    ],
+    "socketSource" : [
+      896,
+      704
+    ]
+  },
+  "freightBounds192" : [
+    [
+      104,
+      80,
+      3,
+      3
+    ],
+    [
+      107,
+      82,
+      2,
+      5
+    ],
+    [
+      118,
+      86,
+      6,
+      12
+    ]
+  ],
+  "freightRecessHeaderAbsoluteMedianLumaSeparation192" : 56,
+  "freightRecessHeaderMedianLuma192" : [
+    49,
+    105
+  ],
+  "freightSeparatorPixels192" : [
+    -1,
+    8
+  ],
+  "freightVisiblePixelCounts192" : [
+    6,
+    9,
+    60
+  ],
+  "gantryAperturePixels192" : [
+    24.000001855777455,
+    18.896065191162037
+  ],
+  "gantryBeamBounds192" : [
+    80,
+    59,
+    39,
+    25
+  ],
+  "gantryBeamThicknessPixels192" : 4.8989798643753488,
+  "gantryHallAbsoluteMedianLumaSeparation192" : 82,
+  "gantryHallMedianLuma192" : [
+    44,
+    126
+  ],
+  "gantryPierThicknessPixels192" : 3.4285716936824997,
+  "gantrySemanticBounds192" : [
+    80,
+    59,
+    39,
+    44
+  ],
+  "gantryUprightBounds192" : [
+    [
+      81,
+      69,
+      22,
+      12
+    ],
+    [
+      104,
+      77,
+      14,
+      26
+    ]
+  ],
+  "gates" : {
+    "allBuildingSilhouetteConnected" : true,
+    "broadLowFoundryHallPreserved" : true,
+    "courtReachesExactNorthSocket" : true,
+    "crucibleGantryLiteral192LumaAtLeast28" : true,
+    "crucibleHasTaperedVesselShape" : true,
+    "crucibleMouthOver3" : true,
+    "crucibleSeparatedFromSupportsOver2" : false,
+    "crucibleVisibleAtCompact" : true,
+    "footprint56x56" : true,
+    "freightBeat1AtLeast4x3" : false,
+    "freightBeat2AtLeast4x3" : false,
+    "freightBeat3AtLeast4x3" : true,
+    "freightRecessHeaderLiteral192LumaAtLeast18" : true,
+    "freightSeparatorsOver2" : false,
+    "gantryBeamSpanAtLeast16" : true,
+    "gantryBeamThicknessAtLeast3" : true,
+    "gantryClearOpeningAtLeast5" : true,
+    "gantryEastUprightAtLeast9" : true,
+    "gantryHallLiteral192LumaAtLeast22" : true,
+    "gantryPierThicknessOver2" : true,
+    "gantryVisibleAtCompact" : true,
+    "gantryWestUprightAtLeast9" : true,
+    "heroAssemblyDominatesOutline" : true,
+    "heroRiseAtLeast3" : true,
+    "heroSpanAtLeast16" : true,
+    "negativeSilhouetteAliasAgainstAcceptedL3" : true,
+    "northwestSoutheastPlaneSeparationAtLeast12" : true,
+    "noSawtoothAdmission" : true,
+    "noV12GeometryAlias" : true,
+    "oneConnectedHeroAssemblyComponent" : true,
+    "pivotAndSocketExact" : true,
+    "productionSelectedFalse" : true,
+    "roofHallLiteral192LumaAtLeast24" : true,
+    "sourceAuthorityFalse" : true,
+    "staffSideReturnOver4x5" : true,
+    "threeCoherentGrayscaleGroups" : true
+  },
+  "generatedAt" : "2026-07-27T00:00:00Z",
+  "grayscaleGroups192" : {
+    "darkSteel" : 44,
+    "machinery" : 93,
+    "warmMasonry" : 126
+  },
+  "heroAssemblyAreaShareOfStackExcludedBuilding192" : 0.49680511182108628,
+  "heroAssemblyComponentCount192" : 1,
+  "heroAssemblyPixelCount192" : 933,
+  "heroRiseAboveHallPixels192" : 10.497813995090027,
+  "heroSpanPixels192" : 32.00000247436995,
+  "layoutAttempt" : 2,
+  "materialLibrarySHA256" : "95d349f7f5bcc5ffbd5d42ef99e641f033b9fcd74171ba278849185a24f5626e",
+  "metalProcesses" : 0,
+  "normalizerProcesses" : 0,
+  "northwestPlaneMedianLuma192" : 66,
+  "northwestSoutheastPlaneSeparation192" : 15,
+  "productionSelected" : false,
+  "rawSourceProcesses" : 0,
+  "registrationSHA256" : "98efc46e77f08b8c86415c60b2f1f27b4d13a10b10f3045e94d010eb5b83d35c",
+  "revision" : "source-v13-prepixel",
+  "roofHallAbsoluteMedianLumaSeparation192" : 43,
+  "roofHallMedianLuma192" : [
+    83,
+    126
+  ],
+  "sceneKitProcesses" : 0,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "southeastPlaneMedianLuma192" : 51,
+  "staffEntranceBounds192" : [
+    98,
+    97,
+    6,
+    12
+  ],
+  "task" : "PLAY-027",
+  "v08RawSHA256" : "3750d0d3fac54923936347579be65ed96461c4721142d73ed0cff31acad9818e",
+  "v10DescriptorSHA256" : "418eabd9dde6c9bffde80334f40d1927d0702b95c1515c372ca4c5527c551fd1",
+  "v10MaterialSHA256" : "7c761a4fb24247702b12893eccb1e6db10d1afd359cfac08274f7087259f63eb",
+  "v12CanonicalGeometrySHA256" : "b201c7f3fd5f34902b30ebfc164c8bac2950cae9b0f9ad63f37577348de0ad40"
+}

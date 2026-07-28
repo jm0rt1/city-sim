@@ -1,0 +1,73 @@
+{
+  "after" : [
+    {
+      "direction" : "N",
+      "exact192x128" : {
+        "median" : 55,
+        "opaquePixelCount" : 1351,
+        "p25" : 55,
+        "p75" : 68,
+        "p95" : 83,
+        "shareAtOrBelow32" : 0.090303478904515178
+      }
+    },
+    {
+      "direction" : "E",
+      "exact192x128" : {
+        "median" : 66,
+        "opaquePixelCount" : 1429,
+        "p25" : 50,
+        "p75" : 87,
+        "p95" : 117,
+        "shareAtOrBelow32" : 0.12666200139958012
+      }
+    },
+    {
+      "direction" : "S",
+      "exact192x128" : {
+        "median" : 68,
+        "opaquePixelCount" : 1450,
+        "p25" : 50,
+        "p75" : 87,
+        "p95" : 117,
+        "shareAtOrBelow32" : 0.12758620689655173
+      }
+    },
+    {
+      "direction" : "W",
+      "exact192x128" : {
+        "median" : 55,
+        "opaquePixelCount" : 1334,
+        "p25" : 55,
+        "p75" : 68,
+        "p95" : 83,
+        "shareAtOrBelow32" : 0.10119940029985007
+      }
+    }
+  ],
+  "beforeAuthorityMeasurements" : [
+    {
+      "direction" : "N",
+      "median" : 34,
+      "shareAtOrBelow32" : 0.14999999999999999
+    },
+    {
+      "direction" : "E",
+      "median" : 51,
+      "shareAtOrBelow32" : 0.14999999999999999
+    },
+    {
+      "direction" : "S",
+      "median" : 51,
+      "shareAtOrBelow32" : 0.14999999999999999
+    },
+    {
+      "direction" : "W",
+      "median" : 51,
+      "shareAtOrBelow32" : 0.14999999999999999
+    }
+  ],
+  "beforeCandidate" : "104027f29fce44fb734c010625a4f8f8fc509c2c",
+  "maximumAfterShareAtOrBelow32" : 0.10000000000000001,
+  "minimumAfterMedian" : 64
+}

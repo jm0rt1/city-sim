@@ -1,0 +1,1484 @@
+{
+  "authoredIndependently" : true,
+  "building" : {
+    "chimney" : {
+      "dimensions" : [
+        5.5,
+        31,
+        5.5
+      ],
+      "materialID" : "v14-warm-masonry",
+      "positionWorld" : [
+        -22,
+        24,
+        22
+      ]
+    },
+    "depth" : 56,
+    "floorHeight" : 8,
+    "floors" : 2,
+    "foundationDimensions" : [
+      56,
+      1.3999999999999999,
+      56
+    ],
+    "foundationHeight" : 2,
+    "foundationMaterialID" : "v14-dark-foundation",
+    "foundationPositionWorld" : [
+      0,
+      0.69999999999999996,
+      0
+    ],
+    "massBlocks" : [
+      {
+        "dimensions" : [
+          56,
+          1.3999999999999999,
+          56
+        ],
+        "id" : "v14-foundation",
+        "materialID" : "v14-dark-foundation",
+        "positionWorld" : [
+          0,
+          0.69999999999999996,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          34,
+          1.6000000000000001,
+          36
+        ],
+        "id" : "v14-road-court",
+        "materialID" : "v14-scored-concrete",
+        "positionWorld" : [
+          11,
+          1.5,
+          -10
+        ]
+      },
+      {
+        "dimensions" : [
+          26,
+          18,
+          42
+        ],
+        "id" : "v14-foundry-hall",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          -15,
+          10,
+          5
+        ]
+      },
+      {
+        "dimensions" : [
+          28,
+          3,
+          44
+        ],
+        "id" : "v14-hall-roof",
+        "materialID" : "v14-dark-roof-steel",
+        "positionWorld" : [
+          -15,
+          20,
+          5
+        ]
+      },
+      {
+        "dimensions" : [
+          20,
+          2,
+          30
+        ],
+        "id" : "v14-clerestory-base",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          -15,
+          22.5,
+          7
+        ]
+      },
+      {
+        "dimensions" : [
+          22,
+          1.5,
+          32
+        ],
+        "id" : "v14-clerestory-cap",
+        "materialID" : "v14-dark-roof-steel",
+        "positionWorld" : [
+          -15,
+          25,
+          7
+        ]
+      },
+      {
+        "dimensions" : [
+          16,
+          2,
+          16
+        ],
+        "id" : "v14-control-roof",
+        "materialID" : "v14-oxidized-copper",
+        "positionWorld" : [
+          -20,
+          12,
+          -20
+        ]
+      },
+      {
+        "dimensions" : [
+          9,
+          14,
+          11
+        ],
+        "id" : "v14-boiler-block",
+        "materialID" : "v14-restrained-green",
+        "positionWorld" : [
+          -22,
+          8,
+          21
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          31,
+          7
+        ],
+        "id" : "v14-gantry-pier-west",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          0,
+          17,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          31,
+          7
+        ],
+        "id" : "v14-gantry-pier-east",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          26,
+          17,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          9,
+          7,
+          11
+        ],
+        "id" : "v14-gantry-west-foot",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          0,
+          4,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          9,
+          7,
+          11
+        ],
+        "id" : "v14-gantry-east-foot",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          26,
+          4,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          36,
+          6,
+          4
+        ],
+        "id" : "v14-gantry-girder-front",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          13,
+          32,
+          -10
+        ]
+      },
+      {
+        "dimensions" : [
+          36,
+          6,
+          4
+        ],
+        "id" : "v14-gantry-girder-rear",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          13,
+          32,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          3,
+          14
+        ],
+        "id" : "v14-gantry-tie-west",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          0,
+          32,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          4,
+          3,
+          14
+        ],
+        "id" : "v14-gantry-tie-center",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          13,
+          32,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          3,
+          14
+        ],
+        "id" : "v14-gantry-tie-east",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          26,
+          32,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          7,
+          5,
+          10
+        ],
+        "id" : "v14-crane-trolley",
+        "materialID" : "v14-oxidized-copper",
+        "positionWorld" : [
+          13,
+          28,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          1.2,
+          8,
+          1.2
+        ],
+        "id" : "v14-lift-rail",
+        "materialID" : "v14-process-heat",
+        "positionWorld" : [
+          13,
+          23,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          2.5,
+          11
+        ],
+        "id" : "v14-gantry-west-mid-brace",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          0,
+          17,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          2.5,
+          11
+        ],
+        "id" : "v14-gantry-east-mid-brace",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          26,
+          17,
+          -5
+        ]
+      },
+      {
+        "dimensions" : [
+          36,
+          1.3999999999999999,
+          5
+        ],
+        "id" : "v14-girder-front-lower-flange",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          13,
+          29.5,
+          -10
+        ]
+      },
+      {
+        "dimensions" : [
+          36,
+          1.3999999999999999,
+          5
+        ],
+        "id" : "v14-girder-rear-lower-flange",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          13,
+          29.5,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          26,
+          2,
+          2
+        ],
+        "id" : "v14-hall-cornice",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -15,
+          17.5,
+          -16
+        ]
+      },
+      {
+        "dimensions" : [
+          3.2000000000000002,
+          7,
+          1.3999999999999999
+        ],
+        "id" : "v14-hall-window-1",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -24,
+          13,
+          -16.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          3.2000000000000002,
+          7,
+          1.3999999999999999
+        ],
+        "id" : "v14-hall-window-2",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -18,
+          13,
+          -16.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          3.2000000000000002,
+          7,
+          1.3999999999999999
+        ],
+        "id" : "v14-hall-window-3",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -12,
+          13,
+          -16.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          3.2000000000000002,
+          7,
+          1.3999999999999999
+        ],
+        "id" : "v14-hall-window-4",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -6,
+          13,
+          -16.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          3,
+          4
+        ],
+        "id" : "v14-clerestory-window-1",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -1.2,
+          23,
+          -4
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          3,
+          4
+        ],
+        "id" : "v14-clerestory-window-2",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -1.2,
+          23,
+          2
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          3,
+          4
+        ],
+        "id" : "v14-clerestory-window-3",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -1.2,
+          23,
+          8
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          3,
+          4
+        ],
+        "id" : "v14-clerestory-window-4",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -1.2,
+          23,
+          14
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          3,
+          4
+        ],
+        "id" : "v14-clerestory-window-5",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -1.2,
+          23,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          2,
+          16,
+          2
+        ],
+        "id" : "v14-hall-buttress-1",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -25,
+          9,
+          -16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          2,
+          16,
+          2
+        ],
+        "id" : "v14-hall-buttress-2",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -15,
+          9,
+          -16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          2,
+          16,
+          2
+        ],
+        "id" : "v14-hall-buttress-3",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -5,
+          9,
+          -16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          2,
+          10
+        ],
+        "id" : "v14-court-rail-west",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          1,
+          2.5,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          2,
+          10
+        ],
+        "id" : "v14-court-rail-east",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          24,
+          2.5,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          14,
+          10,
+          9
+        ],
+        "id" : "v15-control-annex-rear-body",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          -20,
+          6,
+          -15.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          13.5,
+          3
+        ],
+        "id" : "v15-freight-1-wall-left",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          -1.75,
+          6.75,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          13.5,
+          3
+        ],
+        "id" : "v15-freight-1-wall-right",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          5.75,
+          6.75,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          6.5,
+          2.5,
+          3
+        ],
+        "id" : "v15-freight-1-wall-header",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          2,
+          14.25,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          0.75,
+          13.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-1-jamb-left",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          -1.625,
+          7.5,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          0.75,
+          13.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-1-jamb-right",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          5.625,
+          7.5,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          8,
+          2.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-1-lintel",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          2,
+          14.25,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          6.5,
+          11,
+          0.80000000000000004
+        ],
+        "id" : "v15-freight-1-inset-back-plane",
+        "materialID" : "v14-deep-freight-recess",
+        "positionWorld" : [
+          2,
+          7.5,
+          -27.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          13.5,
+          3
+        ],
+        "id" : "v15-freight-2-wall-left",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          6.75,
+          6.75,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          13.5,
+          3
+        ],
+        "id" : "v15-freight-2-wall-right",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          14.25,
+          6.75,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          6.5,
+          2.5,
+          3
+        ],
+        "id" : "v15-freight-2-wall-header",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          10.5,
+          14.25,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          0.75,
+          13.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-2-jamb-left",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          6.875,
+          7.5,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          0.75,
+          13.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-2-jamb-right",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          14.125,
+          7.5,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          8,
+          2.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-2-lintel",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          10.5,
+          14.25,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          6.5,
+          11,
+          0.80000000000000004
+        ],
+        "id" : "v15-freight-2-inset-back-plane",
+        "materialID" : "v14-deep-freight-recess",
+        "positionWorld" : [
+          10.5,
+          7.5,
+          -27.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          13.5,
+          3
+        ],
+        "id" : "v15-freight-3-wall-left",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          15.25,
+          6.75,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          13.5,
+          3
+        ],
+        "id" : "v15-freight-3-wall-right",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          22.75,
+          6.75,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          6.5,
+          2.5,
+          3
+        ],
+        "id" : "v15-freight-3-wall-header",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          19,
+          14.25,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          0.75,
+          13.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-3-jamb-left",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          15.375,
+          7.5,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          0.75,
+          13.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-3-jamb-right",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          22.625,
+          7.5,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          8,
+          2.5,
+          0.90000000000000002
+        ],
+        "id" : "v15-freight-3-lintel",
+        "materialID" : "v14-structural-mid-steel",
+        "positionWorld" : [
+          19,
+          14.25,
+          -21.050000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          6.5,
+          11,
+          0.80000000000000004
+        ],
+        "id" : "v15-freight-3-inset-back-plane",
+        "materialID" : "v14-deep-freight-recess",
+        "positionWorld" : [
+          19,
+          7.5,
+          -27.5
+        ]
+      },
+      {
+        "dimensions" : [
+          26.5,
+          2.5,
+          4
+        ],
+        "id" : "v15-freight-group-continuous-header",
+        "materialID" : "v14-dark-gantry-steel",
+        "positionWorld" : [
+          10.5,
+          15.25,
+          -23
+        ]
+      },
+      {
+        "dimensions" : [
+          4.5,
+          10,
+          4
+        ],
+        "id" : "v15-staff-opening-wall-left",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          -24.75,
+          5,
+          -22
+        ]
+      },
+      {
+        "dimensions" : [
+          4.5,
+          10,
+          4
+        ],
+        "id" : "v15-staff-opening-wall-right",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          -15.25,
+          5,
+          -22
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          2,
+          4
+        ],
+        "id" : "v15-staff-opening-wall-header",
+        "materialID" : "v14-warm-masonry",
+        "positionWorld" : [
+          -20,
+          11,
+          -22
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          10,
+          0.90000000000000002
+        ],
+        "id" : "v15-staff-opening-jamb-left",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -23,
+          6,
+          -19.550000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          10,
+          0.90000000000000002
+        ],
+        "id" : "v15-staff-opening-jamb-right",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -17,
+          6,
+          -19.550000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          7,
+          2,
+          0.90000000000000002
+        ],
+        "id" : "v15-staff-opening-lintel",
+        "materialID" : "v14-concrete-trim",
+        "positionWorld" : [
+          -20,
+          11,
+          -19.550000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          8,
+          0.80000000000000004
+        ],
+        "id" : "v15-staff-opening-inset-back-plane",
+        "materialID" : "v14-warm-glazing",
+        "positionWorld" : [
+          -20,
+          6,
+          -27
+        ]
+      }
+    ],
+    "massingProfile" : "industrial-l04-crucible-gantry-v15-north-recessed-frontage",
+    "roofHeight" : 10,
+    "roofMaterialID" : "v14-dark-roof-steel",
+    "roofOverhang" : 0,
+    "roofVolumes" : [
+
+    ],
+    "trimBands" : [
+
+    ],
+    "trimMaterialID" : "v14-dark-gantry-steel",
+    "usesExplicitComponentGeometry" : true,
+    "usesLegacyDomesticDetails" : false,
+    "wallHeight" : 18,
+    "wallMaterialID" : "v14-warm-masonry",
+    "width" : 56
+  },
+  "camera" : {
+    "elevationDegrees" : 30,
+    "orthographicScale" : 79.195953369140597,
+    "oversamplingFactor" : 4,
+    "positionWorld" : [
+      96,
+      101.24557426726288,
+      96
+    ],
+    "postProjectionOffsetPixels" : [
+      0,
+      128
+    ],
+    "projection" : "orthographic-2-to-1",
+    "renderViewportPixels" : [
+      1536,
+      1024
+    ],
+    "sourceGroundCenter" : [
+      768,
+      768
+    ],
+    "targetWorld" : [
+      0,
+      22.861902498201186,
+      0
+    ],
+    "yawDegrees" : 45
+  },
+  "derivation" : {
+    "mirror" : false,
+    "rotationDegrees" : 0,
+    "siblingSource" : null,
+    "sourceKind" : "offline-scene-v15-single-recessed-opening-refinement",
+    "transform" : "none"
+  },
+  "entrance" : {
+    "baseWorld" : [
+      -20,
+      -28
+    ],
+    "canopyDepth" : 2,
+    "depth" : 4,
+    "doorMaterialID" : "v14-warm-glazing",
+    "facadeID" : "v14-north-road-frontage",
+    "height" : 8,
+    "hingeSide" : "right",
+    "pavilionDepth" : 14,
+    "pavilionHeight" : 10,
+    "pavilionMaterialID" : "v14-warm-masonry",
+    "pavilionRoofHeight" : 2,
+    "pavilionWidth" : 14,
+    "porchColumnWidth" : 1,
+    "porchLateralOffset" : 0,
+    "porchWidth" : 7,
+    "stepCount" : 1,
+    "stepRun" : 1,
+    "style" : "human-scale-control-return",
+    "surroundMaterialID" : "v14-concrete-trim",
+    "width" : 5
+  },
+  "facades" : [
+    {
+      "direction" : "north",
+      "edgeWorld" : [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ]
+      ],
+      "hasEntrance" : true,
+      "id" : "v14-north-road-frontage",
+      "materialID" : "v14-warm-masonry",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    }
+  ],
+  "family" : "industrial",
+  "level" : 4,
+  "light" : {
+    "ambientColorRGBA" : [
+      0.35999999999999999,
+      0.42999999999999999,
+      0.5,
+      1
+    ],
+    "ambientIntensity" : 0,
+    "keyColorRGBA" : [
+      1,
+      0.93999999999999995,
+      0.83999999999999997,
+      1
+    ],
+    "keyIntensity" : 0,
+    "keyOrigin" : [
+      -80,
+      120,
+      -80
+    ],
+    "shadowBlurSourcePixels" : 0,
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowReceiver" : "authored-contact-polygon",
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "logicalBuildingID" : "industrial_l04",
+  "materialLibrary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v15-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json",
+    "role" : "industrial-l04-crucible-gantry-v15-north-material-library",
+    "sha256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+  },
+  "occlusionExclusions" : [
+    {
+      "id" : "v14-frontage-visibility",
+      "polygonWorld" : [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          -7
+        ],
+        [
+          -28,
+          -7
+        ]
+      ],
+      "purpose" : "keep three freight voids and separate staff entrance visible"
+    }
+  ],
+  "productionSelected" : false,
+  "props" : [
+    {
+      "dimensions" : [
+        5.5,
+        31,
+        5.5
+      ],
+      "id" : "v14-stack",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-warm-masonry",
+      "positionWorld" : [
+        -22,
+        24,
+        22
+      ]
+    },
+    {
+      "dimensions" : [
+        7,
+        2.2000000000000002,
+        7
+      ],
+      "id" : "v14-stack-rim",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-dark-gantry-steel",
+      "positionWorld" : [
+        -22,
+        40,
+        22
+      ]
+    },
+    {
+      "dimensions" : [
+        16,
+        3,
+        16
+      ],
+      "id" : "v14-crucible-base",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-dark-gantry-steel",
+      "positionWorld" : [
+        13,
+        4,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        13,
+        7,
+        13
+      ],
+      "id" : "v14-crucible-lower",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-oxidized-copper",
+      "positionWorld" : [
+        13,
+        8,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        17,
+        4,
+        17
+      ],
+      "id" : "v14-crucible-shoulder",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-oxidized-copper",
+      "positionWorld" : [
+        13,
+        13,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        14,
+        5,
+        14
+      ],
+      "id" : "v14-crucible-upper",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-oxidized-copper-light",
+      "positionWorld" : [
+        13,
+        17,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        10,
+        2,
+        10
+      ],
+      "id" : "v14-crucible-neck",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-dark-gantry-steel",
+      "positionWorld" : [
+        13,
+        20,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        13,
+        2.5,
+        13
+      ],
+      "id" : "v14-crucible-rim",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-concrete-trim",
+      "positionWorld" : [
+        13,
+        21.800000000000001,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        9,
+        1.5,
+        9
+      ],
+      "id" : "v14-crucible-mouth",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-process-heat",
+      "positionWorld" : [
+        13,
+        23.199999999999999,
+        -5
+      ]
+    },
+    {
+      "dimensions" : [
+        2.3999999999999999,
+        18,
+        2.3999999999999999
+      ],
+      "id" : "v14-service-pipe-a",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-oxidized-copper",
+      "positionWorld" : [
+        -25,
+        12,
+        7
+      ]
+    },
+    {
+      "dimensions" : [
+        2.3999999999999999,
+        18,
+        2.3999999999999999
+      ],
+      "id" : "v14-service-pipe-b",
+      "kind" : "explicit-cylinder",
+      "materialID" : "v14-oxidized-copper",
+      "positionWorld" : [
+        -25,
+        12,
+        13
+      ]
+    }
+  ],
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        802.28571693682488,
+        645.94518030950337
+      ],
+      [
+        825.14286156137496,
+        657.37375262177829
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      704
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "orientationTransform" : "none",
+    "presentationEnvelopeSource" : [
+      256,
+      64,
+      1280,
+      896
+    ],
+    "sceneFootprintUnits" : [
+      72,
+      72
+    ],
+    "shadowEnvelopeSource" : [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "tileBasisPoints" : [
+      72,
+      36
+    ]
+  },
+  "sampling" : {
+    "canonicalizer" : {
+      "encoder" : "ImageIO",
+      "format" : "png",
+      "id" : "imageio-sips-png-v1",
+      "postEncoder" : "/usr/bin/sips"
+    },
+    "ciContext" : {
+      "cacheIntermediates" : false,
+      "outputColorSpace" : "srgb",
+      "useSoftwareRenderer" : true,
+      "workingColorSpace" : "extended-srgb"
+    },
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsample" : {
+      "aspectRatio" : 1,
+      "filter" : "CILanczosScaleTransform",
+      "scale" : 0.25
+    },
+    "linearOversamplingFactor" : 4,
+    "postQuantizationCanonicalizer" : {
+      "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
+      "boundaryAssist" : {
+        "algorithm" : "immutable-prequantized-one-value-boundary-6-plus-1",
+        "baseQuantizedMajorityCount" : 6,
+        "boundaryBandWidthValues" : 1,
+        "effectiveSupportCount" : 7,
+        "immutablePrequantizedBuffer" : true,
+        "maximumCompetingSupportAfterBoundaryReclassification" : 2,
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "recordsBoundaryVoteReason" : true,
+        "requiredBoundaryVoteCount" : 1,
+        "requiresSameChannelEvidence" : true,
+        "version" : 1
+      },
+      "channels" : "rgb-only",
+      "immutableSourceBuffer" : true,
+      "majorityThreshold" : 7,
+      "neighborhoodSize" : 3,
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationQuantum" : 32,
+      "requiresChromaFreeNeighborhood" : true,
+      "requiresFullyOpaqueNeighborhood" : true,
+      "version" : 3
+    },
+    "purpose" : "source-authority",
+    "quantizer" : {
+      "chromaBypassRGBA" : [
+        255,
+        0,
+        255,
+        255
+      ],
+      "id" : "step32-midpoint-offset8-v1",
+      "midpointOffset" : 8,
+      "step" : 32
+    },
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "authored-constant-v1",
+    "sceneKitShadows" : "disabled",
+    "sourceRevisionBinding" : "source-v15-prepixel"
+  },
+  "sceneGeometryID" : "industrial-l04-crucible-gantry-v15-north-recessed-frontage",
+  "schema" : 2,
+  "sourceAuthority" : false,
+  "sourceRevision" : "source-v15-prepixel",
+  "styleAnchor" : {
+    "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "role" : "global-style-anchor",
+    "sha256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "task" : "PLAY-027",
+  "toolchainFingerprint" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l03-source-v01.json",
+    "role" : "offline-toolchain",
+    "sha256" : "5010b2b809cc21fe26366f49f3620724d39c5c35eae2e5a196d2e7c5ebc91301"
+  },
+  "variantID" : "variant-0",
+  "viewDirection" : "n"
+}

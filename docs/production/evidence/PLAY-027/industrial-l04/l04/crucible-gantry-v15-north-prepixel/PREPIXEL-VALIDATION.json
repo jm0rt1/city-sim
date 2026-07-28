@@ -1,0 +1,241 @@
+{
+  "builderSourceSHA256" : "066d783bc5c18452225b26c6ecedf980570872c7bb68eca9fb2dada1d7bccb5f",
+  "compiledBinarySHA256" : "69f18a683a668cd5b045f9266f663ff0337ec07172b1045246899d57454bf009",
+  "courtWorldBounds" : [
+    -6,
+    -28,
+    28,
+    8
+  ],
+  "descriptorSHA256" : "5c62a3ced28417809394e9bf48eee0962c3c017cbce48c7c65e51efe49303e02",
+  "disposition" : "REJECTED_FIXED_CAMERA_APERTURE_GATE",
+  "geometryID" : "industrial-l04-crucible-gantry-v15-north-recessed-frontage",
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "heroPreservationPass" : true,
+  "heroPreservationSHA256" : "b909b52dc497b11dbc50f9f1d58fdd9b0c8b9bd8e5546b185734cc64188d1072",
+  "materialSHA256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202",
+  "metalProcessCount" : 0,
+  "newOpeningScopeIDs" : [
+    "v15-freight-1-inset-back-plane",
+    "v15-freight-1-jamb-left",
+    "v15-freight-1-jamb-right",
+    "v15-freight-1-lintel",
+    "v15-freight-1-wall-header",
+    "v15-freight-1-wall-left",
+    "v15-freight-1-wall-right",
+    "v15-freight-2-inset-back-plane",
+    "v15-freight-2-jamb-left",
+    "v15-freight-2-jamb-right",
+    "v15-freight-2-lintel",
+    "v15-freight-2-wall-header",
+    "v15-freight-2-wall-left",
+    "v15-freight-2-wall-right",
+    "v15-freight-3-inset-back-plane",
+    "v15-freight-3-jamb-left",
+    "v15-freight-3-jamb-right",
+    "v15-freight-3-lintel",
+    "v15-freight-3-wall-header",
+    "v15-freight-3-wall-left",
+    "v15-freight-3-wall-right",
+    "v15-freight-group-continuous-header",
+    "v15-staff-opening-inset-back-plane",
+    "v15-staff-opening-jamb-left",
+    "v15-staff-opening-jamb-right",
+    "v15-staff-opening-lintel",
+    "v15-staff-opening-wall-header",
+    "v15-staff-opening-wall-left",
+    "v15-staff-opening-wall-right"
+  ],
+  "normalizerProcessCount" : 0,
+  "northSocketSource" : [
+    896,
+    704
+  ],
+  "openingGatePass" : false,
+  "openingReports" : [
+    {
+      "apertureEntryDistance" : 175.55131827760644,
+      "backPlaneDistance" : 183.91801940402854,
+      "blockingOwners" : [
+        {
+          "distance" : 147.83771303990855,
+          "id" : "v14-crucible-rim"
+        },
+        {
+          "distance" : 151.713473459494,
+          "id" : "v14-crucible-neck"
+        },
+        {
+          "distance" : 154.54939571772726,
+          "id" : "v14-crucible-upper"
+        },
+        {
+          "distance" : 163.05716249242704,
+          "id" : "v14-crucible-shoulder"
+        }
+      ],
+      "clearRayPass" : false,
+      "closestBlockedTarget" : [
+        -0.27499999999999991,
+        3.6500000000000004,
+        -27.5
+      ],
+      "openingID" : "v15-freight-1",
+      "positiveSolidOverlapCount" : 2,
+      "positiveSolidOverlapOwners" : [
+        "v14-court-rail-west",
+        "v14-road-court"
+      ],
+      "projectedCompactBounds" : [
+        3.7142860014893699,
+        9.5555399304773658
+      ],
+      "rayFirstEncounter" : "BLOCKED",
+      "raySecondEncounter" : "UNREACHED"
+    },
+    {
+      "apertureEntryDistance" : 171.47057103723151,
+      "backPlaneDistance" : 179.6427854866655,
+      "blockingOwners" : [
+        {
+          "distance" : 142.28409086068146,
+          "id" : "v14-gantry-pier-east"
+        },
+        {
+          "distance" : 156.04916145662128,
+          "id" : "v14-crucible-upper"
+        },
+        {
+          "distance" : 159.26684594913496,
+          "id" : "v14-crucible-shoulder"
+        }
+      ],
+      "clearRayPass" : false,
+      "closestBlockedTarget" : [
+        8.2249999999999996,
+        3.6500000000000004,
+        -27.5
+      ],
+      "openingID" : "v15-freight-2",
+      "positiveSolidOverlapCount" : 1,
+      "positiveSolidOverlapOwners" : [
+        "v14-road-court"
+      ],
+      "projectedCompactBounds" : [
+        3.7142860014893699,
+        9.5555399304773658
+      ],
+      "rayFirstEncounter" : "BLOCKED",
+      "raySecondEncounter" : "UNREACHED"
+    },
+    {
+      "apertureEntryDistance" : 166.67358102469328,
+      "backPlaneDistance" : 174.61717297140206,
+      "clearRayPass" : true,
+      "openingID" : "v15-freight-3",
+      "positiveSolidOverlapCount" : 1,
+      "positiveSolidOverlapOwners" : [
+        "v14-road-court"
+      ],
+      "projectedCompactBounds" : [
+        3.7142860014893699,
+        9.5555399304773658
+      ],
+      "rayFirstEncounter" : "EMPTY_APERTURE",
+      "raySecondEncounter" : "v15-freight-3-inset-back-plane",
+      "rayTarget" : [
+        16.725000000000001,
+        5.5750000000000002,
+        -27.5
+      ]
+    },
+    {
+      "apertureEntryDistance" : 189.39475922836971,
+      "backPlaneDistance" : 195.84765255074169,
+      "blockingOwners" : [
+        {
+          "distance" : 156.02123337315038,
+          "id" : "v14-gantry-pier-west"
+        },
+        {
+          "distance" : 161.86160039781376,
+          "id" : "v14-hall-roof"
+        },
+        {
+          "distance" : 164.82290125349724,
+          "id" : "v14-foundry-hall"
+        },
+        {
+          "distance" : 178.1159319690677,
+          "id" : "v14-hall-window-3"
+        },
+        {
+          "distance" : 180.2170396181844,
+          "id" : "v14-control-roof"
+        },
+        {
+          "distance" : 181.88571591094535,
+          "id" : "v15-control-annex-rear-body"
+        },
+        {
+          "distance" : 185.30446734001663,
+          "id" : "v15-staff-opening-wall-right"
+        }
+      ],
+      "clearRayPass" : false,
+      "closestBlockedTarget" : [
+        -21.75,
+        3.2000000000000002,
+        -27
+      ],
+      "openingID" : "v15-staff-opening",
+      "positiveSolidOverlapCount" : 0,
+      "positiveSolidOverlapOwners" : [
+
+      ],
+      "projectedCompactBounds" : [
+        2.8571430780687592,
+        7.0274056697490579
+      ],
+      "rayFirstEncounter" : "BLOCKED",
+      "raySecondEncounter" : "UNREACHED"
+    }
+  ],
+  "productionSelected" : false,
+  "rawProcessCount" : 0,
+  "removedOpeningScopeIDs" : [
+    "v14-control-annex",
+    "v14-freight-1-header",
+    "v14-freight-1-heat-strip",
+    "v14-freight-1-left-post",
+    "v14-freight-1-rail",
+    "v14-freight-1-recess",
+    "v14-freight-1-right-post",
+    "v14-freight-2-header",
+    "v14-freight-2-heat-strip",
+    "v14-freight-2-left-post",
+    "v14-freight-2-rail",
+    "v14-freight-2-recess",
+    "v14-freight-2-right-post",
+    "v14-freight-3-header",
+    "v14-freight-3-heat-strip",
+    "v14-freight-3-left-post",
+    "v14-freight-3-rail",
+    "v14-freight-3-recess",
+    "v14-freight-3-right-post",
+    "v14-staff-entry",
+    "v14-staff-header",
+    "v14-staff-post-east",
+    "v14-staff-post-west"
+  ],
+  "revision" : "source-v15-prepixel",
+  "sceneKitProcessCount" : 0,
+  "sourceAuthority" : false,
+  "supportSourceSHA256" : "9761e3ee4172b1718f79410dfea89ee9899529717bb2b1905a553ad21c178fa5",
+  "taskID" : "PLAY-027",
+  "v14DescriptorSHA256" : "537c2ed86b53ded38aa00413066a7a8edc0ca3ebc241e5baa13b8e47eb48d4db",
+  "v14MaterialSHA256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+}

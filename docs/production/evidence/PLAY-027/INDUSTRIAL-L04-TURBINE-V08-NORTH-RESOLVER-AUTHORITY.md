@@ -73,6 +73,13 @@ and decoded-pixel-identical. The lane must retain complete raw and provenance
 evidence and stop for independent renderer and QA review before normalization
 or any sibling direction.
 
+That exact gate was run and preserved under
+`docs/production/evidence/PLAY-027/industrial-l04/l04/turbine-v08-north-raw-v02/`.
+Identity and registration passed, but the candidate was rejected because four
+authored roof volumes collapsed into one broad gable in the real raster. The
+resolver admission remains narrow historical authority for reproducing the
+rejected bytes; it does not authorize a redesigned revision.
+
 Rollback is one integration commit: revert the exact predicate, fail-closed
 guard, validator, README, and this evidence record together. Any raw produced
 under the admission remains non-authoritative unless separately accepted.

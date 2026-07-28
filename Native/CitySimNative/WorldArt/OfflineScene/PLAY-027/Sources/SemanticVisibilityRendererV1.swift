@@ -16,13 +16,11 @@ enum PLAY027SemanticRendererV1Error: Error, CustomStringConvertible {
 
 struct PLAY027SemanticRendererV1Record {
     let value: [String: Any]
-    let appliesR5PortalJointDepthOwnership: Bool
 }
 
 struct PLAY027SemanticRendererV1Application {
     let nodeRecords: [[String: Any]]
     let nodeManifestSHA256: String
-    let r5SemanticDepthOwnership: [String: Any]?
 }
 
 enum PLAY027SemanticRendererV1 {
@@ -30,8 +28,6 @@ enum PLAY027SemanticRendererV1 {
         "play027-industrial-l04-v17-semantic-visibility-renderer-v1"
     static let r3ContractID =
         "play027-industrial-l04-v18-semantic-visibility-renderer-r3-v1"
-    static let r5ContractID =
-        "play027-industrial-l04-v18-semantic-visibility-renderer-r5-v1"
     static let descriptorSHA256 =
         "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a"
     static let r3DescriptorSHA256 =
@@ -44,9 +40,6 @@ enum PLAY027SemanticRendererV1 {
     static let r3EvidenceRoot =
         "docs/production/evidence/PLAY-027/industrial-l04/l04/"
         + "duplicate-foundation-repair-r3-v01/diagnostics"
-    static let r5EvidenceRoot =
-        "docs/production/evidence/PLAY-027/industrial-l04/l04/"
-        + "portal-joint-depth-ownership-r5-v01/diagnostics"
 
     static let semanticColors: [String: [Int]] = [
         "portal-jamb-south": [16, 16, 240, 255],
@@ -83,26 +76,19 @@ enum PLAY027SemanticRendererV1 {
     ) throws -> PLAY027SemanticRendererV1Record? {
         guard let requestedContractID else { return nil }
         guard
-            [contractID, r3ContractID, r5ContractID].contains(
-                requestedContractID
-            )
+            [contractID, r3ContractID].contains(requestedContractID)
         else {
             throw PLAY027SemanticRendererV1Error.rejected("contract ID")
         }
-        let isR3OrR5 =
-            requestedContractID == r3ContractID
-            || requestedContractID == r5ContractID
-        let isR5 = requestedContractID == r5ContractID
-        let expectedDescriptorSHA = isR3OrR5
+        let isR3 = requestedContractID == r3ContractID
+        let expectedDescriptorSHA = isR3
             ? r3DescriptorSHA256 : descriptorSHA256
-        let expectedRevision = isR3OrR5
+        let expectedRevision = isR3
             ? "source-v18-prepixel" : "source-v17-prepixel"
-        let expectedGeometryID = isR3OrR5
+        let expectedGeometryID = isR3
             ? "industrial-l04-crucible-gantry-v18-north-single-foundation"
             : "industrial-l04-crucible-gantry-v17-north-monumental-portal"
-        let expectedEvidenceRoot =
-            isR5 ? r5EvidenceRoot
-            : (isR3OrR5 ? r3EvidenceRoot : evidenceRoot)
+        let expectedEvidenceRoot = isR3 ? r3EvidenceRoot : evidenceRoot
         guard
             sceneSHA256 == expectedDescriptorSHA,
             materialSHA256 == self.materialSHA256,
@@ -207,21 +193,15 @@ enum PLAY027SemanticRendererV1 {
                 "registration": descriptor.camera.postProjectionOffsetPixels,
                 "rawProcessCount": 0,
                 "normalizerProcessCount": 0,
-                "r5PortalJointDepthOwnership": isR5,
-            ],
-            appliesR5PortalJointDepthOwnership: isR5
+            ]
         )
     }
 
     static func apply(
-        to scene: SCNScene,
-        appliesR5PortalJointDepthOwnership: Bool
+        to scene: SCNScene
     ) throws -> PLAY027SemanticRendererV1Application {
         var records: [[String: Any]] = []
-        var r5Records: [[String: Any]] = []
-        var applicationError: Error?
         scene.rootNode.enumerateChildNodes { node, _ in
-            guard applicationError == nil else { return }
             guard
                 let name = node.name,
                 let geometry = node.geometry
@@ -241,23 +221,6 @@ enum PLAY027SemanticRendererV1 {
             )
             material.emission.contents = NSColor.black
             material.isDoubleSided = false
-            if appliesR5PortalJointDepthOwnership {
-                do {
-                    if let record =
-                        try PLAY027PortalJointDepthOwnershipR5
-                        .applySemanticMaterial(
-                            material,
-                            to: node,
-                            in: scene
-                        )
-                    {
-                        r5Records.append(record)
-                    }
-                } catch {
-                    applicationError = error
-                    return
-                }
-            }
             geometry.materials = Array(
                 repeating: material,
                 count: max(1, geometry.materials.count)
@@ -273,9 +236,6 @@ enum PLAY027SemanticRendererV1 {
                     "materialSlotCount": geometry.materials.count,
                 ]
             )
-        }
-        if let applicationError {
-            throw applicationError
         }
         records.sort {
             ($0["nodeName"] as? String ?? "")
@@ -312,16 +272,9 @@ enum PLAY027SemanticRendererV1 {
                 "required named node group"
             )
         }
-        let r5Record = try appliesR5PortalJointDepthOwnership
-            ? PLAY027PortalJointDepthOwnershipR5.semanticRecord(
-                r5Records,
-                in: scene
-            )
-            : nil
         return PLAY027SemanticRendererV1Application(
             nodeRecords: records,
-            nodeManifestSHA256: digest(data),
-            r5SemanticDepthOwnership: r5Record
+            nodeManifestSHA256: digest(data)
         )
     }
 

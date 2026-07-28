@@ -1,0 +1,18 @@
+{
+  "byteIdentical": true,
+  "diagnosticOnly": true,
+  "outputSHA256": "452ff007ee3a40e559bd1d2b9833ae5cdc5ca4993d7e388f2be22ff03444db7d",
+  "processCounts": {
+    "noMetalSummary": 2,
+    "sceneKitMetalSemantic": 2,
+    "authoritativeRaw": 0,
+    "normalizer": 0,
+    "siblings": 0,
+    "modeling": 0
+  },
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "summaryBinarySHA256": "603ef513797aff88549dc043e5671dc068eba77f9474847d4cae6e26554e85b4",
+  "summarySourceSHA256": "5374bdf0388df1e4f94f89b86ee2706cccf6e7cfb2ced5acc58cac7f28199305",
+  "task": "PLAY-027"
+}

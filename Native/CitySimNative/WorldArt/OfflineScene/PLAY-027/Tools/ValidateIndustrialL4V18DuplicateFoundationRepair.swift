@@ -268,10 +268,7 @@ private enum ValidateRepair {
                     + "\(nodeNames.filter { $0 == "v16-foundation" }.count)"
             )
         }
-        let semantic = try PLAY027SemanticRendererV1.apply(
-            to: scene,
-            appliesR5PortalJointDepthOwnership: false
-        )
+        let semantic = try PLAY027SemanticRendererV1.apply(to: scene)
         guard semantic.nodeRecords.count == 51 else {
             throw ValidationError.invalid("semantic manifest is not 51 nodes")
         }

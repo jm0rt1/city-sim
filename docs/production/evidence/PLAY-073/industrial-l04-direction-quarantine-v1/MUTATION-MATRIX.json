@@ -31,7 +31,13 @@
         704
       ]
     },
-    "futureDirectionBridgeAuthorityRequired": true,
+    "acceptedDirectionBridge": {
+      "authorityDocument": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+      "sourceCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "authorityDocumentSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+      "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "futureDirectionBridgeAuthorityRequired": false,
     "sourcePacketWorldMappingAccepted": false,
     "dccNativeCoordinatesAccepted": false
   },
@@ -117,7 +123,8 @@
     "mirror_or_rotation_transform_sibling",
     "incomplete_provenance",
     "contract_drift",
-    "direction_bridge_drift",
+    "stale_direction_bridge_candidate",
+    "direction_bridge_mapping_hash_drift",
     "appearance_lock_drift",
     "registration_frontage_or_canonical_source_socket_drift",
     "fallback_reference",

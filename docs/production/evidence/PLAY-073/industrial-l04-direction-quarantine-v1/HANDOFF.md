@@ -2,7 +2,7 @@
 
 ## Disposition
 
-`PREP_COMPLETE_AWAITING_INTEGRATION_REVIEW`
+`BRIDGE_BOUND_AWAITING_DIRECTION_PACKETS_AND_INTEGRATION_REVIEW`
 
 This is a non-shipping renderer intake boundary. It accepts no actual
 Industrial L4 source direction, changes no product byte, and grants no source,
@@ -11,14 +11,14 @@ assembly, staging, QA, or production authority.
 ## Exact lineage
 
 - Published authority:
-  `30af21b5a3cbabb26c415f76d8ce35934dcc5082`.
+  `aa20d5963c356eee812f66bafff8582215293bbb`.
 - Clean synchronization merge:
-  `183d9fe6456ea8d53398415fd64315b6d1a44db2`.
+  `ce6a41f9c401c16cde9c062c3b8ed5caba14f218`.
 - Packet schema and validator boundary:
   `56444245f555d2ac50afed995a65c34a95618f8c`.
 - Deterministic mutation matrix and rejection coverage:
   `f4c0dcda7a1f2d84d2587ff3cb4e298ce13cd3a4`.
-- Canonical source-pixel socket and future direction-bridge boundary:
+- Canonical source-pixel socket and direction-bridge schema boundary:
   `4e71720f4dc4a724030b51ca19c4edf69d28dfeb`.
 - Preserved R2 product/evidence prerequisites remain ancestors:
   `25d291a7373833a797dc3bb3ba36658e18eccc06` and
@@ -33,8 +33,8 @@ The machine-readable direction packet binds:
 
 - Industrial L4 family, level, variant, logical direction and logical ID;
 - CONTRACT-021 revision 2 and exact contract hash;
-- a future Integration-published direction-bridge document, commit, document
-  hash and canonical-mapping hash;
+- the accepted Integration direction-bridge document, source candidate,
+  document hash and canonical-mapping hash;
 - future Integration-published appearance-lock document, commit, document
   hash, North process-A source hash and decoded-RGBA hash;
 - exact source candidate commit/key/decoded-RGBA hash;
@@ -63,9 +63,23 @@ Quarantine packets use only the canonical CitySim source coordinate system
 All four retain source-pixel pivot `[768,896]`. No Blender-native, DCC-native
 or packet-claimed world-coordinate mapping is encoded or trusted. A packet
 cannot decode without the direction-bridge record, and admission rejects any
-bridge document/commit/hash/mapping mismatch. The bridge values used by the
-synthetic tests are fixtures only; actual quarantine remains blocked until
-Integration publishes the accepted bridge authority and exact hashes.
+bridge document/candidate/hash/mapping mismatch. The bound accepted authority
+is:
+
+- document:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md`;
+- source candidate:
+  `3e01ca6738d7574718f9aeff4b66771eee109feb`;
+- document SHA-256:
+  `9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208`;
+- mapping-contract SHA-256:
+  `5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7`.
+
+The packet test hashes both published files directly. The returned v05
+candidate `b8f85934563376727be70fee34fcf88c780b5d9f` rejects as stale, and a
+packet with a mismatched mapping hash rejects. Actual direction payloads and
+the future appearance lock remain unavailable; synthetic source/LOD/lock
+values remain test fixtures only.
 
 The pure test-only quarantine accumulator proves:
 
@@ -96,10 +110,13 @@ SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-swift-cache \
 swift test --package-path Native/CitySimNative --filter IndustrialL4Direction
 ```
 
-The exact `IndustrialL4Direction` filter passed **7 tests, 0 failed** after the
-candidate-neutral catalog repair. The broader previously recorded
-`IndustrialL4` result remains **9 passed, 0 failed** and was not rerun for this
-test/evidence-only descendant.
+The exact `IndustrialL4Direction` filter passed **7 tests, 0 failed** in
+**0.279 seconds**. The first attempt passed 6/7 but exposed an obsolete test
+guard: a broad lowercase `dcc` substring check matched characters inside the
+accepted opaque document SHA. The guard now rejects only actual forbidden
+coordinate field names; candidate evaluation did not change. The broader
+previously recorded `IndustrialL4` result remains **9 passed, 0 failed** and
+was not rerun under the tiered intake rule.
 
 The schema parses with `jq`; `git diff --check` passes. No full suite or staged
 app was run because this task changes only non-shipping test/evidence surfaces,
@@ -113,8 +130,9 @@ fingerprint, incomplete provenance, CONTRACT-021 or appearance-lock drift,
 direction-bridge drift, registration/frontage/canonical-source-socket drift,
 fallback references, non-ready sources and any production-selected packet.
 
-Actual direction quarantine remains blocked until Integration publishes the
-exact direction bridge and World Art returns an independently accepted,
-Integration-authorized exact source packet. Synthetic packet, bridge and lock
-hashes in the tests are validator fixtures only and must never be copied into
-an actual source handoff.
+Actual direction quarantine remains blocked until World Art returns an
+independently accepted, Integration-authorized exact source packet and
+appearance lock. Synthetic packet/source/LOD/lock hashes in the tests are
+validator fixtures only and must never be copied into an actual source
+handoff. The direction bridge is no longer synthetic: it is the exact accepted
+v06 authority above.

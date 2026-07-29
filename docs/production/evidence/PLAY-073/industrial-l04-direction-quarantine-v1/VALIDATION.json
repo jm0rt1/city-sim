@@ -1,18 +1,20 @@
 {
   "schemaVersion": 1,
   "task": "PLAY-073",
-  "publishedAuthority": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
-  "synchronizationMerge": "183d9fe6456ea8d53398415fd64315b6d1a44db2",
+  "publishedAuthority": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "synchronizationMerge": "ce6a41f9c401c16cde9c062c3b8ed5caba14f218",
   "schemaCommit": "56444245f555d2ac50afed995a65c34a95618f8c",
   "matrixCommit": "f4c0dcda7a1f2d84d2587ff3cb4e298ce13cd3a4",
   "coordinateBridgeCommit": "4e71720f4dc4a724030b51ca19c4edf69d28dfeb",
   "inputs": {
     "contract021Revision2Sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c",
     "existingL4IntakeSha256": "048e225ddbd5097ba6283418e3b27c198722eb913bd278b3cf351df51bae018c",
-    "directionPacketSchemaSha256": "00b118a5e6317bb80354a26aae5485f831e681b9190be52c60ba49a83a76716f",
-    "validatorSupportSha256": "0c4e5f044236944b7e055a4bfb5bac1e7b0175c76098c5953a9959ac3b6133ac",
-    "schemaTestsSha256": "882c9027d0ba1335f6240cd70aade56eae5edd36a085b2480cc333e0241e7f24",
-    "matrixTestsSha256": "8c8fdd99317809cff54ae28ca33fb52a291cf4ad7b98525fddf0bed6c0cc6ca3"
+    "directionPacketSchemaSha256": "4b4d0b6e48cd23535d79b0dc6f515be5de5367d931099aaed391c7983f866c83",
+    "validatorSupportSha256": "205975ad7d76653b52a5e395c3d74273436a84b3d470b2d0febbe9f7917abe6e",
+    "schemaTestsSha256": "fd3e63ebf178797fed71472d274c7cce5d13f2b8c2eeea069a466cec036a515a",
+    "matrixTestsSha256": "008eee97972e51a7155ab707e18ab82766ac0d587881983b13a7d5045e829c94",
+    "acceptedBridgeAuthorityDocumentSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+    "acceptedBridgeMappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
   },
   "validation": [
     {
@@ -22,12 +24,13 @@
     {
       "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4Direction",
       "result": "7_passed_0_failed",
-      "elapsedSeconds": 0.269
+      "elapsedSeconds": 0.279
     },
     {
       "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4",
       "result": "9_passed_0_failed",
-      "elapsedSeconds": 0.070
+      "elapsedSeconds": 0.070,
+      "scope": "historical_prior_checkpoint_not_rerun"
     },
     {
       "command": "git diff --check",
@@ -37,7 +40,13 @@
   "environment": {
     "clangModuleCache": "/private/tmp/play073-l4-clang-cache",
     "swiftPMModuleCache": "/private/tmp/play073-l4-swift-cache",
-    "note": "The first sandboxed invocation was blocked before compilation by the user cache path; the identical focused command passed with task-specific temporary caches."
+    "note": "The exact focused command used task-specific temporary caches."
+  },
+  "supersededAttempt": {
+    "result": "6_passed_1_failed",
+    "cause": "the prior broad lowercase dcc substring guard matched three hexadecimal characters inside the accepted authority document SHA",
+    "repair": "assert only forbidden coordinate field names; accepted hashes remain opaque",
+    "candidateEvaluationChanged": false
   },
   "boundaries": {
     "syntheticPacketsOnly": true,
@@ -57,9 +66,14 @@
   },
   "coordinateBoundary": {
     "directionBridgeAuthorityRequired": true,
+    "directionBridgeAuthorityBound": true,
+    "authorityDocument": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+    "acceptedSourceCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "authorityDocumentSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
     "canonicalCoordinateSystem": "citysim_source_pixels_v1",
     "sourcePacketWorldMappingTrusted": false,
     "dccNativeCoordinatesEncoded": false
   },
-  "disposition": "prep_complete_awaiting_integration_review"
+  "disposition": "bridge_bound_awaiting_direction_packets_and_integration_review"
 }

@@ -1,0 +1,70 @@
+{
+  "schema": "citysim.world-art.static-predesign-proof.v1",
+  "task": "PLAY-079",
+  "direction": "east",
+  "phase": "PREDESIGN_ZERO_PIXEL",
+  "result": "PASS",
+  "independence": {
+    "geometryOrigin": "independently-authored-east-from-published-contracts-only",
+    "siblingSceneInputCount": 0,
+    "copiedGeometry": false,
+    "mirroredGeometry": false,
+    "rotatedGeometry": false,
+    "transformedSiblingGeometry": false
+  },
+  "registration": {
+    "citySimFootprint": {
+      "width": 72.0,
+      "depth": 72.0
+    },
+    "dccHorizontalScale": 0.7777777777777778,
+    "dccFootprint": {
+      "width": 56.0,
+      "depth": 56.0,
+      "corners": [
+        [-28.0, 28.0, 0.0],
+        [28.0, 28.0, 0.0],
+        [28.0, -28.0, 0.0],
+        [-28.0, -28.0, 0.0]
+      ]
+    },
+    "groundPivot": [28.0, -28.0, 0.0],
+    "frontageSocket": [28.0, 0.0, 0.0]
+  },
+  "contact": {
+    "area": 1557.0,
+    "footprintArea": 3136.0,
+    "coverageFraction": 0.49649234693877553,
+    "broadDarkMatForbidden": true
+  },
+  "materialBinding": {
+    "lockState": "PROVISIONAL_ROLES_AWAITING_ACCEPTED_NORTH_FAMILY_MATERIAL_LOCK",
+    "roleCount": 9,
+    "roles": [
+      "contact-shadow",
+      "dark-painted-steel",
+      "formed-concrete",
+      "glazing-louver",
+      "hot-process",
+      "portal-void",
+      "roof-edge-metal",
+      "safety-oxide",
+      "warm-weathered-masonry"
+    ]
+  },
+  "silhouette": {
+    "authoredTiers": [0, 1, 2, 3, 4, 5, 6, 7],
+    "authoredBreakCount": 7,
+    "minimumBreakCount": 3
+  },
+  "objectCount": 23,
+  "renderInvocations": 0,
+  "imagesWritten": 0,
+  "renderAPIReferencesInValidator": 0,
+  "sourceHashes": {
+    "sceneSHA256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
+    "materialsSHA256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9",
+    "validatorSHA256": "86dd6b3fad5502c6c9f898d802c9fc5eb4da57e7864c981494ad5ad9f75dde33",
+    "fullProofSHA256": "ae0fa988ca8d151613b8366aff1152fed62d2cab56fee138deab974011c7eabf"
+  }
+}

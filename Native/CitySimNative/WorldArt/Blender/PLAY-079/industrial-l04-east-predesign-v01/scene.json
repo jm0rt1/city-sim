@@ -1,0 +1,354 @@
+{
+  "schema": "citysim.world-art.blender-predesign.v1",
+  "task": "PLAY-079",
+  "phase": "PREDESIGN_ZERO_PIXEL",
+  "logicalBuildingID": "industrial_l04",
+  "variant": 0,
+  "direction": "east",
+  "sourceRevision": "east-predesign-v01",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderingAllowed": false,
+  "orientationTransform": "none",
+  "provenance": {
+    "geometryOrigin": "independently-authored-east-from-published-contracts-only",
+    "siblingSceneInputs": [],
+    "copiedGeometry": false,
+    "mirroredGeometry": false,
+    "rotatedGeometry": false,
+    "transformedSiblingGeometry": false,
+    "contractInputs": [
+      "CONTRACT-010",
+      "CONTRACT-020",
+      "CONTRACT-021",
+      "INDUSTRIAL-L04-BLENDER-REGISTRATION-R3-AUTHORITY",
+      "INDUSTRIAL-L04-BLENDER-NORTH-ART-V01-AUTHORITY",
+      "INDUSTRIAL-L04-BLENDER-NORTH-ART-V02-AUTHORITY"
+    ]
+  },
+  "registration": {
+    "citySimTileBasis": [72.0, 36.0],
+    "citySimFootprint": {
+      "width": 72.0,
+      "depth": 72.0
+    },
+    "dccHorizontalScale": 0.7777777777777778,
+    "dccFootprint": {
+      "width": 56.0,
+      "depth": 56.0,
+      "corners": [
+        [-28.0, 28.0, 0.0],
+        [28.0, 28.0, 0.0],
+        [28.0, -28.0, 0.0],
+        [-28.0, -28.0, 0.0]
+      ]
+    },
+    "groundOrigin": [0.0, 0.0, 0.0],
+    "groundPivot": [28.0, -28.0, 0.0],
+    "frontage": "east",
+    "frontageSocket": [28.0, 0.0, 0.0],
+    "expectedSourcePixels": {
+      "footprint": [
+        [768.0, 640.0],
+        [1024.0, 768.0],
+        [768.0, 896.0],
+        [512.0, 768.0]
+      ],
+      "groundOrigin": [768.0, 768.0],
+      "groundPivot": [768.0, 896.0],
+      "frontageSocket": [896.0, 832.0]
+    },
+    "sourcePixelTolerance": 0.5
+  },
+  "camera": {
+    "projection": "orthographic",
+    "view": "southeast-looking-northwest",
+    "yawDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "target": [0.0, 0.0, 22.861902498201186],
+    "distance": 420.0,
+    "orthoScale": 237.5878601074218,
+    "shiftX": 0.0,
+    "shiftY": 0.08333333333333333,
+    "resolution": [1536, 1024],
+    "resolutionPercentage": 100,
+    "pixelAspect": [1.0, 1.0],
+    "literalResolution": [192, 128]
+  },
+  "light": {
+    "keyOrigin": [-120.0, 120.0, 180.0],
+    "keyDirection": [120.0, -120.0, -180.0],
+    "authoredShadowVector": [14.0, -14.0, 0.0],
+    "semantic": "northwest-key-southeast-contact"
+  },
+  "contact": {
+    "materialRole": "contact-shadow",
+    "polygon": [
+      [-20.0, 16.0, 0.0],
+      [18.0, 16.0, 0.0],
+      [24.0, 10.0, 0.0],
+      [24.0, -17.0, 0.0],
+      [14.0, -22.0, 0.0],
+      [-18.0, -20.0, 0.0]
+    ],
+    "roadApron": [
+      [20.6666666667, -13.3333333333, 0.02],
+      [28.0, -4.0, 0.02],
+      [28.0, 0.0, 0.0],
+      [28.0, 4.0, 0.02],
+      [20.6666666667, 13.3333333333, 0.02]
+    ],
+    "broadDarkMatForbidden": true
+  },
+  "portal": {
+    "frontage": "east",
+    "roadServed": true,
+    "center": [23.0, 0.0, 12.0],
+    "insetObjectID": "east-monumental-portal-inset",
+    "jambObjectIDs": [
+      "east-monumental-portal-south-jamb",
+      "east-monumental-portal-north-jamb"
+    ],
+    "headerObjectID": "east-monumental-portal-header",
+    "revealObjectID": "east-monumental-portal-reveal",
+    "apronConnectsToSocket": true,
+    "literal192Targets": {
+      "insetMinimumWidth": 14.0,
+      "insetMinimumHeight": 12.0,
+      "jambMinimumThickness": 2.0,
+      "headerMinimumThickness": 2.0,
+      "minimumSilhouetteBreaks": 3,
+      "maximumProcessOccluders": 0
+    }
+  },
+  "materialBindings": {
+    "lockState": "PROVISIONAL_ROLES_AWAITING_ACCEPTED_NORTH_FAMILY_MATERIAL_LOCK",
+    "library": "materials.json",
+    "requiredRoles": [
+      "warm-weathered-masonry",
+      "formed-concrete",
+      "dark-painted-steel",
+      "roof-edge-metal",
+      "glazing-louver",
+      "portal-void",
+      "safety-oxide",
+      "hot-process",
+      "contact-shadow"
+    ]
+  },
+  "objects": [
+    {
+      "id": "east-foundation",
+      "kind": "box",
+      "category": "foundation",
+      "center": [0.0, 0.0, 0.6],
+      "dimensions": [54.6666666667, 54.6666666667, 1.2],
+      "materialRole": "formed-concrete",
+      "silhouetteTier": 0
+    },
+    {
+      "id": "east-high-bay-hall",
+      "kind": "box",
+      "category": "hall",
+      "center": [-2.6666666667, 0.0, 14.0],
+      "dimensions": [46.6666666667, 36.0, 28.0],
+      "materialRole": "warm-weathered-masonry",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-south-control-wing",
+      "kind": "box",
+      "category": "administration",
+      "center": [16.0, -20.6666666667, 8.0],
+      "dimensions": [12.0, 12.0, 16.0],
+      "materialRole": "formed-concrete",
+      "silhouetteTier": 1
+    },
+    {
+      "id": "east-control-glazing",
+      "kind": "box",
+      "category": "administration",
+      "center": [22.1666666667, -20.6666666667, 8.5],
+      "dimensions": [0.3333333333, 8.0, 7.0],
+      "materialRole": "glazing-louver",
+      "silhouetteTier": 1
+    },
+    {
+      "id": "east-monitor-low",
+      "kind": "box",
+      "category": "roof",
+      "center": [-4.6666666667, -6.0, 30.5],
+      "dimensions": [28.0, 8.0, 5.0],
+      "materialRole": "roof-edge-metal",
+      "silhouetteTier": 3
+    },
+    {
+      "id": "east-monitor-high",
+      "kind": "box",
+      "category": "roof",
+      "center": [-4.6666666667, 6.0, 34.0],
+      "dimensions": [25.3333333333, 8.0, 12.0],
+      "materialRole": "dark-painted-steel",
+      "silhouetteTier": 4
+    },
+    {
+      "id": "east-monitor-clerestory",
+      "kind": "box",
+      "category": "roof",
+      "center": [8.1666666667, 6.0, 34.0],
+      "dimensions": [0.3333333333, 6.6666666667, 7.0],
+      "materialRole": "glazing-louver",
+      "silhouetteTier": 4
+    },
+    {
+      "id": "east-northwest-process-bay",
+      "kind": "box",
+      "category": "process",
+      "center": [-20.5, 10.0, 19.0],
+      "dimensions": [14.0, 14.0, 38.0],
+      "materialRole": "dark-painted-steel",
+      "silhouetteTier": 5
+    },
+    {
+      "id": "east-northwest-stack",
+      "kind": "cylinder",
+      "category": "process",
+      "center": [-21.3333333333, 20.6666666667, 37.0],
+      "radius": 2.0,
+      "depth": 74.0,
+      "vertices": 16,
+      "materialRole": "safety-oxide",
+      "silhouetteTier": 7
+    },
+    {
+      "id": "east-secondary-stack",
+      "kind": "cylinder",
+      "category": "process",
+      "center": [-14.0, 14.0, 29.0],
+      "radius": 1.6666666667,
+      "depth": 58.0,
+      "vertices": 16,
+      "materialRole": "dark-painted-steel",
+      "silhouetteTier": 6
+    },
+    {
+      "id": "east-roof-plant",
+      "kind": "box",
+      "category": "process",
+      "center": [6.0, 12.6666666667, 32.0],
+      "dimensions": [8.0, 5.3333333333, 8.0],
+      "materialRole": "roof-edge-metal",
+      "silhouetteTier": 4
+    },
+    {
+      "id": "east-south-gantry-beam",
+      "kind": "box",
+      "category": "gantry",
+      "center": [-8.0, -20.0, 23.0],
+      "dimensions": [30.6666666667, 2.0, 4.0],
+      "materialRole": "safety-oxide",
+      "silhouetteTier": 3
+    },
+    {
+      "id": "east-south-gantry-west-post",
+      "kind": "box",
+      "category": "gantry",
+      "center": [-22.0, -20.0, 11.0],
+      "dimensions": [2.0, 2.0, 22.0],
+      "materialRole": "dark-painted-steel",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-south-gantry-east-post",
+      "kind": "box",
+      "category": "gantry",
+      "center": [6.0, -20.0, 11.0],
+      "dimensions": [2.0, 2.0, 22.0],
+      "materialRole": "dark-painted-steel",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-process-tank",
+      "kind": "cylinder",
+      "category": "process",
+      "center": [-20.6666666667, -8.6666666667, 9.0],
+      "radius": 4.0,
+      "depth": 18.0,
+      "vertices": 16,
+      "materialRole": "formed-concrete",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-process-pipe-bridge",
+      "kind": "box",
+      "category": "process",
+      "center": [-16.6666666667, 2.6666666667, 23.0],
+      "dimensions": [6.6666666667, 18.6666666667, 3.0],
+      "materialRole": "safety-oxide",
+      "silhouetteTier": 3
+    },
+    {
+      "id": "east-monumental-portal-inset",
+      "kind": "box",
+      "category": "portal",
+      "center": [22.8333333333, 0.0, 12.0],
+      "dimensions": [1.0, 24.0, 24.0],
+      "materialRole": "portal-void",
+      "silhouetteTier": 0
+    },
+    {
+      "id": "east-monumental-portal-reveal",
+      "kind": "box",
+      "category": "portal",
+      "center": [23.5, 0.0, 12.0],
+      "dimensions": [0.6666666667, 22.6666666667, 22.0],
+      "materialRole": "dark-painted-steel",
+      "silhouetteTier": 0
+    },
+    {
+      "id": "east-monumental-portal-south-jamb",
+      "kind": "box",
+      "category": "portal-frame",
+      "center": [24.0, -13.6666666667, 12.0],
+      "dimensions": [2.0, 3.3333333333, 24.0],
+      "materialRole": "roof-edge-metal",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-monumental-portal-north-jamb",
+      "kind": "box",
+      "category": "portal-frame",
+      "center": [24.0, 13.6666666667, 12.0],
+      "dimensions": [2.0, 3.3333333333, 24.0],
+      "materialRole": "roof-edge-metal",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-monumental-portal-header",
+      "kind": "box",
+      "category": "portal-frame",
+      "center": [24.0, 0.0, 26.25],
+      "dimensions": [2.0, 30.6666666667, 4.5],
+      "materialRole": "formed-concrete",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-portal-safety-fascia",
+      "kind": "box",
+      "category": "portal-frame",
+      "center": [25.0666666667, 0.0, 27.0],
+      "dimensions": [0.1333333333, 25.3333333333, 1.2],
+      "materialRole": "safety-oxide",
+      "silhouetteTier": 2
+    },
+    {
+      "id": "east-staff-entrance",
+      "kind": "box",
+      "category": "administration",
+      "center": [22.2666666667, -20.6666666667, 3.5],
+      "dimensions": [0.5333333333, 2.6666666667, 7.0],
+      "materialRole": "glazing-louver",
+      "silhouetteTier": 0
+    }
+  ]
+}

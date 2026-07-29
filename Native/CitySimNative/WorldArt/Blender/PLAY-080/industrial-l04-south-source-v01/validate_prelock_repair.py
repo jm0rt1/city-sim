@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 import run_production
+from jsonschema import Draft202012Validator
 
 
 SOURCE_DIR = Path(__file__).resolve().parent
@@ -31,6 +32,31 @@ SOURCE_SCHEMA_V1 = (
     "docs/production/evidence/INTEGRATION/"
     "industrial-l04-source-stage-handoff-schema-v1.json"
 )
+SOURCE_SCHEMA_V2 = (
+    "docs/production/evidence/INTEGRATION/"
+    "industrial-l04-source-stage-handoff-schema-v2.json"
+)
+SOURCE_SCHEMA_V2_SHA256 = (
+    "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+)
+EXPECTED_SHARED_BINDINGS = {
+    "sourceStageHandoffSchema": {
+        "path": SOURCE_SCHEMA_V2,
+        "sha256": SOURCE_SCHEMA_V2_SHA256,
+    },
+    "nonAliasLoader": {
+        "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+        "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39",
+    },
+    "semanticValidator": {
+        "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+        "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340",
+    },
+    "canonicalDecoder": {
+        "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+        "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab",
+    },
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -59,9 +85,9 @@ def pixel_files(*roots: Path) -> list[str]:
     )
 
 
-def guard_code(contract: dict[str, Any]) -> str:
+def guard_code(function: Any, contract: dict[str, Any]) -> str:
     try:
-        run_production.require_lock(contract)
+        function(contract)
     except run_production.GuardRejected as rejection:
         return rejection.code
     return "NOT_REJECTED"
@@ -96,6 +122,10 @@ def main() -> int:
         "industrial-l04-accepted-master-non-alias-input-v1.json"
         and non_alias["sha256"]
         == "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+    )
+    static_checks["sourceStageV2AndSharedToolsBound"] = all(
+        contract["authorities"].get(key) == value
+        for key, value in EXPECTED_SHARED_BINDINGS.items()
     )
 
     driver_text = (SOURCE_DIR / "run_production.py").read_text(encoding="utf-8")
@@ -155,7 +185,10 @@ def main() -> int:
         )
     )
 
-    missing_code = guard_code(contract)
+    missing_profile_code = guard_code(
+        run_production.require_source_production_profile, contract
+    )
+    missing_code = guard_code(run_production.require_lock, contract)
     wrong_contract = copy.deepcopy(contract)
     contract_hash = sha256(args.contract)
     contract_display = display_path(args.contract)
@@ -173,17 +206,37 @@ def main() -> int:
         "commit": "3" * 40,
         "sha256": contract_hash,
     }
-    wrong_code = guard_code(wrong_contract)
+    wrong_code = guard_code(run_production.require_lock, wrong_contract)
     guard_ok = (
+        missing_profile_code == "MISSING_SOURCE_PRODUCTION_PROFILE"
+        and
         missing_code == "MISSING_APPEARANCE_LOCK"
         and wrong_code == "WRONG_APPEARANCE_LOCK"
     )
+
+    schema_record = contract["authorities"]["sourceStageHandoffSchema"]
+    schema_path = REPOSITORY_ROOT / schema_record["path"]
+    schema_ok = False
+    schema_error = None
+    try:
+        if sha256(schema_path) != SOURCE_SCHEMA_V2_SHA256:
+            raise ValueError("source-stage schema v2 hash mismatch")
+        schema = load_json(schema_path)
+        Draft202012Validator.check_schema(schema)
+        if schema.get("$id") != (
+            "citysim://integration/industrial-l04-source-stage-handoff-v2"
+        ):
+            raise ValueError("source-stage schema v2 id mismatch")
+        schema_ok = True
+    except Exception as error:  # fail closed in the evidence receipt
+        schema_error = str(error)
 
     after_pixels = pixel_files(SOURCE_DIR, evidence_root)
     overall = (
         all(static_checks.values())
         and describe_ok
         and guard_ok
+        and schema_ok
         and not before_pixels
         and not after_pixels
     )
@@ -210,15 +263,23 @@ def main() -> int:
         "guard": {
             "result": "PASS" if guard_ok else "FAIL",
             "execution": "direct-function-no-A-B-C-mode",
+            "missingSourceProductionProfileRejection": missing_profile_code,
             "missingAppearanceLockRejection": missing_code,
             "wrongAppearanceLockRejection": wrong_code,
             "rejectionStage": "before_renderer_launch",
         },
         "schemaGate": {
-            "result": "BLOCKED",
-            "state": "awaiting_integration_source_stage_schema_v2",
+            "result": "PASS" if schema_ok else "FAIL",
+            "state": "source_stage_schema_v2_bound",
+            "path": SOURCE_SCHEMA_V2,
+            "sha256": SOURCE_SCHEMA_V2_SHA256,
+            "documentValidation": "PASS" if schema_ok else "FAIL",
+            "error": schema_error,
             "sourceSchemaV1FinalBinding": False,
             "sourceSchemaV1Validation": "not_run",
+            "launchBoundInstanceValidation": (
+                "not_run_missing_source_production_profile"
+            ),
         },
         "pixelValidations": {
             "rgba": "not_run",
@@ -245,6 +306,52 @@ def main() -> int:
     output = evidence_root / "PRELOCK-REPAIR-VALIDATION.json"
     output.write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    binding_receipt = {
+        "schema": "citysim.play-080.source-stage-v2-schema-binding.v1",
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "publishedBaseline": contract["baselineCommit"],
+        "result": "PASS" if schema_ok and guard_ok else "FAIL",
+        "sourceStageSchema": schema_record,
+        "sharedBindings": {
+            key: contract["authorities"][key]
+            for key in (
+                "nonAliasLoader",
+                "semanticValidator",
+                "canonicalDecoder",
+            )
+        },
+        "schemaDocumentValidation": "PASS" if schema_ok else "FAIL",
+        "schemaInstanceValidation": "not_run_missing_source_production_profile",
+        "sourceProductionProfileGuard": {
+            "result": (
+                "PASS"
+                if missing_profile_code == "MISSING_SOURCE_PRODUCTION_PROFILE"
+                else "FAIL"
+            ),
+            "rejection": missing_profile_code,
+            "stage": "before_renderer_launch",
+            "execution": "direct-function-no-A-B-C-mode",
+        },
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "renderInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "contactSheetInvocations": 0,
+        "pixelFiles": 0,
+        "processA": "not_run",
+        "processB": "not_run",
+        "processC": "not_run",
+        "sourceReady": False,
+        "productionSelected": False,
+        "selfAccepted": False,
+    }
+    binding_output = evidence_root / "SOURCE-STAGE-V2-SCHEMA-BINDING.json"
+    binding_output.write_text(
+        json.dumps(binding_receipt, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     print(json.dumps({"result": report["result"], "output": display_path(output)}))

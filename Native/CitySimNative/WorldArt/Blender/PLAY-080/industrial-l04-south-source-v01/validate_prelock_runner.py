@@ -115,6 +115,9 @@ def inspect_driver(driver: Path) -> dict[str, Any]:
     render_source_text = ast.get_source_segment(driver_text, render_function) or ""
     main_text = ast.get_source_segment(driver_text, main_function) or ""
     require_lock_index = main_text.find("require_lock(contract)")
+    require_profile_index = main_text.find(
+        "require_source_production_profile(contract)"
+    )
     require_bridge_index = main_text.find("require_coordinate_bridge(contract)")
     render_index = main_text.find("render_source(contract")
     checks = {
@@ -141,9 +144,14 @@ def inspect_driver(driver: Path) -> dict[str, Any]:
             "require_non_alias_input(contract)" in driver_text
         ),
         "guardPrecedesRenderFunctionCall": (
-            require_lock_index >= 0
+            require_profile_index >= 0
+            and require_lock_index > require_profile_index
             and require_bridge_index > require_lock_index
             and render_index > require_bridge_index
+        ),
+        "missingSourceProfileGuardPrecedesLocks": (
+            require_profile_index >= 0
+            and require_lock_index > require_profile_index
         ),
         "canonicalSouthSocketRetained": (
             '"canonicalCitySimFrontageSocket": [0, 0, 28]' in driver_text

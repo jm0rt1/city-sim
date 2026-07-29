@@ -3,7 +3,7 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
@@ -26,7 +26,7 @@
     },
     "prelockRepairAuthority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md",
-      "sha256": "5ecea802faf9bda1e742d12a6a65bca1fe2bceb219a84be8b6a1f68ff51769c6"
+      "sha256": "a92268f4118db7458343d4967c002200af98a8e338b1189aae9423ae2e299412"
     },
     "handoffSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
@@ -35,6 +35,26 @@
     "nonAliasInput": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
       "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+    },
+    "sourceStageSchemaAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-STAGE-SCHEMA-V2-AUTHORITY.md",
+      "sha256": "330c9fd7ee4f4d5e3664ae0c155813b83d15a249f46a77aff4b5908e73f8005e"
+    },
+    "sourceStageHandoffSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
     }
   },
   "acceptedPredesign": {
@@ -82,6 +102,11 @@
     ]
   },
   "postLockProductionAuthority": {
+    "path": null,
+    "commit": null,
+    "sha256": null
+  },
+  "sourceProductionProfile": {
     "path": null,
     "commit": null,
     "sha256": null
@@ -267,6 +292,7 @@
     "native2x": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/native-2x.json",
     "literal192": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/literal-192.json",
     "literal192SemanticProof": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
+    "sourceStageV2BindingReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-V2-SCHEMA-BINDING.json",
     "registration": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/registration.json",
     "contactSheet": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/contact-sheet/industrial-l04-south-source-v01.png",
     "rejections": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/rejections/",

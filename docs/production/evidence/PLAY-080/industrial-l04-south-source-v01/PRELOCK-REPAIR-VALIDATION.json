@@ -1,5 +1,5 @@
 {
-  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "contactSheetInvocations": 0,
@@ -50,6 +50,24 @@
         640,
         832
       ],
+      "sourceStageBindings": {
+        "canonicalDecoder": {
+          "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+          "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+        },
+        "nonAliasLoader": {
+          "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+          "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+        },
+        "semanticValidator": {
+          "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+          "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+        },
+        "sourceStageHandoffSchema": {
+          "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+          "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        }
+      },
       "taskId": "PLAY-080"
     },
     "result": "PASS"
@@ -58,6 +76,7 @@
   "guard": {
     "execution": "direct-function-no-A-B-C-mode",
     "missingAppearanceLockRejection": "MISSING_APPEARANCE_LOCK",
+    "missingSourceProductionProfileRejection": "MISSING_SOURCE_PRODUCTION_PROFILE",
     "rejectionStage": "before_renderer_launch",
     "result": "PASS",
     "wrongAppearanceLockRejection": "WRONG_APPEARANCE_LOCK"
@@ -80,10 +99,15 @@
   "result": "PASS",
   "schema": "citysim.play-080.prelock-repair-validation.v1",
   "schemaGate": {
-    "result": "BLOCKED",
+    "documentValidation": "PASS",
+    "error": null,
+    "launchBoundInstanceValidation": "not_run_missing_source_production_profile",
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "result": "PASS",
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
     "sourceSchemaV1FinalBinding": false,
     "sourceSchemaV1Validation": "not_run",
-    "state": "awaiting_integration_source_stage_schema_v2"
+    "state": "source_stage_schema_v2_bound"
   },
   "selfAccepted": false,
   "sourceReady": false,
@@ -94,7 +118,8 @@
       "deterministicFiveFieldSemanticProofBound": true,
       "literalPlaceholderRemoved": true,
       "runnerContractShapeAndFrozenInputs": true,
-      "sourceSchemaV1FinalBindingAbsent": true
+      "sourceSchemaV1FinalBindingAbsent": true,
+      "sourceStageV2AndSharedToolsBound": true
     },
     "result": "PASS"
   },

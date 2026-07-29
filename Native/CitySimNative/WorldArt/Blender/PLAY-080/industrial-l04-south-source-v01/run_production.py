@@ -19,6 +19,15 @@ from typing import Any
 SOURCE_DIR = Path(__file__).resolve().parent
 REPOSITORY_ROOT = SOURCE_DIR.parents[5]
 DEFAULT_CONTRACT = SOURCE_DIR / "runner-contract.json"
+SHARED_DIR = REPOSITORY_ROOT / "Native/CitySimNative/WorldArt/Shared"
+if str(SHARED_DIR) not in sys.path:
+    sys.path.insert(0, str(SHARED_DIR))
+
+from accepted_master_non_alias_v1 import (  # noqa: E402
+    NonAliasAuthorityError,
+    load_forbidden_decoded_rgba,
+)
+
 RENDER_MODES = {"A", "B", "C"}
 LOCK_FIELDS = (
     "documentPath",
@@ -28,6 +37,7 @@ LOCK_FIELDS = (
     "northProcessADecodedRgbaSha256",
 )
 POST_LOCK_FIELDS = ("path", "commit", "sha256")
+SOURCE_PROFILE_FIELDS = ("path", "commit", "sha256")
 
 
 class GuardRejected(RuntimeError):
@@ -71,52 +81,17 @@ def sha256(path: Path) -> str:
 def require_non_alias_input(contract: dict[str, Any]) -> None:
     record = contract["authorities"]["nonAliasInput"]
     require_sha(record, "nonAliasInput")
-    common_input = load_json(repository_path(record["path"]))
-    derived = common_input.get("authorityInputs", {}).get("derivedInventory", {})
-    if not isinstance(derived, dict):
-        raise GuardRejected("NON_ALIAS_INPUT_MALFORMED", {"derivedInventory": derived})
-    require_sha(derived, "nonAliasDerivedInventory")
-    inventory = load_json(repository_path(derived["path"]))
-    masters = inventory.get("masters", [])
-    hashes = [
-        master.get("decodedRGBASHA256")
-        for master in masters
-        if isinstance(master, dict)
-    ]
-    expected_count = common_input.get("forbiddenDecodedRgbaSha256Count")
-    hashes_are_canonical = all(
-        isinstance(value, str)
-        and len(value) == 64
-        and all(character in "0123456789abcdef" for character in value)
-        for value in hashes
-    )
-    canonical = (
-        "".join(f"{value}\n" for value in sorted(hashes))
-        if hashes_are_canonical
-        else ""
-    )
-    actual_set_sha = hashlib.sha256(canonical.encode("ascii")).hexdigest()
-    if (
-        common_input.get("counts", {}).get("total") != 44
-        or expected_count != 44
-        or len(masters) != 44
-        or len(set(hashes)) != 44
-        or not hashes_are_canonical
-        or actual_set_sha != common_input.get("forbiddenSetSha256")
-    ):
-        raise GuardRejected(
-            "NON_ALIAS_INPUT_MALFORMED",
-            {
-                "declaredTotal": common_input.get("counts", {}).get("total"),
-                "declaredForbiddenCount": expected_count,
-                "derivedMasterCount": len(masters),
-                "uniqueDecodedRgbaCount": len(set(hashes)),
-                "expectedForbiddenSetSha256": common_input.get(
-                    "forbiddenSetSha256"
-                ),
-                "actualForbiddenSetSha256": actual_set_sha,
-            },
+    try:
+        forbidden = load_forbidden_decoded_rgba(
+            REPOSITORY_ROOT, repository_path(record["path"])
         )
+    except NonAliasAuthorityError as error:
+        raise GuardRejected(
+            "NON_ALIAS_INPUT_REJECTED",
+            {"code": error.code, "detail": error.detail},
+        ) from error
+    if len(forbidden) != 44:
+        raise GuardRejected("NON_ALIAS_INPUT_REJECTED", {"count": len(forbidden)})
 
 
 def repository_path(display_path: str) -> Path:
@@ -146,7 +121,7 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+        "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -208,6 +183,11 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "prelockRepairAuthority": authorities.get("prelockRepairAuthority"),
         "handoffSchema": authorities.get("handoffSchema"),
         "nonAliasInput": authorities.get("nonAliasInput"),
+        "sourceStageSchemaAuthority": authorities.get("sourceStageSchemaAuthority"),
+        "sourceStageHandoffSchema": authorities.get("sourceStageHandoffSchema"),
+        "nonAliasLoader": authorities.get("nonAliasLoader"),
+        "semanticValidator": authorities.get("semanticValidator"),
+        "canonicalDecoder": authorities.get("canonicalDecoder"),
         "acceptedPredesign.handoff": predesign.get("handoff"),
         "acceptedPredesign.scene": predesign.get("scene"),
         "acceptedPredesign.materials": predesign.get("materials"),
@@ -240,6 +220,33 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
             },
         )
     require_non_alias_input(contract)
+
+
+def require_source_production_profile(contract: dict[str, Any]) -> dict[str, Any]:
+    profile = contract.get("sourceProductionProfile", {})
+    missing = [field for field in SOURCE_PROFILE_FIELDS if not profile.get(field)]
+    if missing:
+        raise GuardRejected(
+            "MISSING_SOURCE_PRODUCTION_PROFILE",
+            {"missingFields": missing},
+        )
+    require_sha(profile, "sourceProductionProfile")
+    payload = load_json(repository_path(profile["path"]))
+    if payload.get("schema") != "citysim.integration.world-art-source-production-profile.v1":
+        raise GuardRejected(
+            "WRONG_SOURCE_PRODUCTION_PROFILE",
+            {"schema": payload.get("schema")},
+        )
+    source_schema = contract["authorities"]["sourceStageHandoffSchema"]
+    if payload.get("sourceStageSchema") != source_schema:
+        raise GuardRejected(
+            "WRONG_SOURCE_PRODUCTION_PROFILE",
+            {
+                "expectedSourceStageSchema": source_schema,
+                "actualSourceStageSchema": payload.get("sourceStageSchema"),
+            },
+        )
+    return payload
 
 
 def require_lock(contract: dict[str, Any]) -> dict[str, Any]:
@@ -649,6 +656,7 @@ def main() -> int:
         if args.mode == "validate":
             write_report(args.report, result_payload(args.mode, "PASS"))
             return 0
+        require_source_production_profile(contract)
         material_mapping = require_lock(contract)
         coordinate_bridge = require_coordinate_bridge(contract)
     except GuardRejected as rejection:

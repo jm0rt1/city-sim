@@ -15,7 +15,7 @@
     },
     "runnerContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-      "sha256": "da5420b4997c19b413f180eb8917369ec0a0e038056f50935d2e1110d7ccd430"
+      "sha256": "be2c5eed30e9cba142a6191a15c30dffd9a91c6c734161ca897ba47ed9f41655"
     }
   },
   "metrics": {

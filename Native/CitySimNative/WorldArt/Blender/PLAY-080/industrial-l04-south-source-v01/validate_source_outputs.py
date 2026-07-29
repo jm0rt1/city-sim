@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import struct
+import sys
 import zlib
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,13 @@ from typing import Any
 SOURCE_DIR = Path(__file__).resolve().parent
 REPOSITORY_ROOT = SOURCE_DIR.parents[5]
 DEFAULT_CONTRACT = SOURCE_DIR / "runner-contract.json"
+SHARED_DIR = REPOSITORY_ROOT / "Native/CitySimNative/WorldArt/Shared"
+if str(SHARED_DIR) not in sys.path:
+    sys.path.insert(0, str(SHARED_DIR))
+
+from accepted_master_non_alias_v1 import (  # noqa: E402
+    load_forbidden_decoded_rgba,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -41,10 +49,6 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
-
-
-def sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def repository_path(display_path: str) -> Path:
@@ -208,37 +212,11 @@ def forbidden_decoded_rgba_hashes(
     common_record = contract["authorities"]["nonAliasInput"]
     if common_input_path.resolve() != repository_path(common_record["path"]):
         raise ValueError("non-alias input path does not match the runner contract")
-    if sha256_file(common_input_path) != common_record["sha256"]:
-        raise ValueError("non-alias input hash does not match the runner contract")
-    common_input = load_json(common_input_path)
-    derived = common_input["authorityInputs"]["derivedInventory"]
-    derived_path = repository_path(derived["path"])
-    if sha256_file(derived_path) != derived["sha256"]:
-        raise ValueError("derived non-alias inventory hash mismatch")
-    masters = load_json(derived_path).get("masters", [])
-    hashes = [master["decodedRGBASHA256"] for master in masters]
-    hashes_are_canonical = all(
-        isinstance(value, str)
-        and len(value) == 64
-        and all(character in "0123456789abcdef" for character in value)
-        for value in hashes
+    return set(
+        load_forbidden_decoded_rgba(
+            REPOSITORY_ROOT, common_input_path.resolve()
+        )
     )
-    canonical = (
-        "".join(f"{value}\n" for value in sorted(hashes))
-        if hashes_are_canonical
-        else ""
-    )
-    actual_set_sha = sha256_bytes(canonical.encode("ascii"))
-    if (
-        common_input.get("counts", {}).get("total") != 44
-        or common_input.get("forbiddenDecodedRgbaSha256Count") != 44
-        or len(hashes) != 44
-        or len(set(hashes)) != 44
-        or not hashes_are_canonical
-        or actual_set_sha != common_input.get("forbiddenSetSha256")
-    ):
-        raise ValueError("common non-alias input does not resolve to canonical 44")
-    return set(hashes)
 
 
 def main() -> int:
@@ -283,6 +261,15 @@ def main() -> int:
                     "nonAliasInput": contract.get("authorities", {}).get(
                         "nonAliasInput"
                     ),
+                    "sourceStageBindings": {
+                        key: contract.get("authorities", {}).get(key)
+                        for key in (
+                            "sourceStageHandoffSchema",
+                            "nonAliasLoader",
+                            "semanticValidator",
+                            "canonicalDecoder",
+                        )
+                    },
                     "checks": checks,
                     "rgba": "not_run",
                     "literal192": "not_run",

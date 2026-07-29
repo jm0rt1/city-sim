@@ -1,0 +1,49 @@
+{
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+  "contractSha256": "1a575bb5dd2870aa29825f96d73f6a19e04e673ca287a2fdccec695b50b4432d",
+  "direction": "south",
+  "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
+  "driverSha256": "a1ecb0b1d0968512138e7ec3e0f97118b305d34e58cf6c0b8a9885fe9e008f3c",
+  "pixelValidations": {
+    "abcIdentity": "not_run",
+    "literal192": "not_run",
+    "normalization": "not_run",
+    "rgba": "not_run"
+  },
+  "repeatIdentityPass": true,
+  "schema": "citysim.play-080.prelock-runner-static-validation.v1",
+  "staticInspection": {
+    "checks": {
+      "bpyImportIsRenderLocal": true,
+      "driverCannotLaunchBlenderProcess": true,
+      "guardPrecedesRenderFunctionCall": true,
+      "noTopLevelBpyImport": true,
+      "semanticAndProvenanceOutputsBound": true,
+      "separateModes": true,
+      "twoRenderApiCallsAreRenderLocal": true
+    },
+    "result": "PASS"
+  },
+  "taskId": "PLAY-080",
+  "validateMode": {
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py --mode validate --contract Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+    "driverResult": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "direction": "south",
+      "imageGenInvocations": 0,
+      "mode": "validate",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": null,
+      "renderInvocations": 0,
+      "result": "PASS",
+      "schema": "citysim.play-080.south-runner-result.v1",
+      "taskId": "PLAY-080"
+    },
+    "exitCode": 0,
+    "result": "PASS"
+  }
+}

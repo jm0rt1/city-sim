@@ -902,7 +902,7 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(buildReady.tone, .ready)
         XCTAssertEqual(
             buildReady.accessibilityLabel,
-            buildReadyStore.activeMapActionTargetPresentation?.primaryAction.name
+            "Open details for Road at block \(validRoad.coordinate.x + 1), \(validRoad.coordinate.y + 1)"
         )
         XCTAssertEqual(
             buildReady.accessibilityValue,
@@ -919,7 +919,7 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(buildBlocked.tone, .blocked)
         XCTAssertEqual(
             buildBlocked.accessibilityLabel,
-            buildBlockedStore.activeMapActionTargetPresentation?.primaryAction.name
+            "Open details for Road at block \(cityHall.coordinate.x + 1), \(cityHall.coordinate.y + 1)"
         )
         XCTAssertEqual(
             buildBlocked.accessibilityValue,
@@ -933,6 +933,7 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(bulldozeNil.title, "No structure selected")
         XCTAssertEqual(bulldozeNil.status, "BULLDOZE")
         XCTAssertEqual(bulldozeNil.accessibilityLabel, "Bulldoze mode")
+        XCTAssertTrue(bulldozeNil.accessibilityValue.contains("Choose a structure"))
         XCTAssertFalse(bulldozeNil.opensDetails)
 
         let bulldozeReadyStore = CityGameStore(state: state)
@@ -942,6 +943,11 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(bulldozeReady.title, removable.kind.title)
         XCTAssertEqual(bulldozeReady.status, "READY")
         XCTAssertEqual(bulldozeReady.tone, .ready)
+        XCTAssertEqual(
+            bulldozeReady.accessibilityLabel,
+            "Open details for \(removable.kind.title) at block "
+                + "\(removable.coordinate.x + 1), \(removable.coordinate.y + 1)"
+        )
         XCTAssertEqual(
             bulldozeReady.accessibilityValue,
             bulldozeReadyStore.activeMapActionTargetPresentation?.primaryAction.disclosure
@@ -957,7 +963,8 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(bulldozeBlocked.tone, .blocked)
         XCTAssertEqual(
             bulldozeBlocked.accessibilityLabel,
-            bulldozeBlockedStore.activeMapActionTargetPresentation?.primaryAction.name
+            "Open details for City Hall at block "
+                + "\(cityHall.coordinate.x + 1), \(cityHall.coordinate.y + 1)"
         )
         XCTAssertEqual(
             bulldozeBlocked.accessibilityValue,

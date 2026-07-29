@@ -639,13 +639,14 @@ struct BuildToolbarView: View {
                 )
             }
             let isAvailable = target.primaryAction.isAvailable
+            let block = "block \(target.coordinate.x + 1), \(target.coordinate.y + 1)"
             return TargetBeaconPresentation(
                 title: kind.title,
                 detail: "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1)",
                 status: isAvailable ? "READY" : "BLOCKED",
                 symbol: isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill",
                 tone: isAvailable ? .ready : .blocked,
-                accessibilityLabel: target.primaryAction.name,
+                accessibilityLabel: "Open details for \(kind.title) at \(block)",
                 accessibilityValue: target.primaryAction.disclosure,
                 opensDetails: selectedTile != nil
             )
@@ -663,13 +664,15 @@ struct BuildToolbarView: View {
                 )
             }
             let isAvailable = target.primaryAction.isAvailable
+            let title = selectedTile?.kind.title ?? "Selected block"
+            let block = "block \(target.coordinate.x + 1), \(target.coordinate.y + 1)"
             return TargetBeaconPresentation(
-                title: selectedTile?.kind.title ?? "Selected block",
+                title: title,
                 detail: "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1)",
                 status: isAvailable ? "READY" : "BLOCKED",
                 symbol: isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill",
                 tone: isAvailable ? .ready : .blocked,
-                accessibilityLabel: target.primaryAction.name,
+                accessibilityLabel: "Open details for \(title) at \(block)",
                 accessibilityValue: target.primaryAction.disclosure,
                 opensDetails: selectedTile != nil
             )

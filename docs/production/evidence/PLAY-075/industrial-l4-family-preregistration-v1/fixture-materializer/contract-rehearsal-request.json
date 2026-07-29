@@ -1,0 +1,95 @@
+{
+  "admissionManifest": null,
+  "baseFixture": {
+    "immutable": true,
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+    "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+    "stateDigest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f"
+  },
+  "directionBridge": {
+    "acceptedSourceAuthority": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "coordinateSystem": "citysim_source_pixels_v1",
+    "dccLabelsUsed": false,
+    "mappingSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "perDirectionTransforms": false,
+    "sourceOrder": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "mode": "contract_rehearsal",
+  "packets": [
+    {
+      "aliasOf": null,
+      "boundPacketSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "coordinateLabelSystem": "runtime_cardinal",
+      "direction": "north",
+      "fallback": false,
+      "packetCommit": "1111111111111111111111111111111111111111",
+      "packetSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "perDirectionTransform": false,
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "sourcePixelSocket": [
+        896,
+        704
+      ]
+    },
+    {
+      "aliasOf": null,
+      "boundPacketSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "coordinateLabelSystem": "runtime_cardinal",
+      "direction": "east",
+      "fallback": false,
+      "packetCommit": "2222222222222222222222222222222222222222",
+      "packetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "perDirectionTransform": false,
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "sourcePixelSocket": [
+        896,
+        832
+      ]
+    },
+    {
+      "aliasOf": null,
+      "boundPacketSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "coordinateLabelSystem": "runtime_cardinal",
+      "direction": "south",
+      "fallback": false,
+      "packetCommit": "3333333333333333333333333333333333333333",
+      "packetSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "perDirectionTransform": false,
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "sourcePixelSocket": [
+        640,
+        832
+      ]
+    },
+    {
+      "aliasOf": null,
+      "boundPacketSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "coordinateLabelSystem": "runtime_cardinal",
+      "direction": "west",
+      "fallback": false,
+      "packetCommit": "4444444444444444444444444444444444444444",
+      "packetSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "perDirectionTransform": false,
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "sourcePixelSocket": [
+        640,
+        704
+      ]
+    }
+  ],
+  "rendererCandidate": {
+    "admissionAuthorityCommit": "8888888888888888888888888888888888888888",
+    "admittedCommit": "9999999999999999999999999999999999999999",
+    "clean": true,
+    "commit": "9999999999999999999999999999999999999999",
+    "exact": true,
+    "stale": false
+  },
+  "requestId": "candidate-neutral-contract-rehearsal-v1",
+  "schemaVersion": 1
+}

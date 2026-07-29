@@ -1,0 +1,22 @@
+{
+  "contentCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "decodedRgbaSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "direction": "north",
+  "disposition": "integration_source_admitted",
+  "independentTechnicalDisposition": "ACCEPT",
+  "integrationCommit": "cccccccccccccccccccccccccccccccccccccccc",
+  "literalScaleDisposition": "ACCEPT",
+  "logicalID": "industrial_l04_v0_north",
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "schemaVersion": 1,
+  "semanticValidationResult": "PASS",
+  "semanticValidator": {
+    "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+    "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+  },
+  "workerPacket": {
+    "path": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/fixtures/north-source-candidate.json",
+    "sha256": "284b1c960cbd6635c1b0956e8beb619720f73a57ae770e8aad7d4b073df61b68"
+  }
+}

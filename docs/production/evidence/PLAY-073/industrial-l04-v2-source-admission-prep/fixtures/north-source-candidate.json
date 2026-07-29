@@ -1,0 +1,119 @@
+{
+  "d4Fingerprints": {
+    "identity": "1111111111111111111111111111111111111111111111111111111111111111",
+    "mirrorAntiDiagonal": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "mirrorDiagonal": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "mirrorX": "8888888888888888888888888888888888888888888888888888888888888888",
+    "mirrorY": "9999999999999999999999999999999999999999999999999999999999999999",
+    "rotate180": "6666666666666666666666666666666666666666666666666666666666666666",
+    "rotate270": "7777777777777777777777777777777777777777777777777777777777777777",
+    "rotate90": "5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "direction": "north",
+  "family": "industrial",
+  "fixturePreparation": {
+    "blockCameraScale": 0.5,
+    "cityCameraScale": 0.85,
+    "expectedFrontage": "north",
+    "fixtureCoordinate": [
+      4,
+      4
+    ],
+    "neighborhoodCameraScale": 0.65,
+    "soleRoadCoordinate": [
+      4,
+      3
+    ]
+  },
+  "level": 4,
+  "lods": [
+    {
+      "atlasSlot": "industrial_l04_v0_north/city",
+      "canvasPixels": [
+        256,
+        171
+      ],
+      "detail": "city",
+      "normalizedRgbaSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    {
+      "atlasSlot": "industrial_l04_v0_north/neighborhood",
+      "canvasPixels": [
+        512,
+        342
+      ],
+      "detail": "neighborhood",
+      "normalizedRgbaSha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    {
+      "atlasSlot": "industrial_l04_v0_north/block",
+      "canvasPixels": [
+        1024,
+        683
+      ],
+      "detail": "block",
+      "normalizedRgbaSha256": "4444444444444444444444444444444444444444444444444444444444444444"
+    }
+  ],
+  "logicalID": "industrial_l04_v0_north",
+  "productionSelected": false,
+  "registration": {
+    "canvasPixels": [
+      1536,
+      1024
+    ],
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "frontageEdge": "north",
+    "frontageSocketSource": [
+      896,
+      704
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "occupiedBounds": [
+      430,
+      350,
+      1110,
+      930
+    ]
+  },
+  "schemaVersion": 2,
+  "source": {
+    "contentCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "decodedRgbaSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "fallbackSourceKey": null,
+    "sourceKey": "world-art/industrial-l04/north"
+  },
+  "sourceStage": {
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    }
+  },
+  "variant": 0,
+  "workerState": {
+    "candidateReadyForIndependentReview": true,
+    "integrationAdmitted": false,
+    "productionSelected": false,
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "stage": "source_candidate"
+  }
+}

@@ -216,7 +216,7 @@ private struct L4V2SourceAdmissionHarness {
         try Self.validateAdmission(
             admission,
             packet: packet,
-            packetPath: input.packetURL.path,
+            packetPath: try relativePath(input.packetURL),
             packetSha256: input.packetSha256
         )
         return L4V2AdmittedPacket(
@@ -315,6 +315,15 @@ private struct L4V2SourceAdmissionHarness {
             throw L4V2HarnessError.hashMismatch
         }
         return data
+    }
+
+    private func relativePath(_ url: URL) throws -> String {
+        let root = claimedRoot.standardizedFileURL.path
+        let path = url.standardizedFileURL.path
+        guard path.hasPrefix(root + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        return String(path.dropFirst(root.count + 1))
     }
 
     private static func validate(_ packet: L4V2DirectionPacket) throws {
@@ -605,6 +614,91 @@ private struct L4V2SourceAdmissionHarness {
 }
 
 final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
+    func testCallerSuppliedDirectionPacketAndAdmissionReceipt() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let packetPath = environment["CITYSIM_L4_PACKET_PATH"] else {
+            throw XCTSkip("No caller-supplied Industrial L4 packet")
+        }
+        let claimedRoot = URL(
+            fileURLWithPath: try requiredEnvironment(
+                "CITYSIM_L4_CLAIMED_ROOT",
+                environment: environment
+            )
+        ).standardizedFileURL
+        let packetURL = resolve(packetPath, beneath: claimedRoot)
+        let admissionURL = resolve(
+            try requiredEnvironment(
+                "CITYSIM_L4_ADMISSION_PATH",
+                environment: environment
+            ),
+            beneath: claimedRoot
+        )
+        let outputURL = resolve(
+            try requiredEnvironment(
+                "CITYSIM_L4_RECEIPT_OUTPUT",
+                environment: environment
+            ),
+            beneath: claimedRoot
+        )
+        let expectedDirection = try XCTUnwrap(
+            L4V2Direction(
+                rawValue: try requiredEnvironment(
+                    "CITYSIM_L4_DIRECTION",
+                    environment: environment
+                )
+            )
+        )
+        let admitted = try L4V2SourceAdmissionHarness(
+            claimedRoot: claimedRoot
+        ).inspect(
+            L4V2FileInput(
+                packetURL: packetURL,
+                packetSha256: try requiredEnvironment(
+                    "CITYSIM_L4_PACKET_SHA256",
+                    environment: environment
+                ),
+                admissionURL: admissionURL,
+                admissionSha256: try requiredEnvironment(
+                    "CITYSIM_L4_ADMISSION_SHA256",
+                    environment: environment
+                )
+            )
+        )
+        XCTAssertEqual(admitted.packet.direction, expectedDirection)
+        XCTAssertEqual(admitted.admission.direction, expectedDirection)
+        XCTAssertTrue(admitted.receipt.rendererQuarantined)
+        XCTAssertFalse(admitted.receipt.readyForAtomicAssembly)
+        XCTAssertFalse(admitted.receipt.productionSelected)
+        XCTAssertFalse(admitted.receipt.runtimeMappingMutated)
+        XCTAssertFalse(admitted.receipt.shippingResourcesMutated)
+
+        let evidenceRoot = claimedRoot.appending(
+            path: "docs/production/evidence/PLAY-073"
+        ).standardizedFileURL.path
+        guard outputURL.path.hasPrefix(evidenceRoot + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(outputURL.path)
+        }
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let receiptData = try encoder.encode(admitted.receipt)
+        try FileManager.default.createDirectory(
+            at: outputURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        if FileManager.default.fileExists(atPath: outputURL.path) {
+            guard try Data(contentsOf: outputURL) == receiptData else {
+                throw L4V2HarnessError.hashMismatch
+            }
+        } else {
+            try receiptData.write(to: outputURL)
+        }
+        print(
+            "PLAY073_L4_QUARANTINE_RECEIPT "
+                + "\(outputURL.path) "
+                + L4V2SourceAdmissionHarness.sha256(receiptData)
+        )
+    }
+
     func testWorkerCandidateRequiresSeparateIntegrationAdmission() throws {
         try withRoot { root in
             let packet = makePacket(.north)
@@ -1041,7 +1135,7 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
     ) throws -> L4V2FileInput {
         let admission = makeAdmission(
             packet: packet,
-            packetPath: packetURL.path,
+            packetPath: try relativePath(packetURL, root: root),
             packetHash: packetHash
         )
         let admissionURL = root.appending(
@@ -1094,6 +1188,32 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         )
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
+    }
+
+    private func requiredEnvironment(
+        _ key: String,
+        environment: [String: String]
+    ) throws -> String {
+        guard let value = environment[key], !value.isEmpty else {
+            throw L4V2HarnessError.invalidField(key)
+        }
+        return value
+    }
+
+    private func resolve(_ path: String, beneath root: URL) -> URL {
+        if path.hasPrefix("/") {
+            return URL(fileURLWithPath: path).standardizedFileURL
+        }
+        return root.appending(path: path).standardizedFileURL
+    }
+
+    private func relativePath(_ url: URL, root: URL) throws -> String {
+        let rootPath = root.standardizedFileURL.path
+        let path = url.standardizedFileURL.path
+        guard path.hasPrefix(rootPath + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        return String(path.dropFirst(rootPath.count + 1))
     }
 
     @discardableResult

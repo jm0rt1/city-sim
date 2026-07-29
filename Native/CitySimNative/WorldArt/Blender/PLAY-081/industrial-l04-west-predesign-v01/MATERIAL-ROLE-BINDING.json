@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "task": "PLAY-081",
+  "bindingID": "industrial-l04-west-predesign-material-roles-v01",
+  "direction": "west",
+  "bindingState": "PROVISIONAL_NUMERIC_ROLES_PENDING_NORTH_FAMILY_MATERIAL_LOCK",
+  "familyMaterialLockConsumed": false,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderingAuthorized": false,
+  "authoredSwatches": false,
+  "roles": {
+    "foundation-mid": {
+      "familyRole": "restrained-contact-foundation",
+      "grayscaleTarget": 88
+    },
+    "apron-light": {
+      "familyRole": "short-connected-freight-apron",
+      "grayscaleTarget": 118
+    },
+    "portal-void": {
+      "familyRole": "contiguous-recessed-depth",
+      "grayscaleTarget": 24
+    },
+    "portal-frame": {
+      "familyRole": "contrasting-monumental-structure",
+      "grayscaleTarget": 148
+    },
+    "portal-reveal": {
+      "familyRole": "visible-inner-reveal",
+      "grayscaleTarget": 72
+    },
+    "masonry-mid": {
+      "familyRole": "warm-heavy-foundry-masonry",
+      "grayscaleTarget": 94
+    },
+    "roof-mid": {
+      "familyRole": "non-white-sawtooth-roof",
+      "grayscaleTarget": 122
+    },
+    "clerestory": {
+      "familyRole": "credible-dark-glazing-louver",
+      "grayscaleTarget": 68
+    },
+    "warm-masonry": {
+      "familyRole": "low-control-wing",
+      "grayscaleTarget": 112
+    },
+    "staff-entry": {
+      "familyRole": "separate-grounded-staff-door",
+      "grayscaleTarget": 54
+    },
+    "oxidized-process": {
+      "familyRole": "restrained-oxidized-machinery",
+      "grayscaleTarget": 76
+    },
+    "gantry-steel": {
+      "familyRole": "dark-charcoal-gantry",
+      "grayscaleTarget": 82
+    },
+    "roof-plant": {
+      "familyRole": "secondary-rooftop-plant",
+      "grayscaleTarget": 102
+    }
+  },
+  "requiredValueDeltas": {
+    "portalFrameToMasonry": 54,
+    "portalFrameToGantry": 66,
+    "portalFrameToVoid": 124
+  },
+  "lockApplicationRule": "Replace only numeric role values after Integration publishes the accepted North family/material lock; do not transform or consume North geometry."
+}

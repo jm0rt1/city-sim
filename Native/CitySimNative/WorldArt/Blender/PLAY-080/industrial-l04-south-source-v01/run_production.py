@@ -8,9 +8,12 @@ importing bpy unless Integration has populated and published every lock field.
 from __future__ import annotations
 
 import argparse
+import datetime
 import hashlib
 import json
 import math
+import os
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -121,7 +124,7 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
+        "baselineCommit": "af6b661b79e0802386123537aaeddce5c9d385f2",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -220,6 +223,72 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
             },
         )
     require_non_alias_input(contract)
+    require_launch_plan(contract)
+
+
+def require_launch_plan(
+    contract: dict[str, Any], mode: str | None = None
+) -> dict[str, Any]:
+    plan = contract.get("launchPlan", {})
+    processes = ["A", "B", "C"]
+    roots = plan.get("isolatedOutputRoots", {})
+    evidence_roots = plan.get("isolatedEvidenceRoots", {})
+    if (
+        plan.get("authorizedProcesses") != processes
+        or plan.get("maximumConcurrentDccProcesses") != 2
+        or plan.get("exceptionOwner") != "Integration"
+        or plan.get("noOverwrite") is not True
+        or set(roots) != set(processes)
+        or set(evidence_roots) != set(processes)
+    ):
+        raise GuardRejected("INVALID_LAUNCH_PLAN", plan)
+
+    resolved_roots = {
+        process: repository_path(roots[process]) for process in processes
+    }
+    resolved_evidence = {
+        process: repository_path(evidence_roots[process]) for process in processes
+    }
+    if (
+        len(set(resolved_roots.values())) != 3
+        or len(set(resolved_evidence.values())) != 3
+    ):
+        raise GuardRejected(
+            "PROCESS_ROOT_ISOLATION_FAILURE",
+            {"outputRoots": roots, "evidenceRoots": evidence_roots},
+        )
+
+    inventory = contract.get("outputInventory", {})
+    mismatches: dict[str, Any] = {}
+    for process in processes:
+        expected = {
+            "raw": resolved_roots[process] / "raw.png",
+            "semantic": resolved_roots[process] / "semantic.png",
+            "provenance": resolved_evidence[process] / "provenance.json",
+            "runnerReport": resolved_evidence[process] / "runner-result.json",
+        }
+        for section, path in expected.items():
+            value = inventory.get(section, {}).get(process)
+            if not isinstance(value, str) or repository_path(value) != path:
+                mismatches[f"{section}.{process}"] = {
+                    "expected": str(path),
+                    "actual": value,
+                }
+    if mismatches:
+        raise GuardRejected("PROCESS_OUTPUT_BINDING_MISMATCH", mismatches)
+
+    if mode is not None:
+        occupied = [
+            str(path.relative_to(REPOSITORY_ROOT))
+            for path in (resolved_roots[mode], resolved_evidence[mode])
+            if path.exists()
+        ]
+        if occupied:
+            raise GuardRejected(
+                "IMMUTABLE_PROCESS_ROOT_ALREADY_EXISTS",
+                {"process": mode, "paths": occupied},
+            )
+    return plan
 
 
 def require_source_production_profile(contract: dict[str, Any]) -> dict[str, Any]:
@@ -246,6 +315,52 @@ def require_source_production_profile(contract: dict[str, Any]) -> dict[str, Any
                 "actualSourceStageSchema": payload.get("sourceStageSchema"),
             },
         )
+    lock = contract.get("appearanceLock", {})
+    material = contract.get("lockedMaterialMapping", {})
+    expected = {
+        "schema": "citysim.integration.world-art-source-production-profile.v1",
+        "familyIdentity": {"family": "industrial", "level": 4, "variant": 0},
+        "appearanceLock": {
+            "documentPath": lock.get("documentPath"),
+            "commit": lock.get("appearanceLockCommit"),
+            "documentSha256": lock.get("appearanceLockSha256"),
+            "northProcessASourceSha256": lock.get("northProcessASourceSha256"),
+            "northProcessADecodedRgbaSha256": lock.get(
+                "northProcessADecodedRgbaSha256"
+            ),
+        },
+        "lockedMaterialMapping": {
+            "path": material.get("path"),
+            "commit": material.get("commit"),
+            "sha256": material.get("sha256"),
+        },
+        "sourceStageSchema": source_schema,
+        "directionProcesses": {
+            "north": ["B", "C"],
+            "east": ["A", "B", "C"],
+            "south": ["A", "B", "C"],
+            "west": ["A", "B", "C"],
+        },
+        "computeEnvelope": {
+            "maximumConcurrentDccProcesses": 2,
+            "exceptionOwner": "Integration",
+        },
+        "grants": {
+            "sourceAcceptance": False,
+            "rendererAdmission": False,
+            "productionSelection": False,
+            "shippingActivation": False,
+        },
+    }
+    if payload != expected:
+        raise GuardRejected(
+            "WRONG_SOURCE_PRODUCTION_PROFILE",
+            {
+                key: {"expected": value, "actual": payload.get(key)}
+                for key, value in expected.items()
+                if payload.get(key) != value
+            },
+        )
     return payload
 
 
@@ -256,7 +371,9 @@ def require_lock(contract: dict[str, Any]) -> dict[str, Any]:
         raise GuardRejected("MISSING_APPEARANCE_LOCK", {"missingFields": missing})
 
     mapping = contract.get("lockedMaterialMapping", {})
-    mapping_missing = [field for field in ("path", "sha256") if not mapping.get(field)]
+    mapping_missing = [
+        field for field in ("path", "commit", "sha256") if not mapping.get(field)
+    ]
     if mapping_missing:
         raise GuardRejected(
             "MISSING_LOCKED_MATERIAL_MAPPING", {"missingFields": mapping_missing}
@@ -380,6 +497,173 @@ def require_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
             {"axisOrder": axis_order, "axisSigns": axis_signs},
         )
     return bridge
+
+
+def require_git_ancestor(older: str, newer: str, label: str) -> None:
+    result = subprocess.run(
+        ["git", "-C", str(REPOSITORY_ROOT), "merge-base", "--is-ancestor", older, newer],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if len(older) != 40 or result.returncode:
+        raise GuardRejected(
+            "LAUNCH_AUTHORITY_ANCESTRY_MISMATCH",
+            {"label": label, "older": older, "newer": newer},
+        )
+
+
+def require_launch_bundle(contract: dict[str, Any]) -> dict[str, Any]:
+    inventory = contract["outputInventory"]
+    paths = {
+        "manifest": repository_path(inventory["frozenInputManifest"]),
+        "guard": repository_path(inventory["launchGuardReceipt"]),
+        "roots": repository_path(inventory["outputRootIsolationReceipt"]),
+        "packet": repository_path(inventory["launchBoundHandoff"]),
+    }
+    missing = [
+        path.relative_to(REPOSITORY_ROOT).as_posix()
+        for path in paths.values()
+        if not path.is_file()
+    ]
+    if missing:
+        raise GuardRejected("MISSING_LAUNCH_BOUND_BUNDLE", missing)
+
+    manifest = load_json(paths["manifest"])
+    guard = load_json(paths["guard"])
+    roots = load_json(paths["roots"])
+    packet = load_json(paths["packet"])
+    plan = contract["launchPlan"]
+    expected_guard_authorities = {
+        "sourceProductionProfile": contract["sourceProductionProfile"],
+        "appearanceLock": {
+            "documentPath": contract["appearanceLock"]["documentPath"],
+            "commit": contract["appearanceLock"]["appearanceLockCommit"],
+            "documentSha256": contract["appearanceLock"]["appearanceLockSha256"],
+            "northProcessASourceSha256": contract["appearanceLock"][
+                "northProcessASourceSha256"
+            ],
+            "northProcessADecodedRgbaSha256": contract["appearanceLock"][
+                "northProcessADecodedRgbaSha256"
+            ],
+        },
+        "lockedMaterialMapping": {
+            key: contract["lockedMaterialMapping"][key]
+            for key in ("path", "commit", "sha256")
+        },
+        "postLockProductionAuthority": contract["postLockProductionAuthority"],
+    }
+    expected_roots = {
+        "schema": "citysim.play-080.output-root-isolation.v1",
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "authorizedProcesses": ["A", "B", "C"],
+        "isolatedOutputRoots": plan["isolatedOutputRoots"],
+        "isolatedEvidenceRoots": plan["isolatedEvidenceRoots"],
+        "allRootsDistinct": True,
+        "allRootsAbsent": True,
+        "noOverwrite": True,
+        "result": "PASS",
+    }
+    if roots != expected_roots:
+        raise GuardRejected(
+            "LAUNCH_ROOT_ISOLATION_RECEIPT_MISMATCH",
+            {"expected": expected_roots, "actual": roots},
+        )
+    if (
+        guard.get("result") != "PASS"
+        or guard.get("taskId") != "PLAY-080"
+        or guard.get("direction") != "south"
+        or guard.get("authorizedProcesses") != ["A", "B", "C"]
+        or guard.get("maximumConcurrentDccProcesses") != 2
+        or guard.get("blenderProcessLaunches") != 0
+        or guard.get("blenderRenderApiCalls") != 0
+        or guard.get("pixelFiles") != 0
+        or guard.get("sourceReady") is not False
+        or guard.get("productionSelected") is not False
+        or any(
+            guard.get(key) != value
+            for key, value in expected_guard_authorities.items()
+        )
+    ):
+        raise GuardRejected("LAUNCH_GUARD_RECEIPT_MISMATCH", guard)
+
+    packet_artifacts = {
+        "manifest": packet.get("inputs", {}).get("frozenInputManifest", {}),
+        "guard": packet.get("launch", {}).get("guardReceipt", {}),
+        "roots": packet.get("launch", {}).get(
+            "outputRootIsolationReceipt", {}
+        ),
+    }
+    artifact_mismatches = {
+        label: {
+            "expectedPath": path.relative_to(REPOSITORY_ROOT).as_posix(),
+            "actual": packet_artifacts[label],
+        }
+        for label, path in paths.items()
+        if label != "packet"
+        and packet_artifacts[label]
+        != {
+            "path": path.relative_to(REPOSITORY_ROOT).as_posix(),
+            "sha256": sha256(path),
+        }
+    }
+    if artifact_mismatches:
+        raise GuardRejected("LAUNCH_BUNDLE_ARTIFACT_MISMATCH", artifact_mismatches)
+
+    contract_artifact = packet.get("inputs", {}).get("runnerContract", {})
+    if contract_artifact != {
+        "path": DEFAULT_CONTRACT.relative_to(REPOSITORY_ROOT).as_posix(),
+        "sha256": sha256(DEFAULT_CONTRACT),
+    }:
+        raise GuardRejected(
+            "LAUNCH_RUNNER_CONTRACT_MISMATCH", contract_artifact
+        )
+    if (
+        packet.get("schemaVersion") != 2
+        or packet.get("stage") != "launch_bound"
+        or packet.get("identity", {}).get("taskId") != "PLAY-080"
+        or packet.get("identity", {}).get("direction") != "south"
+        or packet.get("lineage", {}).get("publishedBaseline")
+        != contract["baselineCommit"]
+        or packet.get("lineage", {}).get("cellContentCommit") != guard.get("head")
+        or manifest.get("contentCommit") != guard.get("head")
+        or packet.get("launch", {}).get("result") != "PASS"
+        or packet.get("launch", {}).get("authorizedProcesses") != ["A", "B", "C"]
+        or packet.get("launch", {}).get("isolatedOutputRoots")
+        != plan["isolatedOutputRoots"]
+        or packet.get("sourceReady") is not False
+        or packet.get("integrationAdmitted") is not False
+        or packet.get("rendererQuarantined") is not False
+        or packet.get("productionSelected") is not False
+    ):
+        raise GuardRejected("LAUNCH_BOUND_PACKET_MISMATCH", packet)
+
+    head = subprocess.run(
+        ["git", "-C", str(REPOSITORY_ROOT), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    origin_master = subprocess.run(
+        ["git", "-C", str(REPOSITORY_ROOT), "rev-parse", "origin/master"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    ancestry = {
+        "launchHead": guard["head"],
+        "publishedBaseline": contract["baselineCommit"],
+        "appearanceLock": contract["appearanceLock"]["appearanceLockCommit"],
+        "lockedMaterialMapping": contract["lockedMaterialMapping"]["commit"],
+        "sourceProductionProfile": contract["sourceProductionProfile"]["commit"],
+        "postLockProductionAuthority": contract["postLockProductionAuthority"]["commit"],
+    }
+    for label, commit in ancestry.items():
+        require_git_ancestor(commit, head, f"{label}:HEAD")
+        if label != "launchHead":
+            require_git_ancestor(commit, origin_master, f"{label}:origin/master")
+    return packet
 
 
 def result_payload(
@@ -650,21 +934,56 @@ def render_source(
 
 def main() -> int:
     args = parse_args()
+    started_at = datetime.datetime.now(datetime.timezone.utc)
+    success_report = args.report
     try:
         contract = load_json(args.contract)
         validate_contract_shape(contract)
         if args.mode == "validate":
             write_report(args.report, result_payload(args.mode, "PASS"))
             return 0
+        if args.contract.resolve() != DEFAULT_CONTRACT:
+            raise GuardRejected(
+                "NONCANONICAL_RUNNER_CONTRACT",
+                {
+                    "expected": str(DEFAULT_CONTRACT),
+                    "actual": str(args.contract.resolve()),
+                },
+            )
         require_source_production_profile(contract)
         material_mapping = require_lock(contract)
         coordinate_bridge = require_coordinate_bridge(contract)
+        require_launch_plan(contract, args.mode)
+        require_launch_bundle(contract)
+        expected_report = repository_path(
+            contract["outputInventory"]["runnerReport"][args.mode]
+        )
+        if args.report is not None and args.report.resolve() != expected_report:
+            raise GuardRejected(
+                "PROCESS_REPORT_PATH_MISMATCH",
+                {
+                    "expected": str(expected_report),
+                    "actual": str(args.report.resolve()),
+                },
+            )
+        success_report = expected_report
     except GuardRejected as rejection:
         write_report(args.report, result_payload(args.mode, "REJECTED", rejection=rejection))
         return 2
 
     payload = render_source(contract, material_mapping, coordinate_bridge, args.mode)
-    write_report(args.report, payload)
+    ended_at = datetime.datetime.now(datetime.timezone.utc)
+    payload["freshInvocation"] = {
+        "processId": args.mode,
+        "pid": os.getpid(),
+        "exactlyOneFreshBlenderProcess": True,
+        "startedAtUtc": started_at.isoformat().replace("+00:00", "Z"),
+        "endedAtUtc": ended_at.isoformat().replace("+00:00", "Z"),
+        "outputRoot": contract["launchPlan"]["isolatedOutputRoots"][args.mode],
+        "evidenceRoot": contract["launchPlan"]["isolatedEvidenceRoots"][args.mode],
+        "renderApiCalls": payload["renderInvocations"],
+    }
+    write_report(success_report, payload)
     return 0
 
 

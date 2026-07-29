@@ -3,7 +3,7 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
+  "baselineCommit": "af6b661b79e0802386123537aaeddce5c9d385f2",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
@@ -86,6 +86,7 @@
   },
   "lockedMaterialMapping": {
     "path": null,
+    "commit": null,
     "sha256": null,
     "requiredRoles": [
       "charcoal-structural-steel",
@@ -110,6 +111,34 @@
     "path": null,
     "commit": null,
     "sha256": null
+  },
+  "launchPlan": {
+    "authorizedProcesses": ["A", "B", "C"],
+    "maximumConcurrentDccProcesses": 2,
+    "exceptionOwner": "Integration",
+    "noOverwrite": true,
+    "baseOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/",
+    "isolatedOutputRoots": {
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/"
+    },
+    "isolatedEvidenceRoots": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/"
+    }
+  },
+  "candidatePlan": {
+    "selectedProcess": "A",
+    "normalizedRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/candidate/normalized/",
+    "lodRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/candidate/lods/",
+    "validationRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/",
+    "contactSheet": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/contact-sheet/industrial-l04-south-source-v01.png",
+    "reviewManifest": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-REVIEW-MANIFEST.json",
+    "parallelExecutionReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-PARALLEL-EXECUTION-RECEIPT.json",
+    "rejectedAttemptInventory": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-REJECTED-ATTEMPT-INVENTORY.json",
+    "assemblyReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-CANDIDATE-ASSEMBLY.json"
   },
   "coordinateBridge": {
     "state": "v06_revalidated",
@@ -273,19 +302,24 @@
   },
   "outputInventory": {
     "raw": {
-      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/raw/process-A.png",
-      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/raw/process-B.png",
-      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/raw/process-C.png"
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/raw.png",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/raw.png",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/raw.png"
     },
     "semantic": {
-      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/semantic/process-A.png",
-      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/semantic/process-B.png",
-      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/semantic/process-C.png"
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/semantic.png",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/semantic.png",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/semantic.png"
     },
     "provenance": {
-      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/provenance/process-A.json",
-      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/provenance/process-B.json",
-      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/provenance/process-C.json"
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/provenance.json",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/provenance.json",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/provenance.json"
+    },
+    "runnerReport": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/runner-result.json",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/runner-result.json",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/runner-result.json"
     },
     "color": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/color.json",
     "grayscale": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/grayscale.json",
@@ -294,6 +328,10 @@
     "literal192SemanticProof": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
     "sourceStageV2BindingReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-V2-SCHEMA-BINDING.json",
     "parallelZeroPixelHandoff": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PARALLEL-SOUTH-V2-ZERO-PIXEL-HANDOFF.json",
+    "frozenInputManifest": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-FROZEN-INPUT-MANIFEST.json",
+    "launchGuardReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-LAUNCH-GUARD-RECEIPT.json",
+    "outputRootIsolationReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+    "launchBoundHandoff": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-LAUNCH-BOUND-V2.json",
     "registration": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/registration.json",
     "contactSheet": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/contact-sheet/industrial-l04-south-source-v01.png",
     "rejections": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/rejections/",

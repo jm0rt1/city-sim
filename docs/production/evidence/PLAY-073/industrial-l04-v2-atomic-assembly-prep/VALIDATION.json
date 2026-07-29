@@ -10,18 +10,19 @@
   ],
   "proposalCommit": "b9240646",
   "harnessCommit": "fd05ec462517d5c802f4918f65af4515ea7f3c09",
+  "containmentRepairCommit": "a9779a4f1d7170943daa067f6e2210828b2e87bb",
   "surfaceHashes": {
     "proposal": "ec2e293fbbfa1df900dc50479331d9849da8ed7f1863179c9dd448a9f93c7e1c",
-    "harness": "f9e5368082d47bd990c8d74fbd42b8d426acd271a9abd28e39d0bc2800dab2ab",
+    "harness": "d4545b75e3f2c11cd22152aa4637357df91ebeed4c59f09f9d953b2cc335910b",
     "wrapper": "f5a4c672a76b005385fb66fbcf87a55b71477b9cd67f59a63ae313371cf8a5ab"
   },
   "focusedValidation": {
     "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/play073-l4-assembly-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-assembly-swift-cache swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
-    "executed": 8,
-    "passed": 6,
+    "executed": 10,
+    "passed": 8,
     "skipped": 2,
     "failed": 0,
-    "elapsedSeconds": 0.057,
+    "elapsedSeconds": 0.071,
     "skips": [
       "caller-supplied direction input absent",
       "caller-supplied assembly manifest absent"
@@ -35,6 +36,11 @@
     "missingDirectionRejected": true,
     "extraDirectionRejected": true,
     "locatorHashDriftRejected": true,
+    "inputLocatorSymlinkEscapeRejected": true,
+    "ledgerOutputSymlinkEscapeRejected": true,
+    "claimedRootCanonicalized": true,
+    "manifestAndReadLocatorsCanonicalized": true,
+    "evidenceRootAndLedgerOutputCanonicalized": true,
     "fallbackRejectedByExistingJoin": true,
     "aliasRejectedByExistingJoin": true,
     "transformRejectedByExistingJoin": true,
@@ -54,9 +60,16 @@
     "stagedAppRun": false,
     "fullSuiteRun": false
   },
-  "nonPassingAttempt": {
-    "scope": "pre-compilation environment only",
-    "result": "SwiftPM could not write the default user module cache inside the outer sandbox",
-    "resolution": "reran the identical focused command with the approved private-tmp module caches outside the outer sandbox"
-  }
+  "nonPassingAttempts": [
+    {
+      "scope": "pre-compilation environment only",
+      "result": "SwiftPM manifest sandbox could not initialize inside the outer sandbox",
+      "resolution": "reran the identical focused command with private-tmp module caches outside the outer sandbox"
+    },
+    {
+      "scope": "new ledger-output symlink regression",
+      "result": "the first expanded run failed because resolvingSymlinksInPath did not resolve an intermediate symlink when the final ledger file was absent",
+      "resolution": "canonicalized the nearest existing ancestor before reattaching the unresolved suffix; the identical 10-test gate passed"
+    }
+  ]
 }

@@ -18,6 +18,10 @@ atlas, activate runtime lookup, stage the app, or select production art.
    `assembly-input-manifest-v1` boundary.
 3. Harness `fd05ec462517d5c802f4918f65af4515ea7f3c09`
    adds the test-only file-backed assembler and command wrapper.
+4. Containment repair
+   `a9779a4f1d7170943daa067f6e2210828b2e87bb` canonicalizes the claimed
+   root and all atomic-assembly input/output paths through resolved symlinks
+   before boundary comparison.
 
 The accepted caller-path commits on published master,
 `e177be62` and `02fd3434`, are ancestors of the candidate.
@@ -43,6 +47,14 @@ claimed repository root. It:
 8. emits sorted-key deterministic `atomic-admission-ledger-v1` bytes with
    runtime, shipping, and production flags all false.
 
+The claimed root, assembly manifest, accepted-L3 artifacts, direction packet
+and admission inputs, quarantine receipts, all six per-direction locators,
+evidence root, and ledger output are canonicalized before containment checks.
+For a not-yet-created ledger file, the harness resolves the nearest existing
+ancestor first and then reattaches the unresolved suffix. This closes both
+file-symlink and directory-symlink escapes without admitting another resource
+path.
+
 The synthetic file-backed replay passed twice with byte-identical ledgers.
 The explicit caller-path test remains skipped until Integration publishes the
 real manifest; this is intentional.
@@ -58,10 +70,18 @@ swift test --package-path Native/CitySimNative \
   --filter IndustrialL4V2SourceAdmissionHarnessTests
 ```
 
-Result: 8 executed, 6 passed, 2 expected caller-input skips, 0 failed in
-0.057 seconds. `bash -n` and `git diff --check` passed. The first ungoverned
-Swift invocation failed before compilation because the outer sandbox blocked
-the default user module cache; the exact private-tmp rerun passed.
+Result: 10 executed, 8 passed, 2 expected caller-input skips, 0 failed in
+0.071 seconds. The expanded gate directly proves rejection of an input
+locator that escapes through a file symlink and a not-yet-created ledger
+output that escapes through an in-root directory symlink. `bash -n` and
+`git diff --check` passed.
+
+The first ungoverned Swift invocation failed before compilation because the
+outer sandbox blocked SwiftPM's manifest sandbox. The first expanded
+private-tmp run then exposed that Foundation does not resolve an intermediate
+symlink when the final output file is absent; the ledger-output regression
+failed as intended. The harness was repaired to resolve the nearest existing
+ancestor, and the identical focused gate then passed.
 
 No full suite or staged app was run under the tiered intake rule.
 

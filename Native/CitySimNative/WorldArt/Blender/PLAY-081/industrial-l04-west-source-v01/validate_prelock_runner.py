@@ -165,6 +165,7 @@ def main() -> int:
         decision["decision"] == "reject"
         and decision["rejectionStage"] == "before_renderer_launch"
         and "appearance-lock:missing" in decision["reasonCodes"]
+        and "coordinate-bridge:pending-v06" in decision["reasonCodes"]
         and all(value == 0 for key, value in decision.items() if key.endswith("Invocations") or key.endswith("Calls") or key == "pixelFiles")
         for decision in missing_decisions.values()
     )
@@ -195,10 +196,26 @@ def main() -> int:
         and "appearance-lock:document-sha256-mismatch" in decision["reasonCodes"]
         and "locked-materials:sha256-mismatch" in decision["reasonCodes"]
         and "appearance-lock:missing" not in decision["reasonCodes"]
+        and "coordinate-bridge:pending-v06" in decision["reasonCodes"]
         and all(value == 0 for key, value in decision.items() if key.endswith("Invocations") or key.endswith("Calls") or key == "pixelFiles")
         for decision in wrong_decisions.values()
     )
 
+    coordinate_bridge = contract["coordinateBridge"]
+    canonical = coordinate_bridge["canonicalCitySim"]
+    historical = coordinate_bridge["historicalProjectionAdapter"]
+    blender_script_source = blender_script_path.read_text()
+    coordinate_bridge_pass = (
+        coordinate_bridge["state"] == "pending_v06_revalidation"
+        and coordinate_bridge["holdIsStop"] is False
+        and canonical["frontageSocketWorldXYZ"] == [-28, 0, 0]
+        and canonical["frontageSocketExpectedSource"] == [640, 704]
+        and historical["futureSourceAuthority"] is False
+        and historical["authorityScope"] == "retained-predesign-proof-only"
+        and all(value is None for value in coordinate_bridge["v06"].values())
+        and "actualCameraProofScript" not in blender_script_source
+        and "load_accepted_builder" not in blender_script_source
+    )
     static_checks = {
         "frozenInputHashes": not frozen_errors,
         "frozenInputErrors": frozen_errors,
@@ -209,12 +226,31 @@ def main() -> int:
         "blenderScriptPresentButNotImported": (
             blender_script_path.is_file() and not control_flow["driverImportsBpy"]
         ),
+        "coordinateBridgeHold": {
+            "state": coordinate_bridge["state"],
+            "holdIsStop": coordinate_bridge["holdIsStop"],
+            "canonicalWestSocketWorldXYZ": canonical[
+                "frontageSocketWorldXYZ"
+            ],
+            "canonicalWestSocketSource": canonical[
+                "frontageSocketExpectedSource"
+            ],
+            "historicalAdapterFutureSourceAuthority": historical[
+                "futureSourceAuthority"
+            ],
+            "historicalAdapterLoadedByBlenderScript": (
+                "actualCameraProofScript" in blender_script_source
+                or "load_accepted_builder" in blender_script_source
+            ),
+            "passed": coordinate_bridge_pass,
+        },
     }
     static_pass = (
         not frozen_errors
         and control_flow["passed"]
         and pixel_count == 0
         and blender_script_path.is_file()
+        and coordinate_bridge_pass
     )
     common = {
         "schemaVersion": 1,
@@ -224,6 +260,7 @@ def main() -> int:
         "runnerContractSha256": sha256(contract_path),
         "driverSha256": sha256(driver_path),
         "blenderScriptSha256": sha256(blender_script_path),
+        "coordinateBridgeState": coordinate_bridge["state"],
         "rejectionStage": "before_renderer_launch",
         **zero_counts(),
     }
@@ -255,6 +292,7 @@ def main() -> int:
             "lockedMaterialMapping.path",
             "lockedMaterialMapping.sha256",
         ],
+        "coordinateBridgeBlocker": "v06 coordinate projection and contact-corner revalidation is pending",
         "passed": missing_pass,
     }
     wrong_report = {
@@ -269,6 +307,7 @@ def main() -> int:
                 "lockedMaterialMapping"
             ]["sha256"],
         },
+        "coordinateBridgeBlocker": "v06 coordinate projection and contact-corner revalidation is pending",
         "modes": wrong_decisions,
         "passed": wrong_pass,
     }

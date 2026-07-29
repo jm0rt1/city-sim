@@ -121,6 +121,15 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
                 errors.extend(
                     hash_binding_errors(root, f"acceptedPredesign.{name}", binding)
                 )
+        historical_proof = predesign.get("actualCameraProofScript", {})
+        if (
+            historical_proof.get("authorityScope")
+            != "historical-zero-pixel-evidence-only"
+            or historical_proof.get("futureSourceAuthority") is not False
+        ):
+            errors.append(
+                "acceptedPredesign.actualCameraProofScript:future-authority-scope"
+            )
 
     invariants = contract.get("invariants", {})
     registration = invariants.get("registration", {})
@@ -164,6 +173,46 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     for actual, expected, name in exact_invariants:
         if actual != expected:
             errors.append(f"invariant:{name}")
+
+    bridge = contract.get("coordinateBridge", {})
+    canonical = bridge.get("canonicalCitySim", {})
+    historical = bridge.get("historicalProjectionAdapter", {})
+    bridge_invariants = (
+        (bridge.get("holdIsStop"), False, "hold-is-not-stop"),
+        (canonical.get("direction"), "west", "canonical-direction"),
+        (
+            canonical.get("frontageSocketWorldXYZ"),
+            [-28, 0, 0],
+            "canonical-world-socket",
+        ),
+        (
+            canonical.get("frontageSocketExpectedSource"),
+            [640, 704],
+            "canonical-source-socket",
+        ),
+        (
+            historical.get("authorityScope"),
+            "retained-predesign-proof-only",
+            "historical-adapter-scope",
+        ),
+        (
+            historical.get("futureSourceAuthority"),
+            False,
+            "historical-adapter-not-source-authority",
+        ),
+    )
+    for actual, expected, name in bridge_invariants:
+        if actual != expected:
+            errors.append(f"coordinate-bridge:{name}")
+    if bridge.get("state") not in (
+        "pending_v06_revalidation",
+        "validated_v06",
+    ):
+        errors.append("coordinate-bridge:invalid-state")
+    if historical:
+        errors.extend(
+            hash_binding_errors(root, "coordinateBridge.historicalAdapter", historical)
+        )
 
     implementation = contract.get("runnerImplementation", {})
     blender_script = implementation.get("blenderScriptPath")
@@ -242,6 +291,46 @@ def evaluate_render_guard(
 ) -> dict[str, Any]:
     """Return a deterministic pre-launch decision without launching Blender."""
     errors = frozen_input_errors(root, contract)
+    bridge = contract.get("coordinateBridge")
+    bridge_v06: dict[str, Any] = {}
+    if not isinstance(bridge, dict):
+        errors.append("coordinate-bridge:missing")
+    else:
+        bridge_v06 = bridge.get("v06", {})
+        if bridge.get("state") != "validated_v06":
+            errors.append("coordinate-bridge:pending-v06")
+        required_bridge_fields = (
+            "authorityPath",
+            "authorityCommit",
+            "authoritySha256",
+            "adapterPath",
+            "adapterSha256",
+            "cameraProjectionProofSha256",
+            "contactCornerOrderProofSha256",
+            "canonicalWestSocketProofSha256",
+        )
+        if not isinstance(bridge_v06, dict) or any(
+            not bridge_v06.get(field) for field in required_bridge_fields
+        ):
+            errors.append("coordinate-bridge:v06-binding-incomplete")
+        else:
+            try:
+                authority_path = repository_path(
+                    root, bridge_v06["authorityPath"]
+                )
+                adapter_path = repository_path(root, bridge_v06["adapterPath"])
+                if (
+                    not authority_path.is_file()
+                    or sha256(authority_path) != bridge_v06["authoritySha256"]
+                ):
+                    errors.append("coordinate-bridge:authority-sha256-mismatch")
+                if (
+                    not adapter_path.is_file()
+                    or sha256(adapter_path) != bridge_v06["adapterSha256"]
+                ):
+                    errors.append("coordinate-bridge:adapter-sha256-mismatch")
+            except (ContractError, OSError):
+                errors.append("coordinate-bridge:v06-binding-invalid")
     appearance = contract.get("appearanceLock")
     if not isinstance(appearance, dict):
         errors.append("appearance-lock:missing-object")
@@ -359,6 +448,9 @@ def launch_blender(
 ) -> int:
     """Launch Blender only after ``evaluate_render_guard`` returned allow."""
     appearance = contract["appearanceLock"]
+    _verify_lock_commit_ancestry(
+        root, contract["coordinateBridge"]["v06"]["authorityCommit"]
+    )
     _verify_lock_commit_ancestry(root, appearance["commit"])
     pipeline = contract["invariants"]["renderPipeline"]
     executable = Path(pipeline["blenderExecutable"])

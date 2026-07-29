@@ -125,10 +125,25 @@ def main() -> int:
         "repeat-identity": repository_path(
             root, f"{EVIDENCE_ROOT}/RUNNER-REPEAT-IDENTITY.json"
         ),
+        "coordinate-bridge-blocker": repository_path(
+            root, f"{EVIDENCE_ROOT}/COORDINATE-BRIDGE-BLOCKER.json"
+        ),
     }
     for name, path in evidence_reports.items():
         if not path.is_file() or load_json(path).get("passed") is not True:
             failures.append(f"evidence-report:{name}")
+    blocker = load_json(evidence_reports["coordinate-bridge-blocker"])
+    blocker_canonical = blocker.get("canonicalCitySim", {})
+    if (
+        blocker.get("disposition")
+        != "HOLD_PENDING_V06_COORDINATE_BRIDGE_REVALIDATION"
+        or blocker.get("holdIsStop") is not False
+        or blocker_canonical.get("frontageSocketWorldXYZ") != [-28, 0, 0]
+        or blocker_canonical.get("frontageSocketExpectedSource") != [640, 704]
+        or blocker_canonical.get("blenderNativeDirectionalSocket") is not None
+        or blocker.get("sourceReady") is not False
+    ):
+        failures.append("coordinate-bridge-blocker-content")
 
     pixel_files: list[str] = []
     generated_cache: list[str] = []
@@ -162,6 +177,18 @@ def main() -> int:
         for key in ("rgba", "literal192", "abcIdentity", "normalization")
     ):
         failures.append("pixel-validation-state")
+    bridge = contract.get("coordinateBridge", {})
+    canonical = bridge.get("canonicalCitySim", {})
+    if (
+        bridge.get("state") != "pending_v06_revalidation"
+        or bridge.get("holdIsStop") is not False
+        or canonical.get("frontageSocketWorldXYZ") != [-28, 0, 0]
+        or canonical.get("frontageSocketExpectedSource") != [640, 704]
+        or any(value is not None for value in bridge.get("v06", {}).values())
+    ):
+        failures.append("coordinate-bridge-hold")
+    if handoff["state"] != "prelock_runner_ready" or handoff["sourceReady"] is not False:
+        failures.append("handoff-runner-readiness-boundary")
 
     result = {
         "schemaVersion": 1,

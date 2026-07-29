@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "industrial-l04-north-v09-monumental-foundry-materials",
+  "materials": [
+    {
+      "id": "v09-grounded-foundation",
+      "role": "grounded-foundation",
+      "baseColorRGBA": [0.20, 0.22, 0.21, 1],
+      "roughness": 0.88,
+      "metalness": 0.03
+    },
+    {
+      "id": "v09-warm-foundry-masonry",
+      "role": "dominant-foundry-hall-masonry",
+      "baseColorRGBA": [0.64, 0.48, 0.32, 1],
+      "roughness": 0.84,
+      "metalness": 0.02
+    },
+    {
+      "id": "v09-masonry-edge",
+      "role": "masonry-lintel-and-edge",
+      "baseColorRGBA": [0.80, 0.62, 0.40, 1],
+      "roughness": 0.78,
+      "metalness": 0.03
+    },
+    {
+      "id": "v09-charcoal-steel",
+      "role": "primary-structural-steel",
+      "baseColorRGBA": [0.30, 0.38, 0.39, 1],
+      "roughness": 0.60,
+      "metalness": 0.56
+    },
+    {
+      "id": "v09-bluegreen-roof",
+      "role": "roof-and-process-bay-steel",
+      "baseColorRGBA": [0.36, 0.52, 0.48, 1],
+      "roughness": 0.65,
+      "metalness": 0.42
+    },
+    {
+      "id": "v09-roof-edge",
+      "role": "roof-edge-and-clerestory-cap",
+      "baseColorRGBA": [0.62, 0.68, 0.62, 1],
+      "roughness": 0.62,
+      "metalness": 0.32
+    },
+    {
+      "id": "v09-deep-freight-void",
+      "role": "freight-recess-inset",
+      "baseColorRGBA": [0.035, 0.045, 0.046, 1],
+      "roughness": 0.92,
+      "metalness": 0.06
+    },
+    {
+      "id": "v09-freight-frame",
+      "role": "freight-jamb-header-frame",
+      "baseColorRGBA": [0.82, 0.64, 0.38, 1],
+      "roughness": 0.76,
+      "metalness": 0.04
+    },
+    {
+      "id": "v09-operating-apron",
+      "role": "integrated-private-operating-yard",
+      "baseColorRGBA": [0.39, 0.37, 0.31, 1],
+      "roughness": 0.91,
+      "metalness": 0.01
+    },
+    {
+      "id": "v09-service-panel",
+      "role": "louver-and-service-panel",
+      "baseColorRGBA": [0.50, 0.58, 0.53, 1],
+      "roughness": 0.72,
+      "metalness": 0.26
+    },
+    {
+      "id": "v09-warm-glazing",
+      "role": "staff-and-clerestory-glazing",
+      "baseColorRGBA": [0.88, 0.70, 0.36, 1],
+      "roughness": 0.34,
+      "metalness": 0.05,
+      "emissionStrength": 0.18
+    },
+    {
+      "id": "v09-oxidized-machinery",
+      "role": "large-process-machinery",
+      "baseColorRGBA": [0.54, 0.62, 0.48, 1],
+      "roughness": 0.68,
+      "metalness": 0.44
+    },
+    {
+      "id": "v09-hot-process",
+      "role": "large-readable-hot-process",
+      "baseColorRGBA": [1.0, 0.72, 0.18, 1],
+      "roughness": 0.45,
+      "metalness": 0.02,
+      "emissionStrength": 1.35
+    },
+    {
+      "id": "v09-staff-door",
+      "role": "human-scale-staff-door",
+      "baseColorRGBA": [0.58, 0.66, 0.55, 1],
+      "roughness": 0.62,
+      "metalness": 0.30
+    }
+  ],
+  "sourceAuthority": false,
+  "productionSelected": false
+}

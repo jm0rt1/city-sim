@@ -6,10 +6,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
-import stat
 from pathlib import Path
 from typing import Any
+
+from sealed_io import SealedDirectory, reject_symlink_or_missing_chain
 
 
 AUTHORITY_COMMIT = "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24"
@@ -38,6 +38,14 @@ SOURCE_FILES = [
     "SCENE.json",
     "assemble_zero_pixel.py",
     "build_zero_pixel.py",
+    "frozen-inputs/MANIFEST.json",
+    "frozen-inputs/v08/NON-SOURCE-SEMANTIC-192-COLOR.png",
+    "frozen-inputs/v09/EXACT-192-COLOR.png",
+    "frozen-inputs/v09/MATERIALS.json",
+    "frozen-inputs/v09/SCENE.json",
+    "frozen-inputs/v09/build_prepixel.py",
+    "sealed_io.py",
+    "validate_portability.py",
 ]
 
 
@@ -49,25 +57,12 @@ def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def write_json(path: Path, value: Any) -> None:
-    path.write_text(
-        json.dumps(value, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-
-
-def assert_no_symlink_chain(path: Path) -> None:
-    current = Path(path.anchor)
-    for part in path.parts[1:]:
-        current /= part
-        if not os.path.lexists(current):
-            continue
-        if stat.S_ISLNK(os.lstat(current).st_mode):
-            raise RuntimeError(f"symlink path component forbidden: {current}")
-
-
 def inventory(root: Path, names: list[str]) -> dict[str, str]:
-    actual_names = sorted(path.name for path in root.iterdir())
+    actual_names = sorted(
+        str(path.relative_to(root))
+        for path in root.rglob("*")
+        if path.is_file()
+    )
     if actual_names != sorted(names):
         raise RuntimeError(
             f"inventory drift at {root}: expected {sorted(names)}, got {actual_names}"
@@ -75,7 +70,7 @@ def inventory(root: Path, names: list[str]) -> dict[str, str]:
     result = {}
     for name in sorted(names):
         path = root / name
-        assert_no_symlink_chain(path)
+        reject_symlink_or_missing_chain(path.parent)
         if not path.is_file() or path.is_symlink():
             raise RuntimeError(f"regular file required: {path}")
         result[name] = sha256(path)
@@ -91,15 +86,15 @@ def main() -> None:
     parser.add_argument("--run-b-peak-rss-bytes", type=int, required=True)
     args = parser.parse_args()
 
-    repository = args.repository_root.absolute()
-    if repository.resolve() != repository:
+    repository = args.repository_root
+    if not repository.is_absolute() or repository.resolve() != repository:
         raise RuntimeError("repository root must be canonical")
     source_root = repository / SOURCE_REL
     evidence_root = repository / EVIDENCE_REL
     run_a = evidence_root / "replay-a"
     run_b = evidence_root / "replay-b"
     for path in (repository, source_root, evidence_root, run_a, run_b):
-        assert_no_symlink_chain(path)
+        reject_symlink_or_missing_chain(path)
     if not evidence_root.is_dir() or evidence_root.is_symlink():
         raise RuntimeError("exact evidence root required")
     root_names = sorted(path.name for path in evidence_root.iterdir())
@@ -233,8 +228,12 @@ def main() -> None:
         "rendererQuarantined": False,
         "productionSelected": False,
     }
-    write_json(evidence_root / "REPLAY-IDENTITY.json", receipt)
-    write_json(evidence_root / "HANDOFF.json", handoff)
+    sealed = SealedDirectory(
+        evidence_root,
+        {"REPLAY-IDENTITY.json", "HANDOFF.json"},
+    )
+    sealed.write_json("REPLAY-IDENTITY.json", receipt)
+    sealed.write_json("HANDOFF.json", handoff)
     final_names = sorted(path.name for path in evidence_root.iterdir())
     if final_names != [
         "HANDOFF.json",

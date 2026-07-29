@@ -6,13 +6,19 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
-import importlib.util
 import json
 import os
-import shutil
-import stat
+import struct
+import types
+import zlib
 from pathlib import Path
 from typing import Any
+
+from sealed_io import (
+    SealedDirectory,
+    create_exact_directory,
+    reject_symlink_or_missing_chain,
+)
 
 
 AUTHORITY_COMMIT = "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24"
@@ -24,6 +30,9 @@ V10_SCENE_SHA = "0f572b80ec8d17f23e8569816e9a1f17502b114c1a4e361ea582d4ca388f845
 V10_MATERIALS_SHA = "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
 V08_PREVIEW_SHA = "404a7322fcf78e2de5ccd1e5c4cb4ef74eff2314b42f885484f66c0731020f28"
 V09_PREVIEW_SHA = "f8f0ea0cf01264731ceef5271789615809a51a0b9d3419301b6330d088ac3ecb"
+FROZEN_INPUT_MANIFEST_SHA = (
+    "1e25cab5e751ff1a627ede8eee0521f184e8339c11fa176bea78c3df85d5d466"
+)
 
 SOURCE_REL = Path(
     "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
@@ -33,18 +42,12 @@ EVIDENCE_REL = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v10"
 )
-V09_SOURCE_REL = Path(
-    "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
-    "industrial-l04-north-art-v09"
+FROZEN_INPUT_REL = SOURCE_REL / "frozen-inputs"
+V09_SOURCE_REL = FROZEN_INPUT_REL / "v09"
+V08_PREVIEW_REL = (
+    FROZEN_INPUT_REL / "v08/NON-SOURCE-SEMANTIC-192-COLOR.png"
 )
-V08_PREVIEW_REL = Path(
-    "docs/production/evidence/PLAY-027/industrial-l04/l04/"
-    "blender-north-art-v08/replay-a/NON-SOURCE-SEMANTIC-192-COLOR.png"
-)
-V09_PREVIEW_REL = Path(
-    "docs/production/evidence/PLAY-027/industrial-l04/l04/"
-    "blender-north-art-v09/review/EXACT-192-COLOR.png"
-)
+V09_PREVIEW_REL = FROZEN_INPUT_REL / "v09/EXACT-192-COLOR.png"
 
 FILES = [
     "SCENE.json",
@@ -66,26 +69,8 @@ def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def write_json(path: Path, value: Any) -> None:
-    path.write_text(
-        json.dumps(value, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-
-
-def assert_no_symlink_chain(path: Path) -> None:
-    current = Path(path.anchor)
-    for part in path.parts[1:]:
-        current /= part
-        if not os.path.lexists(current):
-            continue
-        mode = os.lstat(current).st_mode
-        if stat.S_ISLNK(mode):
-            raise RuntimeError(f"symlink path component forbidden: {current}")
-
-
 def assert_regular(path: Path, expected_sha: str) -> None:
-    assert_no_symlink_chain(path)
+    reject_symlink_or_missing_chain(path.parent)
     if not path.is_file() or path.is_symlink():
         raise RuntimeError(f"regular non-symlink input required: {path}")
     actual = sha256(path)
@@ -96,12 +81,49 @@ def assert_regular(path: Path, expected_sha: str) -> None:
 
 
 def import_v09_builder(path: Path) -> Any:
-    spec = importlib.util.spec_from_file_location("play027_v09_builder", path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("cannot load frozen v09 analytic builder")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    module = types.ModuleType("play027_v09_builder")
+    source = path.read_bytes()
+    exec(compile(source, str(path), "exec"), module.__dict__)
     return module
+
+
+def png_payload(legacy: Any, width: int, height: int, rgba: bytes) -> bytes:
+    rows = bytearray()
+    stride = width * 4
+    for y in range(height):
+        rows.append(0)
+        rows.extend(rgba[y * stride : (y + 1) * stride])
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + legacy.png_chunk(
+            b"IHDR",
+            struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0),
+        )
+        + legacy.png_chunk(b"IDAT", zlib.compress(bytes(rows), level=9))
+        + legacy.png_chunk(b"IEND", b"")
+    )
+
+
+def validate_frozen_bundle(bundle_root: Path) -> dict[str, Any]:
+    manifest_path = bundle_root / "MANIFEST.json"
+    assert_regular(manifest_path, FROZEN_INPUT_MANIFEST_SHA)
+    manifest = load_json(manifest_path)
+    expected_paths = sorted(item["path"] for item in manifest["files"])
+    actual_paths = sorted(
+        str(path.relative_to(bundle_root))
+        for path in bundle_root.rglob("*")
+        if path.is_file()
+    )
+    if actual_paths != sorted(["MANIFEST.json", *expected_paths]):
+        raise RuntimeError(
+            f"frozen input inventory drift: expected {expected_paths}, got {actual_paths}"
+        )
+    for item in manifest["files"]:
+        path = bundle_root / item["path"]
+        assert_regular(path, item["sha256"])
+        if path.stat().st_size != item["bytes"]:
+            raise RuntimeError(f"frozen input byte-count drift: {path}")
+    return manifest
 
 
 def component(scene: dict[str, Any], component_id: str) -> dict[str, Any]:
@@ -218,32 +240,31 @@ def main() -> None:
     parser.add_argument("--replay-id", choices=("a", "b"), required=True)
     args = parser.parse_args()
 
-    repository = args.repository_root.absolute()
-    if repository.resolve() != repository:
+    repository = args.repository_root
+    if not repository.is_absolute() or repository.resolve() != repository:
         raise RuntimeError("repository root must be canonical")
     source_root = repository / SOURCE_REL
     evidence_root = repository / EVIDENCE_REL
     expected_output = evidence_root / f"replay-{args.replay_id}"
-    output = args.output_root.absolute()
-    if output != expected_output:
+    output = args.output_root
+    if not output.is_absolute() or output.parts != expected_output.parts:
         raise RuntimeError(
             f"output root is not exact whitelist target: {output}"
         )
-    assert_no_symlink_chain(repository)
-    assert_no_symlink_chain(source_root)
-    assert_no_symlink_chain(evidence_root)
-    assert_no_symlink_chain(output)
-    if output.exists() or output.is_symlink():
-        raise RuntimeError(f"output root must be absent: {output}")
+    reject_symlink_or_missing_chain(repository)
+    reject_symlink_or_missing_chain(source_root)
     if args.replay_id == "a":
-        if evidence_root.exists() or evidence_root.is_symlink():
+        if os.path.lexists(evidence_root):
             raise RuntimeError("evidence root must be absent before replay-a")
+        allowed_new_directories = (evidence_root, output)
     else:
         replay_a = evidence_root / "replay-a"
+        reject_symlink_or_missing_chain(evidence_root)
         if not replay_a.is_dir() or replay_a.is_symlink():
             raise RuntimeError("complete replay-a required before replay-b")
         if sorted(path.name for path in replay_a.iterdir()) != sorted(FILES):
             raise RuntimeError("replay-a inventory drift before replay-b")
+        allowed_new_directories = (output,)
 
     v09_scene_path = repository / V09_SOURCE_REL / "SCENE.json"
     v09_materials_path = repository / V09_SOURCE_REL / "MATERIALS.json"
@@ -252,6 +273,9 @@ def main() -> None:
     v10_materials_path = source_root / "MATERIALS.json"
     v08_preview_path = repository / V08_PREVIEW_REL
     v09_preview_path = repository / V09_PREVIEW_REL
+    frozen_manifest = validate_frozen_bundle(
+        repository / FROZEN_INPUT_REL
+    )
     assert_regular(v09_scene_path, V09_SCENE_SHA)
     assert_regular(v09_materials_path, V09_MATERIALS_SHA)
     assert_regular(v09_builder_path, V09_BUILDER_SHA)
@@ -547,12 +571,16 @@ def main() -> None:
         "sceneSHA256": V10_SCENE_SHA,
         "materialsSHA256": V10_MATERIALS_SHA,
         "frozenInputHashes": {
+            "manifest": FROZEN_INPUT_MANIFEST_SHA,
             "v09Scene": V09_SCENE_SHA,
             "v09Materials": V09_MATERIALS_SHA,
             "v09Builder": V09_BUILDER_SHA,
             "v08Preview": V08_PREVIEW_SHA,
             "v09Preview": V09_PREVIEW_SHA,
         },
+        "frozenInputSourceCommits": sorted(
+            {item["sourceCommit"] for item in frozen_manifest["files"]}
+        ),
         "portal": portal,
         "clearApertureWorldUnits": clear_width,
         "effectiveEmptyApertureAABB": empty_aperture,
@@ -609,33 +637,46 @@ def main() -> None:
         "productionSelected": False,
     }
 
-    output.mkdir(parents=True, exist_ok=False)
-    assert_no_symlink_chain(output)
-    shutil.copyfile(v10_scene_path, output / "SCENE.json")
-    shutil.copyfile(v10_materials_path, output / "MATERIALS.json")
-    write_json(output / "FIELD-DIFF.json", field_diff)
-    write_json(output / "VALIDATION.json", validation)
-    legacy.write_png(output / "EXACT-192-COLOR.png", 192, 128, literal)
-    legacy.write_png(
-        output / "EXACT-192-GRAYSCALE.png",
-        192,
-        128,
-        legacy.grayscale(literal),
-    )
-    legacy.write_png(
-        output / "EXACT-192-SEMANTIC.png",
-        192,
-        128,
-        legacy.semantic_image(groups),
-    )
     _, _, v08_preview = legacy.read_png(v08_preview_path)
     _, _, v09_preview = legacy.read_png(v09_preview_path)
-    legacy.write_png(
-        output / "V08-V09-V10-COMPARISON.png",
-        576,
-        128,
-        horizontal_strip([v08_preview, v09_preview, literal], 192, 128),
+    output_payloads = {
+        "EXACT-192-COLOR.png": png_payload(
+            legacy,
+            192,
+            128,
+            literal,
+        ),
+        "EXACT-192-GRAYSCALE.png": png_payload(
+            legacy,
+            192,
+            128,
+            legacy.grayscale(literal),
+        ),
+        "EXACT-192-SEMANTIC.png": png_payload(
+            legacy,
+            192,
+            128,
+            legacy.semantic_image(groups),
+        ),
+        "V08-V09-V10-COMPARISON.png": png_payload(
+            legacy,
+            576,
+            128,
+            horizontal_strip([v08_preview, v09_preview, literal], 192, 128),
+        ),
+    }
+    create_exact_directory(
+        output,
+        expected_output,
+        allowed_new_directories,
     )
+    sealed = SealedDirectory(output, FILES)
+    sealed.copy_regular("SCENE.json", v10_scene_path)
+    sealed.copy_regular("MATERIALS.json", v10_materials_path)
+    sealed.write_json("FIELD-DIFF.json", field_diff)
+    sealed.write_json("VALIDATION.json", validation)
+    for name, payload in output_payloads.items():
+        sealed.write_bytes(name, payload)
     if sorted(path.name for path in output.iterdir()) != sorted(FILES):
         raise RuntimeError("generated output inventory drift")
     if not validation["validationPassed"]:

@@ -1,0 +1,49 @@
+{
+  "bundleID": "play027-industrial-l04-north-v10-frozen-inputs-v01",
+  "files": [
+    {
+      "bytes": 992,
+      "gitBlob": "b813b635b7e296306a4187b06cbfcbc83894f6ec",
+      "path": "v08/NON-SOURCE-SEMANTIC-192-COLOR.png",
+      "sha256": "404a7322fcf78e2de5ccd1e5c4cb4ef74eff2314b42f885484f66c0731020f28",
+      "sourceCommit": "e694987a6dc1e81f341641f29d2ddc7cc4d57a65",
+      "sourcePath": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v08/replay-a/NON-SOURCE-SEMANTIC-192-COLOR.png"
+    },
+    {
+      "bytes": 1303,
+      "gitBlob": "a1d01b2ff09a0901c81642adb894b8c80607417b",
+      "path": "v09/EXACT-192-COLOR.png",
+      "sha256": "f8f0ea0cf01264731ceef5271789615809a51a0b9d3419301b6330d088ac3ecb",
+      "sourceCommit": "94981f22a52c13c79f2d238e9957cae8d6a2ad12",
+      "sourcePath": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v09/review/EXACT-192-COLOR.png"
+    },
+    {
+      "bytes": 2849,
+      "gitBlob": "6ee93699fe7c4ab300bc3e9af385f2b42dd94389",
+      "path": "v09/MATERIALS.json",
+      "sha256": "243b1bd05b9db036f5350d0f2efab311d6f627702a3fda501959dfac6a7590a0",
+      "sourceCommit": "94981f22a52c13c79f2d238e9957cae8d6a2ad12",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v09/MATERIALS.json"
+    },
+    {
+      "bytes": 13728,
+      "gitBlob": "40e5963a28b82de081dcc1eb170a508df41cf5ef",
+      "path": "v09/SCENE.json",
+      "sha256": "50db925c32c442d5c30ee17d4cb74f50c4623c060354d45cf99500f0feb96a87",
+      "sourceCommit": "94981f22a52c13c79f2d238e9957cae8d6a2ad12",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v09/SCENE.json"
+    },
+    {
+      "bytes": 26405,
+      "gitBlob": "5298ce964c5950ad8990df230d8541909eff5d71",
+      "path": "v09/build_prepixel.py",
+      "sha256": "b09bd1e809e55ae360eee14b5b96a8e85c168a83a1fbd78b90295e0d00ab50b0",
+      "sourceCommit": "94981f22a52c13c79f2d238e9957cae8d6a2ad12",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v09/build_prepixel.py"
+    }
+  ],
+  "immutable": true,
+  "purpose": "self-contained read-only inputs for the rejected v10 zero-pixel replay",
+  "sourceAuthority": false,
+  "task": "PLAY-027"
+}

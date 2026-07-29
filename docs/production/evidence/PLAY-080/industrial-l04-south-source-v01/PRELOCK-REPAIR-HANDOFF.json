@@ -1,0 +1,80 @@
+{
+  "schema": "citysim.play-080.prelock-repair-handoff.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "publishedBaseline": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "baselineMergeCommit": "8cdbe6d1e5d822842e883e7eb6de4fd838b31251",
+  "preservedCandidateAncestor": "a8fa0f51c3baa5b79bc3671e1a8fe75c9ad1f874",
+  "repair": {
+    "blenderExecutableSha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "blenderFingerprintLength": 64,
+    "literal192MeasurementMethod": "analytic-v06-camera-semantic-cells-v1",
+    "literal192FiveFieldPass": true,
+    "commonNonAliasMasterCount": 44,
+    "commonNonAliasForbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+  },
+  "inputs": {
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+    },
+    "acceptedSouthScene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "coordinateBridgeMapping": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    }
+  },
+  "proofs": {
+    "literal192Semantic": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
+      "sha256": "19e9e72aa8959a59e52c644e2426093ac8e81ed3a6c101766fed598bde2c9edb",
+      "result": "PASS"
+    },
+    "prelockRepair": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-REPAIR-VALIDATION.json",
+      "sha256": "8cb2a8fed294e3b2b9fd37e650417df0aff1eacf9ca0547d3d894ac384ae07d6",
+      "static": "PASS",
+      "describe": "PASS",
+      "guard": "PASS"
+    },
+    "runnerStatic": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/RUNNER-STATIC-VALIDATION.json",
+      "sha256": "ed8c3b8d059d61c0771dcd173dc33f508b36da5f30a61d4cd2a9683eb3d7c833",
+      "result": "PASS"
+    },
+    "prelockHandoff": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-RUNNER-HANDOFF.json",
+      "sha256": "c134c9e5bcab8f35e05d3e86cb8906935aef67973d75ab302f6cd47145547e43",
+      "schemaReceiptPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/HANDOFF-SCHEMA-VALIDATION.json",
+      "schemaReceiptSha256": "bcefc277e7c300c1507d9429453691fabe39b196936c99a2a1e3e9054962aa32",
+      "result": "PASS"
+    }
+  },
+  "sourceStageSchema": {
+    "state": "awaiting_integration_source_stage_schema_v2",
+    "v1FinalBinding": false,
+    "v1Validation": "not_run",
+    "blockerPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-SCHEMA-V2-BLOCKER.json",
+    "blockerSha256": "95fab389ebd4b6b8c69a50f32414aa8a228f064653cdd04cbf4ced10c5e1da31"
+  },
+  "invocations": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFiles": 0
+  },
+  "processA": "not_run",
+  "processB": "not_run",
+  "processC": "not_run",
+  "sourceReady": false,
+  "productionSelected": false,
+  "selfAccepted": false,
+  "disposition": "non_schema_prelock_repair_ready_schema_v2_blocked"
+}

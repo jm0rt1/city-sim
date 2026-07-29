@@ -3,7 +3,7 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
   "governingContract": {
     "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
     "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
@@ -19,13 +19,15 @@
   },
   "runner": {
     "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-    "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
+    "contractSha256": "da5420b4997c19b413f180eb8917369ec0a0e038056f50935d2e1110d7ccd430",
     "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
-    "driverSha256": "ae72158658626094ead41d6dd32b88a9e674f712a8d03ec0c4627c0ea05d5cad",
+    "driverSha256": "9fcc1af40520ef568261278a26baadcf7a8dfef2c1cf1dc32bd56dce26f137e9",
     "validatorHashes": {
-      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_runner.py": "dda18dea19e2b22c3defdf211b99c90b1a1043af819fc8a839e602faab60be4e",
-      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py": "295fa0cc66ed0329d1d0e7db9310d84079cdeb2c7d2a0dd006f28e9c0516497a",
-      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_bridge_adoption.py": "f9bcddec4cdcb5e3135fd82019de0e19650b3a2ddcb51794ff52ac5dba065ec8"
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_runner.py": "c9bf7ea27aa9ba483eab9f3a4e080fa406e39db58642d24faa5f0fc093ba57a2",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py": "8c6b5855308c4220d03e56916c9b0ebb6eccdc3fc7fe1f30d89748bc81730f13",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_bridge_adoption.py": "f9bcddec4cdcb5e3135fd82019de0e19650b3a2ddcb51794ff52ac5dba065ec8",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/literal192_semantic_proof.py": "d0014b15a8462f3c1147d2c0874f55fadb32d76039d983903fa7d575fb36b021",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_repair.py": "616f3ef0ffa5d001e975a7dd8f4ec14e92eb1ec0693f97b581b97aa3b1aecf40"
     },
     "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
     "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"

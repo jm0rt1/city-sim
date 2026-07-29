@@ -5,7 +5,7 @@
   "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
   "schemaSha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951",
   "handoffPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-RUNNER-HANDOFF.json",
-  "handoffSha256": "77c3231b3d80c63ba96afd65a1bb1a82a498a5ddb1abc9e9705ea4cfd513c092",
+  "handoffSha256": "c134c9e5bcab8f35e05d3e86cb8906935aef67973d75ab302f6cd47145547e43",
   "validator": "python-jsonschema Draft2020-12",
   "command": "python3 -c <load exact schema and handoff; Draft202012Validator.check_schema; jsonschema.validate>",
   "result": "PASS"

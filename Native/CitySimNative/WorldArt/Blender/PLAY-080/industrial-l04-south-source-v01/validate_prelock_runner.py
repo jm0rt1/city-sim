@@ -132,6 +132,14 @@ def inspect_driver(driver: Path) -> dict[str, Any]:
             'contract["outputInventory"]["semantic"][mode]' in render_source_text
             and 'contract["outputInventory"]["provenance"][mode]' in render_source_text
         ),
+        "deterministicLiteral192SemanticProofBound": (
+            "measure_literal192_semantic_proof" in render_source_text
+            and '"literal192": literal192_metrics' in render_source_text
+            and "requires-post-render-v06-measurement" not in render_source_text
+        ),
+        "commonNonAliasGuardBound": (
+            "require_non_alias_input(contract)" in driver_text
+        ),
         "guardPrecedesRenderFunctionCall": (
             require_lock_index >= 0
             and require_bridge_index > require_lock_index

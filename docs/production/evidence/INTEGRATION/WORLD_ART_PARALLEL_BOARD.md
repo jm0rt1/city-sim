@@ -8,10 +8,10 @@
 
 | Cell | Branch / claim | Current state | Next release boundary |
 |---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | v04 zero-pixel proof `84be90eb` correctly stopped an impossible `+X` portal to `X = -28` socket path; v05 socket-facing portal relocation authorized | zero-pixel proof, then one A-only review publishes the appearance lock or returns North only |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | predesign integrated at `3575d6ac`; zero-pixel production runner and hard guard authorized/dispatched | A/B/C begins immediately after the appearance lock |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | predesign integrated at `d9842279`; zero-pixel production runner and hard guard authorized/dispatched | A/B/C begins immediately after the appearance lock |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | predesign integrated at `8a889f2a`; zero-pixel production runner and hard guard authorized/dispatched | A/B/C begins immediately after the appearance lock |
+| North | `codex/citysim-world-art` / `PLAY-027` | Integration review found v04/v05 relied on a permuted Blender bridge and wrong North world edge; v06 zero-pixel coordinate repair authorized at `a9647422` | accepted four-direction bridge releases a corrected North architecture authority; no A yet |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | predesign geometry retained; hard-guarded runner active, but its projection must adopt the accepted v06 bridge before A/B/C | bridge revalidation plus appearance lock releases A/B/C |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | predesign geometry retained; hard-guarded runner active, but its projection must adopt the accepted v06 bridge before A/B/C | bridge revalidation plus appearance lock releases A/B/C |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | predesign geometry retained; hard-guarded runner active, but its projection must adopt the accepted v06 bridge before A/B/C | bridge revalidation plus appearance lock releases A/B/C |
 | Renderer | `codex/citysim-world-rendering` / `PLAY-073` | fail-closed L4 intake is ready; non-shipping per-direction packet validation and 0–4 mutation matrix authorized/dispatched | quarantine each accepted direction; activate only after exact 4/4 |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | deterministic mature-city directional fixture and atomic L4 rubric are published on master at `184e6e5b`; live rehearsal remains deferred while the Mac is locked | one fresh independent final app gate after renderer assembly |
 

@@ -10,8 +10,9 @@
   `docs/production/evidence/PLAY-080/`
 - **Dependencies:** CONTRACT-020; CONTRACT-021; published Industrial L4 North
   family requirements
-- **Status:** Active for zero-pixel predesign only; pixel rendering remains
-  blocked until Integration accepts North and publishes the family/material lock
+- **Status:** Predesign accepted and integrated at `d9842279`; pixel rendering
+  remains blocked until Integration accepts North, publishes the
+  family/material lock, and issues a new production authority
 - **Validation/proof:** Independent South geometry; South road-facing portal
   and socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias

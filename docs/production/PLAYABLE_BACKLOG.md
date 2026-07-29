@@ -813,7 +813,7 @@ This is the authoritative first-wave task source. The shared target is one coher
   the published budget.
 - **Claim:** `docs/production/claims/PLAY-078.simulation-platform.md`.
 
-### [ ] PLAY-079: Predesign the Industrial L4 East source in parallel
+### [x] PLAY-079: Predesign the Industrial L4 East source in parallel
 
 - **Player outcome:** East-facing Industrial L4 can enter art review immediately
   after North acceptance instead of starting from zero.
@@ -829,8 +829,11 @@ This is the authoritative first-wave task source. The shared target is one coher
   registration-correct, non-aliased, cleanly committed, and ready to consume
   the accepted North family/material lock.
 - **Claim:** `docs/production/claims/PLAY-079.world-art-east.md`.
+- **Accepted integration:** East zero-pixel predesign, exact-camera proof, and
+  direction handoff merged at `3575d6ac`; pixel production remains blocked
+  pending the North family/material lock and a new production authority.
 
-### [ ] PLAY-080: Predesign the Industrial L4 South source in parallel
+### [x] PLAY-080: Predesign the Industrial L4 South source in parallel
 
 - **Player outcome:** South-facing Industrial L4 can enter art review
   immediately after North acceptance instead of starting from zero.
@@ -846,8 +849,11 @@ This is the authoritative first-wave task source. The shared target is one coher
   registration-correct, non-aliased, cleanly committed, and ready to consume
   the accepted North family/material lock.
 - **Claim:** `docs/production/claims/PLAY-080.world-art-south.md`.
+- **Accepted integration:** South zero-pixel predesign, exact-camera proof, and
+  direction handoff merged at `d9842279`; pixel production remains blocked
+  pending the North family/material lock and a new production authority.
 
-### [ ] PLAY-081: Predesign the Industrial L4 West source in parallel
+### [x] PLAY-081: Predesign the Industrial L4 West source in parallel
 
 - **Player outcome:** West-facing Industrial L4 can enter art review immediately
   after North acceptance instead of starting from zero.
@@ -863,6 +869,9 @@ This is the authoritative first-wave task source. The shared target is one coher
   registration-correct, non-aliased, cleanly committed, and ready to consume
   the accepted North family/material lock.
 - **Claim:** `docs/production/claims/PLAY-081.world-art-west.md`.
+- **Accepted integration:** West zero-pixel predesign, exact-camera proof, and
+  direction handoff merged at `8a889f2a`; pixel production remains blocked
+  pending the North family/material lock and a new production authority.
 
 ### [ ] PLAY-082: Make the selected target unmistakable
 

@@ -11,8 +11,13 @@ Validated read-only inputs:
 
 - the frozen fixture, fixture manifest, family preregistration, evidence plan,
   rubric, source-stage v2 schema, fixture admission schema, request schema,
-  receipt schema, and deterministic materializer validation receipt match the
-  SHA-256 values bound in `GATE-CONTRACT.json`;
+  receipt schema, materializer tool, materializer validator, and deterministic
+  materializer validation receipt match the exact path and SHA-256 values
+  bound in `GATE-CONTRACT.json`;
+- the bound validation receipt records repeat-receipt SHA-256
+  `96cdd6633a8ac856a260dfbe58ab04fbd9c2d75b42c642bf855fdea743f0f3e3`,
+  and the retained run-A and run-B receipt files each independently match that
+  hash;
 - direction targets are exactly North/East/South/West with unique task,
   logical identity, player block, state coordinate, sole-road relationship,
   and source-pixel socket bindings;

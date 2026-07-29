@@ -48,6 +48,18 @@
     "fixtureReceiptSchema": {
       "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/RECEIPT-FORMAT.json",
       "sha256": "61427431aefbf5ac400f515338b85d5a39a74f658c081e6d46c7b1eda16d0661"
+    },
+    "fixtureMaterializerTool": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/tools/materialize_fixture_receipt.py",
+      "sha256": "e7022a61d5501fc48c10ed6f0fbc1351262636ad7087ea8b59b991600b55be6d"
+    },
+    "fixtureMaterializerValidator": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/tools/validate_fixture_materializer.py",
+      "sha256": "1daff37147af1afc0f16dcaa9a42c47e62fdd94b9483a2a3dd3ee962e7ed32d3"
+    },
+    "fixtureMaterializerValidationReceipt": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/proof/VALIDATION-RECEIPT.json",
+      "sha256": "05c23a602e211aa87d8545d929edb6d31ef6d5ba64f839c4b98425c23c6db745"
     }
   },
   "directionTargets": [

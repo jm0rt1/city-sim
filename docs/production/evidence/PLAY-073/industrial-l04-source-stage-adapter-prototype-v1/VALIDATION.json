@@ -1,67 +1,92 @@
 {
   "schemaVersion": 1,
   "documentType": "PLAY_073_INDUSTRIAL_L04_SOURCE_STAGE_ADAPTER_VALIDATION",
-  "result": "PASS_NONSHIPPING_PROTOTYPE",
+  "result": "PASS_NONSHIPPING_FOUR_DIRECTION_READINESS",
   "candidate": {
     "branch": "codex/citysim-world-rendering",
-    "publishedMaster": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
-    "syncMerge": "fa95453871c669d9fca541a9665714f811f0b3c2",
-    "prototypeCommit": "7e754a0dfbef6c8e91130b091015970702e417ca"
+    "publishedMaster": "54658b2e4ef159185153ae3daa788f6f248d1e6e",
+    "portableBridgeCommit": "95678368a144dec7e7f488b0cb5f3280bdf78e14",
+    "previousEvidenceCommit": "350763baf0b4b714e747aed4789167a99525bc61",
+    "fourDirectionRepairCommit": "009e28e2"
   },
   "artifacts": [
     {
       "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4SourceStageAdapterPrototypeTests.swift",
-      "sha256": "d94a114cd975e37a462f96c77359e2e0a3f2e87cc5679e55cf1e49f10a37698e"
+      "sha256": "f669c7c179be9878d26343f5a65f03175fa454b700ee567658e1199254f48d03"
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-prototype-v1/ADAPTER-MAPPING.json",
-      "sha256": "52b8a49ab81f1bbe3c90372842e1994d246a2907a904e87c7d6c81bf51547ed3"
+      "sha256": "ed8a47692b41f4cf33511b716b61b7dd4718a84b321878916306e3769a2f1ba1"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-prototype-v1/ADMISSION-QUARANTINE-VALIDATION.json",
+      "sha256": "9b33867e12d7c886df3bd47fb8ec7f5dffb8047a5dcf654eb21169507be96b75"
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-prototype-v1/HANDOFF.md",
-      "sha256": "66dfcdac0b30202995668ba35e2eb20dea22b9aab3e0f78ec013ffa82172108c"
+      "sha256": "04a6a88de29f335f2e20768fada93549b816dc172f9dcdcc4e9f49eab7e5b470"
     }
   ],
-  "prototypeSuite": {
+  "branchFocusedSuite": {
     "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-stage-adapter-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-stage-adapter-swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-stage-adapter-build --filter IndustrialL4SourceStageAdapterPrototypeTests",
     "result": "PASS",
-    "executed": 4,
+    "executed": 7,
+    "passed": 7,
     "failed": 0
   },
-  "focusedIndustrialL4Suite": {
+  "branchRetainedIndustrialL4Suite": {
     "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-stage-adapter-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-stage-adapter-swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-stage-adapter-build --filter IndustrialL4",
-    "result": "PASS",
-    "executed": 38,
-    "passed": 36,
+    "result": "PASS_RETAINED_HISTORY_NOT_PORTABILITY_GATE",
+    "executed": 41,
+    "passed": 39,
     "skipped": 2,
-    "failed": 0,
-    "expectedSkips": [
-      "caller-supplied atomic assembly manifest absent",
-      "caller-supplied direction packet absent"
-    ]
+    "failed": 0
   },
   "publishedMasterReplay": {
-    "base": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
-    "prototypeReplayCommit": "88dd12b06f29fdfaf7393e87a53dbce5db7979a7",
-    "evidenceReplayCommit": "1eb911a6f7cb05e5ae45e65daf1b85203b49bbc1",
-    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-stage-adapter-replay.b0RxRK/clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-stage-adapter-replay.b0RxRK/swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-stage-adapter-replay.b0RxRK/build --filter IndustrialL4SourceStageAdapterPrototypeTests",
-    "result": "PASS",
-    "executed": 4,
-    "failed": 0,
+    "base": "54658b2e4ef159185153ae3daa788f6f248d1e6e",
+    "workingRoot": "/private/tmp/play073-four-direction-replay.5SfObN/repo",
+    "head": "fc098b77",
+    "prototypeCommand": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-four-direction-replay.5SfObN/clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-four-direction-replay.5SfObN/swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-four-direction-replay.5SfObN/build --filter IndustrialL4SourceStageAdapterPrototypeTests",
+    "prototypeResult": {
+      "result": "PASS",
+      "executed": 7,
+      "passed": 7,
+      "failed": 0
+    },
+    "industrialL4Command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-four-direction-replay.5SfObN/clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-four-direction-replay.5SfObN/swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-four-direction-replay.5SfObN/build --filter IndustrialL4",
+    "industrialL4Result": {
+      "result": "PASS",
+      "executed": 34,
+      "passed": 32,
+      "skipped": 2,
+      "failed": 0,
+      "expectedSkips": [
+        "caller-supplied atomic assembly manifest absent",
+        "caller-supplied direction packet absent"
+      ]
+    },
+    "gitDiffCheck": "PASS",
     "retainedRendererDependency": false
   },
   "proof": {
-    "eastSouthWestExactReservedLocators": "PASS",
-    "northExplicitlyPending": true,
-    "deterministicFieldMapping": "PASS",
-    "locatorAuthorityHash": "PASS",
-    "sourceHandoffHash": "PASS",
-    "pathContainmentAndSymlinkRejection": "PASS",
-    "directionIsolatedFailure": "PASS",
-    "fallbackRejected": "PASS",
-    "transformAliasRejected": "PASS",
-    "crossDirectionAliasRejected": "PASS",
-    "fourOfFourActivationTriggered": false
+    "eastSouthWestRemainOnlySourceAdapterDirections": "PASS",
+    "quarantineIdentityContainsExactFourDirections": "PASS",
+    "syntheticAcceptedPrelockNorthBound": "PASS",
+    "threeOfFourIncomplete": "PASS",
+    "badFourthIsDirectionLocal": "PASS",
+    "correctedFourthReadyForAtomicAssembly": "PASS",
+    "requireReadyForAtomicAssembly": "PASS",
+    "packetAdmissionBindingsRevalidated": "PASS",
+    "sharedAppearanceLock": "PASS",
+    "twelveUniqueLODHashes": "PASS",
+    "thirtyTwoUniqueD4Hashes": "PASS",
+    "fallbackAliasTransformRejected": "PASS",
+    "runtimeShippingProductionRemainFalse": "PASS"
+  },
+  "supersededRecords": {
+    "industrialL4Executed40": "REMOVED_AS_STALE_BRANCH_ONLY_COUNT",
+    "fileHarnessExecuted3": "REMOVED_AS_STALE_BRANCH_ONLY_COUNT",
+    "authoritativePortableCount": "34_EXECUTED_32_PASSED_2_EXPECTED_SKIPS_0_FAILURES"
   },
   "scope": {
     "testAndEvidenceOnly": true,

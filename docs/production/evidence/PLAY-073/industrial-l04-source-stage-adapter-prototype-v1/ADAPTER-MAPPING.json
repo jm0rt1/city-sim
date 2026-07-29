@@ -3,7 +3,8 @@
   "documentType": "PLAY_073_INDUSTRIAL_L04_SOURCE_STAGE_ADAPTER_PROTOTYPE",
   "disposition": "VALIDATED_SYNTHETIC_NONSHIPPING_PROTOTYPE",
   "authority": {
-    "publishedMaster": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
+    "originalAdapterPublishedMaster": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
+    "currentReplayPublishedMaster": "54658b2e4ef159185153ae3daa788f6f248d1e6e",
     "rendererSyncMerge": "fa95453871c669d9fca541a9665714f811f0b3c2",
     "locatorAuthority": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
@@ -45,8 +46,8 @@
     }
   ],
   "north": {
-    "status": "pending_separate_locator_and_source_authority",
-    "syntheticPacketCreated": false,
+    "status": "synthetic_prelock_quarantine_input_only",
+    "syntheticPacketCreated": true,
     "adapterInvoked": false
   },
   "mapping": {
@@ -72,6 +73,22 @@
     "shippingResourcesMutated": false,
     "productionSelected": false,
     "fourOfFourAssemblyTriggered": false
+  },
+  "quarantineJoinResult": {
+    "status": "ready_for_atomic_assembly",
+    "directions": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "lodIdentities": 12,
+    "d4Identities": 32,
+    "requireReadyForAtomicAssembly": "PASS",
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false,
+    "syntheticOnly": true
   },
   "negativeMatrix": [
     "locator_authority_hash_drift",

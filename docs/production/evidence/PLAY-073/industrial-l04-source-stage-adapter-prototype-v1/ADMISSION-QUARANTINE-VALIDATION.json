@@ -1,119 +1,107 @@
 {
   "schemaVersion": 1,
   "documentType": "PLAY_073_INDUSTRIAL_L04_SYNTHETIC_ADMISSION_QUARANTINE_VALIDATION",
-  "result": "PASS_NONSHIPPING_SYNTHETIC_ONLY",
+  "result": "PASS_NONSHIPPING_SYNTHETIC_FOUR_DIRECTION_READINESS",
   "candidate": {
-    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
-    "rendererSyncMerge": "4f5be9c7c0975173e0a1578764991110d0b8bc3b",
-    "testCommit": "88a3d423689bc28bc6c7090abe6f4507150f8a62",
-    "evidenceCommit": "8bf6b1d5cdddee2d4361d97a583c0d8165e93fa9",
-    "portabilityRepairCommit": "95678368a144dec7e7f488b0cb5f3280bdf78e14"
+    "publishedMaster": "54658b2e4ef159185153ae3daa788f6f248d1e6e",
+    "portableBridgeCommit": "95678368a144dec7e7f488b0cb5f3280bdf78e14",
+    "previousEvidenceCommit": "350763baf0b4b714e747aed4789167a99525bc61",
+    "fourDirectionRepairCommit": "009e28e2"
   },
-  "artifacts": [
-    {
-      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4SourceStageAdapterPrototypeTests.swift",
-      "sha256": "cbbbd49796200549b978f5cfc926891282dfb1617b4a5b02f2ce76bc79af9d08"
-    }
-  ],
-  "syntheticIntegrationReceipts": {
-    "directions": [
+  "directionModels": {
+    "sourceAdapterDirections": [
       "east",
       "south",
       "west"
     ],
-    "schemaVersion": 1,
-    "disposition": "integration_source_admitted",
-    "semanticValidationResult": "PASS",
-    "independentTechnicalDisposition": "ACCEPT",
-    "literalScaleDisposition": "ACCEPT",
-    "rendererQuarantinedOnInput": false,
-    "productionSelected": false,
+    "quarantineDirections": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "northInSourceAdapterLoop": false,
+    "northInput": "synthetic_accepted_prelock_packet_and_admission",
     "realReceiptCount": 0
   },
   "proof": {
-    "adapterBytesReopenedBySelfContainedStrictHarness": "PASS",
-    "repeatIdenticalDirectionReceiptOutput": "PASS",
-    "eastSouthWestRendererQuarantine": "PASS_SYNTHETIC_ONLY",
-    "southAdmissionDecodedHashDriftRejected": "PASS",
-    "eastWestAdmittedPacketsUnchangedAfterSouthRejection": "PASS",
-    "eastWestReceiptBytesUnchangedAfterSouthRejection": "PASS",
-    "northPending": true,
-    "quarantineStatus": "quarantined_incomplete",
-    "readyForAtomicAssembly": false,
+    "threeOfFourStatus": "quarantined_incomplete",
+    "threeOfFourMissingDirections": [
+      "north"
+    ],
+    "badFourthDirectionRejected": "PASS",
+    "passingSiblingPacketsByteIdenticalAfterRejection": "PASS",
+    "passingSiblingReceiptsByteIdenticalAfterRejection": "PASS",
+    "correctedFourthReceiptRepeatIdentity": "PASS",
+    "fourOfFourStatus": "ready_for_atomic_assembly",
+    "requireReadyForAtomicAssembly": "PASS",
+    "exactDirectionSet": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "packetAdmissionBindingsRevalidatedAtJoin": "PASS",
+    "sharedAppearanceLockRevalidatedAtJoin": "PASS",
+    "uniqueSourceHashes": 4,
+    "uniqueGeometryHashes": 4,
+    "uniqueComponentManifestHashes": 4,
+    "uniquePacketHashes": 4,
+    "uniqueAdmissionHashes": 4,
+    "uniqueLODHashes": 12,
+    "uniqueD4Hashes": 32,
     "runtimeMappingMutated": false,
     "shippingResourcesMutated": false,
     "productionSelected": false
   },
-  "portabilityReplay": {
-    "result": "PASS",
-    "base": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+  "publishedMasterReplay": {
+    "base": "54658b2e4ef159185153ae3daa788f6f248d1e6e",
     "orderedSourceCommits": [
+      "7e754a0dfbef6c8e91130b091015970702e417ca",
+      "c7364ded1d12372da2f689214c7ec1690274ca6b",
+      "d1936c560433080115efa4180a1b76b2c1ba5b68",
       "88a3d423689bc28bc6c7090abe6f4507150f8a62",
       "8bf6b1d5cdddee2d4361d97a583c0d8165e93fa9",
-      "95678368a144dec7e7f488b0cb5f3280bdf78e14"
+      "95678368a144dec7e7f488b0cb5f3280bdf78e14",
+      "350763baf0b4b714e747aed4789167a99525bc61",
+      "009e28e2"
+    ],
+    "patchEquivalentInBase": [
+      "7e754a0dfbef6c8e91130b091015970702e417ca",
+      "c7364ded1d12372da2f689214c7ec1690274ca6b",
+      "d1936c560433080115efa4180a1b76b2c1ba5b68"
     ],
     "orderedReplayCommits": [
-      "448add7d",
-      "33973db1",
-      "43403fad"
+      "2b134405",
+      "0912846c",
+      "14ea491d",
+      "295e086f",
+      "fc098b77"
     ],
-    "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4SourceStageAdapterPrototypeTests",
-    "executed": 6,
-    "passed": 6,
-    "failed": 0,
-    "historicalHarnessSymbolReferences": 0,
-    "gitDiffCheck": "PASS",
-    "disposableReplayStatus": "clean_detached_head"
-  },
-  "strictHarnessAlignment": {
-    "groundContactPolygonWorld": [
-      [
-        0,
-        13.5
-      ],
-      [
-        27,
-        0
-      ],
-      [
-        0,
-        -13.5
-      ],
-      [
-        -27,
-        0
-      ]
-    ],
-    "identityTransformEqualsDecodedRgbaSha256": true,
-    "appearanceLockSharedAcrossDirections": true,
-    "validatorOrThresholdChanged": false
-  },
-  "validation": [
-    {
-      "filter": "IndustrialL4SourceStageAdapterPrototypeTests",
+    "prototypeSuite": {
       "result": "PASS",
-      "executed": 6,
+      "executed": 7,
+      "passed": 7,
       "failed": 0
     },
-    {
-      "filter": "IndustrialL4DirectionPacketFileHarnessTests",
+    "industrialL4Suite": {
       "result": "PASS",
-      "executed": 3,
-      "failed": 0
-    },
-    {
-      "filter": "IndustrialL4",
-      "result": "PASS",
-      "executed": 40,
-      "passed": 38,
+      "executed": 34,
+      "passed": 32,
       "skipped": 2,
       "failed": 0,
       "expectedSkips": [
         "caller-supplied atomic assembly manifest absent",
         "caller-supplied direction packet absent"
       ]
-    }
-  ],
+    },
+    "gitDiffCheck": "PASS"
+  },
+  "supersededCounts": {
+    "branchOnlyIndustrialL4Executed40": "SUPERSEDED_NOT_PORTABLE_GATE",
+    "branchOnlyFileHarnessExecuted3": "SUPERSEDED_NOT_PORTABLE_GATE",
+    "retainedBranchIndustrialL4Executed41": "DISCLOSED_NOT_ADOPTION_GATE"
+  },
   "scope": {
     "testAndEvidenceOnly": true,
     "sharedSchemaChanged": false,
@@ -121,6 +109,7 @@
     "realReceiptRead": false,
     "sourcePixelRead": false,
     "sourceAdmissionGranted": false,
+    "rendererQuarantineAccepted": false,
     "runtimeActivated": false,
     "resourceAtlasManifestPackageChanged": false,
     "appLaunched": false,

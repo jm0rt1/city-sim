@@ -920,3 +920,38 @@ This is the authoritative first-wave task source. The shared target is one coher
   behavior, clipped compact layout, or selection/camera/focus regression
   becomes necessary.
 - **Claim:** `docs/production/claims/PLAY-082.ui-input.md`.
+
+### [ ] PLAY-083: Prove exact lifecycle save bindings without relabeling history
+
+- **Player outcome:** Industrial L4 visual QA can compare truthful early and
+  recovered city states without invented fixtures or ambiguous semantic
+  relabeling.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-003, REL-001, REL-002, ART-002.
+- **Dependencies:** Accepted VisibleCityStates v3 corpus; exact PLAY-075
+  lifecycle-save request SHA-256
+  `73842570ee5d10e83ef3ec59b301dd9998959bd07e9d3d64e4d9d49c678bf51b`;
+  next published clean integration baseline.
+- **In scope:** Independent proof of explicit `early → active` and
+  `recovered → recovering` rubric mappings against the existing exact save
+  bytes; focused simulation tests or a task-local validator only if necessary;
+  task evidence.
+- **Out of scope:** Fixture or manifest mutation; new fixture generation;
+  save/schema/fingerprint changes; gameplay, renderer, UI, art, package,
+  build-script, public-contract, or legacy-Python changes; QA rehearsal or
+  scoring.
+- **Acceptance:** All request-bound manifest/save hashes and semantic
+  invariants pass; materialization, replay, persistence, recovery, and
+  round-trip gates repeat identically; all 22 negative cases fail closed; the
+  candidate packet leaves mapping publication and QA unlock to Integration.
+- **Validation:** Focused simulation/fixture tests; independent two-run
+  identity; exact Git-blob/SHA/digest comparison; save/load/backup/replay and
+  fingerprint checks; JSON parsing; `git diff --check`.
+- **Proof:** Machine-readable binding candidate, validation matrix, exact input
+  inventory, repeat receipt, and Integration handoff under
+  `docs/production/evidence/PLAY-083/`.
+- **Stop conditions:** Any fixture/manifest byte must change; either lifecycle
+  meaning must be inferred or weakened; public/save shape drifts; replay or
+  round trip differs; a negative gate does not fail; or product/visual
+  behavior would need mutation.
+- **Claim:** `docs/production/claims/PLAY-083.simulation-platform.md`.

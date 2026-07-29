@@ -1,6 +1,6 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24`
+- **Parallel operating authority:** `e30b57243e05c487509fbe22ef103f4c3b00cb69`
 - **Batch:** Industrial L4 directional family
 - **Updated:** 2026-07-29
 - **Machine-readable ledger:**
@@ -10,12 +10,12 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `414c200e7a99933f5aa5aa202598e94bf4106fb8` | execute the published v10 zero-pixel hypothesis; emission luma stays pending actual Process A |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `649ce1eb7ac4d76c89e0a7da9074f0dad3b91f23` | harden every future East output writer against redirects and symlink components |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `779cf5141a4735d6b7c84a0372f08c9ab111d358` | build a task-owned executable parallel-execution receipt prototype |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | `returned` | `ee95296f4fa0e266e374bef561c966e354b8edeb` | freeze the repaired candidate for independent path-safety and portability review |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `0f3a600abee6bb092dea2342b07252b4e2338a96` | implement the approved mixed-direction isolation and exactly-once assembly rehearsal |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `bdd75ad3caafc966082eaa2676a2990da2b9ad5b` | freeze the exact lifecycle-save request for independent review and Simulation dispatch |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `10df430ca1f6c0f26eb2082766791c39f9a18eab` | specify exact authority for segmenting occluders around a dedicated camera-visible portal pier |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `aa0498d2bd98465ba193f272761cc2ce31f3d269` | produce a code-ready direction-local orchestrator contract without inventing shared authority |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `e30b57243e05c487509fbe22ef103f4c3b00cb69` | derive the smallest production strict-receipt schema and validator contract for Integration |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `c4a8b8f5bac5b864eb4595514a983f54a273aef3` | adversarially replay the proposed two-slot schedule across ties, failures and exception paths |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `d1936c560433080115efa4180a1b76b2c1ba5b68` | map exact source-admission receipt fields into direction-local quarantine and the next test-only slice |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `a18123c4614517c640159fd55022619e81d29e9d` | run candidate-neutral mature-city fixture and six-camera regular/compact preflight when approval resolves |
 
 ## Dispatch invariant
 
@@ -24,22 +24,26 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `09:03Z` refresh, all six exact worktrees acknowledged useful bounded
-work. North is executing the published v10 zero-pixel hypothesis. East and West
-are independently hardening their task-owned output writers; a West-only
-return did not stop East or South. South is prototyping the strict direction-
-local parallel receipt without taking shared-schema ownership. Renderer is
-defining the next nonshipping mixed-direction rehearsal after its path
-hardening landed on `master`. QA is turning its fail-closed lifecycle-state
-blocker into an exact upstream fixture request. None of these tasks authorizes
-source pixels, admission, runtime activation, or scoring.
+At the `12:06Z` refresh, five exact worktrees are doing useful bounded work and
+QA is truthfully blocked on its already-requested Computer Use approval. North
+v11 plus fifty-two bounded parameter and compound-topology cases are rejected;
+North is specifying the smallest honest segmentation authority rather than
+gaming the erosion metric. East is converting its identified launch seam into
+a code-ready orchestrator contract. South is deriving the production strict-
+receipt authority, while West adversarially replays the two-slot schedule.
+Renderer durably proved its
+nonshipping direction adapter portable from exact published master and is now
+mapping the next direction-local quarantine slice.
+QA remains preregistered and may perform only candidate-neutral fixture/camera
+preflight; it is not counted as active while approval is pending. No row may
+edit a sibling direction's source or shared shipping files. None of these tasks
+authorizes source pixels, admission, runtime activation, or candidate scoring.
 
-The compute envelope currently permits zero DCC processes. V10 authorizes only
-two sequential analytic replays at concurrency one; its emission luma remains
-pending one later separately authorized Cycles Process A. North A/B/C and all
-East/South/West pixels remain closed. When a repaired North source earns an
-appearance lock, the next release will cap DCC execution at two simultaneous
-processes unless Integration publishes a measured exception.
+The compute envelope currently permits zero DCC processes and one analytic
+search process. North A/B/C and all East/South/West pixels remain closed. When
+a repaired North source earns an appearance lock, the next release will cap
+DCC execution at two simultaneous processes unless Integration publishes a
+measured exception.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

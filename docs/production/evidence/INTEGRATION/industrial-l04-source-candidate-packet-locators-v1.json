@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "documentType": "CITYSIM_INDUSTRIAL_L04_SOURCE_CANDIDATE_PACKET_LOCATORS",
+  "family": "industrial",
+  "level": 4,
+  "variant": 0,
+  "governingContract": {
+    "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+    "revision": 2,
+    "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+  },
+  "sourceStageSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "version": 2,
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+  },
+  "directions": [
+    {
+      "taskId": "PLAY-079",
+      "direction": "east",
+      "branch": "codex/citysim-world-art-east",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01",
+      "packetPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+      "status": "reserved",
+      "writer": "direction_cell",
+      "creationPolicy": "exclusive_no_overwrite_nofollow"
+    },
+    {
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "branch": "codex/citysim-world-art-south",
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01",
+      "packetPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "status": "reserved",
+      "writer": "direction_cell",
+      "creationPolicy": "exclusive_no_overwrite_nofollow"
+    },
+    {
+      "taskId": "PLAY-081",
+      "direction": "west",
+      "branch": "codex/citysim-world-art-west",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01",
+      "packetPath": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "status": "reserved",
+      "writer": "direction_cell",
+      "creationPolicy": "exclusive_no_overwrite_nofollow"
+    }
+  ],
+  "grants": {
+    "sourceAdmission": false,
+    "rendererQuarantine": false,
+    "rendererActivation": false,
+    "productionSelection": false,
+    "shipping": false
+  }
+}

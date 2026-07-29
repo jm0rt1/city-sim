@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v12-frozen-inputs",
+  "frozenNorthCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+  "files": [
+    {
+      "path": "analytic/build_prepixel.py",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v09/build_prepixel.py",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "bytes": 26405,
+      "sha256": "b09bd1e809e55ae360eee14b5b96a8e85c168a83a1fbd78b90295e0d00ab50b0"
+    },
+    {
+      "path": "v11/EXACT-192-COLOR.png",
+      "sourcePath": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v11/replay-a/EXACT-192-COLOR.png",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "bytes": 1305,
+      "sha256": "c5c2679d4d88c67c6809016cb13443f6aac2fcd4958f1755534b992a43b36897"
+    },
+    {
+      "path": "v11/MATERIALS.json",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v11/MATERIALS.json",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "bytes": 2882,
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+    },
+    {
+      "path": "v11/SCENE.json",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v11/SCENE.json",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "bytes": 13725,
+      "sha256": "814d9c2c86a740f04622f4ac47718c14d8f92d090fb127d921270e96ef1921c3"
+    }
+  ],
+  "pixelAuthority": "none",
+  "dccAuthority": "none"
+}

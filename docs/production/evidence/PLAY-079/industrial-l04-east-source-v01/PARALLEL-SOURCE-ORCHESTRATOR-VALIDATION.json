@@ -1,0 +1,109 @@
+{
+  "schema": "citysim.play-079.parallel-source-orchestrator-validation-receipt.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "result": "PASS_ZERO_PIXEL_BLOCKED",
+  "implementationCommit": "14fc1ce270ac97b3cb90dfa9ad2ef2f25a4f7653",
+  "claim": {
+    "path": "docs/production/claims/PLAY-079.world-art-east.md",
+    "sha256": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab"
+  },
+  "parallelExecutionDesign": {
+    "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED",
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+    "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+    "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
+    "productionAuthority": false
+  },
+  "bindings": {
+    "orchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
+      "sha256": "fe32ad8fb6948c26cf884aec8b0096f2743aa16a73d63a43aa361f83a03c59c0"
+    },
+    "test": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/test_orchestrate_parallel_source.py",
+      "sha256": "cfe079adf7c61757710ce69ae9515fe7b06891f19d0e781e98c9b11b8fa6c652"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "d062be34d48d3a55db7e01bb3a08de43a86baadc5283543a7abe8e9e503636e1"
+    },
+    "frozenInputManifest": {
+      "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
+      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
+    },
+    "rendererLocatorInventory": {
+      "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/RENDERER-LOCATOR-INVENTORY.json",
+      "sha256": "79aad19a933916c6b85f3ee8311d78a467427ba9a20025274215fb0932df968e"
+    }
+  },
+  "fixtures": {
+    "overlappedLocalEvidence": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/parallel-source/VALID-OVERLAPPED.json",
+      "sha256": "81c3e9cbc2ee8f747de04f114125f4b01df2271d4a257631d0430f77d815e59a",
+      "result": "PASS_LOCAL_EVIDENCE_ONLY"
+    },
+    "noOverlapNonready": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/parallel-source/VALID-NO-OVERLAP-NONREADY.json",
+      "sha256": "4cd24efcb3d4d6e2fd811a059e90b3b6d09f3b0f2d319dd6276780d7123e7c86",
+      "result": "PASS_NONREADY"
+    },
+    "negativeCases": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/parallel-source/FAIL-CLOSED-CASES.json",
+      "sha256": "544661a7135b40b6055e9504214675263e153cfdde6bf8ded6ffe7bb2aa16c18",
+      "count": 10,
+      "result": "PASS_ALL_REJECTED"
+    }
+  },
+  "validation": {
+    "orchestratorTests": "PASS",
+    "prelockRunner": "PASS",
+    "launchBoundCli": "PASS",
+    "outputPathSafety": "PASS",
+    "rendererLocatorInventory": "PASS",
+    "locatorAuthorityReceipt": "PASS",
+    "proposalAdapter": "PASS_BLOCKED",
+    "exactlyOnceLocalStateMachine": "PASS",
+    "safeWriteNoFollowNoOverwrite": "PASS",
+    "missingFutureAuthorityCommands": [
+      "preflight",
+      "launch",
+      "finalize"
+    ],
+    "missingFutureAuthorityResult": "REJECTED_BEFORE_DCC_OR_REPOSITORY_WRITE",
+    "globalCapClaimedByEast": false,
+    "globalParallelGateClaimedByEast": false,
+    "integrationMustRecomputeGlobalExecution": true
+  },
+  "futureIntegrationAuthorities": {
+    "appearanceLock": "missing",
+    "sourceProductionProfile": "missing",
+    "directionReceiptSchema": "missing",
+    "globalScheduleSchema": "missing",
+    "strictReceiptValidator": "missing",
+    "globalSchedule": "missing",
+    "executableAuthorityRecord": "missing",
+    "independentApproval": "missing"
+  },
+  "invocations": {
+    "productionSubprocessInvocations": 0,
+    "dccInvocations": 0,
+    "blenderProcessInvocations": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "renderInvocations": 0
+  },
+  "outputs": {
+    "productionReceiptsCreated": 0,
+    "sourceStagePacketsCreated": 0,
+    "pixelFilesCreated": 0,
+    "sourceReady": false,
+    "productionSelected": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "shipping": false
+  }
+}

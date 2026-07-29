@@ -50,6 +50,27 @@ For each active family or release batch, publish and maintain a visible status t
 |---|---|---|---|---|---|---|
 | `<family>` | `<state/claim/commit>` | `<state/claim/commit>` | `<state/claim/commit>` | `<state/claim/commit>` | `<intake state>` | `<gate state>` |
 
+Integration is the single writer for the shared batch ledger. Publish it in a
+machine-readable integration-owned artifact before pixel production begins.
+Each cell reports through its task-owned handoff packet; workers never edit the
+shared ledger. Every cell entry must identify owner, visible thread, branch,
+absolute worktree, claim, published base, exact head, state, blocker, next
+action, and update time. Reserve the intended renderer-ingestion window and
+independent-QA window in the same ledger so completed sources do not enter an
+undefined queue.
+
+Advance each batch through this explicit state machine:
+
+`contract_pending → prelock_active → appearance_lock_pending → abc_active →
+source_ready → renderer_quarantined → 4of4_ready → exact_candidate_qa →
+integrated`
+
+Only Integration advances shared batch state. Direction-local cells may report
+their own completed stage, but may not declare the family advanced. If a cell
+becomes idle before its next transition is legal, assign stage-legal
+preparation, validation, fixture, audit, or evidence work; do not bypass the
+gate and do not leave useful capacity dormant.
+
 For directional World Art, use this default fan-out:
 
 - North is the hero/design-calibration cell and freezes the family vocabulary.
@@ -72,6 +93,17 @@ Only genuine shared authorities remain serialized: family-contract publication, 
 - Keep tasks findable through descriptive thread titles, explicit delegation messages, reported thread IDs, and `list_threads`, `read_thread`, `send_message_to_thread`, and `wait_threads` status management.
 - Do not alter pre-existing pin state. If this integration agent pinned a thread during the current operation, undo only that pin and disclose the correction.
 - Internal subagents may support bounded analysis, but they must not substitute for a requested user-visible lane thread or edit the same worktree concurrently with its visible owner.
+
+### Bind visible threads to exact worktrees
+
+Treat a thread as a communication surface, never as sufficient routing
+authority. Before every dispatch, verify and record the tuple
+`{lane, direction, thread_id, branch, absolute_worktree, claim, base, head,
+state}`. Reuse a canonical visible thread only when its current worktree,
+branch, and claim match that tuple. Otherwise repair the routing or create a
+new clearly titled project/worktree thread; never send mutation authority to a
+stale, detached, or differently claimed checkout. Report the binding in the
+management update so the user can inspect it without relying on pin state.
 
 ## Enforce intelligent commits everywhere
 

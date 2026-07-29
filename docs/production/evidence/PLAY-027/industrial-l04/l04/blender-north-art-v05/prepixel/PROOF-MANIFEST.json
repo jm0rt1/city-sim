@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-020",
+  "authority": {
+    "commit": "af995850f0b20603c89ec7fdfda56245153a7f94",
+    "file": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V05-AUTHORITY.md",
+    "sha256": "5a7ce74cd39f99a7c7a8cef577018b49d20ae62e33aa1d36c444d5faf586cfae"
+  },
+  "synchronizedCheckpoint": "5773d1699785d25ee80ad5e8a53115f1db091d90",
+  "inputs": {
+    "sceneSHA256": "517d992fc1b16b4da9105cf0921ff7a18d01ec0ff45a2c154e0d213a7ea54d27",
+    "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "artContractSHA256": "bd004b92a5c3199ad442599b0279084d22100bb834daa2ae5eb1e890c4196ba5",
+    "sceneBuilderSHA256": "81578a3021f53842e701be6dfb5084a7353d022455e61ec8b743c7468a6c1d1d",
+    "staticValidatorSHA256": "aed1b0c77f7e505f8830d079d65fc31a7c820a5b7b0b631a97b00afb25a1967a",
+    "blenderToolSHA256": "263e71c27f9f0064da2ad3fc8633522ea54df364c3563752aec400d2e4d5e99a"
+  },
+  "artifacts": {
+    "handoff": {
+      "file": "../HANDOFF.json",
+      "sha256": "56bfd045681e17fde6e11359247deaec565306c58b593a28f9f41637e18802ac"
+    },
+    "disposition": {
+      "file": "DISPOSITION.md",
+      "sha256": "6144ff0c9ea81b6e3d18d04cd5bf347fcda516655e9dca8e067a6a1df0976aba"
+    },
+    "staticValidation": {
+      "file": "STATIC-VALIDATION.json",
+      "sha256": "58d286662527e817da88c46568b614f2b64d18ca7e96e72fd50511f8361daa94"
+    },
+    "shadowProofCorrection": {
+      "file": "SHADOW-PROOF-CORRECTION.md",
+      "sha256": "9480dfef284513d17365c82c8cde6752f250ed363bc32acdc27cdf92b5a351af"
+    },
+    "analyticEnvelope": {
+      "file": "proof/ANALYTIC-192-ENVELOPE.json",
+      "sha256": "51b4f35b416c75ca56712757d46bd1122cac0914f5962ea561c77faabd5ae450"
+    },
+    "frontageValue": {
+      "file": "proof/FRONTAGE-VALUE.json",
+      "sha256": "dfda357703da1fc60ea0cdb1e162c8de1c2332fabbdd885d9662545987652ae4"
+    },
+    "groundProjection": {
+      "file": "proof/GROUND-PROJECTION.json",
+      "sha256": "6bad1dcaaf38d5e4bd30c6211854798b8ecc248ab4316d5d244f4ba70a35f943"
+    },
+    "objectManifest": {
+      "file": "proof/OBJECT-MANIFEST.json",
+      "sha256": "000d8c4b159fe63b294277f182c2502d69d4f3e3f8d811bc68c20431f8944f3f"
+    },
+    "portalVisibility": {
+      "file": "proof/PORTAL-VISIBILITY.json",
+      "sha256": "6aa8739ad2ea2ff5b81ee6efb4629c7eadb0ab0b39232a04c731796e0ae29745"
+    },
+    "predesignResult": {
+      "file": "proof/PREDESIGN-RESULT.json",
+      "sha256": "c672bab8d91cea3bb2745f14e9e4098440f92b2cef694aff04f702bf8ea1b00c"
+    },
+    "shadowProjection": {
+      "file": "proof/SHADOW-PROJECTION.json",
+      "sha256": "5e474946be2445417cc6a40913f62f4b0990e36face4d59f6edcb461eb646f6a"
+    }
+  },
+  "failedGates": [
+    "portalVisibilityPassed",
+    "frontageConnectivityPassed",
+    "noOccupiedEnvelopeShrinkPassed"
+  ],
+  "passingGates": [
+    "staticValidationPassed",
+    "groundProjectionPassed",
+    "shadowProjectionPassed",
+    "staffEntryPassed",
+    "roofRhythmPassed",
+    "silhouetteBreaksPassed",
+    "frontageValuePassed"
+  ],
+  "rawProcessCount": 0,
+  "processes": {
+    "A": "not_produced",
+    "B": "not_produced",
+    "C": "not_produced"
+  },
+  "disposition": "REJECT_ZERO_PIXEL_CAMERA_FAR_OCCLUSION",
+  "sourceAuthority": false,
+  "productionSelected": false
+}

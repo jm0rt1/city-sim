@@ -1,0 +1,20 @@
+{
+  "absoluteLumaDeltas": {
+    "apronVsPortalVoid": 140.13146484374997,
+    "portalFrameVsFacade": 59.626171875,
+    "portalVoidVsFacade": 81.68068359375,
+    "staffGlazingVsFacade": 89.03085937499999
+  },
+  "materialLuma": {
+    "foundry-deep-portal": 8.40603515625,
+    "foundry-v03-apron-concrete": 148.53749999999997,
+    "foundry-v03-portal-frame": 149.712890625,
+    "foundry-v03-portal-reveal": 87.11835937500001,
+    "foundry-v03-staff-door": 111.861328125,
+    "foundry-v03-staff-glazing": 179.117578125,
+    "foundry-warm-masonry": 90.08671875
+  },
+  "passed": true,
+  "schema": 1,
+  "task": "PLAY-027"
+}

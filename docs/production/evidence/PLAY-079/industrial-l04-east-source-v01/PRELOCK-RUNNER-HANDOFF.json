@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "governingContract": {
+    "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+    "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+  },
+  "acceptedPredesign": {
+    "handoffPath": "docs/production/evidence/PLAY-079/PLAY-079-EAST-PREDESIGN-HANDOFF.json",
+    "handoffSha256": "bb8b2a00b4bf3ffa99112947d08e11cc92cae8d1ea7709e3fa79a4c58f40f390",
+    "inputHashes": {
+      "scene": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
+      "materials": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9",
+      "validator": "86dd6b3fad5502c6c9f898d802c9fc5eb4da57e7864c981494ad5ad9f75dde33",
+      "staticProof": "9d804fd9780f8404c5127d915140f94820a2c84ffb19c6c4e9da95100b7726f6",
+      "actualCameraProof": "2f50758068b2ce39c6e4cbeb4828e35481740830a35048ffe233a90ab84b0738"
+    }
+  },
+  "runner": {
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
+    "contractSha256": "4abc6229d62babc9d0e9a496499dbc798d6df6b4dab1448ec4fd7cfafb2dc4fb",
+    "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/run_production.py",
+    "driverSha256": "6b7a3ed76ced4dc12da41cc11c7d2856285338c60013b42c987b68998df6e77d",
+    "validatorHashes": {
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_prelock.py": "72d1b9d6a8f1ee71351306540ca7ebf3045f7d8596639e93b11f8a2cc7ecb6f0",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_source_outputs.py": "2458d5f3ce68deb783d490d8f4dad96e5ef3a83ba1b4a6ae46f5e76d48be866f"
+    },
+    "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/",
+    "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
+  },
+  "guardEvidence": {
+    "missingLockRejected": true,
+    "wrongLockRejected": true,
+    "rejectionStage": "before_renderer_launch",
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0
+  },
+  "appearanceLock": {
+    "documentPath": null,
+    "commit": null,
+    "documentSha256": null,
+    "northProcessASourceSha256": null,
+    "northProcessADecodedRgbaSha256": null
+  },
+  "validation": {
+    "runnerStaticPass": true,
+    "guardPass": true,
+    "repeatIdentityPass": true,
+    "rgba": "not_run",
+    "literal192": "not_run",
+    "abcIdentity": "not_run",
+    "normalization": "not_run"
+  },
+  "renderInvocations": 0,
+  "pixelFiles": 0,
+  "state": "prelock_runner_ready",
+  "sourceReady": false,
+  "productionSelected": false
+}

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "governingContract": {
+    "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+    "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+  },
+  "acceptedPredesign": {
+    "handoffPath": "docs/production/evidence/PLAY-080/PREDESIGN-HANDOFF.json",
+    "handoffSha256": "ec3cc2f758e3191d6cf76d5db0686d5481e09a3d42fd3033789f8a85d189bd42",
+    "inputHashes": {
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py": "33ecc7cd31c7cb7efb4ace497a214499e37f4472e85216050b459e35c05c467c"
+    }
+  },
+  "runner": {
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+    "contractSha256": "c7910537187aad6161588dc35f6bf4e3a45e9a3d18d11b8d3de9632206805e0c",
+    "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
+    "driverSha256": "0fbca6b5ed57005fd8d4ef29717aabeb4665cf352474bb8b66ba87577c5741a3",
+    "validatorHashes": {
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_runner.py": "f1314a8cccbbfd1d56c11396a4e631640cb86188bf1c01c234cd9c39734181a7",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py": "8392b79d76417708ac909007c90eb724e218dc1b40937107583a18a9cbb8aa96"
+    },
+    "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
+    "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
+  },
+  "guardEvidence": {
+    "missingLockRejected": true,
+    "wrongLockRejected": true,
+    "rejectionStage": "before_renderer_launch",
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0
+  },
+  "appearanceLock": {
+    "documentPath": null,
+    "commit": null,
+    "documentSha256": null,
+    "northProcessASourceSha256": null,
+    "northProcessADecodedRgbaSha256": null
+  },
+  "validation": {
+    "runnerStaticPass": true,
+    "guardPass": true,
+    "repeatIdentityPass": true,
+    "rgba": "not_run",
+    "literal192": "not_run",
+    "abcIdentity": "not_run",
+    "normalization": "not_run"
+  },
+  "renderInvocations": 0,
+  "pixelFiles": 0,
+  "state": "prelock_runner_ready",
+  "sourceReady": false,
+  "productionSelected": false
+}

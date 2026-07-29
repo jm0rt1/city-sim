@@ -1,0 +1,52 @@
+{
+  "schema": "citysim.play-080.coordinate-bridge-blocker.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "status": "HOLD_PENDING_V06_NOT_STOPPED",
+  "preservedRunnerHead": "cf4c2e8aa17bb3c712174ee0d6d149d282b26ad1",
+  "scope": "direction-local runner and hard-guard plumbing only",
+  "integrationFinding": {
+    "historicalCalibrationContactCornersPermuted": true,
+    "historicalNorthWorldSpaceMislabeled": true,
+    "acceptedPredesignProjectionAdapterSourceAuthority": false
+  },
+  "retainedCoordinates": {
+    "canonicalCitySimSouthSocket": [
+      0,
+      0,
+      28
+    ],
+    "sourceSocketPixels": [
+      640,
+      832
+    ],
+    "blenderNativeDirectionalSocket": null
+  },
+  "revalidation": {
+    "state": "pending_v06",
+    "requiredBeforeRendererEntry": [
+      "Integration-published v06 coordinate-bridge authority path",
+      "exact authority commit and SHA-256",
+      "explicit CitySim-to-Blender axis order and signs",
+      "derived Blender-native South directional socket",
+      "revalidated footprint, pivot, contact corners, and source projection"
+    ]
+  },
+  "disposition": {
+    "runnerGuardReady": true,
+    "sourceReady": false,
+    "productionSelected": false,
+    "processA": "not_run",
+    "processB": "not_run",
+    "processC": "not_run"
+  },
+  "zeroInvocationRecord": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0
+  }
+}

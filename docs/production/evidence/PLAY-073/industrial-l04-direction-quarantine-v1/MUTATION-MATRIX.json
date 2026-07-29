@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "task": "PLAY-073",
+  "scope": "synthetic_non_shipping_quarantine",
+  "contract": {
+    "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+    "revision": 2,
+    "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+  },
+  "coordinateBoundary": {
+    "coordinateSystem": "citysim_source_pixels_v1",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "canonicalFrontageSockets": {
+      "north": [
+        896,
+        704
+      ],
+      "east": [
+        896,
+        832
+      ],
+      "south": [
+        640,
+        832
+      ],
+      "west": [
+        640,
+        704
+      ]
+    },
+    "futureDirectionBridgeAuthorityRequired": true,
+    "sourcePacketWorldMappingAccepted": false,
+    "dccNativeCoordinatesAccepted": false
+  },
+  "matrix": [
+    {
+      "acceptedCount": 0,
+      "acceptedDirections": [],
+      "missingDirections": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "status": "inactive",
+      "runtimeSelected": false,
+      "shippingResourcesMutated": false
+    },
+    {
+      "acceptedCount": 1,
+      "acceptedDirections": [
+        "north"
+      ],
+      "missingDirections": [
+        "east",
+        "south",
+        "west"
+      ],
+      "status": "quarantined_incomplete",
+      "runtimeSelected": false,
+      "shippingResourcesMutated": false
+    },
+    {
+      "acceptedCount": 2,
+      "acceptedDirections": [
+        "north",
+        "east"
+      ],
+      "missingDirections": [
+        "south",
+        "west"
+      ],
+      "status": "quarantined_incomplete",
+      "runtimeSelected": false,
+      "shippingResourcesMutated": false
+    },
+    {
+      "acceptedCount": 3,
+      "acceptedDirections": [
+        "north",
+        "east",
+        "south"
+      ],
+      "missingDirections": [
+        "west"
+      ],
+      "status": "quarantined_incomplete",
+      "runtimeSelected": false,
+      "shippingResourcesMutated": false
+    },
+    {
+      "acceptedCount": 4,
+      "acceptedDirections": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "missingDirections": [],
+      "status": "ready_for_atomic_assembly",
+      "runtimeSelected": false,
+      "shippingResourcesMutated": false
+    }
+  ],
+  "rejections": [
+    "missing_directions_for_atomic_assembly",
+    "duplicate_direction",
+    "logical_id_alias",
+    "source_key_alias",
+    "decoded_rgba_alias",
+    "authored_geometry_alias",
+    "component_manifest_alias",
+    "lod_hash_alias",
+    "mirror_or_rotation_transform_sibling",
+    "incomplete_provenance",
+    "contract_drift",
+    "direction_bridge_drift",
+    "appearance_lock_drift",
+    "registration_frontage_or_canonical_source_socket_drift",
+    "fallback_reference",
+    "source_not_ready",
+    "production_selected"
+  ],
+  "determinism": {
+    "twoReplayLedgersByteIdentical": true,
+    "acceptedSiblingsPreservedAcrossAdmissions": true
+  },
+  "sourceAuthority": false,
+  "productionSelected": false
+}

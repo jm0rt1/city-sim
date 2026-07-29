@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 2
+- **Claim revision:** 3
 - **Title:** Predesign the Industrial L4 East source in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -15,9 +15,13 @@
   `docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/`
 - **Dependencies:** CONTRACT-020; CONTRACT-021; published Industrial L4 North
   family requirements
+- **Accepted bridge dependency:**
+  `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Status:** Predesign accepted and integrated at `3575d6ac`. Direction-local
   zero-pixel production-runner preparation is active under
-  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`; pixel rendering remains
+  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`. East is authorized to
+  adopt the accepted v06 bridge, refresh only stale authority hashes, and
+  revalidate its canonical CitySim/source projection. Pixel rendering remains
   blocked until Integration publishes the exact appearance lock and post-lock
   production authority.
 - **Validation/proof:** Independent East geometry; East road-facing portal and

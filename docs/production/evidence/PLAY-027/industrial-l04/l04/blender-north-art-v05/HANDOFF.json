@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "stage": "predesign",
+  "task": "PLAY-027",
+  "branch": "codex/citysim-world-art",
+  "baseAuthority": "af995850f0b20603c89ec7fdfda56245153a7f94",
+  "familyContract": {
+    "version": "industrial-l04-blender-north-art-v05",
+    "file": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V05-AUTHORITY.md",
+    "sha256": "5a7ce74cd39f99a7c7a8cef577018b49d20ae62e33aa1d36c444d5faf586cfae"
+  },
+  "family": "industrial-l04-variant-0",
+  "direction": "north",
+  "sourceRevision": "blender-art-v05",
+  "sceneGeometryID": "industrial-l04-blender-north-art-v05-socket-facing-portal",
+  "hashes": {
+    "scene": "517d992fc1b16b4da9105cf0921ff7a18d01ec0ff45a2c154e0d213a7ea54d27",
+    "materialLibrary": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "artContract": "bd004b92a5c3199ad442599b0279084d22100bb834daa2ae5eb1e890c4196ba5",
+    "sceneBuilder": "81578a3021f53842e701be6dfb5084a7353d022455e61ec8b743c7468a6c1d1d",
+    "staticValidator": "aed1b0c77f7e505f8830d079d65fc31a7c820a5b7b0b631a97b00afb25a1967a",
+    "blenderTool": "263e71c27f9f0064da2ad3fc8633522ea54df364c3563752aec400d2e4d5e99a"
+  },
+  "geometry": {
+    "footprintWorldXZ": [[-28,-28],[28,-28],[28,28],[-28,28]],
+    "pivotSource": [768,896],
+    "socketSource": [896,704],
+    "socketWorld": [-28,0,0],
+    "thresholdWorldX": -20.4,
+    "portalFacing": "negative-x",
+    "light": "northwest",
+    "shadow": "southeast"
+  },
+  "failedActualCameraGates": {
+    "portalInsetCompact": [0,0],
+    "northJambVisiblePixels": 0,
+    "southJambVisiblePixels": 0,
+    "visibleRevealCount": 0,
+    "visibleApronPixels": 0,
+    "visibleThresholdPixels": 0,
+    "socketDistancePixels": 1000000,
+    "occupiedCompact": [56,48],
+    "returnedV03OccupiedCompact": [62,50]
+  },
+  "passingActualCameraGates": {
+    "staffEntryCompact": [4,8],
+    "roofRhythmVisibleComponentCount": 4,
+    "silhouetteHeightBreakCount": 3,
+    "groundProjectionPassed": true,
+    "shadowProjectionPassed": true
+  },
+  "validationReports": [
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v05/prepixel/STATIC-VALIDATION.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v05/prepixel/proof/PREDESIGN-RESULT.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v05/prepixel/proof/PORTAL-VISIBILITY.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v05/prepixel/proof/GROUND-PROJECTION.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v05/prepixel/proof/SHADOW-PROJECTION.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v05/prepixel/DISPOSITION.md"
+  ],
+  "pixelProduction": "not_produced",
+  "processes": {
+    "A": "not_produced",
+    "B": "not_produced",
+    "C": "not_produced"
+  },
+  "disposition": "REJECT_ZERO_PIXEL_CAMERA_FAR_OCCLUSION",
+  "sourceAuthority": false,
+  "productionSelected": false
+}

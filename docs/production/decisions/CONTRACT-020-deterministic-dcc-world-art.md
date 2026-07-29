@@ -1,8 +1,29 @@
 # CONTRACT-020: Deterministic DCC world-art rendering
 
-**Status:** DCC pipeline accepted; PLAY-027 Industrial L4 North art authorized
+**Status:** DCC determinism/toolchain accepted; directional spatial bridge
+repair required before new Industrial L4 source authority
 
 **Date:** July 28, 2026
+
+## Directional spatial acceptance amendment
+
+Integration review found that the accepted North Blender calibration used
+`source_order = [0,3,2,1]` and hard-coded Blender-native socket
+`[-28,0,0]` while describing that point as CitySim North. Canonical
+descriptors and `OfflineSceneRenderer` define CitySim North as `z = -28`,
+socket `[0,0,-28]`, and outward normal `[0,0,-1]`.
+
+The calibration's Blender version, CPU Cycles determinism, decoded-RGBA
+identity, text-source reconstruction, and source-space camera framing remain
+accepted. Its directional world-space projection/registration acceptance is
+revoked for new Industrial L4 DCC art until the v06 coordinate bridge passes
+independent review.
+
+Prior Blender raw and calibration packets remain valid as determinism and
+appearance evidence. They are not directional source authority, do not prove
+road frontage, and do not authorize new geometry or pixels under the
+superseded mapping. The Integration-published v06 bridge authority governs the
+repair without rewriting historical calibration evidence.
 
 ## Context
 

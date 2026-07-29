@@ -1,0 +1,279 @@
+{
+  "blenderBuildHash": "84afd5f785f7",
+  "blenderVersion": "4.5.12 LTS",
+  "camera": {
+    "citysimPosition": [
+      100,
+      104.511627,
+      100
+    ],
+    "citysimTarget": [
+      0,
+      22.861969,
+      0
+    ],
+    "literalViewportPixels": [
+      192,
+      128
+    ],
+    "orthoScale": 237.5878601074218,
+    "pixelAspect": [
+      1,
+      1
+    ],
+    "projectionTargets": {
+      "footprint": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocket": [
+        640,
+        832
+      ],
+      "groundOrigin": [
+        768,
+        768
+      ],
+      "groundPivot": [
+        768,
+        896
+      ],
+      "toleranceSourcePixels": 1
+    },
+    "renderViewportPixels": [
+      1536,
+      1024
+    ],
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "tool": "Blender",
+    "type": "ORTHO"
+  },
+  "direction": "south",
+  "imageOutputs": 0,
+  "inputs": {
+    "materials": "industrial-l04-south-predesign-v01.materials.json",
+    "materialsSHA256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb",
+    "scene": "industrial-l04-south-predesign-v01.scene.json",
+    "sceneSHA256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d",
+    "validator": "/Users/James/.codex/worktrees/4247/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py",
+    "validatorSHA256": "a8bf4fed4cba97fd785d38798c63a6ab13c2a1f8171fdfa0ad02f4bf5b45c569"
+  },
+  "mode": "blender-actual-camera-zero-pixel",
+  "pythonVersion": "3.11.11",
+  "renderInvocations": 0,
+  "result": "PASS",
+  "schema": "citysim.play-080.predesign-actual-camera-proof.v1",
+  "task": "PLAY-080",
+  "tests": [
+    {
+      "details": {
+        "actual": [
+          [
+            768.0,
+            640.000458
+          ],
+          [
+            1024.000031,
+            768.000488
+          ],
+          [
+            768.0,
+            896.000496
+          ],
+          [
+            511.999969,
+            768.000458
+          ]
+        ],
+        "expected": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "toleranceSourcePixels": 1
+      },
+      "name": "actual-camera-footprint",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          768.0,
+          768.000473
+        ],
+        "expected": [
+          768,
+          768
+        ],
+        "toleranceSourcePixels": 1
+      },
+      "name": "actual-camera-ground-origin",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          768.0,
+          896.000496
+        ],
+        "expected": [
+          768,
+          896
+        ],
+        "toleranceSourcePixels": 1
+      },
+      "name": "actual-camera-ground-pivot",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          639.999985,
+          832.000473
+        ],
+        "expected": [
+          640,
+          832
+        ],
+        "toleranceSourcePixels": 1
+      },
+      "name": "actual-camera-south-frontage-socket",
+      "pass": true
+    },
+    {
+      "details": {
+        "literalBounds": [
+          85.371426,
+          88.288685,
+          99.42857,
+          109.314346
+        ],
+        "literalSize": [
+          14.057144,
+          21.025661
+        ],
+        "minimum": [
+          14,
+          12
+        ]
+      },
+      "name": "literal-192-primary-portal-envelope",
+      "pass": true
+    },
+    {
+      "details": {
+        "headerProjectedHeight": 11.24242,
+        "jambProjectedWidths": {
+          "monumental-portal-east-jamb": 3.428581,
+          "monumental-portal-west-jamb": 3.428576
+        },
+        "minimumThickness": 2
+      },
+      "name": "literal-192-portal-frame",
+      "pass": true
+    },
+    {
+      "details": {
+        "intersections": [],
+        "processComponentCount": 7
+      },
+      "name": "zero-process-portal-occlusion",
+      "pass": true
+    },
+    {
+      "details": {
+        "count": 7,
+        "distinctRowsAtLeastTwoPixelsApart": [
+          53.521042,
+          69.917839,
+          74.176147,
+          79.546993,
+          82.317551,
+          86.715801,
+          90.229794
+        ],
+        "minimum": 3,
+        "projectedTopRows": [
+          {
+            "id": "high-bay-core",
+            "literalRow": 82.317551
+          },
+          {
+            "id": "south-control-wing",
+            "literalRow": 86.715801
+          },
+          {
+            "id": "staff-vestibule",
+            "literalRow": 90.229794
+          },
+          {
+            "id": "monitor-roof-west",
+            "literalRow": 75.803844
+          },
+          {
+            "id": "monitor-roof-center",
+            "literalRow": 74.176147
+          },
+          {
+            "id": "monitor-roof-east",
+            "literalRow": 79.546993
+          },
+          {
+            "id": "rear-process-bay",
+            "literalRow": 74.718716
+          },
+          {
+            "id": "offset-foundry-stack",
+            "literalRow": 53.521042
+          },
+          {
+            "id": "rear-gantry-beam",
+            "literalRow": 69.917839
+          }
+        ]
+      },
+      "name": "actual-camera-silhouette-breaks",
+      "pass": true
+    },
+    {
+      "details": {
+        "minimum": 8,
+        "projectedWidths": {
+          "monumental-portal-inset": 14.057144,
+          "secondary-freight-center-inset": 8.057144,
+          "secondary-freight-west-inset": 8.057144
+        }
+      },
+      "name": "literal-192-freight-opening-widths",
+      "pass": true
+    }
+  ]
+}

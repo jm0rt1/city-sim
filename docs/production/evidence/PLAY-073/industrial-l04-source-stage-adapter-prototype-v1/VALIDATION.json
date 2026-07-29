@@ -19,7 +19,7 @@
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-prototype-v1/HANDOFF.md",
-      "sha256": "93d70a4277bf84ea43135db6de8cc359ab753000a2113ccc5c52143464236cfd"
+      "sha256": "66dfcdac0b30202995668ba35e2eb20dea22b9aab3e0f78ec013ffa82172108c"
     }
   ],
   "prototypeSuite": {
@@ -39,6 +39,16 @@
       "caller-supplied atomic assembly manifest absent",
       "caller-supplied direction packet absent"
     ]
+  },
+  "publishedMasterReplay": {
+    "base": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
+    "prototypeReplayCommit": "88dd12b06f29fdfaf7393e87a53dbce5db7979a7",
+    "evidenceReplayCommit": "1eb911a6f7cb05e5ae45e65daf1b85203b49bbc1",
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-stage-adapter-replay.b0RxRK/clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-stage-adapter-replay.b0RxRK/swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-stage-adapter-replay.b0RxRK/build --filter IndustrialL4SourceStageAdapterPrototypeTests",
+    "result": "PASS",
+    "executed": 4,
+    "failed": 0,
+    "retainedRendererDependency": false
   },
   "proof": {
     "eastSouthWestExactReservedLocators": "PASS",

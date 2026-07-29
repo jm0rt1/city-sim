@@ -29,6 +29,15 @@ Focused tests prove:
 No real source packet or pixel was read, created, admitted, quarantined,
 packed, staged, or selected.
 
+## Published-master replay
+
+The two focused commits were cherry-picked without conflict onto exact
+published master `e30b57243e05c487509fbe22ef103f4c3b00cb69` in a disposable
+clone, producing replay commits `88dd12b06f29fdfaf7393e87a53dbce5db7979a7`
+and `1eb911a6f7cb05e5ae45e65daf1b85203b49bbc1`. The prototype suite compiled
+against that tree and passed 4/4 with zero failures. No retained Renderer
+test or helper file is a prerequisite.
+
 ## Owned paths
 
 - `Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4SourceStageAdapterPrototypeTests.swift`

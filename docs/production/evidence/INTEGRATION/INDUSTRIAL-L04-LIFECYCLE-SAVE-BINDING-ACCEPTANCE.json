@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "documentType": "CITYSIM_INDUSTRIAL_L04_LIFECYCLE_SAVE_BINDING_ACCEPTANCE",
+  "disposition": "APPROVED_FOR_CANDIDATE_NEUTRAL_QA_REHEARSAL",
+  "publishedBy": {
+    "branch": "master",
+    "acceptanceBoundaryCommit": "bfa906463ce1380c5f736a9f205368adc82b4318"
+  },
+  "request": {
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/UPSTREAM-LIFECYCLE-SAVE-REQUEST.json",
+    "sha256": "73842570ee5d10e83ef3ec59b301dd9998959bd07e9d3d64e4d9d49c678bf51b"
+  },
+  "proof": {
+    "taskId": "PLAY-083",
+    "claimPath": "docs/production/claims/PLAY-083.simulation-platform.md",
+    "candidatePath": "docs/production/evidence/PLAY-083/binding-candidate.json",
+    "candidateSha256": "aca3974c2dc6a8386c1ef4f274d5154ae537d2415e50a2558c7417f8f044cb2e",
+    "workerCandidateCommit": "45d79688a9ac903a8f99dd8d5332b080f30f3398",
+    "boundProofCommit": "7169c09bfd276be43a7180fdf61f5a519300c6c6",
+    "integrationMergeCommit": "bfa906463ce1380c5f736a9f205368adc82b4318",
+    "twoRunPacketByteCount": 5089,
+    "twoRunPacketSha256": "aca3974c2dc6a8386c1ef4f274d5154ae537d2415e50a2558c7417f8f044cb2e",
+    "focusedTestsPassed": 10,
+    "failClosedNegativesPassed": 22
+  },
+  "manifest": {
+    "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-states-manifest-v3.json",
+    "gitBlob": "40df8ccd154677f67d3141b33372ba406fc6346f",
+    "sha256": "9eed6405adc84b8bdf025bb2ac1365b327c8659bdbf0384bc6f172d6c9a2aace",
+    "schemaVersion": 1,
+    "fingerprintVersion": 1
+  },
+  "mappings": [
+    {
+      "semanticMapping": "early_to_active",
+      "rubricRole": "early",
+      "manifestLifecycle": "active",
+      "manifestId": "industrial-active-district-v3",
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-industrial-active-district-v3.json",
+      "gitBlob": "af685a8ac6479f97ab12e342a75a726250e58497",
+      "fileSha256": "48a45a4f3901eee09fca2bcf10315381e421dbc605ffa050e13fbee5dc17fdc3",
+      "stateDigest": "1a47eeb6c6a20b742c121f4b8f1e39a8682df54a8ede1528e8715f99885126ca",
+      "spatialDigest": "e2646bba29246376e3e3a2a5c735cd3a7b1ee718cd29fe850cc67d25e0bf7fe7",
+      "diagnosticDigest": "62c0966c63078521177fe9eb6011c0396d2ec6ee38b571cd1d48ba46c294a63e",
+      "activityDigest": "de199fb7d9f0e0e03cefd31e7873c0f7f69ba07b53ea6bcccdaf5783e6bbe6de",
+      "byteCount": 131315,
+      "tick": 68
+    },
+    {
+      "semanticMapping": "recovered_to_recovering",
+      "rubricRole": "recovered",
+      "manifestLifecycle": "recovering",
+      "manifestId": "industrial-recovering-district-v3",
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-industrial-recovering-district-v3.json",
+      "gitBlob": "9b408b2d01763b5a986287e968f4732e67c2a420",
+      "fileSha256": "5a278e43873f364c986545a856eec6a8ba4315b712b843028dcc5d8e602720f4",
+      "stateDigest": "a1525b36f38fc0fb2dfbd042d8fd8748088cbc57f9f3f1549be1e3f88653ad7d",
+      "spatialDigest": "de91f0b9d99398508b4eb4c5e84ac1dc1e8abb0cc401ff7b64bf748bbf3e816c",
+      "diagnosticDigest": "befd4256642557eb7d266e5f0412affeb8a6b608410258f0f943e4cd8ad84d25",
+      "activityDigest": "c4aef758a8dc4d22fba33e234a7208a0567ee1e04790c7669566e609d45b6fee",
+      "byteCount": 134184,
+      "tick": 992
+    }
+  ],
+  "grants": {
+    "qaMayMaterializeCandidateNeutralFixtures": true,
+    "qaMayRunCameraPreflight": true,
+    "qaMayLaunchOrScoreRendererCandidate": false,
+    "fixtureMutation": false,
+    "manifestMutation": false,
+    "productMutation": false,
+    "rendererAdmission": false,
+    "sourceAdmission": false,
+    "productionSelection": false,
+    "shipping": false
+  },
+  "remainingGate": "QA may rehearse only the candidate-neutral fixture and camera materialization. Exact renderer-candidate launch, scoring, or acceptance remains blocked until Integration publishes the immutable 4-of-4 renderer candidate."
+}

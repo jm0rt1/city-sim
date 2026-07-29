@@ -1,0 +1,1235 @@
+#!/usr/bin/env python3
+"""Fail-closed, zero-DCC orchestration contract for PLAY-081 West.
+
+The module validates future Integration schedule inputs and synthetic receipts.
+It deliberately contains no Blender launch or production receipt command.  All
+currently required Integration bindings are absent, so every authority-bearing
+CLI mode rejects before process or output creation.
+"""
+
+from __future__ import annotations
+
+import argparse
+import copy
+from datetime import datetime, timedelta, timezone
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+from typing import Any
+
+from jsonschema import Draft202012Validator
+
+from west_path_safety import (
+    PathSafetyError,
+    lexical_repository_path,
+    write_exact_json_no_overwrite,
+)
+
+
+SOURCE_ROOT = (
+    "Native/CitySimNative/WorldArt/Blender/PLAY-081/"
+    "industrial-l04-west-source-v01"
+)
+DEFAULT_EXECUTION_CONTRACT = f"{SOURCE_ROOT}/WEST-EXECUTION-ORCHESTRATION-V2.json"
+DEFAULT_RUNNER_CONTRACT = f"{SOURCE_ROOT}/RUNNER-CONTRACT.json"
+INTEGRATION_PREFIX = "docs/production/evidence/INTEGRATION/"
+SCHEDULE_SCHEMA = "citysim.integration.world-art-two-slot-schedule.v1"
+GLOBAL_RECEIPT_SCHEMA = (
+    "citysim.integration.world-art-two-slot-execution-receipt.v1"
+)
+HEX_40 = re.compile(r"^[0-9a-f]{40}$")
+HEX_64 = re.compile(r"^[0-9a-f]{64}$")
+UTC_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$")
+ZERO_INVOCATIONS = {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFiles": 0,
+    "productionReceipts": 0,
+    "sourceCandidatePackets": 0,
+}
+
+
+class OrchestrationError(ValueError):
+    """Stable fail-closed orchestration error."""
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise OrchestrationError(f"EXPECTED_JSON_OBJECT:{path}")
+    return value
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def json_sha256(value: dict[str, Any]) -> str:
+    data = (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
+    return hashlib.sha256(data).hexdigest()
+
+
+def parse_utc(value: Any) -> datetime:
+    if not isinstance(value, str) or UTC_PATTERN.fullmatch(value) is None:
+        raise OrchestrationError(f"INVALID_UTC_TIMESTAMP:{value!r}")
+    return datetime.fromisoformat(value[:-1] + "+00:00")
+
+
+def git_output(root: Path, *arguments: str) -> str | None:
+    result = subprocess.run(
+        ["git", *arguments],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
+def is_ancestor(root: Path, older: str, newer: str) -> bool:
+    if HEX_40.fullmatch(older) is None or HEX_40.fullmatch(newer) is None:
+        return False
+    return (
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", older, newer],
+            cwd=root,
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        == 0
+    )
+
+
+def current_binding_errors(
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+) -> list[str]:
+    errors = static_contract_errors(execution_contract, runner_contract)
+    for name, binding in execution_contract["futureIntegrationInputs"].items():
+        if binding != {
+            "state": "not_published",
+            "path": None,
+            "commit": None,
+            "sha256": None,
+        }:
+            if (
+                not isinstance(binding, dict)
+                or binding.get("state") != "bound_integration"
+                or not isinstance(binding.get("path"), str)
+                or not binding["path"].startswith(INTEGRATION_PREFIX)
+                or HEX_40.fullmatch(str(binding.get("commit"))) is None
+                or HEX_64.fullmatch(str(binding.get("sha256"))) is None
+            ):
+                errors.append(f"integration-input:{name}:invalid-binding")
+        else:
+            errors.append(f"integration-input:{name}:not-published")
+
+    appearance = runner_contract.get("appearanceLock", {})
+    if not isinstance(appearance, dict) or any(
+        not appearance.get(field)
+        for field in (
+            "documentPath",
+            "commit",
+            "documentSha256",
+            "northProcessASourceSha256",
+            "northProcessADecodedRgbaSha256",
+        )
+    ):
+        errors.append("appearance-lock:not-bound")
+    profile = runner_contract.get("sourceStage", {}).get(
+        "sourceProductionProfile",
+        {},
+    )
+    if profile.get("state") != "bound_integration_profile":
+        errors.append("source-production-profile:not-bound")
+    if execution_contract.get("productionExecutionEnabled") is not True:
+        errors.append("production-execution:disabled")
+    if execution_contract.get("productionReceiptEmissionEnabled") is not True:
+        errors.append("production-receipt-emission:disabled")
+    return sorted(set(errors))
+
+
+def static_contract_errors(
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    queue = execution_contract.get("queue")
+    if not isinstance(queue, list) or len(queue) != 11:
+        return ["static-contract:queue"]
+    expected_west = {
+        "A": ("W-A", 4),
+        "B": ("W-B", 8),
+        "C": ("W-C", 11),
+    }
+    process_directories: list[str] = []
+    all_leaf_roots: list[str] = []
+    for process_id, (job_id, ordinal) in expected_west.items():
+        process = execution_contract.get("westProcesses", {}).get(process_id)
+        inventory = (
+            runner_contract.get("outputInventory", {})
+            .get("processes", {})
+            .get(process_id)
+        )
+        if not isinstance(process, dict) or not isinstance(inventory, dict):
+            errors.append(f"static-contract:process-{process_id}")
+            continue
+        if process.get("jobId") != job_id or process.get("ordinal") != ordinal:
+            errors.append(f"static-contract:process-{process_id}-identity")
+        for field in ("directory", "rawRoot", "semanticRoot", "evidenceRoot"):
+            if process.get(field) != inventory.get(field):
+                errors.append(f"static-contract:process-{process_id}-{field}")
+        roots = [
+            process.get("rawRoot"),
+            process.get("semanticRoot"),
+            process.get("evidenceRoot"),
+        ]
+        if any(not isinstance(value, str) for value in roots):
+            errors.append(f"static-contract:process-{process_id}-roots")
+        elif len(set(roots)) != 3:
+            errors.append(f"static-contract:process-{process_id}-root-alias")
+        else:
+            all_leaf_roots.extend(roots)
+        if isinstance(process.get("directory"), str):
+            process_directories.append(process["directory"])
+    if len(set(process_directories)) != 3:
+        errors.append("static-contract:process-directory-alias")
+    if len(set(all_leaf_roots)) != 9:
+        errors.append("static-contract:cross-process-root-alias")
+    for index, left in enumerate(process_directories):
+        for right in process_directories[index + 1 :]:
+            if left.startswith(right + "/") or right.startswith(left + "/"):
+                errors.append("static-contract:process-directory-ancestry")
+    return sorted(set(errors))
+
+
+def committed_input_errors(
+    root: Path,
+    binding: dict[str, Any],
+    supplied_path: str | None,
+    supplied_sha256: str | None,
+    label: str,
+) -> tuple[list[str], Path | None]:
+    errors: list[str] = []
+    if binding.get("state") != "bound_integration":
+        return [f"{label}:not-bound"], None
+    relative = binding.get("path")
+    commit = binding.get("commit")
+    expected_sha = binding.get("sha256")
+    if supplied_path != relative:
+        errors.append(f"{label}:path-mismatch")
+    if supplied_sha256 != expected_sha:
+        errors.append(f"{label}:argument-sha256-mismatch")
+    if (
+        not isinstance(relative, str)
+        or not relative.startswith(INTEGRATION_PREFIX)
+        or HEX_40.fullmatch(str(commit)) is None
+        or HEX_64.fullmatch(str(expected_sha)) is None
+    ):
+        return errors + [f"{label}:invalid-binding"], None
+    try:
+        path = lexical_repository_path(root, relative, expected=relative)
+    except PathSafetyError as error:
+        return errors + [f"{label}:unsafe-path:{error}"], None
+    if not path.is_file():
+        return errors + [f"{label}:missing-file"], None
+    if sha256(path) != expected_sha:
+        errors.append(f"{label}:working-tree-sha256")
+    head = git_output(root, "rev-parse", "HEAD")
+    if head is None or not is_ancestor(root, commit, head):
+        errors.append(f"{label}:commit-not-in-head")
+    file_result = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    if (
+        file_result.returncode != 0
+        or hashlib.sha256(file_result.stdout).hexdigest() != expected_sha
+    ):
+        errors.append(f"{label}:publication-content-drift")
+    return sorted(set(errors)), path
+
+
+def expected_queue(execution_contract: dict[str, Any]) -> list[dict[str, Any]]:
+    return copy.deepcopy(execution_contract["queue"])
+
+
+def validate_schedule(
+    schedule: dict[str, Any],
+    execution_contract: dict[str, Any],
+) -> list[str]:
+    required = {
+        "schema",
+        "scheduleId",
+        "scheduleRevision",
+        "executionMode",
+        "maximumConcurrentDccProcesses",
+        "queue",
+        "exceptionAuthority",
+    }
+    errors: list[str] = []
+    if set(schedule) != required:
+        return ["schedule:shape"]
+    if schedule["schema"] != SCHEDULE_SCHEMA:
+        errors.append("schedule:schema")
+    if not isinstance(schedule["scheduleId"], str) or not schedule["scheduleId"]:
+        errors.append("schedule:id")
+    if (
+        not isinstance(schedule["scheduleRevision"], int)
+        or schedule["scheduleRevision"] < 1
+    ):
+        errors.append("schedule:revision")
+    queue = schedule.get("queue")
+    if not isinstance(queue, list) or len(queue) < 11:
+        errors.append("schedule:queue-length")
+        return sorted(set(errors))
+    base = queue[:11]
+    if base != expected_queue(execution_contract):
+        errors.append("schedule:base-queue")
+    ordinals = [job.get("ordinal") for job in queue if isinstance(job, dict)]
+    job_ids = [job.get("jobId") for job in queue if isinstance(job, dict)]
+    if ordinals != list(range(1, len(queue) + 1)):
+        errors.append("schedule:ordinals")
+    if len(set(job_ids)) != len(job_ids):
+        errors.append("schedule:duplicate-job-id")
+
+    mode = schedule.get("executionMode")
+    modes = execution_contract["executionModes"]
+    if mode not in modes:
+        errors.append("schedule:execution-mode")
+    elif mode == "parallel_two_slot":
+        if schedule["maximumConcurrentDccProcesses"] != 2:
+            errors.append("schedule:parallel-cap")
+        if schedule["exceptionAuthority"] is not None:
+            errors.append("schedule:unexpected-exception")
+    else:
+        if schedule["maximumConcurrentDccProcesses"] != 1:
+            errors.append("schedule:sequential-cap")
+        exception = schedule["exceptionAuthority"]
+        if not isinstance(exception, dict) or set(exception) != {
+            "owner",
+            "path",
+            "commit",
+            "sha256",
+            "reason",
+            "queueOrder",
+        }:
+            errors.append("schedule:sequential-exception-shape")
+        else:
+            if exception["owner"] != "Integration":
+                errors.append("schedule:sequential-exception-owner")
+            if (
+                not isinstance(exception["path"], str)
+                or not exception["path"].startswith(INTEGRATION_PREFIX)
+                or HEX_40.fullmatch(str(exception["commit"])) is None
+                or HEX_64.fullmatch(str(exception["sha256"])) is None
+                or not isinstance(exception["reason"], str)
+                or not exception["reason"]
+            ):
+                errors.append("schedule:sequential-exception-binding")
+            if exception["queueOrder"] != job_ids:
+                errors.append("schedule:sequential-exception-order")
+
+    for job in queue[11:]:
+        if not isinstance(job, dict) or set(job) != {
+            "ordinal",
+            "jobId",
+            "direction",
+            "processId",
+            "retry",
+        }:
+            errors.append("schedule:retry-shape")
+            continue
+        retry = job["retry"]
+        if not isinstance(retry, dict) or set(retry) != {
+            "originalJobId",
+            "failureClass",
+            "automatic",
+            "priorScheduleRevision",
+            "roots",
+        }:
+            errors.append("schedule:retry-record")
+            continue
+        if retry["automatic"] is not False:
+            errors.append("schedule:automatic-retry")
+        if retry["priorScheduleRevision"] >= schedule["scheduleRevision"]:
+            errors.append("schedule:retry-revision")
+        if retry["originalJobId"] not in job_ids[:11]:
+            errors.append("schedule:retry-original-job")
+        roots = retry["roots"]
+        if not isinstance(roots, dict) or set(roots) != {
+            "rawRoot",
+            "semanticRoot",
+            "evidenceRoot",
+        }:
+            errors.append("schedule:retry-roots")
+        elif len(set(roots.values())) != 3:
+            errors.append("schedule:retry-root-alias")
+    return sorted(set(errors))
+
+
+def validate_allocation(
+    schedule: dict[str, Any],
+    grant: dict[str, Any],
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+    process_id: str,
+) -> list[str]:
+    errors = validate_schedule(schedule, execution_contract)
+    required = {
+        "schema",
+        "scheduleId",
+        "scheduleRevision",
+        "scheduleSha256",
+        "grantId",
+        "jobId",
+        "direction",
+        "processId",
+        "queueOrdinal",
+        "slotId",
+        "grantedAtUtc",
+        "exactlyOneInvocation",
+        "invocationOrdinal",
+        "rawRoot",
+        "semanticRoot",
+        "evidenceRoot",
+    }
+    if set(grant) != required:
+        return sorted(set(errors + ["allocation:shape"]))
+    if grant["schema"] != "citysim.integration.world-art-launch-grant.v1":
+        errors.append("allocation:schema")
+    if grant["scheduleId"] != schedule.get("scheduleId"):
+        errors.append("allocation:schedule-id")
+    if grant["scheduleRevision"] != schedule.get("scheduleRevision"):
+        errors.append("allocation:schedule-revision")
+    if grant["scheduleSha256"] != json_sha256(schedule):
+        errors.append("allocation:schedule-sha256")
+    if process_id not in {"A", "B", "C"}:
+        errors.append("allocation:process-argument")
+        return sorted(set(errors))
+    expected = execution_contract["westProcesses"][process_id]
+    if (
+        grant["direction"] != "west"
+        or grant["processId"] != process_id
+        or grant["jobId"] != expected["jobId"]
+        or grant["queueOrdinal"] != expected["ordinal"]
+    ):
+        errors.append("allocation:west-identity")
+    if grant["exactlyOneInvocation"] is not True or grant["invocationOrdinal"] != 1:
+        errors.append("allocation:exactly-once")
+    try:
+        parse_utc(grant["grantedAtUtc"])
+    except OrchestrationError:
+        errors.append("allocation:granted-at")
+    mode = schedule.get("executionMode")
+    allowed_slots = (
+        {"dcc-0", "dcc-1"} if mode == "parallel_two_slot" else {"dcc-0"}
+    )
+    if grant["slotId"] not in allowed_slots:
+        errors.append("allocation:slot")
+    inventory = runner_contract["outputInventory"]["processes"][process_id]
+    for field in ("rawRoot", "semanticRoot", "evidenceRoot"):
+        if grant[field] != expected[field] or grant[field] != inventory[field]:
+            errors.append(f"allocation:{field}")
+    roots = [grant[field] for field in ("rawRoot", "semanticRoot", "evidenceRoot")]
+    if len(set(roots)) != 3:
+        errors.append("allocation:root-alias")
+    return sorted(set(errors))
+
+
+def _event_priority(kind: str) -> int:
+    return 0 if kind == "end" else 1
+
+
+def validate_execution_receipt(
+    receipt: dict[str, Any],
+    schedule: dict[str, Any],
+    execution_contract: dict[str, Any],
+) -> list[str]:
+    errors = validate_schedule(schedule, execution_contract)
+    required = {
+        "schema",
+        "scheduleId",
+        "scheduleRevision",
+        "executionMode",
+        "events",
+        "maximumObservedConcurrency",
+        "actualOverlap",
+        "globalCapProven",
+        "failures",
+        "cancellations",
+        "retries",
+        "receiptWrites",
+        "directionOutcome",
+    }
+    if set(receipt) != required:
+        return sorted(set(errors + ["receipt:shape"]))
+    if receipt["schema"] != GLOBAL_RECEIPT_SCHEMA:
+        errors.append("receipt:schema")
+    for field in ("scheduleId", "scheduleRevision", "executionMode"):
+        if receipt[field] != schedule[field]:
+            errors.append(f"receipt:{field}")
+    events = receipt.get("events")
+    if not isinstance(events, list):
+        return sorted(set(errors + ["receipt:events"]))
+
+    active_by_slot: dict[str, str] = {}
+    starts: dict[str, dict[str, Any]] = {}
+    ends: dict[str, dict[str, Any]] = {}
+    maximum = 0
+    overlap = False
+    previous_key: tuple[int, int, str] | None = None
+    previous_utc: datetime | None = None
+    monotonic_utc: dict[int, datetime] = {}
+    start_order: list[str] = []
+    allowed_slots = (
+        {"dcc-0", "dcc-1"}
+        if schedule.get("executionMode") == "parallel_two_slot"
+        else {"dcc-0"}
+    )
+    for index, event in enumerate(events, start=1):
+        if not isinstance(event, dict) or set(event) != {
+            "sequence",
+            "kind",
+            "jobId",
+            "slotId",
+            "atUtc",
+            "monotonicNs",
+        }:
+            errors.append("receipt:event-shape")
+            continue
+        if event["sequence"] != index:
+            errors.append("receipt:event-sequence")
+        if event["kind"] not in {"start", "end"}:
+            errors.append("receipt:event-kind")
+            continue
+        try:
+            at_utc = parse_utc(event["atUtc"])
+        except OrchestrationError:
+            errors.append("receipt:event-utc")
+            at_utc = None
+        if at_utc is not None:
+            if previous_utc is not None and at_utc < previous_utc:
+                errors.append("receipt:event-utc-order")
+            previous_utc = at_utc
+        if not isinstance(event["monotonicNs"], int) or event["monotonicNs"] < 0:
+            errors.append("receipt:event-monotonic")
+            continue
+        if (
+            at_utc is not None
+            and event["monotonicNs"] in monotonic_utc
+            and monotonic_utc[event["monotonicNs"]] != at_utc
+        ):
+            errors.append("receipt:event-clock-disagreement")
+        elif at_utc is not None:
+            monotonic_utc[event["monotonicNs"]] = at_utc
+        key = (
+            event["monotonicNs"],
+            _event_priority(event["kind"]),
+            event["slotId"],
+        )
+        if previous_key is not None and key < previous_key:
+            errors.append("receipt:event-order")
+        previous_key = key
+        if event["slotId"] not in allowed_slots:
+            errors.append("receipt:slot")
+        if event["kind"] == "start":
+            if event["slotId"] in active_by_slot:
+                errors.append("receipt:slot-overlap")
+            if event["jobId"] in starts:
+                errors.append("receipt:duplicate-start")
+            active_by_slot[event["slotId"]] = event["jobId"]
+            starts[event["jobId"]] = event
+            start_order.append(event["jobId"])
+            maximum = max(maximum, len(active_by_slot))
+            overlap = overlap or len(active_by_slot) >= 2
+        else:
+            if active_by_slot.get(event["slotId"]) != event["jobId"]:
+                errors.append("receipt:end-without-start")
+            else:
+                active_by_slot.pop(event["slotId"])
+            if event["jobId"] in ends:
+                errors.append("receipt:duplicate-end")
+            ends[event["jobId"]] = event
+    if active_by_slot:
+        errors.append("receipt:unclosed-process")
+    if set(starts) != set(ends):
+        errors.append("receipt:invocation-pairs")
+    scheduled_jobs = [job["jobId"] for job in schedule["queue"]]
+    cancelled_jobs = {
+        job_id
+        for cancellation in receipt.get("cancellations", [])
+        if isinstance(cancellation, dict)
+        for job_id in cancellation.get("jobIds", [])
+        if isinstance(job_id, str)
+    }
+    if set(starts) & cancelled_jobs:
+        errors.append("receipt:cancelled-job-invoked")
+    if set(starts) | cancelled_jobs != set(scheduled_jobs):
+        errors.append("receipt:job-disposition-completeness")
+    expected_start_order = [
+        job_id for job_id in scheduled_jobs if job_id not in cancelled_jobs
+    ]
+    if start_order != expected_start_order:
+        errors.append("receipt:fifo-start-order")
+    failure_jobs = {
+        failure.get("jobId")
+        for failure in receipt.get("failures", [])
+        if isinstance(failure, dict)
+    }
+    if not failure_jobs.issubset(set(starts)):
+        errors.append("receipt:failure-without-invocation")
+    if receipt["maximumObservedConcurrency"] != maximum:
+        errors.append("receipt:maximum-concurrency-assertion")
+    if receipt["actualOverlap"] is not overlap:
+        errors.append("receipt:overlap-assertion")
+
+    mode = schedule.get("executionMode")
+    if mode == "parallel_two_slot":
+        if maximum > 2:
+            errors.append("receipt:parallel-cap")
+        if not overlap:
+            errors.append("receipt:parallel-overlap-required")
+    elif mode == "sequential_exception":
+        if maximum > 1:
+            errors.append("receipt:sequential-cap")
+        if overlap:
+            errors.append("receipt:sequential-overlap-forbidden")
+    if receipt["globalCapProven"] is not True:
+        errors.append("receipt:global-cap-not-proven")
+    errors.extend(
+        validate_failure_isolation(
+            receipt.get("failures"),
+            receipt.get("cancellations"),
+        )
+    )
+    errors.extend(
+        validate_retries(
+            receipt.get("retries"),
+            schedule,
+            execution_contract,
+        )
+    )
+    errors.extend(
+        validate_receipt_order(
+            receipt.get("receiptWrites"),
+            execution_contract,
+            direction_outcome=receipt.get("directionOutcome"),
+        )
+    )
+    return sorted(set(errors))
+
+
+def validate_failure_isolation(
+    failures: Any,
+    cancellations: Any,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(failures, list) or not isinstance(cancellations, list):
+        return ["failure-isolation:shape"]
+    failure_by_id: dict[str, dict[str, Any]] = {}
+    for failure in failures:
+        if not isinstance(failure, dict) or set(failure) != {
+            "jobId",
+            "direction",
+            "failureClass",
+        }:
+            errors.append("failure-isolation:failure-shape")
+            continue
+        failure_by_id[failure["jobId"]] = failure
+    for cancellation in cancellations:
+        if not isinstance(cancellation, dict) or set(cancellation) != {
+            "causedByJobId",
+            "direction",
+            "jobIds",
+        }:
+            errors.append("failure-isolation:cancellation-shape")
+            continue
+        cause = failure_by_id.get(cancellation["causedByJobId"])
+        if cause is None:
+            errors.append("failure-isolation:missing-cause")
+            continue
+        if cancellation["direction"] != cause["direction"]:
+            errors.append("failure-isolation:cross-direction")
+        if cause["failureClass"] == "process_local" and cancellation["jobIds"]:
+            errors.append("failure-isolation:process-local-cancellation")
+        if any(
+            not isinstance(job_id, str)
+            or not job_id.startswith(cause["direction"][0].upper() + "-")
+            for job_id in cancellation["jobIds"]
+        ):
+            errors.append("failure-isolation:foreign-job")
+    return sorted(set(errors))
+
+
+def validate_retries(
+    retries: Any,
+    schedule: dict[str, Any],
+    execution_contract: dict[str, Any],
+) -> list[str]:
+    if not isinstance(retries, list):
+        return ["retry:shape"]
+    errors: list[str] = []
+    base_roots: set[str] = {
+        process[field]
+        for process in execution_contract["westProcesses"].values()
+        for field in ("rawRoot", "semanticRoot", "evidenceRoot")
+    }
+    for retry in retries:
+        if not isinstance(retry, dict) or set(retry) != {
+            "originalJobId",
+            "retryJobId",
+            "failureClass",
+            "automatic",
+            "newScheduleRevision",
+            "ordinal",
+            "roots",
+        }:
+            errors.append("retry:record-shape")
+            continue
+        if retry["automatic"] is not False:
+            errors.append("retry:automatic")
+        if retry["newScheduleRevision"] <= schedule["scheduleRevision"]:
+            errors.append("retry:schedule-revision")
+        if retry["ordinal"] <= len(schedule["queue"]):
+            errors.append("retry:ordinal-not-appended")
+        roots = retry["roots"]
+        if not isinstance(roots, dict) or set(roots) != {
+            "rawRoot",
+            "semanticRoot",
+            "evidenceRoot",
+        }:
+            errors.append("retry:roots")
+            continue
+        values = list(roots.values())
+        if len(set(values)) != 3:
+            errors.append("retry:root-alias")
+        if any(value in base_roots for value in values):
+            errors.append("retry:root-reuse")
+        base_roots.update(values)
+        if retry["failureClass"] == "candidate_content_or_determinism":
+            errors.append("retry:content-failure-requires-new-direction-revision")
+    return sorted(set(errors))
+
+
+def validate_receipt_order(
+    writes: Any,
+    execution_contract: dict[str, Any],
+    *,
+    direction_outcome: Any,
+) -> list[str]:
+    if not isinstance(writes, list):
+        return ["receipt-order:shape"]
+    errors: list[str] = []
+    groups = execution_contract["receiptOrderGroups"]
+    expected = [identity for group in groups for identity in group]
+    rank_by_identity = {
+        identity: rank
+        for rank, group in enumerate(groups)
+        for identity in group
+    }
+    identities: list[str] = []
+    for index, write in enumerate(writes, start=1):
+        if not isinstance(write, dict) or set(write) != {
+            "sequence",
+            "identity",
+            "path",
+            "noFollow",
+            "noOverwrite",
+        }:
+            errors.append("receipt-order:record-shape")
+            continue
+        if write["sequence"] != index:
+            errors.append("receipt-order:sequence")
+        identity = write["identity"]
+        identities.append(identity)
+        if identity not in expected:
+            errors.append("receipt-order:unknown-identity")
+            continue
+        if write["path"] != execution_contract["receiptPaths"][identity]:
+            errors.append("receipt-order:path")
+        if write["noFollow"] is not True or write["noOverwrite"] is not True:
+            errors.append("receipt-order:unsafe-write")
+    ranks = [
+        rank_by_identity[identity]
+        for identity in identities
+        if identity in rank_by_identity
+    ]
+    if ranks != sorted(ranks):
+        errors.append("receipt-order:dependency-order")
+    if len(set(identities)) != len(identities):
+        errors.append("receipt-order:duplicate")
+    if direction_outcome == "pass":
+        if set(identities) != set(expected) or len(identities) != len(expected):
+            errors.append("receipt-order:incomplete-pass")
+    elif "sourceCandidatePacket" in identities:
+        errors.append("receipt-order:packet-after-failure")
+    return sorted(set(errors))
+
+
+def safe_write_receipt(
+    root: Path,
+    execution_contract: dict[str, Any],
+    identity: str,
+    value: dict[str, Any],
+    *,
+    emission_authorized: bool,
+) -> Path:
+    if not emission_authorized:
+        raise OrchestrationError("PRODUCTION_RECEIPT_EMISSION_DISABLED")
+    if identity not in execution_contract["receiptPaths"]:
+        raise OrchestrationError(f"UNKNOWN_RECEIPT_IDENTITY:{identity}")
+    relative = execution_contract["receiptPaths"][identity]
+    return write_exact_json_no_overwrite(
+        root,
+        relative,
+        value,
+        expected=relative,
+    )
+
+
+def fixture_schedule(
+    execution_contract: dict[str, Any],
+    mode: str,
+) -> dict[str, Any]:
+    exception = None
+    cap = 2
+    if mode == "sequential_exception":
+        cap = 1
+        exception = {
+            "owner": "Integration",
+            "path": f"{INTEGRATION_PREFIX}SYNTHETIC-SEQUENTIAL-EXCEPTION.json",
+            "commit": "1" * 40,
+            "sha256": "2" * 64,
+            "reason": "Synthetic zero-DCC fixture",
+            "queueOrder": [
+                job["jobId"] for job in execution_contract["queue"]
+            ],
+        }
+    return {
+        "schema": SCHEDULE_SCHEMA,
+        "scheduleId": "industrial-l04-synthetic-v1",
+        "scheduleRevision": 1,
+        "executionMode": mode,
+        "maximumConcurrentDccProcesses": cap,
+        "queue": expected_queue(execution_contract),
+        "exceptionAuthority": exception,
+    }
+
+
+def fixture_grant(
+    schedule: dict[str, Any],
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+    process_id: str,
+) -> dict[str, Any]:
+    expected = execution_contract["westProcesses"][process_id]
+    inventory = runner_contract["outputInventory"]["processes"][process_id]
+    return {
+        "schema": "citysim.integration.world-art-launch-grant.v1",
+        "scheduleId": schedule["scheduleId"],
+        "scheduleRevision": schedule["scheduleRevision"],
+        "scheduleSha256": json_sha256(schedule),
+        "grantId": f"synthetic-W-{process_id}",
+        "jobId": expected["jobId"],
+        "direction": "west",
+        "processId": process_id,
+        "queueOrdinal": expected["ordinal"],
+        "slotId": "dcc-0",
+        "grantedAtUtc": "2026-07-29T12:00:00Z",
+        "exactlyOneInvocation": True,
+        "invocationOrdinal": 1,
+        "rawRoot": inventory["rawRoot"],
+        "semanticRoot": inventory["semanticRoot"],
+        "evidenceRoot": inventory["evidenceRoot"],
+    }
+
+
+def fixture_writes(
+    execution_contract: dict[str, Any],
+) -> list[dict[str, Any]]:
+    return [
+        {
+            "sequence": index,
+            "identity": identity,
+            "path": execution_contract["receiptPaths"][identity],
+            "noFollow": True,
+            "noOverwrite": True,
+        }
+        for index, identity in enumerate(
+            (
+                identity
+                for group in execution_contract["receiptOrderGroups"]
+                for identity in group
+            ),
+            start=1,
+        )
+    ]
+
+
+def simulate_receipt(
+    schedule: dict[str, Any],
+    execution_contract: dict[str, Any],
+    durations: list[int],
+    *,
+    failures: list[dict[str, Any]] | None = None,
+    cancellations: list[dict[str, Any]] | None = None,
+    retries: list[dict[str, Any]] | None = None,
+    direction_outcome: str = "pass",
+) -> dict[str, Any]:
+    if len(durations) != len(schedule["queue"]) or any(value <= 0 for value in durations):
+        raise OrchestrationError("INVALID_SYNTHETIC_DURATIONS")
+    cap = schedule["maximumConcurrentDccProcesses"]
+    free_at = [0] * cap
+    events: list[dict[str, Any]] = []
+    sequence = 0
+    base_time = datetime(2026, 7, 29, 12, 0, tzinfo=timezone.utc)
+    intervals: list[tuple[int, int, str, str]] = []
+    for job, duration in zip(schedule["queue"], durations, strict=True):
+        slot_index = min(range(cap), key=lambda index: (free_at[index], index))
+        start = free_at[slot_index]
+        end = start + duration
+        free_at[slot_index] = end
+        intervals.append((start, end, job["jobId"], f"dcc-{slot_index}"))
+    raw_events: list[tuple[int, int, str, str, str]] = []
+    for start, end, job_id, slot_id in intervals:
+        raw_events.append((start, 1, slot_id, "start", job_id))
+        raw_events.append((end, 0, slot_id, "end", job_id))
+    raw_events.sort()
+    active = 0
+    maximum = 0
+    overlap = False
+    for moment, _, slot_id, kind, job_id in raw_events:
+        sequence += 1
+        if kind == "end":
+            active -= 1
+        else:
+            active += 1
+            maximum = max(maximum, active)
+            overlap = overlap or active >= 2
+        timestamp = (base_time + timedelta(seconds=moment)).isoformat().replace(
+            "+00:00",
+            "Z",
+        )
+        events.append(
+            {
+                "sequence": sequence,
+                "kind": kind,
+                "jobId": job_id,
+                "slotId": slot_id,
+                "atUtc": timestamp,
+                "monotonicNs": moment * 1_000_000_000,
+            }
+        )
+    return {
+        "schema": GLOBAL_RECEIPT_SCHEMA,
+        "scheduleId": schedule["scheduleId"],
+        "scheduleRevision": schedule["scheduleRevision"],
+        "executionMode": schedule["executionMode"],
+        "events": events,
+        "maximumObservedConcurrency": maximum,
+        "actualOverlap": overlap,
+        "globalCapProven": maximum <= cap,
+        "failures": failures or [],
+        "cancellations": cancellations or [],
+        "retries": retries or [],
+        "receiptWrites": (
+            fixture_writes(execution_contract)
+            if direction_outcome == "pass"
+            else []
+        ),
+        "directionOutcome": direction_outcome,
+    }
+
+
+def synthetic_proof(
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+) -> dict[str, Any]:
+    parallel = fixture_schedule(execution_contract, "parallel_two_slot")
+    sequential = fixture_schedule(execution_contract, "sequential_exception")
+    durations = [4, 4, 2, 2, 3, 3, 2, 2, 2, 2, 1]
+    parallel_receipt = simulate_receipt(
+        parallel,
+        execution_contract,
+        durations,
+    )
+    sequential_receipt = simulate_receipt(
+        sequential,
+        execution_contract,
+        durations,
+    )
+    grants = {
+        process_id: validate_allocation(
+            parallel,
+            fixture_grant(
+                parallel,
+                execution_contract,
+                runner_contract,
+                process_id,
+            ),
+            execution_contract,
+            runner_contract,
+            process_id,
+        )
+        for process_id in ("A", "B", "C")
+    }
+    cases = {
+        "parallelTwoSlot": validate_execution_receipt(
+            parallel_receipt,
+            parallel,
+            execution_contract,
+        ),
+        "sequentialException": validate_execution_receipt(
+            sequential_receipt,
+            sequential,
+            execution_contract,
+        ),
+        "allocations": sorted(
+            error for errors in grants.values() for error in errors
+        ),
+    }
+    return {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "stage": "zero_dcc_orchestration_proof",
+        "currentAuthorityErrors": current_binding_errors(
+            execution_contract,
+            runner_contract,
+        ),
+        "positiveCases": cases,
+        "allPositiveCasesPassed": all(not errors for errors in cases.values()),
+        "parallelObservedConcurrency": parallel_receipt[
+            "maximumObservedConcurrency"
+        ],
+        "parallelActualOverlap": parallel_receipt["actualOverlap"],
+        "sequentialObservedConcurrency": sequential_receipt[
+            "maximumObservedConcurrency"
+        ],
+        "sequentialActualOverlap": sequential_receipt["actualOverlap"],
+        "invocations": dict(ZERO_INVOCATIONS),
+        "productionExecutionEnabled": False,
+        "productionReceiptEmissionEnabled": False,
+        "passed": all(not errors for errors in cases.values()),
+    }
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--repository-root", required=True)
+    parser.add_argument(
+        "--execution-contract",
+        default=DEFAULT_EXECUTION_CONTRACT,
+    )
+    parser.add_argument("--runner-contract", default=DEFAULT_RUNNER_CONTRACT)
+    parser.add_argument(
+        "--mode",
+        required=True,
+        choices=(
+            "describe",
+            "validate-authority",
+            "validate-schedule",
+            "validate-allocation",
+            "validate-receipt",
+            "self-test",
+        ),
+    )
+    parser.add_argument("--schedule")
+    parser.add_argument("--schedule-sha256")
+    parser.add_argument("--launch-grant")
+    parser.add_argument("--launch-grant-sha256")
+    parser.add_argument("--global-receipt")
+    parser.add_argument("--global-receipt-sha256")
+    parser.add_argument("--process-id", choices=("A", "B", "C"))
+    return parser.parse_args()
+
+
+def blocked_result(mode: str, errors: list[str]) -> dict[str, Any]:
+    return {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "mode": mode,
+        "decision": "BLOCKED",
+        "rejectionStage": "before_dcc_or_output_write",
+        "errors": sorted(set(errors)),
+        "invocations": dict(ZERO_INVOCATIONS),
+        "passed": False,
+    }
+
+
+def main() -> int:
+    args = parse_args()
+    root = Path(args.repository_root).resolve()
+    try:
+        execution_path = lexical_repository_path(
+            root,
+            args.execution_contract,
+            expected=DEFAULT_EXECUTION_CONTRACT,
+        )
+        runner_path = lexical_repository_path(
+            root,
+            args.runner_contract,
+            expected=DEFAULT_RUNNER_CONTRACT,
+        )
+        execution_contract = load_json(execution_path)
+        runner_contract = load_json(runner_path)
+    except (OSError, json.JSONDecodeError, OrchestrationError, PathSafetyError) as error:
+        print(json.dumps(blocked_result(args.mode, [str(error)]), indent=2, sort_keys=True))
+        return 3
+
+    authority_errors = current_binding_errors(
+        execution_contract,
+        runner_contract,
+    )
+    if args.mode == "describe":
+        result = {
+            "schemaVersion": 1,
+            "taskId": "PLAY-081",
+            "direction": "west",
+            "mode": "describe",
+            "state": "awaiting_integration_schedule_lock_and_profile",
+            "authorityErrors": authority_errors,
+            "availableModes": [
+                "validate-authority",
+                "validate-schedule",
+                "validate-allocation",
+                "validate-receipt",
+                "self-test",
+            ],
+            "productionExecutionMode": None,
+            "invocations": dict(ZERO_INVOCATIONS),
+            "passed": True,
+        }
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0
+    if args.mode == "self-test":
+        result = synthetic_proof(execution_contract, runner_contract)
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["passed"] else 1
+    if authority_errors:
+        print(
+            json.dumps(
+                blocked_result(args.mode, authority_errors),
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return 3
+
+    binding_errors, schedule_path = committed_input_errors(
+        root,
+        execution_contract["futureIntegrationInputs"]["scheduleAuthority"],
+        args.schedule,
+        args.schedule_sha256,
+        "schedule-authority",
+    )
+    schema_errors, schema_path = committed_input_errors(
+        root,
+        execution_contract["futureIntegrationInputs"]["scheduleSchema"],
+        execution_contract["futureIntegrationInputs"]["scheduleSchema"].get("path"),
+        execution_contract["futureIntegrationInputs"]["scheduleSchema"].get("sha256"),
+        "schedule-schema",
+    )
+    errors = binding_errors + schema_errors
+    if errors or schedule_path is None or schema_path is None:
+        print(json.dumps(blocked_result(args.mode, errors), indent=2, sort_keys=True))
+        return 3
+    schedule = load_json(schedule_path)
+    schedule_schema = load_json(schema_path)
+    schema_validation = sorted(
+        Draft202012Validator(schedule_schema).iter_errors(schedule),
+        key=lambda error: list(error.path),
+    )
+    errors = [
+        f"schedule-schema:{list(error.path)}:{error.message}"
+        for error in schema_validation
+    ]
+    errors.extend(validate_schedule(schedule, execution_contract))
+    if args.mode in {"validate-authority", "validate-schedule"}:
+        result = {
+            "schemaVersion": 1,
+            "taskId": "PLAY-081",
+            "direction": "west",
+            "mode": args.mode,
+            "errors": sorted(set(errors)),
+            "invocations": dict(ZERO_INVOCATIONS),
+            "passed": not errors,
+        }
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if not errors else 1
+    if errors:
+        print(json.dumps(blocked_result(args.mode, errors), indent=2, sort_keys=True))
+        return 3
+
+    if args.mode == "validate-allocation":
+        if not args.launch_grant or not args.process_id:
+            errors = ["allocation:missing-input"]
+        else:
+            try:
+                grant_path = lexical_repository_path(
+                    root,
+                    args.launch_grant,
+                    expected=args.launch_grant,
+                )
+                if (
+                    not args.launch_grant.startswith(INTEGRATION_PREFIX)
+                    or not grant_path.is_file()
+                    or sha256(grant_path) != args.launch_grant_sha256
+                ):
+                    errors = ["allocation:untrusted-grant"]
+                else:
+                    errors = validate_allocation(
+                        schedule,
+                        load_json(grant_path),
+                        execution_contract,
+                        runner_contract,
+                        args.process_id,
+                    )
+            except (OSError, json.JSONDecodeError, PathSafetyError) as error:
+                errors = [f"allocation:{error}"]
+    else:
+        binding = execution_contract["futureIntegrationInputs"][
+            "globalExecutionReceipt"
+        ]
+        receipt_errors, receipt_path = committed_input_errors(
+            root,
+            binding,
+            args.global_receipt,
+            args.global_receipt_sha256,
+            "global-execution-receipt",
+        )
+        errors = receipt_errors
+        if not errors and receipt_path is not None:
+            errors.extend(
+                validate_execution_receipt(
+                    load_json(receipt_path),
+                    schedule,
+                    execution_contract,
+                )
+            )
+    result = {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "mode": args.mode,
+        "errors": sorted(set(errors)),
+        "invocations": dict(ZERO_INVOCATIONS),
+        "productionReceiptWritten": False,
+        "passed": not errors,
+    }
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0 if not errors else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

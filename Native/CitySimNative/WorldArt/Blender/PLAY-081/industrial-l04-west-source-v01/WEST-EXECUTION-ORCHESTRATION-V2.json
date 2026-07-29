@@ -1,0 +1,247 @@
+{
+  "schema": "citysim.play-081.west-execution-orchestration.v2",
+  "schemaVersion": 2,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "branch": "codex/citysim-world-art-west",
+  "implementationBaseline": {
+    "preservedWestAncestor": "c4a8b8f5bac5b864eb4595514a983f54a273aef3",
+    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
+    "claimRevision": 4,
+    "claimSha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+  },
+  "runnerContract": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+    "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+  },
+  "productionExecutionEnabled": false,
+  "productionReceiptEmissionEnabled": false,
+  "futureIntegrationInputs": {
+    "scheduleSchema": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "scheduleAuthority": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "appearanceLock": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "lockedMaterialMapping": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "sourceProductionProfile": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "globalExecutionReceipt": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    }
+  },
+  "executionModes": {
+    "parallel_two_slot": {
+      "effectiveDccCap": 2,
+      "actualOverlapRequired": true,
+      "exceptionAuthorityRequired": false
+    },
+    "sequential_exception": {
+      "effectiveDccCap": 1,
+      "actualOverlapRequired": false,
+      "actualOverlapPermitted": false,
+      "exceptionAuthorityRequired": true,
+      "exceptionOwner": "Integration"
+    }
+  },
+  "queue": [
+    {
+      "ordinal": 1,
+      "jobId": "N-B",
+      "direction": "north",
+      "processId": "B"
+    },
+    {
+      "ordinal": 2,
+      "jobId": "E-A",
+      "direction": "east",
+      "processId": "A"
+    },
+    {
+      "ordinal": 3,
+      "jobId": "S-A",
+      "direction": "south",
+      "processId": "A"
+    },
+    {
+      "ordinal": 4,
+      "jobId": "W-A",
+      "direction": "west",
+      "processId": "A"
+    },
+    {
+      "ordinal": 5,
+      "jobId": "N-C",
+      "direction": "north",
+      "processId": "C"
+    },
+    {
+      "ordinal": 6,
+      "jobId": "E-B",
+      "direction": "east",
+      "processId": "B"
+    },
+    {
+      "ordinal": 7,
+      "jobId": "S-B",
+      "direction": "south",
+      "processId": "B"
+    },
+    {
+      "ordinal": 8,
+      "jobId": "W-B",
+      "direction": "west",
+      "processId": "B"
+    },
+    {
+      "ordinal": 9,
+      "jobId": "E-C",
+      "direction": "east",
+      "processId": "C"
+    },
+    {
+      "ordinal": 10,
+      "jobId": "S-C",
+      "direction": "south",
+      "processId": "C"
+    },
+    {
+      "ordinal": 11,
+      "jobId": "W-C",
+      "direction": "west",
+      "processId": "C"
+    }
+  ],
+  "westProcesses": {
+    "A": {
+      "jobId": "W-A",
+      "ordinal": 4,
+      "directory": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A",
+      "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+      "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+      "scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/schedule-job-receipt.json"
+    },
+    "B": {
+      "jobId": "W-B",
+      "ordinal": 8,
+      "directory": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B",
+      "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+      "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+      "scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/schedule-job-receipt.json"
+    },
+    "C": {
+      "jobId": "W-C",
+      "ordinal": 11,
+      "directory": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C",
+      "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+      "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+      "scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/schedule-job-receipt.json"
+    }
+  },
+  "receiptOrderGroups": [
+    [
+      "process-A.scheduleJobReceipt",
+      "process-B.scheduleJobReceipt",
+      "process-C.scheduleJobReceipt"
+    ],
+    [
+      "normalizationRun1Receipt",
+      "normalizationRun2Receipt"
+    ],
+    [
+      "normalizationRepeatReceipt"
+    ],
+    [
+      "reviewManifest"
+    ],
+    [
+      "sourceValidation"
+    ],
+    [
+      "parallelExecutionReceipt"
+    ],
+    [
+      "sourceCandidatePacket"
+    ]
+  ],
+  "receiptPaths": {
+    "process-A.scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/schedule-job-receipt.json",
+    "process-B.scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/schedule-job-receipt.json",
+    "process-C.scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/schedule-job-receipt.json",
+    "normalizationRun1Receipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1/receipt.json",
+    "normalizationRun2Receipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2/receipt.json",
+    "normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+    "reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
+    "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
+    "parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+    "sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
+  },
+  "failurePolicy": {
+    "process_local": {
+      "remainingSameDirectionJobs": "remain_eligible",
+      "otherDirectionJobs": "remain_eligible",
+      "directionAssembler": "blocked"
+    },
+    "direction_guard": {
+      "remainingSameDirectionJobs": "quarantined_not_started",
+      "otherDirectionJobs": "remain_eligible",
+      "blenderInvocationsForRejectedJobs": 0
+    },
+    "candidate_content_or_determinism": {
+      "otherDirectionReceipts": "remain_valid",
+      "directionAssembler": "blocked",
+      "sourceCandidatePacket": "forbidden"
+    },
+    "global_integrity": {
+      "newProcessLaunches": "stop_globally"
+    }
+  },
+  "retryPolicy": {
+    "automaticRetry": false,
+    "activeQueueInsertion": false,
+    "rootReuse": false,
+    "failedEvidenceOverwrite": false,
+    "retryOrdinalRule": "greater_than_all_existing_ordinals",
+    "retryScheduleRevisionRule": "greater_than_failed_schedule_revision",
+    "infrastructureFailureScope": "failed_process_only_with_integration_reauthorization",
+    "contentOrDeterminismFailureScope": "new_direction_source_revision_and_new_A_B_C_roots",
+    "authorityOrPathFailureScope": "blocked_until_corrected_authority_is_published"
+  },
+  "zeroDccBoundary": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFiles": 0,
+    "productionReceipts": 0,
+    "sourceCandidatePackets": 0
+  }
+}

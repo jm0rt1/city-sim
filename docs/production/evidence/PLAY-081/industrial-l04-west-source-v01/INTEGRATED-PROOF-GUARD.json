@@ -8,17 +8,6 @@
   "direction": "west",
   "driverSha256": "33cdd8cd92f954776dba6924cc25f8797c603721e806223bf220e5fd6e261b8b",
   "imageGenInvocations": 0,
-  "missingAppearanceLockFields": [
-    "appearanceLock.documentPath",
-    "appearanceLock.commit",
-    "appearanceLock.documentSha256",
-    "appearanceLock.northProcessASourceSha256",
-    "appearanceLock.northProcessADecodedRgbaSha256",
-    "appearanceLockCommit",
-    "appearanceLockSha256",
-    "lockedMaterialMapping.path",
-    "lockedMaterialMapping.sha256"
-  ],
   "modes": {
     "A": {
       "blenderProcessLaunches": 0,
@@ -32,6 +21,8 @@
       "pixelFiles": 0,
       "reasonCodes": [
         "appearance-lock:missing",
+        "coordinate-bridge:integrated-proof-execution-authority",
+        "coordinate-bridge:integrated-proof-not-ancestor",
         "source-production-profile:missing"
       ],
       "rejectionStage": "before_renderer_launch",
@@ -51,6 +42,8 @@
       "pixelFiles": 0,
       "reasonCodes": [
         "appearance-lock:missing",
+        "coordinate-bridge:integrated-proof-execution-authority",
+        "coordinate-bridge:integrated-proof-not-ancestor",
         "source-production-profile:missing"
       ],
       "rejectionStage": "before_renderer_launch",
@@ -70,6 +63,8 @@
       "pixelFiles": 0,
       "reasonCodes": [
         "appearance-lock:missing",
+        "coordinate-bridge:integrated-proof-execution-authority",
+        "coordinate-bridge:integrated-proof-not-ancestor",
         "source-production-profile:missing"
       ],
       "rejectionStage": "before_renderer_launch",
@@ -81,14 +76,13 @@
   "normalizerInvocations": 0,
   "passed": true,
   "pixelFiles": 0,
-  "proof": "MISSING_APPEARANCE_LOCK_REJECTION",
+  "proof": "INTEGRATED_V06_PROOF_EXECUTION_GUARD",
   "rejectionStage": "before_renderer_launch",
-  "remainingBlockers": [
-    "Integration source-production profile is not published",
-    "North process-A appearance lock is not published"
-  ],
   "renderInvocations": 0,
+  "requiredIntegratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
   "runnerContractSha256": "7f8701eeb173426a2a4b8b0587f80584c3141b7d9e4ef7a9f5e19fcda3f87b8c",
   "schemaVersion": 1,
-  "taskId": "PLAY-081"
+  "sourceCandidateProvenanceCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "taskId": "PLAY-081",
+  "testMutation": "substitute source candidate for integrated proof"
 }

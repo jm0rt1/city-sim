@@ -1,5 +1,48 @@
 # PLAY-073 Industrial L4 v2 source-admission prep
 
+## Direction-path confinement addendum
+
+The focused descendant authorized against frozen Renderer base
+`270eb7515c1cc950f3bfe4b6687fd3ee788122c3` makes the direction-local caller
+boundary fail closed without changing its schema or receipt bytes:
+
+- the claimed root, worker packet, Integration admission, evidence root, and
+  quarantine receipt output are canonicalized before use;
+- lexical and canonical paths must remain beneath the claimed repository root,
+  and receipt output must additionally remain beneath
+  `docs/production/evidence/PLAY-073/`;
+- every path component beneath the canonical claimed root is checked with
+  `lstat`; symlinks are rejected even when they resolve inside the root;
+- dangling final receipt-output symlinks are rejected before any write, and
+  the absent external target remains absent; and
+- packet and admission inputs plus existing receipt outputs must be regular
+  files, while existing intermediate components must be directories.
+
+North, East, South, and West each exercise deterministic positive admission
+and receipt replay, packet/admission symlink rejection, non-regular input
+rejection, intermediate output symlink rejection, dangling final output
+symlink rejection, directory-output rejection, and lexical evidence-root
+escape rejection.
+
+Focused validation:
+
+```text
+swift test --package-path Native/CitySimNative \
+  --filter IndustrialL4V2SourceAdmissionHarnessTests
+```
+
+Result: **14 executed, 12 passed, 2 caller-supplied entrypoints skipped,
+0 failed** in **0.107 seconds** after a **2.11-second** focused build.
+The explicit synthetic North caller-path wrapper then passed **1/1** in
+**0.005 seconds** and reproduced the unchanged receipt SHA-256
+`3bc7636f98afed07cc8b0b5f5fc0302d032be107acbb6e69af950459789173d4`.
+`bash -n`, JSON parsing, and `git diff --check` also pass. No full suite or
+staged app was run under the directional-intake tier.
+
+Hardened harness SHA-256:
+`8bcf0978185b6a906be04c21bc71f34d5c115bc820547aaebfa360ef3b9fd3c4`.
+The wrapper and all synthetic packet/admission/receipt bytes remain unchanged.
+
 ## Disposition
 
 `READY_FOR_INTEGRATION_REVIEW_NONSHIPPING`

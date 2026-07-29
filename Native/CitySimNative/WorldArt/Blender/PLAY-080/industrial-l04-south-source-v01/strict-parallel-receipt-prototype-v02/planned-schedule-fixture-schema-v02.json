@@ -1,0 +1,489 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://play-080/strict-parallel-planned-schedule-fixture-v02",
+  "title": "PLAY-080 nonproduction planned schedule fixture v02",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "fixtureMode",
+    "identity",
+    "authorityContext",
+    "scheduleMode",
+    "limits",
+    "globalIntegrationAuthority",
+    "resourceException",
+    "attemptLedger",
+    "allocations",
+    "dispatchEvents",
+    "cancellationPolicy"
+  ],
+  "properties": {
+    "schema": {
+      "const": "citysim.play-080.strict-parallel-planned-schedule-fixture.v02"
+    },
+    "fixtureMode": {
+      "const": "nonproduction_structural_zero_pixel"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "branch",
+        "direction",
+        "scheduleId",
+        "scheduleCommit",
+        "sealed",
+        "fixtureOnly"
+      ],
+      "properties": {
+        "taskId": {
+          "const": "PLAY-080"
+        },
+        "branch": {
+          "const": "codex/citysim-world-art-south"
+        },
+        "direction": {
+          "const": "south"
+        },
+        "scheduleId": {
+          "type": "string",
+          "pattern": "^PLAY-080-SOUTH-SCHEDULE-[A-Z0-9-]+$"
+        },
+        "scheduleCommit": {
+          "type": "null"
+        },
+        "sealed": {
+          "const": true
+        },
+        "fixtureOnly": {
+          "const": true
+        }
+      }
+    },
+    "authorityContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publishedMaster",
+        "claimPath",
+        "claimSha256",
+        "parallelExecutionDesign"
+      ],
+      "properties": {
+        "publishedMaster": {
+          "const": "2f218104cf924c5cb2e80f9a07501dd3755612bf"
+        },
+        "claimPath": {
+          "const": "docs/production/claims/PLAY-080.world-art-south.md"
+        },
+        "claimSha256": {
+          "const": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973"
+        },
+        "parallelExecutionDesign": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "commit",
+            "sha256",
+            "status"
+          ],
+          "properties": {
+            "path": {
+              "const": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md"
+            },
+            "commit": {
+              "const": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7"
+            },
+            "sha256": {
+              "const": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36"
+            },
+            "status": {
+              "const": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED"
+            }
+          }
+        }
+      }
+    },
+    "scheduleMode": {
+      "enum": [
+        "parallel_two_slot",
+        "sequential_exception"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "localPlannedDccCap",
+        "intervalPolicy"
+      ],
+      "properties": {
+        "localPlannedDccCap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "intervalPolicy": {
+          "const": "half_open_end_before_start"
+        }
+      }
+    },
+    "globalIntegrationAuthority": {
+      "$ref": "#/$defs/nullGlobalAuthority"
+    },
+    "resourceException": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "reason",
+            "integrationPath",
+            "integrationSha256",
+            "authorityCommit",
+            "published"
+          ],
+          "properties": {
+            "mode": {
+              "const": "cap1_sequential_fixture_exception"
+            },
+            "reason": {
+              "const": "NONPRODUCTION_FIXTURE_ONLY"
+            },
+            "integrationPath": {
+              "type": "null"
+            },
+            "integrationSha256": {
+              "type": "null"
+            },
+            "authorityCommit": {
+              "type": "null"
+            },
+            "published": {
+              "const": false
+            }
+          }
+        }
+      ]
+    },
+    "attemptLedger": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/attempt"
+      }
+    },
+    "allocations": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/allocation"
+      }
+    },
+    "dispatchEvents": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/dispatchEvent"
+      }
+    },
+    "cancellationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "direction",
+        "cancelledAttemptIds",
+        "siblingDirectionsUnaffected"
+      ],
+      "properties": {
+        "scope": {
+          "const": "direction_local"
+        },
+        "direction": {
+          "const": "south"
+        },
+        "cancelledAttemptIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/attemptId"
+          }
+        },
+        "siblingDirectionsUnaffected": {
+          "const": [
+            "north",
+            "east",
+            "west"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "processId": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "attemptId": {
+      "type": "string",
+      "pattern": "^south-[ABC]-attempt-[0-9]{3}$"
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledgerIndex",
+        "attemptId",
+        "processId",
+        "ordinal",
+        "previousAttemptId",
+        "ownedRoots",
+        "identitySha256",
+        "state"
+      ],
+      "properties": {
+        "ledgerIndex": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "attemptId": {
+          "$ref": "#/$defs/attemptId"
+        },
+        "processId": {
+          "$ref": "#/$defs/processId"
+        },
+        "ordinal": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "previousAttemptId": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/attemptId"
+            }
+          ]
+        },
+        "ownedRoots": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        },
+        "identitySha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "state": {
+          "enum": [
+            "planned",
+            "cancelled"
+          ]
+        }
+      }
+    },
+    "allocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allocationId",
+        "dispatchSequence",
+        "taskId",
+        "direction",
+        "processId",
+        "attemptId",
+        "preassignedSlot",
+        "notBeforeUtc",
+        "notAfterUtc",
+        "retryOf",
+        "retryScope",
+        "state"
+      ],
+      "properties": {
+        "allocationId": {
+          "type": "string",
+          "pattern": "^south-allocation-[0-9]{3}$"
+        },
+        "dispatchSequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "taskId": {
+          "const": "PLAY-080"
+        },
+        "direction": {
+          "const": "south"
+        },
+        "processId": {
+          "$ref": "#/$defs/processId"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/attemptId"
+        },
+        "preassignedSlot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "notBeforeUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "notAfterUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "retryOf": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/attemptId"
+            }
+          ]
+        },
+        "retryScope": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "single_process",
+                "complete_direction_set"
+              ]
+            }
+          ]
+        },
+        "state": {
+          "enum": [
+            "planned",
+            "cancelled"
+          ]
+        }
+      }
+    },
+    "dispatchEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "eventId",
+        "kind",
+        "direction",
+        "attemptId",
+        "atUtc"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "eventId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "schedule_sealed",
+            "process_dispatched",
+            "retry_dispatched",
+            "slot_acquired",
+            "allocation_cancelled"
+          ]
+        },
+        "direction": {
+          "const": "south"
+        },
+        "attemptId": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/attemptId"
+            }
+          ]
+        },
+        "atUtc": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "nullGlobalAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "schemaPath",
+        "schemaSha256",
+        "validatorPath",
+        "validatorSha256",
+        "scheduleReceiptPath",
+        "scheduleReceiptSha256",
+        "authorityCommit",
+        "published"
+      ],
+      "properties": {
+        "owner": {
+          "const": "Integration"
+        },
+        "schemaPath": {
+          "type": "null"
+        },
+        "schemaSha256": {
+          "type": "null"
+        },
+        "validatorPath": {
+          "type": "null"
+        },
+        "validatorSha256": {
+          "type": "null"
+        },
+        "scheduleReceiptPath": {
+          "type": "null"
+        },
+        "scheduleReceiptSha256": {
+          "type": "null"
+        },
+        "authorityCommit": {
+          "type": "null"
+        },
+        "published": {
+          "const": false
+        }
+      }
+    }
+  }
+}

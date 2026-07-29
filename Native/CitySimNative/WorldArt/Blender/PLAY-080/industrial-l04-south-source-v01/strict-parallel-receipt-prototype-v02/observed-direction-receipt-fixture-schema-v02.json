@@ -1,0 +1,540 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://play-080/strict-parallel-observed-direction-receipt-fixture-v02",
+  "title": "PLAY-080 nonproduction observed direction receipt fixture v02",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "fixtureMode",
+    "identity",
+    "plannedScheduleRef",
+    "globalIntegrationAuthority",
+    "processes",
+    "events",
+    "cancellations",
+    "join",
+    "jobs",
+    "assembler",
+    "safety",
+    "grants",
+    "result"
+  ],
+  "properties": {
+    "schema": {
+      "const": "citysim.play-080.strict-parallel-observed-direction-receipt-fixture.v02"
+    },
+    "fixtureMode": {
+      "const": "nonproduction_structural_zero_pixel"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "branch",
+        "direction",
+        "scheduleId",
+        "receiptId",
+        "cellContentCommit",
+        "fixtureOnly"
+      ],
+      "properties": {
+        "taskId": {
+          "const": "PLAY-080"
+        },
+        "branch": {
+          "const": "codex/citysim-world-art-south"
+        },
+        "direction": {
+          "const": "south"
+        },
+        "scheduleId": {
+          "type": "string",
+          "pattern": "^PLAY-080-SOUTH-SCHEDULE-[A-Z0-9-]+$"
+        },
+        "receiptId": {
+          "type": "string",
+          "pattern": "^PLAY-080-SOUTH-RECEIPT-[A-Z0-9-]+$"
+        },
+        "cellContentCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "fixtureOnly": {
+          "const": true
+        }
+      }
+    },
+    "plannedScheduleRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "commit",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "commit": {
+          "type": "null"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "globalIntegrationAuthority": {
+      "$ref": "#/$defs/nullGlobalAuthority"
+    },
+    "processes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "A",
+        "B",
+        "C"
+      ],
+      "properties": {
+        "A": {
+          "$ref": "#/$defs/process"
+        },
+        "B": {
+          "$ref": "#/$defs/process"
+        },
+        "C": {
+          "$ref": "#/$defs/process"
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/observedEvent"
+      }
+    },
+    "cancellations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "direction",
+        "attemptIds",
+        "siblingDirectionsUnaffected"
+      ],
+      "properties": {
+        "scope": {
+          "const": "direction_local"
+        },
+        "direction": {
+          "const": "south"
+        },
+        "attemptIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/attemptId"
+          }
+        },
+        "siblingDirectionsUnaffected": {
+          "const": true
+        }
+      }
+    },
+    "join": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jobId",
+        "selectedAttempts",
+        "allAttemptIds",
+        "rawIdentityResult",
+        "semanticIdentityResult",
+        "fixtureOnly"
+      ],
+      "properties": {
+        "jobId": {
+          "const": "identity-join"
+        },
+        "selectedAttempts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "A",
+            "B",
+            "C"
+          ],
+          "properties": {
+            "A": {
+              "$ref": "#/$defs/attemptId"
+            },
+            "B": {
+              "$ref": "#/$defs/attemptId"
+            },
+            "C": {
+              "$ref": "#/$defs/attemptId"
+            }
+          }
+        },
+        "allAttemptIds": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/attemptId"
+          }
+        },
+        "rawIdentityResult": {
+          "const": "STRUCTURAL_FIXTURE_PASS"
+        },
+        "semanticIdentityResult": {
+          "const": "STRUCTURAL_FIXTURE_PASS"
+        },
+        "fixtureOnly": {
+          "const": true
+        }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "$ref": "#/$defs/job"
+      }
+    },
+    "assembler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jobId",
+        "invocationCount",
+        "fixtureOnly",
+        "productionHandoffWritten"
+      ],
+      "properties": {
+        "jobId": {
+          "const": "packet-assembly"
+        },
+        "invocationCount": {
+          "const": 1
+        },
+        "fixtureOnly": {
+          "const": true
+        },
+        "productionHandoffWritten": {
+          "const": false
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actualDccProcessInvocations",
+        "actualRenderApiCalls",
+        "actualImageGenInvocations",
+        "actualNormalizationInvocations",
+        "actualContactSheetInvocations",
+        "actualPacketWrites",
+        "actualPixelFiles"
+      ],
+      "properties": {
+        "actualDccProcessInvocations": {
+          "const": 0
+        },
+        "actualRenderApiCalls": {
+          "const": 0
+        },
+        "actualImageGenInvocations": {
+          "const": 0
+        },
+        "actualNormalizationInvocations": {
+          "const": 0
+        },
+        "actualContactSheetInvocations": {
+          "const": 0
+        },
+        "actualPacketWrites": {
+          "const": 0
+        },
+        "actualPixelFiles": {
+          "const": 0
+        }
+      }
+    },
+    "grants": {
+      "$ref": "#/$defs/grants"
+    },
+    "result": {
+      "const": "PASS_NONPRODUCTION_GLOBAL_AUTHORITY_PENDING"
+    }
+  },
+  "$defs": {
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "processId": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "attemptId": {
+      "type": "string",
+      "pattern": "^south-[ABC]-attempt-[0-9]{3}$"
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "processId",
+        "attemptId",
+        "allocationId",
+        "preassignedSlot",
+        "schedulerEventIds",
+        "invocationCount",
+        "ownedRoots",
+        "startedAtUtc",
+        "endedAtUtc",
+        "fixtureOnly"
+      ],
+      "properties": {
+        "processId": {
+          "$ref": "#/$defs/processId"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/attemptId"
+        },
+        "allocationId": {
+          "type": "string",
+          "pattern": "^south-allocation-[0-9]{3}$"
+        },
+        "preassignedSlot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "schedulerEventIds": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "invocationCount": {
+          "const": 1
+        },
+        "ownedRoots": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        },
+        "startedAtUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "endedAtUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "fixtureOnly": {
+          "const": true
+        }
+      }
+    },
+    "observedEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence",
+        "eventId",
+        "kind",
+        "direction",
+        "attemptId",
+        "atUtc"
+      ],
+      "properties": {
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "eventId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "process_started",
+            "process_ended",
+            "attempt_cancel_observed",
+            "retry_observed"
+          ]
+        },
+        "direction": {
+          "const": "south"
+        },
+        "attemptId": {
+          "$ref": "#/$defs/attemptId"
+        },
+        "atUtc": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jobId",
+        "kind",
+        "dependsOn",
+        "root",
+        "fixtureOnly"
+      ],
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependsOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "root": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "fixtureOnly": {
+          "const": true
+        }
+      }
+    },
+    "nullGlobalAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "schemaPath",
+        "schemaSha256",
+        "validatorPath",
+        "validatorSha256",
+        "scheduleReceiptPath",
+        "scheduleReceiptSha256",
+        "authorityCommit",
+        "published"
+      ],
+      "properties": {
+        "owner": {
+          "const": "Integration"
+        },
+        "schemaPath": {
+          "type": "null"
+        },
+        "schemaSha256": {
+          "type": "null"
+        },
+        "validatorPath": {
+          "type": "null"
+        },
+        "validatorSha256": {
+          "type": "null"
+        },
+        "scheduleReceiptPath": {
+          "type": "null"
+        },
+        "scheduleReceiptSha256": {
+          "type": "null"
+        },
+        "authorityCommit": {
+          "type": "null"
+        },
+        "published": {
+          "const": false
+        }
+      }
+    },
+    "grants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blender",
+        "render",
+        "pixels",
+        "normalization",
+        "contactSheet",
+        "packetWrite",
+        "productionAdmission",
+        "integrationAdmitted",
+        "rendererQuarantined",
+        "productionSelected",
+        "shipping"
+      ],
+      "properties": {
+        "blender": {
+          "const": false
+        },
+        "render": {
+          "const": false
+        },
+        "pixels": {
+          "const": false
+        },
+        "normalization": {
+          "const": false
+        },
+        "contactSheet": {
+          "const": false
+        },
+        "packetWrite": {
+          "const": false
+        },
+        "productionAdmission": {
+          "const": false
+        },
+        "integrationAdmitted": {
+          "const": false
+        },
+        "rendererQuarantined": {
+          "const": false
+        },
+        "productionSelected": {
+          "const": false
+        },
+        "shipping": {
+          "const": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "schema": "citysim.play-080.strict-parallel-planned-schedule-fixture.v02",
+  "fixtureMode": "nonproduction_structural_zero_pixel",
+  "identity": {
+    "taskId": "PLAY-080",
+    "branch": "codex/citysim-world-art-south",
+    "direction": "south",
+    "scheduleId": "PLAY-080-SOUTH-SCHEDULE-CAP1-EXCEPTION",
+    "scheduleCommit": null,
+    "sealed": true,
+    "fixtureOnly": true
+  },
+  "authorityContext": {
+    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
+    "claimPath": "docs/production/claims/PLAY-080.world-art-south.md",
+    "claimSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
+    "parallelExecutionDesign": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+      "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+      "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
+      "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED"
+    }
+  },
+  "scheduleMode": "sequential_exception",
+  "limits": {
+    "localPlannedDccCap": 1,
+    "intervalPolicy": "half_open_end_before_start"
+  },
+  "globalIntegrationAuthority": {
+    "owner": "Integration",
+    "schemaPath": null,
+    "schemaSha256": null,
+    "validatorPath": null,
+    "validatorSha256": null,
+    "scheduleReceiptPath": null,
+    "scheduleReceiptSha256": null,
+    "authorityCommit": null,
+    "published": false
+  },
+  "resourceException": {
+    "mode": "cap1_sequential_fixture_exception",
+    "reason": "NONPRODUCTION_FIXTURE_ONLY",
+    "integrationPath": null,
+    "integrationSha256": null,
+    "authorityCommit": null,
+    "published": false
+  },
+  "attemptLedger": [
+    {
+      "ledgerIndex": 1,
+      "attemptId": "south-A-attempt-001",
+      "processId": "A",
+      "ordinal": 1,
+      "previousAttemptId": null,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-A/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-A/attempt-001"
+      ],
+      "identitySha256": "aef5c77e11fe09c63ad1d567a59b5cb6ca65a0565a404f68b18159a2fc1f5012",
+      "state": "planned"
+    },
+    {
+      "ledgerIndex": 2,
+      "attemptId": "south-B-attempt-001",
+      "processId": "B",
+      "ordinal": 1,
+      "previousAttemptId": null,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-B/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-B/attempt-001"
+      ],
+      "identitySha256": "ec52e545589e1ea95fcf883f759b938a0d4c06f5afc00c3e0c372f4bf213352f",
+      "state": "planned"
+    },
+    {
+      "ledgerIndex": 3,
+      "attemptId": "south-C-attempt-001",
+      "processId": "C",
+      "ordinal": 1,
+      "previousAttemptId": null,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-C/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-C/attempt-001"
+      ],
+      "identitySha256": "99f88e63ec641350980f025e9b1e930bc93be17de762cdb305f55e5700c55085",
+      "state": "cancelled"
+    },
+    {
+      "ledgerIndex": 4,
+      "attemptId": "south-C-attempt-002",
+      "processId": "C",
+      "ordinal": 2,
+      "previousAttemptId": "south-C-attempt-001",
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-C/attempt-002/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap1/process-C/attempt-002"
+      ],
+      "identitySha256": "c61869f1d72a5ad5b6b1bca167d1f59448bcad7d9f28a14df2b3fb1c4fb104f4",
+      "state": "planned"
+    }
+  ],
+  "allocations": [
+    {
+      "allocationId": "south-allocation-001",
+      "dispatchSequence": 1,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "A",
+      "attemptId": "south-A-attempt-001",
+      "preassignedSlot": 0,
+      "notBeforeUtc": "2026-07-29T13:00:00Z",
+      "notAfterUtc": "2026-07-29T13:01:00Z",
+      "retryOf": null,
+      "retryScope": null,
+      "state": "planned"
+    },
+    {
+      "allocationId": "south-allocation-002",
+      "dispatchSequence": 2,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "B",
+      "attemptId": "south-B-attempt-001",
+      "preassignedSlot": 0,
+      "notBeforeUtc": "2026-07-29T13:01:00Z",
+      "notAfterUtc": "2026-07-29T13:02:00Z",
+      "retryOf": null,
+      "retryScope": null,
+      "state": "planned"
+    },
+    {
+      "allocationId": "south-allocation-003",
+      "dispatchSequence": 3,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "C",
+      "attemptId": "south-C-attempt-001",
+      "preassignedSlot": 0,
+      "notBeforeUtc": "2026-07-29T13:02:00Z",
+      "notAfterUtc": "2026-07-29T13:03:00Z",
+      "retryOf": null,
+      "retryScope": null,
+      "state": "cancelled"
+    },
+    {
+      "allocationId": "south-allocation-004",
+      "dispatchSequence": 4,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "C",
+      "attemptId": "south-C-attempt-002",
+      "preassignedSlot": 0,
+      "notBeforeUtc": "2026-07-29T13:02:00Z",
+      "notAfterUtc": "2026-07-29T13:03:00Z",
+      "retryOf": "south-C-attempt-001",
+      "retryScope": "single_process",
+      "state": "planned"
+    }
+  ],
+  "dispatchEvents": [
+    {
+      "sequence": 1,
+      "eventId": "cap1-event-001",
+      "kind": "schedule_sealed",
+      "direction": "south",
+      "attemptId": null,
+      "atUtc": "2026-07-29T12:59:00Z"
+    },
+    {
+      "sequence": 2,
+      "eventId": "cap1-event-002",
+      "kind": "process_dispatched",
+      "direction": "south",
+      "attemptId": "south-A-attempt-001",
+      "atUtc": "2026-07-29T12:59:10Z"
+    },
+    {
+      "sequence": 3,
+      "eventId": "cap1-event-003",
+      "kind": "process_dispatched",
+      "direction": "south",
+      "attemptId": "south-B-attempt-001",
+      "atUtc": "2026-07-29T12:59:20Z"
+    },
+    {
+      "sequence": 4,
+      "eventId": "cap1-event-004",
+      "kind": "process_dispatched",
+      "direction": "south",
+      "attemptId": "south-C-attempt-001",
+      "atUtc": "2026-07-29T12:59:30Z"
+    },
+    {
+      "sequence": 5,
+      "eventId": "cap1-event-005",
+      "kind": "allocation_cancelled",
+      "direction": "south",
+      "attemptId": "south-C-attempt-001",
+      "atUtc": "2026-07-29T12:59:40Z"
+    },
+    {
+      "sequence": 6,
+      "eventId": "cap1-event-006",
+      "kind": "retry_dispatched",
+      "direction": "south",
+      "attemptId": "south-C-attempt-002",
+      "atUtc": "2026-07-29T12:59:50Z"
+    },
+    {
+      "sequence": 7,
+      "eventId": "cap1-event-007",
+      "kind": "slot_acquired",
+      "direction": "south",
+      "attemptId": "south-A-attempt-001",
+      "atUtc": "2026-07-29T13:00:00Z"
+    },
+    {
+      "sequence": 8,
+      "eventId": "cap1-event-008",
+      "kind": "slot_acquired",
+      "direction": "south",
+      "attemptId": "south-B-attempt-001",
+      "atUtc": "2026-07-29T13:01:00Z"
+    },
+    {
+      "sequence": 9,
+      "eventId": "cap1-event-009",
+      "kind": "slot_acquired",
+      "direction": "south",
+      "attemptId": "south-C-attempt-002",
+      "atUtc": "2026-07-29T13:02:00Z"
+    }
+  ],
+  "cancellationPolicy": {
+    "scope": "direction_local",
+    "direction": "south",
+    "cancelledAttemptIds": [
+      "south-C-attempt-001"
+    ],
+    "siblingDirectionsUnaffected": [
+      "north",
+      "east",
+      "west"
+    ]
+  }
+}

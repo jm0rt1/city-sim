@@ -1,0 +1,285 @@
+{
+  "schema": "citysim.play-080.strict-parallel-observed-direction-receipt-fixture.v02",
+  "fixtureMode": "nonproduction_structural_zero_pixel",
+  "identity": {
+    "taskId": "PLAY-080",
+    "branch": "codex/citysim-world-art-south",
+    "direction": "south",
+    "scheduleId": "PLAY-080-SOUTH-SCHEDULE-CAP2-OVERLAP",
+    "receiptId": "PLAY-080-SOUTH-RECEIPT-CAP2-OVERLAP",
+    "cellContentCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "fixtureOnly": true
+  },
+  "plannedScheduleRef": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixtures/cap2-overlap/PLANNED-SCHEDULE.json",
+    "commit": null,
+    "sha256": "281fa21e9b339f46b63659df3b8ca3648cb31a1743bc5ca4ec1f4d3bdb881d12"
+  },
+  "globalIntegrationAuthority": {
+    "owner": "Integration",
+    "schemaPath": null,
+    "schemaSha256": null,
+    "validatorPath": null,
+    "validatorSha256": null,
+    "scheduleReceiptPath": null,
+    "scheduleReceiptSha256": null,
+    "authorityCommit": null,
+    "published": false
+  },
+  "processes": {
+    "A": {
+      "processId": "A",
+      "attemptId": "south-A-attempt-001",
+      "allocationId": "south-allocation-001",
+      "preassignedSlot": 0,
+      "schedulerEventIds": [
+        "cap2-event-002",
+        "cap2-event-003"
+      ],
+      "invocationCount": 1,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-A/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-A/attempt-001"
+      ],
+      "startedAtUtc": "2026-07-29T12:00:00Z",
+      "endedAtUtc": "2026-07-29T12:02:00Z",
+      "fixtureOnly": true
+    },
+    "B": {
+      "processId": "B",
+      "attemptId": "south-B-attempt-001",
+      "allocationId": "south-allocation-002",
+      "preassignedSlot": 1,
+      "schedulerEventIds": [
+        "cap2-event-004",
+        "cap2-event-005"
+      ],
+      "invocationCount": 1,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-B/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-B/attempt-001"
+      ],
+      "startedAtUtc": "2026-07-29T12:00:30Z",
+      "endedAtUtc": "2026-07-29T12:02:30Z",
+      "fixtureOnly": true
+    },
+    "C": {
+      "processId": "C",
+      "attemptId": "south-C-attempt-001",
+      "allocationId": "south-allocation-003",
+      "preassignedSlot": 0,
+      "schedulerEventIds": [
+        "cap2-event-006",
+        "cap2-event-007"
+      ],
+      "invocationCount": 1,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-C/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-C/attempt-001"
+      ],
+      "startedAtUtc": "2026-07-29T12:02:00Z",
+      "endedAtUtc": "2026-07-29T12:03:30Z",
+      "fixtureOnly": true
+    }
+  },
+  "events": [
+    {
+      "sequence": 1,
+      "eventId": "cap2-observed-001",
+      "kind": "process_started",
+      "direction": "south",
+      "attemptId": "south-A-attempt-001",
+      "atUtc": "2026-07-29T12:00:00Z"
+    },
+    {
+      "sequence": 2,
+      "eventId": "cap2-observed-002",
+      "kind": "process_started",
+      "direction": "south",
+      "attemptId": "south-B-attempt-001",
+      "atUtc": "2026-07-29T12:00:30Z"
+    },
+    {
+      "sequence": 3,
+      "eventId": "cap2-observed-003",
+      "kind": "process_ended",
+      "direction": "south",
+      "attemptId": "south-A-attempt-001",
+      "atUtc": "2026-07-29T12:02:00Z"
+    },
+    {
+      "sequence": 4,
+      "eventId": "cap2-observed-004",
+      "kind": "process_started",
+      "direction": "south",
+      "attemptId": "south-C-attempt-001",
+      "atUtc": "2026-07-29T12:02:00Z"
+    },
+    {
+      "sequence": 5,
+      "eventId": "cap2-observed-005",
+      "kind": "process_ended",
+      "direction": "south",
+      "attemptId": "south-B-attempt-001",
+      "atUtc": "2026-07-29T12:02:30Z"
+    },
+    {
+      "sequence": 6,
+      "eventId": "cap2-observed-006",
+      "kind": "process_ended",
+      "direction": "south",
+      "attemptId": "south-C-attempt-001",
+      "atUtc": "2026-07-29T12:03:30Z"
+    }
+  ],
+  "cancellations": {
+    "scope": "direction_local",
+    "direction": "south",
+    "attemptIds": [],
+    "siblingDirectionsUnaffected": true
+  },
+  "join": {
+    "jobId": "identity-join",
+    "selectedAttempts": {
+      "A": "south-A-attempt-001",
+      "B": "south-B-attempt-001",
+      "C": "south-C-attempt-001"
+    },
+    "allAttemptIds": [
+      "south-A-attempt-001",
+      "south-B-attempt-001",
+      "south-C-attempt-001"
+    ],
+    "rawIdentityResult": "STRUCTURAL_FIXTURE_PASS",
+    "semanticIdentityResult": "STRUCTURAL_FIXTURE_PASS",
+    "fixtureOnly": true
+  },
+  "jobs": [
+    {
+      "jobId": "provenance-A",
+      "kind": "provenance_rgba",
+      "dependsOn": [
+        "process-A"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/provenance-A",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "provenance-B",
+      "kind": "provenance_rgba",
+      "dependsOn": [
+        "process-B"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/provenance-B",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "provenance-C",
+      "kind": "provenance_rgba",
+      "dependsOn": [
+        "process-C"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/provenance-C",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "identity-join",
+      "kind": "identity_join",
+      "dependsOn": [
+        "provenance-A",
+        "provenance-B",
+        "provenance-C"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/identity-join",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "normalization-repeat-1",
+      "kind": "normalization_repeat",
+      "dependsOn": [
+        "identity-join"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/normalization-repeat-1",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "normalization-repeat-2",
+      "kind": "normalization_repeat",
+      "dependsOn": [
+        "identity-join"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/normalization-repeat-2",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "literal-color",
+      "kind": "literal_color",
+      "dependsOn": [
+        "normalization-repeat-1",
+        "normalization-repeat-2"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/literal-color",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "grayscale",
+      "kind": "grayscale",
+      "dependsOn": [
+        "normalization-repeat-1",
+        "normalization-repeat-2"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/grayscale",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "contact-sheet",
+      "kind": "contact_sheet",
+      "dependsOn": [
+        "normalization-repeat-1",
+        "normalization-repeat-2"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/contact-sheet",
+      "fixtureOnly": true
+    },
+    {
+      "jobId": "packet-assembly",
+      "kind": "packet_assembly",
+      "dependsOn": [
+        "literal-color",
+        "grayscale",
+        "contact-sheet"
+      ],
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixture-runs/cap2/jobs/packet-assembly",
+      "fixtureOnly": true
+    }
+  ],
+  "assembler": {
+    "jobId": "packet-assembly",
+    "invocationCount": 1,
+    "fixtureOnly": true,
+    "productionHandoffWritten": false
+  },
+  "safety": {
+    "actualDccProcessInvocations": 0,
+    "actualRenderApiCalls": 0,
+    "actualImageGenInvocations": 0,
+    "actualNormalizationInvocations": 0,
+    "actualContactSheetInvocations": 0,
+    "actualPacketWrites": 0,
+    "actualPixelFiles": 0
+  },
+  "grants": {
+    "blender": false,
+    "render": false,
+    "pixels": false,
+    "normalization": false,
+    "contactSheet": false,
+    "packetWrite": false,
+    "productionAdmission": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "shipping": false
+  },
+  "result": "PASS_NONPRODUCTION_GLOBAL_AUTHORITY_PENDING"
+}

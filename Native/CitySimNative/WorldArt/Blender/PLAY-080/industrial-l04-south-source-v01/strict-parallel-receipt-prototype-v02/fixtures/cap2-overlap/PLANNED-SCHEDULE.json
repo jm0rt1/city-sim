@@ -1,0 +1,194 @@
+{
+  "schema": "citysim.play-080.strict-parallel-planned-schedule-fixture.v02",
+  "fixtureMode": "nonproduction_structural_zero_pixel",
+  "identity": {
+    "taskId": "PLAY-080",
+    "branch": "codex/citysim-world-art-south",
+    "direction": "south",
+    "scheduleId": "PLAY-080-SOUTH-SCHEDULE-CAP2-OVERLAP",
+    "scheduleCommit": null,
+    "sealed": true,
+    "fixtureOnly": true
+  },
+  "authorityContext": {
+    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
+    "claimPath": "docs/production/claims/PLAY-080.world-art-south.md",
+    "claimSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
+    "parallelExecutionDesign": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+      "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+      "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
+      "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED"
+    }
+  },
+  "scheduleMode": "parallel_two_slot",
+  "limits": {
+    "localPlannedDccCap": 2,
+    "intervalPolicy": "half_open_end_before_start"
+  },
+  "globalIntegrationAuthority": {
+    "owner": "Integration",
+    "schemaPath": null,
+    "schemaSha256": null,
+    "validatorPath": null,
+    "validatorSha256": null,
+    "scheduleReceiptPath": null,
+    "scheduleReceiptSha256": null,
+    "authorityCommit": null,
+    "published": false
+  },
+  "resourceException": null,
+  "attemptLedger": [
+    {
+      "ledgerIndex": 1,
+      "attemptId": "south-A-attempt-001",
+      "processId": "A",
+      "ordinal": 1,
+      "previousAttemptId": null,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-A/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-A/attempt-001"
+      ],
+      "identitySha256": "d1b8aef1327deecdd1158f45a06bf7eaec5da1b66af197da790170297d04fe9d",
+      "state": "planned"
+    },
+    {
+      "ledgerIndex": 2,
+      "attemptId": "south-B-attempt-001",
+      "processId": "B",
+      "ordinal": 1,
+      "previousAttemptId": null,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-B/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-B/attempt-001"
+      ],
+      "identitySha256": "dd870bb2714e7dca6c9f39ec2e16e5b1c35c735d52b5088d574ee9504f5b99c5",
+      "state": "planned"
+    },
+    {
+      "ledgerIndex": 3,
+      "attemptId": "south-C-attempt-001",
+      "processId": "C",
+      "ordinal": 1,
+      "previousAttemptId": null,
+      "ownedRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-C/attempt-001/raw",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/source-candidate-v02/cap2/process-C/attempt-001"
+      ],
+      "identitySha256": "039fa6fe70a9907af6aa8d9bd23c9d780fea48e749f0c5615af76f44e0f4c14b",
+      "state": "planned"
+    }
+  ],
+  "allocations": [
+    {
+      "allocationId": "south-allocation-001",
+      "dispatchSequence": 1,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "A",
+      "attemptId": "south-A-attempt-001",
+      "preassignedSlot": 0,
+      "notBeforeUtc": "2026-07-29T12:00:00Z",
+      "notAfterUtc": "2026-07-29T12:02:00Z",
+      "retryOf": null,
+      "retryScope": null,
+      "state": "planned"
+    },
+    {
+      "allocationId": "south-allocation-002",
+      "dispatchSequence": 2,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "B",
+      "attemptId": "south-B-attempt-001",
+      "preassignedSlot": 1,
+      "notBeforeUtc": "2026-07-29T12:00:30Z",
+      "notAfterUtc": "2026-07-29T12:02:30Z",
+      "retryOf": null,
+      "retryScope": null,
+      "state": "planned"
+    },
+    {
+      "allocationId": "south-allocation-003",
+      "dispatchSequence": 3,
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "processId": "C",
+      "attemptId": "south-C-attempt-001",
+      "preassignedSlot": 0,
+      "notBeforeUtc": "2026-07-29T12:02:00Z",
+      "notAfterUtc": "2026-07-29T12:04:00Z",
+      "retryOf": null,
+      "retryScope": null,
+      "state": "planned"
+    }
+  ],
+  "dispatchEvents": [
+    {
+      "sequence": 1,
+      "eventId": "cap2-event-001",
+      "kind": "schedule_sealed",
+      "direction": "south",
+      "attemptId": null,
+      "atUtc": "2026-07-29T11:59:00Z"
+    },
+    {
+      "sequence": 2,
+      "eventId": "cap2-event-002",
+      "kind": "process_dispatched",
+      "direction": "south",
+      "attemptId": "south-A-attempt-001",
+      "atUtc": "2026-07-29T11:59:10Z"
+    },
+    {
+      "sequence": 3,
+      "eventId": "cap2-event-003",
+      "kind": "slot_acquired",
+      "direction": "south",
+      "attemptId": "south-A-attempt-001",
+      "atUtc": "2026-07-29T12:00:00Z"
+    },
+    {
+      "sequence": 4,
+      "eventId": "cap2-event-004",
+      "kind": "process_dispatched",
+      "direction": "south",
+      "attemptId": "south-B-attempt-001",
+      "atUtc": "2026-07-29T12:00:10Z"
+    },
+    {
+      "sequence": 5,
+      "eventId": "cap2-event-005",
+      "kind": "slot_acquired",
+      "direction": "south",
+      "attemptId": "south-B-attempt-001",
+      "atUtc": "2026-07-29T12:00:30Z"
+    },
+    {
+      "sequence": 6,
+      "eventId": "cap2-event-006",
+      "kind": "process_dispatched",
+      "direction": "south",
+      "attemptId": "south-C-attempt-001",
+      "atUtc": "2026-07-29T12:01:50Z"
+    },
+    {
+      "sequence": 7,
+      "eventId": "cap2-event-007",
+      "kind": "slot_acquired",
+      "direction": "south",
+      "attemptId": "south-C-attempt-001",
+      "atUtc": "2026-07-29T12:02:00Z"
+    }
+  ],
+  "cancellationPolicy": {
+    "scope": "direction_local",
+    "direction": "south",
+    "cancelledAttemptIds": [],
+    "siblingDirectionsUnaffected": [
+      "north",
+      "east",
+      "west"
+    ]
+  }
+}

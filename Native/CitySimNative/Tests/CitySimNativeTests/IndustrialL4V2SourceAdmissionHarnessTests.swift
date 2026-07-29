@@ -613,7 +613,470 @@ private struct L4V2SourceAdmissionHarness {
     }
 }
 
+private struct L4V2AcceptedBaseline: Codable, Equatable {
+    let commit: String
+    let catalog: L4V2Artifact
+    let industrialL3Manifest: L4V2Artifact
+}
+
+private struct L4V2AssemblyLocators: Codable, Equatable {
+    let raw: L4V2Artifact
+    let provenance: L4V2Artifact
+    let normalization: L4V2Artifact
+    let descriptor: L4V2Artifact
+    let contact: L4V2Artifact
+    let review: L4V2Artifact
+
+    var ordered: [L4V2Artifact] {
+        [raw, provenance, normalization, descriptor, contact, review]
+    }
+}
+
+private struct L4V2AssemblyDirectionInput: Codable, Equatable {
+    let direction: L4V2Direction
+    let packet: L4V2Artifact
+    let sourceAdmission: L4V2Artifact
+    let quarantineReceipt: L4V2Artifact
+    let locators: L4V2AssemblyLocators
+}
+
+private struct L4V2AssemblyInputManifest: Codable, Equatable {
+    let schemaVersion: Int
+    let disposition: String
+    let acceptedL3Baseline: L4V2AcceptedBaseline
+    let directions: [L4V2AssemblyDirectionInput]
+    let runtimeActivated: Bool
+    let shippingResourcesMutated: Bool
+    let productionSelected: Bool
+}
+
+private struct L4V2AtomicDirectionLedger: Codable, Equatable {
+    let direction: L4V2Direction
+    let logicalID: String
+    let packetSha256: String
+    let sourceAdmissionSha256: String
+    let quarantineReceiptSha256: String
+    let decodedRgbaSha256: String
+    let lodRgbaSha256: [String]
+    let d4Fingerprints: [String: String]
+    let locators: L4V2AssemblyLocators
+}
+
+private struct L4V2AtomicAdmissionLedger: Codable, Equatable {
+    let schemaVersion: Int
+    let disposition: String
+    let assemblyInputManifestSha256: String
+    let acceptedL3Baseline: L4V2AcceptedBaseline
+    let directions: [L4V2AtomicDirectionLedger]
+    let lodIdentityCount: Int
+    let d4IdentityCount: Int
+    let runtimeActivated: Bool
+    let shippingResourcesMutated: Bool
+    let productionSelected: Bool
+}
+
+private struct L4V2AtomicAssemblyHarness {
+    let claimedRoot: URL
+
+    func assemble(
+        manifestURL: URL,
+        manifestSha256: String
+    ) throws -> L4V2AtomicAdmissionLedger {
+        let manifestData = try read(
+            manifestURL,
+            expectedSha256: manifestSha256
+        )
+        try Self.validateManifestShape(manifestData)
+        let manifest = try JSONDecoder().decode(
+            L4V2AssemblyInputManifest.self,
+            from: manifestData
+        )
+        guard manifest.schemaVersion == 1,
+              manifest.disposition ==
+                "integration_assembly_input_admitted",
+              !manifest.runtimeActivated,
+              !manifest.shippingResourcesMutated,
+              !manifest.productionSelected
+        else {
+            throw L4V2HarnessError.invalidField("assemblyManifest")
+        }
+        try validateCommit(manifest.acceptedL3Baseline.commit)
+        _ = try read(manifest.acceptedL3Baseline.catalog)
+        _ = try read(manifest.acceptedL3Baseline.industrialL3Manifest)
+
+        guard manifest.directions.count == 4,
+              Set(manifest.directions.map(\.direction)) ==
+                Set(L4V2Direction.allCases)
+        else {
+            throw L4V2HarnessError.incompleteDirections
+        }
+
+        let directionHarness = L4V2SourceAdmissionHarness(
+            claimedRoot: claimedRoot
+        )
+        var admitted: [L4V2AdmittedPacket] = []
+        var ledgerDirections: [L4V2AtomicDirectionLedger] = []
+        var locatorPaths: [String] = []
+        var locatorHashes: [String] = []
+
+        for direction in L4V2Direction.allCases {
+            let input = try XCTUnwrap(
+                manifest.directions.first { $0.direction == direction }
+            )
+            let admittedPacket = try directionHarness.inspect(
+                L4V2FileInput(
+                    packetURL: try url(for: input.packet.path),
+                    packetSha256: input.packet.sha256,
+                    admissionURL: try url(for: input.sourceAdmission.path),
+                    admissionSha256: input.sourceAdmission.sha256
+                )
+            )
+            let receiptData = try read(input.quarantineReceipt)
+            try Self.validateReceiptShape(receiptData)
+            let receipt = try JSONDecoder().decode(
+                L4V2RendererQuarantineReceipt.self,
+                from: receiptData
+            )
+            guard receipt == admittedPacket.receipt else {
+                throw L4V2HarnessError.invalidField("quarantineReceipt")
+            }
+            for locator in input.locators.ordered {
+                _ = try read(locator)
+                locatorPaths.append(locator.path)
+                locatorHashes.append(locator.sha256)
+            }
+            admitted.append(admittedPacket)
+            ledgerDirections.append(
+                L4V2AtomicDirectionLedger(
+                    direction: direction,
+                    logicalID: admittedPacket.packet.logicalID,
+                    packetSha256: admittedPacket.packetSha256,
+                    sourceAdmissionSha256:
+                        admittedPacket.admissionSha256,
+                    quarantineReceiptSha256:
+                        input.quarantineReceipt.sha256,
+                    decodedRgbaSha256:
+                        admittedPacket.packet.source.decodedRgbaSha256,
+                    lodRgbaSha256: admittedPacket.packet.lods
+                        .sorted { $0.detail < $1.detail }
+                        .map(\.normalizedRgbaSha256),
+                    d4Fingerprints:
+                        admittedPacket.packet.d4Fingerprints,
+                    locators: input.locators
+                )
+            )
+        }
+        guard Set(locatorPaths).count == locatorPaths.count else {
+            throw L4V2HarnessError.alias("locatorPath")
+        }
+        guard Set(locatorHashes).count == locatorHashes.count else {
+            throw L4V2HarnessError.alias("locatorSha256")
+        }
+
+        let ready = try L4V2SourceAdmissionHarness.requireReady(admitted)
+        return L4V2AtomicAdmissionLedger(
+            schemaVersion: 1,
+            disposition: "ready_for_atomic_assembly_nonshipping",
+            assemblyInputManifestSha256: manifestSha256,
+            acceptedL3Baseline: manifest.acceptedL3Baseline,
+            directions: ledgerDirections,
+            lodIdentityCount: ready.lodIdentityCount,
+            d4IdentityCount: ready.d4IdentityCount,
+            runtimeActivated: false,
+            shippingResourcesMutated: false,
+            productionSelected: false
+        )
+    }
+
+    private func read(_ artifact: L4V2Artifact) throws -> Data {
+        try read(
+            try url(for: artifact.path),
+            expectedSha256: artifact.sha256
+        )
+    }
+
+    private func read(
+        _ url: URL,
+        expectedSha256: String
+    ) throws -> Data {
+        let rootPath = claimedRoot.standardizedFileURL.path
+        let path = url.standardizedFileURL.path
+        guard path.hasPrefix(rootPath + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        guard FileManager.default.fileExists(atPath: path) else {
+            throw L4V2HarnessError.missingFile(url.lastPathComponent)
+        }
+        let data = try Data(contentsOf: url)
+        guard L4V2SourceAdmissionHarness.sha256(data) ==
+                expectedSha256
+        else {
+            throw L4V2HarnessError.hashMismatch
+        }
+        return data
+    }
+
+    private func url(for path: String) throws -> URL {
+        guard !path.hasPrefix("/"),
+              !path.split(separator: "/").contains("..")
+        else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        return claimedRoot.appending(path: path).standardizedFileURL
+    }
+
+    private func validateCommit(_ value: String) throws {
+        guard value.count == 40,
+              value.allSatisfy(\.isLowercaseHexDigit)
+        else {
+            throw L4V2HarnessError.invalidField("baselineCommit")
+        }
+    }
+
+    private static func validateManifestShape(_ data: Data) throws {
+        let root = try object(data)
+        try exactKeys(
+            root,
+            [
+                "schemaVersion", "disposition", "acceptedL3Baseline",
+                "directions", "runtimeActivated",
+                "shippingResourcesMutated", "productionSelected",
+            ]
+        )
+        let baseline = try child(root, "acceptedL3Baseline")
+        try exactKeys(
+            baseline,
+            ["commit", "catalog", "industrialL3Manifest"]
+        )
+        try artifactShape(try child(baseline, "catalog"))
+        try artifactShape(try child(baseline, "industrialL3Manifest"))
+        guard let directions = root["directions"] as? [[String: Any]],
+              directions.count == 4
+        else {
+            throw L4V2HarnessError.schemaDrift
+        }
+        for direction in directions {
+            try exactKeys(
+                direction,
+                [
+                    "direction", "packet", "sourceAdmission",
+                    "quarantineReceipt", "locators",
+                ]
+            )
+            try artifactShape(try child(direction, "packet"))
+            try artifactShape(try child(direction, "sourceAdmission"))
+            try artifactShape(try child(direction, "quarantineReceipt"))
+            let locators = try child(direction, "locators")
+            try exactKeys(
+                locators,
+                [
+                    "raw", "provenance", "normalization", "descriptor",
+                    "contact", "review",
+                ]
+            )
+            for key in [
+                "raw", "provenance", "normalization", "descriptor",
+                "contact", "review",
+            ] {
+                try artifactShape(try child(locators, key))
+            }
+        }
+    }
+
+    private static func validateReceiptShape(_ data: Data) throws {
+        try exactKeys(
+            try object(data),
+            [
+                "schemaVersion", "disposition", "direction", "logicalID",
+                "workerPacketSha256", "sourceAdmissionSha256",
+                "rendererQuarantined", "readyForAtomicAssembly",
+                "productionSelected", "runtimeMappingMutated",
+                "shippingResourcesMutated",
+            ]
+        )
+    }
+
+    private static func artifactShape(
+        _ object: [String: Any]
+    ) throws {
+        try exactKeys(object, ["path", "sha256"])
+    }
+
+    private static func object(_ data: Data) throws -> [String: Any] {
+        guard let object = try JSONSerialization.jsonObject(with: data)
+            as? [String: Any]
+        else {
+            throw L4V2HarnessError.schemaDrift
+        }
+        return object
+    }
+
+    private static func child(
+        _ object: [String: Any],
+        _ key: String
+    ) throws -> [String: Any] {
+        guard let child = object[key] as? [String: Any] else {
+            throw L4V2HarnessError.schemaDrift
+        }
+        return child
+    }
+
+    private static func exactKeys(
+        _ object: [String: Any],
+        _ expected: Set<String>
+    ) throws {
+        guard Set(object.keys) == expected else {
+            throw L4V2HarnessError.schemaDrift
+        }
+    }
+}
+
 final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
+    func testCallerSuppliedAtomicAssemblyManifest() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let manifestPath =
+                environment["CITYSIM_L4_ASSEMBLY_MANIFEST_PATH"]
+        else {
+            throw XCTSkip("No caller-supplied Industrial L4 assembly manifest")
+        }
+        let root = URL(
+            fileURLWithPath: try requiredEnvironment(
+                "CITYSIM_L4_CLAIMED_ROOT",
+                environment: environment
+            )
+        ).standardizedFileURL
+        let outputURL = resolve(
+            try requiredEnvironment(
+                "CITYSIM_L4_ATOMIC_LEDGER_OUTPUT",
+                environment: environment
+            ),
+            beneath: root
+        )
+        let evidenceRoot = root.appending(
+            path: "docs/production/evidence/PLAY-073"
+        ).standardizedFileURL.path
+        guard outputURL.path.hasPrefix(evidenceRoot + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(outputURL.path)
+        }
+        let ledger = try L4V2AtomicAssemblyHarness(
+            claimedRoot: root
+        ).assemble(
+            manifestURL: resolve(manifestPath, beneath: root),
+            manifestSha256: try requiredEnvironment(
+                "CITYSIM_L4_ASSEMBLY_MANIFEST_SHA256",
+                environment: environment
+            )
+        )
+        let data = try sortedData(ledger)
+        try FileManager.default.createDirectory(
+            at: outputURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        if FileManager.default.fileExists(atPath: outputURL.path) {
+            XCTAssertEqual(try Data(contentsOf: outputURL), data)
+        } else {
+            try data.write(to: outputURL)
+        }
+        print(
+            "PLAY073_L4_ATOMIC_LEDGER \(outputURL.path) "
+                + L4V2SourceAdmissionHarness.sha256(data)
+        )
+    }
+
+    func testSyntheticFileBackedAtomicAssemblyIsDeterministic() throws {
+        try withRoot { root in
+            let input = try makeAssemblyInput(root: root)
+            let harness = L4V2AtomicAssemblyHarness(claimedRoot: root)
+            let first = try harness.assemble(
+                manifestURL: input.url,
+                manifestSha256: input.sha256
+            )
+            let second = try harness.assemble(
+                manifestURL: input.url,
+                manifestSha256: input.sha256
+            )
+            XCTAssertEqual(first, second)
+            XCTAssertEqual(first.lodIdentityCount, 12)
+            XCTAssertEqual(first.d4IdentityCount, 32)
+            XCTAssertEqual(
+                first.directions.map(\.direction),
+                L4V2Direction.allCases
+            )
+            XCTAssertFalse(first.runtimeActivated)
+            XCTAssertFalse(first.shippingResourcesMutated)
+            XCTAssertFalse(first.productionSelected)
+            XCTAssertEqual(try sortedData(first), try sortedData(second))
+        }
+    }
+
+    func testAtomicAssemblyRejectsMissingExtraAndLocatorDrift() throws {
+        try withRoot { root in
+            let valid = try makeAssemblyInput(root: root)
+            let harness = L4V2AtomicAssemblyHarness(claimedRoot: root)
+            let validData = try Data(contentsOf: valid.url)
+
+            var missing = try jsonObject(validData)
+            var directions = try XCTUnwrap(
+                missing["directions"] as? [[String: Any]]
+            )
+            directions.removeLast()
+            missing["directions"] = directions
+            let missingHash = try write(missing, to: valid.url)
+            XCTAssertThrowsError(
+                try harness.assemble(
+                    manifestURL: valid.url,
+                    manifestSha256: missingHash
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .schemaDrift)
+            }
+
+            let restored = try makeAssemblyInput(root: root)
+            var extra = try jsonObject(try Data(contentsOf: restored.url))
+            directions = try XCTUnwrap(
+                extra["directions"] as? [[String: Any]]
+            )
+            directions.append(try XCTUnwrap(directions.first))
+            extra["directions"] = directions
+            let extraHash = try write(extra, to: restored.url)
+            XCTAssertThrowsError(
+                try harness.assemble(
+                    manifestURL: restored.url,
+                    manifestSha256: extraHash
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .schemaDrift)
+            }
+
+            let locatorInput = try makeAssemblyInput(root: root)
+            var drift = try jsonObject(
+                try Data(contentsOf: locatorInput.url)
+            )
+            directions = try XCTUnwrap(
+                drift["directions"] as? [[String: Any]]
+            )
+            var north = directions[0]
+            var locators = try XCTUnwrap(
+                north["locators"] as? [String: Any]
+            )
+            var raw = try XCTUnwrap(locators["raw"] as? [String: Any])
+            raw["sha256"] = hash("wrong-locator")
+            locators["raw"] = raw
+            north["locators"] = locators
+            directions[0] = north
+            drift["directions"] = directions
+            let driftHash = try write(drift, to: locatorInput.url)
+            XCTAssertThrowsError(
+                try harness.assemble(
+                    manifestURL: locatorInput.url,
+                    manifestSha256: driftHash
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .hashMismatch)
+            }
+        }
+    }
+
     func testCallerSuppliedDirectionPacketAndAdmissionReceipt() throws {
         let environment = ProcessInfo.processInfo.environment
         guard let packetPath = environment["CITYSIM_L4_PACKET_PATH"] else {
@@ -1188,6 +1651,128 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         )
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
+    }
+
+    private func makeAssemblyInput(
+        root: URL
+    ) throws -> (url: URL, sha256: String) {
+        let baselineCatalog = try writeBytes(
+            Data("synthetic-accepted-l3-catalog".utf8),
+            to: root.appending(path: "baseline/catalog.json")
+        )
+        let baselineManifest = try writeBytes(
+            Data("synthetic-accepted-l3-manifest".utf8),
+            to: root.appending(path: "baseline/industrial-l3.json")
+        )
+        let directionHarness = L4V2SourceAdmissionHarness(
+            claimedRoot: root
+        )
+        var directions: [L4V2AssemblyDirectionInput] = []
+
+        for direction in L4V2Direction.allCases {
+            let packet = makePacket(direction)
+            let packetURL = root.appending(
+                path: "worker/\(direction.rawValue).json"
+            )
+            let packetHash = try write(packet, to: packetURL)
+            let input = try writeAdmission(
+                packet: packet,
+                packetURL: packetURL,
+                packetHash: packetHash,
+                root: root
+            )
+            let admitted = try directionHarness.inspect(input)
+            let admissionURL = try XCTUnwrap(input.admissionURL)
+            let admissionHash = try XCTUnwrap(input.admissionSha256)
+            let receiptURL = root.appending(
+                path: "renderer/\(direction.rawValue)-receipt.json"
+            )
+            let receiptHash = try write(
+                admitted.receipt,
+                to: receiptURL
+            )
+
+            func locator(_ role: String) throws -> L4V2Artifact {
+                let url = root.appending(
+                    path:
+                        "locators/\(direction.rawValue)/\(role).synthetic"
+                )
+                let sha = try writeBytes(
+                    Data(
+                        "synthetic-\(direction.rawValue)-\(role)".utf8
+                    ),
+                    to: url
+                )
+                return L4V2Artifact(
+                    path: try relativePath(url, root: root),
+                    sha256: sha
+                )
+            }
+
+            directions.append(
+                L4V2AssemblyDirectionInput(
+                    direction: direction,
+                    packet: L4V2Artifact(
+                        path: try relativePath(packetURL, root: root),
+                        sha256: packetHash
+                    ),
+                    sourceAdmission: L4V2Artifact(
+                        path: try relativePath(admissionURL, root: root),
+                        sha256: admissionHash
+                    ),
+                    quarantineReceipt: L4V2Artifact(
+                        path: try relativePath(receiptURL, root: root),
+                        sha256: receiptHash
+                    ),
+                    locators: L4V2AssemblyLocators(
+                        raw: try locator("raw"),
+                        provenance: try locator("provenance"),
+                        normalization: try locator("normalization"),
+                        descriptor: try locator("descriptor"),
+                        contact: try locator("contact"),
+                        review: try locator("review")
+                    )
+                )
+            )
+        }
+
+        let manifest = L4V2AssemblyInputManifest(
+            schemaVersion: 1,
+            disposition: "integration_assembly_input_admitted",
+            acceptedL3Baseline: L4V2AcceptedBaseline(
+                commit: commit("accepted-l3-baseline"),
+                catalog: L4V2Artifact(
+                    path: "baseline/catalog.json",
+                    sha256: baselineCatalog
+                ),
+                industrialL3Manifest: L4V2Artifact(
+                    path: "baseline/industrial-l3.json",
+                    sha256: baselineManifest
+                )
+            ),
+            directions: directions,
+            runtimeActivated: false,
+            shippingResourcesMutated: false,
+            productionSelected: false
+        )
+        let url = root.appending(path: "integration/assembly-input.json")
+        return (url, try write(manifest, to: url))
+    }
+
+    private func sortedData<T: Encodable>(_ value: T) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        return try encoder.encode(value)
+    }
+
+    @discardableResult
+    private func writeBytes(_ data: Data, to url: URL) throws -> String {
+        try FileManager.default.createDirectory(
+            at: url.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try data.write(to: url)
+        return L4V2SourceAdmissionHarness.sha256(data)
     }
 
     private func requiredEnvironment(

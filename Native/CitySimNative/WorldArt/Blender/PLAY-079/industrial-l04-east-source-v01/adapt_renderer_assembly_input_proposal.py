@@ -34,18 +34,20 @@ SOURCE_STAGE_SCHEMA_PATH = (
 SOURCE_STAGE_SCHEMA_SHA256 = (
     "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
 )
-PROPOSAL_COMMIT = "b92406460499bef17b87e8e95622cae1a990b15c"
+PROPOSAL_COMMIT = "86832482f820201e316b2c2c85d03e4226ede0ac"
 PROPOSAL_PATH = (
     "docs/production/evidence/PLAY-073/industrial-l04-v2-atomic-assembly-prep/"
     "ASSEMBLY-INPUT-MANIFEST-V1-PROPOSAL.md"
 )
 PROPOSAL_SHA256 = "ec2e293fbbfa1df900dc50479331d9849da8ed7f1863179c9dd448a9f93c7e1c"
-ADAPTER_BASE_COMMIT = "c61be146fc7fe6e64c4d353417770761a12d0e11"
+ADAPTER_BASE_COMMIT = "95d496fa06be87cae4fdc2abb58952d83ecac0f0"
+PORTABILITY_AUDIT_MASTER = "8bd4b0a60ea8074743b5db59bccaff3719e86829"
 FIXTURE_PATH = SOURCE_ROOT / "fixtures/ASSEMBLY-INPUT-ADAPTER-DRY-FIXTURE.json"
 OUTPUT_PATH = EVIDENCE_ROOT / "ASSEMBLY-INPUT-PROPOSAL-ADAPTER-DRY-EVIDENCE.json"
 SOURCE_PREFIX = "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/"
 EVIDENCE_PREFIX = "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
 HEX_DIGITS = frozenset("0123456789abcdef")
+ALLOWED_BRANCHES = frozenset({"codex/citysim-world-art-east", "master"})
 
 
 class AdapterRejected(RuntimeError):
@@ -136,6 +138,33 @@ def git_blob(commit: str, path: str) -> bytes:
     return result.stdout
 
 
+def validate_context_values(branch: str, base_is_ancestor: bool) -> None:
+    if branch not in ALLOWED_BRANCHES:
+        raise AdapterRejected("branch_mismatch", branch)
+    if not base_is_ancestor:
+        raise AdapterRejected("adapter_base_ancestry_mismatch", ADAPTER_BASE_COMMIT)
+
+
+def git_is_ancestor(older: str, newer: str) -> bool:
+    require_hex(older, 40, "older_commit")
+    require_hex(newer, 40, "newer_commit")
+    result = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(REPOSITORY_ROOT),
+            "merge-base",
+            "--is-ancestor",
+            older,
+            newer,
+        ],
+        check=False,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    return result.returncode == 0
+
+
 def validate_git_context() -> None:
     branch = subprocess.run(
         ["git", "-C", str(REPOSITORY_ROOT), "branch", "--show-current"],
@@ -143,8 +172,8 @@ def validate_git_context() -> None:
         capture_output=True,
         text=True,
     )
-    if branch.returncode or branch.stdout.strip() != "codex/citysim-world-art-east":
-        raise AdapterRejected("branch_mismatch", branch.stdout.strip())
+    if branch.returncode:
+        raise AdapterRejected("branch_lookup_failed", branch.stderr.strip())
     ancestor = subprocess.run(
         [
             "git",
@@ -159,8 +188,7 @@ def validate_git_context() -> None:
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-    if ancestor.returncode:
-        raise AdapterRejected("adapter_base_ancestry_mismatch", ADAPTER_BASE_COMMIT)
+    validate_context_values(branch.stdout.strip(), ancestor.returncode == 0)
 
 
 def load_inventory_validator() -> Any:
@@ -333,6 +361,73 @@ def run_negative_tests(fixture: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
+def expect_context_rejection(branch: str, base_is_ancestor: bool, code: str) -> dict[str, Any]:
+    try:
+        validate_context_values(branch, base_is_ancestor)
+    except AdapterRejected as error:
+        if error.code != code:
+            raise AdapterRejected(
+                "portability_test_wrong_rejection",
+                f"{branch}: expected {code}, got {error.code}",
+            ) from error
+        return {
+            "branch": branch,
+            "baseIsAncestor": base_is_ancestor,
+            "result": "REJECTED",
+            "rejectionCode": error.code,
+        }
+    raise AdapterRejected("portability_test_failed_open", branch)
+
+
+def run_portability_tests() -> dict[str, Any]:
+    positive_cases: list[dict[str, Any]] = []
+    for branch in ("codex/citysim-world-art-east", "master"):
+        validate_context_values(branch, True)
+        positive_cases.append(
+            {
+                "branch": branch,
+                "baseIsAncestor": True,
+                "result": "PASS",
+            }
+        )
+    negative_cases = [
+        expect_context_rejection(
+            "codex/citysim-world-rendering",
+            True,
+            "branch_mismatch",
+        ),
+        expect_context_rejection(
+            "master",
+            False,
+            "adapter_base_ancestry_mismatch",
+        ),
+    ]
+    integration_ancestry = {
+        "inventoryAuthorityIsAncestor": git_is_ancestor(
+            ADAPTER_BASE_COMMIT,
+            PORTABILITY_AUDIT_MASTER,
+        ),
+        "proposalAuthorityIsAncestor": git_is_ancestor(
+            PROPOSAL_COMMIT,
+            PORTABILITY_AUDIT_MASTER,
+        ),
+    }
+    if not all(integration_ancestry.values()):
+        raise AdapterRejected(
+            "published_master_portability_failed",
+            repr(integration_ancestry),
+        )
+    return {
+        "result": "PASS",
+        "adapterBaseCommit": ADAPTER_BASE_COMMIT,
+        "publishedMaster": PORTABILITY_AUDIT_MASTER,
+        "publishedMasterAncestry": integration_ancestry,
+        "allowedBranches": sorted(ALLOWED_BRANCHES),
+        "positiveCases": positive_cases,
+        "negativeCases": negative_cases,
+    }
+
+
 def artifact_path(record: dict[str, Any]) -> str | None:
     path = record.get("path")
     return path if isinstance(path, str) else None
@@ -442,6 +537,7 @@ def build_evidence(
     inventory: dict[str, Any],
     inventory_result: dict[str, Any],
     negative_tests: list[dict[str, Any]],
+    portability_tests: dict[str, Any],
 ) -> dict[str, Any]:
     blockers = [
         "assembly_input_manifest_v1_is_proposal_only",
@@ -492,6 +588,7 @@ def build_evidence(
             "result": "PASS_BLOCKED",
             "locatorInventoryValidation": inventory_result,
             "negativeCases": negative_tests,
+            "integrationPortability": portability_tests,
             "allRejectionsBeforeWrite": True,
         },
         "writeBoundary": {
@@ -519,13 +616,26 @@ def build_evidence(
     }
 
 
-def prepare() -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+def prepare() -> tuple[
+    dict[str, Any],
+    dict[str, Any],
+    list[dict[str, Any]],
+    dict[str, Any],
+    dict[str, Any],
+]:
     inventory, inventory_result = validate_static_bindings()
     fixture = load_json(FIXTURE_PATH, "fixture")
     validate_fixture(fixture)
     negative_tests = run_negative_tests(fixture)
-    evidence = build_evidence(fixture, inventory, inventory_result, negative_tests)
-    return fixture, inventory_result, negative_tests, evidence
+    portability_tests = run_portability_tests()
+    evidence = build_evidence(
+        fixture,
+        inventory,
+        inventory_result,
+        negative_tests,
+        portability_tests,
+    )
+    return fixture, inventory_result, negative_tests, portability_tests, evidence
 
 
 def write_evidence(evidence: dict[str, Any]) -> None:
@@ -553,11 +663,12 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--validate-only", action="store_true")
     mode.add_argument("--self-test", action="store_true")
+    mode.add_argument("--portability-test", action="store_true")
     mode.add_argument("--write-dry-evidence", action="store_true")
     mode.add_argument("--check", action="store_true")
     arguments = parser.parse_args()
     try:
-        _, inventory_result, negative_tests, evidence = prepare()
+        _, inventory_result, negative_tests, portability_tests, evidence = prepare()
         if arguments.write_dry_evidence:
             write_evidence(evidence)
         elif arguments.check:
@@ -569,6 +680,8 @@ def main() -> int:
             "nonshipping": True,
             "inventoryRecordsValidated": inventory_result["locatorRecordsValidated"],
             "negativeCasesPassed": len(negative_tests),
+            "portabilityPositiveCasesPassed": len(portability_tests["positiveCases"]),
+            "portabilityNegativeCasesPassed": len(portability_tests["negativeCases"]),
             "dryEvidenceWritten": bool(arguments.write_dry_evidence),
             "existingEvidenceValidated": bool(arguments.check),
             "blenderInvocations": 0,

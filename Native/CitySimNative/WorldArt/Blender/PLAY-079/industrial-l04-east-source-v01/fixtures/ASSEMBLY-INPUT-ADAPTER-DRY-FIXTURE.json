@@ -2,7 +2,7 @@
   "schema": "citysim.play-079.assembly-input-adapter.synthetic-fixture.v1",
   "mode": "synthetic_blocked_dry_evidence",
   "proposal": {
-    "commit": "b92406460499bef17b87e8e95622cae1a990b15c",
+    "commit": "86832482f820201e316b2c2c85d03e4226ede0ac",
     "path": "docs/production/evidence/PLAY-073/industrial-l04-v2-atomic-assembly-prep/ASSEMBLY-INPUT-MANIFEST-V1-PROPOSAL.md",
     "sha256": "ec2e293fbbfa1df900dc50479331d9849da8ed7f1863179c9dd448a9f93c7e1c",
     "authorityStatus": "proposal_only"

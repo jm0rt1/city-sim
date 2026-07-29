@@ -1,0 +1,265 @@
+{
+  "schema": "citysim.play-080.strict-parallel-execution-receipt-fixture.v1",
+  "fixtureMode": "nonproduction_structural_zero_pixel",
+  "identity": {
+    "taskId": "PLAY-080",
+    "branch": "codex/citysim-world-art-south",
+    "direction": "south",
+    "frozenCandidate": "779cf5141a4735d6b7c84a0372f08c9ab111d358"
+  },
+  "frozenInputs": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "runnerTool": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
+      "sha256": "80ac231be0b312d69eb55f10a8acee5ef2617a723570ca243d89c419718d5b27"
+    },
+    "assemblerTool": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_candidate_outputs.py",
+      "sha256": "258d13a220de622f2585a2ee62f241533bbb2e84517d1f81627df4cd418c3b51"
+    },
+    "authorityBundle": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+      "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2"
+    }
+  },
+  "processes": {
+    "A": {
+      "processId": "A",
+      "syntheticFixtureInvocation": true,
+      "invocationCount": 1,
+      "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+      "startedAtUtc": "2026-07-29T10:00:00Z",
+      "endedAtUtc": "2026-07-29T10:01:00Z"
+    },
+    "B": {
+      "processId": "B",
+      "syntheticFixtureInvocation": true,
+      "invocationCount": 1,
+      "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+      "startedAtUtc": "2026-07-29T10:01:01Z",
+      "endedAtUtc": "2026-07-29T10:02:01Z"
+    },
+    "C": {
+      "processId": "C",
+      "syntheticFixtureInvocation": true,
+      "invocationCount": 1,
+      "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/",
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/",
+      "startedAtUtc": "2026-07-29T10:02:02Z",
+      "endedAtUtc": "2026-07-29T10:03:02Z"
+    }
+  },
+  "execution": {
+    "mode": "sequential_exception",
+    "maximumConcurrentDccProcesses": 2,
+    "actualOverlap": false,
+    "overlapPairs": [],
+    "maximumObservedDirectionLocalConcurrency": 1,
+    "resourceException": {
+      "owner": "Integration",
+      "state": "pending_integration_authority",
+      "path": null,
+      "sha256": null,
+      "authorityCommit": null,
+      "fixtureReason": "Exercise the fail-closed sequential exception shape without inventing Integration authority."
+    },
+    "queueOrder": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  "jobs": [
+    {
+      "jobId": "provenance-A",
+      "kind": "provenance_rgba",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/provenance-A/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:03:03Z",
+      "endedAtUtc": "2026-07-29T10:03:20Z",
+      "dependsOn": [
+        "process-A"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "provenance-B",
+      "kind": "provenance_rgba",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/provenance-B/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:03:03Z",
+      "endedAtUtc": "2026-07-29T10:03:20Z",
+      "dependsOn": [
+        "process-B"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "provenance-C",
+      "kind": "provenance_rgba",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/provenance-C/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:03:03Z",
+      "endedAtUtc": "2026-07-29T10:03:20Z",
+      "dependsOn": [
+        "process-C"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "identity-join",
+      "kind": "identity_join",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/identity-join/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:03:21Z",
+      "endedAtUtc": "2026-07-29T10:03:30Z",
+      "dependsOn": [
+        "provenance-A",
+        "provenance-B",
+        "provenance-C"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "normalization-repeat-1",
+      "kind": "normalization_repeat",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/normalization-repeat-1/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:03:31Z",
+      "endedAtUtc": "2026-07-29T10:04:00Z",
+      "dependsOn": [
+        "identity-join"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "normalization-repeat-2",
+      "kind": "normalization_repeat",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/normalization-repeat-2/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:03:31Z",
+      "endedAtUtc": "2026-07-29T10:04:00Z",
+      "dependsOn": [
+        "identity-join"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "literal-color",
+      "kind": "literal_color",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/literal-color/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:04:01Z",
+      "endedAtUtc": "2026-07-29T10:04:30Z",
+      "dependsOn": [
+        "normalization-repeat-1",
+        "normalization-repeat-2"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "grayscale",
+      "kind": "grayscale",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/grayscale/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:04:01Z",
+      "endedAtUtc": "2026-07-29T10:04:30Z",
+      "dependsOn": [
+        "normalization-repeat-1",
+        "normalization-repeat-2"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "contact-sheet",
+      "kind": "contact_sheet",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/contact-sheet/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:04:01Z",
+      "endedAtUtc": "2026-07-29T10:04:30Z",
+      "dependsOn": [
+        "normalization-repeat-1",
+        "normalization-repeat-2"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    },
+    {
+      "jobId": "packet-assembly",
+      "kind": "packet_assembly",
+      "root": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/packet-assembly/",
+      "invocationCount": 1,
+      "startedAtUtc": "2026-07-29T10:04:31Z",
+      "endedAtUtc": "2026-07-29T10:04:50Z",
+      "dependsOn": [
+        "literal-color",
+        "grayscale",
+        "contact-sheet"
+      ],
+      "result": "STRUCTURAL_FIXTURE_PASS",
+      "syntheticFixtureInvocation": true
+    }
+  ],
+  "joins": {
+    "identityJoin": {
+      "jobId": "identity-join",
+      "processIds": [
+        "A",
+        "B",
+        "C"
+      ],
+      "rawResult": "STRUCTURAL_FIXTURE_PASS",
+      "semanticResult": "STRUCTURAL_FIXTURE_PASS",
+      "completedAtUtc": "2026-07-29T10:03:30Z",
+      "fixtureOnly": true
+    }
+  },
+  "assembler": {
+    "jobId": "packet-assembly",
+    "identity": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_candidate_outputs.py",
+      "sha256": "258d13a220de622f2585a2ee62f241533bbb2e84517d1f81627df4cd418c3b51"
+    },
+    "invocationCount": 1,
+    "fixtureOnly": true,
+    "productionHandoffWritten": false
+  },
+  "globalScheduleReceipt": {
+    "owner": "Integration",
+    "state": "pending_integration_authority",
+    "path": null,
+    "sha256": null,
+    "authorityCommit": null,
+    "globalCapProven": false
+  },
+  "safety": {
+    "actualDccProcessInvocations": 0,
+    "actualRenderApiCalls": 0,
+    "actualImageGenInvocations": 0,
+    "actualNormalizationInvocations": 0,
+    "actualContactSheetInvocations": 0,
+    "actualPixelFiles": 0
+  },
+  "result": "PASS_DIRECTION_LOCAL_GLOBAL_SCHEDULE_PENDING"
+}

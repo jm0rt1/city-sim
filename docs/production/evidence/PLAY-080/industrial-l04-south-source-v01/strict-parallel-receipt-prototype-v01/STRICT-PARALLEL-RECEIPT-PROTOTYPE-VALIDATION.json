@@ -1,0 +1,166 @@
+{
+  "schema": "citysim.play-080.strict-parallel-receipt-prototype-validation.v1",
+  "taskId": "PLAY-080",
+  "branch": "codex/citysim-world-art-south",
+  "frozenCandidateParent": "779cf5141a4735d6b7c84a0372f08c9ab111d358",
+  "publishedMasterObservedWithoutSync": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
+  "syncPerformed": false,
+  "scope": {
+    "mode": "nonproduction_structural_zero_pixel",
+    "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/",
+    "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/",
+    "sharedFilesModified": 0,
+    "acceptedPredesignFilesModified": 0,
+    "runtimeOrShippingFilesModified": 0
+  },
+  "artifacts": {
+    "readme": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/README.md",
+      "sha256": "944926f4e4b4d734b871765d99ab6d04bdf0ed32232c9e07da73ae92e131280f"
+    },
+    "fixtureSchema": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/strict-parallel-execution-receipt-fixture-schema-v1.json",
+      "sha256": "bc3ea49fbf4a65cc42fed2b0ef5134adb7161ce4977980731e465ebe83d7e69e"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/validate_strict_parallel_receipt_fixture.py",
+      "sha256": "bd36e9d17ca2e0e84f5b8a0ec871448fd38b87f01d8f0a24eb643203d1e100a2"
+    },
+    "testHarness": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/test_strict_parallel_receipt_fixture.py",
+      "sha256": "7ed437a8424c44e9176e62d1ddc5e00873f487cffb5beeefef0cab76f7533cc5"
+    },
+    "overlappedFixture": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixtures/PASS-OVERLAPPED.json",
+      "sha256": "4b6e7246cc1b6f099c49dab0c62bb9679d057f50dd76e31404a483c25f250386"
+    },
+    "sequentialExceptionFixture": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixtures/PASS-SEQUENTIAL-EXCEPTION.json",
+      "sha256": "f1377d831f5a2e15a15ec9adc654fb5ab66db92c12c5c79ef09d93ae4b25a6d2"
+    },
+    "negativeFixtures": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixtures/FAIL-CLOSED-NEGATIVE-FIXTURES.json",
+      "sha256": "0a82737d691b5c02c31a6be1f7be92e3c47baea7318b62fd4169bf4836a8f056"
+    }
+  },
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/test_strict_parallel_receipt_fixture.py",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -B -c <AST parse of both prototype Python files>",
+      "result": "PYTHON_AST_PASS 2"
+    },
+    {
+      "command": "python3 -B -c <JSON parse of all prototype JSON files>",
+      "result": "JSON_PARSE_PASS 4"
+    },
+    {
+      "command": "python3 -B -c <Draft202012Validator.check_schema>",
+      "result": "SCHEMA_META_PASS"
+    }
+  ],
+  "positiveFixtures": [
+    {
+      "fixture": "PASS-OVERLAPPED.json",
+      "executionMode": "overlapped",
+      "directionLocalReceiptValid": true,
+      "globalCapProven": false,
+      "productionReady": false,
+      "result": "PASS"
+    },
+    {
+      "fixture": "PASS-SEQUENTIAL-EXCEPTION.json",
+      "executionMode": "sequential_exception",
+      "directionLocalReceiptValid": true,
+      "globalCapProven": false,
+      "productionReady": false,
+      "result": "PASS"
+    }
+  ],
+  "negativeFixtures": [
+    {
+      "fixture": "invocation-count",
+      "returnCode": 2,
+      "code": "SCHEMA_INVALID"
+    },
+    {
+      "fixture": "root-ancestor-alias",
+      "returnCode": 2,
+      "code": "ROOT_ISOLATION_FAILURE"
+    },
+    {
+      "fixture": "false-overlap-pair",
+      "returnCode": 2,
+      "code": "OVERLAP_PAIR_MISMATCH"
+    },
+    {
+      "fixture": "dependency-race",
+      "returnCode": 2,
+      "code": "DEPENDENCY_BARRIER_VIOLATION"
+    },
+    {
+      "fixture": "second-assembler",
+      "returnCode": 2,
+      "code": "ASSEMBLER_COUNT_MISMATCH"
+    },
+    {
+      "fixture": "frozen-input-drift",
+      "returnCode": 2,
+      "code": "FROZEN_INPUT_SHA_MISMATCH"
+    },
+    {
+      "fixture": "invented-global-schedule-substitute",
+      "returnCode": 2,
+      "code": "SCHEMA_INVALID"
+    },
+    {
+      "fixture": "unsupported-global-cap-claim",
+      "returnCode": 2,
+      "code": "SCHEMA_INVALID"
+    },
+    {
+      "fixture": "sequential-without-exception",
+      "returnCode": 2,
+      "code": "SCHEMA_INVALID"
+    }
+  ],
+  "deterministicRepeat": [
+    {
+      "fixture": "PASS-OVERLAPPED.json",
+      "run1Sha256": "b9dccb42bdd1d7e5c19ffe53838b2be142e81fae509888eb4d921321d1c39476",
+      "run2Sha256": "b9dccb42bdd1d7e5c19ffe53838b2be142e81fae509888eb4d921321d1c39476",
+      "byteIdentical": true
+    },
+    {
+      "fixture": "PASS-SEQUENTIAL-EXCEPTION.json",
+      "run1Sha256": "a3a0f9fbb61f213b885c687cf86de157a7c72a565f7e8db53f625195a969c4cf",
+      "run2Sha256": "a3a0f9fbb61f213b885c687cf86de157a7c72a565f7e8db53f625195a969c4cf",
+      "byteIdentical": true
+    }
+  ],
+  "globalScheduleBoundary": {
+    "owner": "Integration",
+    "state": "PENDING_INTEGRATION_AUTHORITY",
+    "path": null,
+    "sha256": null,
+    "authorityCommit": null,
+    "globalCapProven": false,
+    "productionReady": false,
+    "directionCellSubstitutionForbidden": true
+  },
+  "zeroPixelBoundary": {
+    "executablesInvoked": [
+      "python3"
+    ],
+    "validatorSubprocessInvocations": 13,
+    "dccProcessInvocations": 0,
+    "renderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizationInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFiles": []
+  },
+  "result": "PASS"
+}

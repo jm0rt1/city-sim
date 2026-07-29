@@ -1,0 +1,527 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://play-080/strict-parallel-execution-receipt-fixture-v1",
+  "title": "PLAY-080 strict direction-local parallel-execution receipt fixture v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "fixtureMode",
+    "identity",
+    "frozenInputs",
+    "processes",
+    "execution",
+    "jobs",
+    "joins",
+    "assembler",
+    "globalScheduleReceipt",
+    "safety",
+    "result"
+  ],
+  "properties": {
+    "schema": {
+      "const": "citysim.play-080.strict-parallel-execution-receipt-fixture.v1"
+    },
+    "fixtureMode": {
+      "const": "nonproduction_structural_zero_pixel"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "branch",
+        "direction",
+        "frozenCandidate"
+      ],
+      "properties": {
+        "taskId": {
+          "const": "PLAY-080"
+        },
+        "branch": {
+          "const": "codex/citysim-world-art-south"
+        },
+        "direction": {
+          "const": "south"
+        },
+        "frozenCandidate": {
+          "const": "779cf5141a4735d6b7c84a0372f08c9ab111d358"
+        }
+      }
+    },
+    "frozenInputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scene",
+        "materials",
+        "sourceStageSchema",
+        "runnerTool",
+        "assemblerTool",
+        "authorityBundle"
+      ],
+      "properties": {
+        "scene": {
+          "$ref": "#/$defs/artifact"
+        },
+        "materials": {
+          "$ref": "#/$defs/artifact"
+        },
+        "sourceStageSchema": {
+          "$ref": "#/$defs/artifact"
+        },
+        "runnerTool": {
+          "$ref": "#/$defs/artifact"
+        },
+        "assemblerTool": {
+          "$ref": "#/$defs/artifact"
+        },
+        "authorityBundle": {
+          "$ref": "#/$defs/artifact"
+        }
+      }
+    },
+    "processes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "A",
+        "B",
+        "C"
+      ],
+      "properties": {
+        "A": {
+          "$ref": "#/$defs/process"
+        },
+        "B": {
+          "$ref": "#/$defs/process"
+        },
+        "C": {
+          "$ref": "#/$defs/process"
+        }
+      }
+    },
+    "execution": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/overlappedExecution"
+        },
+        {
+          "$ref": "#/$defs/sequentialExecution"
+        }
+      ]
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "$ref": "#/$defs/job"
+      }
+    },
+    "joins": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identityJoin"
+      ],
+      "properties": {
+        "identityJoin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "jobId",
+            "processIds",
+            "rawResult",
+            "semanticResult",
+            "completedAtUtc",
+            "fixtureOnly"
+          ],
+          "properties": {
+            "jobId": {
+              "const": "identity-join"
+            },
+            "processIds": {
+              "const": [
+                "A",
+                "B",
+                "C"
+              ]
+            },
+            "rawResult": {
+              "const": "STRUCTURAL_FIXTURE_PASS"
+            },
+            "semanticResult": {
+              "const": "STRUCTURAL_FIXTURE_PASS"
+            },
+            "completedAtUtc": {
+              "$ref": "#/$defs/timestamp"
+            },
+            "fixtureOnly": {
+              "const": true
+            }
+          }
+        }
+      }
+    },
+    "assembler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jobId",
+        "identity",
+        "invocationCount",
+        "fixtureOnly",
+        "productionHandoffWritten"
+      ],
+      "properties": {
+        "jobId": {
+          "const": "packet-assembly"
+        },
+        "identity": {
+          "$ref": "#/$defs/artifact"
+        },
+        "invocationCount": {
+          "const": 1
+        },
+        "fixtureOnly": {
+          "const": true
+        },
+        "productionHandoffWritten": {
+          "const": false
+        }
+      }
+    },
+    "globalScheduleReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "state",
+        "path",
+        "sha256",
+        "authorityCommit",
+        "globalCapProven"
+      ],
+      "properties": {
+        "owner": {
+          "const": "Integration"
+        },
+        "state": {
+          "const": "pending_integration_authority"
+        },
+        "path": {
+          "type": "null"
+        },
+        "sha256": {
+          "type": "null"
+        },
+        "authorityCommit": {
+          "type": "null"
+        },
+        "globalCapProven": {
+          "const": false
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actualDccProcessInvocations",
+        "actualRenderApiCalls",
+        "actualImageGenInvocations",
+        "actualNormalizationInvocations",
+        "actualContactSheetInvocations",
+        "actualPixelFiles"
+      ],
+      "properties": {
+        "actualDccProcessInvocations": {
+          "const": 0
+        },
+        "actualRenderApiCalls": {
+          "const": 0
+        },
+        "actualImageGenInvocations": {
+          "const": 0
+        },
+        "actualNormalizationInvocations": {
+          "const": 0
+        },
+        "actualContactSheetInvocations": {
+          "const": 0
+        },
+        "actualPixelFiles": {
+          "const": 0
+        }
+      }
+    },
+    "result": {
+      "const": "PASS_DIRECTION_LOCAL_GLOBAL_SCHEDULE_PENDING"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(Native/CitySimNative/WorldArt/Blender/PLAY-080/|docs/production/evidence/(PLAY-080|INTEGRATION)/).+"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "processId",
+        "syntheticFixtureInvocation",
+        "invocationCount",
+        "outputRoot",
+        "evidenceRoot",
+        "startedAtUtc",
+        "endedAtUtc"
+      ],
+      "properties": {
+        "processId": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "syntheticFixtureInvocation": {
+          "const": true
+        },
+        "invocationCount": {
+          "const": 1
+        },
+        "outputRoot": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "evidenceRoot": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "startedAtUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "endedAtUtc": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "overlapPair": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      ],
+      "items": false
+    },
+    "overlappedExecution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "maximumConcurrentDccProcesses",
+        "actualOverlap",
+        "overlapPairs",
+        "maximumObservedDirectionLocalConcurrency",
+        "resourceException",
+        "queueOrder"
+      ],
+      "properties": {
+        "mode": {
+          "const": "overlapped"
+        },
+        "maximumConcurrentDccProcesses": {
+          "const": 2
+        },
+        "actualOverlap": {
+          "const": true
+        },
+        "overlapPairs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/overlapPair"
+          }
+        },
+        "maximumObservedDirectionLocalConcurrency": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 2
+        },
+        "resourceException": {
+          "type": "null"
+        },
+        "queueOrder": {
+          "const": []
+        }
+      }
+    },
+    "sequentialExecution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "maximumConcurrentDccProcesses",
+        "actualOverlap",
+        "overlapPairs",
+        "maximumObservedDirectionLocalConcurrency",
+        "resourceException",
+        "queueOrder"
+      ],
+      "properties": {
+        "mode": {
+          "const": "sequential_exception"
+        },
+        "maximumConcurrentDccProcesses": {
+          "const": 2
+        },
+        "actualOverlap": {
+          "const": false
+        },
+        "overlapPairs": {
+          "const": []
+        },
+        "maximumObservedDirectionLocalConcurrency": {
+          "const": 1
+        },
+        "resourceException": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "owner",
+            "state",
+            "path",
+            "sha256",
+            "authorityCommit",
+            "fixtureReason"
+          ],
+          "properties": {
+            "owner": {
+              "const": "Integration"
+            },
+            "state": {
+              "const": "pending_integration_authority"
+            },
+            "path": {
+              "type": "null"
+            },
+            "sha256": {
+              "type": "null"
+            },
+            "authorityCommit": {
+              "type": "null"
+            },
+            "fixtureReason": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "queueOrder": {
+          "const": [
+            "A",
+            "B",
+            "C"
+          ]
+        }
+      }
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jobId",
+        "kind",
+        "root",
+        "invocationCount",
+        "startedAtUtc",
+        "endedAtUtc",
+        "dependsOn",
+        "result",
+        "syntheticFixtureInvocation"
+      ],
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "provenance_rgba",
+            "identity_join",
+            "normalization_repeat",
+            "literal_color",
+            "grayscale",
+            "contact_sheet",
+            "packet_assembly"
+          ]
+        },
+        "root": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "invocationCount": {
+          "const": 1
+        },
+        "startedAtUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "endedAtUtc": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "dependsOn": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "result": {
+          "const": "STRUCTURAL_FIXTURE_PASS"
+        },
+        "syntheticFixtureInvocation": {
+          "const": true
+        }
+      }
+    }
+  }
+}

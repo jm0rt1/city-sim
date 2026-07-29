@@ -1973,6 +1973,207 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         }
     }
 
+    func testMixedDirectionRejectionsRemainIsolated() throws {
+        let directions = L4V2Direction.allCases
+        for rotation in directions.indices {
+            try withRoot { root in
+                let rehearsal = try makeRehearsalInput(root: root)
+                let harness = L4V2SourceAdmissionHarness(
+                    claimedRoot: root
+                )
+                let order = directions.indices.map {
+                    directions[($0 + rotation) % directions.count]
+                }
+                var admitted: [L4V2AdmittedPacket] = []
+                let assemblyInvocationCount = 0
+
+                XCTAssertEqual(
+                    try L4V2SourceAdmissionHarness.join(admitted).status,
+                    .inactive
+                )
+                for (index, direction) in order.enumerated() {
+                    let before = try admissionSnapshot(admitted)
+                    let beforeDigest = try batchDigest(admitted)
+                    let validInput = try rehearsalInput(
+                        for: direction,
+                        manifest: rehearsal.manifest,
+                        root: root
+                    )
+                    let rejectedInput = L4V2FileInput(
+                        packetURL: validInput.packetURL,
+                        packetSha256: hash(
+                            "wrong-\(rotation)-\(direction.rawValue)"
+                        ),
+                        admissionURL: validInput.admissionURL,
+                        admissionSha256: validInput.admissionSha256
+                    )
+
+                    XCTAssertThrowsError(
+                        try harness.inspect(rejectedInput)
+                    ) {
+                        XCTAssertEqual(
+                            $0 as? L4V2HarnessError,
+                            .hashMismatch
+                        )
+                    }
+                    XCTAssertEqual(try admissionSnapshot(admitted), before)
+                    XCTAssertEqual(try batchDigest(admitted), beforeDigest)
+                    XCTAssertEqual(assemblyInvocationCount, 0)
+
+                    admitted.append(try harness.inspect(validInput))
+                    let state = try L4V2SourceAdmissionHarness.join(
+                        admitted
+                    )
+                    if index < directions.count - 1 {
+                        XCTAssertEqual(
+                            state.status,
+                            .quarantinedIncomplete
+                        )
+                    } else {
+                        XCTAssertEqual(
+                            state.status,
+                            .readyForAtomicAssembly
+                        )
+                    }
+                    XCTAssertEqual(assemblyInvocationCount, 0)
+                }
+            }
+        }
+    }
+
+    func testFourthDirectionImmediatelyTriggersOneNonshippingAssembly() throws {
+        try withRoot { root in
+            let rehearsal = try makeRehearsalInput(root: root)
+            let directionHarness = L4V2SourceAdmissionHarness(
+                claimedRoot: root
+            )
+            let assemblyHarness = L4V2AtomicAssemblyHarness(
+                claimedRoot: root
+            )
+            let order: [L4V2Direction] = [
+                .east, .south, .west, .north,
+            ]
+            var admitted: [L4V2AdmittedPacket] = []
+            var assemblyInvocationIndices: [Int] = []
+            var ledger: L4V2AtomicAdmissionLedger?
+
+            for (index, direction) in order.enumerated() {
+                let validInput = try rehearsalInput(
+                    for: direction,
+                    manifest: rehearsal.manifest,
+                    root: root
+                )
+                if index == order.count - 1 {
+                    let before = try admissionSnapshot(admitted)
+                    let beforeDigest = try batchDigest(admitted)
+                    XCTAssertThrowsError(
+                        try directionHarness.inspect(
+                            L4V2FileInput(
+                                packetURL: validInput.packetURL,
+                                packetSha256: hash(
+                                    "wrong-fourth-\(direction.rawValue)"
+                                ),
+                                admissionURL: validInput.admissionURL,
+                                admissionSha256:
+                                    validInput.admissionSha256
+                            )
+                        )
+                    ) {
+                        XCTAssertEqual(
+                            $0 as? L4V2HarnessError,
+                            .hashMismatch
+                        )
+                    }
+                    XCTAssertEqual(try admissionSnapshot(admitted), before)
+                    XCTAssertEqual(try batchDigest(admitted), beforeDigest)
+                    XCTAssertTrue(assemblyInvocationIndices.isEmpty)
+                }
+
+                admitted.append(try directionHarness.inspect(validInput))
+                let state = try L4V2SourceAdmissionHarness.join(admitted)
+                if state.status == .readyForAtomicAssembly {
+                    assemblyInvocationIndices.append(index)
+                    ledger = try assemblyHarness.assemble(
+                        manifestURL: rehearsal.url,
+                        manifestSha256: rehearsal.sha256
+                    )
+                } else {
+                    XCTAssertEqual(
+                        state.status,
+                        .quarantinedIncomplete
+                    )
+                    XCTAssertTrue(assemblyInvocationIndices.isEmpty)
+                }
+            }
+
+            XCTAssertEqual(assemblyInvocationIndices, [3])
+            let finalLedger = try XCTUnwrap(ledger)
+            XCTAssertEqual(finalLedger.lodIdentityCount, 12)
+            XCTAssertEqual(finalLedger.d4IdentityCount, 32)
+            XCTAssertFalse(finalLedger.runtimeActivated)
+            XCTAssertFalse(finalLedger.shippingResourcesMutated)
+            XCTAssertFalse(finalLedger.productionSelected)
+            XCTAssertEqual(
+                Set(
+                    admitted.map {
+                        $0.packet.fixturePreparation.fixtureCoordinate
+                            .map(String.init)
+                            .joined(separator: ",")
+                    }
+                ).count,
+                4
+            )
+            XCTAssertEqual(
+                Set(
+                    admitted.map {
+                        $0.packet.fixturePreparation.expectedFrontage
+                    }
+                ),
+                Set(L4V2Direction.allCases.map(\.rawValue))
+            )
+            XCTAssertTrue(
+                admitted.allSatisfy {
+                    $0.receipt.rendererQuarantined
+                        && !$0.receipt.readyForAtomicAssembly
+                        && !$0.receipt.productionSelected
+                        && !$0.receipt.runtimeMappingMutated
+                        && !$0.receipt.shippingResourcesMutated
+                        && !$0.admission.rendererQuarantined
+                        && !$0.admission.productionSelected
+                        && !$0.packet.workerState.sourceReady
+                        && !$0.packet.workerState.integrationAdmitted
+                        && !$0.packet.workerState.rendererQuarantined
+                        && !$0.packet.workerState.productionSelected
+                        && !$0.packet.productionSelected
+                }
+            )
+            XCTAssertTrue(
+                finalLedger.directions.allSatisfy {
+                    $0.locators.ordered.allSatisfy {
+                        $0.path.hasSuffix(".synthetic")
+                    }
+                }
+            )
+
+            for entry in finalLedger.directions {
+                let source = try XCTUnwrap(
+                    admitted.first {
+                        $0.packet.direction == entry.direction
+                    }
+                )
+                XCTAssertEqual(entry.packetSha256, source.packetSha256)
+                XCTAssertEqual(
+                    entry.sourceAdmissionSha256,
+                    source.admissionSha256
+                )
+                XCTAssertEqual(
+                    entry.quarantineReceiptSha256,
+                    try receiptHash(source.receipt)
+                )
+            }
+        }
+    }
+
     func testFourDirectionJoinPreparesTwelveLODAndThirtyTwoD4Identities() throws {
         var admitted: [L4V2AdmittedPacket] = []
         XCTAssertEqual(
@@ -2387,6 +2588,75 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         )
         let url = root.appending(path: "integration/assembly-input.json")
         return (url, try write(manifest, to: url))
+    }
+
+    private func makeRehearsalInput(
+        root: URL
+    ) throws -> (
+        url: URL,
+        sha256: String,
+        manifest: L4V2AssemblyInputManifest
+    ) {
+        let input = try makeAssemblyInput(root: root)
+        return (
+            input.url,
+            input.sha256,
+            try JSONDecoder().decode(
+                L4V2AssemblyInputManifest.self,
+                from: Data(contentsOf: input.url)
+            )
+        )
+    }
+
+    private func rehearsalInput(
+        for direction: L4V2Direction,
+        manifest: L4V2AssemblyInputManifest,
+        root: URL
+    ) throws -> L4V2FileInput {
+        let entry = try XCTUnwrap(
+            manifest.directions.first { $0.direction == direction }
+        )
+        return L4V2FileInput(
+            packetURL: root.appending(path: entry.packet.path),
+            packetSha256: entry.packet.sha256,
+            admissionURL: root.appending(
+                path: entry.sourceAdmission.path
+            ),
+            admissionSha256: entry.sourceAdmission.sha256
+        )
+    }
+
+    private func admissionSnapshot(
+        _ admitted: [L4V2AdmittedPacket]
+    ) throws -> [String] {
+        try admitted
+            .sorted {
+                $0.packet.direction.rawValue
+                    < $1.packet.direction.rawValue
+            }
+            .map {
+                [
+                    $0.packet.direction.rawValue,
+                    $0.packetSha256,
+                    $0.admissionSha256,
+                    try receiptHash($0.receipt),
+                ].joined(separator: "|")
+            }
+    }
+
+    private func batchDigest(
+        _ admitted: [L4V2AdmittedPacket]
+    ) throws -> String {
+        hash(
+            try admissionSnapshot(admitted)
+                .joined(separator: "\n")
+        )
+    }
+
+    private func receiptHash(
+        _ receipt: L4V2RendererQuarantineReceipt
+    ) throws -> String {
+        L4V2SourceAdmissionHarness.sha256(try sortedData(receipt))
     }
 
     private func sortedData<T: Encodable>(_ value: T) throws -> Data {

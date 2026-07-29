@@ -98,13 +98,45 @@ was changed.
 These focused-test renders are supplemental layout evidence, not substitutes
 for the staged-app interaction gate:
 
-| Artifact | Pixels | SHA-256 |
-|---|---:|---|
-| `compact-unit-beacon.png` | 884 x 64 | `e55ccb2e6d4aec9982e8bfbbb9b32b25ca0e3ece32f09034f4428a5d8d197e07` |
-| `regular-unit-beacon.png` | 1020 x 64 | `68fc62a3cc40da445235e05bb4382bc4eb2da55513edb96ad9176b252429f891` |
+| Artifact | Point fixture | Disposition | SHA-256 |
+|---|---:|---|---|
+| `compact-unit-beacon.png` | 884 x 64 | retained compact proof | `e55ccb2e6d4aec9982e8bfbbb9b32b25ca0e3ece32f09034f4428a5d8d197e07` |
+| `regular-unit-beacon.png` | 1020 x 64 | rejected as artificial noncompact proof | `68fc62a3cc40da445235e05bb4382bc4eb2da55513edb96ad9176b252429f891` |
 
-They show the same paused City Hall selection at compact and regular rail
-widths. Both remain exactly 64 points high.
+The original 1020-point fixture forced `compact: false` below the real
+ContentView breakpoint and is not evidence for regular layout. It is retained
+only as the rejected surface that prompted the integration return.
+
+## Integration-return regular-width correction
+
+- Focused product/test repair:
+  `816f8f321ec506979f8258e34ea05eed366a6bd1`
+- Authentic regular window: 1278 x 768 points
+- Authentic regular command-rail maximum: 1120 x 64 points
+- Compact command rail: 884 x 64 points
+
+The first authentic 1120-point render showed `Commands` wrapping onto two
+lines. Inspect, Bulldoze, Details, and the City Hall title/status remained
+single-line. The focused repair gives the existing command-guide label one
+line and its natural horizontal size; it changes no command or hit target.
+The corrected render keeps all command labels plus `City Hall` and `INSPECT`
+single-line and unclipped while retaining the 64-point rail.
+
+| Artifact | Pixels | Disposition | SHA-256 |
+|---|---:|---|---|
+| `return-regular-1120-before-wrap.png` | 2240 x 128 | rejected authentic-width render; Commands wraps | `0a74cff8ac0ce3ef09382351975ec5b614194375daa34ebb041598f063cc4c61` |
+| `return-regular-1120-after.png` | 2240 x 128 | accepted focused regular proof, 1120 x 64 points at 2x | `0f7d0f5253f04ba86c134be645877d4905d8167945ac094d0b2db4cf6f463908` |
+| `return-compact-after.png` | 1768 x 128 | compact continuity, 884 x 64 points at 2x | `ecf5446aa6a1b55a07f440d84607e007862228f7d6dec4925693f3b6c92abf52` |
+
+Return validation:
+
+- all selected-target beacon tests: **3/3 passed**;
+- settled closed/decision/Details/post-close viewport test: **1/1 passed**;
+- regular ContentView path explicitly resolves noncompact;
+- regular rail width is explicitly bound to 1120 points;
+- compact and regular rails remain exactly 64 points high;
+- existing target presentation, activation, Escape, focus, and AX assertions
+  remain unchanged and green.
 
 ## Staged-app attempt and unresolved gate
 
@@ -138,3 +170,4 @@ self-passing the live gate.
 - No temporary product logging or diagnostic trace remains.
 - Exact staged candidate terminated after the blocked attempt; zero matching
   candidate or test process remained at handoff.
+- The return did not retry or claim the locked staged-app interaction gate.

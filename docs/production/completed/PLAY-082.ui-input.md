@@ -7,8 +7,10 @@
   `d15b3b41e3abd61d9a28e9e8611593e954625388`
 - **Merged published authority:**
   `775bea061ee4e9cb0af7842edbd1ec341d61aa41`
-- **Product candidate:**
+- **Initial product candidate:**
   `3b9242efcde6f6183c4de9649afbe66085db3478`
+- **Regular-width product candidate:**
+  `816f8f321ec506979f8258e34ea05eed366a6bd1`
 - **Evidence root:**
   `docs/production/evidence/PLAY-082/candidate-3b9242e/`
 
@@ -39,7 +41,7 @@ alert, or shared theme contract changed.
 - Exact staged candidate build and `--verify`: passed
 - Staged executable SHA-256:
   `d30488dff241d75427f47775c3ba05d8ccc9b6290d5807c5e00e9f3d9e6ff803`
-- Compact/regular focused rail renders: 884 x 64 and 1020 x 64
+- Compact/authentic-regular focused rail renders: 884 x 64 and 1120 x 64
 - Closed interactive map aperture retained: regular 554/768 points (72.1%);
   exact compact 416/600 points (69.3%)
 - `git diff --check` and repository shell syntax: passed
@@ -63,7 +65,34 @@ remain a required integration gate; they are not self-accepted here.
 
 1. `3b9242efcde6f6183c4de9649afbe66085db3478` —
    `PLAY-082: Make selected targets unmistakable`
-2. Evidence/completion commit — reported in the clean handoff.
+2. `80c527a18c66288f2316556b4169e00644844493` —
+   `PLAY-082: Bind selected target evidence`
+3. `816f8f321ec506979f8258e34ea05eed366a6bd1` —
+   `PLAY-082: Bind the authentic regular command rail`
+4. Return evidence/completion commit — reported in the clean handoff.
+
+## Integration-return correction
+
+The prior 1020-point forced-noncompact unit render is retained but rejected:
+it is below ContentView's real regular breakpoint and visibly wrapped several
+labels. The corrected test now enters through a 1278 x 768 regular window and
+binds the real 1120 x 64 command-rail maximum.
+
+At that authentic width, the first render isolated one remaining defect:
+`Commands` wrapped. A two-modifier BuildToolbarView repair keeps that existing
+label single-line at its natural width. The corrected regular proof shows
+Inspect, Bulldoze, Commands, Details, the `City Hall` beacon title, and
+`INSPECT` status single-line and unclipped. Compact remains clean and the
+viewport-settlement test remains green.
+
+Focused return results:
+
+- selected-target beacon suite: **3/3 passed**;
+- affected viewport-settlement test: **1/1 passed**;
+- rail heights: unchanged at 64 points;
+- command/store/focus/AX behavior: unchanged;
+- locked-desktop staged interaction limitation: retained without retry or
+  self-acceptance.
 
 ## Scope and limitations
 

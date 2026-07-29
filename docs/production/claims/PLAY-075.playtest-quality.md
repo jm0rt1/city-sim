@@ -3,7 +3,9 @@
 - **Title:** Gate the city-not-board release
 - **Lane:** Playtest quality
 - **Branch:** `codex/citysim-playtest-quality`
-- **Worktree:** assigned when integration supplies the exact Wave 009 candidate
+- **Worktree:** `/Users/James/.codex/worktrees/71b0/city-sim`, provisioned for
+  candidate-neutral preregistration before candidate arrival; exact-candidate
+  scoring remains blocked until Integration supplies the immutable candidate
 - **Base comparison:** Exact published Wave 008 product candidate `87e1e682566b68d20deb1a9e2028e2b885e0423a`
 - **Planned surfaces:** candidate-blind preregistration, exact manifests, same-state regular/compact/LOD matrices, fresh no-coaching journey, visual/accessibility/performance ledgers, disposition/completion, and `docs/production/evidence/PLAY-075/`
 - **Dependencies:** PLAY-068 closed-rejected/superseded at preserved checkpoint

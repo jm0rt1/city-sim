@@ -19,10 +19,19 @@ The output is a reviewed source batch, not a shipping renderer change.
    Stop on any other branch or claim mismatch.
 3. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`,
    `docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md`,
-   `docs/production/decisions/CONTRACT-010-directional-building-art.md`, and
-   the branch-mapped claim above completely.
+   `docs/production/decisions/CONTRACT-010-directional-building-art.md`,
+   `docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md`,
+   `docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md`,
+   and the branch-mapped claim above completely.
 4. Confirm the branch contains the claim’s published base and is clean.
-5. State the world-art mission and current batch before generating anything.
+5. Resolve and compare the exact full hashes for the current family contract,
+   stage authority, appearance lock, source-production profile, handoff schema,
+   semantic validator, compute envelope, claim revision, and published base.
+   Record an explicit missing/blocked state for authorities that are not yet
+   legal at the current stage; never infer them from nearby artifacts.
+6. Confirm the named direction and its exclusive source, process, output, and
+   evidence roots, then state the world-art mission and current batch before
+   generating anything.
 
 ## Preserve the ownership boundary
 
@@ -88,14 +97,24 @@ authoring tools, shipping manifests, atlas slots, or sibling files unless
 Integration assigns one explicit shared-surface writer. Never copy, mirror,
 rotate, transform, or derive sibling scene geometry or pixels.
 
+A post-lock production claim and dispatch authority must bind the exact claim
+revision and published base; appearance-lock and source-production-profile
+paths, hashes, and commits; authorized process set; immutable process/output
+and evidence roots; source revision; compute-slot and queue policy; bounded
+deliverable; and stop condition. A prelock claim or an appearance lock by
+itself never authorizes pixels.
+
 ### Parallelize inside each direction cell
 
 Scene and material authoring remain single-writer until the exact
 direction-local scene revision is frozen. After that freeze and only within
 the stage authorized by the claim:
 
-- launch A, B, and C as independent fresh processes concurrently, each writing
-  only to its own immutable output directory;
+- enqueue every authorized A, B, and C fresh process immediately, each writing
+  only to its own immutable output directory. Integration's global scheduler
+  keeps every available DCC slot occupied up to the published compute cap;
+  queued processes do not block direction-local CPU validation, evidence, or
+  packet preparation;
 - never let one process consume, repair, rename, or overwrite another
   process's output;
 - after the raw files close, run independent hash/RGBA, registration,
@@ -118,7 +137,8 @@ scene, material, schema, toolchain, and authority hashes; process IDs and
 distinct roots; start/end timestamps; exactly-one-invocation assertions;
 actual overlap; join results; validation-job roots; and the final assembler
 identity. If Integration's compute envelope requires a sequential render wave,
-record the resource exception and queue order; do not falsely claim overlap.
+record the resource exception and queue order. Claim overlap only when the
+timestamps prove it, and never exceed the published global DCC cap.
 
 North's pre-lock process-A appearance calibration remains a one-process gate.
 The internal A/B/C fan-out begins for North only after Integration publishes

@@ -46,6 +46,11 @@ Begin non-shipping renderer preparation as soon as Integration publishes an immu
 5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West packets are all Integration-admitted and independently Renderer-quarantined, and Integration authorizes the shipping mutation.
 6. When the fourth exact Integration-admitted direction passes Renderer quarantine, immediately assemble the frozen 4/4 set as one atomic renderer candidate and run source-to-pack identity plus resource-integrity checks. Stage the real app through the Integration-authorized candidate-only resource path. If staging would require an unapproved shared shipping atlas or manifest mutation, stop and request that authority. Do not silently substitute a newer source, nearby baseline, or partially accepted family.
 
+Treat the transition to `4of4_ready` as an immediate work trigger. Begin atomic
+assembly in the same acknowledged worker turn; if assembly cannot start, emit
+a blocking receipt naming the exact missing Integration authority or
+shared-surface decision rather than entering an undefined queue.
+
 A worker-authored source packet is an independent-review candidate, not
 `integration_admitted` authority. Before marking a direction renderer-quarantined,
 require the exact Integration source-admission receipt that binds the packet,

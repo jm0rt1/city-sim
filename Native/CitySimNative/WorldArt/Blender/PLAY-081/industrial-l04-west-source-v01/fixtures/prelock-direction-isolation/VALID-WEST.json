@@ -1,0 +1,104 @@
+{
+  "schema": "citysim.play-081.west-prelock-direction-isolation.v1",
+  "schemaVersion": 1,
+  "publishedMaster": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+  "claim": {
+    "path": "docs/production/claims/PLAY-081.world-art-west.md",
+    "sha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+  },
+  "identity": {
+    "taskId": "PLAY-081",
+    "direction": "west",
+    "branch": "codex/citysim-world-art-west",
+    "logicalId": "industrial_l04_v0_west",
+    "orientationTransform": "none"
+  },
+  "socket": {
+    "citySimWorldXYZ": [
+      -28,
+      0,
+      0
+    ],
+    "blenderXYZ": [
+      0,
+      -28,
+      0
+    ],
+    "sourceXY": [
+      640,
+      704
+    ]
+  },
+  "acceptedPredesign": {
+    "geometry": [
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",
+        "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/MATERIAL-ROLE-BINDING.json",
+        "sha256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463"
+      }
+    ],
+    "evidence": [
+      {
+        "path": "docs/production/evidence/PLAY-081/PREDESIGN-HANDOFF.json",
+        "sha256": "0bfe22cb607708e21e446f7e11dbc91876f107b3910bf23fcf474e9ee428e978"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-081/STATIC-PREDESIGN-PROOF.json",
+        "sha256": "2dd6c5b77734f0bc1dd101a38ab7f4f69be2a4ac6b2a26c4b3ec6c6872a22727"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-081/ACTUAL-CAMERA-PREDESIGN-PROOF.json",
+        "sha256": "7fa5fdde4f3cd18439b220189c6efac9f0118e3dc5e8d9bb2fe8a0705bfa951d"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-081/REPEAT-IDENTITY.json",
+        "sha256": "14d5f5b3115426a28d85518f2f27e467cf841dcb0ae8b55796160d833490de8a"
+      }
+    ]
+  },
+  "bridgeAuthority": {
+    "acceptancePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+    "acceptanceSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+    "authorityPath": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",
+    "authorityCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "authoritySha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4",
+    "integratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+    "mappingPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mappingSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "orchestration": {
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+    },
+    "executionContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
+      "sha256": "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0"
+    }
+  },
+  "outputRoots": {
+    "processA": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A",
+    "processB": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B",
+    "processC": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C",
+    "normalizationRun1": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+    "normalizationRun2": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+    "review": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+    "assembly": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
+    "parallelReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+    "sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
+  },
+  "authorityBoundary": {
+    "appearanceLockPublished": false,
+    "sourceProductionProfilePublished": false,
+    "productionExecutionEnabled": false,
+    "productionReceiptEmissionEnabled": false,
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "shipping": false
+  }
+}

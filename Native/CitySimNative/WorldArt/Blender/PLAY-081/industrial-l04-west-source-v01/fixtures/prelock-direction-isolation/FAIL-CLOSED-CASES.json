@@ -1,0 +1,125 @@
+{
+  "schema": "citysim.play-081.west-prelock-direction-isolation-cases.v1",
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "name": "non-west-task-identity",
+      "mutationPath": "identity.taskId",
+      "value": "PLAY-079",
+      "expectedError": "identity:taskId"
+    },
+    {
+      "name": "non-west-direction-identity",
+      "mutationPath": "identity.direction",
+      "value": "east",
+      "expectedError": "identity:direction"
+    },
+    {
+      "name": "non-west-branch-identity",
+      "mutationPath": "identity.branch",
+      "value": "codex/citysim-world-art-east",
+      "expectedError": "identity:branch"
+    },
+    {
+      "name": "socket-citysim-substitution",
+      "mutationPath": "socket.citySimWorldXYZ",
+      "value": [
+        0,
+        0,
+        0
+      ],
+      "expectedError": "socket:citysim"
+    },
+    {
+      "name": "socket-blender-substitution",
+      "mutationPath": "socket.blenderXYZ",
+      "value": [
+        -28,
+        0,
+        0
+      ],
+      "expectedError": "socket:blender"
+    },
+    {
+      "name": "socket-source-substitution",
+      "mutationPath": "socket.sourceXY",
+      "value": [
+        641,
+        704
+      ],
+      "expectedError": "socket:source"
+    },
+    {
+      "name": "orientation-transform-not-none",
+      "mutationPath": "identity.orientationTransform",
+      "value": "rotate_y_180",
+      "expectedError": "identity:orientationTransform"
+    },
+    {
+      "name": "sibling-geometry-path",
+      "mutationPath": "acceptedPredesign.geometry.0.path",
+      "value": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/SIBLING-GEOMETRY.json",
+      "expectedError": "predesign:geometry:0:path"
+    },
+    {
+      "name": "sibling-evidence-path",
+      "mutationPath": "acceptedPredesign.evidence.0.path",
+      "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SIBLING-EVIDENCE.json",
+      "expectedError": "predesign:evidence:0:path"
+    },
+    {
+      "name": "stale-bridge-integrated-proof",
+      "mutationPath": "bridgeAuthority.integratedProofCommit",
+      "value": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "expectedError": "bridge:integratedProofCommit"
+    },
+    {
+      "name": "stale-bridge-mapping-hash",
+      "mutationPath": "bridgeAuthority.mappingSha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expectedError": "bridge:mappingSha256"
+    },
+    {
+      "name": "unsafe-output-sibling-root",
+      "mutationPath": "outputRoots.processA",
+      "value": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/process-A",
+      "expectedError": "output:processA"
+    },
+    {
+      "name": "unsafe-output-shared-root",
+      "mutationPath": "outputRoots.review",
+      "value": "docs/production/evidence/INTEGRATION/review",
+      "expectedError": "output:review"
+    },
+    {
+      "name": "unsafe-output-traversal",
+      "mutationPath": "outputRoots.assembly",
+      "value": "../outside/assembly",
+      "expectedError": "output:assembly"
+    },
+    {
+      "name": "unsafe-output-absolute",
+      "mutationPath": "outputRoots.normalizationRun1",
+      "value": "/tmp/play-081-normalization",
+      "expectedError": "output:normalizationRun1"
+    },
+    {
+      "name": "unsafe-output-alias",
+      "mutationPath": "outputRoots.processB",
+      "value": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A",
+      "expectedError": "output:processB"
+    },
+    {
+      "name": "false-production-execution-grant",
+      "mutationPath": "authorityBoundary.productionExecutionEnabled",
+      "value": true,
+      "expectedError": "authority:productionExecutionEnabled"
+    },
+    {
+      "name": "false-source-ready-grant",
+      "mutationPath": "authorityBoundary.sourceReady",
+      "value": true,
+      "expectedError": "authority:sourceReady"
+    }
+  ]
+}

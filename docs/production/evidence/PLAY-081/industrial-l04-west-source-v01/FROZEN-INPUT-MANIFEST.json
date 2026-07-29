@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "branch": "codex/citysim-world-art-west",
+  "approvedCandidateAncestor": "135805d9b092d44ea28ff8421cbc70bddd1ac38a",
+  "publishedMergeAncestor": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+  "acceptedPredesign": {
+    "handoff": {
+      "path": "docs/production/evidence/PLAY-081/PREDESIGN-HANDOFF.json",
+      "sha256": "0bfe22cb607708e21e446f7e11dbc91876f107b3910bf23fcf474e9ee428e978"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",
+      "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/MATERIAL-ROLE-BINDING.json",
+      "sha256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463"
+    },
+    "orientationTransform": "none",
+    "geometryChanged": false
+  },
+  "launchPlumbing": {
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "4e9cacba79de1c91f1ef3ccbe1ddd7892794088db929dc1829a6712d3572f4c3"
+    },
+    "driver": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+      "sha256": "ce4edc755ef151bfda19f11125cb24d03b509abf7251eb49d2b29052d96c5300"
+    },
+    "blenderEntryPoint": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/blender_render_west.py",
+      "sha256": "b754f1deac2375b97e4595a638ad7d70f2cfdcd4228e0015f27a84c675a16423"
+    },
+    "authorityValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_launch_authority.py",
+            "sha256": "372d73023a298df019f7d62b4160f4b412e8813aa265922c34ff1c6e47be7c5a"
+    },
+    "launchBoundAssembler": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
+      "sha256": "0670de045f63a801ef5801ed6484c8ac104380e3d1803c3a9ce89fae5657b7cf"
+    },
+    "postSourcePipeline": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+      "sha256": "2561f7b4d67d0b61292155aeeef8b475e2fbef9730e1aaefadb6b1e43d0062a7"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_launch_plumbing.py",
+      "sha256": "994cb47bf978a2ba723aea6a457690316f28ddd802410d9a155a87e2f98cfc22"
+    }
+  },
+  "sharedReadOnlyAuthorities": {
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+      "forbiddenDecodedRgbaSha256Count": 44,
+      "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+    }
+  },
+  "pixelProduction": "not_run",
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false
+}

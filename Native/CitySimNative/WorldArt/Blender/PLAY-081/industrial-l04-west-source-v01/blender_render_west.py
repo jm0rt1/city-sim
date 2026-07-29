@@ -11,9 +11,11 @@ loaded here and is not future source authority.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import importlib.util
 import json
+import os
 import platform
 import sys
 from pathlib import Path
@@ -30,7 +32,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--runner-contract", required=True)
     parser.add_argument("--locked-materials", required=True)
     parser.add_argument("--process-id", required=True, choices=("A", "B", "C"))
-    parser.add_argument("--output-directory", required=True)
+    parser.add_argument("--raw-root", required=True)
+    parser.add_argument("--semantic-root", required=True)
+    parser.add_argument("--evidence-root", required=True)
     return parser.parse_args(values)
 
 
@@ -163,11 +167,14 @@ def assign_semantic_materials(
 
 
 def main() -> int:
+    started_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     args = parse_args()
     root = Path(args.repository_root).resolve()
     runner_path = repository_path(root, args.runner_contract)
     materials_path = repository_path(root, args.locked_materials)
-    output = repository_path(root, args.output_directory)
+    raw_root = repository_path(root, args.raw_root)
+    semantic_root = repository_path(root, args.semantic_root)
+    evidence_root = repository_path(root, args.evidence_root)
     runner = load_json(runner_path)
     predesign_path = repository_path(
         root, runner["acceptedPredesign"]["scene"]["path"]
@@ -196,12 +203,14 @@ def main() -> int:
         objects[component["id"]] = obj
     bpy.context.view_layer.update()
 
-    output.mkdir(parents=True, exist_ok=False)
-    scene.render.filepath = str(output / "raw.png")
+    raw_root.mkdir(parents=True, exist_ok=False)
+    semantic_root.mkdir(parents=True, exist_ok=False)
+    evidence_root.mkdir(parents=True, exist_ok=False)
+    scene.render.filepath = str(raw_root / "raw.png")
     bpy.ops.render.render(write_still=True)
 
     assign_semantic_materials(objects, component_by_id)
-    scene.render.filepath = str(output / "semantic.png")
+    scene.render.filepath = str(semantic_root / "semantic.png")
     bpy.ops.render.render(write_still=True)
 
     object_mapping = [
@@ -212,7 +221,7 @@ def main() -> int:
         }
         for component_id in sorted(objects)
     ]
-    (output / "object-mapping.json").write_text(
+    (evidence_root / "object-mapping.json").write_text(
         json.dumps(object_mapping, indent=2, sort_keys=True) + "\n"
     )
     registration = {
@@ -228,8 +237,31 @@ def main() -> int:
         "frontage": "west",
         "cameraName": camera.name,
     }
-    (output / "registration.json").write_text(
+    (evidence_root / "registration.json").write_text(
         json.dumps(registration, indent=2, sort_keys=True) + "\n"
+    )
+    ended_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    invocation = {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "processId": args.process_id,
+        "pid": os.getpid(),
+        "startedAt": started_at,
+        "endedAt": ended_at,
+        "exactlyOneBlenderProcessInvocation": True,
+        "renderApiCalls": 2,
+        "rawRoot": args.raw_root,
+        "semanticRoot": args.semantic_root,
+        "evidenceRoot": args.evidence_root,
+        "allRootsDistinct": len(
+            {args.raw_root, args.semantic_root, args.evidence_root}
+        )
+        == 3,
+        "productionSelected": False,
+    }
+    (evidence_root / "fresh-invocation.json").write_text(
+        json.dumps(invocation, indent=2, sort_keys=True) + "\n"
     )
     provenance = {
         "schemaVersion": 1,
@@ -249,9 +281,14 @@ def main() -> int:
         "cyclesSamples": scene.cycles.samples,
         "cyclesSeed": scene.cycles.seed,
         "renderApiCalls": 2,
+        "startedAt": started_at,
+        "endedAt": ended_at,
+        "rawRoot": args.raw_root,
+        "semanticRoot": args.semantic_root,
+        "evidenceRoot": args.evidence_root,
         "productionSelected": False,
     }
-    (output / "provenance.json").write_text(
+    (evidence_root / "provenance.json").write_text(
         json.dumps(provenance, indent=2, sort_keys=True) + "\n"
     )
     return 0

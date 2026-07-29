@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Fail-closed, zero-DCC orchestration contract for PLAY-081 West.
 
-The module validates future Integration schedule inputs and synthetic receipts.
-It deliberately contains no Blender launch or production receipt command.  All
-currently required Integration bindings are absent, so every authority-bearing
-CLI mode rejects before process or output creation.
+The module validates future Integration bindings through exact committed blobs
+and exercises only non-authoritative synthetic scheduling traces. It contains
+no Blender launch or production receipt command. All production bindings are
+absent, so every authority-bearing CLI mode rejects before process or output
+creation.
 """
 
 from __future__ import annotations
@@ -14,8 +15,10 @@ import copy
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 from typing import Any
 
@@ -58,8 +61,35 @@ class OrchestrationError(ValueError):
     """Stable fail-closed orchestration error."""
 
 
+def _reject_duplicate_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise OrchestrationError(f"DUPLICATE_JSON_KEY:{key}")
+        value[key] = item
+    return value
+
+
+def _reject_nonfinite(value: str) -> None:
+    raise OrchestrationError(f"NONFINITE_JSON_VALUE:{value}")
+
+
+def decode_json_object(data: bytes, label: str) -> dict[str, Any]:
+    try:
+        value = json.loads(
+            data.decode("utf-8"),
+            object_pairs_hook=_reject_duplicate_pairs,
+            parse_constant=_reject_nonfinite,
+        )
+    except UnicodeDecodeError as error:
+        raise OrchestrationError(f"INVALID_UTF8:{label}") from error
+    if not isinstance(value, dict):
+        raise OrchestrationError(f"EXPECTED_JSON_OBJECT:{label}")
+    return value
+
+
 def load_json(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"))
+    value = decode_json_object(path.read_bytes(), str(path))
     if not isinstance(value, dict):
         raise OrchestrationError(f"EXPECTED_JSON_OBJECT:{path}")
     return value
@@ -67,6 +97,80 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def capture_regular_file_no_follow(root: Path, relative: str) -> bytes:
+    """Capture one stable regular file without following any symlink."""
+    path = lexical_repository_path(root, relative, expected=relative)
+    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY"):
+        raise OrchestrationError("NO_FOLLOW_CAPTURE_API_UNAVAILABLE")
+    parent_parts = relative.split("/")[:-1]
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    descriptor = os.open(root.resolve(), flags)
+    try:
+        for part in parent_parts:
+            try:
+                child = os.open(part, flags, dir_fd=descriptor)
+            except OSError as error:
+                raise OrchestrationError(
+                    f"AUTHORITY_PARENT_NOT_REGULAR:{relative}"
+                ) from error
+            os.close(descriptor)
+            descriptor = child
+        try:
+            file_descriptor = os.open(
+                relative.rsplit("/", 1)[-1],
+                os.O_RDONLY | os.O_NOFOLLOW,
+                dir_fd=descriptor,
+            )
+        except OSError as error:
+            raise OrchestrationError(
+                f"AUTHORITY_FILE_NOT_REGULAR:{relative}"
+            ) from error
+        try:
+            before = os.fstat(file_descriptor)
+            if not stat.S_ISREG(before.st_mode):
+                raise OrchestrationError(
+                    f"AUTHORITY_FILE_NOT_REGULAR:{relative}"
+                )
+            chunks: list[bytes] = []
+            while True:
+                chunk = os.read(file_descriptor, 1024 * 1024)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+            after = os.fstat(file_descriptor)
+        finally:
+            os.close(file_descriptor)
+    finally:
+        os.close(descriptor)
+    final = os.lstat(path)
+    if not stat.S_ISREG(final.st_mode):
+        raise OrchestrationError(f"AUTHORITY_FILE_NOT_REGULAR:{relative}")
+    identity_before = (
+        before.st_dev,
+        before.st_ino,
+        before.st_size,
+        before.st_mtime_ns,
+        before.st_ctime_ns,
+    )
+    identity_after = (
+        after.st_dev,
+        after.st_ino,
+        after.st_size,
+        after.st_mtime_ns,
+        after.st_ctime_ns,
+    )
+    identity_final = (
+        final.st_dev,
+        final.st_ino,
+        final.st_size,
+        final.st_mtime_ns,
+        final.st_ctime_ns,
+    )
+    if identity_before != identity_after or identity_after != identity_final:
+        raise OrchestrationError(f"AUTHORITY_CHANGED_DURING_CAPTURE:{relative}")
+    return b"".join(chunks)
 
 
 def json_sha256(value: dict[str, Any]) -> str:
@@ -160,6 +264,39 @@ def static_contract_errors(
     runner_contract: dict[str, Any],
 ) -> list[str]:
     errors: list[str] = []
+    if execution_contract.get("frozenDesignAuthority") != {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md"
+        ),
+        "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+        "sha256": (
+            "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36"
+        ),
+        "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED",
+        "productionAuthority": False,
+        "dccAuthority": False,
+        "pixelAuthority": False,
+    }:
+        errors.append("static-contract:frozen-design-authority")
+    separation = execution_contract.get("authoritySeparation")
+    if (
+        not isinstance(separation, dict)
+        or separation.get("globalScheduleAndConcurrencyOwner") != "Integration"
+        or separation.get("directionReceiptOwner") != "PLAY-081 West"
+        or any(
+            separation.get(field) is not False
+            for field in (
+                "syntheticTraceIsAuthority",
+                "westMayClaimGlobalCapOrOverlap",
+                "integrationAdmitted",
+                "rendererQuarantined",
+                "productionSelected",
+                "shipping",
+            )
+        )
+    ):
+        errors.append("static-contract:authority-separation")
     queue = execution_contract.get("queue")
     if not isinstance(queue, list) or len(queue) != 11:
         return ["static-contract:queue"]
@@ -215,9 +352,9 @@ def committed_input_errors(
     supplied_path: str | None,
     supplied_sha256: str | None,
     label: str,
-) -> tuple[list[str], Path | None]:
+) -> tuple[list[str], bytes | None]:
     errors: list[str] = []
-    if binding.get("state") != "bound_integration":
+    if not isinstance(binding, dict) or binding.get("state") != "bound_integration":
         return [f"{label}:not-bound"], None
     relative = binding.get("path")
     commit = binding.get("commit")
@@ -234,16 +371,32 @@ def committed_input_errors(
     ):
         return errors + [f"{label}:invalid-binding"], None
     try:
-        path = lexical_repository_path(root, relative, expected=relative)
-    except PathSafetyError as error:
+        captured = capture_regular_file_no_follow(root, relative)
+    except (OSError, OrchestrationError, PathSafetyError) as error:
         return errors + [f"{label}:unsafe-path:{error}"], None
-    if not path.is_file():
-        return errors + [f"{label}:missing-file"], None
-    if sha256(path) != expected_sha:
+    if hashlib.sha256(captured).hexdigest() != expected_sha:
         errors.append(f"{label}:working-tree-sha256")
     head = git_output(root, "rev-parse", "HEAD")
     if head is None or not is_ancestor(root, commit, head):
         errors.append(f"{label}:commit-not-in-head")
+    tree_result = subprocess.run(
+        ["git", "ls-tree", commit, "--", relative],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    tree_line = tree_result.stdout.rstrip("\n")
+    tree_match = re.fullmatch(
+        r"(100644|100755) blob ([0-9a-f]{40})\t(.+)",
+        tree_line,
+    )
+    if (
+        tree_result.returncode != 0
+        or tree_match is None
+        or tree_match.group(3) != relative
+    ):
+        errors.append(f"{label}:commit-object-not-regular-blob")
     file_result = subprocess.run(
         ["git", "show", f"{commit}:{relative}"],
         cwd=root,
@@ -255,7 +408,83 @@ def committed_input_errors(
         or hashlib.sha256(file_result.stdout).hexdigest() != expected_sha
     ):
         errors.append(f"{label}:publication-content-drift")
-    return sorted(set(errors)), path
+    elif file_result.stdout != captured:
+        errors.append(f"{label}:working-tree-content-drift")
+    return sorted(set(errors)), captured
+
+
+def validate_contract_authorities(
+    root: Path,
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+) -> tuple[list[str], dict[str, bytes]]:
+    """Dereference every Integration binding from its contract, never a caller."""
+    errors: list[str] = []
+    captures: dict[str, bytes] = {}
+    design = execution_contract.get("frozenDesignAuthority", {})
+    design_binding = {
+        "state": "bound_integration",
+        "path": design.get("path"),
+        "commit": design.get("commit"),
+        "sha256": design.get("sha256"),
+    }
+    design_errors, design_bytes = committed_input_errors(
+        root,
+        design_binding,
+        design_binding["path"],
+        design_binding["sha256"],
+        "frozen-design-authority",
+    )
+    errors.extend(design_errors)
+    if design_bytes is not None:
+        captures["frozenDesignAuthority"] = design_bytes
+
+    for name, binding in execution_contract.get(
+        "futureIntegrationInputs",
+        {},
+    ).items():
+        if not isinstance(binding, dict):
+            errors.append(f"integration-input:{name}:invalid-binding")
+            continue
+        binding_errors, data = committed_input_errors(
+            root,
+            binding,
+            binding.get("path"),
+            binding.get("sha256"),
+            f"integration-input:{name}",
+        )
+        errors.extend(binding_errors)
+        if data is not None:
+            captures[name] = data
+
+    appearance = runner_contract.get("appearanceLock", {})
+    appearance_binding = execution_contract.get(
+        "futureIntegrationInputs",
+        {},
+    ).get("appearanceLock", {})
+    if (
+        not isinstance(appearance, dict)
+        or appearance.get("documentPath") != appearance_binding.get("path")
+        or appearance.get("commit") != appearance_binding.get("commit")
+        or appearance.get("documentSha256") != appearance_binding.get("sha256")
+    ):
+        errors.append("appearance-lock:runner-binding-mismatch")
+    profile = (
+        runner_contract.get("sourceStage", {})
+        .get("sourceProductionProfile", {})
+    )
+    profile_binding = execution_contract.get(
+        "futureIntegrationInputs",
+        {},
+    ).get("sourceProductionProfile", {})
+    if (
+        not isinstance(profile, dict)
+        or profile.get("path") != profile_binding.get("path")
+        or profile.get("commit") != profile_binding.get("commit")
+        or profile.get("sha256") != profile_binding.get("sha256")
+    ):
+        errors.append("source-production-profile:runner-binding-mismatch")
+    return sorted(set(errors)), captures
 
 
 def expected_queue(execution_contract: dict[str, Any]) -> list[dict[str, Any]]:
@@ -265,6 +494,8 @@ def expected_queue(execution_contract: dict[str, Any]) -> list[dict[str, Any]]:
 def validate_schedule(
     schedule: dict[str, Any],
     execution_contract: dict[str, Any],
+    *,
+    repository_root: Path | None = None,
 ) -> list[str]:
     required = {
         "schema",
@@ -337,6 +568,48 @@ def validate_schedule(
                 errors.append("schedule:sequential-exception-binding")
             if exception["queueOrder"] != job_ids:
                 errors.append("schedule:sequential-exception-order")
+            if repository_root is None:
+                errors.append("schedule:sequential-exception-not-dereferenced")
+            else:
+                binding = {
+                    "state": "bound_integration",
+                    "path": exception["path"],
+                    "commit": exception["commit"],
+                    "sha256": exception["sha256"],
+                }
+                authority_errors, authority_bytes = committed_input_errors(
+                    repository_root,
+                    binding,
+                    exception["path"],
+                    exception["sha256"],
+                    "sequential-exception",
+                )
+                errors.extend(authority_errors)
+                if not authority_errors and authority_bytes is not None:
+                    try:
+                        authority = decode_json_object(
+                            authority_bytes,
+                            "sequential-exception",
+                        )
+                    except (json.JSONDecodeError, OrchestrationError) as error:
+                        errors.append(f"schedule:sequential-exception-json:{error}")
+                    else:
+                        expected_authority = {
+                            "schema": (
+                                "citysim.integration.world-art-"
+                                "sequential-exception.v1"
+                            ),
+                            "owner": "Integration",
+                            "scheduleId": schedule["scheduleId"],
+                            "scheduleRevision": schedule["scheduleRevision"],
+                            "executionMode": "sequential_exception",
+                            "reason": exception["reason"],
+                            "queueOrder": exception["queueOrder"],
+                        }
+                        if authority != expected_authority:
+                            errors.append(
+                                "schedule:sequential-exception-content"
+                            )
 
     for job in queue[11:]:
         if not isinstance(job, dict) or set(job) != {
@@ -382,8 +655,14 @@ def validate_allocation(
     execution_contract: dict[str, Any],
     runner_contract: dict[str, Any],
     process_id: str,
+    *,
+    repository_root: Path | None = None,
 ) -> list[str]:
-    errors = validate_schedule(schedule, execution_contract)
+    errors = validate_schedule(
+        schedule,
+        execution_contract,
+        repository_root=repository_root,
+    )
     required = {
         "schema",
         "scheduleId",
@@ -442,6 +721,48 @@ def validate_allocation(
     roots = [grant[field] for field in ("rawRoot", "semanticRoot", "evidenceRoot")]
     if len(set(roots)) != 3:
         errors.append("allocation:root-alias")
+    return sorted(set(errors))
+
+
+def validate_bound_launch_grant(
+    root: Path,
+    schedule: dict[str, Any],
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+    process_id: str,
+    supplied_path: str | None,
+    supplied_sha256: str | None,
+) -> list[str]:
+    """Load a launch grant only from its exact contract-bound Git authority."""
+    if process_id not in {"A", "B", "C"}:
+        return ["allocation:process-argument"]
+    binding = execution_contract.get("futureIntegrationInputs", {}).get(
+        f"launchGrant{process_id}",
+        {},
+    )
+    errors, captured = committed_input_errors(
+        root,
+        binding,
+        supplied_path,
+        supplied_sha256,
+        f"launch-grant-{process_id}",
+    )
+    if errors or captured is None:
+        return sorted(set(errors))
+    try:
+        grant = decode_json_object(captured, f"launch-grant-{process_id}")
+    except (json.JSONDecodeError, OrchestrationError) as error:
+        return [f"launch-grant-{process_id}:json:{error}"]
+    errors.extend(
+        validate_allocation(
+            schedule,
+            grant,
+            execution_contract,
+            runner_contract,
+            process_id,
+            repository_root=root,
+        )
+    )
     return sorted(set(errors))
 
 
@@ -982,15 +1303,18 @@ def synthetic_proof(
         )
         for process_id in ("A", "B", "C")
     }
+    sequential_errors = validate_schedule(
+        sequential,
+        execution_contract,
+    )
+    sequential_rejected = (
+        "schedule:sequential-exception-not-dereferenced"
+        in sequential_errors
+    )
     cases = {
-        "parallelTwoSlot": validate_execution_receipt(
+        "syntheticParallelTrace": validate_execution_receipt(
             parallel_receipt,
             parallel,
-            execution_contract,
-        ),
-        "sequentialException": validate_execution_receipt(
-            sequential_receipt,
-            sequential,
             execution_contract,
         ),
         "allocations": sorted(
@@ -1007,19 +1331,33 @@ def synthetic_proof(
             runner_contract,
         ),
         "positiveCases": cases,
-        "allPositiveCasesPassed": all(not errors for errors in cases.values()),
-        "parallelObservedConcurrency": parallel_receipt[
+        "allPositiveCasesPassed": (
+            all(not errors for errors in cases.values())
+            and sequential_rejected
+        ),
+        "syntheticParallelMaximumActive": parallel_receipt[
             "maximumObservedConcurrency"
         ],
-        "parallelActualOverlap": parallel_receipt["actualOverlap"],
-        "sequentialObservedConcurrency": sequential_receipt[
+        "syntheticParallelOverlap": parallel_receipt["actualOverlap"],
+        "syntheticSequentialMaximumActive": sequential_receipt[
             "maximumObservedConcurrency"
         ],
-        "sequentialActualOverlap": sequential_receipt["actualOverlap"],
+        "syntheticSequentialOverlap": sequential_receipt["actualOverlap"],
+        "syntheticTraceIsAuthority": False,
+        "westClaimsGlobalCapOrOverlap": False,
+        "integrationGlobalValidationRequired": True,
+        "sequentialExceptionPositiveValidation": (
+            "not_run_missing_published_integration_exception"
+        ),
+        "fakeSequentialExceptionRejected": sequential_rejected,
+        "fakeSequentialExceptionErrors": sequential_errors,
         "invocations": dict(ZERO_INVOCATIONS),
         "productionExecutionEnabled": False,
         "productionReceiptEmissionEnabled": False,
-        "passed": all(not errors for errors in cases.values()),
+        "passed": (
+            all(not errors for errors in cases.values())
+            and sequential_rejected
+        ),
     }
 
 
@@ -1116,6 +1454,12 @@ def main() -> int:
         result = synthetic_proof(execution_contract, runner_contract)
         print(json.dumps(result, indent=2, sort_keys=True))
         return 0 if result["passed"] else 1
+    dereference_errors, _ = validate_contract_authorities(
+        root,
+        execution_contract,
+        runner_contract,
+    )
+    authority_errors = sorted(set(authority_errors + dereference_errors))
     if authority_errors:
         print(
             json.dumps(
@@ -1126,26 +1470,41 @@ def main() -> int:
         )
         return 3
 
-    binding_errors, schedule_path = committed_input_errors(
+    contract_errors, captures = validate_contract_authorities(
+        root,
+        execution_contract,
+        runner_contract,
+    )
+    binding_errors, schedule_bytes = committed_input_errors(
         root,
         execution_contract["futureIntegrationInputs"]["scheduleAuthority"],
         args.schedule,
         args.schedule_sha256,
         "schedule-authority",
     )
-    schema_errors, schema_path = committed_input_errors(
+    schema_errors, schema_bytes = committed_input_errors(
         root,
         execution_contract["futureIntegrationInputs"]["scheduleSchema"],
         execution_contract["futureIntegrationInputs"]["scheduleSchema"].get("path"),
         execution_contract["futureIntegrationInputs"]["scheduleSchema"].get("sha256"),
         "schedule-schema",
     )
-    errors = binding_errors + schema_errors
-    if errors or schedule_path is None or schema_path is None:
+    errors = contract_errors + binding_errors + schema_errors
+    if errors or schedule_bytes is None or schema_bytes is None:
         print(json.dumps(blocked_result(args.mode, errors), indent=2, sort_keys=True))
         return 3
-    schedule = load_json(schedule_path)
-    schedule_schema = load_json(schema_path)
+    try:
+        schedule = decode_json_object(schedule_bytes, "schedule-authority")
+        schedule_schema = decode_json_object(schema_bytes, "schedule-schema")
+    except (json.JSONDecodeError, OrchestrationError) as error:
+        print(
+            json.dumps(
+                blocked_result(args.mode, [f"authority-json:{error}"]),
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return 3
     schema_validation = sorted(
         Draft202012Validator(schedule_schema).iter_errors(schedule),
         key=lambda error: list(error.path),
@@ -1154,7 +1513,13 @@ def main() -> int:
         f"schedule-schema:{list(error.path)}:{error.message}"
         for error in schema_validation
     ]
-    errors.extend(validate_schedule(schedule, execution_contract))
+    errors.extend(
+        validate_schedule(
+            schedule,
+            execution_contract,
+            repository_root=root,
+        )
+    )
     if args.mode in {"validate-authority", "validate-schedule"}:
         result = {
             "schemaVersion": 1,
@@ -1175,33 +1540,20 @@ def main() -> int:
         if not args.launch_grant or not args.process_id:
             errors = ["allocation:missing-input"]
         else:
-            try:
-                grant_path = lexical_repository_path(
-                    root,
-                    args.launch_grant,
-                    expected=args.launch_grant,
-                )
-                if (
-                    not args.launch_grant.startswith(INTEGRATION_PREFIX)
-                    or not grant_path.is_file()
-                    or sha256(grant_path) != args.launch_grant_sha256
-                ):
-                    errors = ["allocation:untrusted-grant"]
-                else:
-                    errors = validate_allocation(
-                        schedule,
-                        load_json(grant_path),
-                        execution_contract,
-                        runner_contract,
-                        args.process_id,
-                    )
-            except (OSError, json.JSONDecodeError, PathSafetyError) as error:
-                errors = [f"allocation:{error}"]
+            errors = validate_bound_launch_grant(
+                root,
+                schedule,
+                execution_contract,
+                runner_contract,
+                args.process_id,
+                args.launch_grant,
+                args.launch_grant_sha256,
+            )
     else:
         binding = execution_contract["futureIntegrationInputs"][
             "globalExecutionReceipt"
         ]
-        receipt_errors, receipt_path = committed_input_errors(
+        receipt_errors, receipt_bytes = committed_input_errors(
             root,
             binding,
             args.global_receipt,
@@ -1209,10 +1561,13 @@ def main() -> int:
             "global-execution-receipt",
         )
         errors = receipt_errors
-        if not errors and receipt_path is not None:
+        if not errors and receipt_bytes is not None:
             errors.extend(
                 validate_execution_receipt(
-                    load_json(receipt_path),
+                    decode_json_object(
+                        receipt_bytes,
+                        "global-execution-receipt",
+                    ),
                     schedule,
                     execution_contract,
                 )

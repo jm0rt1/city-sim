@@ -6,9 +6,18 @@
   "branch": "codex/citysim-world-art-west",
   "implementationBaseline": {
     "preservedWestAncestor": "c4a8b8f5bac5b864eb4595514a983f54a273aef3",
-    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
+    "publishedMaster": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
     "claimRevision": 4,
     "claimSha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+  },
+  "frozenDesignAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+    "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+    "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
+    "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED",
+    "productionAuthority": false,
+    "dccAuthority": false,
+    "pixelAuthority": false
   },
   "runnerContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
@@ -24,6 +33,24 @@
       "sha256": null
     },
     "scheduleAuthority": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "launchGrantA": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "launchGrantB": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "launchGrantC": {
       "state": "not_published",
       "path": null,
       "commit": null,
@@ -53,6 +80,16 @@
       "commit": null,
       "sha256": null
     }
+  },
+  "authoritySeparation": {
+    "globalScheduleAndConcurrencyOwner": "Integration",
+    "directionReceiptOwner": "PLAY-081 West",
+    "syntheticTraceIsAuthority": false,
+    "westMayClaimGlobalCapOrOverlap": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "shipping": false
   },
   "executionModes": {
     "parallel_two_slot": {

@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 import copy
+from contextlib import contextmanager
+import hashlib
 from itertools import product
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -17,7 +20,9 @@ from west_execution_orchestration_v2 import (
     DEFAULT_EXECUTION_CONTRACT,
     DEFAULT_RUNNER_CONTRACT,
     OrchestrationError,
+    committed_input_errors,
     current_binding_errors,
+    decode_json_object,
     fixture_grant,
     fixture_schedule,
     fixture_writes,
@@ -25,6 +30,8 @@ from west_execution_orchestration_v2 import (
     simulate_receipt,
     static_contract_errors,
     validate_allocation,
+    validate_bound_launch_grant,
+    validate_contract_authorities,
     validate_execution_receipt,
     validate_failure_isolation,
     validate_receipt_order,
@@ -66,7 +73,58 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
             **kwargs,
         )
 
+    @contextmanager
+    def committed_authority(
+        self,
+        relative: str,
+        value: bytes,
+    ):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(
+                ["git", "config", "user.name", "PLAY-081 Test"],
+                cwd=root,
+                check=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "play-081@example.invalid"],
+                cwd=root,
+                check=True,
+            )
+            path = root / relative
+            path.parent.mkdir(parents=True)
+            path.write_bytes(value)
+            subprocess.run(["git", "add", relative], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-q", "-m", "fixture authority"],
+                cwd=root,
+                check=True,
+            )
+            commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            yield root, commit, hashlib.sha256(value).hexdigest(), path
+
     def test_current_inputs_fail_closed_before_dcc(self) -> None:
+        self.assertEqual(
+            set(self.execution_contract["futureIntegrationInputs"]),
+            {
+                "scheduleSchema",
+                "scheduleAuthority",
+                "launchGrantA",
+                "launchGrantB",
+                "launchGrantC",
+                "appearanceLock",
+                "lockedMaterialMapping",
+                "sourceProductionProfile",
+                "globalExecutionReceipt",
+            },
+        )
         self.assertEqual(
             static_contract_errors(
                 self.execution_contract,
@@ -82,6 +140,9 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
         self.assertIn("source-production-profile:not-bound", errors)
         self.assertIn("integration-input:scheduleSchema:not-published", errors)
         self.assertIn("integration-input:scheduleAuthority:not-published", errors)
+        self.assertIn("integration-input:launchGrantA:not-published", errors)
+        self.assertIn("integration-input:launchGrantB:not-published", errors)
+        self.assertIn("integration-input:launchGrantC:not-published", errors)
         self.assertIn("production-execution:disabled", errors)
         self.assertIn("production-receipt-emission:disabled", errors)
 
@@ -101,15 +162,43 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
 
     def test_authorized_sequential_exception_positive(self) -> None:
         schedule, receipt = self.receipt("sequential_exception")
-        self.assertEqual(validate_schedule(schedule, self.execution_contract), [])
-        self.assertEqual(
-            validate_execution_receipt(
-                receipt,
-                schedule,
-                self.execution_contract,
-            ),
-            [],
+        authority = {
+            "schema": "citysim.integration.world-art-sequential-exception.v1",
+            "owner": "Integration",
+            "scheduleId": schedule["scheduleId"],
+            "scheduleRevision": schedule["scheduleRevision"],
+            "executionMode": "sequential_exception",
+            "reason": schedule["exceptionAuthority"]["reason"],
+            "queueOrder": schedule["exceptionAuthority"]["queueOrder"],
+        }
+        data = (
+            json.dumps(authority, indent=2, sort_keys=True) + "\n"
+        ).encode()
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-SEQUENTIAL-EXCEPTION.json"
         )
+        with self.committed_authority(relative, data) as (
+            root,
+            commit,
+            digest,
+            _,
+        ):
+            schedule["exceptionAuthority"].update(
+                {
+                    "path": relative,
+                    "commit": commit,
+                    "sha256": digest,
+                }
+            )
+            self.assertEqual(
+                validate_schedule(
+                    schedule,
+                    self.execution_contract,
+                    repository_root=root,
+                ),
+                [],
+            )
         self.assertEqual(receipt["maximumObservedConcurrency"], 1)
         self.assertFalse(receipt["actualOverlap"])
 
@@ -298,6 +387,441 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 "A",
             ),
         )
+
+    def test_committed_authority_exact_regular_blob_positive(self) -> None:
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-AUTHORITY.json"
+        )
+        data = b'{"fixtureOnly":true}\n'
+        with self.committed_authority(relative, data) as (
+            root,
+            commit,
+            digest,
+            _,
+        ):
+            binding = {
+                "state": "bound_integration",
+                "path": relative,
+                "commit": commit,
+                "sha256": digest,
+            }
+            errors, captured = committed_input_errors(
+                root,
+                binding,
+                relative,
+                digest,
+                "fixture",
+            )
+            self.assertEqual(errors, [])
+            self.assertEqual(captured, data)
+
+    def test_authority_json_rejects_duplicate_keys_and_nonfinite_values(self) -> None:
+        with self.assertRaises(OrchestrationError):
+            decode_json_object(b'{"value":1,"value":2}', "duplicate")
+        with self.assertRaises(OrchestrationError):
+            decode_json_object(b'{"value":NaN}', "nonfinite")
+
+    def test_every_declared_integration_authority_is_dereferenced(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(
+                ["git", "config", "user.name", "PLAY-081 Test"],
+                cwd=root,
+                check=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "play-081@example.invalid"],
+                cwd=root,
+                check=True,
+            )
+            contract = copy.deepcopy(self.execution_contract)
+            runner = copy.deepcopy(self.runner_contract)
+            paths: dict[str, tuple[str, bytes]] = {
+                "frozenDesignAuthority": (
+                    "docs/production/evidence/INTEGRATION/DESIGN.md",
+                    b"frozen design fixture\n",
+                )
+            }
+            for name in contract["futureIntegrationInputs"]:
+                paths[name] = (
+                    f"docs/production/evidence/INTEGRATION/{name}.json",
+                    (json.dumps({"authority": name}) + "\n").encode(),
+                )
+            for relative, data in paths.values():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-q", "-m", "all authorities"],
+                cwd=root,
+                check=True,
+            )
+            commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            design_path, design_data = paths["frozenDesignAuthority"]
+            contract["frozenDesignAuthority"].update(
+                {
+                    "path": design_path,
+                    "commit": commit,
+                    "sha256": hashlib.sha256(design_data).hexdigest(),
+                }
+            )
+            for name, binding in contract["futureIntegrationInputs"].items():
+                relative, data = paths[name]
+                binding.update(
+                    {
+                        "state": "bound_integration",
+                        "path": relative,
+                        "commit": commit,
+                        "sha256": hashlib.sha256(data).hexdigest(),
+                    }
+                )
+            appearance = contract["futureIntegrationInputs"]["appearanceLock"]
+            runner["appearanceLock"].update(
+                {
+                    "documentPath": appearance["path"],
+                    "commit": appearance["commit"],
+                    "documentSha256": appearance["sha256"],
+                }
+            )
+            profile = contract["futureIntegrationInputs"][
+                "sourceProductionProfile"
+            ]
+            runner["sourceStage"]["sourceProductionProfile"] = {
+                "state": "bound_integration_profile",
+                "path": profile["path"],
+                "commit": profile["commit"],
+                "sha256": profile["sha256"],
+            }
+            errors, captures = validate_contract_authorities(
+                root,
+                contract,
+                runner,
+            )
+            self.assertEqual(errors, [])
+            self.assertEqual(
+                set(captures),
+                {
+                    "frozenDesignAuthority",
+                    *contract["futureIntegrationInputs"].keys(),
+                },
+            )
+            locked_path = root / paths["lockedMaterialMapping"][0]
+            locked_path.write_bytes(b'{"authority":"tampered"}\n')
+            errors, _ = validate_contract_authorities(
+                root,
+                contract,
+                runner,
+            )
+            self.assertIn(
+                "integration-input:lockedMaterialMapping:working-tree-sha256",
+                errors,
+            )
+
+    def test_committed_authority_rejects_hash_and_content_drift(self) -> None:
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-AUTHORITY.json"
+        )
+        original = b'{"revision":1}\n'
+        with self.committed_authority(relative, original) as (
+            root,
+            commit,
+            digest,
+            path,
+        ):
+            binding = {
+                "state": "bound_integration",
+                "path": relative,
+                "commit": commit,
+                "sha256": digest,
+            }
+            wrong_errors, _ = committed_input_errors(
+                root,
+                binding,
+                relative,
+                "0" * 64,
+                "fixture",
+            )
+            self.assertIn("fixture:argument-sha256-mismatch", wrong_errors)
+            path.write_bytes(b'{"revision":2}\n')
+            drift_errors, _ = committed_input_errors(
+                root,
+                binding,
+                relative,
+                digest,
+                "fixture",
+            )
+            self.assertIn("fixture:working-tree-sha256", drift_errors)
+            self.assertIn("fixture:working-tree-content-drift", drift_errors)
+
+    def test_committed_authority_rejects_missing_and_symlink(self) -> None:
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-AUTHORITY.json"
+        )
+        data = b'{"fixtureOnly":true}\n'
+        with self.committed_authority(relative, data) as (
+            root,
+            commit,
+            digest,
+            path,
+        ):
+            missing = relative.replace("AUTHORITY", "MISSING")
+            missing_binding = {
+                "state": "bound_integration",
+                "path": missing,
+                "commit": commit,
+                "sha256": digest,
+            }
+            missing_errors, _ = committed_input_errors(
+                root,
+                missing_binding,
+                missing,
+                digest,
+                "missing",
+            )
+            self.assertTrue(
+                any(error.startswith("missing:unsafe-path:") for error in missing_errors)
+            )
+            target = root / "authority-target.json"
+            target.write_bytes(data)
+            path.unlink()
+            path.symlink_to(target)
+            symlink_errors, _ = committed_input_errors(
+                root,
+                {
+                    "state": "bound_integration",
+                    "path": relative,
+                    "commit": commit,
+                    "sha256": digest,
+                },
+                relative,
+                digest,
+                "symlink",
+            )
+            self.assertTrue(
+                any("SYMLINK_COMPONENT" in error for error in symlink_errors)
+            )
+
+    def test_committed_authority_rejects_git_symlink_blob(self) -> None:
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-AUTHORITY.json"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(
+                ["git", "config", "user.name", "PLAY-081 Test"],
+                cwd=root,
+                check=True,
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "play-081@example.invalid"],
+                cwd=root,
+                check=True,
+            )
+            path = root / relative
+            path.parent.mkdir(parents=True)
+            path.symlink_to("fixture-target")
+            subprocess.run(["git", "add", relative], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-q", "-m", "symlink authority"],
+                cwd=root,
+                check=True,
+            )
+            symlink_commit = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            path.unlink()
+            path.write_bytes(b"fixture-target")
+            subprocess.run(["git", "add", relative], cwd=root, check=True)
+            subprocess.run(
+                ["git", "commit", "-q", "-m", "regular working blob"],
+                cwd=root,
+                check=True,
+            )
+            digest = hashlib.sha256(b"fixture-target").hexdigest()
+            errors, _ = committed_input_errors(
+                root,
+                {
+                    "state": "bound_integration",
+                    "path": relative,
+                    "commit": symlink_commit,
+                    "sha256": digest,
+                },
+                relative,
+                digest,
+                "git-mode",
+            )
+            self.assertIn(
+                "git-mode:commit-object-not-regular-blob",
+                errors,
+            )
+
+    def test_committed_authority_rejects_non_ancestral_commit(self) -> None:
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-AUTHORITY.json"
+        )
+        data = b'{"fixtureOnly":true}\n'
+        with self.committed_authority(relative, data) as (
+            root,
+            _,
+            digest,
+            _,
+        ):
+            tree = subprocess.run(
+                ["git", "rev-parse", "HEAD^{tree}"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            unrelated = subprocess.run(
+                ["git", "commit-tree", tree],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+                input="unrelated authority\n",
+            ).stdout.strip()
+            errors, _ = committed_input_errors(
+                root,
+                {
+                    "state": "bound_integration",
+                    "path": relative,
+                    "commit": unrelated,
+                    "sha256": digest,
+                },
+                relative,
+                digest,
+                "ancestry",
+            )
+            self.assertIn("ancestry:commit-not-in-head", errors)
+
+    def test_sequential_exception_rejects_nonexistent_and_wrong_content(self) -> None:
+        schedule = self.schedule("sequential_exception")
+        self.assertIn(
+            "schedule:sequential-exception-not-dereferenced",
+            validate_schedule(schedule, self.execution_contract),
+        )
+        wrong = {
+            "schema": "citysim.integration.world-art-sequential-exception.v1",
+            "owner": "Integration",
+            "scheduleId": schedule["scheduleId"],
+            "scheduleRevision": schedule["scheduleRevision"],
+            "executionMode": "sequential_exception",
+            "reason": "different authority content",
+            "queueOrder": schedule["exceptionAuthority"]["queueOrder"],
+        }
+        data = (json.dumps(wrong, sort_keys=True) + "\n").encode()
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-SEQUENTIAL-EXCEPTION.json"
+        )
+        with self.committed_authority(relative, data) as (
+            root,
+            commit,
+            digest,
+            _,
+        ):
+            schedule["exceptionAuthority"].update(
+                {
+                    "path": relative,
+                    "commit": commit,
+                    "sha256": digest,
+                }
+            )
+            self.assertIn(
+                "schedule:sequential-exception-content",
+                validate_schedule(
+                    schedule,
+                    self.execution_contract,
+                    repository_root=root,
+                ),
+            )
+
+    def test_launch_grant_must_be_exact_contract_bound_blob(self) -> None:
+        schedule = self.schedule()
+        grant = fixture_grant(
+            schedule,
+            self.execution_contract,
+            self.runner_contract,
+            "A",
+        )
+        data = (json.dumps(grant, indent=2, sort_keys=True) + "\n").encode()
+        relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "SYNTHETIC-WEST-A-LAUNCH-GRANT.json"
+        )
+        with self.committed_authority(relative, data) as (
+            root,
+            commit,
+            digest,
+            path,
+        ):
+            contract = copy.deepcopy(self.execution_contract)
+            contract["futureIntegrationInputs"]["launchGrantA"] = {
+                "state": "bound_integration",
+                "path": relative,
+                "commit": commit,
+                "sha256": digest,
+            }
+            self.assertEqual(
+                validate_bound_launch_grant(
+                    root,
+                    schedule,
+                    contract,
+                    self.runner_contract,
+                    "A",
+                    relative,
+                    digest,
+                ),
+                [],
+            )
+            wrong_path_errors = validate_bound_launch_grant(
+                root,
+                schedule,
+                contract,
+                self.runner_contract,
+                "A",
+                relative + ".other",
+                digest,
+            )
+            self.assertIn(
+                "launch-grant-A:path-mismatch",
+                wrong_path_errors,
+            )
+            target = root / "grant-target.json"
+            target.write_bytes(data)
+            path.unlink()
+            path.symlink_to(target)
+            symlink_errors = validate_bound_launch_grant(
+                root,
+                schedule,
+                contract,
+                self.runner_contract,
+                "A",
+                relative,
+                digest,
+            )
+            self.assertTrue(
+                any("SYMLINK_COMPONENT" in error for error in symlink_errors)
+            )
 
     def test_process_local_west_failure_cancels_nothing(self) -> None:
         failures = [
@@ -502,13 +1026,13 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 ),
                 [],
             )
-            self.assertEqual(
+            self.assertIn(
+                "schedule:sequential-exception-not-dereferenced",
                 validate_execution_receipt(
                     sequential_receipt,
                     sequential,
                     self.execution_contract,
                 ),
-                [],
             )
 
 

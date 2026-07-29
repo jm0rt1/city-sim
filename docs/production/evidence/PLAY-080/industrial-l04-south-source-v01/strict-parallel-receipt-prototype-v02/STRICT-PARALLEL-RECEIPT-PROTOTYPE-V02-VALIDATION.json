@@ -27,7 +27,7 @@
   "artifacts": {
     "readme": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/README.md",
-      "sha256": "db191cd3f8fd93f758df9d3272cb332ed214a3053b2cf8a161086dc91d615b3f"
+      "sha256": "0a2a24637529ac9c9c57bb9859942936d9a1619269fe2795ef63a8d35eb931be"
     },
     "plannedScheduleSchema": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/planned-schedule-fixture-schema-v02.json",
@@ -39,11 +39,11 @@
     },
     "validator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/validate_strict_parallel_receipt_v02.py",
-      "sha256": "9ca97e4ab46ed1e77506383c410d62d0c2a3a2840d475ee6e81ab78e6cbc3f88"
+      "sha256": "e72f8c5e1f17a65b8d76761a1e1eac020e7473d2d05bac871d6509869b8fbc82"
     },
     "testHarness": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/test_strict_parallel_receipt_v02.py",
-      "sha256": "17dc564215fb5212447ae20d13f055062f371f2b2a95dbc53c4502880bf9513d"
+      "sha256": "ae5e9c324bc5a1dd81394e7a755c94bfbbb9bb14a854363be58ce6201867b611"
     },
     "cap2PlannedSchedule": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v02/fixtures/cap2-overlap/PLANNED-SCHEDULE.json",
@@ -75,7 +75,10 @@
     "halfOpenIntervals": "[start,end)",
     "equalTimestampOrder": "end-before-start",
     "allocationAttemptSlotLeaseBound": true,
+    "allocationIdsUnique": true,
     "fifoDispatchSequenceValidated": true,
+    "sameSlotPlannedLeaseFifoValidated": true,
+    "sameSlotAcquireFifoValidated": true,
     "schedulerEventIdsEchoedNotAuthored": true,
     "directionLocalCancellation": true,
     "appendOnlyRetryIdentity": true,
@@ -110,7 +113,7 @@
       "repeatByteIdentical": true
     }
   ],
-  "negativeFixtureCount": 45,
+  "negativeFixtureCount": 48,
   "negativeFixtures": [
     ["duplicate-schedule-key", "DUPLICATE_JSON_KEY"],
     ["duplicate-receipt-key", "DUPLICATE_JSON_KEY"],
@@ -129,6 +132,9 @@
     ["reversed-interval", "INVALID_HALF_OPEN_INTERVAL"],
     ["lease-escape", "OBSERVED_INTERVAL_OUTSIDE_ALLOCATION"],
     ["allocation-mismatch", "OBSERVED_ALLOCATION_BINDING_MISMATCH"],
+    ["duplicate-allocation-id", "DUPLICATE_ALLOCATION_ID"],
+    ["same-slot-planned-lease-fifo-reversed", "SAME_SLOT_PLANNED_LEASE_FIFO_CHANGED"],
+    ["same-slot-acquire-fifo-reversed", "SAME_SLOT_ACQUIRE_FIFO_CHANGED"],
     ["scheduler-event-mismatch", "SCHEDULER_EVENT_REFERENCE_MISMATCH"],
     ["cancellation-escapes-direction", "SCHEMA_INVALID"],
     ["retry-chain-broken", "INVALID_RETRY_CHAIN"],

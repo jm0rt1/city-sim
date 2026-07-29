@@ -50,8 +50,10 @@ contract. Never push, integrate, or self-accept.
 Treat the Integration-published family contract as immutable. It must identify
 the exact family/version, logical asset identity, scale, palette/material
 roles, footprint, pivot, N/E/S/W camera and road-facing sockets, light, shadow,
-and toolchain. The later Integration-published family lock must add the exact
-accepted North appearance authority and bind it to that contract version/hash.
+and toolchain. The later Integration-published appearance lock must add the
+exact independently accepted North process-A appearance authority and bind it
+to that contract version/hash. An appearance lock is not North source
+acceptance, family selection, renderer activation, or shipping authority.
 Stop if the contract, family lock, branch claim, or source revision is missing,
 stale, or contradictory for the requested stage; never repair shared authority
 from a direction cell.
@@ -66,10 +68,11 @@ named orientation. Run all Integration-authorized cells concurrently:
    proofs. Do not render, normalize, or claim pixel authority. When the claim
    defines predesign as its complete deliverable, commit the passing predesign
    normally; otherwise preserve it as a non-ready checkpoint.
-2. **After Integration publishes the family lock and updates the claims to
-   authorize production:** begin each direction's authorized A/B/C renders and
-   deterministic validation immediately and concurrently. Do not wait for a
-   sibling direction to finish.
+2. **After Integration publishes the appearance lock and updates the claims to
+   authorize production:** North begins B/C while East, South, and West begin
+   their independently authored A/B/C renders and deterministic validation,
+   all concurrently. Do not wait for a sibling direction to finish. Bind every
+   process to the exact appearance-lock hash.
 3. **On a direction-local failure:** preserve its rejection and return only
    that direction to repair. Successful siblings retain their independent
    candidates and continue to handoff; they may not lend pixels, masks, scene

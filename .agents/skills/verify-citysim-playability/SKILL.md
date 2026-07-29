@@ -67,6 +67,12 @@ accepted directions. A returned direction may continue independently without
 invalidating successful sibling source evidence; the final app journey remains
 blocked until the renderer presents a complete 4/4 family.
 
+Before 4/4 assembly, fresh QA may perform direction-local, candidate-neutral
+literal-scale source review in parallel with Renderer technical review. That
+review may accept or return a direction's source packet, but it is not
+staged-app evidence, renderer ingestion, production acceptance, or permission
+to activate a partial family.
+
 ## Admit one exact candidate
 
 Before the final journey:

@@ -56,7 +56,11 @@ For directional World Art, use this default fan-out:
 - East, South, and West independently complete zero-pixel blockouts plus camera/socket proofs while North is under review.
 - Renderer prepares stable IDs, mapping, atlas/LOD quarantine, registration tests, fallback rejection, and staged fixture placement without activating unfinished art.
 - QA preregisters exact camera states, mature-city fixture, regular/compact layouts, interaction route, and acceptance rubric before the renderer candidate arrives.
-- Once Integration accepts the North appearance and freezes the family contract, immediately authorize East, South, and West A/B/C production concurrently. A failed direction returns only that direction.
+- Once independent technical and literal-scale review accepts North process A,
+  publish a non-production appearance lock. Immediately authorize North B/C
+  and East, South, and West A/B/C concurrently. The lock does not make North
+  source-ready or authorize renderer activation. A failed direction returns
+  only that direction.
 - Production selection and shipping activation remain atomic at four accepted directions.
 
 Only genuine shared authorities remain serialized: family-contract publication, shared toolchain changes, shipping atlas/manifest mutation, production selection, final exact-candidate QA, integration, and push.

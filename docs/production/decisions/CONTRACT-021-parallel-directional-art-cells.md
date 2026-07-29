@@ -1,6 +1,6 @@
 # CONTRACT-021 — Parallel directional World Art cells
 
-**Status:** Approved
+**Status:** Approved, revision 2
 
 **Owner:** Integration
 
@@ -42,16 +42,47 @@ enter Renderer ingestion until Integration accepts North's art direction and
 publishes the shared family/material lock. This prevents three polished but
 incompatible siblings while removing idle predesign time.
 
+## Appearance lock and source acceptance
+
+North's first passing process A is the design-calibration gate. After
+independent technical and literal-game-scale review accepts that exact A,
+Integration publishes an immutable family/material appearance lock. The lock
+binds the accepted North design vocabulary, material roles, scale, cameras,
+sockets, light, shadow, toolchain, and exact A evidence. It does not declare
+North source-ready, select the family, or authorize shipping.
+
+The appearance lock releases all remaining contract-independent source work:
+
+1. North renders B and C to complete its deterministic A/B/C gate.
+2. East, South, and West merge the exact lock without rewriting their accepted
+   predesign histories, then render A/B/C independently and concurrently.
+3. Each cell validates its own three fresh processes, source geometry,
+   registration, frontage, material identity, compact color and grayscale
+   survival, provenance, and non-aliasing.
+4. Renderer and fresh QA may review direction-local source packets in parallel.
+   These are technical and literal-scale source reviews, not production
+   acceptance or staged-app QA.
+5. A failed direction returns only to its owning cell. Passing siblings remain
+   quarantined and source-ready; they do not rerender merely because another
+   direction failed.
+6. Direction-local Renderer quarantine is permitted after source review.
+   Shipping ingestion, runtime activation, production selection, and the one
+   independent staged-app family gate remain blocked until Integration accepts
+   the exact source-ready North, East, South, and West set.
+
 ## Merge and review order
 
-1. North art direction and deterministic A/B/C.
-2. Integration publishes the family/material lock.
-3. East, South, and West rebase or merge that exact authority without
-   rewriting their predesign histories.
-4. Each direction renders one A independently and receives Renderer plus fresh
-   QA review.
-5. Integration accepts the complete four-direction family before any shipping
-   ingestion.
+1. North process A passes independent technical and literal-scale appearance
+   review.
+2. Integration publishes the non-production family/material appearance lock.
+3. North B/C and East/South/West A/B/C execute concurrently under disjoint
+   claims.
+4. Integration accepts and quarantines each complete direction independently.
+5. Renderer assembles one exact 4/4 candidate only after every direction is
+   source-ready.
+6. QA runs one preregistered, independent staged-app family gate.
+7. Integration alone may authorize shipping ingestion and production
+   selection.
 
 Strictest review wins. A passing validator does not override a failed
 literal-game-scale visual review.

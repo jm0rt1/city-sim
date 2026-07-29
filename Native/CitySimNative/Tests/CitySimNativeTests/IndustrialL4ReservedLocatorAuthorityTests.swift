@@ -487,6 +487,46 @@ final class IndustrialL4ReservedLocatorAuthorityTests: XCTestCase {
                     .schemaDrift("authority")
                 )
             }
+
+            let wrongAuthority = try mutatingAuthority(authorityData) { root in
+                var contract =
+                    root["governingContract"] as? [String: Any] ?? [:]
+                contract["sha256"] = String(repeating: "0", count: 64)
+                root["governingContract"] = contract
+            }
+            XCTAssertThrowsError(
+                try harness.load(
+                    authorityData: wrongAuthority,
+                    schemaData: schemaData,
+                    expectedAuthorityHash:
+                        L4ReservedLocatorHarness.sha256(wrongAuthority)
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4ReservedLocatorError,
+                    .authorityDrift("topLevel")
+                )
+            }
+
+            let unknownNested = try mutatingDirection(
+                authorityData,
+                index: 0
+            ) {
+                $0["unexpected"] = true
+            }
+            XCTAssertThrowsError(
+                try harness.load(
+                    authorityData: unknownNested,
+                    schemaData: schemaData,
+                    expectedAuthorityHash:
+                        L4ReservedLocatorHarness.sha256(unknownNested)
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4ReservedLocatorError,
+                    .schemaDrift("direction")
+                )
+            }
         }
     }
 

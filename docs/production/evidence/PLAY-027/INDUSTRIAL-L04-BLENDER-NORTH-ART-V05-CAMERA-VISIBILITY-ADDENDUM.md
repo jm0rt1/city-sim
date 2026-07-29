@@ -1,8 +1,13 @@
 # Industrial L4 North v05 camera-visibility addendum
 
+**Superseded world-space premise:** Canonical descriptors and the renderer
+establish North as `z = -28`, not `x = -28`; the v06 coordinate-bridge
+authority records and governs the repair. This addendum remains historical
+rejection evidence and is no longer operative authority.
+
 **Parent authority:** `INDUSTRIAL-L04-BLENDER-NORTH-ART-V05-AUTHORITY.md`
 
-**Disposition:** `BINDING_PRE_RENDER_GATE`
+**Historical disposition:** `BINDING_PRE_RENDER_GATE`
 
 The frozen camera is on the `+X/+Z` side while the corrected road-facing portal
 must face outward from the `X = -28` footprint side. The socket-facing facade

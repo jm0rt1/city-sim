@@ -37,7 +37,7 @@ cleanly and added a test-only bridge at
 `88a3d423689bc28bc6c7090abe6f4507150f8a62`.
 
 The adapter's synthetic East, South, and West packet bytes now reopen through
-the existing strict direction-packet file harness with separately encoded
+a strict, test-local direction-packet harness with separately encoded
 synthetic Integration source-admission receipts. Two repeat passes emit
 identical direction-local quarantine receipts. A South decoded-hash drift is
 rejected without changing the admitted East/West packets, their receipt bytes,
@@ -45,7 +45,7 @@ or their batch result. Correcting only the South receipt returns the three-
 direction batch to `quarantined_incomplete`; North remains the sole missing
 direction and atomic assembly is rejected.
 
-The strict harness also exposed and corrected three assumptions in the
+The strict test-local harness also exposed and corrected three assumptions in the
 synthetic source fixture: the canonical contact diamond, identity D4 binding
 to decoded RGBA, and one family-shared appearance lock. No validator, shared
 schema, contract, runtime, resource, atlas, manifest, package, or app surface
@@ -59,6 +59,30 @@ clone, producing replay commits `88dd12b06f29fdfaf7393e87a53dbce5db7979a7`
 and `1eb911a6f7cb05e5ae45e65daf1b85203b49bbc1`. The prototype suite compiled
 against that tree and passed 4/4 with zero failures. No retained Renderer
 test or helper file is a prerequisite.
+
+## Current-master portability repair
+
+Integration's disposable replay of `88a3d423` plus `8bf6b1d5` on exact
+published master `aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7` exposed that the
+two new tests still referenced historical Renderer-only packet-file harness
+types. Implementation commit
+`95678368a144dec7e7f488b0cb5f3280bdf78e14` replaces those references with
+private synthetic admission, quarantine, strict-shape, isolation, and receipt
+types built entirely on the already integrated `L4AdapterRendererPacket`.
+
+The exact range was then replayed in a fresh disposable clone:
+
+1. base `aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7`;
+2. `88a3d423` replayed as `448add7d`;
+3. `8bf6b1d5` replayed as `33973db1`; and
+4. `95678368` replayed as `43403fad`.
+
+`swift test --package-path Native/CitySimNative --filter
+IndustrialL4SourceStageAdapterPrototypeTests` compiled the complete current-
+master test target and passed 6/6 with zero failures. The repaired source file
+contains zero references to the six historical packet-file harness/model/
+validator symbols implicated by the return. No broad Renderer history or
+prerequisite file was imported.
 
 ## Owned paths
 

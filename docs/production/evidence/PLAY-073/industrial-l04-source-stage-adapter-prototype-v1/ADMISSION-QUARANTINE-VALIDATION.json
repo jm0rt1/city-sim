@@ -5,12 +5,14 @@
   "candidate": {
     "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
     "rendererSyncMerge": "4f5be9c7c0975173e0a1578764991110d0b8bc3b",
-    "testCommit": "88a3d423689bc28bc6c7090abe6f4507150f8a62"
+    "testCommit": "88a3d423689bc28bc6c7090abe6f4507150f8a62",
+    "evidenceCommit": "8bf6b1d5cdddee2d4361d97a583c0d8165e93fa9",
+    "portabilityRepairCommit": "95678368a144dec7e7f488b0cb5f3280bdf78e14"
   },
   "artifacts": [
     {
       "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4SourceStageAdapterPrototypeTests.swift",
-      "sha256": "bdd80a6a4be4ad7a1ae1a10d0f32b651e1d3a415c6083849b17cb7230832ab9e"
+      "sha256": "cbbbd49796200549b978f5cfc926891282dfb1617b4a5b02f2ce76bc79af9d08"
     }
   ],
   "syntheticIntegrationReceipts": {
@@ -29,7 +31,7 @@
     "realReceiptCount": 0
   },
   "proof": {
-    "adapterBytesReopenedByExistingStrictFileHarness": "PASS",
+    "adapterBytesReopenedBySelfContainedStrictHarness": "PASS",
     "repeatIdenticalDirectionReceiptOutput": "PASS",
     "eastSouthWestRendererQuarantine": "PASS_SYNTHETIC_ONLY",
     "southAdmissionDecodedHashDriftRejected": "PASS",
@@ -41,6 +43,27 @@
     "runtimeMappingMutated": false,
     "shippingResourcesMutated": false,
     "productionSelected": false
+  },
+  "portabilityReplay": {
+    "result": "PASS",
+    "base": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+    "orderedSourceCommits": [
+      "88a3d423689bc28bc6c7090abe6f4507150f8a62",
+      "8bf6b1d5cdddee2d4361d97a583c0d8165e93fa9",
+      "95678368a144dec7e7f488b0cb5f3280bdf78e14"
+    ],
+    "orderedReplayCommits": [
+      "448add7d",
+      "33973db1",
+      "43403fad"
+    ],
+    "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4SourceStageAdapterPrototypeTests",
+    "executed": 6,
+    "passed": 6,
+    "failed": 0,
+    "historicalHarnessSymbolReferences": 0,
+    "gitDiffCheck": "PASS",
+    "disposableReplayStatus": "clean_detached_head"
   },
   "strictHarnessAlignment": {
     "groundContactPolygonWorld": [

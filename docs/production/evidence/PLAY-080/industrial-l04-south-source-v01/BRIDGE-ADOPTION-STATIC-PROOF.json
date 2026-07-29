@@ -1,5 +1,5 @@
 {
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "checks": [
@@ -199,7 +199,7 @@
   "imageGenInvocations": 0,
   "inputs": {
     "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-    "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
+    "contractSha256": "cd51c9020653627125d8bba5eaf0db1488ed06331a36f3df5f1aac04a0620733",
     "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
     "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
     "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_bridge_adoption.py",

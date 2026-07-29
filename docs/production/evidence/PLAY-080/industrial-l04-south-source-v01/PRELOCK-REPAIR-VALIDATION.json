@@ -1,7 +1,41 @@
 {
-  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
+  "cameraSocketGate": {
+    "actualCameraExpected": 5,
+    "actualCameraPassed": 5,
+    "actualSourceSocketPixels": [
+      640.0000305175781,
+      832.0001525878906
+    ],
+    "blenderCameraProofAttempts": 2,
+    "blenderNativeSouthSocket": [
+      28,
+      0,
+      0
+    ],
+    "blenderRenderApiCalls": 0,
+    "canonicalCitySimSouthSocket": [
+      0,
+      0,
+      28
+    ],
+    "failedSandboxedStartupAttempts": 1,
+    "failedStartupDisposition": "crashed_before_validator_entry_no_output",
+    "maximumDeltaSourcePixels": 0.000152587890625,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "result": "PASS",
+    "sourceSouthSocketPixels": [
+      640,
+      832
+    ],
+    "staticExpected": 6,
+    "staticPassed": 6,
+    "successfulBlenderCameraProofProcesses": 1,
+    "toleranceSourcePixels": 0.001
+  },
   "contactSheetInvocations": 0,
   "describe": {
     "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py --mode describe --contract Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
@@ -115,6 +149,7 @@
     "checks": {
       "acceptedBlenderFingerprint": true,
       "common44MasterNonAliasInputBound": true,
+      "currentActualCameraAndSouthSocketProofBound": true,
       "deterministicFiveFieldSemanticProofBound": true,
       "literalPlaceholderRemoved": true,
       "runnerContractShapeAndFrozenInputs": true,

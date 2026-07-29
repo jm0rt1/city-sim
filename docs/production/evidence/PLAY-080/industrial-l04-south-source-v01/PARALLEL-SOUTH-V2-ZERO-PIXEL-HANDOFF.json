@@ -1,0 +1,212 @@
+{
+  "blockers": [
+    "missing_north_appearance_lock",
+    "missing_source_production_profile"
+  ],
+  "branch": "codex/citysim-world-art-south",
+  "cameraAndSocket": {
+    "actualCameraExpected": 5,
+    "actualCameraPassed": 5,
+    "actualSourceSocketPixels": [
+      640.0000305175781,
+      832.0001525878906
+    ],
+    "blenderCameraProofAttempts": 2,
+    "blenderNativeSouthSocket": [
+      28,
+      0,
+      0
+    ],
+    "blenderRenderApiCalls": 0,
+    "canonicalCitySimSouthSocket": [
+      0,
+      0,
+      28
+    ],
+    "failedSandboxedStartupAttempts": 1,
+    "failedStartupDisposition": "crashed_before_validator_entry_no_output",
+    "maximumDeltaSourcePixels": 0.000152587890625,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "result": "PASS",
+    "sourceSouthSocketPixels": [
+      640,
+      832
+    ],
+    "staticExpected": 6,
+    "staticPassed": 6,
+    "successfulBlenderCameraProofProcesses": 1,
+    "toleranceSourcePixels": 0.001
+  },
+  "direction": "south",
+  "disposition": "v2_bound_zero_pixel_camera_socket_pass_appearance_lock_and_profile_pending",
+  "guards": {
+    "appearanceLock": {
+      "rejection": "MISSING_APPEARANCE_LOCK",
+      "stage": "before_renderer_launch",
+      "value": null
+    },
+    "sourceProductionProfile": {
+      "rejection": "MISSING_SOURCE_PRODUCTION_PROFILE",
+      "stage": "before_renderer_launch",
+      "value": null
+    }
+  },
+  "invocations": {
+    "blenderProcessLaunchAttempts": 2,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "failedSandboxedStartupAttempts": 1,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "successfulBlenderCameraProofProcesses": 1
+  },
+  "preservedV2BindingCommit": "84d622117616d6d0d6b000d446bf84484979dd38",
+  "processA": "not_run",
+  "processB": "not_run",
+  "processC": "not_run",
+  "productionSelected": false,
+  "proofs": {
+    "actualCamera": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/BRIDGE-ADOPTION-ACTUAL-CAMERA-PROOF.json",
+      "result": "PASS",
+      "sha256": "803ddde64049178a7a2ecda3ac14f228e6150bfc819d19ee9995be1ed52d7d4a"
+    },
+    "literal192": {
+      "measurementMethod": "analytic-v06-camera-semantic-cells-v1",
+      "metrics": {
+        "frameMinimumThicknessPixels": 3.428572,
+        "freightOpeningWidthsPixels": [
+          8.057143,
+          8.057143,
+          14.057144
+        ],
+        "measurementMethod": "analytic-v06-camera-semantic-cells-v1",
+        "primaryPortalPixels": [
+          14.057144,
+          21.025657
+        ],
+        "processOcclusionPixels": 0,
+        "semanticEvidence": {
+          "distinctSilhouetteRowsAtLeastTwoPixelsApart": [
+            53.520989,
+            69.917783,
+            74.176092,
+            79.546938,
+            82.317492,
+            86.715743,
+            90.229737
+          ],
+          "freightOpeningIds": [
+            "secondary-freight-west-inset",
+            "secondary-freight-center-inset",
+            "monumental-portal-inset"
+          ],
+          "headerProjectedHeightPixels": 11.242421,
+          "jambProjectedWidthsPixels": [
+            3.428572,
+            3.428572
+          ],
+          "literalViewportPixels": [
+            192,
+            128
+          ],
+          "processOccluderCount": 7,
+          "silhouetteRows": [
+            {
+              "id": "high-bay-core",
+              "literalRow": 82.317492
+            },
+            {
+              "id": "south-control-wing",
+              "literalRow": 86.715743
+            },
+            {
+              "id": "staff-vestibule",
+              "literalRow": 90.229737
+            },
+            {
+              "id": "monitor-roof-west",
+              "literalRow": 75.803789
+            },
+            {
+              "id": "monitor-roof-center",
+              "literalRow": 74.176092
+            },
+            {
+              "id": "monitor-roof-east",
+              "literalRow": 79.546938
+            },
+            {
+              "id": "rear-process-bay",
+              "literalRow": 74.718658
+            },
+            {
+              "id": "offset-foundry-stack",
+              "literalRow": 53.520989
+            },
+            {
+              "id": "rear-gantry-beam",
+              "literalRow": 69.917783
+            }
+          ],
+          "virtualSemanticCellSamples": 24576
+        },
+        "silhouetteBreaks": 7
+      },
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
+      "result": "PASS",
+      "sha256": "64805d0352c776daebd1e12c7412f690bad1f1b74d76f1fd55f6cb53d99f1da8"
+    },
+    "prelockRepair": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-REPAIR-VALIDATION.json",
+      "result": "PASS",
+      "sha256": "7631833060f10dda6678ba1b447bf0ed40d2f32b69f06dfb82fb6a08e1fd0131"
+    },
+    "static": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/BRIDGE-ADOPTION-STATIC-PROOF.json",
+      "result": "PASS",
+      "sha256": "9e4a482469ba9a7d65c77d0b52401c6918ad029c15bdcc73ba950646f7c2a6ba"
+    }
+  },
+  "publishedAuthority": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
+  "result": "PASS",
+  "runner": {
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+    "contractSha256": "cd51c9020653627125d8bba5eaf0db1488ed06331a36f3df5f1aac04a0620733",
+    "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
+    "driverSha256": "ecde7d931a3f159857b49215ad71977bd9c4066afc2ebafc724065364ca3e7c5"
+  },
+  "schema": "citysim.play-080.parallel-south-v2-zero-pixel-handoff.v1",
+  "selfAccepted": false,
+  "sourceReady": false,
+  "sourceStageV2": {
+    "bindingReceipt": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-V2-SCHEMA-BINDING.json",
+      "sha256": "5551072e7dc93334d1be4332e3a2ef9ad21a8fad52d63412c4aa0a12559d83e9"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "schemaDocumentValidation": "PASS",
+    "schemaInstanceValidation": "not_run_missing_source_production_profile",
+    "sharedBindings": {
+      "canonicalDecoder": {
+        "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+        "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+      },
+      "nonAliasLoader": {
+        "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+        "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+      },
+      "semanticValidator": {
+        "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+        "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+      }
+    }
+  },
+  "taskId": "PLAY-080"
+}

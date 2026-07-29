@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Validate the authorized PLAY-080 non-schema prelock repair.
+"""Validate and assemble the PLAY-080 parallel zero-pixel checkpoint.
 
-The guard is exercised by direct function calls, never by invoking A/B/C.
-Source-schema v1 is intentionally held and no Blender or pixel process starts.
+The production guard is exercised by direct function calls, never by invoking
+A/B/C. A separately completed Blender actual-camera proof may be consumed, but
+this validator never launches Blender or calls a render API.
 """
 
 from __future__ import annotations
@@ -24,6 +25,10 @@ SOURCE_DIR = Path(__file__).resolve().parent
 REPOSITORY_ROOT = SOURCE_DIR.parents[5]
 DEFAULT_CONTRACT = SOURCE_DIR / "runner-contract.json"
 DEFAULT_SOURCE_VALIDATOR = SOURCE_DIR / "validate_source_outputs.py"
+STATIC_CAMERA_PROOF = "BRIDGE-ADOPTION-STATIC-PROOF.json"
+ACTUAL_CAMERA_PROOF = "BRIDGE-ADOPTION-ACTUAL-CAMERA-PROOF.json"
+LITERAL_192_PROOF = "LITERAL-192-SEMANTIC-PROOF.json"
+PARALLEL_HANDOFF = "PARALLEL-SOUTH-V2-ZERO-PIXEL-HANDOFF.json"
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".webp"}
 ACCEPTED_BLENDER_SHA256 = (
     "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4"
@@ -93,6 +98,110 @@ def guard_code(function: Any, contract: dict[str, Any]) -> str:
     return "NOT_REJECTED"
 
 
+def camera_proof_gate(
+    contract: dict[str, Any], contract_sha: str, evidence_root: Path
+) -> tuple[bool, dict[str, Any], dict[str, Any]]:
+    static_path = evidence_root / STATIC_CAMERA_PROOF
+    actual_path = evidence_root / ACTUAL_CAMERA_PROOF
+    static = load_json(static_path)
+    actual = load_json(actual_path)
+    bridge = contract["coordinateBridge"]
+    validator_sha = sha256(SOURCE_DIR / "validate_bridge_adoption.py")
+
+    static_checks = static.get("checks", [])
+    actual_checks = actual.get("checks", [])
+    socket_check = next(
+        (
+            check
+            for check in actual_checks
+            if check.get("name") == "actual-camera-south-socket"
+        ),
+        {},
+    )
+    socket_details = socket_check.get("details", {})
+    actual_delta = socket_details.get("maximumDeltaSourcePixels")
+    tolerance = socket_details.get("toleranceSourcePixels")
+    proof_inputs_match = all(
+        proof.get("baselineCommit") == contract["baselineCommit"]
+        and proof.get("inputs", {}).get("contractSha256") == contract_sha
+        and proof.get("inputs", {}).get("validatorSha256") == validator_sha
+        and proof.get("inputs", {}).get("mappingContractSha256")
+        == bridge["mappingContractSha256"]
+        for proof in (static, actual)
+    )
+    zero_pixel_boundary = (
+        static.get("blenderProcessLaunches") == 0
+        and actual.get("blenderProcessLaunches") == 1
+        and all(
+            proof.get("renderInvocations") == 0
+            and proof.get("blenderRenderApiCalls") == 0
+            and proof.get("pixelFiles") == 0
+            and proof.get("imageGenInvocations") == 0
+            and proof.get("normalizerInvocations") == 0
+            and proof.get("contactSheetInvocations") == 0
+            and all(proof.get(f"process{process}") == "not_run" for process in "ABC")
+            for proof in (static, actual)
+        )
+    )
+    socket_pass = (
+        socket_check.get("pass") is True
+        and socket_details.get("expected") == [640, 832]
+        and isinstance(actual_delta, (int, float))
+        and isinstance(tolerance, (int, float))
+        and actual_delta <= tolerance
+        and bridge["canonicalCitySimSouthSocket"] == [0, 0, 28]
+        and bridge["blenderNativeDirectionalSocket"] == [28, 0, 0]
+        and bridge["sourceSocketPixels"] == [640, 832]
+    )
+    passed = (
+        proof_inputs_match
+        and static.get("result") == "PASS"
+        and len(static_checks) == 6
+        and all(check.get("pass") is True for check in static_checks)
+        and actual.get("result") == "PASS"
+        and len(actual_checks) == 5
+        and all(check.get("pass") is True for check in actual_checks)
+        and socket_pass
+        and zero_pixel_boundary
+    )
+    summary = {
+        "result": "PASS" if passed else "FAIL",
+        "staticPassed": sum(check.get("pass") is True for check in static_checks),
+        "staticExpected": 6,
+        "actualCameraPassed": sum(
+            check.get("pass") is True for check in actual_checks
+        ),
+        "actualCameraExpected": 5,
+        "canonicalCitySimSouthSocket": bridge["canonicalCitySimSouthSocket"],
+        "blenderNativeSouthSocket": bridge["blenderNativeDirectionalSocket"],
+        "sourceSouthSocketPixels": bridge["sourceSocketPixels"],
+        "actualSourceSocketPixels": socket_details.get("actual"),
+        "maximumDeltaSourcePixels": actual_delta,
+        "toleranceSourcePixels": tolerance,
+        "blenderCameraProofAttempts": 2,
+        "successfulBlenderCameraProofProcesses": actual.get(
+            "blenderProcessLaunches"
+        ),
+        "failedSandboxedStartupAttempts": 1,
+        "failedStartupDisposition": "crashed_before_validator_entry_no_output",
+        "blenderRenderApiCalls": actual.get("blenderRenderApiCalls"),
+        "renderInvocations": actual.get("renderInvocations"),
+        "pixelFiles": actual.get("pixelFiles"),
+    }
+    return passed, summary, {
+        "static": {
+            "path": display_path(static_path),
+            "sha256": sha256(static_path),
+            "result": static.get("result"),
+        },
+        "actualCamera": {
+            "path": display_path(actual_path),
+            "sha256": sha256(actual_path),
+            "result": actual.get("result"),
+        },
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
@@ -103,6 +212,7 @@ def main() -> int:
     contract = load_json(args.contract)
     evidence_root = args.evidence_root.resolve()
     before_pixels = pixel_files(SOURCE_DIR, evidence_root)
+    contract_sha = sha256(args.contract)
 
     static_checks: dict[str, bool] = {}
     try:
@@ -149,6 +259,10 @@ def main() -> int:
         and "processOcclusionPixels" in semantic_text
     )
     static_checks["sourceSchemaV1FinalBindingAbsent"] = SOURCE_SCHEMA_V1 not in owned_text
+    camera_ok, camera_summary, camera_proofs = camera_proof_gate(
+        contract, contract_sha, evidence_root
+    )
+    static_checks["currentActualCameraAndSouthSocketProofBound"] = camera_ok
 
     describe_command = [
         sys.executable,
@@ -190,7 +304,7 @@ def main() -> int:
     )
     missing_code = guard_code(run_production.require_lock, contract)
     wrong_contract = copy.deepcopy(contract)
-    contract_hash = sha256(args.contract)
+    contract_hash = contract_sha
     contract_display = display_path(args.contract)
     wrong_contract["appearanceLock"] = {
         "documentPath": contract_display,
@@ -281,6 +395,7 @@ def main() -> int:
                 "not_run_missing_source_production_profile"
             ),
         },
+        "cameraSocketGate": camera_summary,
         "pixelValidations": {
             "rgba": "not_run",
             "literal192": "not_run",
@@ -354,6 +469,111 @@ def main() -> int:
         json.dumps(binding_receipt, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    literal_path = evidence_root / LITERAL_192_PROOF
+    literal = load_json(literal_path)
+    literal_ok = (
+        literal.get("result") == "PASS"
+        and literal.get("mode") == "analytic-zero-pixel"
+        and literal.get("inputs", {}).get("runnerContract", {}).get("sha256")
+        == contract_sha
+        and literal.get("pixelFiles") == 0
+        and literal.get("renderInvocations") == 0
+        and literal.get("blenderProcessLaunches") == 0
+        and literal.get("sourceReady") is False
+    )
+    handoff_result = overall and literal_ok
+    handoff = {
+        "schema": "citysim.play-080.parallel-south-v2-zero-pixel-handoff.v1",
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "branch": contract["branch"],
+        "publishedAuthority": contract["baselineCommit"],
+        "preservedV2BindingCommit": (
+            "84d622117616d6d0d6b000d446bf84484979dd38"
+        ),
+        "result": "PASS" if handoff_result else "FAIL",
+        "runner": {
+            "contractPath": display_path(args.contract),
+            "contractSha256": contract_sha,
+            "driverPath": display_path(SOURCE_DIR / "run_production.py"),
+            "driverSha256": sha256(SOURCE_DIR / "run_production.py"),
+        },
+        "sourceStageV2": {
+            "schema": schema_record,
+            "sharedBindings": binding_receipt["sharedBindings"],
+            "schemaDocumentValidation": binding_receipt[
+                "schemaDocumentValidation"
+            ],
+            "schemaInstanceValidation": binding_receipt[
+                "schemaInstanceValidation"
+            ],
+            "bindingReceipt": {
+                "path": display_path(binding_output),
+                "sha256": sha256(binding_output),
+            },
+        },
+        "cameraAndSocket": camera_summary,
+        "proofs": {
+            **camera_proofs,
+            "literal192": {
+                "path": display_path(literal_path),
+                "sha256": sha256(literal_path),
+                "result": literal.get("result"),
+                "measurementMethod": literal.get("metrics", {}).get(
+                    "measurementMethod"
+                ),
+                "metrics": literal.get("metrics"),
+            },
+            "prelockRepair": {
+                "path": display_path(output),
+                "sha256": sha256(output),
+                "result": report["result"],
+            },
+        },
+        "guards": {
+            "sourceProductionProfile": {
+                "value": None,
+                "rejection": missing_profile_code,
+                "stage": "before_renderer_launch",
+            },
+            "appearanceLock": {
+                "value": None,
+                "rejection": missing_code,
+                "stage": "before_renderer_launch",
+            },
+        },
+        "invocations": {
+            "blenderProcessLaunchAttempts": 2,
+            "successfulBlenderCameraProofProcesses": 1,
+            "failedSandboxedStartupAttempts": 1,
+            "blenderRenderApiCalls": 0,
+            "renderInvocations": 0,
+            "imageGenInvocations": 0,
+            "normalizerInvocations": 0,
+            "contactSheetInvocations": 0,
+            "pixelFiles": 0,
+        },
+        "processA": "not_run",
+        "processB": "not_run",
+        "processC": "not_run",
+        "sourceReady": False,
+        "productionSelected": False,
+        "selfAccepted": False,
+        "blockers": [
+            "missing_north_appearance_lock",
+            "missing_source_production_profile",
+        ],
+        "disposition": (
+            "v2_bound_zero_pixel_camera_socket_pass_appearance_lock_and_profile_pending"
+        ),
+    }
+    handoff_output = evidence_root / PARALLEL_HANDOFF
+    handoff_output.write_text(
+        json.dumps(handoff, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    if not handoff_result:
+        return 1
     print(json.dumps({"result": report["result"], "output": display_path(output)}))
     return 0 if overall else 1
 

@@ -62,14 +62,22 @@ undefined queue.
 Advance each batch through this explicit state machine:
 
 `contract_pending → prelock_active → appearance_lock_pending → abc_active →
-source_ready → renderer_quarantined → 4of4_ready → exact_candidate_qa →
-integrated`
+4of4_ready → exact_candidate_qa → integrated`
 
 Only Integration advances shared batch state. Direction-local cells may report
 their own completed stage, but may not declare the family advanced. If a cell
 becomes idle before its next transition is legal, assign stage-legal
 preparation, validation, fixture, audit, or evidence work; do not bypass the
 gate and do not leave useful capacity dormant.
+
+Track each direction separately inside the batch:
+
+`predesign → source_candidate → integration_admitted|returned →
+renderer_quarantined`
+
+Keep the batch at `abc_active` while only some directions have advanced.
+Derive `4of4_ready` only when the exact North, East, South, and West packet
+identities are all Integration-admitted and Renderer-quarantined.
 
 Publish a dispatch receipt for every management turn that changes work:
 
@@ -89,7 +97,9 @@ number of branches, threads, or optimistic status labels.
 
 For directional World Art, use this default fan-out:
 
-- North is the hero/design-calibration cell and freezes the family vocabulary.
+- North is the hero/design-calibration cell and authors the proposed family
+  vocabulary; Integration freezes the shared appearance lock only after
+  independent review.
 - East, South, and West independently complete zero-pixel blockouts plus camera/socket proofs while North is under review.
 - Renderer prepares stable IDs, mapping, atlas/LOD quarantine, registration tests, fallback rejection, and staged fixture placement without activating unfinished art.
 - QA preregisters exact camera states, mature-city fixture, regular/compact layouts, interaction route, and acceptance rubric before the renderer candidate arrives.
@@ -101,6 +111,48 @@ For directional World Art, use this default fan-out:
 - Production selection and shipping activation remain atomic at four accepted directions.
 
 Only genuine shared authorities remain serialized: family-contract publication, shared toolchain changes, shipping atlas/manifest mutation, production selection, final exact-candidate QA, integration, and push.
+
+Do not dispatch a four-direction family as a North-only task. In the same
+management turn that establishes or revises the family contract, dispatch
+every legal direction cell plus Renderer intake preparation and QA
+preregistration. North appearance review is a design-calibration gate, not a
+department-wide mutex: before its lock, siblings perform zero-pixel work; after
+its lock, all authorized source processes fan out immediately. If fewer than
+three useful workstreams are acknowledged, the shared ledger must name the
+exact gate preventing each absent stream, its owner, the legal preparation
+available meanwhile, and the next refill action. “Waiting for North” is not a
+sufficient blocker for sibling blockout, Renderer intake, or QA preparation.
+
+For an active directional family, the default target is six acknowledged
+useful rows: North, East, South, West, Renderer, and QA. A missing row is legal
+only when its ledger entry names the exact stage prohibition or exhaustion of
+non-conflicting preparation. The general three-stream minimum applies to other
+work; it does not weaken this six-row family default.
+
+Publish a compute envelope with each source release. Logical cells may all
+remain active while expensive render processes run in bounded waves. Specify
+the maximum simultaneous Blender/DCC processes, assigned process slots, queue
+order, machine/resource assumptions, and exception owner. Do not create
+apparent speed by oversubscribing the machine and invalidating determinism,
+memory, or timing evidence.
+
+Source-stage direction packets may report only `source_candidate` with
+`candidateReadyForIndependentReview:true`; predesign packets may report
+`predesign_ready`.
+Integration advances a direction to `integration_admitted` only after the
+versioned handoff passes the Integration-owned semantic validator and its
+independent technical plus literal-scale review dispositions are recorded.
+This source admission is direction-local: a returned East candidate must not
+demote an admitted North, South, or West candidate. Renderer activation and
+production selection remain separately blocked until the exact admitted set
+is 4/4.
+
+For every admitted direction, publish an Integration-owned source-admission
+receipt binding the source packet path/hash, content commit, family-contract
+and appearance-lock hashes, semantic-validator path/hash/result, independent
+technical disposition, independent literal-scale disposition, admitted raw
+and decoded hashes, and resulting shared-ledger revision. Renderer quarantine
+must consume this receipt rather than a worker-authored readiness boolean.
 
 ## Keep delegation visible without pinning threads
 

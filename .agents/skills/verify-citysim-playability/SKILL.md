@@ -62,16 +62,26 @@ after seeing a result.
 For a directional art family, preregister one family-level staged-app gate.
 North, East, South, and West cells retain their own source determinism and
 geometry evidence, but they do not request separate production acceptance from
-QA. QA admits only the atomic renderer candidate containing all four exact
-accepted directions. A returned direction may continue independently without
+QA. QA evaluates only the atomic renderer candidate containing all four exact
+accepted directions and returns its disposition to Integration. A returned
+direction may continue independently without
 invalidating successful sibling source evidence; the final app journey remains
 blocked until the renderer presents a complete 4/4 family.
 
 Before 4/4 assembly, fresh QA may perform direction-local, candidate-neutral
 literal-scale source review in parallel with Renderer technical review. That
-review may accept or return a direction's source packet, but it is not
-staged-app evidence, renderer ingestion, production acceptance, or permission
-to activate a partial family.
+review may recommend `pass` or `return` for Integration's direction-local
+source admission, but QA must not write `integration_admitted` into the shared ledger
+or the worker packet. It is not staged-app evidence, renderer ingestion,
+production acceptance, or permission to activate a partial family. A failed
+direction returns independently; successful sibling review evidence remains
+valid when bound to unchanged exact packets and source commits.
+
+Run simultaneous direction-local source reviews only through read-only
+reviewers or disjoint temporary/evidence roots. One QA assembler owns the
+claimed evidence packet and commit, preventing concurrent writers from
+changing the acceptance record. Parallel source review never overlaps the
+single final exact-candidate staged-app journey.
 
 ## Admit one exact candidate
 
@@ -90,7 +100,8 @@ Before the final journey:
 
 Candidate-neutral fixture checks, camera proof, harness validation, and rubric
 review should run ahead in parallel. The final exact-candidate real-app journey
-is deliberately serialized and is the only QA production-acceptance gate.
+is deliberately serialized and is the mandatory QA evidence gate; Integration
+alone owns production acceptance.
 
 ## Execute
 

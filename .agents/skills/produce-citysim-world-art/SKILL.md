@@ -77,9 +77,11 @@ named orientation. Run all Integration-authorized cells concurrently:
    that direction to repair. Successful siblings retain their independent
    candidates and continue to handoff; they may not lend pixels, masks, scene
    geometry, or transformed coordinates to the failed cell.
-4. **At selection:** accept and quarantine directions independently, but keep
-   production selection and shipping activation blocked until Integration has
-   the exact accepted N/E/S/W set. Selection is atomic at 4/4.
+4. **At handoff:** return direction candidates independently. Integration
+   admits source candidates and Renderer quarantines admitted directions;
+   direction cells perform neither action. Production selection and shipping
+   activation remain blocked until Integration has the exact admitted and
+   Renderer-quarantined N/E/S/W set. Selection is atomic at 4/4.
 
 Direction cells never edit shared family contracts, material libraries,
 authoring tools, shipping manifests, atlas slots, or sibling files unless
@@ -103,6 +105,20 @@ the stage authorized by the claim:
   and
 - assign exactly one direction-local assembler to validate the complete packet
   and write the final handoff after all required jobs settle.
+
+Follow this dependency graph; concurrency does not authorize consumers to race
+unfinished inputs:
+
+`raw A/B/C fan-out → per-process provenance/RGBA fan-out → identity join →
+normalization-repeat fan-out → literal color/grayscale/contact-sheet fan-out →
+single packet assembly`
+
+Emit one machine-readable parallel-execution receipt containing the frozen
+scene, material, schema, toolchain, and authority hashes; process IDs and
+distinct roots; start/end timestamps; exactly-one-invocation assertions;
+actual overlap; join results; validation-job roots; and the final assembler
+identity. If Integration's compute envelope requires a sequential render wave,
+record the resource exception and queue order; do not falsely claim overlap.
 
 North's pre-lock process-A appearance calibration remains a one-process gate.
 The internal A/B/C fan-out begins for North only after Integration publishes
@@ -190,13 +206,26 @@ predesign packet records pixel production and A/B/C as `not_produced` and may
 declare only `predesign_ready`; never invent placeholder hashes. A source
 packet additionally includes raw/normalized hashes, A/B/C identity results,
 contact-sheet paths, and rejected-attempt inventory, and may declare only that
-direction `source_ready`. Neither stage may declare the four-direction family
-selected.
+direction `source_candidate` with
+`candidateReadyForIndependentReview:true`. It must keep
+`sourceReady`, `integrationAdmitted`, `rendererQuarantined`, and
+`productionSelected` false. A direction worker never self-accepts source art:
+Integration alone advances the shared ledger to `integration_admitted` after the
+Integration-owned semantic validator and independent technical plus
+literal-scale reviews pass. Neither stage may declare the four-direction
+family selected.
 Integration assigns the later 4/4 assembly owner for the combined N/E/S/W
 source-size, actual-game-scale, and grayscale family sheets.
 
 Validate every packet against the exact versioned JSON schema published by
-Integration and record the schema path/hash plus validation command/result.
+Integration and then run the Integration-owned semantic validator. Record the
+schema path/hash, semantic-validator path/hash, common accepted-master
+non-alias authority path/hash/count/set digest, validation commands, and
+results. Direction-local validators may consume the common loader; they must
+not copy, truncate, reinterpret, or replace its forbidden inventory. Schema
+validation alone is insufficient because it cannot prove repository paths,
+file hashes, commit ancestry, process-root isolation, A/B/C identity, LOD
+dimensions, or non-alias intersection.
 Use this direction-local commit sequence unless the claim narrows it further:
 
 1. zero-pixel scene/design checkpoint with the static and actual-camera proofs;

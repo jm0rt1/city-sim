@@ -43,8 +43,24 @@ Begin non-shipping renderer preparation as soon as Integration publishes an immu
 2. Prepare claimed quarantine mapping, logical atlas-slot reservations, LOD validation, pivot/socket/frontage tests, alias and transformed-sibling rejection, fallback rejection, fixture placement, and staged-camera acceptance states before final pixels arrive. Keep these changes non-shipping; shared atlas pages, production manifests, package topology, and production selection remain serialized Integration-controlled mutations.
 3. Admit each returned direction independently into a task-owned quarantine. Bind its exact source commit and decoded-pixel hashes, then validate provenance, semantic direction, unique geometry, registration, alpha/chroma/padding, every LOD, deterministic reruns, and absence of mirroring, rotation, sibling aliasing, or fallback substitution. Record success as renderer quarantine acceptance, never QA or production acceptance.
 4. Preserve a passing direction while returning only a failing direction to its source cell. Never make East wait for South or invalidate North because West failed. Emit one task-owned, versioned quarantine packet per direction with the source handoff schema/hash, exact source commit, decoded hashes, validation result, and disposition. Integration alone updates the shared batch ledger with columns for North, East, South, West, renderer preparation, and QA preparation. Renderer owns only its claimed quarantine/intake paths and never edits World Art source roots.
-5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West set is 4/4 accepted and Integration authorizes the shipping mutation.
-6. When the fourth direction passes, immediately assemble the exact 4/4 set as one atomic renderer candidate and run source-to-pack identity plus resource-integrity checks. Stage the real app through the Integration-authorized candidate-only resource path. If staging would require an unapproved shared shipping atlas or manifest mutation, stop and request that authority. Do not silently substitute a newer source, nearby baseline, or partially accepted family.
+5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West packets are all Integration-admitted and independently Renderer-quarantined, and Integration authorizes the shipping mutation.
+6. When the fourth exact Integration-admitted direction passes Renderer quarantine, immediately assemble the frozen 4/4 set as one atomic renderer candidate and run source-to-pack identity plus resource-integrity checks. Stage the real app through the Integration-authorized candidate-only resource path. If staging would require an unapproved shared shipping atlas or manifest mutation, stop and request that authority. Do not silently substitute a newer source, nearby baseline, or partially accepted family.
+
+A worker-authored source packet is an independent-review candidate, not
+`integration_admitted` authority. Before marking a direction renderer-quarantined,
+require the exact Integration source-admission receipt that binds the packet,
+content commit, semantic-validator result, and independent technical plus
+literal-scale dispositions. Intake harness preparation and focused
+candidate inspection may run before that receipt, but normal runtime lookup,
+shipping mutation, and quarantine acceptance may not.
+
+At direction-local intake, compare the candidate against the complete
+Integration-published accepted-master set and every sibling packet already
+admitted for this batch. Do not claim proof against a sibling that has not yet
+arrived. At the exact 4/4 join, rerun complete North/East/South/West source,
+LOD, geometry, and D4 transform uniqueness across the frozen set. Parallel
+direction checks write only direction-exclusive receipts or temporary roots;
+one Renderer assembler owns common candidate and commit surfaces.
 
 ## Use tiered intake gates
 
@@ -72,10 +88,10 @@ separate serialized mutation after all four exact packet identities pass.
 
 1. Prefer focused renderer components, cached reusable geometry/textures, and incremental tile updates.
 2. Add unit/contract coverage for topology, identity, detail levels, hit testing, or state mapping.
-3. Run the complete Swift suite and `git diff --check`.
-4. Build and operate the real staged app: pan, zoom, inspect, build, reject, select, overlay, undo.
-5. Capture default, compact, city, neighborhood, normal, overlay, and interaction proof when affected.
-6. Record performance before and after; inspect accumulating nodes/actions during longer play.
+3. For ordinary renderer features, run the complete Swift suite and `git diff --check`; for directional intake, defer the complete suite until exact 4/4 and run focused packet gates beforehand.
+4. For ordinary renderer features, build and operate the real staged app. For directional intake, do this once for the exact 4/4 renderer candidate: pan, zoom, inspect, build, reject, select, overlay, undo.
+5. At that final renderer-candidate stage, capture default, compact, city, neighborhood, normal, overlay, and interaction proof when affected.
+6. Record performance before and after at the final affected candidate; inspect accumulating nodes/actions during longer play.
 7. Disclose when a deterministic harness substitutes for window capture.
 
 ## Shared-contract rule

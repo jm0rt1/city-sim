@@ -50,9 +50,12 @@ copy a sibling scene as the starting geometry; author each orientation
 explicitly from the shared family requirements.
 
 Do not edit `Rendering/`, shipping atlas pages, production selection, shared
-manifest types, package/build scripts, gameplay, simulation, UI, saves,
-PLAY-024 artifacts, or legacy Python. Ask integration before any new shared
-contract. Never push, integrate, or self-accept.
+manifest types, shared family/material/toolchain contracts, package/build
+scripts, gameplay, simulation, UI, saves, PLAY-024 artifacts, or legacy
+Python. A direction cell must return any required shared-surface change to
+Integration for publication or to a separately claimed non-direction
+shared-toolchain writer; Integration may not appoint North, East, South, or
+West as that writer. Never push, integrate, or self-accept.
 
 ## Fan out one family across direction cells
 
@@ -93,9 +96,10 @@ named orientation. Run all Integration-authorized cells concurrently:
    Renderer-quarantined N/E/S/W set. Selection is atomic at 4/4.
 
 Direction cells never edit shared family contracts, material libraries,
-authoring tools, shipping manifests, atlas slots, or sibling files unless
-Integration assigns one explicit shared-surface writer. Never copy, mirror,
-rotate, transform, or derive sibling scene geometry or pixels.
+shared authoring tools, shipping manifests, atlas slots, or sibling files.
+Shared changes return to Integration or a separately claimed non-direction
+shared-toolchain writer. Never copy, mirror, rotate, transform, or derive
+sibling scene geometry or pixels.
 
 A post-lock production claim and dispatch authority must bind the exact claim
 revision and published base; appearance-lock and source-production-profile

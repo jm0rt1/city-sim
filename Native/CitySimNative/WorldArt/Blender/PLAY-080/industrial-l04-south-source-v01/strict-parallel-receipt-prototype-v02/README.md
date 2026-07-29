@@ -14,7 +14,8 @@ The model validates:
 - schedule separation from direction-local grants, results, observations,
   joins, and assembler evidence;
 - exact allocation, attempt, slot, half-open lease, FIFO dispatch-sequence,
-  and echoed scheduler-event identity bindings;
+  unique allocation ID, same-slot planned-lease/acquire FIFO, and echoed
+  scheduler-event identity bindings;
 - portable, canonical, repository-relative paths with nofollow checks for
   existing components and input files;
 - half-open process windows (`[start,end)`) with end events swept before start

@@ -455,9 +455,14 @@ def validate_allocations_and_dispatch(
     dict[str, dict[str, Any]],
 ]:
     allocations: dict[str, dict[str, Any]] = {}
+    allocation_ids: set[str] = set()
     all_intervals: dict[str, tuple[dt.datetime, dt.datetime]] = {}
     for allocation in schedule["allocations"]:
         attempt_id = allocation["attemptId"]
+        allocation_id = allocation["allocationId"]
+        if allocation_id in allocation_ids:
+            reject("DUPLICATE_ALLOCATION_ID", allocation_id)
+        allocation_ids.add(allocation_id)
         if attempt_id not in attempts:
             reject("ALLOCATION_UNKNOWN_ATTEMPT", attempt_id)
         if (
@@ -572,6 +577,28 @@ def validate_allocations_and_dispatch(
         allocation["attemptId"] for allocation in schedule["allocations"]
     ]:
         reject("FIFO_DISPATCH_ORDER_CHANGED", dispatch_order)
+    for slot in range(schedule["limits"]["localPlannedDccCap"]):
+        expected_acquire_order = [
+            allocation["attemptId"]
+            for allocation in schedule["allocations"]
+            if allocation["state"] == "planned"
+            and allocation["preassignedSlot"] == slot
+        ]
+        observed_acquire_order = [
+            event["attemptId"]
+            for event in events
+            if event["kind"] == "slot_acquired"
+            and allocations[event["attemptId"]]["preassignedSlot"] == slot
+        ]
+        if observed_acquire_order != expected_acquire_order:
+            reject(
+                "SAME_SLOT_ACQUIRE_FIFO_CHANGED",
+                {
+                    "slot": slot,
+                    "expected": expected_acquire_order,
+                    "observed": observed_acquire_order,
+                },
+            )
 
     cancellation = schedule["cancellationPolicy"]
     if set(cancellation["cancelledAttemptIds"]) != expected_cancelled:
@@ -602,6 +629,29 @@ def validate_allocations_and_dispatch(
             slot_peak, _ = half_open_peak(slot_intervals)
             if slot_peak > 1:
                 reject("SAME_SLOT_PLANNED_OVERLAP", {"slot": slot, "peak": slot_peak})
+        slot_allocations = sorted(
+            (
+                allocation
+                for allocation in allocations.values()
+                if allocation["state"] == "planned"
+                and allocation["preassignedSlot"] == slot
+            ),
+            key=lambda allocation: allocation["dispatchSequence"],
+        )
+        for previous, current in zip(slot_allocations, slot_allocations[1:]):
+            previous_interval = all_intervals[previous["attemptId"]]
+            current_interval = all_intervals[current["attemptId"]]
+            if previous_interval[1] > current_interval[0]:
+                reject(
+                    "SAME_SLOT_PLANNED_LEASE_FIFO_CHANGED",
+                    {
+                        "slot": slot,
+                        "previousAttemptId": previous["attemptId"],
+                        "previousDispatchSequence": previous["dispatchSequence"],
+                        "currentAttemptId": current["attemptId"],
+                        "currentDispatchSequence": current["dispatchSequence"],
+                    },
+                )
 
     mode = schedule["scheduleMode"]
     exception = schedule["resourceException"]

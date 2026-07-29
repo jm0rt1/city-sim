@@ -376,6 +376,40 @@ def run_negative_cases() -> list[dict[str, Any]]:
         del schedule
         receipt["processes"]["A"]["allocationId"] = "south-allocation-999"
 
+    def duplicate_allocation_id(
+        schedule: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        del receipt
+        schedule["allocations"][1]["allocationId"] = schedule["allocations"][0][
+            "allocationId"
+        ]
+
+    def same_slot_planned_lease_fifo_reversed(
+        schedule: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        del receipt
+        first = schedule["allocations"][0]
+        last = schedule["allocations"][2]
+        first["notBeforeUtc"], last["notBeforeUtc"] = (
+            last["notBeforeUtc"],
+            first["notBeforeUtc"],
+        )
+        first["notAfterUtc"], last["notAfterUtc"] = (
+            last["notAfterUtc"],
+            first["notAfterUtc"],
+        )
+
+    def same_slot_acquire_fifo_reversed(
+        schedule: dict[str, Any], receipt: dict[str, Any]
+    ) -> None:
+        del receipt
+        first_acquire = schedule["dispatchEvents"][6]
+        second_acquire = schedule["dispatchEvents"][7]
+        first_acquire["attemptId"], second_acquire["attemptId"] = (
+            second_acquire["attemptId"],
+            first_acquire["attemptId"],
+        )
+
     def scheduler_event_mismatch(
         schedule: dict[str, Any], receipt: dict[str, Any]
     ) -> None:
@@ -525,6 +559,9 @@ def run_negative_cases() -> list[dict[str, Any]]:
         ("reversed-interval", "INVALID_HALF_OPEN_INTERVAL", "cap2_overlap", reversed_interval, False, True),
         ("lease-escape", "OBSERVED_INTERVAL_OUTSIDE_ALLOCATION", "cap2_overlap", lease_escape, False, True),
         ("allocation-mismatch", "OBSERVED_ALLOCATION_BINDING_MISMATCH", "cap2_overlap", allocation_mismatch, False, True),
+        ("duplicate-allocation-id", "DUPLICATE_ALLOCATION_ID", "cap2_overlap", duplicate_allocation_id, False, True),
+        ("same-slot-planned-lease-fifo-reversed", "SAME_SLOT_PLANNED_LEASE_FIFO_CHANGED", "cap2_overlap", same_slot_planned_lease_fifo_reversed, False, True),
+        ("same-slot-acquire-fifo-reversed", "SAME_SLOT_ACQUIRE_FIFO_CHANGED", "cap1_exception", same_slot_acquire_fifo_reversed, False, True),
         ("scheduler-event-mismatch", "SCHEDULER_EVENT_REFERENCE_MISMATCH", "cap2_overlap", scheduler_event_mismatch, False, True),
         ("cancellation-escapes-direction", "SCHEMA_INVALID", "cap2_overlap", cancellation_escape, False, True),
         ("retry-chain-broken", "INVALID_RETRY_CHAIN", "cap1_exception", retry_chain_broken, True, True),

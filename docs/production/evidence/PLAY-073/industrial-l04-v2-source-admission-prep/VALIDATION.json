@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "task": "PLAY-073",
+  "disposition": "ready_for_integration_review_nonshipping",
+  "publishedAuthority": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
+  "synchronizationMerge": "c833f1c4e5c6a2f226d28523e0bfea9fa2e26fec",
+  "selfContainedHarnessCommit": "139b2429a7bd629e69156a216b57a5e14455ea17",
+  "preservedNonAdoptableLegacyCheckpoint": "62ea57faa42d7324809f028bfc699e069ecd7f31",
+  "inputs": {
+    "harnessPath": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4V2SourceAdmissionHarnessTests.swift",
+    "harnessSha256": "c2d67e04d3f930d71b695bc1456c31342e777ede4b21be978ff82e89a141f7ea",
+    "sourceStageSchemaV2Sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+    "semanticValidatorV2Sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340",
+    "canonicalDecoderV1Sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab",
+    "acceptedMasterNonAliasV1Sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+  },
+  "validation": {
+    "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
+    "result": "4_passed_0_failed",
+    "testElapsedSeconds": 0.013,
+    "incrementalBuildSeconds": 1.49,
+    "directionPacketStrictShape": true,
+    "sourceAdmissionStrictShape": true,
+    "workerSelfAdmissionRejected": true,
+    "missingAdmissionRejected": true,
+    "missingAdmissionFieldRejected": true,
+    "unknownAdmissionNestedFieldRejected": true,
+    "fallbackRejected": true,
+    "registrationDriftRejected": true,
+    "sourceAliasRejected": true,
+    "transformedSiblingRejected": true,
+    "lodIdentityCount": 12,
+    "d4IdentityCount": 32,
+    "fixturePreparationCount": 4,
+    "zeroThroughThreeNonActivating": true,
+    "fourOfFourReadyForAtomicAssemblyOnly": true
+  },
+  "selfContainedDelta": {
+    "legacyIndustrialL4IntakeTestsReferenced": false,
+    "legacyIndustrialL4SupportTypesReferenced": false,
+    "productTypesReferenced": false,
+    "addedTestTargetFiles": 1,
+    "modifiedExistingFiles": 0
+  },
+  "boundaries": {
+    "actualDirectionPacketsAccepted": 0,
+    "actualIntegrationAdmissionReceiptsAccepted": 0,
+    "syntheticPacketsOnly": true,
+    "sourceArtChanged": false,
+    "atlasOrManifestChanged": false,
+    "runtimeMappingChanged": false,
+    "fixtureBytesChanged": false,
+    "packageChanged": false,
+    "productRenderingChanged": false,
+    "stagedAppRun": false,
+    "fullSuiteRun": false,
+    "productionSelected": false
+  }
+}

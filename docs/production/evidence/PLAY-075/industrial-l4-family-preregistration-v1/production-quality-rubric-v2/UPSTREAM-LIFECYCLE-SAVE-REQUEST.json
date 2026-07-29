@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-075_UPSTREAM_INDUSTRIAL_LIFECYCLE_SAVE_REQUEST",
+  "status": "REQUEST_READY_FOR_INTEGRATION_DISPATCH",
+  "authority": {
+    "claim": "PLAY-075",
+    "requestingLane": "codex/citysim-playtest-quality",
+    "requestedOwningLane": "codex/citysim-simulation-platform",
+    "qaHeadBeforeRequest": "ada459cb48f271859b10a9c8dcec98a0c7fc886e",
+    "publishedMasterInspectedReadOnly": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
+    "syncPerformed": false,
+    "mergePerformed": false
+  },
+  "blockingInput": {
+    "code": "BLOCK_MISSING_EXACT_EARLY_RECOVERED_SAVE_BINDINGS",
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/EARLY-RECOVERED-BINDING-BLOCKER.json",
+    "sha256": "2b7a66b50f20e859281a55806cc529e10ee46d0a8e4993f4f6e85b6f76cc3a5c",
+    "publishedImport": {
+      "commit": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
+      "gitBlob": "b0df55608967f35586e48323df2fed318358e0b2",
+      "byteIdenticalToQaCheckpoint": true
+    }
+  },
+  "frozenCorpusAuthority": {
+    "fixtureRoot": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/",
+    "manifest": {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-states-manifest-v3.json",
+      "gitBlobAtPublishedMaster": "40df8ccd154677f67d3141b33372ba406fc6346f",
+      "sha256": "9eed6405adc84b8bdf025bb2ac1365b327c8659bdbf0384bc6f172d6c9a2aace",
+      "authorityCommit": "85b8963193fde123be6e3e9321860c19aa61969c",
+      "sourceStoryManifestSHA256": "cfbff099a9064f83cbf1a279987722191ec23acc1f03b915bba816169543003a",
+      "fixtureSet": "PLAY-078 post-PLAY-076 visible-city states",
+      "schemaVersion": 1,
+      "fingerprintVersion": 1,
+      "seed": 42
+    },
+    "historicalPreservation": {
+      "required": true,
+      "rule": "VisibleCityStates v1-v3 and every existing fixture byte remain unchanged. Any new output is additive and versioned unless Integration publishes a binding-only receipt over existing exact bytes."
+    }
+  },
+  "requestedRubricBindings": [
+    {
+      "rubricState": "early",
+      "requiredPlayerMeaning": "A nonterminal Industrial city after the first Industrial construction is complete and occupied, before first-act pressure or any recovery path begins.",
+      "requiredLifecycleSemantics": {
+        "status": "playing",
+        "strategy": "industrialExpansion",
+        "strategyDistrictKind": "industrial",
+        "strategyPhase": "opportunity",
+        "secondActPhase": null,
+        "recoveryResolution": null,
+        "townCharterAwarded": false,
+        "focusKind": "industrial",
+        "focusTileConstructionProgress": 1,
+        "focusTileOccupancyComparator": "greater_than",
+        "focusTileOccupancyThreshold": 0,
+        "pressureOrRecoveryActive": false
+      },
+      "requiredReplayRelationship": {
+        "predecessorLifecycle": "construction",
+        "operation": "advance_four_deterministic_simulation_steps",
+        "expectedResult": "byte_and_state_equivalent_to_requested_early_save"
+      },
+      "minimalExistingBindingCandidate": {
+        "manifestId": "industrial-active-district-v3",
+        "manifestLifecycle": "active",
+        "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-industrial-active-district-v3.json",
+        "gitBlobAtPublishedMaster": "af685a8ac6479f97ab12e342a75a726250e58497",
+        "sha256": "48a45a4f3901eee09fca2bcf10315381e421dbc605ffa050e13fbee5dc17fdc3",
+        "expectedStateDigest": "1a47eeb6c6a20b742c121f4b8f1e39a8682df54a8ede1528e8715f99885126ca",
+        "spatialDigest": "e2646bba29246376e3e3a2a5c735cd3a7b1ee718cd29fe850cc67d25e0bf7fe7",
+        "diagnosticDigest": "62c0966c63078521177fe9eb6011c0396d2ec6ee38b571cd1d48ba46c294a63e",
+        "activityDigest": "de199fb7d9f0e0e03cefd31e7873c0f7f69ba07b53ea6bcccdaf5783e6bbe6de",
+        "tick": 68,
+        "focusCoordinate": {
+          "x": 5,
+          "y": 8
+        },
+        "bindingRule": "Eligible only if Simulation reproduces every required semantic, replay, digest, and round-trip gate and Integration explicitly publishes early_to_active as a rubric mapping. QA does not infer this mapping."
+      }
+    },
+    {
+      "rubricState": "recovered",
+      "requiredPlayerMeaning": "A nonterminal Industrial city after the authorized Industrial recovery has visibly removed acute pressure and entered qualification, while retaining truthful residual recovery evidence before terminal completion.",
+      "requiredLifecycleSemantics": {
+        "status": "playing",
+        "strategy": "industrialExpansion",
+        "strategyDistrictKind": "industrial",
+        "strategyPhase": "completed",
+        "secondActPhase": "qualification",
+        "recoveryResolution": "industrialUtilityExpansion",
+        "townCharterAwarded": true,
+        "regionalCapitalAwarded": false,
+        "focusKind": "industrial",
+        "focusTileConstructionProgress": 1,
+        "industrialTilesBelowCondition04": 0,
+        "industrialTilesAtLeast04AndBelow075": 1,
+        "terminalStateAllowed": false,
+        "pressuredLifecycleAllowed": false
+      },
+      "requiredReplayRelationship": {
+        "predecessorLifecycle": "pressured",
+        "operation": "replayRegionalRecoveryToQualification_with_industrialUtilityExpansion",
+        "expectedResult": "byte_and_state_equivalent_to_requested_recovered_save",
+        "requiredSuccessor": "terminal_replay_remains_exact"
+      },
+      "minimalExistingBindingCandidate": {
+        "manifestId": "industrial-recovering-district-v3",
+        "manifestLifecycle": "recovering",
+        "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-industrial-recovering-district-v3.json",
+        "gitBlobAtPublishedMaster": "9b408b2d01763b5a986287e968f4732e67c2a420",
+        "sha256": "5a278e43873f364c986545a856eec6a8ba4315b712b843028dcc5d8e602720f4",
+        "expectedStateDigest": "a1525b36f38fc0fb2dfbd042d8fd8748088cbc57f9f3f1549be1e3f88653ad7d",
+        "spatialDigest": "de91f0b9d99398508b4eb4c5e84ac1dc1e8abb0cc401ff7b64bf748bbf3e816c",
+        "diagnosticDigest": "befd4256642557eb7d266e5f0412affeb8a6b608410258f0f943e4cd8ad84d25",
+        "activityDigest": "c4aef758a8dc4d22fba33e234a7208a0567ee1e04790c7669566e609d45b6fee",
+        "tick": 992,
+        "focusCoordinate": {
+          "x": 4,
+          "y": 8
+        },
+        "focusCondition": 0.64,
+        "focusLevel": 3,
+        "bindingRule": "Eligible only if Simulation reproduces every required semantic, replay, digest, and round-trip gate and Integration explicitly publishes recovered_to_recovering as a rubric mapping. QA does not infer this mapping."
+      }
+    }
+  ],
+  "permittedResolutionModes": [
+    {
+      "id": "bind_existing_exact_bytes",
+      "preferred": true,
+      "fixtureMutationAllowed": false,
+      "manifestMutationAllowed": false,
+      "requirement": "Simulation validates the two minimal existing binding candidates and Integration publishes one exact binding receipt that maps both rubric roles to the unchanged exact paths, hashes, digests, and manifest entries."
+    },
+    {
+      "id": "additive_versioned_fixture_outputs",
+      "preferred": false,
+      "fixtureMutationAllowedByThisRequest": false,
+      "requiresSeparateIntegrationIssuedSimulationClaim": true,
+      "requirement": "If either existing save fails the requested meaning, Simulation may produce additive versioned outputs only under a separate claim. Existing fixture and manifest bytes may not be renamed, replaced, or rewritten, and no save schema, fingerprint algorithm, gameplay balance, renderer, UI, or art change is authorized by this request."
+    }
+  ],
+  "requiredOutputIdentity": {
+    "integrationBindingReceipt": {
+      "publishedCommit": "required_full_git_sha",
+      "path": "required_exact_repository_path",
+      "gitBlob": "required_full_git_blob_sha",
+      "sha256": "required_full_sha256",
+      "requestPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/UPSTREAM-LIFECYCLE-SAVE-REQUEST.json",
+      "requestSHA256": "required_after_qa_commit"
+    },
+    "simulationCandidate": {
+      "commit": "required_full_git_sha",
+      "branch": "codex/citysim-simulation-platform",
+      "basePublishedMaster": "required_full_git_sha",
+      "cleanStatus": true,
+      "claimPath": "required_exact_repository_path"
+    },
+    "manifestAuthorityFields": [
+      "exactPath",
+      "gitBlob",
+      "sha256",
+      "authorityCommit",
+      "sourceStoryManifestSHA256",
+      "fixtureSet",
+      "schemaVersion",
+      "fingerprintVersion",
+      "seed"
+    ],
+    "perStateAuthorityFields": [
+      "rubricState",
+      "manifestId",
+      "manifestLifecycle",
+      "semanticMapping",
+      "exactPath",
+      "gitBlob",
+      "sha256",
+      "byteCount",
+      "expectedStateDigest",
+      "spatialDigest",
+      "diagnosticDigest",
+      "activityDigest",
+      "tick",
+      "status",
+      "strategy",
+      "strategyDistrictKind",
+      "strategyPhase",
+      "secondActPhase",
+      "recoveryResolution",
+      "focusCoordinate",
+      "focusKind",
+      "schemaVersion",
+      "fingerprintVersion",
+      "replayProvenance"
+    ]
+  },
+  "deterministicMaterializationGates": [
+    {
+      "id": "two_independent_output_roots",
+      "requirement": "Build the requested corpus or binding validation twice in disjoint caller-supplied temporary roots."
+    },
+    {
+      "id": "recursive_byte_identity",
+      "requirement": "The two output roots and their receipts are recursively byte-identical."
+    },
+    {
+      "id": "committed_bytes_match_generation",
+      "requirement": "Every admitted save and manifest byte equals its generated artifact and published Git blob."
+    },
+    {
+      "id": "manifest_hash_and_count",
+      "requirement": "Every admitted entry has exact SHA-256 and byteCount values matching the file, with unique id and path."
+    },
+    {
+      "id": "digest_reproduction",
+      "requirement": "State, spatial, diagnostic, and activity digests reproduce exactly from each admitted save."
+    },
+    {
+      "id": "fingerprint_repeat_identity",
+      "requirement": "At least five independent fingerprints per state yield the single manifest expectedStateDigest."
+    },
+    {
+      "id": "historical_byte_preservation",
+      "requirement": "Legacy schema fixtures, StoryStates v1-v4, VisibleCityStates v1-v3, and all previously published fixture hashes remain byte-exact."
+    }
+  ],
+  "roundTripAndPersistenceGates": [
+    {
+      "id": "primary_load",
+      "requirement": "Primary load returns the exact state, schema version 1, fingerprint version 1, manifest focus kind, and every declared digest."
+    },
+    {
+      "id": "save_round_trip",
+      "requirement": "Saving the loaded state reproduces the original fixture bytes exactly and preserves the expected fingerprint."
+    },
+    {
+      "id": "store_load_contract",
+      "requirement": "Player-store load reproduces the exact state, pauses simulation, clears Undo, and retains the authoritative load feedback."
+    },
+    {
+      "id": "corrupt_primary_backup_recovery",
+      "requirement": "With corrupt primary and exact fixture bytes as backup, load recovers the identical state and fingerprint without rewriting either supplied input."
+    },
+    {
+      "id": "snapshot_immutability",
+      "requirement": "Presentation snapshot state, fingerprint, spatial consequences, and derived digests remain immutable after live store mutation."
+    },
+    {
+      "id": "playing_state_undo",
+      "requirement": "A valid reversible player command followed by Undo restores the exact fixture state and expected fingerprint."
+    }
+  ],
+  "acceptedL3RehearsalUnlock": {
+    "currentStatus": "BLOCKED",
+    "allConditionsRequired": [
+      "Both early and recovered bindings appear in one Integration-published receipt.",
+      "The receipt binds this request SHA-256 and the exact Simulation candidate.",
+      "Every required output identity field is non-null and verified.",
+      "Every deterministic materialization and round-trip gate passes.",
+      "The blocker file remains preserved and is closed only by additive evidence.",
+      "No candidate-specific renderer, art, pixel, or scoring evidence is mixed into the receipt."
+    ],
+    "thenAllowed": "One accepted-L3 baseline rehearsal may record six numeric camera states, the regular content rectangle, and the player-visible capture route.",
+    "proofBoundary": "The rehearsal is candidate-neutral harness proof only. It is not Industrial L4 evidence, PLAY-075 scoring, production acceptance, or authority to begin the final staged-app gate."
+  },
+  "failClosedNegatives": [
+    "missing_early_binding",
+    "missing_recovered_binding",
+    "one_state_only",
+    "active_relabeled_early_without_integration_mapping",
+    "recovering_relabeled_recovered_without_integration_mapping",
+    "lifecycle_semantics_mismatch",
+    "replay_relationship_mismatch",
+    "status_or_progression_mismatch",
+    "focus_coordinate_or_kind_mismatch",
+    "path_outside_authorized_fixture_root",
+    "unpublished_or_uncommitted_save",
+    "missing_or_stale_manifest_authority",
+    "null_or_mismatched_hash_or_digest",
+    "duplicate_manifest_id_or_path",
+    "two_run_materialization_difference",
+    "save_round_trip_byte_difference",
+    "schema_or_fingerprint_version_drift",
+    "historical_fixture_byte_drift",
+    "existing_fixture_rename_overwrite_or_rewrite",
+    "product_save_schema_gameplay_renderer_ui_or_art_change_without_separate_authority",
+    "candidate_specific_coaching_or_measurement",
+    "app_launch_capture_score_or_acceptance_claim"
+  ],
+  "scope": {
+    "requestOnly": true,
+    "fixturesCreatedOrRenamed": 0,
+    "productFilesChanged": 0,
+    "sharedManifestsChanged": 0,
+    "appLaunches": 0,
+    "captures": 0,
+    "pixelsInspected": false,
+    "measurements": 0,
+    "scores": 0,
+    "acceptanceDecisions": 0,
+    "productBehavior": "UNVERIFIED"
+  }
+}

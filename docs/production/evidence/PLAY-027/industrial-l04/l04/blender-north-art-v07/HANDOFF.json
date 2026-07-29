@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "candidate": "industrial-l04-north-v07-asymmetric-roofless-hammerhead",
+  "authorityBase": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "synchronizationMerge": "7a404d191b71c24603ace68c497d12136163d707",
+  "initialDesignCheckpoint": "f81db1e60933259e86a0b613de54582eec083308",
+  "finalDesignCheckpoint": "6811a287d614f03d29e383d8abad5ad402c0f572",
+  "inputs": {
+    "sceneSHA256": "010ceee7aa1917e767ffb93faea6de1cdc1c31f85513b105de7efce16c7dde25",
+    "artContractSHA256": "31531be3d4e384eb033467e1edd53fdc59b8083c021b253c766642c03fbc123a",
+    "staticValidationSHA256": "43689c4263bd88c8826fa51aae10fb9fa010c29b1951e4088415845e65100cdf",
+    "staticValidatorSHA256": "71571122ba03f1aecf4c36402d633324357c1f70b347a75e9f16c33aa05d1a68",
+    "actualCameraProofToolSHA256": "42befeea211f8657b68af0fa69b3fe80d23fd9f73a54a0d86cbb20743be4258e",
+    "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "actualCameraResult": {
+    "reportSHA256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+    "validationPassed": true,
+    "registrationMaximumAbsoluteDeltaSourcePixels": 0.00018310546897737368,
+    "courtSocketDistanceCompactPixels": 0,
+    "courtSocketComponentVisiblePixels": 190,
+    "openThroatCompactBounds": [
+      15,
+      23
+    ],
+    "openThroatVisiblePixels": 280,
+    "visibleRevealCount": 3,
+    "freightRecessVisiblePixels": {
+      "a": 23,
+      "b": 14,
+      "c": 32
+    },
+    "staffEntryCompactBounds": [
+      4,
+      10
+    ],
+    "visibleMonitorCount": 4,
+    "heightBreakCount": 13,
+    "occupiedCompactBounds": [
+      64,
+      58
+    ]
+  },
+  "disposition": "PENDING_INDEPENDENT_PREPIXEL_REVIEW",
+  "rawProcessCount": 0,
+  "blenderRenderProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "imageGenProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

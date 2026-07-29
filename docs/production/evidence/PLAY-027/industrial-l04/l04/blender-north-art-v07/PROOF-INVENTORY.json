@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "purpose": "Preserve the bounded actual-camera diagnosis and final proof trail.",
+  "runs": [
+    {
+      "run": "a",
+      "sha256": "65077f78c9ad72babad089787f7c9f480e90f2b747f23c223ae4db038ab481e3",
+      "validationPassed": false,
+      "disposition": "Initial symmetric split-wing layout did not visibly connect the court to the canonical North socket."
+    },
+    {
+      "run": "b",
+      "sha256": "a9deca0dee5eebce88d15974af0302221bd8b1cc0d1a6592739a700481398533",
+      "validationPassed": false,
+      "disposition": "Rejected diagnostic with an incorrect reversed local-X ray unprojection; tool change was reverted."
+    },
+    {
+      "run": "c",
+      "sha256": "bb86af02426ff446746d71b61336cace52ed6603904c06f360f99e182b161ecd",
+      "validationPassed": false,
+      "disposition": "Correct ray inverse localized the socket occlusion to the east wing."
+    },
+    {
+      "run": "d",
+      "sha256": "e04cdb4120435224407031d9605f7909630fe715e742f2a4e8a0f0932d3b37f5",
+      "validationPassed": false,
+      "disposition": "Repeated localization confirmed the architectural occlusion."
+    },
+    {
+      "run": "e",
+      "sha256": "14fb5e512b907592e1ca1745b98f54c112aa1c457f0afe5ec1ff6442864749cb",
+      "validationPassed": false,
+      "disposition": "First asymmetric fallback connected the socket but left an 11-pixel-wide open throat."
+    },
+    {
+      "run": "f",
+      "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+      "validationPassed": true,
+      "disposition": "Final r3 architecture passed before the design checkpoint."
+    },
+    {
+      "run": "g",
+      "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+      "validationPassed": true,
+      "disposition": "Fresh committed replay 1."
+    },
+    {
+      "run": "h",
+      "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+      "validationPassed": true,
+      "disposition": "Fresh committed replay 2."
+    }
+  ],
+  "sourceAuthority": false,
+  "productionSelected": false
+}

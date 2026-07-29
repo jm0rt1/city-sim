@@ -1,0 +1,22 @@
+{
+  "componentCount": 55,
+  "contractSHA256": "bd004b92a5c3199ad442599b0279084d22100bb834daa2ae5eb1e890c4196ba5",
+  "disposition": "REJECT_ZERO_PIXEL_PREDESIGN",
+  "frontageConnectivityPassed": false,
+  "frontageValuePassed": true,
+  "groundProjectionPassed": true,
+  "materialCount": 17,
+  "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+  "noOccupiedEnvelopeShrinkPassed": false,
+  "portalVisibilityPassed": false,
+  "productionSelected": false,
+  "rawProcessCount": 0,
+  "roofRhythmPassed": true,
+  "sceneSHA256": "517d992fc1b16b4da9105cf0921ff7a18d01ec0ff45a2c154e0d213a7ea54d27",
+  "schema": 1,
+  "shadowProjectionPassed": true,
+  "silhouetteBreaksPassed": true,
+  "sourceAuthority": false,
+  "staffEntryPassed": true,
+  "task": "PLAY-027"
+}

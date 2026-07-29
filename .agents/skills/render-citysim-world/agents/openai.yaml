@@ -1,4 +1,4 @@
 interface:
   display_name: "CitySim World Rendering"
-  short_description: "Build a vivid and truthful SpriteKit city"
-  default_prompt: "Use $render-citysim-world to implement the claimed CitySim world-rendering outcome with visual and performance proof."
+  short_description: "Prepare and ingest exact directional world art"
+  default_prompt: "Use $render-citysim-world to prepare renderer intake ahead, quarantine exact directions, and assemble an atomic 4/4 staged candidate."

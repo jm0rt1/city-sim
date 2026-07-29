@@ -11,18 +11,19 @@
   "proposalCommit": "b9240646",
   "harnessCommit": "fd05ec462517d5c802f4918f65af4515ea7f3c09",
   "containmentRepairCommit": "a9779a4f1d7170943daa067f6e2210828b2e87bb",
+  "danglingSymlinkReviewBase": "babee695bd849dbee44ff489fbc3e721c5a6b1d9",
   "surfaceHashes": {
     "proposal": "ec2e293fbbfa1df900dc50479331d9849da8ed7f1863179c9dd448a9f93c7e1c",
-    "harness": "d4545b75e3f2c11cd22152aa4637357df91ebeed4c59f09f9d953b2cc335910b",
+    "harness": "b47d9c7c7366e6e3cda22e2986b666df28948d61edbc1dcf9d99041b06a70f57",
     "wrapper": "f5a4c672a76b005385fb66fbcf87a55b71477b9cd67f59a63ae313371cf8a5ab"
   },
   "focusedValidation": {
     "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/play073-l4-assembly-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-assembly-swift-cache swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
-    "executed": 10,
-    "passed": 8,
+    "executed": 11,
+    "passed": 9,
     "skipped": 2,
     "failed": 0,
-    "elapsedSeconds": 0.071,
+    "elapsedSeconds": 0.069,
     "skips": [
       "caller-supplied direction input absent",
       "caller-supplied assembly manifest absent"
@@ -38,6 +39,9 @@
     "locatorHashDriftRejected": true,
     "inputLocatorSymlinkEscapeRejected": true,
     "ledgerOutputSymlinkEscapeRejected": true,
+    "ledgerOutputComponentsCheckedWithLstat": true,
+    "danglingFinalLedgerSymlinkRejected": true,
+    "danglingExternalTargetRemainsAbsent": true,
     "claimedRootCanonicalized": true,
     "manifestAndReadLocatorsCanonicalized": true,
     "evidenceRootAndLedgerOutputCanonicalized": true,
@@ -70,6 +74,11 @@
       "scope": "new ledger-output symlink regression",
       "result": "the first expanded run failed because resolvingSymlinksInPath did not resolve an intermediate symlink when the final ledger file was absent",
       "resolution": "canonicalized the nearest existing ancestor before reattaching the unresolved suffix; the identical 10-test gate passed"
+    },
+    {
+      "scope": "new no-follow component guard",
+      "result": "the first 11-test run rejected the intermediate symlink at its in-root component while the older test expected the resolved external target path",
+      "resolution": "updated the assertion to the stricter first-forbidden-component boundary; the identical 11-test gate passed"
     }
   ]
 }

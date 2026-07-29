@@ -1,4 +1,5 @@
 import CryptoKit
+import Darwin
 import Foundation
 import XCTest
 
@@ -831,6 +832,7 @@ private struct L4V2AtomicAssemblyHarness {
     }
 
     func canonicalEvidenceOutputURL(_ outputURL: URL) throws -> URL {
+        try rejectSymlinkComponents(in: outputURL)
         let evidenceRoot = try containedURL(
             canonicalClaimedRoot.appending(
                 path: "docs/production/evidence/PLAY-073"
@@ -843,6 +845,34 @@ private struct L4V2AtomicAssemblyHarness {
             )
         }
         return canonicalOutput
+    }
+
+    private func rejectSymlinkComponents(in outputURL: URL) throws {
+        let root = canonicalClaimedRoot
+        let output = outputURL.standardizedFileURL
+        guard output.path.hasPrefix(root.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(output.path)
+        }
+        let relativePath = output.path.dropFirst(root.path.count + 1)
+        var componentURL = root
+        for component in relativePath.split(separator: "/") {
+            componentURL.append(path: String(component))
+            var metadata = stat()
+            let result = componentURL.path.withCString {
+                lstat($0, &metadata)
+            }
+            if result == 0 {
+                guard (metadata.st_mode & S_IFMT) != S_IFLNK else {
+                    throw L4V2HarnessError.outsideClaimedRoot(
+                        componentURL.path
+                    )
+                }
+            } else if errno != ENOENT {
+                throw L4V2HarnessError.outsideClaimedRoot(
+                    componentURL.path
+                )
+            }
+        }
     }
 
     private func containedURL(_ url: URL) throws -> URL {
@@ -1229,10 +1259,70 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
                 XCTAssertEqual(
                     $0 as? L4V2HarnessError,
                     .outsideClaimedRoot(
-                        externalRoot.appending(path: "ledger.json").path
+                        symlinkURL.path
                     )
                 )
             }
+        }
+    }
+
+    func testAtomicAssemblyRejectsDanglingFinalLedgerSymlink() throws {
+        try withRoot { root in
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path:
+                        "play073-l4-v2-dangling-ledger-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let evidenceRoot = root.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+            try FileManager.default.createDirectory(
+                at: evidenceRoot,
+                withIntermediateDirectories: true
+            )
+            let externalTarget = externalRoot.appending(
+                path: "absent-ledger.json"
+            )
+            let outputURL = evidenceRoot.appending(
+                path: "atomic-ledger.json"
+            )
+            try FileManager.default.createSymbolicLink(
+                at: outputURL,
+                withDestinationURL: externalTarget
+            )
+            XCTAssertFalse(
+                FileManager.default.fileExists(
+                    atPath: externalTarget.path
+                )
+            )
+
+            XCTAssertThrowsError(
+                try {
+                    let validatedOutput =
+                        try L4V2AtomicAssemblyHarness(
+                            claimedRoot: root
+                        ).canonicalEvidenceOutputURL(outputURL)
+                    try Data("must-not-escape".utf8).write(
+                        to: validatedOutput
+                    )
+                }()
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .outsideClaimedRoot(outputURL.path)
+                )
+            }
+            XCTAssertFalse(
+                FileManager.default.fileExists(
+                    atPath: externalTarget.path
+                )
+            )
         }
     }
 

@@ -22,6 +22,10 @@ atlas, activate runtime lookup, stage the app, or select production art.
    `a9779a4f1d7170943daa067f6e2210828b2e87bb` canonicalizes the claimed
    root and all atomic-assembly input/output paths through resolved symlinks
    before boundary comparison.
+5. The current focused review descendant adds a fail-closed `lstat` walk over
+   every ledger-output component before canonicalization or creation. Its
+   exact commit identity is reported in the Renderer handoff because a commit
+   cannot contain its own hash.
 
 The accepted caller-path commits on published master,
 `e177be62` and `02fd3434`, are ancestors of the candidate.
@@ -53,7 +57,9 @@ evidence root, and ledger output are canonicalized before containment checks.
 For a not-yet-created ledger file, the harness resolves the nearest existing
 ancestor first and then reattaches the unresolved suffix. This closes both
 file-symlink and directory-symlink escapes without admitting another resource
-path.
+path. Before ledger creation it additionally inspects every component with
+`lstat` and rejects any symlink, including a dangling final symlink whose
+external target does not yet exist.
 
 The synthetic file-backed replay passed twice with byte-identical ledgers.
 The explicit caller-path test remains skipped until Integration publishes the
@@ -70,11 +76,12 @@ swift test --package-path Native/CitySimNative \
   --filter IndustrialL4V2SourceAdmissionHarnessTests
 ```
 
-Result: 10 executed, 8 passed, 2 expected caller-input skips, 0 failed in
-0.071 seconds. The expanded gate directly proves rejection of an input
+Result: 11 executed, 9 passed, 2 expected caller-input skips, 0 failed in
+0.069 seconds. The expanded gate directly proves rejection of an input
 locator that escapes through a file symlink and a not-yet-created ledger
-output that escapes through an in-root directory symlink. `bash -n` and
-`git diff --check` passed.
+output that escapes through an in-root directory symlink. It also proves a
+dangling final ledger symlink is rejected and that its absent external target
+remains absent. `bash -n` and `git diff --check` passed.
 
 The first ungoverned Swift invocation failed before compilation because the
 outer sandbox blocked SwiftPM's manifest sandbox. The first expanded
@@ -82,6 +89,12 @@ private-tmp run then exposed that Foundation does not resolve an intermediate
 symlink when the final output file is absent; the ledger-output regression
 failed as intended. The harness was repaired to resolve the nearest existing
 ancestor, and the identical focused gate then passed.
+
+The first run with the new component guard correctly rejected the existing
+intermediate-symlink case at the first forbidden component rather than at the
+resolved external target. Its older assertion expected the latter error
+location; the assertion was tightened to the fail-closed component boundary,
+and the identical 11-test gate passed.
 
 No full suite or staged app was run under the tiered intake rule.
 

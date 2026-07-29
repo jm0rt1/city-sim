@@ -410,7 +410,8 @@ def validate_packet(packet: dict[str, Any], repo: Path, *, check_git: bool = Tru
         and authority.get("branch") == "codex/citysim-simulation-platform"
         and authority.get("claimPath")
         == "docs/production/claims/PLAY-083.simulation-platform.md"
-        and len(candidate_commit) == 40,
+        and len(candidate_commit) == 40
+        and candidate_commit != "0" * 40,
         "unpublished_or_uncommitted_save",
         "candidate authority incomplete",
     )

@@ -1,0 +1,312 @@
+{
+  "allNegativesPassed": true,
+  "authority": {
+    "commit": "fa66b5605deca987685c058a072613e89a0d8be9",
+    "instancePath": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+    "instanceSha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65",
+    "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+    "schemaSha256": "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+  },
+  "direction": "west",
+  "integrationAdmitted": false,
+  "invocations": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "sourceCandidatePacketWrites": 0
+  },
+  "negativeTestCount": 9,
+  "negativeTests": [
+    {
+      "errors": [
+        "locator-schema:bound-sha256-mismatch"
+      ],
+      "expectedError": "locator-schema:bound-sha256-mismatch",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "wrong-schema-hash",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "locator-instance:bound-sha256-mismatch"
+      ],
+      "expectedError": "locator-instance:bound-sha256-mismatch",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "wrong-instance-hash",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "appearance-lock:not-bound",
+        "future-authority:not-bound",
+        "locked-materials:not-bound",
+        "origin-master:missing-binding",
+        "process-A:missing-freshInvocationReceipt",
+        "process-A:missing-objectMapping",
+        "process-A:missing-provenance",
+        "process-A:missing-raw",
+        "process-A:missing-registration",
+        "process-A:missing-semantic",
+        "process-B:missing-freshInvocationReceipt",
+        "process-B:missing-objectMapping",
+        "process-B:missing-provenance",
+        "process-B:missing-raw",
+        "process-B:missing-registration",
+        "process-B:missing-semantic",
+        "process-C:missing-freshInvocationReceipt",
+        "process-C:missing-objectMapping",
+        "process-C:missing-provenance",
+        "process-C:missing-raw",
+        "process-C:missing-registration",
+        "process-C:missing-semantic",
+        "source-candidate-locator:locator-instance:bound-sha256-mismatch",
+        "source-profile:not-bound"
+      ],
+      "expectedError": "source-candidate-locator:locator-instance:bound-sha256-mismatch",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "post-source-wrong-instance-hash",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "appearance-lock:missing",
+        "appearance-lock:not-bound",
+        "future-authority:not-bound",
+        "locked-materials:not-bound",
+        "origin-master:missing-binding",
+        "source-candidate-locator:locator-schema:bound-sha256-mismatch",
+        "source-profile:not-bound"
+      ],
+      "expectedError": "source-candidate-locator:locator-schema:bound-sha256-mismatch",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "launch-guard-wrong-schema-hash",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "locator-instance:schema:directions/2/packetPath:const",
+        "locator-west:packet-path-mismatch",
+        "locator-west:packetPath-mismatch"
+      ],
+      "expectedError": "locator-west:packetPath-mismatch",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "wrong-reserved-path",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "locator-instance:schema:directions/2/direction:const",
+        "locator-west:direction-mismatch",
+        "locator-west:runner-direction-mismatch"
+      ],
+      "expectedError": "locator-west:direction-mismatch",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "wrong-direction",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "locator-selection:sibling-direction:east"
+      ],
+      "expectedError": "locator-selection:sibling-direction:east",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "sibling-direction-selection",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "locator-packet:preexisting"
+      ],
+      "expectedError": "locator-packet:preexisting",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "preexisting-packet",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    },
+    {
+      "errors": [
+        "locator-packet:unsafe:SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
+      ],
+      "expectedError": "locator-packet:unsafe:SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "invocations": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "imageGenInvocations": 0,
+        "normalizerInvocations": 0,
+        "pixelFiles": 0,
+        "renderInvocations": 0,
+        "sourceCandidatePacketWrites": 0
+      },
+      "name": "symlink-packet",
+      "passed": true,
+      "rejected": true,
+      "targetUnchanged": true
+    }
+  ],
+  "passed": true,
+  "positive": {
+    "authorityCommit": "fa66b5605deca987685c058a072613e89a0d8be9",
+    "direction": "west",
+    "errors": [],
+    "instance": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+      "sha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+    },
+    "invocations": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "imageGenInvocations": 0,
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "renderInvocations": 0,
+      "sourceCandidatePacketWrites": 0
+    },
+    "passed": true,
+    "pipeline": {
+      "errors": [],
+      "implementations": {
+        "locatorAuthorityValidatorPath": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_locator_authority.py",
+          "sha256": "42535699980dec614c9af628b21fbbcfca91cc039fa820c5ff1e204513335f2f"
+        },
+        "pathSafetyPath": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
+          "sha256": "d8b742e90e562d2da97c342d9c79c1674134b086a9df8d47b3bbe9ec689e6f1a"
+        },
+        "postSourcePipelinePath": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+          "sha256": "a652d6dfed934e0ceebcdcda275693702961fd706fdefc8e218a662af7c847a9"
+        }
+      },
+      "noFollow": true,
+      "noOverwrite": true,
+      "packetPipelineIdentity": "postSource.sourceCandidatePacket",
+      "passed": true,
+      "runnerContract": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+        "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+      },
+      "safeWriter": "write_exact_json_no_overwrite"
+    },
+    "reservedPacket": {
+      "creationPolicy": "exclusive_no_overwrite_nofollow",
+      "exists": false,
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+      "sha256": "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+    },
+    "schemaVersion": 1,
+    "taskId": "PLAY-081"
+  },
+  "productionSelected": false,
+  "proofOutput": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LOCATOR-AUTHORITY-CONSUMPTION-PROOF.json",
+  "rendererQuarantined": false,
+  "reservedPacket": {
+    "created": false,
+    "creationPolicy": "exclusive_no_overwrite_nofollow",
+    "existedBefore": false,
+    "existsAfter": false,
+    "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+    "pipelineIdentity": "postSource.sourceCandidatePacket",
+    "safeWriter": "write_exact_json_no_overwrite"
+  },
+  "schemaVersion": 1,
+  "sourceReady": false,
+  "stage": "zero_pixel_locator_authority_consumption",
+  "taskId": "PLAY-081"
+}

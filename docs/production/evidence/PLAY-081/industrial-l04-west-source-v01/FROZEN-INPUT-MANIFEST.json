@@ -24,11 +24,11 @@
   "launchPlumbing": {
     "runnerContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
-      "sha256": "47c1c1b86127fe31f22d5957848a64a3a61bf02ee73669da43e89ac083ffdc63"
+      "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
     },
     "driver": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
-      "sha256": "63809979f8deedbfa844df9e89af9d84769192ea67262feb8a5710dd3a97f34e"
+      "sha256": "c8dd97a111bf898afe4a81de5557fa94d788581ee2ed37110e4f691011ec64e9"
     },
     "blenderEntryPoint": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/blender_render_west.py",
@@ -40,7 +40,7 @@
     },
     "pathSafety": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
-      "sha256": "b79294c36f95594884842ab398a63aae061d5673d437dbd5216b69b7bf5bfa73"
+      "sha256": "d8b742e90e562d2da97c342d9c79c1674134b086a9df8d47b3bbe9ec689e6f1a"
     },
     "launchBoundAssembler": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
@@ -48,7 +48,11 @@
     },
     "postSourcePipeline": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
-      "sha256": "a5b7b7bf7024683f00f48beb96a7d623719ceb8611c69ef0e25a8cefb8d5295e"
+      "sha256": "a652d6dfed934e0ceebcdcda275693702961fd706fdefc8e218a662af7c847a9"
+    },
+    "locatorAuthorityValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_locator_authority.py",
+      "sha256": "42535699980dec614c9af628b21fbbcfca91cc039fa820c5ff1e204513335f2f"
     },
     "sourceValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
@@ -60,6 +64,19 @@
     }
   },
   "sharedReadOnlyAuthorities": {
+    "sourceCandidatePacketLocatorAuthority": {
+      "commit": "fa66b5605deca987685c058a072613e89a0d8be9",
+      "schema": {
+        "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+        "sha256": "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+      },
+      "instance": {
+        "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+        "sha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+      },
+      "reservedWestPacketPath": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "creationPolicy": "exclusive_no_overwrite_nofollow"
+    },
     "sourceStageSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
       "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"

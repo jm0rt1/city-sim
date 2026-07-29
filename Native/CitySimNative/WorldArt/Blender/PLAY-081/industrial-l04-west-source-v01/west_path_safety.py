@@ -63,6 +63,9 @@ PIPELINE_PATH_IDENTITIES = {
     "review.sourceColor": f"{EVIDENCE_ROOT}/review/SOURCE-COLOR.png",
     "review.sourceGrayscale": f"{EVIDENCE_ROOT}/review/SOURCE-GRAYSCALE.png",
     "validation.sourceValidation": f"{EVIDENCE_ROOT}/SOURCE-VALIDATION.json",
+    "validation.locatorAuthorityProof": (
+        f"{EVIDENCE_ROOT}/LOCATOR-AUTHORITY-CONSUMPTION-PROOF.json"
+    ),
     "rejections": f"{EVIDENCE_ROOT}/REJECTIONS.json",
 }
 

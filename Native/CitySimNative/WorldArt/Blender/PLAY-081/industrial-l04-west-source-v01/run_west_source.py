@@ -18,6 +18,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from validate_locator_authority import validate_locator_authority
+
 from west_launch_authority import (
     validate_future_authorities,
     validate_output_root_isolation,
@@ -389,6 +391,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         ("path-safety", "pathSafetyPath"),
         ("launch-bound-assembler", "launchBoundAssemblerPath"),
         ("post-source-pipeline", "postSourcePipelinePath"),
+        ("locator-authority-validator", "locatorAuthorityValidatorPath"),
     ):
         value = implementation.get(key)
         if not isinstance(value, str):
@@ -399,6 +402,12 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
                     errors.append(f"runnerImplementation:{name}-missing")
             except ContractError:
                 errors.append(f"runnerImplementation:{name}-invalid")
+
+    locator_authority = validate_locator_authority(root, contract)
+    errors.extend(
+        f"source-candidate-locator:{error}"
+        for error in locator_authority["errors"]
+    )
 
     counts = contract.get("invocationCounts", {})
     if not isinstance(counts, dict) or any(value != 0 for value in counts.values()):

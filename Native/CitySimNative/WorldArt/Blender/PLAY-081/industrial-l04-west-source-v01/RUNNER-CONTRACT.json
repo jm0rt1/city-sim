@@ -204,6 +204,7 @@
     "pathSafetyPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
     "launchBoundAssemblerPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
     "postSourcePipelinePath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+    "locatorAuthorityValidatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_locator_authority.py",
     "pngDecoderPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
     "modes": [
       "validate",
@@ -315,6 +316,25 @@
       "sha256": null
     },
     "state": "schema_v2_bound_source_production_profile_pending"
+  },
+  "sourceCandidatePacketLocatorAuthority": {
+    "state": "bound_reserved_zero_pixel",
+    "authorityCommit": "fa66b5605deca987685c058a072613e89a0d8be9",
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+      "sha256": "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+    },
+    "instance": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+      "sha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+    },
+    "grants": {
+      "sourceAdmission": false,
+      "rendererQuarantine": false,
+      "rendererActivation": false,
+      "productionSelection": false,
+      "shipping": false
+    }
   },
   "futureProductionAuthority": {
     "state": "not_published",
@@ -481,6 +501,7 @@
       "zeroPixelV2Handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V2-HANDOFF.json",
       "zeroPixelV2HandoffValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V2-HANDOFF-VALIDATION.json",
       "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
+      "locatorAuthorityProof": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LOCATOR-AUTHORITY-CONSUMPTION-PROOF.json",
       "handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json"
     },
     "review": {

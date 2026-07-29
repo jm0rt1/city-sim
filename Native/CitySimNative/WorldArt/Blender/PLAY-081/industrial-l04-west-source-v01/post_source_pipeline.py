@@ -28,6 +28,7 @@ from prepare_launch_bound import (
     build_packet,
 )
 from stdlib_png_rgba import PNG_SIGNATURE, decode_rgba_png
+from validate_locator_authority import validate_locator_authority
 from west_launch_authority import (
     SOURCE_SCHEMA_PATH,
     SOURCE_SCHEMA_SHA256,
@@ -143,6 +144,7 @@ def preflight(
     contract: dict[str, Any],
 ) -> tuple[dict[str, dict[str, Path]], list[str]]:
     authority = validate_future_authorities(root, contract)
+    locator_authority = validate_locator_authority(root, contract)
     layout = validate_process_layout(root, contract, require_absent=False)
     pipeline_layout = validate_pipeline_layout(root, contract)
     if not layout["passed"] or not pipeline_layout["passed"]:
@@ -158,6 +160,10 @@ def preflight(
         )
     files, errors = required_process_files(root, contract)
     errors.extend(authority["errors"])
+    errors.extend(
+        f"source-candidate-locator:{error}"
+        for error in locator_authority["errors"]
+    )
     if not errors:
         raw_identities = {
             process_id: decoded_sha(paths["raw"])
@@ -720,6 +726,12 @@ def assemble_source(
     contract: dict[str, Any],
     files: dict[str, dict[str, Path]],
 ) -> dict[str, Any]:
+    locator_authority = validate_locator_authority(root, contract)
+    if not locator_authority["passed"]:
+        raise ValueError(
+            "source-candidate locator authority rejected: "
+            + ",".join(locator_authority["errors"])
+        )
     post = contract["outputInventory"]["postSource"]
     packet_relative, packet_path = pipeline_output(
         root,

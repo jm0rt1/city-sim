@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "command": [
+    "python3",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_prelock_handoff.py",
+    "--repository-root",
+    "."
+  ],
+  "schema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
+    "sha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951"
+  },
+  "handoff": {
+    "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json",
+    "sha256": "3f0ec3c3b02a034ea46679be2904df20819363e0a670f7069bbe27ec88dff06a"
+  },
+  "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "blenderProjectionProcessLaunches": 2,
+  "blenderRenderApiCalls": 0,
+  "imageGenInvocations": 0,
+  "normalizerInvocations": 0,
+  "contactSheetInvocations": 0,
+  "renderInvocations": 0,
+  "pixelFiles": [],
+  "generatedCaches": [],
+  "failures": [],
+  "sourceReady": false,
+  "productionSelected": false,
+  "passed": true
+}

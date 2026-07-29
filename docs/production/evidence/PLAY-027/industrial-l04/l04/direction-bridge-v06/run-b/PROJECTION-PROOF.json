@@ -1,0 +1,647 @@
+{
+  "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+  "basisMatrixRows": [
+    [
+      0,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0
+    ]
+  ],
+  "camera": {
+    "blenderOrthographicScale": 237.587860107422,
+    "blenderPosition": [
+      96.0,
+      96.0,
+      101.245574951172
+    ],
+    "blenderTarget": [
+      0,
+      0,
+      22.861902498201186
+    ],
+    "citySimPosition": [
+      96,
+      101.24557426726288,
+      96
+    ],
+    "citySimTarget": [
+      0,
+      22.861902498201186,
+      0
+    ],
+    "renderViewportPixels": [
+      1536,
+      1024
+    ],
+    "shiftX": 0.0,
+    "shiftY": 0.083333335817
+  },
+  "cameraProjectionCount": 15,
+  "contract": "CONTRACT-020-directional-spatial-bridge-v06",
+  "directions": {
+    "east": {
+      "frontageAbsoluteDeltaSourcePixels": [
+        [
+          3.0517578e-05,
+          0.000137329102
+        ],
+        [
+          0.0,
+          0.000122070312
+        ]
+      ],
+      "frontageActualSource": [
+        [
+          1024.000030517578,
+          768.000137329102
+        ],
+        [
+          768.0,
+          896.000122070312
+        ]
+      ],
+      "frontageBlender": [
+        [
+          -28.0,
+          28.0,
+          0.0
+        ],
+        [
+          28.0,
+          28.0,
+          0.0
+        ]
+      ],
+      "frontageCitySim": [
+        [
+          28,
+          0,
+          -28
+        ],
+        [
+          28,
+          0,
+          28
+        ]
+      ],
+      "frontageExpectedSource": [
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ]
+      ],
+      "outwardBlender": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "outwardCitySim": [
+        1,
+        0,
+        0
+      ],
+      "passed": true,
+      "socketAbsoluteDeltaSourcePixels": [
+        6.1035156e-05,
+        0.000122070312
+      ],
+      "socketActualSource": [
+        896.000061035156,
+        832.000122070312
+      ],
+      "socketBlender": [
+        0.0,
+        28.0,
+        0.0
+      ],
+      "socketCitySim": [
+        28,
+        0,
+        0
+      ],
+      "socketExpectedSource": [
+        896,
+        832
+      ],
+      "socketIsExactCitySimMidpoint": true
+    },
+    "north": {
+      "frontageAbsoluteDeltaSourcePixels": [
+        [
+          0.0,
+          0.000183105469
+        ],
+        [
+          3.0517578e-05,
+          0.000137329102
+        ]
+      ],
+      "frontageActualSource": [
+        [
+          768.0,
+          640.000183105469
+        ],
+        [
+          1024.000030517578,
+          768.000137329102
+        ]
+      ],
+      "frontageBlender": [
+        [
+          -28.0,
+          -28.0,
+          0.0
+        ],
+        [
+          -28.0,
+          28.0,
+          0.0
+        ]
+      ],
+      "frontageCitySim": [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          0,
+          -28
+        ]
+      ],
+      "frontageExpectedSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ]
+      ],
+      "outwardBlender": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "outwardCitySim": [
+        0,
+        0,
+        -1
+      ],
+      "passed": true,
+      "socketAbsoluteDeltaSourcePixels": [
+        6.1035156e-05,
+        0.000152587891
+      ],
+      "socketActualSource": [
+        896.000061035156,
+        704.000152587891
+      ],
+      "socketBlender": [
+        -28.0,
+        0.0,
+        0.0
+      ],
+      "socketCitySim": [
+        0,
+        0,
+        -28
+      ],
+      "socketExpectedSource": [
+        896,
+        704
+      ],
+      "socketIsExactCitySimMidpoint": true
+    },
+    "south": {
+      "frontageAbsoluteDeltaSourcePixels": [
+        [
+          0.0,
+          0.000122070312
+        ],
+        [
+          1.5258789e-05,
+          0.00016784668
+        ]
+      ],
+      "frontageActualSource": [
+        [
+          768.0,
+          896.000122070312
+        ],
+        [
+          512.000015258789,
+          768.00016784668
+        ]
+      ],
+      "frontageBlender": [
+        [
+          28.0,
+          28.0,
+          0.0
+        ],
+        [
+          28.0,
+          -28.0,
+          0.0
+        ]
+      ],
+      "frontageCitySim": [
+        [
+          28,
+          0,
+          28
+        ],
+        [
+          -28,
+          0,
+          28
+        ]
+      ],
+      "frontageExpectedSource": [
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "outwardBlender": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "outwardCitySim": [
+        0,
+        0,
+        1
+      ],
+      "passed": true,
+      "socketAbsoluteDeltaSourcePixels": [
+        3.0517578e-05,
+        0.000152587891
+      ],
+      "socketActualSource": [
+        640.000030517578,
+        832.000152587891
+      ],
+      "socketBlender": [
+        28.0,
+        0.0,
+        0.0
+      ],
+      "socketCitySim": [
+        0,
+        0,
+        28
+      ],
+      "socketExpectedSource": [
+        640,
+        832
+      ],
+      "socketIsExactCitySimMidpoint": true
+    },
+    "west": {
+      "frontageAbsoluteDeltaSourcePixels": [
+        [
+          1.5258789e-05,
+          0.00016784668
+        ],
+        [
+          0.0,
+          0.000183105469
+        ]
+      ],
+      "frontageActualSource": [
+        [
+          512.000015258789,
+          768.00016784668
+        ],
+        [
+          768.0,
+          640.000183105469
+        ]
+      ],
+      "frontageBlender": [
+        [
+          28.0,
+          -28.0,
+          0.0
+        ],
+        [
+          -28.0,
+          -28.0,
+          0.0
+        ]
+      ],
+      "frontageCitySim": [
+        [
+          -28,
+          0,
+          28
+        ],
+        [
+          -28,
+          0,
+          -28
+        ]
+      ],
+      "frontageExpectedSource": [
+        [
+          512,
+          768
+        ],
+        [
+          768,
+          640
+        ]
+      ],
+      "outwardBlender": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "outwardCitySim": [
+        -1,
+        0,
+        0
+      ],
+      "passed": true,
+      "socketAbsoluteDeltaSourcePixels": [
+        3.0517578e-05,
+        0.000152587891
+      ],
+      "socketActualSource": [
+        640.000030517578,
+        704.000152587891
+      ],
+      "socketBlender": [
+        0.0,
+        -28.0,
+        0.0
+      ],
+      "socketCitySim": [
+        -28,
+        0,
+        0
+      ],
+      "socketExpectedSource": [
+        640,
+        704
+      ],
+      "socketIsExactCitySimMidpoint": true
+    }
+  },
+  "globalMappingSamples": {
+    "allMatch": true,
+    "cameraPositionBlender": [
+      96.0,
+      96.0,
+      101.24557426726288
+    ],
+    "cameraTargetBlender": [
+      0.0,
+      0.0,
+      22.861902498201186
+    ],
+    "componentDimensionsBlender": [
+      24.0,
+      18.0,
+      9.0
+    ],
+    "componentPositionBlender": [
+      -13.0,
+      11.0,
+      7.0
+    ],
+    "lightOriginBlender": [
+      -80.0,
+      -80.0,
+      120.0
+    ],
+    "shadowOffsetBlender": [
+      1.75,
+      3.5,
+      0.0
+    ]
+  },
+  "handednessAndWinding": {
+    "basisXBlender": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "basisYBlender": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "basisZBlender": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "crossBasisXBasisY": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "crossEqualsBasisZ": true,
+    "determinant": 1.0,
+    "hiddenPermutation": false,
+    "rightHanded": true,
+    "sourceOrder": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "windingChanged": false
+  },
+  "mappingContractSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "maximumAbsoluteDeltaSourcePixels": 0.000183105469,
+  "pixelInvocationCounts": {
+    "contactSheet": 0,
+    "imageGen": 0,
+    "normalizer": 0,
+    "raw": 0,
+    "render": 0
+  },
+  "productionSelected": false,
+  "projectionToolSHA256": "eb9849446fac95b3d36499fbc1d6acdc35553c50737d8029cb345db542f47e4d",
+  "registration": {
+    "contactPolygonBlenderXYZ": [
+      [
+        -28.0,
+        -28.0,
+        0.0
+      ],
+      [
+        -28.0,
+        28.0,
+        0.0
+      ],
+      [
+        28.0,
+        28.0,
+        0.0
+      ],
+      [
+        28.0,
+        -28.0,
+        0.0
+      ]
+    ],
+    "contactPolygonCitySimXYZ": [
+      [
+        -28,
+        0,
+        -28
+      ],
+      [
+        28,
+        0,
+        -28
+      ],
+      [
+        28,
+        0,
+        28
+      ],
+      [
+        -28,
+        0,
+        28
+      ]
+    ],
+    "footprintAbsoluteDeltaSourcePixels": [
+      [
+        0.0,
+        0.000183105469
+      ],
+      [
+        3.0517578e-05,
+        0.000137329102
+      ],
+      [
+        0.0,
+        0.000122070312
+      ],
+      [
+        1.5258789e-05,
+        0.00016784668
+      ]
+    ],
+    "footprintActualSource": [
+      [
+        768.0,
+        640.000183105469
+      ],
+      [
+        1024.000030517578,
+        768.000137329102
+      ],
+      [
+        768.0,
+        896.000122070312
+      ],
+      [
+        512.000015258789,
+        768.00016784668
+      ]
+    ],
+    "footprintExpectedSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "originAbsoluteDeltaSourcePixels": [
+      0.0,
+      0.000152587891
+    ],
+    "originActualSource": [
+      768.0,
+      768.000152587891
+    ],
+    "originBlender": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "originCitySim": [
+      0,
+      0,
+      0
+    ],
+    "originExpectedSource": [
+      768,
+      768
+    ],
+    "pivotAbsoluteDeltaSourcePixels": [
+      0.0,
+      0.000122070312
+    ],
+    "pivotActualSource": [
+      768.0,
+      896.000122070312
+    ],
+    "pivotBlender": [
+      28.0,
+      28.0,
+      0.0
+    ],
+    "pivotCitySim": [
+      28,
+      0,
+      28
+    ],
+    "pivotExpectedSource": [
+      768,
+      896
+    ],
+    "sourceOrder": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "sceneConstructionCount": 1,
+  "schema": 1,
+  "sourceAuthority": false,
+  "sourceRevision": "direction-bridge-v06",
+  "task": "PLAY-027",
+  "toleranceSourcePixels": 0.001,
+  "validationPassed": true
+}

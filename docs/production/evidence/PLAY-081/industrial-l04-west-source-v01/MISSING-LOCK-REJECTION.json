@@ -1,0 +1,94 @@
+{
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
+  "contactSheetInvocations": 0,
+  "coordinateBridgeBlocker": "v06 coordinate projection and contact-corner revalidation is pending",
+  "coordinateBridgeState": "pending_v06_revalidation",
+  "direction": "west",
+  "driverSha256": "54a7155a9c7eb8731172d1f77a5670d407f00d0b77f34cbde5cd1f667b68f8c8",
+  "imageGenInvocations": 0,
+  "missingAppearanceLockFields": [
+    "appearanceLock.documentPath",
+    "appearanceLock.commit",
+    "appearanceLock.documentSha256",
+    "appearanceLock.northProcessASourceSha256",
+    "appearanceLock.northProcessADecodedRgbaSha256",
+    "appearanceLockCommit",
+    "appearanceLockSha256",
+    "lockedMaterialMapping.path",
+    "lockedMaterialMapping.sha256"
+  ],
+  "modes": {
+    "A": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "A",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing",
+        "coordinate-bridge:pending-v06",
+        "coordinate-bridge:v06-binding-incomplete"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    },
+    "B": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "B",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing",
+        "coordinate-bridge:pending-v06",
+        "coordinate-bridge:v06-binding-incomplete"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    },
+    "C": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "C",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing",
+        "coordinate-bridge:pending-v06",
+        "coordinate-bridge:v06-binding-incomplete"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    }
+  },
+  "normalizerInvocations": 0,
+  "passed": true,
+  "pixelFiles": 0,
+  "proof": "MISSING_APPEARANCE_LOCK_REJECTION",
+  "rejectionStage": "before_renderer_launch",
+  "renderInvocations": 0,
+  "runnerContractSha256": "6757a7839e999331604dbe9bc12a52053dbf8b54af9a7ac41456178371cb2a8d",
+  "schemaVersion": 1,
+  "taskId": "PLAY-081"
+}

@@ -91,8 +91,11 @@ rotate, transform, or derive sibling scene geometry or pixels.
 1. Audit the current catalog and prove the logical type is not aliased.
 2. Load the immutable style anchor, the exact geometry template, and the
    approved family anchor. Never use a rejected sibling as a reference.
-3. Use built-in ImageGen once for one source attempt. Follow CONTRACT-006’s
-   chroma-key prompt and retain the complete prompt and reference hashes.
+3. Use the source method authorized by the immutable family contract. When it
+   authorizes built-in ImageGen, use it once for one source attempt, follow
+   CONTRACT-006’s chroma-key prompt, and retain the complete prompt and
+   reference hashes. When it authorizes the offline/DCC path, do not make a
+   whole-building ImageGen call.
 4. Save the raw stochastic master immediately with a unique revision. Never
    overwrite a prior attempt.
 5. Normalize deterministically with the existing repository tools. Do not use
@@ -121,8 +124,8 @@ whole-building ImageGen:
 - freeze tool/framework versions, scene/material hashes, render settings,
   camera, pivot, socket, light, shadow, and flat chroma field;
 - prove repeat-run determinism before judging appearance;
-- stop after the residential L1 N/E/S/W calibration set until independent art
-  review and integration authorize batch expansion.
+- stop at the exact claim-authorized family, direction, and stage boundary
+  until independent art review and Integration authorize expansion.
 
 The offline renderer remains a source-authoring tool. It may not become a
 shipping dependency or edit `Package.swift`, `Rendering/`, atlas selection, or
@@ -166,6 +169,18 @@ direction `source_ready`. Neither stage may declare the four-direction family
 selected.
 Integration assigns the later 4/4 assembly owner for the combined N/E/S/W
 source-size, actual-game-scale, and grayscale family sheets.
+
+Validate every packet against the exact versioned JSON schema published by
+Integration and record the schema path/hash plus validation command/result.
+Use this direction-local commit sequence unless the claim narrows it further:
+
+1. zero-pixel scene/design checkpoint with the static and actual-camera proofs;
+2. A/B/C source plus deterministic validation checkpoint after production is
+   authorized;
+3. machine-readable handoff and completion checkpoint.
+
+Do not collapse these boundaries when doing so would hide a rejected attempt,
+an unrun gate, or a change in source authority.
 
 Stage explicit claimed paths, inspect staged diff/stat/check, and commit one
 coherent batch with the branch-mapped `PLAY-027`, `PLAY-079`, `PLAY-080`, or

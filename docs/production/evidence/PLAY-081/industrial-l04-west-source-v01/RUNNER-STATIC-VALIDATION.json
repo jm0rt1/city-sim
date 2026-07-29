@@ -1,0 +1,67 @@
+{
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
+  "checks": {
+    "acceptedPredesignUnmodified": true,
+    "blenderScriptPresentButNotImported": true,
+    "controlFlow": {
+      "driverImportsBpy": false,
+      "evaluateGuardLines": [
+        518
+      ],
+      "guardTextPrecedesLaunchText": true,
+      "launchBlenderLines": [
+        523
+      ],
+      "passed": true,
+      "subprocessRunLines": [
+        426,
+        435,
+        485
+      ]
+    },
+    "coordinateBridgeHold": {
+      "canonicalWestSocketSource": [
+        640,
+        704
+      ],
+      "canonicalWestSocketWorldXYZ": [
+        -28,
+        0,
+        0
+      ],
+      "historicalAdapterFutureSourceAuthority": false,
+      "historicalAdapterLoadedByBlenderScript": false,
+      "holdIsStop": false,
+      "passed": true,
+      "state": "pending_v06_revalidation"
+    },
+    "frozenInputErrors": [],
+    "frozenInputHashes": true,
+    "pixelFiles": 0,
+    "sourceAndEvidencePixelFiles": []
+  },
+  "contactSheetInvocations": 0,
+  "coordinateBridgeState": "pending_v06_revalidation",
+  "direction": "west",
+  "driverSha256": "54a7155a9c7eb8731172d1f77a5670d407f00d0b77f34cbde5cd1f667b68f8c8",
+  "imageGenInvocations": 0,
+  "normalizerInvocations": 0,
+  "passed": true,
+  "pixelFiles": 0,
+  "proof": "PRELOCK_RUNNER_STATIC",
+  "rejectionStage": "before_renderer_launch",
+  "renderInvocations": 0,
+  "runnerContractSha256": "6757a7839e999331604dbe9bc12a52053dbf8b54af9a7ac41456178371cb2a8d",
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "validation": {
+    "abcIdentity": "not_run",
+    "literal192": "not_run",
+    "normalization": "not_run",
+    "rgba": "not_run",
+    "runnerStatic": "pass"
+  }
+}

@@ -1,5 +1,10 @@
 # PLAY-027 Industrial L4 Blender North art v05 authority
 
+**Superseded world-space premise:** Canonical descriptors and the renderer
+establish North as `z = -28`, not `x = -28`; the v06 coordinate-bridge
+authority records and governs the repair. This file remains historical
+rejection evidence and is no longer operative authority.
+
 **Returned zero-pixel proof:** `84be90eb1f930f0377d36cc6909ad0f13485c466`
 
 **Superseded authority:** `INDUSTRIAL-L04-BLENDER-NORTH-ART-V04-AUTHORITY.md`

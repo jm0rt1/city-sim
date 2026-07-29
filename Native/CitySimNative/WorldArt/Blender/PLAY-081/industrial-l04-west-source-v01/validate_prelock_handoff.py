@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +39,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--handoff",
         default=f"{EVIDENCE_ROOT}/PRELOCK-RUNNER-HANDOFF.json",
+    )
+    parser.add_argument(
+        "--output",
+        default=f"{EVIDENCE_ROOT}/HANDOFF-SCHEMA-VALIDATION.json",
     )
     return parser.parse_args()
 
@@ -75,6 +80,26 @@ def main() -> int:
         != sha256(schema_path)
     ):
         failures.append("integration-schema-binding")
+    if (
+        handoff.get("baselineCommit") != contract.get("baselineCommit")
+        or handoff.get("baselineCommit")
+        != "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8"
+        or subprocess.run(
+            [
+                "git",
+                "merge-base",
+                "--is-ancestor",
+                handoff.get("baselineCommit", ""),
+                "HEAD",
+            ],
+            cwd=root,
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode
+        != 0
+    ):
+        failures.append("published-baseline-ancestry")
 
     try:
         jsonschema.Draft202012Validator(schema).validate(handoff)
@@ -144,6 +169,20 @@ def main() -> int:
         "bridge-repeat-identity": repository_path(
             root, f"{EVIDENCE_ROOT}/BRIDGE-REPEAT-IDENTITY.json"
         ),
+        "source-validator-describe": repository_path(
+            root, f"{EVIDENCE_ROOT}/SOURCE-VALIDATOR-DESCRIBE.json"
+        ),
+        "integrated-proof-guard": repository_path(
+            root, f"{EVIDENCE_ROOT}/INTEGRATED-PROOF-GUARD.json"
+        ),
+        "source-stage-schema-gate": repository_path(
+            root, f"{EVIDENCE_ROOT}/SOURCE-STAGE-SCHEMA-GATE.json"
+        ),
+        "missing-source-production-profile": repository_path(
+            root,
+            f"{EVIDENCE_ROOT}/"
+            "MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json",
+        ),
     }
     for name, path in evidence_reports.items():
         if not path.is_file() or load_json(path).get("passed") is not True:
@@ -204,6 +243,10 @@ def main() -> int:
         or canonical.get("frontageSocketExpectedSource") != [640, 704]
         or bridge_v06.get("authorityCommit")
         != "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        or bridge_v06.get("sourceCandidateCommit")
+        != "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        or bridge_v06.get("integratedProofCommit")
+        != "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e"
         or bridge_v06.get("mappingContractSha256")
         != "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
         or bridge_v06.get("frontageSocketCitySimXYZ") != [-28, 0, 0]
@@ -214,6 +257,76 @@ def main() -> int:
         or bridge_v06.get("windingChange") is not False
     ):
         failures.append("coordinate-bridge-adoption")
+    source_stage = contract.get("sourceStage", {})
+    expected_source_bindings = {
+        "handoffSchema": {
+            "state": "bound_integration_v2",
+            "path": (
+                "docs/production/evidence/INTEGRATION/"
+                "industrial-l04-source-stage-handoff-schema-v2.json"
+            ),
+            "sha256": (
+                "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+            ),
+            "schemaId": (
+                "citysim://integration/industrial-l04-source-stage-handoff-v2"
+            ),
+        },
+        "nonAliasLoader": {
+            "path": (
+                "Native/CitySimNative/WorldArt/Shared/"
+                "accepted_master_non_alias_v1.py"
+            ),
+            "sha256": (
+                "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+            ),
+        },
+        "semanticValidator": {
+            "path": (
+                "Native/CitySimNative/WorldArt/Shared/"
+                "validate_source_stage_handoff_v2.py"
+            ),
+            "sha256": (
+                "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+            ),
+        },
+        "canonicalDecoder": {
+            "path": (
+                "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift"
+            ),
+            "sha256": (
+                "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+            ),
+        },
+    }
+    if any(
+        source_stage.get(name) != expected
+        for name, expected in expected_source_bindings.items()
+    ):
+        failures.append("source-stage-v2-binding")
+    if source_stage.get("sourceProductionProfile") != {
+        "state": "not_published",
+        "path": None,
+        "commit": None,
+        "sha256": None,
+    }:
+        failures.append("source-production-profile-boundary")
+    profile_rejection = load_json(
+        evidence_reports["missing-source-production-profile"]
+    )
+    if (
+        profile_rejection.get("structuralSchemaResult") != "PASS"
+        or profile_rejection.get("semanticResult", {}).get("error")
+        != (
+            "MISSING_REFERENCED_FILE: "
+            "authorities.sourceProductionProfile.path: "
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-SOURCE-PRODUCTION-PROFILE.json"
+        )
+        or profile_rejection.get("rejectionStage")
+        != "before_renderer_launch"
+    ):
+        failures.append("missing-source-production-profile-proof")
     if handoff["state"] != "prelock_runner_ready" or handoff["sourceReady"] is not False:
         failures.append("handoff-runner-readiness-boundary")
 
@@ -224,6 +337,13 @@ def main() -> int:
         "schemaSha256": sha256(schema_path),
         "handoffSha256": sha256(handoff_path),
         "acceptedBridgeCandidate": bridge_v06.get("authorityCommit"),
+        "integratedProofExecutionAuthority": bridge_v06.get(
+            "integratedProofCommit"
+        ),
+        "sourceStageSchemaSha256": source_stage.get(
+            "handoffSchema",
+            {},
+        ).get("sha256"),
         "mappingContractSha256": bridge_v06.get("mappingContractSha256"),
         "blenderProjectionProcessLaunches": 2,
         "blenderRenderApiCalls": 0,
@@ -233,6 +353,8 @@ def main() -> int:
         "failures": failures,
         "passed": not failures,
     }
+    output_path = repository_path(root, args.output)
+    output_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if not failures else 1
 

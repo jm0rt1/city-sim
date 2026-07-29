@@ -1,12 +1,12 @@
 {
-  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
   "contactSheetInvocations": 0,
   "coordinateBridgeState": "validated_v06",
   "direction": "west",
-  "driverSha256": "be88c6ae9b4acd29bbdb874a453db436b856a22d187d243b300ee1d1f4970c54",
+  "driverSha256": "248d1d723ffc75b33fb99d508b304f0c5136163c013d577ec6a059804bc3b104",
   "imageGenInvocations": 0,
   "modes": {
     "A": {
@@ -22,7 +22,7 @@
       "reasonCodes": [
         "appearance-lock:document-sha256-mismatch",
         "locked-materials:sha256-mismatch",
-        "source-stage-schema:pending-v2"
+        "source-production-profile:missing"
       ],
       "rejectionStage": "before_renderer_launch",
       "renderInvocations": 0,
@@ -42,7 +42,7 @@
       "reasonCodes": [
         "appearance-lock:document-sha256-mismatch",
         "locked-materials:sha256-mismatch",
-        "source-stage-schema:pending-v2"
+        "source-production-profile:missing"
       ],
       "rejectionStage": "before_renderer_launch",
       "renderInvocations": 0,
@@ -62,7 +62,7 @@
       "reasonCodes": [
         "appearance-lock:document-sha256-mismatch",
         "locked-materials:sha256-mismatch",
-        "source-stage-schema:pending-v2"
+        "source-production-profile:missing"
       ],
       "rejectionStage": "before_renderer_launch",
       "renderInvocations": 0,
@@ -76,11 +76,11 @@
   "proof": "WRONG_APPEARANCE_LOCK_REJECTION",
   "rejectionStage": "before_renderer_launch",
   "remainingBlockers": [
-    "Integration source-stage schema v2 is not published",
+    "Integration source-production profile is not published",
     "North process-A appearance lock is not published"
   ],
   "renderInvocations": 0,
-  "runnerContractSha256": "a3d279f7be15f07f95c3b3e7732a2988b80e69820daca6f071305162b9c2c4e2",
+  "runnerContractSha256": "5767db5a12db008e6238f711b65cbb820e10152d9fb33b268f8c6407e29d9e0f",
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "testBinding": {

@@ -85,7 +85,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "taskId": "PLAY-081",
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
-        "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+        "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -303,12 +303,27 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     source_stage = contract.get("sourceStage", {})
     schema_binding = source_stage.get("handoffSchema", {})
     if (
-        schema_binding.get("state") != "pending_integration_v2"
-        or schema_binding.get("path") is not None
-        or schema_binding.get("sha256") is not None
+        schema_binding.get("state") != "bound_integration_v2"
+        or schema_binding.get("path")
+        != (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-source-stage-handoff-schema-v2.json"
+        )
+        or schema_binding.get("sha256")
+        != "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        or schema_binding.get("schemaId")
+        != "citysim://integration/industrial-l04-source-stage-handoff-v2"
     ):
-        errors.append("source-stage-schema:pending-v2-binding")
-    for name in ("nonAliasInput", "pngDecoder"):
+        errors.append("source-stage-schema:v2-binding")
+    for name in (
+        "schemaAuthority",
+        "handoffSchema",
+        "nonAliasInput",
+        "nonAliasLoader",
+        "semanticValidator",
+        "canonicalDecoder",
+        "pngDecoder",
+    ):
         binding = source_stage.get(name)
         if not isinstance(binding, dict):
             errors.append(f"source-stage:{name}:missing-binding")
@@ -318,7 +333,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             )
     non_alias = source_stage.get("nonAliasInput", {})
     if (
-        non_alias.get("acceptedMasterCount") != 44
+        non_alias.get("forbiddenDecodedRgbaSha256Count") != 44
         or non_alias.get("forbiddenSetSha256")
         != "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
     ):
@@ -335,6 +350,14 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             errors.append("source-stage:non-alias-content")
     except (ContractError, KeyError, OSError, json.JSONDecodeError):
         errors.append("source-stage:non-alias-invalid")
+    source_profile = source_stage.get("sourceProductionProfile", {})
+    if source_profile != {
+        "state": "not_published",
+        "path": None,
+        "commit": None,
+        "sha256": None,
+    }:
+        errors.append("source-production-profile:prelock-state")
 
     implementation = contract.get("runnerImplementation", {})
     blender_script = implementation.get("blenderScriptPath")
@@ -413,13 +436,12 @@ def evaluate_render_guard(
 ) -> dict[str, Any]:
     """Return a deterministic pre-launch decision without launching Blender."""
     errors = frozen_input_errors(root, contract)
-    if (
-        contract.get("sourceStage", {})
-        .get("handoffSchema", {})
-        .get("state")
-        != "bound_integration_v2"
-    ):
-        errors.append("source-stage-schema:pending-v2")
+    source_profile = contract.get("sourceStage", {}).get(
+        "sourceProductionProfile",
+        {},
+    )
+    if source_profile.get("state") != "bound_integration_profile":
+        errors.append("source-production-profile:missing")
     bridge = contract.get("coordinateBridge")
     bridge_v06: dict[str, Any] = {}
     if not isinstance(bridge, dict):

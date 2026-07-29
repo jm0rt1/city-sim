@@ -2,25 +2,40 @@
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "direction": "west",
-  "proof": "TWO_INDEPENDENT_SYSTEM_PYTHON_RUNS_AFTER_V06_ADOPTION",
+  "proof": "TWO_INDEPENDENT_ZERO_PIXEL_RUNS_AFTER_SOURCE_STAGE_V2_BINDING",
   "runs": {
     "run1": {
       "bridgeRepeatIdentitySha256": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
-      "missingLockRejectionSha256": "3e66227f110e69e772ddccc0fcbcd5495572a2d0e42788b91279ea44413206ab",
-      "runnerStaticValidationSha256": "d7d59cf497b6dd30c4bfed2a0eadb4ae4bd3ee10a9444342854f040092ea15c4",
-      "wrongLockRejectionSha256": "85942ac5bde068434a56fa58ea427d10137e50d50c927e86c43bdf3f0d7ea88d"
+      "handoffSchemaValidationSha256": "164d478a49c7dab6fe3076a313855ed7b0239dc9fd85af1c16c98416d2a75a6a",
+      "integratedProofGuardSha256": "0a11f7837d85062a6885a9693519340342084226466f80029a84081b78b987d2",
+      "missingLockRejectionSha256": "96b67722b7244e9e18eeafb21df682160defe1382dc4a3ae72ac86f15ca3e269",
+      "missingSourceProductionProfileRejectionSha256": "68c370cacf96d369b720a2e2de53257b13a38cb9fb3d1191d19ef3b99ad72072",
+      "runnerStaticValidationSha256": "b333a37924bca35c10456807b9fd7a13a6ec6448bb9d3c4434bdecd19859f4d6",
+      "sourceStageSchemaGateSha256": "02e738ffda92c20195505a0b673d4089a746ad860e47b4db3addaaf11b8c77e6",
+      "sourceValidatorDescribeSha256": "ab1724d81b90143f23a8e261b202f651078023ca6203e446a93f64f0f94201b2",
+      "wrongLockRejectionSha256": "2755e632fb07497da6302e8446c4958d67950e23982e5f1fc6f71880486d5163"
     },
     "run2": {
       "bridgeRepeatIdentitySha256": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
-      "missingLockRejectionSha256": "3e66227f110e69e772ddccc0fcbcd5495572a2d0e42788b91279ea44413206ab",
-      "runnerStaticValidationSha256": "d7d59cf497b6dd30c4bfed2a0eadb4ae4bd3ee10a9444342854f040092ea15c4",
-      "wrongLockRejectionSha256": "85942ac5bde068434a56fa58ea427d10137e50d50c927e86c43bdf3f0d7ea88d"
+      "handoffSchemaValidationSha256": "164d478a49c7dab6fe3076a313855ed7b0239dc9fd85af1c16c98416d2a75a6a",
+      "integratedProofGuardSha256": "0a11f7837d85062a6885a9693519340342084226466f80029a84081b78b987d2",
+      "missingLockRejectionSha256": "96b67722b7244e9e18eeafb21df682160defe1382dc4a3ae72ac86f15ca3e269",
+      "missingSourceProductionProfileRejectionSha256": "68c370cacf96d369b720a2e2de53257b13a38cb9fb3d1191d19ef3b99ad72072",
+      "runnerStaticValidationSha256": "b333a37924bca35c10456807b9fd7a13a6ec6448bb9d3c4434bdecd19859f4d6",
+      "sourceStageSchemaGateSha256": "02e738ffda92c20195505a0b673d4089a746ad860e47b4db3addaaf11b8c77e6",
+      "sourceValidatorDescribeSha256": "ab1724d81b90143f23a8e261b202f651078023ca6203e446a93f64f0f94201b2",
+      "wrongLockRejectionSha256": "2755e632fb07497da6302e8446c4958d67950e23982e5f1fc6f71880486d5163"
     }
   },
   "byteIdentical": {
     "bridgeRepeatIdentity": true,
+    "handoffSchemaValidation": true,
+    "integratedProofGuard": true,
     "missingLockRejection": true,
+    "missingSourceProductionProfileRejection": true,
     "runnerStaticValidation": true,
+    "sourceStageSchemaGate": true,
+    "sourceValidatorDescribe": true,
     "wrongLockRejection": true
   },
   "blenderProjectionProcessLaunches": 2,

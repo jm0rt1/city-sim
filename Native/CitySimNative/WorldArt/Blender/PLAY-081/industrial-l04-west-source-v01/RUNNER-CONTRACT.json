@@ -3,14 +3,14 @@
   "taskId": "PLAY-081",
   "direction": "west",
   "branch": "codex/citysim-world-art-west",
-  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
   "authority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
     "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
   },
   "repairAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md",
-    "sha256": "5ecea802faf9bda1e742d12a6a65bca1fe2bceb219a84be8b6a1f68ff51769c6"
+    "sha256": "a92268f4118db7458343d4967c002200af98a8e338b1189aae9423ae2e299412"
   },
   "handoffSchema": {
     "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
@@ -269,16 +269,33 @@
     }
   },
   "sourceStage": {
+    "schemaAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-STAGE-SCHEMA-V2-AUTHORITY.md",
+      "sha256": "330c9fd7ee4f4d5e3664ae0c155813b83d15a249f46a77aff4b5908e73f8005e"
+    },
     "handoffSchema": {
-      "state": "pending_integration_v2",
-      "path": null,
-      "sha256": null
+      "state": "bound_integration_v2",
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+      "schemaId": "citysim://integration/industrial-l04-source-stage-handoff-v2"
     },
     "nonAliasInput": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
       "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
-      "acceptedMasterCount": 44,
+      "forbiddenDecodedRgbaSha256Count": 44,
       "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
     },
     "pngDecoder": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
@@ -287,7 +304,13 @@
       "supportedFormat": "non-interlaced-8-bit-rgba-png",
       "pillowRequired": false
     },
-    "state": "prelock_non_schema_repairs_ready_schema_v2_pending"
+    "sourceProductionProfile": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "state": "schema_v2_bound_source_production_profile_pending"
   },
   "appearanceLock": {
     "documentPath": null,
@@ -319,6 +342,10 @@
       "integrated-v06-proof-commit-ancestry",
       "common-44-master-non-alias-input",
       "source-stage-schema-v2-binding",
+      "shared-non-alias-loader-binding",
+      "shared-semantic-validator-binding",
+      "canonical-decoder-binding",
+      "source-production-profile-presence-hash-and-ancestry",
       "appearance-lock-fields",
       "appearance-lock-document-hash",
       "appearance-lock-commit-ancestry",
@@ -369,6 +396,7 @@
       "sourceValidatorDescribe": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATOR-DESCRIBE.json",
       "integratedProofGuard": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/INTEGRATED-PROOF-GUARD.json",
       "sourceStageSchemaGate": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-SCHEMA-GATE.json",
+      "missingSourceProductionProfileRejection": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json",
       "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
       "handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json"
     },

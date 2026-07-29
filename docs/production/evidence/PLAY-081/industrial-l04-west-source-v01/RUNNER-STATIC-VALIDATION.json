@@ -1,5 +1,5 @@
 {
-  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
@@ -10,17 +10,17 @@
     "controlFlow": {
       "driverImportsBpy": false,
       "evaluateGuardLines": [
-        680
+        702
       ],
       "guardTextPrecedesLaunchText": true,
       "launchBlenderLines": [
-        685
+        707
       ],
       "passed": true,
       "subprocessRunLines": [
-        574,
-        583,
-        647
+        596,
+        605,
+        669
       ]
     },
     "coordinateBridgeAdoption": {
@@ -66,6 +66,15 @@
       "sourceCandidateProvenance": "3e01ca6738d7574718f9aeff4b66771eee109feb",
       "sourceCandidateSubstitutionRejected": true
     },
+    "missingSourceProductionProfileRejection": {
+      "passed": true,
+      "rejectionStage": "before_renderer_launch",
+      "semanticResult": {
+        "error": "MISSING_REFERENCED_FILE: authorities.sourceProductionProfile.path: docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-PRODUCTION-PROFILE.json",
+        "result": "FAIL"
+      },
+      "structuralSchemaResult": "PASS"
+    },
     "pixelFiles": 0,
     "sourceAndEvidencePixelFiles": [],
     "sourceValidatorDescribe": {
@@ -98,19 +107,36 @@
       },
       "returnCode": 0,
       "sourceStageSchema": {
-        "candidatePacketValidation": "not_run",
-        "passed": null,
-        "path": null,
+        "candidatePacketValidation": "not_run_pending_source_production_profile",
+        "draft202012MetaSchema": "pass",
+        "futureAuthorizedProcesses": [
+          "A",
+          "B",
+          "C"
+        ],
+        "passed": true,
+        "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
         "placeholderHashesUsed": false,
-        "sha256": null,
-        "state": "pending_integration_v2"
+        "schemaId": "citysim://integration/industrial-l04-source-stage-handoff-v2",
+        "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+        "state": "bound_integration_v2",
+        "westIdentity": {
+          "branch": "codex/citysim-world-art-west",
+          "direction": "west",
+          "frontageSocketSource": [
+            640,
+            704
+          ],
+          "logicalID": "industrial_l04_v0_west",
+          "taskId": "PLAY-081"
+        }
       }
     }
   },
   "contactSheetInvocations": 0,
   "coordinateBridgeState": "validated_v06",
   "direction": "west",
-  "driverSha256": "be88c6ae9b4acd29bbdb874a453db436b856a22d187d243b300ee1d1f4970c54",
+  "driverSha256": "248d1d723ffc75b33fb99d508b304f0c5136163c013d577ec6a059804bc3b104",
   "imageGenInvocations": 0,
   "normalizerInvocations": 0,
   "passed": true,
@@ -118,17 +144,18 @@
   "proof": "PRELOCK_RUNNER_STATIC",
   "rejectionStage": "before_renderer_launch",
   "renderInvocations": 0,
-  "runnerContractSha256": "a3d279f7be15f07f95c3b3e7732a2988b80e69820daca6f071305162b9c2c4e2",
+  "runnerContractSha256": "5767db5a12db008e6238f711b65cbb820e10152d9fb33b268f8c6407e29d9e0f",
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "validation": {
     "abcIdentity": "not_run",
     "integratedProofGuard": "pass",
     "literal192": "not_run",
+    "missingSourceProductionProfile": "pass",
     "normalization": "not_run",
     "rgba": "not_run",
     "runnerStatic": "pass",
-    "sourceStageSchema": "not_run_pending_integration_v2",
+    "sourceStageSchema": "pass",
     "sourceValidatorDescribe": "pass"
   }
 }

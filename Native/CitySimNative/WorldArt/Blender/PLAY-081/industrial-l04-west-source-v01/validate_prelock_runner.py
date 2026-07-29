@@ -12,8 +12,11 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
+
+import jsonschema
 
 
 SOURCE_ROOT = (
@@ -144,6 +147,230 @@ def zero_counts() -> dict[str, int]:
     }
 
 
+def prove_missing_source_production_profile(
+    root: Path,
+    contract_path: Path,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    source_stage = contract["sourceStage"]
+    schema_binding = source_stage["handoffSchema"]
+    schema_path = repository_path(root, schema_binding["path"])
+    schema = json.loads(schema_path.read_text())
+    authority_path = source_stage["schemaAuthority"]["path"]
+    authority_sha = source_stage["schemaAuthority"]["sha256"]
+    missing_profile_path = (
+        "docs/production/evidence/INTEGRATION/"
+        "INDUSTRIAL-L04-SOURCE-PRODUCTION-PROFILE.json"
+    )
+    if repository_path(root, missing_profile_path).exists():
+        raise RuntimeError("negative profile fixture unexpectedly exists")
+
+    prelaunch_path = contract["outputInventory"]["validation"]["handoff"]
+    prelaunch = {
+        "path": prelaunch_path,
+        "sha256": sha256(repository_path(root, prelaunch_path)),
+    }
+    guard_path = contract["outputInventory"]["validation"][
+        "missingLockRejection"
+    ]
+    isolation_path = contract["outputInventory"]["validation"]["runnerStatic"]
+    negative_sha = hashlib.sha256(
+        b"PLAY-081 missing source-production profile negative fixture"
+    ).hexdigest()
+    packet = {
+        "schemaVersion": 2,
+        "stage": "launch_bound",
+        "identity": {
+            "taskId": "PLAY-081",
+            "direction": "west",
+            "branch": "codex/citysim-world-art-west",
+            "family": "industrial",
+            "level": 4,
+            "variant": 0,
+            "logicalID": "industrial_l04_v0_west",
+            "sourceKey": "industrial_l04/variant-0/west/source-v1",
+            "sourceRoot": SOURCE_ROOT,
+            "evidenceRoot": EVIDENCE_ROOT,
+            "orientationTransform": "none",
+            "fallbackSourceKey": None,
+        },
+        "lineage": {
+            "publishedBaseline": contract["baselineCommit"],
+            "cellContentCommit": subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=root,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip(),
+        },
+        "authorities": {
+            "contract010": {
+                "path": (
+                    "docs/production/decisions/"
+                    "CONTRACT-010-directional-building-art.md"
+                ),
+                "sha256": (
+                    "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+                ),
+            },
+            "contract021": {
+                "path": (
+                    "docs/production/decisions/"
+                    "CONTRACT-021-parallel-directional-art-cells.md"
+                ),
+                "revision": 2,
+                "sha256": (
+                    "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+                ),
+            },
+            "directionBridge": {
+                "documentPath": (
+                    "docs/production/evidence/INTEGRATION/"
+                    "INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md"
+                ),
+                "sourceCandidate": (
+                    "3e01ca6738d7574718f9aeff4b66771eee109feb"
+                ),
+                "integratedProofCommit": (
+                    "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e"
+                ),
+                "documentSha256": (
+                    "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208"
+                ),
+                "mappingContractSha256": (
+                    "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+                ),
+                "coordinateSystem": "citysim_source_pixels_v1",
+            },
+            "appearanceLock": {
+                "documentPath": authority_path,
+                "commit": contract["baselineCommit"],
+                "documentSha256": authority_sha,
+                "northProcessASourceSha256": authority_sha,
+                "northProcessADecodedRgbaSha256": authority_sha,
+            },
+            "lockedMaterialMapping": {
+                "path": authority_path,
+                "commit": contract["baselineCommit"],
+                "sha256": authority_sha,
+            },
+            "sourceProductionProfile": {
+                "path": missing_profile_path,
+                "commit": contract["baselineCommit"],
+                "sha256": negative_sha,
+            },
+            "nonAliasInput": source_stage["nonAliasInput"],
+            "nonAliasLoader": source_stage["nonAliasLoader"],
+            "semanticValidator": source_stage["semanticValidator"],
+            "canonicalDecoder": source_stage["canonicalDecoder"],
+        },
+        "inputs": {
+            "prelaunchHandoff": prelaunch,
+            "frozenInputManifest": prelaunch,
+            "runnerContract": {
+                "path": str(contract_path.relative_to(root)),
+                "sha256": sha256(contract_path),
+            },
+            "outputRoot": EVIDENCE_ROOT,
+        },
+        "launch": {
+            "guardReceipt": {
+                "path": guard_path,
+                "sha256": sha256(repository_path(root, guard_path)),
+            },
+            "result": "PASS",
+            "authorizedProcesses": ["A", "B", "C"],
+            "isolatedOutputRoots": {
+                process: f"{SOURCE_ROOT}/process-{process.lower()}"
+                for process in ("A", "B", "C")
+            },
+            "allOutputRootsDistinct": True,
+            "outputRootIsolationReceipt": {
+                "path": isolation_path,
+                "sha256": sha256(repository_path(root, isolation_path)),
+            },
+        },
+        "completion": None,
+        "candidateReadyForIndependentReview": False,
+        "sourceReady": False,
+        "integrationAdmitted": False,
+        "rendererQuarantined": False,
+        "productionSelected": False,
+    }
+    structural_errors = sorted(
+        jsonschema.Draft202012Validator(schema).iter_errors(packet),
+        key=lambda error: list(error.path),
+    )
+    with tempfile.TemporaryDirectory(
+        prefix="play081-missing-source-profile-"
+    ) as temporary:
+        fixture_path = Path(temporary) / "launch-bound-negative.json"
+        fixture_path.write_text(
+            json.dumps(packet, indent=2, sort_keys=True) + "\n"
+        )
+        semantic_path = repository_path(
+            root,
+            source_stage["semanticValidator"]["path"],
+        )
+        process = subprocess.run(
+            [
+                sys.executable,
+                str(semantic_path),
+                str(fixture_path),
+                "--repo-root",
+                str(root),
+                "--schema",
+                str(schema_path.relative_to(root)),
+                "--expected-schema-sha256",
+                schema_binding["sha256"],
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+        )
+    try:
+        semantic_result = json.loads(process.stdout)
+    except json.JSONDecodeError:
+        semantic_result = {
+            "result": "UNPARSEABLE",
+            "stdout": process.stdout,
+            "stderr": process.stderr,
+        }
+    expected_error = (
+        "MISSING_REFERENCED_FILE: "
+        f"authorities.sourceProductionProfile.path: {missing_profile_path}"
+    )
+    passed = (
+        not structural_errors
+        and process.returncode == 1
+        and semantic_result.get("result") == "FAIL"
+        and semantic_result.get("error") == expected_error
+    )
+    return {
+        "proof": "MISSING_SOURCE_PRODUCTION_PROFILE_REJECTION",
+        "schemaBinding": schema_binding,
+        "semanticValidator": source_stage["semanticValidator"],
+        "negativeFixturePersisted": False,
+        "negativeFixtureSyntheticSha256": negative_sha,
+        "missingProfilePath": missing_profile_path,
+        "structuralSchemaResult": (
+            "PASS" if not structural_errors else "FAIL"
+        ),
+        "structuralErrors": [
+            f"{list(error.path)}: {error.message}"
+            for error in structural_errors
+        ],
+        "semanticReturnCode": process.returncode,
+        "semanticResult": semantic_result,
+        "rejectionStage": "before_renderer_launch",
+        **zero_counts(),
+        "passed": passed,
+    }
+
+
 def main() -> int:
     args = parse_args()
     root = Path(args.repository_root).resolve()
@@ -198,10 +425,19 @@ def main() -> int:
         == 44
         and describe_report.get("pngDecoder", {}).get("pillowImported") is False
         and describe_report.get("sourceStageSchema", {}).get("state")
-        == "pending_integration_v2"
-        and describe_report.get("sourceStageSchema", {}).get("path") is None
-        and describe_report.get("sourceStageSchema", {}).get("sha256") is None
+        == "bound_integration_v2"
+        and describe_report.get("sourceStageSchema", {}).get("sha256")
+        == "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        and describe_report.get("sharedSemanticValidator", {}).get("passed")
+        is True
+        and describe_report.get("canonicalDecoder", {}).get("passed") is True
     )
+    source_profile_rejection = prove_missing_source_production_profile(
+        root,
+        contract_path,
+        contract,
+    )
+    source_profile_rejection_pass = source_profile_rejection["passed"] is True
 
     missing_decisions = {
         mode: runner.evaluate_render_guard(root, contract, mode)
@@ -211,6 +447,7 @@ def main() -> int:
         decision["decision"] == "reject"
         and decision["rejectionStage"] == "before_renderer_launch"
         and "appearance-lock:missing" in decision["reasonCodes"]
+        and "source-production-profile:missing" in decision["reasonCodes"]
         and not any(
             code.startswith("coordinate-bridge:")
             for code in decision["reasonCodes"]
@@ -442,6 +679,14 @@ def main() -> int:
             "sourceCandidateSubstitutionRejected": integrated_proof_guard_pass,
             "passed": integrated_proof_guard_pass,
         },
+        "missingSourceProductionProfileRejection": {
+            "structuralSchemaResult": source_profile_rejection[
+                "structuralSchemaResult"
+            ],
+            "semanticResult": source_profile_rejection["semanticResult"],
+            "rejectionStage": source_profile_rejection["rejectionStage"],
+            "passed": source_profile_rejection_pass,
+        },
     }
     static_pass = (
         not frozen_errors
@@ -452,6 +697,7 @@ def main() -> int:
         and bridge_repeat_pass
         and describe_pass
         and integrated_proof_guard_pass
+        and source_profile_rejection_pass
     )
     common = {
         "schemaVersion": 1,
@@ -476,7 +722,10 @@ def main() -> int:
             "integratedProofGuard": (
                 "pass" if integrated_proof_guard_pass else "fail"
             ),
-            "sourceStageSchema": "not_run_pending_integration_v2",
+            "sourceStageSchema": "pass",
+            "missingSourceProductionProfile": (
+                "pass" if source_profile_rejection_pass else "fail"
+            ),
             "rgba": "not_run",
             "literal192": "not_run",
             "abcIdentity": "not_run",
@@ -501,7 +750,7 @@ def main() -> int:
         ],
         "coordinateBridgeState": "validated_v06",
         "remainingBlockers": [
-            "Integration source-stage schema v2 is not published",
+            "Integration source-production profile is not published",
             "North process-A appearance lock is not published"
         ],
         "passed": missing_pass,
@@ -520,7 +769,7 @@ def main() -> int:
         },
         "coordinateBridgeState": "validated_v06",
         "remainingBlockers": [
-            "Integration source-stage schema v2 is not published",
+            "Integration source-production profile is not published",
             "North process-A appearance lock is not published"
         ],
         "modes": wrong_decisions,
@@ -539,20 +788,41 @@ def main() -> int:
     }
     source_stage_schema_gate = {
         **common,
-        "proof": "SOURCE_STAGE_SCHEMA_HOLD",
-        "state": "not_run_pending_integration_v2",
+        "proof": "SOURCE_STAGE_SCHEMA_V2_BINDING",
+        "state": "bound_integration_v2",
         "binding": contract["sourceStage"]["handoffSchema"],
         "v1FinalBindingDeclared": False,
-        "candidatePacketValidation": "not_run",
+        "sharedBindings": {
+            name: contract["sourceStage"][name]
+            for name in (
+                "nonAliasInput",
+                "nonAliasLoader",
+                "semanticValidator",
+                "canonicalDecoder",
+                "pngDecoder",
+            )
+        },
+        "candidatePacketValidation":
+            "not_run_pending_source_production_profile",
         "placeholderHashesUsed": False,
         "renderModesRemainClosed": True,
         "passed": (
             contract["sourceStage"]["handoffSchema"]
             == {
-                "state": "pending_integration_v2",
-                "path": None,
-                "sha256": None,
+                "state": "bound_integration_v2",
+                "path": (
+                    "docs/production/evidence/INTEGRATION/"
+                    "industrial-l04-source-stage-handoff-schema-v2.json"
+                ),
+                "sha256": (
+                    "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+                ),
+                "schemaId": (
+                    "citysim://integration/"
+                    "industrial-l04-source-stage-handoff-v2"
+                ),
             }
+            and describe_pass
         ),
     }
     reports = {
@@ -563,6 +833,8 @@ def main() -> int:
         "SOURCE-VALIDATOR-DESCRIBE.json": describe_report,
         "INTEGRATED-PROOF-GUARD.json": integrated_proof_guard_report,
         "SOURCE-STAGE-SCHEMA-GATE.json": source_stage_schema_gate,
+        "MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json":
+            source_profile_rejection,
     }
     for name, report in reports.items():
         (output / name).write_text(
@@ -577,6 +849,7 @@ def main() -> int:
             and integrated_proof_guard_pass
             and describe_pass
             and source_stage_schema_gate["passed"]
+            and source_profile_rejection_pass
         )
         else 1
     )

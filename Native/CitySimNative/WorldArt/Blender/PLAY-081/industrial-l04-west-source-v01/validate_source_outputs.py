@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """PLAY-081 source validator with a zero-pixel prelock describe mode.
 
-``describe`` validates the future source-stage schema, canonical 44-master
-non-alias input, and task-owned standard-library PNG decoder without reading a
-candidate pixel. ``validate`` remains blocked until Integration publishes the
-appearance lock and post-lock production authority.
+``describe`` validates the bound source-stage schema v2, Integration's shared
+44-master loader/semantic/canonical-decoder authorities, and the task-owned
+standard-library PNG decoder without reading a candidate pixel. ``validate``
+remains blocked until Integration publishes the appearance lock and exact
+source-production profile.
 """
 
 from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
-import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -75,115 +76,38 @@ def validate_artifact(
     return path
 
 
-def _accepted_commit_is_ancestor(root: Path, commit: str) -> bool:
-    object_check = subprocess.run(
-        ["git", "cat-file", "-e", f"{commit}^{{commit}}"],
-        cwd=root,
-        check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    if object_check.returncode:
-        return False
-    ancestry = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", commit, "HEAD"],
-        cwd=root,
-        check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    return ancestry.returncode == 0
-
-
 def validate_non_alias_input(
     root: Path,
+    loader_binding: dict[str, Any],
     binding: dict[str, Any],
 ) -> tuple[set[str], dict[str, Any]]:
+    loader_path = validate_artifact(root, loader_binding, "non-alias-loader")
     input_path = validate_artifact(root, binding, "non-alias-input")
-    source = load_json(input_path)
-    if source.get("schema") != "citysim.integration.accepted-building-non-alias-input.v1":
-        raise ValueError("non-alias-input: schema")
-    if source.get("disposition") != "derived-validation-input":
-        raise ValueError("non-alias-input: disposition")
-    if source.get("authoritative") is not False:
-        raise ValueError("non-alias-input: authority boundary")
-
-    authority_inputs = source["authorityInputs"]
-    artifact_checks: dict[str, str] = {}
-    for name in ("shippingManifest", "generator", "derivedInventory"):
-        path = validate_artifact(root, authority_inputs[name], f"non-alias-{name}")
-        artifact_checks[name] = sha256(path)
-
-    source_only = authority_inputs["acceptedSourceOnlyFamilies"]
-    if len(source_only) != 1 or source_only[0].get("family") != "industrial_l03":
-        raise ValueError("non-alias-input: accepted source-only family")
-    accepted = source_only[0]
-    for label, path_key, hash_key in (
-        ("industrial-l03-manifest", "manifestPath", "manifestSha256"),
-        ("industrial-l03-acceptance", "acceptancePath", "acceptanceSha256"),
-    ):
-        path = validate_artifact(
-            root,
-            {"path": accepted[path_key], "sha256": accepted[hash_key]},
-            label,
-        )
-        artifact_checks[label] = sha256(path)
-    if not _accepted_commit_is_ancestor(root, accepted["acceptedCommit"]):
-        raise ValueError("non-alias-input: accepted Industrial L3 commit ancestry")
-
-    inventory_path = repository_path(root, authority_inputs["derivedInventory"]["path"])
-    inventory = load_json(inventory_path)
-    masters = inventory.get("masters")
-    if (
-        not isinstance(masters, list)
-        or inventory.get("acceptedMasterCount") != 44
-        or len(masters) != 44
-    ):
-        raise ValueError("non-alias-input: derived inventory count")
-    logical_ids = [record.get("logicalID") for record in masters]
-    file_hashes = [record.get("sha256Before") for record in masters]
-    decoded_hashes = [record.get("decodedRGBASHA256") for record in masters]
-    lowercase_hex = all(
-        isinstance(value, str)
-        and len(value) == 64
-        and value == value.lower()
-        and all(character in "0123456789abcdef" for character in value)
-        for value in decoded_hashes
+    spec = importlib.util.spec_from_file_location(
+        "citysim_accepted_master_non_alias_v1",
+        loader_path,
     )
+    if spec is None or spec.loader is None:
+        raise ValueError("non-alias-loader: unable to load shared authority")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    forbidden = module.load_forbidden_decoded_rgba(root, input_path)
     if (
-        logical_ids != sorted(logical_ids)
-        or len(set(logical_ids)) != 44
-        or len(set(file_hashes)) != 44
-        or len(set(decoded_hashes)) != 44
-        or not lowercase_hex
+        len(forbidden) != binding["forbiddenDecodedRgbaSha256Count"]
+        or module.FORBIDDEN_SET_SHA256 != binding["forbiddenSetSha256"]
     ):
-        raise ValueError("non-alias-input: inventory order or uniqueness")
-    forbidden_bytes = "".join(
-        f"{value}\n" for value in sorted(decoded_hashes)
-    ).encode("ascii")
-    forbidden_set_sha256 = sha256_bytes(forbidden_bytes)
-    counts = source.get("counts", {})
-    if (
-        counts.get("shippingDirectionalMasters") != 40
-        or counts.get("acceptedSourceOnlyMasters") != 4
-        or counts.get("total") != 44
-        or source.get("forbiddenDecodedRgbaSha256Count") != 44
-        or forbidden_set_sha256 != source.get("forbiddenSetSha256")
-    ):
-        raise ValueError("non-alias-input: canonical forbidden set")
-    return set(decoded_hashes), {
+        raise ValueError("non-alias-loader: result binding")
+    return set(forbidden), {
         "path": binding["path"],
         "sha256": binding["sha256"],
-        "schema": source["schema"],
-        "disposition": source["disposition"],
-        "shippingDirectionalMasters": 40,
-        "acceptedSourceOnlyMasters": 4,
-        "acceptedSourceOnlyFamily": "industrial_l03",
-        "forbiddenDecodedRgbaSha256Count": 44,
-        "forbiddenSetSha256": forbidden_set_sha256,
-        "logicalIdOrder": "ascii-ascending",
+        "loader": {
+            "path": loader_binding["path"],
+            "sha256": loader_binding["sha256"],
+        },
+        "schema": module.SCHEMA,
+        "forbiddenDecodedRgbaSha256Count": len(forbidden),
+        "forbiddenSetSha256": module.FORBIDDEN_SET_SHA256,
         "candidatePixelFilesRead": 0,
-        "authorityArtifacts": artifact_checks,
         "passed": True,
     }
 
@@ -192,40 +116,39 @@ def validate_source_stage_schema(
     root: Path,
     binding: dict[str, Any],
 ) -> dict[str, Any]:
-    if binding.get("state") == "pending_integration_v2":
-        if binding.get("path") is not None or binding.get("sha256") is not None:
-            raise ValueError("source-stage-schema: pending v2 binding must be null")
-        return {
-            "state": "pending_integration_v2",
-            "path": None,
-            "sha256": None,
-            "candidatePacketValidation": "not_run",
-            "placeholderHashesUsed": False,
-            "passed": None,
-        }
+    if binding.get("state") != "bound_integration_v2":
+        raise ValueError("source-stage-schema: v2 is not bound")
     schema_path = validate_artifact(root, binding, "source-stage-schema")
     schema = load_json(schema_path)
     jsonschema.Draft202012Validator.check_schema(schema)
-    identity_options = schema["$defs"]["identity"]["oneOf"]
-    west = next(
-        option
-        for option in identity_options
-        if option["properties"]["taskId"].get("const") == "PLAY-081"
-    )
-    authorized = schema["allOf"][2]["else"]["properties"]["launch"]["properties"][
-        "authorizedProcesses"
-    ]["const"]
+    west = schema["$defs"]["westIdentity"]["allOf"][1]["properties"]
+    west_registration = schema["$defs"]["westRegistration"]["allOf"][1][
+        "properties"
+    ]
+    authorities = schema["$defs"]["authorities"]["properties"]
+    authorized = schema["allOf"][2]["else"]["properties"]["launch"][
+        "properties"
+    ]["authorizedProcesses"]["const"]
     if (
         schema.get("$id") != binding.get("schemaId")
-        or west["properties"]["direction"].get("const") != "west"
-        or west["properties"]["branch"].get("const")
+        or west["direction"].get("const") != "west"
+        or west["branch"].get("const")
         != "codex/citysim-world-art-west"
-        or west["properties"]["logicalID"].get("const")
+        or west["logicalID"].get("const")
         != "industrial_l04_v0_west"
         or authorized != ["A", "B", "C"]
+        or west_registration["frontageSocketSource"].get("const")
+        != [640, 704]
+        or authorities["nonAliasLoader"]["properties"]["sha256"].get("const")
+        != "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+        or authorities["semanticValidator"]["properties"]["sha256"].get("const")
+        != "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+        or authorities["canonicalDecoder"]["properties"]["sha256"].get("const")
+        != "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
     ):
         raise ValueError("source-stage-schema: West contract")
     return {
+        "state": binding["state"],
         "path": binding["path"],
         "sha256": binding["sha256"],
         "schemaId": schema["$id"],
@@ -235,9 +158,11 @@ def validate_source_stage_schema(
             "direction": "west",
             "branch": "codex/citysim-world-art-west",
             "logicalID": "industrial_l04_v0_west",
+            "frontageSocketSource": [640, 704],
         },
         "futureAuthorizedProcesses": authorized,
-        "candidatePacketValidation": "not_run_pending_appearance_lock_and_post_lock_authority",
+        "candidatePacketValidation":
+            "not_run_pending_source_production_profile",
         "placeholderHashesUsed": False,
         "passed": True,
     }
@@ -294,6 +219,7 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
     )
     forbidden, non_alias = validate_non_alias_input(
         root,
+        source_stage["nonAliasLoader"],
         source_stage["nonAliasInput"],
     )
     schema = validate_source_stage_schema(
@@ -304,7 +230,7 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         decoder_report["passed"] is True
         and len(forbidden) == 44
         and non_alias["passed"] is True
-        and schema["state"] == "pending_integration_v2"
+        and schema["state"] == "bound_integration_v2"
         and contract["sourceReady"] is False
         and contract["productionSelected"] is False
     )
@@ -315,6 +241,32 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         "mode": "describe",
         "sourceStageSchema": schema,
         "nonAliasInput": non_alias,
+        "sharedSemanticValidator": {
+            **source_stage["semanticValidator"],
+            "passed": (
+                sha256(
+                    validate_artifact(
+                        root,
+                        source_stage["semanticValidator"],
+                        "semantic-validator",
+                    )
+                )
+                == source_stage["semanticValidator"]["sha256"]
+            ),
+        },
+        "canonicalDecoder": {
+            **source_stage["canonicalDecoder"],
+            "passed": (
+                sha256(
+                    validate_artifact(
+                        root,
+                        source_stage["canonicalDecoder"],
+                        "canonical-decoder",
+                    )
+                )
+                == source_stage["canonicalDecoder"]["sha256"]
+            ),
+        },
         "pngDecoder": decoder_report,
         "futureChecks": [
             "fresh-process provenance",
@@ -484,6 +436,7 @@ def main() -> int:
             raise SystemExit("--mode validate requires --output")
         forbidden, _ = validate_non_alias_input(
             root,
+            contract["sourceStage"]["nonAliasLoader"],
             contract["sourceStage"]["nonAliasInput"],
         )
         result = validate_pixels(root, contract, forbidden)

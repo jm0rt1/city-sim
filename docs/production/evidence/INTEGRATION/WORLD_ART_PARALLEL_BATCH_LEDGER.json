@@ -52,8 +52,8 @@
       "publishedBase": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
       "head": "b1e63cf7fb12addb3891b2253caa7593718aa445",
       "state": "prelock_active",
-      "blocker": "source_production_profile_intentionally_absent",
-      "nextAction": "bind_v08_future_runner_to_v2_and_prove_prelaunch_rejection",
+      "blocker": "finish_current_v2_binding_checkpoint_before_process_a",
+      "nextAction": "run_one_authorized_v08_process_a_after_clean_sync",
       "updatedAt": "2026-07-29T06:07:04Z"
     },
     {

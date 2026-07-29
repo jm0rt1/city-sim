@@ -10,7 +10,7 @@
 
 | Cell | Branch / claim | Current state | Next release boundary |
 |---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | v08 pre-pixel candidate preserved; exact v2 binding active | prove future runner fails closed without profile; no source render |
+| North | `codex/citysim-world-art` / `PLAY-027` | v08 pre-pixel candidate independently passed; exact v2 binding active | finish binding checkpoint, then run one authorized Process A |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | held repair being preserved before exact v2 synchronization | bind v2 and return zero-pixel rejection evidence |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | fingerprint/literal-192 repair preserved; exact v2 binding active | bind v2 and return zero-pixel rejection evidence |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | held ancestry/stdlib repair being preserved before exact v2 synchronization | bind v2 and return zero-pixel rejection evidence |

@@ -13,6 +13,8 @@ import subprocess
 import sys
 from typing import Any
 
+import east_output_safety as output_safety
+
 
 SOURCE_ROOT = pathlib.Path(__file__).resolve().parent
 REPOSITORY_ROOT = SOURCE_ROOT.parents[5]
@@ -293,8 +295,11 @@ def main() -> int:
     proof = build_proof()
     payload = canonical_bytes(proof)
     if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_bytes(payload)
+        output_safety.write_bytes_exclusive(
+            args.output,
+            payload,
+            "validation",
+        )
     sys.stdout.buffer.write(payload)
     return 0
 

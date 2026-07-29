@@ -19,6 +19,8 @@ import subprocess
 import sys
 from typing import Any, Callable, Iterable
 
+import east_output_safety as output_safety
+
 
 SOURCE_ROOT = pathlib.Path(__file__).resolve().parent
 CONTRACT_PATH = SOURCE_ROOT / "RUNNER-CONTRACT.json"
@@ -686,7 +688,13 @@ def output_paths(contract: dict[str, Any], process_id: str) -> dict[str, pathlib
     inventory = contract["outputInventory"]
     root = repository_path(inventory["root"])
     process = inventory["processes"][process_id]
-    return {name: root / relative for name, relative in process.items()}
+    paths = {name: root / relative for name, relative in process.items()}
+    try:
+        for path in paths.values():
+            output_safety.require_output_path(path, "run_production")
+    except output_safety.OutputSafetyRejected as error:
+        raise GuardRejected(error.code, error.detail) from error
+    return paths
 
 
 def launch_blender(
@@ -696,8 +704,11 @@ def launch_blender(
 ) -> int:
     toolchain = contract["toolchain"]
     paths = output_paths(contract, process_id)
-    for path in paths.values():
-        path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        for path in paths.values():
+            output_safety.ensure_output_parent(path, "run_production")
+    except output_safety.OutputSafetyRejected as error:
+        raise GuardRejected(error.code, error.detail) from error
     command = [
         toolchain["executable"],
         *toolchain["requiredArguments"],
@@ -928,13 +939,27 @@ def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
         coordinate_mapping,
     )
     paths = output_paths(contract, mode)
-    scene.render.filepath = str(paths["raw"])
-    bpy.ops.render.render(write_still=True)
+    try:
+        with output_safety.reserve_external_output(
+            paths["raw"],
+            "run_production",
+        ) as raw_path:
+            scene.render.filepath = str(raw_path)
+            bpy.ops.render.render(write_still=True)
+    except output_safety.OutputSafetyRejected as error:
+        raise GuardRejected(error.code, error.detail) from error
     for obj, role in built["objects"]:
         obj.data.materials.clear()
         obj.data.materials.append(built["semanticMaterials"][role])
-    scene.render.filepath = str(paths["semantic"])
-    bpy.ops.render.render(write_still=True)
+    try:
+        with output_safety.reserve_external_output(
+            paths["semantic"],
+            "run_production",
+        ) as semantic_path:
+            scene.render.filepath = str(semantic_path)
+            bpy.ops.render.render(write_still=True)
+    except output_safety.OutputSafetyRejected as error:
+        raise GuardRejected(error.code, error.detail) from error
     provenance = {
         "schema": "citysim.world-art.blender-process-provenance.v1",
         "taskId": "PLAY-079",
@@ -950,7 +975,14 @@ def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
         "autoexecDisabled": True,
         "renderApiCalls": 2,
     }
-    paths["provenance"].write_bytes(canonical_bytes(provenance))
+    try:
+        output_safety.write_bytes_exclusive(
+            paths["provenance"],
+            canonical_bytes(provenance),
+            "run_production",
+        )
+    except output_safety.OutputSafetyRejected as error:
+        raise GuardRejected(error.code, error.detail) from error
     return 0
 
 

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "task": "PLAY-073",
+  "publishedAuthority": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "synchronizationMerge": "183d9fe6456ea8d53398415fd64315b6d1a44db2",
+  "schemaCommit": "56444245f555d2ac50afed995a65c34a95618f8c",
+  "matrixCommit": "f4c0dcda7a1f2d84d2587ff3cb4e298ce13cd3a4",
+  "inputs": {
+    "contract021Revision2Sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c",
+    "existingL4IntakeSha256": "048e225ddbd5097ba6283418e3b27c198722eb913bd278b3cf351df51bae018c",
+    "directionPacketSchemaSha256": "51126753b17edf9992bb4df55336bcdca3974a10a92498f93543cf6d62254779",
+    "validatorSupportSha256": "506397e47ad33eac5c0799030c77bd23434f6590dd3cf0275b851643b70a940b",
+    "schemaTestsSha256": "05f88769d1b9200c0540be5ab17cae7285a606404a4a2f6ef846961dfaff5a3a",
+    "matrixTestsSha256": "81a648d71f245c612f4c354debe99579a689a067b846b8432b447472784505cb"
+  },
+  "validation": [
+    {
+      "command": "jq empty docs/production/evidence/PLAY-073/industrial-l04-direction-quarantine-v1/DIRECTION-PACKET-SCHEMA.json",
+      "result": "pass"
+    },
+    {
+      "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4Direction",
+      "result": "5_passed_0_failed",
+      "elapsedSeconds": 0.035
+    },
+    {
+      "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4",
+      "result": "7_passed_0_failed",
+      "elapsedSeconds": 0.042
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "environment": {
+    "clangModuleCache": "/private/tmp/play073-l4-clang-cache",
+    "swiftPMModuleCache": "/private/tmp/play073-l4-swift-cache",
+    "note": "The first sandboxed invocation was blocked before compilation by the user cache path; the identical focused command passed with task-specific temporary caches."
+  },
+  "boundaries": {
+    "syntheticPacketsOnly": true,
+    "actualDirectionPacketsAccepted": 0,
+    "sourceArtChanged": false,
+    "atlasOrManifestChanged": false,
+    "runtimeMappingOrSelectionChanged": false,
+    "packageChanged": false,
+    "qaFixtureChanged": false,
+    "stagedAppRun": false
+  },
+  "disposition": "prep_complete_awaiting_integration_review"
+}

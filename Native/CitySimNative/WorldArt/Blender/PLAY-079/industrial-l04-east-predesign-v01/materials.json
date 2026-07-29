@@ -1,0 +1,66 @@
+{
+  "schema": "citysim.world-art.material-role-binding.v1",
+  "task": "PLAY-079",
+  "direction": "east",
+  "revision": "east-predesign-v01",
+  "lockState": "PROVISIONAL_ROLES_AWAITING_ACCEPTED_NORTH_FAMILY_MATERIAL_LOCK",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderingAllowed": false,
+  "roles": [
+    {
+      "id": "warm-weathered-masonry",
+      "baseColorSRGB": "#765A45",
+      "analyticLuminance": 0.36,
+      "familyIntent": "warm weathered masonry primary hall"
+    },
+    {
+      "id": "formed-concrete",
+      "baseColorSRGB": "#756C60",
+      "analyticLuminance": 0.42,
+      "familyIntent": "midvalue formed concrete control and portal structure"
+    },
+    {
+      "id": "dark-painted-steel",
+      "baseColorSRGB": "#354347",
+      "analyticLuminance": 0.25,
+      "familyIntent": "dark blue-green structural and process steel"
+    },
+    {
+      "id": "roof-edge-metal",
+      "baseColorSRGB": "#59656A",
+      "analyticLuminance": 0.38,
+      "familyIntent": "readable midtone roof edge and freight frame"
+    },
+    {
+      "id": "glazing-louver",
+      "baseColorSRGB": "#2E4C55",
+      "analyticLuminance": 0.27,
+      "familyIntent": "restrained industrial glazing and clerestory louver"
+    },
+    {
+      "id": "portal-void",
+      "baseColorSRGB": "#121719",
+      "analyticLuminance": 0.08,
+      "familyIntent": "contiguous recessed freight depth"
+    },
+    {
+      "id": "safety-oxide",
+      "baseColorSRGB": "#A85A2A",
+      "analyticLuminance": 0.38,
+      "familyIntent": "restrained oxide and ochre operational accent"
+    },
+    {
+      "id": "hot-process",
+      "baseColorSRGB": "#C97B31",
+      "analyticLuminance": 0.55,
+      "familyIntent": "subordinate hot-process cue away from the portal"
+    },
+    {
+      "id": "contact-shadow",
+      "baseColorSRGB": "#463F38",
+      "analyticLuminance": 0.24,
+      "familyIntent": "small light-touch southeast grounding field"
+    }
+  ]
+}

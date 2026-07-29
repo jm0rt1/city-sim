@@ -81,8 +81,8 @@ Command:
 swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests
 ```
 
-Result: **4 passed, 0 failed** in **0.013 seconds** after a 1.49-second
-incremental build.
+Exact-candidate result: **4 passed, 0 failed** in **0.085 seconds** after an
+18.34-second clean relink/build.
 
 The focused gate covers separate admission, worker self-admission, missing and
 unknown receipt fields, fallback, registration drift, source alias,

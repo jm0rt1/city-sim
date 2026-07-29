@@ -17,8 +17,8 @@
   "validation": {
     "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
     "result": "4_passed_0_failed",
-    "testElapsedSeconds": 0.013,
-    "incrementalBuildSeconds": 1.49,
+    "testElapsedSeconds": 0.085,
+    "buildSeconds": 18.34,
     "directionPacketStrictShape": true,
     "sourceAdmissionStrictShape": true,
     "workerSelfAdmissionRejected": true,

@@ -1,0 +1,86 @@
+{
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "blenderScriptSha256": "3dcd00646ebdc1c48b4fe1551e530c44d348c62beb93e902733820eba85c2c5d",
+  "contactSheetInvocations": 0,
+  "direction": "west",
+  "driverSha256": "abc55de432c9ba930af25fcb93ef6c777d60aebd60cd52f4368dd87887c5ae47",
+  "imageGenInvocations": 0,
+  "missingAppearanceLockFields": [
+    "appearanceLock.documentPath",
+    "appearanceLock.commit",
+    "appearanceLock.documentSha256",
+    "appearanceLock.northProcessASourceSha256",
+    "appearanceLock.northProcessADecodedRgbaSha256",
+    "appearanceLockCommit",
+    "appearanceLockSha256",
+    "lockedMaterialMapping.path",
+    "lockedMaterialMapping.sha256"
+  ],
+  "modes": {
+    "A": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "A",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    },
+    "B": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "B",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    },
+    "C": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "C",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    }
+  },
+  "normalizerInvocations": 0,
+  "passed": true,
+  "pixelFiles": 0,
+  "proof": "MISSING_APPEARANCE_LOCK_REJECTION",
+  "rejectionStage": "before_renderer_launch",
+  "renderInvocations": 0,
+  "runnerContractSha256": "7629fbd8f7c2647ebafab4b055b10cc321d55fdff8613ce8e71f45fced8d2636",
+  "schemaVersion": 1,
+  "taskId": "PLAY-081"
+}

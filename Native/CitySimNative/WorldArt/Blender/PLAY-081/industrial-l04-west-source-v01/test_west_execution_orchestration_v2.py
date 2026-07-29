@@ -199,6 +199,15 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 ),
                 [],
             )
+            self.assertEqual(
+                validate_execution_receipt(
+                    receipt,
+                    schedule,
+                    self.execution_contract,
+                    repository_root=root,
+                ),
+                [],
+            )
         self.assertEqual(receipt["maximumObservedConcurrency"], 1)
         self.assertFalse(receipt["actualOverlap"])
 

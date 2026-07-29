@@ -774,8 +774,14 @@ def validate_execution_receipt(
     receipt: dict[str, Any],
     schedule: dict[str, Any],
     execution_contract: dict[str, Any],
+    *,
+    repository_root: Path | None = None,
 ) -> list[str]:
-    errors = validate_schedule(schedule, execution_contract)
+    errors = validate_schedule(
+        schedule,
+        execution_contract,
+        repository_root=repository_root,
+    )
     required = {
         "schema",
         "scheduleId",
@@ -1570,6 +1576,7 @@ def main() -> int:
                     ),
                     schedule,
                     execution_contract,
+                    repository_root=root,
                 )
             )
     result = {

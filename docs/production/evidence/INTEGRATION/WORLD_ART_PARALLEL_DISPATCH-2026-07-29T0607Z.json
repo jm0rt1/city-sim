@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "batch": "industrial_l04_directional_family",
+  "authorityCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "sourceStageSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+  },
+  "sentAt": "2026-07-29T06:07:04Z",
+  "pixelAuthority": false,
+  "sourceProductionProfilePublished": false,
+  "computeEnvelope": {
+    "activeDccProcesses": 0,
+    "maximumConcurrentDccProcessesAfterFutureRelease": 2,
+    "exceptionOwner": "Integration"
+  },
+  "rows": [
+    {
+      "direction": "north",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "claim": "PLAY-027",
+      "headAtAcknowledgement": "b1e63cf7fb12addb3891b2253caa7593718aa445",
+      "dirtyFileCountAtAcknowledgement": 0,
+      "state": "working",
+      "firstDeliverable": "v08 future-runner v2 binding and missing-profile rejection",
+      "stopCondition": "no pixels or DCC process before appearance lock and source-production profile"
+    },
+    {
+      "direction": "east",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "branch": "codex/citysim-world-art-east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "claim": "PLAY-079",
+      "headAtAcknowledgement": "171896da90fc5679323976e86eebaf886c04b00f",
+      "dirtyFileCountAtAcknowledgement": 6,
+      "state": "working",
+      "firstDeliverable": "preserved repair checkpoint then exact v2 binding",
+      "stopCondition": "no pixels or DCC process before appearance lock and source-production profile"
+    },
+    {
+      "direction": "south",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "branch": "codex/citysim-world-art-south",
+      "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+      "claim": "PLAY-080",
+      "headAtAcknowledgement": "ec16ce119627b7f8213c280cffcb901c317f34fd",
+      "dirtyFileCountAtAcknowledgement": 0,
+      "state": "working",
+      "firstDeliverable": "repaired runner exact v2 binding and missing-profile rejection",
+      "stopCondition": "no pixels or DCC process before appearance lock and source-production profile"
+    },
+    {
+      "direction": "west",
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "branch": "codex/citysim-world-art-west",
+      "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+      "claim": "PLAY-081",
+      "headAtAcknowledgement": "f5fcddfe4ed5b76d4e3d4376497f5facf5220b3d",
+      "dirtyFileCountAtAcknowledgement": 11,
+      "state": "working",
+      "firstDeliverable": "preserved repair checkpoint then exact v2 binding",
+      "stopCondition": "no pixels or DCC process before appearance lock and source-production profile"
+    },
+    {
+      "direction": "renderer",
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "branch": "codex/citysim-world-rendering",
+      "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+      "claim": "PLAY-073",
+      "headAtAcknowledgement": "4b7bc5aaf04f6bc8e28526723ac53266b5c96d86",
+      "dirtyFileCountAtAcknowledgement": 0,
+      "state": "working",
+      "firstDeliverable": "v2 admission-receipt quarantine harness",
+      "stopCondition": "no art activation or shared shipping mutation"
+    },
+    {
+      "direction": "qa",
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "branch": "codex/citysim-playtest-quality",
+      "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+      "claim": "PLAY-075",
+      "headAtAcknowledgement": "5d7d19fd41c104a4c46c565bad4ea386b984460e",
+      "dirtyFileCountAtAcknowledgement": 0,
+      "state": "working",
+      "firstDeliverable": "candidate-neutral direction review preregistration",
+      "stopCondition": "no app run, materialization, scoring, or production acceptance"
+    }
+  ]
+}

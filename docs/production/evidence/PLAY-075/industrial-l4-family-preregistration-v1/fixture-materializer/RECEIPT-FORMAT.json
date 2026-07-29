@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "atomicDirectionGate": {
+      "type": "object"
+    },
+    "authority": {
+      "type": "object"
+    },
+    "baseFixture": {
+      "type": "object"
+    },
+    "canonicalPayloadSha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "derivativePlans": {
+      "items": {
+        "type": "object"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "directionBridge": {
+      "type": "object"
+    },
+    "disposition": {
+      "enum": [
+        "CONTRACT_REHEARSAL_RECEIPT_ONLY",
+        "CANDIDATE_BOUND_PREPARATION_RECEIPT_ONLY"
+      ]
+    },
+    "expectedCaptureTree": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "integrationAdmission": {
+      "type": "object"
+    },
+    "mode": {
+      "enum": [
+        "candidate_bound",
+        "contract_rehearsal"
+      ]
+    },
+    "receiptType": {
+      "const": "PLAY-075_CANDIDATE_NEUTRAL_FIXTURE_MATERIALIZATION_PLAN"
+    },
+    "rendererCandidate": {
+      "type": "object"
+    },
+    "request": {
+      "type": "object"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "sideEffects": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "receiptType",
+    "disposition",
+    "mode",
+    "request",
+    "authority",
+    "baseFixture",
+    "rendererCandidate",
+    "integrationAdmission",
+    "directionBridge",
+    "atomicDirectionGate",
+    "derivativePlans",
+    "expectedCaptureTree",
+    "sideEffects",
+    "canonicalPayloadSha256"
+  ],
+  "title": "PLAY-075 Industrial L4 fixture-materialization receipt",
+  "type": "object"
+}

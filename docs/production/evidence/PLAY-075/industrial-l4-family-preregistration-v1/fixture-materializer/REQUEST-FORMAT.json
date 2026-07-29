@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "contract_rehearsal"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admissionManifest": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "candidate_bound"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admissionManifest": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "admissionManifest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "pattern": "^docs/production/evidence/INTEGRATION/industrial-l04-admissions/[^/]+\\.json$",
+              "type": "string"
+            },
+            "publishedManifestCommit": {
+              "pattern": "^[0-9a-f]{40}$",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "sha256",
+            "publishedManifestCommit"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "baseFixture": {
+      "additionalProperties": false,
+      "properties": {
+        "immutable": {
+          "const": true
+        },
+        "path": {
+          "const": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json"
+        },
+        "sha256": {
+          "const": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5"
+        },
+        "stateDigest": {
+          "const": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "stateDigest",
+        "immutable"
+      ],
+      "type": "object"
+    },
+    "directionBridge": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptedSourceAuthority": {
+          "const": "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        },
+        "coordinateSystem": {
+          "const": "citysim_source_pixels_v1"
+        },
+        "dccLabelsUsed": {
+          "const": false
+        },
+        "mappingSha256": {
+          "const": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+        },
+        "perDirectionTransforms": {
+          "const": false
+        },
+        "sourceOrder": {
+          "const": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      },
+      "required": [
+        "acceptedSourceAuthority",
+        "mappingSha256",
+        "coordinateSystem",
+        "sourceOrder",
+        "perDirectionTransforms",
+        "dccLabelsUsed"
+      ],
+      "type": "object"
+    },
+    "mode": {
+      "enum": [
+        "candidate_bound",
+        "contract_rehearsal"
+      ]
+    },
+    "packets": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "aliasOf": {
+            "type": "null"
+          },
+          "boundPacketSha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "coordinateLabelSystem": {
+            "const": "runtime_cardinal"
+          },
+          "direction": {
+            "enum": [
+              "north",
+              "east",
+              "south",
+              "west"
+            ]
+          },
+          "fallback": {
+            "const": false
+          },
+          "packetCommit": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "packetSha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "perDirectionTransform": {
+            "const": false
+          },
+          "rendererCandidateCommit": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "sourcePixelSocket": {
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array"
+          }
+        },
+        "required": [
+          "direction",
+          "packetCommit",
+          "packetSha256",
+          "boundPacketSha256",
+          "rendererCandidateCommit",
+          "coordinateLabelSystem",
+          "sourcePixelSocket",
+          "aliasOf",
+          "fallback",
+          "perDirectionTransform"
+        ],
+        "type": "object"
+      },
+      "maxItems": 4,
+      "minItems": 4,
+      "type": "array"
+    },
+    "rendererCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "admissionAuthorityCommit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "admittedCommit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "clean": {
+          "const": true
+        },
+        "commit": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "exact": {
+          "const": true
+        },
+        "stale": {
+          "const": false
+        }
+      },
+      "required": [
+        "commit",
+        "admittedCommit",
+        "admissionAuthorityCommit",
+        "clean",
+        "exact",
+        "stale"
+      ],
+      "type": "object"
+    },
+    "requestId": {
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "mode",
+    "requestId",
+    "admissionManifest",
+    "baseFixture",
+    "rendererCandidate",
+    "directionBridge",
+    "packets"
+  ],
+  "title": "PLAY-075 Industrial L4 fixture-materialization request",
+  "type": "object"
+}

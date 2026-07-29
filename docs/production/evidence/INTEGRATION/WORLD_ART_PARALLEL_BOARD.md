@@ -1,6 +1,6 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `346a27240668d97f0e89b7a9d4be00f9ed6e8239`
+- **Parallel operating authority:** `9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8`
 - **Batch:** Industrial L4 directional family
 - **Updated:** 2026-07-29
 - **Machine-readable ledger:**
@@ -10,12 +10,12 @@
 
 | Cell | Branch / claim | Current state | Next release boundary |
 |---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | v07 A preserved as technical-pass / `RETURNED_APPEARANCE_GATE`; v08 zero-pixel/material redesign released | return stronger v08 pre-pixel packet; no source render |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | v06 zero-pixel runner passes; shared source-schema/non-alias binding released | fail-closed launch-bound packet, no pixels |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | v06 proof accepted; fingerprint and literal-192 runner repairs released | corrected zero-pixel runner and launch-bound packet |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | v06 proof accepted; ancestry and stdlib PNG validation repairs released | corrected zero-pixel runner and launch-bound packet |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | file-backed preparation returned because JSONDecoder accepted unknown schema fields; strict shape repair acknowledged | reject unknown top-level/nested fields, rerun focused gates |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | materializer preparation returned because a synthetic mode flip could declare eligibility; admission-manifest repair acknowledged | reject unverified candidate/packet identities, rerun receipt gates |
+| North | `codex/citysim-world-art` / `PLAY-027` | v08 pre-pixel candidate independently passed; exact v2 binding active | finish binding checkpoint, then run one authorized Process A |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | held repair being preserved before exact v2 synchronization | bind v2 and return zero-pixel rejection evidence |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | fingerprint/literal-192 repair preserved; exact v2 binding active | bind v2 and return zero-pixel rejection evidence |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | held ancestry/stdlib repair being preserved before exact v2 synchronization | bind v2 and return zero-pixel rejection evidence |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | strict unknown-field repair preserved; v2 intake work active | require Integration admission receipt and prepare 4/4 join tests |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | candidate-manifest repair preserved; source-review preregistration active | bind read-only direction reviews to v2 candidates |
 
 ## Dispatch invariant
 
@@ -23,6 +23,13 @@ Integration refreshes this board at dispatch, candidate return, family-lock, and
 integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
+
+All six rows were active and acknowledged at the `06:07Z` dispatch. Pixel
+production remains blocked because the exact North appearance lock and
+Integration source-production profile do not yet exist. The future source
+release will cap DCC execution at two simultaneous processes unless
+Integration publishes a measured exception; all non-render work remains
+parallel.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

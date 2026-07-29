@@ -1,0 +1,33 @@
+{
+  "schema": "citysim.play-079.assembly-input-adapter.synthetic-fixture.v1",
+  "mode": "synthetic_blocked_dry_evidence",
+  "proposal": {
+    "commit": "b92406460499bef17b87e8e95622cae1a990b15c",
+    "path": "docs/production/evidence/PLAY-073/industrial-l04-v2-atomic-assembly-prep/ASSEMBLY-INPUT-MANIFEST-V1-PROPOSAL.md",
+    "sha256": "ec2e293fbbfa1df900dc50479331d9849da8ed7f1863179c9dd448a9f93c7e1c",
+    "authorityStatus": "proposal_only"
+  },
+  "locatorInventory": {
+    "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/RENDERER-LOCATOR-INVENTORY.json",
+    "sha256": "c2b673414dfe31bf894e1b959335b4a9a41ec93a720922c64c88a48eb58ef3b8",
+    "recordCount": 59
+  },
+  "sourceStageSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+  },
+  "requestedOutputPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/ASSEMBLY-INPUT-PROPOSAL-ADAPTER-DRY-EVIDENCE.json",
+  "syntheticOnly": {
+    "acceptedL3Baseline": null,
+    "appearanceLock": null,
+    "sourceProductionProfile": null,
+    "postLockProductionAuthority": null,
+    "selectedProcess": null,
+    "sourceCommit": null,
+    "integrationSourceAdmission": null,
+    "rendererQuarantineReceipt": null,
+    "fixturePreparation": null,
+    "camera": null,
+    "atlasSlot": null
+  }
+}

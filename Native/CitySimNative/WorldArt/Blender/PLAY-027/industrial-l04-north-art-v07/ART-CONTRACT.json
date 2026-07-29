@@ -10,12 +10,12 @@
   },
   "scene": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/SCENE.json",
-    "sha256": "010ceee7aa1917e767ffb93faea6de1cdc1c31f85513b105de7efce16c7dde25"
+    "sha256": "bf9ce7f6405f5c21777d12c73aa9f312da092d79d64bce743f3ca3ee05ffb488"
   },
   "materials": {
-    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/MATERIALS.json",
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/MATERIALS.json",
     "sha256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
-    "role": "immutable-returned-North-L4-family-identity-input"
+    "role": "byte-identical-self-contained-copy-of-immutable-returned-North-L4-family-identity-input"
   },
   "staticValidator": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/validate_predesign.py",
@@ -27,7 +27,7 @@
   },
   "staticValidation": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/STATIC-VALIDATION.json",
-    "sha256": "43689c4263bd88c8826fa51aae10fb9fa010c29b1951e4088415845e65100cdf"
+    "sha256": "69a78c896318d526cc4cebc2fbc5baa4586a27b1be4e6f49b7a8a0682be64667"
   },
   "architecture": {
     "concept": "roofless-hammerhead-split-wing-foundry",

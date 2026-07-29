@@ -49,7 +49,19 @@
       "run": "h",
       "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
       "validationPassed": true,
-      "disposition": "Fresh committed replay 2."
+      "disposition": "Fresh committed replay 2 using the byte-identical material at its prior external v03 path."
+    },
+    {
+      "run": "i",
+      "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
+      "validationPassed": true,
+      "disposition": "Fresh self-contained replay 1."
+    },
+    {
+      "run": "j",
+      "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
+      "validationPassed": true,
+      "disposition": "Fresh self-contained replay 2."
     }
   ],
   "sourceAuthority": false,

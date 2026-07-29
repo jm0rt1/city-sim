@@ -15,5 +15,11 @@ a subordinate stack preserve Industrial L4 scale and identity.
 then uses `world_to_camera_view` and camera-ray intersection at literal
 `192x128`. It does not invoke rendering or emit pixels.
 
+`MATERIALS.json` is a byte-identical, task-local copy of the immutable
+North L4 family input at SHA-256
+`474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab`.
+Keeping it in this root makes the predesign replay self-contained without
+changing any material value or role.
+
 This candidate remains zero-pixel predesign evidence only:
 `sourceAuthority=false`, `productionSelected=false`, and A/B/C are unproduced.

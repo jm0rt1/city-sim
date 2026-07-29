@@ -11,7 +11,8 @@
     "proofToolSHA256": "42befeea211f8657b68af0fa69b3fe80d23fd9f73a54a0d86cbb20743be4258e"
   },
   "inputs": {
-    "sceneSHA256": "010ceee7aa1917e767ffb93faea6de1cdc1c31f85513b105de7efce16c7dde25",
+    "sceneSHA256": "bf9ce7f6405f5c21777d12c73aa9f312da092d79d64bce743f3ca3ee05ffb488",
+    "materialLibraryFile": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/MATERIALS.json",
     "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
     "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
     "descriptorOrder": [
@@ -25,27 +26,30 @@
   },
   "freshCommittedReplays": [
     {
-      "run": "g",
-      "file": "run-g/ACTUAL-CAMERA-PROOF.json",
-      "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+      "run": "i",
+      "file": "run-i/ACTUAL-CAMERA-PROOF.json",
+      "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
       "validationPassed": true
     },
     {
-      "run": "h",
-      "file": "run-h/ACTUAL-CAMERA-PROOF.json",
-      "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+      "run": "j",
+      "file": "run-j/ACTUAL-CAMERA-PROOF.json",
+      "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
       "validationPassed": true
     }
   ],
-  "precommitConfirmatoryReplay": {
-    "run": "f",
-    "file": "run-f/ACTUAL-CAMERA-PROOF.json",
+  "priorExternalPathReplay": {
+    "runs": [
+      "g",
+      "h"
+    ],
     "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
-    "validationPassed": true
+    "validationPassed": true,
+    "supersededReason": "Scene path referenced the byte-identical material input outside the v07 root."
   },
   "freshReplayCount": 2,
   "freshReplayByteIdentical": true,
-  "freshReplaySHA256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+  "freshReplaySHA256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
   "pixelInvocationCounts": {
     "blenderRender": 0,
     "raw": 0,

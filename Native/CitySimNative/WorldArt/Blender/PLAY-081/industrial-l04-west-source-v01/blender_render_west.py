@@ -2,8 +2,10 @@
 """Blender-side PLAY-081 West source renderer.
 
 This module is never imported by the system-Python guard. The guarded runner
-launches it only after the exact appearance lock, material mapping, frozen
-predesign hashes, commit ancestry, and deterministic output path all pass.
+launches it only after the exact v06 coordinate bridge, appearance lock,
+material mapping, frozen predesign hashes, commit ancestry, and deterministic
+output path all pass. The historical predesign projection adapter is never
+loaded here and is not future source authority.
 """
 
 from __future__ import annotations
@@ -48,11 +50,11 @@ def repository_path(root: Path, relative: str) -> Path:
     return resolved
 
 
-def load_accepted_builder(root: Path, path: str) -> Any:
-    builder_path = repository_path(root, path)
-    spec = importlib.util.spec_from_file_location("play081_west_predesign", builder_path)
+def load_validated_bridge(root: Path, path: str) -> Any:
+    bridge_path = repository_path(root, path)
+    spec = importlib.util.spec_from_file_location("play081_west_v06_bridge", bridge_path)
     if spec is None or spec.loader is None:
-        raise RuntimeError("unable to load accepted West predesign builder")
+        raise RuntimeError("unable to load validated West v06 coordinate bridge")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -74,7 +76,7 @@ def configure_scene(
     scene: bpy.types.Scene,
     runner: dict[str, Any],
     predesign: dict[str, Any],
-    builder: Any,
+    bridge: Any,
 ) -> bpy.types.Object:
     pipeline = runner["invariants"]["renderPipeline"]
     camera_contract = predesign["camera"]
@@ -107,8 +109,8 @@ def configure_scene(
     camera_data = bpy.data.cameras.new("PLAY-081-West-Camera")
     camera = bpy.data.objects.new("PLAY-081-West-Camera", camera_data)
     scene.collection.objects.link(camera)
-    camera.location = builder.citysim_to_blender(camera_contract["positionWorldXYZ"])
-    target = builder.citysim_to_blender(camera_contract["targetWorldXYZ"])
+    camera.location = bridge.citysim_to_blender(camera_contract["positionWorldXYZ"])
+    target = bridge.citysim_to_blender(camera_contract["targetWorldXYZ"])
     camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     camera_data.type = "ORTHO"
     camera_data.ortho_scale = camera_contract["blenderOrthographicScale"]
@@ -118,14 +120,14 @@ def configure_scene(
     return camera
 
 
-def add_key_light(builder: Any, predesign: dict[str, Any]) -> bpy.types.Object:
+def add_key_light(bridge: Any, predesign: dict[str, Any]) -> bpy.types.Object:
     data = bpy.data.lights.new(name="PLAY-081-Northwest-Key", type="AREA")
     data.energy = 1600
     data.shape = "DISK"
     data.size = 80
     light = bpy.data.objects.new("PLAY-081-Northwest-Key", data)
     bpy.context.scene.collection.objects.link(light)
-    light.location = builder.citysim_to_blender(
+    light.location = bridge.citysim_to_blender(
         predesign["lightAndContact"]["keyOriginWorldXYZ"]
     )
     target = Vector((0, 0, 0))
@@ -172,14 +174,14 @@ def main() -> int:
     )
     predesign = load_json(predesign_path)
     material_mapping = load_json(materials_path)
-    builder = load_accepted_builder(
-        root, runner["acceptedPredesign"]["actualCameraProofScript"]["path"]
+    bridge = load_validated_bridge(
+        root, runner["coordinateBridge"]["v06"]["adapterPath"]
     )
 
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
-    camera = configure_scene(scene, runner, predesign, builder)
-    add_key_light(builder, predesign)
+    camera = configure_scene(scene, runner, predesign, bridge)
+    add_key_light(bridge, predesign)
     materials = {
         name: create_material(name, values)
         for name, values in material_mapping["roles"].items()
@@ -189,7 +191,7 @@ def main() -> int:
         component["id"]: component for component in predesign["components"]
     }
     for component in predesign["components"]:
-        obj = builder.create_component(component)
+        obj = bridge.create_component(component)
         obj.data.materials.append(materials[component["materialRole"]])
         objects[component["id"]] = obj
     bpy.context.view_layer.update()
@@ -238,6 +240,7 @@ def main() -> int:
         "acceptedPredesignSha256": sha256(predesign_path),
         "lockedMaterialMappingSha256": sha256(materials_path),
         "appearanceLock": runner["appearanceLock"],
+        "coordinateBridge": runner["coordinateBridge"]["v06"],
         "blenderVersion": bpy.app.version_string,
         "blenderBuildHash": bpy.app.build_hash.decode(),
         "pythonVersion": platform.python_version(),

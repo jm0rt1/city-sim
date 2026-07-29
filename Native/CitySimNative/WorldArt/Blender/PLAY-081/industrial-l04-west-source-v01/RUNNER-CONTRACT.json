@@ -36,7 +36,9 @@
     },
     "actualCameraProofScript": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/prove_actual_camera.py",
-      "sha256": "5dedf5f269b002ec5ea9078ed30ac8da7d804d622c32d52468dc7996f878b3ff"
+      "sha256": "5dedf5f269b002ec5ea9078ed30ac8da7d804d622c32d52468dc7996f878b3ff",
+      "authorityScope": "historical-zero-pixel-evidence-only",
+      "futureSourceAuthority": false
     },
     "staticProof": {
       "path": "docs/production/evidence/PLAY-081/STATIC-PREDESIGN-PROOF.json",
@@ -198,6 +200,38 @@
       "C"
     ]
   },
+  "coordinateBridge": {
+    "state": "pending_v06_revalidation",
+    "holdIsStop": false,
+    "canonicalCitySim": {
+      "direction": "west",
+      "frontageSocketWorldXYZ": [
+        -28,
+        0,
+        0
+      ],
+      "frontageSocketExpectedSource": [
+        640,
+        704
+      ]
+    },
+    "historicalProjectionAdapter": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/prove_actual_camera.py",
+      "sha256": "5dedf5f269b002ec5ea9078ed30ac8da7d804d622c32d52468dc7996f878b3ff",
+      "authorityScope": "retained-predesign-proof-only",
+      "futureSourceAuthority": false
+    },
+    "v06": {
+      "authorityPath": null,
+      "authorityCommit": null,
+      "authoritySha256": null,
+      "adapterPath": null,
+      "adapterSha256": null,
+      "cameraProjectionProofSha256": null,
+      "contactCornerOrderProofSha256": null,
+      "canonicalWestSocketProofSha256": null
+    }
+  },
   "appearanceLock": {
     "documentPath": null,
     "commit": null,
@@ -224,6 +258,7 @@
     "rejectionStage": "before_renderer_launch",
     "requiredChecksInOrder": [
       "frozen-input-hashes",
+      "v06-coordinate-bridge-authority-and-proofs",
       "appearance-lock-fields",
       "appearance-lock-document-hash",
       "appearance-lock-commit-ancestry",
@@ -267,6 +302,7 @@
       "missingLockRejection": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/MISSING-LOCK-REJECTION.json",
       "wrongLockRejection": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WRONG-LOCK-REJECTION.json",
       "repeatIdentity": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/RUNNER-REPEAT-IDENTITY.json",
+      "coordinateBridgeBlocker": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/COORDINATE-BRIDGE-BLOCKER.json",
       "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
       "handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json"
     },

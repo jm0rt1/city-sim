@@ -139,6 +139,8 @@ def main() -> int:
             != contract["appearanceLock"]
         ):
             failures.append(f"process-{process_id}:appearance-lock-provenance")
+        if provenance.get("coordinateBridge") != contract["coordinateBridge"]["v06"]:
+            failures.append(f"process-{process_id}:coordinate-bridge-provenance")
         expected_registration = contract["invariants"]["registration"]
         if registration.get("footprintWorldXZ") != expected_registration[
             "contactPolygonWorldXZ"

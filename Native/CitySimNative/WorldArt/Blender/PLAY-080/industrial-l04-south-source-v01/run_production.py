@@ -95,7 +95,7 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+        "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -134,18 +134,24 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         )
     bridge = contract.get("coordinateBridge", {})
     if (
-        bridge.get("state") not in {"pending_v06_revalidation", "v06_revalidated"}
+        bridge.get("state") != "v06_revalidated"
+        or bridge.get("acceptedCandidateCommit")
+        != "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        or bridge.get("mappingContractSha256")
+        != "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+        or bridge.get("formula") != "B(CitySim[x,y,z])=Blender[z,x,y]"
+        or bridge.get("matrixRows") != [[0, 0, 1], [1, 0, 0], [0, 1, 0]]
+        or bridge.get("determinant") != 1
+        or bridge.get("sourceOrder") != [0, 1, 2, 3]
         or bridge.get("canonicalCitySimSouthSocket") != [0, 0, 28]
+        or bridge.get("blenderNativeDirectionalSocket") != [28, 0, 0]
         or bridge.get("sourceSocketPixels") != [640, 832]
         or bridge.get("historicalPredesignProjectionAdapterSourceAuthority") is not False
-        or (
-            bridge.get("state") == "pending_v06_revalidation"
-            and bridge.get("blenderNativeDirectionalSocket") is not None
-        )
     ):
         raise GuardRejected("COORDINATE_BRIDGE_HOLD_MISMATCH", bridge)
     required_records = {
         "governingContract": authorities.get("governingContract"),
+        "dccContract": authorities.get("dccContract"),
         "prelockRunnerAuthority": authorities.get("prelockRunnerAuthority"),
         "handoffSchema": authorities.get("handoffSchema"),
         "acceptedPredesign.handoff": predesign.get("handoff"),
@@ -233,6 +239,10 @@ def require_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
         "authorityPath",
         "authorityCommit",
         "authoritySha256",
+        "acceptancePath",
+        "acceptanceSha256",
+        "mappingContractPath",
+        "mappingContractSha256",
         "citysimToBlenderAxisOrder",
         "citysimToBlenderAxisSigns",
         "blenderNativeDirectionalSocket",
@@ -251,6 +261,34 @@ def require_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
         {"path": bridge["authorityPath"], "sha256": bridge["authoritySha256"]},
         "coordinateBridge",
     )
+    require_sha(
+        {"path": bridge["acceptancePath"], "sha256": bridge["acceptanceSha256"]},
+        "coordinateBridgeAcceptance",
+    )
+    require_sha(
+        {
+            "path": bridge["mappingContractPath"],
+            "sha256": bridge["mappingContractSha256"],
+        },
+        "coordinateBridgeMappingContract",
+    )
+    mapping_contract = load_json(repository_path(bridge["mappingContractPath"]))
+    south = mapping_contract.get("directions", {}).get("south", {})
+    if (
+        mapping_contract.get("basis", {}).get("formula") != bridge.get("formula")
+        or mapping_contract.get("basis", {}).get("matrixRows")
+        != bridge.get("matrixRows")
+        or mapping_contract.get("basis", {}).get("sourceOrder")
+        != bridge.get("sourceOrder")
+        or south.get("socketCitySim") != bridge.get("canonicalCitySimSouthSocket")
+        or south.get("socketBlender")
+        != bridge.get("blenderNativeDirectionalSocket")
+        or south.get("socketSource") != bridge.get("sourceSocketPixels")
+    ):
+        raise GuardRejected(
+            "V06_MAPPING_CONTRACT_MISMATCH",
+            {"basis": mapping_contract.get("basis"), "south": south},
+        )
     axis_order = bridge["citysimToBlenderAxisOrder"]
     axis_signs = bridge["citysimToBlenderAxisSigns"]
     if (

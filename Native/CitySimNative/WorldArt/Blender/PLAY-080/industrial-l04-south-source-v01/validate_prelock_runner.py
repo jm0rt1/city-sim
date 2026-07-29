@@ -177,6 +177,7 @@ def zero_counters(payload: dict[str, Any]) -> bool:
 def main() -> int:
     args = parse_args()
     contract = load_json(args.contract)
+    bridge_state = contract.get("coordinateBridge", {}).get("state")
     source_root = SOURCE_DIR
     evidence_root = args.evidence_root.resolve()
     before_pixels = pixel_files(source_root) + pixel_files(evidence_root)
@@ -294,7 +295,7 @@ def main() -> int:
             "driverResult": validate_one[1],
         },
         "repeatIdentityPass": repeat_ok,
-        "coordinateBridgeRevalidation": "pending_v06",
+        "coordinateBridgeRevalidation": bridge_state,
         "coordinateBridgeBlocker": (
             "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
             "COORDINATE-BRIDGE-V06-BLOCKER.json"
@@ -331,7 +332,7 @@ def main() -> int:
         "runnerStaticPass": static_inspection["result"] == "PASS" and validate_ok,
         "guardPass": missing_ok and wrong_ok,
         "repeatIdentityPass": repeat_ok,
-        "coordinateBridgeRevalidation": "pending_v06",
+        "coordinateBridgeRevalidation": bridge_state,
         "coordinateBridgeBlocker": (
             "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
             "COORDINATE-BRIDGE-V06-BLOCKER.json"

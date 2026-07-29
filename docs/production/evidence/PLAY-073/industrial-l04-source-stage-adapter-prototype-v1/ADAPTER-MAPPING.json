@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY_073_INDUSTRIAL_L04_SOURCE_STAGE_ADAPTER_PROTOTYPE",
+  "disposition": "VALIDATED_SYNTHETIC_NONSHIPPING_PROTOTYPE",
+  "authority": {
+    "publishedMaster": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
+    "rendererSyncMerge": "fa95453871c669d9fca541a9665714f811f0b3c2",
+    "locatorAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+      "sha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "directionBridge": {
+      "documentPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+      "commit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "documentSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+      "canonicalMappingSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+      "coordinateSystem": "citysim_source_pixels_v1"
+    }
+  },
+  "directions": [
+    {
+      "direction": "east",
+      "taskId": "PLAY-079",
+      "reservedLocator": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+      "frontageSocketSource": [896, 832],
+      "status": "synthetic_adapter_mapping_pass"
+    },
+    {
+      "direction": "south",
+      "taskId": "PLAY-080",
+      "reservedLocator": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "frontageSocketSource": [640, 832],
+      "status": "synthetic_adapter_mapping_pass"
+    },
+    {
+      "direction": "west",
+      "taskId": "PLAY-081",
+      "reservedLocator": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "frontageSocketSource": [640, 704],
+      "status": "synthetic_adapter_mapping_pass"
+    }
+  ],
+  "north": {
+    "status": "pending_separate_locator_and_source_authority",
+    "syntheticPacketCreated": false,
+    "adapterInvoked": false
+  },
+  "mapping": {
+    "identity": "source-stage identity direction, logicalID, and sourceKey",
+    "governingContract": "source-stage authorities.contract021",
+    "directionBridge": "source-stage authorities.directionBridge",
+    "appearanceLock": "source-stage authorities.appearanceLock",
+    "sourceStage": "published schema, semantic validator, canonical decoder, and non-alias loader bindings",
+    "workerState": "source_candidate with candidateReadyForIndependentReview true and every admission/quarantine flag false",
+    "source": "content commit and source identity hashes with null fallback",
+    "lods": "city, neighborhood, block ordered with unique decoded hashes and fixed canvas sizes",
+    "provenance": "reserved handoff path/hash, runner contract, and normalization receipt",
+    "registration": "1x1 footprint, fixed pivot, direction socket/frontage, contact, shadow, and alpha truth",
+    "transformFingerprints": "eight unique authored D4 hashes per direction",
+    "productionSelected": false
+  },
+  "batchResult": {
+    "status": "quarantined_incomplete_north_pending",
+    "mappedDirections": 3,
+    "lodIdentities": 9,
+    "d4Identities": 24,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false,
+    "fourOfFourAssemblyTriggered": false
+  },
+  "negativeMatrix": [
+    "locator_authority_hash_drift",
+    "source_handoff_hash_drift",
+    "source_handoff_symlink",
+    "source_path_or_semantic_drift",
+    "fallback_source",
+    "duplicate_transform_fingerprint",
+    "cross_direction_source_or_lod_or_transform_alias"
+  ]
+}

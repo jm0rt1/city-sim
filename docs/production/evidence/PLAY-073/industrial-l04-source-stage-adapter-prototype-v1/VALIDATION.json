@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY_073_INDUSTRIAL_L04_SOURCE_STAGE_ADAPTER_VALIDATION",
+  "result": "PASS_NONSHIPPING_PROTOTYPE",
+  "candidate": {
+    "branch": "codex/citysim-world-rendering",
+    "publishedMaster": "e30b57243e05c487509fbe22ef103f4c3b00cb69",
+    "syncMerge": "fa95453871c669d9fca541a9665714f811f0b3c2",
+    "prototypeCommit": "7e754a0dfbef6c8e91130b091015970702e417ca"
+  },
+  "artifacts": [
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4SourceStageAdapterPrototypeTests.swift",
+      "sha256": "d94a114cd975e37a462f96c77359e2e0a3f2e87cc5679e55cf1e49f10a37698e"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-prototype-v1/ADAPTER-MAPPING.json",
+      "sha256": "52b8a49ab81f1bbe3c90372842e1994d246a2907a904e87c7d6c81bf51547ed3"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-prototype-v1/HANDOFF.md",
+      "sha256": "93d70a4277bf84ea43135db6de8cc359ab753000a2113ccc5c52143464236cfd"
+    }
+  ],
+  "prototypeSuite": {
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-stage-adapter-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-stage-adapter-swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-stage-adapter-build --filter IndustrialL4SourceStageAdapterPrototypeTests",
+    "result": "PASS",
+    "executed": 4,
+    "failed": 0
+  },
+  "focusedIndustrialL4Suite": {
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-stage-adapter-clang SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-stage-adapter-swiftpm swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-stage-adapter-build --filter IndustrialL4",
+    "result": "PASS",
+    "executed": 38,
+    "passed": 36,
+    "skipped": 2,
+    "failed": 0,
+    "expectedSkips": [
+      "caller-supplied atomic assembly manifest absent",
+      "caller-supplied direction packet absent"
+    ]
+  },
+  "proof": {
+    "eastSouthWestExactReservedLocators": "PASS",
+    "northExplicitlyPending": true,
+    "deterministicFieldMapping": "PASS",
+    "locatorAuthorityHash": "PASS",
+    "sourceHandoffHash": "PASS",
+    "pathContainmentAndSymlinkRejection": "PASS",
+    "directionIsolatedFailure": "PASS",
+    "fallbackRejected": "PASS",
+    "transformAliasRejected": "PASS",
+    "crossDirectionAliasRejected": "PASS",
+    "fourOfFourActivationTriggered": false
+  },
+  "scope": {
+    "testAndEvidenceOnly": true,
+    "realSourcePacketsRead": 0,
+    "sourcePixelsInspected": false,
+    "sourceAdmissionGranted": false,
+    "rendererQuarantineAccepted": false,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "atlasOrManifestMutated": false,
+    "packageMutated": false,
+    "appLaunched": false,
+    "pushed": false,
+    "selfAccepted": false
+  }
+}

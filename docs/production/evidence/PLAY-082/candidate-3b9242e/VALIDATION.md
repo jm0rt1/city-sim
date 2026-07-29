@@ -138,6 +138,45 @@ Return validation:
 - existing target presentation, activation, Escape, focus, and AX assertions
   remain unchanged and green.
 
+## Independent-return actionable AX correction
+
+- Focused product/test repair:
+  `d12d1df1948605153e7fa91c7ea05621391a71fb`
+
+The beacon is a semantic button whose activation opens Details. Build and
+bulldoze targets previously exposed the underlying primary action name, such
+as `Build Road` or `Demolish City Hall`, even though pressing the beacon never
+performed that action. The descendant repair makes every actionable beacon
+name its actual result:
+
+```text
+Open details for <target or tool> at block <x>, <y>
+```
+
+The AX value remains the existing primary-action disclosure without
+transformation. It therefore retains availability, blocked reason, cost,
+upkeep/consequence, and demolition protection truth. Nil inspect/build/
+bulldoze presentations remain nonactionable and retain their truthful mode or
+selection descriptions.
+
+Focused assertions now bind exact labels and untouched disclosure values for:
+
+- inspect;
+- build-ready and build-blocked;
+- bulldoze-ready and bulldoze-blocked;
+- inspect/build/bulldoze nil controls.
+
+Return validation:
+
+- all selected-target beacon tests: **3/3 passed**;
+- settled closed/decision/Details/post-close viewport test: **1/1 passed**;
+- exactly one `toggleCommandCenter` activation: retained;
+- Escape, focus generation, selection, state, mode, and Undo continuity:
+  retained;
+- 64-point compact and authentic 1120-point regular rails: unchanged;
+- current regular/compact visual evidence: still binding because the repair
+  changes only semantic AX text.
+
 ## Staged-app attempt and unresolved gate
 
 The exact candidate was staged and verified, but the desktop was locked.

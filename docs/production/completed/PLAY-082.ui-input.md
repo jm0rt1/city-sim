@@ -11,6 +11,8 @@
   `3b9242efcde6f6183c4de9649afbe66085db3478`
 - **Regular-width product candidate:**
   `816f8f321ec506979f8258e34ea05eed366a6bd1`
+- **Action-truth product candidate:**
+  `d12d1df1948605153e7fa91c7ea05621391a71fb`
 - **Evidence root:**
   `docs/production/evidence/PLAY-082/candidate-3b9242e/`
 
@@ -69,7 +71,11 @@ remain a required integration gate; they are not self-accepted here.
    `PLAY-082: Bind selected target evidence`
 3. `816f8f321ec506979f8258e34ea05eed366a6bd1` —
    `PLAY-082: Bind the authentic regular command rail`
-4. Return evidence/completion commit — reported in the clean handoff.
+4. `c76c75279237c6d50b3fe41e02b7c929ae91f828` —
+   `PLAY-082: Correct regular rail evidence`
+5. `d12d1df1948605153e7fa91c7ea05621391a71fb` —
+   `PLAY-082: Make beacon actions truthful to accessibility`
+6. Return evidence/completion commit — reported in the clean handoff.
 
 ## Integration-return correction
 
@@ -93,6 +99,19 @@ Focused return results:
 - command/store/focus/AX behavior: unchanged;
 - locked-desktop staged interaction limitation: retained without retry or
   self-acceptance.
+
+## Independent-return accessibility correction
+
+Build and bulldoze beacons no longer announce an action they do not perform.
+Every actionable beacon now says `Open details for <target/tool> at block …`.
+Its AX value continues to expose the existing build/demolish readiness,
+blocked reason, cost/consequence, and protection disclosure.
+
+Exact focused assertions cover inspect, build-ready, build-blocked,
+bulldoze-ready, bulldoze-blocked, and all nil controls. The 3/3 beacon suite
+and 1/1 viewport test pass. Exactly-once command routing, Escape/focus/state
+continuity, the 64-point rail, authentic 1120 proof, and the locked-desktop
+limitation are unchanged.
 
 ## Scope and limitations
 

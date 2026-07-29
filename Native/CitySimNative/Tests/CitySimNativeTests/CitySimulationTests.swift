@@ -1015,7 +1015,13 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(compact.size.width, compactSize.width, accuracy: 0.5)
         XCTAssertEqual(compact.size.height, compactSize.height, accuracy: 0.5)
 
-        let regularSize = CGSize(width: 1_020, height: BuildToolbarView.regularSituationalMaximumHeight)
+        let regularWindowSize = CGSize(width: 1_278, height: 768)
+        XCTAssertFalse(ContentView.isCompactLayout(regularWindowSize))
+        let regularSize = CGSize(
+            width: 1_120,
+            height: BuildToolbarView.regularSituationalMaximumHeight
+        )
+        XCTAssertEqual(regularSize.width, 1_120, "Bind the real regular command-rail maximum")
         let regular = try toolbarBitmap(size: regularSize, store: store, compact: false)
         XCTAssertEqual(regular.size.width, regularSize.width, accuracy: 0.5)
         XCTAssertEqual(regular.size.height, regularSize.height, accuracy: 0.5)

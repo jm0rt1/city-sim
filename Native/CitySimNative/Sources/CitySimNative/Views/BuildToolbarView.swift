@@ -480,6 +480,8 @@ struct BuildToolbarView: View {
         return Button { store.perform(.openCommandGuide) } label: {
             Label(compact ? "Cmds" : "Commands", systemImage: "command.square")
                 .font(.caption.weight(.semibold))
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, compact ? 0 : 8)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
                 .contentShape(Rectangle())

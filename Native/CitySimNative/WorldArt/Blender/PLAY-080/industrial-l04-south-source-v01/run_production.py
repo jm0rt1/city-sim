@@ -968,7 +968,7 @@ def main() -> int:
             )
         success_report = expected_report
     except GuardRejected as rejection:
-        write_report(args.report, result_payload(args.mode, "REJECTED", rejection=rejection))
+        write_report(None, result_payload(args.mode, "REJECTED", rejection=rejection))
         return 2
 
     payload = render_source(contract, material_mapping, coordinate_bridge, args.mode)

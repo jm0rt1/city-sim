@@ -96,6 +96,51 @@
     "missingArtifactCount": 12,
     "result": "REJECTED"
   },
+  "preRenderReportWriteGuards": {
+    "destination": "stdout_only",
+    "processes": {
+      "A": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "rejectionCode": "MISSING_SOURCE_PRODUCTION_PROFILE",
+        "rejectionStage": "before_renderer_launch",
+        "renderInvocations": 0,
+        "reportParentCreated": false,
+        "reportSupplied": true,
+        "reportWritten": false,
+        "result": "REJECTED",
+        "returnCode": 2
+      },
+      "B": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "rejectionCode": "MISSING_SOURCE_PRODUCTION_PROFILE",
+        "rejectionStage": "before_renderer_launch",
+        "renderInvocations": 0,
+        "reportParentCreated": false,
+        "reportSupplied": true,
+        "reportWritten": false,
+        "result": "REJECTED",
+        "returnCode": 2
+      },
+      "C": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "rejectionCode": "MISSING_SOURCE_PRODUCTION_PROFILE",
+        "rejectionStage": "before_renderer_launch",
+        "renderInvocations": 0,
+        "reportParentCreated": false,
+        "reportSupplied": true,
+        "reportWritten": false,
+        "result": "REJECTED",
+        "returnCode": 2
+      }
+    },
+    "result": "PASS"
+  },
   "productionSelected": false,
   "productionValidationDisposition": {
     "assembly": "not_run",
@@ -130,6 +175,7 @@
       "require_launch_bundle",
       "render_source"
     ],
+    "guardRejectedReportDestination": "stdout_only",
     "result": "PASS"
   },
   "taskId": "PLAY-080",

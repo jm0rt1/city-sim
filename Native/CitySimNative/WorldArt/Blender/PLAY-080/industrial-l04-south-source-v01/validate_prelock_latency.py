@@ -69,6 +69,80 @@ def run_rejected(command: list[str], expected_code: str) -> dict[str, Any]:
     }
 
 
+def prelock_report_write_rejection_check() -> dict[str, Any]:
+    results: dict[str, Any] = {}
+    with tempfile.TemporaryDirectory(
+        prefix="play-080-south-report-guard-"
+    ) as directory:
+        temporary_root = Path(directory)
+        for mode in ("A", "B", "C"):
+            report_path = (
+                temporary_root / f"process-{mode}" / "runner-result.json"
+            )
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(SOURCE_DIR / "run_production.py"),
+                    "--mode",
+                    mode,
+                    "--report",
+                    str(report_path),
+                ],
+                cwd=REPOSITORY_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            output = json.loads(result.stdout)
+            expected_zero = {
+                "blenderProcessLaunches": 0,
+                "blenderRenderApiCalls": 0,
+                "renderInvocations": 0,
+                "pixelFiles": 0,
+            }
+            if (
+                result.returncode != 2
+                or output.get("result") != "REJECTED"
+                or output.get("rejection", {}).get("code")
+                != "MISSING_SOURCE_PRODUCTION_PROFILE"
+                or output.get("rejectionStage") != "before_renderer_launch"
+                or any(
+                    output.get(key) != value
+                    for key, value in expected_zero.items()
+                )
+                or report_path.exists()
+                or report_path.parent.exists()
+                or result.stderr
+            ):
+                raise AssertionError(
+                    {
+                        "mode": mode,
+                        "returncode": result.returncode,
+                        "stdout": result.stdout,
+                        "stderr": result.stderr,
+                        "reportWritten": report_path.exists(),
+                        "reportParentCreated": report_path.parent.exists(),
+                    }
+                )
+            results[mode] = {
+                "returnCode": result.returncode,
+                "result": output["result"],
+                "rejectionCode": output["rejection"]["code"],
+                "rejectionStage": output["rejectionStage"],
+                "reportSupplied": True,
+                "reportWritten": False,
+                "reportParentCreated": False,
+                **expected_zero,
+            }
+        if list(temporary_root.iterdir()):
+            raise AssertionError("prelock report guard created a file or directory")
+    return {
+        "result": "PASS",
+        "destination": "stdout_only",
+        "processes": results,
+    }
+
+
 def synthetic_packet_check(contract: dict[str, Any]) -> dict[str, Any]:
     sha_a = "a" * 64
     commit_a = "a" * 40
@@ -240,10 +314,34 @@ def static_guard_order_check() -> dict[str, Any]:
         line < render.lineno or line > render.end_lineno for line in bpy_lines
     ):
         raise AssertionError({"bpyImportLines": bpy_lines})
+    guard_handlers = [
+        node
+        for node in ast.walk(main)
+        if isinstance(node, ast.ExceptHandler)
+        and isinstance(node.type, ast.Name)
+        and node.type.id == "GuardRejected"
+    ]
+    guard_write_calls = [
+        node
+        for handler in guard_handlers
+        for node in ast.walk(handler)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "write_report"
+    ]
+    if (
+        len(guard_handlers) != 1
+        or len(guard_write_calls) != 1
+        or not guard_write_calls[0].args
+        or not isinstance(guard_write_calls[0].args[0], ast.Constant)
+        or guard_write_calls[0].args[0].value is not None
+    ):
+        raise AssertionError("GuardRejected report destination is not stdout")
     return {
         "result": "PASS",
         "guardOrder": required,
         "bpyImportInsideRenderOnly": True,
+        "guardRejectedReportDestination": "stdout_only",
     }
 
 
@@ -347,6 +445,7 @@ def main() -> int:
             "allRootsDistinct": True,
         },
         "launchGuardDryRejection": launch_rejection,
+        "preRenderReportWriteGuards": prelock_report_write_rejection_check(),
         "candidateCommandDryRejections": candidate_rejections,
         "missingABCRejection": abc_rejection,
         "candidateCommandSurfaces": sorted(EXPECTED_MODES),

@@ -863,3 +863,45 @@ This is the authoritative first-wave task source. The shared target is one coher
   registration-correct, non-aliased, cleanly committed, and ready to consume
   the accepted North family/material lock.
 - **Claim:** `docs/production/claims/PLAY-081.world-art-west.md`.
+
+### [ ] PLAY-082: Make the selected target unmistakable
+
+- **Player outcome:** The selected building, block, and next available action
+  remain immediately legible against richer world art and diagnostic overlays
+  at regular and compact sizes.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** ART-002, UX-003, UX-004, UX-006, REL-001.
+- **Dependencies:** Accepted PLAY-074/077 interaction contracts; the
+  candidate-bound HUD/world-cohesion audit of the published product; next
+  published clean integration baseline.
+- **In scope:** Promote the existing closed-rail selected-target summary into a
+  high-contrast target beacon; truthful inspect/build/bulldoze Ready/Blocked
+  presentation; existing Details activation; exact keyboard/FKA/AX behavior;
+  focused UI tests and regular/compact evidence.
+- **Out of scope:** Renderer selection art, `CityScene`, `ContentView`, store or
+  command contracts, objectives, alerts, simulation/gameplay/persistence,
+  shared theme redesign, rail-height growth, or new state.
+- **Work checklist:** Preserve the existing `hud.selected.context` identity and
+  64-point closed rail; show a strong target name, block coordinate, and
+  truthful state from `selectedTile` and
+  `activeMapActionTargetPresentation`; open the existing Details surface
+  through `toggleCommandCenter`; preserve selection, camera, focus, and input
+  quarantine; prove nil, inspect, build, bulldoze, Ready, and Blocked states.
+- **Acceptance:** The beacon is visually dominant over secondary rail text in
+  City and Pollution layers, remains unclipped at regular and exact 900 x 600,
+  activates Details exactly once by pointer, Return, FKA, and AX, exposes an
+  exact accessible label/value, restores the prior map state with Escape, and
+  does not reduce the audited world aperture or alter selection/camera/game
+  state.
+- **Validation:** Focused presentation, accessibility, activation, focus, and
+  aperture tests; full native suite; exact lane-staged verify; real
+  regular/compact City/Pollution pointer and keyboard journeys with FKA, AX,
+  Escape, and Reduce Motion.
+- **Proof:** Before/after color frames, accessibility ledger, exactly-once
+  command trace, selection/camera/focus identities, aperture measurements, and
+  staged executable identity under `docs/production/evidence/PLAY-082/`.
+- **Stop conditions:** A new command/store contract, renderer mutation, second
+  selection truth, rail-height increase, objective/alert redesign, pointer-only
+  behavior, clipped compact layout, or selection/camera/focus regression
+  becomes necessary.
+- **Claim:** `docs/production/claims/PLAY-082.ui-input.md`.

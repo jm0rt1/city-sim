@@ -8,7 +8,7 @@
 
 | Cell | Branch / claim | Current state | Next release boundary |
 |---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | v02 A technical gate and literal-scale review in progress from focused camera-occlusion repair | Integration freezes family appearance contract or returns North only |
+| North | `codex/citysim-world-art` / `PLAY-027` | v02 A `3ff0b641` technically approved but visually returned; focused v03 frontage alignment/value repair authorized | one new A-only review freezes the family or returns North only |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | independent zero-pixel blockout and camera/socket proof in progress | A/B/C production begins immediately after family lock |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | independent zero-pixel blockout and camera/socket proof in progress | A/B/C production begins immediately after family lock |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | independent zero-pixel blockout and camera/socket proof in progress | A/B/C production begins immediately after family lock |

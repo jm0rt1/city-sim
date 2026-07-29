@@ -1,8 +1,8 @@
 {
   "schema": 2,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-29T07:13:49Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0713Z.json",
+  "updatedAt": "2026-07-29T07:16:45Z",
+  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0716Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
@@ -176,16 +176,16 @@
       "claim": "PLAY-073",
       "publishedBase": "8214ba39d88ec30a28597e65a10f1b0bc5e1759e",
       "head": "375a2290e62f2a43f3230241282dc3a3d69b9cb4",
-      "state": "intake_ready",
-      "dispatchState": "review_pending",
-      "acknowledgedAt": "2026-07-29T07:10:30Z",
+      "state": "intake_preparing",
+      "dispatchState": "working",
+      "acknowledgedAt": "2026-07-29T07:16:45Z",
       "claimRevision": "4199f9da2f7955e85db4a3173e67ce2d8487fc9150266de34b4198f847afddf1",
       "cleanState": "clean_exact_candidate_frozen",
-      "blocker": "integration_admitted_direction_sources_not_yet_available",
-      "nextAction": "independent_review_of_nonshipping_file_backed_assembler_candidate",
-      "boundedDeliverable": "read_only_accepted_l3_and_candidate_resource_path_inventory_while_candidate_is_frozen",
-      "stopCondition": "no_candidate_mutation_no_activation_and_no_shared_manifest_or_runtime_edits",
-      "updatedAt": "2026-07-29T07:10:30Z"
+      "blocker": "file_backed_assembler_path_containment_does_not_resolve_symlinks",
+      "nextAction": "repair_canonical_path_containment_and_add_input_and_output_symlink_escape_tests",
+      "boundedDeliverable": "one_narrow_descendant_repair_plus_refreshed_focused_nonshipping_proof",
+      "stopCondition": "no_app_runtime_resource_atlas_package_fixture_activation_or_shared_authority_publication",
+      "updatedAt": "2026-07-29T07:16:45Z"
     },
     {
       "lane": "playtest_quality",

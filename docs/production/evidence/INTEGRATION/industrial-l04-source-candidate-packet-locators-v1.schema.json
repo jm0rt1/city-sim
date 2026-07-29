@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://citysim.local/contracts/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+  "title": "Industrial L4 source-candidate packet locator authority",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "documentType",
+    "family",
+    "level",
+    "variant",
+    "governingContract",
+    "sourceStageSchema",
+    "directions",
+    "grants"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "documentType": {
+      "const": "CITYSIM_INDUSTRIAL_L04_SOURCE_CANDIDATE_PACKET_LOCATORS"
+    },
+    "family": {
+      "const": "industrial"
+    },
+    "level": {
+      "const": 4
+    },
+    "variant": {
+      "const": 0
+    },
+    "governingContract": {
+      "$ref": "#/$defs/contractAuthority"
+    },
+    "sourceStageSchema": {
+      "$ref": "#/$defs/schemaAuthority"
+    },
+    "directions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/east"
+        },
+        {
+          "$ref": "#/$defs/south"
+        },
+        {
+          "$ref": "#/$defs/west"
+        }
+      ],
+      "items": false
+    },
+    "grants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceAdmission",
+        "rendererQuarantine",
+        "rendererActivation",
+        "productionSelection",
+        "shipping"
+      ],
+      "properties": {
+        "sourceAdmission": {
+          "const": false
+        },
+        "rendererQuarantine": {
+          "const": false
+        },
+        "rendererActivation": {
+          "const": false
+        },
+        "productionSelection": {
+          "const": false
+        },
+        "shipping": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "safeRepositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*//)[A-Za-z0-9._/-]+$"
+    },
+    "contractAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "revision",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "const": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md"
+        },
+        "revision": {
+          "const": 2
+        },
+        "sha256": {
+          "const": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+        }
+      }
+    },
+    "schemaAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "const": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json"
+        },
+        "version": {
+          "const": 2
+        },
+        "sha256": {
+          "const": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        }
+      }
+    },
+    "directionBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "direction",
+        "branch",
+        "evidenceRoot",
+        "packetPath",
+        "status",
+        "writer",
+        "creationPolicy"
+      ],
+      "properties": {
+        "taskId": {
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "east",
+            "south",
+            "west"
+          ]
+        },
+        "branch": {
+          "type": "string"
+        },
+        "evidenceRoot": {
+          "$ref": "#/$defs/safeRepositoryPath"
+        },
+        "packetPath": {
+          "$ref": "#/$defs/safeRepositoryPath"
+        },
+        "status": {
+          "const": "reserved"
+        },
+        "writer": {
+          "const": "direction_cell"
+        },
+        "creationPolicy": {
+          "const": "exclusive_no_overwrite_nofollow"
+        }
+      }
+    },
+    "east": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/directionBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "taskId": {
+              "const": "PLAY-079"
+            },
+            "direction": {
+              "const": "east"
+            },
+            "branch": {
+              "const": "codex/citysim-world-art-east"
+            },
+            "evidenceRoot": {
+              "const": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01"
+            },
+            "packetPath": {
+              "const": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json"
+            }
+          }
+        }
+      ]
+    },
+    "south": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/directionBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "taskId": {
+              "const": "PLAY-080"
+            },
+            "direction": {
+              "const": "south"
+            },
+            "branch": {
+              "const": "codex/citysim-world-art-south"
+            },
+            "evidenceRoot": {
+              "const": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01"
+            },
+            "packetPath": {
+              "const": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
+            }
+          }
+        }
+      ]
+    },
+    "west": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/directionBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "taskId": {
+              "const": "PLAY-081"
+            },
+            "direction": {
+              "const": "west"
+            },
+            "branch": {
+              "const": "codex/citysim-world-art-west"
+            },
+            "evidenceRoot": {
+              "const": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01"
+            },
+            "packetPath": {
+              "const": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

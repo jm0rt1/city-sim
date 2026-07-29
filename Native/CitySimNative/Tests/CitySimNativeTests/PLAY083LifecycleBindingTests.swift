@@ -4,6 +4,8 @@ import XCTest
 
 final class PLAY083LifecycleBindingTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/VisibleCityStates"
+    private static let repositoryFixtureRoot =
+        "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates"
     private static let manifestFile = "visible-city-states-manifest-v3.json"
     private static let requestSHA256 =
         "73842570ee5d10e83ef3ec59b301dd9998959bd07e9d3d64e4d9d49c678bf51b"
@@ -384,7 +386,7 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 "gitBlob": binding.gitBlob,
                 "manifestID": binding.manifestID,
                 "manifestLifecycle": binding.manifestLifecycle.rawValue,
-                "path": Self.fixtureSubdirectory + "/" + binding.file,
+                "path": Self.repositoryFixtureRoot + "/" + binding.file,
                 "replayProvenance": binding.rubricState == "early"
                     ? "industrial-construction-district-v3 + four deterministic steps"
                     : "industrial-pressured-district-v3 + industrialUtilityExpansion to qualification; terminal successor exact",
@@ -418,7 +420,7 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 "fingerprintVersion": manifest.fingerprintVersion,
                 "fixtureSet": manifest.fixtureSet,
                 "gitBlob": Self.manifestGitBlob,
-                "path": Self.fixtureSubdirectory + "/" + Self.manifestFile,
+                "path": Self.repositoryFixtureRoot + "/" + Self.manifestFile,
                 "schemaVersion": manifest.schemaVersion,
                 "seed": manifest.seed,
                 "sha256": Self.manifestSHA256,

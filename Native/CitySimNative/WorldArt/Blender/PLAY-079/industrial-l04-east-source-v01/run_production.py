@@ -13,7 +13,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import pathlib
 import subprocess
 import sys
@@ -94,7 +93,7 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         raise GuardRejected("contract_direction_mismatch", str(contract.get("direction")))
     if contract.get("branch") != "codex/citysim-world-art-east":
         raise GuardRejected("contract_branch_mismatch", str(contract.get("branch")))
-    if contract.get("baselineCommit") != "30af21b5a3cbabb26c415f76d8ce35934dcc5082":
+    if contract.get("baselineCommit") != "aa20d5963c356eee812f66bafff8582215293bbb":
         raise GuardRejected("contract_baseline_mismatch", str(contract.get("baselineCommit")))
     if contract.get("sourceReady") or contract.get("productionSelected"):
         raise GuardRejected("unauthorized_disposition", "pre-lock runner cannot claim source/production")
@@ -242,8 +241,8 @@ def validate_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
         "authorityPath",
         "commit",
         "documentSha256",
-        "projectionAdapterPath",
-        "projectionAdapterSha256",
+        "mappingContractPath",
+        "mappingContractSha256",
         "blenderNativeDirectionalSocket",
         "blenderNativeGroundPivot",
         "blenderNativeFootprintCorners",
@@ -254,15 +253,15 @@ def validate_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
             "coordinate_bridge_incomplete",
             "v06 coordinate-bridge binding is incomplete",
         )
-    adapter_path = repository_path(binding["projectionAdapterPath"])
+    mapping_path = repository_path(binding["mappingContractPath"])
     try:
-        adapter_digest = sha256_bytes(adapter_path.read_bytes())
+        mapping_digest = sha256_bytes(mapping_path.read_bytes())
     except OSError as error:
-        raise GuardRejected("coordinate_bridge_adapter_missing", str(adapter_path)) from error
-    if adapter_digest != binding["projectionAdapterSha256"]:
+        raise GuardRejected("coordinate_bridge_mapping_missing", str(mapping_path)) from error
+    if mapping_digest != binding["mappingContractSha256"]:
         raise GuardRejected(
-            "coordinate_bridge_adapter_hash_mismatch",
-            f"expected {binding['projectionAdapterSha256']}, got {adapter_digest}",
+            "coordinate_bridge_mapping_hash_mismatch",
+            f"expected {binding['mappingContractSha256']}, got {mapping_digest}",
         )
     authority_path = repository_path(binding["authorityPath"])
     try:
@@ -274,7 +273,46 @@ def validate_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
             "coordinate_bridge_authority_hash_mismatch",
             f"expected {binding['documentSha256']}, got {authority_digest}",
         )
-    return binding
+    mapping = load_json(mapping_path)
+    expected_basis = {
+        "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+        "matrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+        "determinant": 1,
+        "sourceOrder": [0, 1, 2, 3],
+        "perDirectionTransforms": False,
+        "windingChange": False,
+    }
+    if mapping.get("basis") != expected_basis:
+        raise GuardRejected("coordinate_bridge_basis_mismatch", str(mapping.get("basis")))
+    east = mapping.get("directions", {}).get("east")
+    expected_east = {
+        "frontageCitySim": [[28, 0, -28], [28, 0, 28]],
+        "frontageSource": [[1024, 768], [768, 896]],
+        "socketCitySim": [28, 0, 0],
+        "socketBlender": [0, 28, 0],
+        "socketSource": [896, 832],
+        "outwardCitySim": [1, 0, 0],
+        "outwardBlender": [0, 1, 0],
+    }
+    if east != expected_east:
+        raise GuardRejected("coordinate_bridge_east_mapping_mismatch", str(east))
+    registration = mapping.get("registration", {})
+    if registration.get("pivotCitySim") != [28, 0, 28]:
+        raise GuardRejected("coordinate_bridge_citysim_pivot_mismatch", str(registration))
+    if registration.get("pivotBlender") != [28, 28, 0]:
+        raise GuardRejected("coordinate_bridge_blender_pivot_mismatch", str(registration))
+    if registration.get("pivotSource") != [768, 896]:
+        raise GuardRejected("coordinate_bridge_source_pivot_mismatch", str(registration))
+    if registration.get("contactPolygonBlenderXYZ") != binding["blenderNativeFootprintCorners"]:
+        raise GuardRejected("coordinate_bridge_footprint_mismatch", str(registration))
+    if binding["blenderContactCornerOrder"] != [0, 1, 2, 3]:
+        raise GuardRejected(
+            "coordinate_bridge_contact_order_mismatch",
+            str(binding["blenderContactCornerOrder"]),
+        )
+    if mapping.get("sourceAuthority") is not False or mapping.get("productionSelected") is not False:
+        raise GuardRejected("coordinate_bridge_disposition_mismatch", "bridge is zero-pixel only")
+    return {"binding": binding, "mapping": mapping}
 
 
 def output_paths(contract: dict[str, Any], process_id: str) -> dict[str, pathlib.Path]:
@@ -351,12 +389,37 @@ def look_at(obj: Any, target: Any) -> None:
     obj.rotation_euler = (target - obj.location).to_track_quat("-Z", "Y").to_euler()
 
 
+def apply_citysim_to_blender(
+    coordinate: Iterable[float],
+    mapping: dict[str, Any],
+) -> list[float]:
+    values = list(coordinate)
+    if len(values) != 3:
+        raise GuardRejected("coordinate_dimension_mismatch", str(values))
+    return [
+        sum(float(row[index]) * float(values[index]) for index in range(3))
+        for row in mapping["basis"]["matrixRows"]
+    ]
+
+
+def descriptor_point_to_blender(
+    coordinate: Iterable[float],
+    mapping: dict[str, Any],
+) -> list[float]:
+    descriptor = list(coordinate)
+    if len(descriptor) != 3:
+        raise GuardRejected("descriptor_dimension_mismatch", str(descriptor))
+    citysim = [descriptor[0], descriptor[2], descriptor[1]]
+    return apply_citysim_to_blender(citysim, mapping)
+
+
 def build_blender_scene(
     bpy: Any,
     vector_type: Any,
     contract: dict[str, Any],
     scene_data: dict[str, Any],
     material_mapping: dict[str, Any],
+    coordinate_mapping: dict[str, Any],
 ) -> tuple[Any, dict[str, Any]]:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
@@ -399,17 +462,8 @@ def build_blender_scene(
     camera_data.shift_y = camera_spec["shiftY"]
     camera = bpy.data.objects.new("PLAY-079-East-Camera", camera_data)
     scene.collection.objects.link(camera)
-    target = vector_type(camera_spec["target"])
-    yaw = math.radians(camera_spec["yawDegrees"])
-    elevation = math.radians(camera_spec["elevationDegrees"])
-    horizontal = camera_spec["distance"] * math.cos(elevation)
-    camera.location = vector_type(
-        (
-            target.x + horizontal * math.cos(yaw),
-            target.y - horizontal * math.sin(yaw),
-            target.z + camera_spec["distance"] * math.sin(elevation),
-        )
-    )
+    target = vector_type(camera_spec["blenderTarget"])
+    camera.location = vector_type(camera_spec["blenderPosition"])
     look_at(camera, target)
     scene.camera = camera
 
@@ -434,16 +488,17 @@ def build_blender_scene(
 
     objects: list[tuple[Any, str]] = []
     for spec in scene_data["objects"]:
+        location = descriptor_point_to_blender(spec["center"], coordinate_mapping)
         if spec["kind"] == "box":
-            bpy.ops.mesh.primitive_cube_add(size=1.0, location=spec["center"])
+            bpy.ops.mesh.primitive_cube_add(size=1.0, location=location)
             obj = bpy.context.object
-            obj.dimensions = spec["dimensions"]
+            obj.dimensions = descriptor_point_to_blender(spec["dimensions"], coordinate_mapping)
         elif spec["kind"] == "cylinder":
             bpy.ops.mesh.primitive_cylinder_add(
                 vertices=spec["vertices"],
                 radius=spec["radius"],
                 depth=spec["depth"],
-                location=spec["center"],
+                location=location,
             )
             obj = bpy.context.object
         else:
@@ -455,7 +510,11 @@ def build_blender_scene(
 
     def add_polygon(name: str, coordinates: list[list[float]], role: str) -> None:
         mesh = bpy.data.meshes.new(f"{name}-mesh")
-        mesh.from_pydata(coordinates, [], [list(range(len(coordinates)))])
+        mapped = [
+            descriptor_point_to_blender(coordinate, coordinate_mapping)
+            for coordinate in coordinates
+        ]
+        mesh.from_pydata(mapped, [], [list(range(len(mapped)))])
         mesh.update()
         obj = bpy.data.objects.new(name, mesh)
         scene.collection.objects.link(obj)
@@ -472,7 +531,7 @@ def build_blender_scene(
     sun_data.angle = 0.08
     sun = bpy.data.objects.new("PLAY-079-Northwest-Key", sun_data)
     scene.collection.objects.link(sun)
-    sun.location = light_spec["keyOrigin"]
+    sun.location = light_spec["blenderKeyOrigin"]
     look_at(sun, vector_type((0.0, 0.0, 0.0)))
     scene.world.color = (0.28, 0.28, 0.28)
     bpy.context.view_layer.update()
@@ -483,19 +542,22 @@ def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
     contract = load_json(CONTRACT_PATH)
     validate_contract(contract)
     lock = validate_appearance_lock(contract, appearance_lock_path)
-    bridge = validate_coordinate_bridge(contract)
+    bridge_result = validate_coordinate_bridge(contract)
+    bridge = bridge_result["binding"]
+    coordinate_mapping = bridge_result["mapping"]
 
     # Both hard guards above must complete before this process imports bpy.
     import bpy  # type: ignore
     from mathutils import Vector  # type: ignore
 
-    scene_data = load_json(repository_path(bridge["projectionAdapterPath"]))
+    scene_data = load_json(repository_path(contract["acceptedPredesign"]["scene"]["path"]))
     scene, built = build_blender_scene(
         bpy,
         Vector,
         contract,
         scene_data,
         lock["materialRoleMapping"],
+        coordinate_mapping,
     )
     paths = output_paths(contract, mode)
     scene.render.filepath = str(paths["raw"])
@@ -511,7 +573,8 @@ def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
         "direction": "east",
         "processId": mode,
         "appearanceLockCommit": lock["commit"],
-        "sceneSha256": bridge["projectionAdapterSha256"],
+        "sceneSha256": contract["acceptedPredesign"]["scene"]["sha256"],
+        "coordinateMappingSha256": bridge["mappingContractSha256"],
         "contractSha256": sha256_bytes(CONTRACT_PATH.read_bytes()),
         "blenderVersion": bpy.app.version_string,
         "blenderBuildHash": bpy.app.build_hash.decode("utf-8"),

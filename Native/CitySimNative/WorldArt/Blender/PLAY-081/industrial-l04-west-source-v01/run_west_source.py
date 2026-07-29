@@ -85,7 +85,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "taskId": "PLAY-081",
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
-        "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+        "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -177,8 +177,10 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     bridge = contract.get("coordinateBridge", {})
     canonical = bridge.get("canonicalCitySim", {})
     historical = bridge.get("historicalProjectionAdapter", {})
+    bridge_v06 = bridge.get("v06", {})
     bridge_invariants = (
         (bridge.get("holdIsStop"), False, "hold-is-not-stop"),
+        (bridge.get("state"), "validated_v06", "validated-v06-state"),
         (canonical.get("direction"), "west", "canonical-direction"),
         (
             canonical.get("frontageSocketWorldXYZ"),
@@ -200,19 +202,88 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             False,
             "historical-adapter-not-source-authority",
         ),
+        (
+            bridge_v06.get("authorityCommit"),
+            "3e01ca6738d7574718f9aeff4b66771eee109feb",
+            "accepted-candidate",
+        ),
+        (
+            bridge_v06.get("mappingContractSha256"),
+            "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+            "mapping-contract-sha256",
+        ),
+        (
+            bridge_v06.get("basisFormula"),
+            "B(CitySim[x,y,z])=Blender[z,x,y]",
+            "basis-formula",
+        ),
+        (bridge_v06.get("sourceOrder"), [0, 1, 2, 3], "source-order"),
+        (
+            bridge_v06.get("frontageSocketCitySimXYZ"),
+            [-28, 0, 0],
+            "v06-citysim-socket",
+        ),
+        (
+            bridge_v06.get("frontageSocketBlenderXYZ"),
+            [0, -28, 0],
+            "v06-blender-socket",
+        ),
+        (
+            bridge_v06.get("frontageSocketSourceXY"),
+            [640, 704],
+            "v06-source-socket",
+        ),
+        (
+            bridge_v06.get("perDirectionTransform"),
+            False,
+            "no-per-direction-transform",
+        ),
+        (bridge_v06.get("windingChange"), False, "no-winding-change"),
     )
     for actual, expected, name in bridge_invariants:
         if actual != expected:
             errors.append(f"coordinate-bridge:{name}")
-    if bridge.get("state") not in (
-        "pending_v06_revalidation",
-        "validated_v06",
-    ):
-        errors.append("coordinate-bridge:invalid-state")
     if historical:
         errors.extend(
             hash_binding_errors(root, "coordinateBridge.historicalAdapter", historical)
         )
+    bridge_bindings = (
+        ("acceptance", "acceptancePath", "acceptanceSha256"),
+        ("authority", "authorityPath", "authoritySha256"),
+        ("mappingContract", "mappingContractPath", "mappingContractSha256"),
+        ("adapter", "adapterPath", "adapterSha256"),
+        ("proofTool", "proofToolPath", "proofToolSha256"),
+    )
+    for name, path_key, hash_key in bridge_bindings:
+        errors.extend(
+            hash_binding_errors(
+                root,
+                f"coordinateBridge.v06.{name}",
+                {
+                    "path": bridge_v06.get(path_key),
+                    "sha256": bridge_v06.get(hash_key),
+                },
+            )
+        )
+    try:
+        mapping = load_json(
+            repository_path(root, bridge_v06["mappingContractPath"])
+        )
+        west = mapping["directions"]["west"]
+        if (
+            mapping["basis"]["formula"] != bridge_v06.get("basisFormula")
+            or mapping["basis"]["sourceOrder"] != bridge_v06.get("sourceOrder")
+            or mapping["basis"]["perDirectionTransforms"] is not False
+            or mapping["basis"]["windingChange"] is not False
+            or west["socketCitySim"]
+            != bridge_v06.get("frontageSocketCitySimXYZ")
+            or west["socketBlender"]
+            != bridge_v06.get("frontageSocketBlenderXYZ")
+            or west["socketSource"] != bridge_v06.get("frontageSocketSourceXY")
+        ):
+            errors.append("coordinate-bridge:mapping-content")
+    except (ContractError, KeyError, OSError, json.JSONDecodeError):
+        errors.append("coordinate-bridge:mapping-invalid")
 
     implementation = contract.get("runnerImplementation", {})
     blender_script = implementation.get("blenderScriptPath")
@@ -300,14 +371,22 @@ def evaluate_render_guard(
         if bridge.get("state") != "validated_v06":
             errors.append("coordinate-bridge:pending-v06")
         required_bridge_fields = (
+            "acceptancePath",
+            "acceptanceSha256",
             "authorityPath",
             "authorityCommit",
             "authoritySha256",
+            "mappingContractPath",
+            "mappingContractSha256",
             "adapterPath",
             "adapterSha256",
-            "cameraProjectionProofSha256",
-            "contactCornerOrderProofSha256",
-            "canonicalWestSocketProofSha256",
+            "proofToolPath",
+            "proofToolSha256",
+            "basisFormula",
+            "sourceOrder",
+            "frontageSocketCitySimXYZ",
+            "frontageSocketBlenderXYZ",
+            "frontageSocketSourceXY",
         )
         if not isinstance(bridge_v06, dict) or any(
             not bridge_v06.get(field) for field in required_bridge_fields
@@ -315,20 +394,25 @@ def evaluate_render_guard(
             errors.append("coordinate-bridge:v06-binding-incomplete")
         else:
             try:
-                authority_path = repository_path(
-                    root, bridge_v06["authorityPath"]
-                )
-                adapter_path = repository_path(root, bridge_v06["adapterPath"])
-                if (
-                    not authority_path.is_file()
-                    or sha256(authority_path) != bridge_v06["authoritySha256"]
+                for name, path_key, hash_key in (
+                    ("acceptance", "acceptancePath", "acceptanceSha256"),
+                    ("authority", "authorityPath", "authoritySha256"),
+                    (
+                        "mapping-contract",
+                        "mappingContractPath",
+                        "mappingContractSha256",
+                    ),
+                    ("adapter", "adapterPath", "adapterSha256"),
+                    ("proof-tool", "proofToolPath", "proofToolSha256"),
                 ):
-                    errors.append("coordinate-bridge:authority-sha256-mismatch")
-                if (
-                    not adapter_path.is_file()
-                    or sha256(adapter_path) != bridge_v06["adapterSha256"]
-                ):
-                    errors.append("coordinate-bridge:adapter-sha256-mismatch")
+                    path = repository_path(root, bridge_v06[path_key])
+                    if (
+                        not path.is_file()
+                        or sha256(path) != bridge_v06[hash_key]
+                    ):
+                        errors.append(
+                            f"coordinate-bridge:{name}-sha256-mismatch"
+                        )
             except (ContractError, OSError):
                 errors.append("coordinate-bridge:v06-binding-invalid")
     appearance = contract.get("appearanceLock")

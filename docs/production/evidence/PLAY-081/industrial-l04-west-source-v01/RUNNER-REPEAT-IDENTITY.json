@@ -2,25 +2,28 @@
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "direction": "west",
-  "proof": "TWO_INDEPENDENT_SYSTEM_PYTHON_RUNS",
+  "proof": "TWO_INDEPENDENT_SYSTEM_PYTHON_RUNS_AFTER_V06_ADOPTION",
   "runs": {
     "run1": {
-      "missingLockRejectionSha256": "2f30f83527580707b3e8726691a176e56af8a66b02601fb4bcb779e810b06e01",
-      "runnerStaticValidationSha256": "995dfff4b79018d794199a65f15932459ee18a04b0c54ade6e4e6c76c239199b",
-      "wrongLockRejectionSha256": "c090efeb1495ac3a37aef36b8580c275c54238b631a69e858de8a5906de90f02"
+      "bridgeRepeatIdentitySha256": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
+      "missingLockRejectionSha256": "3e66227f110e69e772ddccc0fcbcd5495572a2d0e42788b91279ea44413206ab",
+      "runnerStaticValidationSha256": "d7d59cf497b6dd30c4bfed2a0eadb4ae4bd3ee10a9444342854f040092ea15c4",
+      "wrongLockRejectionSha256": "85942ac5bde068434a56fa58ea427d10137e50d50c927e86c43bdf3f0d7ea88d"
     },
     "run2": {
-      "missingLockRejectionSha256": "2f30f83527580707b3e8726691a176e56af8a66b02601fb4bcb779e810b06e01",
-      "runnerStaticValidationSha256": "995dfff4b79018d794199a65f15932459ee18a04b0c54ade6e4e6c76c239199b",
-      "wrongLockRejectionSha256": "c090efeb1495ac3a37aef36b8580c275c54238b631a69e858de8a5906de90f02"
+      "bridgeRepeatIdentitySha256": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
+      "missingLockRejectionSha256": "3e66227f110e69e772ddccc0fcbcd5495572a2d0e42788b91279ea44413206ab",
+      "runnerStaticValidationSha256": "d7d59cf497b6dd30c4bfed2a0eadb4ae4bd3ee10a9444342854f040092ea15c4",
+      "wrongLockRejectionSha256": "85942ac5bde068434a56fa58ea427d10137e50d50c927e86c43bdf3f0d7ea88d"
     }
   },
   "byteIdentical": {
+    "bridgeRepeatIdentity": true,
     "missingLockRejection": true,
     "runnerStaticValidation": true,
     "wrongLockRejection": true
   },
-  "blenderProcessLaunches": 0,
+  "blenderProjectionProcessLaunches": 2,
   "blenderRenderApiCalls": 0,
   "imageGenInvocations": 0,
   "normalizerInvocations": 0,

@@ -139,30 +139,32 @@ def guard_rejection(driver: Any, appearance_lock: pathlib.Path | None) -> dict[s
     return result
 
 
-def coordinate_bridge_rejection(driver: Any) -> dict[str, Any]:
+def coordinate_bridge_adoption(driver: Any) -> dict[str, Any]:
     contract = driver.load_json(CONTRACT_PATH)
     driver.validate_contract(contract)
-    try:
-        driver.validate_coordinate_bridge(contract)
-    except driver.GuardRejected as rejection:
-        result = {
-            "result": "REJECTED",
-            "stage": "before_renderer_launch",
-            "code": rejection.code,
-            "detail": rejection.detail,
-            "blenderNativeDirectionalSocket": contract["invariants"]["coordinateBridge"]["v06"][
-                "blenderNativeDirectionalSocket"
-            ],
-            "blenderProcessLaunches": 0,
-            "blenderRenderApiCalls": 0,
-            "renderInvocations": 0,
-            "pixelFiles": 0,
-        }
-    else:
-        raise RuntimeError("pending coordinate bridge did not reject")
-    if result["code"] != "coordinate_bridge_pending_v06":
-        raise RuntimeError(f"unexpected coordinate-bridge code: {result['code']}")
-    return result
+    validated = driver.validate_coordinate_bridge(contract)
+    binding = validated["binding"]
+    mapping = validated["mapping"]
+    east = mapping["directions"]["east"]
+    return {
+        "result": "PASS",
+        "state": "validated_v06",
+        "acceptedSourceCandidateCommit": contract["invariants"]["coordinateBridge"][
+            "acceptedSourceCandidateCommit"
+        ],
+        "mappingContractPath": binding["mappingContractPath"],
+        "mappingContractSha256": binding["mappingContractSha256"],
+        "basis": mapping["basis"],
+        "canonicalCitySimEastSocket": east["socketCitySim"],
+        "blenderNativeEastSocket": east["socketBlender"],
+        "sourcePixelEastSocket": east["socketSource"],
+        "blenderContactCornerOrder": binding["blenderContactCornerOrder"],
+        "historicalPredesignProjectionAdapterFutureSourceAuthority": False,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "renderInvocations": 0,
+        "pixelFiles": 0,
+    }
 
 
 def pixel_inventory() -> list[str]:
@@ -212,7 +214,7 @@ def build_proof(handoff_path: pathlib.Path | None) -> dict[str, Any]:
         wrong_path = pathlib.Path(temporary) / "WRONG-LOCK.json"
         wrong_path.write_text('{"not":"an appearance lock"}\\n', encoding="utf-8")
         wrong = guard_rejection(driver, wrong_path)
-    coordinate_bridge = coordinate_bridge_rejection(driver)
+    coordinate_bridge = coordinate_bridge_adoption(driver)
     if missing["code"] != "missing_appearance_lock":
         raise RuntimeError(f"unexpected missing-lock code: {missing['code']}")
     if wrong["code"] != "unpublished_or_wrong_appearance_lock":
@@ -226,7 +228,7 @@ def build_proof(handoff_path: pathlib.Path | None) -> dict[str, Any]:
         "taskId": "PLAY-079",
         "direction": "east",
         "branch": "codex/citysim-world-art-east",
-        "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+        "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
         "result": "PASS",
         "static": static,
         "missingLock": missing,

@@ -1,0 +1,730 @@
+{
+  "allComponentsMapped": true,
+  "componentCount": 39,
+  "components": [
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-foundation",
+      "dimensionsCitySimXYZ": [
+        56,
+        0.8,
+        56
+      ],
+      "group": "foundation",
+      "id": "north-v07-foundation",
+      "materialID": "foundry-dark-foundation",
+      "positionCitySimXYZ": [
+        0,
+        0.4,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.04,
+      "blenderObjectName": "north-v07-court-spine",
+      "dimensionsCitySimXYZ": [
+        34,
+        0.3,
+        42
+      ],
+      "group": "freight-court",
+      "id": "north-v07-court-spine",
+      "materialID": "foundry-v03-apron-concrete",
+      "positionCitySimXYZ": [
+        4,
+        1,
+        -7
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.04,
+      "blenderObjectName": "north-v07-court-head",
+      "dimensionsCitySimXYZ": [
+        46,
+        0.3,
+        12
+      ],
+      "group": "freight-court",
+      "id": "north-v07-court-head",
+      "materialID": "foundry-v03-apron-concrete",
+      "positionCitySimXYZ": [
+        0,
+        1,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.32,
+      "blenderObjectName": "north-v07-west-foundry-wing",
+      "dimensionsCitySimXYZ": [
+        13,
+        20,
+        50
+      ],
+      "group": "foundry-hall",
+      "id": "north-v07-west-foundry-wing",
+      "materialID": "foundry-warm-masonry",
+      "positionCitySimXYZ": [
+        -21.5,
+        10,
+        1
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.32,
+      "blenderObjectName": "north-v07-east-assembly-wing-south",
+      "dimensionsCitySimXYZ": [
+        13,
+        20,
+        12
+      ],
+      "group": "assembly-hall",
+      "id": "north-v07-east-assembly-wing-south",
+      "materialID": "foundry-warm-masonry",
+      "positionCitySimXYZ": [
+        21.5,
+        10,
+        20
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.28,
+      "blenderObjectName": "north-v07-west-high-bay",
+      "dimensionsCitySimXYZ": [
+        13,
+        10,
+        30
+      ],
+      "group": "high-bay",
+      "id": "north-v07-west-high-bay",
+      "materialID": "foundry-bluegreen-steel",
+      "positionCitySimXYZ": [
+        -21.5,
+        25,
+        5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.28,
+      "blenderObjectName": "north-v07-east-process-bay",
+      "dimensionsCitySimXYZ": [
+        13,
+        7,
+        12
+      ],
+      "group": "process-bay",
+      "id": "north-v07-east-process-bay",
+      "materialID": "foundry-bluegreen-steel",
+      "positionCitySimXYZ": [
+        21.5,
+        23.5,
+        20
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-west-roof-edge",
+      "dimensionsCitySimXYZ": [
+        13,
+        1.2,
+        50
+      ],
+      "group": "roof-edge",
+      "id": "north-v07-west-roof-edge",
+      "materialID": "foundry-roof-edge",
+      "positionCitySimXYZ": [
+        -21.5,
+        20.6,
+        1
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-east-roof-edge-south",
+      "dimensionsCitySimXYZ": [
+        13,
+        1.2,
+        12
+      ],
+      "group": "roof-edge",
+      "id": "north-v07-east-roof-edge-south",
+      "materialID": "foundry-roof-edge",
+      "positionCitySimXYZ": [
+        21.5,
+        20.6,
+        20
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-monitor-a",
+      "dimensionsCitySimXYZ": [
+        9,
+        4,
+        8
+      ],
+      "group": "roof-monitor",
+      "id": "north-v07-monitor-a",
+      "materialID": "foundry-oxidized-machinery",
+      "positionCitySimXYZ": [
+        -21.5,
+        32,
+        -5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-monitor-b",
+      "dimensionsCitySimXYZ": [
+        9,
+        4,
+        8
+      ],
+      "group": "roof-monitor",
+      "id": "north-v07-monitor-b",
+      "materialID": "foundry-oxidized-machinery",
+      "positionCitySimXYZ": [
+        -21.5,
+        32,
+        9
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-monitor-c",
+      "dimensionsCitySimXYZ": [
+        9,
+        4,
+        4
+      ],
+      "group": "roof-monitor",
+      "id": "north-v07-monitor-c",
+      "materialID": "foundry-oxidized-machinery",
+      "positionCitySimXYZ": [
+        21.5,
+        29,
+        17
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-monitor-d",
+      "dimensionsCitySimXYZ": [
+        9,
+        4,
+        4
+      ],
+      "group": "roof-monitor",
+      "id": "north-v07-monitor-d",
+      "materialID": "foundry-oxidized-machinery",
+      "positionCitySimXYZ": [
+        21.5,
+        29,
+        23
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.2,
+      "blenderObjectName": "north-v07-throat-jamb-west",
+      "dimensionsCitySimXYZ": [
+        3,
+        28,
+        3
+      ],
+      "group": "monumental-throat",
+      "id": "north-v07-throat-jamb-west",
+      "materialID": "foundry-v03-portal-frame",
+      "positionCitySimXYZ": [
+        -14,
+        14,
+        -22
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.2,
+      "blenderObjectName": "north-v07-throat-jamb-east",
+      "dimensionsCitySimXYZ": [
+        3,
+        28,
+        3
+      ],
+      "group": "monumental-throat",
+      "id": "north-v07-throat-jamb-east",
+      "materialID": "foundry-v03-portal-frame",
+      "positionCitySimXYZ": [
+        22,
+        14,
+        -22
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.24,
+      "blenderObjectName": "north-v07-throat-header",
+      "dimensionsCitySimXYZ": [
+        39,
+        4,
+        3
+      ],
+      "group": "monumental-throat",
+      "id": "north-v07-throat-header",
+      "materialID": "foundry-charcoal-steel",
+      "positionCitySimXYZ": [
+        4,
+        30,
+        -22
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-throat-reveal-west",
+      "dimensionsCitySimXYZ": [
+        1.5,
+        24,
+        5
+      ],
+      "group": "monumental-throat",
+      "id": "north-v07-throat-reveal-west",
+      "materialID": "foundry-v03-portal-reveal",
+      "positionCitySimXYZ": [
+        -12.75,
+        13,
+        -19.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-throat-reveal-east",
+      "dimensionsCitySimXYZ": [
+        1.5,
+        24,
+        5
+      ],
+      "group": "monumental-throat",
+      "id": "north-v07-throat-reveal-east",
+      "materialID": "foundry-v03-portal-reveal",
+      "positionCitySimXYZ": [
+        20.75,
+        13,
+        -19.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.14,
+      "blenderObjectName": "north-v07-throat-inner-header",
+      "dimensionsCitySimXYZ": [
+        35,
+        3,
+        2
+      ],
+      "group": "monumental-throat",
+      "id": "north-v07-throat-inner-header",
+      "materialID": "foundry-v03-portal-reveal",
+      "positionCitySimXYZ": [
+        4,
+        27.5,
+        -17.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-gantry-pier-west",
+      "dimensionsCitySimXYZ": [
+        3,
+        23,
+        4
+      ],
+      "group": "gantry",
+      "id": "north-v07-gantry-pier-west",
+      "materialID": "foundry-charcoal-steel",
+      "positionCitySimXYZ": [
+        -16,
+        12.5,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-gantry-pier-east",
+      "dimensionsCitySimXYZ": [
+        3,
+        23,
+        4
+      ],
+      "group": "gantry",
+      "id": "north-v07-gantry-pier-east",
+      "materialID": "foundry-charcoal-steel",
+      "positionCitySimXYZ": [
+        16,
+        12.5,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-gantry-girder-a",
+      "dimensionsCitySimXYZ": [
+        35,
+        3,
+        2
+      ],
+      "group": "gantry",
+      "id": "north-v07-gantry-girder-a",
+      "materialID": "foundry-charcoal-steel",
+      "positionCitySimXYZ": [
+        0,
+        25,
+        17
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.18,
+      "blenderObjectName": "north-v07-gantry-girder-b",
+      "dimensionsCitySimXYZ": [
+        35,
+        3,
+        2
+      ],
+      "group": "gantry",
+      "id": "north-v07-gantry-girder-b",
+      "materialID": "foundry-bluegreen-steel",
+      "positionCitySimXYZ": [
+        0,
+        25,
+        20
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.24,
+      "blenderObjectName": "north-v07-gantry-trolley",
+      "dimensionsCitySimXYZ": [
+        5,
+        3,
+        5
+      ],
+      "group": "gantry",
+      "id": "north-v07-gantry-trolley",
+      "materialID": "foundry-oxidized-machinery",
+      "positionCitySimXYZ": [
+        6,
+        22.5,
+        18.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-crucible",
+      "dimensionsCitySimXYZ": [
+        8,
+        14,
+        8
+      ],
+      "group": "hot-process",
+      "id": "north-v07-crucible",
+      "materialID": "foundry-oxidized-machinery",
+      "positionCitySimXYZ": [
+        10,
+        8,
+        17
+      ],
+      "shape": "octagonal-prism"
+    },
+    {
+      "bevelWorldUnits": 0.08,
+      "blenderObjectName": "north-v07-crucible-mouth",
+      "dimensionsCitySimXYZ": [
+        9,
+        2,
+        9
+      ],
+      "group": "hot-process",
+      "id": "north-v07-crucible-mouth",
+      "materialID": "foundry-hot-process",
+      "positionCitySimXYZ": [
+        10,
+        16,
+        17
+      ],
+      "shape": "octagonal-prism"
+    },
+    {
+      "bevelWorldUnits": 0.24,
+      "blenderObjectName": "north-v07-boiler-block",
+      "dimensionsCitySimXYZ": [
+        9,
+        9,
+        11
+      ],
+      "group": "boiler",
+      "id": "north-v07-boiler-block",
+      "materialID": "foundry-charcoal-steel",
+      "positionCitySimXYZ": [
+        -21.5,
+        34.5,
+        16
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.08,
+      "blenderObjectName": "north-v07-subordinate-stack",
+      "dimensionsCitySimXYZ": [
+        5.5,
+        17,
+        5.5
+      ],
+      "group": "stack",
+      "id": "north-v07-subordinate-stack",
+      "materialID": "foundry-charcoal-steel",
+      "positionCitySimXYZ": [
+        -22,
+        47.5,
+        16
+      ],
+      "shape": "octagonal-prism"
+    },
+    {
+      "bevelWorldUnits": 0.04,
+      "blenderObjectName": "north-v07-freight-recess-a",
+      "dimensionsCitySimXYZ": [
+        0.6,
+        12,
+        7
+      ],
+      "group": "freight-recess",
+      "id": "north-v07-freight-recess-a",
+      "materialID": "foundry-deep-portal",
+      "positionCitySimXYZ": [
+        -14.65,
+        7,
+        -10
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.04,
+      "blenderObjectName": "north-v07-freight-recess-b",
+      "dimensionsCitySimXYZ": [
+        0.6,
+        12,
+        7
+      ],
+      "group": "freight-recess",
+      "id": "north-v07-freight-recess-b",
+      "materialID": "foundry-deep-portal",
+      "positionCitySimXYZ": [
+        -14.65,
+        7,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.04,
+      "blenderObjectName": "north-v07-freight-recess-c",
+      "dimensionsCitySimXYZ": [
+        0.6,
+        12,
+        7
+      ],
+      "group": "freight-recess",
+      "id": "north-v07-freight-recess-c",
+      "materialID": "foundry-deep-portal",
+      "positionCitySimXYZ": [
+        -14.65,
+        7,
+        10
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.08,
+      "blenderObjectName": "north-v07-freight-header-a",
+      "dimensionsCitySimXYZ": [
+        1,
+        2,
+        8
+      ],
+      "group": "freight-frame",
+      "id": "north-v07-freight-header-a",
+      "materialID": "foundry-v03-portal-frame",
+      "positionCitySimXYZ": [
+        -14.2,
+        14,
+        -10
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.08,
+      "blenderObjectName": "north-v07-freight-header-b",
+      "dimensionsCitySimXYZ": [
+        1,
+        2,
+        8
+      ],
+      "group": "freight-frame",
+      "id": "north-v07-freight-header-b",
+      "materialID": "foundry-v03-portal-frame",
+      "positionCitySimXYZ": [
+        -14.2,
+        14,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.08,
+      "blenderObjectName": "north-v07-freight-header-c",
+      "dimensionsCitySimXYZ": [
+        1,
+        2,
+        8
+      ],
+      "group": "freight-frame",
+      "id": "north-v07-freight-header-c",
+      "materialID": "foundry-v03-portal-frame",
+      "positionCitySimXYZ": [
+        -14.2,
+        14,
+        10
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.08,
+      "blenderObjectName": "north-v07-staff-door",
+      "dimensionsCitySimXYZ": [
+        7,
+        13,
+        0.6
+      ],
+      "group": "staff-entry",
+      "id": "north-v07-staff-door",
+      "materialID": "foundry-v03-staff-door",
+      "positionCitySimXYZ": [
+        21.5,
+        7,
+        26.3
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.1,
+      "blenderObjectName": "north-v07-staff-header",
+      "dimensionsCitySimXYZ": [
+        9,
+        2,
+        1
+      ],
+      "group": "staff-entry",
+      "id": "north-v07-staff-header",
+      "materialID": "foundry-masonry-trim",
+      "positionCitySimXYZ": [
+        21.5,
+        14,
+        26.2
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.12,
+      "blenderObjectName": "north-v07-staff-canopy",
+      "dimensionsCitySimXYZ": [
+        10,
+        1,
+        4
+      ],
+      "group": "staff-entry",
+      "id": "north-v07-staff-canopy",
+      "materialID": "foundry-v03-portal-frame",
+      "positionCitySimXYZ": [
+        21.5,
+        15.5,
+        25
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.06,
+      "blenderObjectName": "north-v07-east-louver",
+      "dimensionsCitySimXYZ": [
+        8,
+        5,
+        0.5
+      ],
+      "group": "facade-articulation",
+      "id": "north-v07-east-louver",
+      "materialID": "foundry-louver",
+      "positionCitySimXYZ": [
+        21.5,
+        15,
+        26.3
+      ],
+      "shape": "box"
+    },
+    {
+      "bevelWorldUnits": 0.06,
+      "blenderObjectName": "north-v07-west-glazing",
+      "dimensionsCitySimXYZ": [
+        8,
+        4,
+        0.5
+      ],
+      "group": "facade-articulation",
+      "id": "north-v07-west-glazing",
+      "materialID": "foundry-warm-glazing",
+      "positionCitySimXYZ": [
+        -21.5,
+        14,
+        26.3
+      ],
+      "shape": "box"
+    }
+  ],
+  "materialCount": 17,
+  "materialIDs": [
+    "foundry-apron-concrete",
+    "foundry-bluegreen-steel",
+    "foundry-charcoal-steel",
+    "foundry-dark-foundation",
+    "foundry-deep-portal",
+    "foundry-hot-process",
+    "foundry-louver",
+    "foundry-masonry-trim",
+    "foundry-oxidized-machinery",
+    "foundry-roof-edge",
+    "foundry-v03-apron-concrete",
+    "foundry-v03-portal-frame",
+    "foundry-v03-portal-reveal",
+    "foundry-v03-staff-door",
+    "foundry-v03-staff-glazing",
+    "foundry-warm-glazing",
+    "foundry-warm-masonry"
+  ],
+  "schema": 1,
+  "task": "PLAY-027"
+}

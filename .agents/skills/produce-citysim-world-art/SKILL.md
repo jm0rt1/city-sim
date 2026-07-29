@@ -86,6 +86,31 @@ authoring tools, shipping manifests, atlas slots, or sibling files unless
 Integration assigns one explicit shared-surface writer. Never copy, mirror,
 rotate, transform, or derive sibling scene geometry or pixels.
 
+### Parallelize inside each direction cell
+
+Scene and material authoring remain single-writer until the exact
+direction-local scene revision is frozen. After that freeze and only within
+the stage authorized by the claim:
+
+- launch A, B, and C as independent fresh processes concurrently, each writing
+  only to its own immutable output directory;
+- never let one process consume, repair, rename, or overwrite another
+  process's output;
+- after the raw files close, run independent hash/RGBA, registration,
+  normalization-repeat, literal-scale, grayscale, and contact-sheet jobs
+  concurrently when their input/output paths are disjoint;
+- preserve any failed process immediately without canceling passing siblings;
+  and
+- assign exactly one direction-local assembler to validate the complete packet
+  and write the final handoff after all required jobs settle.
+
+North's pre-lock process-A appearance calibration remains a one-process gate.
+The internal A/B/C fan-out begins for North only after Integration publishes
+the appearance lock and explicitly releases B/C. East, South, and West may
+begin their full A/B/C fan-out concurrently at that same release boundary.
+Parallel execution never relaxes fresh-process identity, exact input hashes,
+or the requirement for byte/pixel determinism.
+
 ## Produce one governed source per direction cell
 
 1. Audit the current catalog and prove the logical type is not aliased.

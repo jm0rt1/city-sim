@@ -18,7 +18,9 @@
   candidate under the mixed-fidelity stop before an independent live
   disposition completed. This implies no PLAY-075 score. One focused R2 slot
   remains reserved for a repaired exact Industrial L3 renderer candidate. The
-  final 20/20 Wave 009 release gate remains open.
+  final 20/20 Wave 009 release gate remains open. Candidate-neutral
+  Industrial L4 fixture-materializer preparation is active only under
+  `INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md`.
 
 Independently prove or reject the city-not-board release. Acceptance requires
 20/20, every category 4/4, zero P0/P1, zero automatic rejects, and material
@@ -42,3 +44,8 @@ bound to the exact candidate.
 Do not repeat the full 20-minute release journey or the integration-owned full
 native suite for every art batch. A focused approval means only that the batch
 may publish; final Wave 009 acceptance still requires the complete 20/20 gate.
+
+Before an exact Industrial L4 renderer candidate exists, PLAY-075 may build
+only the deterministic, fail-closed task-owned fixture materializer authorized
+by Integration. It may not instantiate, stage, score, or accept a hypothetical
+candidate.

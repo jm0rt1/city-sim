@@ -1,0 +1,35 @@
+{
+  "apertureSolidOverlapIDs": [],
+  "bridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "canonicalNorthPassed": true,
+  "componentBoundsPassed": true,
+  "componentCount": 39,
+  "courtAndHammerheadConnected": true,
+  "courtReachesRoadEdge": true,
+  "descriptorOrder": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "freightRecessCount": 3,
+  "materialCount": 17,
+  "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+  "monitorCount": 4,
+  "pixelInvocationCounts": {
+    "contactSheet": 0,
+    "imageGen": 0,
+    "normalizer": 0,
+    "raw": 0,
+    "render": 0
+  },
+  "productionSelected": false,
+  "sceneSHA256": "bf9ce7f6405f5c21777d12c73aa9f312da092d79d64bce743f3ca3ee05ffb488",
+  "schema": 1,
+  "sourceAuthority": false,
+  "splitWingCourtClearancePassed": true,
+  "stage": "predesign-static",
+  "task": "PLAY-027",
+  "unresolvedMaterialIDs": [],
+  "validationPassed": true
+}

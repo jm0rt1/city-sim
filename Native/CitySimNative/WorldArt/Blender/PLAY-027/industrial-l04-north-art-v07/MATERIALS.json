@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "libraryID": "industrial-l04-north-foundry-art-v03-frontage-materials",
+  "materials": [
+    {
+      "id": "foundry-dark-foundation",
+      "role": "foundation",
+      "baseColorRGBA": [0.22, 0.24, 0.22, 1],
+      "roughness": 0.86,
+      "metalness": 0.04
+    },
+    {
+      "id": "foundry-warm-masonry",
+      "role": "freight-hall-masonry",
+      "baseColorRGBA": [0.52, 0.32, 0.20, 1],
+      "roughness": 0.84,
+      "metalness": 0.02
+    },
+    {
+      "id": "foundry-masonry-trim",
+      "role": "masonry-depth-and-jamb-trim",
+      "baseColorRGBA": [0.66, 0.46, 0.27, 1],
+      "roughness": 0.78,
+      "metalness": 0.03
+    },
+    {
+      "id": "foundry-charcoal-steel",
+      "role": "primary-structural-steel",
+      "baseColorRGBA": [0.16, 0.24, 0.24, 1],
+      "roughness": 0.58,
+      "metalness": 0.58
+    },
+    {
+      "id": "foundry-bluegreen-steel",
+      "role": "process-bay-and-roof",
+      "baseColorRGBA": [0.20, 0.34, 0.33, 1],
+      "roughness": 0.64,
+      "metalness": 0.44
+    },
+    {
+      "id": "foundry-roof-edge",
+      "role": "roof-edge-and-clerestory-cap",
+      "baseColorRGBA": [0.26, 0.34, 0.32, 1],
+      "roughness": 0.61,
+      "metalness": 0.36
+    },
+    {
+      "id": "foundry-deep-portal",
+      "role": "freight-portal-void",
+      "baseColorRGBA": [0.025, 0.035, 0.036, 1],
+      "roughness": 0.91,
+      "metalness": 0.08
+    },
+    {
+      "id": "foundry-louver",
+      "role": "louvers-and-service-panels",
+      "baseColorRGBA": [0.36, 0.44, 0.39, 1],
+      "roughness": 0.73,
+      "metalness": 0.28
+    },
+    {
+      "id": "foundry-warm-glazing",
+      "role": "clerestory-and-staff-glazing",
+      "baseColorRGBA": [0.62, 0.46, 0.24, 1],
+      "roughness": 0.32,
+      "metalness": 0.06
+    },
+    {
+      "id": "foundry-oxidized-machinery",
+      "role": "subordinate-process-equipment",
+      "baseColorRGBA": [0.34, 0.50, 0.42, 1],
+      "roughness": 0.67,
+      "metalness": 0.46
+    },
+    {
+      "id": "foundry-hot-process",
+      "role": "restrained-hot-process",
+      "baseColorRGBA": [1, 0.22, 0.035, 1],
+      "roughness": 0.46,
+      "metalness": 0.02,
+      "emissionStrength": 1.2
+    },
+    {
+      "id": "foundry-apron-concrete",
+      "role": "private-service-apron",
+      "baseColorRGBA": [0.47, 0.45, 0.39, 1],
+      "roughness": 0.9,
+      "metalness": 0.01
+    },
+    {
+      "id": "foundry-v03-apron-concrete",
+      "role": "frontage-socket-path-concrete",
+      "baseColorRGBA": [0.62, 0.58, 0.50, 1],
+      "roughness": 0.9,
+      "metalness": 0.01
+    },
+    {
+      "id": "foundry-v03-portal-frame",
+      "role": "freight-portal-and-staff-frame",
+      "baseColorRGBA": [0.78, 0.56, 0.30, 1],
+      "roughness": 0.76,
+      "metalness": 0.03
+    },
+    {
+      "id": "foundry-v03-portal-reveal",
+      "role": "freight-portal-reveal",
+      "baseColorRGBA": [0.28, 0.36, 0.34, 1],
+      "roughness": 0.66,
+      "metalness": 0.30
+    },
+    {
+      "id": "foundry-v03-staff-glazing",
+      "role": "staff-control-glazing",
+      "baseColorRGBA": [0.92, 0.68, 0.30, 1],
+      "roughness": 0.30,
+      "metalness": 0.04,
+      "emissionStrength": 0.25
+    },
+    {
+      "id": "foundry-v03-staff-door",
+      "role": "staff-control-door",
+      "baseColorRGBA": [0.38, 0.46, 0.40, 1],
+      "roughness": 0.62,
+      "metalness": 0.34
+    }
+  ],
+  "sourceAuthority": false,
+  "productionSelected": false
+}

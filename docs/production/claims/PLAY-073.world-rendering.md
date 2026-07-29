@@ -29,6 +29,10 @@
   fixture intake. Industrial L4 non-shipping direction-quarantine preparation
   is separately active under
   `INDUSTRIAL-L04-RENDERER-QUARANTINE-PREP-AUTHORITY.md`.
+  File-backed packet-intake and baseline-neutral semantic-slot preparation are
+  additionally active under
+  `INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md`; this remains test/evidence
+  only and cannot ingest or activate actual source art.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,
@@ -100,6 +104,11 @@ work, gameplay changes, UI repair, and broad composition mutation are not
 authorized by this claim. The Integration-published L4 quarantine-preparation
 addendum authorizes only its explicit test/evidence-owned non-shipping packet
 schema, validator, mutation matrix, and handoff.
+
+The arrival-gate addendum additionally authorizes a caller-path file-backed
+packet harness and a baseline-neutral repair of the preserved semantic-slot
+fixture. Neither change may adopt R2 product state, accept a real L4 source, or
+mutate runtime/shipping resources.
 
 After the accepted Industrial batches publish or are explicitly deferred, R4
 is governed by `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. Its

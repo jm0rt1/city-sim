@@ -4,7 +4,7 @@
   "taskId": "PLAY-079",
   "direction": "east",
   "branch": "codex/citysim-world-art-east",
-  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
@@ -21,7 +21,7 @@
   "authorities": {
     "contract020": {
       "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
-      "sha256": "4b932c236e38816911fe065cc24d07380369fa6c45ef46db1e54b8c0766669c0"
+      "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
     },
     "contract021": {
       "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
@@ -34,6 +34,26 @@
     "handoffSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
       "sha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951"
+    },
+    "bridgeV06Authority": {
+      "path": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",
+      "sha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4"
+    },
+    "bridgeV06Acceptance": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+      "sha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208"
+    },
+    "bridgeV06Mapping": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "bridgeV06Handoff": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/direction-bridge-v06/HANDOFF.json",
+      "sha256": "1c94aab0fe2bc5b8d50a7e06bdd2600a9acf5941cd859ab5e0b569483c58d9d7"
+    },
+    "bridgeV06RepeatProof": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/direction-bridge-v06/REPEAT-IDENTITY.json",
+      "sha256": "4513dc01ae02cc029a1ef0fc7eee53e1f84148f46ea99238e9b64b3f48c7bdef"
     }
   },
   "acceptedPredesign": {
@@ -68,14 +88,26 @@
     "camera": {
       "projection": "orthographic",
       "view": "southeast-looking-northwest",
-      "yawDegrees": 45.0,
-      "elevationDegrees": 30.0,
-      "target": [
+      "citySimPosition": [
+        96.0,
+        101.24557426726288,
+        96.0
+      ],
+      "citySimTarget": [
+        0.0,
+        22.861902498201186,
+        0.0
+      ],
+      "blenderPosition": [
+        96.0,
+        96.0,
+        101.24557426726288
+      ],
+      "blenderTarget": [
         0.0,
         0.0,
         22.861902498201186
       ],
-      "distance": 420.0,
       "orthoScale": 237.5878601074218,
       "shiftX": 0.0,
       "shiftY": 0.08333333333333333,
@@ -111,10 +143,37 @@
         896.0,
         832.0
       ],
-      "sourcePixelTolerance": 0.5
+      "canonicalCitySimPivot": [
+        28.0,
+        0.0,
+        28.0
+      ],
+      "blenderNativePivot": [
+        28.0,
+        28.0,
+        0.0
+      ],
+      "sourcePixelPivot": [
+        768.0,
+        896.0
+      ],
+      "sourcePixelTolerance": 0.001
     },
     "coordinateBridge": {
-      "state": "pending_v06_revalidation",
+      "state": "validated_v06",
+      "acceptedSourceCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "basis": {
+        "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+        "matrixRows": [
+          [0, 0, 1],
+          [1, 0, 0],
+          [0, 1, 0]
+        ],
+        "determinant": 1,
+        "sourceOrder": [0, 1, 2, 3],
+        "perDirectionTransforms": false,
+        "windingChange": false
+      },
       "canonicalCitySimEastSocket": [
         28.0,
         0.0,
@@ -124,33 +183,53 @@
         896.0,
         832.0
       ],
+      "blenderNativeEastSocket": [
+        0.0,
+        28.0,
+        0.0
+      ],
       "historicalPredesignProjectionAdapter": {
         "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
         "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
         "futureSourceAuthority": false
       },
       "v06": {
-        "authorityPath": null,
-        "commit": null,
-        "documentSha256": null,
-        "projectionAdapterPath": null,
-        "projectionAdapterSha256": null,
-        "blenderNativeDirectionalSocket": null,
-        "blenderNativeGroundPivot": null,
-        "blenderNativeFootprintCorners": null,
-        "blenderContactCornerOrder": null
+        "authorityPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+        "commit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+        "documentSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+        "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+        "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+        "blenderNativeDirectionalSocket": [0.0, 28.0, 0.0],
+        "blenderNativeGroundPivot": [28.0, 28.0, 0.0],
+        "blenderNativeFootprintCorners": [
+          [-28.0, -28.0, 0.0],
+          [-28.0, 28.0, 0.0],
+          [28.0, 28.0, 0.0],
+          [28.0, -28.0, 0.0]
+        ],
+        "blenderContactCornerOrder": [0, 1, 2, 3]
       }
     },
     "light": {
       "semantic": "northwest-key-southeast-contact",
-      "keyOrigin": [
+      "citySimKeyOrigin": [
         -120.0,
+        180.0,
+        120.0
+      ],
+      "blenderKeyOrigin": [
         120.0,
+        -120.0,
         180.0
       ],
-      "shadowVector": [
+      "citySimShadowVector": [
         14.0,
+        0.0,
+        -14.0
+      ],
+      "blenderShadowVector": [
         -14.0,
+        14.0,
         0.0
       ]
     },

@@ -1,0 +1,29 @@
+{
+  "byteIdentical": true,
+  "direction": "west",
+  "invocations": {
+    "blenderProjectionProcesses": 2,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0
+  },
+  "passed": true,
+  "productionSelected": false,
+  "proof": "V06_ACTUAL_CAMERA_REPEAT_IDENTITY",
+  "runA": {
+    "passed": true,
+    "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-ACTUAL-CAMERA-RUN-A.json",
+    "sha256": "a8b3c5fbe8f131b7c7237abfc3a4c662cff2ffebba7925dd4eec42fd1dfae4cf"
+  },
+  "runB": {
+    "passed": true,
+    "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-ACTUAL-CAMERA-RUN-B.json",
+    "sha256": "a8b3c5fbe8f131b7c7237abfc3a4c662cff2ffebba7925dd4eec42fd1dfae4cf"
+  },
+  "schemaVersion": 1,
+  "sourceReady": false,
+  "taskId": "PLAY-081"
+}

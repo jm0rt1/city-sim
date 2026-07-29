@@ -6,6 +6,12 @@
 - **Date:** July 28, 2026
 - **Published operating authority:**
   `c08a0aa7b0a461c1dfcd6c50dfe149db5ff766a3`
+- **Published bridge follow-up authority:**
+  `aa20d5963c356eee812f66bafff8582215293bbb`
+- **Accepted directional bridge source authority:**
+  `3e01ca6738d7574718f9aeff4b66771eee109feb`
+- **Directional mapping contract SHA-256:**
+  `5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7`
 - **Parallel-art skill authority:**
   `346a27240668d97f0e89b7a9d4be00f9ed6e8239`
 - **Fixture checkpoint:**
@@ -61,6 +67,33 @@ Candidate-neutral accepted-L3 comparison/harness fixture:
 
 The exact transformation and sole-adjacent-road proof are in
 `fixtures/industrial-l03-directional-mature-city-manifest-v1.json`.
+
+## Canonical runtime direction bridge
+
+This preregistration consumes the published bridge only through canonical
+CitySim runtime direction and `citysim_source_pixels_v1` source-pixel sockets.
+Blender-native coordinates, DCC world labels, and per-direction transforms are
+not fixture inputs or QA acceptance identities.
+
+| Runtime direction | Logical identity | Canonical CitySim socket | Source-pixel socket |
+|---|---|---:|---:|
+| North | `industrial_l03_v0_north` | `[0,0,-28]` | `[896,704]` |
+| East | `industrial_l03_v0_east` | `[28,0,0]` | `[896,832]` |
+| South | `industrial_l03_v0_south` | `[0,0,28]` | `[640,832]` |
+| West | `industrial_l03_v0_west` | `[-28,0,0]` | `[640,704]` |
+
+The mapping contract is
+`Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json`.
+Its source order is exactly `[0,1,2,3]`, its source-pixel pivot is
+`[768,896]`, and it permits no per-direction transforms. The accepted source
+authority is recorded as an Integration-approved immutable input; the
+published acceptance and mapping bytes are carried by `aa20d596`.
+
+This binding does not alter the fixture save or its state digest. The visible
+sole-adjacent-road relationship remains the runtime selector. For the final L4
+gate, candidate admission must prove the exact bridge authority and mapping
+hash, then bind each of the four runtime identities to the corresponding
+source-pixel socket above.
 
 The future L4 candidate fixture must be derived mechanically from these exact
 bytes by changing only the four declared tiles from level `3` to level `4`.
@@ -180,15 +213,20 @@ Do not launch the final journey until Integration supplies:
 4. twelve distinct `N/E/S/W x City/Neighborhood/Block` L4 normalized outputs;
 5. four unique source keys and source hashes, twelve unique normalized hashes,
    exact raw/normalized/pack/runtime parity, and two-build determinism;
-6. zero alias, mirror, rotation, recolor, fallback, crop, registration, socket,
-   alpha, padding, extrusion, or overlap failure;
-7. one isolated attached-SHA staged environment with unique bundle/defaults,
+6. exact bridge source authority
+   `3e01ca6738d7574718f9aeff4b66771eee109feb`, exact mapping SHA-256
+   `5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7`,
+   canonical source order `[0,1,2,3]`, and exact N/E/S/W source-pixel sockets;
+7. zero alias, mirror, rotation, recolor, fallback, crop, registration, socket,
+   alpha, padding, extrusion, overlap, DCC-label substitution, or
+   per-direction transform failure;
+8. one isolated attached-SHA staged environment with unique bundle/defaults,
    data root, executable, resources, manifest, and PID; and
-8. the three exact candidate-bound L4 fixture digests described above.
+9. the three exact candidate-bound L4 fixture digests described above.
 
-A missing direction, returned source, unpublished R2 baseline, dirty worktree,
-candidate drift, mixed resources, or candidate substitution is `BLOCK`, never
-a partial family score.
+A one-, two-, or three-direction assembly, missing direction, returned source,
+unpublished R2 baseline, dirty worktree, candidate drift, mixed resources, or
+candidate substitution is `BLOCK`, never a partial family score.
 
 ## Disposition boundary
 

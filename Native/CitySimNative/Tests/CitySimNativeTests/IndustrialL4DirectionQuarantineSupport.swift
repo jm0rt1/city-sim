@@ -479,10 +479,12 @@ struct IndustrialL4DirectionPacketValidator {
 enum IndustrialL4DirectionPacketFactory {
     static let directionBridge = IndustrialL4DirectionBridge(
         documentPath:
-            "docs/production/evidence/INTEGRATION/future-industrial-l04-direction-bridge.md",
-        commit: commit("direction-bridge-authority"),
-        documentSha256: sha("direction-bridge-document"),
-        canonicalMappingSha256: sha("direction-bridge-canonical-mapping"),
+            "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+        commit: "3e01ca6738d7574718f9aeff4b66771eee109feb",
+        documentSha256:
+            "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+        canonicalMappingSha256:
+            "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
         coordinateSystem: "citysim_source_pixels_v1"
     )
 

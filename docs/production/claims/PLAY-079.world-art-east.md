@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 3
+- **Claim revision:** 4
 - **Title:** Predesign the Industrial L4 East source in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -18,16 +18,18 @@
 - **Accepted bridge dependency:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Status:** Predesign accepted and integrated at `3575d6ac`. Direction-local
-  zero-pixel production-runner preparation is active under
-  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`. East is authorized to
-  adopt the accepted v06 bridge, refresh only stale authority hashes, and
-  revalidate its canonical CitySim/source projection. Pixel rendering remains
+  zero-pixel runner and handoff now pass against accepted v06 at candidate
+  `22e15b06`; the stale CONTRACT-020 hash is repaired. Pixel rendering remains
   blocked until Integration publishes the exact appearance lock and post-lock
-  production authority.
+  production authority. While North v08 is redesigned, East may bind its
+  zero-pixel runner/handoff to the shared source-stage schema and common
+  44-master non-alias input and prove the prelaunch guard fails closed, under
+  `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`.
 - **Validation/proof:** Independent East geometry; East road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
 
 Do not edit accepted East predesign, North, South, West, renderer/shipping,
 package, gameplay, simulation, UI, build, claim, or shared-manifest surfaces.
-Do not render A/B/C, push, integrate, or self-accept.
+Do not render A/B/C, push, integrate, or self-accept. Do not edit the shared
+schema, non-alias input, ledger, or sibling roots.

@@ -16,6 +16,9 @@ For exact future renderer candidate `<candidate>`, retain evidence under:
 - `identity/staging-manifest.sha256`
 - `identity/generated-v4-source.sha256`
 - `identity/generated-v4-staged.sha256`
+- `identity/direction-bridge-authority.txt`
+- `identity/direction-bridge-mapping.sha256`
+- `identity/runtime-direction-source-pixel-sockets.json`
 - `identity/fixture-completed.sha256`
 - `identity/fixture-construction.sha256`
 - `identity/fixture-condition.sha256`
@@ -75,6 +78,7 @@ restored state fingerprints. Before and restored must match exactly.
 
 - `validation/world-asset-pack-report.json`
 - `validation/directional-source-pack-runtime.csv`
+- `validation/atomic-four-direction-admission.json`
 - `validation/fallback-and-alias-ledger.json`
 - `validation/registration-and-overlap.json`
 - `validation/two-build-identity.txt`
@@ -82,6 +86,17 @@ restored state fingerprints. Before and restored must match exactly.
 - `performance/rss-footprint.csv`
 - `performance/node-drawable-action.csv`
 - `performance/process-termination.txt`
+
+`identity/direction-bridge-authority.txt` must bind accepted source authority
+`3e01ca6738d7574718f9aeff4b66771eee109feb` through published Integration
+authority `aa20d5963c356eee812f66bafff8582215293bbb`.
+`identity/direction-bridge-mapping.sha256` must equal
+`5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7`.
+The socket ledger must use `citysim_source_pixels_v1` and exact North
+`[896,704]`, East `[896,832]`, South `[640,832]`, and West `[640,704]`
+sockets. The atomic admission record must fail closed unless all four
+directions are present in the same exact renderer candidate; a one-, two-, or
+three-direction packet is not eligible for a staged-app score.
 
 ## Final records
 

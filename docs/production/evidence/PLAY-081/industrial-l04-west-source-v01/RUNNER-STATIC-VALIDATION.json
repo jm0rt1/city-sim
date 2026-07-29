@@ -1,28 +1,40 @@
 {
-  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
+  "bridgeProjectionProcessLaunches": 2,
   "checks": {
     "acceptedPredesignUnmodified": true,
     "blenderScriptPresentButNotImported": true,
     "controlFlow": {
       "driverImportsBpy": false,
       "evaluateGuardLines": [
-        518
+        602
       ],
       "guardTextPrecedesLaunchText": true,
       "launchBlenderLines": [
-        523
+        607
       ],
       "passed": true,
       "subprocessRunLines": [
-        426,
-        435,
-        485
+        510,
+        519,
+        569
       ]
     },
-    "coordinateBridgeHold": {
+    "coordinateBridgeAdoption": {
+      "acceptedCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "actualCameraProofs": {
+        "runA": true,
+        "runB": true
+      },
+      "actualCameraProofsByteIdentical": true,
+      "canonicalWestSocketBlenderXYZ": [
+        0,
+        -28,
+        0
+      ],
       "canonicalWestSocketSource": [
         640,
         704
@@ -35,8 +47,15 @@
       "historicalAdapterFutureSourceAuthority": false,
       "historicalAdapterLoadedByBlenderScript": false,
       "holdIsStop": false,
+      "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
       "passed": true,
-      "state": "pending_v06_revalidation"
+      "sourceOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "state": "validated_v06"
     },
     "frozenInputErrors": [],
     "frozenInputHashes": true,
@@ -44,9 +63,9 @@
     "sourceAndEvidencePixelFiles": []
   },
   "contactSheetInvocations": 0,
-  "coordinateBridgeState": "pending_v06_revalidation",
+  "coordinateBridgeState": "validated_v06",
   "direction": "west",
-  "driverSha256": "54a7155a9c7eb8731172d1f77a5670d407f00d0b77f34cbde5cd1f667b68f8c8",
+  "driverSha256": "bb10409354d34d59a2f2807cab2c1ea5c0aadf0d99ee105600835dfbfe144d05",
   "imageGenInvocations": 0,
   "normalizerInvocations": 0,
   "passed": true,
@@ -54,7 +73,7 @@
   "proof": "PRELOCK_RUNNER_STATIC",
   "rejectionStage": "before_renderer_launch",
   "renderInvocations": 0,
-  "runnerContractSha256": "6757a7839e999331604dbe9bc12a52053dbf8b54af9a7ac41456178371cb2a8d",
+  "runnerContractSha256": "6000a0f70daa240e803e975684965d2364ceacb7d33c7b8ae0c4fae488542cf9",
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "validation": {

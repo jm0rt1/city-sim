@@ -60,6 +60,14 @@ Keep per-direction intake fast and independent:
   final camera, layout, interaction, accessibility, performance, and visual
   acceptance gate. A newer rebuild or nearby commit is a different candidate.
 
+When multiple direction packets arrive together, run their focused quarantine
+validations concurrently in direction-exclusive input and evidence
+directories. One renderer-owned writer may change the common intake harness;
+direction jobs consume that frozen harness and may not edit it. Join the
+results only after every job completes, preserve passing directions, and
+return failing directions independently. Atomic 4/4 assembly remains a
+separate serialized mutation after all four exact packet identities pass.
+
 ## Implement and prove
 
 1. Prefer focused renderer components, cached reusable geometry/textures, and incremental tile updates.

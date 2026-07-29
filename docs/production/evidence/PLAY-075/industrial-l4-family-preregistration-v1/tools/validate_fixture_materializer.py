@@ -15,12 +15,15 @@ sys.dont_write_bytecode = True
 from materialize_fixture_receipt import (
     MaterializerError,
     PLAY075_ROOT,
+    PUBLISHED_MASTER,
     build_receipt,
     canonical_bytes,
     ensure_task_owned_output,
     sha256_bytes,
     sha256_file,
+    validate_admission_manifest_contents,
     validate_request,
+    verify_integration_admission,
     write_receipt,
 )
 
@@ -39,11 +42,12 @@ def expect_rejection(
     name: str,
     expected_code: str,
     mutate: Callable[[Dict[str, Any]], None],
+    check: Callable[[Dict[str, Any]], Any] = validate_request,
 ) -> Dict[str, str]:
     candidate = copy.deepcopy(request)
     mutate(candidate)
     try:
-        validate_request(candidate)
+        check(candidate)
     except MaterializerError as error:
         if error.code != expected_code:
             raise AssertionError(
@@ -53,12 +57,70 @@ def expect_rejection(
     raise AssertionError(f"{name}: request unexpectedly passed")
 
 
+def bind_missing_admission(request: Dict[str, Any]) -> None:
+    request["mode"] = "candidate_bound"
+    request["admissionManifest"] = {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-admissions/nonexistent.json"
+        ),
+        "sha256": "0" * 64,
+        "publishedManifestCommit": PUBLISHED_MASTER,
+    }
+
+
+def synthetic_admission_manifest(request: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "schemaVersion": 1,
+        "issuedBy": "Integration",
+        "disposition": (
+            "EXACT_RENDERER_CANDIDATE_ADMITTED_FOR_PLAY075_FIXTURE_PREPARATION"
+        ),
+        "baseFixture": copy.deepcopy(request["baseFixture"]),
+        "rendererCandidate": copy.deepcopy(request["rendererCandidate"]),
+        "directionBridge": copy.deepcopy(request["directionBridge"]),
+        "packets": copy.deepcopy(request["packets"]),
+        "productionSelected": False,
+        "qaDispositionDeclared": False,
+    }
+
+
+def expect_manifest_rejection(
+    request: Dict[str, Any],
+    manifest: Dict[str, Any],
+    name: str,
+    expected_code: str,
+    mutate: Callable[[Dict[str, Any]], None],
+) -> Dict[str, str]:
+    candidate = copy.deepcopy(manifest)
+    mutate(candidate)
+    try:
+        validate_admission_manifest_contents(request, candidate)
+    except MaterializerError as error:
+        if error.code != expected_code:
+            raise AssertionError(
+                f"{name}: expected {expected_code}, received {error.code}"
+            ) from error
+        return {"case": name, "status": "REJECTED", "code": error.code}
+    raise AssertionError(f"{name}: manifest unexpectedly passed")
+
+
 def main() -> int:
     args = parse_args()
     request = json.loads(args.request.read_text(encoding="utf-8"))
     validated = validate_request(request)
+    admission = verify_integration_admission(validated)
+    if admission is not None:
+        raise AssertionError("contract rehearsal unexpectedly has admission")
     receipt_a = build_receipt(validated)
     receipt_b = build_receipt(copy.deepcopy(validated))
+    if (
+        receipt_a["rendererCandidate"]["eligibleForFutureFixtureMaterialization"]
+        is not False
+        or receipt_a["rendererCandidate"]["candidateOrPacketExistenceVerified"]
+        is not False
+    ):
+        raise AssertionError("rehearsal identity became eligible or verified")
     path_a = write_receipt(receipt_a, args.run_a_output_root)
     path_b = write_receipt(receipt_b, args.run_b_output_root)
     bytes_a = path_a.read_bytes()
@@ -67,6 +129,48 @@ def main() -> int:
         raise AssertionError("repeat receipts differ")
 
     negative_results: List[Dict[str, str]] = []
+    negative_results.append(
+        expect_rejection(
+            request,
+            "rehearsal-mode-flip",
+            "ADMISSION_MANIFEST_REQUIRED",
+            lambda value: value.update({"mode": "candidate_bound"}),
+            build_receipt,
+        )
+    )
+    negative_results.append(
+        expect_rejection(
+            request,
+            "nonexistent-integration-admission",
+            "ADMISSION_MANIFEST_NOT_PUBLISHED",
+            bind_missing_admission,
+            lambda value: verify_integration_admission(validate_request(value)),
+        )
+    )
+    candidate_bound = copy.deepcopy(request)
+    bind_missing_admission(candidate_bound)
+    validate_request(candidate_bound)
+    synthetic_manifest = synthetic_admission_manifest(candidate_bound)
+    negative_results.append(
+        expect_manifest_rejection(
+            candidate_bound,
+            synthetic_manifest,
+            "packet-identity-not-admitted",
+            "PACKET_NOT_ADMITTED",
+            lambda value: value.update({"packets": value["packets"][:3]}),
+        )
+    )
+    negative_results.append(
+        expect_manifest_rejection(
+            candidate_bound,
+            synthetic_manifest,
+            "packet-identity-unbound-from-admission",
+            "UNBOUND_PACKET_IDENTITY",
+            lambda value: value["packets"][0].update(
+                {"packetSha256": "e" * 64}
+            ),
+        )
+    )
     for direction_count in (1, 2, 3):
         negative_results.append(
             expect_rejection(
@@ -179,6 +283,11 @@ def main() -> int:
         "runA": str(path_a.relative_to(PLAY075_ROOT)),
         "runB": str(path_b.relative_to(PLAY075_ROOT)),
         "negativeGates": negative_results,
+        "candidateBoundAuthorityPolicy": (
+            "BYTE_IDENTICAL_MANIFEST_PUBLISHED_AT_ORIGIN_MASTER_REQUIRED"
+        ),
+        "rehearsalEligibleForFutureFixtureMaterialization": False,
+        "rehearsalCandidateOrPacketExistenceVerified": False,
         "fixtureFilesCreated": [],
         "appRunOrScored": False,
         "productOrResourcesMutated": False,

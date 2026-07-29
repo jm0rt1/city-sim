@@ -1,4 +1,5 @@
 {
+  "admissionManifest": null,
   "baseFixture": {
     "immutable": true,
     "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",

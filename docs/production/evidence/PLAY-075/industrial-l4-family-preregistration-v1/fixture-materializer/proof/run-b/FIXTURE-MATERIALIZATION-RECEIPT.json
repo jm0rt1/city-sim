@@ -59,7 +59,7 @@
       "south",
       "west"
     ],
-    "status": "INPUT_IDENTITIES_BOUND_4_OF_4"
+    "status": "REHEARSAL_IDENTITIES_ONLY_NOT_ADMITTED"
   },
   "authority": {
     "arrivalGateAuthority": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md",
@@ -72,7 +72,7 @@
     "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
     "stateDigest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f"
   },
-  "canonicalPayloadSha256": "896814a27a9ddbb636329d976fa87425e71de2f08218e21df5d99fb71c1a5060",
+  "canonicalPayloadSha256": "281b51774bae6e5d130088334e5f035e8d8593e7f5afccea4f08f15787c3eedd",
   "derivativePlans": [
     {
       "actualFixtureIdentity": "NOT_MATERIALIZED",
@@ -255,7 +255,7 @@
       3
     ]
   },
-  "disposition": "PREPARATION_RECEIPT_ONLY",
+  "disposition": "CONTRACT_REHEARSAL_RECEIPT_ONLY",
   "expectedCaptureTree": [
     "live/regular/north/city-color.png",
     "live/regular/north/city-grayscale.png",
@@ -344,6 +344,12 @@
     "live/comparison/l3-vs-l4-compact.png",
     "live/comparison/l3-vs-l4-grayscale.png"
   ],
+  "integrationAdmission": {
+    "path": null,
+    "publishedManifestCommit": null,
+    "sha256": null,
+    "status": "NOT_APPLICABLE_CONTRACT_REHEARSAL"
+  },
   "mode": "contract_rehearsal",
   "receiptType": "PLAY-075_CANDIDATE_NEUTRAL_FIXTURE_MATERIALIZATION_PLAN",
   "rendererCandidate": {
@@ -353,10 +359,11 @@
     "commit": "9999999999999999999999999999999999999999",
     "declaredInputSyntacticallyExactAndNonStale": true,
     "eligibleForFutureFixtureMaterialization": false,
-    "gitOrProductInspectionPerformed": false
+    "integrationGitAuthorityInspectionPerformed": false,
+    "productInspectionPerformed": false
   },
   "request": {
-    "canonicalSha256": "55632ac7718073a051d45a27c0bbec53b6035d68e0ff8cf16268b2c3d8b3a80c",
+    "canonicalSha256": "e6018dc10e3fe2d3430c805e7f068f07546ff1cfcef5371b7a64b1e209511d45",
     "requestId": "candidate-neutral-contract-rehearsal-v1"
   },
   "schemaVersion": 1,

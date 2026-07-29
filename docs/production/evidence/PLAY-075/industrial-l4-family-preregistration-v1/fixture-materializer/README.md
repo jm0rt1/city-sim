@@ -18,9 +18,23 @@ The request has no mutable CLI or JSON defaults. It must name:
 - explicit false values for aliases, fallbacks, DCC labels, and
   per-direction transforms.
 
+The two modes are intentionally non-interchangeable:
+
+- `contract_rehearsal` requires `admissionManifest: null`, always emits
+  `eligibleForFutureFixtureMaterialization: false`, and never verifies or
+  admits its conspicuously synthetic identities.
+- `candidate_bound` requires an Integration admission JSON under
+  `docs/production/evidence/INTEGRATION/industrial-l04-admissions/`. The local
+  file, its requested SHA-256, and the exact blob published at the requested
+  `origin/master` commit must be byte-identical. The manifest must bind the
+  same fixture, renderer candidate, bridge, and exact four packet objects.
+  Missing, local-only, stale, or mismatched authority fails before a receipt
+  is written.
+
 One through three directions, stale or placeholder candidate identities,
-unbound hashes, wrong sockets, aliases/fallbacks, DCC labels, transforms,
-schema drift, frozen-fixture drift, and outputs outside
+unbound or non-admitted packet identities, nonexistent admission authority,
+wrong sockets, aliases/fallbacks, DCC labels, transforms, schema drift,
+frozen-fixture drift, and outputs outside
 `docs/production/evidence/PLAY-075/` fail before any receipt is written.
 
 `contract-rehearsal-request.json` uses conspicuously synthetic immutable
@@ -40,7 +54,8 @@ python3 -B tools/validate_fixture_materializer.py \
 
 For a future Integration-admitted exact candidate, use
 `tools/materialize_fixture_receipt.py` with a request conforming to
-`REQUEST-FORMAT.json`, mode `candidate_bound`, and an explicit output root
-beneath the PLAY-075 evidence tree. The resulting receipt describes the three
-candidate-bound derivative plans and expected capture tree, but still creates
-no save or acceptance fixture.
+`REQUEST-FORMAT.json`, mode `candidate_bound`, a manifest conforming to
+`ADMISSION-MANIFEST-FORMAT.json` already published on `origin/master`, and an
+explicit output root beneath the PLAY-075 evidence tree. The resulting receipt
+describes the three candidate-bound derivative plans and expected capture
+tree, but still creates no save or acceptance fixture.

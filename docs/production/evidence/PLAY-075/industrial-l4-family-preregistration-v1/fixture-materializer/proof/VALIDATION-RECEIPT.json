@@ -1,8 +1,29 @@
 {
   "appRunOrScored": false,
+  "candidateBoundAuthorityPolicy": "BYTE_IDENTICAL_MANIFEST_PUBLISHED_AT_ORIGIN_MASTER_REQUIRED",
   "disposition": "FIXTURE_MATERIALIZER_PREPARATION_VALID",
   "fixtureFilesCreated": [],
   "negativeGates": [
+    {
+      "case": "rehearsal-mode-flip",
+      "code": "ADMISSION_MANIFEST_REQUIRED",
+      "status": "REJECTED"
+    },
+    {
+      "case": "nonexistent-integration-admission",
+      "code": "ADMISSION_MANIFEST_NOT_PUBLISHED",
+      "status": "REJECTED"
+    },
+    {
+      "case": "packet-identity-not-admitted",
+      "code": "PACKET_NOT_ADMITTED",
+      "status": "REJECTED"
+    },
+    {
+      "case": "packet-identity-unbound-from-admission",
+      "code": "UNBOUND_PACKET_IDENTITY",
+      "status": "REJECTED"
+    },
     {
       "case": "1-direction-input",
       "code": "ATOMIC_4_OF_4_REQUIRED",
@@ -66,9 +87,11 @@
   ],
   "productOrResourcesMutated": false,
   "qaDispositionDeclared": false,
-  "repeatReceiptSha256": "4eb0e91c0456f1e88a0ceb7161eb23b923a3ca6ec3d1a6dde3f97571d3a56f27",
+  "rehearsalCandidateOrPacketExistenceVerified": false,
+  "rehearsalEligibleForFutureFixtureMaterialization": false,
+  "repeatReceiptSha256": "96cdd6633a8ac856a260dfbe58ab04fbd9c2d75b42c642bf855fdea743f0f3e3",
   "repeatReceiptsByteIdentical": true,
-  "requestCanonicalSha256": "55632ac7718073a051d45a27c0bbec53b6035d68e0ff8cf16268b2c3d8b3a80c",
+  "requestCanonicalSha256": "e6018dc10e3fe2d3430c805e7f068f07546ff1cfcef5371b7a64b1e209511d45",
   "runA": "industrial-l4-family-preregistration-v1/fixture-materializer/proof/run-a/FIXTURE-MATERIALIZATION-RECEIPT.json",
   "runB": "industrial-l4-family-preregistration-v1/fixture-materializer/proof/run-b/FIXTURE-MATERIALIZATION-RECEIPT.json",
   "schemaVersion": 1

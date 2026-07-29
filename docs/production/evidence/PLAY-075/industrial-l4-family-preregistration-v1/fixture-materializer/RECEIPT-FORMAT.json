@@ -27,7 +27,10 @@
       "type": "object"
     },
     "disposition": {
-      "const": "PREPARATION_RECEIPT_ONLY"
+      "enum": [
+        "CONTRACT_REHEARSAL_RECEIPT_ONLY",
+        "CANDIDATE_BOUND_PREPARATION_RECEIPT_ONLY"
+      ]
     },
     "expectedCaptureTree": {
       "items": {
@@ -35,6 +38,9 @@
       },
       "minItems": 1,
       "type": "array"
+    },
+    "integrationAdmission": {
+      "type": "object"
     },
     "mode": {
       "enum": [
@@ -67,6 +73,7 @@
     "authority",
     "baseFixture",
     "rendererCandidate",
+    "integrationAdmission",
     "directionBridge",
     "atomicDirectionGate",
     "derivativePlans",

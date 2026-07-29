@@ -13,13 +13,18 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, NoReturn
+from typing import Any, Dict, Iterable, List, NoReturn, Optional
 
 
 PREREG_ROOT = Path(__file__).resolve().parent.parent
 PLAY075_ROOT = PREREG_ROOT.parent
+REPO_ROOT = PREREG_ROOT.parents[4]
+INTEGRATION_ADMISSION_PREFIX = Path(
+    "docs/production/evidence/INTEGRATION/industrial-l04-admissions"
+)
 FIXTURE_PATH = PREREG_ROOT / "fixtures" / "industrial-l03-directional-mature-city-v1.json"
 MANIFEST_PATH = (
     PREREG_ROOT
@@ -112,6 +117,23 @@ def require_hex(value: Any, pattern: re.Pattern[str], label: str) -> str:
     return value
 
 
+def run_git(arguments: List[str]) -> bytes:
+    result = subprocess.run(
+        ["git", *arguments],
+        cwd=REPO_ROOT,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if result.returncode != 0:
+        fail(
+            "ADMISSION_MANIFEST_NOT_PUBLISHED",
+            result.stderr.decode("utf-8", errors="replace").strip()
+            or "published Integration authority is unavailable",
+        )
+    return result.stdout
+
+
 def verify_frozen_fixture() -> Dict[str, Any]:
     if sha256_file(FIXTURE_PATH) != FIXTURE_SHA256:
         fail("FROZEN_FIXTURE_DRIFT", "immutable L3 fixture SHA-256 changed")
@@ -149,6 +171,7 @@ def validate_request(request: Any) -> Dict[str, Any]:
             "rendererCandidate",
             "directionBridge",
             "packets",
+            "admissionManifest",
         ),
         "request",
     )
@@ -160,6 +183,36 @@ def validate_request(request: Any) -> Dict[str, Any]:
         request["requestId"]
     ):
         fail("MUTABLE_OR_INEXACT_IDENTITY", "requestId is not immutable")
+
+    admission = request["admissionManifest"]
+    if request["mode"] == "contract_rehearsal":
+        if admission is not None:
+            fail(
+                "REHEARSAL_ADMISSION_FORBIDDEN",
+                "contract rehearsal may not carry admission authority",
+            )
+    else:
+        if admission is None:
+            fail(
+                "ADMISSION_MANIFEST_REQUIRED",
+                "candidate_bound requires a published Integration admission manifest",
+            )
+        admission = require_object(admission, "admissionManifest")
+        require_exact_keys(
+            admission,
+            ("path", "sha256", "publishedManifestCommit"),
+            "admissionManifest",
+        )
+        if not isinstance(admission["path"], str) or not admission["path"]:
+            fail("ADMISSION_MANIFEST_REQUIRED", "admission manifest path is required")
+        require_hex(
+            admission["sha256"], HEX64, "admission manifest SHA-256"
+        )
+        require_hex(
+            admission["publishedManifestCommit"],
+            HEX40,
+            "commit publishing the Integration admission manifest",
+        )
 
     base = require_object(request["baseFixture"], "baseFixture")
     require_exact_keys(
@@ -283,6 +336,130 @@ def validate_request(request: Any) -> Dict[str, Any]:
     return request
 
 
+def validate_admission_manifest_contents(
+    request: Dict[str, Any], manifest: Any
+) -> Dict[str, Any]:
+    manifest = require_object(manifest, "Integration admission manifest")
+    require_exact_keys(
+        manifest,
+        (
+            "schemaVersion",
+            "issuedBy",
+            "disposition",
+            "baseFixture",
+            "rendererCandidate",
+            "directionBridge",
+            "packets",
+            "productionSelected",
+            "qaDispositionDeclared",
+        ),
+        "Integration admission manifest",
+    )
+    if (
+        manifest["schemaVersion"] != 1
+        or manifest["issuedBy"] != "Integration"
+        or manifest["disposition"]
+        != "EXACT_RENDERER_CANDIDATE_ADMITTED_FOR_PLAY075_FIXTURE_PREPARATION"
+    ):
+        fail(
+            "ADMISSION_MANIFEST_INVALID",
+            "Integration issuer, schema, or disposition differs",
+        )
+    if manifest["baseFixture"] != request["baseFixture"]:
+        fail("FROZEN_FIXTURE_DRIFT", "admission binds another base fixture")
+    if manifest["rendererCandidate"] != request["rendererCandidate"]:
+        fail("STALE_CANDIDATE", "admission binds another renderer candidate")
+    if manifest["directionBridge"] != request["directionBridge"]:
+        fail("STALE_OR_UNBOUND_BRIDGE", "admission binds another direction bridge")
+    if manifest["productionSelected"] is not False:
+        fail("ADMISSION_MANIFEST_INVALID", "admission may not select production")
+    if manifest["qaDispositionDeclared"] is not False:
+        fail("ADMISSION_MANIFEST_INVALID", "admission may not declare QA disposition")
+
+    admitted_packets = manifest["packets"]
+    requested_packets = request["packets"]
+    if not isinstance(admitted_packets, list):
+        fail("ADMISSION_MANIFEST_INVALID", "admitted packets must be an array")
+    admitted_directions = [
+        packet.get("direction")
+        for packet in admitted_packets
+        if isinstance(packet, dict)
+    ]
+    if len(admitted_packets) != 4 or admitted_directions != list(DIRECTIONS):
+        fail(
+            "PACKET_NOT_ADMITTED",
+            "Integration manifest must admit exact N/E/S/W packet identities",
+        )
+    for requested, admitted in zip(requested_packets, admitted_packets):
+        if not isinstance(admitted, dict):
+            fail("PACKET_NOT_ADMITTED", "admitted packet identity is missing")
+        if (
+            admitted.get("direction") != requested["direction"]
+            or admitted.get("packetCommit") != requested["packetCommit"]
+        ):
+            fail(
+                "PACKET_NOT_ADMITTED",
+                f"{requested['direction']} packet identity is not admitted",
+            )
+        if admitted != requested:
+            fail(
+                "UNBOUND_PACKET_IDENTITY",
+                f"{requested['direction']} admission binding differs",
+            )
+    return manifest
+
+
+def verify_integration_admission(
+    request: Dict[str, Any],
+) -> Optional[Dict[str, Any]]:
+    if request["mode"] == "contract_rehearsal":
+        return None
+    admission = request["admissionManifest"]
+    relative_path = Path(admission["path"])
+    if (
+        relative_path.is_absolute()
+        or ".." in relative_path.parts
+        or relative_path.parent != INTEGRATION_ADMISSION_PREFIX
+        or relative_path.suffix != ".json"
+    ):
+        fail(
+            "ADMISSION_MANIFEST_NOT_PUBLISHED",
+            "admission path must be one JSON file in Integration's admission root",
+        )
+    local_path = REPO_ROOT / relative_path
+    if not local_path.is_file():
+        fail(
+            "ADMISSION_MANIFEST_NOT_PUBLISHED",
+            "Integration admission manifest does not exist",
+        )
+    payload = local_path.read_bytes()
+    if sha256_bytes(payload) != admission["sha256"]:
+        fail("ADMISSION_MANIFEST_NOT_PUBLISHED", "admission manifest hash differs")
+    published_commit = (
+        run_git(["rev-parse", "refs/remotes/origin/master^{commit}"])
+        .decode("ascii")
+        .strip()
+    )
+    if published_commit != admission["publishedManifestCommit"]:
+        fail(
+            "ADMISSION_MANIFEST_NOT_PUBLISHED",
+            "local origin/master differs from exact admission authority",
+        )
+    published_payload = run_git(
+        ["show", f"{published_commit}:{relative_path.as_posix()}"]
+    )
+    if published_payload != payload:
+        fail(
+            "ADMISSION_MANIFEST_NOT_PUBLISHED",
+            "local manifest differs from published Integration bytes",
+        )
+    try:
+        manifest = json.loads(payload.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        fail("ADMISSION_MANIFEST_INVALID", f"manifest is not canonical JSON: {error}")
+    return validate_admission_manifest_contents(request, manifest)
+
+
 def expected_capture_tree() -> List[str]:
     paths: List[str] = []
     per_direction = (
@@ -322,7 +499,20 @@ def expected_capture_tree() -> List[str]:
 
 
 def build_receipt(request: Dict[str, Any]) -> Dict[str, Any]:
+    request = validate_request(request)
     manifest = verify_frozen_fixture()
+    admission_manifest = verify_integration_admission(request)
+    admission_verified = admission_manifest is not None
+    if request["mode"] == "candidate_bound" and not admission_verified:
+        fail(
+            "ADMISSION_MANIFEST_REQUIRED",
+            "unverified candidate-bound identities may not produce a receipt",
+        )
+    if request["mode"] == "contract_rehearsal" and admission_verified:
+        fail(
+            "REHEARSAL_ADMISSION_FORBIDDEN",
+            "rehearsal may not consume candidate admission",
+        )
     candidate = request["rendererCandidate"]["commit"]
     packets = [
         {
@@ -382,7 +572,11 @@ def build_receipt(request: Dict[str, Any]) -> Dict[str, Any]:
     receipt: Dict[str, Any] = {
         "schemaVersion": 1,
         "receiptType": "PLAY-075_CANDIDATE_NEUTRAL_FIXTURE_MATERIALIZATION_PLAN",
-        "disposition": "PREPARATION_RECEIPT_ONLY",
+        "disposition": (
+            "CANDIDATE_BOUND_PREPARATION_RECEIPT_ONLY"
+            if admission_verified
+            else "CONTRACT_REHEARSAL_RECEIPT_ONLY"
+        ),
         "mode": request["mode"],
         "request": {
             "requestId": request["requestId"],
@@ -406,11 +600,28 @@ def build_receipt(request: Dict[str, Any]) -> Dict[str, Any]:
                 "admissionAuthorityCommit"
             ],
             "declaredInputSyntacticallyExactAndNonStale": True,
-            "candidateOrPacketExistenceVerified": False,
-            "eligibleForFutureFixtureMaterialization": request["mode"]
-            == "candidate_bound",
-            "gitOrProductInspectionPerformed": False,
+            "candidateOrPacketExistenceVerified": admission_verified,
+            "eligibleForFutureFixtureMaterialization": admission_verified,
+            "integrationGitAuthorityInspectionPerformed": admission_verified,
+            "productInspectionPerformed": False,
         },
+        "integrationAdmission": (
+            {
+                "status": "VERIFIED_PUBLISHED_ORIGIN_MASTER",
+                "path": request["admissionManifest"]["path"],
+                "sha256": request["admissionManifest"]["sha256"],
+                "publishedManifestCommit": request["admissionManifest"][
+                    "publishedManifestCommit"
+                ],
+            }
+            if admission_verified
+            else {
+                "status": "NOT_APPLICABLE_CONTRACT_REHEARSAL",
+                "path": None,
+                "sha256": None,
+                "publishedManifestCommit": None,
+            }
+        ),
         "directionBridge": {
             "acceptedSourceAuthority": BRIDGE_AUTHORITY,
             "mappingSha256": BRIDGE_MAPPING_SHA256,
@@ -422,7 +633,11 @@ def build_receipt(request: Dict[str, Any]) -> Dict[str, Any]:
         "atomicDirectionGate": {
             "requiredDirections": list(DIRECTIONS),
             "receivedDirections": [packet["direction"] for packet in packets],
-            "status": "INPUT_IDENTITIES_BOUND_4_OF_4",
+            "status": (
+                "INTEGRATION_ADMISSION_VERIFIED_4_OF_4"
+                if admission_verified
+                else "REHEARSAL_IDENTITIES_ONLY_NOT_ADMITTED"
+            ),
             "oneThroughThreeDirectionsAccepted": False,
             "packets": packets,
         },
@@ -500,7 +715,7 @@ def main() -> int:
     print(
         json.dumps(
             {
-                "status": "PREPARATION_RECEIPT_ONLY",
+                "status": receipt["disposition"],
                 "output": str(output),
                 "sha256": sha256_file(output),
             },

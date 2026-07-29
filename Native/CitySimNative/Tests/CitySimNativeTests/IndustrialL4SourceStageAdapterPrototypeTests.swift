@@ -131,7 +131,7 @@ private struct L4AdapterRegistration: Codable, Equatable {
     let frontageEdge: L4AdapterDirection
     let supportedOrientation: String
     let occupiedBounds: L4AdapterBounds
-    let groundContactPolygonWorld: [[Int]]
+    let groundContactPolygonWorld: [[Double]]
     let contactDeclaration: String
     let shadowDirection: String
     let alpha: L4AdapterAlpha
@@ -851,6 +851,238 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
         }
     }
 
+    func testSyntheticIntegrationReceiptsQuarantineEastSouthWestWithNorthPending()
+        throws
+    {
+        try withSyntheticInputs { root, authorityData, hashes in
+            let adapter = try L4AdapterPrototype(
+                root: root,
+                authorityData: authorityData
+            )
+            let adapted = adapter.adaptIndependently(hashes: hashes)
+            XCTAssertTrue(adapted.failures.isEmpty)
+
+            var admitted: [IndustrialL4AdmittedDirectionPacket] = []
+            for direction in L4AdapterDirection.allCases {
+                let pair = try makeQuarantineInput(
+                    root: root,
+                    direction: direction,
+                    packetData: try XCTUnwrap(adapted.packets[direction])
+                )
+                let first = try pair.harness.inspect(
+                    pair.input,
+                    existingPackets: admitted
+                )
+                let second = try pair.harness.inspect(
+                    pair.input,
+                    existingPackets: admitted
+                )
+                XCTAssertEqual(first, second)
+                XCTAssertEqual(first.receiptData, second.receiptData)
+                XCTAssertEqual(
+                    first.receipt.direction.rawValue,
+                    direction.rawValue
+                )
+                XCTAssertEqual(
+                    first.receipt.quarantineStatus,
+                    .quarantinedIncomplete
+                )
+                XCTAssertTrue(first.receipt.rendererQuarantined)
+                XCTAssertFalse(first.receipt.productionSelected)
+                XCTAssertFalse(first.receipt.runtimeMappingMutated)
+                XCTAssertFalse(first.receipt.shippingResourcesMutated)
+                admitted.append(first.admittedPacket)
+            }
+
+            let validator = try XCTUnwrap(
+                admitted.first.map {
+                    IndustrialL4DirectionPacketValidator(
+                        appearanceLock: $0.packet.appearanceLock,
+                        directionBridge: $0.packet.directionBridge
+                    )
+                }
+            )
+            let result = try validator.validateBatch(admitted)
+            XCTAssertEqual(result.status, .quarantinedIncomplete)
+            XCTAssertEqual(
+                result.acceptedDirections,
+                [.east, .south, .west]
+            )
+            XCTAssertEqual(result.missingDirections, [.north])
+            XCTAssertThrowsError(
+                try validator.requireReadyForAtomicAssembly(admitted)
+            ) {
+                XCTAssertEqual(
+                    $0 as? IndustrialL4DirectionPacketValidationError,
+                    .missingDirections(["north"])
+                )
+            }
+        }
+    }
+
+    func testSouthAdmissionDriftRejectsWithoutChangingEastWestQuarantine()
+        throws
+    {
+        try withSyntheticInputs { root, authorityData, hashes in
+            let adapter = try L4AdapterPrototype(
+                root: root,
+                authorityData: authorityData
+            )
+            let adapted = adapter.adaptIndependently(hashes: hashes)
+            XCTAssertTrue(adapted.failures.isEmpty)
+
+            var siblings: [IndustrialL4AdmittedDirectionPacket] = []
+            var siblingReceipts: [Data] = []
+            for direction in [L4AdapterDirection.east, .west] {
+                let pair = try makeQuarantineInput(
+                    root: root,
+                    direction: direction,
+                    packetData: try XCTUnwrap(adapted.packets[direction])
+                )
+                let output = try pair.harness.inspect(
+                    pair.input,
+                    existingPackets: siblings
+                )
+                siblings.append(output.admittedPacket)
+                siblingReceipts.append(output.receiptData)
+            }
+            let siblingsBefore = siblings
+            let receiptsBefore = siblingReceipts
+            let validator = IndustrialL4DirectionPacketValidator(
+                appearanceLock: siblings[0].packet.appearanceLock,
+                directionBridge: siblings[0].packet.directionBridge
+            )
+            let resultBefore = try validator.validateBatch(siblings)
+
+            let rejected = try makeQuarantineInput(
+                root: root,
+                direction: .south,
+                packetData: try XCTUnwrap(adapted.packets[.south]),
+                admittedDecodedRgbaSha256: String(repeating: "0", count: 64)
+            )
+            XCTAssertThrowsError(
+                try rejected.harness.inspect(
+                    rejected.input,
+                    existingPackets: siblings
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? IndustrialL4DirectionPacketFileHarnessError,
+                    .packetRejected(
+                        .sourceAdmissionDrift("candidateBinding")
+                    )
+                )
+            }
+            XCTAssertEqual(siblings, siblingsBefore)
+            XCTAssertEqual(siblingReceipts, receiptsBefore)
+            XCTAssertEqual(
+                try validator.validateBatch(siblings),
+                resultBefore
+            )
+
+            let corrected = try makeQuarantineInput(
+                root: root,
+                direction: .south,
+                packetData: try XCTUnwrap(adapted.packets[.south])
+            )
+            let acceptedSouth = try corrected.harness.inspect(
+                corrected.input,
+                existingPackets: siblings
+            )
+            siblings.append(acceptedSouth.admittedPacket)
+            let final = try validator.validateBatch(siblings)
+            XCTAssertEqual(final.status, .quarantinedIncomplete)
+            XCTAssertEqual(final.missingDirections, [.north])
+            XCTAssertTrue(acceptedSouth.receipt.rendererQuarantined)
+            XCTAssertFalse(acceptedSouth.receipt.productionSelected)
+            XCTAssertFalse(acceptedSouth.receipt.runtimeMappingMutated)
+            XCTAssertFalse(acceptedSouth.receipt.shippingResourcesMutated)
+        }
+    }
+
+    private func makeQuarantineInput(
+        root: URL,
+        direction: L4AdapterDirection,
+        packetData: Data,
+        admittedDecodedRgbaSha256: String? = nil
+    ) throws -> (
+        harness: IndustrialL4DirectionPacketFileHarness,
+        input: IndustrialL4DirectionPacketFileInput
+    ) {
+        let packet = try JSONDecoder().decode(
+            IndustrialL4DirectionPacket.self,
+            from: packetData
+        )
+        XCTAssertEqual(packet.direction.rawValue, direction.rawValue)
+
+        let packetPath =
+            "renderer-candidate/\(direction.rawValue)-direction-packet-v2.json"
+        let packetURL = root.appending(path: packetPath)
+        try writeData(packetData, to: packetURL)
+        let packetSha256 = L4AdapterPrototype.sha256(packetData)
+
+        let admission = IndustrialL4SourceAdmissionReceipt(
+            schemaVersion: 1,
+            disposition: "integration_source_admitted",
+            integrationCommit: String(
+                L4AdapterPrototype.sha256(
+                    Data(
+                        "integration-source-admission-\(direction.rawValue)"
+                            .utf8
+                    )
+                ).prefix(40)
+            ),
+            direction: packet.direction,
+            logicalID: packet.logicalID,
+            workerPacket: IndustrialL4ArtifactBinding(
+                path: packetPath,
+                sha256: packetSha256
+            ),
+            contentCommit: packet.source.candidateCommit,
+            decodedRgbaSha256:
+                admittedDecodedRgbaSha256
+                ?? packet.source.decodedRgbaSha256,
+            semanticValidator: packet.sourceStage.semanticValidator,
+            semanticValidationResult: "PASS",
+            independentTechnicalDisposition: "ACCEPT",
+            literalScaleDisposition: "ACCEPT",
+            rendererQuarantined: false,
+            productionSelected: false
+        )
+        let admissionData = try L4AdapterPrototype.sortedData(admission)
+        let admissionURL = root.appending(
+            path:
+                "integration-admission/"
+                + "\(direction.rawValue)-source-admission-v1.json"
+        )
+        try writeData(admissionData, to: admissionURL)
+
+        return (
+            IndustrialL4DirectionPacketFileHarness(
+                claimedRoot: root,
+                validator: IndustrialL4DirectionPacketValidator(
+                    appearanceLock: packet.appearanceLock,
+                    directionBridge: packet.directionBridge
+                )
+            ),
+            IndustrialL4DirectionPacketFileInput(
+                packetURL: packetURL,
+                expectedPacketSha256: packetSha256,
+                sourceAdmissionURL: admissionURL,
+                expectedSourceAdmissionSha256:
+                    L4AdapterPrototype.sha256(admissionData)
+            )
+        )
+    }
+
+    private func writeData(_ data: Data, to url: URL) throws {
+        try FileManager.default.createDirectory(
+            at: url.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try data.write(to: url, options: .atomic)
+    }
+
     private func withSyntheticInputs(
         _ body: (
             URL,
@@ -940,12 +1172,13 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                 )
             }
         )
-        let transformFingerprints = Dictionary(
+        var transformFingerprints = Dictionary(
             uniqueKeysWithValues:
                 L4AdapterPrototype.transformKeys.sorted().map {
                     ($0, hash("transform-\($0)"))
                 }
         )
+        transformFingerprints["identity"] = hash("source-rgba")
         return L4AdapterSourceStage(
             schemaVersion: 2,
             stage: "source_candidate",
@@ -966,10 +1199,12 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                 appearanceLock: L4AdapterAppearance(
                     documentPath:
                         "docs/production/evidence/INTEGRATION/synthetic-appearance-lock.json",
-                    commit: hash("appearance-commit").prefix(40).description,
-                    documentSha256: hash("appearance-document"),
-                    northProcessASourceSha256: hash("north-source"),
-                    northProcessADecodedRgbaSha256: hash("north-rgba")
+                    commit: commonHash("appearance-commit")
+                        .prefix(40).description,
+                    documentSha256: commonHash("appearance-document"),
+                    northProcessASourceSha256: commonHash("north-source"),
+                    northProcessADecodedRgbaSha256:
+                        commonHash("north-rgba")
                 ),
                 semanticValidator:
                     L4AdapterPrototype.sourceStage.semanticValidator,
@@ -1014,7 +1249,7 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                         maxY: 896
                     ),
                     groundContactPolygonWorld: [
-                        [-28, -28], [28, -28], [28, 28], [-28, 28],
+                        [0, 13.5], [27, 0], [0, -13.5], [-27, 0],
                     ],
                     contactDeclaration: "registered_ground_pivot",
                     shadowDirection: "southeast",
@@ -1140,5 +1375,9 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
             }
         }
         throw L4AdapterPrototypeError.unsafePath("repositoryRoot")
+    }
+
+    private func commonHash(_ value: String) -> String {
+        L4AdapterPrototype.sha256(Data("shared-\(value)".utf8))
     }
 }

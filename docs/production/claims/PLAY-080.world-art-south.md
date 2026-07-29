@@ -1,6 +1,6 @@
 # PLAY-080 Claim
 
-- **Claim revision:** 2
+- **Claim revision:** 3
 - **Title:** Predesign the Industrial L4 South source in parallel
 - **Lane:** World Art South cell
 - **Branch:** `codex/citysim-world-art-south`
@@ -15,15 +15,14 @@
   `docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/`
 - **Dependencies:** CONTRACT-020; CONTRACT-021; published Industrial L4 North
   family requirements
-- **Bridge adoption dependency:**
-  `a96474222618ab28507e662483637947a437a626`
+- **Accepted bridge dependency:**
+  `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Status:** Predesign accepted and integrated at `d9842279`. Direction-local
   zero-pixel production-runner preparation is active under
-  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`; pixel rendering remains
-  blocked until Integration accepts the v06 global coordinate bridge,
-  South revalidates its canonical CitySim/source projection through that
-  bridge, and Integration publishes the exact appearance lock and post-lock
-  production authority.
+  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`. South is authorized to
+  adopt the accepted v06 bridge and revalidate its canonical CitySim/source
+  projection. Pixel rendering remains blocked until Integration publishes the
+  exact appearance lock and post-lock production authority.
 - **Validation/proof:** Independent South geometry; South road-facing portal
   and socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias

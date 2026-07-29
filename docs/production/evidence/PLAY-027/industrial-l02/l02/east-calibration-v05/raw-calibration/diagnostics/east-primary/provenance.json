@@ -1,0 +1,268 @@
+{
+  "alphaCompositorContractSHA256" : "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9",
+  "approvedPrepixelCommit" : "f3bcdb882ed00d5ca241840c77ae057f152a297f",
+  "canonicalGeometrySHA256" : "6c727c4b7053d69578e97c2f73cf3054cd2dda106bf06625e0dac12a356798fb",
+  "diagnosticCLIOverrides" : "none",
+  "disposition" : "PENDING_RAW_REVIEW",
+  "freshMetalProcessCount" : 1,
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v05/materials/industrial-l02-east-calibration-v05.json",
+  "materialLibrarySHA256" : "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb",
+  "outputs" : [
+    {
+      "decodedRGBASHA256" : "555f35d466326783a038ff842f76e8cdeff8284a4b26bb901d6d20428ad88bcc",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/raw.png",
+      "fileSHA256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "governed-v05-straight-alpha-flat-chroma-quantized-canonicalized-raw"
+    },
+    {
+      "decodedRGBASHA256" : "79366f2232f3145ee659f7573725eb4dd39439994ffd52269438a34dda855b14",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/pre-chroma-downsampled.png",
+      "fileSHA256" : "0bfb5827de5f7fad6639cd0d0a143a41073c31626e2948a72c7b42726cd71e4b",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "genuine-post-lanczos-pre-chroma-unregistered-alpha"
+    },
+    {
+      "decodedRGBASHA256" : "70ec87f9949799d046e151c38d482c79bef7366dfb565b56e13294e5c08c946e",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/pre-chroma-registered-building.png",
+      "fileSHA256" : "99910929f1a7aef4539d61a249f89d13edd50013d672877cf2e59e3a3cba7393",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "proof-only-registered-building-alpha-without-authored-shadow"
+    },
+    {
+      "decodedRGBASHA256" : "e5ddb827d0c5b101ccffd67d948a91fbf228eb87d8610c37859d54d4809a60c8",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/pre-chroma-registered-alpha.png",
+      "fileSHA256" : "1235196abdd02f77f8b50a83985ea72c1931f862f4caf428452cb38e4a2dc721",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "proof-only-registered-building-alpha-plus-authored-shadow"
+    },
+    {
+      "decodedRGBASHA256" : "40aafee7ae85d98aca797bb7b98a5892390cc095edcdc5e39c0d6a8870c5d20c",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/neutral-alpha-composite.png",
+      "fileSHA256" : "673d0719921ded3420f732cdaf95ef9850d53da3ac8e88d07832e2b9bd87d2da",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "role" : "proof-only-neutral-alpha-respecting-composite"
+    }
+  ],
+  "preservedV03" : {
+    "handoffSHA256" : "d1bf816ec8267b68d780fc4ab7b02d123a011d19fe3727994236c20ace9b9015",
+    "metricsSHA256" : "cd55e28517b2e2ca5896d433f5a0646840786b8684a45c2f3ef0bd931f69c1c9",
+    "provenanceSHA256" : "a8feb0b164d7d67c047de32e8291e4c4d16c220a8f72b6f46ef931b22a7b4db7",
+    "rawSHA256" : "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba",
+    "rejectionSHA256" : "3ccefb83cded63bf0958c4b28eabf00af8ccf4551dd4191d3675c4641110a877"
+  },
+  "probeToolFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RenderIndustrialL2EastV05Calibration.swift",
+  "probeToolSHA256" : "ad3177d52dec86c6ebfdfd5745bbaa25eb9e6591835233d50dcde52fadb0ec58",
+  "productionSelected" : false,
+  "rawOccupancy" : {
+    "completeOccupiedAreaPassed" : true,
+    "minimumBoundsPixels" : [
+      400,
+      260
+    ],
+    "minimumNonChromaPixelCount" : 50000,
+    "nonChromaBounds" : [
+      509,
+      488,
+      1029,
+      906
+    ],
+    "nonChromaPixelCount" : 147343
+  },
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      832
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "southeastShadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "renderedNodeBounds" : {
+    "completeBuildingVolumePassed" : true,
+    "maximumWorld" : [
+      28.75,
+      37.5,
+      28.75
+    ],
+    "minimumRequiredHeight" : 36,
+    "minimumWorld" : [
+      -28,
+      0,
+      -28
+    ],
+    "requiredFootprintHalfExtents" : [
+      28,
+      28
+    ]
+  },
+  "rendererBinarySHA256" : "7c92146a9f748e4879dd8295bb66ae3a66cefb12e3e07e95f52cb28158bbe3d9",
+  "rendererCapability" : {
+    "available" : true,
+    "renderingAPIRawValue" : 0,
+    "result" : "renderer-backend-available",
+    "sceneKitRendererDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "sceneKitRendererDevicePresent" : true,
+    "systemDefaultMetalDevice" : {
+      "hasUnifiedMemory" : true,
+      "isLowPower" : false,
+      "isRemovable" : false,
+      "name" : "Apple M5 Pro",
+      "registryIDDecimal" : "4294968844",
+      "registryIDHex" : "0x000000010000060c"
+    },
+    "visibleMetalDeviceCount" : 1,
+    "visibleMetalDevices" : [
+      {
+        "hasUnifiedMemory" : true,
+        "isLowPower" : false,
+        "isRemovable" : false,
+        "name" : "Apple M5 Pro",
+        "registryIDDecimal" : "4294968844",
+        "registryIDHex" : "0x000000010000060c"
+      }
+    ]
+  },
+  "rendererSourceCommit" : "f3bcdb882ed00d5ca241840c77ae057f152a297f",
+  "rendererSources" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256" : "4e404d255c19cbeb39445e1b41e5fbbe6d87aece22c757a2ea1102052f1d7957"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256" : "e0943590ee01f8518fbd3a230fa126e607b6aa130c6fcc422e250eb9467b76af"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+      "sha256" : "160f2361f096b2a06b56b075486b0d9f4c791f9c754664813ce27d6cee57edfd"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+      "sha256" : "c68643e1dc224b621922db8d3729b6ceb908df826f1799ed478c49f077b9e76a"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+      "sha256" : "27c5766d08b3fbeb316fe77d66c071b1913de92a0e0fe838d065751bcd0fdbc1"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256" : "b712784c25bff79d3032755f4dde6e251ebee9a7bc7250361e0c7deea483f5b0"
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RenderIndustrialL2EastV05Calibration.swift",
+      "sha256" : "ad3177d52dec86c6ebfdfd5745bbaa25eb9e6591835233d50dcde52fadb0ec58"
+    }
+  ],
+  "sampling" : {
+    "canonicalizerID" : "imageio-sips-png-v1",
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsampleFilter" : "CILanczosScaleTransform",
+    "downsampleScale" : 0.25,
+    "linearOversamplingFactor" : 4,
+    "quantizerID" : "step32-midpoint-offset8-v1",
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "lambert-scene-lights",
+    "sceneKitShadows" : "current"
+  },
+  "sceneDescriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v05/scenes/industrial_l02/variant-0/east/scene.json",
+  "sceneDescriptorSHA256" : "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0",
+  "schema" : 1,
+  "sharedRendererOrCompositorMutation" : false,
+  "sourceKey" : "industrial_l02/variant-0/east/east-quality-calibration-art-proof-v05",
+  "task" : "PLAY-027",
+  "taskOwnedFlatChromaCompositor" : {
+    "alphaRelationViolationCount" : 0,
+    "contractID" : "industrial-l02-east-v04-straight-alpha-flat-chroma-v1",
+    "crossRunState" : false,
+    "exactChromaPixelCount" : 1425521,
+    "foregroundInputAlphaSHA256" : "e185feb7e4e62e006d396cc0fc79a3eca0197341599e94ec02c3c3bec70f9ae3",
+    "foregroundOutputAlphaSHA256" : "e185feb7e4e62e006d396cc0fc79a3eca0197341599e94ec02c3c3bec70f9ae3",
+    "foregroundPixelCount" : 147343,
+    "inputAlphaSHA256" : "3c1f709e1374b1af3297366554ecb2cc7f3623315527ab566f5f870dc12b0c9e",
+    "opaqueNearMagentaForegroundPixelCount" : 0,
+    "outputAlphaSHA256" : "81cca36eb051665e600022f3eb20bf3d1cb73fbaa604eb9eb2e6f61c558f955f",
+    "partialAlphaPixelCount" : 13145,
+    "postQuantizationMutationCount" : 2806,
+    "scope" : "v05-east-calibration-only",
+    "zeroToChromaPixelCount" : 1425521
+  },
+  "toolchainFingerprintActualSHA256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "toolchainFingerprintDeclaredSHA256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e",
+  "toolchainFingerprintFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-quality-reset-source-v09.json",
+  "type" : "industrial-l02-east-v05-single-primary-calibration",
+  "validatorReplaySHA256" : "4d7da7268dc39e5bf6b35671f4ec4df73c0991cd8c496ae79a7f50a313449e2a"
+}

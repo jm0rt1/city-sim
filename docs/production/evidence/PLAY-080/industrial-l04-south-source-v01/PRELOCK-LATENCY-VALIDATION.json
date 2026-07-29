@@ -1,0 +1,190 @@
+{
+  "approvedCandidateAncestor": "148261e482b4faea468dffcebd2d96ca3dfdec19",
+  "branch": "codex/citysim-world-art-south",
+  "candidateCommandDryRejections": {
+    "assemble": {
+      "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+      "result": "REJECTED",
+      "returnCode": 2
+    },
+    "contact-sheet": {
+      "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+      "result": "REJECTED",
+      "returnCode": 2
+    },
+    "lods": {
+      "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+      "result": "REJECTED",
+      "returnCode": 2
+    },
+    "normalize-repeat": {
+      "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+      "result": "REJECTED",
+      "returnCode": 2
+    },
+    "parallel-receipt": {
+      "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+      "result": "REJECTED",
+      "returnCode": 2
+    },
+    "review-manifest": {
+      "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+      "result": "REJECTED",
+      "returnCode": 2
+    }
+  },
+  "candidateCommandSurfaces": [
+    "assemble",
+    "contact-sheet",
+    "lods",
+    "normalize-repeat",
+    "parallel-receipt",
+    "review-manifest"
+  ],
+  "deterministicNonProductionFixture": {
+    "fixtureOnly": true,
+    "lodRepeatDecodedRgbaSha256": "d7bec918b17e220b18f7f607514b02f32ce40922a29b8b86d1444447708b6adb",
+    "normalizationRepeatSha256": "7ee397f472e695c719d15fa7ab3c1a2f27f92f86e874511b1b35bce2721158ea",
+    "repositoryPixelFilesWritten": 0,
+    "result": "PASS"
+  },
+  "direction": "south",
+  "launchGuardDryRejection": {
+    "code": "RUNNER_NOT_APPEARANCE_LOCK_BOUND",
+    "result": "REJECTED",
+    "returnCode": 2
+  },
+  "launchPlan": {
+    "allRootsDistinct": true,
+    "authorizedProcesses": [
+      "A",
+      "B",
+      "C"
+    ],
+    "isolatedEvidenceRoots": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/"
+    },
+    "isolatedOutputRoots": {
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/"
+    },
+    "maximumConcurrentDccProcesses": 2,
+    "noOverwrite": true
+  },
+  "literal192AnalyticProof": {
+    "frameMinimumThicknessPixels": 3.428572,
+    "freightOpeningWidthsPixels": [
+      8.057143,
+      8.057143,
+      14.057144
+    ],
+    "measurementMethod": "analytic-v06-camera-semantic-cells-v1",
+    "pixelFiles": 0,
+    "primaryPortalPixels": [
+      14.057144,
+      21.025657
+    ],
+    "processOcclusionPixels": 0,
+    "result": "PASS",
+    "silhouetteBreaks": 7
+  },
+  "missingABCRejection": {
+    "code": "MISSING_ABC_PRODUCTS",
+    "missingArtifactCount": 12,
+    "result": "REJECTED"
+  },
+  "preRenderReportWriteGuards": {
+    "destination": "stdout_only",
+    "processes": {
+      "A": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "rejectionCode": "MISSING_SOURCE_PRODUCTION_PROFILE",
+        "rejectionStage": "before_renderer_launch",
+        "renderInvocations": 0,
+        "reportParentCreated": false,
+        "reportSupplied": true,
+        "reportWritten": false,
+        "result": "REJECTED",
+        "returnCode": 2
+      },
+      "B": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "rejectionCode": "MISSING_SOURCE_PRODUCTION_PROFILE",
+        "rejectionStage": "before_renderer_launch",
+        "renderInvocations": 0,
+        "reportParentCreated": false,
+        "reportSupplied": true,
+        "reportWritten": false,
+        "result": "REJECTED",
+        "returnCode": 2
+      },
+      "C": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "rejectionCode": "MISSING_SOURCE_PRODUCTION_PROFILE",
+        "rejectionStage": "before_renderer_launch",
+        "renderInvocations": 0,
+        "reportParentCreated": false,
+        "reportSupplied": true,
+        "reportWritten": false,
+        "result": "REJECTED",
+        "returnCode": 2
+      }
+    },
+    "result": "PASS"
+  },
+  "productionSelected": false,
+  "productionValidationDisposition": {
+    "assembly": "not_run",
+    "contactSheet": "not_run",
+    "lods": "not_run",
+    "normalization": "not_run",
+    "processA": "not_run",
+    "processB": "not_run",
+    "processC": "not_run",
+    "reviewManifest": "not_run"
+  },
+  "publishedBaseline": "0186066bb88d78dc8dab4be03296d418ea2e259a",
+  "result": "PASS",
+  "schema": "citysim.play-080.prelock-latency-validation.v1",
+  "selfAccepted": false,
+  "sourceReady": false,
+  "sourceStageV2": {
+    "productionSelected": false,
+    "result": "PASS",
+    "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "schemaSha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+    "sourceReady": false,
+    "stage": "launch_bound"
+  },
+  "staticGuardOrder": {
+    "bpyImportInsideRenderOnly": true,
+    "guardOrder": [
+      "require_source_production_profile",
+      "require_lock",
+      "require_coordinate_bridge",
+      "require_launch_plan",
+      "require_launch_bundle",
+      "render_source"
+    ],
+    "guardRejectedReportDestination": "stdout_only",
+    "result": "PASS"
+  },
+  "taskId": "PLAY-080",
+  "zeroInvocationProof": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "contactSheetProductionInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerProductionInvocations": 0,
+    "repositoryPixelFiles": []
+  }
+}

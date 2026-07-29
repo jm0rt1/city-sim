@@ -1,0 +1,105 @@
+{
+  "asset_id" : "industrial_l03_north_source_v04",
+  "ground_pivot_source" : [
+    768,
+    896
+  ],
+  "normalization" : "8-bit sRGB premultiplied RGBA; border-connected #ff00ff removal; edge despill; zero hidden RGB; deterministic Core Graphics high-quality LOD exports; post-resize strict zero exact\/near chroma at every nonzero alpha",
+  "object_width" : 410,
+  "outputs" : [
+    {
+      "file" : "generated_v4_industrial_l03_north_source_v04_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "c8d5a7b53f43c14e26fcd73f9fbe584f654ddfd79db63cbd40d874c41bf8dd53",
+      "strictNonzeroAlphaChroma" : {
+        "alphaMutationCount" : 0,
+        "changedChannelCount" : 4,
+        "changedPixelCount" : 2,
+        "inputExactChromaAtNonzeroAlpha" : 0,
+        "inputNearChromaAtNonzeroAlpha" : 2,
+        "outputExactChromaAtNonzeroAlpha" : 0,
+        "outputNearChromaAtNonzeroAlpha" : 0,
+        "zeroAlphaHiddenRGBPixelCount" : 0
+      }
+    },
+    {
+      "file" : "generated_v4_industrial_l03_north_source_v04_neighborhood.png",
+      "lod" : "neighborhood",
+      "pixels" : [
+        512,
+        342
+      ],
+      "sha256" : "d210fcd169f53bd2853b73772e2facd27d8eb5f29e0d0733131cdf7d696f64d9",
+      "strictNonzeroAlphaChroma" : {
+        "alphaMutationCount" : 0,
+        "changedChannelCount" : 12,
+        "changedPixelCount" : 6,
+        "inputExactChromaAtNonzeroAlpha" : 3,
+        "inputNearChromaAtNonzeroAlpha" : 6,
+        "outputExactChromaAtNonzeroAlpha" : 0,
+        "outputNearChromaAtNonzeroAlpha" : 0,
+        "zeroAlphaHiddenRGBPixelCount" : 0
+      }
+    },
+    {
+      "file" : "generated_v4_industrial_l03_north_source_v04_city.png",
+      "lod" : "city",
+      "pixels" : [
+        256,
+        171
+      ],
+      "sha256" : "a4ec01ced2138a7fde93ece000f66fd5c2c99ed523b138962b8015cc00366eb5",
+      "strictNonzeroAlphaChroma" : {
+        "alphaMutationCount" : 0,
+        "changedChannelCount" : 0,
+        "changedPixelCount" : 0,
+        "inputExactChromaAtNonzeroAlpha" : 0,
+        "inputNearChromaAtNonzeroAlpha" : 0,
+        "outputExactChromaAtNonzeroAlpha" : 0,
+        "outputNearChromaAtNonzeroAlpha" : 0,
+        "zeroAlphaHiddenRGBPixelCount" : 0
+      }
+    }
+  ],
+  "productionSelected" : false,
+  "reference_subject_width" : 512,
+  "registration" : {
+    "mode" : "uniform-object-registration",
+    "reference_subject_width" : 512,
+    "source_bbox" : [
+      512,
+      389,
+      1024,
+      868
+    ],
+    "target_ground_pivot" : [
+      768,
+      896
+    ],
+    "target_origin" : [
+      563,
+      512
+    ],
+    "target_size" : [
+      410,
+      384
+    ],
+    "uniform_scale" : 0.80078125
+  },
+  "schema" : 1,
+  "source_bbox" : [
+    563,
+    512,
+    973,
+    896
+  ],
+  "source_file" : "\/Users\/James\/.codex\/worktrees\/0648\/city-sim\/docs\/production\/evidence\/PLAY-027\/industrial-l03\/l03\/cohesion-a0-family-v01\/raw\/north-primary-v02\/raw.png",
+  "source_sha256" : "fb75b3610aa331fe99f74751f2667851fec7c61f90987078c32b0def394f3126",
+  "strict_chroma_contract" : "play027-zero-nonzero-alpha-chroma-premultiplied-v1",
+  "task" : "PLAY-027",
+  "tool" : "PLAY-027 macOS-native offline source normalizer"
+}

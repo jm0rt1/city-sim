@@ -1,0 +1,363 @@
+{
+  "colorSpace" : "extended-sRGB",
+  "familyAnchorFile" : "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "familyAnchorSHA256" : "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "imageGenMaterialSwatchesUsed" : false,
+  "libraryID" : "industrial-l02-projection-silhouette-reset-v04",
+  "materials" : [
+    {
+      "baseColorRGBA" : [
+        0.38,
+        0.41999999999999998,
+        0.45000000000000001,
+        1
+      ],
+      "id" : "v04-deep-recess",
+      "metalness" : 0,
+      "pattern" : "solid-depth-cavity",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.95999999999999996,
+      "targetPostLightStep32Bin" : 80,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "recess"
+    },
+    {
+      "baseColorRGBA" : [
+        0.64000000000000001,
+        0.67000000000000004,
+        0.69999999999999996,
+        1
+      ],
+      "id" : "v04-roof-membrane",
+      "metalness" : 0,
+      "pattern" : "rolled-membrane-seams",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.93999999999999995,
+      "targetPostLightStep32Bin" : 176,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "roof"
+    },
+    {
+      "baseColorRGBA" : [
+        0.56000000000000005,
+        0.63,
+        0.68000000000000005,
+        1
+      ],
+      "id" : "v04-loading-door",
+      "metalness" : 0.16,
+      "pattern" : "horizontal-section-joints",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.78000000000000003,
+      "targetPostLightStep32Bin" : 144,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "load-bay"
+    },
+    {
+      "baseColorRGBA" : [
+        0.67000000000000004,
+        0.77000000000000002,
+        0.83999999999999997,
+        1
+      ],
+      "id" : "v04-corrugated-hall",
+      "metalness" : 0.22,
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.78000000000000003,
+      "targetPostLightStep32Bin" : 160,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "production-hall"
+    },
+    {
+      "baseColorRGBA" : [
+        0.78000000000000003,
+        0.77000000000000002,
+        0.70999999999999996,
+        1
+      ],
+      "id" : "v04-formed-concrete",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.94999999999999996,
+      "targetPostLightStep32Bin" : 192,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "formed-concrete"
+    },
+    {
+      "baseColorRGBA" : [
+        0.73999999999999999,
+        0.75,
+        0.71999999999999997,
+        1
+      ],
+      "id" : "v04-neutral-apron",
+      "metalness" : 0,
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.97999999999999998,
+      "targetPostLightStep32Bin" : 176,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "apron"
+    },
+    {
+      "baseColorRGBA" : [
+        0.85999999999999999,
+        0.81999999999999995,
+        0.71999999999999997,
+        1
+      ],
+      "id" : "v04-admin-concrete",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.92000000000000004,
+      "targetPostLightStep32Bin" : 208,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "administration"
+    },
+    {
+      "baseColorRGBA" : [
+        0.34000000000000002,
+        0.56000000000000005,
+        0.66000000000000003,
+        1
+      ],
+      "id" : "v04-industrial-glazing",
+      "metalness" : 0.080000000000000002,
+      "pattern" : "muted-mullion-grid",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.40000000000000002,
+      "targetPostLightStep32Bin" : 144,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "glazing"
+    },
+    {
+      "baseColorRGBA" : [
+        0.64000000000000001,
+        0.68000000000000005,
+        0.69999999999999996,
+        1
+      ],
+      "id" : "v04-process-metal",
+      "metalness" : 0.47999999999999998,
+      "pattern" : "fine-galvanized",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.67000000000000004,
+      "targetPostLightStep32Bin" : 176,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "secondary-process"
+    },
+    {
+      "baseColorRGBA" : [
+        0.90000000000000002,
+        0.88,
+        0.80000000000000004,
+        1
+      ],
+      "id" : "v04-structural-trim",
+      "metalness" : 0.38,
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.66000000000000003,
+      "targetPostLightStep32Bin" : 224,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "trim"
+    },
+    {
+      "baseColorRGBA" : [
+        0.68999999999999995,
+        0.46999999999999997,
+        0.31,
+        1
+      ],
+      "id" : "v04-oxide-process",
+      "metalness" : 0.40000000000000002,
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.79000000000000004,
+      "targetPostLightStep32Bin" : 144,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "process-accent"
+    },
+    {
+      "baseColorRGBA" : [
+        0.93999999999999995,
+        0.76000000000000001,
+        0.41999999999999998,
+        1
+      ],
+      "id" : "v04-warm-glazing",
+      "metalness" : 0.059999999999999998,
+      "pattern" : "muted-warm-glazing",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.34999999999999998,
+      "targetPostLightStep32Bin" : 208,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "staff-entrance"
+    },
+    {
+      "baseColorRGBA" : [
+        0.93999999999999995,
+        0.69999999999999996,
+        0.19,
+        1
+      ],
+      "id" : "v04-safety-trim",
+      "metalness" : 0.28000000000000003,
+      "pattern" : "solid-safety-paint",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.62,
+      "targetPostLightStep32Bin" : 208,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      },
+      "valueRole" : "safety"
+    }
+  ],
+  "predeclaredDistributionTargets" : {
+    "authority" : "later-pixel-rejection-target-not-a-prepixel-pass-claim",
+    "identityBearingMinimumStep32Bin" : 80,
+    "maximumSingleMajorFacadeBinShare" : 0.34999999999999998,
+    "minimumOccupiedStep32Bins" : 5,
+    "p25Minimum" : 80,
+    "p75MinusP25Minimum" : 48,
+    "p95Minimum" : 192,
+    "roofMayNotBeSingleBrightSlab" : true
+  },
+  "productionSelected" : false,
+  "schema" : 1,
+  "source" : "offline-only material/light reset derived from retained v03 segmentation; no ImageGen or raster swatch",
+  "styleAnchorFile" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "task" : "PLAY-027"
+}

@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial-l03-variant-0-raw-gate-v02",
+  "authorityCommit": "4096741c7fe64404408e8ea39df116c32f5f2623",
+  "disposition": "REJECTED_REPEAT_IDENTITY",
+  "directionAttempted": "north",
+  "sceneKitMetalProcessCount": 3,
+  "remainingDirectionProcessCount": 9,
+  "normalizerProcessCount": 0,
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "inputs": {
+    "rendererBinarySHA256": "cbbbf9bb3c73d68dba495707fc1c222d21c63407587beb214044cebf352aa7f2",
+    "offlineSceneRendererSourceSHA256": "4fe620e3368f73997bdca7ed5834172e4e0b341e2840a553fcf3c3c48183787f",
+    "rendererArchitectureSourceSHA256": "34c0bced859f2716b1ca04a0f576aa463022ff1b3e7e10056717458daba239e2",
+    "sceneDescriptorSourceSHA256": "4e404d255c19cbeb39445e1b41e5fbbe6d87aece22c757a2ea1102052f1d7957",
+    "northDescriptorSHA256": "78803712a2b4118abef6ff90119444b1c4093f5cb442348f3cdb9b3e4bf1fe51",
+    "materialLibrarySHA256": "3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e",
+    "toolchainFingerprintSHA256": "5010b2b809cc21fe26366f49f3620724d39c5c35eae2e5a196d2e7c5ebc91301"
+  },
+  "attempts": [
+    {
+      "run": "a",
+      "rawFileSHA256": "05d97a621d466b8943d3fcd30ee934e91b9733cc7715d832534771eaeb2b6888",
+      "decodedRGBASHA256": "5d1858ff3676156b7b2084f492e3a227a70b65177d1f4bf436885d8e4237eb9f"
+    },
+    {
+      "run": "b",
+      "rawFileSHA256": "f32f5715fae247a3f2ec72ba11b5d575058648b8ac4cc76e44acd1ebb503a839",
+      "decodedRGBASHA256": "573bed12f780bd7bd43625561b6364d34891b700def893b70214db8a64b11066"
+    },
+    {
+      "run": "c",
+      "rawFileSHA256": "07899c8edbab7c1ded5bb7ca48fdb69ca071171a74903d0ca1e5da19e8630618",
+      "decodedRGBASHA256": "5520fa1690450bf665d43bd0ff038056ee14d4eb1a2b80b3272b3693cc2c3039"
+    }
+  ],
+  "repeatComparison": {
+    "firstObservedDivergentStage": "emitted raw PNG and canonical decoded RGBA",
+    "primaryVsRepeatB": {
+      "differingPixelCount": 2,
+      "differingChannelCount": 2,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatC": {
+      "differingPixelCount": 61,
+      "differingChannelCount": 66,
+      "alphaDifferingPixelCount": 0
+    },
+    "repeatBVsRepeatC": {
+      "differingPixelCount": 61,
+      "differingChannelCount": 66,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatBDifferenceBoundsSource": [
+      656,
+      468,
+      886,
+      591
+    ],
+    "localityReport": "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/rejection/NORTH-RAW-LOCALITY.json",
+    "localitySheet": "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v02/rejection/NORTH-RAW-LOCALITY.png"
+  },
+  "stableTechnicalEvidence": {
+    "rendererBackendAvailableCount": 3,
+    "completeOccupiedAreaPassedCount": 3,
+    "completeBuildingVolumePassedCount": 3,
+    "nonChromaBounds": [
+      509,
+      387,
+      1027,
+      896
+    ],
+    "nonChromaPixelCount": 159577,
+    "alphaDifferingPixelCount": 0
+  },
+  "artRejected": false,
+  "stopCondition": "North failed exact emitted-file and canonical decoded-RGBA repeat identity. Per the approved first-failure gate, East, South, West, normalization, catalog assembly, and source-authority proposal were not attempted."
+}

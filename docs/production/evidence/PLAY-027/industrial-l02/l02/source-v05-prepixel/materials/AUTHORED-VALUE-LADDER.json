@@ -1,0 +1,317 @@
+{
+  "buildingPixelsCreated" : false,
+  "contactSheetFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-prepixel/materials/AUTHORED-VALUE-LADDER.png",
+  "contactSheetHeight" : 620,
+  "contactSheetSHA256" : "bf0423491eedee134dc3ec2ad7f0d93ab1f12464645c96bece92d2ab5943167b",
+  "contactSheetWidth" : 560,
+  "layout" : "each row presents authored color at left and exact relative-luminance grayscale at right; darkest role first",
+  "logicalBuildingID" : "industrial_l02",
+  "materialLibraryFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l02-v0-source-v05-materials.json",
+  "materialLibrarySHA256" : "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "materialRoleCount" : 21,
+  "maximumLuminance" : 0.681284,
+  "minimumLuminance" : 0.12221800000000001,
+  "passed" : true,
+  "productionSelected" : false,
+  "purpose" : "pre-pixel authored material color and grayscale value hierarchy",
+  "roles" : [
+    {
+      "baseColorRGBA" : [
+        0.089999999999999997,
+        0.13,
+        0.14000000000000001,
+        1
+      ],
+      "deltaFromPrevious" : 0,
+      "grayscaleByte" : 31,
+      "index" : 0,
+      "materialID" : "i02-v05-loading-throat",
+      "materialRoleSHA256" : "700c69543cb74f9e43207f87a5b7ae4bd51f6bad985a2405cf47191090ffbc90",
+      "relativeLuminance" : 0.12221800000000001
+    },
+    {
+      "baseColorRGBA" : [
+        0.12,
+        0.16,
+        0.17999999999999999,
+        1
+      ],
+      "deltaFromPrevious" : 0.030721999999999985,
+      "grayscaleByte" : 39,
+      "index" : 1,
+      "materialID" : "slate-charcoal",
+      "materialRoleSHA256" : "05823f23cc0df7719104064b13fcfa055feebd30a8b0018bb4295b03c1a29eeb",
+      "relativeLuminance" : 0.15293999999999999
+    },
+    {
+      "baseColorRGBA" : [
+        0.14000000000000001,
+        0.17999999999999999,
+        0.20000000000000001,
+        1
+      ],
+      "deltaFromPrevious" : 0.020000000000000018,
+      "grayscaleByte" : 44,
+      "index" : 2,
+      "materialID" : "i02-v05-roof-flat",
+      "materialRoleSHA256" : "b103ebcfe9219b3b9e6a26967a0aa190db985993bff62226a6403ae3bcf4906f",
+      "relativeLuminance" : 0.17294000000000001
+    },
+    {
+      "baseColorRGBA" : [
+        0.14999999999999999,
+        0.20000000000000001,
+        0.17999999999999999,
+        1
+      ],
+      "deltaFromPrevious" : 0.014985999999999999,
+      "grayscaleByte" : 48,
+      "index" : 3,
+      "materialID" : "i02-v05-recess-sage",
+      "materialRoleSHA256" : "054fc99c6b80bc6737f68620494d4dabd3f62ae862256df5a3d07d2b2072a725",
+      "relativeLuminance" : 0.18792600000000001
+    },
+    {
+      "baseColorRGBA" : [
+        0.34999999999999998,
+        0.19,
+        0.14000000000000001,
+        1
+      ],
+      "deltaFromPrevious" : 0.032479999999999981,
+      "grayscaleByte" : 56,
+      "index" : 4,
+      "materialID" : "i02-v05-brick-side",
+      "materialRoleSHA256" : "68b0f11f2e4cf10d79bb057a668fa7d99bd42e5d438b98d3b3a3d11d2e30b85b",
+      "relativeLuminance" : 0.22040599999999999
+    },
+    {
+      "baseColorRGBA" : [
+        0.20000000000000001,
+        0.23999999999999999,
+        0.23999999999999999,
+        1
+      ],
+      "deltaFromPrevious" : 0.011089999999999989,
+      "grayscaleByte" : 59,
+      "index" : 5,
+      "materialID" : "exhaust-dark",
+      "materialRoleSHA256" : "56998df399788a9193422799adc907ad7bbb2878f025008d38dcbf0ada7b3cd5",
+      "relativeLuminance" : 0.23149599999999998
+    },
+    {
+      "baseColorRGBA" : [
+        0.20000000000000001,
+        0.27000000000000002,
+        0.28999999999999998,
+        1
+      ],
+      "deltaFromPrevious" : 0.025066000000000033,
+      "grayscaleByte" : 65,
+      "index" : 6,
+      "materialID" : "i02-v05-roof-sawtooth",
+      "materialRoleSHA256" : "04ed89e5ffce820b829cd81833dd9babebdcff66a49ff78e29868a63ca2ec14c",
+      "relativeLuminance" : 0.25656200000000001
+    },
+    {
+      "baseColorRGBA" : [
+        0.26000000000000001,
+        0.31,
+        0.31,
+        1
+      ],
+      "deltaFromPrevious" : 0.042808000000000013,
+      "grayscaleByte" : 76,
+      "index" : 7,
+      "materialID" : "i02-v05-mechanical",
+      "materialRoleSHA256" : "37dd3e92815df8078616a2300922976631dbe99022941356957ddaa7a19ef22b",
+      "relativeLuminance" : 0.29937000000000002
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.34000000000000002,
+        0.39000000000000001,
+        1
+      ],
+      "deltaFromPrevious" : 0.010224000000000011,
+      "grayscaleByte" : 79,
+      "index" : 8,
+      "materialID" : "i02-v05-glazing-side",
+      "materialRoleSHA256" : "426d25c54a4b65e81f981d8a1e939379d402047947ff226411d00526e97986b1",
+      "relativeLuminance" : 0.30959400000000004
+    },
+    {
+      "baseColorRGBA" : [
+        0.52000000000000002,
+        0.28000000000000003,
+        0.17999999999999999,
+        1
+      ],
+      "deltaFromPrevious" : 0.01421,
+      "grayscaleByte" : 83,
+      "index" : 9,
+      "materialID" : "tank-oxide",
+      "materialRoleSHA256" : "b259cff1174dcb5fc40a63d6ca18c59c0bd7e4ee12cf23eaa09832eb0bacc615",
+      "relativeLuminance" : 0.32380400000000004
+    },
+    {
+      "baseColorRGBA" : [
+        0.5,
+        0.29999999999999999,
+        0.20000000000000001,
+        1
+      ],
+      "deltaFromPrevious" : 0.011495999999999951,
+      "grayscaleByte" : 86,
+      "index" : 10,
+      "materialID" : "i02-v05-brick-northwest",
+      "materialRoleSHA256" : "9bceeb7599ec3a1ffa81e30ff4ac744e35fdcef995619c1ed8ced1dd092af7ca",
+      "relativeLuminance" : 0.33529999999999999
+    },
+    {
+      "baseColorRGBA" : [
+        0.32000000000000001,
+        0.39000000000000001,
+        0.34000000000000002,
+        1
+      ],
+      "deltaFromPrevious" : 0.036208000000000073,
+      "grayscaleByte" : 95,
+      "index" : 11,
+      "materialID" : "i02-v05-corrugated-side",
+      "materialRoleSHA256" : "2014aeaca047bef24427823679f3d76b57951bcfda7b55ad06c4fddf2cb81cc1",
+      "relativeLuminance" : 0.37150800000000006
+    },
+    {
+      "baseColorRGBA" : [
+        0.35999999999999999,
+        0.42999999999999999,
+        0.41999999999999998,
+        1
+      ],
+      "deltaFromPrevious" : 0.042887999999999926,
+      "grayscaleByte" : 106,
+      "index" : 12,
+      "materialID" : "rooftop-metal",
+      "materialRoleSHA256" : "40958ce54ed94331ec6d92718284318081e1dfecf0fe30776f6d8ba7543157dd",
+      "relativeLuminance" : 0.41439599999999999
+    },
+    {
+      "baseColorRGBA" : [
+        0.68000000000000005,
+        0.41999999999999998,
+        0.080000000000000002,
+        1
+      ],
+      "deltaFromPrevious" : 0.036332000000000031,
+      "grayscaleByte" : 115,
+      "index" : 13,
+      "materialID" : "i02-v05-hazard-recess",
+      "materialRoleSHA256" : "84e13c105c9c65b40c470657aa1838630ef58c8e898241f5b787c6a5fc2d692a",
+      "relativeLuminance" : 0.45072800000000002
+    },
+    {
+      "baseColorRGBA" : [
+        0.29999999999999999,
+        0.52000000000000002,
+        0.56000000000000005,
+        1
+      ],
+      "deltaFromPrevious" : 0.025388000000000022,
+      "grayscaleByte" : 121,
+      "index" : 14,
+      "materialID" : "i02-v05-glazing-northwest",
+      "materialRoleSHA256" : "4cc9c3845854a47eccb1fadeaff528a279a71f59535c84639e3ce29105afcd4b",
+      "relativeLuminance" : 0.47611600000000004
+    },
+    {
+      "baseColorRGBA" : [
+        0.53000000000000003,
+        0.48999999999999999,
+        0.41999999999999998,
+        1
+      ],
+      "deltaFromPrevious" : 0.017333999999999961,
+      "grayscaleByte" : 126,
+      "index" : 15,
+      "materialID" : "i02-v05-trim-side",
+      "materialRoleSHA256" : "2ca4c446ebc16f75c4bc5be3bb5db7f719f8b1ec5948d9b3175e2199e5e41c30",
+      "relativeLuminance" : 0.49345
+    },
+    {
+      "baseColorRGBA" : [
+        0.46000000000000002,
+        0.54000000000000004,
+        0.46000000000000002,
+        1
+      ],
+      "deltaFromPrevious" : 0.023766000000000009,
+      "grayscaleByte" : 132,
+      "index" : 16,
+      "materialID" : "i02-v05-corrugated-northwest",
+      "materialRoleSHA256" : "c883cefc2c0fedc12982fdcb8690a88f8cfe726d9a78b4e29d3e9fd40bce7bec",
+      "relativeLuminance" : 0.51721600000000001
+    },
+    {
+      "baseColorRGBA" : [
+        0.47999999999999998,
+        0.56000000000000005,
+        0.53000000000000003,
+        1
+      ],
+      "deltaFromPrevious" : 0.02361000000000002,
+      "grayscaleByte" : 138,
+      "index" : 17,
+      "materialID" : "i02-v05-loading-door",
+      "materialRoleSHA256" : "12a560409ceaa3de5b404aa4561096a30abbcfc5dfdf5959602adfb361beec2d",
+      "relativeLuminance" : 0.54082600000000003
+    },
+    {
+      "baseColorRGBA" : [
+        0.59999999999999998,
+        0.55000000000000004,
+        0.46999999999999997,
+        1
+      ],
+      "deltaFromPrevious" : 0.01402800000000004,
+      "grayscaleByte" : 141,
+      "index" : 18,
+      "materialID" : "i02-v05-foundation",
+      "materialRoleSHA256" : "4f251c2dd89be4b73ef9e97b604999693720a2b0a709eb2f6ce31128888751fe",
+      "relativeLuminance" : 0.55485400000000007
+    },
+    {
+      "baseColorRGBA" : [
+        0.92000000000000004,
+        0.65000000000000002,
+        0.14000000000000001,
+        1
+      ],
+      "deltaFromPrevious" : 0.11572599999999988,
+      "grayscaleByte" : 171,
+      "index" : 19,
+      "materialID" : "hazard-yellow",
+      "materialRoleSHA256" : "e221594efb7a158b72254b546de2a7acf0372c79adc10f0897946039914f418f",
+      "relativeLuminance" : 0.67057999999999995
+    },
+    {
+      "baseColorRGBA" : [
+        0.71999999999999997,
+        0.68000000000000005,
+        0.57999999999999996,
+        1
+      ],
+      "deltaFromPrevious" : 0.010704000000000047,
+      "grayscaleByte" : 174,
+      "index" : 20,
+      "materialID" : "limestone-warm",
+      "materialRoleSHA256" : "2a4154951773a0c72f656d35a2f64a8d70907495e4aac1b09506f142559f5424",
+      "relativeLuminance" : 0.681284
+    }
+  ],
+  "schema" : 1,
+  "sourceRevision" : "source-v05",
+  "strictlyIncreasingLuminance" : true,
+  "task" : "PLAY-027"
+}

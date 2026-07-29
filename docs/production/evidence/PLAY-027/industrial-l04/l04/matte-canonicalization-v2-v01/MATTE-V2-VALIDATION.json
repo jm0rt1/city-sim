@@ -1,0 +1,153 @@
+{
+  "acceptedMasterRegression" : {
+    "allByteIdentical" : true,
+    "allRejectedByVersionGate" : true,
+    "count" : 44,
+    "file" : "ACCEPTED-MASTER-REGRESSION.json"
+  },
+  "artifact" : "matte-canonicalization-v2-regression-v01",
+  "binding" : {
+    "authoredPaletteAllowsMagenta" : false,
+    "descriptor" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/art-proof\/industrial-l04-crucible-gantry-v17-north-prepixel\/artifact\/scenes\/industrial_l04\/variant-0\/n\/scene.json",
+    "descriptorSHA256" : "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a",
+    "materialLibrary" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/art-proof\/industrial-l04-crucible-gantry-v17-north-prepixel\/materials\/industrial-l04-crucible-gantry-v14-north-prepixel.json",
+    "materialLibrarySHA256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+  },
+  "contract" : "CONTRACT-019",
+  "diagnosticOnly" : true,
+  "disposition" : "PASS_MATTE_CANONICALIZATION_V2",
+  "input" : {
+    "decodedRGBASHA256" : "0d9ca24f63de0f17c72cd36c38b742bd6fe6aca8aaee60c987a541af952e620f",
+    "file" : "docs\/production\/evidence\/PLAY-027\/industrial-l04\/l04\/crucible-gantry-v17-north-raw-probe\/diagnostics\/north\/run-a\/raw.png",
+    "fileSHA256" : "9aea278d4fe7640a4dd126c4393fd284f2849f80168b5e62d6e8dbe2cf75c5d7",
+    "nearChromaCoordinateSHA256" : "824601712493f3e8b402b69055267a10bfdd8d80254e4d04b8c91f58d6df4109",
+    "nearChromaCount" : 1807
+  },
+  "negativeCases" : [
+    {
+      "name" : "pipeline",
+      "rejected" : true
+    },
+    {
+      "name" : "logicalBuildingID",
+      "rejected" : true
+    },
+    {
+      "name" : "variantID",
+      "rejected" : true
+    },
+    {
+      "name" : "sourceRevision",
+      "rejected" : true
+    },
+    {
+      "name" : "direction",
+      "rejected" : true
+    },
+    {
+      "name" : "descriptorSHA256",
+      "rejected" : true
+    },
+    {
+      "name" : "materialLibrarySHA256",
+      "rejected" : true
+    },
+    {
+      "name" : "decodedRGBASHA256",
+      "rejected" : true
+    },
+    {
+      "name" : "dimensions",
+      "rejected" : true
+    },
+    {
+      "name" : "authoredPaletteAllowsMagenta",
+      "rejected" : true
+    },
+    {
+      "name" : "rgbaByteCount",
+      "rejected" : true
+    }
+  ],
+  "output" : {
+    "borderConnectedMattePixelCount" : 1461112,
+    "boundsPreserved" : true,
+    "changedOutsidePredicatePixelCount" : 0,
+    "changedPixelCount" : 1461797,
+    "decodedRGBASHA256" : "d5ef428818b2ea5ba5e44c3d46f30c06b69589964ed37f53843a6976128c87ad",
+    "exactOrNearChromaAtNonzeroAlpha" : 0,
+    "file" : "V17-CANONICAL-TRANSPARENT.png",
+    "fileSHA256" : "39bcb896664ef436853790e2acd87bb0d450b8401bb5318708757aef331a2385",
+    "hiddenRGBAtAlphaZero" : 0,
+    "occupiedBounds" : [
+      512,
+      525,
+      1023,
+      895
+    ],
+    "retainedDespillPixelCount" : 685,
+    "retainedSupportBounds" : [
+      512,
+      525,
+      1023,
+      895
+    ]
+  },
+  "pipeline" : "matte-canonicalization-v2",
+  "processCounts" : {
+    "metal" : 0,
+    "normalizer" : 0,
+    "raw" : 0,
+    "sceneKit" : 0
+  },
+  "productionSelected" : false,
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      704
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "unchanged" : true
+  },
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027",
+  "tool" : {
+    "binarySHA256" : "37ade67f2f762fa1aea8fc109ea772a571af7d6a573e385310b4209ecf63156c",
+    "compileCommand" : "xcrun swiftc -parse-as-library -warnings-as-errors -module-cache-path <task-local-cache> MatteCanonicalizationV2.swift ValidateMatteCanonicalizationV2.swift -framework CoreGraphics -framework ImageIO -framework UniformTypeIdentifiers -o validate-matte-canonicalization-v2",
+    "implementation" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/Sources\/MatteCanonicalizationV2.swift",
+    "implementationSHA256" : "00efb80cfffaf8ac195add3c6fee2516c637ed7d6223659fbf95f0cf4a76e2f8",
+    "validator" : "Native\/CitySimNative\/WorldArt\/OfflineScene\/PLAY-027\/Tools\/ValidateMatteCanonicalizationV2.swift",
+    "validatorSHA256" : "05f7402b41f6354c0398f5b6a7253f0ecf7b37a5ecd5a4cf67aad51120d3a0cd"
+  }
+}

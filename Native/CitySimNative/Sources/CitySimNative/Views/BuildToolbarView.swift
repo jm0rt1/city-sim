@@ -120,6 +120,23 @@ struct BuildToolbarView: View {
     var compact = false
     let pointerTransitionGate: CityMapPointerTransitionGate
 
+    enum TargetBeaconTone: Equatable {
+        case information
+        case ready
+        case blocked
+    }
+
+    struct TargetBeaconPresentation: Equatable {
+        let title: String
+        let detail: String
+        let status: String
+        let symbol: String
+        let tone: TargetBeaconTone
+        let accessibilityLabel: String
+        let accessibilityValue: String
+        let opensDetails: Bool
+    }
+
     // The low command rail preserves the world aperture; details remain
     // reachable in a visibly scrolling region instead of growing over the map.
     static let compactClosedMaximumHeight: CGFloat = 64
@@ -216,7 +233,11 @@ struct BuildToolbarView: View {
 
             if !store.showInspector, activeBuildDecision == nil {
                 selectedToolSummary
-                    .frame(maxWidth: compact ? 184 : 260, alignment: .trailing)
+                    .frame(
+                        minWidth: compact ? 172 : 184,
+                        maxWidth: compact ? 210 : 260,
+                        alignment: .trailing
+                    )
             }
 
             Spacer(minLength: 2)
@@ -459,6 +480,8 @@ struct BuildToolbarView: View {
         return Button { store.perform(.openCommandGuide) } label: {
             Label(compact ? "Cmds" : "Commands", systemImage: "command.square")
                 .font(.caption.weight(.semibold))
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, compact ? 0 : 8)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
                 .contentShape(Rectangle())
@@ -495,79 +518,172 @@ struct BuildToolbarView: View {
 
     @ViewBuilder
     private var selectedToolSummary: some View {
-        Group {
-            switch store.interactionMode {
-            case .inspect:
-                if let tile = store.selectedTile {
-                    Label(
-                        "\(tile.kind.title) · Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)",
-                        systemImage: "mappin.and.ellipse"
-                    )
-                    .accessibilityLabel(
-                        "Inspecting \(tile.kind.title) at block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)"
-                    )
-                } else {
-                    Label("Choose a block for details", systemImage: "info.circle")
-                        .accessibilityLabel("Inspect mode. Choose a block for details")
-                }
-            case .bulldoze:
-                if let target = store.activeMapActionTargetPresentation {
-                    Label(
-                        "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1) · "
-                            + (target.primaryAction.isAvailable ? "Ready" : "Blocked"),
-                        systemImage: target.primaryAction.isAvailable
-                            ? "checkmark.circle.fill"
-                            : "exclamationmark.triangle.fill"
-                    )
-                    .accessibilityLabel(target.primaryAction.name)
-                    .accessibilityValue(target.primaryAction.disclosure)
-                } else {
-                    Label("Cost shown on map · Undo available", systemImage: "arrow.uturn.backward.circle")
-                        .accessibilityLabel("Bulldoze mode. Demolition cost is shown on the map. Undo is available")
-                }
-            case .build(let kind):
-                if let target = store.activeMapActionTargetPresentation {
-                    HStack(spacing: 8) {
-                        Label(
-                            "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1)",
-                            systemImage: "mappin.and.ellipse"
-                        )
-                        Label(
-                            target.primaryAction.isAvailable ? "Ready" : "Blocked",
-                            systemImage: target.primaryAction.isAvailable
-                                ? "checkmark.circle.fill"
-                                : "exclamationmark.triangle.fill"
-                        )
-                        .foregroundStyle(
-                            target.primaryAction.isAvailable ? GameTheme.accent : GameTheme.warning
-                        )
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(target.primaryAction.name)
-                    .accessibilityValue(target.primaryAction.disclosure)
-                } else {
-                    HStack(spacing: 9) {
-                        Label(kind.buildCost.currencyText, systemImage: "banknote")
-                        Label("\(kind.upkeep.currencyText) / cycle", systemImage: "arrow.triangle.2.circlepath")
-                        if kind.requiresRoad {
-                            Label("Road required", systemImage: "road.lanes")
-                        } else {
-                            Label("Flexible access", systemImage: "checkmark.circle")
-                        }
-                    }
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Selected \(kind.title)")
-                    .accessibilityValue(
-                        "Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle, "
-                            + (kind.requiresRoad ? "road required" : "no road required")
-                    )
-                }
+        let presentation = Self.targetBeaconPresentation(
+            interactionMode: store.interactionMode,
+            selectedTile: store.selectedTile,
+            target: store.activeMapActionTargetPresentation
+        )
+        if presentation.opensDetails {
+            Button {
+                Self.activateTargetBeacon(store: store)
+            } label: {
+                targetBeaconLabel(presentation)
             }
+            .buttonStyle(.plain)
+            .help("Open Details for the selected target")
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(presentation.accessibilityLabel)
+            .accessibilityValue(presentation.accessibilityValue)
+            .accessibilityHint("Opens Details for the selected target")
+            .accessibilityIdentifier("hud.selected.context")
+        } else {
+            targetBeaconLabel(presentation)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(presentation.accessibilityLabel)
+                .accessibilityValue(presentation.accessibilityValue)
+                .accessibilityIdentifier("hud.selected.context")
         }
-        .font(.caption.monospacedDigit())
-        .foregroundStyle(.secondary)
-        .lineLimit(1)
-        .accessibilityIdentifier("hud.selected.context")
+    }
+
+    private func targetBeaconLabel(_ presentation: TargetBeaconPresentation) -> some View {
+        let tint = targetBeaconTint(presentation.tone)
+        return HStack(spacing: 7) {
+            Image(systemName: presentation.symbol)
+                .font(.system(size: 15, weight: .bold))
+                .foregroundStyle(tint)
+                .frame(width: 17)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(presentation.title)
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                    .lineLimit(1)
+                    .layoutPriority(1)
+                Text(presentation.detail)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+
+            Spacer(minLength: 2)
+
+            Text(presentation.status)
+                .font(.system(size: GameTheme.hudSupportTextSize, weight: .heavy, design: .rounded))
+                .foregroundStyle(tint)
+                .lineLimit(1)
+                .padding(.horizontal, 5)
+                .padding(.vertical, 2)
+                .background(tint.opacity(0.14), in: Capsule())
+        }
+        .padding(.horizontal, 8)
+        .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+        .contentShape(Rectangle())
+        .background(GameTheme.contextCard.opacity(0.72), in: RoundedRectangle(cornerRadius: 9))
+        .overlay(
+            RoundedRectangle(cornerRadius: 9)
+                .stroke(tint.opacity(0.72), lineWidth: 1.5)
+        )
+    }
+
+    private func targetBeaconTint(_ tone: TargetBeaconTone) -> Color {
+        switch tone {
+        case .information: GameTheme.information
+        case .ready: GameTheme.accent
+        case .blocked: GameTheme.warning
+        }
+    }
+
+    static func targetBeaconPresentation(
+        interactionMode: CityInteractionMode,
+        selectedTile: CityTile?,
+        target: CityMapActionTargetPresentation?
+    ) -> TargetBeaconPresentation {
+        switch interactionMode {
+        case .inspect:
+            guard let selectedTile else {
+                return TargetBeaconPresentation(
+                    title: "No block selected",
+                    detail: "Choose a block",
+                    status: "INSPECT",
+                    symbol: CityInteractionMode.inspect.symbol,
+                    tone: .information,
+                    accessibilityLabel: "Inspect mode",
+                    accessibilityValue: "No block selected",
+                    opensDetails: false
+                )
+            }
+            let block = "Block \(selectedTile.coordinate.x + 1), \(selectedTile.coordinate.y + 1)"
+            return TargetBeaconPresentation(
+                title: selectedTile.kind.title,
+                detail: block,
+                status: "INSPECT",
+                symbol: selectedTile.kind.symbol,
+                tone: .information,
+                accessibilityLabel: "Open details for \(selectedTile.kind.title) at \(block.lowercased())",
+                accessibilityValue: target?.primaryAction.disclosure
+                    ?? "Available. Opens details for the selected target.",
+                opensDetails: true
+            )
+        case .build(let kind):
+            guard let target else {
+                return TargetBeaconPresentation(
+                    title: kind.title,
+                    detail: "\(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                    status: "CHOOSE",
+                    symbol: kind.symbol,
+                    tone: .information,
+                    accessibilityLabel: "Build \(kind.title)",
+                    accessibilityValue: "Selected \(kind.title). Cost \(kind.buildCost.currencyText), "
+                        + "upkeep \(kind.upkeep.currencyText) per cycle. Choose a block.",
+                    opensDetails: false
+                )
+            }
+            let isAvailable = target.primaryAction.isAvailable
+            let block = "block \(target.coordinate.x + 1), \(target.coordinate.y + 1)"
+            return TargetBeaconPresentation(
+                title: kind.title,
+                detail: "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1)",
+                status: isAvailable ? "READY" : "BLOCKED",
+                symbol: isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill",
+                tone: isAvailable ? .ready : .blocked,
+                accessibilityLabel: "Open details for \(kind.title) at \(block)",
+                accessibilityValue: target.primaryAction.disclosure,
+                opensDetails: selectedTile != nil
+            )
+        case .bulldoze:
+            guard let target else {
+                return TargetBeaconPresentation(
+                    title: "No structure selected",
+                    detail: "Choose a structure",
+                    status: "BULLDOZE",
+                    symbol: CityInteractionMode.bulldoze.symbol,
+                    tone: .information,
+                    accessibilityLabel: "Bulldoze mode",
+                    accessibilityValue: "Choose a structure. Protected structures and open land remain unavailable.",
+                    opensDetails: false
+                )
+            }
+            let isAvailable = target.primaryAction.isAvailable
+            let title = selectedTile?.kind.title ?? "Selected block"
+            let block = "block \(target.coordinate.x + 1), \(target.coordinate.y + 1)"
+            return TargetBeaconPresentation(
+                title: title,
+                detail: "Block \(target.coordinate.x + 1), \(target.coordinate.y + 1)",
+                status: isAvailable ? "READY" : "BLOCKED",
+                symbol: isAvailable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill",
+                tone: isAvailable ? .ready : .blocked,
+                accessibilityLabel: "Open details for \(title) at \(block)",
+                accessibilityValue: target.primaryAction.disclosure,
+                opensDetails: selectedTile != nil
+            )
+        }
+    }
+
+    @MainActor
+    @discardableResult
+    static func activateTargetBeacon(store: CityGameStore) -> Bool {
+        guard store.selectedTile != nil else { return false }
+        return store.perform(.toggleCommandCenter)
     }
 
     private var buildCatalogMenu: some View {

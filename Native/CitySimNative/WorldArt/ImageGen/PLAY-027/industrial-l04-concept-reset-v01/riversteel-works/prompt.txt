@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: non-authoritative CitySim Industrial L4 concept reference
+Primary request: Riversteel Works — design a genuinely city-defining heavy steel fabrication plant as premium high-fidelity isometric city-building game art. Create a broad, grounded, clearly wider-than-tall composition with layered steel-and-brick production volumes, a strong stepped horizontal roofline, two paired stacks forming an asymmetric skyline marker, large external ducts running between volumes, an exposed gantry crane, and a deep service yard. Include two or three credible heavy freight openings and a clearly separate human-scale staff/control entrance. Large fabrication operations and silhouette must read before small detail.
+Scene/backdrop: isolated on a neutral matte ground field, generous padding, no road, no parcel markings, no city, river, or landscape background.
+Style/medium: polished painterly 3D isometric strategy-game concept art, realistic architectural massing and premium weathered materials, readable at small gameplay scale.
+Composition/framing: fixed three-quarter isometric view, entire works visible, long layered horizontal profile, stepped roofs, paired-stack skyline feature offset from center, grounded heavy-industry contact.
+Lighting/mood: northwest key light, southeast contact shadow, warm rugged steelworks atmosphere.
+Color palette: weathered dark steel and blue-green panels, aged red-brown brick and warm formed concrete, restrained oxide/copper/ochre accents, black service depths, believable muted glazing.
+Materials/textures: plate steel, riveted and corrugated cladding, soot-stained brick, external ductwork, roof seams, tanks and vents, grime and material aging; strong readable masses without micro-greeble noise.
+Constraints: concept reference only; separate staff/control entrance; two or three large freight openings; paired stacks, external ducts and gantry crane clearly visible; no labels, no UI, no text, no people or vehicles.
+Avoid: dominant white, cyan, ice-blue, or cream planes; compact office tower; apartment; retail storefront; glossy science-fiction factory; miniature toy; generic cube stack; skylit robotics-campus repetition; commercial signage; city or river background; roads; excessive tiny detail; watermark.

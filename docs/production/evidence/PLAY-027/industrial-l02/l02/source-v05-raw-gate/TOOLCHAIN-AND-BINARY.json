@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "logicalBuildingID": "industrial_l02",
+  "variantID": "variant-0",
+  "sourceRevision": "source-v05",
+  "descriptorAuthority": "299fdd4cb2fe764421ba0c1f81daa09c63486a35",
+  "rendererSourceCommit": "299fdd4cb2fe764421ba0c1f81daa09c63486a35",
+  "rendererBinarySHA256": "fb62e2b1de493bde0ceb1c0034cdab254a05b95c4b156d80d410a07362e17894",
+  "toolchainFingerprintSHA256": "81bf644b41612c83d124c9b1e51ceade6b2931772402849ef71e16bee4545531",
+  "compiler": {
+    "swiftDriver": "1.148.6",
+    "swift": "6.3.3",
+    "swiftlang": "swiftlang-6.3.3.1.3",
+    "clang": "clang-2100.1.1.101",
+    "target": "arm64-apple-macosx26.0"
+  },
+  "host": {
+    "architecture": "arm64",
+    "macOSProductVersion": "26.4.1",
+    "macOSBuildVersion": "25E253",
+    "metalDevice": "Apple M5 Pro",
+    "metalRegistryID": "0x000000010000060c"
+  },
+  "rendererSources": [
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift",
+      "sha256": "691f2d6310163426184a00ac383242702b032a5dc2960ae973199d5fdb0e9e7c"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererArchitecture.swift",
+      "sha256": "4beaf444c47f41317440cadb2641e11bbd3615933cac93b7394174f50f62b7f3"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/DeterministicPixelCanonicalizer.swift",
+      "sha256": "160f2361f096b2a06b56b075486b0d9f4c791f9c754664813ce27d6cee57edfd"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererStageDiagnostics.swift",
+      "sha256": "c7b4a3884516de5dc880ab1cac3ee51da0038b3fdde26f1729d19397e1486be4"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/RendererCapabilityPreflight.swift",
+      "sha256": "27c5766d08b3fbeb316fe77d66c071b1913de92a0e0fe838d065751bcd0fdbc1"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/OfflineSceneRenderer.swift",
+      "sha256": "746847d5c4e11737c58ea7944d524505b1b1dc4a6370a14342362468e2bb0471"
+    }
+  ],
+  "descriptorSHA256": {
+    "north": "f776d7486efd04766816019960f38b46119e46cf31b72c3f22ab48294d6452f5",
+    "east": "aa4ec6dba5eb89c23c7e475f725a8181fc5954f1503cca4b5a700c399f565b44",
+    "south": "5a40700a9b25574cc2886120932ae41e05a7210959ae6a9bd1a67072a1e4875a",
+    "west": "7b7afb7eed54558f73a7e5123d67b2b13c8876114c6684b0314b260c0db10433"
+  },
+  "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "productionSelected": false
+}

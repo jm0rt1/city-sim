@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "renderer": {
+    "binarySHA256": "2283632f7445b467632fae414e23e6ebd31b7a89fa2dbacbd934051eb3aa301f",
+    "sourceCommit": "4ae0f3cb38867260685a5eecfed881bda71bde24",
+    "descriptorBoundSampling": true,
+    "diagnosticCLIOverrideCount": 0
+  },
+  "materials": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v05/materials/industrial-l02-east-calibration-v05.json",
+    "sha256": "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
+  },
+  "comparisonTool": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/CompareRetainedRawPixels.swift",
+    "sourceSHA256": "f996cd5dc9f8d372516ae5ba54aad205bda33afaa462b61ce56ec5f7513636e1",
+    "binarySHA256": "28f9077557e9cd1e6a3f75888a285cf83de64fcecc8953cddf7aa7e33d961211",
+    "warningsAsErrors": true
+  },
+  "prePixelPathGuardFailures": {
+    "northInvocationCount": 3,
+    "rawPixelCount": 0,
+    "error": "backend capability record must be a new JSON under a diagnostics path"
+  },
+  "successfulFreshMetalProcesses": {
+    "north": 3,
+    "east": 3,
+    "south": 0,
+    "west": 0
+  },
+  "normalizerProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

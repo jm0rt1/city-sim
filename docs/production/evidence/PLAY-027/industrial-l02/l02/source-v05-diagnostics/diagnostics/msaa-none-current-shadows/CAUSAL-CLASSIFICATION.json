@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "logicalBuildingID": "industrial_l02",
+  "sourceRevision": "source-v05",
+  "status": "COMPLETE-stop-after-causal-classification",
+  "classification": "MSAA-not-a-differentiating-variable-for-source-v05",
+  "classificationConfidence": "high-negative-causal-result",
+  "reason": [
+    "The frozen source-v05 descriptor already resolves SceneKit antialiasing to none.",
+    "The explicit diagnostic none override therefore changes no effective MSAA state.",
+    "Exact repeat nondeterminism persists in N/E/S/W under the explicit diagnostic path.",
+    "East diagnostic run C exactly reproduces frozen run B file and decoded-pixel identities.",
+    "West diagnostic runs A and B exactly reproduce both frozen West decoded-pixel identities."
+  ],
+  "frozenRejectionAuthority": "3b821be3473acab858c7ffd684680421a2071ede",
+  "frozenRejectionTreeSHA1": "b575801c6862f9354b9ad356d155fa1a1f887942",
+  "frozenRejectionTreePreserved": true,
+  "effectiveSceneKitAntialiasingChanged": false,
+  "effectiveSceneKitShadowsChanged": false,
+  "repeatIdentityPassed": false,
+  "exactRGBAVisibilityPassed": true,
+  "hiddenNonMagentaPixelCount": 0,
+  "alphaDifferencePixelCountAcrossAllReportedPairs": 0,
+  "directions": [
+    {
+      "direction": "north",
+      "frozen": {
+        "uniquePixelIdentityCount": 2,
+        "maximumDifferingPixelCount": 2,
+        "locality": "two isolated one-quantum RGB pixels"
+      },
+      "diagnostic": {
+        "uniqueFileIdentityCount": 3,
+        "uniquePixelIdentityCount": 3,
+        "maximumDifferingPixelCount": 1328,
+        "maximumDifferingChannelCount": 2984,
+        "maximumDifferenceBounds": [756, 701, 800, 806],
+        "locality": "44x105 facade-detail band plus an isolated one-quantum pixel"
+      },
+      "frozenDiagnosticSharedPixelIdentityCount": 0
+    },
+    {
+      "direction": "east",
+      "frozen": {
+        "uniquePixelIdentityCount": 3,
+        "maximumDifferingPixelCount": 724,
+        "maximumDifferenceBounds": [682, 685, 711, 780],
+        "locality": "29x95 narrow vertical facade-detail band"
+      },
+      "diagnostic": {
+        "uniqueFileIdentityCount": 3,
+        "uniquePixelIdentityCount": 3,
+        "maximumDifferingPixelCount": 724,
+        "maximumDifferingChannelCount": 1646,
+        "maximumDifferenceBounds": [682, 685, 711, 780],
+        "locality": "same 29x95 narrow vertical facade-detail band signature"
+      },
+      "frozenDiagnosticSharedPixelIdentityCount": 1,
+      "exactSharedPixelSHA256": "4e2ee7b4074ab709f2bb8e3321ee6399d3b9cd09a56d5544eeef04ec3b80e519"
+    },
+    {
+      "direction": "south",
+      "frozen": {
+        "uniquePixelIdentityCount": 2,
+        "maximumDifferingPixelCount": 1,
+        "locality": "one isolated one-quantum RGB pixel"
+      },
+      "diagnostic": {
+        "uniqueFileIdentityCount": 2,
+        "uniquePixelIdentityCount": 2,
+        "maximumDifferingPixelCount": 4,
+        "maximumDifferingChannelCount": 4,
+        "maximumDifferenceBounds": [778, 672, 840, 729],
+        "locality": "four isolated one-quantum RGB pixels"
+      },
+      "frozenDiagnosticSharedPixelIdentityCount": 0
+    },
+    {
+      "direction": "west",
+      "frozen": {
+        "uniquePixelIdentityCount": 2,
+        "maximumDifferingPixelCount": 1,
+        "locality": "one isolated one-quantum RGB pixel"
+      },
+      "diagnostic": {
+        "uniqueFileIdentityCount": 3,
+        "uniquePixelIdentityCount": 3,
+        "maximumDifferingPixelCount": 2,
+        "maximumDifferingChannelCount": 2,
+        "maximumDifferenceBounds": [724, 712, 812, 715],
+        "locality": "two isolated one-quantum RGB pixels"
+      },
+      "frozenDiagnosticSharedPixelIdentityCount": 2,
+      "exactSharedPixelSHA256": [
+        "e3e99151e25d9d8b0239ed58851ba630f70982d4ce715823ff09eb1a0b3bbe38",
+        "e9485da224f0240601079d1ad6b1d3845b7a95e3c291e27ec93ce3ba8a2d956b"
+      ]
+    }
+  ],
+  "residualStageClassification": "unresolved-rendered-RGB-or-quantizer-support-variation",
+  "residualStageClaimLimited": true,
+  "nextDiagnosticAuthorized": false,
+  "normalizationPerformed": false,
+  "sourceOrDescriptorMutationPerformed": false,
+  "productionSelected": false
+}

@@ -6,12 +6,12 @@
 
 **Integration branch:** `master`
 
-**Accepted product candidate:** `897c191355d2fcb18ecc2e8d7358b44e9cae7cd4`
-(the independently accepted directional Residential, Commercial, and
-Industrial L1 product plus accepted PLAY-077 input truth)
+**Accepted product candidate:** `d41c2c68d5584c990e271af06c0b93ab50722f5e`
+(the independently accepted directional Residential, Commercial, Industrial
+L1, and Industrial L2 product plus the denser starter-town renderer truth)
 
-**Independent evidence and published tip:**
-`1b883ca684b07ba38c5c755b616723bde0cd2230`
+**Independent evidence integration commit:**
+`eb61182ec03114ee62d98ffdfa78a7a69a16d3fe`
 
 **Industrial L1 product commit:** `02612e414912fdabcab858b0ca97e1f5edbc2757`
 
@@ -47,6 +47,13 @@ Industrial L1 product plus accepted PLAY-077 input truth)
   selection uses authoritative road frontage with no transform, alias,
   fallback, or cross-family substitution. PLAY-063 independently approved the
   exact combined candidate 20/20 with every category 4/4.
+- Industrial L2 now ships as four separately authored N/E/S/W factory
+  identities and 12 unique normalized LOD payloads. Runtime selection uses
+  authoritative road frontage with no mirror, rotation, recolor, alias, or
+  fallback. PLAY-075 independently approved the focused R1 batch at regular
+  and exact 900 x 600 sizes with pointer/keyboard identity, AX, construction,
+  condition, demolition/Undo, Reduce Motion, source/pack parity, and visible
+  preference over the pre-R1 product.
 - The readable command surface uses responsive HUD composition with 11-point
   critical/action typography, 10-point decision-support typography, complete
   compact Overview and Journal content, and a world-first 60.2% closed /
@@ -58,9 +65,9 @@ Industrial L1 product plus accepted PLAY-077 input truth)
 - Independent PLAY-055 scored the exact accepted product 20/20, with every
   category at 4/4, zero P0/P1 defects, zero automatic rejects, and material
   preference over the frozen baseline in both regular and compact layouts.
-- The complete native suite passes with 266 tests and no failures. The accepted
-  renderer passes 55 focused tests, reports zero fallback assets and zero
-  geometry collisions, uses four pages with a stable 41,943,040-byte
+- The complete native suite passes with 271 tests and no failures. The accepted
+  renderer passes 66 focused tests, reports zero fallback assets and zero
+  geometry collisions, uses four pages with a stable 50,331,648-byte
   repeated-cycle high-water, and remains within declared render and RSS
   ceilings.
 - Independent PLAY-050 completed a fresh no-coaching pointer-and-keyboard journey in 9:55.966, made the first meaningful placement at 96.784 seconds, earned the permanent Town Charter, and save/resumed the exact paused fingerprint.
@@ -71,10 +78,10 @@ Industrial L1 product plus accepted PLAY-077 input truth)
 - Accepted PLAY-055 RSS remained bounded below the 333.8 MiB ceiling:
   194.52 MiB regular, 175.83 MiB compact, and 194.25 MiB Reduce Motion.
   Continued profiling remains release work.
-- Industrial directional breadth above L1 remains incomplete. Industrial L2
-  source authoring is under a level-by-level deterministic review gate, while
-  L3/L4 remain blocked. No higher level may enter the shipping pack before
-  independent source review and a separate renderer/quality gate.
+- Industrial directional breadth above L2 remains incomplete. Industrial L3
+  source authoring is authorized under the level-by-level deterministic review
+  gate; Industrial L4 remains blocked. No higher level may enter the shipping
+  pack before independent source review and a separate renderer/quality gate.
 - Spoken VoiceOver audio was not recorded for PLAY-055. Live AX actions, AX
   trees, and Full Keyboard Access were exercised successfully.
 - Deeper game identity, content breadth, audio, delight, progression beyond
@@ -112,6 +119,16 @@ Industrial L1 product plus accepted PLAY-077 input truth)
   recovery, truthful adjacent-road targeting, explicit confirmation, Escape,
   and clean process exit. This is integration acceptance, not a new
   independent PLAY-075 quality score.
+- Exact Industrial L2 product `d41c2c68` passed 271/271 native tests, 66/66
+  renderer tests, deterministic four-page source/staged pack identity, 5,727
+  packed-overlap checks, zero geometry collisions, zero
+  alias/mirror/rotation/recolor/fallback, 4.561 ms cold update, 0.0007 ms
+  unchanged pulse, 50,331,648-byte residency high-water, and bounded live RSS.
+  Independent PLAY-075 evidence `74f2164` approved the focused batch after
+  regular/compact, baseline comparison, pointer/keyboard, AX,
+  construction/condition, demolition/Undo, and Reduce Motion operation. The
+  exact integrated `master` build at `eb61182` then passed 271/271, staged
+  verification, and an integration-owned pointer/keyboard smoke check.
 - Non-shipping Industrial L1 source authority `79668c3` passed four-direction
   three-process raw identity, 12/12 unique two-run normalized LOD identity,
   registration/frontage/alpha/chroma/padding checks, accepted-source byte

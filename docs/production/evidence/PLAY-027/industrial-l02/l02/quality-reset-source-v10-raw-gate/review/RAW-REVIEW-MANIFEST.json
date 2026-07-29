@@ -1,0 +1,217 @@
+{
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "familyComparisonLayout" : {
+    "columns" : [
+      "accepted Industrial L1 source-v05",
+      "rejected Industrial L2 source-v10 raw attempt"
+    ],
+    "rows" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ]
+  },
+  "files" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/SOURCE-SCALE-NESW.png",
+      "role" : "sourceScale",
+      "sha256" : "7d315fa63232f9ac0c0806d2fd9b6fadf4545f148e445ea2018aeac60c26eabf"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NATIVE-2X-COLOR-NESW.png",
+      "role" : "native2xColor",
+      "sha256" : "ec639d79774e19ee51f39e479ebe864bbabbb750eaf402acb23e36f02f39be60"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NATIVE-2X-GRAYSCALE-NESW.png",
+      "role" : "native2xGrayscale",
+      "sha256" : "45ca90988bcd5cca9d46953f2f48c5349898bc6e4e74fbcae54668c6f540ac01"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/INDUSTRIAL-L1-VS-L2-NATIVE-2X-COLOR.png",
+      "role" : "industrialL1VsL2Color",
+      "sha256" : "1be173ab28ff5cae09759142ed3afc3fd8c86a386a295ba3d17e9cb9be99c105"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/INDUSTRIAL-L1-VS-L2-NATIVE-2X-GRAYSCALE.png",
+      "role" : "industrialL1VsL2Grayscale",
+      "sha256" : "23a044d8c3a556f85a29dfd14594c6a132699b52d6553cefc37a233550d870b2"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/EAST-V05-VS-V04-VS-FLATTENED-COLOR.png",
+      "role" : "eastLightingComparisonColor",
+      "sha256" : "239d5a10e5fa9d5a7a6d60f64990e3d5778c190ed371e5f8917e6ee9a7cf5d97"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/EAST-V05-VS-V04-VS-FLATTENED-GRAYSCALE.png",
+      "role" : "eastLightingComparisonGrayscale",
+      "sha256" : "61a550f12ae1a0e1017bf714cc7e391093ea2b98cb3132808435751992f37476"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NORTH-A-B-C-NATIVE-2X-COLOR.png",
+      "role" : "northABCNative2xColor",
+      "sha256" : "0ab9f085435ee7d4c4432a55b5c47bffabb93f7fdc42b0f856d330e6a2ac8371"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NORTH-A-B-C-NATIVE-2X-GRAYSCALE.png",
+      "role" : "northABCNative2xGrayscale",
+      "sha256" : "63256f3605c07476cd67fede956522710c3809ab10a72cb22f4ec199983ba54e"
+    }
+  ],
+  "lightingComparisonLayout" : {
+    "columns" : [
+      "Industrial L2 source-v10 East",
+      "rejected Industrial L2 source-v04 East current lighting",
+      "rejected Industrial L2 source-v04 East flattened constant-unlit diagnostic"
+    ]
+  },
+  "logicalBuildingID" : "industrial_l02",
+  "native2xLayout" : {
+    "order" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "panelPixels" : [
+      144,
+      195
+    ],
+    "presentation" : "task-owned review-only exact-chroma mask plus frozen magenta-edge alpha preview on neutral field; no normalized output created",
+    "registeredRawCrop" : [
+      512,
+      270,
+      513,
+      695
+    ],
+    "scale" : 0.28125
+  },
+  "normalizationPerformed" : false,
+  "northABCLayout" : {
+    "columns" : [
+      "North primary",
+      "North repeat B",
+      "North repeat C"
+    ],
+    "panelPixels" : [
+      144,
+      195
+    ],
+    "presentation" : "exact retained PNG decoded through ImageIO, exact chroma masked transparent, alpha retained, native-2x scale on neutral field",
+    "registeredRawCrop" : [
+      512,
+      270,
+      513,
+      695
+    ]
+  },
+  "productionSelected" : false,
+  "purpose" : "review-only raw-gate panels after deterministic identity failure; no normalization",
+  "rawGateIdentityPassed" : false,
+  "visualGatePassed" : false,
+  "reviewStatus" : "rejected-technical-and-independent-visual-gates",
+  "schema" : 1,
+  "sourceRevision" : "source-v10",
+  "sourceScaleLayout" : {
+    "order" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "presentation" : "exact retained raw PNG on exact #ff00ff field"
+  },
+  "task" : "PLAY-027",
+  "valueEvidence" : [
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/north/source-quality-reset-v02.png",
+      "id" : "industrial-l02-source-v10-north",
+      "lumaQuantiles" : {
+        "p05" : 46,
+        "p25" : 48,
+        "p50" : 71,
+        "p75" : 80,
+        "p95" : 84
+      },
+      "nonChromaPixelCount" : 60305,
+      "p75MinusP25" : 32,
+      "p95MinusP05" : 38
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/east/source-quality-reset-v02.png",
+      "id" : "industrial-l02-source-v10-east",
+      "lumaQuantiles" : {
+        "p05" : 43,
+        "p25" : 48,
+        "p50" : 71,
+        "p75" : 80,
+        "p95" : 84
+      },
+      "nonChromaPixelCount" : 63556,
+      "p75MinusP25" : 32,
+      "p95MinusP05" : 41
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/south/source-quality-reset-v02.png",
+      "id" : "industrial-l02-source-v10-south",
+      "lumaQuantiles" : {
+        "p05" : 48,
+        "p25" : 48,
+        "p50" : 71,
+        "p75" : 80,
+        "p95" : 84
+      },
+      "nonChromaPixelCount" : 59500,
+      "p75MinusP25" : 32,
+      "p95MinusP05" : 36
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/west/source-quality-reset-v02.png",
+      "id" : "industrial-l02-source-v10-west",
+      "lumaQuantiles" : {
+        "p05" : 46,
+        "p25" : 48,
+        "p50" : 71,
+        "p75" : 80,
+        "p95" : 84
+      },
+      "nonChromaPixelCount" : 63279,
+      "p75MinusP25" : 32,
+      "p95MinusP05" : 38
+    },
+    {
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/east/source-v04.png",
+      "id" : "rejected-industrial-l02-source-v04-east",
+      "lumaQuantiles" : {
+        "p05" : 16,
+        "p25" : 48,
+        "p50" : 71,
+        "p75" : 80,
+        "p95" : 110
+      },
+      "nonChromaPixelCount" : 67598,
+      "p75MinusP25" : 32,
+      "p95MinusP05" : 94
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v04-candidate/diagnostics/constant-unlit/east-run-a.png",
+      "id" : "rejected-industrial-l02-source-v04-east-constant-unlit-diagnostic",
+      "lumaQuantiles" : {
+        "p05" : 50,
+        "p25" : 71,
+        "p50" : 80,
+        "p75" : 112,
+        "p95" : 180
+      },
+      "nonChromaPixelCount" : 67598,
+      "p75MinusP25" : 41,
+      "p95MinusP05" : 130
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "manifestSHA256" : "e4793eebb1103736d7f50ef2b038b480139d3bd4580b9b2b6aa2ded8d77b3189",
+  "panels" : [
+    {
+      "decodedRGBASHA256" : "792ec6cba25c6fa04f7ec10072ee8c49a5c271602905a70542e95e454ed758b5",
+      "file" : "SOURCE-COLOR-COMPARISON.png",
+      "sha256" : "9b8f8f41ffed785e569de0fe1526280b58f985026d6ea08d533631ef3421951a"
+    },
+    {
+      "decodedRGBASHA256" : "d9eb39347b3f503201079b2ad24772af31d8a2215c7f46e7970b840069d31b74",
+      "file" : "NATIVE-2X-COLOR-COMPARISON.png",
+      "sha256" : "43386debbdc0c8a3a687d0620a4fe763b0f75e0d1b3b27f5c38d4477a0d23b17"
+    },
+    {
+      "decodedRGBASHA256" : "42262135605a25a71c799cf795099b780c4a6997d1811e146c45e4ae506e3822",
+      "file" : "COMPACT-COLOR-COMPARISON.png",
+      "sha256" : "e772c02b99b45a5fec922ff0c025839fc655867fa667496eec576fb01c3148ee"
+    },
+    {
+      "decodedRGBASHA256" : "89a646d5857b88d7f1f925988c81b2e2d16bc9f71876e8cac8ae1145f8ee3fdb",
+      "file" : "NATIVE-2X-GRAYSCALE-COMPARISON.png",
+      "sha256" : "ce136f1f2ad3e8c8454bc56e2fa50b78dd27d5529658f51a8a67fb54b1a40f59"
+    }
+  ]
+}

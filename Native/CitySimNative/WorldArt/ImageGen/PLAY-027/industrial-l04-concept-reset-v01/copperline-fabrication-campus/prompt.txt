@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: non-authoritative CitySim Industrial L4 concept reference
+Primary request: Copperline Fabrication Campus — design a genuinely city-defining advanced fabrication campus as premium high-fidelity isometric city-building game art. Create a broad, grounded, clearly wider-than-tall asymmetric organization: an offset long assembly hall, an unusually broad open freight court carved between major volumes, an elevated pipe bridge connecting the hall to a compact silo/process cluster, deep shadowed service recesses, and a small human-scale glazed control entrance distinctly separate from the freight doors. Make two or three large heavy freight openings legible before small detail. The composition must feel like a working copper and precision-fabrication campus, not a tower or retail block.
+Scene/backdrop: isolated on a neutral matte ground field, generous padding, no road, no parcel markings, no city or landscape background.
+Style/medium: polished painterly 3D isometric strategy-game concept art, realistic architectural massing and premium material rendering, readable at small gameplay scale.
+Composition/framing: fixed three-quarter isometric view, whole campus visible, asymmetric horizontal silhouette, wide freight court as a major negative-space feature, grounded contact.
+Lighting/mood: northwest key light, southeast contact shadow, warm late-industrial atmosphere.
+Color palette: warm formed concrete and weathered brick, dark blue-green and charcoal steel, oxidized copper and restrained ochre accents, deep service shadows, believable muted glazing.
+Materials/textures: patinated copper, aged corrugated steel, stained concrete, masonry joints, weathered pipework, roof plant, silos, seams and restrained grime; large readable surfaces rather than micro-greebles.
+Constraints: concept reference only; separate staff/control entrance; two or three large freight openings; pipe bridge and silos clearly legible; no labels, no UI, no text, no people or vehicles.
+Avoid: dominant white, cyan, ice-blue, or cream planes; office tower; apartment; retail storefront; glossy science-fiction factory; miniature toy; generic cube stack; symmetric foundry hall; vertical high-rise grammar; commercial signage; city background; roads; excessive tiny detail; watermark.

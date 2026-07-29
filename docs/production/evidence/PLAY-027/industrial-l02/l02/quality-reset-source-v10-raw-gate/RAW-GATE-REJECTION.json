@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "logicalBuildingID": "industrial_l02",
+  "sourceRevision": "source-v10",
+  "status": "rejected-first-failure-stop",
+  "descriptorFreezeCommit": "25c3c2a3f1cc52a958b83089d66af311a6b1553e",
+  "firstFailure": {
+    "sequence": 9,
+    "direction": "north",
+    "attempt": "C",
+    "bindingGate": "three fresh processes must have exact emitted PNG and canonical decoded RGBA identity per direction",
+    "primaryAndRepeatBFileSHA256": "f35b5aa8591fd45713431d603e3787c197a26f4958a25702d350913a346161d9",
+    "repeatCFileSHA256": "e78f6160a6a83c77e57d7901ab0d19ee942899001e7f88def75262b792879a01",
+    "primaryAndRepeatBDecodedRGBASHA256": "80e3f6cd316722a2e5b9c6ef4bc54ab9c875e40bd7c3829a1f2de5123ff92334",
+    "repeatCDecodedRGBASHA256": "3c5abda1388f36e4ec44fbeeb3ff8c90d8a78c195226598b3e567b95a0905b1f",
+    "firstRetainedDivergentStage": "final-sips retained PNG and standard ImageIO-decoded canonical RGBA",
+    "firstCausalDivergentStageClassified": false,
+    "causalClassificationLimit": "governed raw processes did not request intermediate stage capture; no pre-Lanczos, post-Lanczos, quantized, or post-majority buffer may be inferred from final-output evidence",
+    "canonicalDecodedDifference": {
+      "coordinateOrigin": "top-left",
+      "differenceBoundsSource": [
+        834,
+        741,
+        842,
+        760
+      ],
+      "differingPixelCount": 32,
+      "differingChannelCount": 32,
+      "alphaDifferingPixelCount": 0,
+      "differingChannels": [
+        "blue"
+      ],
+      "dominantRepeatCRGBA": [
+        48,
+        48,
+        16,
+        255
+      ],
+      "dominantPrimaryRepeatBRGBA": [
+        48,
+        48,
+        48,
+        255
+      ],
+      "singletonRepeatCRGBA": [
+        80,
+        48,
+        48,
+        255
+      ],
+      "singletonPrimaryRepeatBRGBA": [
+        80,
+        48,
+        16,
+        255
+      ],
+      "localityReport": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/NORTH-C-FIRST-FAILURE-LOCALITY.json",
+      "localityZoom": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/NORTH-C-FIRST-FAILURE-ZOOM.png"
+    },
+    "unchangedGeometryAndVisibility": {
+      "nonChromaBounds": [
+        619,
+        638,
+        1029,
+        906
+      ],
+      "nonChromaPixelCount": 60305,
+      "alphaBoundsChanged": false,
+      "occupancyChanged": false,
+      "completeOccupiedAreaPassed": true,
+      "postQuantizationMutationCountAllRuns": 300,
+      "postQuantizationBoundaryAssistMutationCountAllRuns": 52,
+      "postQuantizationMutationRecordsCanonicalSHA256AllRuns": "687710f758100eedd726ace977a3b49de077bd4fe4620db64bf7bef655aa20ff"
+    }
+  },
+  "passingEvidenceBeforeStop": {
+    "primaryDirectionFileHashesUnique": 4,
+    "primaryRGBAVisibilityPassed": true,
+    "primaryHiddenNonMagentaPixelCount": 0,
+    "primaryAlphaVisibilityRatio": 1,
+    "primaryOccupiedBounds": {
+      "north": [
+        619,
+        638,
+        1029,
+        906
+      ],
+      "east": [
+        619,
+        578,
+        1029,
+        906
+      ],
+      "south": [
+        619,
+        642,
+        1029,
+        906
+      ],
+      "west": [
+        619,
+        626,
+        1029,
+        906
+      ]
+    },
+    "primaryOccupiedPixelCount": {
+      "north": 60305,
+      "east": 63556,
+      "south": 59500,
+      "west": 63279
+    },
+    "AAndBExactFileIdentityPassedDirections": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "backendAvailableProcessCount": 9,
+    "descriptorHashStableProcessCount": 9,
+    "completeOccupiedAreaPassedProcessCount": 9
+  },
+  "independentVisualDisposition": {
+    "passed": false,
+    "status": "rejected",
+    "evidence": [
+      "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/INDUSTRIAL-L1-VS-L2-NATIVE-2X-COLOR.png",
+      "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NATIVE-2X-COLOR-NESW.png",
+      "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/SOURCE-SCALE-NESW.png"
+    ],
+    "bindingDefects": [
+      "L2 capability step is weaker than required relative to accepted Industrial L1",
+      "dark box massing obscures the approved stepped production, administration, and process hierarchy",
+      "dock and frontage logic is less recognizable than accepted Industrial L1",
+      "materials remain shallow and flat",
+      "staff-scale and service details are tiny and low contrast",
+      "the saturated magenta footprint plate dominates alpha-respecting review presentation",
+      "candidate is not production-quality"
+    ],
+    "determinismRepairRecommendedForThesePixels": false,
+    "nextWorkMustAddressArtQualityBeforeRepeatability": true,
+    "rootCauseAudit": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/QUALITY-ROOT-CAUSE-AUDIT.md"
+  },
+  "reviewEvidence": {
+    "primaryOccupiedContact": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/PRIMARY-OCCUPIED-CROPS.png",
+    "alphaVisibilityReport": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/PRIMARY-RGBA-VISIBILITY.json",
+    "northABCNative2xColor": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NORTH-A-B-C-NATIVE-2X-COLOR.png",
+    "northABCNative2xGrayscale": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/NORTH-A-B-C-NATIVE-2X-GRAYSCALE.png",
+    "reviewManifest": "docs/production/evidence/PLAY-027/industrial-l02/l02/quality-reset-source-v10-raw-gate/review/RAW-REVIEW-MANIFEST.json",
+    "nativeScaleDifferencePerceptible": false,
+    "technicalIdentityGateStillBinding": true
+  },
+  "stoppedActions": [
+    "East C not run",
+    "South C not run",
+    "West C not run",
+    "no normalization",
+    "no source revision",
+    "no geometry or material change",
+    "no renderer pipeline tuning",
+    "no production selection"
+  ],
+  "normalizationPerformed": false,
+  "productionSelected": false,
+  "passed": false
+}

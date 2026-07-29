@@ -1,0 +1,54 @@
+{
+  "disposition" : "VISUAL-REJECTION",
+  "metricsFile" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/RASTER-SURVIVAL-METRICS.json",
+  "panels" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/ALPHA-MASKED-SOURCE.png",
+      "sha256" : "4e9d0e3951bb911e56bd011d0ee278fa7f417f267c2420517b8458f168c24c36"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/FOOTPRINT-CROP-COLOR-GRAYSCALE.png",
+      "sha256" : "7ddff9d077c9973798f587da5384b8b7a7a266c758a23f16de6c65a95bf15e2f"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-NATIVE-2X-COLOR.png",
+      "sha256" : "e72d0ca9c7dcc47e79596714348f42a5b1825bd3b142500e4a91be5c2006991e"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-NATIVE-2X-GRAYSCALE.png",
+      "sha256" : "6ba400aedba6080c9483cb8557ffc2d5f52d65a05b706d29270773dd7379aecf"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-SOURCE-COLOR.png",
+      "sha256" : "6cb967a208056eee59c9503faab838dfd742d396920bd23fb0c57cc895e345f5"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-SOURCE-GRAYSCALE.png",
+      "sha256" : "5023cee971b3a08b0a3dd800f16cec31586125c290d0df0e893f32d576963a47"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/NATIVE-2X-COLOR.png",
+      "sha256" : "58b965e8e210bf2883da4a21679bf7e058e76343012fce49e6842309ec7d378d"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/NATIVE-2X-GRAYSCALE.png",
+      "sha256" : "cb7b8d75213431c722f895062dea564e35671fd6ab2823b1834c4decea478bf9"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/SOURCE-SCALE-NEUTRAL-COLOR.png",
+      "sha256" : "0b4e166f505e604d8a2c1039643f2de7fa7a730d7ff56284d088f185f69e8c8e"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/SOURCE-SCALE-NEUTRAL-GRAYSCALE.png",
+      "sha256" : "eb72fe04aa16402131d22a2a03c786eed60b3fed348976833e340a98cf4c52b8"
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/ZOOM.png",
+      "sha256" : "a44f6499f0c33cefe0edaf60a15921718c2953dd2278e006b1babd868c18473c"
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-raster-survival-review-manifest"
+}

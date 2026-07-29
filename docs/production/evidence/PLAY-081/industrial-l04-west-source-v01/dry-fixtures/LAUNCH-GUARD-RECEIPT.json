@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "fixtureOnly": true,
+  "result": "PASS",
+  "productionAuthority": false,
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "pixelFiles": 0
+}

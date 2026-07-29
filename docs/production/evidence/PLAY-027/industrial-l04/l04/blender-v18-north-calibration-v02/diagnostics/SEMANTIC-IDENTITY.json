@@ -1,0 +1,125 @@
+{
+  "contract" : "CONTRACT-020",
+  "decodedRGBAIdentity" : true,
+  "expectation" : "identical",
+  "fileIdentity" : false,
+  "fileIdentityRequired" : false,
+  "identityExpectationPassed" : true,
+  "productionSelected" : false,
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "sourceCount" : 3,
+  "sources" : [
+    {
+      "decodedPremultipliedRGBASHA256" : "75339fe821108b76dc2b058c5804b373cec31265bd8c42d82588bfb359e2e2d2",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-v18-north-calibration-v02/diagnostics/run-a/semantic.png",
+      "fileSHA256" : "a4608251eb46ef72064ece99aae72acc66df45bcbb79c74d8e190810ae75ccb6",
+      "id" : "a",
+      "metrics" : {
+        "alphaBounds" : [
+          511,
+          589,
+          1025,
+          960
+        ],
+        "alphaChromaHiddenRGBPassed" : true,
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "dimensions" : [
+          1536,
+          1024
+        ],
+        "exactChromaAtNonzeroAlphaPixelCount" : 0,
+        "hiddenRGBAtAlphaZeroPixelCount" : 0,
+        "nearChromaAtNonzeroAlphaPixelCount" : 0,
+        "nonTransparentPixelCount" : 112812,
+        "paddingPixels" : [
+          511,
+          589,
+          511,
+          64
+        ],
+        "registrationPaddingPassed" : true,
+        "sourceChecksPassed" : true,
+        "transparentPixelCount" : 1460052
+      }
+    },
+    {
+      "decodedPremultipliedRGBASHA256" : "75339fe821108b76dc2b058c5804b373cec31265bd8c42d82588bfb359e2e2d2",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-v18-north-calibration-v02/diagnostics/run-b/semantic.png",
+      "fileSHA256" : "16f2182eebd29601cf0777e4f4b15ab126891a26543f7531ca7f4ab5a5da0a4b",
+      "id" : "b",
+      "metrics" : {
+        "alphaBounds" : [
+          511,
+          589,
+          1025,
+          960
+        ],
+        "alphaChromaHiddenRGBPassed" : true,
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "dimensions" : [
+          1536,
+          1024
+        ],
+        "exactChromaAtNonzeroAlphaPixelCount" : 0,
+        "hiddenRGBAtAlphaZeroPixelCount" : 0,
+        "nearChromaAtNonzeroAlphaPixelCount" : 0,
+        "nonTransparentPixelCount" : 112812,
+        "paddingPixels" : [
+          511,
+          589,
+          511,
+          64
+        ],
+        "registrationPaddingPassed" : true,
+        "sourceChecksPassed" : true,
+        "transparentPixelCount" : 1460052
+      }
+    },
+    {
+      "decodedPremultipliedRGBASHA256" : "75339fe821108b76dc2b058c5804b373cec31265bd8c42d82588bfb359e2e2d2",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-v18-north-calibration-v02/diagnostics/run-c/semantic.png",
+      "fileSHA256" : "be13ee5e385105e77749fb3ecc9147da0f111f56ca4329574174f5f134bd3f8b",
+      "id" : "c",
+      "metrics" : {
+        "alphaBounds" : [
+          511,
+          589,
+          1025,
+          960
+        ],
+        "alphaChromaHiddenRGBPassed" : true,
+        "alphaRange" : [
+          0,
+          255
+        ],
+        "dimensions" : [
+          1536,
+          1024
+        ],
+        "exactChromaAtNonzeroAlphaPixelCount" : 0,
+        "hiddenRGBAtAlphaZeroPixelCount" : 0,
+        "nearChromaAtNonzeroAlphaPixelCount" : 0,
+        "nonTransparentPixelCount" : 112812,
+        "paddingPixels" : [
+          511,
+          589,
+          511,
+          64
+        ],
+        "registrationPaddingPassed" : true,
+        "sourceChecksPassed" : true,
+        "transparentPixelCount" : 1460052
+      }
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "task-owned Blender transparent-raw validator",
+  "validationPassed" : true
+}

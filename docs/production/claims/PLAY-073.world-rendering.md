@@ -18,9 +18,21 @@
   `bfcd46cc361f04f38c35c7c463b8a42dfb000351`, with its accepted integration
   repair published through `4e5d79f43c8213e86d58a9cfe0c0bc1f98c8b3c1`.
   The task remains open because the production opening is still visibly sparse.
-  Under Wave 010, further composition mutation is paused and the lane's next
-  production mutation is reserved for the independently accepted PLAY-027
-  Industrial L2 N/E/S/W family.
+  Wave 010 R1 Industrial L2 is accepted at exact renderer product
+  `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075 approval
+  `74f2164da506a246af9335cab2d3a9e977624097`. Further composition mutation
+  remains paused. Exact R2 candidate
+  `b4191d98ee7c526bc08a6fe272521588572e27fd` is clean and preserved and passed
+  the 271-test integration gate, but integration returned it before publication
+  because the L3 material/value/outline language fails the mixed-fidelity stop.
+  The lane now preserves replacement R2 plus its candidate-bound external
+  fixture intake. Industrial L4 non-shipping direction-quarantine preparation
+  is separately active under
+  `INDUSTRIAL-L04-RENDERER-QUARANTINE-PREP-AUTHORITY.md`.
+  File-backed packet-intake and baseline-neutral semantic-slot preparation are
+  additionally active under
+  `INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md`; this remains test/evidence
+  only and cannot ingest or activate actual source art.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,
@@ -77,15 +89,29 @@ technical green as visual acceptance.
 
 ## Wave 010 art-first ingestion authority
 
-Follow `docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`. Preserve the
-clean PLAY-073 boundary above. Do not begin a second composition iteration
-while World Art authors Industrial L2. When integration supplies one clean,
-independently approved N/E/S/W source candidate from PLAY-027, synchronize to
-the named published master and use the R1 window to ingest only that exact
-family. Source repair remains World Art-owned.
+Follow `docs/production/WAVE-010-ART-FIRST-RELEASE-SPRINT.md`. Preserve exact
+R1 product `d41c2c68` until synchronized to the next published baseline. Do not
+begin a second composition iteration while World Art authors Industrial L3.
+Use the R2 window to ingest only exact independently approved PLAY-027 source
+candidate `5e019c3e7b7992cabeae179641a0f6748a971666`. Source repair remains World
+Art-owned.
 
-For R1, run focused pack/runtime/frontage/LOD/resource checks and one staged
+For R2, run focused pack/runtime/frontage/LOD/resource checks and one staged
 candidate build. Integration owns the single full-suite and staged-identity
 gate; PLAY-075 owns the single focused independent real-app disposition.
-Industrial L3/L4, unaccepted source work, gameplay density, and UI repair are
-not authorized by this claim.
+Industrial L4 source ingestion, runtime/shipping activation, unaccepted source
+work, gameplay changes, UI repair, and broad composition mutation are not
+authorized by this claim. The Integration-published L4 quarantine-preparation
+addendum authorizes only its explicit test/evidence-owned non-shipping packet
+schema, validator, mutation matrix, and handoff.
+
+The arrival-gate addendum additionally authorizes a caller-path file-backed
+packet harness and a baseline-neutral repair of the preserved semantic-slot
+fixture. Neither change may adopt R2 product state, accept a real L4 source, or
+mutate runtime/shipping resources.
+
+After the accepted Industrial batches publish or are explicitly deferred, R4
+is governed by `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. Its
+rendered-pixel composition, terrain-mass, ground-contact, cross-fidelity,
+repetition, LOD, interaction, and resource criteria replace vague polish
+language and require the full independent PLAY-075 20/20 disposition.

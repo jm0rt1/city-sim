@@ -1,0 +1,61 @@
+{
+  "authorityCommit": "94fcbb7c73683782caae5bebf6c7bea7bdd6b3d0",
+  "startingCheckpoint": "9a384ebceef0a4dadd64b980950d8fe2a9d4137e",
+  "mergeCheckpoint": "0154e7a202cc1b28df84d683c42eb39de52f903d",
+  "task": "PLAY-027",
+  "sequence": "N2",
+  "disposition": "N2_REPEAT_PASS_DIAGNOSTIC_ONLY",
+  "n2": {
+    "charcoalOutlineSteelRedDeltaUnits": 2,
+    "warmTrimRedDeltaUnits": 3,
+    "freshProcessCount": 3,
+    "rawFileIdentity": true,
+    "rawDecodedPixelIdentity": true,
+    "rawFileSHA256": "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+    "rawDecodedRGBASHA256": "ca087fb06b5bcc67ea101f661ac07a5a1b263d5b3b32db4d1c6d8aa7d18764af",
+    "descriptorSHA256": "a147ad0a7023374b982a6677325da2912f45796616b03579e1a72eb7da4a6b61",
+    "materialSHA256": "33ff7c3424594a05bf9eea94958f33e82f186b7ed5b99ea3d736b0852342dd58",
+    "occupancyAndVisibilityPassed": true,
+    "registrationSocketFrontageStructuralInvariancePassed": true,
+    "changedRegionOwnershipPassed": true,
+    "visualComparisonPassed": true
+  },
+  "n3": {
+    "authorizedOnlyOnN2Failure": true,
+    "executed": false,
+    "reason": "N2 passed exact emitted-file and decoded-RGBA identity; the published hard stop therefore prohibited N3."
+  },
+  "governedCoordinateCenters": [
+    {
+      "coordinate": [796, 746],
+      "prequantizedRGBA": [184, 162, 124, 255],
+      "finalRGBA": [208, 176, 144, 255]
+    },
+    {
+      "coordinate": [795, 748],
+      "prequantizedRGBA": [185, 162, 124, 255],
+      "finalRGBA": [208, 176, 144, 255]
+    },
+    {
+      "coordinate": [688, 391],
+      "prequantizedRGBA": [25, 32, 34, 255],
+      "finalRGBA": [48, 48, 48, 255]
+    }
+  ],
+  "tooling": {
+    "inputBuilderSourceSHA256": "8c1fe08608b8db5e7dfaa3e3f5b9d5ae95a33c04d8f4c8c4d2397b7706ac21ca",
+    "inputBuilderBinarySHA256": "8e550302ba4ffd682683fe4cccd9a0df9db4a1b876839de7854126b9e8795446",
+    "reviewBuilderSourceSHA256": "a03a95099a09c9db18872aa4a49fcd92ba013307ddea22eccd84bf6406e033be",
+    "reviewBuilderBinarySHA256": "52e02b79781b6028b429445ba0be589f83566ccae636a69b23a43a3351e9f6f1",
+    "rendererBinarySHA256": "d8ca1c92f0d6fc58a77499ffefb4dd3195b4fda02f6efc5e50383d2479396f63",
+    "rendererSourceCommit": "26e3a52168a9b2747cc95f202990b08e5c1ac432"
+  },
+  "evidence": {
+    "matrixManifestSHA256": "e4793eebb1103736d7f50ef2b038b480139d3bd4580b9b2b6aa2ded8d77b3189",
+    "reviewInventorySHA256": "fb97ce040f89a17d71268f85d019badc8f97ce108cfe8c8229fb3027a5111c4c",
+    "descriptorMaterialAndReviewReplayByteIdentical": true,
+    "normalizerProcessCount": 0,
+    "sourceAuthority": false,
+    "productionSelected": false
+  }
+}

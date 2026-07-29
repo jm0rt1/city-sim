@@ -321,7 +321,7 @@ final class CitySimulationTests: XCTestCase {
     @MainActor
     func testRendererInvalidatesOnlyOneChangedBuildingTile() {
         var state = CityGameState.newCity(seed: 42)
-        let target = GridCoordinate(x: 8, y: 11)
+        let target = GridCoordinate(x: 2, y: 2)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
@@ -347,9 +347,9 @@ final class CitySimulationTests: XCTestCase {
     @MainActor
     func testRendererRoadMutationInvalidatesTargetConnectedRoadAndAdjacentFrontage() {
         var state = CityGameState.newCity(seed: 42)
-        let target = GridCoordinate(x: 8, y: 11)
-        let connectedRoad = GridCoordinate(x: 8, y: 12)
-        let adjacentFrontage = GridCoordinate(x: 9, y: 11)
+        let target = GridCoordinate(x: 3, y: 11)
+        let connectedRoad = GridCoordinate(x: 4, y: 11)
+        let adjacentFrontage = GridCoordinate(x: 3, y: 10)
         let expectedUpdates: Set<GridCoordinate> = [target, connectedRoad, adjacentFrontage]
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -832,6 +832,226 @@ final class CitySimulationTests: XCTestCase {
             CityTrajectoryHUDPresentation.make(projectedBalance: 0).accessibilityValue,
             "Holding steady"
         )
+    }
+
+    @MainActor
+    func testSelectedTargetBeaconPresentsInspectBuildBulldozeNilReadyAndBlockedTruth() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let cityHall = try XCTUnwrap(state.tiles.first { $0.kind == .cityHall })
+        let removable = try XCTUnwrap(state.tiles.first {
+            $0.kind != .empty && $0.kind != .cityHall
+        })
+        let validRoad = try XCTUnwrap(state.tiles.first { tile in
+            if case .success = CitySimulation.validateBuild(.road, at: tile.coordinate, in: state) {
+                return true
+            }
+            return false
+        })
+
+        func presentation(_ store: CityGameStore) -> BuildToolbarView.TargetBeaconPresentation {
+            BuildToolbarView.targetBeaconPresentation(
+                interactionMode: store.interactionMode,
+                selectedTile: store.selectedTile,
+                target: store.activeMapActionTargetPresentation
+            )
+        }
+
+        let inspectNil = presentation(CityGameStore(state: state))
+        XCTAssertEqual(inspectNil.title, "No block selected")
+        XCTAssertEqual(inspectNil.detail, "Choose a block")
+        XCTAssertEqual(inspectNil.status, "INSPECT")
+        XCTAssertEqual(inspectNil.accessibilityLabel, "Inspect mode")
+        XCTAssertEqual(inspectNil.accessibilityValue, "No block selected")
+        XCTAssertFalse(inspectNil.opensDetails)
+
+        let inspectStore = CityGameStore(state: state)
+        inspectStore.selectedCoordinate = cityHall.coordinate
+        let inspect = presentation(inspectStore)
+        XCTAssertEqual(inspect.title, "City Hall")
+        XCTAssertEqual(
+            inspect.detail,
+            "Block \(cityHall.coordinate.x + 1), \(cityHall.coordinate.y + 1)"
+        )
+        XCTAssertEqual(inspect.status, "INSPECT")
+        XCTAssertEqual(inspect.tone, .information)
+        XCTAssertEqual(
+            inspect.accessibilityLabel,
+            "Open details for City Hall at block \(cityHall.coordinate.x + 1), \(cityHall.coordinate.y + 1)"
+        )
+        XCTAssertEqual(
+            inspect.accessibilityValue,
+            inspectStore.activeMapActionTargetPresentation?.primaryAction.disclosure
+        )
+        XCTAssertTrue(inspect.opensDetails)
+
+        let buildNilStore = CityGameStore(state: state)
+        buildNilStore.selectTool(.road)
+        let buildNil = presentation(buildNilStore)
+        XCTAssertEqual(buildNil.title, "Road")
+        XCTAssertEqual(buildNil.status, "CHOOSE")
+        XCTAssertEqual(buildNil.accessibilityLabel, "Build Road")
+        XCTAssertTrue(buildNil.accessibilityValue.contains("Choose a block"))
+        XCTAssertFalse(buildNil.opensDetails)
+
+        let buildReadyStore = CityGameStore(state: state)
+        buildReadyStore.selectTool(.road)
+        buildReadyStore.selectedCoordinate = validRoad.coordinate
+        let buildReady = presentation(buildReadyStore)
+        XCTAssertEqual(buildReady.title, "Road")
+        XCTAssertEqual(buildReady.status, "READY")
+        XCTAssertEqual(buildReady.tone, .ready)
+        XCTAssertEqual(
+            buildReady.accessibilityLabel,
+            "Open details for Road at block \(validRoad.coordinate.x + 1), \(validRoad.coordinate.y + 1)"
+        )
+        XCTAssertEqual(
+            buildReady.accessibilityValue,
+            buildReadyStore.activeMapActionTargetPresentation?.primaryAction.disclosure
+        )
+        XCTAssertTrue(buildReady.opensDetails)
+
+        let buildBlockedStore = CityGameStore(state: state)
+        buildBlockedStore.selectTool(.road)
+        buildBlockedStore.selectedCoordinate = cityHall.coordinate
+        let buildBlocked = presentation(buildBlockedStore)
+        XCTAssertEqual(buildBlocked.title, "Road")
+        XCTAssertEqual(buildBlocked.status, "BLOCKED")
+        XCTAssertEqual(buildBlocked.tone, .blocked)
+        XCTAssertEqual(
+            buildBlocked.accessibilityLabel,
+            "Open details for Road at block \(cityHall.coordinate.x + 1), \(cityHall.coordinate.y + 1)"
+        )
+        XCTAssertEqual(
+            buildBlocked.accessibilityValue,
+            buildBlockedStore.activeMapActionTargetPresentation?.primaryAction.disclosure
+        )
+        XCTAssertTrue(buildBlocked.opensDetails)
+
+        let bulldozeNilStore = CityGameStore(state: state)
+        bulldozeNilStore.interactionMode = .bulldoze
+        let bulldozeNil = presentation(bulldozeNilStore)
+        XCTAssertEqual(bulldozeNil.title, "No structure selected")
+        XCTAssertEqual(bulldozeNil.status, "BULLDOZE")
+        XCTAssertEqual(bulldozeNil.accessibilityLabel, "Bulldoze mode")
+        XCTAssertTrue(bulldozeNil.accessibilityValue.contains("Choose a structure"))
+        XCTAssertFalse(bulldozeNil.opensDetails)
+
+        let bulldozeReadyStore = CityGameStore(state: state)
+        bulldozeReadyStore.interactionMode = .bulldoze
+        bulldozeReadyStore.selectedCoordinate = removable.coordinate
+        let bulldozeReady = presentation(bulldozeReadyStore)
+        XCTAssertEqual(bulldozeReady.title, removable.kind.title)
+        XCTAssertEqual(bulldozeReady.status, "READY")
+        XCTAssertEqual(bulldozeReady.tone, .ready)
+        XCTAssertEqual(
+            bulldozeReady.accessibilityLabel,
+            "Open details for \(removable.kind.title) at block "
+                + "\(removable.coordinate.x + 1), \(removable.coordinate.y + 1)"
+        )
+        XCTAssertEqual(
+            bulldozeReady.accessibilityValue,
+            bulldozeReadyStore.activeMapActionTargetPresentation?.primaryAction.disclosure
+        )
+        XCTAssertTrue(bulldozeReady.opensDetails)
+
+        let bulldozeBlockedStore = CityGameStore(state: state)
+        bulldozeBlockedStore.interactionMode = .bulldoze
+        bulldozeBlockedStore.selectedCoordinate = cityHall.coordinate
+        let bulldozeBlocked = presentation(bulldozeBlockedStore)
+        XCTAssertEqual(bulldozeBlocked.title, "City Hall")
+        XCTAssertEqual(bulldozeBlocked.status, "BLOCKED")
+        XCTAssertEqual(bulldozeBlocked.tone, .blocked)
+        XCTAssertEqual(
+            bulldozeBlocked.accessibilityLabel,
+            "Open details for City Hall at block "
+                + "\(cityHall.coordinate.x + 1), \(cityHall.coordinate.y + 1)"
+        )
+        XCTAssertEqual(
+            bulldozeBlocked.accessibilityValue,
+            bulldozeBlockedStore.activeMapActionTargetPresentation?.primaryAction.disclosure
+        )
+        XCTAssertTrue(bulldozeBlocked.opensDetails)
+    }
+
+    @MainActor
+    func testSelectedTargetBeaconActivatesDetailsExactlyOnceAndEscapeRestoresMapFocus() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let cityHall = try XCTUnwrap(state.tiles.first { $0.kind == .cityHall })
+        let store = CityGameStore(state: state)
+        store.selectedCoordinate = cityHall.coordinate
+        store.hudContextScope = .city
+
+        let stateBefore = store.state
+        let focusBefore = store.mapFocusRequestGeneration
+        let selectedBefore = store.selectedCoordinate
+        let modeBefore = store.interactionMode
+        let undoBefore = store.canUndo
+
+        XCTAssertTrue(BuildToolbarView.activateTargetBeacon(store: store))
+        XCTAssertTrue(store.showInspector, "Exactly one toggle must leave Details open")
+        XCTAssertEqual(store.hudContextScope, .selection)
+        XCTAssertEqual(store.state, stateBefore)
+        XCTAssertEqual(store.selectedCoordinate, selectedBefore)
+        XCTAssertEqual(store.interactionMode, modeBefore)
+        XCTAssertEqual(store.canUndo, undoBefore)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusBefore)
+
+        XCTAssertTrue(store.perform(.cancelInteraction))
+        XCTAssertFalse(store.showInspector)
+        XCTAssertEqual(store.state, stateBefore)
+        XCTAssertEqual(store.selectedCoordinate, selectedBefore)
+        XCTAssertEqual(store.interactionMode, modeBefore)
+        XCTAssertEqual(store.canUndo, undoBefore)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusBefore + 1)
+
+        let nilStore = CityGameStore(state: state)
+        XCTAssertFalse(BuildToolbarView.activateTargetBeacon(store: nilStore))
+        XCTAssertFalse(nilStore.showInspector)
+        XCTAssertEqual(nilStore.mapFocusRequestGeneration, 0)
+    }
+
+    @MainActor
+    func testSelectedTargetBeaconFitsClosedRegularAndCompactRailWithoutReducingAperture() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let cityHall = try XCTUnwrap(store.state.tiles.first { $0.kind == .cityHall })
+        store.speed = .paused
+        store.selectedCoordinate = cityHall.coordinate
+
+        let compactSize = CGSize(width: 884, height: BuildToolbarView.compactClosedMaximumHeight)
+        let compact = try toolbarBitmap(size: compactSize, store: store, compact: true)
+        XCTAssertEqual(compact.size.width, compactSize.width, accuracy: 0.5)
+        XCTAssertEqual(compact.size.height, compactSize.height, accuracy: 0.5)
+
+        let regularWindowSize = CGSize(width: 1_278, height: 768)
+        XCTAssertFalse(ContentView.isCompactLayout(regularWindowSize))
+        let regularSize = CGSize(
+            width: 1_120,
+            height: BuildToolbarView.regularSituationalMaximumHeight
+        )
+        XCTAssertEqual(regularSize.width, 1_120, "Bind the real regular command-rail maximum")
+        let regular = try toolbarBitmap(size: regularSize, store: store, compact: false)
+        XCTAssertEqual(regular.size.width, regularSize.width, accuracy: 0.5)
+        XCTAssertEqual(regular.size.height, regularSize.height, accuracy: 0.5)
+        XCTAssertEqual(BuildToolbarView.compactClosedMaximumHeight, 64)
+        XCTAssertEqual(BuildToolbarView.regularSituationalMaximumHeight, 64)
+
+        let compactChrome = CityHUDChromeFrames(
+            top: CGRect(x: 8, y: 8, width: 884, height: 104),
+            bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
+        )
+        XCTAssertEqual(
+            ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactChrome),
+            416
+        )
+
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_PLAY082_COMPACT_BEACON_PROOF"] {
+            let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_PLAY082_REGULAR_BEACON_PROOF"] {
+            let data = try XCTUnwrap(regular.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
     }
 
     @MainActor
@@ -1349,6 +1569,29 @@ final class CitySimulationTests: XCTestCase {
         view.frame = CGRect(origin: .zero, size: size)
         view.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.25))
+
+        let representation = try XCTUnwrap(view.bitmapImageRepForCachingDisplay(in: view.bounds))
+        view.cacheDisplay(in: view.bounds, to: representation)
+        return representation
+    }
+
+    @MainActor
+    private func toolbarBitmap(
+        size: CGSize,
+        store: CityGameStore,
+        compact: Bool
+    ) throws -> NSBitmapImageRep {
+        let view = NSHostingView(
+            rootView: BuildToolbarView(
+                store: store,
+                compact: compact,
+                pointerTransitionGate: CityMapPointerTransitionGate()
+            )
+            .frame(width: size.width, height: size.height)
+        )
+        view.frame = CGRect(origin: .zero, size: size)
+        view.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
 
         let representation = try XCTUnwrap(view.bitmapImageRepForCachingDisplay(in: view.bounds))
         view.cacheDisplay(in: view.bounds, to: representation)

@@ -1,0 +1,60 @@
+{
+  "canonicalPixelFormat" : "8-bit sRGB premultiplied RGBA",
+  "fileExpectationPassed" : true,
+  "identityExpectationPassed" : true,
+  "pixelExpectation" : "unique",
+  "pixelExpectationPassed" : true,
+  "schema" : 1,
+  "sourceCount" : 1,
+  "sourceKind" : "raw",
+  "sources" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v04/primary-calibration/diagnostics/north-primary-v02/raw.png",
+      "fileSHA256" : "ca283890943f7a9df288fbdcac992b461ef1300ce64c4d9aa9983c7782e002a8",
+      "id" : "north",
+      "inspection" : {
+        "allRawPixelsOpaque" : true,
+        "alphaRange" : [
+          255,
+          255
+        ],
+        "completeOccupiedAreaPassed" : true,
+        "exactChromaPixelCount" : 1423562,
+        "flatChromaCorners" : true,
+        "minimumNonChromaBoundsPixels" : [
+          400,
+          260
+        ],
+        "minimumNonChromaPixelCount" : 50000,
+        "nonChromaBounds" : [
+          509,
+          461,
+          1029,
+          906
+        ],
+        "nonChromaBoundsPixels" : [
+          520,
+          445
+        ],
+        "nonChromaPixelCount" : 149302,
+        "paddingPixels" : [
+          509,
+          461,
+          507,
+          118
+        ]
+      },
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "pixelSHA256" : "ba81606269fd61de22ec1e2ec548859d31d5453cbfb05d370d5cde268be9327c",
+      "sourceChecksPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "macOS-native canonical RGBA source validator",
+  "uniqueFileHashCount" : 1,
+  "uniquePixelHashCount" : 1,
+  "validationPassed" : true
+}

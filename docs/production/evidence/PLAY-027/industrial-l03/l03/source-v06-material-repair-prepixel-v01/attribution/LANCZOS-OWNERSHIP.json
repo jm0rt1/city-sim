@@ -1,0 +1,285 @@
+{
+  "authorityCommit" : "5fd2d6861305fef23d32af4afbac7228f60d925f",
+  "authorityFile" : "docs/production/evidence/PLAY-027/INDUSTRIAL-L03-SOURCE-V06-MATERIAL-REPAIR-AUTHORITY-722c8c5.md",
+  "coordinates" : [
+    {
+      "attributedPositiveWeight" : 22.506753511785206,
+      "descriptorSHA256" : "a147ad0a7023374b982a6677325da2912f45796616b03579e1a72eb7da4a6b61",
+      "direction" : "north",
+      "downsampleInputCoordinate" : [
+        688,
+        263
+      ],
+      "expectedMaterialID" : "l3c-charcoal-outline-steel",
+      "expectedMaterialPositiveWeight" : 22.506753511785206,
+      "expectedOwnershipAmongAttributedPositiveSupport" : 1,
+      "expectedOwnershipOfFullPositiveSupport" : 0.98438267650401023,
+      "expectedRole" : "flat-parapet-trim",
+      "expectedRoleMaterialPositiveWeight" : 22.506753511785206,
+      "highResolutionCenter" : [
+        2753.5,
+        1053.5
+      ],
+      "label" : "North high-bay parapet trim",
+      "materialOwnership" : [
+        {
+          "attributedOwnership" : 1,
+          "materialID" : "l3c-charcoal-outline-steel",
+          "positiveWeight" : 22.506753511785206
+        }
+      ],
+      "minimumExpectedOwnershipAmongAttributedPositiveSupport" : 0.80000000000000004,
+      "passed" : true,
+      "positiveSupportHitSampleCount" : 253,
+      "positiveSupportMissSampleCount" : 67,
+      "positiveSupportSampleCount" : 320,
+      "primaryMaterialID" : "l3c-charcoal-outline-steel",
+      "primaryRole" : "flat-parapet-trim",
+      "primitiveOwnership" : [
+        {
+          "attributedOwnership" : 0.97811146873370391,
+          "positiveWeight" : 22.014113733839675,
+          "primitiveID" : "n-high-bay-roof-parapet-north"
+        },
+        {
+          "attributedOwnership" : 0.0218885312662963,
+          "positiveWeight" : 0.49263977794553454,
+          "primitiveID" : "n-high-bay-roof-parapet-west"
+        }
+      ],
+      "sourceCoordinate" : [
+        688,
+        391
+      ],
+      "totalPositiveWeight" : 22.863825267341056,
+      "unattributedPositiveWeight" : 0.35707175555585025
+    },
+    {
+      "attributedPositiveWeight" : 22.506753511785206,
+      "descriptorSHA256" : "56e9aef896ef5eef435f76ff466f837ac022ff18edbc4e6bd3fa24cb583d78dc",
+      "direction" : "west",
+      "downsampleInputCoordinate" : [
+        847,
+        263
+      ],
+      "expectedMaterialID" : "l3c-charcoal-outline-steel",
+      "expectedMaterialPositiveWeight" : 22.506753511785206,
+      "expectedOwnershipAmongAttributedPositiveSupport" : 1,
+      "expectedOwnershipOfFullPositiveSupport" : 0.98438267650401023,
+      "expectedRole" : "flat-parapet-trim",
+      "expectedRoleMaterialPositiveWeight" : 22.506753511785206,
+      "highResolutionCenter" : [
+        3389.5,
+        1053.5
+      ],
+      "label" : "West high-bay parapet trim",
+      "materialOwnership" : [
+        {
+          "attributedOwnership" : 1,
+          "materialID" : "l3c-charcoal-outline-steel",
+          "positiveWeight" : 22.506753511785206
+        }
+      ],
+      "minimumExpectedOwnershipAmongAttributedPositiveSupport" : 0.80000000000000004,
+      "passed" : true,
+      "positiveSupportHitSampleCount" : 253,
+      "positiveSupportMissSampleCount" : 67,
+      "positiveSupportSampleCount" : 320,
+      "primaryMaterialID" : "l3c-charcoal-outline-steel",
+      "primaryRole" : "flat-parapet-trim",
+      "primitiveOwnership" : [
+        {
+          "attributedOwnership" : 0.91534230373815328,
+          "positiveWeight" : 20.601383609144243,
+          "primitiveID" : "w-high-bay-roof-parapet-north"
+        },
+        {
+          "attributedOwnership" : 0.084657696261846938,
+          "positiveWeight" : 1.9053699026409687,
+          "primitiveID" : "w-high-bay-roof-parapet-west"
+        }
+      ],
+      "sourceCoordinate" : [
+        847,
+        391
+      ],
+      "totalPositiveWeight" : 22.863825267341056,
+      "unattributedPositiveWeight" : 0.35707175555585025
+    },
+    {
+      "attributedPositiveWeight" : 22.863825267341056,
+      "descriptorSHA256" : "a147ad0a7023374b982a6677325da2912f45796616b03579e1a72eb7da4a6b61",
+      "direction" : "north",
+      "downsampleInputCoordinate" : [
+        795,
+        620
+      ],
+      "expectedMaterialID" : "l3c-warm-trim",
+      "expectedMaterialPositiveWeight" : 22.479001003608655,
+      "expectedOwnershipAmongAttributedPositiveSupport" : 0.98316885913740393,
+      "expectedOwnershipOfFullPositiveSupport" : 0.98316885913740393,
+      "expectedRole" : "flat-parapet-trim",
+      "expectedRoleMaterialPositiveWeight" : 22.479001003608655,
+      "highResolutionCenter" : [
+        3181.5,
+        2481.5
+      ],
+      "label" : "North annex parapet edge",
+      "materialOwnership" : [
+        {
+          "attributedOwnership" : 0.98316885913740393,
+          "materialID" : "l3c-warm-trim",
+          "positiveWeight" : 22.479001003608655
+        },
+        {
+          "attributedOwnership" : 0.016831140862596117,
+          "materialID" : "l3c-weathered-roof-membrane",
+          "positiveWeight" : 0.38482426373240164
+        }
+      ],
+      "minimumExpectedOwnershipAmongAttributedPositiveSupport" : 0.80000000000000004,
+      "passed" : true,
+      "positiveSupportHitSampleCount" : 320,
+      "positiveSupportMissSampleCount" : 0,
+      "positiveSupportSampleCount" : 320,
+      "primaryMaterialID" : "l3c-warm-trim",
+      "primaryRole" : "flat-parapet-trim",
+      "primitiveOwnership" : [
+        {
+          "attributedOwnership" : 0.89926852937176216,
+          "positiveWeight" : 20.560718523974728,
+          "primitiveID" : "n-annex-roof-parapet-east"
+        },
+        {
+          "attributedOwnership" : 0.083900329765641532,
+          "positiveWeight" : 1.9182824796339217,
+          "primitiveID" : "n-annex-roof-parapet-south"
+        },
+        {
+          "attributedOwnership" : 0.016831140862596117,
+          "positiveWeight" : 0.38482426373240164,
+          "primitiveID" : "n-annex-roof-slab"
+        }
+      ],
+      "sourceCoordinate" : [
+        795,
+        748
+      ],
+      "totalPositiveWeight" : 22.863825267341056,
+      "unattributedPositiveWeight" : 0
+    },
+    {
+      "attributedPositiveWeight" : 22.863825267341056,
+      "descriptorSHA256" : "56e9aef896ef5eef435f76ff466f837ac022ff18edbc4e6bd3fa24cb583d78dc",
+      "direction" : "west",
+      "downsampleInputCoordinate" : [
+        786,
+        396
+      ],
+      "expectedMaterialID" : "l3c-warm-formed-concrete",
+      "expectedMaterialPositiveWeight" : 15.307281295063872,
+      "expectedOwnershipAmongAttributedPositiveSupport" : 0.66949782532361124,
+      "expectedOwnershipOfFullPositiveSupport" : 0.66949782532361124,
+      "expectedRole" : "mass-block",
+      "expectedRoleMaterialPositiveWeight" : 15.307281295063872,
+      "highResolutionCenter" : [
+        3145.5,
+        1585.5
+      ],
+      "label" : "West loading-spine edge",
+      "materialOwnership" : [
+        {
+          "attributedOwnership" : 0.66949782532361124,
+          "materialID" : "l3c-warm-formed-concrete",
+          "positiveWeight" : 15.307281295063872
+        },
+        {
+          "attributedOwnership" : 0.31203362707195842,
+          "materialID" : "l3c-restrained-safety",
+          "positiveWeight" : 7.1342823269079192
+        },
+        {
+          "attributedOwnership" : 0.01846854760443082,
+          "materialID" : "l3c-weathered-blue-steel",
+          "positiveWeight" : 0.42226164536927652
+        }
+      ],
+      "minimumExpectedOwnershipAmongAttributedPositiveSupport" : 0.80000000000000004,
+      "passed" : false,
+      "positiveSupportHitSampleCount" : 320,
+      "positiveSupportMissSampleCount" : 0,
+      "positiveSupportSampleCount" : 320,
+      "primaryMaterialID" : "l3c-warm-formed-concrete",
+      "primaryRole" : "mass-block",
+      "primitiveOwnership" : [
+        {
+          "attributedOwnership" : 0.66949782532361124,
+          "positiveWeight" : 15.307281295063872,
+          "primitiveID" : "w-loading-spine"
+        },
+        {
+          "attributedOwnership" : 0.31203362707195842,
+          "positiveWeight" : 7.1342823269079192,
+          "primitiveID" : "w-portal-header"
+        },
+        {
+          "attributedOwnership" : 0.01846854760443082,
+          "positiveWeight" : 0.42226164536927652,
+          "primitiveID" : "w-high-bay-hall"
+        }
+      ],
+      "sourceCoordinate" : [
+        786,
+        524
+      ],
+      "totalPositiveWeight" : 22.863825267341056,
+      "unattributedPositiveWeight" : 0
+    }
+  ],
+  "descriptorFiles" : {
+    "north" : {
+      "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-frontage-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "sha256" : "a147ad0a7023374b982a6677325da2912f45796616b03579e1a72eb7da4a6b61"
+    },
+    "west" : {
+      "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-frontage-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "sha256" : "56e9aef896ef5eef435f76ff466f837ac022ff18edbc4e6bd3fa24cb583d78dc"
+    }
+  },
+  "disposition" : "STOP_ATTRIBUTION_GATE_FAILED",
+  "kernel" : {
+    "downsampleScale" : 0.25,
+    "fullPositiveSupportAccounting" : "unattributed/background weight retained separately",
+    "name" : "analytical separable Lanczos-3",
+    "ownershipDenominator" : "positive weight attributed to explicit geometry",
+    "positiveSupportRule" : "retain every 2D product weight greater than 1e-15",
+    "radiusDownsampleInputPixels" : 3
+  },
+  "materialLibrary" : {
+    "path" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+    "sha256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65"
+  },
+  "minimumExpectedOwnership" : 0.80000000000000004,
+  "normalizerProcessCount" : 0,
+  "passed" : false,
+  "primitiveModel" : {
+    "explicitBoxProps" : "axis-aligned boxes",
+    "explicitCylinderProps" : "finite vertical cylinders",
+    "foundation" : "axis-aligned box",
+    "massBlocks" : "axis-aligned boxes",
+    "roofVolumes" : "ContractSceneBuilder flat-parapet slab plus four trim boxes",
+    "trimBands" : "axis-aligned boxes"
+  },
+  "projection" : {
+    "camera" : "descriptor position/target look-at, vertical orthographic",
+    "inversePixelCenter" : "(downsamplePixel+0.5)*4-0.5",
+    "orthographicPixelsPerWorld" : "(viewportHeight*4)/(2*orthographicScale)",
+    "rayModel" : "orthographic ray, nearest finite explicit primitive",
+    "registration" : "output coordinate minus postProjectionOffsetPixels"
+  },
+  "purpose" : "no-SceneKit analytical full-positive-Lanczos-support ownership",
+  "rawProcessCount" : 0,
+  "sceneKitProcessCount" : 0,
+  "task" : "PLAY-027",
+  "traceCheckpoint" : "722c8c5456f58716827adee598c48361d0ee0295"
+}

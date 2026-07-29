@@ -68,6 +68,24 @@ struct SamplingCanonicalizerDescriptor: Codable, Equatable {
     let format: String
 }
 
+struct SamplingPreLanczosCanonicalizerDescriptor:
+    Codable, Equatable
+{
+    let algorithm: String
+    let version: Int
+    let quantizationStep: Int
+    let midpointOffset: Int
+    let chromaBypassRGBA: [Int]
+    let channels: String
+    let opaquePixelPolicy: String
+    let transparentPixelPolicy: String
+    let partialAlphaPolicy: String
+    let preservesAlpha: Bool
+    let preservesChroma: Bool
+    let immutableSourceBuffer: Bool
+    let crossRunState: String
+}
+
 struct SamplingBoundaryAssistDescriptor: Codable, Equatable {
     let algorithm: String
     let version: Int
@@ -105,11 +123,15 @@ struct SamplingDescriptor: Codable, Equatable {
     let sourceRevisionBinding: String
     let purpose: String
     let sceneKitAntialiasing: String
+    let sceneKitShadows: String?
+    let sceneKitLightingMode: String?
     let linearOversamplingFactor: Int
     let downsample: SamplingDownsampleDescriptor
     let ciContext: SamplingCIContextDescriptor
     let quantizer: SamplingQuantizerDescriptor
     let canonicalizer: SamplingCanonicalizerDescriptor
+    let preLanczosCanonicalizer:
+        SamplingPreLanczosCanonicalizerDescriptor?
     let postQuantizationCanonicalizer:
         SamplingPostQuantizationCanonicalizerDescriptor?
 }
@@ -174,6 +196,9 @@ struct BuildingDescriptor: Codable, Equatable {
     let roofVolumes: [RoofVolumeDescriptor]?
     let trimBands: [TrimBandDescriptor]?
     let usesLegacyDomesticDetails: Bool?
+    let usesExplicitComponentGeometry: Bool?
+    let foundationDimensions: [Double]?
+    let foundationPositionWorld: [Double]?
 }
 
 struct WindowBayDescriptor: Codable, Equatable {
@@ -285,6 +310,15 @@ struct MaterialLibraryDescriptor: Codable {
     let productionSelected: Bool
 }
 
+struct MaterialTextureMappingDescriptor: Codable {
+    let mode: String
+    let wrapS: String
+    let wrapT: String
+    let minificationFilter: String
+    let magnificationFilter: String
+    let mipFilter: String
+}
+
 struct MaterialDescriptor: Codable {
     let id: String
     let baseColorRGBA: [Double]
@@ -293,4 +327,6 @@ struct MaterialDescriptor: Codable {
     let emissionRGBA: [Double]?
     let pattern: String
     let physicalScaleWorld: [Double]
+    let sourceTexture: FileReference?
+    let textureMapping: MaterialTextureMappingDescriptor?
 }

@@ -186,7 +186,14 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
 - **Acceptance:** The CONTRACT-011 residential L1 N/E/S/W calibration set passes before batch expansion; every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all scene/tool/source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
 - **Stop conditions:** Reuse across building types, recolor-only variants, runtime mirroring/rotation, perspective or light drift, invented roads or ground truth, geometry/pivot/frontage mismatch, missing provenance, direct edits to live renderer/shipping selection, or generation continuing after two rejected direction siblings without anchor review.
-- **Current disposition:** Residential L1–L4 source authority is accepted and its 16 directional identities ship through PLAY-028. Commercial L1–L4 source authority `bf3e24b2b465870f131ac0a01a2327ac4969d5d5` ships through independently approved PLAY-060/061. Industrial L1 N/E/S/W source-v05 is independently accepted through clean source candidate `79668c347e58d602f9627c73cb09e3272a83ef57`: four unique raw directions are repeat-identical across three fresh processes, all 12 normalized LOD outputs are unique and repeat-identical, registration and frontage pass, and Industrial remains unmistakable from Residential and Commercial in color and grayscale. Industrial L1 production selection belongs to PLAY-062. Industrial L2 source authoring may begin under the same one-level-at-a-time gate; L3/L4 and all Industrial production selection beyond L1 remain blocked.
+- **Current disposition:** Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North is active under CONTRACT-020 and CONTRACT-021 revision 2.
+- **Latest L4 gate:** North v03 at `ba2c4127` preserves the materially stronger
+  foundry and passes technical intake, but its analytically connected
+  socket-side apron is occluded; the visible road court still points away from
+  the North socket at literal 192. V04 is authorized for one exterior,
+  player-visible road-court repair and one A-only review. A passing A publishes
+  the non-production appearance lock and releases North B/C plus
+  East/South/West A/B/C concurrently; shipping remains atomic at exact 4/4.
 
 ### [x] PLAY-028: Ship the directional residential skyline
 
@@ -686,11 +693,14 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Invented simulation truth, unaccepted art, mirroring/rotation/aliasing, gameplay/UI/persistence changes, or hero-frame-only work.
 - **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
-- **Art-first queue:** Wave 010 freezes the clean renderer boundary through
-  `bfcd46c`/published `4e5d79f`. The lane's next production mutation is the R1
-  ingestion window for one independently approved PLAY-027 Industrial L2
-  N/E/S/W family; broader composition resumes after that batch is published or
-  independently rejected.
+- **Art-first queue:** Wave 010 R1 Industrial L2 is accepted at exact renderer
+  product `d41c2c68` with focused PLAY-075 approval `74f2164`. Exact R2
+  candidate `b4191d98ee7c526bc08a6fe272521588572e27fd` remains preserved and passed
+  271/271 integration tests, but integration returned it before publication
+  under the mixed-fidelity stop. The next renderer mutation is one replacement
+  R2 ingestion window after independent source review accepts a cohesive
+  PLAY-027 Industrial L3 N/E/S/W repair. Broader composition and R3 remain
+  paused.
 
 ### [x] PLAY-074: Make building and recovery obvious on the map
 
@@ -718,7 +728,11 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Claim:** `docs/production/claims/PLAY-075.playtest-quality.md`.
 - **Art-first queue:** PLAY-075 performs one focused exact-candidate staged-app
   disposition for each Wave 010 art ingestion. These narrow passes do not
-  replace or pre-score the final 20/20 release gate.
+  replace or pre-score the final 20/20 release gate. R1 exact candidate
+  `d41c2c68` was approved at focused evidence commit `74f2164`. R2 candidate
+  `b4191d9` was returned by integration before independent live disposition;
+  its preregistration/admission evidence is preserved, and no score is implied.
+  PLAY-075 now awaits a repaired integration-supplied Industrial L3 candidate.
 
 ### [ ] PLAY-076: Grow the opening into a believable starter town
 
@@ -804,3 +818,140 @@ This is the authoritative first-wave task source. The shared target is one coher
   version change; non-deterministic generation; performance regression outside
   the published budget.
 - **Claim:** `docs/production/claims/PLAY-078.simulation-platform.md`.
+
+### [x] PLAY-079: Predesign the Industrial L4 East source in parallel
+
+- **Player outcome:** East-facing Industrial L4 can enter art review immediately
+  after North acceptance instead of starting from zero.
+- **Owning lane:** World Art East cell.
+- **Requirement IDs:** ART-001, ART-002, ART-004, REL-001.
+- **Dependencies:** CONTRACT-020; CONTRACT-021; active North family authority.
+- **In scope:** Independent East text scene/material binding and zero-pixel
+  portal, footprint, pivot, socket, silhouette, light, shadow, and occlusion
+  proof.
+- **Out of scope:** Pixel rendering, normalization, sibling geometry,
+  renderer/shipping, runtime, package, gameplay, simulation, UI, or build work.
+- **Acceptance:** East predesign is independently authored, road-facing,
+  registration-correct, non-aliased, cleanly committed, and ready to consume
+  the accepted North family/material lock.
+- **Claim:** `docs/production/claims/PLAY-079.world-art-east.md`.
+- **Accepted integration:** East zero-pixel predesign, exact-camera proof, and
+  direction handoff merged at `3575d6ac`; pixel production remains blocked
+  pending the North family/material lock and a new production authority.
+
+### [x] PLAY-080: Predesign the Industrial L4 South source in parallel
+
+- **Player outcome:** South-facing Industrial L4 can enter art review
+  immediately after North acceptance instead of starting from zero.
+- **Owning lane:** World Art South cell.
+- **Requirement IDs:** ART-001, ART-002, ART-004, REL-001.
+- **Dependencies:** CONTRACT-020; CONTRACT-021; active North family authority.
+- **In scope:** Independent South text scene/material binding and zero-pixel
+  portal, footprint, pivot, socket, silhouette, light, shadow, and occlusion
+  proof.
+- **Out of scope:** Pixel rendering, normalization, sibling geometry,
+  renderer/shipping, runtime, package, gameplay, simulation, UI, or build work.
+- **Acceptance:** South predesign is independently authored, road-facing,
+  registration-correct, non-aliased, cleanly committed, and ready to consume
+  the accepted North family/material lock.
+- **Claim:** `docs/production/claims/PLAY-080.world-art-south.md`.
+- **Accepted integration:** South zero-pixel predesign, exact-camera proof, and
+  direction handoff merged at `d9842279`; pixel production remains blocked
+  pending the North family/material lock and a new production authority.
+
+### [x] PLAY-081: Predesign the Industrial L4 West source in parallel
+
+- **Player outcome:** West-facing Industrial L4 can enter art review immediately
+  after North acceptance instead of starting from zero.
+- **Owning lane:** World Art West cell.
+- **Requirement IDs:** ART-001, ART-002, ART-004, REL-001.
+- **Dependencies:** CONTRACT-020; CONTRACT-021; active North family authority.
+- **In scope:** Independent West text scene/material binding and zero-pixel
+  portal, footprint, pivot, socket, silhouette, light, shadow, and occlusion
+  proof.
+- **Out of scope:** Pixel rendering, normalization, sibling geometry,
+  renderer/shipping, runtime, package, gameplay, simulation, UI, or build work.
+- **Acceptance:** West predesign is independently authored, road-facing,
+  registration-correct, non-aliased, cleanly committed, and ready to consume
+  the accepted North family/material lock.
+- **Claim:** `docs/production/claims/PLAY-081.world-art-west.md`.
+- **Accepted integration:** West zero-pixel predesign, exact-camera proof, and
+  direction handoff merged at `8a889f2a`; pixel production remains blocked
+  pending the North family/material lock and a new production authority.
+
+### [ ] PLAY-082: Make the selected target unmistakable
+
+- **Player outcome:** The selected building, block, and next available action
+  remain immediately legible against richer world art and diagnostic overlays
+  at regular and compact sizes.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** ART-002, UX-003, UX-004, UX-006, REL-001.
+- **Dependencies:** Accepted PLAY-074/077 interaction contracts; the
+  candidate-bound HUD/world-cohesion audit of the published product; next
+  published clean integration baseline.
+- **In scope:** Promote the existing closed-rail selected-target summary into a
+  high-contrast target beacon; truthful inspect/build/bulldoze Ready/Blocked
+  presentation; existing Details activation; exact keyboard/FKA/AX behavior;
+  focused UI tests and regular/compact evidence.
+- **Out of scope:** Renderer selection art, `CityScene`, `ContentView`, store or
+  command contracts, objectives, alerts, simulation/gameplay/persistence,
+  shared theme redesign, rail-height growth, or new state.
+- **Work checklist:** Preserve the existing `hud.selected.context` identity and
+  64-point closed rail; show a strong target name, block coordinate, and
+  truthful state from `selectedTile` and
+  `activeMapActionTargetPresentation`; open the existing Details surface
+  through `toggleCommandCenter`; preserve selection, camera, focus, and input
+  quarantine; prove nil, inspect, build, bulldoze, Ready, and Blocked states.
+- **Acceptance:** The beacon is visually dominant over secondary rail text in
+  City and Pollution layers, remains unclipped at regular and exact 900 x 600,
+  activates Details exactly once by pointer, Return, FKA, and AX, exposes an
+  exact accessible label/value, restores the prior map state with Escape, and
+  does not reduce the audited world aperture or alter selection/camera/game
+  state.
+- **Validation:** Focused presentation, accessibility, activation, focus, and
+  aperture tests; full native suite; exact lane-staged verify; real
+  regular/compact City/Pollution pointer and keyboard journeys with FKA, AX,
+  Escape, and Reduce Motion.
+- **Proof:** Before/after color frames, accessibility ledger, exactly-once
+  command trace, selection/camera/focus identities, aperture measurements, and
+  staged executable identity under `docs/production/evidence/PLAY-082/`.
+- **Stop conditions:** A new command/store contract, renderer mutation, second
+  selection truth, rail-height increase, objective/alert redesign, pointer-only
+  behavior, clipped compact layout, or selection/camera/focus regression
+  becomes necessary.
+- **Claim:** `docs/production/claims/PLAY-082.ui-input.md`.
+
+### [ ] PLAY-083: Prove exact lifecycle save bindings without relabeling history
+
+- **Player outcome:** Industrial L4 visual QA can compare truthful early and
+  recovered city states without invented fixtures or ambiguous semantic
+  relabeling.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-003, REL-001, REL-002, ART-002.
+- **Dependencies:** Accepted VisibleCityStates v3 corpus; exact PLAY-075
+  lifecycle-save request SHA-256
+  `73842570ee5d10e83ef3ec59b301dd9998959bd07e9d3d64e4d9d49c678bf51b`;
+  next published clean integration baseline.
+- **In scope:** Independent proof of explicit `early → active` and
+  `recovered → recovering` rubric mappings against the existing exact save
+  bytes; focused simulation tests or a task-local validator only if necessary;
+  task evidence.
+- **Out of scope:** Fixture or manifest mutation; new fixture generation;
+  save/schema/fingerprint changes; gameplay, renderer, UI, art, package,
+  build-script, public-contract, or legacy-Python changes; QA rehearsal or
+  scoring.
+- **Acceptance:** All request-bound manifest/save hashes and semantic
+  invariants pass; materialization, replay, persistence, recovery, and
+  round-trip gates repeat identically; all 22 negative cases fail closed; the
+  candidate packet leaves mapping publication and QA unlock to Integration.
+- **Validation:** Focused simulation/fixture tests; independent two-run
+  identity; exact Git-blob/SHA/digest comparison; save/load/backup/replay and
+  fingerprint checks; JSON parsing; `git diff --check`.
+- **Proof:** Machine-readable binding candidate, validation matrix, exact input
+  inventory, repeat receipt, and Integration handoff under
+  `docs/production/evidence/PLAY-083/`.
+- **Stop conditions:** Any fixture/manifest byte must change; either lifecycle
+  meaning must be inferred or weakened; public/save shape drifts; replay or
+  round trip differs; a negative gate does not fail; or product/visual
+  behavior would need mutation.
+- **Claim:** `docs/production/claims/PLAY-083.simulation-platform.md`.

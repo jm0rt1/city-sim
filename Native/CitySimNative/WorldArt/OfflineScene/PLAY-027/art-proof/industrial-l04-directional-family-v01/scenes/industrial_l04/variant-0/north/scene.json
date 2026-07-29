@@ -1,0 +1,1063 @@
+{
+  "authoredIndependently" : true,
+  "building" : {
+    "chimney" : {
+      "dimensions" : [
+        5,
+        18,
+        5
+      ],
+      "materialID" : "l4-charcoal-steel",
+      "positionWorld" : [
+        0,
+        58,
+        0
+      ]
+    },
+    "depth" : 56,
+    "floorHeight" : 12,
+    "floors" : 5,
+    "foundationDimensions" : [
+      56,
+      2.3999999999999999,
+      56
+    ],
+    "foundationHeight" : 3,
+    "foundationMaterialID" : "l4-foundation",
+    "foundationPositionWorld" : [
+      0,
+      1.2,
+      0
+    ],
+    "massBlocks" : [
+      {
+        "dimensions" : [
+          8,
+          48,
+          28
+        ],
+        "id" : "n-high-bay-west",
+        "materialID" : "l4-weathered-blue-steel",
+        "positionWorld" : [
+          -24,
+          28,
+          14
+        ]
+      },
+      {
+        "dimensions" : [
+          8,
+          31,
+          26
+        ],
+        "id" : "n-assembly-east",
+        "materialID" : "l4-blue-steel-light",
+        "positionWorld" : [
+          24,
+          19.5,
+          15
+        ]
+      },
+      {
+        "dimensions" : [
+          34,
+          24,
+          4
+        ],
+        "id" : "n-loading-spine",
+        "materialID" : "l4-warm-concrete",
+        "positionWorld" : [
+          0,
+          15,
+          12
+        ]
+      },
+      {
+        "dimensions" : [
+          36,
+          3,
+          41.25
+        ],
+        "id" : "n-open-loading-court",
+        "materialID" : "l4-concrete-shadow",
+        "positionWorld" : [
+          0,
+          3.8999999999999999,
+          -6.875
+        ]
+      },
+      {
+        "dimensions" : [
+          38,
+          1.8,
+          13
+        ],
+        "id" : "n-service-apron",
+        "materialID" : "l4-apron",
+        "positionWorld" : [
+          0,
+          2.1000000000000001,
+          -21.5
+        ]
+      },
+      {
+        "dimensions" : [
+          8,
+          28,
+          12
+        ],
+        "id" : "n-control-wing",
+        "materialID" : "l4-warm-concrete",
+        "positionWorld" : [
+          20,
+          17.5,
+          6
+        ]
+      },
+      {
+        "dimensions" : [
+          7,
+          8,
+          1.2
+        ],
+        "id" : "n-control-glazing",
+        "materialID" : "l4-control-glazing",
+        "positionWorld" : [
+          20,
+          20,
+          12.6
+        ]
+      },
+      {
+        "dimensions" : [
+          5.5,
+          10,
+          1
+        ],
+        "id" : "n-staff-door",
+        "materialID" : "l4-warm-glazing",
+        "positionWorld" : [
+          20,
+          8.5,
+          12.800000000000001
+        ]
+      },
+      {
+        "dimensions" : [
+          7,
+          3.5,
+          6
+        ],
+        "id" : "n-staff-canopy",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          19.800000000000001,
+          15.5,
+          15.5
+        ]
+      },
+      {
+        "dimensions" : [
+          7,
+          8,
+          10
+        ],
+        "id" : "n-process-podium",
+        "materialID" : "l4-oxide",
+        "positionWorld" : [
+          -24,
+          60,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          8,
+          8
+        ],
+        "id" : "n-process-crown",
+        "materialID" : "l4-process-metal",
+        "positionWorld" : [
+          -24,
+          68.200000000000003,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          33,
+          4,
+          4
+        ],
+        "id" : "n-pipe-gallery",
+        "materialID" : "l4-duct-metal",
+        "positionWorld" : [
+          0,
+          58,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          14,
+          1.6000000000000001
+        ],
+        "id" : "n-dock-1-recess",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          -12.4,
+          10.5,
+          14.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          12,
+          0.90000000000000002
+        ],
+        "id" : "n-dock-1-door",
+        "materialID" : "l4-dock-door",
+        "positionWorld" : [
+          -12.4,
+          9.5,
+          15.399999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          6
+        ],
+        "id" : "n-dock-1-canopy",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          -12.4,
+          19,
+          11.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          7,
+          1
+        ],
+        "id" : "n-dock-1-portal-shadow",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          -12.4,
+          24.5,
+          15.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          2.5,
+          3
+        ],
+        "id" : "n-dock-1-portal-cap",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          -12.4,
+          29,
+          15
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          14,
+          1.6000000000000001
+        ],
+        "id" : "n-dock-2-recess",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          -6.2000000000000002,
+          10.5,
+          14.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          12,
+          0.90000000000000002
+        ],
+        "id" : "n-dock-2-door",
+        "materialID" : "l4-dock-door",
+        "positionWorld" : [
+          -6.2000000000000002,
+          9.5,
+          15.399999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          6
+        ],
+        "id" : "n-dock-2-canopy",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          -6.2000000000000002,
+          19,
+          11.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          7,
+          1
+        ],
+        "id" : "n-dock-2-portal-shadow",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          -6.2000000000000002,
+          24.5,
+          15.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          2.5,
+          3
+        ],
+        "id" : "n-dock-2-portal-cap",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          -6.2000000000000002,
+          29,
+          15
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          14,
+          1.6000000000000001
+        ],
+        "id" : "n-dock-3-recess",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          0,
+          10.5,
+          14.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          12,
+          0.90000000000000002
+        ],
+        "id" : "n-dock-3-door",
+        "materialID" : "l4-dock-door",
+        "positionWorld" : [
+          0,
+          9.5,
+          15.399999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          6
+        ],
+        "id" : "n-dock-3-canopy",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          0,
+          19,
+          11.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          7,
+          1
+        ],
+        "id" : "n-dock-3-portal-shadow",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          0,
+          24.5,
+          15.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          2.5,
+          3
+        ],
+        "id" : "n-dock-3-portal-cap",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          0,
+          29,
+          15
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          14,
+          1.6000000000000001
+        ],
+        "id" : "n-dock-4-recess",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          6.2000000000000002,
+          10.5,
+          14.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          12,
+          0.90000000000000002
+        ],
+        "id" : "n-dock-4-door",
+        "materialID" : "l4-dock-door",
+        "positionWorld" : [
+          6.2000000000000002,
+          9.5,
+          15.399999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          6
+        ],
+        "id" : "n-dock-4-canopy",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          6.2000000000000002,
+          19,
+          11.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          7,
+          1
+        ],
+        "id" : "n-dock-4-portal-shadow",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          6.2000000000000002,
+          24.5,
+          15.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          2.5,
+          3
+        ],
+        "id" : "n-dock-4-portal-cap",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          6.2000000000000002,
+          29,
+          15
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          14,
+          1.6000000000000001
+        ],
+        "id" : "n-dock-5-recess",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          12.4,
+          10.5,
+          14.199999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          12,
+          0.90000000000000002
+        ],
+        "id" : "n-dock-5-door",
+        "materialID" : "l4-dock-door",
+        "positionWorld" : [
+          12.4,
+          9.5,
+          15.399999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          6
+        ],
+        "id" : "n-dock-5-canopy",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          12.4,
+          19,
+          11.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          7,
+          1
+        ],
+        "id" : "n-dock-5-portal-shadow",
+        "materialID" : "l4-recess",
+        "positionWorld" : [
+          12.4,
+          24.5,
+          15.799999999999999
+        ]
+      },
+      {
+        "dimensions" : [
+          5.7999999999999998,
+          2.5,
+          3
+        ],
+        "id" : "n-dock-5-portal-cap",
+        "materialID" : "l4-light-trim",
+        "positionWorld" : [
+          12.4,
+          29,
+          15
+        ]
+      }
+    ],
+    "massingProfile" : "industrial-l04-advanced-manufacturing-process-campus",
+    "roofHeight" : 6,
+    "roofMaterialID" : "l4-roof-membrane",
+    "roofOverhang" : 0.80000000000000004,
+    "roofVolumes" : [
+      {
+        "dimensions" : [
+          8,
+          4,
+          28
+        ],
+        "id" : "n-high-bay-roof",
+        "materialID" : "l4-roof-membrane",
+        "positionWorld" : [
+          -24,
+          54,
+          14
+        ],
+        "shape" : "flat-parapet",
+        "trimMaterialID" : "l4-charcoal-steel"
+      },
+      {
+        "dimensions" : [
+          8,
+          3.5,
+          26
+        ],
+        "id" : "n-assembly-roof",
+        "materialID" : "l4-roof-membrane",
+        "positionWorld" : [
+          24,
+          36.799999999999997,
+          15
+        ],
+        "shape" : "flat-parapet",
+        "trimMaterialID" : "l4-light-trim"
+      },
+      {
+        "dimensions" : [
+          8,
+          3,
+          12
+        ],
+        "id" : "n-control-roof",
+        "materialID" : "l4-roof-membrane",
+        "positionWorld" : [
+          20,
+          33,
+          6
+        ],
+        "shape" : "flat-parapet",
+        "trimMaterialID" : "l4-charcoal-steel"
+      }
+    ],
+    "trimBands" : [
+      {
+        "dimensions" : [
+          5,
+          7,
+          13
+        ],
+        "id" : "n-clerestory-west",
+        "materialID" : "l4-control-glazing",
+        "positionWorld" : [
+          -24,
+          59.5,
+          13
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          6,
+          12
+        ],
+        "id" : "n-clerestory-east",
+        "materialID" : "l4-control-glazing",
+        "positionWorld" : [
+          24,
+          42,
+          14
+        ]
+      },
+      {
+        "dimensions" : [
+          34,
+          3.5,
+          3
+        ],
+        "id" : "n-portal-beam",
+        "materialID" : "l4-safety-ochre",
+        "positionWorld" : [
+          0,
+          26.5,
+          16.399999999999999
+        ]
+      }
+    ],
+    "trimMaterialID" : "l4-light-trim",
+    "usesExplicitComponentGeometry" : true,
+    "usesLegacyDomesticDetails" : false,
+    "wallHeight" : 52,
+    "wallMaterialID" : "l4-weathered-blue-steel",
+    "width" : 56
+  },
+  "camera" : {
+    "elevationDegrees" : 30,
+    "orthographicScale" : 79.195953369140597,
+    "oversamplingFactor" : 4,
+    "positionWorld" : [
+      96,
+      96,
+      96
+    ],
+    "postProjectionOffsetPixels" : [
+      0,
+      128
+    ],
+    "projection" : "orthographic-2-to-1",
+    "renderViewportPixels" : [
+      1536,
+      1024
+    ],
+    "sourceGroundCenter" : [
+      768,
+      768
+    ],
+    "targetWorld" : [
+      0,
+      20,
+      0
+    ],
+    "yawDegrees" : 45
+  },
+  "derivation" : {
+    "mirror" : false,
+    "rotationDegrees" : 0,
+    "siblingSource" : null,
+    "sourceKind" : "offline-scene-explicit-authored",
+    "transform" : "none"
+  },
+  "entrance" : {
+    "baseWorld" : [
+      20,
+      3,
+      -28
+    ],
+    "canopyDepth" : 4,
+    "depth" : 1,
+    "doorMaterialID" : "l4-warm-glazing",
+    "facadeID" : "l4-north-road-frontage",
+    "height" : 10,
+    "hingeSide" : "right",
+    "pavilionDepth" : 12,
+    "pavilionHeight" : 24,
+    "pavilionMaterialID" : "l4-warm-concrete",
+    "pavilionRoofHeight" : 3,
+    "pavilionWidth" : 13,
+    "porchColumnWidth" : 1.2,
+    "porchLateralOffset" : 0,
+    "porchWidth" : 8,
+    "stepCount" : 1,
+    "stepRun" : 1.2,
+    "style" : "industrial-control-quality-entry",
+    "surroundMaterialID" : "l4-light-trim",
+    "width" : 5.5
+  },
+  "facades" : [
+    {
+      "direction" : "north",
+      "edgeWorld" : [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ]
+      ],
+      "hasEntrance" : true,
+      "id" : "l4-north-road-frontage",
+      "materialID" : "l4-warm-concrete",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    }
+  ],
+  "family" : "industrial",
+  "level" : 4,
+  "light" : {
+    "ambientColorRGBA" : [
+      0.35999999999999999,
+      0.42999999999999999,
+      0.5,
+      1
+    ],
+    "ambientIntensity" : 0,
+    "keyColorRGBA" : [
+      1,
+      0.93999999999999995,
+      0.83999999999999997,
+      1
+    ],
+    "keyIntensity" : 0,
+    "keyOrigin" : [
+      -80,
+      120,
+      -80
+    ],
+    "shadowBlurSourcePixels" : 0,
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowReceiver" : "authored-contact-polygon",
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "logicalBuildingID" : "industrial_l04",
+  "materialLibrary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-directional-family-v01/materials/industrial-l04-v01.json",
+    "role" : "industrial-l04-material-library",
+    "sha256" : "c8318538b98e9dec020907d47769a81b73970ec40fb1b5b732bcec85354fcc29"
+  },
+  "occlusionExclusions" : [
+    {
+      "id" : "l4-north-frontage-visibility",
+      "polygonWorld" : [
+        [
+          -19,
+          -28
+        ],
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          8
+        ],
+        [
+          -19,
+          8
+        ]
+      ],
+      "purpose" : "keep five loading bays and control entrance visible at native-2x"
+    }
+  ],
+  "productionSelected" : false,
+  "props" : [
+    {
+      "dimensions" : [
+        5,
+        20,
+        5
+      ],
+      "id" : "n-stack-a",
+      "kind" : "explicit-cylinder",
+      "materialID" : "l4-charcoal-steel",
+      "positionWorld" : [
+        -24.300000000000001,
+        66,
+        8
+      ]
+    },
+    {
+      "dimensions" : [
+        5,
+        17,
+        5
+      ],
+      "id" : "n-stack-b",
+      "kind" : "explicit-cylinder",
+      "materialID" : "l4-oxide",
+      "positionWorld" : [
+        24,
+        63.5,
+        10
+      ]
+    },
+    {
+      "dimensions" : [
+        8,
+        16,
+        8
+      ],
+      "id" : "n-tank-a",
+      "kind" : "explicit-cylinder",
+      "materialID" : "l4-process-metal",
+      "positionWorld" : [
+        8,
+        11,
+        21
+      ]
+    },
+    {
+      "dimensions" : [
+        7,
+        13,
+        7
+      ],
+      "id" : "n-tank-b",
+      "kind" : "explicit-cylinder",
+      "materialID" : "l4-oxide",
+      "positionWorld" : [
+        -3,
+        9.5,
+        21
+      ]
+    },
+    {
+      "dimensions" : [
+        6,
+        5,
+        7
+      ],
+      "id" : "n-hvac-a",
+      "kind" : "explicit-box",
+      "materialID" : "l4-process-metal",
+      "positionWorld" : [
+        22,
+        42,
+        10
+      ]
+    },
+    {
+      "dimensions" : [
+        6,
+        5,
+        7
+      ],
+      "id" : "n-hvac-b",
+      "kind" : "explicit-box",
+      "materialID" : "l4-process-metal",
+      "positionWorld" : [
+        22,
+        42,
+        19
+      ]
+    }
+  ],
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        858,
+        685
+      ],
+      [
+        934,
+        723
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      704
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "orientationTransform" : "none",
+    "presentationEnvelopeSource" : [
+      256,
+      20,
+      1280,
+      896
+    ],
+    "sceneFootprintUnits" : [
+      72,
+      72
+    ],
+    "shadowEnvelopeSource" : [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "tileBasisPoints" : [
+      72,
+      36
+    ]
+  },
+  "sampling" : {
+    "canonicalizer" : {
+      "encoder" : "ImageIO",
+      "format" : "png",
+      "id" : "imageio-sips-png-v1",
+      "postEncoder" : "/usr/bin/sips"
+    },
+    "ciContext" : {
+      "cacheIntermediates" : false,
+      "outputColorSpace" : "srgb",
+      "useSoftwareRenderer" : true,
+      "workingColorSpace" : "extended-srgb"
+    },
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsample" : {
+      "aspectRatio" : 1,
+      "filter" : "CILanczosScaleTransform",
+      "scale" : 0.25
+    },
+    "linearOversamplingFactor" : 4,
+    "postQuantizationCanonicalizer" : {
+      "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
+      "boundaryAssist" : {
+        "algorithm" : "immutable-prequantized-one-value-boundary-6-plus-1",
+        "baseQuantizedMajorityCount" : 6,
+        "boundaryBandWidthValues" : 1,
+        "effectiveSupportCount" : 7,
+        "immutablePrequantizedBuffer" : true,
+        "maximumCompetingSupportAfterBoundaryReclassification" : 2,
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "recordsBoundaryVoteReason" : true,
+        "requiredBoundaryVoteCount" : 1,
+        "requiresSameChannelEvidence" : true,
+        "version" : 1
+      },
+      "channels" : "rgb-only",
+      "immutableSourceBuffer" : true,
+      "majorityThreshold" : 7,
+      "neighborhoodSize" : 3,
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationQuantum" : 32,
+      "requiresChromaFreeNeighborhood" : true,
+      "requiresFullyOpaqueNeighborhood" : true,
+      "version" : 3
+    },
+    "purpose" : "source-authority",
+    "quantizer" : {
+      "chromaBypassRGBA" : [
+        255,
+        0,
+        255,
+        255
+      ],
+      "id" : "step32-midpoint-offset8-v1",
+      "midpointOffset" : 8,
+      "step" : 32
+    },
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "authored-constant-v1",
+    "sceneKitShadows" : "disabled",
+    "sourceRevisionBinding" : "source-v01"
+  },
+  "sceneGeometryID" : "industrial-l04-north-v01-centered-loading-court-campus",
+  "schema" : 2,
+  "sourceRevision" : "source-v01",
+  "styleAnchor" : {
+    "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "role" : "global-style-anchor",
+    "sha256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "task" : "PLAY-027",
+  "toolchainFingerprint" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l04-source-v01.json",
+    "role" : "offline-toolchain",
+    "sha256" : "e7dc7c56952a322e34a3824bc8014aade61776e52ca557a97f263e2f22910143"
+  },
+  "variantID" : "variant-0",
+  "viewDirection" : "north"
+}

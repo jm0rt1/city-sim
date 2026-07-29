@@ -42,12 +42,13 @@
       "minLength": 1
     },
     "logicalBuildingID": {
-      "pattern": "^(residential|commercial)_l0[1-4]$"
+      "pattern": "^(residential|commercial|industrial)_l0[1-4]$"
     },
     "family": {
       "enum": [
         "residential",
-        "commercial"
+        "commercial",
+        "industrial"
       ]
     },
     "level": {
@@ -136,6 +137,79 @@
       "minItems": 1
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {
+            "properties": {
+              "logicalBuildingID": {
+                "const": "industrial_l02"
+              },
+              "sourceRevision": {
+                "const": "source-v05"
+              }
+            },
+            "required": [
+              "logicalBuildingID",
+              "sourceRevision"
+            ]
+          },
+          {
+            "properties": {
+              "logicalBuildingID": {
+                "const": "industrial_l02"
+              },
+              "sourceRevision": {
+                "const": "source-v06"
+              },
+              "viewDirection": {
+                "const": "east"
+              }
+            },
+            "required": [
+              "logicalBuildingID",
+              "sourceRevision",
+              "viewDirection"
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "sampling": {
+            "properties": {
+              "purpose": {
+                "const": "source-authority"
+              },
+              "sceneKitLightingMode": {
+                "const": "authored-constant-v1"
+              },
+              "sceneKitShadows": {
+                "const": "disabled"
+              }
+            },
+            "required": [
+              "purpose",
+              "sceneKitLightingMode",
+              "sceneKitShadows"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "sampling": {
+            "properties": {
+              "sceneKitLightingMode": {
+                "const": "lambert-scene-lights"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "sampling": {
       "type": "object",
@@ -170,6 +244,18 @@
         },
         "sceneKitAntialiasing": {
           "const": "none"
+        },
+        "sceneKitShadows": {
+          "enum": [
+            "current",
+            "disabled"
+          ]
+        },
+        "sceneKitLightingMode": {
+          "enum": [
+            "lambert-scene-lights",
+            "authored-constant-v1"
+          ]
         },
         "linearOversamplingFactor": {
           "const": 4
@@ -271,6 +357,9 @@
             }
           }
         },
+        "preLanczosCanonicalizer": {
+          "$ref": "#/$defs/preLanczosCanonicalizer"
+        },
         "postQuantizationCanonicalizer": {
           "$ref": "#/$defs/postQuantizationCanonicalizer"
         }
@@ -294,6 +383,71 @@
           }
         }
       ]
+    },
+    "preLanczosCanonicalizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "version",
+        "quantizationStep",
+        "midpointOffset",
+        "chromaBypassRGBA",
+        "channels",
+        "opaquePixelPolicy",
+        "transparentPixelPolicy",
+        "partialAlphaPolicy",
+        "preservesAlpha",
+        "preservesChroma",
+        "immutableSourceBuffer",
+        "crossRunState"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "rgb-step32-midpoint8-preserve-alpha-chroma-v1"
+        },
+        "version": {
+          "const": 1
+        },
+        "quantizationStep": {
+          "const": 32
+        },
+        "midpointOffset": {
+          "const": 8
+        },
+        "chromaBypassRGBA": {
+          "const": [
+            255,
+            0,
+            255,
+            255
+          ]
+        },
+        "channels": {
+          "const": "rgb-only"
+        },
+        "opaquePixelPolicy": {
+          "const": "quantize-each-rgb-channel"
+        },
+        "transparentPixelPolicy": {
+          "const": "zero-hidden-rgb"
+        },
+        "partialAlphaPolicy": {
+          "const": "reject"
+        },
+        "preservesAlpha": {
+          "const": true
+        },
+        "preservesChroma": {
+          "const": true
+        },
+        "immutableSourceBuffer": {
+          "const": true
+        },
+        "crossRunState": {
+          "const": "none"
+        }
+      }
     },
     "postQuantizationCanonicalizer": {
       "type": "object",

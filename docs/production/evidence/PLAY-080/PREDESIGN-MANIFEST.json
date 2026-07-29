@@ -1,0 +1,73 @@
+{
+  "schema": "citysim.play-080.predesign-manifest.v1",
+  "task": "PLAY-080",
+  "lane": "world-art-south",
+  "branch": "codex/citysim-world-art-south",
+  "publishedBase": "e066afbd94a5e73eddd0ab891e4995079409693f",
+  "direction": "south",
+  "revision": "south-predesign-v01",
+  "disposition": "READY_FOR_INDEPENDENT_PREDESIGN_REVIEW",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderAuthorized": false,
+  "renderInvocations": 0,
+  "imageOutputs": 0,
+  "familyMaterialLock": "pending-integration-north-lock",
+  "toolchain": {
+    "blenderVersion": "4.5.12 LTS",
+    "blenderBuildHash": "84afd5f785f7",
+    "actualCameraEngine": "Blender scene projection only",
+    "renderOperatorInvoked": false
+  },
+  "artifacts": [
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d",
+      "role": "independently-authored-south-text-scene"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb",
+      "role": "provisional-material-role-binding"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py",
+      "sha256": "33ecc7cd31c7cb7efb4ace497a214499e37f4472e85216050b459e35c05c467c",
+      "role": "static-and-actual-camera-zero-pixel-validator"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-080/PREDESIGN-STATIC-PROOF.json",
+      "sha256": "6697f4ea34822ab18da78e4fe0725bcb8a05d47342306bf75cc667012fe3fd7b",
+      "role": "static-predesign-proof",
+      "result": "PASS"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-080/PREDESIGN-ACTUAL-CAMERA-PROOF.json",
+      "sha256": "059b346adc020aa3535ee218bbb3d5e30fa6c3d6fb54264c9f51f461ae5c5a1b",
+      "role": "blender-actual-camera-zero-pixel-proof",
+      "result": "PASS"
+    }
+  ],
+  "commands": [
+    "python3 validate_predesign.py --mode static --scene industrial-l04-south-predesign-v01.scene.json --materials industrial-l04-south-predesign-v01.materials.json --output ../../../../../docs/production/evidence/PLAY-080/PREDESIGN-STATIC-PROOF.json",
+    "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --disable-autoexec --python-exit-code 1 --python validate_predesign.py -- --mode actual-camera --scene industrial-l04-south-predesign-v01.scene.json --materials industrial-l04-south-predesign-v01.materials.json --output ../../../../../docs/production/evidence/PLAY-080/PREDESIGN-ACTUAL-CAMERA-PROOF.json"
+  ],
+  "proofSummary": {
+    "staticTestsPassed": 14,
+    "staticTestsFailed": 0,
+    "actualCameraTestsPassed": 9,
+    "actualCameraTestsFailed": 0,
+    "footprintMaximumErrorSourcePixels": 0.000496,
+    "southSocketMaximumErrorSourcePixels": 0.000473,
+    "primaryPortalLiteralPixels": [14.057144, 21.025661],
+    "secondaryFreightWidthsLiteralPixels": [8.057144, 8.057144],
+    "portalFrameMinimumObservedLiteralPixels": 3.428576,
+    "processPortalIntersections": 0,
+    "distinctSilhouetteBreakRows": 7
+  },
+  "hardStops": [
+    "Do not render pixel A before Integration publishes the North-bound family/material lock and updates PLAY-080.",
+    "Do not normalize, ingest, ship, select production art, push, integrate, or self-accept.",
+    "Reconcile provisional material numeric values against the future published lock before any pixel process."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "baseline": "3a7be05ec80bdaf23c70e945a968c02aca47b2f5",
+  "sourceRevision": "source-v10",
+  "sourceV09AndRejectionTree": {
+    "command": "git diff --quiet 3a7be05ec80bdaf23c70e945a968c02aca47b2f5 -- <explicit source-v09 and rejection paths>",
+    "exitCode": 0,
+    "bytePreserved": true
+  },
+  "acceptedSources": {
+    "scope": [
+      "Residential L1-L4 scene/raw/normalized/provenance",
+      "Commercial L1-L4 scene/raw/normalized/provenance",
+      "Industrial L1 scene/raw/normalized/provenance"
+    ],
+    "command": "git diff --quiet 3a7be05ec80bdaf23c70e945a968c02aca47b2f5 -- <explicit accepted source paths>",
+    "exitCode": 0,
+    "bytePreserved": true
+  },
+  "materialLibrarySHA256": "27e4c199da63e9a3a4e8c0084caa8c4f375e7b16499dd7a7b507cdb384eeb8e1",
+  "acceptedSwatchesUnchanged": true,
+  "shippingRuntimeSharedPackageBuildMutated": false,
+  "productionSelected": false,
+  "passed": true
+}

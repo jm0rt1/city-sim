@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-020",
+  "authority": {
+    "commit": "fd5fe7b956b645acb9a7599cb8780df4873ee628",
+    "file": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V04-AUTHORITY.md",
+    "sha256": "cd6c61ffd9c0dacbc579b80ed4f4c7b0bb089909167f09bbf47c8ce5879c62ef"
+  },
+  "synchronizedCheckpoint": "acb31ef39ff02c3c020fdb3b747f5e327038441d",
+  "returnedV03": {
+    "commit": "ba2c41270092263367ef2b259c70518317dc8deb",
+    "sceneSHA256": "e333caca586c78aa5f1cf7f10d8c962a130b887e9cbafdd1465753f1405254f0",
+    "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "preservedByteForByte": true
+  },
+  "toolchain": {
+    "blenderVersion": "4.5.12 LTS",
+    "blenderBuildHash": "84afd5f785f7",
+    "blenderExecutableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "proofContractSHA256": "eb98134a950cab5f7c431a2e9d4f8a88bb272a3735d78e0e6aa2181c398734c3",
+    "proofToolSHA256": "976405c5bf0e0c121d3d08f8efa3fd95c678bd8a28eaf0250b63203abade7f29"
+  },
+  "proof": {
+    "portalFacing": "positive-x",
+    "socketWorld": [-28, 0, 0],
+    "socketCompactActual": [112.00000762939453, 88.00001907348633],
+    "mostPermissiveExteriorCourtMinimumX": 16,
+    "closestExteriorCourtWorld": [16.000000000262506, 1.05, 15.523582764509074],
+    "closestExteriorCourtCompact": [95.72776794433594, 104.27190780639648],
+    "minimumExteriorCourtToSocketChebyshevPixels": 16.272239685058594,
+    "minimumMethod": "continuous-convex-half-plane-clipping-v1",
+    "maximumAllowedSocketDistancePixels": 2,
+    "portalPlaneContradictsSocket": true,
+    "hiddenOrUnderBuildingGeometryCanCure": false,
+    "portalPlaneRelocationRequired": true
+  },
+  "artifacts": {
+    "proofJSON": {
+      "file": "proof/PORTAL-PLANE-PROOF.json",
+      "sha256": "663b445c56ce07e60b6306929b3188e02fdbc0a90bb43a1c7c5dba55f0023785"
+    },
+    "overlaySVG": {
+      "file": "proof/PORTAL-PLANE-SOCKET.svg",
+      "sha256": "7c6faeb6d31cb158dee40214bc0627a8f49aeaa890deb534c008d85420a87a5a"
+    },
+    "overlayPNG": {
+      "file": "proof/PORTAL-PLANE-SOCKET.png",
+      "sha256": "d6f96728443bc5fbea6c18e8885d312182273cd098e4b3123afd34d3ee0b137b"
+    },
+    "disposition": {
+      "file": "proof/DISPOSITION.md",
+      "sha256": "3815e695b270872f3177288617860947324affa85add0ce3667e7c15cf6ce5a7"
+    }
+  },
+  "rawProcessCount": 0,
+  "processes": {
+    "A": "not_produced",
+    "B": "not_produced",
+    "C": "not_produced"
+  },
+  "disposition": "STOP_PORTAL_PLANE_CONTRADICTION",
+  "sourceAuthority": false,
+  "productionSelected": false
+}

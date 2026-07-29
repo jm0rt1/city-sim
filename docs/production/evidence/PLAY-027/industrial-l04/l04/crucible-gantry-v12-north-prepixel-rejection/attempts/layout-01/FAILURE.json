@@ -1,0 +1,22 @@
+{
+  "taskID": "PLAY-027",
+  "revision": "source-v12-prepixel",
+  "layout": "layout-01-parallel-road-court",
+  "disposition": "REJECTED_PREPIXEL_GATE",
+  "failure": {
+    "gate": "semantic-frontage-visibility",
+    "message": "v12 semantic regions missing: [\"freight1\", \"freight2\"]",
+    "missingRegions": [
+      "freight1",
+      "freight2"
+    ]
+  },
+  "descriptorSHA256": "69d216ed2c7ac02f2211c3f8f7c2191273aeef40af2a8f376232d05240cac64e",
+  "materialSHA256": "d2784ddde15fdc458cfec44090ccbcdd6f9c941c7d2aff6cff76447341471c33",
+  "rawProcessCount": 0,
+  "sceneKitProcessCount": 0,
+  "metalProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

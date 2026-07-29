@@ -1,0 +1,76 @@
+{
+  "schema": "citysim.integration.parallel-dispatch-receipt.v1",
+  "batch": "industrial_l04_directional_family",
+  "authorityCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "sentAt": "2026-07-29T05:03:00Z",
+  "acknowledgedAt": "2026-07-29T05:05:55Z",
+  "usefulAcknowledgedWorkstreams": 4,
+  "cells": [
+    {
+      "taskId": "PLAY-027",
+      "claimRevision": "current",
+      "direction": "north",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "preservedCandidate": "4b3855d7f5dfbb5e6daa585048b0997b4a94a086",
+      "acknowledgedHead": "94b9276879dc8e43b4233029bd8abb624af113fe",
+      "cleanAtAcknowledgement": true,
+      "status": "working",
+      "firstDeliverable": "north_v08_zero_pixel_material_redesign_packet",
+      "stopCondition": "return_clean_prepixel_candidate_before_any_source_render"
+    },
+    {
+      "taskId": "PLAY-079",
+      "claimRevision": 4,
+      "direction": "east",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "branch": "codex/citysim-world-art-east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "preservedCandidate": "22e15b0645cc17fa012bb3ba5bfb0d8f369c033a",
+      "acknowledgedHead": "171896da90fc5679323976e86eebaf886c04b00f",
+      "cleanAtAcknowledgement": true,
+      "status": "working",
+      "firstDeliverable": "east_launch_bound_schema_and_non_alias_receipt",
+      "stopCondition": "no_pixel_or_renderer_launch"
+    },
+    {
+      "taskId": "PLAY-080",
+      "claimRevision": 4,
+      "direction": "south",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "branch": "codex/citysim-world-art-south",
+      "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+      "preservedCandidate": "a8fa0f51c3baa5b79bc3671e1a8fe75c9ad1f874",
+      "acknowledgedHead": "8cdbe6d1e5d822842e883e7eb6de4fd838b31251",
+      "cleanAtAcknowledgement": true,
+      "status": "working",
+      "firstDeliverable": "south_fingerprint_literal192_and_shared_input_repair",
+      "stopCondition": "static_describe_guard_schema_only"
+    },
+    {
+      "taskId": "PLAY-081",
+      "claimRevision": 4,
+      "direction": "west",
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "branch": "codex/citysim-world-art-west",
+      "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+      "preservedCandidate": "03bc2402fa010f33cd57bc67d9113d20343cc491",
+      "acknowledgedHead": "f5fcddfe4ed5b76d4e3d4376497f5facf5220b3d",
+      "cleanAtAcknowledgement": true,
+      "status": "working",
+      "firstDeliverable": "west_ancestry_stdlib_png_and_shared_input_repair",
+      "stopCondition": "static_describe_guard_schema_only"
+    }
+  ],
+  "serializedAuthoritiesUnchanged": [
+    "appearance_lock_publication",
+    "shared_toolchain_changes",
+    "shipping_atlas_or_manifest_mutation",
+    "production_selection",
+    "atomic_4of4_renderer_assembly",
+    "final_exact_candidate_qa",
+    "integration",
+    "push"
+  ]
+}

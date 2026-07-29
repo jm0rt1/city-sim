@@ -1,0 +1,962 @@
+{
+  "authoredIndependently" : true,
+  "building" : {
+    "chimney" : {
+      "dimensions" : [
+        4,
+        8,
+        4
+      ],
+      "materialID" : "v05-duct-metal",
+      "positionWorld" : [
+        -17,
+        34,
+        18
+      ]
+    },
+    "depth" : 56,
+    "floorHeight" : 12,
+    "floors" : 3,
+    "foundationDimensions" : [
+      56,
+      2.3999999999999999,
+      56
+    ],
+    "foundationHeight" : 3,
+    "foundationMaterialID" : "v05-foundation",
+    "foundationPositionWorld" : [
+      0,
+      1.2,
+      0
+    ],
+    "massBlocks" : [
+      {
+        "dimensions" : [
+          23,
+          5,
+          42
+        ],
+        "id" : "n-production-plinth-west",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-plinth",
+        "positionWorld" : [
+          -15,
+          4.9000000000000004,
+          2
+        ],
+        "presentationRole" : "grounded western production plinth"
+      },
+      {
+        "dimensions" : [
+          23,
+          5,
+          36
+        ],
+        "id" : "n-production-plinth-east",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-plinth",
+        "positionWorld" : [
+          15,
+          5.2000000000000002,
+          5
+        ],
+        "presentationRole" : "stepped eastern production plinth"
+      },
+      {
+        "dimensions" : [
+          22.600000000000001,
+          18,
+          41.600000000000001
+        ],
+        "id" : "n-production-hall-west",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-metal",
+        "positionWorld" : [
+          -15,
+          16.300000000000001,
+          2
+        ],
+        "presentationRole" : "broad western clear-span hall"
+      },
+      {
+        "dimensions" : [
+          22.399999999999999,
+          20,
+          35.600000000000001
+        ],
+        "id" : "n-production-hall-east",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-metal",
+        "positionWorld" : [
+          15,
+          17.199999999999999,
+          5
+        ],
+        "presentationRole" : "asymmetric eastern production hall"
+      },
+      {
+        "dimensions" : [
+          21,
+          15,
+          2.3999999999999999
+        ],
+        "id" : "n-loading-throat",
+        "identityBearing" : true,
+        "materialID" : "v05-recess",
+        "positionWorld" : [
+          0,
+          10,
+          -20.800000000000001
+        ],
+        "presentationRole" : "deep North loading throat"
+      },
+      {
+        "dimensions" : [
+          8.5,
+          11,
+          0.80000000000000004
+        ],
+        "id" : "n-dock-door-a",
+        "identityBearing" : true,
+        "materialID" : "v05-dock-door",
+        "positionWorld" : [
+          -10,
+          9,
+          -22.399999999999999
+        ],
+        "presentationRole" : "North loading door A"
+      },
+      {
+        "dimensions" : [
+          8.5,
+          11,
+          0.80000000000000004
+        ],
+        "id" : "n-dock-door-b",
+        "identityBearing" : true,
+        "materialID" : "v05-dock-door",
+        "positionWorld" : [
+          0,
+          9,
+          -22.399999999999999
+        ],
+        "presentationRole" : "North loading door B"
+      },
+      {
+        "dimensions" : [
+          8.5,
+          11,
+          0.80000000000000004
+        ],
+        "id" : "n-dock-door-c",
+        "identityBearing" : true,
+        "materialID" : "v05-dock-door",
+        "positionWorld" : [
+          10,
+          9,
+          -22.399999999999999
+        ],
+        "presentationRole" : "North loading door C"
+      },
+      {
+        "dimensions" : [
+          10,
+          3,
+          8
+        ],
+        "id" : "n-dock-canopy-a",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          -10,
+          17.699999999999999,
+          -23.199999999999999
+        ],
+        "presentationRole" : "North dock canopy A"
+      },
+      {
+        "dimensions" : [
+          10,
+          3.3999999999999999,
+          9
+        ],
+        "id" : "n-dock-canopy-b",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          0,
+          18.100000000000001,
+          -23.800000000000001
+        ],
+        "presentationRole" : "North dock canopy B"
+      },
+      {
+        "dimensions" : [
+          10,
+          3,
+          8
+        ],
+        "id" : "n-dock-canopy-c",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          10,
+          17.699999999999999,
+          -23.199999999999999
+        ],
+        "presentationRole" : "North dock canopy C"
+      },
+      {
+        "dimensions" : [
+          38,
+          2.2000000000000002,
+          8
+        ],
+        "id" : "n-loading-apron",
+        "identityBearing" : true,
+        "materialID" : "v05-apron",
+        "positionWorld" : [
+          0,
+          1.1000000000000001,
+          -24
+        ],
+        "presentationRole" : "socket-aligned North service apron"
+      },
+      {
+        "dimensions" : [
+          3.5,
+          29,
+          3.5
+        ],
+        "id" : "n-portal-post-west",
+        "identityBearing" : true,
+        "materialID" : "v05-dark-steel",
+        "positionWorld" : [
+          -15,
+          20,
+          -20
+        ],
+        "presentationRole" : "grounded far-edge loading portal west"
+      },
+      {
+        "dimensions" : [
+          3.5,
+          31,
+          3.5
+        ],
+        "id" : "n-portal-post-east",
+        "identityBearing" : true,
+        "materialID" : "v05-dark-steel",
+        "positionWorld" : [
+          15,
+          21,
+          -20
+        ],
+        "presentationRole" : "grounded far-edge loading portal east"
+      },
+      {
+        "dimensions" : [
+          34,
+          4,
+          4
+        ],
+        "id" : "n-portal-header",
+        "identityBearing" : true,
+        "materialID" : "v05-safety",
+        "positionWorld" : [
+          0,
+          36.5,
+          -20
+        ],
+        "presentationRole" : "roof-clearing North logistics header"
+      },
+      {
+        "dimensions" : [
+          18,
+          16,
+          14
+        ],
+        "id" : "n-admin-quality-wing",
+        "identityBearing" : true,
+        "materialID" : "v05-admin-concrete",
+        "positionWorld" : [
+          19,
+          10.6,
+          -18
+        ],
+        "presentationRole" : "road-facing administration quality wing"
+      },
+      {
+        "dimensions" : [
+          12,
+          6.5,
+          1.1000000000000001
+        ],
+        "id" : "n-admin-glazing",
+        "identityBearing" : true,
+        "materialID" : "v05-glazing",
+        "positionWorld" : [
+          19,
+          12.199999999999999,
+          -25.550000000000001
+        ],
+        "presentationRole" : "North administration glazing band"
+      },
+      {
+        "dimensions" : [
+          5.5,
+          8.5,
+          0.80000000000000004
+        ],
+        "id" : "n-staff-door",
+        "identityBearing" : true,
+        "materialID" : "v05-warm-glazing",
+        "positionWorld" : [
+          21,
+          7.3499999999999996,
+          -27.399999999999999
+        ],
+        "presentationRole" : "North staff entrance"
+      },
+      {
+        "dimensions" : [
+          9,
+          2.5,
+          6
+        ],
+        "id" : "n-staff-canopy",
+        "identityBearing" : true,
+        "materialID" : "v05-safety",
+        "positionWorld" : [
+          21,
+          13.6,
+          -25
+        ],
+        "presentationRole" : "separate North staff canopy"
+      },
+      {
+        "dimensions" : [
+          24,
+          2.3999999999999999,
+          43
+        ],
+        "id" : "n-roof-west",
+        "identityBearing" : true,
+        "materialID" : "v05-roof",
+        "positionWorld" : [
+          -15,
+          26.399999999999999,
+          2
+        ],
+        "presentationRole" : "western membrane roof"
+      },
+      {
+        "dimensions" : [
+          24,
+          3.2000000000000002,
+          37
+        ],
+        "id" : "n-roof-east",
+        "identityBearing" : true,
+        "materialID" : "v05-roof",
+        "positionWorld" : [
+          15,
+          27.399999999999999,
+          5
+        ],
+        "presentationRole" : "raised eastern membrane roof"
+      },
+      {
+        "dimensions" : [
+          15,
+          6,
+          9
+        ],
+        "id" : "n-clerestory-west",
+        "identityBearing" : true,
+        "materialID" : "v05-glazing",
+        "positionWorld" : [
+          -15,
+          32.600000000000001,
+          0
+        ],
+        "presentationRole" : "western daylight monitor"
+      },
+      {
+        "dimensions" : [
+          13,
+          7,
+          9
+        ],
+        "id" : "n-clerestory-east",
+        "identityBearing" : true,
+        "materialID" : "v05-glazing",
+        "positionWorld" : [
+          15,
+          34,
+          8
+        ],
+        "presentationRole" : "asymmetric eastern daylight monitor"
+      },
+      {
+        "dimensions" : [
+          18,
+          3.5,
+          11
+        ],
+        "id" : "n-process-platform",
+        "identityBearing" : true,
+        "materialID" : "v05-dark-steel",
+        "positionWorld" : [
+          -18,
+          29,
+          18
+        ],
+        "presentationRole" : "secondary process platform"
+      },
+      {
+        "dimensions" : [
+          4,
+          4,
+          28
+        ],
+        "id" : "n-main-duct",
+        "identityBearing" : true,
+        "materialID" : "v05-duct-metal",
+        "positionWorld" : [
+          -8,
+          30.5,
+          8
+        ],
+        "presentationRole" : "readable North roof duct"
+      }
+    ],
+    "massingProfile" : "industrial-l02-north-wide-low-capable-campus-v01",
+    "roofHeight" : 2.5,
+    "roofMaterialID" : "v05-roof",
+    "roofOverhang" : 0,
+    "roofVolumes" : [
+
+    ],
+    "trimBands" : [
+
+    ],
+    "trimMaterialID" : "v05-light-trim",
+    "usesExplicitComponentGeometry" : true,
+    "usesLegacyDomesticDetails" : false,
+    "wallHeight" : 33,
+    "wallMaterialID" : "v05-hall-metal",
+    "width" : 56
+  },
+  "camera" : {
+    "elevationDegrees" : 30,
+    "orthographicScale" : 79.195953369140597,
+    "oversamplingFactor" : 4,
+    "positionWorld" : [
+      180,
+      146.9693845669907,
+      180
+    ],
+    "postProjectionOffsetPixels" : [
+      0,
+      256
+    ],
+    "projection" : "orthographic-2:1",
+    "renderViewportPixels" : [
+      1536,
+      1024
+    ],
+    "sourceGroundCenter" : [
+      768,
+      768
+    ],
+    "targetWorld" : [
+      0,
+      0,
+      0
+    ],
+    "yawDegrees" : 45
+  },
+  "derivation" : {
+    "mirror" : false,
+    "rotationDegrees" : 0,
+    "siblingSource" : null,
+    "sourceKind" : "independent-scene-description",
+    "transform" : "none"
+  },
+  "eastReviewAnchor" : {
+    "commit" : "023407791bbebe81f882dd8c7a4b348b79c22e67",
+    "descriptorSHA256" : "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0",
+    "materialLibrarySHA256" : "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb",
+    "productionSelected" : false,
+    "rawSHA256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8",
+    "sourceAuthority" : false
+  },
+  "entrance" : {
+    "baseWorld" : [
+      20,
+      3,
+      -28
+    ],
+    "depth" : 2.3999999999999999,
+    "doorMaterialID" : "v05-warm-glazing",
+    "facadeID" : "north-facade",
+    "frontageLoadingDoorCount" : 3,
+    "height" : 10,
+    "stepCount" : 1,
+    "style" : "staff-entrance-plus-three-dock-frontage",
+    "surroundMaterialID" : "v05-safety",
+    "width" : 7
+  },
+  "facades" : [
+    {
+      "direction" : "north",
+      "edgeWorld" : [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ]
+      ],
+      "hasEntrance" : true,
+      "id" : "north-facade",
+      "materialID" : "v05-hall-plinth",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    },
+    {
+      "direction" : "east",
+      "edgeWorld" : [
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          28
+        ]
+      ],
+      "hasEntrance" : false,
+      "id" : "east-facade",
+      "materialID" : "v05-hall-metal",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    },
+    {
+      "direction" : "south",
+      "edgeWorld" : [
+        [
+          28,
+          28
+        ],
+        [
+          -28,
+          28
+        ]
+      ],
+      "hasEntrance" : false,
+      "id" : "south-facade",
+      "materialID" : "v05-hall-metal",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    },
+    {
+      "direction" : "west",
+      "edgeWorld" : [
+        [
+          -28,
+          28
+        ],
+        [
+          -28,
+          -28
+        ]
+      ],
+      "hasEntrance" : false,
+      "id" : "west-facade",
+      "materialID" : "v05-hall-metal",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    }
+  ],
+  "family" : "industrial",
+  "level" : 2,
+  "light" : {
+    "ambientColorRGBA" : [
+      0.71999999999999997,
+      0.76000000000000001,
+      0.80000000000000004,
+      1
+    ],
+    "ambientIntensity" : 0.71999999999999997,
+    "keyColorRGBA" : [
+      1,
+      0.92000000000000004,
+      0.83999999999999997,
+      1
+    ],
+    "keyIntensity" : 1050,
+    "keyOrigin" : [
+      -120,
+      180,
+      -120
+    ],
+    "shadowBlurSourcePixels" : 18,
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowReceiver" : "task-owned-transparent-ground-plane",
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "logicalBuildingID" : "industrial_l02",
+  "materialLibrary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v05/materials/industrial-l02-east-calibration-v05.json",
+    "role" : "immutable-industrial-l02-east-v05-family-material-anchor",
+    "sha256" : "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
+  },
+  "occlusionExclusions" : [
+    {
+      "id" : "north-industrial-l02-v01-loading-clearance",
+      "polygonWorld" : [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          -18
+        ],
+        [
+          -28,
+          -18
+        ]
+      ],
+      "purpose" : "preserve exact socket, three-bay apron, staff route, and authored loading infrastructure"
+    }
+  ],
+  "prePixelFamilyAuthority" : {
+    "approvedContinuationCommit" : "4918b32f44f4d767203a02421f364e234eeebf10",
+    "normalizerProcessesConsumed" : 0,
+    "primaryMetalProcessesConsumed" : 0,
+    "productionSelected" : false,
+    "scope" : "Industrial L2 North South West source-v07 only",
+    "sourceAuthorityPixels" : false
+  },
+  "productionSelected" : false,
+  "props" : [
+    {
+      "dimensions" : [
+        9,
+        16,
+        9
+      ],
+      "id" : "n-process-vessel",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-process-metal",
+      "positionWorld" : [
+        -21,
+        11,
+        22
+      ],
+      "presentationRole" : "secondary North process vessel"
+    },
+    {
+      "dimensions" : [
+        7,
+        5,
+        7
+      ],
+      "id" : "n-hvac-bank-a",
+      "identityBearing" : true,
+      "kind" : "explicit-box",
+      "materialID" : "v05-process-metal",
+      "positionWorld" : [
+        -12,
+        32.5,
+        17
+      ],
+      "presentationRole" : "North roof plant A"
+    },
+    {
+      "dimensions" : [
+        7,
+        5,
+        7
+      ],
+      "id" : "n-hvac-bank-b",
+      "identityBearing" : true,
+      "kind" : "explicit-box",
+      "materialID" : "v05-process-metal",
+      "positionWorld" : [
+        -21,
+        32.5,
+        17
+      ],
+      "presentationRole" : "North roof plant B"
+    },
+    {
+      "dimensions" : [
+        4,
+        9,
+        4
+      ],
+      "id" : "n-stack",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-duct-metal",
+      "positionWorld" : [
+        -17,
+        34,
+        18
+      ],
+      "presentationRole" : "subordinate North stack"
+    },
+    {
+      "dimensions" : [
+        3.5,
+        5,
+        3.5
+      ],
+      "id" : "n-bollard-west",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-safety",
+      "positionWorld" : [
+        -18,
+        3.7000000000000002,
+        -26
+      ],
+      "presentationRole" : "North dock protection west"
+    },
+    {
+      "dimensions" : [
+        3.5,
+        5,
+        3.5
+      ],
+      "id" : "n-bollard-east",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-safety",
+      "positionWorld" : [
+        17,
+        3.7000000000000002,
+        -26
+      ],
+      "presentationRole" : "North dock protection east"
+    }
+  ],
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        858,
+        685
+      ],
+      [
+        934,
+        723
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ]
+    ],
+    "frontageEdgeWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      704
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "orientationTransform" : "none",
+    "presentationEnvelopeSource" : [
+      256,
+      40,
+      1280,
+      896
+    ],
+    "sceneFootprintUnits" : [
+      72,
+      72
+    ],
+    "shadowEnvelopeSource" : [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowVectorSource" : [
+      2,
+      1
+    ],
+    "tileBasisPoints" : [
+      72,
+      36
+    ]
+  },
+  "sampling" : {
+    "canonicalizer" : {
+      "encoder" : "ImageIO",
+      "format" : "png",
+      "id" : "imageio-sips-png-v1",
+      "postEncoder" : "/usr/bin/sips"
+    },
+    "ciContext" : {
+      "cacheIntermediates" : false,
+      "outputColorSpace" : "srgb",
+      "useSoftwareRenderer" : true,
+      "workingColorSpace" : "extended-srgb"
+    },
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsample" : {
+      "aspectRatio" : 1,
+      "filter" : "CILanczosScaleTransform",
+      "scale" : 0.25
+    },
+    "flatChromaCompositor" : {
+      "contractID" : "industrial-l02-east-v04-straight-alpha-flat-chroma-v1",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/V04-ALPHA-COMPOSITOR-CONTRACT.json",
+      "implementationAuthorized" : false,
+      "sha256" : "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9"
+    },
+    "linearOversamplingFactor" : 4,
+    "postQuantizationCanonicalizer" : {
+      "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
+      "boundaryAssist" : {
+        "algorithm" : "immutable-prequantized-one-value-boundary-6-plus-1",
+        "baseQuantizedMajorityCount" : 6,
+        "boundaryBandWidthValues" : 1,
+        "effectiveSupportCount" : 7,
+        "immutablePrequantizedBuffer" : true,
+        "maximumCompetingSupportAfterBoundaryReclassification" : 2,
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "recordsBoundaryVoteReason" : true,
+        "requiredBoundaryVoteCount" : 1,
+        "requiresSameChannelEvidence" : true,
+        "version" : 1
+      },
+      "channels" : "rgb-only",
+      "immutableSourceBuffer" : true,
+      "majorityThreshold" : 7,
+      "neighborhoodSize" : 3,
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationQuantum" : 32,
+      "requiresChromaFreeNeighborhood" : true,
+      "requiresFullyOpaqueNeighborhood" : true,
+      "version" : 3
+    },
+    "purpose" : "source-authority",
+    "quantizer" : {
+      "chromaBypassRGBA" : [
+        255,
+        0,
+        255,
+        255
+      ],
+      "id" : "step32-midpoint-offset8-v1",
+      "midpointOffset" : 8,
+      "step" : 32
+    },
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "lambert-scene-lights",
+    "sceneKitShadows" : "current",
+    "sourceRevisionBinding" : "source-v07"
+  },
+  "sceneGeometryID" : "industrial-l02-north-wide-low-capable-campus-geometry-v02",
+  "schema" : 2,
+  "sourceRevision" : "source-v07",
+  "styleAnchor" : {
+    "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "role" : "immutable-appearance-only-global-style-anchor",
+    "sha256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "task" : "PLAY-027",
+  "toolchainFingerprint" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-quality-reset-source-v09.json",
+    "role" : "frozen-schema-2-v3-quality-reset-offline-host-and-frameworks",
+    "sha256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e"
+  },
+  "variantID" : "variant-0",
+  "viewDirection" : "north"
+}

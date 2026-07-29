@@ -3,18 +3,26 @@
 - **Title:** Gate the city-not-board release
 - **Lane:** Playtest quality
 - **Branch:** `codex/citysim-playtest-quality`
-- **Worktree:** assigned when integration supplies the exact Wave 009 candidate
+- **Worktree:** `/Users/James/.codex/worktrees/71b0/city-sim`, provisioned for
+  candidate-neutral preregistration before candidate arrival; exact-candidate
+  scoring remains blocked until Integration supplies the immutable candidate
 - **Base comparison:** Exact published Wave 008 product candidate `87e1e682566b68d20deb1a9e2028e2b885e0423a`
 - **Planned surfaces:** candidate-blind preregistration, exact manifests, same-state regular/compact/LOD matrices, fresh no-coaching journey, visual/accessibility/performance ledgers, disposition/completion, and `docs/production/evidence/PLAY-075/`
 - **Dependencies:** PLAY-068 closed-rejected/superseded at preserved checkpoint
   `776cc9b7dfd9532bbf9eee09aca3359373b875a7`; clean PLAY-071/072/073/074
   handoffs; exact integration-provided candidate
 - **Validation/proof:** every requirement and automatic reject in `WAVE-009-CITY-NOT-BOARD.md`
-- **Status:** unblocked for candidate-blind preregistration; scoring waits for
-  an exact combined candidate that integration has not visually rejected.
-  Wave 010 additionally reserves one focused independent staged-app
-  disposition for each exact accepted art-ingestion candidate; these batch
-  gates do not replace or pre-score the final 20/20 release gate.
+- **Status:** Wave 010 R1 exact renderer candidate `d41c2c68` received focused
+  independent approval at evidence commit `74f2164`; this permits Industrial
+  L2 publication but does not pre-score the final release. Exact R2 candidate
+  `b4191d98ee7c526bc08a6fe272521588572e27fd` was preregistered and admitted,
+  but Computer Use remained approval-blocked and integration returned the
+  candidate under the mixed-fidelity stop before an independent live
+  disposition completed. This implies no PLAY-075 score. One focused R2 slot
+  remains reserved for a repaired exact Industrial L3 renderer candidate. The
+  final 20/20 Wave 009 release gate remains open. Candidate-neutral
+  Industrial L4 fixture-materializer preparation is active only under
+  `INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md`.
 
 Independently prove or reject the city-not-board release. Acceptance requires
 20/20, every category 4/4, zero P0/P1, zero automatic rejects, and material
@@ -38,3 +46,8 @@ bound to the exact candidate.
 Do not repeat the full 20-minute release journey or the integration-owned full
 native suite for every art batch. A focused approval means only that the batch
 may publish; final Wave 009 acceptance still requires the complete 20/20 gate.
+
+Before an exact Industrial L4 renderer candidate exists, PLAY-075 may build
+only the deterministic, fail-closed task-owned fixture materializer authorized
+by Integration. It may not instantiate, stage, score, or accept a hypothetical
+candidate.

@@ -1,0 +1,19 @@
+{
+  "acceptedSourceMutationCount" : 0,
+  "baseline" : "ba4845612c2a5e8ce746c2a08379342bbca946f1",
+  "checkedAtHead" : "368f08add8760535e3d54fbd318bdf501784e41b",
+  "failures" : [
+
+  ],
+  "passed" : true,
+  "productionSelected" : false,
+  "schema" : 1,
+  "scope" : "all task-owned OfflineScene PLAY-027 paths whose names bind accepted Residential L1-L4, Commercial L1-L4, or Industrial L1 sources, descriptors, materials, raw, normalized, or provenance",
+  "task" : "PLAY-027",
+  "trackedAcceptedChangedPaths" : [
+
+  ],
+  "untrackedAcceptedPaths" : [
+
+  ]
+}

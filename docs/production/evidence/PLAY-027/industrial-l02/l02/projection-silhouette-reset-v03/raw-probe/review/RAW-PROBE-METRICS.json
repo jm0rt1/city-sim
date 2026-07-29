@@ -1,0 +1,439 @@
+{
+  "alphaAndChroma" : {
+    "alphaVisibleToRGBWidthRatio" : 0.9884615384615385,
+    "exactChromaPixelCount" : 1426723,
+    "hiddenRGBPixelCount" : 0,
+    "hiddenRGBRatio" : 0,
+    "nearMagentaOpaquePixelCount" : 8460,
+    "preChromaBuildingAlphaBounds" : {
+      "height" : 406,
+      "maximum" : [
+        1024,
+        895
+      ],
+      "minimum" : [
+        511,
+        490
+      ],
+      "pixelCount" : 135818,
+      "width" : 514
+    },
+    "preChromaBuildingAndShadowAlphaBounds" : {
+      "height" : 406,
+      "maximum" : [
+        1024,
+        895
+      ],
+      "minimum" : [
+        511,
+        490
+      ],
+      "pixelCount" : 141318,
+      "width" : 514
+    },
+    "proofMagentaFamilyPixelCount" : 0,
+    "rawRGBOccupiedBounds" : {
+      "height" : 418,
+      "maximum" : [
+        1028,
+        905
+      ],
+      "minimum" : [
+        509,
+        488
+      ],
+      "pixelCount" : 146141,
+      "width" : 520
+    }
+  },
+  "disposition" : "REJECTED_RAW_TECHNICAL_GATE",
+  "features" : {
+    "measuredMinimumNative2xPixels" : 17.15625,
+    "records" : [
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 96,
+          "maximum" : [
+            999,
+            779
+          ],
+          "minimum" : [
+            945,
+            684
+          ],
+          "pixelCount" : 5233,
+          "width" : 55
+        },
+        "id" : "v02-dock-door-a",
+        "measuredNative2xHeightPixels" : 27,
+        "measuredNative2xMaximumSpanPixels" : 27,
+        "measuredNative2xWidthPixels" : 15.46875,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          945.60003514324922,
+          684.93288833964721,
+          998.17146283389468,
+          778.40460669424954
+        ]
+      },
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 95,
+          "maximum" : [
+            930,
+            813
+          ],
+          "minimum" : [
+            877,
+            719
+          ],
+          "pixelCount" : 5130,
+          "width" : 54
+        },
+        "id" : "v02-dock-door-b",
+        "measuredNative2xHeightPixels" : 26.71875,
+        "measuredNative2xMaximumSpanPixels" : 26.71875,
+        "measuredNative2xWidthPixels" : 15.1875,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          877.02860128712155,
+          719.21859910222861,
+          929.60004130873153,
+          812.69031668614571
+        ]
+      },
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 95,
+          "maximum" : [
+            862,
+            847
+          ],
+          "minimum" : [
+            808,
+            753
+          ],
+          "pixelCount" : 5225,
+          "width" : 55
+        },
+        "id" : "v02-dock-door-c",
+        "measuredNative2xHeightPixels" : 26.71875,
+        "measuredNative2xMaximumSpanPixels" : 26.71875,
+        "measuredNative2xWidthPixels" : 15.46875,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          808.45716743099376,
+          753.50430986481024,
+          861.02860128712155,
+          846.9760305314685
+        ]
+      },
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 60,
+          "maximum" : [
+            1006,
+            708
+          ],
+          "minimum" : [
+            923,
+            649
+          ],
+          "pixelCount" : 4799,
+          "width" : 84
+        },
+        "id" : "v02-dock-canopy-a",
+        "measuredNative2xHeightPixels" : 16.875,
+        "measuredNative2xMaximumSpanPixels" : 23.625,
+        "measuredNative2xWidthPixels" : 23.625,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          923.42861546773088,
+          649.21231570506336,
+          1005.714338561277,
+          707.15167125031735
+        ]
+      },
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 60,
+          "maximum" : [
+            938,
+            742
+          ],
+          "minimum" : [
+            854,
+            683
+          ],
+          "pixelCount" : 5100,
+          "width" : 85
+        },
+        "id" : "v02-dock-canopy-b",
+        "measuredNative2xHeightPixels" : 16.875,
+        "measuredNative2xMaximumSpanPixels" : 23.90625,
+        "measuredNative2xWidthPixels" : 23.90625,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          854.85717544612089,
+          683.49802030216256,
+          937.14289237418473,
+          741.43737584741666
+        ]
+      },
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 60,
+          "maximum" : [
+            869,
+            776
+          ],
+          "minimum" : [
+            786,
+            717
+          ],
+          "pixelCount" : 5040,
+          "width" : 84
+        },
+        "id" : "v02-dock-canopy-c",
+        "measuredNative2xHeightPixels" : 16.875,
+        "measuredNative2xMaximumSpanPixels" : 23.625,
+        "measuredNative2xWidthPixels" : 23.625,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          786.28574467273427,
+          717.78372798200292,
+          868.57146468353926,
+          775.72308738068352
+        ]
+      },
+      {
+        "alphaOccupiedBounds" : {
+          "height" : 61,
+          "maximum" : [
+            802,
+            869
+          ],
+          "minimum" : [
+            772,
+            809
+          ],
+          "pixelCount" : 1891,
+          "width" : 31
+        },
+        "id" : "v02-personnel-door",
+        "measuredNative2xHeightPixels" : 17.15625,
+        "measuredNative2xMaximumSpanPixels" : 17.15625,
+        "measuredNative2xWidthPixels" : 8.71875,
+        "passedSixPixelMinimum" : true,
+        "projectedSourceBounds" : [
+          772.8000137181981,
+          809.38418777284664,
+          801.60002589502574,
+          868.57486186429549
+        ]
+      }
+    ]
+  },
+  "freshMetalProcessCount" : 1,
+  "luma" : {
+    "buildingOpaquePixelCount" : 135034,
+    "maximumMajorFacadeBinShareProxy" : 0.46409793089147916,
+    "occupiedStep32Bins" : [
+      16,
+      48,
+      80,
+      112,
+      144,
+      176
+    ],
+    "p25" : 48,
+    "p75" : 87,
+    "p75MinusP25" : 39,
+    "p95" : 148,
+    "proxyDefinition" : "maximum occupied step-32 luma-bin share over building-alpha pixels",
+    "step32BinCounts" : {
+      "16" : 1431,
+      "48" : 53351,
+      "80" : 62669,
+      "112" : 4034,
+      "144" : 7692,
+      "176" : 5857
+    },
+    "targets" : {
+      "maximumMajorFacadeBinShare" : 0.34999999999999998,
+      "minimumOccupiedStep32Bins" : 5,
+      "p25Minimum" : 80,
+      "p75MinusP25Minimum" : 48,
+      "p95Minimum" : 192
+    }
+  },
+  "normalizationRunCount" : 0,
+  "panels" : [
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/SOURCE-SCALE-RAW-AND-NEUTRAL.png",
+      "fileSHA256" : "cfbffe3ff7d5fb8f4df3892bad8f5297979b35209ff5784cc738064c2f162875",
+      "pixels" : [
+        3120,
+        1056
+      ]
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/SOURCE-SCALE-COLOR-AND-GRAYSCALE.png",
+      "fileSHA256" : "5b47cdf6c6a302440f38f55fe1a08b72f0a0b0dfd59e9124bacc94f00d4ed6ee",
+      "pixels" : [
+        3120,
+        1056
+      ]
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/NEUTRAL-NATIVE-2X-COLOR.png",
+      "fileSHA256" : "3dea4b66c82e06635d69aa359c62724482e92625ed6042a462e0643c6fa289b7",
+      "pixels" : [
+        432,
+        288
+      ]
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/NEUTRAL-NATIVE-2X-GRAYSCALE.png",
+      "fileSHA256" : "93b83fb9a0a6d8d7e340ba4ee56509c6eff3004f2936729c0ae21fcb37b54924",
+      "pixels" : [
+        432,
+        288
+      ]
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/FOOTPRINT-NATIVE-2X-COLOR.png",
+      "fileSHA256" : "855652d80e4cdc540c520204ec89a3080495a9e41cbb768a2e585c4a96abbaec",
+      "pixels" : [
+        216,
+        180
+      ]
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/FOOTPRINT-NATIVE-2X-GRAYSCALE.png",
+      "fileSHA256" : "d75d930371c8887fa5739d3ed76b9b678f7441b5220e099896cbeb4d4ef897e1",
+      "pixels" : [
+        216,
+        180
+      ]
+    },
+    {
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/raw-probe/review/ZOOM-COLOR-AND-GRAYSCALE.png",
+      "fileSHA256" : "467ae8cc4181258514eb6607b929c437c2c5b4b5edf4f754ba986231f84b928a",
+      "pixels" : [
+        2296,
+        940
+      ]
+    }
+  ],
+  "probe" : {
+    "approvedCommit" : "aaa431e867a635d78f70e422caa756efe71d07e8",
+    "descriptorSHA256" : "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca",
+    "materialLibrarySHA256" : "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6",
+    "prepixelValidationSHA256" : "f73a0a077e058845a03ed8cf273babebbab11fec6bd87dce34444ccd20d42a47",
+    "preservedV02RejectionSHA256" : "7ca9a9dcdbf0552872baecb311eb5459c54d4c186e65ae8f3fa66015020cf4f5",
+    "provenanceFileSHA256" : "a8feb0b164d7d67c047de32e8291e4c4d16c220a8f72b6f46ef931b22a7b4db7",
+    "rawDecodedRGBASHA256" : "6748347ef60f9a40fcc0e2faa52564c3fe7b6968260b65715f75a4ac7fea1d83",
+    "rawFileSHA256" : "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba"
+  },
+  "productionSelected" : false,
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      832
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "passed" : true,
+    "southeastShadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "schema" : 1,
+  "sourceAuthorityAccepted" : false,
+  "spans" : {
+    "buildingOnlyBounds" : {
+      "height" : 406,
+      "maximum" : [
+        1024,
+        895
+      ],
+      "minimum" : [
+        511,
+        490
+      ],
+      "pixelCount" : 135818,
+      "width" : 514
+    },
+    "buildingOnlyNative2xWidth" : 144.5625,
+    "buildingOnlySourceWidth" : 514,
+    "coreFormBounds" : {
+      "height" : 367,
+      "maximum" : [
+        997,
+        874
+      ],
+      "minimum" : [
+        576,
+        508
+      ],
+      "pixelCount" : 124554,
+      "width" : 422
+    },
+    "coreFormNative2xWidth" : 118.6875,
+    "coreFormSourceWidth" : 422
+  },
+  "task" : "PLAY-027",
+  "technicalPassed" : false,
+  "type" : "industrial-l02-east-v03-single-primary-raw-review",
+  "visualDisposition" : "PENDING_INDEPENDENT_REVIEW"
+}

@@ -1,0 +1,55 @@
+{
+  "taskID": "PLAY-027",
+  "artifact": "industrial-l04-turbine-v08-north-raw-v01",
+  "disposition": "REJECTED_PRE_PIXEL_CAPABILITY",
+  "timestampUTC": "2026-07-27T21:10:26Z",
+  "branch": "codex/citysim-world-art",
+  "mergeCheckpoint": "b48357f70f4d10bb76e978c5c823c1cf7959b867",
+  "acceptedPrepixelAncestor": "58bdac23653389ad62603f9e2567bd65430fd7ed",
+  "publishedAuthorityAncestor": "48823cb7e3f709a2c3c9a3bff190b2e2a384f0b9",
+  "bindingAuthority": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-TURBINE-V08-PREPIXEL-ACCEPTANCE-58bdac2.md",
+  "direction": "north",
+  "attemptedProcesses": 1,
+  "metalProcesses": 0,
+  "rawPixelCount": 0,
+  "remainingProcessesConsumed": 0,
+  "renderer": {
+    "binarySHA256": "f9f196c1df60bace84d41760bd4057c6ce53c6c619c17b88e07fb39952dfe5a9",
+    "rendererArchitectureSHA256": "ef6e0a5a808c9b4e716e378ae39149458a44befbbb022c2e817de6b59628130e",
+    "offlineSceneRendererSHA256": "4c1335e7dca44774280e678b9ff21d0c58550a2a19d112871a0c8fddf67e8e2f",
+    "compileDisposition": "PASS_WARNINGS_AS_ERRORS"
+  },
+  "inputs": {
+    "descriptor": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-turbine-v08-prepixel/scenes/industrial_l04/variant-0/n/scene.json",
+    "descriptorSHA256": "9f812479746ba031335aad53f89d562e1f03de0b868b5b533bf43007eb4a9472",
+    "materialLibrary": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-turbine-v08-prepixel/materials/industrial-l04-turbine-v08-prepixel.json",
+    "materialLibrarySHA256": "f8cf1d4ff9ab4446ec562fe949dd09c45399a32d9a763f7d6dd6380b66e52b94",
+    "logicalBuildingID": "industrial_l04",
+    "sourceRevision": "source-v08-prepixel",
+    "sceneGeometryID": "industrial-l04-turbine-v08-n-independent",
+    "samplingContractID": "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "sceneKitAntialiasing": "none",
+    "sceneKitShadows": "disabled",
+    "sceneKitLightingMode": "authored-constant-v1"
+  },
+  "failure": {
+    "stage": "DescriptorSamplingResolver.resolve",
+    "exitCode": 133,
+    "message": "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03/source-v04 N/E/S/W and exact source-v05/source-v06 North/West v3 source-authority descriptors"
+  },
+  "outputAbsence": {
+    "rawPNG": true,
+    "provenanceJSON": true,
+    "backendCapabilityJSON": true
+  },
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "stoppedWithoutResolverMutation": true,
+  "unrun": [
+    "north run-b",
+    "north run-c",
+    "raw identity validation",
+    "raw semantic visibility validation",
+    "raw review panels"
+  ]
+}

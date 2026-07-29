@@ -1,0 +1,64 @@
+{
+  "artifacts": [
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/AuditIndustrialL2PreRenderBounds.swift",
+      "role": "CPU/SceneKit node-union and face-contributor audit with no renderer",
+      "sha256": "44f4f2d30b79b94db5f56716c2ee09a420e71ba1c7870f757f57e1a635eec389"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/FreezeIndustrialL2EastProjectionSilhouetteV03.swift",
+      "role": "deterministic v02-to-v03 descriptor freeze",
+      "sha256": "85b6461efaa1657474e056431b332eb2279ba82c7d7beb2c6f04feee68959588"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/ValidateIndustrialL2EastProjectionSilhouetteV03.swift",
+      "role": "typed pre-render contract and preservation validator",
+      "sha256": "3c5900fcb48b03fdeac48d87e6159091f4366636e7c5999191d160dd686e8dee"
+    },
+    {
+      "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-projection-silhouette-reset-v03/scenes/industrial_l02/variant-0/east/scene.json",
+      "role": "frozen East v03 pre-render descriptor",
+      "sha256": "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca"
+    },
+    {
+      "file": "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/prepixel/V02-ROOT-BOUNDS-AUDIT.json",
+      "role": "measured v02 root-bound failure and contributors",
+      "sha256": "fd83215816c3f881af982057e3335cc4c63748037bafccb8c24ffad4dfd88296"
+    },
+    {
+      "file": "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/prepixel/V03-ROOT-BOUNDS-AUDIT.json",
+      "role": "measured v03 root-bound pass and contributors",
+      "sha256": "62ab061b052c9b5c767bc36f0d5d9832206898e6dfc42e3df42552ff2e75896d"
+    },
+    {
+      "file": "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/prepixel/PREPIXEL-VALIDATION.json",
+      "role": "typed pre-render validation report",
+      "sha256": "f73a0a077e058845a03ed8cf273babebbab11fec6bd87dce34444ccd20d42a47"
+    },
+    {
+      "file": "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v03/prepixel/PRE-RENDER-REPAIR.md",
+      "role": "human-readable contradiction, repair, and future-probe boundary",
+      "sha256": "54d8db989204e5ebc39eae37f3eecea80d5fe21a2d8239dd548e94d41b24d3fc"
+    }
+  ],
+  "compiledTools": [
+    {
+      "file": "/private/tmp/play027-offline-tools/audit-industrial-l2-pre-render-bounds",
+      "sha256": "c1ce16ee8e6e436f584357f6c5dcc1179ff1d2306c7db184cfc6063c2ed2e043"
+    },
+    {
+      "file": "/private/tmp/play027-offline-tools/freeze-industrial-l2-east-projection-silhouette-v03",
+      "sha256": "aee131277055b7cca622bcf4a1be9995893cead2f8ca80e2c4c6d5030747d09d"
+    },
+    {
+      "file": "/private/tmp/play027-offline-tools/validate-industrial-l2-east-projection-silhouette-v03",
+      "sha256": "181567b4bda3abeb507ea82bda6e61fed8a2c29d1421904ad052fb93edf64087"
+    }
+  ],
+  "disposition": "PENDING_INDEPENDENT_PRE_RENDER_REVIEW",
+  "pixelsCreated": false,
+  "productionSelected": false,
+  "rawRenderProcessesConsumed": 0,
+  "schema": 1,
+  "task": "PLAY-027"
+}

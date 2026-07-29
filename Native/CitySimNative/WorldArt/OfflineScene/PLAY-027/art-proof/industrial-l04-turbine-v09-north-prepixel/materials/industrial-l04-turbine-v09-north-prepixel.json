@@ -1,0 +1,357 @@
+{
+  "colorSpace" : "extended-sRGB",
+  "familyAnchorFile" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/final-review/review/COMPACT-NESW-COLOR.png",
+  "familyAnchorSHA256" : "83b5be9cafc359c95c9455ef7c419a99053f1e843cb401cdb95ea7fad2da6d70",
+  "imageGenMaterialSwatchesUsed" : false,
+  "libraryID" : "industrial-l04-turbine-v09-north-prepixel",
+  "materials" : [
+    {
+      "baseColorRGBA" : [
+        0.22,
+        0.23999999999999999,
+        0.23000000000000001,
+        1
+      ],
+      "id" : "l4t-charcoal-foundation",
+      "metalness" : 0.02,
+      "pattern" : "large-scored-foundation",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.95999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.20000000000000001,
+        0.20000000000000001,
+        1
+      ],
+      "id" : "l4t-deep-freight-recess",
+      "metalness" : 0.02,
+      "pattern" : "solid-depth-cavity",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.96999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.23000000000000001,
+        0.23000000000000001,
+        1
+      ],
+      "id" : "l4t-charcoal-structural-steel",
+      "metalness" : 0.38,
+      "pattern" : "painted-structural-steel",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.78000000000000003,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.27000000000000002,
+        0.40000000000000002,
+        0.40999999999999998,
+        1
+      ],
+      "id" : "l4t-weathered-blue-green-steel",
+      "metalness" : 0.26000000000000001,
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.83999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.25,
+        0.34000000000000002,
+        0.28999999999999998,
+        1
+      ],
+      "id" : "l4t-restrained-green-steel",
+      "metalness" : 0.20000000000000001,
+      "pattern" : "painted-weathered-steel",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.85999999999999999,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.62,
+        0.41999999999999998,
+        0.28999999999999998,
+        1
+      ],
+      "id" : "l4t-weathered-warm-brick",
+      "metalness" : 0,
+      "pattern" : "weathered-industrial-brick",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.93999999999999995,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.29999999999999999,
+        0.37,
+        0.35999999999999999,
+        1
+      ],
+      "id" : "l4t-dark-roof-metal",
+      "metalness" : 0.23999999999999999,
+      "pattern" : "weathered-standing-seam",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.88,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.47999999999999998,
+        0.28999999999999998,
+        0.17000000000000001,
+        1
+      ],
+      "id" : "l4t-oxidized-machinery",
+      "metalness" : 0.41999999999999998,
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.81999999999999995,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.54000000000000004,
+        0.5,
+        0.41999999999999998,
+        1
+      ],
+      "id" : "l4t-warm-scored-apron",
+      "metalness" : 0,
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.97999999999999998,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.38,
+        0.56000000000000005,
+        0.57999999999999996,
+        1
+      ],
+      "id" : "l4t-believable-glazing",
+      "metalness" : 0.059999999999999998,
+      "pattern" : "muted-mullion-grid",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.46000000000000002,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.78000000000000003,
+        0.29999999999999999,
+        0.080000000000000002,
+        1
+      ],
+      "emissionRGBA" : [
+        0.20000000000000001,
+        0.044999999999999998,
+        0.0080000000000000002,
+        1
+      ],
+      "id" : "l4t-orange-process-heat",
+      "metalness" : 0.16,
+      "pattern" : "restrained-process-heat",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.71999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.41999999999999998,
+        0.55000000000000004,
+        0.54000000000000004,
+        1
+      ],
+      "id" : "l4t-v09-weathered-hall-steel",
+      "metalness" : 0.26000000000000001,
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.83999999999999997,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.28000000000000003,
+        0.35999999999999999,
+        0.33000000000000002,
+        1
+      ],
+      "id" : "l4t-v09-nw-roof-steel",
+      "metalness" : 0.23999999999999999,
+      "pattern" : "weathered-standing-seam",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.88,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.17000000000000001,
+        0.23999999999999999,
+        0.23000000000000001,
+        1
+      ],
+      "id" : "l4t-v09-se-roof-steel",
+      "metalness" : 0.22,
+      "pattern" : "weathered-standing-seam",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.90000000000000002,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "source" : "task-owned numeric North roof/value redesign; no ImageGen or raster swatch",
+  "styleAnchorFile" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "task" : "PLAY-027"
+}

@@ -1,0 +1,85 @@
+{
+  "task": "PLAY-027",
+  "baseCommit": "6d3dffd60925ad1aa1a4babcf6c959b44d324714",
+  "sourceKey": "industrial_l02/variant-0/east/source-v07",
+  "scope": "task-owned offline pre-Lanczos pipeline only",
+  "sceneDescriptorSHA256": "69c2d2b37e65c91fb19e6c1f3b913e4f00a22558694fdd87b97a9942c6ed6a90",
+  "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "toolchainFingerprintSHA256": "4ccf615f226d4bbea5a625f77c97683ae9ffd94ac6b99402309c639b4f0c4716",
+  "rendererBinarySHA256": "df8ef43361dabb64ba8132c6ba050b0a950d7f6260df80aafe9dee3553cdca06",
+  "captureContractID": "industrial-l02-source-v07-east-pre-lanczos-707x687-v1",
+  "algorithm": {
+    "id": "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+    "version": 1,
+    "quantizationStep": 32,
+    "midpointOffset": 8,
+    "chromaBypassRGBA": [
+      255,
+      0,
+      255,
+      255
+    ],
+    "channels": "rgb-only",
+    "opaquePixelPolicy": "quantize-each-rgb-channel",
+    "transparentPixelPolicy": "zero-hidden-rgb",
+    "partialAlphaPolicy": "reject",
+    "preservesAlpha": true,
+    "preservesChroma": true,
+    "immutableSourceBuffer": true,
+    "crossRunState": "none"
+  },
+  "sourceHashes": {
+    "sceneDescriptorModelSwift": "b6c4e9ef93728a8fe1a0b53764a089b4b59d532d7f663b2fa7c47d1644f22fc4",
+    "rendererArchitectureSwift": "e0943590ee01f8518fbd3a230fa126e607b6aa130c6fcc422e250eb9467b76af",
+    "preLanczosFrameCanonicalizerSwift": "61361c05ca16327cb75ff9f2b733a39785a37d2ac5934989690c8da4ec1d384d",
+    "rendererStageDiagnosticsSwift": "f499ade1aec7d2eb4a05de98df83d443fe706bc3cdd1e697ad87955241eceead",
+    "offlineSceneRendererSwift": "db423a35c7c54a820be37a1d63118ef1e2bc38ca4d9c2378954293f319997668",
+    "captureContractSwift": "2cf833d3a0652018a5a897230ace057b0b0b64b7e1d878c7e966c47a0ae11604",
+    "pureCanonicalizerTestSwift": "f48a28aba0e9bc0cfbba1671a2e323e27a8fd508e604545956d9776aaf0b033d",
+    "captureContractTestSwift": "591417299ff54b87f1ac3f600c15c508962729358370fee7869737e24b93af7e",
+    "sceneV2SchemaJSON": "f09b6f184cc52ef57caacadd5f24970d3b543ce14fa02d1ffcdda7b792f66f18"
+  },
+  "compiledTestHashes": {
+    "pureCanonicalizer": "bf6b130b19ff4d0d9a2d5bed3ba54842dcfe67cffcd46c71cc2d69219ded2bc9",
+    "captureContract": "15831613667b6903d72e713dad5a7aca075acd2e5657b7ec83a6836828d36302"
+  },
+  "tests": {
+    "pureCanonicalizer": "PASS",
+    "exactSourceV07DescriptorAdmitted": "PASS",
+    "mismatchedDescriptorHashRejected": "PASS",
+    "mismatchedSourceRevisionRejected": "PASS",
+    "mismatchedDirectionRejected": "PASS",
+    "mismatchedCoordinateRejected": "PASS",
+    "defaultPathNoOp": "PASS",
+    "schemaAndDescriptorJSONParse": "PASS"
+  },
+  "authoredPayloadPreservation": {
+    "sourceV06CanonicalPayloadSHA256": "0aeb7f0d58da96c346c803044394351b99cce1e862d208b52fd710ec8949db05",
+    "sourceV07CanonicalPayloadSHA256": "0aeb7f0d58da96c346c803044394351b99cce1e862d208b52fd710ec8949db05",
+    "comparisonExcludesOnly": [
+      "sourceRevision",
+      "sampling.sourceRevisionBinding",
+      "sampling.preLanczosCanonicalizer",
+      "toolchainFingerprint"
+    ],
+    "sceneChanged": false,
+    "topologyChanged": false,
+    "materialsChanged": false,
+    "cameraChanged": false,
+    "lightChanged": false,
+    "shadowChanged": false,
+    "registrationChanged": false
+  },
+  "frozenBaseObjects": {
+    "sourceV06Descriptor": "ac523576aac0fee3b2f0b2a4f64f6b2b892415b9",
+    "sourceV06ProofRejectionTree": "4b5615bb3f373b779f64ca73d6b92f66b9c80086",
+    "sourceV05RawRejectionTree": "b575801c6862f9354b9ad356d155fa1a1f887942",
+    "northDescriptor": "578583583a940fa8bf41ad84164172bef4b7c0f3",
+    "southDescriptor": "864b7a8804a7144ccc03896ef5829a71e7241fc6",
+    "westDescriptor": "a5c1e0bfad0a73a97fca166bba9b084baf73a97e"
+  },
+  "rawRenderProcessesConsumed": 0,
+  "normalizationRun": false,
+  "productionSelected": false,
+  "disposition": "PRE-RENDER DESIGN PASS"
+}

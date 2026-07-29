@@ -1,0 +1,120 @@
+{
+  "schema": "citysim.world-art.east-zero-pixel-readiness.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "parallelOperatingAuthority": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "synchronizedPublishedMaster": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
+  "synchronizationMergeCommit": "3f76525465fbc962a5f925b89ceb1531e5544d2b",
+  "runnerCheckpoint": "72ee6f1fc8c830f35815628f89fce1b318ca11e4",
+  "result": "PASS_BLOCKED",
+  "sourceStage": {
+    "schemaVersion": 2,
+    "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "schemaSha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+    "bindingResult": "PASS",
+    "prelockHandoff": {
+      "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PRELOCK-RUNNER-HANDOFF.json",
+      "sha256": "877b4bdce759caa543e90ad51af53107edb82ebf2d8ffadf4cf57a964c886b03",
+      "schemaValidation": "PASS"
+    },
+    "sourceStageHandoff": {
+      "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+      "emission": "blocked_missing_source_production_profile",
+      "exists": false
+    }
+  },
+  "zeroPixelBlockout": {
+    "result": "PASS",
+    "proofPath": "docs/production/evidence/PLAY-079/STATIC-PREDESIGN-PROOF.json",
+    "proofSha256": "9d804fd9780f8404c5127d915140f94820a2c84ffb19c6c4e9da95100b7726f6",
+    "sceneSha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
+    "objectCount": 23,
+    "authoredSilhouetteBreakCount": 7,
+    "minimumSilhouetteBreakCount": 3,
+    "siblingSceneInputCount": 0,
+    "copiedMirroredRotatedOrTransformedSiblingGeometry": false,
+    "renderInvocations": 0,
+    "imagesWritten": 0
+  },
+  "actualCamera": {
+    "result": "PASS",
+    "proofPath": "docs/production/evidence/PLAY-079/ACTUAL-CAMERA-PREDESIGN-PROOF.json",
+    "proofSha256": "2f50758068b2ce39c6e4cbeb4828e35481740830a35048ffe233a90ab84b0738",
+    "projection": "ORTHO",
+    "view": "southeast-looking-northwest",
+    "resolution": [
+      1536,
+      1024
+    ],
+    "maximumRegistrationErrorSourcePixels": 0.0004105720229209506,
+    "toleranceSourcePixels": 0.5,
+    "literal192PortalInset": [
+      14.285717010498047,
+      23.939355850219727
+    ],
+    "literal192SilhouetteBreakCount": 5,
+    "portalProcessOverlapCount": 0,
+    "renderInvocations": 0,
+    "imagesWritten": 0
+  },
+  "registration": {
+    "result": "PASS",
+    "citySimFootprint": [
+      72.0,
+      72.0
+    ],
+    "canonicalCitySimEastSocket": [
+      28.0,
+      0.0,
+      0.0
+    ],
+    "blenderNativeEastSocket": [
+      0.0,
+      28.0,
+      0.0
+    ],
+    "sourcePixelEastSocket": [
+      896.0,
+      832.0
+    ],
+    "sourcePixelGroundPivot": [
+      768.0,
+      896.0
+    ],
+    "coordinateMappingSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "failClosedProfileProof": {
+    "result": "PASS",
+    "receiptPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-PRELOCK-RECEIPT.json",
+    "runnerCode": "missing_source_production_profile",
+    "semanticValidatorCode": "MISSING_REFERENCED_FILE",
+    "rejectionStage": "before_renderer_launch",
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0
+  },
+  "invocations": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "renderInvocations": 0
+  },
+  "pixelFiles": {
+    "count": 0,
+    "paths": []
+  },
+  "pixelValidation": {
+    "rgba": "not_run",
+    "literal192": "not_run",
+    "abcIdentity": "not_run",
+    "normalization": "not_run"
+  },
+  "candidateReadyForIndependentReview": false,
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "blocker": "The exact North appearance lock and Integration source-production profile are not published; East source pixels and A/B/C remain unauthorized."
+}

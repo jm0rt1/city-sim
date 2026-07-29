@@ -1,0 +1,92 @@
+{
+  "schema": "citysim.world-art.prelock-runner-validation.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "result": "PASS",
+  "static": {
+    "result": "PASS",
+    "topLevelBpyImports": 0,
+    "workerAppearanceGuardLine": 544,
+    "workerCoordinateBridgeGuardLine": 545,
+    "workerBpyImportLine": 550,
+    "bothGuardsPrecedeBpyImport": true,
+    "guardedFutureRenderApiReferences": 2,
+    "repeatIdentityPass": true,
+    "frozenInputCount": 15
+  },
+  "missingLock": {
+    "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/MISSING-LOCK-REJECTION.json",
+    "result": "REJECTED",
+    "stage": "before_renderer_launch",
+    "code": "missing_appearance_lock"
+  },
+  "wrongLock": {
+    "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/WRONG-LOCK-REJECTION.json",
+    "result": "REJECTED",
+    "stage": "before_renderer_launch",
+    "code": "unpublished_or_wrong_appearance_lock"
+  },
+  "coordinateBridge": {
+    "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/COORDINATE-BRIDGE-V06-ADOPTION.json",
+    "sha256": "78de3136daf15171243cb34ec62b49f6480069e7bfeb850a3c9c0b8a4e29de1c",
+    "state": "validated_v06",
+    "result": "PASS",
+    "acceptedSourceCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "basis": {
+      "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+      "matrixRows": [
+        [0, 0, 1],
+        [1, 0, 0],
+        [0, 1, 0]
+      ],
+      "determinant": 1,
+      "sourceOrder": [0, 1, 2, 3],
+      "perDirectionTransforms": false,
+      "windingChange": false
+    },
+    "canonicalCitySimEastSocket": [
+      28.0,
+      0.0,
+      0.0
+    ],
+    "sourcePixelEastSocket": [
+      896.0,
+      832.0
+    ],
+    "blenderNativeEastSocket": [
+      0.0,
+      28.0,
+      0.0
+    ],
+    "blenderContactCornerOrder": [0, 1, 2, 3],
+    "historicalPredesignProjectionAdapterFutureSourceAuthority": false
+  },
+  "invocations": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "renderInvocations": 0
+  },
+  "pixelFiles": {
+    "count": 0,
+    "paths": []
+  },
+  "pixelValidation": {
+    "rgba": "not_run",
+    "literal192": "not_run",
+    "abcIdentity": "not_run",
+    "normalization": "not_run"
+  },
+  "runnerHashes": {
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json": "43490a6d2c561b097abc7a452a9da172b2b1ac69ea8b33c2a9ad484c2581b9bc",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/run_production.py": "6dd7d76fc5d1a773825df5f81b890ef27a62364f714cf3614c7129fa301ab8e3",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_prelock.py": "b7a1fde9b5f5c06c86bfc0fd00c91b534bddba460f557ac004806c168c96c561",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_source_outputs.py": "d59820a2062aba0074ab927e4e7dbeb3ff816c6c235a400ac6ff281e80bc1774"
+  }
+}

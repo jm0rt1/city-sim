@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "proof": "TWO_INDEPENDENT_ZERO_PIXEL_RUNS_AFTER_SOURCE_STAGE_V2_BINDING",
+  "runs": {
+    "run1": {
+      "blockoutCameraSocketV2ProofSha256": "c54da974296dbadd64e580ac0f68bf49efcc6b59be565f993a4d78930451d92f",
+      "bridgeRepeatIdentitySha256": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
+      "handoffSchemaValidationSha256": "0a697c3314ccbce2b12f2a4080b1374d47f0ceb2c463277cda4738d0a0d8da4a",
+      "integratedProofGuardSha256": "5611d26e1309b9f1ce55358cab2567f7d5f96fa97e88258a0cfc6b61bdf6acc5",
+      "missingLockRejectionSha256": "7f5ac7d9686b100972c49d75866d627addf7aebfc64c0df7291e508c7e466888",
+      "missingSourceProductionProfileRejectionSha256": "68c370cacf96d369b720a2e2de53257b13a38cb9fb3d1191d19ef3b99ad72072",
+      "runnerStaticValidationSha256": "7db17d35e792e950764db19540081947b76e019567e0993673d2cfe7149465be",
+      "sourceStageSchemaGateSha256": "33106a59bfa784e37d19fe227d2981f87d18a18cd8292de923771f3b7706ee73",
+      "sourceValidatorDescribeSha256": "ab1724d81b90143f23a8e261b202f651078023ca6203e446a93f64f0f94201b2",
+      "wrongLockRejectionSha256": "81b6c3592e53d348ccc2552b51d6163719ffc66db69758fbef46b04857b1d99e"
+    },
+    "run2": {
+      "blockoutCameraSocketV2ProofSha256": "c54da974296dbadd64e580ac0f68bf49efcc6b59be565f993a4d78930451d92f",
+      "bridgeRepeatIdentitySha256": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
+      "handoffSchemaValidationSha256": "0a697c3314ccbce2b12f2a4080b1374d47f0ceb2c463277cda4738d0a0d8da4a",
+      "integratedProofGuardSha256": "5611d26e1309b9f1ce55358cab2567f7d5f96fa97e88258a0cfc6b61bdf6acc5",
+      "missingLockRejectionSha256": "7f5ac7d9686b100972c49d75866d627addf7aebfc64c0df7291e508c7e466888",
+      "missingSourceProductionProfileRejectionSha256": "68c370cacf96d369b720a2e2de53257b13a38cb9fb3d1191d19ef3b99ad72072",
+      "runnerStaticValidationSha256": "7db17d35e792e950764db19540081947b76e019567e0993673d2cfe7149465be",
+      "sourceStageSchemaGateSha256": "33106a59bfa784e37d19fe227d2981f87d18a18cd8292de923771f3b7706ee73",
+      "sourceValidatorDescribeSha256": "ab1724d81b90143f23a8e261b202f651078023ca6203e446a93f64f0f94201b2",
+      "wrongLockRejectionSha256": "81b6c3592e53d348ccc2552b51d6163719ffc66db69758fbef46b04857b1d99e"
+    }
+  },
+  "byteIdentical": {
+    "blockoutCameraSocketV2Proof": true,
+    "bridgeRepeatIdentity": true,
+    "handoffSchemaValidation": true,
+    "integratedProofGuard": true,
+    "missingLockRejection": true,
+    "missingSourceProductionProfileRejection": true,
+    "runnerStaticValidation": true,
+    "sourceStageSchemaGate": true,
+    "sourceValidatorDescribe": true,
+    "wrongLockRejection": true
+  },
+  "blenderProjectionProcessLaunches": 2,
+  "blenderRenderApiCalls": 0,
+  "imageGenInvocations": 0,
+  "normalizerInvocations": 0,
+  "contactSheetInvocations": 0,
+  "renderInvocations": 0,
+  "pixelFiles": 0,
+  "passed": true
+}

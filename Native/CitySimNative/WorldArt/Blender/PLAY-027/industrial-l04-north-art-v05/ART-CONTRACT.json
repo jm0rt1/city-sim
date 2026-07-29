@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-020",
+  "artID": "industrial-l04-north-foundry-blender-art-v05",
+  "direction": "north",
+  "scene": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/SCENE.json",
+    "sha256": "517d992fc1b16b4da9105cf0921ff7a18d01ec0ff45a2c154e0d213a7ea54d27"
+  },
+  "materials": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/MATERIALS.json",
+    "sha256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab"
+  },
+  "builder": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/render_north_art_v05.py",
+    "sha256": "263e71c27f9f0064da2ad3fc8633522ea54df364c3563752aec400d2e4d5e99a"
+  },
+  "sceneBuilder": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/build_scene_v05.py",
+    "sha256": "81578a3021f53842e701be6dfb5084a7353d022455e61ec8b743c7468a6c1d1d"
+  },
+  "staticValidator": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/validate_predesign.py",
+    "sha256": "aed1b0c77f7e505f8830d079d65fc31a7c820a5b7b0b631a97b00afb25a1967a"
+  },
+  "baseRenderer": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/render_north_art_v03.py",
+    "sha256": "bc9c97d2bdf6143396d58460f7137831dba61bd80996dd1a129064c06e8ff1c7"
+  },
+  "baseAuthority": {
+    "commit": "af995850f0b20603c89ec7fdfda56245153a7f94",
+    "file": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V05-AUTHORITY.md",
+    "sha256": "5a7ce74cd39f99a7c7a8cef577018b49d20ae62e33aa1d36c444d5faf586cfae"
+  },
+  "returnedV03": {
+    "sceneSHA256": "e333caca586c78aa5f1cf7f10d8c962a130b887e9cbafdd1465753f1405254f0",
+    "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "compactOccupiedBounds": [64, 59, 126, 109],
+    "portalInsetCompactPixels": [15, 13],
+    "staffEntryCompactPixels": [4, 8]
+  },
+  "acceptedIndustrialL3": {
+    "compactOccupiedBounds": [70, 64, 123, 113]
+  },
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7"
+  },
+  "predesignCommandTemplate": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --disable-autoexec --threads 1 --python-exit-code 1 --python Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/render_north_art_v05.py -- --repository-root <repo> --contract Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/ART-CONTRACT.json --output-root <absent-output> --process-id PREDESIGN --predesign-proof-only",
+  "renderCommandTemplate": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --disable-autoexec --threads 1 --python-exit-code 1 --python Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/render_north_art_v05.py -- --repository-root <repo> --contract Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v05/ART-CONTRACT.json --output-root <absent-output> --process-id A",
+  "rawProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

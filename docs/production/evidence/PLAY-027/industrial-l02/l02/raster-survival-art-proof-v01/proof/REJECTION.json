@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "type": "industrial-l02-east-raster-survival-visual-rejection",
+  "prepixelFreezeCommit": "920af3b8730a556c564daa56d9a0c9a4d451cf18",
+  "processesConsumed": 1,
+  "directionsRendered": [
+    "east"
+  ],
+  "rawSHA256": "77d47f3feef50c584dfd60177e41ab6793247a6772c536270806a0c3196db5b8",
+  "registration": {
+    "completeRenderedNodeBounds": true,
+    "minimumWorld": [
+      -28,
+      0,
+      -28
+    ],
+    "maximumWorld": [
+      28.5,
+      76,
+      28
+    ],
+    "pivotSource": [
+      768,
+      896
+    ],
+    "eastSocketSource": [
+      896,
+      832
+    ],
+    "doorBaseSource": [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ]
+  },
+  "bindingFailures": [
+    {
+      "gate": "source-diamond utilization materially above rejected 80.1%",
+      "observed": 0.80078125,
+      "passed": false
+    },
+    {
+      "gate": "neutral alpha-respecting presentation eliminates opaque magenta plate",
+      "observedResidualQuantizedMagentaPlatePixels": 33488,
+      "passed": false
+    },
+    {
+      "gate": "broad post-step-32 material/value separation",
+      "observed": {
+        "p25": 48,
+        "p50": 48,
+        "p75": 54,
+        "p75MinusP25": 6
+      },
+      "passed": false
+    },
+    {
+      "gate": "three docks and personnel route unmistakable at literal source and native-2x",
+      "observed": "independent review found the cues require zoom coaching",
+      "passed": false
+    },
+    {
+      "gate": "materially superior capability hierarchy over accepted Industrial L1",
+      "observed": "small dark stacked box/tower with compressed near-black masses and footprint field dominance",
+      "passed": false
+    }
+  ],
+  "buildingBoundsExcludingQuantizedMagentaFamily": {
+    "minX": 640,
+    "minY": 508,
+    "maxX": 893,
+    "maxY": 830,
+    "width": 254,
+    "height": 323,
+    "area": 42888
+  },
+  "reviewEvidence": {
+    "metrics": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/RASTER-SURVIVAL-METRICS.json",
+    "sourceColor": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-SOURCE-COLOR.png",
+    "sourceGrayscale": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-SOURCE-GRAYSCALE.png",
+    "native2xColor": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-NATIVE-2X-COLOR.png",
+    "native2xGrayscale": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/L1-VS-L2-NATIVE-2X-GRAYSCALE.png",
+    "footprint": "docs/production/evidence/PLAY-027/industrial-l02/l02/raster-survival-art-proof-v01/proof/review/FOOTPRINT-CROP-COLOR-GRAYSCALE.png"
+  },
+  "nextAction": "stop; no second process, direction, normalization, LOD, source-authority promotion, or production selection",
+  "productionSelected": false,
+  "disposition": "REJECTED"
+}

@@ -1,0 +1,14 @@
+{
+  "binarySHA256" : "17489271836d93091fdd891d92eeeef2999d764f42abc4c0d7f9f692c8d50596",
+  "compileCommand" : "CLANG_MODULE_CACHE_PATH=/tmp/play027-l4-v09-module-cache SWIFT_MODULECACHE_PATH=/tmp/play027-l4-v09-module-cache swiftc -parse-as-library -warnings-as-errors Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL4TurbineV09NorthPrepixel.swift -o /tmp/build-industrial-l4-v09-north-prepixel",
+  "completeReplayCount" : 2,
+  "descriptorProductionDecode" : true,
+  "materialLibraryProductionDecode" : true,
+  "normalizedPerFileHashManifestSHA256" : "bbf621b322f6a41a030aa7270220cb9c4b773a06813083d5393827ea7b27dd09",
+  "replayA" : "byte-identical",
+  "replayB" : "byte-identical",
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "task" : "PLAY-027",
+  "toolSourceSHA256" : "d70ee6052bdedaf24f09913c18ec13a00034d84502cbe79ad26fd0bc765ef335"
+}

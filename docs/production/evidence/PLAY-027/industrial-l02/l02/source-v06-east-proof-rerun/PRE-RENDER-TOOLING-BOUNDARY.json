@@ -1,0 +1,56 @@
+{
+  "task": "PLAY-027",
+  "scope": "Industrial L2 source-v06 East diagnostic capture guard only",
+  "baseCommit": "3a2bdb6abfb08cde106653faaa70d41767547f84",
+  "sourceRevision": "source-v06",
+  "viewDirection": "east",
+  "diagnosticContractID": "industrial-l02-source-v06-east-scene-kit-vs-lanczos-707x687-v1",
+  "admittedSceneDescriptorSHA256": "70b36a0e76581524e64d40f19e364659eed6a53d7f7ab8d8924c51ba5d0951dd",
+  "materialLibrarySHA256": "4f4e34aa87891d70c442e596315bcbd474f059638c0af69abe6ecaac17af0815",
+  "targetCoordinate": [
+    707,
+    687
+  ],
+  "supportWindowPixels": [
+    33,
+    33
+  ],
+  "sourceHashes": {
+    "preservedSourceV05Contract": "7f0006a2b1567383c377fadaf3b1cdebc93a6e98f95b5afe9f71cac761fc39dd",
+    "sourceV06CaptureContract": "a509d1bb7ba52577bae8e871b92d8fc89b2cf10001c0b7539df0683c501d79cc",
+    "offlineSceneRenderer": "e7a87fa2209026074d4e4c71a7455570d0e7cedb6c6e114be01f9b14025f2cac",
+    "sourceV06ContractTest": "f097a92769d50c5d70f0e19c41738c640395eb2ea4fc25c4b20c0983befebed6"
+  },
+  "compiledArtifacts": {
+    "rendererPath": "/private/tmp/play027-source-v06-proof-tools/offline-scene-renderer",
+    "rendererSHA256": "421def6f19a285d4af1f3f087920df9fdda588092f62d3307efd933de7287a4d",
+    "testPath": "/private/tmp/play027-source-v06-proof-tools/test-source-v06-capture-contract",
+    "testSHA256": "ca71d49324772beeaee8bc33bda2ece2c85e8b6ba4d8ce85c8efb1a1316f6f2e"
+  },
+  "validation": {
+    "compile": "PASS",
+    "validExactSourceV06EastDescriptor": "PASS",
+    "defaultRendererPathNoOp": "PASS",
+    "mismatchedDescriptorHashRejected": "PASS",
+    "mismatchedSourceRevisionRejected": "PASS",
+    "mismatchedDirectionRejected": "PASS",
+    "mismatchedCoordinateRejected": "PASS",
+    "mismatchedEvidenceRootRejected": "PASS",
+    "sourceV05ContractFileBytePreserved": true
+  },
+  "boundaries": {
+    "diagnosticOnly": true,
+    "sceneChanged": false,
+    "topologyChanged": false,
+    "materialsChanged": false,
+    "cameraChanged": false,
+    "compositorChanged": false,
+    "normalizerChanged": false,
+    "runtimeChanged": false,
+    "shippingChanged": false,
+    "sharedManifestChanged": false,
+    "productionSelected": false
+  },
+  "rawRenderProcessesConsumed": 0,
+  "disposition": "PRE-RENDER TOOLING PASS"
+}

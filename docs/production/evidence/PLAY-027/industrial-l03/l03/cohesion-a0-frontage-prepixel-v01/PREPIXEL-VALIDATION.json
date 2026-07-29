@@ -1,0 +1,596 @@
+{
+  "authorizedDirections" : [
+    "north",
+    "west"
+  ],
+  "batch" : "industrial-l03-north-west-frontage-prepixel-v01",
+  "builderSource" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL3NWFrontagePrepixel.swift",
+  "builderSourceSHA256" : "413b5b41998eefa104999974110eb3807cf318ef6fd9ae5033ac04bdc2d59f87",
+  "descriptors" : [
+    {
+      "cameraPreserved" : true,
+      "candidateDescriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-frontage-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "candidateDescriptorSHA256" : "a147ad0a7023374b982a6677325da2912f45796616b03579e1a72eb7da4a6b61",
+      "changeLedger" : [
+        {
+          "fromDimensions" : [
+            44,
+            5,
+            8
+          ],
+          "fromPosition" : [
+            0,
+            5.5,
+            -10.5
+          ],
+          "id" : "n-throat-bridge",
+          "reason" : "lower continuous foreground threshold below loading-door base without expanding footprint",
+          "toDimensions" : [
+            44,
+            0.45000000000000001,
+            8
+          ],
+          "toPosition" : [
+            0,
+            2.6749999999999998,
+            -10.5
+          ]
+        },
+        {
+          "ids" : [
+            "n-dock-1-canopy",
+            "n-dock-2-canopy",
+            "n-dock-3-canopy",
+            "n-dock-4-canopy"
+          ],
+          "positionDeltaWorld" : [
+            0,
+            0,
+            -5
+          ],
+          "reason" : "move the retained warm-trim canopies behind the dark loading faces in the far-edge sightline so they frame rather than occlude the doors"
+        },
+        {
+          "fromDimensions" : [
+            8,
+            20,
+            14
+          ],
+          "fromPosition" : [
+            24,
+            13.1,
+            -7
+          ],
+          "id" : "n-quality-wing",
+          "reason" : "recess visible-side wall by 0.5 world unit for non-coincident return-side entrance treatment",
+          "toDimensions" : [
+            7.5,
+            20,
+            14
+          ],
+          "toPosition" : [
+            23.75,
+            13.1,
+            -7
+          ]
+        },
+        {
+          "ids" : [
+            "n-quality-glazing",
+            "n-staff-door",
+            "n-staff-canopy"
+          ],
+          "reason" : "move staff identity from camera-hidden far face to separately authored visible return face inside the same governed footprint"
+        }
+      ],
+      "direction" : "north",
+      "inputDescriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "inputDescriptorSHA256" : "1afaefb06e8e6a91f3e3e6215e9721f1ce8de224cc790e1599c33f956afa12be",
+      "lightShadowPreserved" : true,
+      "materialLibraryPreserved" : true,
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "registrationPreserved" : true,
+      "rootBoundsWorld" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          51,
+          28
+        ]
+      ],
+      "sceneGeometryID" : "industrial-l03-north-v05-open-loading-court"
+    },
+    {
+      "cameraPreserved" : true,
+      "candidateDescriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-frontage-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "candidateDescriptorSHA256" : "56e9aef896ef5eef435f76ff466f837ac022ff18edbc4e6bd3fa24cb583d78dc",
+      "changeLedger" : [
+        {
+          "fromDimensions" : [
+            8,
+            5,
+            44
+          ],
+          "fromPosition" : [
+            -10.5,
+            5.5,
+            0
+          ],
+          "id" : "w-throat-bridge",
+          "reason" : "lower continuous foreground threshold below loading-door base without expanding footprint",
+          "toDimensions" : [
+            8,
+            0.45000000000000001,
+            44
+          ],
+          "toPosition" : [
+            -10.5,
+            2.6749999999999998,
+            0
+          ]
+        },
+        {
+          "ids" : [
+            "w-dock-1-canopy",
+            "w-dock-2-canopy",
+            "w-dock-3-canopy",
+            "w-dock-4-canopy"
+          ],
+          "positionDeltaWorld" : [
+            -5,
+            0,
+            0
+          ],
+          "reason" : "move the retained warm-trim canopies behind the dark loading faces in the far-edge sightline so they frame rather than occlude the doors"
+        },
+        {
+          "fromDimensions" : [
+            14,
+            20,
+            8
+          ],
+          "fromPosition" : [
+            -7,
+            13.1,
+            24
+          ],
+          "id" : "w-quality-wing",
+          "reason" : "recess visible-side wall by 0.5 world unit for non-coincident return-side entrance treatment",
+          "toDimensions" : [
+            14,
+            20,
+            7.5
+          ],
+          "toPosition" : [
+            -7,
+            13.1,
+            23.75
+          ]
+        },
+        {
+          "ids" : [
+            "w-quality-glazing",
+            "w-staff-door",
+            "w-staff-canopy"
+          ],
+          "reason" : "move staff identity from camera-hidden far face to separately authored visible return face inside the same governed footprint"
+        }
+      ],
+      "direction" : "west",
+      "inputDescriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "inputDescriptorSHA256" : "9107f7b1055b9b4e523071614687ccf6a9fef728a7318339b1951dfe1a775e1c",
+      "lightShadowPreserved" : true,
+      "materialLibraryPreserved" : true,
+      "productionDecode" : "pass",
+      "productionSelected" : false,
+      "registrationPreserved" : true,
+      "rootBoundsWorld" : [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          51,
+          28
+        ]
+      ],
+      "sceneGeometryID" : "industrial-l03-west-v05-open-loading-court"
+    }
+  ],
+  "familyAuthority" : false,
+  "footprintPivotSocketDoorBaseLightShadowHeightPreserved" : true,
+  "frontageMinimumPixels" : 8,
+  "imageGenCalls" : 0,
+  "immutableDirections" : [
+    {
+      "bytePreserved" : true,
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
+      "direction" : "east",
+      "sha256" : "1e5c69a03a6298f64f4d4d13bb0f523690729b82d5565343f40aaa8278aa3b6d"
+    },
+    {
+      "bytePreserved" : true,
+      "descriptor" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/south/scene.json",
+      "direction" : "south",
+      "sha256" : "31c7eef5e3f461b97b116288274baa8bc5980ef711d45401645e2925ac326a48"
+    }
+  ],
+  "materialLibrary" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+  "materialLibraryBytePreserved" : true,
+  "materialLibrarySHA256" : "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+  "metalProcesses" : 0,
+  "mirrorRotationRecolorAliasFallback" : false,
+  "nextGate" : "independent pre-pixel review; no raw render authority in this checkpoint",
+  "normalizerProcesses" : 0,
+  "orientationTransform" : "none",
+  "plantIdentityPreserved" : true,
+  "productionSelected" : false,
+  "program" : "Wave-011-A0",
+  "publishedAuthority" : "db03ab1459ebbc612438859a6602ef9bcc2bef86",
+  "rawRenderProcesses" : 0,
+  "returnedCheckpoint" : "e5613a3faa34b35c15385e465e4e47f17cf88b5e",
+  "reviewPanels" : [
+    {
+      "authority" : "descriptor-only analytic pre-pixel visualization; not source pixels or acceptance",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/review/DESCRIPTOR-SOURCE-NW-COLOR.png",
+      "pixels" : [
+        3072,
+        1024
+      ],
+      "purpose" : "North/West descriptor-only analytic color; not source pixels",
+      "sha256" : "50562dc7f36295834731c6bf4bd68e5310886f51b07eaba96c38b411c96f1aed"
+    },
+    {
+      "authority" : "descriptor-only analytic pre-pixel visualization; not source pixels or acceptance",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/review/DESCRIPTOR-SOURCE-NW-CLAY-GRAYSCALE.png",
+      "pixels" : [
+        1536,
+        1024
+      ],
+      "purpose" : "rows North clay/grayscale then West clay/grayscale; descriptor-only",
+      "sha256" : "1623c1f0f1c2a00265c1680248022d067eda57bb28a8a5d8a1134deadc6682f1"
+    },
+    {
+      "authority" : "descriptor-only analytic pre-pixel visualization; not source pixels or acceptance",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/review/COMPACT-PROJECTED-FRONTAGE-NW.png",
+      "pixels" : [
+        1024,
+        342
+      ],
+      "purpose" : "literal descriptor projection through retained normalization registration",
+      "sha256" : "39df5a8884edd497f8334604af4c1a6fec754631a79eebb564551fe5b9acbc43"
+    },
+    {
+      "authority" : "descriptor-only analytic pre-pixel visualization; not source pixels or acceptance",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/review/COMPACT-ROAD-SOCKET-OVERLAY-NW.png",
+      "pixels" : [
+        1024,
+        342
+      ],
+      "purpose" : "cyan road edge, white door/loading-base segment, yellow socket",
+      "sha256" : "94b5b68b09f298d625a1ea2f5a4e02f5e03d025cc0acf50a8b9c5ef3f1ea4376"
+    },
+    {
+      "authority" : "descriptor-only analytic pre-pixel visualization; not source pixels or acceptance",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/review/COMPACT-SEMANTIC-VISIBILITY-NW.png",
+      "pixels" : [
+        1024,
+        342
+      ],
+      "purpose" : "red/green/blue/purple loading doors; yellow staff entrance; gray occluders",
+      "sha256" : "6e7c013e11d7b2bbcbd800af4a8267e0bfd848411d0be13a22a1e27a61cf92f7"
+    },
+    {
+      "authority" : "descriptor-only analytic pre-pixel visualization; not source pixels or acceptance",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/review/SILHOUETTE-NESW-COMPARISON.png",
+      "pixels" : [
+        1024,
+        684
+      ],
+      "purpose" : "N/E/S/W row-major; revised N/W beside immutable E/S",
+      "sha256" : "891529abdecf37e1613d06bb845c87b2c9d2d7d0bb87f83d8196ba88fa4ba691"
+    }
+  ],
+  "roadSocketOverlays" : [
+    {
+      "direction" : "north",
+      "doorBaseNeighborhood" : [
+        [
+          280.0234375,
+          250.16473388671875
+        ],
+        [
+          300.30989583333331,
+          260.32777404785156
+        ]
+      ],
+      "frontageEdgeNeighborhood" : [
+        [
+          256,
+          238.12955474853516
+        ],
+        [
+          324.33333333333331,
+          272.36295318603516
+        ]
+      ],
+      "frontageWidthAtLeastEightPixels" : true,
+      "frontageWidthPixels" : 22.689816593063664,
+      "legend" : "cyan=authoritative road edge; white=door/loading-base segment; yellow=socket",
+      "socketBelowTwoPixels" : true,
+      "socketDistancePixels" : 5.6843418860808015e-14,
+      "socketNeighborhood" : [
+        290.16666666666669,
+        255.24625396728516
+      ]
+    },
+    {
+      "direction" : "west",
+      "doorBaseNeighborhood" : [
+        [
+          211.69010416666666,
+          260.32777404785156
+        ],
+        [
+          231.9765625,
+          250.16473388671875
+        ]
+      ],
+      "frontageEdgeNeighborhood" : [
+        [
+          187.66666666666666,
+          272.36295318603516
+        ],
+        [
+          256,
+          238.12955474853516
+        ]
+      ],
+      "frontageWidthAtLeastEightPixels" : true,
+      "frontageWidthPixels" : 22.689816593063689,
+      "legend" : "cyan=authoritative road edge; white=door/loading-base segment; yellow=socket",
+      "socketBelowTwoPixels" : true,
+      "socketDistancePixels" : 2.8421709430404007e-14,
+      "socketNeighborhood" : [
+        221.83333333333334,
+        255.24625396728516
+      ]
+    }
+  ],
+  "sceneKitProcesses" : 0,
+  "schema" : 1,
+  "semanticVisibility" : [
+    {
+      "completeLoadingBayRectangleCount" : 2,
+      "direction" : "north",
+      "minimumCompleteLoadingBayCount" : 2,
+      "passed" : true,
+      "staffEntranceSeparatelyReadable" : true,
+      "targets" : [
+        {
+          "boundingFillRatio" : 0.78181818181818186,
+          "bounds" : [
+            251,
+            240,
+            256,
+            251
+          ],
+          "completeRectangleGate" : false,
+          "heightPixels" : 11,
+          "id" : "n-dock-1-door",
+          "semanticColorRGBA" : [
+            225,
+            45,
+            45,
+            255
+          ],
+          "visiblePixelCount" : 43,
+          "widthPixels" : 5
+        },
+        {
+          "boundingFillRatio" : 0.58999999999999997,
+          "bounds" : [
+            260,
+            237,
+            270,
+            247
+          ],
+          "completeRectangleGate" : true,
+          "heightPixels" : 10,
+          "id" : "n-dock-2-door",
+          "semanticColorRGBA" : [
+            45,
+            205,
+            80,
+            255
+          ],
+          "visiblePixelCount" : 59,
+          "widthPixels" : 10
+        },
+        {
+          "boundingFillRatio" : 0.6607142857142857,
+          "bounds" : [
+            273,
+            244,
+            280,
+            252
+          ],
+          "completeRectangleGate" : true,
+          "heightPixels" : 8,
+          "id" : "n-dock-3-door",
+          "semanticColorRGBA" : [
+            45,
+            115,
+            235,
+            255
+          ],
+          "visiblePixelCount" : 37,
+          "widthPixels" : 7
+        },
+        {
+          "boundingFillRatio" : 0,
+          "bounds" : [
+            0,
+            0,
+            0,
+            0
+          ],
+          "completeRectangleGate" : false,
+          "heightPixels" : 0,
+          "id" : "n-dock-4-door",
+          "semanticColorRGBA" : [
+            175,
+            65,
+            225,
+            255
+          ],
+          "visiblePixelCount" : 0,
+          "widthPixels" : 0
+        },
+        {
+          "boundingFillRatio" : 0.82352941176470584,
+          "bounds" : [
+            299,
+            263,
+            306,
+            280
+          ],
+          "completeRectangleGate" : true,
+          "heightPixels" : 17,
+          "id" : "n-staff-door",
+          "semanticColorRGBA" : [
+            255,
+            210,
+            35,
+            255
+          ],
+          "visiblePixelCount" : 98,
+          "widthPixels" : 7
+        }
+      ]
+    },
+    {
+      "completeLoadingBayRectangleCount" : 2,
+      "direction" : "west",
+      "minimumCompleteLoadingBayCount" : 2,
+      "passed" : true,
+      "staffEntranceSeparatelyReadable" : true,
+      "targets" : [
+        {
+          "boundingFillRatio" : 0.78181818181818186,
+          "bounds" : [
+            256,
+            240,
+            261,
+            251
+          ],
+          "completeRectangleGate" : false,
+          "heightPixels" : 11,
+          "id" : "w-dock-1-door",
+          "semanticColorRGBA" : [
+            225,
+            45,
+            45,
+            255
+          ],
+          "visiblePixelCount" : 43,
+          "widthPixels" : 5
+        },
+        {
+          "boundingFillRatio" : 0.58999999999999997,
+          "bounds" : [
+            242,
+            237,
+            252,
+            247
+          ],
+          "completeRectangleGate" : true,
+          "heightPixels" : 10,
+          "id" : "w-dock-2-door",
+          "semanticColorRGBA" : [
+            45,
+            205,
+            80,
+            255
+          ],
+          "visiblePixelCount" : 59,
+          "widthPixels" : 10
+        },
+        {
+          "boundingFillRatio" : 0.6607142857142857,
+          "bounds" : [
+            232,
+            244,
+            239,
+            252
+          ],
+          "completeRectangleGate" : true,
+          "heightPixels" : 8,
+          "id" : "w-dock-3-door",
+          "semanticColorRGBA" : [
+            45,
+            115,
+            235,
+            255
+          ],
+          "visiblePixelCount" : 37,
+          "widthPixels" : 7
+        },
+        {
+          "boundingFillRatio" : 0,
+          "bounds" : [
+            0,
+            0,
+            0,
+            0
+          ],
+          "completeRectangleGate" : false,
+          "heightPixels" : 0,
+          "id" : "w-dock-4-door",
+          "semanticColorRGBA" : [
+            175,
+            65,
+            225,
+            255
+          ],
+          "visiblePixelCount" : 0,
+          "widthPixels" : 0
+        },
+        {
+          "boundingFillRatio" : 0.82352941176470584,
+          "bounds" : [
+            206,
+            263,
+            213,
+            280
+          ],
+          "completeRectangleGate" : true,
+          "heightPixels" : 17,
+          "id" : "w-staff-door",
+          "semanticColorRGBA" : [
+            255,
+            210,
+            35,
+            255
+          ],
+          "visiblePixelCount" : 98,
+          "widthPixels" : 7
+        }
+      ]
+    }
+  ],
+  "socketDistanceMustBeBelowPixels" : 2,
+  "sourceAuthority" : false,
+  "sourceRevision" : "source-v05",
+  "structuralBoundaryReport" : "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-frontage-prepixel-v01/STRUCTURAL-BOUNDARIES.json",
+  "task" : "PLAY-027",
+  "uniqueCandidateDescriptorHashes" : 2,
+  "uniqueCandidateGeometryIDs" : 2
+}

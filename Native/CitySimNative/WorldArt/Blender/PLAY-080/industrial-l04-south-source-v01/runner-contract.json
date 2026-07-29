@@ -1,0 +1,340 @@
+{
+  "schema": "citysim.world-art.prelock-runner-contract.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "baselineCommit": "0186066bb88d78dc8dab4be03296d418ea2e259a",
+  "state": "awaiting_appearance_lock",
+  "sourceReady": false,
+  "productionSelected": false,
+  "authorities": {
+    "artContract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "governingContract": {
+      "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+      "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+    },
+    "dccContract": {
+      "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+      "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+    },
+    "prelockRunnerAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
+      "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
+    },
+    "prelockRepairAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md",
+      "sha256": "a92268f4118db7458343d4967c002200af98a8e338b1189aae9423ae2e299412"
+    },
+    "handoffSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
+      "sha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+    },
+    "sourceStageSchemaAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-STAGE-SCHEMA-V2-AUTHORITY.md",
+      "sha256": "330c9fd7ee4f4d5e3664ae0c155813b83d15a249f46a77aff4b5908e73f8005e"
+    },
+    "sourceStageHandoffSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    }
+  },
+  "acceptedPredesign": {
+    "authorityScope": "historical-zero-pixel-predesign-only",
+    "projectionAdapterSourceAuthority": false,
+    "handoff": {
+      "path": "docs/production/evidence/PLAY-080/PREDESIGN-HANDOFF.json",
+      "sha256": "ec3cc2f758e3191d6cf76d5db0686d5481e09a3d42fd3033789f8a85d189bd42"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py",
+      "sha256": "33ecc7cd31c7cb7efb4ace497a214499e37f4472e85216050b459e35c05c467c"
+    }
+  },
+  "appearanceLock": {
+    "documentPath": null,
+    "appearanceLockCommit": null,
+    "appearanceLockSha256": null,
+    "northProcessASourceSha256": null,
+    "northProcessADecodedRgbaSha256": null
+  },
+  "lockedMaterialMapping": {
+    "path": null,
+    "commit": null,
+    "sha256": null,
+    "requiredRoles": [
+      "charcoal-structural-steel",
+      "clerestory-glazing",
+      "concrete-apron",
+      "control-glazing",
+      "deep-service-shadow",
+      "orange-heat",
+      "oxidized-machinery",
+      "portal-void",
+      "restrained-green",
+      "roof-mid",
+      "weathered-brick"
+    ]
+  },
+  "postLockProductionAuthority": {
+    "path": null,
+    "commit": null,
+    "sha256": null
+  },
+  "sourceProductionProfile": {
+    "path": null,
+    "commit": null,
+    "sha256": null
+  },
+  "launchPlan": {
+    "authorizedProcesses": ["A", "B", "C"],
+    "maximumConcurrentDccProcesses": 2,
+    "exceptionOwner": "Integration",
+    "noOverwrite": true,
+    "baseOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/",
+    "isolatedOutputRoots": {
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/"
+    },
+    "isolatedEvidenceRoots": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/"
+    }
+  },
+  "candidatePlan": {
+    "selectedProcess": "A",
+    "normalizedRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/candidate/normalized/",
+    "lodRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/candidate/lods/",
+    "validationRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/",
+    "contactSheet": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/contact-sheet/industrial-l04-south-source-v01.png",
+    "reviewManifest": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-REVIEW-MANIFEST.json",
+    "parallelExecutionReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-PARALLEL-EXECUTION-RECEIPT.json",
+    "rejectedAttemptInventory": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-REJECTED-ATTEMPT-INVENTORY.json",
+    "assemblyReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-CANDIDATE-ASSEMBLY.json"
+  },
+  "coordinateBridge": {
+    "state": "v06_revalidated",
+    "acceptedCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "integratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+    "authorityPath": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",
+    "authorityCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "authoritySha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4",
+    "acceptancePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+    "acceptanceSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+    "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "matrixRows": [
+      [0, 0, 1],
+      [1, 0, 0],
+      [0, 1, 0]
+    ],
+    "determinant": 1,
+    "sourceOrder": [0, 1, 2, 3],
+    "citysimToBlenderAxisOrder": [2, 0, 1],
+    "citysimToBlenderAxisSigns": [1, 1, 1],
+    "blenderNativeDirectionalSocket": [28, 0, 0],
+    "canonicalCitySimSouthSocket": [
+      0,
+      0,
+      28
+    ],
+    "sourceSocketPixels": [
+      640,
+      832
+    ],
+    "historicalPredesignProjectionAdapterSourceAuthority": false
+  },
+  "invariants": {
+    "camera": {
+      "authorityStatus": "accepted-v06-coordinate-bridge",
+      "type": "ORTHO",
+      "citysimPosition": [
+        96,
+        101.24557426726288,
+        96
+      ],
+      "citysimTarget": [
+        0,
+        22.861902498201186,
+        0
+      ],
+      "orthoScale": 237.5878601074218,
+      "shiftX": 0,
+      "shiftY": 0.08333333333333333,
+      "renderViewportPixels": [
+        1536,
+        1024
+      ],
+      "pixelAspect": [
+        1,
+        1
+      ],
+      "literalViewportPixels": [
+        192,
+        128
+      ]
+    },
+    "registration": {
+      "tileBasisWorldPoints": [
+        72,
+        36
+      ],
+      "footprintWorldSize": [
+        56,
+        56
+      ],
+      "groundPivot": [
+        28,
+        0,
+        28
+      ],
+      "canonicalCitySimFrontage": {
+        "direction": "south",
+        "socket": [
+          0,
+          0,
+          28
+        ],
+        "outwardVector": [
+          0,
+          0,
+          1
+        ]
+      },
+      "sourceProjectionObservation": {
+        "socketPixels": [
+          640,
+          832
+        ],
+        "status": "accepted-v06-projection"
+      },
+      "blenderNativeFrontage": {
+        "socket": [28, 0, 0],
+        "outwardVector": [1, 0, 0]
+      }
+    },
+    "lighting": {
+      "keySourceDirection": [
+        -1,
+        2,
+        -1
+      ],
+      "contactShadowVector": [
+        1,
+        0,
+        1
+      ],
+      "keyLabel": "northwest",
+      "contactLabel": "southeast"
+    },
+    "render": {
+      "blenderVersion": "4.5.12 LTS",
+      "blenderBuildHash": "84afd5f785f7",
+      "blenderExecutableSha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+      "engine": "CYCLES",
+      "device": "CPU",
+      "threadsMode": "FIXED",
+      "threads": 1,
+      "samples": 128,
+      "seed": 804,
+      "adaptiveSampling": false,
+      "denoising": false,
+      "resolutionPercentage": 100,
+      "pixelAspect": [
+        1,
+        1
+      ],
+      "transparentFilm": true,
+      "motionBlur": false,
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "Medium High Contrast",
+      "exposure": 0,
+      "gamma": 1,
+      "fileFormat": "PNG",
+      "colorMode": "RGBA",
+      "colorDepth": "8",
+      "compression": 9
+    },
+    "pixelValidation": {
+      "zeroHiddenRgb": true,
+      "visibleChromaSpillPixels": 0,
+      "backgroundChroma": "#ff00ff",
+      "decodedRgbaIdentityAcrossABC": true,
+      "literal192PrimaryPortalMinimumPixels": [
+        14,
+        12
+      ],
+      "literal192FreightOpeningMinimumWidthPixels": 8,
+      "literal192FrameMinimumThicknessPixels": 2,
+      "minimumSilhouetteBreaks": 3,
+      "maximumProcessOcclusionPixels": 0
+    }
+  },
+  "outputInventory": {
+    "raw": {
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/raw.png",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/raw.png",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/raw.png"
+    },
+    "semantic": {
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/semantic.png",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/semantic.png",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/semantic.png"
+    },
+    "provenance": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/provenance.json",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/provenance.json",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/provenance.json"
+    },
+    "runnerReport": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/runner-result.json",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/runner-result.json",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/runner-result.json"
+    },
+    "color": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/color.json",
+    "grayscale": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/grayscale.json",
+    "native2x": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/native-2x.json",
+    "literal192": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/literal-192.json",
+    "literal192SemanticProof": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
+    "sourceStageV2BindingReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-V2-SCHEMA-BINDING.json",
+    "parallelZeroPixelHandoff": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PARALLEL-SOUTH-V2-ZERO-PIXEL-HANDOFF.json",
+    "frozenInputManifest": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-FROZEN-INPUT-MANIFEST.json",
+    "launchGuardReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-LAUNCH-GUARD-RECEIPT.json",
+    "outputRootIsolationReceipt": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+    "launchBoundHandoff": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-LAUNCH-BOUND-V2.json",
+    "registration": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/registration.json",
+    "contactSheet": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/contact-sheet/industrial-l04-south-source-v01.png",
+    "rejections": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/rejections/",
+    "handoff": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-RUNNER-HANDOFF.json"
+  }
+}

@@ -43,6 +43,8 @@ struct EffectiveSamplingContract: Equatable {
     let contractID: String
     let descriptorSchema: Int
     let sceneKitAntialiasing: String
+    let sceneKitShadows: String
+    let sceneKitLightingMode: String
     let linearOversamplingFactor: Int
     let downsampleFilter: String
     let downsampleScale: Double
@@ -59,6 +61,8 @@ struct EffectiveSamplingContract: Equatable {
     let canonicalizerEncoder: String
     let canonicalizerPostEncoder: String
     let canonicalizerFormat: String
+    let preLanczosCanonicalizer:
+        SamplingPreLanczosCanonicalizerDescriptor?
     let postQuantizationCanonicalizer:
         SamplingPostQuantizationCanonicalizerDescriptor?
     let purpose: String
@@ -69,6 +73,8 @@ enum DescriptorSamplingResolver {
         contractID: "play027-legacy-schema1-factor2-msaa4x-v1",
         descriptorSchema: 1,
         sceneKitAntialiasing: "multisampling4X",
+        sceneKitShadows: "current",
+        sceneKitLightingMode: "lambert-scene-lights",
         linearOversamplingFactor: 2,
         downsampleFilter: "CILanczosScaleTransform",
         downsampleScale: 0.5,
@@ -85,6 +91,7 @@ enum DescriptorSamplingResolver {
         canonicalizerEncoder: "ImageIO",
         canonicalizerPostEncoder: "/usr/bin/sips",
         canonicalizerFormat: "png",
+        preLanczosCanonicalizer: nil,
         postQuantizationCanonicalizer: nil,
         purpose: "accepted-legacy-reproduction"
     )
@@ -119,6 +126,266 @@ enum DescriptorSamplingResolver {
         let isV1 = sampling.contractID == schema2ContractV1ID
         let isV2 = sampling.contractID == schema2ContractV2ID
         let isV3 = sampling.contractID == schema2ContractV3ID
+        let sceneKitShadows = sampling.sceneKitShadows ?? "current"
+        let sceneKitLightingMode =
+            sampling.sceneKitLightingMode ?? "lambert-scene-lights"
+        let isIndustrialL2SourceV04 =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v04"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV05 =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v05"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV06East =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v06"
+            && descriptor.viewDirection == "east"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2SourceV07East =
+            descriptor.logicalBuildingID == "industrial_l02"
+            && descriptor.sourceRevision == "source-v07"
+            && descriptor.viewDirection == "east"
+            && sampling.purpose == "source-authority"
+        let isIndustrialL2AuthoredConstant =
+            isIndustrialL2SourceV05
+            || isIndustrialL2SourceV06East
+            || isIndustrialL2SourceV07East
+        let isIndustrialL3SourceV02 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.sourceRevision == "source-v02"
+            && ["north", "east", "south", "west"].contains(
+                descriptor.viewDirection
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+        let isIndustrialL3SourceV03 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.variantID == "variant-0"
+            && descriptor.sourceRevision == "source-v03"
+            && ["north", "east", "south", "west"].contains(
+                descriptor.viewDirection
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+        let isIndustrialL3CohesionSourceV04 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.variantID == "variant-0"
+            && descriptor.sourceRevision == "source-v04"
+            && ["north", "east", "south", "west"].contains(
+                descriptor.viewDirection
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+        let isIndustrialL3CohesionSourceV05NorthWest =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.variantID == "variant-0"
+            && descriptor.sourceRevision == "source-v05"
+            && sampling.sourceRevisionBinding == "source-v05"
+            && (
+                (
+                    descriptor.viewDirection == "north"
+                    && descriptor.sceneGeometryID
+                        == "industrial-l03-north-v05-open-loading-court"
+                )
+                    || (
+                        descriptor.viewDirection == "west"
+                        && descriptor.sceneGeometryID
+                            == "industrial-l03-west-v05-open-loading-court"
+                    )
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+        let isIndustrialL3CohesionSourceV06NorthWest =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.variantID == "variant-0"
+            && descriptor.sourceRevision == "source-v06"
+            && sampling.sourceRevisionBinding == "source-v06"
+            && (
+                (
+                    descriptor.viewDirection == "north"
+                    && descriptor.sceneGeometryID
+                        == "industrial-l03-north-v06-open-loading-court"
+                    && descriptor.materialLibrary.file
+                        == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json"
+                    && descriptor.materialLibrary.sha256
+                        == "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8"
+                )
+                    || (
+                        descriptor.viewDirection == "west"
+                        && descriptor.sceneGeometryID
+                            == "industrial-l03-west-v06-open-loading-court"
+                        && descriptor.materialLibrary.file
+                            == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json"
+                        && descriptor.materialLibrary.sha256
+                            == "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf"
+                    )
+            )
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+        let isIndustrialL4TurbineV08North =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.variantID == "variant-0"
+            && descriptor.viewDirection == "n"
+            && descriptor.sourceRevision == "source-v08-prepixel"
+            && descriptor.sceneGeometryID
+                == "industrial-l04-turbine-v08-n-independent"
+            && descriptor.authoredIndependently
+            && !descriptor.productionSelected
+            && descriptor.registration.orientationTransform == "none"
+            && sampling.sourceRevisionBinding == "source-v08-prepixel"
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+            && descriptor.materialLibrary.file
+                == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-turbine-v08-prepixel/materials/industrial-l04-turbine-v08-prepixel.json"
+            && descriptor.materialLibrary.sha256
+                == "f8cf1d4ff9ab4446ec562fe949dd09c45399a32d9a763f7d6dd6380b66e52b94"
+        let isIndustrialL4CrucibleGantryV16North =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.variantID == "variant-0"
+            && descriptor.viewDirection == "n"
+            && descriptor.sourceRevision == "source-v16-prepixel"
+            && descriptor.sceneGeometryID
+                == "industrial-l04-crucible-gantry-v16-north-l-side-return"
+            && descriptor.authoredIndependently
+            && !descriptor.productionSelected
+            && descriptor.registration.orientationTransform == "none"
+            && sampling.sourceRevisionBinding == "source-v16-prepixel"
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+            && descriptor.materialLibrary.file
+                == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v16-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json"
+            && descriptor.materialLibrary.sha256
+                == "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+        let isIndustrialL4CrucibleGantryV17North =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.variantID == "variant-0"
+            && descriptor.viewDirection == "n"
+            && descriptor.sourceRevision == "source-v17-prepixel"
+            && descriptor.sceneGeometryID
+                == "industrial-l04-crucible-gantry-v17-north-monumental-portal"
+            && descriptor.authoredIndependently
+            && !descriptor.productionSelected
+            && descriptor.registration.orientationTransform == "none"
+            && sampling.sourceRevisionBinding == "source-v17-prepixel"
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+            && descriptor.materialLibrary.file
+                == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v17-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json"
+            && descriptor.materialLibrary.sha256
+                == "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+        let isIndustrialL4CrucibleGantryV18North =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.variantID == "variant-0"
+            && descriptor.viewDirection == "n"
+            && descriptor.sourceRevision == "source-v18-prepixel"
+            && descriptor.sceneGeometryID
+                == "industrial-l04-crucible-gantry-v18-north-single-foundation"
+            && descriptor.authoredIndependently
+            && !descriptor.productionSelected
+            && descriptor.registration.orientationTransform == "none"
+            && sampling.sourceRevisionBinding == "source-v18-prepixel"
+            && sampling.purpose == "source-authority"
+            && isV3
+            && sampling.sceneKitAntialiasing == "none"
+            && sceneKitShadows == "disabled"
+            && sceneKitLightingMode == "authored-constant-v1"
+            && descriptor.materialLibrary.file
+                == "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l04-crucible-gantry-v17-north-prepixel/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json"
+            && descriptor.materialLibrary.sha256
+                == "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+        let isIndustrialL3SourceV05 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.sourceRevision == "source-v05"
+        let isIndustrialL3SourceV06 =
+            descriptor.logicalBuildingID == "industrial_l03"
+            && descriptor.sourceRevision == "source-v06"
+        let isIndustrialL4SourceV08 =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.sourceRevision == "source-v08-prepixel"
+        let isIndustrialL4SourceV16 =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.sourceRevision == "source-v16-prepixel"
+        let isIndustrialL4SourceV17 =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.sourceRevision == "source-v17-prepixel"
+        let isIndustrialL4SourceV18 =
+            descriptor.logicalBuildingID == "industrial_l04"
+            && descriptor.sourceRevision == "source-v18-prepixel"
+        guard
+            !isIndustrialL3SourceV05
+                || isIndustrialL3CohesionSourceV05NorthWest
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L3 source-v05 is limited to the exact variant-0 North/West geometry-bound v3 source-authority contract"
+            )
+        }
+        guard
+            !isIndustrialL3SourceV06
+                || isIndustrialL3CohesionSourceV06NorthWest
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L3 source-v06 is limited to the exact variant-0 North/West geometry-and-material-bound v3 source-authority contract"
+            )
+        }
+        guard
+            !isIndustrialL4SourceV08
+                || isIndustrialL4TurbineV08North
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L4 source-v08-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
+            )
+        }
+        guard
+            !isIndustrialL4SourceV16
+                || isIndustrialL4CrucibleGantryV16North
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L4 source-v16-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
+            )
+        }
+        guard
+            !isIndustrialL4SourceV17
+                || isIndustrialL4CrucibleGantryV17North
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L4 source-v17-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
+            )
+        }
+        guard
+            !isIndustrialL4SourceV18
+                || isIndustrialL4CrucibleGantryV18North
+        else {
+            throw SamplingContractError.invalid(
+                "Industrial L4 source-v18-prepixel is limited to the exact variant-0 North geometry-and-material-bound v3 source-authority contract"
+            )
+        }
+        let isAuthoredConstantSource =
+            isIndustrialL2AuthoredConstant
+            || isIndustrialL3SourceV02
+            || isIndustrialL3SourceV03
+            || isIndustrialL3CohesionSourceV04
+            || isIndustrialL3CohesionSourceV05NorthWest
+            || isIndustrialL3CohesionSourceV06NorthWest
+            || isIndustrialL4TurbineV08North
+            || isIndustrialL4CrucibleGantryV16North
+            || isIndustrialL4CrucibleGantryV17North
+            || isIndustrialL4CrucibleGantryV18North
         guard
             isV1 || isV2 || isV3,
             sampling.sourceRevisionBinding == descriptor.sourceRevision,
@@ -126,6 +393,11 @@ enum DescriptorSamplingResolver {
                 sampling.purpose
             ),
             sampling.sceneKitAntialiasing == "none",
+            ["current", "disabled"].contains(sceneKitShadows),
+            [
+                "lambert-scene-lights",
+                "authored-constant-v1",
+            ].contains(sceneKitLightingMode),
             sampling.linearOversamplingFactor == 4,
             descriptor.camera.oversamplingFactor == 4,
             sampling.downsample.filter == "CILanczosScaleTransform",
@@ -146,6 +418,67 @@ enum DescriptorSamplingResolver {
         else {
             throw SamplingContractError.invalid(
                 "schema 2 sampling block does not match the frozen deterministic contract"
+            )
+        }
+        guard
+            (
+                (
+                    isIndustrialL2SourceV04
+                        || isAuthoredConstantSource
+                )
+                    && sceneKitShadows == "disabled"
+            )
+                || (
+                    !isIndustrialL2SourceV04
+                    && !isAuthoredConstantSource
+                    && sceneKitShadows == "current")
+        else {
+            throw SamplingContractError.invalid(
+                "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03/source-v04 N/E/S/W, exact source-v05/source-v06 North/West, or exact admitted Industrial L4 North v3 source-authority descriptors"
+            )
+        }
+        guard
+            (
+                isAuthoredConstantSource
+                    && sceneKitLightingMode == "authored-constant-v1"
+            )
+                || (
+                    !isAuthoredConstantSource
+                    && sceneKitLightingMode == "lambert-scene-lights"
+                )
+        else {
+            throw SamplingContractError.invalid(
+                "authored-constant-v1 may be selected only by the enumerated Industrial L2 revisions, Industrial L3 source-v02/source-v03/source-v04 N/E/S/W, exact source-v05/source-v06 North/West, or exact admitted Industrial L4 North v3 source-authority descriptors"
+            )
+        }
+        if isIndustrialL2SourceV07East || isIndustrialL3SourceV03 {
+            guard
+                let preLanczos =
+                    sampling.preLanczosCanonicalizer,
+                preLanczos.algorithm
+                    == "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+                preLanczos.version == 1,
+                preLanczos.quantizationStep == 32,
+                preLanczos.midpointOffset == 8,
+                preLanczos.chromaBypassRGBA == [255, 0, 255, 255],
+                preLanczos.channels == "rgb-only",
+                preLanczos.opaquePixelPolicy
+                    == "quantize-each-rgb-channel",
+                preLanczos.transparentPixelPolicy
+                    == "zero-hidden-rgb",
+                preLanczos.partialAlphaPolicy == "reject",
+                preLanczos.preservesAlpha,
+                preLanczos.preservesChroma,
+                preLanczos.immutableSourceBuffer,
+                preLanczos.crossRunState == "none"
+            else {
+                throw SamplingContractError.invalid(
+                    "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+                )
+            }
+        } else if sampling.preLanczosCanonicalizer != nil {
+            throw SamplingContractError.invalid(
+                "pre-Lanczos canonicalization is authorized only for Industrial L2 source-v07 East or Industrial L3 variant-0 source-v03 N/E/S/W"
             )
         }
         if isV1, sampling.postQuantizationCanonicalizer != nil {
@@ -219,6 +552,8 @@ enum DescriptorSamplingResolver {
             contractID: sampling.contractID,
             descriptorSchema: descriptor.schema,
             sceneKitAntialiasing: sampling.sceneKitAntialiasing,
+            sceneKitShadows: sceneKitShadows,
+            sceneKitLightingMode: sceneKitLightingMode,
             linearOversamplingFactor: sampling.linearOversamplingFactor,
             downsampleFilter: sampling.downsample.filter,
             downsampleScale: sampling.downsample.scale,
@@ -242,6 +577,8 @@ enum DescriptorSamplingResolver {
             canonicalizerPostEncoder:
                 sampling.canonicalizer.postEncoder,
             canonicalizerFormat: sampling.canonicalizer.format,
+            preLanczosCanonicalizer:
+                sampling.preLanczosCanonicalizer,
             postQuantizationCanonicalizer:
                 sampling.postQuantizationCanonicalizer,
             purpose: sampling.purpose

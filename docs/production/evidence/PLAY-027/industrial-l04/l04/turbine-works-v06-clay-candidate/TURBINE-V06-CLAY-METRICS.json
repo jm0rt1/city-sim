@@ -1,0 +1,120 @@
+{
+  "artifact" : "Industrial L4 Turbine Works v06 clay-only candidate",
+  "authority" : "play027-turbine-v06-contract-arithmetic-repair",
+  "containsDescriptors" : false,
+  "containsMaterials" : false,
+  "containsPropsOrDetails" : false,
+  "directions" : [
+    {
+      "controlWingToHallHeight" : 0.5,
+      "direction" : "N",
+      "freightOpeningCompactWidthsPixels" : [
+        9.3815000000000026,
+        9.3815000000000026,
+        9.3814999999999884
+      ],
+      "freightOpeningPass" : true,
+      "geometryID" : "industrial-l04-turbine-v06-n",
+      "hallIsometricBoundingBoxHeightPixels" : 271.22239999999994,
+      "hallProjectedWidthPixels" : 465.84000000000003,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "hallWidthToVisibleHeight" : 3.6000000000000001,
+      "nonStackMaximumWorldY" : 22,
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        405,
+        441,
+        726,
+        384
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.062082742334340815
+    },
+    {
+      "controlWingToHallHeight" : 0.5,
+      "direction" : "E",
+      "freightOpeningCompactWidthsPixels" : [
+        9.3815000000000026,
+        9.3815000000000026,
+        9.3814999999999884
+      ],
+      "freightOpeningPass" : true,
+      "geometryID" : "industrial-l04-turbine-v06-e",
+      "hallIsometricBoundingBoxHeightPixels" : 271.22239999999994,
+      "hallProjectedWidthPixels" : 465.84000000000003,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "hallWidthToVisibleHeight" : 3.6000000000000001,
+      "nonStackMaximumWorldY" : 22,
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        405,
+        353,
+        726,
+        472
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.062112262714068132
+    },
+    {
+      "controlWingToHallHeight" : 0.5,
+      "direction" : "S",
+      "freightOpeningCompactWidthsPixels" : [
+        9.3815000000000026,
+        9.3815000000000026,
+        9.3814999999999884
+      ],
+      "freightOpeningPass" : true,
+      "geometryID" : "industrial-l04-turbine-v06-s",
+      "hallIsometricBoundingBoxHeightPixels" : 271.22239999999994,
+      "hallProjectedWidthPixels" : 465.84000000000003,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "hallWidthToVisibleHeight" : 3.6000000000000001,
+      "nonStackMaximumWorldY" : 22,
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        405,
+        350,
+        726,
+        475
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.064347599604721889
+    },
+    {
+      "controlWingToHallHeight" : 0.5,
+      "direction" : "W",
+      "freightOpeningCompactWidthsPixels" : [
+        9.3815000000000026,
+        9.3815000000000026,
+        9.3814999999999884
+      ],
+      "freightOpeningPass" : true,
+      "geometryID" : "industrial-l04-turbine-v06-w",
+      "hallIsometricBoundingBoxHeightPixels" : 271.22239999999994,
+      "hallProjectedWidthPixels" : 465.84000000000003,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "hallWidthToVisibleHeight" : 3.6000000000000001,
+      "nonStackMaximumWorldY" : 22,
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        405,
+        444,
+        726,
+        381
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.062547960342551945
+    }
+  ],
+  "hardGateFailures" : [
+
+  ],
+  "imageGenCalls" : 0,
+  "metalProcesses" : 0,
+  "normalizerProcesses" : 0,
+  "outputs" : {
+    "TURBINE-V06-CLAY-NESW-192x128.png" : "747a76093f7aa59a04c5b96643f24aa414df9011aa114070bf2160ebe011e48a",
+    "TURBINE-V06-CLAY-NESW-EQUAL-SCALE.png" : "4e8fca56c7d47f28eb3525a40dc783295708d8f7d80ffdc7f2e34d5c49cc6cfa"
+  },
+  "productionSelected" : false,
+  "sceneKitProcesses" : 0,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027",
+  "technicalDisposition" : "PASS_PENDING_VISUAL_REVIEW"
+}

@@ -1,0 +1,66 @@
+{
+  "aggregateEqual": true,
+  "builderSourceSHA256": "50198ea5b18d9eb9da8948566f86fb2ec52b5d929555a25dda8bb07dae503ac2",
+  "compileCommand": "xcrun swiftc -parse-as-library -warnings-as-errors -module-cache-path /tmp/play027-v17-final-build-4/module-cache Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Sources/SceneDescriptor.swift Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/RecessedOpeningV15Support.swift Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/BuildIndustrialL4CrucibleGantryV17NorthPrepixel.swift -o /tmp/play027-v17-final-build-4/build-v17",
+  "compiledBinarySHA256": "d2b6d5fb5b61c36db9589c1d2cfdfe07e5d784676c635170a923c292d19c5958",
+  "descriptorDecode": "PASS",
+  "descriptorSHA256": "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a",
+  "fileCountPerReplay": 17,
+  "inventories": [
+    {
+      "id": "replay-a",
+      "files": [
+        {"path": "artifact/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json", "sha256": "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"},
+        {"path": "artifact/scenes/industrial_l04/variant-0/n/scene.json", "sha256": "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a"},
+        {"path": "evidence/DESIGN-DECISIONS.md", "sha256": "9a17c52b943ae28d20893089f1c42ad3e0cf34e18f14998aece77d1499c3f8b6"},
+        {"path": "evidence/PREPIXEL-VALIDATION.json", "sha256": "d3deb71b8ea7cc17ebdda151c6b2dfcc3b8e70d6dd02308ddd3b5b5196c30081"},
+        {"path": "evidence/review/ACCEPTED-L3-VS-V17-EXACT-192-COLOR.png", "sha256": "871095f25e1d03167f51158bf77e676b3fa81f34e89bf8ad8bad4a397fd094d2"},
+        {"path": "evidence/review/ACCEPTED-L3-VS-V17-EXACT-192-GRAYSCALE.png", "sha256": "2a3a517f64ace93692a3409c0c2b4ea23c88f9c3c3857357a9e6bb955db6a24d"},
+        {"path": "evidence/review/ALPHA-CHROMA-SEMANTIC-TO-PLAYER-PARTITION.png", "sha256": "7b0c65bdd2599ff7e47734d12e0d2b60bb6ded02daafe7b5299a44074ecbb9be"},
+        {"path": "evidence/review/EXACT-192X128-COLOR.png", "sha256": "bdc7bca26b5daffdc54fbf4db769458396b7623c1b130794d2a33abc5c3224a3"},
+        {"path": "evidence/review/EXACT-192X128-GRAYSCALE.png", "sha256": "82e527e75bb3f22db67071dbdd5c5b041a96666811bd87c8c84fbcf1d9413df3"},
+        {"path": "evidence/review/NATIVE-2X-COLOR.png", "sha256": "92d9bd06b4d01b7ef724459cdebb333768f63a850fc35ccb1da827fdaec7a8f4"},
+        {"path": "evidence/review/NATIVE-2X-GRAYSCALE.png", "sha256": "2c9d5a8fb871ad4acafdaaf52bbe3d54d6ef349e7104ce5595b70b7ab6c1a42e"},
+        {"path": "evidence/review/REGISTRATION-CONTACT-SHADOW-192.png", "sha256": "1bc04f4ed81b95efd3498a75ff90cc95c3f67e4d261c07ac033d12a0a52a56c3"},
+        {"path": "evidence/review/SEMANTIC-PORTAL-192.png", "sha256": "997911ee14ffd29113e9a8d06c528ff455fafd9ac75fd4166b6e4543736e7a46"},
+        {"path": "evidence/review/SOURCE-COLOR.png", "sha256": "5aaa6cf28667e96e02f42210a094de78d9092e86576e00fb4b784249226257ee"},
+        {"path": "evidence/review/SOURCE-GRAYSCALE.png", "sha256": "98db834d03243f7a5417c1719d08dd03d42e6e9c0cfeaccd2ba4ceb48b37cfff"},
+        {"path": "evidence/review/V16-RAW-VS-V17-EXACT-192-COLOR.png", "sha256": "237905d83d779604d857f2e1d9ffae65abbc0ed8a84c1f9e394a8be4e4b62c8d"},
+        {"path": "evidence/review/V16-RAW-VS-V17-EXACT-192-GRAYSCALE.png", "sha256": "7267306f71db6168d11ef8821edd4fde79e350ab70b77aa46f28554b573866a6"}
+      ]
+    },
+    {
+      "id": "replay-b",
+      "files": [
+        {"path": "artifact/materials/industrial-l04-crucible-gantry-v14-north-prepixel.json", "sha256": "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"},
+        {"path": "artifact/scenes/industrial_l04/variant-0/n/scene.json", "sha256": "6cb190ea388746c620945ff401a03817df0ff1f92797a18fff8e86b00b0cd94a"},
+        {"path": "evidence/DESIGN-DECISIONS.md", "sha256": "9a17c52b943ae28d20893089f1c42ad3e0cf34e18f14998aece77d1499c3f8b6"},
+        {"path": "evidence/PREPIXEL-VALIDATION.json", "sha256": "d3deb71b8ea7cc17ebdda151c6b2dfcc3b8e70d6dd02308ddd3b5b5196c30081"},
+        {"path": "evidence/review/ACCEPTED-L3-VS-V17-EXACT-192-COLOR.png", "sha256": "871095f25e1d03167f51158bf77e676b3fa81f34e89bf8ad8bad4a397fd094d2"},
+        {"path": "evidence/review/ACCEPTED-L3-VS-V17-EXACT-192-GRAYSCALE.png", "sha256": "2a3a517f64ace93692a3409c0c2b4ea23c88f9c3c3857357a9e6bb955db6a24d"},
+        {"path": "evidence/review/ALPHA-CHROMA-SEMANTIC-TO-PLAYER-PARTITION.png", "sha256": "7b0c65bdd2599ff7e47734d12e0d2b60bb6ded02daafe7b5299a44074ecbb9be"},
+        {"path": "evidence/review/EXACT-192X128-COLOR.png", "sha256": "bdc7bca26b5daffdc54fbf4db769458396b7623c1b130794d2a33abc5c3224a3"},
+        {"path": "evidence/review/EXACT-192X128-GRAYSCALE.png", "sha256": "82e527e75bb3f22db67071dbdd5c5b041a96666811bd87c8c84fbcf1d9413df3"},
+        {"path": "evidence/review/NATIVE-2X-COLOR.png", "sha256": "92d9bd06b4d01b7ef724459cdebb333768f63a850fc35ccb1da827fdaec7a8f4"},
+        {"path": "evidence/review/NATIVE-2X-GRAYSCALE.png", "sha256": "2c9d5a8fb871ad4acafdaaf52bbe3d54d6ef349e7104ce5595b70b7ab6c1a42e"},
+        {"path": "evidence/review/REGISTRATION-CONTACT-SHADOW-192.png", "sha256": "1bc04f4ed81b95efd3498a75ff90cc95c3f67e4d261c07ac033d12a0a52a56c3"},
+        {"path": "evidence/review/SEMANTIC-PORTAL-192.png", "sha256": "997911ee14ffd29113e9a8d06c528ff455fafd9ac75fd4166b6e4543736e7a46"},
+        {"path": "evidence/review/SOURCE-COLOR.png", "sha256": "5aaa6cf28667e96e02f42210a094de78d9092e86576e00fb4b784249226257ee"},
+        {"path": "evidence/review/SOURCE-GRAYSCALE.png", "sha256": "98db834d03243f7a5417c1719d08dd03d42e6e9c0cfeaccd2ba4ceb48b37cfff"},
+        {"path": "evidence/review/V16-RAW-VS-V17-EXACT-192-COLOR.png", "sha256": "237905d83d779604d857f2e1d9ffae65abbc0ed8a84c1f9e394a8be4e4b62c8d"},
+        {"path": "evidence/review/V16-RAW-VS-V17-EXACT-192-GRAYSCALE.png", "sha256": "7267306f71db6168d11ef8821edd4fde79e350ab70b77aa46f28554b573866a6"}
+      ]
+    }
+  ],
+  "materialDecode": "PASS",
+  "materialSHA256": "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202",
+  "metalProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "perFileEqual": true,
+  "productionSelected": false,
+  "rawProcessCount": 0,
+  "replayCount": 2,
+  "sceneKitProcessCount": 0,
+  "sourceAuthority": false,
+  "toolchain": "swift-driver 1.148.6; Apple Swift 6.3.3; arm64-apple-macosx26.0"
+}

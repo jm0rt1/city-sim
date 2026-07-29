@@ -18,6 +18,7 @@ from pack_world_atlas import DETAILS, Payload, sha256, write_manifest, write_pag
 ROOT = Path(__file__).resolve().parents[2]
 GENERATED = ROOT / "GeneratedV4"
 PACKAGE = ROOT.parent
+REPOSITORY = PACKAGE.parent.parent
 CANONICAL_ATLAS = PACKAGE / "Sources" / "CitySimNative" / "Resources" / "WorldAssets.atlas"
 MANIFEST_TEMPLATE = CANONICAL_ATLAS / "generated-v4-manifest.json"
 STYLE = ROOT / "GateA" / "golden_district_imagegen_source-v2.png"
@@ -25,6 +26,9 @@ PLAY027 = ROOT / "OfflineScene" / "PLAY-027"
 PLAY028_SELECTION = GENERATED / "catalog" / "play-028-residential-directions.json"
 PLAY060_SELECTION = GENERATED / "catalog" / "play-060-commercial-directions.json"
 PLAY062_SELECTION = GENERATED / "catalog" / "play-062-industrial-l1-directions.json"
+PLAY073_INDUSTRIAL_L2_SELECTION = (
+    GENERATED / "catalog" / "play-073-industrial-l2-directions.json"
+)
 RAW_CANVAS = (1536, 1024)
 GROUND_PIVOT = (768, 896)
 WORLD_POINTS_PER_RAW_PIXEL = 72 / 512
@@ -39,7 +43,10 @@ WORLD_HALF_TILE = (36.0, 18.0)
 
 
 def relative_to_package(path: Path) -> str:
-    return str(path.relative_to(PACKAGE.parent))
+    try:
+        return str(path.relative_to(PACKAGE.parent))
+    except ValueError:
+        return str(path.relative_to(REPOSITORY))
 
 
 def repository_record(path: Path, role: str) -> dict[str, object]:
@@ -57,10 +64,11 @@ def pixel_sha256(path: Path) -> str:
 
 
 def repository_path(relative: str) -> Path:
-    path = PACKAGE.parent / relative
-    if not path.is_file():
-        raise SystemExit(f"build rejected: repository input is missing: {relative}")
-    return path
+    for root in (PACKAGE.parent, REPOSITORY):
+        path = root / relative
+        if path.is_file():
+            return path
+    raise SystemExit(f"build rejected: repository input is missing: {relative}")
 
 
 def normalized_path(asset: dict[str, object], detail: str) -> Path:
@@ -144,30 +152,35 @@ def directional_building_assets(
         revision = str(selection["source_revision"])
         source_id = f"{family}_l{level:02d}"
         logical_id = f"{source_id}_v0_{direction}"
-        relative_base = (
-            f"CitySimNative/WorldArt/OfflineScene/PLAY-027/"
-        )
-        raw_file = (
-            f"{relative_base}raw/{source_id}/variant-0/{direction}/{revision}.png"
-        )
-        provenance_file = (
-            f"{relative_base}provenance/{source_id}/variant-0/{direction}/{revision}.json"
-        )
-        if task == "PLAY-028" and level == 1:
-            normalization_name = f"{revision}-normalization.json"
-        elif task == "PLAY-062":
-            normalization_name = f"normalization-{revision}-native-tool.json"
-        elif family == "commercial" and level > 1:
-            normalization_name = f"normalization-{revision}-native-tool.json"
+        relative_base = "CitySimNative/WorldArt/OfflineScene/PLAY-027/"
+        explicit_files = "raw_file" in selection
+        if explicit_files:
+            raw_file = str(selection["raw_file"])
+            provenance_file = str(selection["provenance_file"])
+            normalization_file = str(selection["normalization_record_file"])
+            scene_file = str(selection["scene_descriptor_file"])
         else:
-            normalization_name = f"normalization-{revision}-raw-tool.json"
-        normalization_file = (
-            f"{relative_base}provenance/{source_id}/variant-0/{direction}/"
-            f"{normalization_name}"
-        )
-        scene_file = (
-            f"{relative_base}scenes/{source_id}/variant-0/{direction}/scene.json"
-        )
+            raw_file = (
+                f"{relative_base}raw/{source_id}/variant-0/{direction}/{revision}.png"
+            )
+            provenance_file = (
+                f"{relative_base}provenance/{source_id}/variant-0/{direction}/{revision}.json"
+            )
+            if task == "PLAY-028" and level == 1:
+                normalization_name = f"{revision}-normalization.json"
+            elif task == "PLAY-062":
+                normalization_name = f"normalization-{revision}-native-tool.json"
+            elif family == "commercial" and level > 1:
+                normalization_name = f"normalization-{revision}-native-tool.json"
+            else:
+                normalization_name = f"normalization-{revision}-raw-tool.json"
+            normalization_file = (
+                f"{relative_base}provenance/{source_id}/variant-0/{direction}/"
+                f"{normalization_name}"
+            )
+            scene_file = (
+                f"{relative_base}scenes/{source_id}/variant-0/{direction}/scene.json"
+            )
         raw = repository_path(raw_file)
         provenance = repository_path(provenance_file)
         normalization = repository_path(normalization_file)
@@ -176,22 +189,52 @@ def directional_building_assets(
         scene_data = json.loads(scene.read_text(encoding="utf-8"))
         if sha256(raw) != selection["raw_sha256"]:
             raise SystemExit(f"build rejected: raw digest mismatch for {logical_id}")
-        if (
-            provenance_data.get("sourceKey")
-            != f"{source_id}/variant-0/{direction}/{revision}"
-            or provenance_data.get("logicalBuildingID") != source_id
-            or provenance_data.get("viewDirection") != direction
-            or provenance_data.get("level") != level
-            or provenance_data.get("orientationTransform") != "none"
-            or provenance_data.get("authoredIndependently") is not True
-        ):
-            raise SystemExit(f"build rejected: provenance identity mismatch for {logical_id}")
+        if explicit_files:
+            if (
+                selection.get("contract") not in (None, "CONTRACT-018")
+                or not selection.get("source_key")
+                or sha256(provenance) != selection.get("provenance_sha256", sha256(provenance))
+                or sha256(normalization)
+                != selection.get("normalization_record_sha256", sha256(normalization))
+                or sha256(scene) != selection["scene_descriptor_sha256"]
+            ):
+                raise SystemExit(
+                    f"build rejected: immutable source authority mismatch for {logical_id}"
+                )
+            normalization_data = json.loads(normalization.read_text(encoding="utf-8"))
+            output_hashes = {
+                item.get("lod"): item.get("sha256")
+                for item in normalization_data.get("outputs", [])
+            }
+            if (
+                normalization_data.get("productionSelected") is not False
+                or normalization_data.get("source_sha256") != selection["raw_sha256"]
+                or output_hashes != selection["normalized_sha256"]
+            ):
+                raise SystemExit(
+                    f"build rejected: normalization authority mismatch for {logical_id}"
+                )
+            source_key = str(selection["source_key"])
+        else:
+            if (
+                provenance_data.get("sourceKey")
+                != f"{source_id}/variant-0/{direction}/{revision}"
+                or provenance_data.get("logicalBuildingID") != source_id
+                or provenance_data.get("viewDirection") != direction
+                or provenance_data.get("level") != level
+                or provenance_data.get("orientationTransform") != "none"
+                or provenance_data.get("authoredIndependently") is not True
+            ):
+                raise SystemExit(
+                    f"build rejected: provenance identity mismatch for {logical_id}"
+                )
+            source_key = str(provenance_data["sourceKey"])
         derivation = scene_data.get("derivation", {})
         if (
             scene_data.get("logicalBuildingID") != source_id
             or scene_data.get("viewDirection") != direction
             or scene_data.get("level") != level
-            or scene_data.get("sourceRevision") != revision
+            or (not explicit_files and scene_data.get("sourceRevision") != revision)
             or scene_data.get("productionSelected") is not False
             or derivation.get("mirror") is not False
             or derivation.get("rotationDegrees") != 0
@@ -228,8 +271,12 @@ def directional_building_assets(
         block_registration: tuple[float, float, list[float], list[float]] | None = None
         for detail in DETAILS:
             normalized_file = (
-                f"{relative_base}normalized/{source_id}/variant-0/{direction}/{revision}/"
-                f"generated_v4_{source_id}_{detail}.png"
+                str(selection["normalized_files"][detail])
+                if explicit_files
+                else (
+                    f"{relative_base}normalized/{source_id}/variant-0/{direction}/{revision}/"
+                    f"generated_v4_{source_id}_{detail}.png"
+                )
             )
             normalized = repository_path(normalized_file)
             expected_sha = selection["normalized_sha256"][detail]
@@ -302,14 +349,18 @@ def directional_building_assets(
             lods[detail]["anchor"] = [anchor_x, anchor_y]
             lods[detail]["world_size"] = world_size
 
-        material_file = provenance_data["materialLibraryFile"].replace(
-            "Native/", "", 1
+        material_file = (
+            str(selection["material_library_file"])
+            if explicit_files
+            else provenance_data["materialLibraryFile"].replace("Native/", "", 1)
         )
         material = repository_path(material_file)
+        if explicit_files and sha256(material) != selection["material_library_sha256"]:
+            raise SystemExit(f"build rejected: material authority mismatch for {logical_id}")
         assets.append(
             {
                 "logical_id": logical_id,
-                "source_key": provenance_data["sourceKey"],
+                "source_key": source_key,
                 "source_revision": revision,
                 "view_direction": direction,
                 "family": family,
@@ -544,6 +595,12 @@ def build(output_atlas: Path) -> None:
             "PLAY-062",
             levels=(1,),
         )
+        + directional_building_assets(
+            PLAY073_INDUSTRIAL_L2_SELECTION,
+            "industrial",
+            "PLAY-073",
+            levels=(2,),
+        )
     )
     directional_ids = {asset["logical_id"] for asset in directional_assets}
     manifest["assets"] = [
@@ -620,7 +677,7 @@ def build(output_atlas: Path) -> None:
             for mask in range(16)
         }
 
-    manifest["generator_version"] = "PLAY-062-directional-industrial-l1-production-1"
+    manifest["generator_version"] = "PLAY-073-wave-010-r1-industrial-l2-production-1"
     manifest["pages"] = sorted(pages, key=lambda item: item["id"])
     manifest["inventory"] = [
         {
@@ -633,8 +690,8 @@ def build(output_atlas: Path) -> None:
     ]
     manifest["source_inventory"] = provenance_inventory(manifest)
     manifest["packing"] = {
-        "algorithm": "stable-detail-tall-first-shelf-v2",
-        "sort": "detail then descending height, descending width, semantic key",
+        "algorithm": "stable-detail-best-short-side-v3",
+        "sort": "detail then descending padded area, height, width, semantic key",
         "rotation": False,
         "padding_pixels": 4,
         "extrusion_pixels": 2,

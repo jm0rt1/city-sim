@@ -440,6 +440,8 @@ enum CompareRetainedRawPixelsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "fileSHA256": primary.fileSHA256,
+                "decodedRGBASHA256":
+                    comparisonSHA256(Data(primary.rgba)),
             ],
             "repeatB": [
                 "file": comparisonRelativePath(
@@ -447,6 +449,8 @@ enum CompareRetainedRawPixelsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "fileSHA256": repeatB.fileSHA256,
+                "decodedRGBASHA256":
+                    comparisonSHA256(Data(repeatB.rgba)),
             ],
             "repeatC": [
                 "file": comparisonRelativePath(
@@ -454,6 +458,8 @@ enum CompareRetainedRawPixelsMain {
                     repositoryRoot: repositoryRoot
                 ),
                 "fileSHA256": repeatC.fileSHA256,
+                "decodedRGBASHA256":
+                    comparisonSHA256(Data(repeatC.rgba)),
             ],
             "sourcePixels": [primary.width, primary.height],
             "differenceBoundsSource": bounds,

@@ -1,0 +1,586 @@
+{
+  "schema": 1,
+  "task": "PLAY-081",
+  "contract": [
+    "CONTRACT-010",
+    "CONTRACT-020",
+    "CONTRACT-021"
+  ],
+  "predesignID": "industrial-l04-west-predesign-v01",
+  "logicalBuildingID": "industrial_l04",
+  "variantID": "variant-0",
+  "direction": "west",
+  "sourceRevision": "predesign-v01",
+  "sceneGeometryID": "industrial-l04-west-v01-forge-throat-independent",
+  "massingProfile": "west-forge-throat-sawtooth-foundry",
+  "disposition": "PREDESIGN_ONLY_PENDING_NORTH_FAMILY_MATERIAL_LOCK",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderingAuthorized": false,
+  "normalizationAuthorized": false,
+  "rendererIngestionAuthorized": false,
+  "independence": {
+    "authoredFromSiblingScene": false,
+    "siblingSceneOpened": false,
+    "siblingGeometryConsumed": false,
+    "mirror": false,
+    "rotation": false,
+    "transform": false,
+    "orientationTransform": "none",
+    "inputs": "published family, material-role, registration, camera, light, and shadow requirements only"
+  },
+  "catalogAudit": {
+    "publishedPlan": "docs/production/evidence/PLAY-027/ALIAS-COVERAGE-AND-PRODUCTION-PLAN.md",
+    "logicalBuildingID": "industrial_l04",
+    "publishedAcceptedDirectionalSources": 0,
+    "disposition": "MISSING_NOT_ALIASED"
+  },
+  "registration": {
+    "tileBasisPoints": [
+      72,
+      36
+    ],
+    "footprintTiles": [
+      1,
+      1
+    ],
+    "contactPolygonWorldXZ": [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "footprintExpectedSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "groundOriginWorldXYZ": [
+      0,
+      0,
+      0
+    ],
+    "groundOriginExpectedSource": [
+      768,
+      768
+    ],
+    "groundPivotWorldXYZ": [
+      28,
+      0,
+      28
+    ],
+    "groundPivotExpectedSource": [
+      768,
+      896
+    ],
+    "frontageEdge": "west",
+    "dccGroundEdge": "x=-28",
+    "frontageSocketWorldXYZ": [
+      -28,
+      0,
+      0
+    ],
+    "frontageSocketExpectedSource": [
+      640,
+      704
+    ],
+    "maximumProjectionErrorSourcePixels": 1,
+    "verticalEnvelopeWorld": [
+      0,
+      44
+    ]
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "positionWorldXYZ": [
+      96,
+      101.24557426726288,
+      96
+    ],
+    "targetWorldXYZ": [
+      0,
+      22.861902498201186,
+      0
+    ],
+    "sceneKitOrthographicScale": 79.1959533691406,
+    "blenderOrthographicScale": 237.5878601074218,
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "renderViewportPixels": [
+      1536,
+      1024
+    ],
+    "literalViewportPixels": [
+      192,
+      128
+    ],
+    "groundPlaneCitySimY": 0
+  },
+  "lightAndContact": {
+    "keyDirection": "northwest",
+    "keyOriginWorldXYZ": [
+      -120,
+      180,
+      -120
+    ],
+    "contactDirection": "southeast",
+    "contactVectorSourcePixels": [
+      2,
+      1
+    ],
+    "contactOpacityTarget": 0.22,
+    "contactField": "restrained footprint-local field; no broad dark mat"
+  },
+  "literal192Targets": {
+    "portalInsetMinimumWidthPixels": 14,
+    "portalInsetMinimumHeightPixels": 12,
+    "portalJambMinimumThicknessPixels": 2,
+    "portalHeaderMinimumThicknessPixels": 2,
+    "minimumSilhouetteBreaks": 3,
+    "portalFrameToWallMinimumGrayscaleDelta": 12,
+    "portalFrameToProcessMinimumGrayscaleDelta": 12,
+    "maximumProcessOcclusionAreaPixels": 0
+  },
+  "portal": {
+    "roadFacingAxis": "negative-x",
+    "socketConnectionPolylineWorldXYZ": [
+      [
+        -28,
+        0,
+        0
+      ],
+      [
+        -24,
+        0,
+        -2
+      ],
+      [
+        -20,
+        0,
+        -2
+      ]
+    ],
+    "portalCenterWorldXYZ": [
+      -20,
+      13,
+      -2
+    ],
+    "insetComponentID": "west-portal-inset",
+    "jambComponentIDs": [
+      "west-portal-jamb-left",
+      "west-portal-jamb-right"
+    ],
+    "headerComponentID": "west-portal-header",
+    "frameComponentIDs": [
+      "west-portal-jamb-left",
+      "west-portal-jamb-right",
+      "west-portal-header"
+    ],
+    "processOccluderComponentIDs": [
+      "offset-stack",
+      "gantry-beam",
+      "gantry-support-west",
+      "gantry-support-east",
+      "turbine-process-vessel"
+    ]
+  },
+  "components": [
+    {
+      "id": "restrained-foundation",
+      "shape": "box",
+      "centerWorldXYZ": [
+        0,
+        0.5,
+        0
+      ],
+      "sizeWorldXYZ": [
+        56,
+        1,
+        56
+      ],
+      "materialRole": "foundation-mid"
+    },
+    {
+      "id": "west-socket-apron",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -24,
+        0.8,
+        -2
+      ],
+      "sizeWorldXYZ": [
+        8,
+        0.6,
+        44
+      ],
+      "materialRole": "apron-light"
+    },
+    {
+      "id": "west-portal-inset",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -14,
+        14,
+        -2
+      ],
+      "sizeWorldXYZ": [
+        1,
+        26,
+        38
+      ],
+      "materialRole": "portal-void"
+    },
+    {
+      "id": "west-portal-jamb-left",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -20,
+        14,
+        -24
+      ],
+      "sizeWorldXYZ": [
+        4,
+        28,
+        6
+      ],
+      "materialRole": "portal-frame"
+    },
+    {
+      "id": "west-portal-jamb-right",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -20,
+        14,
+        20
+      ],
+      "sizeWorldXYZ": [
+        4,
+        28,
+        6
+      ],
+      "materialRole": "portal-frame"
+    },
+    {
+      "id": "west-portal-header",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -20,
+        30.5,
+        -2
+      ],
+      "sizeWorldXYZ": [
+        4,
+        5,
+        50
+      ],
+      "materialRole": "portal-frame"
+    },
+    {
+      "id": "west-portal-reveal-left",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -17,
+        14,
+        -20.5
+      ],
+      "sizeWorldXYZ": [
+        6,
+        26,
+        1
+      ],
+      "materialRole": "portal-reveal"
+    },
+    {
+      "id": "west-portal-reveal-right",
+      "shape": "box",
+      "centerWorldXYZ": [
+        -17,
+        14,
+        16.5
+      ],
+      "sizeWorldXYZ": [
+        6,
+        26,
+        1
+      ],
+      "materialRole": "portal-reveal"
+    },
+    {
+      "id": "forge-hall",
+      "shape": "box",
+      "centerWorldXYZ": [
+        18,
+        13,
+        -10
+      ],
+      "sizeWorldXYZ": [
+        20,
+        26,
+        36
+      ],
+      "materialRole": "masonry-mid"
+    },
+    {
+      "id": "saw-monitor-west",
+      "shape": "box",
+      "centerWorldXYZ": [
+        12,
+        29,
+        -21
+      ],
+      "sizeWorldXYZ": [
+        6,
+        6,
+        10
+      ],
+      "materialRole": "roof-mid"
+    },
+    {
+      "id": "saw-monitor-center",
+      "shape": "box",
+      "centerWorldXYZ": [
+        18,
+        31,
+        -10
+      ],
+      "sizeWorldXYZ": [
+        7,
+        10,
+        9
+      ],
+      "materialRole": "clerestory"
+    },
+    {
+      "id": "saw-monitor-east",
+      "shape": "box",
+      "centerWorldXYZ": [
+        24,
+        28,
+        1
+      ],
+      "sizeWorldXYZ": [
+        6,
+        4,
+        9
+      ],
+      "materialRole": "roof-mid"
+    },
+    {
+      "id": "control-wing",
+      "shape": "box",
+      "centerWorldXYZ": [
+        18,
+        7,
+        17
+      ],
+      "sizeWorldXYZ": [
+        20,
+        14,
+        22
+      ],
+      "materialRole": "warm-masonry"
+    },
+    {
+      "id": "west-staff-entry",
+      "shape": "box",
+      "centerWorldXYZ": [
+        7,
+        4,
+        17
+      ],
+      "sizeWorldXYZ": [
+        1,
+        8,
+        5
+      ],
+      "materialRole": "staff-entry"
+    },
+    {
+      "id": "offset-stack",
+      "shape": "cylinder",
+      "centerWorldXYZ": [
+        24,
+        22,
+        -22
+      ],
+      "sizeWorldXYZ": [
+        5,
+        44,
+        5
+      ],
+      "materialRole": "oxidized-process"
+    },
+    {
+      "id": "gantry-beam",
+      "shape": "box",
+      "centerWorldXYZ": [
+        18,
+        27,
+        -18
+      ],
+      "sizeWorldXYZ": [
+        14,
+        3,
+        3
+      ],
+      "materialRole": "gantry-steel"
+    },
+    {
+      "id": "gantry-support-west",
+      "shape": "box",
+      "centerWorldXYZ": [
+        12,
+        14,
+        -18
+      ],
+      "sizeWorldXYZ": [
+        2,
+        26,
+        2
+      ],
+      "materialRole": "gantry-steel"
+    },
+    {
+      "id": "gantry-support-east",
+      "shape": "box",
+      "centerWorldXYZ": [
+        24,
+        14,
+        -18
+      ],
+      "sizeWorldXYZ": [
+        2,
+        26,
+        2
+      ],
+      "materialRole": "gantry-steel"
+    },
+    {
+      "id": "turbine-process-vessel",
+      "shape": "cylinder",
+      "centerWorldXYZ": [
+        22,
+        7,
+        -22
+      ],
+      "sizeWorldXYZ": [
+        9,
+        14,
+        9
+      ],
+      "materialRole": "oxidized-process"
+    },
+    {
+      "id": "roof-plant",
+      "shape": "box",
+      "centerWorldXYZ": [
+        19,
+        16,
+        10
+      ],
+      "sizeWorldXYZ": [
+        10,
+        4,
+        6
+      ],
+      "materialRole": "roof-plant"
+    }
+  ],
+  "silhouetteMarkers": [
+    {
+      "id": "stack-cap",
+      "componentID": "offset-stack",
+      "worldXYZ": [
+        24,
+        44,
+        -22
+      ]
+    },
+    {
+      "id": "monitor-center-crown",
+      "componentID": "saw-monitor-center",
+      "worldXYZ": [
+        18,
+        36,
+        -10
+      ]
+    },
+    {
+      "id": "monitor-west-crown",
+      "componentID": "saw-monitor-west",
+      "worldXYZ": [
+        12,
+        32,
+        -21
+      ]
+    },
+    {
+      "id": "portal-left-crown",
+      "componentID": "west-portal-jamb-left",
+      "worldXYZ": [
+        -20,
+        28,
+        -24
+      ]
+    },
+    {
+      "id": "portal-header-crown",
+      "componentID": "west-portal-header",
+      "worldXYZ": [
+        -20,
+        33,
+        -2
+      ]
+    },
+    {
+      "id": "control-wing-crown",
+      "componentID": "control-wing",
+      "worldXYZ": [
+        18,
+        14,
+        17
+      ]
+    },
+    {
+      "id": "portal-right-crown",
+      "componentID": "west-portal-jamb-right",
+      "worldXYZ": [
+        -20,
+        28,
+        20
+      ]
+    }
+  ],
+  "processCounts": {
+    "imageGeneration": 0,
+    "rawRenderer": 0,
+    "normalizer": 0,
+    "sceneKit": 0,
+    "pixelOutput": 0
+  }
+}

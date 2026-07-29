@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v07-zero-pixel-actual-camera",
+  "designCommit": "6811a287d614f03d29e383d8abad5ad402c0f572",
+  "command": "/Applications/Blender.app/Contents/MacOS/Blender --background --factory-startup --disable-autoexec --threads 1 --python-exit-code 1 --python Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/prove_actual_camera.py -- --scene Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/SCENE.json --output <absent-run-root>/ACTUAL-CAMERA-PROOF.json",
+  "toolchain": {
+    "blenderVersion": "4.5.12 LTS",
+    "blenderBuildHash": "84afd5f785f7",
+    "blenderExecutableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "proofToolSHA256": "42befeea211f8657b68af0fa69b3fe80d23fd9f73a54a0d86cbb20743be4258e"
+  },
+  "inputs": {
+    "sceneSHA256": "bf9ce7f6405f5c21777d12c73aa9f312da092d79d64bce743f3ca3ee05ffb488",
+    "materialLibraryFile": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/MATERIALS.json",
+    "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "descriptorOrder": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "basis": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "canonicalNorthRoadEdge": "z=-28"
+  },
+  "freshCommittedReplays": [
+    {
+      "run": "i",
+      "file": "run-i/ACTUAL-CAMERA-PROOF.json",
+      "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
+      "validationPassed": true
+    },
+    {
+      "run": "j",
+      "file": "run-j/ACTUAL-CAMERA-PROOF.json",
+      "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
+      "validationPassed": true
+    }
+  ],
+  "priorExternalPathReplay": {
+    "runs": [
+      "g",
+      "h"
+    ],
+    "sha256": "561864224576b732499bca070958902bf4f894a52d7b76d5d1de8b79f27157ce",
+    "validationPassed": true,
+    "supersededReason": "Scene path referenced the byte-identical material input outside the v07 root."
+  },
+  "freshReplayCount": 2,
+  "freshReplayByteIdentical": true,
+  "freshReplaySHA256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
+  "pixelInvocationCounts": {
+    "blenderRender": 0,
+    "raw": 0,
+    "normalizer": 0,
+    "imageGen": 0,
+    "contactSheet": 0
+  },
+  "sourceAuthority": false,
+  "productionSelected": false
+}

@@ -1,0 +1,46 @@
+{
+  "authorityCommit" : "af6b35bee6732d8ad9b16e7353083258c48e5607",
+  "geometry" : {
+    "unchanged" : true,
+    "v03CanonicalGeometrySHA256" : "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3",
+    "v04CanonicalGeometrySHA256" : "478254a6228ae5bcc4d81ae87ec1f43bfc433b606f95b87a440ca3d41cdf34a3"
+  },
+  "metalProcessesConsumed" : 0,
+  "newPixelFilesCreated" : 0,
+  "passed" : true,
+  "preservation" : {
+    "passed" : true,
+    "v03DescriptorSHA256" : "d32c2aaf03cebf53f3821515b19ab03fd86e759687fed9b4bf68eda14e1b65ca",
+    "v03MaterialLibrarySHA256" : "94069509093c122d4cb2383bd648757561f6561f78b8345c6222b5354f3f18f6",
+    "v03MetricsSHA256" : "cd55e28517b2e2ca5896d433f5a0646840786b8684a45c2f3ef0bd931f69c1c9",
+    "v03RawSHA256" : "24e57812ef0d0d024aef8b4d45a2bda9f98c902874b534aed9ff6040707867ba",
+    "v03RejectionSHA256" : "3ccefb83cded63bf0958c4b28eabf00af8ccf4551dd4191d3675c4641110a877"
+  },
+  "productionSelected" : false,
+  "sceneKitSnapshotsCreated" : 0,
+  "schema" : 1,
+  "segmentation" : {
+    "attributedAlphaRatio" : 0.99232796831053316,
+    "attributedOpaqueRatio" : 0.99822812516285619,
+    "diagnosisSHA256" : "2c07696e2d6fc14e554ee1715a84bc741f70fcb1d110d927c5892ce67dfde48a"
+  },
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-v04-prepixel-validation",
+  "unrunGates" : [
+    "Metal capability preflight",
+    "SceneKit snapshot",
+    "governed raw PNG",
+    "literal-pixel value hierarchy",
+    "repeat determinism",
+    "normalization and LOD",
+    "independent visual review"
+  ],
+  "v04" : {
+    "alphaCompositorContractSHA256" : "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9",
+    "descriptorSHA256" : "fdb92d39acb8847178a95d1e0f6315332a93eda01df71388e54582fe1e6f12bf",
+    "materialLibrarySHA256" : "31f500488b7d143e88015bf71b53db4d1a4b19076563dc3d774d61f00c8b83a3",
+    "materialLightContractSHA256" : "96d51f18e8a7eef98eba3bdd1d3af74c0be90e648257602fa844cf43f090ba15",
+    "predictedValueLedgerSHA256" : "60da32f89de16cd4706675dac83dc6dbd0395305acbb5a9cd1ee0f2ef67cb77e",
+    "predictedValueTargetsPassed" : true
+  }
+}

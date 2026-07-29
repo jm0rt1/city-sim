@@ -1,0 +1,560 @@
+{
+  "schema": "citysim.play-079.renderer-locator-inventory.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "stage": "prelock_zero_pixel",
+  "authority": {
+    "publishedMaster": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+    "inventoryBaseCommit": "9c60c955d5f78f76161a6a4260a3ed0447e678a5",
+    "acceptedEastAncestor": "83a256cff555ecbf1f16d3b80a13a6c774f2cc20",
+    "appearanceLockPublished": false,
+    "sourceProductionProfilePublished": false,
+    "pixelProductionAuthorized": false
+  },
+  "roots": {
+    "eastSource": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/",
+    "eastEvidence": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/",
+    "integrationAuthority": "docs/production/evidence/INTEGRATION/"
+  },
+  "statusDefinitions": {
+    "existing": "The exact repo-relative locator exists at inventoryBaseCommit.",
+    "reserved": "The exact repo-relative locator is reserved for future East output and does not exist at inventoryBaseCommit.",
+    "inline": "The value is carried at a JSON pointer inside the named container and has no independent byte locator.",
+    "derived": "The value is deterministically derived by the consuming Renderer contract and is not an East-authored byte locator.",
+    "unassigned": "No value or locator is authorized yet; null is intentional and fail-closed."
+  },
+  "sourceCommitPlaceholderRules": {
+    "currentValue": null,
+    "currentStatus": "unassigned",
+    "nullRequiredStages": [
+      "prelock_zero_pixel",
+      "launch_bound"
+    ],
+    "nonNullAllowedStage": "source_candidate",
+    "acceptedPattern": "^[0-9a-f]{40}$",
+    "mustResolveToGitCommit": true,
+    "mustContainCandidateBytes": true,
+    "forbiddenPlaceholders": [
+      "HEAD",
+      "TBD",
+      "TODO",
+      "UNKNOWN",
+      "PENDING",
+      "0000000000000000000000000000000000000000"
+    ],
+    "rule": "Remain null until the future source-candidate bytes are committed; never substitute a branch name, moving HEAD, synthetic hash, or pending token."
+  },
+  "inputs": {
+    "runnerContract": {
+      "locatorType": "file",
+      "ownership": "east_owned",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "3550a7d1cc9b6494e28289574f8ad30df14200ce9dc7f2ebc929991cccc04eb1"
+    },
+    "acceptedPredesignDescriptor": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
+      "futureSourceAuthority": false
+    },
+    "acceptedPredesignMaterials": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "contract010": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "contract021": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+    },
+    "sourceStageSchema": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "sourceStageSemanticValidator": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    },
+    "nonAliasInput": {
+      "locatorType": "file",
+      "ownership": "pinned_read_only",
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+    },
+    "frozenInputManifest": {
+      "locatorType": "file",
+      "ownership": "east_owned",
+      "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
+      "status": "existing",
+      "existsAtInventoryBase": true,
+      "sha256": "0193da455c880aea21c200589a7a1fca33c4058bdde0d030443f9d5a317dbfb1"
+    },
+    "appearanceLock": {
+      "locatorType": "file",
+      "ownership": "integration_authority",
+      "path": null,
+      "status": "unassigned",
+      "existsAtInventoryBase": false,
+      "requiredRootWhenAssigned": "docs/production/evidence/INTEGRATION/"
+    },
+    "sourceProductionProfile": {
+      "locatorType": "file",
+      "ownership": "integration_authority",
+      "path": null,
+      "status": "unassigned",
+      "existsAtInventoryBase": false,
+      "requiredRootWhenAssigned": "docs/production/evidence/INTEGRATION/"
+    },
+    "postLockProductionAuthority": {
+      "locatorType": "file",
+      "ownership": "integration_authority",
+      "path": null,
+      "status": "unassigned",
+      "existsAtInventoryBase": false,
+      "requiredRootWhenAssigned": "docs/production/evidence/INTEGRATION/"
+    }
+  },
+  "outputs": {
+    "processes": {
+      "A": {
+        "outputRoot": {
+          "locatorType": "directory",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "raw": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/raw/industrial-l04-east-a.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "semantic": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/semantic/industrial-l04-east-a-semantic.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "provenance": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/provenance.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "freshInvocationReceipt": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/INVOCATION-RECEIPT.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        }
+      },
+      "B": {
+        "outputRoot": {
+          "locatorType": "directory",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "raw": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/raw/industrial-l04-east-b.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "semantic": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/semantic/industrial-l04-east-b-semantic.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "provenance": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/provenance.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "freshInvocationReceipt": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/INVOCATION-RECEIPT.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        }
+      },
+      "C": {
+        "outputRoot": {
+          "locatorType": "directory",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "raw": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/raw/industrial-l04-east-c.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "semantic": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/semantic/industrial-l04-east-c-semantic.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "provenance": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/provenance.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "freshInvocationReceipt": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/INVOCATION-RECEIPT.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        }
+      },
+      "selectedSource": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": null,
+        "status": "unassigned",
+        "existsAtInventoryBase": false,
+        "selectionRule": "Bind to exactly one existing A, B, or C raw locator only after independent review."
+      }
+    },
+    "normalization": {
+      "run1": {
+        "city": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/city/industrial-l04-east-city.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "neighborhood": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/neighborhood/industrial-l04-east-neighborhood.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "block": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/block/industrial-l04-east-block.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "receipt": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/NORMALIZATION-RECEIPT.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        }
+      },
+      "run2": {
+        "city": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-2/city/industrial-l04-east-city.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "neighborhood": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-2/neighborhood/industrial-l04-east-neighborhood.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "block": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-2/block/industrial-l04-east-block.png",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        },
+        "receipt": {
+          "locatorType": "file",
+          "ownership": "east_owned",
+          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-2/NORMALIZATION-RECEIPT.json",
+          "status": "reserved",
+          "existsAtInventoryBase": false
+        }
+      },
+      "repeatIdentityReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/validation/NORMALIZATION-REPEAT.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      }
+    },
+    "lods": {
+      "city": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/city/industrial-l04-east-city.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false,
+        "canvasPixels": [
+          256,
+          171
+        ],
+        "normalizationSource": "outputs.normalization.run1.city"
+      },
+      "neighborhood": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/neighborhood/industrial-l04-east-neighborhood.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false,
+        "canvasPixels": [
+          512,
+          342
+        ],
+        "normalizationSource": "outputs.normalization.run1.neighborhood"
+      },
+      "block": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/normalization/run-1/block/industrial-l04-east-block.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false,
+        "canvasPixels": [
+          1024,
+          683
+        ],
+        "normalizationSource": "outputs.normalization.run1.block"
+      }
+    },
+    "registrationAndContact": {
+      "registrationReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/validation/REGISTRATION.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "predesignContact": {
+        "locatorType": "inline",
+        "ownership": "pinned_read_only",
+        "containerPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+        "jsonPointer": "/contact",
+        "status": "inline",
+        "containerExistsAtInventoryBase": true
+      },
+      "sourceCandidateContact": {
+        "locatorType": "inline",
+        "ownership": "east_owned",
+        "containerPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+        "jsonPointer": "/completion/registration/groundContactPolygonWorld",
+        "status": "inline",
+        "containerExistsAtInventoryBase": false
+      }
+    },
+    "review": {
+      "colorSource": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/color/source.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "colorNative2x": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/color/native-2x.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "colorLiteral192": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/color/literal-192.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "grayscaleSource": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/grayscale/source.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "grayscaleNative2x": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/grayscale/native-2x.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "grayscaleLiteral192": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/grayscale/literal-192.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "contactSheet": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/CONTACT-SHEET.png",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "reviewManifest": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/REVIEW-MANIFEST.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      }
+    },
+    "receiptsAndHandoffs": {
+      "prelockRunnerHandoff": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PRELOCK-RUNNER-HANDOFF.json",
+        "status": "existing",
+        "existsAtInventoryBase": true,
+        "sha256": "877b4bdce759caa543e90ad51af53107edb82ebf2d8ffadf4cf57a964c886b03"
+      },
+      "sourceStagePrelockReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-PRELOCK-RECEIPT.json",
+        "status": "existing",
+        "existsAtInventoryBase": true,
+        "sha256": "f04a28a890beb46ff20b47e0da1b138f3270f01236d973d8c8f4be7eba9deed8"
+      },
+      "sourceStageLaunchGuardReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-LAUNCH-GUARD-RECEIPT.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "sourceStageHandoff": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "parallelExecutionReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "sourceCandidateValidationReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/validation/SOURCE-CANDIDATE-VALIDATION.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      },
+      "rejectedAttemptInventory": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/rejections/REJECTION-INVENTORY.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      }
+    }
+  },
+  "rendererDerived": {
+    "atlasSlots": {
+      "status": "derived",
+      "formula": "<logicalID>/<detail>",
+      "logicalID": "industrial_l04_v0_east",
+      "values": {
+        "city": "industrial_l04_v0_east/city",
+        "neighborhood": "industrial_l04_v0_east/neighborhood",
+        "block": "industrial_l04_v0_east/block"
+      },
+      "source": "Renderer admission harness; not an East-authored manifest field."
+    },
+    "fixturePreparation": {
+      "status": "unassigned",
+      "expectedFrontage": {
+        "status": "derived",
+        "value": "east"
+      },
+      "fixtureCoordinate": null,
+      "soleRoadCoordinate": null,
+      "cityCameraScale": null,
+      "neighborhoodCameraScale": null,
+      "blockCameraScale": null,
+      "rule": "Synthetic Renderer test-fixture values are not production authority."
+    }
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessInvocations": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFilesCreated": 0,
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false
+  }
+}

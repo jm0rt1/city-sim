@@ -233,6 +233,9 @@ final class CityScene: SKScene {
             ) && !$0.contains(".generated-v4.")
         }
     }
+    var ambientCorridorIdentifierForTesting: ObjectIdentifier? {
+        ambientLifeLayer.childNode(withName: "world.ambient.corridor").map(ObjectIdentifier.init)
+    }
     var ambientEnvironmentNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
@@ -403,7 +406,7 @@ final class CityScene: SKScene {
             previousOverlay: previousOverlay,
             defersRuntimeMetricsToFullRecount: isFirstRender
         )
-        let ambientChanged = updateAmbientCorridor(snapshot: snapshot)
+        _ = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateSelection(selection)
@@ -437,7 +440,6 @@ final class CityScene: SKScene {
         let requiresTreeRecount = isFirstRender
             || previousSelection != selection
             || motionChanged
-            || ambientChanged
             || unexplainedCueRemoval
         let runtimeMetricsStarted = ProcessInfo.processInfo.systemUptime
         refreshRuntimeDiagnostics(
@@ -1056,6 +1058,8 @@ final class CityScene: SKScene {
         )
         guard signature != ambientCorridorSignature else { return false }
         ambientRebuildCountForTesting += 1
+        let priorGroundMetrics = attachedRuntimeTreeMetrics(ambientGroundLayer)
+        let priorLifeMetrics = attachedRuntimeTreeMetrics(ambientLifeLayer)
         let groundSignature = AmbientGroundSignature(
             layoutRoles: context.layoutRoles,
             detail: context.detail
@@ -1069,14 +1073,51 @@ final class CityScene: SKScene {
             ambientGroundSignature = groundSignature
             ambientGroundRebuildCountForTesting += 1
         }
-        ambientLifeLayer.removeAllChildren()
-        ambientLifeLayer.addChild(ambientLifeRenderer.makeCorridorLife(
-            in: snapshot.state,
-            consequences: snapshot.spatialConsequences,
-            detail: currentCameraDetailLevel,
-            reducedMotion: !ambientMotionEnabled,
-            resolvedActivityPlacements: placements
-        ))
+        if ambientCorridorSignature?.context != context {
+            ambientLifeLayer.removeAllChildren()
+            ambientLifeLayer.addChild(ambientLifeRenderer.makeCorridorLife(
+                in: snapshot.state,
+                consequences: snapshot.spatialConsequences,
+                detail: currentCameraDetailLevel,
+                reducedMotion: !ambientMotionEnabled,
+                resolvedActivityPlacements: placements
+            ))
+        } else if let corridor = ambientLifeLayer.childNode(
+            withName: "world.ambient.corridor"
+        ) {
+            // Activity-band changes are authoritative but do not invalidate
+            // the deterministic furniture, vegetation, or vacant-land tree.
+            // Replace only the bounded actor layer so a state pulse does not
+            // rebuild the complete public realm.
+            corridor.childNode(withName: "world.activity.local")?.removeFromParent()
+            let activity = ambientLifeRenderer.makeLocalActivity(
+                placements: placements,
+                detail: currentCameraDetailLevel,
+                reducedMotion: !ambientMotionEnabled
+            )
+            if !activity.children.isEmpty {
+                corridor.addChild(activity)
+            }
+        } else {
+            ambientLifeLayer.removeAllChildren()
+            ambientLifeLayer.addChild(ambientLifeRenderer.makeCorridorLife(
+                in: snapshot.state,
+                consequences: snapshot.spatialConsequences,
+                detail: currentCameraDetailLevel,
+                reducedMotion: !ambientMotionEnabled,
+                resolvedActivityPlacements: placements
+            ))
+        }
+        applyRuntimeDelta(
+            from: priorGroundMetrics,
+            to: attachedRuntimeTreeMetrics(ambientGroundLayer),
+            diagnostics: &diagnosticsSnapshot
+        )
+        applyRuntimeDelta(
+            from: priorLifeMetrics,
+            to: attachedRuntimeTreeMetrics(ambientLifeLayer),
+            diagnostics: &diagnosticsSnapshot
+        )
         ambientCorridorSignature = signature
         return true
     }
@@ -2547,8 +2588,8 @@ final class CityScene: SKScene {
                 )
             )?.logicalID
         }
-        if tile.kind == .industrial && tile.level == 1 {
-            return IndustrialL1GeneratedAssetIdentity(
+        if tile.kind == .industrial && (1...2).contains(tile.level) {
+            return IndustrialGeneratedAssetIdentity(
                 level: tile.level,
                 adjacentRoads: RoadConnectionMask.resolving(
                     at: tile.coordinate,

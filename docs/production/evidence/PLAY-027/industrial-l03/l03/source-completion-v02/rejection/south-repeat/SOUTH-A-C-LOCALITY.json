@@ -1,0 +1,356 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/rejection/south-repeat/SOUTH-A-C-LOCALITY.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l03-source-v02-south-repeat-stop-a-c",
+  "differenceBoundsSource" : [
+    589,
+    531,
+    599,
+    597
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        240,
+        240,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        595,
+        531
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        597,
+        531
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        596,
+        532
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        597,
+        532
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        240,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        598,
+        532
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "sourceCoordinate" : [
+        596,
+        533
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        591,
+        594
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        591,
+        595
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        592,
+        595
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        589,
+        596
+      ]
+    },
+    {
+      "differingChannels" : [
+        "blue"
+      ],
+      "primaryRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        208,
+        208,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        208,
+        176,
+        255
+      ],
+      "sourceCoordinate" : [
+        590,
+        596
+      ]
+    }
+  ],
+  "primary" : {
+    "decodedRGBASHA256" : "4a5d3f5473528015ce604ade12e18fb6bbc53df4d3607f277b67d86d40386e06",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/south/run-a/raw.png",
+    "fileSHA256" : "171bcba90f5a06353778bc6d420723b714ad0a6313dd4d858128ae0efad5775c"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 11,
+    "differingPixelCount" : 11
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "decodedRGBASHA256" : "b77b153b4dcd2967e758f1288c6cbd237e62f9a7c7d22e84a831e5d2c0e525c4",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/south/run-c/raw.png",
+    "fileSHA256" : "a03b711ede705731608828827279efc3b7ff820a57a64a634fdbe61403221b48"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 11,
+    "differingPixelCount" : 11
+  },
+  "repeatC" : {
+    "decodedRGBASHA256" : "4a5d3f5473528015ce604ade12e18fb6bbc53df4d3607f277b67d86d40386e06",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l03/l03/source-completion-v02/diagnostics/raw-repeat/south/run-b/raw.png",
+    "fileSHA256" : "171bcba90f5a06353778bc6d420723b714ad0a6313dd4d858128ae0efad5775c"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

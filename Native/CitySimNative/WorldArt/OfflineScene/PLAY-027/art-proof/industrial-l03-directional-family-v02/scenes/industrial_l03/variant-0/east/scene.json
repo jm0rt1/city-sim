@@ -1,0 +1,807 @@
+{
+  "authoredIndependently" : true,
+  "building" : {
+    "chimney" : {
+      "dimensions" : [
+        4,
+        8,
+        4
+      ],
+      "materialID" : "l3-duct-metal",
+      "positionWorld" : [
+        0,
+        50,
+        0
+      ]
+    },
+    "depth" : 56,
+    "floorHeight" : 12,
+    "floors" : 4,
+    "foundationDimensions" : [
+      56,
+      2.3999999999999999,
+      56
+    ],
+    "foundationHeight" : 3,
+    "foundationMaterialID" : "l3-foundation",
+    "foundationPositionWorld" : [
+      0,
+      1.2,
+      0
+    ],
+    "massBlocks" : [
+      {
+        "dimensions" : [
+          36,
+          5,
+          48
+        ],
+        "id" : "e-main-plinth",
+        "materialID" : "l3-plinth",
+        "positionWorld" : [
+          -8,
+          4.9000000000000004,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          35.600000000000001,
+          32,
+          47.600000000000001
+        ],
+        "id" : "e-high-bay-hall",
+        "materialID" : "l3-hall-blue",
+        "positionWorld" : [
+          -8,
+          23,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          5,
+          21,
+          48
+        ],
+        "id" : "e-loading-spine",
+        "materialID" : "l3-admin-concrete",
+        "positionWorld" : [
+          19,
+          13.5,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          12,
+          1.6000000000000001,
+          52
+        ],
+        "id" : "e-loading-apron",
+        "materialID" : "l3-apron",
+        "positionWorld" : [
+          22,
+          1.8,
+          0
+        ]
+      },
+      {
+        "dimensions" : [
+          14,
+          25,
+          15
+        ],
+        "id" : "e-admin-wing",
+        "materialID" : "l3-admin-concrete",
+        "positionWorld" : [
+          18,
+          15.6,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          8,
+          10
+        ],
+        "id" : "e-admin-glazing",
+        "materialID" : "l3-glazing",
+        "positionWorld" : [
+          25.5,
+          18,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          1,
+          9,
+          5.5
+        ],
+        "id" : "e-staff-door",
+        "materialID" : "l3-warm-glazing",
+        "positionWorld" : [
+          25.699999999999999,
+          8,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          8
+        ],
+        "id" : "e-staff-canopy",
+        "materialID" : "l3-light-trim",
+        "positionWorld" : [
+          24.800000000000001,
+          14.699999999999999,
+          20
+        ]
+      },
+      {
+        "dimensions" : [
+          14,
+          48,
+          14
+        ],
+        "id" : "e-process-tower",
+        "materialID" : "l3-process-metal",
+        "positionWorld" : [
+          -18,
+          27,
+          14
+        ]
+      },
+      {
+        "dimensions" : [
+          4,
+          4,
+          34
+        ],
+        "id" : "e-duct-spine",
+        "materialID" : "l3-duct-metal",
+        "positionWorld" : [
+          -1,
+          45.200000000000003,
+          -4
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          13,
+          8
+        ],
+        "id" : "e-dock-1-recess",
+        "materialID" : "l3-recess",
+        "positionWorld" : [
+          21.699999999999999,
+          10,
+          -16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          7
+        ],
+        "id" : "e-dock-1-door",
+        "materialID" : "l3-dock-door",
+        "positionWorld" : [
+          22.899999999999999,
+          9,
+          -16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          9
+        ],
+        "id" : "e-dock-1-canopy",
+        "materialID" : "l3-light-trim",
+        "positionWorld" : [
+          25,
+          18,
+          -16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          13,
+          8
+        ],
+        "id" : "e-dock-2-recess",
+        "materialID" : "l3-recess",
+        "positionWorld" : [
+          21.699999999999999,
+          10,
+          -5.5
+        ]
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          7
+        ],
+        "id" : "e-dock-2-door",
+        "materialID" : "l3-dock-door",
+        "positionWorld" : [
+          22.899999999999999,
+          9,
+          -5.5
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          9
+        ],
+        "id" : "e-dock-2-canopy",
+        "materialID" : "l3-light-trim",
+        "positionWorld" : [
+          25,
+          18,
+          -5.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          13,
+          8
+        ],
+        "id" : "e-dock-3-recess",
+        "materialID" : "l3-recess",
+        "positionWorld" : [
+          21.699999999999999,
+          10,
+          5.5
+        ]
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          7
+        ],
+        "id" : "e-dock-3-door",
+        "materialID" : "l3-dock-door",
+        "positionWorld" : [
+          22.899999999999999,
+          9,
+          5.5
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          9
+        ],
+        "id" : "e-dock-3-canopy",
+        "materialID" : "l3-light-trim",
+        "positionWorld" : [
+          25,
+          18,
+          5.5
+        ]
+      },
+      {
+        "dimensions" : [
+          1.3999999999999999,
+          13,
+          8
+        ],
+        "id" : "e-dock-4-recess",
+        "materialID" : "l3-recess",
+        "positionWorld" : [
+          21.699999999999999,
+          10,
+          16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          7
+        ],
+        "id" : "e-dock-4-door",
+        "materialID" : "l3-dock-door",
+        "positionWorld" : [
+          22.899999999999999,
+          9,
+          16.5
+        ]
+      },
+      {
+        "dimensions" : [
+          6,
+          3.5,
+          9
+        ],
+        "id" : "e-dock-4-canopy",
+        "materialID" : "l3-light-trim",
+        "positionWorld" : [
+          25,
+          18,
+          16.5
+        ]
+      }
+    ],
+    "massingProfile" : "industrial-l03-high-capacity-stepped-manufacturing-campus",
+    "roofHeight" : 6,
+    "roofMaterialID" : "l3-roof",
+    "roofOverhang" : 0.80000000000000004,
+    "roofVolumes" : [
+      {
+        "dimensions" : [
+          37,
+          4,
+          49
+        ],
+        "id" : "e-main-roof",
+        "materialID" : "l3-roof",
+        "positionWorld" : [
+          -8,
+          40.899999999999999,
+          0
+        ],
+        "shape" : "flat-parapet",
+        "trimMaterialID" : "l3-dark-steel"
+      },
+      {
+        "dimensions" : [
+          15,
+          3,
+          16
+        ],
+        "id" : "e-admin-roof",
+        "materialID" : "l3-roof",
+        "positionWorld" : [
+          18,
+          29.399999999999999,
+          20
+        ],
+        "shape" : "flat-parapet",
+        "trimMaterialID" : "l3-light-trim"
+      }
+    ],
+    "trimBands" : [
+      {
+        "dimensions" : [
+          18,
+          6,
+          8
+        ],
+        "id" : "e-roof-monitor-north",
+        "materialID" : "l3-glazing",
+        "positionWorld" : [
+          -7,
+          44,
+          -13
+        ]
+      },
+      {
+        "dimensions" : [
+          18,
+          7,
+          8
+        ],
+        "id" : "e-roof-monitor-south",
+        "materialID" : "l3-glazing",
+        "positionWorld" : [
+          -7,
+          45,
+          6
+        ]
+      },
+      {
+        "dimensions" : [
+          2.5,
+          2.5,
+          48
+        ],
+        "id" : "e-loading-crown",
+        "materialID" : "l3-safety",
+        "positionWorld" : [
+          24,
+          25,
+          0
+        ]
+      }
+    ],
+    "trimMaterialID" : "l3-light-trim",
+    "usesExplicitComponentGeometry" : true,
+    "usesLegacyDomesticDetails" : false,
+    "wallHeight" : 44,
+    "wallMaterialID" : "l3-hall-blue",
+    "width" : 56
+  },
+  "camera" : {
+    "elevationDegrees" : 30,
+    "orthographicScale" : 79.195953369140597,
+    "oversamplingFactor" : 4,
+    "positionWorld" : [
+      96,
+      96,
+      96
+    ],
+    "postProjectionOffsetPixels" : [
+      0,
+      128
+    ],
+    "projection" : "orthographic-2-to-1",
+    "renderViewportPixels" : [
+      1536,
+      1024
+    ],
+    "sourceGroundCenter" : [
+      768,
+      768
+    ],
+    "targetWorld" : [
+      0,
+      18,
+      0
+    ],
+    "yawDegrees" : 45
+  },
+  "derivation" : {
+    "mirror" : false,
+    "rotationDegrees" : 0,
+    "siblingSource" : null,
+    "sourceKind" : "offline-scene-explicit-authored",
+    "transform" : "none"
+  },
+  "entrance" : {
+    "baseWorld" : [
+      28,
+      3,
+      20
+    ],
+    "canopyDepth" : 4,
+    "depth" : 1,
+    "doorMaterialID" : "l3-warm-glazing",
+    "facadeID" : "l3-east-road-frontage",
+    "height" : 9,
+    "hingeSide" : "right",
+    "pavilionDepth" : 10,
+    "pavilionHeight" : 18,
+    "pavilionMaterialID" : "l3-admin-concrete",
+    "pavilionRoofHeight" : 2.5,
+    "pavilionWidth" : 11,
+    "porchColumnWidth" : 1.2,
+    "porchLateralOffset" : 0,
+    "porchWidth" : 7,
+    "stepCount" : 1,
+    "stepRun" : 1.2,
+    "style" : "industrial-quality-lab-entry",
+    "surroundMaterialID" : "l3-light-trim",
+    "width" : 5.5
+  },
+  "facades" : [
+    {
+      "direction" : "east",
+      "edgeWorld" : [
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          28
+        ]
+      ],
+      "hasEntrance" : true,
+      "id" : "l3-east-road-frontage",
+      "materialID" : "l3-admin-concrete",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    }
+  ],
+  "family" : "industrial",
+  "level" : 3,
+  "light" : {
+    "ambientColorRGBA" : [
+      0.35999999999999999,
+      0.42999999999999999,
+      0.5,
+      1
+    ],
+    "ambientIntensity" : 0,
+    "keyColorRGBA" : [
+      1,
+      0.93999999999999995,
+      0.83999999999999997,
+      1
+    ],
+    "keyIntensity" : 0,
+    "keyOrigin" : [
+      -80,
+      120,
+      -80
+    ],
+    "shadowBlurSourcePixels" : 0,
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowReceiver" : "authored-contact-polygon",
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "logicalBuildingID" : "industrial_l03",
+  "materialLibrary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v02/materials/industrial-l03-v02.json",
+    "role" : "industrial-l03-material-library",
+    "sha256" : "3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e"
+  },
+  "occlusionExclusions" : [
+    {
+      "id" : "l3-east-frontage-visibility",
+      "polygonWorld" : [
+        [
+          10,
+          -26
+        ],
+        [
+          28,
+          -26
+        ],
+        [
+          28,
+          26
+        ],
+        [
+          10,
+          26
+        ]
+      ],
+      "purpose" : "keep four loading bays and staff entrance visible at native-2x"
+    }
+  ],
+  "productionSelected" : false,
+  "props" : [
+    {
+      "dimensions" : [
+        6,
+        17,
+        6
+      ],
+      "id" : "e-tank-a",
+      "kind" : "explicit-cylinder",
+      "materialID" : "l3-tank-oxide",
+      "positionWorld" : [
+        12.800000000000001,
+        11.5,
+        -18
+      ]
+    },
+    {
+      "dimensions" : [
+        5,
+        14,
+        5
+      ],
+      "id" : "e-tank-b",
+      "kind" : "explicit-cylinder",
+      "materialID" : "l3-process-metal",
+      "positionWorld" : [
+        12.800000000000001,
+        10,
+        -9
+      ]
+    },
+    {
+      "dimensions" : [
+        7,
+        5,
+        7
+      ],
+      "id" : "e-hvac-a",
+      "kind" : "explicit-box",
+      "materialID" : "l3-process-metal",
+      "positionWorld" : [
+        4,
+        45,
+        15
+      ]
+    },
+    {
+      "dimensions" : [
+        7,
+        5,
+        7
+      ],
+      "id" : "e-hvac-b",
+      "kind" : "explicit-box",
+      "materialID" : "l3-process-metal",
+      "positionWorld" : [
+        12,
+        45,
+        15
+      ]
+    }
+  ],
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      832
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "orientationTransform" : "none",
+    "presentationEnvelopeSource" : [
+      256,
+      40,
+      1280,
+      896
+    ],
+    "sceneFootprintUnits" : [
+      72,
+      72
+    ],
+    "shadowEnvelopeSource" : [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "tileBasisPoints" : [
+      72,
+      36
+    ]
+  },
+  "sampling" : {
+    "canonicalizer" : {
+      "encoder" : "ImageIO",
+      "format" : "png",
+      "id" : "imageio-sips-png-v1",
+      "postEncoder" : "/usr/bin/sips"
+    },
+    "ciContext" : {
+      "cacheIntermediates" : false,
+      "outputColorSpace" : "srgb",
+      "useSoftwareRenderer" : true,
+      "workingColorSpace" : "extended-srgb"
+    },
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsample" : {
+      "aspectRatio" : 1,
+      "filter" : "CILanczosScaleTransform",
+      "scale" : 0.25
+    },
+    "linearOversamplingFactor" : 4,
+    "postQuantizationCanonicalizer" : {
+      "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
+      "boundaryAssist" : {
+        "algorithm" : "immutable-prequantized-one-value-boundary-6-plus-1",
+        "baseQuantizedMajorityCount" : 6,
+        "boundaryBandWidthValues" : 1,
+        "effectiveSupportCount" : 7,
+        "immutablePrequantizedBuffer" : true,
+        "maximumCompetingSupportAfterBoundaryReclassification" : 2,
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "recordsBoundaryVoteReason" : true,
+        "requiredBoundaryVoteCount" : 1,
+        "requiresSameChannelEvidence" : true,
+        "version" : 1
+      },
+      "channels" : "rgb-only",
+      "immutableSourceBuffer" : true,
+      "majorityThreshold" : 7,
+      "neighborhoodSize" : 3,
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationQuantum" : 32,
+      "requiresChromaFreeNeighborhood" : true,
+      "requiresFullyOpaqueNeighborhood" : true,
+      "version" : 3
+    },
+    "purpose" : "source-authority",
+    "quantizer" : {
+      "chromaBypassRGBA" : [
+        255,
+        0,
+        255,
+        255
+      ],
+      "id" : "step32-midpoint-offset8-v1",
+      "midpointOffset" : 8,
+      "step" : 32
+    },
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "authored-constant-v1",
+    "sceneKitShadows" : "disabled",
+    "sourceRevisionBinding" : "source-v02"
+  },
+  "sceneGeometryID" : "industrial-l03-east-v02-four-bay-process-spine",
+  "schema" : 2,
+  "sourceRevision" : "source-v02",
+  "styleAnchor" : {
+    "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "role" : "global-style-anchor",
+    "sha256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "task" : "PLAY-027",
+  "toolchainFingerprint" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l03-source-v01.json",
+    "role" : "offline-toolchain",
+    "sha256" : "5010b2b809cc21fe26366f49f3620724d39c5c35eae2e5a196d2e7c5ebc91301"
+  },
+  "variantID" : "variant-0",
+  "viewDirection" : "east"
+}

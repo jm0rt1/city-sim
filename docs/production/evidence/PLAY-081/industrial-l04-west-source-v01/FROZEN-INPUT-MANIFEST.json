@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "branch": "codex/citysim-world-art-west",
+  "approvedCandidateAncestor": "135805d9b092d44ea28ff8421cbc70bddd1ac38a",
+  "publishedMergeAncestor": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+  "acceptedPredesign": {
+    "handoff": {
+      "path": "docs/production/evidence/PLAY-081/PREDESIGN-HANDOFF.json",
+      "sha256": "0bfe22cb607708e21e446f7e11dbc91876f107b3910bf23fcf474e9ee428e978"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",
+      "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/MATERIAL-ROLE-BINDING.json",
+      "sha256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463"
+    },
+    "orientationTransform": "none",
+    "geometryChanged": false
+  },
+  "launchPlumbing": {
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "47c1c1b86127fe31f22d5957848a64a3a61bf02ee73669da43e89ac083ffdc63"
+    },
+    "driver": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+      "sha256": "63809979f8deedbfa844df9e89af9d84769192ea67262feb8a5710dd3a97f34e"
+    },
+    "blenderEntryPoint": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/blender_render_west.py",
+      "sha256": "a1f521de1dca44b3fca18b22447fbf80d47db5c5b1b9371c6af5e3143b43e27b"
+    },
+    "authorityValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_launch_authority.py",
+      "sha256": "b15b25eb397e5d9c96ff8163ba535497326892b2af432599c37cec1e5e65f3ed"
+    },
+    "pathSafety": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
+      "sha256": "b79294c36f95594884842ab398a63aae061d5673d437dbd5216b69b7bf5bfa73"
+    },
+    "launchBoundAssembler": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
+      "sha256": "26a3235deb38bc9a968a150f10105f389c8c2a76b535887b824cf24e0dc96847"
+    },
+    "postSourcePipeline": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+      "sha256": "a5b7b7bf7024683f00f48beb96a7d623719ceb8611c69ef0e25a8cefb8d5295e"
+    },
+    "sourceValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
+      "sha256": "9f48110b02df134f14531156ab452d9421fc72054d35a4a02af73f8abff144cc"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_launch_plumbing.py",
+      "sha256": "c8336165d986443a3dbc5552a8370bd0f6043ae6e7f7ea56ca5f809cfec4f568"
+    }
+  },
+  "sharedReadOnlyAuthorities": {
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+      "forbiddenDecodedRgbaSha256Count": 44,
+      "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+    }
+  },
+  "pixelProduction": "not_run",
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false
+}

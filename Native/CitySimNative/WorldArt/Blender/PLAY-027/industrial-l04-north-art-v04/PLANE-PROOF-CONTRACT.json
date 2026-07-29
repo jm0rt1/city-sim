@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-020",
+  "sourceRevision": "blender-art-v04-plane-audit",
+  "baseAuthority": {
+    "commit": "fd5fe7b956b645acb9a7599cb8780df4873ee628",
+    "file": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V04-AUTHORITY.md",
+    "sha256": "cd6c61ffd9c0dacbc579b80ed4f4c7b0bb089909167f09bbf47c8ce5879c62ef"
+  },
+  "returnedV03": {
+    "commit": "ba2c41270092263367ef2b259c70518317dc8deb",
+    "scene": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/SCENE.json",
+      "sha256": "e333caca586c78aa5f1cf7f10d8c962a130b887e9cbafdd1465753f1405254f0"
+    },
+    "materials": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/MATERIALS.json",
+      "sha256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab"
+    },
+    "portalVisibility": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v03/prepixel/proof/PORTAL-VISIBILITY.json",
+      "sha256": "cc798a1555d3ee05d94ebe376f4ab462b105b7de446a3d7168fb8b1b8cb8b80d"
+    }
+  },
+  "proof": {
+    "compactDimensions": [192, 128],
+    "maximumSocketDistancePixels": 2,
+    "exteriorCourtTopCitySimY": 1.05,
+    "requiredPortalFacing": "positive-x",
+    "requiredSocketSource": [896, 704]
+  },
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7"
+  },
+  "rawProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

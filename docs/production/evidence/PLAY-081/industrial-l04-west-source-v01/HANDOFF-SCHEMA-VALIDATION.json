@@ -1,0 +1,18 @@
+{
+  "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "blenderProjectionProcessLaunches": 2,
+  "blenderRenderApiCalls": 0,
+  "direction": "west",
+  "failures": [],
+  "generatedCaches": [],
+  "handoffSha256": "e5204541a3b9d15a6180118c8c49d25b130dbc345e4b9214c069a3c3a9aff2ad",
+  "integratedProofExecutionAuthority": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+  "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "passed": true,
+  "pixelFiles": [],
+  "renderInvocations": 0,
+  "schemaSha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951",
+  "schemaVersion": 1,
+  "sourceStageSchemaSha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+  "taskId": "PLAY-081"
+}

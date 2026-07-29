@@ -174,12 +174,14 @@ final class AmbientLifeRenderer {
             detail: detail,
             excluding: excludedActivityRoads
         )
-        addLocalActivity(
+        let activity = makeLocalActivity(
             placements: placements,
             detail: detail,
-            reducedMotion: reducedMotion,
-            to: root
+            reducedMotion: reducedMotion
         )
+        if !activity.children.isEmpty {
+            root.addChild(activity)
+        }
         addVacantLandscape(
             in: state,
             developedCoordinates: developedCoordinates,
@@ -400,17 +402,15 @@ final class AmbientLifeRenderer {
         return placements
     }
 
-    private func addLocalActivity(
+    func makeLocalActivity(
         placements: [ActivityPlacement],
         detail: CameraDetailLevel,
-        reducedMotion: Bool,
-        to root: SKNode
-    ) {
+        reducedMotion: Bool
+    ) -> SKNode {
         lastActivityPlacements = placements
-        guard !placements.isEmpty else { return }
-
         let activity = SKNode()
         activity.name = "world.activity.local"
+        guard !placements.isEmpty else { return activity }
         for (index, placement) in placements.enumerated() {
             let semanticName = "world.activity.\(placement.domain.rawValue).local-activity."
                 + "\(placement.sourceCoordinate.x).\(placement.sourceCoordinate.y)"
@@ -458,9 +458,7 @@ final class AmbientLifeRenderer {
             }
             activity.addChild(presence)
         }
-        if !activity.children.isEmpty {
-            root.addChild(activity)
-        }
+        return activity
     }
 
     private func sidewalkActivityGeometry(

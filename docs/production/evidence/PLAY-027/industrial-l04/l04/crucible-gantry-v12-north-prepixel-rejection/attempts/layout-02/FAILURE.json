@@ -1,0 +1,23 @@
+{
+  "taskID": "PLAY-027",
+  "revision": "source-v12-prepixel",
+  "layout": "layout-02-perpendicular-l-court-final-sightline-correction",
+  "disposition": "REJECTED_PREPIXEL_GATE",
+  "failure": {
+    "gate": "semantic-frontage-visibility",
+    "message": "v12 semantic regions missing: [\"freight1\", \"freight2\"]",
+    "missingRegions": [
+      "freight1",
+      "freight2"
+    ]
+  },
+  "authorityNote": "This is the final allowed layout-02 outcome after the single authorized sightline correction. No third layout or threshold adjustment was attempted.",
+  "descriptorSHA256": "fd1e78574a583dceca1dd14ed7023ddde53b3f5a514e74e6c65abe21af2baac5",
+  "materialSHA256": "d2784ddde15fdc458cfec44090ccbcdd6f9c941c7d2aff6cff76447341471c33",
+  "rawProcessCount": 0,
+  "sceneKitProcessCount": 0,
+  "metalProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

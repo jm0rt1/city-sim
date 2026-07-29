@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "logicalBuildingID": "industrial_l02",
+  "sourceRevision": "source-v05",
+  "sourceAuthority": "368f08add8760535e3d54fbd318bdf501784e41b",
+  "compiledTools": [
+    {
+      "tool": "advance-industrial-l2-v5-descriptors",
+      "sourceSHA256": "ff7dfad930befbccfbf7acd155dea4b78f5ddf68f66b9f7a2b84a9d12fa4572b",
+      "binarySHA256": "61a88f5ae73c7a395d13e00c30e259ba9b78a1a7e32cdc1b9eb5ff71c9ccaf1b",
+      "result": "PASS"
+    },
+    {
+      "tool": "build-material-value-ladder",
+      "sourceSHA256": "60fc9e216f67db46908ab595eb1322ee6640466a8fb517e0804cd3027cd512af",
+      "binarySHA256": "3ac6e46e0c6391232c1ccc4710ea4d66abed8457c339a60e33665ece814874cc",
+      "result": "PASS"
+    },
+    {
+      "tool": "validate-accepted-sampling-reproduction",
+      "sourceSHA256": "fff0225145aca75e80c845f0f62750e28a215bef7966326adc19cfb0fdfb0be4",
+      "binarySHA256": "48e97666d7df3c3e2d9f6a3fd2c3462f45bdc89786ab1f86d74de241c7f793ab",
+      "result": "PASS"
+    },
+    {
+      "tool": "validate-industrial-l2-v4-rejection-preservation",
+      "sourceSHA256": "d287e776797a201c183ca1c552ecca9539889f9a9378a942a28466683b0b588f",
+      "binarySHA256": "d7b546a4c8c03b66d96e51a3c56af56f729b10ba0ab3b2e995848e5281ab37b2",
+      "result": "PASS"
+    },
+    {
+      "tool": "validate-scenes",
+      "sourceSHA256": "8435870b52a1f4ff00639dcee768d6321a43a7f0895ef23c6bc760e128b6cab5",
+      "binarySHA256": "ee381619cb3a326047e0f2b95afaaa3a290c719474bf41064ee50057d74a1589",
+      "result": "PASS"
+    },
+    {
+      "tool": "validate-industrial-l2-frontages",
+      "sourceSHA256": "6a7f917f4a02ea25f6e772fd8210a3d847211c5622087c6edc49e64659ed0e4d",
+      "binarySHA256": "83a8425b333cec5ee9222b67c9d53aad6bb235fc335343479d8cea5ec4162a08",
+      "result": "PASS"
+    },
+    {
+      "tool": "validate-structural-boundaries",
+      "binarySHA256": "8be051d1e2b4b816df6f5ce9f0e4e809165a9f5fc43f497910775c3900e3cccf",
+      "result": "PASS"
+    }
+  ],
+  "resolverAndSchemaTest": {
+    "result": "PASS",
+    "acceptedSchema1Default": "lambert-scene-lights",
+    "sourceV04Default": "lambert-scene-lights",
+    "onlyAuthorizedConstantSource": "industrial_l02/source-v05/source-authority"
+  },
+  "toolchainFingerprint": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-source-v05.json",
+    "sha256": "81bf644b41612c83d124c9b1e51ceade6b2931772402849ef71e16bee4545531",
+    "materialRoleCount": 21,
+    "sceneLightCount": 2,
+    "diagnosticCLIProducesSourceAuthority": false
+  },
+  "materialValueLadderRepeat": {
+    "primaryPNGFileSHA256": "bf0423491eedee134dc3ec2ad7f0d93ab1f12464645c96bece92d2ab5943167b",
+    "freshRunPNGFileSHA256": "bf0423491eedee134dc3ec2ad7f0d93ab1f12464645c96bece92d2ab5943167b",
+    "fileIdentity": true
+  },
+  "rawPixelsCreated": false,
+  "normalizationPerformed": false,
+  "productionSelected": false,
+  "passed": true
+}

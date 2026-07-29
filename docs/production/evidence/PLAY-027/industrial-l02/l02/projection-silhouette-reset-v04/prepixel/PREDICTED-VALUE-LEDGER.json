@@ -1,0 +1,1422 @@
+{
+  "authority" : "analytic prediction only; later literal pixels remain binding",
+  "global" : {
+    "identityBearingMinimumPredictedBin" : 80,
+    "passed" : true,
+    "predictedMaximumBinShare" : 0.33547877061223275,
+    "predictedOccupiedStep32Bins" : [
+      80,
+      112,
+      144,
+      176,
+      208,
+      240,
+      255
+    ],
+    "predictedP25" : 112,
+    "predictedP75" : 208,
+    "predictedP75MinusP25" : 96,
+    "predictedP95" : 240,
+    "predictedStep32BinCounts" : {
+      "80" : 5845,
+      "112" : 42661,
+      "144" : 29893,
+      "176" : 3805,
+      "208" : 44982,
+      "240" : 6879,
+      "255" : 18
+    }
+  },
+  "model" : {
+    "currentAmbientTerm" : 0.23136400000000001,
+    "formula" : "newBaseLuma * (newAmbient + max(0, oldObservedMedian/oldBaseLuma-currentAmbient) * keyScale), then frozen step-32 quantizer",
+    "id" : "retained-v03-material-face-response-plus-light-delta-v1",
+    "keyScale" : 1.1152250082119788,
+    "newAmbientTerm" : 0.54315647999999994,
+    "patternRisk" : "supported v04 pattern relief may split predicted bins; prediction uses conservative material medians and does not claim pixel acceptance"
+  },
+  "native2xFeatureLedger" : {
+    "buildingOnlyNative2xWidth" : 144.5625,
+    "buildingOnlySourceWidth" : 514,
+    "coreFormNative2xWidth" : 118.6875,
+    "coreFormSourceWidth" : 422,
+    "geometryChanged" : false,
+    "geometrySource" : "byte-equivalent v03 canonical geometry",
+    "minimumIdentityFeatureNative2xPixels" : 17.15625,
+    "minimumRequiredNative2xPixels" : 6
+  },
+  "perComponent" : [
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "foundation",
+      "identityBearing" : false,
+      "newDeclaredBaseLuma" : 196,
+      "newMaterialID" : "v04-formed-concrete",
+      "oldDeclaredBaseLuma" : 173,
+      "oldMaterialID" : "v02-formed-concrete",
+      "oldObservedPreChromaLuma" : {
+        "count" : 12989,
+        "maximum" : 155,
+        "median" : 139,
+        "minimum" : 32,
+        "p10" : 49,
+        "p25" : 55,
+        "p75" : 141,
+        "p90" : 141,
+        "p95" : 144
+      },
+      "predictedMedianStep32Bin" : 240,
+      "predictedStep32Bins" : {
+        "112" : 1527,
+        "144" : 4174,
+        "176" : 322,
+        "208" : 266,
+        "240" : 6700
+      },
+      "predictedStep32Luma" : {
+        "count" : 12989,
+        "maximum" : 240,
+        "median" : 240,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 144,
+        "p75" : 240,
+        "p90" : 240,
+        "p95" : 240
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 12989,
+        "maximum" : 225,
+        "median" : 225,
+        "minimum" : 106,
+        "p10" : 118,
+        "p25" : 125,
+        "p75" : 225,
+        "p90" : 225,
+        "p95" : 225
+      },
+      "visibleOpaquePixelCount" : 12989
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-main-production-hall",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 192,
+      "newMaterialID" : "v04-corrugated-hall",
+      "oldDeclaredBaseLuma" : 173,
+      "oldMaterialID" : "v02-formed-concrete",
+      "oldObservedPreChromaLuma" : {
+        "count" : 10311,
+        "maximum" : 105,
+        "median" : 55,
+        "minimum" : 45,
+        "p10" : 55,
+        "p25" : 55,
+        "p75" : 55,
+        "p90" : 55,
+        "p95" : 56
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "112" : 210,
+        "144" : 10049,
+        "176" : 29,
+        "208" : 23
+      },
+      "predictedStep32Luma" : {
+        "count" : 10311,
+        "maximum" : 208,
+        "median" : 144,
+        "minimum" : 112,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 10311,
+        "maximum" : 185,
+        "median" : 123,
+        "minimum" : 110,
+        "p10" : 123,
+        "p25" : 123,
+        "p75" : 123,
+        "p90" : 123,
+        "p95" : 124
+      },
+      "visibleOpaquePixelCount" : 10311
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-loading-spine",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 196,
+      "newMaterialID" : "v04-formed-concrete",
+      "oldDeclaredBaseLuma" : 156,
+      "oldMaterialID" : "v02-painted-steel",
+      "oldObservedPreChromaLuma" : {
+        "count" : 1593,
+        "maximum" : 84,
+        "median" : 48,
+        "minimum" : 40,
+        "p10" : 47,
+        "p25" : 48,
+        "p75" : 48,
+        "p90" : 50,
+        "p95" : 59
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "112" : 109,
+        "144" : 1468,
+        "176" : 16
+      },
+      "predictedStep32Luma" : {
+        "count" : 1593,
+        "maximum" : 176,
+        "median" : 144,
+        "minimum" : 112,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 1593,
+        "maximum" : 174,
+        "median" : 123,
+        "minimum" : 112,
+        "p10" : 122,
+        "p25" : 123,
+        "p75" : 123,
+        "p90" : 126,
+        "p95" : 139
+      },
+      "visibleOpaquePixelCount" : 1593
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-administration-wing",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 209,
+      "newMaterialID" : "v04-admin-concrete",
+      "oldDeclaredBaseLuma" : 185,
+      "oldMaterialID" : "v02-warm-concrete",
+      "oldObservedPreChromaLuma" : {
+        "count" : 7879,
+        "maximum" : 180,
+        "median" : 59,
+        "minimum" : 35,
+        "p10" : 59,
+        "p25" : 59,
+        "p75" : 59,
+        "p90" : 59,
+        "p95" : 68
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "112" : 54,
+        "144" : 7653,
+        "176" : 56,
+        "208" : 9,
+        "240" : 107
+      },
+      "predictedStep32Luma" : {
+        "count" : 7879,
+        "maximum" : 240,
+        "median" : 144,
+        "minimum" : 112,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 7879,
+        "maximum" : 240,
+        "median" : 134,
+        "minimum" : 114,
+        "p10" : 134,
+        "p25" : 134,
+        "p75" : 134,
+        "p90" : 134,
+        "p95" : 145
+      },
+      "visibleOpaquePixelCount" : 7879
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-process-base",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 172,
+      "newMaterialID" : "v04-process-metal",
+      "oldDeclaredBaseLuma" : 156,
+      "oldMaterialID" : "v02-painted-steel",
+      "oldObservedPreChromaLuma" : {
+        "count" : 12277,
+        "maximum" : 139,
+        "median" : 48,
+        "minimum" : 18,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 48,
+        "p90" : 48,
+        "p95" : 124
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "112" : 11452,
+        "144" : 63,
+        "176" : 92,
+        "208" : 670
+      },
+      "predictedStep32Luma" : {
+        "count" : 12277,
+        "maximum" : 208,
+        "median" : 112,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 112,
+        "p90" : 112,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 12277,
+        "maximum" : 198,
+        "median" : 108,
+        "minimum" : 93,
+        "p10" : 108,
+        "p25" : 108,
+        "p75" : 108,
+        "p90" : 108,
+        "p95" : 198
+      },
+      "visibleOpaquePixelCount" : 12277
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-process-monitor",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 172,
+      "newMaterialID" : "v04-process-metal",
+      "oldDeclaredBaseLuma" : 192,
+      "oldMaterialID" : "v02-galvanized",
+      "oldObservedPreChromaLuma" : {
+        "count" : 4391,
+        "maximum" : 170,
+        "median" : 62,
+        "minimum" : 20,
+        "p10" : 33,
+        "p25" : 62,
+        "p75" : 156,
+        "p90" : 156,
+        "p95" : 156
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "112" : 2413,
+        "144" : 153,
+        "176" : 43,
+        "208" : 1782
+      },
+      "predictedStep32Luma" : {
+        "count" : 4391,
+        "maximum" : 208,
+        "median" : 112,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 208,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 4391,
+        "maximum" : 198,
+        "median" : 111,
+        "minimum" : 93,
+        "p10" : 93,
+        "p25" : 111,
+        "p75" : 198,
+        "p90" : 198,
+        "p95" : 198
+      },
+      "visibleOpaquePixelCount" : 4391
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-throat-a",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 105,
+      "newMaterialID" : "v04-deep-recess",
+      "oldDeclaredBaseLuma" : 81,
+      "oldMaterialID" : "v02-deep-recess",
+      "oldObservedPreChromaLuma" : {
+        "count" : 649,
+        "maximum" : 67,
+        "median" : 21,
+        "minimum" : 12,
+        "p10" : 19,
+        "p25" : 21,
+        "p75" : 22,
+        "p90" : 35,
+        "p95" : 38
+      },
+      "predictedMedianStep32Bin" : 80,
+      "predictedStep32Bins" : {
+        "80" : 618,
+        "112" : 30,
+        "144" : 1
+      },
+      "predictedStep32Luma" : {
+        "count" : 649,
+        "maximum" : 144,
+        "median" : 80,
+        "minimum" : 80,
+        "p10" : 80,
+        "p25" : 80,
+        "p75" : 80,
+        "p90" : 80,
+        "p95" : 80
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 649,
+        "maximum" : 121,
+        "median" : 60,
+        "minimum" : 57,
+        "p10" : 57,
+        "p25" : 60,
+        "p75" : 62,
+        "p90" : 81,
+        "p95" : 85
+      },
+      "visibleOpaquePixelCount" : 649
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-throat-b",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 105,
+      "newMaterialID" : "v04-deep-recess",
+      "oldDeclaredBaseLuma" : 81,
+      "oldMaterialID" : "v02-deep-recess",
+      "oldObservedPreChromaLuma" : {
+        "count" : 572,
+        "maximum" : 52,
+        "median" : 21,
+        "minimum" : 13,
+        "p10" : 20,
+        "p25" : 20,
+        "p75" : 21,
+        "p90" : 21,
+        "p95" : 31
+      },
+      "predictedMedianStep32Bin" : 80,
+      "predictedStep32Bins" : {
+        "80" : 547,
+        "112" : 25
+      },
+      "predictedStep32Luma" : {
+        "count" : 572,
+        "maximum" : 112,
+        "median" : 80,
+        "minimum" : 80,
+        "p10" : 80,
+        "p25" : 80,
+        "p75" : 80,
+        "p90" : 80,
+        "p95" : 80
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 572,
+        "maximum" : 105,
+        "median" : 60,
+        "minimum" : 57,
+        "p10" : 59,
+        "p25" : 59,
+        "p75" : 60,
+        "p90" : 60,
+        "p95" : 75
+      },
+      "visibleOpaquePixelCount" : 572
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-throat-c",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 105,
+      "newMaterialID" : "v04-deep-recess",
+      "oldDeclaredBaseLuma" : 81,
+      "oldMaterialID" : "v02-deep-recess",
+      "oldObservedPreChromaLuma" : {
+        "count" : 232,
+        "maximum" : 183,
+        "median" : 28,
+        "minimum" : 8,
+        "p10" : 18,
+        "p25" : 21,
+        "p75" : 68,
+        "p90" : 170,
+        "p95" : 171
+      },
+      "predictedMedianStep32Bin" : 80,
+      "predictedStep32Bins" : {
+        "80" : 125,
+        "112" : 24,
+        "144" : 83
+      },
+      "predictedStep32Luma" : {
+        "count" : 232,
+        "maximum" : 144,
+        "median" : 80,
+        "minimum" : 80,
+        "p10" : 80,
+        "p25" : 80,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 232,
+        "maximum" : 121,
+        "median" : 70,
+        "minimum" : 57,
+        "p10" : 57,
+        "p25" : 60,
+        "p75" : 121,
+        "p90" : 121,
+        "p95" : 121
+      },
+      "visibleOpaquePixelCount" : 232
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-door-a",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 158,
+      "newMaterialID" : "v04-loading-door",
+      "oldDeclaredBaseLuma" : 129,
+      "oldMaterialID" : "v02-loading-door",
+      "oldObservedPreChromaLuma" : {
+        "count" : 3584,
+        "maximum" : 111,
+        "median" : 39,
+        "minimum" : 27,
+        "p10" : 35,
+        "p25" : 38,
+        "p75" : 39,
+        "p90" : 40,
+        "p95" : 49
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "80" : 24,
+        "112" : 3392,
+        "144" : 49,
+        "176" : 119
+      },
+      "predictedStep32Luma" : {
+        "count" : 3584,
+        "maximum" : 176,
+        "median" : 112,
+        "minimum" : 80,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 112,
+        "p90" : 112,
+        "p95" : 112
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 3584,
+        "maximum" : 182,
+        "median" : 98,
+        "minimum" : 86,
+        "p10" : 93,
+        "p25" : 97,
+        "p75" : 98,
+        "p90" : 100,
+        "p95" : 112
+      },
+      "visibleOpaquePixelCount" : 3584
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-door-b",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 158,
+      "newMaterialID" : "v04-loading-door",
+      "oldDeclaredBaseLuma" : 129,
+      "oldMaterialID" : "v02-loading-door",
+      "oldObservedPreChromaLuma" : {
+        "count" : 3654,
+        "maximum" : 114,
+        "median" : 39,
+        "minimum" : 24,
+        "p10" : 35,
+        "p25" : 38,
+        "p75" : 39,
+        "p90" : 40,
+        "p95" : 49
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "80" : 91,
+        "112" : 3393,
+        "144" : 50,
+        "176" : 120
+      },
+      "predictedStep32Luma" : {
+        "count" : 3654,
+        "maximum" : 176,
+        "median" : 112,
+        "minimum" : 80,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 112,
+        "p90" : 112,
+        "p95" : 112
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 3654,
+        "maximum" : 182,
+        "median" : 98,
+        "minimum" : 86,
+        "p10" : 93,
+        "p25" : 97,
+        "p75" : 98,
+        "p90" : 100,
+        "p95" : 112
+      },
+      "visibleOpaquePixelCount" : 3654
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-door-c",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 158,
+      "newMaterialID" : "v04-loading-door",
+      "oldDeclaredBaseLuma" : 129,
+      "oldMaterialID" : "v02-loading-door",
+      "oldObservedPreChromaLuma" : {
+        "count" : 3550,
+        "maximum" : 183,
+        "median" : 39,
+        "minimum" : 27,
+        "p10" : 35,
+        "p25" : 38,
+        "p75" : 39,
+        "p90" : 40,
+        "p95" : 71
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "80" : 26,
+        "112" : 3300,
+        "144" : 87,
+        "176" : 137
+      },
+      "predictedStep32Luma" : {
+        "count" : 3550,
+        "maximum" : 176,
+        "median" : 112,
+        "minimum" : 80,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 112,
+        "p90" : 112,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 3550,
+        "maximum" : 182,
+        "median" : 98,
+        "minimum" : 86,
+        "p10" : 93,
+        "p25" : 97,
+        "p75" : 98,
+        "p90" : 100,
+        "p95" : 142
+      },
+      "visibleOpaquePixelCount" : 3550
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-canopy-a",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 224,
+      "newMaterialID" : "v04-structural-trim",
+      "oldDeclaredBaseLuma" : 211,
+      "oldMaterialID" : "v02-structural-trim",
+      "oldObservedPreChromaLuma" : {
+        "count" : 1087,
+        "maximum" : 117,
+        "median" : 69,
+        "minimum" : 48,
+        "p10" : 62,
+        "p25" : 65,
+        "p75" : 70,
+        "p90" : 72,
+        "p95" : 84
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "144" : 1003,
+        "176" : 30,
+        "208" : 54
+      },
+      "predictedStep32Luma" : {
+        "count" : 1087,
+        "maximum" : 208,
+        "median" : 144,
+        "minimum" : 144,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 176
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 1087,
+        "maximum" : 202,
+        "median" : 146,
+        "minimum" : 122,
+        "p10" : 137,
+        "p25" : 141,
+        "p75" : 147,
+        "p90" : 149,
+        "p95" : 163
+      },
+      "visibleOpaquePixelCount" : 1087
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-canopy-b",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 224,
+      "newMaterialID" : "v04-structural-trim",
+      "oldDeclaredBaseLuma" : 211,
+      "oldMaterialID" : "v02-structural-trim",
+      "oldObservedPreChromaLuma" : {
+        "count" : 1105,
+        "maximum" : 114,
+        "median" : 69,
+        "minimum" : 43,
+        "p10" : 61,
+        "p25" : 65,
+        "p75" : 70,
+        "p90" : 71,
+        "p95" : 84
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "144" : 1022,
+        "176" : 28,
+        "208" : 55
+      },
+      "predictedStep32Luma" : {
+        "count" : 1105,
+        "maximum" : 208,
+        "median" : 144,
+        "minimum" : 144,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 176
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 1105,
+        "maximum" : 199,
+        "median" : 146,
+        "minimum" : 122,
+        "p10" : 136,
+        "p25" : 141,
+        "p75" : 147,
+        "p90" : 148,
+        "p95" : 163
+      },
+      "visibleOpaquePixelCount" : 1105
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-canopy-c",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 224,
+      "newMaterialID" : "v04-structural-trim",
+      "oldDeclaredBaseLuma" : 211,
+      "oldMaterialID" : "v02-structural-trim",
+      "oldObservedPreChromaLuma" : {
+        "count" : 1121,
+        "maximum" : 182,
+        "median" : 69,
+        "minimum" : 43,
+        "p10" : 61,
+        "p25" : 65,
+        "p75" : 70,
+        "p90" : 74,
+        "p95" : 113
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "144" : 1010,
+        "176" : 28,
+        "208" : 56,
+        "240" : 9,
+        "255" : 18
+      },
+      "predictedStep32Luma" : {
+        "count" : 1121,
+        "maximum" : 255,
+        "median" : 144,
+        "minimum" : 144,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 1121,
+        "maximum" : 258,
+        "median" : 146,
+        "minimum" : 122,
+        "p10" : 136,
+        "p25" : 141,
+        "p75" : 147,
+        "p90" : 151,
+        "p95" : 198
+      },
+      "visibleOpaquePixelCount" : 1121
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-dock-header",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 172,
+      "newMaterialID" : "v04-process-metal",
+      "oldDeclaredBaseLuma" : 192,
+      "oldMaterialID" : "v02-galvanized",
+      "oldObservedPreChromaLuma" : {
+        "count" : 41,
+        "maximum" : 64,
+        "median" : 49,
+        "minimum" : 48,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 61,
+        "p90" : 62,
+        "p95" : 64
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "112" : 41
+      },
+      "predictedStep32Luma" : {
+        "count" : 41,
+        "maximum" : 112,
+        "median" : 112,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 112,
+        "p90" : 112,
+        "p95" : 112
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 41,
+        "maximum" : 113,
+        "median" : 98,
+        "minimum" : 97,
+        "p10" : 97,
+        "p25" : 97,
+        "p75" : 110,
+        "p90" : 111,
+        "p95" : 113
+      },
+      "visibleOpaquePixelCount" : 41
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-loading-apron",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 190,
+      "newMaterialID" : "v04-neutral-apron",
+      "oldDeclaredBaseLuma" : 157,
+      "oldMaterialID" : "v02-neutral-apron",
+      "oldObservedPreChromaLuma" : {
+        "count" : 1295,
+        "maximum" : 52,
+        "median" : 49,
+        "minimum" : 32,
+        "p10" : 48,
+        "p25" : 48,
+        "p75" : 49,
+        "p90" : 51,
+        "p95" : 52
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "112" : 481,
+        "144" : 814
+      },
+      "predictedStep32Luma" : {
+        "count" : 1295,
+        "maximum" : 144,
+        "median" : 144,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 1295,
+        "maximum" : 124,
+        "median" : 120,
+        "minimum" : 103,
+        "p10" : 119,
+        "p25" : 119,
+        "p75" : 120,
+        "p90" : 123,
+        "p95" : 124
+      },
+      "visibleOpaquePixelCount" : 1295
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-personnel-recess",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 105,
+      "newMaterialID" : "v04-deep-recess",
+      "oldDeclaredBaseLuma" : 81,
+      "oldMaterialID" : "v02-deep-recess",
+      "oldObservedPreChromaLuma" : {
+        "count" : 55,
+        "maximum" : 177,
+        "median" : 17,
+        "minimum" : 11,
+        "p10" : 16,
+        "p25" : 16,
+        "p75" : 68,
+        "p90" : 145,
+        "p95" : 170
+      },
+      "predictedMedianStep32Bin" : 80,
+      "predictedStep32Bins" : {
+        "80" : 36,
+        "112" : 1,
+        "144" : 18
+      },
+      "predictedStep32Luma" : {
+        "count" : 55,
+        "maximum" : 144,
+        "median" : 80,
+        "minimum" : 80,
+        "p10" : 80,
+        "p25" : 80,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 144
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 55,
+        "maximum" : 121,
+        "median" : 57,
+        "minimum" : 57,
+        "p10" : 57,
+        "p25" : 57,
+        "p75" : 121,
+        "p90" : 121,
+        "p95" : 121
+      },
+      "visibleOpaquePixelCount" : 55
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-personnel-door",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 197,
+      "newMaterialID" : "v04-warm-glazing",
+      "oldDeclaredBaseLuma" : 190,
+      "oldMaterialID" : "v02-warm-glazing",
+      "oldObservedPreChromaLuma" : {
+        "count" : 1091,
+        "maximum" : 181,
+        "median" : 62,
+        "minimum" : 43,
+        "p10" : 57,
+        "p25" : 60,
+        "p75" : 68,
+        "p90" : 69,
+        "p95" : 152
+      },
+      "predictedMedianStep32Bin" : 144,
+      "predictedStep32Bins" : {
+        "112" : 48,
+        "144" : 952,
+        "176" : 17,
+        "208" : 11,
+        "240" : 63
+      },
+      "predictedStep32Luma" : {
+        "count" : 1091,
+        "maximum" : 240,
+        "median" : 144,
+        "minimum" : 112,
+        "p10" : 144,
+        "p25" : 144,
+        "p75" : 144,
+        "p90" : 144,
+        "p95" : 240
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 1091,
+        "maximum" : 227,
+        "median" : 128,
+        "minimum" : 107,
+        "p10" : 122,
+        "p25" : 126,
+        "p75" : 135,
+        "p90" : 136,
+        "p95" : 227
+      },
+      "visibleOpaquePixelCount" : 1091
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-personnel-canopy",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 182,
+      "newMaterialID" : "v04-safety-trim",
+      "oldDeclaredBaseLuma" : 207,
+      "oldMaterialID" : "v02-safety-trim",
+      "oldObservedPreChromaLuma" : {
+        "count" : 793,
+        "maximum" : 185,
+        "median" : 68,
+        "minimum" : 54,
+        "p10" : 68,
+        "p25" : 68,
+        "p75" : 136,
+        "p90" : 171,
+        "p95" : 177
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "112" : 466,
+        "144" : 107,
+        "176" : 18,
+        "208" : 202
+      },
+      "predictedStep32Luma" : {
+        "count" : 793,
+        "maximum" : 208,
+        "median" : 112,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 208,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 793,
+        "maximum" : 209,
+        "median" : 119,
+        "minimum" : 105,
+        "p10" : 119,
+        "p25" : 119,
+        "p75" : 185,
+        "p90" : 209,
+        "p95" : 209
+      },
+      "visibleOpaquePixelCount" : 793
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-admin-glazing",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 133,
+      "newMaterialID" : "v04-industrial-glazing",
+      "oldDeclaredBaseLuma" : 123,
+      "oldMaterialID" : "v02-industrial-glazing",
+      "oldObservedPreChromaLuma" : {
+        "count" : 520,
+        "maximum" : 105,
+        "median" : 36,
+        "minimum" : 27,
+        "p10" : 34,
+        "p25" : 36,
+        "p75" : 44,
+        "p90" : 96,
+        "p95" : 99
+      },
+      "predictedMedianStep32Bin" : 80,
+      "predictedStep32Bins" : {
+        "80" : 382,
+        "112" : 37,
+        "144" : 47,
+        "176" : 54
+      },
+      "predictedStep32Luma" : {
+        "count" : 520,
+        "maximum" : 176,
+        "median" : 80,
+        "minimum" : 80,
+        "p10" : 80,
+        "p25" : 80,
+        "p75" : 112,
+        "p90" : 176,
+        "p95" : 176
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 520,
+        "maximum" : 153,
+        "median" : 81,
+        "minimum" : 72,
+        "p10" : 79,
+        "p25" : 81,
+        "p75" : 91,
+        "p90" : 153,
+        "p95" : 153
+      },
+      "visibleOpaquePixelCount" : 520
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-hall-roof",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 170,
+      "newMaterialID" : "v04-roof-membrane",
+      "oldDeclaredBaseLuma" : 106,
+      "oldMaterialID" : "v02-roof-membrane",
+      "oldObservedPreChromaLuma" : {
+        "count" : 34909,
+        "maximum" : 108,
+        "median" : 85,
+        "minimum" : 24,
+        "p10" : 30,
+        "p25" : 82,
+        "p75" : 85,
+        "p90" : 86,
+        "p95" : 86
+      },
+      "predictedMedianStep32Bin" : 208,
+      "predictedStep32Bins" : {
+        "112" : 5508,
+        "144" : 97,
+        "176" : 246,
+        "208" : 29058
+      },
+      "predictedStep32Luma" : {
+        "count" : 34909,
+        "maximum" : 208,
+        "median" : 208,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 208,
+        "p75" : 208,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 34909,
+        "maximum" : 195,
+        "median" : 195,
+        "minimum" : 92,
+        "p10" : 102,
+        "p25" : 195,
+        "p75" : 195,
+        "p90" : 195,
+        "p95" : 195
+      },
+      "visibleOpaquePixelCount" : 34909
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-admin-roof",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 170,
+      "newMaterialID" : "v04-roof-membrane",
+      "oldDeclaredBaseLuma" : 106,
+      "oldMaterialID" : "v02-roof-membrane",
+      "oldObservedPreChromaLuma" : {
+        "count" : 5186,
+        "maximum" : 90,
+        "median" : 84,
+        "minimum" : 13,
+        "p10" : 30,
+        "p25" : 30,
+        "p75" : 85,
+        "p90" : 85,
+        "p95" : 86
+      },
+      "predictedMedianStep32Bin" : 208,
+      "predictedStep32Bins" : {
+        "112" : 1642,
+        "144" : 63,
+        "176" : 65,
+        "208" : 3416
+      },
+      "predictedStep32Luma" : {
+        "count" : 5186,
+        "maximum" : 208,
+        "median" : 208,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 208,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 5186,
+        "maximum" : 195,
+        "median" : 195,
+        "minimum" : 92,
+        "p10" : 102,
+        "p25" : 102,
+        "p75" : 195,
+        "p90" : 195,
+        "p95" : 195
+      },
+      "visibleOpaquePixelCount" : 5186
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-loading-roof",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 170,
+      "newMaterialID" : "v04-roof-membrane",
+      "oldDeclaredBaseLuma" : 106,
+      "oldMaterialID" : "v02-roof-membrane",
+      "oldObservedPreChromaLuma" : {
+        "count" : 6915,
+        "maximum" : 95,
+        "median" : 85,
+        "minimum" : 9,
+        "p10" : 31,
+        "p25" : 81,
+        "p75" : 85,
+        "p90" : 86,
+        "p95" : 86
+      },
+      "predictedMedianStep32Bin" : 208,
+      "predictedStep32Bins" : {
+        "112" : 928,
+        "144" : 208,
+        "176" : 16,
+        "208" : 5763
+      },
+      "predictedStep32Luma" : {
+        "count" : 6915,
+        "maximum" : 208,
+        "median" : 208,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 208,
+        "p75" : 208,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 6915,
+        "maximum" : 195,
+        "median" : 195,
+        "minimum" : 92,
+        "p10" : 104,
+        "p25" : 193,
+        "p75" : 195,
+        "p90" : 195,
+        "p95" : 195
+      },
+      "visibleOpaquePixelCount" : 6915
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v03-hall-clerestory-envelope",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 133,
+      "newMaterialID" : "v04-industrial-glazing",
+      "oldDeclaredBaseLuma" : 123,
+      "oldMaterialID" : "v02-industrial-glazing",
+      "oldObservedPreChromaLuma" : {
+        "count" : 6394,
+        "maximum" : 102,
+        "median" : 36,
+        "minimum" : 29,
+        "p10" : 36,
+        "p25" : 36,
+        "p75" : 98,
+        "p90" : 98,
+        "p95" : 98
+      },
+      "predictedMedianStep32Bin" : 80,
+      "predictedStep32Bins" : {
+        "80" : 3996,
+        "112" : 184,
+        "144" : 54,
+        "176" : 2160
+      },
+      "predictedStep32Luma" : {
+        "count" : 6394,
+        "maximum" : 176,
+        "median" : 80,
+        "minimum" : 80,
+        "p10" : 80,
+        "p25" : 80,
+        "p75" : 176,
+        "p90" : 176,
+        "p95" : 176
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 6394,
+        "maximum" : 153,
+        "median" : 81,
+        "minimum" : 73,
+        "p10" : 81,
+        "p25" : 81,
+        "p75" : 153,
+        "p90" : 153,
+        "p95" : 153
+      },
+      "visibleOpaquePixelCount" : 6394
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-hvac-bank",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 172,
+      "newMaterialID" : "v04-process-metal",
+      "oldDeclaredBaseLuma" : 192,
+      "oldMaterialID" : "v02-galvanized",
+      "oldObservedPreChromaLuma" : {
+        "count" : 4555,
+        "maximum" : 163,
+        "median" : 62,
+        "minimum" : 54,
+        "p10" : 62,
+        "p25" : 62,
+        "p75" : 156,
+        "p90" : 156,
+        "p95" : 156
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "112" : 2502,
+        "144" : 46,
+        "176" : 18,
+        "208" : 1989
+      },
+      "predictedStep32Luma" : {
+        "count" : 4555,
+        "maximum" : 208,
+        "median" : 112,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 208,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 4555,
+        "maximum" : 198,
+        "median" : 111,
+        "minimum" : 103,
+        "p10" : 111,
+        "p25" : 111,
+        "p75" : 198,
+        "p90" : 198,
+        "p95" : 198
+      },
+      "visibleOpaquePixelCount" : 4555
+    },
+    {
+      "analyticKeyScale" : 1.1152250082119788,
+      "analyticNewAmbientTerm" : 0.54315647999999994,
+      "componentID" : "v02-hazard-header",
+      "identityBearing" : true,
+      "newDeclaredBaseLuma" : 182,
+      "newMaterialID" : "v04-safety-trim",
+      "oldDeclaredBaseLuma" : 207,
+      "oldMaterialID" : "v02-safety-trim",
+      "oldObservedPreChromaLuma" : {
+        "count" : 7335,
+        "maximum" : 187,
+        "median" : 68,
+        "minimum" : 47,
+        "p10" : 68,
+        "p25" : 68,
+        "p75" : 84,
+        "p90" : 171,
+        "p95" : 171
+      },
+      "predictedMedianStep32Bin" : 112,
+      "predictedStep32Bins" : {
+        "112" : 4894,
+        "144" : 622,
+        "176" : 191,
+        "208" : 1628
+      },
+      "predictedStep32Luma" : {
+        "count" : 7335,
+        "maximum" : 208,
+        "median" : 112,
+        "minimum" : 112,
+        "p10" : 112,
+        "p25" : 112,
+        "p75" : 144,
+        "p90" : 208,
+        "p95" : 208
+      },
+      "predictedUnquantizedLuma" : {
+        "count" : 7335,
+        "maximum" : 209,
+        "median" : 119,
+        "minimum" : 99,
+        "p10" : 119,
+        "p25" : 119,
+        "p75" : 134,
+        "p90" : 209,
+        "p95" : 209
+      },
+      "visibleOpaquePixelCount" : 7335
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "task" : "PLAY-027",
+  "type" : "industrial-l02-east-v04-prepixel-empirical-value-ledger"
+}

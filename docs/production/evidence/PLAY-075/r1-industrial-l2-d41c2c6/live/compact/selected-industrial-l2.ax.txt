@@ -1,0 +1,45 @@
+The following is a diff from the previous accessibility tree for Window: "CitySim" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 27
+~			3 button Description: Open New Arcadia command center, Value: Day 212. Paused, ID: hud.city.identity
+~			4 progress indicator Description: Show objectives, Help: Regional mandate arrives in 16 days, Value: 0.1, ID: hud.objective.summary
+~				6 unknown Description: Treasury, Details: $67,999, Net +$415, ID: hud.metric.treasury
+~				7 unknown Description: Residents, Details: 511, Open 1.2K, ID: hud.metric.population
+~				8 unknown Description: Happiness, Details: 53%, Appr 100%, ID: hud.metric.happiness
+~				9 unknown Description: Jobs filled, Details: 357, Open 493, ID: hud.metric.employment
+~				10 unknown Description: Utilities, Details: 100%, P 134 · W 135, ID: hud.metric.utilities
+~			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+~			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+~			15 button Description: Open city notices, Value: 12 notices, highest severity critical, ID: hud.notices
+~			16 container Description: City priority: Regional Capital mandate, Details: MANDATE · 16 DAYS. Regional mandate arrives in 16 days, ID: hud.strategy.priority
+~				17 text Help: Regional mandate arrives in 16 days, Value: REGIONAL FREIGHT
+~				18 text Help: Regional mandate arrives in 16 days, Value: MANDATE · 16 DAYS
+~				19 text Help: Regional mandate arrives in 16 days, Value: Regional Capital mandate
+~				20 text Description: City trajectory, Help: Regional mandate arrives in 16 days, Value: Growing by $415 per cycle, ID: hud.city.trajectory
++				53 button Description: Utility capacity, Help: Regional mandate arrives in 16 days
+~				21 menu button Act, Description: Act on Regional Capital mandate, Help: Regional mandate arrives in 16 days, Value: 3 available routes, ID: arrow.turn.down.right
++		54 button Description: Action update, Value: Inspect mode active, Secondary Actions: Dismiss action message
+~		22 container City command deck with details open
+~			26 menu button Catalog, Description: Open categorized build catalog, Value: Selected Road, ID: square.grid.2x2
+~			30 button Description: Close command-center details, Value: Open, ID: hud.command.details
+~			31 menu button City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., ID: building.2
++			55 scroll area Description: Scrollable command-center details, ID: hud.command.details.scroll, Secondary Actions: Scroll Up, Scroll Down
++				56 container Selected block command center, Industrial, block 15, 12
++					57 text Industrial
++					58 text Block 15, 12
++					59 menu button City data, Description: Choose city data, Value: Overview, ID: chart.dots.scatter
++					60 button Description: Close command-center details, ID: hud.context.close
++					61 collection Secondary Actions: AXScrollToTop, AXScrollToBottom
++						62 text NEXT ACTION Demolition, $256
++						63 button City data
++						64 button Description: Demolish Industrial for $256, Help: Demolition costs $256. Undo is available after activation.
++						65 text IDENTITY Type, Industrial Level, 2 Operational WORKPLACES Workers, 89 Capacity, 220
++						66 progress indicator 0.4045454545454545
++						67 text OPERATIONS Upkeep, $8 / cycle Road, Connected Road access active
++				68 scroll bar (settable, float) 0
++					69 value indicator (settable, float) 0
++					70 increment arrow button
++					71 decrement arrow button
++					72 increment page button
++					73 decrement page button
+~		32 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Industrial at block 15, 12, Value: Selected Industrial, block 15, 12. Completed, maintained condition. Power service is strained at 75%; Water service is strained at 75%; Pollution exposure is severe at 100%. This block is stable at 60% vitality.. Primary action: Inspect Industrial at block 15, 12. Available. Opens details for the selected target.
+The focused UI element is 32 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Industrial at block 15, 12, Value: Selected Industrial, block 15, 12. Completed, maintained condition. Power service is strained at 75%; Water service is strained at 75%; Pollution exposure is severe at 100%. This block is stable at 60% vitality.. Primary action: Inspect Industrial at block 15, 12. Available. Opens details for the selected target.

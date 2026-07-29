@@ -41,8 +41,8 @@ struct GeneratedCommercialPresentation {
 }
 
 @MainActor
-struct GeneratedIndustrialL1Presentation {
-    let identity: IndustrialL1GeneratedAssetIdentity
+struct GeneratedIndustrialPresentation {
+    let identity: IndustrialGeneratedAssetIdentity
     let presentation: GeneratedWorldPresentation
 }
 
@@ -283,38 +283,39 @@ final class WorldAssetCatalog {
                 issues.append("\(asset.logicalID) has incomplete directional provenance")
             }
         }
-        let industrialL1 = manifest.assets.filter {
+        let industrial = manifest.assets.filter {
             $0.family == "industrial" && $0.viewDirection != nil
         }
-        let expectedIndustrialL1Identities = Set(
-            ["north", "east", "south", "west"].map {
-                "industrial_l01_v0_\($0)"
+        let expectedIndustrialIdentities = Set(
+            (1...2).flatMap { level in
+                ["north", "east", "south", "west"].map {
+                    "industrial_l\(String(format: "%02d", level))_v0_\($0)"
+                }
             }
         )
-        if Set(industrialL1.map(\.logicalID)) != expectedIndustrialL1Identities {
-            issues.append("industrial production selection is not the exact L1 N/E/S/W matrix")
+        if Set(industrial.map(\.logicalID)) != expectedIndustrialIdentities {
+            issues.append("industrial production selection is not the exact L1-L2 N/E/S/W matrix")
         }
-        if Set(industrialL1.compactMap(\.sourceKey)).count != 4
-            || Set(industrialL1.compactMap(\.sourceSHA256)).count != 4 {
-            issues.append("industrial L1 production sources are missing or aliased")
+        if Set(industrial.compactMap(\.sourceKey)).count != 8
+            || Set(industrial.compactMap(\.sourceSHA256)).count != 8 {
+            issues.append("industrial L1-L2 production sources are missing or aliased")
         }
-        let normalizedIndustrialHashes = industrialL1.flatMap { asset in
+        let normalizedIndustrialHashes = industrial.flatMap { asset in
             CameraDetailLevel.allCases.compactMap {
                 asset.lods[$0.assetSuffix]?.normalizedSHA256
             }
         }
-        if Set(normalizedIndustrialHashes).count != 12 {
-            issues.append("industrial L1 normalized LODs are missing or aliased")
+        if Set(normalizedIndustrialHashes).count != 24 {
+            issues.append("industrial L1-L2 normalized LODs are missing or aliased")
         }
-        for asset in industrialL1 {
+        for asset in industrial {
             guard let direction = asset.viewDirection else {
                 issues.append("\(asset.logicalID) is missing view direction")
                 continue
             }
-            if asset.level != 1
+            if !(1...2).contains(asset.level)
                 || asset.frontageEdge != direction
                 || asset.supportedOrientation != "\(direction)-facing-authored"
-                || asset.sourceRevision != "source-v05"
                 || asset.provenanceFile == nil
                 || asset.provenanceSHA256 == nil
                 || asset.normalizationRecordFile == nil
@@ -562,23 +563,23 @@ final class WorldAssetCatalog {
         )
     }
 
-    func generatedIndustrialL1Presentation(
+    func generatedIndustrialPresentation(
         level: Int,
         adjacentRoads: RoadConnectionMask,
         detail: CameraDetailLevel
-    ) -> GeneratedIndustrialL1Presentation? {
-        guard let identity = IndustrialL1GeneratedAssetIdentity(
+    ) -> GeneratedIndustrialPresentation? {
+        guard let identity = IndustrialGeneratedAssetIdentity(
             level: level,
             adjacentRoads: adjacentRoads
         ) else {
             recordFallback(
-                "industrial L1 has no authoritative adjacent road or requested level is not L1"
+                "industrial level \(level) has no accepted directional source or authoritative adjacent road"
             )
             return nil
         }
         guard let asset = generatedAssetsByID[identity.logicalID],
               asset.family == "industrial",
-              asset.level == 1,
+              asset.level == identity.level,
               asset.variant == 0,
               asset.frontageEdge == identity.direction,
               asset.viewDirection == identity.direction else {
@@ -591,7 +592,7 @@ final class WorldAssetCatalog {
         ) else {
             return nil
         }
-        return GeneratedIndustrialL1Presentation(
+        return GeneratedIndustrialPresentation(
             identity: identity,
             presentation: presentation
         )

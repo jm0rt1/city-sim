@@ -1,0 +1,351 @@
+{
+  "colorSpace" : "extended-sRGB",
+  "familyAnchorFile" : "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/industrial_l01/source-v01.png",
+  "familyAnchorSHA256" : "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515",
+  "imageGenMaterialSwatchesUsed" : false,
+  "libraryID" : "industrial-l02-raster-survival-art-proof-v01",
+  "materials" : [
+    {
+      "baseColorRGBA" : [
+        0.044999999999999998,
+        0.055,
+        0.065000000000000002,
+        1
+      ],
+      "id" : "proof-deep-recess",
+      "metalness" : 0,
+      "pattern" : "solid-depth-cavity",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.95999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.17000000000000001,
+        0.19,
+        0.22,
+        1
+      ],
+      "id" : "proof-roof-membrane",
+      "metalness" : 0,
+      "pattern" : "rolled-membrane-seams",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.93999999999999995,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.31,
+        0.40000000000000002,
+        0.47999999999999998,
+        1
+      ],
+      "id" : "proof-painted-production-steel",
+      "metalness" : 0.28000000000000003,
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.72999999999999998,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.47999999999999998,
+        0.41999999999999998,
+        0.32000000000000001,
+        1
+      ],
+      "id" : "proof-loading-door",
+      "metalness" : 0.17999999999999999,
+      "pattern" : "horizontal-section-joints",
+      "physicalScaleWorld" : [
+        8,
+        14
+      ],
+      "roughness" : 0.76000000000000001,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.46999999999999997,
+        0.47999999999999998,
+        0.45000000000000001,
+        1
+      ],
+      "id" : "proof-concrete-side",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        10,
+        10
+      ],
+      "roughness" : 0.94999999999999996,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.52000000000000002,
+        0.53000000000000003,
+        0.5,
+        1
+      ],
+      "id" : "proof-neutral-apron",
+      "metalness" : 0,
+      "pattern" : "large-scored-slabs",
+      "physicalScaleWorld" : [
+        12,
+        12
+      ],
+      "roughness" : 0.97999999999999998,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.62,
+        0.59999999999999998,
+        0.52000000000000002,
+        1
+      ],
+      "id" : "proof-concrete-northwest",
+      "metalness" : 0,
+      "pattern" : "procedural-formed-concrete",
+      "physicalScaleWorld" : [
+        10,
+        10
+      ],
+      "roughness" : 0.92000000000000004,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.17999999999999999,
+        0.47999999999999998,
+        0.59999999999999998,
+        1
+      ],
+      "id" : "proof-industrial-glazing",
+      "metalness" : 0.10000000000000001,
+      "pattern" : "muted-mullion-grid",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.38,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.66000000000000003,
+        0.69999999999999996,
+        0.69999999999999996,
+        1
+      ],
+      "id" : "proof-galvanized-northwest",
+      "metalness" : 0.57999999999999996,
+      "pattern" : "procedural-vertical-corrugation",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.67000000000000004,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.71999999999999997,
+        0.75,
+        0.71999999999999997,
+        1
+      ],
+      "id" : "proof-galvanized-service",
+      "metalness" : 0.62,
+      "pattern" : "fine-galvanized",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.62,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.77000000000000002,
+        0.72999999999999998,
+        0.62,
+        1
+      ],
+      "id" : "proof-structural-trim",
+      "metalness" : 0.45000000000000001,
+      "pattern" : "painted-steel",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.66000000000000003,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.55000000000000004,
+        0.28000000000000003,
+        0.16,
+        1
+      ],
+      "id" : "proof-oxide-process",
+      "metalness" : 0.47999999999999998,
+      "pattern" : "restrained-oxide",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.78000000000000003,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.90000000000000002,
+        0.66000000000000003,
+        0.32000000000000001,
+        1
+      ],
+      "id" : "proof-warm-glazing",
+      "metalness" : 0.080000000000000002,
+      "pattern" : "muted-warm-glazing",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.34999999999999998,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    },
+    {
+      "baseColorRGBA" : [
+        0.95999999999999996,
+        0.67000000000000004,
+        0.10000000000000001,
+        1
+      ],
+      "id" : "proof-safety-yellow",
+      "metalness" : 0.22,
+      "pattern" : "solid-safety-paint",
+      "physicalScaleWorld" : [
+        8,
+        8
+      ],
+      "roughness" : 0.68000000000000005,
+      "textureMapping" : {
+        "magnificationFilter" : "linear",
+        "minificationFilter" : "linear",
+        "mipFilter" : "linear",
+        "mode" : "world-scale-box-face-repeat-v1",
+        "wrapS" : "repeat",
+        "wrapT" : "repeat"
+      }
+    }
+  ],
+  "productionSelected" : false,
+  "schema" : 1,
+  "source" : "offline-only numerical material/value redesign; no ImageGen building or new swatch",
+  "styleAnchorFile" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+  "styleAnchorSHA256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+  "task" : "PLAY-027"
+}

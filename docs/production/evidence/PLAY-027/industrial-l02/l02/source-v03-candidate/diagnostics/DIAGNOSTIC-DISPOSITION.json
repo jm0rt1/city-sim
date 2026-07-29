@@ -1,0 +1,59 @@
+{
+  "acceptedSourceBytesChanged": false,
+  "candidateDescriptorOrMaterialChanged": false,
+  "candidateOutputWritten": false,
+  "causalBoundary": {
+    "abortCallbackInvoked": false,
+    "allVisibleMetalDeviceCount": 0,
+    "emptyMaterialPreparePassed": false,
+    "emptyNodePreparePassed": false,
+    "emptyScenePreparePassed": false,
+    "implicitSceneKitRendererDeviceAvailable": false,
+    "minimalFailingSet": "empty SCNScene",
+    "systemDefaultMetalDeviceAvailable": false
+  },
+  "cause": "Metal backend unavailable to the native diagnostic process; SceneKit synchronous preparation returns false before candidate content participates",
+  "descriptorCheckpoint": "c0ae6ed",
+  "diagnosticCommitsBeforeFinalEvidence": [
+    "fee5266",
+    "a950ee9",
+    "150f210",
+    "941c2cb"
+  ],
+  "fullInventories": {
+    "east": {
+      "nodeCount": 130,
+      "preparePassed": false,
+      "primitiveCount": 2046,
+      "validationFailureCount": 0
+    },
+    "north": {
+      "nodeCount": 130,
+      "preparePassed": false,
+      "primitiveCount": 2046,
+      "validationFailureCount": 0
+    },
+    "south": {
+      "nodeCount": 130,
+      "preparePassed": false,
+      "primitiveCount": 2046,
+      "validationFailureCount": 0
+    },
+    "west": {
+      "nodeCount": 130,
+      "preparePassed": false,
+      "primitiveCount": 2046,
+      "validationFailureCount": 0
+    }
+  },
+  "logicalBuildingID": "industrial_l02",
+  "normalizationStarted": false,
+  "productionSelected": false,
+  "rendererSourceAuthority": "e2690f524dbf468255605cfe77a236404a015fa9",
+  "repairImplemented": false,
+  "repairProposal": "Add an offline Metal and SCNRenderer device capability preflight; classify zero-device execution as renderer-backend-unavailable and retain synchronous prepare as a fatal source gate only on a Metal-visible approved macOS process",
+  "schema": 1,
+  "sourceRevision": "source-v03",
+  "staleBinaryOrSourceMismatchRuledOut": true,
+  "task": "PLAY-027"
+}

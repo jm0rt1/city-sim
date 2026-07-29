@@ -1,0 +1,48 @@
+The following is a diff from the previous accessibility tree for Window: "CitySim" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 2-16, 20
++		31 container City command status
++			32 button Description: Open New Arcadia command center, Value: Day 212. Paused, ID: hud.city.identity
++			33 progress indicator Description: Show objectives, Help: Regional mandate arrives in 16 days, Value: 0.1, ID: hud.objective.summary
++			34 container City status
++				35 unknown Description: Treasury, Details: $67,999, +$415 / cycle, ID: hud.metric.treasury
++				36 unknown Description: Residents, Details: 511, 1,169 homes open, ID: hud.metric.population
++				37 unknown Description: Happiness, Details: 53%, 100% mayor approval, ID: hud.metric.happiness
++				38 unknown Description: Jobs filled, Details: 357, 493 openings, ID: hud.metric.employment
++				39 unknown Description: Utilities, Details: 100%, P 134 · W 135, ID: hud.metric.utilities
++			40 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
++			41 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
++			42 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
++			43 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
++			44 button Description: Open city notices, Value: 12 notices, highest severity critical, ID: hud.notices
++			45 container Description: City priority: Regional Capital mandate, Details: MANDATE · 16 DAYS. Regional mandate arrives in 16 days, ID: hud.strategy.priority
++				46 text Help: Regional mandate arrives in 16 days, Value: REGIONAL FREIGHT
++				47 text Help: Regional mandate arrives in 16 days, Value: MANDATE · 16 DAYS
++				48 text Help: Regional mandate arrives in 16 days, Value: Regional Capital mandate
++				49 text Regional mandate arrives in 16 days
++				50 text Description: City trajectory, Help: Regional mandate arrives in 16 days, Value: Growing by $415 per cycle, ID: hud.city.trajectory
++				51 button Description: Utility capacity, Help: Regional mandate arrives in 16 days
++				52 menu button Act, Description: Act on Regional Capital mandate, Help: Regional mandate arrives in 16 days, Value: 3 available routes, ID: arrow.turn.down.right
++		53 button (selected) Description: Action update, Value: City loaded · Simulation paused, Secondary Actions: Dismiss action message
++		54 container City command deck
++			55 button (selected) Description: Inspect mode, Value: Selected
++			56 button Description: Build mode, Value: Not selected
++			57 button Description: Bulldoze mode, Value: Not selected
++			58 button Description: Roads build category, Value: Selected
++			59 button Description: Zones build category, Value: Not selected
++			60 button Description: Utilities build category, Value: Not selected
++			61 button Description: Services build category, Value: Not selected
++			62 button Description: Civic build category, Value: Not selected
++			63 text Value: Inspecting Industrial at block 15, 12, ID: hud.selected.context
++			64 button Description: Enter Focus City, Help: Give the city maximum space while retaining critical operating truth., Value: ⇧⌘F, ID: hud.focus-city.enter
++			65 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
++			66 button Description: Open command-center details, Value: Closed, ID: hud.command.details
++			67 menu button Layer: City, Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City, ID: building.2
++		68 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Industrial at block 15, 12, Value: Selected Industrial, block 15, 12. Completed, maintained condition. Power service is strained at 75%; Water service is strained at 75%; Pollution exposure is severe at 100%. This block is stable at 60% vitality.. Primary action: Inspect Industrial at block 15, 12. Available. Opens details for the selected target.
++	69 toolbar
++		70 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
++		71 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
++		72 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
++		73 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
++		74 button (disabled) Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
++	75 text CitySim
+The focused UI element is 68 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Industrial at block 15, 12, Value: Selected Industrial, block 15, 12. Completed, maintained condition. Power service is strained at 75%; Water service is strained at 75%; Pollution exposure is severe at 100%. This block is stable at 60% vitality.. Primary action: Inspect Industrial at block 15, 12. Available. Opens details for the selected target.

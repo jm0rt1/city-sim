@@ -1,0 +1,2841 @@
+{
+  "passed" : true,
+  "purpose" : "component-for-component approved-design to source-authority trace",
+  "records" : [
+    {
+      "approvedDesignDescriptorSHA256" : "83c4bb6b8437f44b9c25b168395725c788b6f7326d6595d7404882090e1a3596",
+      "approvedGeometrySHA256" : "7bae82334de9b3dfad0a10217dd4109e536385354275ef0566c86de7c155c313",
+      "componentCount" : 45,
+      "components" : [
+        {
+          "approvedComponentID" : "n-foundation",
+          "dimensions" : [
+            54,
+            3,
+            52
+          ],
+          "materialRole" : "cast-concrete-plinth",
+          "positionWorld" : [
+            0,
+            1.5,
+            1
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.foundation"
+        },
+        {
+          "approvedComponentID" : "n-hall-west",
+          "dimensions" : [
+            21,
+            35,
+            36
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            -16.5,
+            19,
+            3
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-hall-west"
+        },
+        {
+          "approvedComponentID" : "n-hall-east",
+          "dimensions" : [
+            21,
+            35,
+            36
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            16.5,
+            19,
+            3
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-hall-east"
+        },
+        {
+          "approvedComponentID" : "n-rear-process",
+          "dimensions" : [
+            16,
+            47,
+            16
+          ],
+          "materialRole" : "warm-concrete-northwest",
+          "positionWorld" : [
+            18,
+            25,
+            18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-rear-process"
+        },
+        {
+          "approvedComponentID" : "n-admin-bar",
+          "dimensions" : [
+            20,
+            20,
+            16
+          ],
+          "materialRole" : "warm-concrete-side",
+          "positionWorld" : [
+            17,
+            11.5,
+            -18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-admin-bar"
+        },
+        {
+          "approvedComponentID" : "n-admin-step",
+          "dimensions" : [
+            10,
+            11,
+            8
+          ],
+          "materialRole" : "warm-concrete-northwest",
+          "positionWorld" : [
+            6,
+            7,
+            -22
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-admin-step"
+        },
+        {
+          "approvedComponentID" : "n-loading-recess",
+          "dimensions" : [
+            25,
+            15,
+            1.6000000000000001
+          ],
+          "materialRole" : "deep-loading-recess",
+          "positionWorld" : [
+            0,
+            9,
+            -15.800000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-loading-recess"
+        },
+        {
+          "approvedComponentID" : "n-dock-door-a",
+          "dimensions" : [
+            6,
+            12,
+            1
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            -8,
+            8.5,
+            -16.800000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-dock-door-a"
+        },
+        {
+          "approvedComponentID" : "n-dock-door-b",
+          "dimensions" : [
+            6,
+            12,
+            1
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            0,
+            8.5,
+            -16.800000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-dock-door-b"
+        },
+        {
+          "approvedComponentID" : "n-dock-door-c",
+          "dimensions" : [
+            6,
+            12,
+            1
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            8,
+            8.5,
+            -16.800000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-dock-door-c"
+        },
+        {
+          "approvedComponentID" : "n-dock-seal-a",
+          "dimensions" : [
+            8,
+            15,
+            0.80000000000000004
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            -8,
+            9,
+            -17.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-dock-seal-a"
+        },
+        {
+          "approvedComponentID" : "n-dock-seal-b",
+          "dimensions" : [
+            8,
+            15,
+            0.80000000000000004
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            0,
+            9,
+            -17.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-dock-seal-b"
+        },
+        {
+          "approvedComponentID" : "n-dock-seal-c",
+          "dimensions" : [
+            8,
+            15,
+            0.80000000000000004
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            8,
+            9,
+            -17.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-dock-seal-c"
+        },
+        {
+          "approvedComponentID" : "n-canopy",
+          "dimensions" : [
+            29,
+            2.2000000000000002,
+            10
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            0,
+            17,
+            -21
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-canopy"
+        },
+        {
+          "approvedComponentID" : "n-canopy-post-west",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -13,
+            8.5,
+            -24.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-canopy-post-west"
+        },
+        {
+          "approvedComponentID" : "n-canopy-post-east",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            13,
+            8.5,
+            -24.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-canopy-post-east"
+        },
+        {
+          "approvedComponentID" : "n-portal-post-west",
+          "dimensions" : [
+            2,
+            30,
+            2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -8,
+            29,
+            -18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-portal-post-west"
+        },
+        {
+          "approvedComponentID" : "n-portal-post-east",
+          "dimensions" : [
+            2,
+            30,
+            2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            8,
+            29,
+            -18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-portal-post-east"
+        },
+        {
+          "approvedComponentID" : "n-portal-header",
+          "dimensions" : [
+            18,
+            3,
+            3
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            0,
+            44,
+            -18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-portal-header"
+        },
+        {
+          "approvedComponentID" : "n-apron",
+          "dimensions" : [
+            30,
+            1.2,
+            6
+          ],
+          "materialRole" : "service-apron-concrete",
+          "positionWorld" : [
+            0,
+            0.80000000000000004,
+            -25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-apron"
+        },
+        {
+          "approvedComponentID" : "n-apron-joint-a",
+          "dimensions" : [
+            0.59999999999999998,
+            0.25,
+            6
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            -8,
+            1.45,
+            -25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-apron-joint-a"
+        },
+        {
+          "approvedComponentID" : "n-apron-joint-b",
+          "dimensions" : [
+            0.59999999999999998,
+            0.25,
+            6
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            8,
+            1.45,
+            -25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-apron-joint-b"
+        },
+        {
+          "approvedComponentID" : "n-hall-roof-west",
+          "dimensions" : [
+            22,
+            2.2000000000000002,
+            37
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -16.5,
+            37,
+            3
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-hall-roof-west"
+        },
+        {
+          "approvedComponentID" : "n-hall-roof-east",
+          "dimensions" : [
+            22,
+            2.2000000000000002,
+            37
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            16.5,
+            37,
+            3
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-hall-roof-east"
+        },
+        {
+          "approvedComponentID" : "n-process-roof",
+          "dimensions" : [
+            25,
+            2.2000000000000002,
+            17
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            2,
+            49,
+            18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-process-roof"
+        },
+        {
+          "approvedComponentID" : "n-roof-monitor-west",
+          "dimensions" : [
+            14,
+            7,
+            6
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            -16,
+            41,
+            4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-roof-monitor-west"
+        },
+        {
+          "approvedComponentID" : "n-roof-monitor-east",
+          "dimensions" : [
+            12,
+            8,
+            6
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            15,
+            41.5,
+            2
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-roof-monitor-east"
+        },
+        {
+          "approvedComponentID" : "n-admin-glazing",
+          "dimensions" : [
+            13,
+            7,
+            0.80000000000000004
+          ],
+          "materialRole" : "industrial-glazing",
+          "positionWorld" : [
+            17,
+            13,
+            -26.199999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-admin-glazing"
+        },
+        {
+          "approvedComponentID" : "n-admin-return-glazing",
+          "dimensions" : [
+            0.80000000000000004,
+            7,
+            10
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            27.199999999999999,
+            13,
+            -18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-admin-return-glazing"
+        },
+        {
+          "approvedComponentID" : "n-staff-door",
+          "dimensions" : [
+            3.5,
+            7,
+            0.80000000000000004
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            6,
+            5,
+            -26.399999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-staff-door"
+        },
+        {
+          "approvedComponentID" : "n-admin-canopy",
+          "dimensions" : [
+            8,
+            1.2,
+            4
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            6,
+            9.5,
+            -25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-admin-canopy"
+        },
+        {
+          "approvedComponentID" : "n-hvac-a",
+          "dimensions" : [
+            5,
+            6,
+            5
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -19,
+            42,
+            8
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-hvac-a"
+        },
+        {
+          "approvedComponentID" : "n-hvac-b",
+          "dimensions" : [
+            8,
+            5,
+            6
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            20,
+            41,
+            7
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-hvac-b"
+        },
+        {
+          "approvedComponentID" : "n-exhaust-a",
+          "dimensions" : [
+            4,
+            14,
+            4
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            -3,
+            57,
+            19
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-exhaust-a"
+        },
+        {
+          "approvedComponentID" : "n-exhaust-b",
+          "dimensions" : [
+            3,
+            11,
+            3
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            5,
+            55,
+            19
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-exhaust-b"
+        },
+        {
+          "approvedComponentID" : "n-tank",
+          "dimensions" : [
+            8,
+            16,
+            8
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            -21,
+            10,
+            19
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-tank"
+        },
+        {
+          "approvedComponentID" : "n-pipe-bridge",
+          "dimensions" : [
+            20,
+            2,
+            2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -10,
+            29,
+            18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-pipe-bridge"
+        },
+        {
+          "approvedComponentID" : "n-downpipe",
+          "dimensions" : [
+            1.2,
+            29,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            27,
+            17,
+            12
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-downpipe"
+        },
+        {
+          "approvedComponentID" : "n-gutter",
+          "dimensions" : [
+            22,
+            1,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            16,
+            37.5,
+            22
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-gutter"
+        },
+        {
+          "approvedComponentID" : "n-panel-seam-a",
+          "dimensions" : [
+            1.2,
+            30,
+            0.59999999999999998
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            8,
+            19,
+            21.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-panel-seam-a"
+        },
+        {
+          "approvedComponentID" : "n-panel-seam-b",
+          "dimensions" : [
+            1.2,
+            30,
+            0.59999999999999998
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            16,
+            19,
+            21.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-panel-seam-b"
+        },
+        {
+          "approvedComponentID" : "n-panel-seam-c",
+          "dimensions" : [
+            1.2,
+            30,
+            0.59999999999999998
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            24,
+            19,
+            21.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-panel-seam-c"
+        },
+        {
+          "approvedComponentID" : "n-bollard-a",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            -12,
+            3,
+            -26
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-bollard-a"
+        },
+        {
+          "approvedComponentID" : "n-bollard-b",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            12,
+            3,
+            -26
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.n-bollard-b"
+        },
+        {
+          "approvedComponentID" : "n-guardrail",
+          "dimensions" : [
+            27,
+            1,
+            1
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            0,
+            19.5,
+            -24.800000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.n-guardrail"
+        }
+      ],
+      "direction" : "north"
+    },
+    {
+      "approvedDesignDescriptorSHA256" : "46896f6c9aae7e37e682d6137cfaec7d35c706f4222bedece9be7127ff9d0265",
+      "approvedGeometrySHA256" : "03fa84eb21231bb191887bccd45e5c22ed9d4739b8325b4bb89411bd56bb57b9",
+      "componentCount" : 43,
+      "components" : [
+        {
+          "approvedComponentID" : "e-foundation",
+          "dimensions" : [
+            54,
+            3,
+            54
+          ],
+          "materialRole" : "cast-concrete-plinth",
+          "positionWorld" : [
+            0,
+            1.5,
+            0
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.foundation"
+        },
+        {
+          "approvedComponentID" : "e-main-hall",
+          "dimensions" : [
+            38,
+            37,
+            44
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            -5,
+            20,
+            1
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-main-hall"
+        },
+        {
+          "approvedComponentID" : "e-north-process",
+          "dimensions" : [
+            18,
+            51,
+            18
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            -17,
+            27,
+            -16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-north-process"
+        },
+        {
+          "approvedComponentID" : "e-south-fabrication",
+          "dimensions" : [
+            25,
+            27,
+            14
+          ],
+          "materialRole" : "warm-concrete-side",
+          "positionWorld" : [
+            -12,
+            15,
+            20
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-south-fabrication"
+        },
+        {
+          "approvedComponentID" : "e-admin-corner",
+          "dimensions" : [
+            18,
+            21,
+            18
+          ],
+          "materialRole" : "warm-concrete-northwest",
+          "positionWorld" : [
+            17,
+            12,
+            18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-admin-corner"
+        },
+        {
+          "approvedComponentID" : "e-stair-tower",
+          "dimensions" : [
+            10,
+            33,
+            8
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            20,
+            18,
+            7
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-stair-tower"
+        },
+        {
+          "approvedComponentID" : "e-loading-recess",
+          "dimensions" : [
+            1.8,
+            15,
+            31
+          ],
+          "materialRole" : "deep-loading-recess",
+          "positionWorld" : [
+            20.5,
+            9,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-loading-recess"
+        },
+        {
+          "approvedComponentID" : "e-dock-door-a",
+          "dimensions" : [
+            1,
+            12,
+            6
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            21.699999999999999,
+            8.5,
+            -15
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-dock-door-a"
+        },
+        {
+          "approvedComponentID" : "e-dock-door-b",
+          "dimensions" : [
+            1,
+            12,
+            6
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            21.699999999999999,
+            8.5,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-dock-door-b"
+        },
+        {
+          "approvedComponentID" : "e-dock-door-c",
+          "dimensions" : [
+            1,
+            12,
+            6
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            21.699999999999999,
+            8.5,
+            5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-dock-door-c"
+        },
+        {
+          "approvedComponentID" : "e-dock-seal-a",
+          "dimensions" : [
+            0.80000000000000004,
+            15,
+            8
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            22.399999999999999,
+            9,
+            -15
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-dock-seal-a"
+        },
+        {
+          "approvedComponentID" : "e-dock-seal-b",
+          "dimensions" : [
+            0.80000000000000004,
+            15,
+            8
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            22.399999999999999,
+            9,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-dock-seal-b"
+        },
+        {
+          "approvedComponentID" : "e-dock-seal-c",
+          "dimensions" : [
+            0.80000000000000004,
+            15,
+            8
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            22.399999999999999,
+            9,
+            5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-dock-seal-c"
+        },
+        {
+          "approvedComponentID" : "e-canopy",
+          "dimensions" : [
+            6,
+            2.2000000000000002,
+            35
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            25,
+            17,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-canopy"
+        },
+        {
+          "approvedComponentID" : "e-canopy-post-north",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            27,
+            8.5,
+            -21
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-canopy-post-north"
+        },
+        {
+          "approvedComponentID" : "e-canopy-post-south",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            27,
+            8.5,
+            11
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-canopy-post-south"
+        },
+        {
+          "approvedComponentID" : "e-apron",
+          "dimensions" : [
+            6,
+            1.2,
+            38
+          ],
+          "materialRole" : "service-apron-concrete",
+          "positionWorld" : [
+            25,
+            0.80000000000000004,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-apron"
+        },
+        {
+          "approvedComponentID" : "e-apron-joint-a",
+          "dimensions" : [
+            6,
+            0.25,
+            0.59999999999999998
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            25,
+            1.45,
+            -11
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-apron-joint-a"
+        },
+        {
+          "approvedComponentID" : "e-apron-joint-b",
+          "dimensions" : [
+            6,
+            0.25,
+            0.59999999999999998
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            25,
+            1.45,
+            1
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-apron-joint-b"
+        },
+        {
+          "approvedComponentID" : "e-main-roof",
+          "dimensions" : [
+            39,
+            2.2000000000000002,
+            45
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -5,
+            39,
+            1
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-main-roof"
+        },
+        {
+          "approvedComponentID" : "e-process-roof",
+          "dimensions" : [
+            19,
+            2.2000000000000002,
+            19
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -17,
+            53,
+            -16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-process-roof"
+        },
+        {
+          "approvedComponentID" : "e-fabrication-roof",
+          "dimensions" : [
+            26,
+            2.2000000000000002,
+            15
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -12,
+            29.5,
+            20
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-fabrication-roof"
+        },
+        {
+          "approvedComponentID" : "e-clerestory-a",
+          "dimensions" : [
+            22,
+            7,
+            6
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            -6,
+            43,
+            -10
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-clerestory-a"
+        },
+        {
+          "approvedComponentID" : "e-clerestory-b",
+          "dimensions" : [
+            18,
+            6,
+            6
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            0,
+            42,
+            9
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-clerestory-b"
+        },
+        {
+          "approvedComponentID" : "e-admin-glazing-east",
+          "dimensions" : [
+            0.80000000000000004,
+            8,
+            12
+          ],
+          "materialRole" : "industrial-glazing",
+          "positionWorld" : [
+            26.300000000000001,
+            13,
+            18
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-admin-glazing-east"
+        },
+        {
+          "approvedComponentID" : "e-stair-glazing",
+          "dimensions" : [
+            0.80000000000000004,
+            23,
+            5
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            25.399999999999999,
+            20,
+            7
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-stair-glazing"
+        },
+        {
+          "approvedComponentID" : "e-person-door",
+          "dimensions" : [
+            0.80000000000000004,
+            7,
+            3.5
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            26.5,
+            5,
+            22
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-person-door"
+        },
+        {
+          "approvedComponentID" : "e-person-canopy",
+          "dimensions" : [
+            4,
+            1.2,
+            8
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            26,
+            9.5,
+            22
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-person-canopy"
+        },
+        {
+          "approvedComponentID" : "e-hvac-a",
+          "dimensions" : [
+            9,
+            6,
+            7
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -5,
+            44,
+            2
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-hvac-a"
+        },
+        {
+          "approvedComponentID" : "e-hvac-b",
+          "dimensions" : [
+            7,
+            5,
+            6
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            9,
+            43,
+            -6
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-hvac-b"
+        },
+        {
+          "approvedComponentID" : "e-exhaust-a",
+          "dimensions" : [
+            4,
+            16,
+            4
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            -19,
+            62,
+            -17
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-exhaust-a"
+        },
+        {
+          "approvedComponentID" : "e-exhaust-b",
+          "dimensions" : [
+            3,
+            11,
+            3
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -13,
+            59,
+            -14
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-exhaust-b"
+        },
+        {
+          "approvedComponentID" : "e-tank-a",
+          "dimensions" : [
+            8,
+            16,
+            8
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            -22,
+            10,
+            20
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-tank-a"
+        },
+        {
+          "approvedComponentID" : "e-tank-b",
+          "dimensions" : [
+            6,
+            12,
+            6
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -13,
+            8,
+            23
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-tank-b"
+        },
+        {
+          "approvedComponentID" : "e-pipe-run",
+          "dimensions" : [
+            2,
+            2,
+            28
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -17,
+            34,
+            2
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-pipe-run"
+        },
+        {
+          "approvedComponentID" : "e-downpipe",
+          "dimensions" : [
+            1.2,
+            31,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            14,
+            18,
+            -21
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-downpipe"
+        },
+        {
+          "approvedComponentID" : "e-gutter",
+          "dimensions" : [
+            1.2,
+            1,
+            43
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            14,
+            39.5,
+            1
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-gutter"
+        },
+        {
+          "approvedComponentID" : "e-panel-seam-a",
+          "dimensions" : [
+            0.59999999999999998,
+            30,
+            1.2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            14.300000000000001,
+            19,
+            -12
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-panel-seam-a"
+        },
+        {
+          "approvedComponentID" : "e-panel-seam-b",
+          "dimensions" : [
+            0.59999999999999998,
+            30,
+            1.2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            14.300000000000001,
+            19,
+            0
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-panel-seam-b"
+        },
+        {
+          "approvedComponentID" : "e-panel-seam-c",
+          "dimensions" : [
+            0.59999999999999998,
+            30,
+            1.2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            14.300000000000001,
+            19,
+            12
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-panel-seam-c"
+        },
+        {
+          "approvedComponentID" : "e-bollard-a",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            27,
+            3,
+            -23
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-bollard-a"
+        },
+        {
+          "approvedComponentID" : "e-bollard-b",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            27,
+            3,
+            13
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.e-bollard-b"
+        },
+        {
+          "approvedComponentID" : "e-guardrail",
+          "dimensions" : [
+            1,
+            1,
+            33
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            27.199999999999999,
+            19.5,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.e-guardrail"
+        }
+      ],
+      "direction" : "east"
+    },
+    {
+      "approvedDesignDescriptorSHA256" : "b6e5df380e17cd10c08394e844066fe2e4e25f4e181484b178172ea0663f0185",
+      "approvedGeometrySHA256" : "01e74e25fcb06002e369973c4ccbb831e36cf03a6c34cc03752927225fcf2277",
+      "componentCount" : 41,
+      "components" : [
+        {
+          "approvedComponentID" : "s-foundation",
+          "dimensions" : [
+            54,
+            3,
+            54
+          ],
+          "materialRole" : "cast-concrete-plinth",
+          "positionWorld" : [
+            0,
+            1.5,
+            0
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.foundation"
+        },
+        {
+          "approvedComponentID" : "s-main-hall",
+          "dimensions" : [
+            42,
+            35,
+            38
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            2,
+            19,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-main-hall"
+        },
+        {
+          "approvedComponentID" : "s-process-east",
+          "dimensions" : [
+            16,
+            47,
+            22
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            18,
+            25,
+            9
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-process-east"
+        },
+        {
+          "approvedComponentID" : "s-fabrication-west",
+          "dimensions" : [
+            12,
+            25,
+            32
+          ],
+          "materialRole" : "warm-concrete-side",
+          "positionWorld" : [
+            -20,
+            14,
+            -8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-fabrication-west"
+        },
+        {
+          "approvedComponentID" : "s-admin-west",
+          "dimensions" : [
+            24,
+            20,
+            16
+          ],
+          "materialRole" : "warm-concrete-northwest",
+          "positionWorld" : [
+            -14,
+            11.5,
+            19
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-admin-west"
+        },
+        {
+          "approvedComponentID" : "s-admin-step",
+          "dimensions" : [
+            10,
+            11,
+            8
+          ],
+          "materialRole" : "warm-concrete-side",
+          "positionWorld" : [
+            0,
+            7,
+            23
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-admin-step"
+        },
+        {
+          "approvedComponentID" : "s-loading-recess",
+          "dimensions" : [
+            24,
+            15,
+            1.8
+          ],
+          "materialRole" : "deep-loading-recess",
+          "positionWorld" : [
+            10,
+            9,
+            17.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-loading-recess"
+        },
+        {
+          "approvedComponentID" : "s-dock-door-a",
+          "dimensions" : [
+            6,
+            12,
+            1
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            2,
+            8.5,
+            18.699999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-dock-door-a"
+        },
+        {
+          "approvedComponentID" : "s-dock-door-b",
+          "dimensions" : [
+            6,
+            12,
+            1
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            10,
+            8.5,
+            18.699999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-dock-door-b"
+        },
+        {
+          "approvedComponentID" : "s-dock-door-c",
+          "dimensions" : [
+            6,
+            12,
+            1
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            18,
+            8.5,
+            18.699999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-dock-door-c"
+        },
+        {
+          "approvedComponentID" : "s-dock-seal-a",
+          "dimensions" : [
+            8,
+            15,
+            0.80000000000000004
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            2,
+            9,
+            19.399999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-dock-seal-a"
+        },
+        {
+          "approvedComponentID" : "s-dock-seal-b",
+          "dimensions" : [
+            8,
+            15,
+            0.80000000000000004
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            10,
+            9,
+            19.399999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-dock-seal-b"
+        },
+        {
+          "approvedComponentID" : "s-dock-seal-c",
+          "dimensions" : [
+            8,
+            15,
+            0.80000000000000004
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            18,
+            9,
+            19.399999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-dock-seal-c"
+        },
+        {
+          "approvedComponentID" : "s-canopy",
+          "dimensions" : [
+            28,
+            2.2000000000000002,
+            9
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            10,
+            17,
+            23
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-canopy"
+        },
+        {
+          "approvedComponentID" : "s-canopy-post-west",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -3,
+            8.5,
+            26.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-canopy-post-west"
+        },
+        {
+          "approvedComponentID" : "s-canopy-post-east",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            23,
+            8.5,
+            26.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-canopy-post-east"
+        },
+        {
+          "approvedComponentID" : "s-apron",
+          "dimensions" : [
+            30,
+            1.2,
+            6
+          ],
+          "materialRole" : "service-apron-concrete",
+          "positionWorld" : [
+            10,
+            0.80000000000000004,
+            25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-apron"
+        },
+        {
+          "approvedComponentID" : "s-apron-joint-a",
+          "dimensions" : [
+            0.59999999999999998,
+            0.25,
+            6
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            2,
+            1.45,
+            25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-apron-joint-a"
+        },
+        {
+          "approvedComponentID" : "s-apron-joint-b",
+          "dimensions" : [
+            0.59999999999999998,
+            0.25,
+            6
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            18,
+            1.45,
+            25
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-apron-joint-b"
+        },
+        {
+          "approvedComponentID" : "s-main-roof",
+          "dimensions" : [
+            43,
+            2.2000000000000002,
+            39
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            2,
+            37,
+            -5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-main-roof"
+        },
+        {
+          "approvedComponentID" : "s-process-roof",
+          "dimensions" : [
+            17,
+            2.2000000000000002,
+            23
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            18,
+            49,
+            9
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-process-roof"
+        },
+        {
+          "approvedComponentID" : "s-fabrication-roof",
+          "dimensions" : [
+            13,
+            2.2000000000000002,
+            33
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -20,
+            27.5,
+            -8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-fabrication-roof"
+        },
+        {
+          "approvedComponentID" : "s-sawlight-a",
+          "dimensions" : [
+            14,
+            7,
+            7
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            -8,
+            41,
+            -8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-sawlight-a"
+        },
+        {
+          "approvedComponentID" : "s-sawlight-b",
+          "dimensions" : [
+            14,
+            9,
+            7
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            8,
+            42,
+            -8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-sawlight-b"
+        },
+        {
+          "approvedComponentID" : "s-admin-glazing",
+          "dimensions" : [
+            15,
+            7,
+            0.80000000000000004
+          ],
+          "materialRole" : "industrial-glazing",
+          "positionWorld" : [
+            -14,
+            13,
+            27.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-admin-glazing"
+        },
+        {
+          "approvedComponentID" : "s-person-door",
+          "dimensions" : [
+            3.5,
+            7,
+            0.80000000000000004
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            0,
+            5,
+            27.5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-person-door"
+        },
+        {
+          "approvedComponentID" : "s-person-canopy",
+          "dimensions" : [
+            8,
+            1.2,
+            4
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            0,
+            9.5,
+            26
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-person-canopy"
+        },
+        {
+          "approvedComponentID" : "s-hvac-a",
+          "dimensions" : [
+            9,
+            6,
+            7
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -5,
+            43,
+            -1
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-hvac-a"
+        },
+        {
+          "approvedComponentID" : "s-hvac-b",
+          "dimensions" : [
+            7,
+            5,
+            6
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            9,
+            42,
+            -14
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-hvac-b"
+        },
+        {
+          "approvedComponentID" : "s-exhaust-a",
+          "dimensions" : [
+            4,
+            15,
+            4
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            17,
+            58,
+            8
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.s-exhaust-a"
+        },
+        {
+          "approvedComponentID" : "s-exhaust-b",
+          "dimensions" : [
+            3,
+            11,
+            3
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            22,
+            55,
+            12
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.s-exhaust-b"
+        },
+        {
+          "approvedComponentID" : "s-tank-a",
+          "dimensions" : [
+            8,
+            16,
+            8
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            -22,
+            10,
+            14
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.s-tank-a"
+        },
+        {
+          "approvedComponentID" : "s-pipe-bridge",
+          "dimensions" : [
+            2,
+            2,
+            24
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            13,
+            31,
+            4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-pipe-bridge"
+        },
+        {
+          "approvedComponentID" : "s-downpipe",
+          "dimensions" : [
+            1.2,
+            29,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -19,
+            17,
+            -24
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.s-downpipe"
+        },
+        {
+          "approvedComponentID" : "s-gutter",
+          "dimensions" : [
+            41,
+            1,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            2,
+            37.5,
+            -24
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-gutter"
+        },
+        {
+          "approvedComponentID" : "s-panel-seam-a",
+          "dimensions" : [
+            1.2,
+            30,
+            0.59999999999999998
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -10,
+            19,
+            14.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-panel-seam-a"
+        },
+        {
+          "approvedComponentID" : "s-panel-seam-b",
+          "dimensions" : [
+            1.2,
+            30,
+            0.59999999999999998
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            2,
+            19,
+            14.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-panel-seam-b"
+        },
+        {
+          "approvedComponentID" : "s-panel-seam-c",
+          "dimensions" : [
+            1.2,
+            30,
+            0.59999999999999998
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            14,
+            19,
+            14.300000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-panel-seam-c"
+        },
+        {
+          "approvedComponentID" : "s-bollard-a",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            -4,
+            3,
+            26
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.s-bollard-a"
+        },
+        {
+          "approvedComponentID" : "s-bollard-b",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            24,
+            3,
+            26
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.s-bollard-b"
+        },
+        {
+          "approvedComponentID" : "s-guardrail",
+          "dimensions" : [
+            27,
+            1,
+            1
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            10,
+            19.5,
+            26.800000000000001
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.s-guardrail"
+        }
+      ],
+      "direction" : "south"
+    },
+    {
+      "approvedDesignDescriptorSHA256" : "57a150395f4c073b77fc4eeecc4d246e9b3c00e81ec87661383e8c120faabbc3",
+      "approvedGeometrySHA256" : "72728a3e3fec588a27a4d3dfa8cc212c5d388ede8ae67759dbe7aab1701a9d2c",
+      "componentCount" : 46,
+      "components" : [
+        {
+          "approvedComponentID" : "w-foundation",
+          "dimensions" : [
+            54,
+            3,
+            54
+          ],
+          "materialRole" : "cast-concrete-plinth",
+          "positionWorld" : [
+            0,
+            1.5,
+            0
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.foundation"
+        },
+        {
+          "approvedComponentID" : "w-hall-north",
+          "dimensions" : [
+            38,
+            37,
+            21
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            -3,
+            20,
+            -16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-hall-north"
+        },
+        {
+          "approvedComponentID" : "w-hall-south",
+          "dimensions" : [
+            38,
+            37,
+            21
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            -3,
+            20,
+            16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-hall-south"
+        },
+        {
+          "approvedComponentID" : "w-rear-process",
+          "dimensions" : [
+            20,
+            49,
+            18
+          ],
+          "materialRole" : "warm-concrete-side",
+          "positionWorld" : [
+            15,
+            26,
+            -17
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-rear-process"
+        },
+        {
+          "approvedComponentID" : "w-admin-south",
+          "dimensions" : [
+            18,
+            20,
+            20
+          ],
+          "materialRole" : "warm-concrete-northwest",
+          "positionWorld" : [
+            -18,
+            11.5,
+            17
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-admin-south"
+        },
+        {
+          "approvedComponentID" : "w-admin-step",
+          "dimensions" : [
+            8,
+            11,
+            10
+          ],
+          "materialRole" : "warm-concrete-side",
+          "positionWorld" : [
+            -23,
+            7,
+            5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-admin-step"
+        },
+        {
+          "approvedComponentID" : "w-loading-recess",
+          "dimensions" : [
+            1.6000000000000001,
+            15,
+            25
+          ],
+          "materialRole" : "deep-loading-recess",
+          "positionWorld" : [
+            -15.800000000000001,
+            9,
+            -4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-loading-recess"
+        },
+        {
+          "approvedComponentID" : "w-dock-door-a",
+          "dimensions" : [
+            1,
+            12,
+            6
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            -16.800000000000001,
+            8.5,
+            -12
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-dock-door-a"
+        },
+        {
+          "approvedComponentID" : "w-dock-door-b",
+          "dimensions" : [
+            1,
+            12,
+            6
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            -16.800000000000001,
+            8.5,
+            -4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-dock-door-b"
+        },
+        {
+          "approvedComponentID" : "w-dock-door-c",
+          "dimensions" : [
+            1,
+            12,
+            6
+          ],
+          "materialRole" : "sectional-loading-door",
+          "positionWorld" : [
+            -16.800000000000001,
+            8.5,
+            4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-dock-door-c"
+        },
+        {
+          "approvedComponentID" : "w-dock-seal-a",
+          "dimensions" : [
+            0.80000000000000004,
+            15,
+            8
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            -17.5,
+            9,
+            -12
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-dock-seal-a"
+        },
+        {
+          "approvedComponentID" : "w-dock-seal-b",
+          "dimensions" : [
+            0.80000000000000004,
+            15,
+            8
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            -17.5,
+            9,
+            -4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-dock-seal-b"
+        },
+        {
+          "approvedComponentID" : "w-dock-seal-c",
+          "dimensions" : [
+            0.80000000000000004,
+            15,
+            8
+          ],
+          "materialRole" : "dock-seal-charcoal",
+          "positionWorld" : [
+            -17.5,
+            9,
+            4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-dock-seal-c"
+        },
+        {
+          "approvedComponentID" : "w-canopy",
+          "dimensions" : [
+            10,
+            2.2000000000000002,
+            29
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -21,
+            17,
+            -4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-canopy"
+        },
+        {
+          "approvedComponentID" : "w-canopy-post-north",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -24.5,
+            8.5,
+            -17
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-canopy-post-north"
+        },
+        {
+          "approvedComponentID" : "w-canopy-post-south",
+          "dimensions" : [
+            1.3999999999999999,
+            17,
+            1.3999999999999999
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -24.5,
+            8.5,
+            9
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-canopy-post-south"
+        },
+        {
+          "approvedComponentID" : "w-portal-post-north",
+          "dimensions" : [
+            2,
+            30,
+            2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -18,
+            29,
+            -8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-portal-post-north"
+        },
+        {
+          "approvedComponentID" : "w-portal-post-south",
+          "dimensions" : [
+            2,
+            30,
+            2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -18,
+            29,
+            8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-portal-post-south"
+        },
+        {
+          "approvedComponentID" : "w-portal-header",
+          "dimensions" : [
+            3,
+            3,
+            18
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            -18,
+            44,
+            0
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-portal-header"
+        },
+        {
+          "approvedComponentID" : "w-apron",
+          "dimensions" : [
+            6,
+            1.2,
+            30
+          ],
+          "materialRole" : "service-apron-concrete",
+          "positionWorld" : [
+            -25,
+            0.80000000000000004,
+            -4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-apron"
+        },
+        {
+          "approvedComponentID" : "w-apron-joint-a",
+          "dimensions" : [
+            6,
+            0.25,
+            0.59999999999999998
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            -25,
+            1.45,
+            -12
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-apron-joint-a"
+        },
+        {
+          "approvedComponentID" : "w-apron-joint-b",
+          "dimensions" : [
+            6,
+            0.25,
+            0.59999999999999998
+          ],
+          "materialRole" : "apron-joint",
+          "positionWorld" : [
+            -25,
+            1.45,
+            4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-apron-joint-b"
+        },
+        {
+          "approvedComponentID" : "w-hall-roof-north",
+          "dimensions" : [
+            39,
+            2.2000000000000002,
+            22
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -3,
+            39,
+            -16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-hall-roof-north"
+        },
+        {
+          "approvedComponentID" : "w-hall-roof-south",
+          "dimensions" : [
+            39,
+            2.2000000000000002,
+            22
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            -3,
+            39,
+            16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-hall-roof-south"
+        },
+        {
+          "approvedComponentID" : "w-process-roof",
+          "dimensions" : [
+            21,
+            2.2000000000000002,
+            25
+          ],
+          "materialRole" : "dark-roof-membrane",
+          "positionWorld" : [
+            15,
+            51,
+            -2
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-process-roof"
+        },
+        {
+          "approvedComponentID" : "w-roof-monitor-north",
+          "dimensions" : [
+            18,
+            7,
+            7
+          ],
+          "materialRole" : "blue-gray-painted-steel",
+          "positionWorld" : [
+            -5,
+            43,
+            -16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-roof-monitor-north"
+        },
+        {
+          "approvedComponentID" : "w-roof-monitor-south",
+          "dimensions" : [
+            14,
+            6,
+            7
+          ],
+          "materialRole" : "galvanized-corrugated-northwest",
+          "positionWorld" : [
+            2,
+            42,
+            16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-roof-monitor-south"
+        },
+        {
+          "approvedComponentID" : "w-admin-glazing",
+          "dimensions" : [
+            0.80000000000000004,
+            7,
+            13
+          ],
+          "materialRole" : "industrial-glazing",
+          "positionWorld" : [
+            -27.300000000000001,
+            13,
+            17
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-admin-glazing"
+        },
+        {
+          "approvedComponentID" : "w-admin-return-glazing",
+          "dimensions" : [
+            10,
+            7,
+            0.80000000000000004
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            -18,
+            13,
+            27.199999999999999
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-admin-return-glazing"
+        },
+        {
+          "approvedComponentID" : "w-person-door",
+          "dimensions" : [
+            0.80000000000000004,
+            7,
+            3.5
+          ],
+          "materialRole" : "warm-interior-glazing",
+          "positionWorld" : [
+            -27.5,
+            5,
+            5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-person-door"
+        },
+        {
+          "approvedComponentID" : "w-person-canopy",
+          "dimensions" : [
+            4,
+            1.2,
+            8
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            -26,
+            9.5,
+            5
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-person-canopy"
+        },
+        {
+          "approvedComponentID" : "w-hvac-a",
+          "dimensions" : [
+            9,
+            6,
+            7
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -8,
+            44,
+            -11
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-hvac-a"
+        },
+        {
+          "approvedComponentID" : "w-hvac-b",
+          "dimensions" : [
+            7,
+            5,
+            6
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -1,
+            43,
+            17
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-hvac-b"
+        },
+        {
+          "approvedComponentID" : "w-exhaust-a",
+          "dimensions" : [
+            4,
+            16,
+            4
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            17,
+            60,
+            -4
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-exhaust-a"
+        },
+        {
+          "approvedComponentID" : "w-exhaust-b",
+          "dimensions" : [
+            3,
+            11,
+            3
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            10,
+            57,
+            2
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-exhaust-b"
+        },
+        {
+          "approvedComponentID" : "w-tank-a",
+          "dimensions" : [
+            8,
+            16,
+            8
+          ],
+          "materialRole" : "oxide-process-metal",
+          "positionWorld" : [
+            20,
+            10,
+            17
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-tank-a"
+        },
+        {
+          "approvedComponentID" : "w-tank-b",
+          "dimensions" : [
+            6,
+            12,
+            6
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            12,
+            8,
+            22
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-tank-b"
+        },
+        {
+          "approvedComponentID" : "w-pipe-bridge",
+          "dimensions" : [
+            24,
+            2,
+            2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -5,
+            31,
+            -2
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-pipe-bridge"
+        },
+        {
+          "approvedComponentID" : "w-downpipe",
+          "dimensions" : [
+            1.2,
+            31,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            16,
+            18,
+            27
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-downpipe"
+        },
+        {
+          "approvedComponentID" : "w-gutter",
+          "dimensions" : [
+            37,
+            1,
+            1.2
+          ],
+          "materialRole" : "galvanized-service-metal",
+          "positionWorld" : [
+            -3,
+            39.5,
+            27
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-gutter"
+        },
+        {
+          "approvedComponentID" : "w-panel-seam-a",
+          "dimensions" : [
+            0.59999999999999998,
+            30,
+            1.2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            16.300000000000001,
+            19,
+            8
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-panel-seam-a"
+        },
+        {
+          "approvedComponentID" : "w-panel-seam-b",
+          "dimensions" : [
+            0.59999999999999998,
+            30,
+            1.2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            16.300000000000001,
+            19,
+            16
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-panel-seam-b"
+        },
+        {
+          "approvedComponentID" : "w-panel-seam-c",
+          "dimensions" : [
+            0.59999999999999998,
+            30,
+            1.2
+          ],
+          "materialRole" : "painted-structural-steel",
+          "positionWorld" : [
+            16.300000000000001,
+            19,
+            24
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-panel-seam-c"
+        },
+        {
+          "approvedComponentID" : "w-bollard-a",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            -26,
+            3,
+            -18
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-bollard-a"
+        },
+        {
+          "approvedComponentID" : "w-bollard-b",
+          "dimensions" : [
+            1.2,
+            5,
+            1.2
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            -26,
+            3,
+            10
+          ],
+          "primitive" : "cylinder",
+          "productionOwner" : "props.w-bollard-b"
+        },
+        {
+          "approvedComponentID" : "w-guardrail",
+          "dimensions" : [
+            1,
+            1,
+            27
+          ],
+          "materialRole" : "safety-yellow",
+          "positionWorld" : [
+            -24.800000000000001,
+            19.5,
+            -4
+          ],
+          "primitive" : "box",
+          "productionOwner" : "building.massBlocks.w-guardrail"
+        }
+      ],
+      "direction" : "west"
+    }
+  ],
+  "schema" : 1,
+  "sourceRevision" : "source-v09",
+  "task" : "PLAY-027"
+}

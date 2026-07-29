@@ -1,0 +1,57 @@
+{
+  "artifactInventory" : [
+    {
+      "path" : "materials/industrial-l04-crucible-gantry-v14-north-prepixel.json",
+      "sha256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202"
+    },
+    {
+      "path" : "scenes/industrial_l04/variant-0/n/scene.json",
+      "sha256" : "537c2ed86b53ded38aa00413066a7a8edc0ca3ebc241e5baa13b8e47eb48d4db"
+    }
+  ],
+  "cameraProjection" : "orthographic-2-to-1",
+  "componentCount" : 72,
+  "crucibleTierCount" : 7,
+  "descriptorSHA256" : "537c2ed86b53ded38aa00413066a7a8edc0ca3ebc241e5baa13b8e47eb48d4db",
+  "doubleGirderCount" : 2,
+  "footprintWorld" : [
+    [
+      -28,
+      -28
+    ],
+    [
+      28,
+      -28
+    ],
+    [
+      28,
+      28
+    ],
+    [
+      -28,
+      28
+    ]
+  ],
+  "freightBeatCount" : 3,
+  "frontageSocketSource" : [
+    896,
+    704
+  ],
+  "frontageWorldZ" : -28,
+  "generatedAt" : "2026-07-27T00:00:00Z",
+  "geometryID" : "industrial-l04-crucible-gantry-v14-north-board-led",
+  "geometrySHA256" : "0ac9404a905d6d91c5b3cb6f1d01f9785d419a46452c5d3097d5241fde8477a5",
+  "groundPivotSource" : [
+    768,
+    896
+  ],
+  "materialSHA256" : "147c11d64be9fac934a6d4276a2e1a9d27f207bb1a1babd47222aaf5c2b3d202",
+  "metalProcessCount" : 0,
+  "normalizerProcessCount" : 0,
+  "productionSelected" : false,
+  "rawProcessCount" : 0,
+  "revision" : "source-v14-prepixel",
+  "sceneKitProcessCount" : 0,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027"
+}

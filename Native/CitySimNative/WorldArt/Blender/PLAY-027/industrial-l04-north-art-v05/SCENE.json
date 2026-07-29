@@ -1,0 +1,1191 @@
+{
+  "authoredIndependently": true,
+  "camera": {
+    "orthographicScale": 79.1959533691406,
+    "positionWorld": [
+      96,
+      101.24557426726288,
+      96
+    ],
+    "postProjectionOffsetPixels": [
+      0,
+      128
+    ],
+    "projection": "orthographic-2-to-1",
+    "renderViewportPixels": [
+      1536,
+      1024
+    ],
+    "sourceGroundCenter": [
+      768,
+      768
+    ],
+    "targetWorld": [
+      0,
+      22.861902498201186,
+      0
+    ]
+  },
+  "components": [
+    {
+      "bevel": 0.16,
+      "dimensions": [
+        46,
+        0.8,
+        50
+      ],
+      "group": "foundation",
+      "id": "foundry-foundation",
+      "materialID": "foundry-dark-foundation",
+      "position": [
+        -2,
+        0.4,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        25,
+        3.2,
+        3.6
+      ],
+      "group": "monitor-roof",
+      "id": "foundry-monitor-a",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -6.5,
+        21.1,
+        -18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        26,
+        0.55,
+        4.2
+      ],
+      "group": "monitor-roof-edge",
+      "id": "foundry-monitor-a-cap",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -6.5,
+        23.0,
+        -18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        25,
+        3.2,
+        3.6
+      ],
+      "group": "monitor-roof",
+      "id": "foundry-monitor-b",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -6.5,
+        21.1,
+        -6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        26,
+        0.55,
+        4.2
+      ],
+      "group": "monitor-roof-edge",
+      "id": "foundry-monitor-b-cap",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -6.5,
+        23.0,
+        -6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        25,
+        3.2,
+        3.6
+      ],
+      "group": "monitor-roof",
+      "id": "foundry-monitor-c",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -6.5,
+        21.1,
+        6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        26,
+        0.55,
+        4.2
+      ],
+      "group": "monitor-roof-edge",
+      "id": "foundry-monitor-c-cap",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -6.5,
+        23.0,
+        6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        25,
+        3.2,
+        3.6
+      ],
+      "group": "monitor-roof",
+      "id": "foundry-monitor-d",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -6.5,
+        21.1,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        26,
+        0.55,
+        4.2
+      ],
+      "group": "monitor-roof-edge",
+      "id": "foundry-monitor-d-cap",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -6.5,
+        23.0,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.28,
+      "dimensions": [
+        14,
+        8,
+        14
+      ],
+      "group": "raised-process-bay",
+      "id": "foundry-process-bay",
+      "materialID": "foundry-charcoal-steel",
+      "position": [
+        -12,
+        27,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.2,
+      "dimensions": [
+        3,
+        6,
+        12
+      ],
+      "group": "raised-process-bay",
+      "id": "foundry-process-bay-masonry-return",
+      "materialID": "foundry-masonry-trim",
+      "position": [
+        -4.5,
+        26,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.2,
+      "dimensions": [
+        10,
+        3.5,
+        10
+      ],
+      "group": "clerestory",
+      "id": "foundry-clerestory",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -12,
+        32.75,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.06,
+      "dimensions": [
+        0.5,
+        2.2,
+        8
+      ],
+      "group": "glazing",
+      "id": "foundry-clerestory-glazing",
+      "materialID": "foundry-warm-glazing",
+      "position": [
+        -6.75,
+        32.75,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.04,
+      "dimensions": [
+        0.35,
+        0.55,
+        8
+      ],
+      "group": "louver",
+      "id": "foundry-clerestory-louver-a",
+      "materialID": "foundry-louver",
+      "position": [
+        -6.449999999999999,
+        32.2,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.04,
+      "dimensions": [
+        0.35,
+        0.55,
+        8
+      ],
+      "group": "louver",
+      "id": "foundry-clerestory-louver-b",
+      "materialID": "foundry-louver",
+      "position": [
+        -6.449999999999999,
+        33.3,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.22,
+      "dimensions": [
+        16,
+        1.4,
+        16
+      ],
+      "group": "process-roof",
+      "id": "foundry-process-roof",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -12,
+        35.2,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.16,
+      "dimensions": [
+        16,
+        0.55,
+        17
+      ],
+      "group": "process-roof-edge",
+      "id": "foundry-process-roof-edge",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -12,
+        36.15,
+        13
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        4.8,
+        12,
+        4.8
+      ],
+      "group": "stack",
+      "id": "foundry-stack",
+      "materialID": "foundry-warm-masonry",
+      "position": [
+        -11,
+        42.5,
+        14
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        5.3,
+        1.2,
+        5.3
+      ],
+      "group": "stack",
+      "id": "foundry-stack-band",
+      "materialID": "foundry-charcoal-steel",
+      "position": [
+        -11,
+        48.6,
+        14
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        3.4,
+        4.5,
+        3.4
+      ],
+      "group": "roof-equipment",
+      "id": "foundry-roof-vent-a",
+      "materialID": "foundry-oxidized-machinery",
+      "position": [
+        -9,
+        38.7,
+        8
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        3.9,
+        0.7,
+        3.9
+      ],
+      "group": "roof-equipment",
+      "id": "foundry-roof-vent-a-cap",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -9,
+        41.3,
+        8
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.1,
+      "dimensions": [
+        2.8,
+        3.6,
+        2.8
+      ],
+      "group": "roof-equipment",
+      "id": "foundry-roof-vent-b",
+      "materialID": "foundry-oxidized-machinery",
+      "position": [
+        -14,
+        38.0,
+        18
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        3.3,
+        0.6,
+        3.3
+      ],
+      "group": "roof-equipment",
+      "id": "foundry-roof-vent-b-cap",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -14,
+        40.1,
+        18
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.14,
+      "dimensions": [
+        2.8,
+        8,
+        2.8
+      ],
+      "group": "subordinate-gantry",
+      "id": "foundry-side-crane-pier-west",
+      "materialID": "foundry-charcoal-steel",
+      "position": [
+        22,
+        5,
+        12
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.14,
+      "dimensions": [
+        2.8,
+        12,
+        2.8
+      ],
+      "group": "subordinate-gantry",
+      "id": "foundry-side-crane-pier-east",
+      "materialID": "foundry-charcoal-steel",
+      "position": [
+        22,
+        7,
+        24
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.16,
+      "dimensions": [
+        3.2,
+        2.8,
+        15
+      ],
+      "group": "subordinate-gantry",
+      "id": "foundry-side-crane-beam",
+      "materialID": "foundry-charcoal-steel",
+      "position": [
+        22,
+        7.4,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.16,
+      "dimensions": [
+        3.8,
+        2.4,
+        4
+      ],
+      "group": "subordinate-gantry",
+      "id": "foundry-side-crane-trolley",
+      "materialID": "foundry-oxidized-machinery",
+      "position": [
+        22,
+        10.6,
+        18
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        6.2,
+        6.8,
+        6.2
+      ],
+      "group": "hot-process",
+      "id": "foundry-hot-ladle-body",
+      "materialID": "foundry-oxidized-machinery",
+      "position": [
+        22,
+        4.2,
+        20
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        4.8,
+        0.9,
+        4.8
+      ],
+      "group": "hot-process",
+      "id": "foundry-hot-ladle-mouth",
+      "materialID": "foundry-hot-process",
+      "position": [
+        22,
+        8.05,
+        20
+      ],
+      "shape": "cylinder"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        0.6,
+        6,
+        5.2
+      ],
+      "group": "louver",
+      "id": "foundry-east-louver-panel",
+      "materialID": "foundry-louver",
+      "position": [
+        14.35,
+        10,
+        17
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        9,
+        4.4,
+        0.55
+      ],
+      "group": "glazing",
+      "id": "foundry-staff-glazing",
+      "materialID": "foundry-v03-staff-glazing",
+      "position": [
+        -18,
+        7,
+        24.3
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.1,
+      "dimensions": [
+        3.5,
+        6.5,
+        0.6
+      ],
+      "group": "staff-entry",
+      "id": "foundry-staff-door",
+      "materialID": "foundry-v03-staff-door",
+      "position": [
+        -7,
+        4.25,
+        24.3
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        1,
+        7.5,
+        0.8
+      ],
+      "group": "staff-entry",
+      "id": "foundry-v03-staff-jamb-west",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -9.25,
+        4.75,
+        24.6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        1,
+        7.5,
+        0.8
+      ],
+      "group": "staff-entry",
+      "id": "foundry-v03-staff-jamb-east",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -4.75,
+        4.75,
+        24.6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        5.5,
+        1,
+        0.8
+      ],
+      "group": "staff-entry",
+      "id": "foundry-v03-staff-header",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -7,
+        8.75,
+        24.6
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.14,
+      "dimensions": [
+        6.5,
+        0.8,
+        1.6
+      ],
+      "group": "staff-entry",
+      "id": "foundry-staff-canopy",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -7,
+        10.2,
+        24.7
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        7.2,
+        0.25,
+        32
+      ],
+      "group": "apron",
+      "id": "foundry-v05-socket-court",
+      "materialID": "foundry-v03-apron-concrete",
+      "position": [
+        -24.4,
+        0.925,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.04,
+      "dimensions": [
+        0.8,
+        0.25,
+        32
+      ],
+      "group": "portal-threshold",
+      "id": "foundry-v05-threshold",
+      "materialID": "foundry-v03-apron-concrete",
+      "position": [
+        -20.4,
+        0.925,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.28,
+      "dimensions": [
+        28,
+        18,
+        48
+      ],
+      "group": "freight-hall",
+      "id": "foundry-hall-east-core",
+      "materialID": "foundry-warm-masonry",
+      "position": [
+        -6,
+        9,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.24,
+      "dimensions": [
+        8,
+        18,
+        8
+      ],
+      "group": "freight-hall",
+      "id": "foundry-hall-west-north-return",
+      "materialID": "foundry-warm-masonry",
+      "position": [
+        -24,
+        9,
+        -20
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.24,
+      "dimensions": [
+        8,
+        18,
+        8
+      ],
+      "group": "freight-hall",
+      "id": "foundry-hall-west-south-return",
+      "materialID": "foundry-warm-masonry",
+      "position": [
+        -24,
+        9,
+        20
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.24,
+      "dimensions": [
+        6,
+        18,
+        48
+      ],
+      "group": "freight-hall",
+      "id": "foundry-east-facade-restoration",
+      "materialID": "foundry-warm-masonry",
+      "position": [
+        11,
+        9,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.05,
+      "dimensions": [
+        0.7,
+        16,
+        32
+      ],
+      "group": "portal-inset",
+      "id": "foundry-portal-inset",
+      "materialID": "foundry-deep-portal",
+      "position": [
+        -20.35,
+        9,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        4,
+        17,
+        2
+      ],
+      "group": "portal-frame",
+      "id": "foundry-portal-jamb-north",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -26,
+        9.5,
+        -17
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        4,
+        17,
+        2
+      ],
+      "group": "portal-frame",
+      "id": "foundry-portal-jamb-south",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -26,
+        9.5,
+        17
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.22,
+      "dimensions": [
+        8,
+        1.8,
+        36
+      ],
+      "group": "portal-frame",
+      "id": "foundry-portal-header",
+      "materialID": "foundry-v03-portal-frame",
+      "position": [
+        -24,
+        18.5,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        7.5,
+        16,
+        0.75
+      ],
+      "group": "portal-depth",
+      "id": "foundry-portal-reveal-north",
+      "materialID": "foundry-v03-portal-reveal",
+      "position": [
+        -24.1,
+        9,
+        -16.4
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        7.5,
+        16,
+        0.75
+      ],
+      "group": "portal-depth",
+      "id": "foundry-portal-reveal-south",
+      "materialID": "foundry-v03-portal-reveal",
+      "position": [
+        -24.1,
+        9,
+        16.4
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.08,
+      "dimensions": [
+        7.5,
+        0.6,
+        32
+      ],
+      "group": "portal-depth",
+      "id": "foundry-portal-reveal-top",
+      "materialID": "foundry-v03-portal-reveal",
+      "position": [
+        -24.1,
+        17.3,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.2,
+      "dimensions": [
+        30,
+        1.2,
+        50
+      ],
+      "group": "hall-roof",
+      "id": "foundry-lower-hall-roof-core",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -5,
+        18.6,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        8,
+        1.2,
+        9
+      ],
+      "group": "hall-roof",
+      "id": "foundry-lower-hall-roof-north-return",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -24,
+        18.6,
+        -20.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.18,
+      "dimensions": [
+        8,
+        1.2,
+        9
+      ],
+      "group": "hall-roof",
+      "id": "foundry-lower-hall-roof-south-return",
+      "materialID": "foundry-bluegreen-steel",
+      "position": [
+        -24,
+        18.6,
+        20.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.12,
+      "dimensions": [
+        30,
+        0.5,
+        50
+      ],
+      "group": "hall-roof-edge",
+      "id": "foundry-lower-hall-roof-edge-core",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -5,
+        19.45,
+        0
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.1,
+      "dimensions": [
+        8,
+        0.5,
+        9
+      ],
+      "group": "hall-roof-edge",
+      "id": "foundry-lower-hall-roof-edge-north-return",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -24,
+        19.45,
+        -20.5
+      ],
+      "shape": "box"
+    },
+    {
+      "bevel": 0.1,
+      "dimensions": [
+        8,
+        0.5,
+        9
+      ],
+      "group": "hall-roof-edge",
+      "id": "foundry-lower-hall-roof-edge-south-return",
+      "materialID": "foundry-roof-edge",
+      "position": [
+        -24,
+        19.45,
+        20.5
+      ],
+      "shape": "box"
+    }
+  ],
+  "contract": "CONTRACT-020",
+  "cycles": {
+    "adaptiveSampling": false,
+    "colorManagement": {
+      "displayDevice": "sRGB",
+      "exposure": 0,
+      "gamma": 1,
+      "look": "None",
+      "viewTransform": "Standard"
+    },
+    "denoising": false,
+    "device": "CPU",
+    "maxBounces": 4,
+    "motionBlur": false,
+    "northwestSunAngleRadians": 0.08,
+    "northwestSunEnergy": 1.4,
+    "pixelAspect": [
+      1,
+      1
+    ],
+    "resolution": [
+      1536,
+      1024
+    ],
+    "resolutionPercentage": 100,
+    "samples": 64,
+    "seed": 2704,
+    "threads": 1,
+    "transparentFilm": true,
+    "worldStrength": 0.28
+  },
+  "frontageConnectivity": {
+    "apronComponentIDs": [
+      "foundry-v05-socket-court",
+      "foundry-v05-threshold"
+    ],
+    "maximumPortalAdjacencyPixels": 2,
+    "maximumSocketDistancePixels": 2,
+    "outwardNormalWorld": [
+      -1,
+      0,
+      0
+    ],
+    "portalThresholdComponentIDs": [
+      "foundry-v05-threshold"
+    ],
+    "socketCompact": [
+      112,
+      88
+    ],
+    "socketWorld": [
+      -28,
+      0,
+      0
+    ],
+    "thresholdWorldX": -20.4
+  },
+  "light": {
+    "keyOrigin": [
+      -80,
+      120,
+      -80
+    ],
+    "shadowDirection": "southeast",
+    "shadowVectorSource": [
+      2,
+      1
+    ]
+  },
+  "logicalBuildingID": "industrial_l04",
+  "orientationTransform": "none",
+  "portal": {
+    "headerComponentID": "foundry-portal-header",
+    "insetComponentID": "foundry-portal-inset",
+    "jambComponentIDs": [
+      "foundry-portal-jamb-north",
+      "foundry-portal-jamb-south"
+    ],
+    "minimumCompactFrameThicknessPixels": 2,
+    "minimumCompactInsetPixels": [
+      15,
+      13
+    ],
+    "processOccluderIDs": [
+      "foundry-side-crane-pier-west",
+      "foundry-side-crane-pier-east",
+      "foundry-side-crane-beam",
+      "foundry-side-crane-trolley",
+      "foundry-hot-ladle-body",
+      "foundry-hot-ladle-mouth"
+    ],
+    "revealComponentIDs": [
+      "foundry-portal-reveal-north",
+      "foundry-portal-reveal-south",
+      "foundry-portal-reveal-top"
+    ]
+  },
+  "productionSelected": false,
+  "registration": {
+    "contactPolygonWorld": [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageSocketSource": [
+      896,
+      704
+    ],
+    "frontageWorld": {
+      "courtMaximum": [
+        -20,
+        16
+      ],
+      "courtMinimum": [
+        -28,
+        -16
+      ],
+      "portalFacing": "negative-x",
+      "roadEdgeX": -28
+    },
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "presentationEnvelopeSource": [
+      256,
+      64,
+      1280,
+      896
+    ],
+    "sceneFootprintUnits": [
+      72,
+      72
+    ],
+    "tileBasisPoints": [
+      72,
+      36
+    ]
+  },
+  "roofRhythm": {
+    "componentIDs": [
+      "foundry-monitor-a-cap",
+      "foundry-monitor-b-cap",
+      "foundry-monitor-c-cap",
+      "foundry-monitor-d-cap"
+    ],
+    "minimumVisibleComponentCount": 4
+  },
+  "sceneGeometryID": "industrial-l04-blender-north-art-v05-socket-facing-portal",
+  "schema": 1,
+  "shadow": {
+    "id": "foundry-authored-southeast-contact",
+    "offsetWorldXZ": [
+      3.5,
+      1.75
+    ],
+    "opacity": 0.08,
+    "polygonWorldXZ": [
+      [
+        -18,
+        -15
+      ],
+      [
+        16,
+        -15
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        -18,
+        16
+      ]
+    ]
+  },
+  "sourceAuthority": false,
+  "sourceRevision": "blender-art-v05",
+  "staffEntry": {
+    "componentIDs": [
+      "foundry-staff-door",
+      "foundry-v03-staff-jamb-west",
+      "foundry-v03-staff-jamb-east",
+      "foundry-v03-staff-header",
+      "foundry-staff-canopy"
+    ],
+    "minimumCompactBounds": [
+      4,
+      8
+    ]
+  },
+  "task": "PLAY-027",
+  "variantID": "variant-0",
+  "viewDirection": "north"
+}

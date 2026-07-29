@@ -1,0 +1,674 @@
+{
+  "acceptedClayCommit" : "90f3c0e8d3c6eab62de2487b84ebf211a2403cd6",
+  "artifact" : "Industrial L4 Turbine Works v07 descriptor-bound material and registration pre-pixel",
+  "authorityCommit" : "3c160e21a917adffd4bf148351a1657184154669",
+  "canonicalGeometryUniqueness" : 4,
+  "catalogDescriptorHashIntersection" : [
+
+  ],
+  "catalogGeometryIDIntersection" : [
+
+  ],
+  "containsDescriptors" : true,
+  "containsMaterials" : true,
+  "descriptorRecords" : [
+    {
+      "authoredIndependently" : true,
+      "canonicalGeometrySHA256" : "e2545fdd41f9d4ce44f1c0849871017f14170f15c45c064ba089219b46732d90",
+      "descriptorSHA256" : "24979ddc5aaf82dfa2c3a5aea9f1bf4ff95ecd5531e8332fd53d5af39109f105",
+      "direction" : "N",
+      "file" : "source/scenes/industrial_l04/variant-0/n/scene.json",
+      "materialReferenceCount" : 34,
+      "missingMaterialReferences" : [
+
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "PASS",
+      "sceneGeometryID" : "industrial-l04-turbine-v07-n-independent"
+    },
+    {
+      "authoredIndependently" : true,
+      "canonicalGeometrySHA256" : "bd3879a96543129af230d9cade458a90fcd57c21a456f3cb0c9b22cc0dc380ee",
+      "descriptorSHA256" : "bd440616dbd9c3b8e167f4ac68574c71b50169d58010854026a8236b6c0d91f9",
+      "direction" : "E",
+      "file" : "source/scenes/industrial_l04/variant-0/e/scene.json",
+      "materialReferenceCount" : 30,
+      "missingMaterialReferences" : [
+
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "PASS",
+      "sceneGeometryID" : "industrial-l04-turbine-v07-e-independent"
+    },
+    {
+      "authoredIndependently" : true,
+      "canonicalGeometrySHA256" : "a6d3190610c39b9b661809ac3905f1ec18ef66a8863a5d345f13616661b9f5c5",
+      "descriptorSHA256" : "4041daffce7f3aed70617fa9cc05e95e3e657b2e0349b1306ff44643d82306f1",
+      "direction" : "S",
+      "file" : "source/scenes/industrial_l04/variant-0/s/scene.json",
+      "materialReferenceCount" : 30,
+      "missingMaterialReferences" : [
+
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "PASS",
+      "sceneGeometryID" : "industrial-l04-turbine-v07-s-independent"
+    },
+    {
+      "authoredIndependently" : true,
+      "canonicalGeometrySHA256" : "94b8c821bfbc7c3524dd452338d3b31972858aa3f06ea4b076ade7dfe90d76ea",
+      "descriptorSHA256" : "a35fd06bd36294a3e4b72ece5c1b0183f49b54cf05f647f9382d3f919c8498dc",
+      "direction" : "W",
+      "file" : "source/scenes/industrial_l04/variant-0/w/scene.json",
+      "materialReferenceCount" : 34,
+      "missingMaterialReferences" : [
+
+      ],
+      "orientationTransform" : "none",
+      "productionDecode" : "PASS",
+      "sceneGeometryID" : "industrial-l04-turbine-v07-w-independent"
+    }
+  ],
+  "descriptorUniqueness" : 4,
+  "directions" : [
+    {
+      "acceptedClayHallWidthToVisibleHeight" : 3.6000000000000001,
+      "controlWingToHallHeight" : 0.5,
+      "descriptorGeometrySHA256" : "e2545fdd41f9d4ce44f1c0849871017f14170f15c45c064ba089219b46732d90",
+      "descriptorProjectedHallBoundingBoxHeightPixels" : 254.1527873881945,
+      "direction" : "N",
+      "freightOpeningCompactWidthsPixels" : [
+        8.8000006804517454,
+        8.8000006804517312,
+        8.8000006804517312
+      ],
+      "freightOpeningPass" : true,
+      "freightStaffVisiblePixels" : [
+        {
+          "id" : "i04-v07-n-freight-1-recess",
+          "pass" : false,
+          "visibleBoundsSource" : [
+            612,
+            676,
+            65,
+            30
+          ],
+          "visibleHeightCompact" : 3.75,
+          "visiblePixelCount" : 246,
+          "visibleWidthCompact" : 8.125
+        },
+        {
+          "id" : "i04-v07-n-freight-2-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            685,
+            699,
+            65,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4264,
+          "visibleWidthCompact" : 8.125
+        },
+        {
+          "id" : "i04-v07-n-freight-3-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            758,
+            735,
+            65,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4263,
+          "visibleWidthCompact" : 8.125
+        },
+        {
+          "id" : "i04-v07-n-staff-entry",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            970,
+            698,
+            22,
+            42
+          ],
+          "visibleHeightCompact" : 5.25,
+          "visiblePixelCount" : 730,
+          "visibleWidthCompact" : 2.75
+        }
+      ],
+      "geometryID" : "industrial-l04-turbine-v07-n-independent",
+      "hallProjectedWidthPixels" : 329.14288259351952,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "lastOpaqueSourceY" : 896,
+      "nonStackMaximumWorldY" : 22,
+      "opaqueContactToPivotPixels" : 0,
+      "proofInput" : "persisted descriptor geometry and camera",
+      "renderGeometrySHA256" : "195e5883b9d58127567932a60d4bc6203e78b44fa815349df2dd86ab6eb36efc",
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        511,
+        512,
+        514,
+        385
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.058585486986112385,
+      "staffEntryBoundsCompact" : [
+        121.37143053325046,
+        87.258308483409706,
+        2.6285716318232488,
+        5.5134114139476225
+      ],
+      "staffEntryLuminance" : {
+        "median" : 56,
+        "opaquePixelCount" : 24,
+        "p25" : 55,
+        "p75" : 96,
+        "p95" : 96,
+        "shareAtOrBelow32" : 0
+      }
+    },
+    {
+      "acceptedClayHallWidthToVisibleHeight" : 3.6000000000000001,
+      "controlWingToHallHeight" : 0.5,
+      "descriptorGeometrySHA256" : "bd3879a96543129af230d9cade458a90fcd57c21a456f3cb0c9b22cc0dc380ee",
+      "descriptorProjectedHallBoundingBoxHeightPixels" : 254.1527873881945,
+      "direction" : "E",
+      "freightOpeningCompactWidthsPixels" : [
+        8.8000006804517454,
+        8.8000006804517454,
+        8.8000006804517312
+      ],
+      "freightOpeningPass" : true,
+      "freightStaffVisiblePixels" : [
+        {
+          "id" : "i04-v07-e-freight-1-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            888,
+            680,
+            71,
+            83
+          ],
+          "visibleHeightCompact" : 10.375,
+          "visiblePixelCount" : 2965,
+          "visibleWidthCompact" : 8.875
+        },
+        {
+          "id" : "i04-v07-e-freight-2-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            815,
+            717,
+            71,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4545,
+          "visibleWidthCompact" : 8.875
+        },
+        {
+          "id" : "i04-v07-e-freight-3-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            741,
+            754,
+            72,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4606,
+          "visibleWidthCompact" : 9
+        },
+        {
+          "id" : "i04-v07-e-staff-entry",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            801,
+            822,
+            22,
+            45
+          ],
+          "visibleHeightCompact" : 5.625,
+          "visiblePixelCount" : 825,
+          "visibleWidthCompact" : 2.75
+        }
+      ],
+      "geometryID" : "industrial-l04-turbine-v07-e-independent",
+      "hallProjectedWidthPixels" : 329.14288259351952,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "lastOpaqueSourceY" : 896,
+      "nonStackMaximumWorldY" : 22,
+      "opaqueContactToPivotPixels" : 0,
+      "proofInput" : "persisted descriptor geometry and camera",
+      "renderGeometrySHA256" : "aa140c6508c2538a67669530265cfdbc5eadae15f0dd24f8b3c9ca37fc212515",
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        511,
+        539,
+        514,
+        358
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.055174205842229491,
+      "staffEntryBoundsCompact" : [
+        100.22857175554174,
+        102.80116682810367,
+        2.6285716318232488,
+        5.5134114139476367
+      ],
+      "staffEntryLuminance" : {
+        "median" : 96,
+        "opaquePixelCount" : 41,
+        "p25" : 43,
+        "p75" : 117,
+        "p95" : 117,
+        "shareAtOrBelow32" : 0.12195121951219512
+      }
+    },
+    {
+      "acceptedClayHallWidthToVisibleHeight" : 3.6000000000000001,
+      "controlWingToHallHeight" : 0.5,
+      "descriptorGeometrySHA256" : "a6d3190610c39b9b661809ac3905f1ec18ef66a8863a5d345f13616661b9f5c5",
+      "descriptorProjectedHallBoundingBoxHeightPixels" : 254.1527873881945,
+      "direction" : "S",
+      "freightOpeningCompactWidthsPixels" : [
+        8.8000006804517312,
+        8.8000006804517454,
+        8.8000006804517454
+      ],
+      "freightOpeningPass" : true,
+      "freightStaffVisiblePixels" : [
+        {
+          "id" : "i04-v07-s-freight-1-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            723,
+            754,
+            72,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4606,
+          "visibleWidthCompact" : 9
+        },
+        {
+          "id" : "i04-v07-s-freight-2-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            650,
+            717,
+            71,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4545,
+          "visibleWidthCompact" : 8.875
+        },
+        {
+          "id" : "i04-v07-s-freight-3-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            577,
+            680,
+            71,
+            83
+          ],
+          "visibleHeightCompact" : 10.375,
+          "visiblePixelCount" : 2965,
+          "visibleWidthCompact" : 8.875
+        },
+        {
+          "id" : "i04-v07-s-staff-entry",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            717,
+            824,
+            22,
+            45
+          ],
+          "visibleHeightCompact" : 5.625,
+          "visiblePixelCount" : 825,
+          "visibleWidthCompact" : 2.75
+        }
+      ],
+      "geometryID" : "industrial-l04-turbine-v07-s-independent",
+      "hallProjectedWidthPixels" : 329.14288259351952,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "lastOpaqueSourceY" : 896,
+      "nonStackMaximumWorldY" : 22,
+      "opaqueContactToPivotPixels" : 0,
+      "proofInput" : "persisted descriptor geometry and camera",
+      "renderGeometrySHA256" : "2c9c8e35807b3ea8a752c6603ed0e09c36be6cc6bcef6c7255d7d1c3617ea4e8",
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        511,
+        450,
+        514,
+        447
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.055130035916742398,
+      "staffEntryBoundsCompact" : [
+        89.714285228248755,
+        103.08688113591055,
+        2.6285716318232488,
+        5.5134114139476367
+      ],
+      "staffEntryLuminance" : {
+        "median" : 117,
+        "opaquePixelCount" : 44,
+        "p25" : 43,
+        "p75" : 117,
+        "p95" : 117,
+        "shareAtOrBelow32" : 0.090909090909090912
+      }
+    },
+    {
+      "acceptedClayHallWidthToVisibleHeight" : 3.6000000000000001,
+      "controlWingToHallHeight" : 0.5,
+      "descriptorGeometrySHA256" : "94b8c821bfbc7c3524dd452338d3b31972858aa3f06ea4b076ade7dfe90d76ea",
+      "descriptorProjectedHallBoundingBoxHeightPixels" : 254.1527873881945,
+      "direction" : "W",
+      "freightOpeningCompactWidthsPixels" : [
+        8.8000006804517312,
+        8.8000006804517312,
+        8.8000006804517454
+      ],
+      "freightOpeningPass" : true,
+      "freightStaffVisiblePixels" : [
+        {
+          "id" : "i04-v07-w-freight-1-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            713,
+            735,
+            65,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 3479,
+          "visibleWidthCompact" : 8.125
+        },
+        {
+          "id" : "i04-v07-w-freight-2-recess",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            786,
+            699,
+            65,
+            99
+          ],
+          "visibleHeightCompact" : 12.375,
+          "visiblePixelCount" : 4264,
+          "visibleWidthCompact" : 8.125
+        },
+        {
+          "id" : "i04-v07-w-freight-3-recess",
+          "pass" : false,
+          "visibleBoundsSource" : [
+            859,
+            662,
+            65,
+            44
+          ],
+          "visibleHeightCompact" : 5.5,
+          "visiblePixelCount" : 934,
+          "visibleWidthCompact" : 8.125
+        },
+        {
+          "id" : "i04-v07-w-staff-entry",
+          "pass" : true,
+          "visibleBoundsSource" : [
+            548,
+            695,
+            22,
+            43
+          ],
+          "visibleHeightCompact" : 5.375,
+          "visiblePixelCount" : 733,
+          "visibleWidthCompact" : 2.75
+        }
+      ],
+      "geometryID" : "industrial-l04-turbine-v07-w-independent",
+      "hallProjectedWidthPixels" : 329.14288259351952,
+      "hallVisibleHeightPixels" : 129.40000000000001,
+      "lastOpaqueSourceY" : 896,
+      "nonStackMaximumWorldY" : 22,
+      "opaqueContactToPivotPixels" : 0,
+      "proofInput" : "persisted descriptor geometry and camera",
+      "renderGeometrySHA256" : "e05c858cf4000e4b9b75c3e8d9b792cb1c293a0c56497a7271c80a334ca274b9",
+      "roofPeakCount" : 4,
+      "silhouetteBoundsSource" : [
+        511,
+        583,
+        514,
+        314
+      ],
+      "stackSilhouetteAreaShareUpperBound" : 0.059781333583595324,
+      "staffEntryBoundsCompact" : [
+        68.571426450540045,
+        86.972594175602822,
+        2.6285716318232488,
+        5.5134114139476367
+      ],
+      "staffEntryLuminance" : {
+        "median" : 56,
+        "opaquePixelCount" : 28,
+        "p25" : 55,
+        "p75" : 96,
+        "p95" : 96,
+        "shareAtOrBelow32" : 0
+      }
+    }
+  ],
+  "feasibilitySHA256" : "b5edb0642f4ad3eed1d9281b27a16166a56a6b9a6183d5c52fa6f71a3aa2d269",
+  "hardGateFailures" : [
+    "N: compact median 55",
+    "N: freight/staff semantic visibility",
+    "E: compact dark share 0.12666200139958012",
+    "S: compact dark share 0.12758620689655173",
+    "W: compact median 55",
+    "W: compact dark share 0.10119940029985007",
+    "W: freight/staff semantic visibility"
+  ],
+  "imageGenCalls" : 0,
+  "luminanceBeforeAfter" : {
+    "after" : [
+      {
+        "direction" : "N",
+        "exact192x128" : {
+          "median" : 55,
+          "opaquePixelCount" : 1351,
+          "p25" : 55,
+          "p75" : 68,
+          "p95" : 83,
+          "shareAtOrBelow32" : 0.090303478904515178
+        }
+      },
+      {
+        "direction" : "E",
+        "exact192x128" : {
+          "median" : 66,
+          "opaquePixelCount" : 1429,
+          "p25" : 50,
+          "p75" : 87,
+          "p95" : 117,
+          "shareAtOrBelow32" : 0.12666200139958012
+        }
+      },
+      {
+        "direction" : "S",
+        "exact192x128" : {
+          "median" : 68,
+          "opaquePixelCount" : 1450,
+          "p25" : 50,
+          "p75" : 87,
+          "p95" : 117,
+          "shareAtOrBelow32" : 0.12758620689655173
+        }
+      },
+      {
+        "direction" : "W",
+        "exact192x128" : {
+          "median" : 55,
+          "opaquePixelCount" : 1334,
+          "p25" : 55,
+          "p75" : 68,
+          "p95" : 83,
+          "shareAtOrBelow32" : 0.10119940029985007
+        }
+      }
+    ],
+    "beforeAuthorityMeasurements" : [
+      {
+        "direction" : "N",
+        "median" : 34,
+        "shareAtOrBelow32" : 0.14999999999999999
+      },
+      {
+        "direction" : "E",
+        "median" : 51,
+        "shareAtOrBelow32" : 0.14999999999999999
+      },
+      {
+        "direction" : "S",
+        "median" : 51,
+        "shareAtOrBelow32" : 0.14999999999999999
+      },
+      {
+        "direction" : "W",
+        "median" : 51,
+        "shareAtOrBelow32" : 0.14999999999999999
+      }
+    ],
+    "beforeCandidate" : "104027f29fce44fb734c010625a4f8f8fc509c2c",
+    "maximumAfterShareAtOrBelow32" : 0.10000000000000001,
+    "minimumAfterMedian" : 64
+  },
+  "materialCount" : 11,
+  "materialLibrarySHA256" : "2a4b26ca5e40e98bed0722269bb47d24553fbb7a53c44984a2cca59db8515973",
+  "metalProcesses" : 0,
+  "normalizerProcesses" : 0,
+  "productionSelected" : false,
+  "registrationAssertions" : [
+    {
+      "descriptorGeometrySHA256" : "e2545fdd41f9d4ce44f1c0849871017f14170f15c45c064ba089219b46732d90",
+      "direction" : "N",
+      "doorSegmentParameters" : [
+        0.78607511858353907,
+        0.85750369553525785
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 1.1368683772161603e-13,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "195e5883b9d58127567932a60d4bc6203e78b44fa815349df2dd86ab6eb36efc",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "descriptorGeometrySHA256" : "bd3879a96543129af230d9cade458a90fcd57c21a456f3cb0c9b22cc0dc380ee",
+      "direction" : "E",
+      "doorSegmentParameters" : [
+        0.76821792795117294,
+        0.8396465049028915
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 0,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "aa140c6508c2538a67669530265cfdbc5eadae15f0dd24f8b3c9ca37fc212515",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "descriptorGeometrySHA256" : "a6d3190610c39b9b661809ac3905f1ec18ef66a8863a5d345f13616661b9f5c5",
+      "direction" : "S",
+      "doorSegmentParameters" : [
+        0.14249635085917872,
+        0.21392492781089753
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 1.1368683772161603e-13,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "2c9c8e35807b3ea8a752c6603ed0e09c36be6cc6bcef6c7255d7d1c3617ea4e8",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    },
+    {
+      "descriptorGeometrySHA256" : "94b8c821bfbc7c3524dd452338d3b31972858aa3f06ea4b076ade7dfe90d76ea",
+      "direction" : "W",
+      "doorSegmentParameters" : [
+        0.16035344870267193,
+        0.23178202565439038
+      ],
+      "doorWorldPlaneDistance" : 0,
+      "maximumDoorProjectionDistancePixels" : 0,
+      "maximumFootprintProjectionDistancePixels" : 1.9794959598584683e-05,
+      "maximumFrontageEndpointDistancePixels" : 1.9794959598584683e-05,
+      "northwestKeyOriginWorld" : [
+        -80,
+        120,
+        -80
+      ],
+      "pass" : true,
+      "pivotToContactDistancePixels" : 9.8974797992923413e-06,
+      "renderGeometrySHA256" : "e05c858cf4000e4b9b75c3e8d9b792cb1c293a0c56497a7271c80a334ca274b9",
+      "socketToFrontageMidpointDistancePixels" : 0,
+      "southeastShadowVectorSource" : [
+        2,
+        1
+      ]
+    }
+  ],
+  "rejectedProofCandidate" : "104027f29fce44fb734c010625a4f8f8fc509c2c",
+  "reviewPanelSHA256" : {
+    "BLOCK-COLOR-NESW.png" : "a2b0d7b5720afdec591ad9f63a7b47883f8a551730a670936127cccca987393a",
+    "BLOCK-GRAYSCALE-NESW.png" : "7296f409836f6fa319c48614671fe9c1149c9b64c4cbb74f4bb2b97b269f43a2",
+    "CITY-COLOR-NESW.png" : "e815aaaa8d16f10715f4136912897a8b7ac727c446385b6a681988b9e4778662",
+    "CITY-GRAYSCALE-NESW.png" : "9872cf75814ea37f5637c7fed213b1275f1d9c3f8bc0bb1e353392d58aba611f",
+    "CLAY-OVERLAY-NESW.png" : "3c4a7537af33f18191e7327d8a6c83c8e937f481258fc6414839dffee7135cfa",
+    "EXACT-192X128-COLOR-NESW.png" : "a2b0d7b5720afdec591ad9f63a7b47883f8a551730a670936127cccca987393a",
+    "EXACT-192X128-GRAYSCALE-NESW.png" : "7296f409836f6fa319c48614671fe9c1149c9b64c4cbb74f4bb2b97b269f43a2",
+    "FREIGHT-STAFF-VISIBILITY-NESW.png" : "4d7194bb31832a2f8108fe245ad89e7535b10612de96e7a2f933ddcded49e31d",
+    "FRONTAGE-CONTACT-NESW.png" : "7b852a4448ca403dd3ae28368a00002971a065d4eac4b65f04f4529f2f2079be",
+    "NEIGHBORHOOD-COLOR-NESW.png" : "4e464f60a841f319928dfa783be50fd3ab4653b50f719ca6a3495cb61aba715c",
+    "NEIGHBORHOOD-GRAYSCALE-NESW.png" : "f1b9980872e2b4bd009b064b21d0c305873c7879dd10ef802f73087e487e09ca",
+    "SOURCE-COLOR-NESW.png" : "64bc9182add7ef2d2b706535d3d68e58327d8915669f1347762cf6d1153a17e1",
+    "SOURCE-GRAYSCALE-NESW.png" : "aece961dfa07ae2ca0c231715daebbb44e0fa051a46829922512834c97a15060"
+  },
+  "sceneKitProcesses" : 0,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027",
+  "technicalDisposition" : "REJECTED"
+}

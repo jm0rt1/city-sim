@@ -543,12 +543,15 @@ final class TerrainRenderer {
         meadow.zPosition = 3
         city.addChild(meadow)
 
-        guard commons.vacantCoordinates.count >= 8 else { return }
-        let textureAnchors = [
-            commons.vacantCoordinates.count / 4,
-            commons.vacantCoordinates.count / 2,
-            commons.vacantCoordinates.count * 3 / 4,
-        ]
+        let textureAnchors = if commons.vacantCoordinates.count >= 8 {
+            [
+                commons.vacantCoordinates.count / 4,
+                commons.vacantCoordinates.count / 2,
+                commons.vacantCoordinates.count * 3 / 4,
+            ]
+        } else {
+            [commons.vacantCoordinates.count / 2]
+        }
         for (textureIndex, coordinateIndex) in textureAnchors.enumerated() {
             let textureCoordinate = commons.vacantCoordinates[coordinateIndex]
             let textureCenter = style.isoPosition(textureCoordinate)
@@ -591,7 +594,8 @@ final class TerrainRenderer {
             neighborhood.addChild(texture)
         }
 
-        guard let foliageCoordinate = commons.vacantCoordinates.first,
+        guard index == 0,
+              let foliageCoordinate = commons.vacantCoordinates.first,
               let grove = assets.generatedSprite(
                   logicalID: "ambient_vegetation_cluster",
                   detail: detail

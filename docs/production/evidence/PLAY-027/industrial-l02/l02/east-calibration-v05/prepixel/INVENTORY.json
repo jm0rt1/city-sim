@@ -1,0 +1,39 @@
+{
+  "artInputs": {
+    "descriptorSHA256": "482bea0169e9229df437b05ca6f0299046d49bb92e2e9d9ef4f3865df9be5fa0",
+    "materialLibrarySHA256": "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
+  },
+  "binarySHA256": {
+    "calibrationBuilder": "a5a15bc79e87ddd8d7ab9c981a973cf132368dacdb9d711df519549cdfb598f9",
+    "panelBuilder": "cb6cacad6803eda3464a0c41f647793932d9f5680c3146a8d983460d678c7769",
+    "structuralValidator": "1664a589f2d79e2bfe27fc99d930f893042d10c2da7eee756e9cba660f13e925"
+  },
+  "deterministicPatternBindings": {
+    "allMaterialPatternsRecognizedByOfflineRenderer": true,
+    "sharedRendererChanged": false
+  },
+  "deterministicReplay": {
+    "artTreeByteIdentical": true,
+    "evidenceTreeByteIdentical": true,
+    "metalProcesses": 0,
+    "replayRoot": "/private/tmp/play027-v05-replay-root"
+  },
+  "evidenceSHA256": {
+    "contract": "fec4bdea5a8852d0ec4ffefc6947113c89a142e06cf0e9cfe1b956f3f15c1038",
+    "prepixelReviewRequest": "c5dfcb71c42702ad0c94637d38cb119e907c6a91e45c128e9c6eec58b0bb7092",
+    "prepixelValidation": "4d7da7268dc39e5bf6b35671f4ec4df73c0991cd8c496ae79a7f50a313449e2a",
+    "structuralBoundaryValidation": "f1d521a01b171ebf14830fc3a52f4d0c34c47994c64986e36fd69bd5966dffac"
+  },
+  "panelsBytePreservedFromIndependentReview": true,
+  "productionSelected": false,
+  "samplerPurpose": "diagnostic-regression",
+  "schema": 1,
+  "sourceAuthorityPixels": false,
+  "sourceSHA256": {
+    "calibrationBuilder": "31d4f01125c384abf8d0cc4713f90eff29c92e110f3bb90c205999eb0c6f01bb",
+    "panelBuilder": "abcb54b841c930842987360bb19fb988b6bfaaaed487ab7d4f2d95cbc9932979",
+    "structuralValidator": "8fa0fcff81b7876cdfa217acf579bbb414a438303c568b742e45dac7a2a9475e"
+  },
+  "task": "PLAY-027",
+  "type": "industrial-l02-east-v05-prepixel-inventory"
+}

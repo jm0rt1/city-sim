@@ -1,0 +1,294 @@
+{
+  "candidateThresholds" : {
+    "maximumHiddenNonMagentaPixelCount" : 0,
+    "minimumAlphaVisibilityRatio" : 0.999,
+    "minimumReferenceCountRatio" : 0.90000000000000002,
+    "minimumReferenceHeightRatio" : 0.94999999999999996,
+    "minimumReferenceWidthRatio" : 0.94999999999999996,
+    "rgbAndAlphaVisibleBoundsMustMatch" : true
+  },
+  "contactSheet" : {
+    "directionOrder" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/review/EXACT-RGBA-OCCUPIED-CROPS.png",
+    "panels" : [
+      {
+        "column" : 0,
+        "id" : "north",
+        "row" : 0,
+        "sheetPanel" : [
+          24,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          578,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          570,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 1,
+        "id" : "east",
+        "row" : 0,
+        "sheetPanel" : [
+          504,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          589,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 0,
+        "id" : "south",
+        "row" : 1,
+        "sheetPanel" : [
+          24,
+          24,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          571,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          563,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 1,
+        "id" : "west",
+        "row" : 1,
+        "sheetPanel" : [
+          504,
+          24,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          579,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          571,
+          1037,
+          914
+        ]
+      }
+    ],
+    "presentation" : "exact decoded RGBA, flat chroma masked transparent, occupied crop on neutral field"
+  },
+  "decodePath" : "CGImageSource immediate standard RGBA decode plus provider bytes",
+  "derivedReferenceFloor" : {
+    "alphaVisibleOccupiedPixelCount" : 67598,
+    "occupiedBoundsPixels" : [
+      410,
+      309
+    ]
+  },
+  "references" : [
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        578,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 69418,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/north/source-v05.png",
+      "fileSHA256" : "a7d1ebc3b5d89c8f90aa50f26da308781cfc79c1bece58416b779893cb8d2158",
+      "id" : "north-default"
+    },
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 67598,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/east/source-v05.png",
+      "fileSHA256" : "8d33e76ec6dd14adca72db51c56e3bed4b50a02f2b122e8f217ee13c67b86f2c",
+      "id" : "east-default"
+    },
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        571,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 68925,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/south/source-v05.png",
+      "fileSHA256" : "58a679af3e21941f3ab5cd40e5aaf9895840eb0a576875a8a91bb783ae569ad4",
+      "id" : "south-default"
+    },
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        579,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 70838,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/west/source-v05.png",
+      "fileSHA256" : "24fd9fc2179f079703909ffa9ae622b2ca27894bdf92c31092664f29f8e008e0",
+      "id" : "west-default"
+    }
+  ],
+  "schema" : 1,
+  "sources" : [
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        578,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 69418,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/north-run-a.png",
+      "fileSHA256" : "0b435d44cd053c335f48c09739ba1d1366dc03110ed4e3a04b60eb7cee4546ab",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "north",
+      "referenceMinimumCountRatio" : 1.0269238734873813,
+      "referenceMinimumHeightRatio" : 1.0614886731391586,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        578,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 69418,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 67598,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/east-run-a.png",
+      "fileSHA256" : "87a18f5efa33462067e43bd12bf400d2f3c1777636dbc99b35faedfa86467eb2",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "east",
+      "referenceMinimumCountRatio" : 1,
+      "referenceMinimumHeightRatio" : 1,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 67598,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        571,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 68925,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/south-run-a.png",
+      "fileSHA256" : "76892dd11d0ad2d7914c999fbbc99d01d7b5a0189e947e5c4107d3dd990b5aca",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "south",
+      "referenceMinimumCountRatio" : 1.0196307583064588,
+      "referenceMinimumHeightRatio" : 1.0841423948220066,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        571,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 68925,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        579,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 70838,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/west-run-a.png",
+      "fileSHA256" : "5f8b6d7156cbb2bd31f24e7729bfd2d4393e87dc2bc3a74ab8f99e0844fdd54f",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "west",
+      "referenceMinimumCountRatio" : 1.0479304121423711,
+      "referenceMinimumHeightRatio" : 1.058252427184466,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        579,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 70838,
+      "validationPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "exact retained-byte ImageIO RGBA visibility validator",
+  "validationPassed" : true
+}

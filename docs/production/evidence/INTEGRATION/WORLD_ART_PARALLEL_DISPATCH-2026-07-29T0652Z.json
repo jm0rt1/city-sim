@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "batch": "industrial_l04_directional_family",
+  "authorityCommit": "02fd3434f0467864700db798ad2078035262ad7b",
+  "sentAt": "2026-07-29T06:52:53Z",
+  "batchState": "appearance_lock_pending",
+  "northDisposition": {
+    "candidate": "d9a2f768a558c3ffa6bf380a34b7f5639ac2758e",
+    "technicalState": "independent_review_in_progress",
+    "literalScaleState": "returned",
+    "reason": [
+      "l3_reads_more_monumental",
+      "v08_collapses_to_small_dark_mass",
+      "portal_frame_incomplete_at_literal_scale",
+      "freight_frontage_reads_as_black_slits",
+      "hot_process_presence_and_grayscale_hierarchy_insufficient"
+    ],
+    "nextAuthority": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V09-REDESIGN-AUTHORITY.md"
+  },
+  "computeEnvelope": {
+    "maxSimultaneousPixelProducingDccProcesses": 0,
+    "activePixelProducingDccProcesses": 0,
+    "nextPermittedWork": "north_v09_zero_pixel_redesign",
+    "futureAbcLimitAfterAppearanceLock": 2,
+    "exceptionOwner": "integration"
+  },
+  "rows": [
+    {
+      "direction": "north",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "head": "d9a2f768a558c3ffa6bf380a34b7f5639ac2758e",
+      "status": "returned_and_refilled",
+      "deliverable": "v09 zero-pixel redesign and literal-scale packet"
+    },
+    {
+      "direction": "east",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "head": "aec7f8fe0a23deee446dc9108b22e6929b54922f",
+      "status": "independent_review",
+      "deliverable": "fail-closed launch-bound CLI"
+    },
+    {
+      "direction": "south",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "head": "68f42a4aa587b11807738a0e77f96c4e5c370ccd",
+      "status": "working",
+      "deliverable": "immutable A/B/C roots and launch-bound assembler"
+    },
+    {
+      "direction": "west",
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "head": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "status": "working",
+      "deliverable": "West launch-bound and immutable A/B/C plumbing"
+    },
+    {
+      "direction": "renderer",
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "head": "dd94ea8fe540337f87b7582ef6a63b6c6eb34251",
+      "status": "accepted_caller_path_and_refilled",
+      "deliverable": "exact 4/4 atomic assembly dependency audit"
+    },
+    {
+      "direction": "qa",
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "head": "d0b79769d1a75c4103fb3a9799c3dfb9dca38d3a",
+      "status": "working",
+      "deliverable": "additive production-quality rubric v2 preregistration"
+    }
+  ]
+}

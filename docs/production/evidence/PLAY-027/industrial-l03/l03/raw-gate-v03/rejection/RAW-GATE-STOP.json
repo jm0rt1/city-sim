@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial-l03-variant-0-source-v03-north-raw-gate",
+  "authorityCommit": "64f3972206cf887e0441ee47c9c6fdae12181a5b",
+  "disposition": "REJECTED_REPEAT_IDENTITY",
+  "directionAttempted": "north",
+  "sceneKitMetalProcessCount": 3,
+  "remainingDirectionProcessCount": 9,
+  "normalizerProcessCount": 0,
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "inputs": {
+    "rendererBinarySHA256": "d85d05e5a9b749b5f575e0905a5c0e55873e4bf904d97178b712dd8fbd42117f",
+    "descriptorSHA256": "11b559a3b2ba4c679a22cd063f94cec56c06c4f46c9c93af2832d31eb06b6bf9",
+    "materialLibrarySHA256": "3a9b0d97e74c3aba1772fa0dac66151955db98b34d25212eee7e15472ce2715e",
+    "samplingContractID": "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "preLanczosCanonicalizer": "rgb-step32-midpoint8-preserve-alpha-chroma-v1"
+  },
+  "attempts": [
+    {
+      "run": "a",
+      "rawFileSHA256": "c2c0c45a3550d76c8e8fb5ed26a5fa0429bc9700c39a171703413e8ef2567750",
+      "decodedRGBASHA256": "81257782424c7318f8b770cd999997c61b62af4430decf6b154889eb80ce4361"
+    },
+    {
+      "run": "b",
+      "rawFileSHA256": "60f9e925e03b9fc8ccd9834ac8d01bc97c02a19a4c0fff1a86bebf0592c80a49",
+      "decodedRGBASHA256": "fd0e6debc6556f340062f6c4a2eaa97f6abb2b57df05dab49d4c322d06c561f4"
+    },
+    {
+      "run": "c",
+      "rawFileSHA256": "78bdea312e5f144da83bece204a66d43341cf7f76f156afe84e346837267cfc6",
+      "decodedRGBASHA256": "21886393a0ade89a8920c1f59c01ab5d02969a3730f7878ba2697afa20d5f845"
+    }
+  ],
+  "repeatComparison": {
+    "primaryVsRepeatB": {
+      "differingPixelCount": 25,
+      "differingChannelCount": 26,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatC": {
+      "differingPixelCount": 20,
+      "differingChannelCount": 21,
+      "alphaDifferingPixelCount": 0
+    },
+    "repeatBVsRepeatC": {
+      "differingPixelCount": 5,
+      "differingChannelCount": 5,
+      "alphaDifferingPixelCount": 0
+    },
+    "primaryVsRepeatBDifferenceBoundsSource": [
+      885,
+      591,
+      933,
+      679
+    ],
+    "localityReport": "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/rejection/NORTH-RAW-LOCALITY.json",
+    "localitySheet": "docs/production/evidence/PLAY-027/industrial-l03/l03/raw-gate-v03/rejection/NORTH-RAW-LOCALITY.png"
+  },
+  "stableTechnicalEvidence": {
+    "completeOccupiedAreaPassedCount": 3,
+    "completeBuildingVolumePassedCount": 3,
+    "nonChromaBounds": [
+      509,
+      387,
+      1027,
+      896
+    ],
+    "nonChromaPixelCount": 159577,
+    "alphaDifferingPixelCount": 0,
+    "registrationIdenticalCount": 3
+  },
+  "samplingRepairResult": "The authorized pre-Lanczos canonicalizer did not establish exact emitted-file or decoded-RGBA identity for North.",
+  "artRejected": false,
+  "stopCondition": "North source-v03 failed exact file and canonical decoded-RGBA repeat identity. Per authorization, no v02-v03 visual acceptance, East, South, West, normalization, catalog assembly, or source-authority proposal was attempted."
+}

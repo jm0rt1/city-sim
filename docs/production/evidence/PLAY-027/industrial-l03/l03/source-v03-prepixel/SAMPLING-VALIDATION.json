@@ -1,0 +1,149 @@
+{
+  "descriptorMutationCount" : 0,
+  "materialMutationCount" : 0,
+  "negativeCases" : [
+    {
+      "failedClosed" : true,
+      "mutation" : "logicalBuildingID",
+      "resolverError" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "variantID",
+      "resolverError" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "sourceRevision",
+      "resolverError" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "viewDirection",
+      "resolverError" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "purpose",
+      "resolverError" : "SceneKit shadows may be disabled only by the enumerated Industrial L2 revisions or Industrial L3 source-v02/source-v03 N/E/S/W v3 source-authority descriptors"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "contractID",
+      "resolverError" : "schema 2 sampling block does not match the frozen deterministic contract"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.missing",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.algorithm",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.version",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.quantizationStep",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.midpointOffset",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.chromaBypassRGBA",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.channels",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.opaquePixelPolicy",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.transparentPixelPolicy",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.partialAlphaPolicy",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.preservesAlpha",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.preservesChroma",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.immutableSourceBuffer",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    },
+    {
+      "failedClosed" : true,
+      "mutation" : "preLanczos.crossRunState",
+      "resolverError" : "authorized Industrial L2 source-v07 East or Industrial L3 source-v03 pre-Lanczos canonicalizer mismatch"
+    }
+  ],
+  "negativeCount" : 20,
+  "passed" : true,
+  "positiveCases" : [
+    {
+      "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v03/scenes/industrial_l03/variant-0/north/scene.json",
+      "descriptorSHA256" : "11b559a3b2ba4c679a22cd063f94cec56c06c4f46c9c93af2832d31eb06b6bf9",
+      "direction" : "north",
+      "passed" : true,
+      "preLanczosAlgorithm" : "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+      "resolvedContractID" : "play027-deterministic-4x-no-msaa-lanczos-v3"
+    },
+    {
+      "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v03/scenes/industrial_l03/variant-0/east/scene.json",
+      "descriptorSHA256" : "1a4687b3ac6db8492ee8030f44dc04d99db163d460c5b923fb628a72d8279448",
+      "direction" : "east",
+      "passed" : true,
+      "preLanczosAlgorithm" : "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+      "resolvedContractID" : "play027-deterministic-4x-no-msaa-lanczos-v3"
+    },
+    {
+      "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v03/scenes/industrial_l03/variant-0/south/scene.json",
+      "descriptorSHA256" : "e0d286c55bfd79527faf87b3c5c75b725ec5dea4394b2d3e1af13b57642f9126",
+      "direction" : "south",
+      "passed" : true,
+      "preLanczosAlgorithm" : "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+      "resolvedContractID" : "play027-deterministic-4x-no-msaa-lanczos-v3"
+    },
+    {
+      "descriptorFile" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-directional-family-v03/scenes/industrial_l03/variant-0/west/scene.json",
+      "descriptorSHA256" : "46cfb19f041bb3303cf4fd5d84a84e111c5892122512859202bfe2b59410bfaf",
+      "direction" : "west",
+      "passed" : true,
+      "preLanczosAlgorithm" : "rgb-step32-midpoint8-preserve-alpha-chroma-v1",
+      "resolvedContractID" : "play027-deterministic-4x-no-msaa-lanczos-v3"
+    }
+  ],
+  "positiveCount" : 4,
+  "productionSelected" : false,
+  "rendererArchitectureSHA256" : "88b6e9d30f666eff5d0527abae4722f027150ac4b93734df40b681160e395d58",
+  "schema" : 1,
+  "scope" : "Industrial L3 variant-0 source-v03 N/E/S/W exact pre-Lanczos schema-2 v3 resolver capability",
+  "sourceAuthority" : false,
+  "task" : "PLAY-027"
+}

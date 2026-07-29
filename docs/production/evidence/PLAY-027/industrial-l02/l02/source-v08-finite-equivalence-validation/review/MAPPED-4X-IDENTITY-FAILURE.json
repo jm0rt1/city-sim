@@ -1,0 +1,254 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v08-finite-equivalence-validation/review/MAPPED-4X-IDENTITY-FAILURE.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l02-east-source-v08-equivalent-validation-mapped-4x-identity-failure",
+  "differenceBoundsSource" : [
+    3359,
+    1742,
+    3417,
+    1797
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "red",
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        182,
+        171,
+        146,
+        255
+      ],
+      "repeatBRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "repeatCRGBA" : [
+        182,
+        171,
+        146,
+        255
+      ],
+      "sourceCoordinate" : [
+        3415,
+        1742
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "repeatBRGBA" : [
+        181,
+        170,
+        146,
+        255
+      ],
+      "repeatCRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "sourceCoordinate" : [
+        3416,
+        1742
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red",
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        182,
+        171,
+        146,
+        255
+      ],
+      "repeatBRGBA" : [
+        183,
+        172,
+        147,
+        255
+      ],
+      "repeatCRGBA" : [
+        182,
+        171,
+        146,
+        255
+      ],
+      "sourceCoordinate" : [
+        3415,
+        1743
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red",
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "repeatBRGBA" : [
+        181,
+        171,
+        146,
+        255
+      ],
+      "repeatCRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "sourceCoordinate" : [
+        3416,
+        1743
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        181,
+        170,
+        146,
+        255
+      ],
+      "repeatBRGBA" : [
+        181,
+        171,
+        146,
+        255
+      ],
+      "repeatCRGBA" : [
+        181,
+        170,
+        146,
+        255
+      ],
+      "sourceCoordinate" : [
+        3359,
+        1766
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        182,
+        171,
+        146,
+        255
+      ],
+      "repeatBRGBA" : [
+        181,
+        171,
+        146,
+        255
+      ],
+      "repeatCRGBA" : [
+        182,
+        171,
+        146,
+        255
+      ],
+      "sourceCoordinate" : [
+        3415,
+        1796
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red",
+        "green",
+        "blue"
+      ],
+      "primaryRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "repeatBRGBA" : [
+        183,
+        172,
+        147,
+        255
+      ],
+      "repeatCRGBA" : [
+        180,
+        170,
+        145,
+        255
+      ],
+      "sourceCoordinate" : [
+        3416,
+        1796
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v08-finite-equivalence-validation/diagnostics/run-a/MAPPED-PRE-LANCZOS-4X.png",
+    "fileSHA256" : "160374adebdf257d06bac582d0c746069dfcc9dfff109ee63335bff5bff85440"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 16,
+    "differingPixelCount" : 7
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v08-finite-equivalence-validation/diagnostics/run-b/MAPPED-PRE-LANCZOS-4X.png",
+    "fileSHA256" : "d64351bd45eb3966ddbc2ef7fd373daad01c3e8f52364d395b3575ab15cdcdf8"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 16,
+    "differingPixelCount" : 7
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v08-finite-equivalence-validation/diagnostics/run-c/MAPPED-PRE-LANCZOS-4X.png",
+    "fileSHA256" : "160374adebdf257d06bac582d0c746069dfcc9dfff109ee63335bff5bff85440"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    6144,
+    4096
+  ],
+  "task" : "PLAY-027"
+}

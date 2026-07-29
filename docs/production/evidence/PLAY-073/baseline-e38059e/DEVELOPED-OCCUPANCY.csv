@@ -1,0 +1,7 @@
+route,width,height,camera_scale,eligible_pixels,developed_pixels,developed_share,terrain_share
+regular-city,1278,768,0.85,564833,65154,0.1154,0.8846
+regular-neighborhood,1278,768,0.65,568464,95294,0.1676,0.8324
+regular-block,1278,768,0.50,567036,144833,0.2554,0.7446
+compact-city,900,600,0.576345682144165,321527,104388,0.3247,0.6753
+compact-neighborhood,900,600,0.52,321172,119076,0.3708,0.6292
+compact-block,900,600,0.45,320685,139585,0.4353,0.5647

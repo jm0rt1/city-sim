@@ -1,0 +1,206 @@
+{
+  "calibrationID" : "industrial-l02-variant-0-contract018-final-family",
+  "directionOrder" : [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "grayscaleRecognition" : {
+    "conversion" : "Core Graphics deterministic Rec.709 integer luma",
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/final-family/review/NATIVE-2X-GRAYSCALE.png",
+    "sha256" : "3f7612001d86b9344926f34ead7d38242016a4e10eb61844b6503be23d8a553a",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "inputs" : [
+    {
+      "direction" : "north",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/diagnostics/raw-repeat/north/run-a/raw.png",
+      "sha256" : "095267c78f333eb43c3fd0e14c4e9bb14bb83a787188ddecfa9c94dd92ab88e3"
+    },
+    {
+      "direction" : "east",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/raw.png",
+      "sha256" : "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8"
+    },
+    {
+      "direction" : "south",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/diagnostics/raw-repeat/south/run-a/raw.png",
+      "sha256" : "b3cafd821e29980a86a6d74f562a2ad97d5f877b4106f746aaa88bc19d9922a5"
+    },
+    {
+      "direction" : "west",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/diagnostics/raw-repeat/west/run-a/raw.png",
+      "sha256" : "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d"
+    }
+  ],
+  "layout" : {
+    "columns" : 2,
+    "labels" : false,
+    "rowMajor" : [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "rows" : 2
+  },
+  "native2xActualScale" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/final-family/review/NATIVE-2X-COLOR.png",
+    "panelPixels" : [
+      432,
+      288
+    ],
+    "presentation" : "existing deterministic normalized-alpha block output on neutral background",
+    "scale" : 0.421875,
+    "sha256" : "ac981aa751669f8d9edcc96a7e9f8cdaa63bfe5b52d77d256ccba9b9aafa5a49",
+    "sheetPixels" : [
+      864,
+      576
+    ]
+  },
+  "normalizedAlphaInputs" : [
+    {
+      "direction" : "north",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/north/generated_v4_industrial_l02_north_source_v07_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "c539f4478296e929fb77250ad8476572e7b8155ad96abd2ebebe3170b052debc"
+    },
+    {
+      "direction" : "east",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/east/generated_v4_industrial_l02_east_source_v05_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086"
+    },
+    {
+      "direction" : "south",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/south/generated_v4_industrial_l02_south_source_v07_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "c98e9b56a5705613a482b4ca249b4cb2b23a74fd6123638fc8282e7e8e5ba6f7"
+    },
+    {
+      "direction" : "west",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/west/generated_v4_industrial_l02_west_source_v07_block.png",
+      "lod" : "block",
+      "pixels" : [
+        1024,
+        683
+      ],
+      "sha256" : "4c66e3d326606838bb484beef0a685cbf73d38d2e127572bd19be8e0c83077dd"
+    }
+  ],
+  "previewAlphaIsNormalizedOutput" : true,
+  "productionSelected" : false,
+  "registeredFootprintActualScale" : {
+    "correspondingRawSourceCrop" : [
+      512,
+      512,
+      513,
+      387
+    ],
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/final-family/review/FOOTPRINT-NATIVE-2X-COLOR.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      341,
+      342,
+      258
+    ],
+    "panelPixels" : [
+      144,
+      109
+    ],
+    "presentation" : "fixed descriptor-derived normalized-alpha tile and vertical sprite envelope at native-2x scale",
+    "scale" : 0.421875,
+    "sha256" : "1ea773475056d57cce0f4998d31b11c220eb5cb42d976c6c8d3c53bca6fd6369",
+    "sheetPixels" : [
+      288,
+      218
+    ]
+  },
+  "registeredFootprintGrayscale" : {
+    "conversion" : "Core Graphics deterministic Rec.709 integer luma",
+    "correspondingRawSourceCrop" : [
+      512,
+      512,
+      513,
+      387
+    ],
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/final-family/review/FOOTPRINT-NATIVE-2X-GRAYSCALE.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      341,
+      342,
+      258
+    ],
+    "panelPixels" : [
+      144,
+      109
+    ],
+    "scale" : 0.421875,
+    "sha256" : "4091cc51b3c93132e00b5549b84a1738ed2b0fd1e1698329e6c6cf99c41ef34a",
+    "sheetPixels" : [
+      288,
+      218
+    ]
+  },
+  "registeredFootprintZoom" : {
+    "correspondingRawSourceCrop" : [
+      512,
+      512,
+      513,
+      387
+    ],
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/final-family/review/ZOOM.png",
+    "interpolation" : "none",
+    "normalizedBlockCrop" : [
+      341,
+      341,
+      342,
+      258
+    ],
+    "panelPixels" : [
+      512,
+      386
+    ],
+    "presentation" : "fixed descriptor-derived normalized-alpha envelope enlarged with nearest-neighbor review scaling",
+    "scale" : 1.4970760233918128,
+    "sha256" : "5ab6a02fa0068ec388979cdf104c5791892d7a5180776a2eada2578f2a59e170",
+    "sheetPixels" : [
+      1024,
+      772
+    ]
+  },
+  "reviewStatus" : "pending-independent-source-art-review",
+  "schema" : 1,
+  "sourceScale" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/final-family/review/SOURCE-SCALE.png",
+    "panelPixels" : [
+      1536,
+      1024
+    ],
+    "presentation" : "unaltered raw #ff00ff inspection",
+    "sha256" : "ab5367c53f309397c9b0d86e5227a27627d30f9f149d0132ab4d8add62f3e68b",
+    "sheetPixels" : [
+      3072,
+      2048
+    ]
+  },
+  "task" : "PLAY-027"
+}

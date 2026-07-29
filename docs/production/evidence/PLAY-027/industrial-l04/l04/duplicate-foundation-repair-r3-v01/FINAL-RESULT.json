@@ -1,0 +1,401 @@
+{
+  "contract" : "CONTRACT-019-R3",
+  "diagnosticOnly" : true,
+  "disposition" : "RETURN_REMAINING_REPEAT_SPLIT",
+  "portalCounts" : {
+    "expectedLiteral192" : {
+      "portal-header" : 19,
+      "portal-inset-void" : 57,
+      "portal-jamb-north" : 21,
+      "portal-jamb-south" : 3
+    },
+    "expectedSource" : {
+      "portal-header" : 1275,
+      "portal-inset-void" : 3388,
+      "portal-jamb-north" : 1562,
+      "portal-jamb-south" : 155
+    },
+    "runALiteral192" : {
+      "crucible-occluder" : {
+        "bounds" : [
+          94,
+          91,
+          100,
+          107
+        ],
+        "visiblePixelCount" : 109
+      },
+      "gantry" : {
+        "bounds" : [
+          82,
+          75,
+          111,
+          107
+        ],
+        "visiblePixelCount" : 458
+      },
+      "hall" : {
+        "bounds" : [
+          64,
+          68,
+          127,
+          111
+        ],
+        "visiblePixelCount" : 422
+      },
+      "other" : {
+        "bounds" : [
+          64,
+          66,
+          120,
+          107
+        ],
+        "visiblePixelCount" : 653
+      },
+      "portal-header" : {
+        "bounds" : [
+          89,
+          77,
+          104,
+          86
+        ],
+        "visiblePixelCount" : 19
+      },
+      "portal-inset-void" : {
+        "bounds" : [
+          91,
+          84,
+          100,
+          94
+        ],
+        "visiblePixelCount" : 57
+      },
+      "portal-jamb-north" : {
+        "bounds" : [
+          89,
+          87,
+          97,
+          96
+        ],
+        "visiblePixelCount" : 21
+      },
+      "portal-jamb-south" : {
+        "bounds" : [
+          102,
+          88,
+          102,
+          90
+        ],
+        "visiblePixelCount" : 3
+      }
+    },
+    "runASource" : {
+      "crucible-occluder" : {
+        "bounds" : [
+          713,
+          615,
+          836,
+          866
+        ],
+        "visiblePixelCount" : 7229
+      },
+      "gantry" : {
+        "bounds" : [
+          658,
+          599,
+          898,
+          863
+        ],
+        "visiblePixelCount" : 28929
+      },
+      "hall" : {
+        "bounds" : [
+          512,
+          526,
+          1023,
+          895
+        ],
+        "visiblePixelCount" : 27068
+      },
+      "other" : {
+        "bounds" : [
+          512,
+          526,
+          968,
+          864
+        ],
+        "visiblePixelCount" : 41932
+      },
+      "portal-header" : {
+        "bounds" : [
+          714,
+          616,
+          836,
+          698
+        ],
+        "visiblePixelCount" : 1275
+      },
+      "portal-inset-void" : {
+        "bounds" : [
+          732,
+          675,
+          805,
+          759
+        ],
+        "visiblePixelCount" : 3388
+      },
+      "portal-jamb-north" : {
+        "bounds" : [
+          713,
+          693,
+          792,
+          779
+        ],
+        "visiblePixelCount" : 1562
+      },
+      "portal-jamb-south" : {
+        "bounds" : [
+          818,
+          705,
+          824,
+          728
+        ],
+        "visiblePixelCount" : 155
+      }
+    },
+    "runBLiteral192" : {
+      "crucible-occluder" : {
+        "bounds" : [
+          89,
+          86,
+          100,
+          107
+        ],
+        "visiblePixelCount" : 111
+      },
+      "gantry" : {
+        "bounds" : [
+          82,
+          75,
+          111,
+          107
+        ],
+        "visiblePixelCount" : 458
+      },
+      "hall" : {
+        "bounds" : [
+          64,
+          68,
+          127,
+          111
+        ],
+        "visiblePixelCount" : 422
+      },
+      "other" : {
+        "bounds" : [
+          64,
+          66,
+          120,
+          107
+        ],
+        "visiblePixelCount" : 653
+      },
+      "portal-header" : {
+        "bounds" : [
+          89,
+          77,
+          104,
+          85
+        ],
+        "visiblePixelCount" : 17
+      },
+      "portal-inset-void" : {
+        "bounds" : [
+          91,
+          84,
+          100,
+          94
+        ],
+        "visiblePixelCount" : 57
+      },
+      "portal-jamb-north" : {
+        "bounds" : [
+          89,
+          87,
+          97,
+          96
+        ],
+        "visiblePixelCount" : 21
+      },
+      "portal-jamb-south" : {
+        "bounds" : [
+          102,
+          88,
+          102,
+          90
+        ],
+        "visiblePixelCount" : 3
+      }
+    },
+    "runBSource" : {
+      "crucible-occluder" : {
+        "bounds" : [
+          713,
+          615,
+          836,
+          866
+        ],
+        "visiblePixelCount" : 7308
+      },
+      "gantry" : {
+        "bounds" : [
+          658,
+          599,
+          898,
+          863
+        ],
+        "visiblePixelCount" : 28929
+      },
+      "hall" : {
+        "bounds" : [
+          512,
+          526,
+          1023,
+          895
+        ],
+        "visiblePixelCount" : 27092
+      },
+      "other" : {
+        "bounds" : [
+          512,
+          526,
+          968,
+          864
+        ],
+        "visiblePixelCount" : 41908
+      },
+      "portal-header" : {
+        "bounds" : [
+          714,
+          616,
+          836,
+          696
+        ],
+        "visiblePixelCount" : 1175
+      },
+      "portal-inset-void" : {
+        "bounds" : [
+          732,
+          675,
+          805,
+          759
+        ],
+        "visiblePixelCount" : 3388
+      },
+      "portal-jamb-north" : {
+        "bounds" : [
+          713,
+          693,
+          792,
+          779
+        ],
+        "visiblePixelCount" : 1583
+      },
+      "portal-jamb-south" : {
+        "bounds" : [
+          818,
+          705,
+          824,
+          728
+        ],
+        "visiblePixelCount" : 155
+      }
+    },
+    "unchangedFromV17Return" : false
+  },
+  "processCounts" : {
+    "authoritativeRaw" : 0,
+    "normalizer" : 0,
+    "sceneKitMetalSemantic" : 2,
+    "siblings" : 0
+  },
+  "productionSelected" : false,
+  "repeatIdentity" : {
+    "decodedRGBAIdentity" : false,
+    "differenceBounds" : [
+      558,
+      688,
+      731,
+      743
+    ],
+    "differingChannelCount" : 167,
+    "differingPixelCount" : 143,
+    "fileIdentity" : false,
+    "firstDifference" : {
+      "coordinate" : [
+        719,
+        688
+      ],
+      "runA" : [
+        240,
+        48,
+        16,
+        255
+      ],
+      "runB" : [
+        240,
+        80,
+        16,
+        255
+      ]
+    },
+    "manifestIdentity" : true,
+    "maximumChannelDelta" : 160,
+    "semanticTransitions" : [
+      {
+        "pixelCount" : 3,
+        "transition" : "crucible-occluder->crucible-occluder"
+      },
+      {
+        "pixelCount" : 6,
+        "transition" : "crucible-occluder->portal-jamb-north"
+      },
+      {
+        "pixelCount" : 2,
+        "transition" : "hall->hall"
+      },
+      {
+        "pixelCount" : 24,
+        "transition" : "other->hall"
+      },
+      {
+        "pixelCount" : 85,
+        "transition" : "portal-header->crucible-occluder"
+      },
+      {
+        "pixelCount" : 15,
+        "transition" : "portal-header->portal-jamb-north"
+      },
+      {
+        "pixelCount" : 8,
+        "transition" : "portal-jamb-north->portal-jamb-north"
+      }
+    ]
+  },
+  "runs" : {
+    "runA" : {
+      "decodedRGBASHA256" : "dab941daf6be1539218ee030cd8ddd32474b1296eaef0268d84c54301fe37925",
+      "fileSHA256" : "39c5a71a3a185a125b3404a72a36deae5274833a3e6b81f01a063fb7f9db1ade",
+      "nodeManifestSHA256" : "611d60db7d39c9c0de73d1042f658c08e18c2d26bf4be9b7af3c6f577593a94f"
+    },
+    "runB" : {
+      "decodedRGBASHA256" : "48e76f3adedc5969cef212a89487275c8c6b89cfaa8eb674ec357c040f399641",
+      "fileSHA256" : "d9932be72d4538da41eb096c426e416e34f5eb4a40baf29dfcf32ec1bce0595e",
+      "nodeManifestSHA256" : "611d60db7d39c9c0de73d1042f658c08e18c2d26bf4be9b7af3c6f577593a94f"
+    }
+  },
+  "schema" : 1,
+  "sourceAuthority" : false,
+  "stopReason" : "A/B split remains after duplicate-foundation removal; no further process or modeling is authorized.",
+  "task" : "PLAY-027"
+}

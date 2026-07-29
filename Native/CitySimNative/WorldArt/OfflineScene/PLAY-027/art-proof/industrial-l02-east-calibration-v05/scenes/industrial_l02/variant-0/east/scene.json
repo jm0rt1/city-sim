@@ -1,0 +1,1107 @@
+{
+  "authoredIndependently" : true,
+  "building" : {
+    "chimney" : {
+      "dimensions" : [
+        1,
+        1,
+        1
+      ],
+      "materialID" : "v04-process-metal",
+      "positionWorld" : [
+        0,
+        1,
+        0
+      ]
+    },
+    "depth" : 56,
+    "floorHeight" : 12,
+    "floors" : 3,
+    "foundationDimensions" : [
+      56,
+      2.3999999999999999,
+      56
+    ],
+    "foundationHeight" : 3,
+    "foundationMaterialID" : "v05-foundation",
+    "foundationPositionWorld" : [
+      0,
+      1.2,
+      0
+    ],
+    "massBlocks" : [
+      {
+        "dimensions" : [
+          42,
+          5,
+          48
+        ],
+        "id" : "v05-production-plinth",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-plinth",
+        "positionWorld" : [
+          -6,
+          4.9000000000000004,
+          -2
+        ],
+        "presentationRole" : "continuous grounded production plinth"
+      },
+      {
+        "dimensions" : [
+          41.600000000000001,
+          18,
+          47.600000000000001
+        ],
+        "id" : "v05-production-hall",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-metal",
+        "positionWorld" : [
+          -6,
+          16.300000000000001,
+          -2
+        ],
+        "presentationRole" : "broad low forty-eight-unit production hall"
+      },
+      {
+        "dimensions" : [
+          8.5,
+          20,
+          42
+        ],
+        "id" : "v05-east-loading-spine",
+        "identityBearing" : true,
+        "materialID" : "v05-hall-plinth",
+        "positionWorld" : [
+          18.75,
+          12.5,
+          -5
+        ],
+        "presentationRole" : "continuous East logistics frontage spine"
+      },
+      {
+        "dimensions" : [
+          14,
+          16,
+          18
+        ],
+        "id" : "v05-admin-quality-wing",
+        "identityBearing" : true,
+        "materialID" : "v05-admin-concrete",
+        "positionWorld" : [
+          20.5,
+          10.6,
+          19
+        ],
+        "presentationRole" : "separate administration and quality wing"
+      },
+      {
+        "dimensions" : [
+          1.1000000000000001,
+          6.5,
+          10
+        ],
+        "id" : "v05-admin-glazing-band",
+        "identityBearing" : true,
+        "materialID" : "v05-glazing",
+        "positionWorld" : [
+          27.550000000000001,
+          12.199999999999999,
+          18
+        ],
+        "presentationRole" : "large administration glazing rhythm"
+      },
+      {
+        "dimensions" : [
+          1.6000000000000001,
+          2,
+          17.199999999999999
+        ],
+        "id" : "v05-admin-sill",
+        "identityBearing" : false,
+        "materialID" : "v05-dark-steel",
+        "positionWorld" : [
+          27.199999999999999,
+          6,
+          19
+        ],
+        "presentationRole" : "grounding administration sill"
+      },
+      {
+        "dimensions" : [
+          2.3999999999999999,
+          14,
+          11.5
+        ],
+        "id" : "v05-dock-recess-a",
+        "identityBearing" : true,
+        "materialID" : "v05-recess",
+        "positionWorld" : [
+          25.800000000000001,
+          10,
+          -19
+        ],
+        "presentationRole" : "deep grounded loading recess A"
+      },
+      {
+        "dimensions" : [
+          2.3999999999999999,
+          14,
+          11.5
+        ],
+        "id" : "v05-dock-recess-b",
+        "identityBearing" : true,
+        "materialID" : "v05-recess",
+        "positionWorld" : [
+          25.800000000000001,
+          10,
+          -5
+        ],
+        "presentationRole" : "deep grounded loading recess B"
+      },
+      {
+        "dimensions" : [
+          2.3999999999999999,
+          14,
+          11.5
+        ],
+        "id" : "v05-dock-recess-c",
+        "identityBearing" : true,
+        "materialID" : "v05-recess",
+        "positionWorld" : [
+          25.800000000000001,
+          10,
+          9
+        ],
+        "presentationRole" : "deep grounded loading recess C"
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          8.5
+        ],
+        "id" : "v05-dock-door-a",
+        "identityBearing" : true,
+        "materialID" : "v05-dock-door",
+        "positionWorld" : [
+          27.300000000000001,
+          9,
+          -19
+        ],
+        "presentationRole" : "individually readable dock door A"
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          8.5
+        ],
+        "id" : "v05-dock-door-b",
+        "identityBearing" : true,
+        "materialID" : "v05-dock-door",
+        "positionWorld" : [
+          27.300000000000001,
+          9,
+          -5
+        ],
+        "presentationRole" : "individually readable dock door B"
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          11,
+          8.5
+        ],
+        "id" : "v05-dock-door-c",
+        "identityBearing" : true,
+        "materialID" : "v05-dock-door",
+        "positionWorld" : [
+          27.300000000000001,
+          9,
+          9
+        ],
+        "presentationRole" : "individually readable dock door C"
+      },
+      {
+        "dimensions" : [
+          7,
+          3,
+          12.5
+        ],
+        "id" : "v05-dock-canopy-a",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          24.5,
+          17.699999999999999,
+          -19
+        ],
+        "presentationRole" : "deep high-contrast dock canopy A"
+      },
+      {
+        "dimensions" : [
+          7,
+          3,
+          12.5
+        ],
+        "id" : "v05-dock-canopy-b",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          24.5,
+          17.699999999999999,
+          -5
+        ],
+        "presentationRole" : "deep high-contrast dock canopy B"
+      },
+      {
+        "dimensions" : [
+          7,
+          3,
+          12.5
+        ],
+        "id" : "v05-dock-canopy-c",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          24.5,
+          17.699999999999999,
+          9
+        ],
+        "presentationRole" : "deep high-contrast dock canopy C"
+      },
+      {
+        "dimensions" : [
+          7.2000000000000002,
+          1.8,
+          12.800000000000001
+        ],
+        "id" : "v05-dock-hazard-fascia-a",
+        "identityBearing" : true,
+        "materialID" : "v05-safety",
+        "positionWorld" : [
+          24.199999999999999,
+          19.800000000000001,
+          -19
+        ],
+        "presentationRole" : "dock A safety hierarchy"
+      },
+      {
+        "dimensions" : [
+          7.2000000000000002,
+          1.8,
+          12.800000000000001
+        ],
+        "id" : "v05-dock-hazard-fascia-b",
+        "identityBearing" : true,
+        "materialID" : "v05-safety",
+        "positionWorld" : [
+          24.199999999999999,
+          19.800000000000001,
+          -5
+        ],
+        "presentationRole" : "dock B safety hierarchy"
+      },
+      {
+        "dimensions" : [
+          7.2000000000000002,
+          1.8,
+          12.800000000000001
+        ],
+        "id" : "v05-dock-hazard-fascia-c",
+        "identityBearing" : true,
+        "materialID" : "v05-safety",
+        "positionWorld" : [
+          24.199999999999999,
+          19.800000000000001,
+          9
+        ],
+        "presentationRole" : "dock C safety hierarchy"
+      },
+      {
+        "dimensions" : [
+          6,
+          2.2000000000000002,
+          48
+        ],
+        "id" : "v05-loading-apron",
+        "identityBearing" : true,
+        "materialID" : "v05-apron",
+        "positionWorld" : [
+          25,
+          1.1000000000000001,
+          -1
+        ],
+        "presentationRole" : "wide grounded East service apron"
+      },
+      {
+        "dimensions" : [
+          2,
+          10,
+          7
+        ],
+        "id" : "v05-personnel-recess",
+        "identityBearing" : true,
+        "materialID" : "v05-recess",
+        "positionWorld" : [
+          26.100000000000001,
+          8,
+          23
+        ],
+        "presentationRole" : "grounded staff entrance recess"
+      },
+      {
+        "dimensions" : [
+          0.80000000000000004,
+          8.5,
+          5.5
+        ],
+        "id" : "v05-personnel-door",
+        "identityBearing" : true,
+        "materialID" : "v05-warm-glazing",
+        "positionWorld" : [
+          27.399999999999999,
+          7.3499999999999996,
+          23
+        ],
+        "presentationRole" : "staff-scale entrance"
+      },
+      {
+        "dimensions" : [
+          5.5,
+          2.5,
+          8
+        ],
+        "id" : "v05-personnel-canopy",
+        "identityBearing" : true,
+        "materialID" : "v05-safety",
+        "positionWorld" : [
+          25,
+          13.6,
+          23
+        ],
+        "presentationRole" : "distinct staff entrance canopy"
+      },
+      {
+        "dimensions" : [
+          43.5,
+          2.3999999999999999,
+          16
+        ],
+        "id" : "v05-roof-north",
+        "identityBearing" : true,
+        "materialID" : "v05-roof",
+        "positionWorld" : [
+          -6,
+          26.399999999999999,
+          -18
+        ],
+        "presentationRole" : "north production roof plane"
+      },
+      {
+        "dimensions" : [
+          43.5,
+          3.2000000000000002,
+          16
+        ],
+        "id" : "v05-roof-center",
+        "identityBearing" : true,
+        "materialID" : "v05-roof",
+        "positionWorld" : [
+          -6,
+          26.800000000000001,
+          -1.5
+        ],
+        "presentationRole" : "raised center production roof plane"
+      },
+      {
+        "dimensions" : [
+          29,
+          2.3999999999999999,
+          15
+        ],
+        "id" : "v05-roof-south",
+        "identityBearing" : true,
+        "materialID" : "v05-roof",
+        "positionWorld" : [
+          -13,
+          26.399999999999999,
+          14.5
+        ],
+        "presentationRole" : "south production roof plane"
+      },
+      {
+        "dimensions" : [
+          15.5,
+          2.3999999999999999,
+          19.5
+        ],
+        "id" : "v05-admin-roof",
+        "identityBearing" : true,
+        "materialID" : "v05-roof",
+        "positionWorld" : [
+          20.5,
+          19.399999999999999,
+          19
+        ],
+        "presentationRole" : "separate administration roof"
+      },
+      {
+        "dimensions" : [
+          25,
+          6,
+          9
+        ],
+        "id" : "v05-clerestory",
+        "identityBearing" : true,
+        "materialID" : "v05-glazing",
+        "positionWorld" : [
+          -7,
+          32.649999999999999,
+          -5
+        ],
+        "presentationRole" : "large readable production clerestory"
+      },
+      {
+        "dimensions" : [
+          26.5,
+          2,
+          10.5
+        ],
+        "id" : "v05-clerestory-cap",
+        "identityBearing" : true,
+        "materialID" : "v05-light-trim",
+        "positionWorld" : [
+          -7,
+          35,
+          -5
+        ],
+        "presentationRole" : "high-value hall roof silhouette"
+      },
+      {
+        "dimensions" : [
+          18,
+          3.5,
+          11
+        ],
+        "id" : "v05-process-platform",
+        "identityBearing" : true,
+        "materialID" : "v05-dark-steel",
+        "positionWorld" : [
+          -17,
+          29,
+          17
+        ],
+        "presentationRole" : "secondary process platform"
+      },
+      {
+        "dimensions" : [
+          7,
+          5,
+          7
+        ],
+        "id" : "v05-hvac-bank-a",
+        "identityBearing" : true,
+        "materialID" : "v05-process-metal",
+        "positionWorld" : [
+          -12,
+          32.5,
+          17
+        ],
+        "presentationRole" : "large readable roof plant A"
+      },
+      {
+        "dimensions" : [
+          7,
+          5,
+          7
+        ],
+        "id" : "v05-hvac-bank-b",
+        "identityBearing" : true,
+        "materialID" : "v05-process-metal",
+        "positionWorld" : [
+          -21,
+          32.5,
+          17
+        ],
+        "presentationRole" : "large readable roof plant B"
+      },
+      {
+        "dimensions" : [
+          4,
+          4,
+          30
+        ],
+        "id" : "v05-main-duct",
+        "identityBearing" : true,
+        "materialID" : "v05-duct-metal",
+        "positionWorld" : [
+          -9.8000000000000007,
+          30.5,
+          4
+        ],
+        "presentationRole" : "visible roof duct hierarchy"
+      }
+    ],
+    "massingProfile" : "industrial-l02-east-wide-low-capable-campus-v05",
+    "roofHeight" : 2.5,
+    "roofMaterialID" : "v05-roof",
+    "roofOverhang" : 0,
+    "roofVolumes" : [
+
+    ],
+    "trimBands" : [
+
+    ],
+    "trimMaterialID" : "v05-light-trim",
+    "usesExplicitComponentGeometry" : true,
+    "usesLegacyDomesticDetails" : false,
+    "wallHeight" : 33,
+    "wallMaterialID" : "v05-hall-metal",
+    "width" : 56
+  },
+  "camera" : {
+    "elevationDegrees" : 30,
+    "orthographicScale" : 79.195953369140597,
+    "oversamplingFactor" : 4,
+    "positionWorld" : [
+      180,
+      146.9693845669907,
+      180
+    ],
+    "postProjectionOffsetPixels" : [
+      0,
+      256
+    ],
+    "projection" : "orthographic-2:1",
+    "renderViewportPixels" : [
+      1536,
+      1024
+    ],
+    "sourceGroundCenter" : [
+      768,
+      768
+    ],
+    "targetWorld" : [
+      0,
+      0,
+      0
+    ],
+    "yawDegrees" : 45
+  },
+  "derivation" : {
+    "mirror" : false,
+    "rotationDegrees" : 0,
+    "siblingSource" : null,
+    "sourceKind" : "independent-scene-description",
+    "transform" : "none"
+  },
+  "entrance" : {
+    "baseWorld" : [
+      28,
+      3,
+      23
+    ],
+    "canopyDepth" : 9,
+    "depth" : 2,
+    "doorMaterialID" : "v05-warm-glazing",
+    "facadeID" : "east-facade",
+    "height" : 10,
+    "hingeSide" : "right",
+    "pavilionDepth" : 8,
+    "pavilionHeight" : 24,
+    "pavilionMaterialID" : "v02-painted-steel",
+    "pavilionRoofHeight" : 3,
+    "pavilionWidth" : 30,
+    "porchColumnWidth" : 1.3999999999999999,
+    "porchLateralOffset" : 0,
+    "porchWidth" : 30,
+    "stepCount" : 1,
+    "stepRun" : 2,
+    "style" : "staff-entrance-plus-three-dock-frontage",
+    "surroundMaterialID" : "v05-safety",
+    "width" : 7
+  },
+  "facades" : [
+    {
+      "direction" : "north",
+      "edgeWorld" : [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ]
+      ],
+      "hasEntrance" : false,
+      "id" : "north-facade",
+      "materialID" : "v04-formed-concrete",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    },
+    {
+      "direction" : "east",
+      "edgeWorld" : [
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          28
+        ]
+      ],
+      "hasEntrance" : true,
+      "id" : "east-facade",
+      "materialID" : "v04-corrugated-hall",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    },
+    {
+      "direction" : "south",
+      "edgeWorld" : [
+        [
+          28,
+          28
+        ],
+        [
+          -28,
+          28
+        ]
+      ],
+      "hasEntrance" : false,
+      "id" : "south-facade",
+      "materialID" : "v04-formed-concrete",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    },
+    {
+      "direction" : "west",
+      "edgeWorld" : [
+        [
+          -28,
+          28
+        ],
+        [
+          -28,
+          -28
+        ]
+      ],
+      "hasEntrance" : false,
+      "id" : "west-facade",
+      "materialID" : "v04-formed-concrete",
+      "windowBays" : [
+
+      ],
+      "windowRhythms" : [
+
+      ]
+    }
+  ],
+  "family" : "industrial",
+  "level" : 2,
+  "light" : {
+    "ambientColorRGBA" : [
+      0.71999999999999997,
+      0.76000000000000001,
+      0.80000000000000004,
+      1
+    ],
+    "ambientIntensity" : 0.71999999999999997,
+    "keyColorRGBA" : [
+      1,
+      0.92000000000000004,
+      0.83999999999999997,
+      1
+    ],
+    "keyIntensity" : 1050,
+    "keyOrigin" : [
+      -120,
+      180,
+      -120
+    ],
+    "shadowBlurSourcePixels" : 18,
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowReceiver" : "task-owned-transparent-ground-plane",
+    "shadowVectorSource" : [
+      2,
+      1
+    ]
+  },
+  "logicalBuildingID" : "industrial_l02",
+  "materialLibrary" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v05/materials/industrial-l02-east-calibration-v05.json",
+    "role" : "industrial-l02-east-readable-logistics-and-manufacturing-v05",
+    "sha256" : "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb"
+  },
+  "occlusionExclusions" : [
+    {
+      "id" : "east-wide-campus-loading-clearance-v02",
+      "polygonWorld" : [
+        [
+          18,
+          -28
+        ],
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          28
+        ],
+        [
+          18,
+          28
+        ]
+      ],
+      "purpose" : "protect three eleven-unit grounded dock throats, canopies, apron, and personnel route at the exact East socket"
+    }
+  ],
+  "prePixelCalibrationAuthority" : {
+    "approvedBaseCommit" : "0e062b86388985845eab47c820c51ef4fa48298a",
+    "normalizerFreshProcessesAfterCapture" : 2,
+    "oneFreshMetalProcessAfterIndependentPrepixelFreeze" : true,
+    "productionSelected" : false,
+    "scope" : "Industrial L2 East only",
+    "sourceAuthorityPixels" : false
+  },
+  "prePixelMaterialLightResetAuthority" : {
+    "approvedBaseCommit" : "af6b35bee6732d8ad9b16e7353083258c48e5607",
+    "metalProcessesAuthorized" : 0,
+    "productionSelected" : false,
+    "purpose" : "repair retained v03 value compression, pattern fallback, and opaque magenta fringe before any new pixel",
+    "sceneKitSnapshotAuthorized" : false
+  },
+  "preRenderRepairAuthority" : {
+    "approvedBaseCommit" : "a0c04c0b60a66451d743985bbbe901554431eaa2",
+    "pixelsAuthorized" : false,
+    "purpose" : "replace the 33.9000015 maximum-Y stop with a visible hall clerestory envelope at the required 35.65 world-unit height",
+    "rendererCapabilityPreflightAuthorized" : false,
+    "sceneKitSnapshotAuthorized" : false
+  },
+  "productionSelected" : false,
+  "props" : [
+    {
+      "dimensions" : [
+        9,
+        16,
+        9
+      ],
+      "id" : "v05-process-vessel",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-process-metal",
+      "positionWorld" : [
+        -20,
+        11,
+        23
+      ],
+      "presentationRole" : "secondary process vessel"
+    },
+    {
+      "dimensions" : [
+        4,
+        9,
+        4
+      ],
+      "id" : "v05-stack-a",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-duct-metal",
+      "positionWorld" : [
+        -17,
+        33,
+        18
+      ],
+      "presentationRole" : "restrained roof stack A"
+    },
+    {
+      "dimensions" : [
+        4,
+        7,
+        4
+      ],
+      "id" : "v05-stack-b",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-duct-metal",
+      "positionWorld" : [
+        -8,
+        32.100000000000001,
+        10
+      ],
+      "presentationRole" : "restrained roof stack B"
+    },
+    {
+      "dimensions" : [
+        3.5,
+        5,
+        3.5
+      ],
+      "id" : "v05-bollard-a",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-safety",
+      "positionWorld" : [
+        27,
+        3.7000000000000002,
+        -25.5
+      ],
+      "presentationRole" : "dock A approach protection"
+    },
+    {
+      "dimensions" : [
+        3.5,
+        5,
+        3.5
+      ],
+      "id" : "v05-bollard-b",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-safety",
+      "positionWorld" : [
+        27,
+        3.7000000000000002,
+        -12
+      ],
+      "presentationRole" : "dock B approach protection"
+    },
+    {
+      "dimensions" : [
+        3.5,
+        5,
+        3.5
+      ],
+      "id" : "v05-bollard-c",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-safety",
+      "positionWorld" : [
+        27,
+        3.7000000000000002,
+        2
+      ],
+      "presentationRole" : "dock C approach protection"
+    },
+    {
+      "dimensions" : [
+        3.5,
+        5,
+        3.5
+      ],
+      "id" : "v05-bollard-staff",
+      "identityBearing" : true,
+      "kind" : "explicit-cylinder",
+      "materialID" : "v05-safety",
+      "positionWorld" : [
+        27,
+        3.7000000000000002,
+        26
+      ],
+      "presentationRole" : "staff route protection"
+    }
+  ],
+  "registration" : {
+    "contactPolygonWorld" : [
+      [
+        -28,
+        -28
+      ],
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        -28,
+        28
+      ]
+    ],
+    "doorBaseSource" : [
+      [
+        934,
+        813
+      ],
+      [
+        858,
+        851
+      ]
+    ],
+    "footprintPolygonSource" : [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageEdgeSource" : [
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ]
+    ],
+    "frontageEdgeWorld" : [
+      [
+        28,
+        -28
+      ],
+      [
+        28,
+        28
+      ]
+    ],
+    "frontageSocketSource" : [
+      896,
+      832
+    ],
+    "groundPivotSource" : [
+      768,
+      896
+    ],
+    "orientationTransform" : "none",
+    "presentationEnvelopeSource" : [
+      256,
+      40,
+      1280,
+      896
+    ],
+    "sceneFootprintUnits" : [
+      72,
+      72
+    ],
+    "shadowEnvelopeSource" : [
+      768,
+      512,
+      1456,
+      976
+    ],
+    "shadowOpacity" : 0.34000000000000002,
+    "shadowVectorSource" : [
+      2,
+      1
+    ],
+    "tileBasisPoints" : [
+      72,
+      36
+    ]
+  },
+  "sampling" : {
+    "canonicalizer" : {
+      "encoder" : "ImageIO",
+      "format" : "png",
+      "id" : "imageio-sips-png-v1",
+      "postEncoder" : "/usr/bin/sips"
+    },
+    "ciContext" : {
+      "cacheIntermediates" : false,
+      "outputColorSpace" : "srgb",
+      "useSoftwareRenderer" : true,
+      "workingColorSpace" : "extended-srgb"
+    },
+    "contractID" : "play027-deterministic-4x-no-msaa-lanczos-v3",
+    "downsample" : {
+      "aspectRatio" : 1,
+      "filter" : "CILanczosScaleTransform",
+      "scale" : 0.25
+    },
+    "flatChromaCompositor" : {
+      "contractID" : "industrial-l02-east-v04-straight-alpha-flat-chroma-v1",
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/projection-silhouette-reset-v04/prepixel/V04-ALPHA-COMPOSITOR-CONTRACT.json",
+      "implementationAuthorized" : false,
+      "sha256" : "351aed1910d7b680991815a479897fb4849060dd19798d662fe8c03f494f64e9"
+    },
+    "linearOversamplingFactor" : 4,
+    "postQuantizationCanonicalizer" : {
+      "algorithm" : "opaque-isolated-one-quantum-majority-3x3",
+      "boundaryAssist" : {
+        "algorithm" : "immutable-prequantized-one-value-boundary-6-plus-1",
+        "baseQuantizedMajorityCount" : 6,
+        "boundaryBandWidthValues" : 1,
+        "effectiveSupportCount" : 7,
+        "immutablePrequantizedBuffer" : true,
+        "maximumCompetingSupportAfterBoundaryReclassification" : 2,
+        "quantizerMidpointOffset" : 8,
+        "quantizerStep" : 32,
+        "recordsBoundaryVoteReason" : true,
+        "requiredBoundaryVoteCount" : 1,
+        "requiresSameChannelEvidence" : true,
+        "version" : 1
+      },
+      "channels" : "rgb-only",
+      "immutableSourceBuffer" : true,
+      "majorityThreshold" : 7,
+      "neighborhoodSize" : 3,
+      "preservesAlpha" : true,
+      "preservesChroma" : true,
+      "quantizationQuantum" : 32,
+      "requiresChromaFreeNeighborhood" : true,
+      "requiresFullyOpaqueNeighborhood" : true,
+      "version" : 3
+    },
+    "purpose" : "diagnostic-regression",
+    "quantizer" : {
+      "chromaBypassRGBA" : [
+        255,
+        0,
+        255,
+        255
+      ],
+      "id" : "step32-midpoint-offset8-v1",
+      "midpointOffset" : 8,
+      "step" : 32
+    },
+    "sceneKitAntialiasing" : "none",
+    "sceneKitLightingMode" : "lambert-scene-lights",
+    "sceneKitShadows" : "current",
+    "sourceRevisionBinding" : "east-quality-calibration-art-proof-v05"
+  },
+  "sceneGeometryID" : "industrial-l02-east-wide-low-capable-campus-geometry-v05",
+  "schema" : 2,
+  "sourceRevision" : "east-quality-calibration-art-proof-v05",
+  "styleAnchor" : {
+    "file" : "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+    "role" : "immutable-appearance-only-global-style-anchor",
+    "sha256" : "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+  },
+  "task" : "PLAY-027",
+  "toolchainFingerprint" : {
+    "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/toolchain/toolchain-industrial-l02-quality-reset-source-v09.json",
+    "role" : "frozen-schema-2-v3-quality-reset-offline-host-and-frameworks",
+    "sha256" : "a240a1a501c6fa30c5bd4b2d6303aac4547fd7a7416649ff8fd0d58f9729341e"
+  },
+  "variantID" : "variant-0",
+  "viewDirection" : "east"
+}

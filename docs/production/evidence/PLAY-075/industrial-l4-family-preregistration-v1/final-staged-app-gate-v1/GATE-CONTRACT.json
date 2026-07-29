@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "disposition": "PREREGISTERED_BLOCKED_AWAITING_EXACT_4_OF_4_RENDERER",
+  "authority": {
+    "claim": "PLAY-075",
+    "lane": "codex/citysim-playtest-quality",
+    "publishedMaster": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
+    "qaMergeCarrier": "72aafa5539d115edfe8c6fb426703e6524c7d678",
+    "fixtureAdmissionSupportCommit": "dc450f898f80d815631cf6b6aaef3b5280ff7699"
+  },
+  "frozenInputs": {
+    "familyPreregistration": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/PREREGISTRATION.md",
+      "sha256": "4d09aa6d78363fa1fec1d980e372193278a96fc63326e4ebf983280723231aff"
+    },
+    "evidencePlan": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/EVIDENCE-PLAN.md",
+      "sha256": "0f66f3fa43361b60fd03b1970314195c245bea1eb6bbb38dbdb87cf691d68d0c"
+    },
+    "rubric": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/RUBRIC.md",
+      "sha256": "3807edfe7ea7cd5263723b4b045562f445ba5f727ec9a3adeccc395ffdbfa692"
+    },
+    "fixture": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+      "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+      "stateDigest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f",
+      "tick": 844,
+      "seed": 10481999410520546993,
+      "initialState": "loaded_then_immediately_paused"
+    },
+    "fixtureManifest": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-manifest-v1.json",
+      "sha256": "48b23638572993f76c087c95113475b2c0e3d59e89525a12fcb7ee38005f2a2d"
+    },
+    "sourceStageSchemaV2": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "fixtureAdmissionManifestSchema": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/ADMISSION-MANIFEST-FORMAT.json",
+      "sha256": "6df8abc1c5883eb93ce4bfe773c7ff5d9455d8fd6420d51ea41aa598a9c0733e"
+    },
+    "fixtureRequestSchema": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/REQUEST-FORMAT.json",
+      "sha256": "63288bf43f99732e9b0ca44d506753b69908b22e4713bbe2faa0a4b5d0929043"
+    },
+    "fixtureReceiptSchema": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/RECEIPT-FORMAT.json",
+      "sha256": "61427431aefbf5ac400f515338b85d5a39a74f658c081e6d46c7b1eda16d0661"
+    },
+    "fixtureMaterializerTool": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/tools/materialize_fixture_receipt.py",
+      "sha256": "e7022a61d5501fc48c10ed6f0fbc1351262636ad7087ea8b59b991600b55be6d"
+    },
+    "fixtureMaterializerValidator": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/tools/validate_fixture_materializer.py",
+      "sha256": "1daff37147af1afc0f16dcaa9a42c47e62fdd94b9483a2a3dd3ee962e7ed32d3"
+    },
+    "fixtureMaterializerValidationReceipt": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/proof/VALIDATION-RECEIPT.json",
+      "sha256": "05c23a602e211aa87d8545d929edb6d31ef6d5ba64f839c4b98425c23c6db745"
+    }
+  },
+  "directionTargets": [
+    {
+      "direction": "north",
+      "sourceTask": "PLAY-027",
+      "logicalID": "industrial_l04_v0_north",
+      "playerBlock": [11, 11],
+      "stateCoordinate": [10, 10],
+      "soleRoadCoordinate": [10, 9],
+      "sourcePixelSocket": [896, 704]
+    },
+    {
+      "direction": "east",
+      "sourceTask": "PLAY-079",
+      "logicalID": "industrial_l04_v0_east",
+      "playerBlock": [4, 10],
+      "stateCoordinate": [3, 9],
+      "soleRoadCoordinate": [4, 9],
+      "sourcePixelSocket": [896, 832]
+    },
+    {
+      "direction": "south",
+      "sourceTask": "PLAY-080",
+      "logicalID": "industrial_l04_v0_south",
+      "playerBlock": [5, 9],
+      "stateCoordinate": [4, 8],
+      "soleRoadCoordinate": [4, 9],
+      "sourcePixelSocket": [640, 832]
+    },
+    {
+      "direction": "west",
+      "sourceTask": "PLAY-081",
+      "logicalID": "industrial_l04_v0_west",
+      "playerBlock": [18, 12],
+      "stateCoordinate": [17, 11],
+      "soleRoadCoordinate": [16, 11],
+      "sourcePixelSocket": [640, 704]
+    }
+  ],
+  "viewContract": {
+    "common": {
+      "overlay": "City",
+      "focusCity": false,
+      "details": "closed_before_capture",
+      "transientSurfaces": "closed",
+      "loadToast": "absent",
+      "rotationDegrees": 0,
+      "cameraPanAllowed": false,
+      "selectionMayRecenter": false,
+      "cameraResetBeforeEveryDirection": {
+        "playerVisibleKey": "0",
+        "command": "Frame Developed City"
+      },
+      "cameraCenter": {
+        "identity": "exact_output_of_Frame_Developed_City_for_frozen_fixture",
+        "preregisteredNumericValue": null,
+        "reason": "The save contains no camera state and this preparation is prohibited from running the app.",
+        "candidateEvidenceRequirement": "Record numeric x/y immediately after every reset and require bit-identical center within a width and between exact candidate and accepted-baseline comparison."
+      }
+    },
+    "states": [
+      {
+        "id": "regular-city",
+        "width": "regular",
+        "decoratedCapturePixels": [1278, 768],
+        "contentPixels": null,
+        "semanticLOD": "city",
+        "canonicalCameraScale": 0.74
+      },
+      {
+        "id": "regular-neighborhood",
+        "width": "regular",
+        "decoratedCapturePixels": [1278, 768],
+        "contentPixels": null,
+        "semanticLOD": "neighborhood",
+        "canonicalCameraScale": 0.66
+      },
+      {
+        "id": "regular-block",
+        "width": "regular",
+        "decoratedCapturePixels": [1278, 768],
+        "contentPixels": null,
+        "semanticLOD": "block",
+        "canonicalCameraScale": 0.5
+      },
+      {
+        "id": "compact-city",
+        "width": "compact",
+        "decoratedCapturePixels": [900, 652],
+        "contentPixels": [900, 600],
+        "semanticLOD": "city",
+        "canonicalCameraScale": 0.74
+      },
+      {
+        "id": "compact-neighborhood",
+        "width": "compact",
+        "decoratedCapturePixels": [900, 652],
+        "contentPixels": [900, 600],
+        "semanticLOD": "neighborhood",
+        "canonicalCameraScale": 0.66
+      },
+      {
+        "id": "compact-block",
+        "width": "compact",
+        "decoratedCapturePixels": [900, 652],
+        "contentPixels": [900, 600],
+        "semanticLOD": "block",
+        "canonicalCameraScale": 0.5
+      }
+    ],
+    "requiredMatrixCells": 24,
+    "matrixDefinition": "4 runtime directions x 3 semantic LODs x 2 widths",
+    "captureVariantsPerCell": ["original_color", "literal_grayscale"]
+  },
+  "candidateAdmission": {
+    "status": "NOT_ADMITTED_NO_RENDERER_CANDIDATE_SUPPLIED",
+    "sourceDirections": {
+      "requiredCount": 4,
+      "requiredOrder": ["north", "east", "south", "west"],
+      "packetStage": "source_candidate",
+      "packetSchemaVersion": 2,
+      "integrationSourceAdmissionReceiptRequiredPerDirection": true,
+      "directionLocalQARecommendationsAreProductionAcceptance": false
+    },
+    "integrationFixtureAdmission": {
+      "required": true,
+      "pathPattern": "docs/production/evidence/INTEGRATION/industrial-l04-admissions/*.json",
+      "mustBeByteIdenticalToPublishedOriginMasterBlob": true,
+      "mustBindExactFixtureRendererBridgeAndFourPackets": true
+    },
+    "rendererCandidate": {
+      "oneExactCleanAttachedCommit": true,
+      "exactProductCommitRequired": true,
+      "allFourPacketsBoundToSameRendererCommit": true,
+      "twelveDistinctDirectionLODOutputsRequired": true,
+      "sourceNormalizedPackRuntimeParityRequired": true,
+      "twoBuildDeterminismRequired": true,
+      "zeroAliasMirrorRotationRecolorFallbackTransformRequired": true
+    },
+    "fixtureReceipt": {
+      "mode": "candidate_bound",
+      "candidateOrPacketExistenceVerified": true,
+      "integrationGitAuthorityInspectionPerformed": true,
+      "eligibleForFutureFixtureMaterialization": true,
+      "completedConstructionConditionPlansRequired": true
+    },
+    "stagedIdentity": {
+      "isolatedAttachedSHA": true,
+      "uniqueBundleDefaultsDataRootAndPID": true,
+      "sourceExecutableResourcesAndManifestHashesRequired": true,
+      "exactCandidateIdentityRequiredBeforeAndAfterJourney": true
+    },
+    "failClosedOn": [
+      "one_through_three_directions",
+      "missing_or_returned_direction",
+      "missing_or_unpublished_source_admission_receipt",
+      "missing_or_unpublished_fixture_admission_manifest",
+      "synthetic_or_unverified_candidate_or_packet_identity",
+      "unpublished_accepted_L3_comparison_baseline",
+      "candidate_or_resource_drift",
+      "mixed_pack_or_runtime_identity",
+      "dirty_or_detached_candidate_checkout",
+      "fixture_or_camera_contract_drift"
+    ]
+  },
+  "rubricBinding": {
+    "scoringAllowedBeforeFinalJourney": false,
+    "requiredScore": "20/20",
+    "requiredPerCategory": "4/4",
+    "maximumP0P1Defects": 0,
+    "automaticReturnsAllowed": 0,
+    "visualChecks": [
+      "one premium heavy-industrial family across all directions",
+      "truthful sole-road frontage and logistics story",
+      "material advancement and cohesion versus exact accepted L3",
+      "legible hierarchy and ground contact at every width and LOD",
+      "construction and condition preserve family and state meaning",
+      "zero fallback alias mirror rotation recolor crop overlap detachment or sparse output"
+    ],
+    "interactionChecks": [
+      "pointer and keyboard select the same exact lot once",
+      "visible and AX Level 4 block workers condition road state and action agree",
+      "selection and hover do not obscure frontage or exceed the frozen coverage limit",
+      "Full Keyboard Access VoiceOver Escape and Reduce Motion preserve target and meaning",
+      "demolition changes one lot and Undo restores the exact preregistered state digest",
+      "regular compact and Reduce Motion resource and frame budgets remain bounded"
+    ]
+  },
+  "finalStagedAppGate": {
+    "status": "BLOCKED_AWAITING_EXACT_4_OF_4_RENDERER",
+    "gateCount": 1,
+    "freshNoCoachingJourneyRequired": true,
+    "directionCellsMayReceiveProductionAcceptance": false,
+    "baselineRehearsalMaySubstituteForCandidateEvidence": false,
+    "appRunAuthorizedByThisPreregistration": false,
+    "permittedFinalDisposition": ["APPROVE", "RETURN"],
+    "focusedApprovalScope": "Industrial L4 atomic family batch only",
+    "fullPLAY075ReleaseGateSatisfied": false
+  },
+  "prohibited": {
+    "candidateCoaching": true,
+    "productOrResourceMutation": true,
+    "shippingMutation": true,
+    "fixtureMaterializationBeforeAdmission": true,
+    "appBuildStageLaunchOrScore": true,
+    "partialFamilyAcceptance": true,
+    "qaSelfAcceptance": true,
+    "pushOrIntegration": true
+  }
+}

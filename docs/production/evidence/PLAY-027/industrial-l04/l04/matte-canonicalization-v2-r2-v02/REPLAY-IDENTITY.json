@@ -1,0 +1,36 @@
+{
+  "aggregateInventorySHA256": "c41df6370ebab06eac075c29323302c51f0d4c56d7bbb05299de47967a186a27",
+  "allByteIdentical": true,
+  "artifact": "industrial-l04-matte-canonicalization-v2-r2-replay",
+  "files": [
+    {
+      "path": "ACCEPTED-MASTER-REGRESSION.json",
+      "runASHA256": "9a5f561327ba5ed3a5178c03caae19d79204401b9b7dfd5c53ac716d2e6ab3af",
+      "runBSHA256": "9a5f561327ba5ed3a5178c03caae19d79204401b9b7dfd5c53ac716d2e6ab3af"
+    },
+    {
+      "path": "MATTE-V2-VALIDATION.json",
+      "runASHA256": "dac80c82aa44eb05a428095814b54a2669c1a7b7ec0fe7e1b961a5216b871acf",
+      "runBSHA256": "dac80c82aa44eb05a428095814b54a2669c1a7b7ec0fe7e1b961a5216b871acf"
+    },
+    {
+      "path": "V17-CANONICAL-TRANSPARENT.png",
+      "runASHA256": "39bcb896664ef436853790e2acd87bb0d450b8401bb5318708757aef331a2385",
+      "runBSHA256": "39bcb896664ef436853790e2acd87bb0d450b8401bb5318708757aef331a2385"
+    }
+  ],
+  "processCounts": {
+    "metal": 0,
+    "normalizer": 0,
+    "raw": 0,
+    "replay": 2,
+    "sceneKit": 0
+  },
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "tool": {
+    "binarySHA256": "8f37cc1cb4e323d8696710228db72a493e08ecc91d8283c5d1ff579effbc6d80",
+    "implementationSHA256": "19aebca8655e3093a0f5532ef6f41d94958d1b0b21e7aa6c3bc18ae7146d2167",
+    "validatorSHA256": "46b00bf09d10fe049cb34e036d8feed545ace8374680ca0a962ed3a7f86746b6"
+  }
+}

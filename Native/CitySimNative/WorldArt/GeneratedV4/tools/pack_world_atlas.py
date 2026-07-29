@@ -104,21 +104,75 @@ def paste_with_extrusion(page: Image.Image, source: Image.Image, x: int, y: int)
 
 
 def layout_pages(payloads: Iterable[Payload]) -> list[list[tuple[Payload, int, int, Image.Image]]]:
-    """Stable tall-first shelf packing with no rotation and fixed padding."""
+    """Stable best-short-side packing with no rotation and fixed padding."""
 
     pages: list[list[tuple[Payload, int, int, Image.Image]]] = []
-    current: list[tuple[Payload, int, int, Image.Image]] = []
-    x = 0
-    y = 0
-    row_height = 0
+    free_rectangles: list[list[tuple[int, int, int, int]]] = []
+
+    def intersects_rect(
+        left: tuple[int, int, int, int],
+        right: tuple[int, int, int, int],
+    ) -> bool:
+        return not (
+            left[0] + left[2] <= right[0]
+            or right[0] + right[2] <= left[0]
+            or left[1] + left[3] <= right[1]
+            or right[1] + right[3] <= left[1]
+        )
+
+    def contains_rect(
+        outer: tuple[int, int, int, int],
+        inner: tuple[int, int, int, int],
+    ) -> bool:
+        return (
+            outer[0] <= inner[0]
+            and outer[1] <= inner[1]
+            and outer[0] + outer[2] >= inner[0] + inner[2]
+            and outer[1] + outer[3] >= inner[1] + inner[3]
+        )
+
+    def split_free_rectangles(
+        rectangles: list[tuple[int, int, int, int]],
+        occupied: tuple[int, int, int, int],
+    ) -> list[tuple[int, int, int, int]]:
+        occupied_x, occupied_y, occupied_width, occupied_height = occupied
+        occupied_right = occupied_x + occupied_width
+        occupied_bottom = occupied_y + occupied_height
+        candidates: list[tuple[int, int, int, int]] = []
+        for rectangle in rectangles:
+            if not intersects_rect(rectangle, occupied):
+                candidates.append(rectangle)
+                continue
+            x, y, width, height = rectangle
+            right = x + width
+            bottom = y + height
+            if occupied_x > x:
+                candidates.append((x, y, occupied_x - x, height))
+            if occupied_right < right:
+                candidates.append((occupied_right, y, right - occupied_right, height))
+            if occupied_y > y:
+                candidates.append((x, y, width, occupied_y - y))
+            if occupied_bottom < bottom:
+                candidates.append((x, occupied_bottom, width, bottom - occupied_bottom))
+
+        nonempty = sorted(
+            {item for item in candidates if item[2] > 0 and item[3] > 0},
+            key=lambda item: (item[1], item[0], item[2], item[3]),
+        )
+        return [
+            item
+            for index, item in enumerate(nonempty)
+            if not any(
+                index != other_index and contains_rect(other, item)
+                for other_index, other in enumerate(nonempty)
+            )
+        ]
 
     verified = [(payload, verify_payload(payload)) for payload in payloads]
-    # Tall-first rows materially reduce fragmentation from mixed skyline
-    # heights while retaining a complete deterministic tie break. Source
-    # pixels are never rotated or transformed.
     for payload, image in sorted(
         verified,
         key=lambda item: (
+            -(item[1].width + PADDING * 2) * (item[1].height + PADDING * 2),
             -item[1].height,
             -item[1].width,
             item[0].key,
@@ -126,24 +180,39 @@ def layout_pages(payloads: Iterable[Payload]) -> list[list[tuple[Payload, int, i
     ):
         width = image.width + PADDING * 2
         height = image.height + PADDING * 2
-        if x > 0 and x + width > PAGE_LIMIT:
-            x = 0
-            y += row_height
-            row_height = 0
-        if y > 0 and y + height > PAGE_LIMIT:
-            pages.append(current)
-            current = []
-            x = 0
-            y = 0
-            row_height = 0
         if width > PAGE_LIMIT or height > PAGE_LIMIT:
             raise SystemExit(f"pack rejected: {payload.key} cannot fit a page")
-        current.append((payload, x, y, image))
-        x += width
-        row_height = max(row_height, height)
 
-    if current:
-        pages.append(current)
+        choices: list[tuple[int, int, int, int, int, int]] = []
+        for page_index, rectangles in enumerate(free_rectangles):
+            for rectangle_index, (x, y, free_width, free_height) in enumerate(rectangles):
+                if width <= free_width and height <= free_height:
+                    choices.append(
+                        (
+                            min(free_width - width, free_height - height),
+                            max(free_width - width, free_height - height),
+                            page_index,
+                            y,
+                            x,
+                            rectangle_index,
+                        )
+                    )
+        if choices:
+            _, _, page_index, y, x, _ = min(choices)
+        else:
+            page_index = len(pages)
+            pages.append([])
+            free_rectangles.append([(0, 0, PAGE_LIMIT, PAGE_LIMIT)])
+            x = 0
+            y = 0
+
+        occupied = (x, y, width, height)
+        pages[page_index].append((payload, x, y, image))
+        free_rectangles[page_index] = split_free_rectangles(
+            free_rectangles[page_index],
+            occupied,
+        )
+
     return pages
 
 

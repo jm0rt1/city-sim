@@ -1,0 +1,205 @@
+{
+  "candidateThresholds" : {
+    "maximumHiddenNonMagentaPixelCount" : 0,
+    "minimumAlphaVisibilityRatio" : 0.999,
+    "minimumReferenceCountRatio" : 0.90000000000000002,
+    "minimumReferenceHeightRatio" : 0.94999999999999996,
+    "minimumReferenceWidthRatio" : 0.94999999999999996,
+    "rgbAndAlphaVisibleBoundsMustMatch" : true
+  },
+  "contactSheet" : {
+    "directionOrder" : [
+      "run-a",
+      "run-b",
+      "run-c"
+    ],
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/EXACT-RGBA-OCCUPIED-CROPS-east.png",
+    "panels" : [
+      {
+        "column" : 0,
+        "id" : "run-a",
+        "row" : 0,
+        "sheetPanel" : [
+          24,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          589,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 1,
+        "id" : "run-b",
+        "row" : 0,
+        "sheetPanel" : [
+          504,
+          364,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          589,
+          1037,
+          914
+        ]
+      },
+      {
+        "column" : 0,
+        "id" : "run-c",
+        "row" : 1,
+        "sheetPanel" : [
+          24,
+          24,
+          460,
+          320
+        ],
+        "sourceAlphaVisibleBounds" : [
+          619,
+          597,
+          1029,
+          906
+        ],
+        "sourceCrop" : [
+          611,
+          589,
+          1037,
+          914
+        ]
+      }
+    ],
+    "presentation" : "exact decoded RGBA, flat chroma masked transparent, occupied crop on neutral field"
+  },
+  "decodePath" : "CGImageSource immediate standard RGBA decode plus provider bytes",
+  "derivedReferenceFloor" : {
+    "alphaVisibleOccupiedPixelCount" : 67598,
+    "occupiedBoundsPixels" : [
+      410,
+      309
+    ]
+  },
+  "references" : [
+    {
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 67598,
+      "file" : "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/raw/industrial_l02/variant-0/east/source-v03.png",
+      "fileSHA256" : "3463546dc438daa78f3065c3b169cf02b6d9e34d16635b7da1bf51ad9dbbf967",
+      "id" : "current-primary"
+    }
+  ],
+  "schema" : 1,
+  "sources" : [
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 67598,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/east-run-a.png",
+      "fileSHA256" : "1a22b9a6bddfad198de8b585c7f319569902c26b63324be2e2ef8eb74b5a2ebc",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "run-a",
+      "referenceMinimumCountRatio" : 1,
+      "referenceMinimumHeightRatio" : 1,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 67598,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 67598,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/east-run-b.png",
+      "fileSHA256" : "1a22b9a6bddfad198de8b585c7f319569902c26b63324be2e2ef8eb74b5a2ebc",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "run-b",
+      "referenceMinimumCountRatio" : 1,
+      "referenceMinimumHeightRatio" : 1,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 67598,
+      "validationPassed" : true
+    },
+    {
+      "alphaVisibilityRatio" : 1,
+      "alphaVisibleOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "alphaVisibleOccupiedPixelCount" : 67598,
+      "decodedAlphaInfo" : 3,
+      "decodedBitsPerPixel" : 32,
+      "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v03-candidate/diagnostics/shadows-disabled/east-run-c.png",
+      "fileSHA256" : "1a22b9a6bddfad198de8b585c7f319569902c26b63324be2e2ef8eb74b5a2ebc",
+      "flatOpaqueChromaCorners" : true,
+      "hiddenNonMagentaPixelCount" : 0,
+      "id" : "run-c",
+      "referenceMinimumCountRatio" : 1,
+      "referenceMinimumHeightRatio" : 1,
+      "referenceMinimumWidthRatio" : 1,
+      "rgbAndAlphaVisibleBoundsMatch" : true,
+      "rgbOccupiedBounds" : [
+        619,
+        597,
+        1029,
+        906
+      ],
+      "rgbOccupiedPixelCount" : 67598,
+      "validationPassed" : true
+    }
+  ],
+  "task" : "PLAY-027",
+  "tool" : "exact retained-byte ImageIO RGBA visibility validator",
+  "validationPassed" : true
+}

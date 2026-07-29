@@ -1,0 +1,164 @@
+{
+  "contactZoom" : {
+    "cropPaddingSourcePixels" : 10,
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/review/PIXEL-LOCALITY-south.png",
+    "nearestNeighborScale" : 12,
+    "panelOrder" : [
+      "primary exact crop",
+      "repeat B exact crop",
+      "difference mask"
+    ]
+  },
+  "coordinateOrigin" : "top-left exact decoded RGBA row",
+  "diagnostic" : "industrial-l02-source-v05-explicit-none-current-south",
+  "differenceBoundsSource" : [
+    778,
+    672,
+    840,
+    729
+  ],
+  "differingPixels" : [
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        144,
+        144,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        176,
+        144,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        144,
+        144,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        838,
+        672
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        839,
+        673
+      ]
+    },
+    {
+      "differingChannels" : [
+        "green"
+      ],
+      "primaryRGBA" : [
+        112,
+        144,
+        112,
+        255
+      ],
+      "repeatBRGBA" : [
+        112,
+        112,
+        112,
+        255
+      ],
+      "repeatCRGBA" : [
+        112,
+        144,
+        112,
+        255
+      ],
+      "sourceCoordinate" : [
+        811,
+        714
+      ]
+    },
+    {
+      "differingChannels" : [
+        "red"
+      ],
+      "primaryRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "repeatBRGBA" : [
+        208,
+        176,
+        144,
+        255
+      ],
+      "repeatCRGBA" : [
+        176,
+        176,
+        144,
+        255
+      ],
+      "sourceCoordinate" : [
+        778,
+        728
+      ]
+    }
+  ],
+  "primary" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/south-run-a.png",
+    "fileSHA256" : "76892dd11d0ad2d7914c999fbbc99d01d7b5a0189e947e5c4107d3dd990b5aca"
+  },
+  "primaryVsRepeatB" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 4,
+    "differingPixelCount" : 4
+  },
+  "primaryVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 0,
+    "differingPixelCount" : 0
+  },
+  "productionSelected" : false,
+  "repeatB" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/south-run-b.png",
+    "fileSHA256" : "0d8658826a2ffcbcac121b94aabc6bc55699dbf0f045426fa20e624ceadd72f4"
+  },
+  "repeatBVsRepeatC" : {
+    "alphaDifferingPixelCount" : 0,
+    "differingChannelCount" : 4,
+    "differingPixelCount" : 4
+  },
+  "repeatC" : {
+    "file" : "docs/production/evidence/PLAY-027/industrial-l02/l02/source-v05-diagnostics/diagnostics/msaa-none-current-shadows/raw/south-run-c.png",
+    "fileSHA256" : "76892dd11d0ad2d7914c999fbbc99d01d7b5a0189e947e5c4107d3dd990b5aca"
+  },
+  "schema" : 1,
+  "sourcePixels" : [
+    1536,
+    1024
+  ],
+  "task" : "PLAY-027"
+}

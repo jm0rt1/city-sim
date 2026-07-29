@@ -1,0 +1,23 @@
+{
+  "descriptorSHA256": "c44e0eed41a06093cdfe533c8dbe92f0fd3fe69dac659a724245bf29a3941abd",
+  "materialLibrarySHA256": "6ab8b19d6d6cf53dc98f77867117569f6cccd104cd886a2dc1788361736404fb",
+  "metalProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "productionRendererBinarySHA256": "f36e9c0c693b3738c9ac4e9fb91866271dbb4eda0589fb62fab4b247bc2052ea",
+  "productionRendererCompileWarningsAsErrors": true,
+  "productionSelected": false,
+  "rawPixelCount": 0,
+  "rendererSourceBeforeSHA256": "b712784c25bff79d3032755f4dde6e251ebee9a7bc7250361e0c7deea483f5b0",
+  "rendererSourceSHA256": "4fe620e3368f73997bdca7ed5834172e4e0b341e2840a553fcf3c3c48183787f",
+  "sceneKitSnapshotCount": 0,
+  "schema": 1,
+  "sourceAuthority": false,
+  "task": "PLAY-027",
+  "type": "industrial-l02-explicit-box-offline-capability-toolchain",
+  "validatorBinarySHA256": "18f1eec7c2ab495006bf0fec3afb7d6fbbedbaa836160b6576003a68078142b0",
+  "validatorCompileWarningsAsErrors": true,
+  "validatorReportByteIdenticalAcrossTwoProcesses": true,
+  "validatorReportSHA256": "eeff82939a6e90c10a651c1143cabe75a6385a0b3b6296d285b063c3a10e4b63",
+  "validatorSourceSHA256": "a0442b9ff5b8b6c3b52a8632ab17a206a1a4b7e67671a70d4be82ae99b9b036d",
+  "westProcessCount": 0
+}

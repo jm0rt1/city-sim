@@ -1,0 +1,43 @@
+{
+  "aperture" : {
+    "maximum" : [
+      6,
+      14,
+      -18
+    ],
+    "minimum" : [
+      -6,
+      2,
+      -22
+    ]
+  },
+  "cameraRayApertureEntryDistance" : 172.96889196423874,
+  "cameraRayBackPlaneDistance" : 182.98288044637886,
+  "cameraRayFirstEncounter" : "EMPTY_APERTURE",
+  "cameraRaySecondEncounter" : "fixture-opening-inset-back-plane",
+  "cameraRaySolidHitsBeforeBackPlane" : [
+
+  ],
+  "cameraRayTarget" : [
+    -3,
+    5,
+    -25
+  ],
+  "capability" : "recessed-opening-positive-mass-segmentation-v1",
+  "descriptorSHA256" : "3cfcd3cef9b405b31a156eb2b22ba1efbef91694e6c87e7b7331e0d88991c78d",
+  "geometryID" : "play027-v15-north-recessed-opening-fixture",
+  "metalProcessCount" : 0,
+  "normalizerProcessCount" : 0,
+  "positiveSolidOverlapCount" : 0,
+  "positiveSolidOverlapIDs" : [
+
+  ],
+  "productionSelected" : false,
+  "rawProcessCount" : 0,
+  "revision" : "source-v15-recessed-opening-fixture",
+  "sceneKitProcessCount" : 0,
+  "sharedSceneDescriptorRoundTrip" : "PASS",
+  "sharedSceneDescriptorSourceChanged" : false,
+  "sourceAuthority" : false,
+  "taskID" : "PLAY-027"
+}

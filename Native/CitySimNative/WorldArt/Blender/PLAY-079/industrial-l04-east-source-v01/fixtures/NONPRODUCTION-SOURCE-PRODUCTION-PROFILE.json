@@ -1,0 +1,55 @@
+{
+  "schema": "citysim.integration.world-art-source-production-profile.v1",
+  "familyIdentity": {
+    "family": "industrial",
+    "level": 4,
+    "variant": 0
+  },
+  "appearanceLock": {
+    "documentPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/NONPRODUCTION-APPEARANCE-LOCK.json",
+    "commit": "3ca37996953230b7255f6a22ac1f977c99e56e03",
+    "documentSha256": "274294bd2a108f72b83ce8713686a1ffe8730653109c440d5ff3a3d5568a14e7",
+    "northProcessASourceSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "northProcessADecodedRgbaSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "lockedMaterialMapping": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/NONPRODUCTION-LOCKED-MATERIAL-MAPPING.json",
+    "commit": "3ca37996953230b7255f6a22ac1f977c99e56e03",
+    "sha256": "20be3fe266f4c730b3c44e23951c8e13d4e1f35e8288b4fa00810fa03c2c9c39"
+  },
+  "sourceStageSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+  },
+  "directionProcesses": {
+    "north": [
+      "B",
+      "C"
+    ],
+    "east": [
+      "A",
+      "B",
+      "C"
+    ],
+    "south": [
+      "A",
+      "B",
+      "C"
+    ],
+    "west": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  "computeEnvelope": {
+    "maximumConcurrentDccProcesses": 2,
+    "exceptionOwner": "Integration"
+  },
+  "grants": {
+    "sourceAcceptance": false,
+    "rendererAdmission": false,
+    "productionSelection": false,
+    "shippingActivation": false
+  }
+}

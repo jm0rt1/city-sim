@@ -1,5 +1,6 @@
 # PLAY-080 Claim
 
+- **Claim revision:** 2
 - **Title:** Predesign the Industrial L4 South source in parallel
 - **Lane:** World Art South cell
 - **Branch:** `codex/citysim-world-art-south`
@@ -8,15 +9,21 @@
 - **Planned surfaces:** South-only task-owned Blender text scene/tools under
   `Native/CitySimNative/WorldArt/Blender/PLAY-080/` and
   `docs/production/evidence/PLAY-080/`
+- **Revision-2 exclusive roots:**
+  `Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/`
+  and
+  `docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/`
 - **Dependencies:** CONTRACT-020; CONTRACT-021; published Industrial L4 North
   family requirements
-- **Status:** Predesign accepted and integrated at `d9842279`; pixel rendering
-  remains blocked until Integration accepts North, publishes the
-  family/material lock, and issues a new production authority
+- **Status:** Predesign accepted and integrated at `d9842279`. Direction-local
+  zero-pixel production-runner preparation is active under
+  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`; pixel rendering remains
+  blocked until Integration publishes the exact appearance lock and post-lock
+  production authority.
 - **Validation/proof:** Independent South geometry; South road-facing portal
   and socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
 
-Do not edit North, East, West, renderer/shipping, package, gameplay,
-simulation, UI, build, or shared-manifest surfaces. Do not render A, push,
-integrate, or self-accept.
+Do not edit accepted South predesign, North, East, West, renderer/shipping,
+package, gameplay, simulation, UI, build, claim, or shared-manifest surfaces.
+Do not render A/B/C, push, integrate, or self-accept.

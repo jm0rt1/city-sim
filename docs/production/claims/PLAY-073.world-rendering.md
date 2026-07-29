@@ -25,8 +25,10 @@
   `b4191d98ee7c526bc08a6fe272521588572e27fd` is clean and preserved and passed
   the 271-test integration gate, but integration returned it before publication
   because the L3 material/value/outline language fails the mixed-fidelity stop.
-  The lane now waits for independently accepted cohesive Industrial L3
-  N/E/S/W repair authority before one replacement R2 ingestion window.
+  The lane now preserves replacement R2 plus its candidate-bound external
+  fixture intake. Industrial L4 non-shipping direction-quarantine preparation
+  is separately active under
+  `INDUSTRIAL-L04-RENDERER-QUARANTINE-PREP-AUTHORITY.md`.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,
@@ -93,8 +95,11 @@ Art-owned.
 For R2, run focused pack/runtime/frontage/LOD/resource checks and one staged
 candidate build. Integration owns the single full-suite and staged-identity
 gate; PLAY-075 owns the single focused independent real-app disposition.
-Industrial L4, unaccepted source work, gameplay changes, UI repair, and broad
-composition mutation are not authorized by this claim.
+Industrial L4 source ingestion, runtime/shipping activation, unaccepted source
+work, gameplay changes, UI repair, and broad composition mutation are not
+authorized by this claim. The Integration-published L4 quarantine-preparation
+addendum authorizes only its explicit test/evidence-owned non-shipping packet
+schema, validator, mutation matrix, and handoff.
 
 After the accepted Industrial batches publish or are explicitly deferred, R4
 is governed by `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. Its

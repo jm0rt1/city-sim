@@ -15,9 +15,11 @@
   cannot visibly reach the governed `X = -28` North socket: its closest legal
   exterior court remains `16.272240` compact pixels away against the two-pixel
   limit. The v05 authority permits one socket-facing portal relocation,
-  zero-pixel proof, and one new A render. A passing A releases a non-production
-  appearance lock; North B/C and sibling A/B/C remain blocked until that exact
-  independent review boundary.
+  camera-far visibility proof, and one new A render. The binding visibility
+  addendum requires the full portal/apron/scale cue to survive the actual
+  camera before A. A passing A releases a non-production appearance lock;
+  North B/C and sibling A/B/C remain blocked until that exact independent
+  review boundary.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

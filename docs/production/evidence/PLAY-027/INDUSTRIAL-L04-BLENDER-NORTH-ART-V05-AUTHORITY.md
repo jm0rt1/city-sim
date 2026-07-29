@@ -6,6 +6,9 @@
 
 **Disposition:** `AUTHORIZED_SOCKET_FACING_PORTAL_RELOCATION`
 
+**Binding pre-render addendum:**
+`INDUSTRIAL-L04-BLENDER-NORTH-ART-V05-CAMERA-VISIBILITY-ADDENDUM.md`
+
 The v04 actual-camera proof is decisive. The governed North frontage socket is
 on the `X = -28` footprint edge, while the retained monumental freight portal
 faces `+X`. The closest legal exterior court on that portal plane remains

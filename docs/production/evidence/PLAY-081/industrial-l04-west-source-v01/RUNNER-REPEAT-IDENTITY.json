@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "proof": "TWO_INDEPENDENT_SYSTEM_PYTHON_RUNS",
+  "runs": {
+    "run1": {
+      "missingLockRejectionSha256": "9558e4dcb1411b7c02068fc0f8a298febe5bac2c019886af87e76fd683a0665b",
+      "runnerStaticValidationSha256": "37317652db6a2efd34983e4d91a0d84d50c839a22d2050b426919ea87c77ff88",
+      "wrongLockRejectionSha256": "fb155ca9546007d98a68b45641affc2fd889a03064914ad197cace7b76c96970"
+    },
+    "run2": {
+      "missingLockRejectionSha256": "9558e4dcb1411b7c02068fc0f8a298febe5bac2c019886af87e76fd683a0665b",
+      "runnerStaticValidationSha256": "37317652db6a2efd34983e4d91a0d84d50c839a22d2050b426919ea87c77ff88",
+      "wrongLockRejectionSha256": "fb155ca9546007d98a68b45641affc2fd889a03064914ad197cace7b76c96970"
+    }
+  },
+  "byteIdentical": {
+    "missingLockRejection": true,
+    "runnerStaticValidation": true,
+    "wrongLockRejection": true
+  },
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "imageGenInvocations": 0,
+  "normalizerInvocations": 0,
+  "contactSheetInvocations": 0,
+  "renderInvocations": 0,
+  "pixelFiles": 0,
+  "passed": true
+}

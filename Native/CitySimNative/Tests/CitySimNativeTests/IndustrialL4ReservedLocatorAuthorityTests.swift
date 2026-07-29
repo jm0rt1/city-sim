@@ -100,6 +100,20 @@ private struct L4ReservedLocatorHarness {
         sha256:
             "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
     )
+    static let governingContract = L4ReservedContract(
+        path:
+            "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+        revision: 2,
+        sha256:
+            "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+    )
+    static let sourceStageSchema = L4ReservedSourceStageSchema(
+        path:
+            "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+        version: 2,
+        sha256:
+            "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    )
 
     static let expectedEntries: [L4ReservedDirection: L4ReservedDirectionEntry] = [
         .east: L4ReservedDirectionEntry(
@@ -269,17 +283,8 @@ private struct L4ReservedLocatorHarness {
               authority.family == "industrial",
               authority.level == 4,
               authority.variant == 0,
-              authority.governingContract.path ==
-                IndustrialL4DirectionPacketValidator.contract.path,
-              authority.governingContract.revision ==
-                IndustrialL4DirectionPacketValidator.contract.revision,
-              authority.governingContract.sha256 ==
-                IndustrialL4DirectionPacketValidator.contract.sha256,
-              authority.sourceStageSchema.path ==
-                IndustrialL4DirectionPacketValidator.sourceStage.schema.path,
-              authority.sourceStageSchema.version == 2,
-              authority.sourceStageSchema.sha256 ==
-                IndustrialL4DirectionPacketValidator.sourceStage.schema.sha256,
+              authority.governingContract == Self.governingContract,
+              authority.sourceStageSchema == Self.sourceStageSchema,
               !authority.grants.sourceAdmission,
               !authority.grants.rendererQuarantine,
               !authority.grants.rendererActivation,
@@ -425,6 +430,15 @@ final class IndustrialL4ReservedLocatorAuthorityTests: XCTestCase {
             schemaData: try Data(contentsOf: repo.appendingPathComponent(
                 L4ReservedLocatorHarness.schema.path
             ))
+        )
+        let sourceStageSchemaData = try Data(
+            contentsOf: repo.appendingPathComponent(
+                authority.sourceStageSchema.path
+            )
+        )
+        XCTAssertEqual(
+            L4ReservedLocatorHarness.sha256(sourceStageSchemaData),
+            authority.sourceStageSchema.sha256
         )
         var receipts: [L4ReservedDirection: L4ReservedLocatorReceipt] = [:]
         for direction in L4ReservedDirection.allCases {

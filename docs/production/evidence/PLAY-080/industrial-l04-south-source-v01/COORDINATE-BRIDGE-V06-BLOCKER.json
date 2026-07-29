@@ -2,7 +2,7 @@
   "schema": "citysim.play-080.coordinate-bridge-blocker.v1",
   "taskId": "PLAY-080",
   "direction": "south",
-  "status": "HOLD_PENDING_V06_NOT_STOPPED",
+  "status": "RESOLVED_BY_ACCEPTED_V06",
   "preservedRunnerHead": "cf4c2e8aa17bb3c712174ee0d6d149d282b26ad1",
   "scope": "direction-local runner and hard-guard plumbing only",
   "integrationFinding": {
@@ -20,16 +20,22 @@
       640,
       832
     ],
-    "blenderNativeDirectionalSocket": null
+    "blenderNativeDirectionalSocket": [
+      28,
+      0,
+      0
+    ]
   },
   "revalidation": {
-    "state": "pending_v06",
-    "requiredBeforeRendererEntry": [
-      "Integration-published v06 coordinate-bridge authority path",
-      "exact authority commit and SHA-256",
-      "explicit CitySim-to-Blender axis order and signs",
-      "derived Blender-native South directional socket",
-      "revalidated footprint, pivot, contact corners, and source projection"
+    "state": "accepted_v06_adopted",
+    "acceptedCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "basis": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "sourceOrder": [
+      0,
+      1,
+      2,
+      3
     ]
   },
   "disposition": {

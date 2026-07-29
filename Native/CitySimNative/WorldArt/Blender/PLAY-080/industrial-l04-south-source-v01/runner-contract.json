@@ -3,7 +3,7 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
@@ -11,6 +11,10 @@
     "governingContract": {
       "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
       "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+    },
+    "dccContract": {
+      "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+      "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
     },
     "prelockRunnerAuthority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
@@ -71,13 +75,27 @@
     "sha256": null
   },
   "coordinateBridge": {
-    "state": "pending_v06_revalidation",
-    "authorityPath": null,
-    "authorityCommit": null,
-    "authoritySha256": null,
-    "citysimToBlenderAxisOrder": null,
-    "citysimToBlenderAxisSigns": null,
-    "blenderNativeDirectionalSocket": null,
+    "state": "v06_revalidated",
+    "acceptedCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "integratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+    "authorityPath": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",
+    "authorityCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "authoritySha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4",
+    "acceptancePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+    "acceptanceSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+    "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "matrixRows": [
+      [0, 0, 1],
+      [1, 0, 0],
+      [0, 1, 0]
+    ],
+    "determinant": 1,
+    "sourceOrder": [0, 1, 2, 3],
+    "citysimToBlenderAxisOrder": [2, 0, 1],
+    "citysimToBlenderAxisSigns": [1, 1, 1],
+    "blenderNativeDirectionalSocket": [28, 0, 0],
     "canonicalCitySimSouthSocket": [
       0,
       0,
@@ -91,16 +109,16 @@
   },
   "invariants": {
     "camera": {
-      "authorityStatus": "historical-predesign-observation-pending-v06-revalidation",
+      "authorityStatus": "accepted-v06-coordinate-bridge",
       "type": "ORTHO",
       "citysimPosition": [
-        100,
-        104.511627,
-        100
+        96,
+        101.24557426726288,
+        96
       ],
       "citysimTarget": [
         0,
-        22.861969,
+        22.861902498201186,
         0
       ],
       "orthoScale": 237.5878601074218,
@@ -151,7 +169,11 @@
           640,
           832
         ],
-        "status": "retained-historical-observation-pending-v06-revalidation"
+        "status": "accepted-v06-projection"
+      },
+      "blenderNativeFrontage": {
+        "socket": [28, 0, 0],
+        "outwardVector": [1, 0, 0]
       }
     },
     "lighting": {

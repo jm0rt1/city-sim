@@ -41,7 +41,7 @@
     },
     "validator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py",
-      "sha256": "a8bf4fed4cba97fd785d38798c63a6ab13c2a1f8171fdfa0ad02f4bf5b45c569"
+      "sha256": "33ecc7cd31c7cb7efb4ace497a214499e37f4472e85216050b459e35c05c467c"
     }
   },
   "toolchain": {
@@ -74,14 +74,14 @@
   "validation": {
     "staticProof": {
       "path": "docs/production/evidence/PLAY-080/PREDESIGN-STATIC-PROOF.json",
-      "sha256": "e091cacb68f46d18a71eb58b33277de4043f6e8304b71ba7abfbe2123f8174b3",
+      "sha256": "6697f4ea34822ab18da78e4fe0725bcb8a05d47342306bf75cc667012fe3fd7b",
       "result": "PASS",
       "passed": 14,
       "failed": 0
     },
     "actualCameraProof": {
       "path": "docs/production/evidence/PLAY-080/PREDESIGN-ACTUAL-CAMERA-PROOF.json",
-      "sha256": "fdf291209563e79f373c56e0b030113751e20ac139c410c6838a4ff2afbeb950",
+      "sha256": "059b346adc020aa3535ee218bbb3d5e30fa6c3d6fb54264c9f51f461ae5c5a1b",
       "result": "PASS",
       "passed": 9,
       "failed": 0,

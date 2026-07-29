@@ -588,6 +588,9 @@ def actual_camera_proof(scene: dict, materials: dict) -> dict:
 
 def main() -> int:
     args = parse_args()
+    validator_file = Path(__file__).resolve()
+    repository_root = validator_file.parents[5]
+    validator_display = validator_file.relative_to(repository_root).as_posix()
     scene = load_json(args.scene)
     materials = load_json(args.materials)
     if args.mode == "static":
@@ -600,8 +603,8 @@ def main() -> int:
         "sceneSHA256": sha256(args.scene),
         "materials": str(args.materials),
         "materialsSHA256": sha256(args.materials),
-        "validator": str(Path(__file__)),
-        "validatorSHA256": sha256(Path(__file__)),
+        "validator": validator_display,
+        "validatorSHA256": sha256(validator_file),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as handle:

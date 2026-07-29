@@ -69,7 +69,7 @@ Result:
 - `PASS`
 - `14/14` checks passed
 - SHA-256:
-  `e091cacb68f46d18a71eb58b33277de4043f6e8304b71ba7abfbe2123f8174b3`
+  `6697f4ea34822ab18da78e4fe0725bcb8a05d47342306bf75cc667012fe3fd7b`
 - Integration independently regenerated this proof byte-identically at the
   same SHA and reported `PASS`.
 
@@ -94,7 +94,7 @@ Result:
 - `9/9` checks passed
 - Blender `4.5.12 LTS`, build `84afd5f785f7`
 - SHA-256:
-  `fdf291209563e79f373c56e0b030113751e20ac139c410c6838a4ff2afbeb950`
+  `059b346adc020aa3535ee218bbb3d5e30fa6c3d6fb54264c9f51f461ae5c5a1b`
 - `renderInvocations: 0`
 - `imageOutputs: 0`
 - monumental portal: `14.057144 × 21.025661` literal-192 pixels against

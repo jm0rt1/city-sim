@@ -70,8 +70,8 @@
     "materialsSHA256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb",
     "scene": "industrial-l04-south-predesign-v01.scene.json",
     "sceneSHA256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d",
-    "validator": "/Users/James/.codex/worktrees/4247/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py",
-    "validatorSHA256": "a8bf4fed4cba97fd785d38798c63a6ab13c2a1f8171fdfa0ad02f4bf5b45c569"
+    "validator": "Native/CitySimNative/WorldArt/Blender/PLAY-080/validate_predesign.py",
+    "validatorSHA256": "33ecc7cd31c7cb7efb4ace497a214499e37f4472e85216050b459e35c05c467c"
   },
   "mode": "blender-actual-camera-zero-pixel",
   "pythonVersion": "3.11.11",

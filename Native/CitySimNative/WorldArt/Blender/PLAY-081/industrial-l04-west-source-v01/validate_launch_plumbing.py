@@ -169,6 +169,83 @@ def semantic_dry_rejection(
     }
 
 
+def command_guard_matrix(root: Path) -> dict[str, dict[str, Any]]:
+    commands = {
+        **{
+            f"render-{process_id}": [
+                "python3",
+                "-B",
+                f"{SOURCE_ROOT}/run_west_source.py",
+                "--repository-root",
+                ".",
+                "--mode",
+                process_id,
+            ]
+            for process_id in ("A", "B", "C")
+        },
+        "launch-bound": [
+            "python3",
+            "-B",
+            f"{SOURCE_ROOT}/prepare_launch_bound.py",
+            "--repository-root",
+            ".",
+            "--mode",
+            "assemble",
+        ],
+        **{
+            mode: [
+                "python3",
+                "-B",
+                f"{SOURCE_ROOT}/post_source_pipeline.py",
+                "--repository-root",
+                ".",
+                "--mode",
+                mode,
+            ]
+            for mode in (
+                "normalize-1",
+                "normalize-2",
+                "validate-repeat",
+                "contact-sheet",
+                "review-manifest",
+                "parallel-receipt",
+                "assemble-source",
+            )
+        },
+    }
+    matrix: dict[str, dict[str, Any]] = {}
+    for name, command in commands.items():
+        completed = subprocess.run(
+            command,
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        try:
+            payload = json.loads(completed.stdout)
+        except json.JSONDecodeError:
+            payload = {}
+        matrix[name] = {
+            "command": command,
+            "returnCode": completed.returncode,
+            "decision": payload.get("decision"),
+            "rejectionStage": payload.get("rejectionStage"),
+            "blenderProcessLaunches": payload.get("blenderProcessLaunches"),
+            "blenderRenderApiCalls": payload.get("blenderRenderApiCalls"),
+            "normalizerInvocations": payload.get("normalizerInvocations", 0),
+            "contactSheetInvocations": payload.get(
+                "contactSheetInvocations",
+                0,
+            ),
+            "pixelFiles": payload.get(
+                "pixelFiles",
+                payload.get("pixelFilesWritten"),
+            ),
+        }
+    return matrix
+
+
 def main() -> int:
     args = parse_args()
     root = Path(args.repository_root).resolve()
@@ -236,6 +313,29 @@ def main() -> int:
     }
     if not expected_process_errors.issubset(post_errors):
         failures.append("post-source-input-block")
+    commands = command_guard_matrix(root)
+    if any(
+        result["returnCode"] != 3
+        or result["decision"] not in {"reject", "BLOCKED"}
+        or result["rejectionStage"]
+        not in {
+            "before_renderer_launch",
+            "before_blender_process",
+            "before_pixel_read_or_write",
+        }
+        or any(
+            result[field] != 0
+            for field in (
+                "blenderProcessLaunches",
+                "blenderRenderApiCalls",
+                "normalizerInvocations",
+                "contactSheetInvocations",
+                "pixelFiles",
+            )
+        )
+        for result in commands.values()
+    ):
+        failures.append("command-surface-guard-matrix")
 
     dry_contract = fixture_contract(root, contract)
     fixture_authority = validate_future_authorities(root, dry_contract)
@@ -310,6 +410,7 @@ def main() -> int:
         "outputRootIsolation": isolation,
         "launchBoundProductionAttempt": assemble_result,
         "postSourceBlockers": post_errors,
+        "commandGuardMatrix": commands,
         "dryFixture": {
             "structuralStage": dry_packet["stage"],
             "structuralSchemaPassed": not schema_errors,

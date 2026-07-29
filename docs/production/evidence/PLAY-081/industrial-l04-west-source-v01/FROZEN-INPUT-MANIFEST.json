@@ -48,7 +48,7 @@
     },
     "validator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_launch_plumbing.py",
-      "sha256": "994cb47bf978a2ba723aea6a457690316f28ddd802410d9a155a87e2f98cfc22"
+      "sha256": "42f3ca2a9b0825a14cc18d1c6fe877aceddaa20b6c33086efee502cba7619ad4"
     }
   },
   "sharedReadOnlyAuthorities": {

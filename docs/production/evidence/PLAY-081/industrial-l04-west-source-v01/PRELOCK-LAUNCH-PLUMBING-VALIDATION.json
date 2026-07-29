@@ -1,0 +1,658 @@
+{
+  "actualMissingAuthorityRejection": {
+    "appearanceLockCommit": null,
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "direction": "west",
+    "errors": [
+      "appearance-lock:not-bound",
+      "future-authority:not-bound",
+      "locked-materials:not-bound",
+      "origin-master:missing-binding",
+      "source-profile:not-bound"
+    ],
+    "originMaster": {
+      "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+      "bound": null,
+      "head": "28f19c289beead7c145d01c2d58186dd98799908"
+    },
+    "passed": false,
+    "pixelFiles": 0,
+    "schemaVersion": 1,
+    "sourceProductionProfileCommit": null,
+    "taskId": "PLAY-081"
+  },
+  "approvedCandidate": "135805d9b092d44ea28ff8421cbc70bddd1ac38a",
+  "approvedCandidateAncestor": true,
+  "commandGuardMatrix": {
+    "assemble-source": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "assemble-source"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    },
+    "contact-sheet": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "contact-sheet"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    },
+    "launch-bound": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "assemble"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_blender_process",
+      "returnCode": 3
+    },
+    "normalize-1": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "normalize-1"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    },
+    "normalize-2": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "normalize-2"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    },
+    "parallel-receipt": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "parallel-receipt"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    },
+    "render-A": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "A"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_renderer_launch",
+      "returnCode": 3
+    },
+    "render-B": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "B"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_renderer_launch",
+      "returnCode": 3
+    },
+    "render-C": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "C"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_renderer_launch",
+      "returnCode": 3
+    },
+    "review-manifest": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "review-manifest"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    },
+    "validate-repeat": {
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "command": [
+        "python3",
+        "-B",
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+        "--repository-root",
+        ".",
+        "--mode",
+        "validate-repeat"
+      ],
+      "contactSheetInvocations": 0,
+      "decision": "BLOCKED",
+      "normalizerInvocations": 0,
+      "pixelFiles": 0,
+      "rejectionStage": "before_pixel_read_or_write",
+      "returnCode": 3
+    }
+  },
+  "direction": "west",
+  "dryFixture": {
+    "fixtureAuthorityRejection": {
+      "appearanceLockCommit": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "direction": "west",
+      "errors": [
+        "appearance-lock:publication-content-drift",
+        "appearance-lock:unpublished-path",
+        "locked-materials:publication-content-drift",
+        "locked-materials:unpublished-path",
+        "origin-master:stale-binding",
+        "source-profile:publication-content-drift",
+        "source-profile:unpublished-path"
+      ],
+      "originMaster": {
+        "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+        "bound": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+        "head": "28f19c289beead7c145d01c2d58186dd98799908"
+      },
+      "passed": false,
+      "pixelFiles": 0,
+      "schemaVersion": 1,
+      "sourceProductionProfileCommit": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "taskId": "PLAY-081"
+    },
+    "mismatchedMaterialRejection": {
+      "appearanceLockCommit": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "direction": "west",
+      "errors": [
+        "appearance-lock:publication-content-drift",
+        "appearance-lock:unpublished-path",
+        "locked-materials:publication-content-drift",
+        "locked-materials:unpublished-path",
+        "locked-materials:working-tree-sha256",
+        "origin-master:stale-binding",
+        "source-profile:publication-content-drift",
+        "source-profile:unpublished-path"
+      ],
+      "originMaster": {
+        "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+        "bound": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+        "head": "28f19c289beead7c145d01c2d58186dd98799908"
+      },
+      "passed": false,
+      "pixelFiles": 0,
+      "schemaVersion": 1,
+      "sourceProductionProfileCommit": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "taskId": "PLAY-081"
+    },
+    "productionAuthority": false,
+    "semanticRejection": {
+      "rejected": true,
+      "result": {
+        "error": "AUTHORITY_FILE_NOT_IN_COMMIT: appearanceLock: 662bc89d0ad8d1856aabd4a37c9b24b57e34f32b:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/dry-fixtures/APPEARANCE-LOCK.json",
+        "result": "FAIL"
+      },
+      "returnCode": 1
+    },
+    "staleOriginMasterRejection": {
+      "appearanceLockCommit": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "direction": "west",
+      "errors": [
+        "appearance-lock:commit-not-on-origin-master",
+        "appearance-lock:publication-content-drift",
+        "appearance-lock:unpublished-path",
+        "locked-materials:commit-not-on-origin-master",
+        "locked-materials:publication-content-drift",
+        "locked-materials:unpublished-path",
+        "origin-master:stale-binding",
+        "source-profile:commit-not-on-origin-master",
+        "source-profile:publication-content-drift",
+        "source-profile:unpublished-path"
+      ],
+      "originMaster": {
+        "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+        "bound": "0000000000000000000000000000000000000000",
+        "head": "28f19c289beead7c145d01c2d58186dd98799908"
+      },
+      "passed": false,
+      "pixelFiles": 0,
+      "schemaVersion": 1,
+      "sourceProductionProfileCommit": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+      "taskId": "PLAY-081"
+    },
+    "structuralSchemaPassed": true,
+    "structuralStage": "launch_bound"
+  },
+  "failures": [],
+  "generatedCaches": [],
+  "guardResults": {
+    "A": {
+      "authorityValidation": {
+        "appearanceLockCommit": null,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "direction": "west",
+        "errors": [
+          "appearance-lock:not-bound",
+          "future-authority:not-bound",
+          "locked-materials:not-bound",
+          "origin-master:missing-binding",
+          "source-profile:not-bound"
+        ],
+        "originMaster": {
+          "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+          "bound": null,
+          "head": "28f19c289beead7c145d01c2d58186dd98799908"
+        },
+        "passed": false,
+        "pixelFiles": 0,
+        "schemaVersion": 1,
+        "sourceProductionProfileCommit": null,
+        "taskId": "PLAY-081"
+      },
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "A",
+      "normalizerInvocations": 0,
+      "outputRootIsolation": {
+        "allOutputRootsDistinct": true,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "direction": "west",
+        "errors": [],
+        "noExistingOutputRoots": true,
+        "noOverwrite": true,
+        "passed": true,
+        "pixelFiles": 0,
+        "roots": {
+          "A": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic"
+          },
+          "B": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic"
+          },
+          "C": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic"
+          }
+        },
+        "schemaVersion": 1,
+        "taskId": "PLAY-081"
+      },
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing",
+        "appearance-lock:not-bound",
+        "future-authority:not-bound",
+        "locked-materials:not-bound",
+        "origin-master:missing-binding",
+        "source-profile:not-bound"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    },
+    "B": {
+      "authorityValidation": {
+        "appearanceLockCommit": null,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "direction": "west",
+        "errors": [
+          "appearance-lock:not-bound",
+          "future-authority:not-bound",
+          "locked-materials:not-bound",
+          "origin-master:missing-binding",
+          "source-profile:not-bound"
+        ],
+        "originMaster": {
+          "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+          "bound": null,
+          "head": "28f19c289beead7c145d01c2d58186dd98799908"
+        },
+        "passed": false,
+        "pixelFiles": 0,
+        "schemaVersion": 1,
+        "sourceProductionProfileCommit": null,
+        "taskId": "PLAY-081"
+      },
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "B",
+      "normalizerInvocations": 0,
+      "outputRootIsolation": {
+        "allOutputRootsDistinct": true,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "direction": "west",
+        "errors": [],
+        "noExistingOutputRoots": true,
+        "noOverwrite": true,
+        "passed": true,
+        "pixelFiles": 0,
+        "roots": {
+          "A": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic"
+          },
+          "B": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic"
+          },
+          "C": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic"
+          }
+        },
+        "schemaVersion": 1,
+        "taskId": "PLAY-081"
+      },
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing",
+        "appearance-lock:not-bound",
+        "future-authority:not-bound",
+        "locked-materials:not-bound",
+        "origin-master:missing-binding",
+        "source-profile:not-bound"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    },
+    "C": {
+      "authorityValidation": {
+        "appearanceLockCommit": null,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "direction": "west",
+        "errors": [
+          "appearance-lock:not-bound",
+          "future-authority:not-bound",
+          "locked-materials:not-bound",
+          "origin-master:missing-binding",
+          "source-profile:not-bound"
+        ],
+        "originMaster": {
+          "actual": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
+          "bound": null,
+          "head": "28f19c289beead7c145d01c2d58186dd98799908"
+        },
+        "passed": false,
+        "pixelFiles": 0,
+        "schemaVersion": 1,
+        "sourceProductionProfileCommit": null,
+        "taskId": "PLAY-081"
+      },
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "decision": "reject",
+      "direction": "west",
+      "imageGenInvocations": 0,
+      "mode": "C",
+      "normalizerInvocations": 0,
+      "outputRootIsolation": {
+        "allOutputRootsDistinct": true,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "direction": "west",
+        "errors": [],
+        "noExistingOutputRoots": true,
+        "noOverwrite": true,
+        "passed": true,
+        "pixelFiles": 0,
+        "roots": {
+          "A": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic"
+          },
+          "B": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic"
+          },
+          "C": {
+            "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+            "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+            "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic"
+          }
+        },
+        "schemaVersion": 1,
+        "taskId": "PLAY-081"
+      },
+      "pixelFiles": 0,
+      "reasonCodes": [
+        "appearance-lock:missing",
+        "appearance-lock:not-bound",
+        "future-authority:not-bound",
+        "locked-materials:not-bound",
+        "origin-master:missing-binding",
+        "source-profile:not-bound"
+      ],
+      "rejectionStage": "before_renderer_launch",
+      "renderInvocations": 0,
+      "schemaVersion": 1,
+      "taskId": "PLAY-081"
+    }
+  },
+  "head": "28f19c289beead7c145d01c2d58186dd98799908",
+  "integrationAdmitted": false,
+  "invocations": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "dccProcesses": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0
+  },
+  "launchBoundProductionAttempt": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "decision": "BLOCKED",
+    "direction": "west",
+    "errors": [
+      "appearance-lock:not-bound",
+      "future-authority:not-bound",
+      "locked-materials:not-bound",
+      "origin-master:missing-binding",
+      "source-profile:not-bound"
+    ],
+    "mode": "assemble",
+    "packetWritten": false,
+    "pixelFiles": 0,
+    "rejectionStage": "before_blender_process",
+    "schemaVersion": 1,
+    "taskId": "PLAY-081"
+  },
+  "outputRootIsolation": {
+    "allOutputRootsDistinct": true,
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "direction": "west",
+    "errors": [],
+    "noExistingOutputRoots": true,
+    "noOverwrite": true,
+    "passed": true,
+    "pixelFiles": 0,
+    "roots": {
+      "A": {
+        "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+        "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+        "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic"
+      },
+      "B": {
+        "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+        "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+        "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic"
+      },
+      "C": {
+        "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+        "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+        "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic"
+      }
+    },
+    "schemaVersion": 1,
+    "taskId": "PLAY-081"
+  },
+  "passed": true,
+  "pixelFiles": [],
+  "postSourceBlockers": [
+    "appearance-lock:not-bound",
+    "future-authority:not-bound",
+    "locked-materials:not-bound",
+    "origin-master:missing-binding",
+    "process-A:missing-freshInvocationReceipt",
+    "process-A:missing-objectMapping",
+    "process-A:missing-provenance",
+    "process-A:missing-raw",
+    "process-A:missing-registration",
+    "process-A:missing-semantic",
+    "process-B:missing-freshInvocationReceipt",
+    "process-B:missing-objectMapping",
+    "process-B:missing-provenance",
+    "process-B:missing-raw",
+    "process-B:missing-registration",
+    "process-B:missing-semantic",
+    "process-C:missing-freshInvocationReceipt",
+    "process-C:missing-objectMapping",
+    "process-C:missing-provenance",
+    "process-C:missing-raw",
+    "process-C:missing-registration",
+    "process-C:missing-semantic",
+    "source-profile:not-bound"
+  ],
+  "productionSelected": false,
+  "publishedMerge": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
+  "publishedMergeAncestor": true,
+  "rendererQuarantined": false,
+  "schemaVersion": 1,
+  "sourceReady": false,
+  "taskId": "PLAY-081"
+}

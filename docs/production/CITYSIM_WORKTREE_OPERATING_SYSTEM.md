@@ -43,14 +43,18 @@ When sources conflict, use this order:
 ## 3. Repository topology
 
 The system has one integration command center, five product specialist
-worktrees, and one isolated world-art generation cell.
+worktrees, and direction-exclusive World Art cells that may run concurrently
+only under disjoint Integration-issued claims.
 
 | Lane | Branch | Default worktree path | Mission |
 |---|---|---|---|
 | Integration | `master` | Main repository checkout | Own accepted builds, allocation, integration, conflict resolution, release proof, and rollback |
 | Gameplay loop | `codex/citysim-gameplay-loop` | `/Users/James/.codex/worktrees/citysim/gameplay-loop` | Make decisions consequential and the session paced, legible, recoverable, and worth replaying |
 | World rendering | `codex/citysim-world-rendering` | `/Users/James/.codex/worktrees/citysim/world-rendering` | Make the city readable, alive, performant, and visually compelling |
-| World art | `codex/citysim-world-art` | `/Users/James/.codex/worktrees/citysim/world-art` | Author governed high-fidelity directional source art without changing renderer or gameplay authority |
+| World art — North/core | `codex/citysim-world-art` | `/Users/James/.codex/worktrees/citysim/world-art` | Author the governed North calibration/hero source and shared family handoff without changing renderer or gameplay authority |
+| World art — East | `codex/citysim-world-art-east` | Integration-provisioned | Independently author East-facing source predesign under a direction-exclusive claim |
+| World art — South | `codex/citysim-world-art-south` | Integration-provisioned | Independently author South-facing source predesign under a direction-exclusive claim |
+| World art — West | `codex/citysim-world-art-west` | Integration-provisioned | Independently author West-facing source predesign under a direction-exclusive claim |
 | UI and input | `codex/citysim-ui-input` | `/Users/James/.codex/worktrees/citysim/ui-input` | Make every command discoverable, responsive, accessible, and keyboard-operable |
 | Simulation platform | `codex/citysim-simulation-platform` | `/Users/James/.codex/worktrees/citysim/simulation-platform` | Own deterministic state, persistence, performance, diagnostics, and system contracts |
 | Playtest quality | `codex/citysim-playtest-quality` | `/Users/James/.codex/worktrees/citysim/playtest-quality` | Prove or disprove playability with golden cities, journeys, visual evidence, balance findings, and regressions |
@@ -167,7 +171,7 @@ Default surfaces:
 
 This lane is read-mostly against feature code. It should return product defects to the owning lane rather than casually repairing cross-cutting implementation.
 
-### 4.7 World art generation cell
+### 4.7 World art generation cells
 
 Primary ownership:
 
@@ -181,13 +185,18 @@ Default surfaces:
 
 - `Native/CitySimNative/WorldArt/ImageGen/`;
 - task-owned source catalog additions outside the shipping production selection;
-- source-art validators, contact sheets, and `PLAY-027` evidence.
+- source-art validators, contact sheets, and task-owned `PLAY-027/079/080/081`
+  evidence.
 
-The cell does not edit `Rendering/`, the shipping atlas pages or production
+The cells do not edit `Rendering/`, the shipping atlas pages or production
 selection, package topology, gameplay/simulation/UI code, or shared manifests.
 Only integration may approve a manifest contract; the renderer lead later
-reviews and ingests accepted source batches. This cell must never run
-concurrently as a second writer on the world-rendering worktree.
+reviews and ingests accepted source batches. A direction-exclusive cell owns
+only its named source/evidence paths and may never copy, mirror, rotate, or
+derive geometry from a sibling direction. Shared art contracts and family
+materials are read-only inputs unless Integration assigns one explicit writer.
+No art cell may run concurrently as a second writer on the world-rendering
+worktree.
 
 ## 5. Shared surfaces and contract locks
 

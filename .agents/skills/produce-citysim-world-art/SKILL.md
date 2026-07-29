@@ -1,6 +1,6 @@
 ---
 name: produce-citysim-world-art
-description: "Author and validate CitySim directional building source art on `codex/citysim-world-art`. Use for PLAY-027 ImageGen prompts, raw masters, provenance, non-shipping source records, N/E/S/W consistency, alias audits, contact sheets, and source-art handoffs. This skill forbids live renderer, shipping atlas, gameplay, UI, save, and shared-manifest changes."
+description: "Author and validate CitySim directional building source art on the governed `codex/citysim-world-art*` branches. Use for PLAY-027/079/080/081 source scenes, raw masters, provenance, non-shipping source records, N/E/S/W consistency, alias audits, contact sheets, and source-art handoffs. This skill forbids live renderer, shipping atlas, gameplay, UI, save, and shared-manifest changes."
 ---
 
 # Produce CitySim World Art
@@ -11,11 +11,16 @@ The output is a reviewed source batch, not a shipping renderer change.
 ## Start every turn
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
-2. Require `codex/citysim-world-art`; stop on any other branch.
+2. Require one exact governed branch and claim:
+   - `codex/citysim-world-art` → `PLAY-027.world-art.md`;
+   - `codex/citysim-world-art-east` → `PLAY-079.world-art-east.md`;
+   - `codex/citysim-world-art-south` → `PLAY-080.world-art-south.md`;
+   - `codex/citysim-world-art-west` → `PLAY-081.world-art-west.md`.
+   Stop on any other branch or claim mismatch.
 3. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`,
    `docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md`,
    `docs/production/decisions/CONTRACT-010-directional-building-art.md`, and
-   `docs/production/claims/PLAY-027.world-art.md` completely.
+   the branch-mapped claim above completely.
 4. Confirm the branch contains the claim’s published base and is clean.
 5. State the world-art mission and current batch before generating anything.
 
@@ -26,7 +31,14 @@ Own only:
 - ImageGen prompts, raw attempts, accepted masters, provenance, and rejection
   records under `Native/CitySimNative/WorldArt/ImageGen/`;
 - task-owned non-shipping source records and source validators;
-- PLAY-027 contact sheets, geometry reports, and evidence.
+- task-owned PLAY-027/079/080/081 contact sheets, geometry reports, and
+  evidence.
+
+Direction cells additionally own only the exact direction named by their
+claim. They may consume the published family/material/camera contract but may
+not edit a sibling direction's scene, tools, raw pixels, or evidence. Do not
+copy a sibling scene as the starting geometry; author each orientation
+explicitly from the shared family requirements.
 
 Do not edit `Rendering/`, shipping atlas pages, production selection, shared
 manifest types, package/build scripts, gameplay, simulation, UI, saves,

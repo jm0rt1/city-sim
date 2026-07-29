@@ -812,3 +812,54 @@ This is the authoritative first-wave task source. The shared target is one coher
   version change; non-deterministic generation; performance regression outside
   the published budget.
 - **Claim:** `docs/production/claims/PLAY-078.simulation-platform.md`.
+
+### [ ] PLAY-079: Predesign the Industrial L4 East source in parallel
+
+- **Player outcome:** East-facing Industrial L4 can enter art review immediately
+  after North acceptance instead of starting from zero.
+- **Owning lane:** World Art East cell.
+- **Requirement IDs:** ART-001, ART-002, ART-004, REL-001.
+- **Dependencies:** CONTRACT-020; CONTRACT-021; active North family authority.
+- **In scope:** Independent East text scene/material binding and zero-pixel
+  portal, footprint, pivot, socket, silhouette, light, shadow, and occlusion
+  proof.
+- **Out of scope:** Pixel rendering, normalization, sibling geometry,
+  renderer/shipping, runtime, package, gameplay, simulation, UI, or build work.
+- **Acceptance:** East predesign is independently authored, road-facing,
+  registration-correct, non-aliased, cleanly committed, and ready to consume
+  the accepted North family/material lock.
+- **Claim:** `docs/production/claims/PLAY-079.world-art-east.md`.
+
+### [ ] PLAY-080: Predesign the Industrial L4 South source in parallel
+
+- **Player outcome:** South-facing Industrial L4 can enter art review
+  immediately after North acceptance instead of starting from zero.
+- **Owning lane:** World Art South cell.
+- **Requirement IDs:** ART-001, ART-002, ART-004, REL-001.
+- **Dependencies:** CONTRACT-020; CONTRACT-021; active North family authority.
+- **In scope:** Independent South text scene/material binding and zero-pixel
+  portal, footprint, pivot, socket, silhouette, light, shadow, and occlusion
+  proof.
+- **Out of scope:** Pixel rendering, normalization, sibling geometry,
+  renderer/shipping, runtime, package, gameplay, simulation, UI, or build work.
+- **Acceptance:** South predesign is independently authored, road-facing,
+  registration-correct, non-aliased, cleanly committed, and ready to consume
+  the accepted North family/material lock.
+- **Claim:** `docs/production/claims/PLAY-080.world-art-south.md`.
+
+### [ ] PLAY-081: Predesign the Industrial L4 West source in parallel
+
+- **Player outcome:** West-facing Industrial L4 can enter art review immediately
+  after North acceptance instead of starting from zero.
+- **Owning lane:** World Art West cell.
+- **Requirement IDs:** ART-001, ART-002, ART-004, REL-001.
+- **Dependencies:** CONTRACT-020; CONTRACT-021; active North family authority.
+- **In scope:** Independent West text scene/material binding and zero-pixel
+  portal, footprint, pivot, socket, silhouette, light, shadow, and occlusion
+  proof.
+- **Out of scope:** Pixel rendering, normalization, sibling geometry,
+  renderer/shipping, runtime, package, gameplay, simulation, UI, or build work.
+- **Acceptance:** West predesign is independently authored, road-facing,
+  registration-correct, non-aliased, cleanly committed, and ready to consume
+  the accepted North family/material lock.
+- **Claim:** `docs/production/claims/PLAY-081.world-art-west.md`.

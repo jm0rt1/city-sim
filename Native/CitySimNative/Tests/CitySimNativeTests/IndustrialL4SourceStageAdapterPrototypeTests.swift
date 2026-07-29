@@ -234,6 +234,454 @@ private struct L4AdapterBatchState: Equatable {
     let productionSelected: Bool
 }
 
+private struct L4AdapterSyntheticAdmission: Codable, Equatable {
+    let schemaVersion: Int
+    let disposition: String
+    let integrationCommit: String
+    let direction: L4AdapterDirection
+    let logicalID: String
+    let workerPacket: L4AdapterArtifact
+    let contentCommit: String
+    let decodedRgbaSha256: String
+    let semanticValidator: L4AdapterArtifact
+    let semanticValidationResult: String
+    let independentTechnicalDisposition: String
+    let literalScaleDisposition: String
+    let rendererQuarantined: Bool
+    let productionSelected: Bool
+}
+
+private enum L4AdapterSyntheticQuarantineStatus: String, Codable, Equatable {
+    case inactive
+    case quarantinedIncomplete = "quarantined_incomplete"
+    case readyForAtomicAssembly = "ready_for_atomic_assembly"
+}
+
+private struct L4AdapterSyntheticQuarantineReceipt: Codable, Equatable {
+    let schemaVersion: Int
+    let packetSha256: String
+    let sourceAdmissionSha256: String
+    let logicalID: String
+    let direction: L4AdapterDirection
+    let decodedRgbaSha256: String
+    let validationResult: String
+    let quarantineStatus: L4AdapterSyntheticQuarantineStatus
+    let rendererQuarantined: Bool
+    let productionSelected: Bool
+    let runtimeMappingMutated: Bool
+    let shippingResourcesMutated: Bool
+}
+
+private struct L4AdapterSyntheticAdmittedPacket: Equatable {
+    let packet: L4AdapterRendererPacket
+    let packetSha256: String
+    let admission: L4AdapterSyntheticAdmission
+    let admissionSha256: String
+}
+
+private struct L4AdapterSyntheticQuarantineResult: Equatable {
+    let status: L4AdapterSyntheticQuarantineStatus
+    let acceptedDirections: [L4AdapterDirection]
+    let missingDirections: [String]
+}
+
+private struct L4AdapterSyntheticFileInput {
+    let packetURL: URL
+    let packetSha256: String
+    let admissionURL: URL
+    let admissionSha256: String
+}
+
+private struct L4AdapterSyntheticFileOutput: Equatable {
+    let admittedPacket: L4AdapterSyntheticAdmittedPacket
+    let receipt: L4AdapterSyntheticQuarantineReceipt
+    let receiptData: Data
+}
+
+private enum L4AdapterSyntheticQuarantineError: Error, Equatable {
+    case unsafePath(String)
+    case hashMismatch(String)
+    case schemaDrift
+    case packetDrift(String)
+    case admissionDrift(String)
+    case alias(String)
+    case transformedSibling
+    case incompleteDirections([String])
+}
+
+private struct L4AdapterSyntheticQuarantineHarness {
+    let root: URL
+
+    func inspect(
+        _ input: L4AdapterSyntheticFileInput,
+        existingPackets: [L4AdapterSyntheticAdmittedPacket] = []
+    ) throws -> L4AdapterSyntheticFileOutput {
+        let packetData = try read(
+            input.packetURL,
+            expectedSha256: input.packetSha256
+        )
+        try Self.validatePacketShape(packetData)
+        let packet = try JSONDecoder().decode(
+            L4AdapterRendererPacket.self,
+            from: packetData
+        )
+        try Self.validatePacket(packet)
+
+        let admissionData = try read(
+            input.admissionURL,
+            expectedSha256: input.admissionSha256
+        )
+        try Self.validateAdmissionShape(admissionData)
+        let admission = try JSONDecoder().decode(
+            L4AdapterSyntheticAdmission.self,
+            from: admissionData
+        )
+        try Self.validateAdmission(
+            admission,
+            packet: packet,
+            packetPath: try relativePath(input.packetURL),
+            packetSha256: input.packetSha256
+        )
+
+        let admitted = L4AdapterSyntheticAdmittedPacket(
+            packet: packet,
+            packetSha256: input.packetSha256,
+            admission: admission,
+            admissionSha256: input.admissionSha256
+        )
+        let result = try Self.validateBatch(existingPackets + [admitted])
+        let receipt = L4AdapterSyntheticQuarantineReceipt(
+            schemaVersion: 1,
+            packetSha256: input.packetSha256,
+            sourceAdmissionSha256: input.admissionSha256,
+            logicalID: packet.logicalID,
+            direction: packet.direction,
+            decodedRgbaSha256: packet.source.decodedRgbaSha256,
+            validationResult: "accepted_direction_quarantine",
+            quarantineStatus: result.status,
+            rendererQuarantined: true,
+            productionSelected: false,
+            runtimeMappingMutated: false,
+            shippingResourcesMutated: false
+        )
+        return L4AdapterSyntheticFileOutput(
+            admittedPacket: admitted,
+            receipt: receipt,
+            receiptData: try L4AdapterPrototype.sortedData(receipt)
+        )
+    }
+
+    static func validateBatch(
+        _ admitted: [L4AdapterSyntheticAdmittedPacket]
+    ) throws -> L4AdapterSyntheticQuarantineResult {
+        let packets = admitted.map(\.packet)
+        try unique(packets.map { $0.direction.rawValue }, field: "direction")
+        try unique(packets.map(\.logicalID), field: "logicalID")
+        try unique(packets.map(\.source.sourceKey), field: "sourceKey")
+        try unique(
+            packets.map(\.source.decodedRgbaSha256),
+            field: "decodedRgbaSha256"
+        )
+        try unique(
+            packets.map(\.source.authoredGeometrySha256),
+            field: "authoredGeometrySha256"
+        )
+        try unique(
+            packets.map(\.source.componentManifestSha256),
+            field: "componentManifestSha256"
+        )
+        try unique(
+            packets.flatMap { $0.lods.map(\.normalizedRgbaSha256) },
+            field: "lods"
+        )
+        for packet in packets {
+            let transformed = Set(
+                packet.transformFingerprints
+                    .filter { $0.key != "identity" }
+                    .map(\.value)
+            )
+            for sibling in packets where sibling.direction != packet.direction {
+                guard !transformed.contains(
+                    sibling.source.decodedRgbaSha256
+                ) else {
+                    throw L4AdapterSyntheticQuarantineError.transformedSibling
+                }
+            }
+        }
+
+        let accepted = L4AdapterDirection.allCases.filter {
+            packets.map(\.direction).contains($0)
+        }
+        let missing = ["north", "east", "south", "west"].filter {
+            !accepted.map(\.rawValue).contains($0)
+        }
+        let status: L4AdapterSyntheticQuarantineStatus
+        switch packets.count {
+        case 0:
+            status = .inactive
+        case 4 where missing.isEmpty:
+            status = .readyForAtomicAssembly
+        default:
+            status = .quarantinedIncomplete
+        }
+        return L4AdapterSyntheticQuarantineResult(
+            status: status,
+            acceptedDirections: accepted,
+            missingDirections: missing
+        )
+    }
+
+    static func requireReadyForAtomicAssembly(
+        _ admitted: [L4AdapterSyntheticAdmittedPacket]
+    ) throws -> L4AdapterSyntheticQuarantineResult {
+        let result = try validateBatch(admitted)
+        guard result.status == .readyForAtomicAssembly else {
+            throw L4AdapterSyntheticQuarantineError.incompleteDirections(
+                result.missingDirections
+            )
+        }
+        return result
+    }
+
+    private static func validatePacket(
+        _ packet: L4AdapterRendererPacket
+    ) throws {
+        guard packet.schemaVersion == 2,
+              packet.family == "industrial",
+              packet.level == 4,
+              packet.variant == 0,
+              packet.logicalID ==
+                "industrial_l04_v0_\(packet.direction.rawValue)",
+              packet.governingContract == L4AdapterPrototype.contract,
+              packet.directionBridge == L4AdapterPrototype.directionBridge,
+              packet.sourceStage == L4AdapterPrototype.sourceStage,
+              packet.workerState.stage == "source_candidate",
+              packet.workerState.candidateReadyForIndependentReview,
+              !packet.workerState.sourceReady,
+              !packet.workerState.integrationAdmitted,
+              !packet.workerState.rendererQuarantined,
+              packet.source.fallbackSourceKey == nil,
+              !packet.productionSelected
+        else {
+            throw L4AdapterSyntheticQuarantineError.packetDrift("authority")
+        }
+
+        let lods = Dictionary(grouping: packet.lods, by: \.detail)
+        guard packet.lods.count == 3,
+              Set(lods.keys) == Set(L4AdapterPrototype.lodOrder),
+              lods.values.allSatisfy({ $0.count == 1 }),
+              packet.lods.allSatisfy({
+                  $0.canvasPixels ==
+                    L4AdapterPrototype.lodSizes[$0.detail]
+              }),
+              Set(packet.lods.map(\.normalizedRgbaSha256)).count == 3
+        else {
+            throw L4AdapterSyntheticQuarantineError.packetDrift("lods")
+        }
+        guard packet.transformFingerprints["identity"] ==
+                packet.source.decodedRgbaSha256,
+              Set(packet.transformFingerprints.keys) ==
+                L4AdapterPrototype.transformKeys,
+              Set(packet.transformFingerprints.values).count ==
+                L4AdapterPrototype.transformKeys.count
+        else {
+            throw L4AdapterSyntheticQuarantineError.packetDrift("transforms")
+        }
+    }
+
+    private static func validateAdmission(
+        _ admission: L4AdapterSyntheticAdmission,
+        packet: L4AdapterRendererPacket,
+        packetPath: String,
+        packetSha256: String
+    ) throws {
+        guard admission.schemaVersion == 1,
+              admission.disposition == "integration_source_admitted",
+              admission.direction == packet.direction,
+              admission.logicalID == packet.logicalID,
+              admission.workerPacket ==
+                L4AdapterArtifact(path: packetPath, sha256: packetSha256),
+              admission.contentCommit == packet.source.candidateCommit,
+              admission.decodedRgbaSha256 ==
+                packet.source.decodedRgbaSha256,
+              admission.semanticValidator ==
+                packet.sourceStage.semanticValidator
+        else {
+            throw L4AdapterSyntheticQuarantineError.admissionDrift(
+                "candidateBinding"
+            )
+        }
+        guard admission.semanticValidationResult == "PASS",
+              admission.independentTechnicalDisposition == "ACCEPT",
+              admission.literalScaleDisposition == "ACCEPT",
+              !admission.rendererQuarantined,
+              !admission.productionSelected,
+              isCommit(admission.integrationCommit)
+        else {
+            throw L4AdapterSyntheticQuarantineError.admissionDrift(
+                "authorityBoundary"
+            )
+        }
+    }
+
+    private func read(
+        _ url: URL,
+        expectedSha256: String
+    ) throws -> Data {
+        let canonicalRoot = root.standardizedFileURL.resolvingSymlinksInPath()
+        let canonicalURL = url.standardizedFileURL.resolvingSymlinksInPath()
+        guard canonicalURL.path.hasPrefix(canonicalRoot.path + "/"),
+              canonicalURL.pathExtension == "json"
+        else {
+            throw L4AdapterSyntheticQuarantineError.unsafePath(
+                canonicalURL.path
+            )
+        }
+        let data = try Data(contentsOf: canonicalURL)
+        guard L4AdapterPrototype.sha256(data) == expectedSha256 else {
+            throw L4AdapterSyntheticQuarantineError.hashMismatch(
+                canonicalURL.lastPathComponent
+            )
+        }
+        return data
+    }
+
+    private func relativePath(_ url: URL) throws -> String {
+        let canonicalRoot = root.standardizedFileURL.resolvingSymlinksInPath()
+        let canonicalURL = url.standardizedFileURL.resolvingSymlinksInPath()
+        guard canonicalURL.path.hasPrefix(canonicalRoot.path + "/") else {
+            throw L4AdapterSyntheticQuarantineError.unsafePath(
+                canonicalURL.path
+            )
+        }
+        return String(
+            canonicalURL.path.dropFirst(canonicalRoot.path.count + 1)
+        )
+    }
+
+    private static func validatePacketShape(_ data: Data) throws {
+        let root = try object(data)
+        try exactKeys(
+            root,
+            [
+                "schemaVersion", "family", "level", "variant", "direction",
+                "logicalID", "governingContract", "directionBridge",
+                "appearanceLock", "sourceStage", "workerState", "source",
+                "lods", "provenance", "registration",
+                "transformFingerprints", "productionSelected",
+            ]
+        )
+        try exactKeys(
+            try child(root, "workerState"),
+            [
+                "stage", "candidateReadyForIndependentReview", "sourceReady",
+                "integrationAdmitted", "rendererQuarantined",
+            ]
+        )
+        try allowedKeys(
+            try child(root, "source"),
+            [
+                "candidateCommit", "sourceKey", "decodedRgbaSha256",
+                "authoredGeometrySha256", "componentManifestSha256",
+                "fallbackSourceKey",
+            ],
+            required: [
+                "candidateCommit", "sourceKey", "decodedRgbaSha256",
+                "authoredGeometrySha256", "componentManifestSha256",
+            ]
+        )
+        guard let lods = root["lods"] as? [[String: Any]],
+              lods.count == 3
+        else {
+            throw L4AdapterSyntheticQuarantineError.schemaDrift
+        }
+        for lod in lods {
+            try exactKeys(
+                lod,
+                ["detail", "normalizedRgbaSha256", "canvasPixels"]
+            )
+        }
+    }
+
+    private static func validateAdmissionShape(_ data: Data) throws {
+        let root = try object(data)
+        try exactKeys(
+            root,
+            [
+                "schemaVersion", "disposition", "integrationCommit",
+                "direction", "logicalID", "workerPacket", "contentCommit",
+                "decodedRgbaSha256", "semanticValidator",
+                "semanticValidationResult", "independentTechnicalDisposition",
+                "literalScaleDisposition", "rendererQuarantined",
+                "productionSelected",
+            ]
+        )
+        try exactKeys(
+            try child(root, "workerPacket"),
+            ["path", "sha256"]
+        )
+        try exactKeys(
+            try child(root, "semanticValidator"),
+            ["path", "sha256"]
+        )
+    }
+
+    private static func object(_ data: Data) throws -> [String: Any] {
+        guard let object = try JSONSerialization.jsonObject(with: data)
+                as? [String: Any]
+        else {
+            throw L4AdapterSyntheticQuarantineError.schemaDrift
+        }
+        return object
+    }
+
+    private static func child(
+        _ object: [String: Any],
+        _ key: String
+    ) throws -> [String: Any] {
+        guard let child = object[key] as? [String: Any] else {
+            throw L4AdapterSyntheticQuarantineError.schemaDrift
+        }
+        return child
+    }
+
+    private static func exactKeys(
+        _ object: [String: Any],
+        _ expected: Set<String>
+    ) throws {
+        guard Set(object.keys) == expected else {
+            throw L4AdapterSyntheticQuarantineError.schemaDrift
+        }
+    }
+
+    private static func allowedKeys(
+        _ object: [String: Any],
+        _ allowed: Set<String>,
+        required: Set<String>
+    ) throws {
+        let keys = Set(object.keys)
+        guard keys.isSubset(of: allowed),
+              required.isSubset(of: keys)
+        else {
+            throw L4AdapterSyntheticQuarantineError.schemaDrift
+        }
+    }
+
+    private static func unique(
+        _ values: [String],
+        field: String
+    ) throws {
+        guard Set(values).count == values.count else {
+            throw L4AdapterSyntheticQuarantineError.alias(field)
+        }
+    }
+
+    private static func isCommit(_ value: String) -> Bool {
+        value.count == 40
+            && value.allSatisfy { $0.isHexDigit && !$0.isUppercase }
+    }
+}
+
 private enum L4AdapterPrototypeError: Error, Equatable {
     case authorityHash
     case authorityDrift(String)
@@ -862,7 +1310,7 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
             let adapted = adapter.adaptIndependently(hashes: hashes)
             XCTAssertTrue(adapted.failures.isEmpty)
 
-            var admitted: [IndustrialL4AdmittedDirectionPacket] = []
+            var admitted: [L4AdapterSyntheticAdmittedPacket] = []
             for direction in L4AdapterDirection.allCases {
                 let pair = try makeQuarantineInput(
                     root: root,
@@ -894,27 +1342,21 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                 admitted.append(first.admittedPacket)
             }
 
-            let validator = try XCTUnwrap(
-                admitted.first.map {
-                    IndustrialL4DirectionPacketValidator(
-                        appearanceLock: $0.packet.appearanceLock,
-                        directionBridge: $0.packet.directionBridge
-                    )
-                }
-            )
-            let result = try validator.validateBatch(admitted)
+            let result =
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(admitted)
             XCTAssertEqual(result.status, .quarantinedIncomplete)
             XCTAssertEqual(
                 result.acceptedDirections,
                 [.east, .south, .west]
             )
-            XCTAssertEqual(result.missingDirections, [.north])
+            XCTAssertEqual(result.missingDirections, ["north"])
             XCTAssertThrowsError(
-                try validator.requireReadyForAtomicAssembly(admitted)
+                try L4AdapterSyntheticQuarantineHarness
+                    .requireReadyForAtomicAssembly(admitted)
             ) {
                 XCTAssertEqual(
-                    $0 as? IndustrialL4DirectionPacketValidationError,
-                    .missingDirections(["north"])
+                    $0 as? L4AdapterSyntheticQuarantineError,
+                    .incompleteDirections(["north"])
                 )
             }
         }
@@ -931,7 +1373,7 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
             let adapted = adapter.adaptIndependently(hashes: hashes)
             XCTAssertTrue(adapted.failures.isEmpty)
 
-            var siblings: [IndustrialL4AdmittedDirectionPacket] = []
+            var siblings: [L4AdapterSyntheticAdmittedPacket] = []
             var siblingReceipts: [Data] = []
             for direction in [L4AdapterDirection.east, .west] {
                 let pair = try makeQuarantineInput(
@@ -948,11 +1390,8 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
             }
             let siblingsBefore = siblings
             let receiptsBefore = siblingReceipts
-            let validator = IndustrialL4DirectionPacketValidator(
-                appearanceLock: siblings[0].packet.appearanceLock,
-                directionBridge: siblings[0].packet.directionBridge
-            )
-            let resultBefore = try validator.validateBatch(siblings)
+            let resultBefore =
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(siblings)
 
             let rejected = try makeQuarantineInput(
                 root: root,
@@ -967,16 +1406,16 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                 )
             ) {
                 XCTAssertEqual(
-                    $0 as? IndustrialL4DirectionPacketFileHarnessError,
-                    .packetRejected(
-                        .sourceAdmissionDrift("candidateBinding")
-                    )
+                    $0 as? L4AdapterSyntheticQuarantineError,
+                    .admissionDrift("candidateBinding")
                 )
             }
             XCTAssertEqual(siblings, siblingsBefore)
             XCTAssertEqual(siblingReceipts, receiptsBefore)
             XCTAssertEqual(
-                try validator.validateBatch(siblings),
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(
+                    siblings
+                ),
                 resultBefore
             )
 
@@ -990,9 +1429,10 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                 existingPackets: siblings
             )
             siblings.append(acceptedSouth.admittedPacket)
-            let final = try validator.validateBatch(siblings)
+            let final =
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(siblings)
             XCTAssertEqual(final.status, .quarantinedIncomplete)
-            XCTAssertEqual(final.missingDirections, [.north])
+            XCTAssertEqual(final.missingDirections, ["north"])
             XCTAssertTrue(acceptedSouth.receipt.rendererQuarantined)
             XCTAssertFalse(acceptedSouth.receipt.productionSelected)
             XCTAssertFalse(acceptedSouth.receipt.runtimeMappingMutated)
@@ -1006,11 +1446,11 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
         packetData: Data,
         admittedDecodedRgbaSha256: String? = nil
     ) throws -> (
-        harness: IndustrialL4DirectionPacketFileHarness,
-        input: IndustrialL4DirectionPacketFileInput
+        harness: L4AdapterSyntheticQuarantineHarness,
+        input: L4AdapterSyntheticFileInput
     ) {
         let packet = try JSONDecoder().decode(
-            IndustrialL4DirectionPacket.self,
+            L4AdapterRendererPacket.self,
             from: packetData
         )
         XCTAssertEqual(packet.direction.rawValue, direction.rawValue)
@@ -1021,7 +1461,7 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
         try writeData(packetData, to: packetURL)
         let packetSha256 = L4AdapterPrototype.sha256(packetData)
 
-        let admission = IndustrialL4SourceAdmissionReceipt(
+        let admission = L4AdapterSyntheticAdmission(
             schemaVersion: 1,
             disposition: "integration_source_admitted",
             integrationCommit: String(
@@ -1034,7 +1474,7 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
             ),
             direction: packet.direction,
             logicalID: packet.logicalID,
-            workerPacket: IndustrialL4ArtifactBinding(
+            workerPacket: L4AdapterArtifact(
                 path: packetPath,
                 sha256: packetSha256
             ),
@@ -1058,18 +1498,12 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
         try writeData(admissionData, to: admissionURL)
 
         return (
-            IndustrialL4DirectionPacketFileHarness(
-                claimedRoot: root,
-                validator: IndustrialL4DirectionPacketValidator(
-                    appearanceLock: packet.appearanceLock,
-                    directionBridge: packet.directionBridge
-                )
-            ),
-            IndustrialL4DirectionPacketFileInput(
+            L4AdapterSyntheticQuarantineHarness(root: root),
+            L4AdapterSyntheticFileInput(
                 packetURL: packetURL,
-                expectedPacketSha256: packetSha256,
-                sourceAdmissionURL: admissionURL,
-                expectedSourceAdmissionSha256:
+                packetSha256: packetSha256,
+                admissionURL: admissionURL,
+                admissionSha256:
                     L4AdapterPrototype.sha256(admissionData)
             )
         )

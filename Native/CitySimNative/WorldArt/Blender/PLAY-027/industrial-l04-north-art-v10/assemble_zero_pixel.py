@@ -152,11 +152,13 @@ def main() -> None:
         "sourceInventory": source_inventory,
         "commands": [
             (
-                "python3 build_zero_pixel.py --repository-root "
+                "/usr/bin/time -lp python3 -B "
+                f"{source_root / 'build_zero_pixel.py'} --repository-root "
                 f"{repository} --output-root {run_a} --replay-id a"
             ),
             (
-                "python3 build_zero_pixel.py --repository-root "
+                "/usr/bin/time -lp python3 -B "
+                f"{source_root / 'build_zero_pixel.py'} --repository-root "
                 f"{repository} --output-root {run_b} --replay-id b"
             ),
         ],

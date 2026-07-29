@@ -53,7 +53,7 @@
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
       "status": "existing",
       "existsAtInventoryBase": true,
-      "sha256": "2e663113a4fb424ccf3eb9d10b703d9b5341e7c9999c77a47a8d9737ec3259fb"
+      "sha256": "d062be34d48d3a55db7e01bb3a08de43a86baadc5283543a7abe8e9e503636e1"
     },
     "acceptedPredesignDescriptor": {
       "locatorType": "file",
@@ -126,7 +126,7 @@
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
       "status": "existing",
       "existsAtInventoryBase": true,
-      "sha256": "4e161e475cda95930367c113036ac0d7a36c769d8dceb84d50bcefffb518927e"
+      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
     },
     "appearanceLock": {
       "locatorType": "file",
@@ -184,13 +184,13 @@
           "status": "reserved",
           "existsAtInventoryBase": false
         },
-        "freshInvocationReceipt": {
-          "locatorType": "file",
-          "ownership": "east_owned",
-          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/INVOCATION-RECEIPT.json",
-          "status": "reserved",
-          "existsAtInventoryBase": false
-        }
+      "freshInvocationReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-a/INVOCATION-RECEIPT.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      }
       },
       "B": {
         "outputRoot": {
@@ -221,13 +221,13 @@
           "status": "reserved",
           "existsAtInventoryBase": false
         },
-        "freshInvocationReceipt": {
-          "locatorType": "file",
-          "ownership": "east_owned",
-          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/INVOCATION-RECEIPT.json",
-          "status": "reserved",
-          "existsAtInventoryBase": false
-        }
+      "freshInvocationReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-b/INVOCATION-RECEIPT.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      }
       },
       "C": {
         "outputRoot": {
@@ -258,13 +258,13 @@
           "status": "reserved",
           "existsAtInventoryBase": false
         },
-        "freshInvocationReceipt": {
-          "locatorType": "file",
-          "ownership": "east_owned",
-          "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/INVOCATION-RECEIPT.json",
-          "status": "reserved",
-          "existsAtInventoryBase": false
-        }
+      "freshInvocationReceipt": {
+        "locatorType": "file",
+        "ownership": "east_owned",
+        "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-c/INVOCATION-RECEIPT.json",
+        "status": "reserved",
+        "existsAtInventoryBase": false
+      }
       },
       "selectedSource": {
         "locatorType": "file",
@@ -472,7 +472,7 @@
         "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PRELOCK-RUNNER-HANDOFF.json",
         "status": "existing",
         "existsAtInventoryBase": true,
-        "sha256": "1209c1e3a320df81110feb7e06bc1c8fc3dfed9302a9b904bac58968aeb8d7a1"
+        "sha256": "4edab75431120d4f77733910d6a803aea6fdaacf5cb381faa4567ad6e1dee0c7"
       },
       "sourceStagePrelockReceipt": {
         "locatorType": "file",

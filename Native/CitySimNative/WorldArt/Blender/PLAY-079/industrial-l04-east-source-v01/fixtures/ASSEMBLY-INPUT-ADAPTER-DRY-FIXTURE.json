@@ -9,7 +9,7 @@
   },
   "locatorInventory": {
     "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/RENDERER-LOCATOR-INVENTORY.json",
-    "sha256": "db2ef36e3f0a0b2968173c14afc83f1af174002fab95261a1b01c860c31efee6",
+    "sha256": "79aad19a933916c6b85f3ee8311d78a467427ba9a20025274215fb0932df968e",
     "recordCount": 59
   },
   "sourceStageSchema": {

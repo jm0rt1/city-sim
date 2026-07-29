@@ -1,0 +1,157 @@
+{
+  "schema": "citysim.play-079.parallel-source-dry-fixture.v1",
+  "nonProductionFixture": true,
+  "fixtureDisposition": "synthetic_local_overlap_evidence_only",
+  "identity": {
+    "taskId": "PLAY-079",
+    "branch": "codex/citysim-world-art-east",
+    "direction": "east"
+  },
+  "designBinding": {
+    "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED",
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+    "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+    "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
+    "productionAuthority": false
+  },
+  "authorities": {
+    "appearanceLock": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "sourceProductionProfile": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "strictReceiptSchema": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "strictReceiptValidator": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "globalScheduleSchema": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "globalScheduleReceipt": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    }
+  },
+  "processes": {
+    "A": {
+      "taskId": "PLAY-079",
+      "branch": "codex/citysim-world-art-east",
+      "direction": "east",
+      "processId": "A",
+      "outputRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-a/",
+      "invocationCount": 1,
+      "allocationEcho": {
+        "allocationId": "synthetic-nonproduction-east-a",
+        "attemptId": "synthetic-nonproduction-east-a-attempt-1",
+        "preassignedSlot": "synthetic_nonproduction_unassigned",
+        "plannedLease": {
+          "start": null,
+          "end": null
+        },
+        "schedulerEventIds": []
+      },
+      "startedAtUtc": "2026-07-29T12:00:00.000000Z",
+      "endedAtUtc": "2026-07-29T12:02:00.000000Z",
+      "startedMonotonicNs": 1000000000,
+      "endedMonotonicNs": 121000000000,
+      "result": "PASS"
+    },
+    "B": {
+      "taskId": "PLAY-079",
+      "branch": "codex/citysim-world-art-east",
+      "direction": "east",
+      "processId": "B",
+      "outputRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-b/",
+      "invocationCount": 1,
+      "allocationEcho": {
+        "allocationId": "synthetic-nonproduction-east-b",
+        "attemptId": "synthetic-nonproduction-east-b-attempt-1",
+        "preassignedSlot": "synthetic_nonproduction_unassigned",
+        "plannedLease": {
+          "start": null,
+          "end": null
+        },
+        "schedulerEventIds": []
+      },
+      "startedAtUtc": "2026-07-29T12:00:30.000000Z",
+      "endedAtUtc": "2026-07-29T12:02:30.000000Z",
+      "startedMonotonicNs": 31000000000,
+      "endedMonotonicNs": 151000000000,
+      "result": "PASS"
+    },
+    "C": {
+      "taskId": "PLAY-079",
+      "branch": "codex/citysim-world-art-east",
+      "direction": "east",
+      "processId": "C",
+      "outputRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-c/",
+      "invocationCount": 1,
+      "allocationEcho": {
+        "allocationId": "synthetic-nonproduction-east-c",
+        "attemptId": "synthetic-nonproduction-east-c-attempt-1",
+        "preassignedSlot": "synthetic_nonproduction_unassigned",
+        "plannedLease": {
+          "start": null,
+          "end": null
+        },
+        "schedulerEventIds": []
+      },
+      "startedAtUtc": "2026-07-29T12:02:31.000000Z",
+      "endedAtUtc": "2026-07-29T12:04:31.000000Z",
+      "startedMonotonicNs": 152000000000,
+      "endedMonotonicNs": 272000000000,
+      "result": "PASS"
+    }
+  },
+  "execution": {
+    "disposition": "synthetic_local_overlap_evidence_only",
+    "localOverlapPairs": [
+      [
+        "A",
+        "B"
+      ]
+    ],
+    "localMaximumActiveIntervals": 2,
+    "localStartOrder": [
+      "A",
+      "B",
+      "C"
+    ],
+    "globalCapClaim": null,
+    "globalParallelGateClaim": null,
+    "scheduleModeClaim": null,
+    "sequentialExceptionClaim": null,
+    "integrationMustRecompute": true
+  },
+  "safety": {
+    "subprocessInvocations": 0,
+    "dccInvocations": 0,
+    "blenderProcessInvocations": 0,
+    "renderApiCalls": 0,
+    "pixelFiles": 0,
+    "repositoryWrites": 0
+  }
+}

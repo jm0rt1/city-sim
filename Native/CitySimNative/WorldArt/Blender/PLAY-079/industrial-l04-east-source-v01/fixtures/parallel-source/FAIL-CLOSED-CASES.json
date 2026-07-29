@@ -1,0 +1,75 @@
+{
+  "schema": "citysim.play-079.parallel-source-negative-fixtures.v1",
+  "baseFixture": "VALID-OVERLAPPED.json",
+  "cases": [
+    {
+      "id": "duplicate-invocation",
+      "pointer": "/processes/B/invocationCount",
+      "value": 2,
+      "expectedCode": "invocation_receipt_identity_mismatch"
+    },
+    {
+      "id": "overlapping-evidence-root",
+      "pointer": "/processes/B/evidenceRoot",
+      "value": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-a/nested/",
+      "expectedCode": "process_root_mismatch"
+    },
+    {
+      "id": "false-overlap",
+      "pointer": "/execution/localOverlapPairs",
+      "value": [
+        [
+          "A",
+          "C"
+        ]
+      ],
+      "expectedCode": "execution_claim_mismatch"
+    },
+    {
+      "id": "forbidden-global-cap-claim",
+      "pointer": "/execution/globalCapClaim",
+      "value": 2,
+      "expectedCode": "forbidden_global_execution_claim"
+    },
+    {
+      "id": "reversed-monotonic",
+      "pointer": "/processes/A/endedMonotonicNs",
+      "value": 1,
+      "expectedCode": "invalid_monotonic_interval"
+    },
+    {
+      "id": "invented-authority",
+      "pointer": "/authorities/appearanceLock/path",
+      "value": "docs/production/evidence/INTEGRATION/FAKE-LOCK.json",
+      "expectedCode": "dry_fixture_invented_authority"
+    },
+    {
+      "id": "unsafe-output-root",
+      "pointer": "/processes/C/outputRoot",
+      "value": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/../../PLAY-080/",
+      "expectedCode": "process_root_mismatch"
+    },
+    {
+      "id": "invented-sequential-exception",
+      "baseFixture": "VALID-NO-OVERLAP-NONREADY.json",
+      "pointer": "/execution/sequentialExceptionClaim",
+      "value": {
+        "owner": "Integration",
+        "path": "docs/production/evidence/INTEGRATION/FAKE-EXCEPTION.json"
+      },
+      "expectedCode": "forbidden_global_execution_claim"
+    },
+    {
+      "id": "stale-design-binding",
+      "pointer": "/designBinding/sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expectedCode": "parallel_design_binding_mismatch"
+    },
+    {
+      "id": "missing-allocation-echo",
+      "pointer": "/processes/A/allocationEcho",
+      "value": {},
+      "expectedCode": "allocation_echo_shape_mismatch"
+    }
+  ]
+}

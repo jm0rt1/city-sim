@@ -217,6 +217,7 @@ def static_writer_audit() -> dict[str, Any]:
         ("validation", "validate_launch_bound_cli.py", {"write_bytes_exclusive"}),
         ("validation", "validate_prelock.py", {"write_bytes_exclusive"}),
         ("source_candidate", "validate_source_outputs.py", {"write_bytes_exclusive"}),
+        ("receipt", "orchestrate_parallel_source.py", {"write_bytes_exclusive"}),
     ]
     audited: list[dict[str, Any]] = []
     for writer_class, name, required_calls in implementations:
@@ -322,6 +323,9 @@ def build_proof(repair_commit: str | None = None) -> dict[str, Any]:
             str((SOURCE_ROOT / "run_production.py").relative_to(REPOSITORY_ROOT)): sha256_file(
                 SOURCE_ROOT / "run_production.py"
             ),
+            str(
+                (SOURCE_ROOT / "orchestrate_parallel_source.py").relative_to(REPOSITORY_ROOT)
+            ): sha256_file(SOURCE_ROOT / "orchestrate_parallel_source.py"),
             str((SOURCE_ROOT / "validate_launch_bound_cli.py").relative_to(REPOSITORY_ROOT)): sha256_file(
                 SOURCE_ROOT / "validate_launch_bound_cli.py"
             ),

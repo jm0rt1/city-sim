@@ -38,7 +38,7 @@
     },
     "frozenInputManifest": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
-      "sha256": "4e161e475cda95930367c113036ac0d7a36c769d8dceb84d50bcefffb518927e"
+      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
     },
     "handoffOutputPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
     "prelockReceiptPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-PRELOCK-RECEIPT.json",
@@ -117,11 +117,15 @@
     },
     "directionLocalOutputSafety": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/east_output_safety.py",
-      "sha256": "0e94b1f62d7b0f9d102a03b4343717aee7b066b4b0067607489e5943b5f7deb3"
+      "sha256": "a4d316d0b40ca16b714f12740c3a840ac140dda1dec5d322bee275b56fa5c458"
     },
     "directionLocalOutputSafetyValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_output_path_safety.py",
-      "sha256": "f32611c683e193a275b08fff8810f20a2038fb1758922e6252ed25044b6f1522"
+      "sha256": "cfc5aafb0af2377e5c1a2da46312afd3da37fd1d9199475b4bbe220278fb84b8"
+    },
+    "parallelSourceOrchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
+      "sha256": "fe32ad8fb6948c26cf884aec8b0096f2743aa16a73d63a43aa361f83a03c59c0"
     },
     "canonicalDecoder": {
       "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
@@ -137,7 +141,7 @@
     },
     "sourceStageFrozenInputManifest": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
-      "sha256": "4e161e475cda95930367c113036ac0d7a36c769d8dceb84d50bcefffb518927e"
+      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
     },
     "bridgeV06Authority": {
       "path": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",

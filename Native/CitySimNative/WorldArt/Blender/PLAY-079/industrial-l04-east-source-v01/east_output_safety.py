@@ -93,7 +93,7 @@ WRITER_IDENTITIES: Mapping[str, frozenset[str]] = {
             f"{EVIDENCE_PREFIX}PARALLEL-EXECUTION-RECEIPT.json",
             f"{EVIDENCE_PREFIX}review/REVIEW-MANIFEST.json",
             *(
-                f"{EVIDENCE_PREFIX}renders/process-{process}/INVOCATION-RECEIPT.json"
+                f"{EVIDENCE_PREFIX}execution/process-{process}/INVOCATION-RECEIPT.json"
                 for process in ("a", "b", "c")
             ),
             *(

@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 3
+- **Claim revision:** 4
 - **Title:** Predesign the Industrial L4 West source in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -21,11 +21,17 @@
   v06 bridge adoption and handoff pass at candidate `03bc2402`; two fresh
   actual-camera proofs are byte-identical. Pixel rendering remains blocked
   until Integration publishes the exact appearance lock and post-lock
-  production authority.
+  production authority. While North v08 is redesigned, West may correct its
+  execution ancestry guard, replace its unprovisioned Pillow validator
+  dependency with a task-owned standard-library decoder, bind the shared
+  source-stage schema and common 44-master non-alias input, and rerun only
+  zero-pixel/static/guard/schema gates under
+  `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`.
 - **Validation/proof:** Independent West geometry; West road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
 
 Do not edit accepted West predesign, North, East, South, renderer/shipping,
 package, gameplay, simulation, UI, build, claim, or shared-manifest surfaces.
-Do not render A/B/C, push, integrate, or self-accept.
+Do not render A/B/C, push, integrate, or self-accept. Do not edit the shared
+schema, non-alias input, ledger, or sibling roots.

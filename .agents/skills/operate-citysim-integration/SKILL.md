@@ -71,6 +71,22 @@ becomes idle before its next transition is legal, assign stage-legal
 preparation, validation, fixture, audit, or evidence work; do not bypass the
 gate and do not leave useful capacity dormant.
 
+Publish a dispatch receipt for every management turn that changes work:
+
+- authority commit and exact claim revision sent to each cell;
+- thread/worktree/branch binding and send timestamp;
+- whether the thread acknowledged the assignment;
+- exact worker head and clean/dirty state at acknowledgement;
+- the first bounded deliverable and its stop condition; and
+- `planned`, `sent`, `acknowledged`, `working`, `returned`, or `blocked`.
+
+Do not count a row as an active workstream until the visible thread has
+acknowledged the exact authority and begun a legal bounded deliverable.
+Likewise, do not leave a completed thread labeled active. Refresh the ledger
+and dispatch receipt when a worker returns, blocks, or becomes idle. The
+parallelism invariant is measured by useful acknowledged work, not by the
+number of branches, threads, or optimistic status labels.
+
 For directional World Art, use this default fan-out:
 
 - North is the hero/design-calibration cell and freezes the family vocabulary.

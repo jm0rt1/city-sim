@@ -17,17 +17,18 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v07 pre-pixel architecture is independently accepted for one process-A appearance candidate.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v07 process A passed technical gates but was returned at the independent appearance gate. North v08 zero-pixel/material redesign is active.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
   source socket is `[896,704]`. Corrected, self-contained North v07 zero-pixel
-  architecture is accepted from candidate `ea0fe600`. Exactly one North
-  process-A appearance source plus deterministic North-only review outputs is
-  authorized by
-  `INDUSTRIAL-L04-NORTH-V07-PREPIXEL-ACCEPTANCE.md`. Process B/C and all sibling
-  pixels remain blocked until Integration independently accepts A and publishes
-  the appearance lock.
+  architecture was accepted from candidate `ea0fe600`; its one authorized
+  process A is preserved through returned review `bc59e424`. The exact
+  literal-scale disposition is `RETURNED_APPEARANCE_GATE`. North may now create
+  only the v08 zero-pixel/material redesign and semantic review packet defined
+  by `INDUSTRIAL-L04-NORTH-V08-REDESIGN-AUTHORITY.md`. No new source pixels,
+  process B/C, or sibling pixels are authorized until Integration accepts a
+  stronger North process A and publishes the appearance lock.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

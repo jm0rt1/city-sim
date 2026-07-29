@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY_073_INDUSTRIAL_L04_SYNTHETIC_ADMISSION_QUARANTINE_VALIDATION",
+  "result": "PASS_NONSHIPPING_SYNTHETIC_ONLY",
+  "candidate": {
+    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
+    "rendererSyncMerge": "4f5be9c7c0975173e0a1578764991110d0b8bc3b",
+    "testCommit": "88a3d423689bc28bc6c7090abe6f4507150f8a62"
+  },
+  "artifacts": [
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4SourceStageAdapterPrototypeTests.swift",
+      "sha256": "bdd80a6a4be4ad7a1ae1a10d0f32b651e1d3a415c6083849b17cb7230832ab9e"
+    }
+  ],
+  "syntheticIntegrationReceipts": {
+    "directions": [
+      "east",
+      "south",
+      "west"
+    ],
+    "schemaVersion": 1,
+    "disposition": "integration_source_admitted",
+    "semanticValidationResult": "PASS",
+    "independentTechnicalDisposition": "ACCEPT",
+    "literalScaleDisposition": "ACCEPT",
+    "rendererQuarantinedOnInput": false,
+    "productionSelected": false,
+    "realReceiptCount": 0
+  },
+  "proof": {
+    "adapterBytesReopenedByExistingStrictFileHarness": "PASS",
+    "repeatIdenticalDirectionReceiptOutput": "PASS",
+    "eastSouthWestRendererQuarantine": "PASS_SYNTHETIC_ONLY",
+    "southAdmissionDecodedHashDriftRejected": "PASS",
+    "eastWestAdmittedPacketsUnchangedAfterSouthRejection": "PASS",
+    "eastWestReceiptBytesUnchangedAfterSouthRejection": "PASS",
+    "northPending": true,
+    "quarantineStatus": "quarantined_incomplete",
+    "readyForAtomicAssembly": false,
+    "runtimeMappingMutated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false
+  },
+  "strictHarnessAlignment": {
+    "groundContactPolygonWorld": [
+      [
+        0,
+        13.5
+      ],
+      [
+        27,
+        0
+      ],
+      [
+        0,
+        -13.5
+      ],
+      [
+        -27,
+        0
+      ]
+    ],
+    "identityTransformEqualsDecodedRgbaSha256": true,
+    "appearanceLockSharedAcrossDirections": true,
+    "validatorOrThresholdChanged": false
+  },
+  "validation": [
+    {
+      "filter": "IndustrialL4SourceStageAdapterPrototypeTests",
+      "result": "PASS",
+      "executed": 6,
+      "failed": 0
+    },
+    {
+      "filter": "IndustrialL4DirectionPacketFileHarnessTests",
+      "result": "PASS",
+      "executed": 3,
+      "failed": 0
+    },
+    {
+      "filter": "IndustrialL4",
+      "result": "PASS",
+      "executed": 40,
+      "passed": 38,
+      "skipped": 2,
+      "failed": 0,
+      "expectedSkips": [
+        "caller-supplied atomic assembly manifest absent",
+        "caller-supplied direction packet absent"
+      ]
+    }
+  ],
+  "scope": {
+    "testAndEvidenceOnly": true,
+    "sharedSchemaChanged": false,
+    "realPacketRead": false,
+    "realReceiptRead": false,
+    "sourcePixelRead": false,
+    "sourceAdmissionGranted": false,
+    "runtimeActivated": false,
+    "resourceAtlasManifestPackageChanged": false,
+    "appLaunched": false,
+    "fourOfFourAssemblyInvoked": false,
+    "pushed": false,
+    "selfAccepted": false
+  }
+}

@@ -29,6 +29,28 @@ Focused tests prove:
 No real source packet or pixel was read, created, admitted, quarantined,
 packed, staged, or selected.
 
+## Synthetic admission-to-quarantine follow-up
+
+After Integration published the adapter candidate on exact master
+`2f218104cf924c5cb2e80f9a07501dd3755612bf`, Renderer merged that authority
+cleanly and added a test-only bridge at
+`88a3d423689bc28bc6c7090abe6f4507150f8a62`.
+
+The adapter's synthetic East, South, and West packet bytes now reopen through
+the existing strict direction-packet file harness with separately encoded
+synthetic Integration source-admission receipts. Two repeat passes emit
+identical direction-local quarantine receipts. A South decoded-hash drift is
+rejected without changing the admitted East/West packets, their receipt bytes,
+or their batch result. Correcting only the South receipt returns the three-
+direction batch to `quarantined_incomplete`; North remains the sole missing
+direction and atomic assembly is rejected.
+
+The strict harness also exposed and corrected three assumptions in the
+synthetic source fixture: the canonical contact diamond, identity D4 binding
+to decoded RGBA, and one family-shared appearance lock. No validator, shared
+schema, contract, runtime, resource, atlas, manifest, package, or app surface
+changed. See `ADMISSION-QUARANTINE-VALIDATION.json`.
+
 ## Published-master replay
 
 The two focused commits were cherry-picked without conflict onto exact

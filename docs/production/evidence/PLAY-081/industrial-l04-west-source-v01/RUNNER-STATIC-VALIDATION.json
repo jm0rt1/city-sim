@@ -1,5 +1,5 @@
 {
-  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
@@ -7,6 +7,48 @@
   "checks": {
     "acceptedPredesignUnmodified": true,
     "blenderScriptPresentButNotImported": true,
+    "blockoutCameraSocketV2": {
+      "camera": {
+        "dccProcessesLaunchedThisRun": 0,
+        "historicalActualCameraEvidenceRevalidated": true,
+        "literalViewportPixels": [
+          192,
+          128
+        ],
+        "maximumRegistrationErrorSourcePixels": 0.000183,
+        "passed": true,
+        "processOcclusionAreaPixels": 0.0,
+        "projection": "orthographic-2:1",
+        "renderViewportPixels": [
+          1536,
+          1024
+        ],
+        "silhouetteBreaks": 6
+      },
+      "passed": true,
+      "socket": {
+        "actualCameraSourceXY": [
+          639.999939,
+          704.000153
+        ],
+        "blenderXYZ": [
+          0,
+          -28,
+          0
+        ],
+        "citySimWorldXYZ": [
+          -28,
+          0,
+          0
+        ],
+        "maximumErrorSourcePixels": 0.000153,
+        "passed": true,
+        "sourceXY": [
+          640,
+          704
+        ]
+      }
+    },
     "controlFlow": {
       "driverImportsBpy": false,
       "evaluateGuardLines": [
@@ -136,7 +178,7 @@
   "contactSheetInvocations": 0,
   "coordinateBridgeState": "validated_v06",
   "direction": "west",
-  "driverSha256": "248d1d723ffc75b33fb99d508b304f0c5136163c013d577ec6a059804bc3b104",
+  "driverSha256": "33cdd8cd92f954776dba6924cc25f8797c603721e806223bf220e5fd6e261b8b",
   "imageGenInvocations": 0,
   "normalizerInvocations": 0,
   "passed": true,
@@ -144,11 +186,12 @@
   "proof": "PRELOCK_RUNNER_STATIC",
   "rejectionStage": "before_renderer_launch",
   "renderInvocations": 0,
-  "runnerContractSha256": "5767db5a12db008e6238f711b65cbb820e10152d9fb33b268f8c6407e29d9e0f",
+  "runnerContractSha256": "7f8701eeb173426a2a4b8b0587f80584c3141b7d9e4ef7a9f5e19fcda3f87b8c",
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "validation": {
     "abcIdentity": "not_run",
+    "blockoutCameraSocketV2": "pass",
     "integratedProofGuard": "pass",
     "literal192": "not_run",
     "missingSourceProductionProfile": "pass",

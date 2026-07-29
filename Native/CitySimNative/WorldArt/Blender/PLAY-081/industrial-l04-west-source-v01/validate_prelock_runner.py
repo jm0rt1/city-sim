@@ -371,6 +371,189 @@ def prove_missing_source_production_profile(
     }
 
 
+def prove_blockout_camera_socket(
+    root: Path,
+    contract: dict[str, Any],
+    source_profile_rejection: dict[str, Any],
+) -> dict[str, Any]:
+    bindings = contract["acceptedPredesign"]
+    paths: dict[str, Path] = {}
+    input_bindings: dict[str, dict[str, Any]] = {}
+    for name, binding in bindings.items():
+        path = repository_path(root, binding["path"])
+        passed = path.is_file() and sha256(path) == binding["sha256"]
+        input_bindings[name] = {
+            "path": binding["path"],
+            "sha256": binding["sha256"],
+            "passed": passed,
+        }
+        paths[name] = path
+
+    handoff = json.loads(paths["handoff"].read_text())
+    scene = json.loads(paths["scene"].read_text())
+    static = json.loads(paths["staticProof"].read_text())
+    camera = json.loads(paths["actualCameraProof"].read_text())
+    repeat = json.loads(paths["repeatIdentity"].read_text())
+    registration = camera["registration"]
+    maximum_error = max(
+        component
+        for record in (
+            registration["footprint"]
+            + [registration["origin"], registration["pivot"], registration["westSocket"]]
+        )
+        for component in record["absoluteError"]
+    )
+    occlusion_areas = camera[
+        "processOcclusionAgainstPortalInsetLiteral192"
+    ]["intersectionAreaPixels"]
+    socket_pass = (
+        scene["registration"]["frontageEdge"] == "west"
+        and scene["registration"]["frontageSocketWorldXYZ"] == [-28, 0, 0]
+        and scene["registration"]["frontageSocketExpectedSource"] == [640, 704]
+        and registration["westSocket"]["expected"] == [640, 704]
+        and max(registration["westSocket"]["absoluteError"]) < 0.001
+    )
+    blockout_pass = (
+        scene["direction"] == "west"
+        and scene["independence"]["orientationTransform"] == "none"
+        and scene["independence"]["siblingSceneOpened"] is False
+        and scene["independence"]["siblingGeometryConsumed"] is False
+        and scene["portal"]["roadFacingAxis"] == "negative-x"
+        and scene["processCounts"]
+        == {
+            "imageGeneration": 0,
+            "rawRenderer": 0,
+            "normalizer": 0,
+            "sceneKit": 0,
+            "pixelOutput": 0,
+        }
+        and static["passed"] is True
+        and static["processCounts"] == scene["processCounts"]
+    )
+    camera_pass = (
+        camera["passed"] is True
+        and camera["camera"]["projection"] == "orthographic-2:1"
+        and camera["camera"]["renderViewportPixels"] == [1536, 1024]
+        and camera["camera"]["literalViewportPixels"] == [192, 128]
+        and camera["pixelOutputCount"] == 0
+        and camera["renderInvocationCount"] == 0
+        and camera["registrationPassed"] is True
+        and maximum_error < 0.001
+        and camera["portalLiteral192"]["passed"] is True
+        and camera["silhouette"]["breakCount"] >= 3
+        and camera["silhouette"]["passed"] is True
+        and all(value == 0 for value in occlusion_areas.values())
+        and camera[
+            "processOcclusionAgainstPortalInsetLiteral192"
+        ]["passed"]
+        is True
+    )
+    repeat_pass = (
+        repeat["passed"] is True
+        and repeat["static"]["byteIdentical"] is True
+        and repeat["actualCamera"]["byteIdentical"] is True
+        and repeat["static"]["authoritySHA256"]
+        == bindings["staticProof"]["sha256"]
+        and repeat["actualCamera"]["authoritySHA256"]
+        == bindings["actualCameraProof"]["sha256"]
+        and repeat["renderInvocationCount"] == 0
+        and repeat["pixelOutputCount"] == 0
+    )
+    v2_pass = (
+        contract["sourceStage"]["handoffSchema"]["sha256"]
+        == "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        and source_profile_rejection["passed"] is True
+        and source_profile_rejection["semanticResult"]["error"].startswith(
+            "MISSING_REFERENCED_FILE: "
+            "authorities.sourceProductionProfile.path:"
+        )
+    )
+    passed = (
+        all(record["passed"] for record in input_bindings.values())
+        and handoff["validation"]["passed"] is True
+        and blockout_pass
+        and camera_pass
+        and socket_pass
+        and repeat_pass
+        and v2_pass
+    )
+    return {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "proof": "WEST_ZERO_PIXEL_BLOCKOUT_CAMERA_SOCKET_V2",
+        "publishedBaseline": contract["baselineCommit"],
+        "preservedRepairCheckpoint":
+            "b10386df0b92d5eba0466be0b7a45e4a4dbf9e8c",
+        "frozenInputs": input_bindings,
+        "blockout": {
+            "sceneGeometryID": scene["sceneGeometryID"],
+            "massingProfile": scene["massingProfile"],
+            "componentCount": len(scene["components"]),
+            "portalComponentIDs": scene["portal"]["frameComponentIDs"]
+            + [scene["portal"]["insetComponentID"]],
+            "orientationTransform": scene["independence"][
+                "orientationTransform"
+            ],
+            "siblingGeometryConsumed": scene["independence"][
+                "siblingGeometryConsumed"
+            ],
+            "passed": blockout_pass,
+        },
+        "camera": {
+            "projection": camera["camera"]["projection"],
+            "renderViewportPixels": camera["camera"][
+                "renderViewportPixels"
+            ],
+            "literalViewportPixels": camera["camera"][
+                "literalViewportPixels"
+            ],
+            "maximumRegistrationErrorSourcePixels": maximum_error,
+            "silhouetteBreaks": camera["silhouette"]["breakCount"],
+            "processOcclusionAreaPixels": max(occlusion_areas.values()),
+            "historicalActualCameraEvidenceRevalidated": True,
+            "dccProcessesLaunchedThisRun": 0,
+            "passed": camera_pass,
+        },
+        "socket": {
+            "citySimWorldXYZ": [-28, 0, 0],
+            "blenderXYZ": [0, -28, 0],
+            "sourceXY": [640, 704],
+            "actualCameraSourceXY": registration["westSocket"]["actual"],
+            "maximumErrorSourcePixels": max(
+                registration["westSocket"]["absoluteError"]
+            ),
+            "passed": socket_pass,
+        },
+        "sourceStageV2": {
+            "schema": contract["sourceStage"]["handoffSchema"],
+            "sourceProductionProfileState": contract["sourceStage"][
+                "sourceProductionProfile"
+            ]["state"],
+            "missingProfileSemanticError": source_profile_rejection[
+                "semanticResult"
+            ]["error"],
+            "rejectionStage": source_profile_rejection["rejectionStage"],
+            "passed": v2_pass,
+        },
+        "repeatIdentity": {
+            "path": bindings["repeatIdentity"]["path"],
+            "sha256": bindings["repeatIdentity"]["sha256"],
+            "passed": repeat_pass,
+        },
+        "currentRunInvocations": {
+            **zero_counts(),
+            "dccProcesses": 0,
+        },
+        "pixelProduction": "not_run",
+        "sourceReady": False,
+        "integrationAdmitted": False,
+        "rendererQuarantined": False,
+        "productionSelected": False,
+        "passed": passed,
+    }
+
+
 def main() -> int:
     args = parse_args()
     root = Path(args.repository_root).resolve()
@@ -438,6 +621,12 @@ def main() -> int:
         contract,
     )
     source_profile_rejection_pass = source_profile_rejection["passed"] is True
+    blockout_camera_socket = prove_blockout_camera_socket(
+        root,
+        contract,
+        source_profile_rejection,
+    )
+    blockout_camera_socket_pass = blockout_camera_socket["passed"] is True
 
     missing_decisions = {
         mode: runner.evaluate_render_guard(root, contract, mode)
@@ -687,6 +876,11 @@ def main() -> int:
             "rejectionStage": source_profile_rejection["rejectionStage"],
             "passed": source_profile_rejection_pass,
         },
+        "blockoutCameraSocketV2": {
+            "camera": blockout_camera_socket["camera"],
+            "socket": blockout_camera_socket["socket"],
+            "passed": blockout_camera_socket_pass,
+        },
     }
     static_pass = (
         not frozen_errors
@@ -698,6 +892,7 @@ def main() -> int:
         and describe_pass
         and integrated_proof_guard_pass
         and source_profile_rejection_pass
+        and blockout_camera_socket_pass
     )
     common = {
         "schemaVersion": 1,
@@ -725,6 +920,9 @@ def main() -> int:
             "sourceStageSchema": "pass",
             "missingSourceProductionProfile": (
                 "pass" if source_profile_rejection_pass else "fail"
+            ),
+            "blockoutCameraSocketV2": (
+                "pass" if blockout_camera_socket_pass else "fail"
             ),
             "rgba": "not_run",
             "literal192": "not_run",
@@ -835,6 +1033,7 @@ def main() -> int:
         "SOURCE-STAGE-SCHEMA-GATE.json": source_stage_schema_gate,
         "MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json":
             source_profile_rejection,
+        "BLOCKOUT-CAMERA-SOCKET-V2-PROOF.json": blockout_camera_socket,
     }
     for name, report in reports.items():
         (output / name).write_text(
@@ -850,6 +1049,7 @@ def main() -> int:
             and describe_pass
             and source_stage_schema_gate["passed"]
             and source_profile_rejection_pass
+            and blockout_camera_socket_pass
         )
         else 1
     )

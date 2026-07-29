@@ -85,7 +85,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "taskId": "PLAY-081",
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
-        "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+        "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
         "sourceReady": False,
         "productionSelected": False,
     }

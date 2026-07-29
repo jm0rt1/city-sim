@@ -83,7 +83,7 @@ def main() -> int:
     if (
         handoff.get("baselineCommit") != contract.get("baselineCommit")
         or handoff.get("baselineCommit")
-        != "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8"
+        != "f9cb5fbae1be459ba297a8605347c4174f912ba0"
         or subprocess.run(
             [
                 "git",
@@ -182,6 +182,10 @@ def main() -> int:
             root,
             f"{EVIDENCE_ROOT}/"
             "MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json",
+        ),
+        "blockout-camera-socket-v2": repository_path(
+            root,
+            f"{EVIDENCE_ROOT}/BLOCKOUT-CAMERA-SOCKET-V2-PROOF.json",
         ),
     }
     for name, path in evidence_reports.items():

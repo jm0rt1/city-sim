@@ -3,7 +3,7 @@
   "taskId": "PLAY-081",
   "direction": "west",
   "branch": "codex/citysim-world-art-west",
-  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
   "authority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
     "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
@@ -397,6 +397,9 @@
       "integratedProofGuard": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/INTEGRATED-PROOF-GUARD.json",
       "sourceStageSchemaGate": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-SCHEMA-GATE.json",
       "missingSourceProductionProfileRejection": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json",
+      "blockoutCameraSocketV2": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BLOCKOUT-CAMERA-SOCKET-V2-PROOF.json",
+      "zeroPixelV2Handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V2-HANDOFF.json",
+      "zeroPixelV2HandoffValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V2-HANDOFF-VALIDATION.json",
       "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
       "handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json"
     },

@@ -1,10 +1,46 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "task": "PLAY-073",
-  "disposition": "caller_path_prepared_nonshipping",
+  "disposition": "direction_paths_fail_closed_nonshipping",
   "publishedAuthority": "af6b661b79e0802386123537aaeddce5c9d385f2",
   "synchronizationMerge": "2639ba33d5ba9f2c2e36ce080295b51d631d29a0",
   "callerPathCheckpoint": "a66b245b6b822e3b03a17fd96a1e7ab3f6960c0e",
+  "directionPathHardening": {
+    "authorizedPublishedAuthority": "8bd4b0a60ea8074743b5db59bccaff3719e86829",
+    "frozenRendererBase": "270eb7515c1cc950f3bfe4b6687fd3ee788122c3",
+    "harnessSha256": "8bcf0978185b6a906be04c21bc71f34d5c115bc820547aaebfa360ef3b9fd3c4",
+    "directionsCovered": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "rules": {
+      "canonicalClaimedRoot": true,
+      "canonicalPacketAndAdmissionInputs": true,
+      "canonicalReceiptOutput": true,
+      "lexicalRootConfinement": true,
+      "canonicalRootConfinement": true,
+      "evidenceRootConfinement": true,
+      "rejectAnySymlinkComponent": true,
+      "rejectDanglingFinalOutputSymlink": true,
+      "requireRegularInputAndExistingOutputFiles": true,
+      "requireDirectoryIntermediateComponents": true
+    },
+    "focusedValidation": {
+      "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
+      "result": "12_passed_2_skipped_0_failed",
+      "executedTests": 14,
+      "testElapsedSeconds": 0.107,
+      "buildSeconds": 2.11
+    },
+    "callerPathValidation": {
+      "command": "quarantine_direction_packet.sh synthetic-north",
+      "result": "1_passed_0_failed",
+      "testElapsedSeconds": 0.005,
+      "receiptSha256": "3bc7636f98afed07cc8b0b5f5fc0302d032be107acbb6e69af950459789173d4"
+    }
+  },
   "inputs": {
     "packetPath": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/fixtures/north-source-candidate.json",
     "packetSha256": "284b1c960cbd6635c1b0956e8beb619720f73a57ae770e8aad7d4b073df61b68",

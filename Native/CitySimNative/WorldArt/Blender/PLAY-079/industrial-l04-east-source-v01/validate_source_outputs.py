@@ -19,6 +19,8 @@ import zlib
 from collections import Counter
 from typing import Any
 
+import east_output_safety as output_safety
+
 
 SOURCE_ROOT = pathlib.Path(__file__).resolve().parent
 REPOSITORY_ROOT = SOURCE_ROOT.parents[5]
@@ -408,6 +410,7 @@ def pixel_validation() -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=("prelock", "pixels"), required=True)
+    parser.add_argument("--output", type=pathlib.Path)
     args = parser.parse_args()
     if args.mode == "prelock":
         _forbidden_hashes, non_alias_input = load_forbidden_decoded_rgba_hashes()
@@ -432,7 +435,16 @@ def main() -> int:
         }
     else:
         result = pixel_validation()
-    sys.stdout.buffer.write(canonical_bytes(result))
+    payload = canonical_bytes(result)
+    if args.output:
+        if args.mode != "pixels":
+            raise RuntimeError("source-candidate receipt requires --mode pixels")
+        output_safety.write_bytes_exclusive(
+            args.output,
+            payload,
+            "source_candidate",
+        )
+    sys.stdout.buffer.write(payload)
     return 0
 
 

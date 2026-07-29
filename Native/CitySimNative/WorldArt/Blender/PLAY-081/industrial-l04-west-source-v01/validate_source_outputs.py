@@ -20,6 +20,16 @@ from typing import Any
 import jsonschema
 
 from stdlib_png_rgba import decode_rgba_png, self_test as decoder_self_test
+from west_path_safety import (
+    PathSafetyError,
+    exact_pipeline_path,
+    expected_process_paths,
+    lexical_repository_path,
+    pipeline_relative,
+    validate_pipeline_layout,
+    validate_process_layout,
+    write_exact_json_no_overwrite,
+)
 
 
 DEFAULT_CONTRACT = (
@@ -299,6 +309,13 @@ def validate_pixels(
 ) -> dict[str, Any]:
     if contract.get("state") != "ready_for_source_render":
         raise ValueError("pixel validation blocked pending post-lock production authority")
+    layout = validate_process_layout(root, contract, require_absent=False)
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    if not layout["passed"] or not pipeline_layout["passed"]:
+        raise ValueError(
+            "unsafe output layout before pixel read: "
+            + ",".join(layout["errors"] + pipeline_layout["errors"])
+        )
     failures: list[str] = []
     processes: dict[str, Any] = {}
     raw_hashes: dict[str, str] = {}
@@ -308,16 +325,26 @@ def validate_pixels(
 
     for process_id in ("A", "B", "C"):
         inventory = contract["outputInventory"]["processes"][process_id]
-        required = {
-            name: repository_path(root, inventory[name])
-            for name in (
-                "raw",
-                "semantic",
-                "provenance",
-                "objectMapping",
-                "registration",
-            )
-        }
+        expected = expected_process_paths(process_id)
+        try:
+            required = {
+                name: lexical_repository_path(
+                    root,
+                    inventory[name],
+                    expected=expected[name],
+                )
+                for name in (
+                    "raw",
+                    "semantic",
+                    "provenance",
+                    "objectMapping",
+                    "registration",
+                )
+            }
+        except PathSafetyError as error:
+            raise ValueError(
+                f"unsafe process-{process_id} output before pixel read: {error}"
+            ) from error
         missing = sorted(name for name, path in required.items() if not path.is_file())
         if missing:
             failures.append(f"process-{process_id}:missing:{','.join(missing)}")
@@ -387,9 +414,10 @@ def validate_pixels(
     if not non_alias:
         failures.append("catalog:decoded-rgba-alias")
 
-    literal_path = repository_path(
+    literal_path = exact_pipeline_path(
         root,
-        contract["outputInventory"]["review"]["literal192Color"],
+        contract,
+        "review.literal192Color",
     )
     literal_size = None
     if literal_path.is_file():
@@ -434,15 +462,59 @@ def main() -> int:
     else:
         if not args.output:
             raise SystemExit("--mode validate requires --output")
+        try:
+            expected_output = pipeline_relative(
+                contract,
+                "validation.sourceValidation",
+            )
+            if args.output != expected_output:
+                raise PathSafetyError(
+                    f"LEXICAL_IDENTITY_MISMATCH:{args.output!r}"
+                    f"!={expected_output!r}"
+                )
+            output_path = exact_pipeline_path(
+                root,
+                contract,
+                "validation.sourceValidation",
+            )
+            if output_path.exists() or output_path.is_symlink():
+                raise PathSafetyError(f"NO_OVERWRITE:{expected_output}")
+            pipeline_layout = validate_pipeline_layout(root, contract)
+            if not pipeline_layout["passed"]:
+                raise PathSafetyError(
+                    "PIPELINE_LAYOUT:"
+                    + ",".join(pipeline_layout["errors"])
+                )
+        except PathSafetyError as error:
+            result = {
+                "schemaVersion": 1,
+                "taskId": "PLAY-081",
+                "direction": "west",
+                "mode": "validate",
+                "decision": "BLOCKED",
+                "rejectionStage": "before_pixel_read_or_output_write",
+                "errors": [f"PATH_SAFETY:{error}"],
+                "outputWritten": False,
+                "pixelFilesRead": 0,
+                "pixelFilesWritten": 0,
+                "blenderProcessLaunches": 0,
+                "blenderRenderApiCalls": 0,
+                "passed": False,
+            }
+            print(json.dumps(result, indent=2, sort_keys=True))
+            return 3
         forbidden, _ = validate_non_alias_input(
             root,
             contract["sourceStage"]["nonAliasLoader"],
             contract["sourceStage"]["nonAliasInput"],
         )
         result = validate_pixels(root, contract, forbidden)
-        output = repository_path(root, args.output)
-        output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+        write_exact_json_no_overwrite(
+            root,
+            args.output,
+            result,
+            expected=expected_output,
+        )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["passed"] else 1
 

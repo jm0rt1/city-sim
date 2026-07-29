@@ -1,4 +1,5 @@
 import CryptoKit
+import Darwin
 import Foundation
 import XCTest
 
@@ -136,6 +137,7 @@ private struct L4V2BatchResult: Equatable {
 private enum L4V2HarnessError: Error, Equatable {
     case missingFile(String)
     case outsideClaimedRoot(String)
+    case invalidPathType(String)
     case hashMismatch
     case schemaDrift
     case invalidField(String)
@@ -186,6 +188,10 @@ private struct L4V2SourceAdmissionHarness {
     )
 
     let claimedRoot: URL
+
+    private var canonicalClaimedRoot: URL {
+        claimedRoot.standardizedFileURL.resolvingSymlinksInPath()
+    }
 
     func inspect(_ input: L4V2FileInput) throws -> L4V2AdmittedPacket {
         let packetData = try read(
@@ -301,16 +307,45 @@ private struct L4V2SourceAdmissionHarness {
         return result
     }
 
+    func writeReceipt(
+        _ receipt: L4V2RendererQuarantineReceipt,
+        to outputURL: URL
+    ) throws -> (url: URL, data: Data) {
+        let canonicalOutput = try validatedPath(
+            outputURL,
+            use: .outputFile
+        )
+        let evidenceRoot = canonicalURLForContainment(
+            canonicalClaimedRoot.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+        )
+        guard canonicalOutput.path.hasPrefix(evidenceRoot.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(
+                canonicalOutput.path
+            )
+        }
+
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let receiptData = try encoder.encode(receipt)
+        try FileManager.default.createDirectory(
+            at: canonicalOutput.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        if FileManager.default.fileExists(atPath: canonicalOutput.path) {
+            guard try Data(contentsOf: canonicalOutput) == receiptData else {
+                throw L4V2HarnessError.hashMismatch
+            }
+        } else {
+            try receiptData.write(to: canonicalOutput)
+        }
+        return (canonicalOutput, receiptData)
+    }
+
     private func read(_ url: URL, expectedSha256: String) throws -> Data {
-        let root = claimedRoot.standardizedFileURL.path
-        let path = url.standardizedFileURL.path
-        guard path == root || path.hasPrefix(root + "/") else {
-            throw L4V2HarnessError.outsideClaimedRoot(path)
-        }
-        guard FileManager.default.fileExists(atPath: path) else {
-            throw L4V2HarnessError.missingFile(url.lastPathComponent)
-        }
-        let data = try Data(contentsOf: url)
+        let canonicalURL = try validatedPath(url, use: .inputFile)
+        let data = try Data(contentsOf: canonicalURL)
         guard Self.sha256(data) == expectedSha256 else {
             throw L4V2HarnessError.hashMismatch
         }
@@ -318,12 +353,108 @@ private struct L4V2SourceAdmissionHarness {
     }
 
     private func relativePath(_ url: URL) throws -> String {
-        let root = claimedRoot.standardizedFileURL.path
-        let path = url.standardizedFileURL.path
+        let root = canonicalClaimedRoot.path
+        let path = try validatedPath(url, use: .inputFile).path
         guard path.hasPrefix(root + "/") else {
             throw L4V2HarnessError.outsideClaimedRoot(path)
         }
         return String(path.dropFirst(root.count + 1))
+    }
+
+    private enum PathUse: Equatable {
+        case inputFile
+        case outputFile
+    }
+
+    private func validatedPath(
+        _ url: URL,
+        use: PathUse
+    ) throws -> URL {
+        let root = canonicalClaimedRoot
+        let lexicalURL = url.standardizedFileURL
+        guard lexicalURL.path.hasPrefix(root.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(lexicalURL.path)
+        }
+
+        let relativePath = lexicalURL.path.dropFirst(root.path.count + 1)
+        let components = relativePath.split(separator: "/")
+        guard !components.isEmpty else {
+            throw L4V2HarnessError.invalidPathType(lexicalURL.path)
+        }
+
+        var componentURL = root
+        var missingComponentSeen = false
+        for (index, component) in components.enumerated() {
+            componentURL.append(path: String(component))
+            guard !missingComponentSeen else {
+                continue
+            }
+
+            var metadata = stat()
+            let result = componentURL.path.withCString {
+                lstat($0, &metadata)
+            }
+            if result == 0 {
+                let fileType = metadata.st_mode & S_IFMT
+                guard fileType != S_IFLNK else {
+                    throw L4V2HarnessError.outsideClaimedRoot(
+                        componentURL.path
+                    )
+                }
+                let isFinal = index == components.count - 1
+                if isFinal {
+                    guard fileType == S_IFREG else {
+                        throw L4V2HarnessError.invalidPathType(
+                            componentURL.path
+                        )
+                    }
+                } else {
+                    guard fileType == S_IFDIR else {
+                        throw L4V2HarnessError.invalidPathType(
+                            componentURL.path
+                        )
+                    }
+                }
+            } else if errno == ENOENT {
+                guard use == .outputFile else {
+                    throw L4V2HarnessError.missingFile(
+                        componentURL.lastPathComponent
+                    )
+                }
+                missingComponentSeen = true
+            } else {
+                throw L4V2HarnessError.invalidPathType(componentURL.path)
+            }
+        }
+
+        let canonicalURL = canonicalURLForContainment(lexicalURL)
+        guard canonicalURL.path.hasPrefix(root.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(canonicalURL.path)
+        }
+        return canonicalURL
+    }
+
+    private func canonicalURLForContainment(_ url: URL) -> URL {
+        var existingAncestor = url.standardizedFileURL
+        var unresolvedComponents: [String] = []
+        while !FileManager.default.fileExists(
+            atPath: existingAncestor.path
+        ) {
+            let parent = existingAncestor.deletingLastPathComponent()
+            guard parent.path != existingAncestor.path else {
+                break
+            }
+            unresolvedComponents.insert(
+                existingAncestor.lastPathComponent,
+                at: 0
+            )
+            existingAncestor = parent
+        }
+        var canonicalURL = existingAncestor.resolvingSymlinksInPath()
+        for component in unresolvedComponents {
+            canonicalURL.append(path: component)
+        }
+        return canonicalURL.standardizedFileURL
     }
 
     private static func validate(_ packet: L4V2DirectionPacket) throws {
@@ -613,7 +744,718 @@ private struct L4V2SourceAdmissionHarness {
     }
 }
 
+private struct L4V2AcceptedBaseline: Codable, Equatable {
+    let commit: String
+    let catalog: L4V2Artifact
+    let industrialL3Manifest: L4V2Artifact
+}
+
+private struct L4V2AssemblyLocators: Codable, Equatable {
+    let raw: L4V2Artifact
+    let provenance: L4V2Artifact
+    let normalization: L4V2Artifact
+    let descriptor: L4V2Artifact
+    let contact: L4V2Artifact
+    let review: L4V2Artifact
+
+    var ordered: [L4V2Artifact] {
+        [raw, provenance, normalization, descriptor, contact, review]
+    }
+}
+
+private struct L4V2AssemblyDirectionInput: Codable, Equatable {
+    let direction: L4V2Direction
+    let packet: L4V2Artifact
+    let sourceAdmission: L4V2Artifact
+    let quarantineReceipt: L4V2Artifact
+    let locators: L4V2AssemblyLocators
+}
+
+private struct L4V2AssemblyInputManifest: Codable, Equatable {
+    let schemaVersion: Int
+    let disposition: String
+    let acceptedL3Baseline: L4V2AcceptedBaseline
+    let directions: [L4V2AssemblyDirectionInput]
+    let runtimeActivated: Bool
+    let shippingResourcesMutated: Bool
+    let productionSelected: Bool
+}
+
+private struct L4V2AtomicDirectionLedger: Codable, Equatable {
+    let direction: L4V2Direction
+    let logicalID: String
+    let packetSha256: String
+    let sourceAdmissionSha256: String
+    let quarantineReceiptSha256: String
+    let decodedRgbaSha256: String
+    let lodRgbaSha256: [String]
+    let d4Fingerprints: [String: String]
+    let locators: L4V2AssemblyLocators
+}
+
+private struct L4V2AtomicAdmissionLedger: Codable, Equatable {
+    let schemaVersion: Int
+    let disposition: String
+    let assemblyInputManifestSha256: String
+    let acceptedL3Baseline: L4V2AcceptedBaseline
+    let directions: [L4V2AtomicDirectionLedger]
+    let lodIdentityCount: Int
+    let d4IdentityCount: Int
+    let runtimeActivated: Bool
+    let shippingResourcesMutated: Bool
+    let productionSelected: Bool
+}
+
+private struct L4V2AtomicAssemblyHarness {
+    let claimedRoot: URL
+
+    private var canonicalClaimedRoot: URL {
+        canonicalURLForContainment(claimedRoot)
+    }
+
+    func assemble(
+        manifestURL: URL,
+        manifestSha256: String
+    ) throws -> L4V2AtomicAdmissionLedger {
+        let manifestData = try read(
+            manifestURL,
+            expectedSha256: manifestSha256
+        )
+        try Self.validateManifestShape(manifestData)
+        let manifest = try JSONDecoder().decode(
+            L4V2AssemblyInputManifest.self,
+            from: manifestData
+        )
+        guard manifest.schemaVersion == 1,
+              manifest.disposition ==
+                "integration_assembly_input_admitted",
+              !manifest.runtimeActivated,
+              !manifest.shippingResourcesMutated,
+              !manifest.productionSelected
+        else {
+            throw L4V2HarnessError.invalidField("assemblyManifest")
+        }
+        try validateCommit(manifest.acceptedL3Baseline.commit)
+        _ = try read(manifest.acceptedL3Baseline.catalog)
+        _ = try read(manifest.acceptedL3Baseline.industrialL3Manifest)
+
+        guard manifest.directions.count == 4,
+              Set(manifest.directions.map(\.direction)) ==
+                Set(L4V2Direction.allCases)
+        else {
+            throw L4V2HarnessError.incompleteDirections
+        }
+
+        let directionHarness = L4V2SourceAdmissionHarness(
+            claimedRoot: canonicalClaimedRoot
+        )
+        var admitted: [L4V2AdmittedPacket] = []
+        var ledgerDirections: [L4V2AtomicDirectionLedger] = []
+        var locatorPaths: [String] = []
+        var locatorHashes: [String] = []
+
+        for direction in L4V2Direction.allCases {
+            let input = try XCTUnwrap(
+                manifest.directions.first { $0.direction == direction }
+            )
+            let admittedPacket = try directionHarness.inspect(
+                L4V2FileInput(
+                    packetURL: try url(for: input.packet.path),
+                    packetSha256: input.packet.sha256,
+                    admissionURL: try url(for: input.sourceAdmission.path),
+                    admissionSha256: input.sourceAdmission.sha256
+                )
+            )
+            let receiptData = try read(input.quarantineReceipt)
+            try Self.validateReceiptShape(receiptData)
+            let receipt = try JSONDecoder().decode(
+                L4V2RendererQuarantineReceipt.self,
+                from: receiptData
+            )
+            guard receipt == admittedPacket.receipt else {
+                throw L4V2HarnessError.invalidField("quarantineReceipt")
+            }
+            for locator in input.locators.ordered {
+                _ = try read(locator)
+                locatorPaths.append(locator.path)
+                locatorHashes.append(locator.sha256)
+            }
+            admitted.append(admittedPacket)
+            ledgerDirections.append(
+                L4V2AtomicDirectionLedger(
+                    direction: direction,
+                    logicalID: admittedPacket.packet.logicalID,
+                    packetSha256: admittedPacket.packetSha256,
+                    sourceAdmissionSha256:
+                        admittedPacket.admissionSha256,
+                    quarantineReceiptSha256:
+                        input.quarantineReceipt.sha256,
+                    decodedRgbaSha256:
+                        admittedPacket.packet.source.decodedRgbaSha256,
+                    lodRgbaSha256: admittedPacket.packet.lods
+                        .sorted { $0.detail < $1.detail }
+                        .map(\.normalizedRgbaSha256),
+                    d4Fingerprints:
+                        admittedPacket.packet.d4Fingerprints,
+                    locators: input.locators
+                )
+            )
+        }
+        guard Set(locatorPaths).count == locatorPaths.count else {
+            throw L4V2HarnessError.alias("locatorPath")
+        }
+        guard Set(locatorHashes).count == locatorHashes.count else {
+            throw L4V2HarnessError.alias("locatorSha256")
+        }
+
+        let ready = try L4V2SourceAdmissionHarness.requireReady(admitted)
+        return L4V2AtomicAdmissionLedger(
+            schemaVersion: 1,
+            disposition: "ready_for_atomic_assembly_nonshipping",
+            assemblyInputManifestSha256: manifestSha256,
+            acceptedL3Baseline: manifest.acceptedL3Baseline,
+            directions: ledgerDirections,
+            lodIdentityCount: ready.lodIdentityCount,
+            d4IdentityCount: ready.d4IdentityCount,
+            runtimeActivated: false,
+            shippingResourcesMutated: false,
+            productionSelected: false
+        )
+    }
+
+    private func read(_ artifact: L4V2Artifact) throws -> Data {
+        try read(
+            try url(for: artifact.path),
+            expectedSha256: artifact.sha256
+        )
+    }
+
+    private func read(
+        _ url: URL,
+        expectedSha256: String
+    ) throws -> Data {
+        let canonicalURL = try containedURL(url)
+        let path = canonicalURL.path
+        guard FileManager.default.fileExists(atPath: path) else {
+            throw L4V2HarnessError.missingFile(
+                canonicalURL.lastPathComponent
+            )
+        }
+        let data = try Data(contentsOf: canonicalURL)
+        guard L4V2SourceAdmissionHarness.sha256(data) ==
+                expectedSha256
+        else {
+            throw L4V2HarnessError.hashMismatch
+        }
+        return data
+    }
+
+    private func url(for path: String) throws -> URL {
+        guard !path.hasPrefix("/"),
+              !path.split(separator: "/").contains("..")
+        else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        return try containedURL(
+            canonicalClaimedRoot.appending(path: path)
+        )
+    }
+
+    func canonicalEvidenceOutputURL(_ outputURL: URL) throws -> URL {
+        try rejectSymlinkComponents(in: outputURL)
+        let evidenceRoot = try containedURL(
+            canonicalClaimedRoot.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+        )
+        let canonicalOutput = try containedURL(outputURL)
+        guard canonicalOutput.path.hasPrefix(evidenceRoot.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(
+                canonicalOutput.path
+            )
+        }
+        return canonicalOutput
+    }
+
+    private func rejectSymlinkComponents(in outputURL: URL) throws {
+        let root = canonicalClaimedRoot
+        let output = outputURL.standardizedFileURL
+        guard output.path.hasPrefix(root.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(output.path)
+        }
+        let relativePath = output.path.dropFirst(root.path.count + 1)
+        var componentURL = root
+        for component in relativePath.split(separator: "/") {
+            componentURL.append(path: String(component))
+            var metadata = stat()
+            let result = componentURL.path.withCString {
+                lstat($0, &metadata)
+            }
+            if result == 0 {
+                guard (metadata.st_mode & S_IFMT) != S_IFLNK else {
+                    throw L4V2HarnessError.outsideClaimedRoot(
+                        componentURL.path
+                    )
+                }
+            } else if errno != ENOENT {
+                throw L4V2HarnessError.outsideClaimedRoot(
+                    componentURL.path
+                )
+            }
+        }
+    }
+
+    private func containedURL(_ url: URL) throws -> URL {
+        let root = canonicalClaimedRoot
+        let canonicalURL = canonicalURLForContainment(url)
+        let path = canonicalURL.path
+        guard path.hasPrefix(root.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        return canonicalURL
+    }
+
+    private func canonicalURLForContainment(_ url: URL) -> URL {
+        var existingAncestor = url.standardizedFileURL
+        var unresolvedComponents: [String] = []
+        while !FileManager.default.fileExists(
+            atPath: existingAncestor.path
+        ) {
+            let parent = existingAncestor.deletingLastPathComponent()
+            guard parent.path != existingAncestor.path else {
+                break
+            }
+            unresolvedComponents.insert(
+                existingAncestor.lastPathComponent,
+                at: 0
+            )
+            existingAncestor = parent
+        }
+        var canonicalURL = existingAncestor.resolvingSymlinksInPath()
+        for component in unresolvedComponents {
+            canonicalURL.append(path: component)
+        }
+        return canonicalURL.standardizedFileURL
+    }
+
+    private func validateCommit(_ value: String) throws {
+        guard value.count == 40,
+              value.allSatisfy(\.isLowercaseHexDigit)
+        else {
+            throw L4V2HarnessError.invalidField("baselineCommit")
+        }
+    }
+
+    private static func validateManifestShape(_ data: Data) throws {
+        let root = try object(data)
+        try exactKeys(
+            root,
+            [
+                "schemaVersion", "disposition", "acceptedL3Baseline",
+                "directions", "runtimeActivated",
+                "shippingResourcesMutated", "productionSelected",
+            ]
+        )
+        let baseline = try child(root, "acceptedL3Baseline")
+        try exactKeys(
+            baseline,
+            ["commit", "catalog", "industrialL3Manifest"]
+        )
+        try artifactShape(try child(baseline, "catalog"))
+        try artifactShape(try child(baseline, "industrialL3Manifest"))
+        guard let directions = root["directions"] as? [[String: Any]],
+              directions.count == 4
+        else {
+            throw L4V2HarnessError.schemaDrift
+        }
+        for direction in directions {
+            try exactKeys(
+                direction,
+                [
+                    "direction", "packet", "sourceAdmission",
+                    "quarantineReceipt", "locators",
+                ]
+            )
+            try artifactShape(try child(direction, "packet"))
+            try artifactShape(try child(direction, "sourceAdmission"))
+            try artifactShape(try child(direction, "quarantineReceipt"))
+            let locators = try child(direction, "locators")
+            try exactKeys(
+                locators,
+                [
+                    "raw", "provenance", "normalization", "descriptor",
+                    "contact", "review",
+                ]
+            )
+            for key in [
+                "raw", "provenance", "normalization", "descriptor",
+                "contact", "review",
+            ] {
+                try artifactShape(try child(locators, key))
+            }
+        }
+    }
+
+    private static func validateReceiptShape(_ data: Data) throws {
+        try exactKeys(
+            try object(data),
+            [
+                "schemaVersion", "disposition", "direction", "logicalID",
+                "workerPacketSha256", "sourceAdmissionSha256",
+                "rendererQuarantined", "readyForAtomicAssembly",
+                "productionSelected", "runtimeMappingMutated",
+                "shippingResourcesMutated",
+            ]
+        )
+    }
+
+    private static func artifactShape(
+        _ object: [String: Any]
+    ) throws {
+        try exactKeys(object, ["path", "sha256"])
+    }
+
+    private static func object(_ data: Data) throws -> [String: Any] {
+        guard let object = try JSONSerialization.jsonObject(with: data)
+            as? [String: Any]
+        else {
+            throw L4V2HarnessError.schemaDrift
+        }
+        return object
+    }
+
+    private static func child(
+        _ object: [String: Any],
+        _ key: String
+    ) throws -> [String: Any] {
+        guard let child = object[key] as? [String: Any] else {
+            throw L4V2HarnessError.schemaDrift
+        }
+        return child
+    }
+
+    private static func exactKeys(
+        _ object: [String: Any],
+        _ expected: Set<String>
+    ) throws {
+        guard Set(object.keys) == expected else {
+            throw L4V2HarnessError.schemaDrift
+        }
+    }
+}
+
 final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
+    func testCallerSuppliedAtomicAssemblyManifest() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let manifestPath =
+                environment["CITYSIM_L4_ASSEMBLY_MANIFEST_PATH"]
+        else {
+            throw XCTSkip("No caller-supplied Industrial L4 assembly manifest")
+        }
+        let root = URL(
+            fileURLWithPath: try requiredEnvironment(
+                "CITYSIM_L4_CLAIMED_ROOT",
+                environment: environment
+            )
+        ).standardizedFileURL.resolvingSymlinksInPath()
+        let harness = L4V2AtomicAssemblyHarness(
+            claimedRoot: root
+        )
+        let outputURL = try harness.canonicalEvidenceOutputURL(
+            resolve(
+                try requiredEnvironment(
+                    "CITYSIM_L4_ATOMIC_LEDGER_OUTPUT",
+                    environment: environment
+                ),
+                beneath: root
+            )
+        )
+        let ledger = try harness.assemble(
+            manifestURL: resolve(manifestPath, beneath: root),
+            manifestSha256: try requiredEnvironment(
+                "CITYSIM_L4_ASSEMBLY_MANIFEST_SHA256",
+                environment: environment
+            )
+        )
+        let data = try sortedData(ledger)
+        try FileManager.default.createDirectory(
+            at: outputURL.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        if FileManager.default.fileExists(atPath: outputURL.path) {
+            XCTAssertEqual(try Data(contentsOf: outputURL), data)
+        } else {
+            try data.write(to: outputURL)
+        }
+        print(
+            "PLAY073_L4_ATOMIC_LEDGER \(outputURL.path) "
+                + L4V2SourceAdmissionHarness.sha256(data)
+        )
+    }
+
+    func testSyntheticFileBackedAtomicAssemblyIsDeterministic() throws {
+        try withRoot { root in
+            let input = try makeAssemblyInput(root: root)
+            let harness = L4V2AtomicAssemblyHarness(claimedRoot: root)
+            let first = try harness.assemble(
+                manifestURL: input.url,
+                manifestSha256: input.sha256
+            )
+            let second = try harness.assemble(
+                manifestURL: input.url,
+                manifestSha256: input.sha256
+            )
+            XCTAssertEqual(first, second)
+            XCTAssertEqual(first.lodIdentityCount, 12)
+            XCTAssertEqual(first.d4IdentityCount, 32)
+            XCTAssertEqual(
+                first.directions.map(\.direction),
+                L4V2Direction.allCases
+            )
+            XCTAssertFalse(first.runtimeActivated)
+            XCTAssertFalse(first.shippingResourcesMutated)
+            XCTAssertFalse(first.productionSelected)
+            XCTAssertEqual(try sortedData(first), try sortedData(second))
+        }
+    }
+
+    func testAtomicAssemblyRejectsMissingExtraAndLocatorDrift() throws {
+        try withRoot { root in
+            let valid = try makeAssemblyInput(root: root)
+            let harness = L4V2AtomicAssemblyHarness(claimedRoot: root)
+            let validData = try Data(contentsOf: valid.url)
+
+            var missing = try jsonObject(validData)
+            var directions = try XCTUnwrap(
+                missing["directions"] as? [[String: Any]]
+            )
+            directions.removeLast()
+            missing["directions"] = directions
+            let missingHash = try write(missing, to: valid.url)
+            XCTAssertThrowsError(
+                try harness.assemble(
+                    manifestURL: valid.url,
+                    manifestSha256: missingHash
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .schemaDrift)
+            }
+
+            let restored = try makeAssemblyInput(root: root)
+            var extra = try jsonObject(try Data(contentsOf: restored.url))
+            directions = try XCTUnwrap(
+                extra["directions"] as? [[String: Any]]
+            )
+            directions.append(try XCTUnwrap(directions.first))
+            extra["directions"] = directions
+            let extraHash = try write(extra, to: restored.url)
+            XCTAssertThrowsError(
+                try harness.assemble(
+                    manifestURL: restored.url,
+                    manifestSha256: extraHash
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .schemaDrift)
+            }
+
+            let locatorInput = try makeAssemblyInput(root: root)
+            var drift = try jsonObject(
+                try Data(contentsOf: locatorInput.url)
+            )
+            directions = try XCTUnwrap(
+                drift["directions"] as? [[String: Any]]
+            )
+            var north = directions[0]
+            var locators = try XCTUnwrap(
+                north["locators"] as? [String: Any]
+            )
+            var raw = try XCTUnwrap(locators["raw"] as? [String: Any])
+            raw["sha256"] = hash("wrong-locator")
+            locators["raw"] = raw
+            north["locators"] = locators
+            directions[0] = north
+            drift["directions"] = directions
+            let driftHash = try write(drift, to: locatorInput.url)
+            XCTAssertThrowsError(
+                try harness.assemble(
+                    manifestURL: locatorInput.url,
+                    manifestSha256: driftHash
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .hashMismatch)
+            }
+        }
+    }
+
+    func testAtomicAssemblyRejectsInputLocatorSymlinkEscape() throws {
+        try withRoot { root in
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path: "play073-l4-v2-external-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let input = try makeAssemblyInput(root: root)
+            let escapedData = Data("escaped-raw-locator".utf8)
+            let escapedURL = externalRoot.appending(path: "raw.png")
+            let escapedHash = try writeBytes(
+                escapedData,
+                to: escapedURL
+            )
+            let symlinkURL = root.appending(
+                path: "locators/n/escaped-raw.png"
+            )
+            try FileManager.default.createDirectory(
+                at: symlinkURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            try FileManager.default.createSymbolicLink(
+                at: symlinkURL,
+                withDestinationURL: escapedURL
+            )
+
+            var manifest = try jsonObject(
+                try Data(contentsOf: input.url)
+            )
+            var directions = try XCTUnwrap(
+                manifest["directions"] as? [[String: Any]]
+            )
+            var north = directions[0]
+            var locators = try XCTUnwrap(
+                north["locators"] as? [String: Any]
+            )
+            locators["raw"] = [
+                "path": try relativePath(symlinkURL, root: root),
+                "sha256": escapedHash,
+            ]
+            north["locators"] = locators
+            directions[0] = north
+            manifest["directions"] = directions
+            let manifestHash = try write(manifest, to: input.url)
+
+            XCTAssertThrowsError(
+                try L4V2AtomicAssemblyHarness(
+                    claimedRoot: root
+                ).assemble(
+                    manifestURL: input.url,
+                    manifestSha256: manifestHash
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .outsideClaimedRoot(
+                        escapedURL.resolvingSymlinksInPath().path
+                    )
+                )
+            }
+        }
+    }
+
+    func testAtomicAssemblyRejectsLedgerOutputSymlinkEscape() throws {
+        try withRoot { root in
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path: "play073-l4-v2-ledger-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let evidenceRoot = root.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+            try FileManager.default.createDirectory(
+                at: evidenceRoot,
+                withIntermediateDirectories: true
+            )
+            let symlinkURL = evidenceRoot.appending(path: "escaped")
+            try FileManager.default.createSymbolicLink(
+                at: symlinkURL,
+                withDestinationURL: externalRoot
+            )
+            let outputURL = symlinkURL.appending(path: "ledger.json")
+
+            XCTAssertThrowsError(
+                try L4V2AtomicAssemblyHarness(
+                    claimedRoot: root
+                ).canonicalEvidenceOutputURL(outputURL)
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .outsideClaimedRoot(
+                        symlinkURL.path
+                    )
+                )
+            }
+        }
+    }
+
+    func testAtomicAssemblyRejectsDanglingFinalLedgerSymlink() throws {
+        try withRoot { root in
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path:
+                        "play073-l4-v2-dangling-ledger-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let evidenceRoot = root.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+            try FileManager.default.createDirectory(
+                at: evidenceRoot,
+                withIntermediateDirectories: true
+            )
+            let externalTarget = externalRoot.appending(
+                path: "absent-ledger.json"
+            )
+            let outputURL = evidenceRoot.appending(
+                path: "atomic-ledger.json"
+            )
+            try FileManager.default.createSymbolicLink(
+                at: outputURL,
+                withDestinationURL: externalTarget
+            )
+            XCTAssertFalse(
+                FileManager.default.fileExists(
+                    atPath: externalTarget.path
+                )
+            )
+
+            XCTAssertThrowsError(
+                try {
+                    let validatedOutput =
+                        try L4V2AtomicAssemblyHarness(
+                            claimedRoot: root
+                        ).canonicalEvidenceOutputURL(outputURL)
+                    try Data("must-not-escape".utf8).write(
+                        to: validatedOutput
+                    )
+                }()
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .outsideClaimedRoot(outputURL.path)
+                )
+            }
+            XCTAssertFalse(
+                FileManager.default.fileExists(
+                    atPath: externalTarget.path
+                )
+            )
+        }
+    }
+
     func testCallerSuppliedDirectionPacketAndAdmissionReceipt() throws {
         let environment = ProcessInfo.processInfo.environment
         guard let packetPath = environment["CITYSIM_L4_PACKET_PATH"] else {
@@ -624,7 +1466,7 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
                 "CITYSIM_L4_CLAIMED_ROOT",
                 environment: environment
             )
-        ).standardizedFileURL
+        ).standardizedFileURL.resolvingSymlinksInPath()
         let packetURL = resolve(packetPath, beneath: claimedRoot)
         let admissionURL = resolve(
             try requiredEnvironment(
@@ -672,31 +1514,282 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         XCTAssertFalse(admitted.receipt.runtimeMappingMutated)
         XCTAssertFalse(admitted.receipt.shippingResourcesMutated)
 
-        let evidenceRoot = claimedRoot.appending(
-            path: "docs/production/evidence/PLAY-073"
-        ).standardizedFileURL.path
-        guard outputURL.path.hasPrefix(evidenceRoot + "/") else {
-            throw L4V2HarnessError.outsideClaimedRoot(outputURL.path)
-        }
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.sortedKeys]
-        let receiptData = try encoder.encode(admitted.receipt)
-        try FileManager.default.createDirectory(
-            at: outputURL.deletingLastPathComponent(),
-            withIntermediateDirectories: true
-        )
-        if FileManager.default.fileExists(atPath: outputURL.path) {
-            guard try Data(contentsOf: outputURL) == receiptData else {
-                throw L4V2HarnessError.hashMismatch
-            }
-        } else {
-            try receiptData.write(to: outputURL)
-        }
+        let written = try L4V2SourceAdmissionHarness(
+            claimedRoot: claimedRoot
+        ).writeReceipt(admitted.receipt, to: outputURL)
         print(
             "PLAY073_L4_QUARANTINE_RECEIPT "
-                + "\(outputURL.path) "
-                + L4V2SourceAdmissionHarness.sha256(receiptData)
+                + "\(written.url.path) "
+                + L4V2SourceAdmissionHarness.sha256(written.data)
         )
+    }
+
+    func testAllDirectionsUseCanonicalRegularFilesAndDeterministicReceipts() throws {
+        try withRoot { root in
+            let harness = L4V2SourceAdmissionHarness(claimedRoot: root)
+            for direction in L4V2Direction.allCases {
+                let packet = makePacket(direction)
+                let packetURL = root.appending(
+                    path: "worker/\(direction.rawValue).json"
+                )
+                let packetHash = try write(packet, to: packetURL)
+                let input = try writeAdmission(
+                    packet: packet,
+                    packetURL: packetURL,
+                    packetHash: packetHash,
+                    root: root
+                )
+
+                let first = try harness.inspect(input)
+                let second = try harness.inspect(input)
+                XCTAssertEqual(first, second)
+
+                let outputURL = root.appending(
+                    path:
+                        "docs/production/evidence/PLAY-073/"
+                        + "\(direction.rawValue)-receipt.json"
+                )
+                let firstWrite = try harness.writeReceipt(
+                    first.receipt,
+                    to: outputURL
+                )
+                let secondWrite = try harness.writeReceipt(
+                    second.receipt,
+                    to: outputURL
+                )
+                XCTAssertEqual(firstWrite.url, secondWrite.url)
+                XCTAssertEqual(firstWrite.data, secondWrite.data)
+                XCTAssertEqual(
+                    try Data(contentsOf: firstWrite.url),
+                    firstWrite.data
+                )
+                XCTAssertTrue(first.receipt.rendererQuarantined)
+                XCTAssertFalse(first.receipt.readyForAtomicAssembly)
+                XCTAssertFalse(first.receipt.productionSelected)
+                XCTAssertFalse(first.receipt.runtimeMappingMutated)
+                XCTAssertFalse(first.receipt.shippingResourcesMutated)
+            }
+        }
+    }
+
+    func testAllDirectionsRejectInputSymlinksAndNonRegularFiles() throws {
+        try withRoot { root in
+            let harness = L4V2SourceAdmissionHarness(claimedRoot: root)
+            for direction in L4V2Direction.allCases {
+                let packet = makePacket(direction)
+                let packetURL = root.appending(
+                    path: "worker/\(direction.rawValue).json"
+                )
+                let packetHash = try write(packet, to: packetURL)
+                let input = try writeAdmission(
+                    packet: packet,
+                    packetURL: packetURL,
+                    packetHash: packetHash,
+                    root: root
+                )
+                let admissionURL = try XCTUnwrap(input.admissionURL)
+                let admissionHash = try XCTUnwrap(input.admissionSha256)
+
+                let packetSymlink = root.appending(
+                    path: "worker/\(direction.rawValue)-link.json"
+                )
+                try FileManager.default.createSymbolicLink(
+                    at: packetSymlink,
+                    withDestinationURL: packetURL
+                )
+                XCTAssertThrowsError(
+                    try harness.inspect(
+                        L4V2FileInput(
+                            packetURL: packetSymlink,
+                            packetSha256: packetHash,
+                            admissionURL: admissionURL,
+                            admissionSha256: admissionHash
+                        )
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .outsideClaimedRoot(packetSymlink.path)
+                    )
+                }
+
+                let admissionSymlink = root.appending(
+                    path:
+                        "integration/\(direction.rawValue)-admission-link.json"
+                )
+                try FileManager.default.createSymbolicLink(
+                    at: admissionSymlink,
+                    withDestinationURL: admissionURL
+                )
+                XCTAssertThrowsError(
+                    try harness.inspect(
+                        L4V2FileInput(
+                            packetURL: packetURL,
+                            packetSha256: packetHash,
+                            admissionURL: admissionSymlink,
+                            admissionSha256: admissionHash
+                        )
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .outsideClaimedRoot(admissionSymlink.path)
+                    )
+                }
+
+                let packetDirectory = root.appending(
+                    path: "worker/\(direction.rawValue)-directory"
+                )
+                try FileManager.default.createDirectory(
+                    at: packetDirectory,
+                    withIntermediateDirectories: true
+                )
+                XCTAssertThrowsError(
+                    try harness.inspect(
+                        L4V2FileInput(
+                            packetURL: packetDirectory,
+                            packetSha256: packetHash,
+                            admissionURL: admissionURL,
+                            admissionSha256: admissionHash
+                        )
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .invalidPathType(packetDirectory.path)
+                    )
+                }
+            }
+        }
+    }
+
+    func testAllDirectionsRejectReceiptSymlinksAndDirectoryTargets() throws {
+        try withRoot { root in
+            let harness = L4V2SourceAdmissionHarness(claimedRoot: root)
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path: "play073-l4-v2-direction-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let evidenceRoot = root.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+            try FileManager.default.createDirectory(
+                at: evidenceRoot,
+                withIntermediateDirectories: true
+            )
+
+            for direction in L4V2Direction.allCases {
+                let packet = makePacket(direction)
+                let packetURL = root.appending(
+                    path: "worker/\(direction.rawValue).json"
+                )
+                let packetHash = try write(packet, to: packetURL)
+                let input = try writeAdmission(
+                    packet: packet,
+                    packetURL: packetURL,
+                    packetHash: packetHash,
+                    root: root
+                )
+                let admitted = try harness.inspect(input)
+
+                let intermediateSymlink = evidenceRoot.appending(
+                    path: "\(direction.rawValue)-escaped"
+                )
+                try FileManager.default.createSymbolicLink(
+                    at: intermediateSymlink,
+                    withDestinationURL: externalRoot
+                )
+                XCTAssertThrowsError(
+                    try harness.writeReceipt(
+                        admitted.receipt,
+                        to: intermediateSymlink.appending(
+                            path: "receipt.json"
+                        )
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .outsideClaimedRoot(intermediateSymlink.path)
+                    )
+                }
+
+                let externalTarget = externalRoot.appending(
+                    path: "\(direction.rawValue)-absent.json"
+                )
+                let danglingOutput = evidenceRoot.appending(
+                    path: "\(direction.rawValue)-dangling.json"
+                )
+                try FileManager.default.createSymbolicLink(
+                    at: danglingOutput,
+                    withDestinationURL: externalTarget
+                )
+                XCTAssertFalse(
+                    FileManager.default.fileExists(
+                        atPath: externalTarget.path
+                    )
+                )
+                XCTAssertThrowsError(
+                    try harness.writeReceipt(
+                        admitted.receipt,
+                        to: danglingOutput
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .outsideClaimedRoot(danglingOutput.path)
+                    )
+                }
+                XCTAssertFalse(
+                    FileManager.default.fileExists(
+                        atPath: externalTarget.path
+                    )
+                )
+
+                let directoryOutput = evidenceRoot.appending(
+                    path: "\(direction.rawValue)-directory"
+                )
+                try FileManager.default.createDirectory(
+                    at: directoryOutput,
+                    withIntermediateDirectories: true
+                )
+                XCTAssertThrowsError(
+                    try harness.writeReceipt(
+                        admitted.receipt,
+                        to: directoryOutput
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .invalidPathType(directoryOutput.path)
+                    )
+                }
+
+                let lexicalEscape = root.appending(
+                    path:
+                        "docs/production/evidence/PLAY-073/../../../../"
+                        + "\(direction.rawValue)-escaped.json"
+                )
+                XCTAssertThrowsError(
+                    try harness.writeReceipt(
+                        admitted.receipt,
+                        to: lexicalEscape
+                    )
+                ) {
+                    XCTAssertEqual(
+                        $0 as? L4V2HarnessError,
+                        .outsideClaimedRoot(
+                            lexicalEscape.standardizedFileURL.path
+                        )
+                    )
+                }
+            }
+        }
     }
 
     func testWorkerCandidateRequiresSeparateIntegrationAdmission() throws {
@@ -877,6 +1970,207 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
             try L4V2SourceAdmissionHarness.join([north, transformedEast])
         ) {
             XCTAssertEqual($0 as? L4V2HarnessError, .transformedSibling)
+        }
+    }
+
+    func testMixedDirectionRejectionsRemainIsolated() throws {
+        let directions = L4V2Direction.allCases
+        for rotation in directions.indices {
+            try withRoot { root in
+                let rehearsal = try makeRehearsalInput(root: root)
+                let harness = L4V2SourceAdmissionHarness(
+                    claimedRoot: root
+                )
+                let order = directions.indices.map {
+                    directions[($0 + rotation) % directions.count]
+                }
+                var admitted: [L4V2AdmittedPacket] = []
+                let assemblyInvocationCount = 0
+
+                XCTAssertEqual(
+                    try L4V2SourceAdmissionHarness.join(admitted).status,
+                    .inactive
+                )
+                for (index, direction) in order.enumerated() {
+                    let before = try admissionSnapshot(admitted)
+                    let beforeDigest = try batchDigest(admitted)
+                    let validInput = try rehearsalInput(
+                        for: direction,
+                        manifest: rehearsal.manifest,
+                        root: root
+                    )
+                    let rejectedInput = L4V2FileInput(
+                        packetURL: validInput.packetURL,
+                        packetSha256: hash(
+                            "wrong-\(rotation)-\(direction.rawValue)"
+                        ),
+                        admissionURL: validInput.admissionURL,
+                        admissionSha256: validInput.admissionSha256
+                    )
+
+                    XCTAssertThrowsError(
+                        try harness.inspect(rejectedInput)
+                    ) {
+                        XCTAssertEqual(
+                            $0 as? L4V2HarnessError,
+                            .hashMismatch
+                        )
+                    }
+                    XCTAssertEqual(try admissionSnapshot(admitted), before)
+                    XCTAssertEqual(try batchDigest(admitted), beforeDigest)
+                    XCTAssertEqual(assemblyInvocationCount, 0)
+
+                    admitted.append(try harness.inspect(validInput))
+                    let state = try L4V2SourceAdmissionHarness.join(
+                        admitted
+                    )
+                    if index < directions.count - 1 {
+                        XCTAssertEqual(
+                            state.status,
+                            .quarantinedIncomplete
+                        )
+                    } else {
+                        XCTAssertEqual(
+                            state.status,
+                            .readyForAtomicAssembly
+                        )
+                    }
+                    XCTAssertEqual(assemblyInvocationCount, 0)
+                }
+            }
+        }
+    }
+
+    func testFourthDirectionImmediatelyTriggersOneNonshippingAssembly() throws {
+        try withRoot { root in
+            let rehearsal = try makeRehearsalInput(root: root)
+            let directionHarness = L4V2SourceAdmissionHarness(
+                claimedRoot: root
+            )
+            let assemblyHarness = L4V2AtomicAssemblyHarness(
+                claimedRoot: root
+            )
+            let order: [L4V2Direction] = [
+                .east, .south, .west, .north,
+            ]
+            var admitted: [L4V2AdmittedPacket] = []
+            var assemblyInvocationIndices: [Int] = []
+            var ledger: L4V2AtomicAdmissionLedger?
+
+            for (index, direction) in order.enumerated() {
+                let validInput = try rehearsalInput(
+                    for: direction,
+                    manifest: rehearsal.manifest,
+                    root: root
+                )
+                if index == order.count - 1 {
+                    let before = try admissionSnapshot(admitted)
+                    let beforeDigest = try batchDigest(admitted)
+                    XCTAssertThrowsError(
+                        try directionHarness.inspect(
+                            L4V2FileInput(
+                                packetURL: validInput.packetURL,
+                                packetSha256: hash(
+                                    "wrong-fourth-\(direction.rawValue)"
+                                ),
+                                admissionURL: validInput.admissionURL,
+                                admissionSha256:
+                                    validInput.admissionSha256
+                            )
+                        )
+                    ) {
+                        XCTAssertEqual(
+                            $0 as? L4V2HarnessError,
+                            .hashMismatch
+                        )
+                    }
+                    XCTAssertEqual(try admissionSnapshot(admitted), before)
+                    XCTAssertEqual(try batchDigest(admitted), beforeDigest)
+                    XCTAssertTrue(assemblyInvocationIndices.isEmpty)
+                }
+
+                admitted.append(try directionHarness.inspect(validInput))
+                let state = try L4V2SourceAdmissionHarness.join(admitted)
+                if state.status == .readyForAtomicAssembly {
+                    assemblyInvocationIndices.append(index)
+                    ledger = try assemblyHarness.assemble(
+                        manifestURL: rehearsal.url,
+                        manifestSha256: rehearsal.sha256
+                    )
+                } else {
+                    XCTAssertEqual(
+                        state.status,
+                        .quarantinedIncomplete
+                    )
+                    XCTAssertTrue(assemblyInvocationIndices.isEmpty)
+                }
+            }
+
+            XCTAssertEqual(assemblyInvocationIndices, [3])
+            let finalLedger = try XCTUnwrap(ledger)
+            XCTAssertEqual(finalLedger.lodIdentityCount, 12)
+            XCTAssertEqual(finalLedger.d4IdentityCount, 32)
+            XCTAssertFalse(finalLedger.runtimeActivated)
+            XCTAssertFalse(finalLedger.shippingResourcesMutated)
+            XCTAssertFalse(finalLedger.productionSelected)
+            XCTAssertEqual(
+                Set(
+                    admitted.map {
+                        $0.packet.fixturePreparation.fixtureCoordinate
+                            .map(String.init)
+                            .joined(separator: ",")
+                    }
+                ).count,
+                4
+            )
+            XCTAssertEqual(
+                Set(
+                    admitted.map {
+                        $0.packet.fixturePreparation.expectedFrontage
+                    }
+                ),
+                Set(L4V2Direction.allCases.map(\.rawValue))
+            )
+            XCTAssertTrue(
+                admitted.allSatisfy {
+                    $0.receipt.rendererQuarantined
+                        && !$0.receipt.readyForAtomicAssembly
+                        && !$0.receipt.productionSelected
+                        && !$0.receipt.runtimeMappingMutated
+                        && !$0.receipt.shippingResourcesMutated
+                        && !$0.admission.rendererQuarantined
+                        && !$0.admission.productionSelected
+                        && !$0.packet.workerState.sourceReady
+                        && !$0.packet.workerState.integrationAdmitted
+                        && !$0.packet.workerState.rendererQuarantined
+                        && !$0.packet.workerState.productionSelected
+                        && !$0.packet.productionSelected
+                }
+            )
+            XCTAssertTrue(
+                finalLedger.directions.allSatisfy {
+                    $0.locators.ordered.allSatisfy {
+                        $0.path.hasSuffix(".synthetic")
+                    }
+                }
+            )
+
+            for entry in finalLedger.directions {
+                let source = try XCTUnwrap(
+                    admitted.first {
+                        $0.packet.direction == entry.direction
+                    }
+                )
+                XCTAssertEqual(entry.packetSha256, source.packetSha256)
+                XCTAssertEqual(
+                    entry.sourceAdmissionSha256,
+                    source.admissionSha256
+                )
+                XCTAssertEqual(
+                    entry.quarantineReceiptSha256,
+                    try receiptHash(source.receipt)
+                )
+            }
         }
     }
 
@@ -1188,6 +2482,197 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         )
         defer { try? FileManager.default.removeItem(at: root) }
         try body(root)
+    }
+
+    private func makeAssemblyInput(
+        root: URL
+    ) throws -> (url: URL, sha256: String) {
+        let baselineCatalog = try writeBytes(
+            Data("synthetic-accepted-l3-catalog".utf8),
+            to: root.appending(path: "baseline/catalog.json")
+        )
+        let baselineManifest = try writeBytes(
+            Data("synthetic-accepted-l3-manifest".utf8),
+            to: root.appending(path: "baseline/industrial-l3.json")
+        )
+        let directionHarness = L4V2SourceAdmissionHarness(
+            claimedRoot: root
+        )
+        var directions: [L4V2AssemblyDirectionInput] = []
+
+        for direction in L4V2Direction.allCases {
+            let packet = makePacket(direction)
+            let packetURL = root.appending(
+                path: "worker/\(direction.rawValue).json"
+            )
+            let packetHash = try write(packet, to: packetURL)
+            let input = try writeAdmission(
+                packet: packet,
+                packetURL: packetURL,
+                packetHash: packetHash,
+                root: root
+            )
+            let admitted = try directionHarness.inspect(input)
+            let admissionURL = try XCTUnwrap(input.admissionURL)
+            let admissionHash = try XCTUnwrap(input.admissionSha256)
+            let receiptURL = root.appending(
+                path: "renderer/\(direction.rawValue)-receipt.json"
+            )
+            let receiptHash = try write(
+                admitted.receipt,
+                to: receiptURL
+            )
+
+            func locator(_ role: String) throws -> L4V2Artifact {
+                let url = root.appending(
+                    path:
+                        "locators/\(direction.rawValue)/\(role).synthetic"
+                )
+                let sha = try writeBytes(
+                    Data(
+                        "synthetic-\(direction.rawValue)-\(role)".utf8
+                    ),
+                    to: url
+                )
+                return L4V2Artifact(
+                    path: try relativePath(url, root: root),
+                    sha256: sha
+                )
+            }
+
+            directions.append(
+                L4V2AssemblyDirectionInput(
+                    direction: direction,
+                    packet: L4V2Artifact(
+                        path: try relativePath(packetURL, root: root),
+                        sha256: packetHash
+                    ),
+                    sourceAdmission: L4V2Artifact(
+                        path: try relativePath(admissionURL, root: root),
+                        sha256: admissionHash
+                    ),
+                    quarantineReceipt: L4V2Artifact(
+                        path: try relativePath(receiptURL, root: root),
+                        sha256: receiptHash
+                    ),
+                    locators: L4V2AssemblyLocators(
+                        raw: try locator("raw"),
+                        provenance: try locator("provenance"),
+                        normalization: try locator("normalization"),
+                        descriptor: try locator("descriptor"),
+                        contact: try locator("contact"),
+                        review: try locator("review")
+                    )
+                )
+            )
+        }
+
+        let manifest = L4V2AssemblyInputManifest(
+            schemaVersion: 1,
+            disposition: "integration_assembly_input_admitted",
+            acceptedL3Baseline: L4V2AcceptedBaseline(
+                commit: commit("accepted-l3-baseline"),
+                catalog: L4V2Artifact(
+                    path: "baseline/catalog.json",
+                    sha256: baselineCatalog
+                ),
+                industrialL3Manifest: L4V2Artifact(
+                    path: "baseline/industrial-l3.json",
+                    sha256: baselineManifest
+                )
+            ),
+            directions: directions,
+            runtimeActivated: false,
+            shippingResourcesMutated: false,
+            productionSelected: false
+        )
+        let url = root.appending(path: "integration/assembly-input.json")
+        return (url, try write(manifest, to: url))
+    }
+
+    private func makeRehearsalInput(
+        root: URL
+    ) throws -> (
+        url: URL,
+        sha256: String,
+        manifest: L4V2AssemblyInputManifest
+    ) {
+        let input = try makeAssemblyInput(root: root)
+        return (
+            input.url,
+            input.sha256,
+            try JSONDecoder().decode(
+                L4V2AssemblyInputManifest.self,
+                from: Data(contentsOf: input.url)
+            )
+        )
+    }
+
+    private func rehearsalInput(
+        for direction: L4V2Direction,
+        manifest: L4V2AssemblyInputManifest,
+        root: URL
+    ) throws -> L4V2FileInput {
+        let entry = try XCTUnwrap(
+            manifest.directions.first { $0.direction == direction }
+        )
+        return L4V2FileInput(
+            packetURL: root.appending(path: entry.packet.path),
+            packetSha256: entry.packet.sha256,
+            admissionURL: root.appending(
+                path: entry.sourceAdmission.path
+            ),
+            admissionSha256: entry.sourceAdmission.sha256
+        )
+    }
+
+    private func admissionSnapshot(
+        _ admitted: [L4V2AdmittedPacket]
+    ) throws -> [String] {
+        try admitted
+            .sorted {
+                $0.packet.direction.rawValue
+                    < $1.packet.direction.rawValue
+            }
+            .map {
+                [
+                    $0.packet.direction.rawValue,
+                    $0.packetSha256,
+                    $0.admissionSha256,
+                    try receiptHash($0.receipt),
+                ].joined(separator: "|")
+            }
+    }
+
+    private func batchDigest(
+        _ admitted: [L4V2AdmittedPacket]
+    ) throws -> String {
+        hash(
+            try admissionSnapshot(admitted)
+                .joined(separator: "\n")
+        )
+    }
+
+    private func receiptHash(
+        _ receipt: L4V2RendererQuarantineReceipt
+    ) throws -> String {
+        L4V2SourceAdmissionHarness.sha256(try sortedData(receipt))
+    }
+
+    private func sortedData<T: Encodable>(_ value: T) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        return try encoder.encode(value)
+    }
+
+    @discardableResult
+    private func writeBytes(_ data: Data, to url: URL) throws -> String {
+        try FileManager.default.createDirectory(
+            at: url.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try data.write(to: url)
+        return L4V2SourceAdmissionHarness.sha256(data)
     }
 
     private func requiredEnvironment(

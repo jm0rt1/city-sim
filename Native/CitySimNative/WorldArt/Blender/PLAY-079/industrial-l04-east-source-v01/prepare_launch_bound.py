@@ -13,11 +13,12 @@ import copy
 import hashlib
 import importlib.util
 import json
-import os
 import pathlib
 import subprocess
 import sys
 from typing import Any, Iterable
+
+import east_output_safety as output_safety
 
 
 SOURCE_ROOT = pathlib.Path(__file__).resolve().parent
@@ -503,25 +504,13 @@ def validate_packet_structure(packet: dict[str, Any]) -> None:
 
 
 def write_exclusive_atomic(path: pathlib.Path, payload: bytes) -> None:
-    if path.exists():
-        raise PreparationRejected("launch_artifact_already_exists", repository_relative(path))
-    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    if temporary.exists():
-        raise PreparationRejected("launch_artifact_temporary_exists", str(temporary))
     try:
-        with temporary.open("xb") as handle:
-            handle.write(payload)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    except OSError as error:
+        output_safety.write_bytes_exclusive(path, payload, "prepare_launch_bound")
+    except output_safety.OutputSafetyRejected as error:
         raise PreparationRejected(
-            "launch_artifact_write_failed",
-            f"{repository_relative(path)}: {error}",
+            error.code,
+            error.detail,
         ) from error
-    finally:
-        if temporary.exists():
-            temporary.unlink()
 
 
 def prepare_launch(
@@ -621,10 +610,22 @@ def prepare_launch(
                 repr(semantic_result),
             )
     except Exception:
-        if handoff_written and handoff_path.exists():
-            handoff_path.unlink()
-        if receipt_written and receipt_path.exists():
-            receipt_path.unlink()
+        try:
+            if handoff_written:
+                output_safety.remove_created_output(
+                    handoff_path,
+                    "prepare_launch_bound",
+                )
+            if receipt_written:
+                output_safety.remove_created_output(
+                    receipt_path,
+                    "prepare_launch_bound",
+                )
+        except output_safety.OutputSafetyRejected as cleanup_error:
+            raise PreparationRejected(
+                cleanup_error.code,
+                cleanup_error.detail,
+            ) from cleanup_error
         raise
     return {
         "schema": "citysim.world-art.launch-bound-preparation.v1",

@@ -636,7 +636,7 @@ def main() -> int:
         decision["decision"] == "reject"
         and decision["rejectionStage"] == "before_renderer_launch"
         and "appearance-lock:missing" in decision["reasonCodes"]
-        and "source-production-profile:missing" in decision["reasonCodes"]
+        and "source-profile:not-bound" in decision["reasonCodes"]
         and not any(
             code.startswith("coordinate-bridge:")
             for code in decision["reasonCodes"]

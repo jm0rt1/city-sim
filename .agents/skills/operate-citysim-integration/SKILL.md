@@ -16,6 +16,12 @@ Keep one game coherent while specialist lanes and contract-separable cells move 
 5. Treat every dirty or untracked file as user-owned until provenance and intended commit are established.
 6. State the integration lane, current baseline, dirty-state risk, active workers, and immediate management objective.
 
+Resolve every baseline, authority, and worker commit in its owning worktree
+with `git rev-parse --verify '<ref>^{commit}'`. Never type, infer, or expand an
+abbreviated SHA. Before dispatch, compare the exact full SHA across the
+authority artifact, claim, ledger, receipt, and delegation message; any
+mismatch is a hard stop.
+
 ## Own all management responsibilities
 
 Maintain active awareness of:
@@ -58,6 +64,14 @@ absolute worktree, claim, published base, exact head, state, blocker, next
 action, and update time. Reserve the intended renderer-ingestion window and
 independent-QA window in the same ledger so completed sources do not enter an
 undefined queue.
+
+For directional World Art, the canonical control surfaces are
+`docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json`,
+`docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md`, and one
+timestamped
+`docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-*.json`
+receipt. The ledger is authoritative; the board and receipt are projections
+and must not be maintained as independent truth.
 
 Before reporting status, dispatching work, admitting a source, or integrating a
 candidate, compare every recorded cell against its live visible-thread status
@@ -114,12 +128,33 @@ Publish a dispatch receipt for every management turn that changes work:
 - the first bounded deliverable and its stop condition; and
 - `planned`, `sent`, `acknowledged`, `working`, `returned`, or `blocked`.
 
+Every dispatch receipt contains all six rows, including unchanged rows, with
+`changedThisTurn: true|false`. Do not split unchanged or review-pending rows
+into a weaker side list. Each row carries its exact head, dispatch state,
+acknowledgement, bounded deliverable, stop condition, blocker, next refill
+action, and live observation time.
+
 Do not count a row as an active workstream until the visible thread has
 acknowledged the exact authority and begun a legal bounded deliverable.
 Likewise, do not leave a completed thread labeled active. Refresh the ledger
 and dispatch receipt when a worker returns, blocks, or becomes idle. The
 parallelism invariant is measured by useful acknowledged work, not by the
 number of branches, threads, or optimistic status labels.
+
+Before ending a management turn, requery all six visible threads and
+worktrees; refill every returned, blocked, completed, or idle row with
+stage-legal work in the same turn; wait for acknowledgement; refresh the
+ledger, board, and complete receipt; validate them; and commit the management
+checkpoint. A row may remain unstaffed only when the ledger names the exact
+stage prohibition, owner, resumption event, and why no non-conflicting
+preparation exists. `planned`, `sent`, `review_pending`, or an unacknowledged
+assignment does not satisfy this gate.
+
+Run
+`python3 .agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py`
+before committing a directional World Art management checkpoint. Treat any
+stale, partial, non-resolving, or contradictory control-surface result as a
+hard stop.
 
 For directional World Art, use this default fan-out:
 

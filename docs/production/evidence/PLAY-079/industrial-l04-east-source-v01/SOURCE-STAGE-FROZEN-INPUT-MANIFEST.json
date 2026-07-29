@@ -46,6 +46,14 @@
       "acceptedMasterCount": 44,
       "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
     },
+    "directionLocalOutputSafety": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/east_output_safety.py",
+      "sha256": "0e94b1f62d7b0f9d102a03b4343717aee7b066b4b0067607489e5943b5f7deb3"
+    },
+    "directionLocalOutputSafetyValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_output_path_safety.py",
+      "sha256": "f32611c683e193a275b08fff8810f20a2038fb1758922e6252ed25044b6f1522"
+    },
     "prelaunchHandoff": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PRELOCK-RUNNER-HANDOFF.json",
       "sha256Binding": "computed_after_runner_content_is_frozen",

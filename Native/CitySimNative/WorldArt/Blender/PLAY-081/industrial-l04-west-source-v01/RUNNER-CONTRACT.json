@@ -200,6 +200,10 @@
     "coordinateBridgeAdapterPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/coordinate_bridge_v06.py",
     "coordinateBridgeProofPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prove_west_bridge_v06.py",
     "sourceValidatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
+    "launchAuthorityValidatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_launch_authority.py",
+    "pathSafetyPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
+    "launchBoundAssemblerPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
+    "postSourcePipelinePath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
     "pngDecoderPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
     "modes": [
       "validate",
@@ -312,6 +316,47 @@
     },
     "state": "schema_v2_bound_source_production_profile_pending"
   },
+  "futureProductionAuthority": {
+    "state": "not_published",
+    "originMasterCommit": null,
+    "authorityPathPrefix": "docs/production/evidence/INTEGRATION/",
+    "profileSchema": "citysim.integration.world-art-source-production-profile.v1",
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "directionProcesses": {
+      "north": [
+        "B",
+        "C"
+      ],
+      "east": [
+        "A",
+        "B",
+        "C"
+      ],
+      "south": [
+        "A",
+        "B",
+        "C"
+      ],
+      "west": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "computeEnvelope": {
+      "maximumConcurrentDccProcesses": 2,
+      "exceptionOwner": "Integration"
+    },
+    "grants": {
+      "sourceAcceptance": false,
+      "rendererAdmission": false,
+      "productionSelection": false,
+      "shippingActivation": false
+    }
+  },
   "appearanceLock": {
     "documentPath": null,
     "commit": null,
@@ -323,6 +368,7 @@
   "appearanceLockSha256": null,
   "lockedMaterialMapping": {
     "path": null,
+    "commit": null,
     "sha256": null,
     "requiredSchema": {
       "schemaVersion": 1,
@@ -346,12 +392,17 @@
       "shared-semantic-validator-binding",
       "canonical-decoder-binding",
       "source-production-profile-presence-hash-and-ancestry",
+      "exact-origin-master-binding",
+      "source-production-profile-content-and-grants",
       "appearance-lock-fields",
       "appearance-lock-document-hash",
       "appearance-lock-commit-ancestry",
       "north-process-a-hashes",
       "locked-material-mapping-presence-and-hash",
       "locked-material-role-completeness",
+      "exact-task-owned-validator-output",
+      "exact-abc-directory-root-and-leaf-identities",
+      "no-symlink-output-components",
       "deterministic-output-path"
     ],
     "renderApiMayLoadAfterGuardOnly": true
@@ -361,28 +412,57 @@
     "processes": {
       "A": {
         "directory": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A",
-        "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw.png",
-        "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic.png",
-        "provenance": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/provenance.json",
-        "objectMapping": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/object-mapping.json",
-        "registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/registration.json"
+        "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+        "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic",
+        "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+        "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw/raw.png",
+        "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic/semantic.png",
+        "provenance": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/provenance.json",
+        "freshInvocationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/fresh-invocation.json",
+        "objectMapping": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/object-mapping.json",
+        "registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/registration.json"
       },
       "B": {
         "directory": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B",
-        "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw.png",
-        "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic.png",
-        "provenance": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/provenance.json",
-        "objectMapping": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/object-mapping.json",
-        "registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/registration.json"
+        "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+        "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic",
+        "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+        "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw/raw.png",
+        "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic/semantic.png",
+        "provenance": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/provenance.json",
+        "freshInvocationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/fresh-invocation.json",
+        "objectMapping": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/object-mapping.json",
+        "registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/registration.json"
       },
       "C": {
         "directory": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C",
-        "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw.png",
-        "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic.png",
-        "provenance": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/provenance.json",
-        "objectMapping": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/object-mapping.json",
-        "registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/registration.json"
+        "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+        "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic",
+        "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+        "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw/raw.png",
+        "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic/semantic.png",
+        "provenance": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/provenance.json",
+        "freshInvocationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/fresh-invocation.json",
+        "objectMapping": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/object-mapping.json",
+        "registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/registration.json"
       }
+    },
+    "launchBound": {
+      "frozenInputManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/FROZEN-INPUT-MANIFEST.json",
+      "guardReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LAUNCH-GUARD-RECEIPT.json",
+      "outputRootIsolationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+      "packet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-LAUNCH-BOUND-V2.json"
+    },
+    "postSource": {
+      "normalizationRun1Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+      "normalizationRun2Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+      "normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+      "parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+      "canonicalRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/validation/canonical-rgba",
+      "reviewRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+      "reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
+      "assemblyRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
+      "sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
     },
     "validation": {
       "runnerStatic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/RUNNER-STATIC-VALIDATION.json",

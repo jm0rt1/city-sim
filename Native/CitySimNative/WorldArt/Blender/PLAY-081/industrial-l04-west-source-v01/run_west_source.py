@@ -18,6 +18,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from west_launch_authority import (
+    validate_future_authorities,
+    validate_output_root_isolation,
+)
+from west_path_safety import (
+    PathSafetyError,
+    expected_process_paths,
+    lexical_repository_path,
+    validate_pipeline_layout,
+)
+
 
 DEFAULT_CONTRACT = (
     "Native/CitySimNative/WorldArt/Blender/PLAY-081/"
@@ -351,24 +362,43 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     except (ContractError, KeyError, OSError, json.JSONDecodeError):
         errors.append("source-stage:non-alias-invalid")
     source_profile = source_stage.get("sourceProductionProfile", {})
-    if source_profile != {
-        "state": "not_published",
-        "path": None,
-        "commit": None,
-        "sha256": None,
-    }:
-        errors.append("source-production-profile:prelock-state")
+    if source_profile.get("state") == "not_published":
+        if source_profile != {
+            "state": "not_published",
+            "path": None,
+            "commit": None,
+            "sha256": None,
+        }:
+            errors.append("source-production-profile:prelock-state")
+    elif source_profile.get("state") == "bound_integration_profile":
+        if (
+            set(source_profile) != {"state", "path", "commit", "sha256"}
+            or any(
+                not source_profile.get(field)
+                for field in ("path", "commit", "sha256")
+            )
+        ):
+            errors.append("source-production-profile:bound-state")
+    else:
+        errors.append("source-production-profile:state")
 
     implementation = contract.get("runnerImplementation", {})
-    blender_script = implementation.get("blenderScriptPath")
-    if not isinstance(blender_script, str):
-        errors.append("runnerImplementation:blender-script-path")
-    else:
-        try:
-            if not repository_path(root, blender_script).is_file():
-                errors.append("runnerImplementation:blender-script-missing")
-        except ContractError:
-            errors.append("runnerImplementation:blender-script-invalid")
+    for name, key in (
+        ("blender-script", "blenderScriptPath"),
+        ("launch-authority-validator", "launchAuthorityValidatorPath"),
+        ("path-safety", "pathSafetyPath"),
+        ("launch-bound-assembler", "launchBoundAssemblerPath"),
+        ("post-source-pipeline", "postSourcePipelinePath"),
+    ):
+        value = implementation.get(key)
+        if not isinstance(value, str):
+            errors.append(f"runnerImplementation:{name}-path")
+        else:
+            try:
+                if not repository_path(root, value).is_file():
+                    errors.append(f"runnerImplementation:{name}-missing")
+            except ContractError:
+                errors.append(f"runnerImplementation:{name}-invalid")
 
     counts = contract.get("invocationCounts", {})
     if not isinstance(counts, dict) or any(value != 0 for value in counts.values()):
@@ -436,12 +466,8 @@ def evaluate_render_guard(
 ) -> dict[str, Any]:
     """Return a deterministic pre-launch decision without launching Blender."""
     errors = frozen_input_errors(root, contract)
-    source_profile = contract.get("sourceStage", {}).get(
-        "sourceProductionProfile",
-        {},
-    )
-    if source_profile.get("state") != "bound_integration_profile":
-        errors.append("source-production-profile:missing")
+    authority_report = validate_future_authorities(root, contract)
+    errors.extend(authority_report["errors"])
     bridge = contract.get("coordinateBridge")
     bridge_v06: dict[str, Any] = {}
     if not isinstance(bridge, dict):
@@ -573,6 +599,16 @@ def evaluate_render_guard(
         )
         if process.get("directory") != expected_directory:
             errors.append("output:non-deterministic-directory")
+    isolation_report = validate_output_root_isolation(
+        root,
+        contract,
+        require_absent=True,
+    )
+    errors.extend(isolation_report["errors"])
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    errors.extend(
+        f"pipeline-output:{error}" for error in pipeline_layout["errors"]
+    )
 
     return {
         "schemaVersion": 1,
@@ -582,6 +618,9 @@ def evaluate_render_guard(
         "decision": "reject" if errors else "allow",
         "rejectionStage": "before_renderer_launch",
         "reasonCodes": sorted(set(errors)),
+        "authorityValidation": authority_report,
+        "outputRootIsolation": isolation_report,
+        "pipelineOutputIsolation": pipeline_layout,
         "blenderProcessLaunches": 0,
         "blenderRenderApiCalls": 0,
         "imageGenInvocations": 0,
@@ -644,11 +683,46 @@ def launch_blender(
         root, contract["runnerImplementation"]["blenderScriptPath"]
     )
     mapping = repository_path(root, contract["lockedMaterialMapping"]["path"])
-    output = repository_path(
-        root, contract["outputInventory"]["processes"][mode]["directory"]
+    process = contract["outputInventory"]["processes"][mode]
+    layout = validate_output_root_isolation(
+        root,
+        contract,
+        require_absent=True,
     )
-    if output.exists():
-        raise ContractError(f"refusing to overwrite existing output: {output}")
+    if not layout["passed"]:
+        raise ContractError(
+            "unsafe output layout: " + ",".join(layout["errors"])
+        )
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    if not pipeline_layout["passed"]:
+        raise ContractError(
+            "unsafe pipeline output layout: "
+            + ",".join(pipeline_layout["errors"])
+        )
+    expected = expected_process_paths(mode)
+    try:
+        process_root = lexical_repository_path(
+            root,
+            process["directory"],
+            expected=expected["directory"],
+        )
+        raw_root = lexical_repository_path(
+            root,
+            process["rawRoot"],
+            expected=expected["rawRoot"],
+        )
+        semantic_root = lexical_repository_path(
+            root,
+            process["semanticRoot"],
+            expected=expected["semanticRoot"],
+        )
+        evidence_root = lexical_repository_path(
+            root,
+            process["evidenceRoot"],
+            expected=expected["evidenceRoot"],
+        )
+    except PathSafetyError as error:
+        raise ContractError(f"unsafe process output: {error}") from error
     command = [
         str(executable),
         *pipeline["startupArguments"],
@@ -663,8 +737,12 @@ def launch_blender(
         str(mapping.relative_to(root)),
         "--process-id",
         mode,
-        "--output-directory",
-        str(output.relative_to(root)),
+        "--raw-root",
+        str(raw_root.relative_to(root)),
+        "--semantic-root",
+        str(semantic_root.relative_to(root)),
+        "--evidence-root",
+        str(evidence_root.relative_to(root)),
     ]
     completed = subprocess.run(command, cwd=root, check=False)
     return completed.returncode

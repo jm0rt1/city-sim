@@ -38,7 +38,7 @@
     },
     "frozenInputManifest": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
-      "sha256": "0193da455c880aea21c200589a7a1fca33c4058bdde0d030443f9d5a317dbfb1"
+      "sha256": "4e161e475cda95930367c113036ac0d7a36c769d8dceb84d50bcefffb518927e"
     },
     "handoffOutputPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
     "prelockReceiptPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-PRELOCK-RECEIPT.json",
@@ -109,11 +109,19 @@
     },
     "launchBoundPreparationCli": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/prepare_launch_bound.py",
-      "sha256": "77d4db6dcab30819b8a577baa032bb367c103ab6e107a795e3be15d805ac9926"
+      "sha256": "939dbc2dcd41cb72a32846845f8756a66212e0dc5a5f313fedab0054288d6c60"
     },
     "launchBoundPreparationValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_launch_bound_cli.py",
-      "sha256": "ee5aee4e8b07eb38a936844e24674ca9c0753f62a988049f0a49b94084eac84a"
+      "sha256": "e6cefe99c1c0824d1678452a05371b8849ac63849e6c2d0824a5f7fcc71fee66"
+    },
+    "directionLocalOutputSafety": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/east_output_safety.py",
+      "sha256": "0e94b1f62d7b0f9d102a03b4343717aee7b066b4b0067607489e5943b5f7deb3"
+    },
+    "directionLocalOutputSafetyValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_output_path_safety.py",
+      "sha256": "f32611c683e193a275b08fff8810f20a2038fb1758922e6252ed25044b6f1522"
     },
     "canonicalDecoder": {
       "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
@@ -129,7 +137,7 @@
     },
     "sourceStageFrozenInputManifest": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
-      "sha256": "0193da455c880aea21c200589a7a1fca33c4058bdde0d030443f9d5a317dbfb1"
+      "sha256": "4e161e475cda95930367c113036ac0d7a36c769d8dceb84d50bcefffb518927e"
     },
     "bridgeV06Authority": {
       "path": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",

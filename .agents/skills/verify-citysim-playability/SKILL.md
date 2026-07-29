@@ -59,6 +59,11 @@ changes a preregistered contract, preserve the original record and obtain an
 Integration-approved revision before testing; never silently relax the rubric
 after seeing a result.
 
+Preregistration is complete only when the fixture materializer,
+camera/capture coordinates, regular/compact variants, rubric, stop conditions,
+and evidence destinations have been exercised against the accepted baseline
+or fail closed with a named blocker. Baseline rehearsal is harness proof only.
+
 For a directional art family, preregister one family-level staged-app gate.
 North, East, South, and West cells retain their own source determinism and
 geometry evidence, but they do not request separate production acceptance from
@@ -97,6 +102,11 @@ Before the final journey:
 4. Execute one independent final staged-app gate from a fresh app state using
    the preregistered journey. Do not ask the feature or art author for help
    during the journey and do not substitute their screenshots or testimony.
+
+The one final gate may contain all preregistered layout, input, accessibility,
+and performance variants, but every variant remains bound to the same exact
+candidate and fresh-journey authority. Do not create a separate acceptance
+candidate per variant.
 
 Candidate-neutral fixture checks, camera proof, harness validation, and rubric
 review should run ahead in parallel. The final exact-candidate real-app journey

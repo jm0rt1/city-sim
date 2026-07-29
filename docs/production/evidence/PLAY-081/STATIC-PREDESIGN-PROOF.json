@@ -1,0 +1,214 @@
+{
+  "checks": [
+    {
+      "detail": {
+        "direction": "west",
+        "task": "PLAY-081"
+      },
+      "name": "task-and-direction",
+      "passed": true
+    },
+    {
+      "detail": "PREDESIGN_ONLY_PENDING_NORTH_FAMILY_MATERIAL_LOCK",
+      "name": "predesign-only-authority",
+      "passed": true
+    },
+    {
+      "detail": {
+        "authoredFromSiblingScene": false,
+        "inputs": "published family, material-role, registration, camera, light, and shadow requirements only",
+        "mirror": false,
+        "orientationTransform": "none",
+        "rotation": false,
+        "siblingGeometryConsumed": false,
+        "siblingSceneOpened": false,
+        "transform": false
+      },
+      "name": "independent-no-transform",
+      "passed": true
+    },
+    {
+      "detail": {
+        "disposition": "MISSING_NOT_ALIASED",
+        "logicalBuildingID": "industrial_l04",
+        "publishedAcceptedDirectionalSources": 0,
+        "publishedPlan": "docs/production/evidence/PLAY-027/ALIAS-COVERAGE-AND-PRODUCTION-PLAN.md"
+      },
+      "name": "catalog-missing-not-aliased",
+      "passed": true
+    },
+    {
+      "detail": [
+        [
+          -28,
+          -28
+        ],
+        [
+          28,
+          -28
+        ],
+        [
+          28,
+          28
+        ],
+        [
+          -28,
+          28
+        ]
+      ],
+      "name": "frozen-footprint",
+      "passed": true
+    },
+    {
+      "detail": {
+        "source": [
+          640,
+          704
+        ],
+        "world": [
+          -28,
+          0,
+          0
+        ]
+      },
+      "name": "west-socket",
+      "passed": true
+    },
+    {
+      "detail": {
+        "source": [
+          768,
+          896
+        ],
+        "world": [
+          28,
+          0,
+          28
+        ]
+      },
+      "name": "frozen-pivot",
+      "passed": true
+    },
+    {
+      "detail": [
+        "restrained-foundation",
+        "west-socket-apron",
+        "west-portal-inset",
+        "west-portal-jamb-left",
+        "west-portal-jamb-right",
+        "west-portal-header",
+        "west-portal-reveal-left",
+        "west-portal-reveal-right",
+        "forge-hall",
+        "saw-monitor-west",
+        "saw-monitor-center",
+        "saw-monitor-east",
+        "control-wing",
+        "west-staff-entry",
+        "offset-stack",
+        "gantry-beam",
+        "gantry-support-west",
+        "gantry-support-east",
+        "turbine-process-vessel",
+        "roof-plant"
+      ],
+      "name": "unique-component-ids",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "complete-material-binding",
+      "passed": true
+    },
+    {
+      "detail": "PROVISIONAL_NUMERIC_ROLES_PENDING_NORTH_FAMILY_MATERIAL_LOCK",
+      "name": "provisional-material-lock",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "all-components-inside-footprint",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "all-components-on-ground",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "vertical-envelope",
+      "passed": true
+    },
+    {
+      "detail": [
+        "west-portal-header",
+        "west-portal-inset",
+        "west-portal-jamb-left",
+        "west-portal-jamb-right"
+      ],
+      "name": "complete-monumental-portal",
+      "passed": true
+    },
+    {
+      "detail": [
+        [
+          -28,
+          0,
+          0
+        ],
+        [
+          -24,
+          0,
+          -2
+        ],
+        [
+          -20,
+          0,
+          -2
+        ]
+      ],
+      "name": "apron-connects-exact-west-socket",
+      "passed": true
+    },
+    {
+      "detail": 54,
+      "name": "frame-wall-value-separation",
+      "passed": true
+    },
+    {
+      "detail": 66,
+      "name": "frame-process-value-separation",
+      "passed": true
+    },
+    {
+      "detail": {
+        "imageGeneration": 0,
+        "normalizer": 0,
+        "pixelOutput": 0,
+        "rawRenderer": 0,
+        "sceneKit": 0
+      },
+      "name": "zero-pixel-processes",
+      "passed": true
+    }
+  ],
+  "failureCount": 0,
+  "failures": [],
+  "materialBindingSHA256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463",
+  "passed": true,
+  "predesignID": "industrial-l04-west-predesign-v01",
+  "processCounts": {
+    "imageGeneration": 0,
+    "normalizer": 0,
+    "pixelOutput": 0,
+    "rawRenderer": 0,
+    "sceneKit": 0
+  },
+  "productionSelected": false,
+  "proof": "STATIC_ZERO_PIXEL_PREDESIGN",
+  "sceneSHA256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c",
+  "schema": 1,
+  "sourceAuthority": false,
+  "task": "PLAY-081"
+}

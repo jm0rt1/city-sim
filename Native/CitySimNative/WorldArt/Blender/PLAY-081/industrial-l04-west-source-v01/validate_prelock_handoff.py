@@ -69,6 +69,13 @@ def main() -> int:
     schema = load_json(schema_path)
     failures: list[str] = []
 
+    if (
+        contract.get("handoffSchema", {}).get("path") != args.schema
+        or contract.get("handoffSchema", {}).get("sha256")
+        != sha256(schema_path)
+    ):
+        failures.append("integration-schema-binding")
+
     try:
         jsonschema.Draft202012Validator(schema).validate(handoff)
     except jsonschema.ValidationError as error:
@@ -128,6 +135,15 @@ def main() -> int:
         "coordinate-bridge-blocker": repository_path(
             root, f"{EVIDENCE_ROOT}/COORDINATE-BRIDGE-BLOCKER.json"
         ),
+        "bridge-actual-camera-run-a": repository_path(
+            root, f"{EVIDENCE_ROOT}/BRIDGE-ACTUAL-CAMERA-RUN-A.json"
+        ),
+        "bridge-actual-camera-run-b": repository_path(
+            root, f"{EVIDENCE_ROOT}/BRIDGE-ACTUAL-CAMERA-RUN-B.json"
+        ),
+        "bridge-repeat-identity": repository_path(
+            root, f"{EVIDENCE_ROOT}/BRIDGE-REPEAT-IDENTITY.json"
+        ),
     }
     for name, path in evidence_reports.items():
         if not path.is_file() or load_json(path).get("passed") is not True:
@@ -136,11 +152,12 @@ def main() -> int:
     blocker_canonical = blocker.get("canonicalCitySim", {})
     if (
         blocker.get("disposition")
-        != "HOLD_PENDING_V06_COORDINATE_BRIDGE_REVALIDATION"
+        != "V06_BRIDGE_ADOPTED_APPEARANCE_LOCK_PENDING"
         or blocker.get("holdIsStop") is not False
         or blocker_canonical.get("frontageSocketWorldXYZ") != [-28, 0, 0]
         or blocker_canonical.get("frontageSocketExpectedSource") != [640, 704]
-        or blocker_canonical.get("blenderNativeDirectionalSocket") is not None
+        or blocker_canonical.get("blenderNativeDirectionalSocket")
+        != [0, -28, 0]
         or blocker.get("sourceReady") is not False
     ):
         failures.append("coordinate-bridge-blocker-content")
@@ -179,14 +196,24 @@ def main() -> int:
         failures.append("pixel-validation-state")
     bridge = contract.get("coordinateBridge", {})
     canonical = bridge.get("canonicalCitySim", {})
+    bridge_v06 = bridge.get("v06", {})
     if (
-        bridge.get("state") != "pending_v06_revalidation"
+        bridge.get("state") != "validated_v06"
         or bridge.get("holdIsStop") is not False
         or canonical.get("frontageSocketWorldXYZ") != [-28, 0, 0]
         or canonical.get("frontageSocketExpectedSource") != [640, 704]
-        or any(value is not None for value in bridge.get("v06", {}).values())
+        or bridge_v06.get("authorityCommit")
+        != "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        or bridge_v06.get("mappingContractSha256")
+        != "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+        or bridge_v06.get("frontageSocketCitySimXYZ") != [-28, 0, 0]
+        or bridge_v06.get("frontageSocketBlenderXYZ") != [0, -28, 0]
+        or bridge_v06.get("frontageSocketSourceXY") != [640, 704]
+        or bridge_v06.get("sourceOrder") != [0, 1, 2, 3]
+        or bridge_v06.get("perDirectionTransform") is not False
+        or bridge_v06.get("windingChange") is not False
     ):
-        failures.append("coordinate-bridge-hold")
+        failures.append("coordinate-bridge-adoption")
     if handoff["state"] != "prelock_runner_ready" or handoff["sourceReady"] is not False:
         failures.append("handoff-runner-readiness-boundary")
 
@@ -196,6 +223,11 @@ def main() -> int:
         "direction": "west",
         "schemaSha256": sha256(schema_path),
         "handoffSha256": sha256(handoff_path),
+        "acceptedBridgeCandidate": bridge_v06.get("authorityCommit"),
+        "mappingContractSha256": bridge_v06.get("mappingContractSha256"),
+        "blenderProjectionProcessLaunches": 2,
+        "blenderRenderApiCalls": 0,
+        "renderInvocations": 0,
         "pixelFiles": sorted(pixel_files),
         "generatedCaches": sorted(generated_cache),
         "failures": failures,

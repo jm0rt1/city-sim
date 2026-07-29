@@ -165,7 +165,10 @@ def main() -> int:
         decision["decision"] == "reject"
         and decision["rejectionStage"] == "before_renderer_launch"
         and "appearance-lock:missing" in decision["reasonCodes"]
-        and "coordinate-bridge:pending-v06" in decision["reasonCodes"]
+        and not any(
+            code.startswith("coordinate-bridge:")
+            for code in decision["reasonCodes"]
+        )
         and all(value == 0 for key, value in decision.items() if key.endswith("Invocations") or key.endswith("Calls") or key == "pixelFiles")
         for decision in missing_decisions.values()
     )
@@ -196,7 +199,10 @@ def main() -> int:
         and "appearance-lock:document-sha256-mismatch" in decision["reasonCodes"]
         and "locked-materials:sha256-mismatch" in decision["reasonCodes"]
         and "appearance-lock:missing" not in decision["reasonCodes"]
-        and "coordinate-bridge:pending-v06" in decision["reasonCodes"]
+        and not any(
+            code.startswith("coordinate-bridge:")
+            for code in decision["reasonCodes"]
+        )
         and all(value == 0 for key, value in decision.items() if key.endswith("Invocations") or key.endswith("Calls") or key == "pixelFiles")
         for decision in wrong_decisions.values()
     )
@@ -204,18 +210,102 @@ def main() -> int:
     coordinate_bridge = contract["coordinateBridge"]
     canonical = coordinate_bridge["canonicalCitySim"]
     historical = coordinate_bridge["historicalProjectionAdapter"]
+    bridge_v06 = coordinate_bridge["v06"]
     blender_script_source = blender_script_path.read_text()
     coordinate_bridge_pass = (
-        coordinate_bridge["state"] == "pending_v06_revalidation"
+        coordinate_bridge["state"] == "validated_v06"
         and coordinate_bridge["holdIsStop"] is False
         and canonical["frontageSocketWorldXYZ"] == [-28, 0, 0]
         and canonical["frontageSocketExpectedSource"] == [640, 704]
         and historical["futureSourceAuthority"] is False
         and historical["authorityScope"] == "retained-predesign-proof-only"
-        and all(value is None for value in coordinate_bridge["v06"].values())
+        and bridge_v06["authorityCommit"]
+        == "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        and bridge_v06["mappingContractSha256"]
+        == "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+        and bridge_v06["basisFormula"]
+        == "B(CitySim[x,y,z])=Blender[z,x,y]"
+        and bridge_v06["sourceOrder"] == [0, 1, 2, 3]
+        and bridge_v06["frontageSocketCitySimXYZ"] == [-28, 0, 0]
+        and bridge_v06["frontageSocketBlenderXYZ"] == [0, -28, 0]
+        and bridge_v06["frontageSocketSourceXY"] == [640, 704]
+        and bridge_v06["perDirectionTransform"] is False
+        and bridge_v06["windingChange"] is False
         and "actualCameraProofScript" not in blender_script_source
         and "load_accepted_builder" not in blender_script_source
     )
+    proof_paths = {
+        name: repository_path(root, contract["outputInventory"]["validation"][key])
+        for name, key in (
+            ("runA", "bridgeActualCameraRunA"),
+            ("runB", "bridgeActualCameraRunB"),
+        )
+    }
+    proof_records = {
+        name: json.loads(path.read_text()) if path.is_file() else {}
+        for name, path in proof_paths.items()
+    }
+    proof_hashes = {
+        name: sha256(path) if path.is_file() else None
+        for name, path in proof_paths.items()
+    }
+    proof_checks = {
+        name: (
+            record.get("passed") is True
+            and record.get("acceptedBridgeCandidate")
+            == bridge_v06["authorityCommit"]
+            and record.get("mappingContractSha256")
+            == bridge_v06["mappingContractSha256"]
+            and record.get("basisFormula") == bridge_v06["basisFormula"]
+            and record.get("sourceOrder") == bridge_v06["sourceOrder"]
+            and record.get("west", {}).get("socketCitySim") == [-28, 0, 0]
+            and record.get("west", {}).get("socketBlender") == [0.0, -28.0, 0.0]
+            and record.get("west", {}).get("socketExpectedSource") == [640, 704]
+            and record.get("invocations", {}).get("blenderRenderApiCalls") == 0
+            and record.get("invocations", {}).get("renderInvocations") == 0
+            and record.get("invocations", {}).get("pixelFiles") == 0
+        )
+        for name, record in proof_records.items()
+    }
+    bridge_repeat_pass = (
+        all(proof_checks.values())
+        and proof_paths["runA"].read_bytes() == proof_paths["runB"].read_bytes()
+        and proof_hashes["runA"] == proof_hashes["runB"]
+    )
+    bridge_repeat_report = {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "proof": "V06_ACTUAL_CAMERA_REPEAT_IDENTITY",
+        "runA": {
+            "path": str(proof_paths["runA"].relative_to(root)),
+            "sha256": proof_hashes["runA"],
+            "passed": proof_checks["runA"],
+        },
+        "runB": {
+            "path": str(proof_paths["runB"].relative_to(root)),
+            "sha256": proof_hashes["runB"],
+            "passed": proof_checks["runB"],
+        },
+        "byteIdentical": (
+            proof_paths["runA"].is_file()
+            and proof_paths["runB"].is_file()
+            and proof_paths["runA"].read_bytes()
+            == proof_paths["runB"].read_bytes()
+        ),
+        "invocations": {
+            "blenderProjectionProcesses": 2,
+            "blenderRenderApiCalls": 0,
+            "imageGenInvocations": 0,
+            "normalizerInvocations": 0,
+            "contactSheetInvocations": 0,
+            "renderInvocations": 0,
+            "pixelFiles": 0,
+        },
+        "sourceReady": False,
+        "productionSelected": False,
+        "passed": bridge_repeat_pass,
+    }
     static_checks = {
         "frozenInputHashes": not frozen_errors,
         "frozenInputErrors": frozen_errors,
@@ -226,7 +316,7 @@ def main() -> int:
         "blenderScriptPresentButNotImported": (
             blender_script_path.is_file() and not control_flow["driverImportsBpy"]
         ),
-        "coordinateBridgeHold": {
+        "coordinateBridgeAdoption": {
             "state": coordinate_bridge["state"],
             "holdIsStop": coordinate_bridge["holdIsStop"],
             "canonicalWestSocketWorldXYZ": canonical[
@@ -242,6 +332,16 @@ def main() -> int:
                 "actualCameraProofScript" in blender_script_source
                 or "load_accepted_builder" in blender_script_source
             ),
+            "acceptedCandidate": bridge_v06["authorityCommit"],
+            "mappingContractSha256": bridge_v06["mappingContractSha256"],
+            "canonicalWestSocketBlenderXYZ": bridge_v06[
+                "frontageSocketBlenderXYZ"
+            ],
+            "sourceOrder": bridge_v06["sourceOrder"],
+            "actualCameraProofs": proof_checks,
+            "actualCameraProofsByteIdentical": bridge_repeat_report[
+                "byteIdentical"
+            ],
             "passed": coordinate_bridge_pass,
         },
     }
@@ -251,6 +351,7 @@ def main() -> int:
         and pixel_count == 0
         and blender_script_path.is_file()
         and coordinate_bridge_pass
+        and bridge_repeat_pass
     )
     common = {
         "schemaVersion": 1,
@@ -267,6 +368,7 @@ def main() -> int:
     static_report = {
         **common,
         "proof": "PRELOCK_RUNNER_STATIC",
+        "bridgeProjectionProcessLaunches": 2,
         "checks": static_checks,
         "validation": {
             "runnerStatic": "pass" if static_pass else "fail",
@@ -292,7 +394,8 @@ def main() -> int:
             "lockedMaterialMapping.path",
             "lockedMaterialMapping.sha256",
         ],
-        "coordinateBridgeBlocker": "v06 coordinate projection and contact-corner revalidation is pending",
+        "coordinateBridgeState": "validated_v06",
+        "remainingBlocker": "North process-A appearance lock is not published",
         "passed": missing_pass,
     }
     wrong_report = {
@@ -307,7 +410,8 @@ def main() -> int:
                 "lockedMaterialMapping"
             ]["sha256"],
         },
-        "coordinateBridgeBlocker": "v06 coordinate projection and contact-corner revalidation is pending",
+        "coordinateBridgeState": "validated_v06",
+        "remainingBlocker": "North process-A appearance lock is not published",
         "modes": wrong_decisions,
         "passed": wrong_pass,
     }
@@ -315,6 +419,7 @@ def main() -> int:
         "RUNNER-STATIC-VALIDATION.json": static_report,
         "MISSING-LOCK-REJECTION.json": missing_report,
         "WRONG-LOCK-REJECTION.json": wrong_report,
+        "BRIDGE-REPEAT-IDENTITY.json": bridge_repeat_report,
     }
     for name, report in reports.items():
         (output / name).write_text(

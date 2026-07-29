@@ -3,7 +3,7 @@
   "taskId": "PLAY-081",
   "direction": "west",
   "branch": "codex/citysim-world-art-west",
-  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
   "authority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
     "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
@@ -127,7 +127,7 @@
         640,
         704
       ],
-      "maximumProjectionErrorSourcePixels": 1
+      "maximumProjectionErrorSourcePixels": 0.001
     },
     "lightAndContact": {
       "keyDirection": "northwest",
@@ -193,6 +193,8 @@
   "runnerImplementation": {
     "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
     "blenderScriptPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/blender_render_west.py",
+    "coordinateBridgeAdapterPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/coordinate_bridge_v06.py",
+    "coordinateBridgeProofPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prove_west_bridge_v06.py",
     "modes": [
       "validate",
       "A",
@@ -201,7 +203,7 @@
     ]
   },
   "coordinateBridge": {
-    "state": "pending_v06_revalidation",
+    "state": "validated_v06",
     "holdIsStop": false,
     "canonicalCitySim": {
       "direction": "west",
@@ -222,14 +224,40 @@
       "futureSourceAuthority": false
     },
     "v06": {
-      "authorityPath": null,
-      "authorityCommit": null,
-      "authoritySha256": null,
-      "adapterPath": null,
-      "adapterSha256": null,
-      "cameraProjectionProofSha256": null,
-      "contactCornerOrderProofSha256": null,
-      "canonicalWestSocketProofSha256": null
+      "acceptancePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTIONAL-BRIDGE-V06-ACCEPTANCE.md",
+      "acceptanceSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+      "authorityPath": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",
+      "authorityCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "authoritySha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4",
+      "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+      "adapterPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/coordinate_bridge_v06.py",
+      "adapterSha256": "006416b8b08903b5c0c970c86b7c6cfe72f667ecdd3f23cdca354e629861c3f6",
+      "proofToolPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prove_west_bridge_v06.py",
+      "proofToolSha256": "787572f4ab50da2cbe36360857ae451aaff801c47e0e0b7867b87f10cc846d29",
+      "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+      "sourceOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frontageSocketCitySimXYZ": [
+        -28,
+        0,
+        0
+      ],
+      "frontageSocketBlenderXYZ": [
+        0,
+        -28,
+        0
+      ],
+      "frontageSocketSourceXY": [
+        640,
+        704
+      ],
+      "perDirectionTransform": false,
+      "windingChange": false
     }
   },
   "appearanceLock": {
@@ -303,6 +331,9 @@
       "wrongLockRejection": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WRONG-LOCK-REJECTION.json",
       "repeatIdentity": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/RUNNER-REPEAT-IDENTITY.json",
       "coordinateBridgeBlocker": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/COORDINATE-BRIDGE-BLOCKER.json",
+      "bridgeActualCameraRunA": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-ACTUAL-CAMERA-RUN-A.json",
+      "bridgeActualCameraRunB": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-ACTUAL-CAMERA-RUN-B.json",
+      "bridgeRepeatIdentity": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-REPEAT-IDENTITY.json",
       "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
       "handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json"
     },

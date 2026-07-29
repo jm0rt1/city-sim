@@ -1,0 +1,57 @@
+{
+  "documentType": "PLAY-083_VALIDATION_MATRIX",
+  "proofCodeCommit": "7169c09bfd276be43a7180fdf61f5a519300c6c6",
+  "positive": {
+    "result": "PASS_CANDIDATE_FOR_INTEGRATION_REVIEW",
+    "mappingsValidated": [
+      "early_to_active",
+      "recovered_to_recovering"
+    ],
+    "semanticReplayPersistenceRecoveryRoundTripTests": "3/3 passed",
+    "combinedVisibleFixtureMatrix": "10/10 passed",
+    "completeNativeSuite": {
+      "executed": 298,
+      "skipped": 2,
+      "failures": 1,
+      "ownedFailures": 0,
+      "externalFailure": "CitySimulationTests.testRendererInitialRenderAndPulsesInvalidateOnlyChangedSpatialTruth: 4.330 ms > unchanged 2.1 ms renderer budget"
+    },
+    "qaRehearsal": "BLOCKED"
+  },
+  "negatives": {
+    "result": "PASS_22_OF_22",
+    "tests": [
+      "missing_early_binding",
+      "missing_recovered_binding",
+      "one_state_only",
+      "active_relabeled_early_without_integration_mapping",
+      "recovering_relabeled_recovered_without_integration_mapping",
+      "lifecycle_semantics_mismatch",
+      "replay_relationship_mismatch",
+      "status_or_progression_mismatch",
+      "focus_coordinate_or_kind_mismatch",
+      "path_outside_authorized_fixture_root",
+      "unpublished_or_uncommitted_save",
+      "missing_or_stale_manifest_authority",
+      "null_or_mismatched_hash_or_digest",
+      "duplicate_manifest_id_or_path",
+      "two_run_materialization_difference",
+      "save_round_trip_byte_difference",
+      "schema_or_fingerprint_version_drift",
+      "historical_fixture_byte_drift",
+      "existing_fixture_rename_overwrite_or_rewrite",
+      "product_save_schema_gameplay_renderer_ui_or_art_change_without_separate_authority",
+      "candidate_specific_coaching_or_measurement",
+      "app_launch_capture_score_or_acceptance_claim"
+    ]
+  },
+  "scope": {
+    "mappingAuthorityPublished": false,
+    "qaUnlocked": false,
+    "productBehaviorChanged": false,
+    "fixtureBytesChanged": false,
+    "manifestBytesChanged": false,
+    "schemaVersion": 1,
+    "fingerprintVersion": 1
+  }
+}

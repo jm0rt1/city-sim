@@ -115,13 +115,20 @@ alone owns production acceptance.
 
 ## Execute
 
-1. Run the candidate's automated validation independently.
+1. Verify the exact candidate, build, resource, manifest, fixture, and Renderer
+   validation-record identities independently. Consume the Renderer full-suite
+   result only when it is bound to that exact candidate and remains complete
+   and current. Run only preregistered QA-focused automated checks; rerun the
+   full suite only when the Renderer record is missing, stale, mismatched, or
+   the QA journey exposes a defect that requires independent reproduction.
 2. Build and launch the real staged app.
 3. Perform the journey without developer shortcuts or hidden state.
 4. Capture exact timestamps/steps for confusion, error, dead time, misleading feedback, or failure.
 5. Retain real screenshots or disclosed deterministic harness proof.
 6. Measure performance on the declared fixture when affected.
-7. Repeat critical input/accessibility/layout variants separately.
+7. Exercise critical input, accessibility, and layout variants as separately
+   recorded segments inside the same preregistered, same-SHA acceptance gate;
+   do not create separate candidate builds or acceptance gates for them.
 
 ## Report
 

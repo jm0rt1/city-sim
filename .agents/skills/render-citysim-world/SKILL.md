@@ -76,10 +76,14 @@ Keep per-direction intake fast and independent:
   tests needed for that packet.
 - Do not rerun the full Swift suite or staged app for every isolated direction.
 - At exact 4/4, run resource integrity, source-to-pack identity, the complete
-  Swift suite, build verification, and one staged-app assembly journey.
+  Swift suite, build verification, and a non-interactive launch/resource smoke.
+  Renderer may retain technical render-fixture and telemetry captures, but must
+  label them non-acceptance evidence and must not perform the player-facing
+  acceptance journey reserved for independent QA.
 - Hand that exact renderer candidate SHA to one independent QA lane for the
-  final camera, layout, interaction, accessibility, performance, and visual
-  acceptance gate. A newer rebuild or nearby commit is a different candidate.
+  single final camera, layout, interaction, accessibility, performance, and
+  visual acceptance gate. A newer rebuild or nearby commit is a different
+  candidate.
 
 When multiple direction packets arrive together, run their focused quarantine
 validations concurrently in direction-exclusive input and evidence
@@ -94,8 +98,8 @@ separate serialized mutation after all four exact packet identities pass.
 1. Prefer focused renderer components, cached reusable geometry/textures, and incremental tile updates.
 2. Add unit/contract coverage for topology, identity, detail levels, hit testing, or state mapping.
 3. For ordinary renderer features, run the complete Swift suite and `git diff --check`; for directional intake, defer the complete suite until exact 4/4 and run focused packet gates beforehand.
-4. For ordinary renderer features, build and operate the real staged app. For directional intake, do this once for the exact 4/4 renderer candidate: pan, zoom, inspect, build, reject, select, overlay, undo.
-5. At that final renderer-candidate stage, capture default, compact, city, neighborhood, normal, overlay, and interaction proof when affected.
+4. For ordinary renderer features, build and operate the real staged app. For directional intake, build the exact 4/4 renderer candidate and perform only a non-interactive launch/resource smoke; independent QA owns the player-facing staged-app journey.
+5. At that final renderer-candidate stage, retain technical resource, geometry, LOD, fixture-render, and telemetry proof. Do not capture or score default/compact player interaction as Renderer acceptance evidence.
 6. Record performance before and after at the final affected candidate; inspect accumulating nodes/actions during longer play.
 7. Disclose when a deterministic harness substitutes for window capture.
 

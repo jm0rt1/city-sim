@@ -70,6 +70,27 @@
       "pointer": "/execution/resourceException",
       "value": null,
       "expectedCode": "SCHEMA_INVALID"
+    },
+    {
+      "id": "process-output-root-traversal",
+      "operation": "replace",
+      "pointer": "/processes/A/outputRoot",
+      "value": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/../../../../Rendering/",
+      "expectedCode": "UNSAFE_ROOT_PATH_COMPONENT"
+    },
+    {
+      "id": "process-evidence-root-traversal",
+      "operation": "replace",
+      "pointer": "/processes/A/evidenceRoot",
+      "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/../../../../../INTEGRATION/",
+      "expectedCode": "UNSAFE_ROOT_PATH_COMPONENT"
+    },
+    {
+      "id": "validation-job-root-traversal",
+      "operation": "replace",
+      "pointer": "/jobs/6/root",
+      "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixture-jobs/../../../../INTEGRATION/",
+      "expectedCode": "UNSAFE_ROOT_PATH_COMPONENT"
     }
   ]
 }

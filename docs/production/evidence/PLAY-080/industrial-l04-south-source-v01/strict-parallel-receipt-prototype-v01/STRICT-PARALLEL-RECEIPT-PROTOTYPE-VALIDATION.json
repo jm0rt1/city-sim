@@ -3,6 +3,7 @@
   "taskId": "PLAY-080",
   "branch": "codex/citysim-world-art-south",
   "frozenCandidateParent": "779cf5141a4735d6b7c84a0372f08c9ab111d358",
+  "independentReviewRepairParent": "00099fb8b35cd2433b9e6ecb89044dbecf3dd0ee",
   "publishedMasterObservedWithoutSync": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
   "syncPerformed": false,
   "scope": {
@@ -24,7 +25,7 @@
     },
     "validator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/validate_strict_parallel_receipt_fixture.py",
-      "sha256": "bd36e9d17ca2e0e84f5b8a0ec871448fd38b87f01d8f0a24eb643203d1e100a2"
+      "sha256": "14af35c536c6d10c9c0967268b547b89d3e00091278fd5afcdff0af8ff26d715"
     },
     "testHarness": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/test_strict_parallel_receipt_fixture.py",
@@ -40,7 +41,7 @@
     },
     "negativeFixtures": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/fixtures/FAIL-CLOSED-NEGATIVE-FIXTURES.json",
-      "sha256": "0a82737d691b5c02c31a6be1f7be92e3c47baea7318b62fd4169bf4836a8f056"
+      "sha256": "a6b2d4a3b68f86e096c8fe48d6025158757bfdceaddbe8ceb42b7e7ecc769b95"
     }
   },
   "commands": [
@@ -124,6 +125,21 @@
       "fixture": "sequential-without-exception",
       "returnCode": 2,
       "code": "SCHEMA_INVALID"
+    },
+    {
+      "fixture": "process-output-root-traversal",
+      "returnCode": 2,
+      "code": "UNSAFE_ROOT_PATH_COMPONENT"
+    },
+    {
+      "fixture": "process-evidence-root-traversal",
+      "returnCode": 2,
+      "code": "UNSAFE_ROOT_PATH_COMPONENT"
+    },
+    {
+      "fixture": "validation-job-root-traversal",
+      "returnCode": 2,
+      "code": "UNSAFE_ROOT_PATH_COMPONENT"
     }
   ],
   "deterministicRepeat": [
@@ -154,7 +170,7 @@
     "executablesInvoked": [
       "python3"
     ],
-    "validatorSubprocessInvocations": 13,
+    "validatorSubprocessInvocations": 16,
     "dccProcessInvocations": 0,
     "renderApiCalls": 0,
     "imageGenInvocations": 0,

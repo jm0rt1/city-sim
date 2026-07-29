@@ -12,9 +12,9 @@
       "source-profile:not-bound"
     ],
     "originMaster": {
-      "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+      "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
       "bound": null,
-      "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+      "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
     },
     "passed": false,
     "pixelFiles": 0,
@@ -252,9 +252,9 @@
         "source-profile:unpublished-path"
       ],
       "originMaster": {
-        "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+        "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
         "bound": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
-        "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+        "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
       },
       "passed": false,
       "pixelFiles": 0,
@@ -278,9 +278,9 @@
         "source-profile:unpublished-path"
       ],
       "originMaster": {
-        "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+        "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
         "bound": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
-        "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+        "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
       },
       "passed": false,
       "pixelFiles": 0,
@@ -315,9 +315,9 @@
         "source-profile:unpublished-path"
       ],
       "originMaster": {
-        "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+        "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
         "bound": "0000000000000000000000000000000000000000",
-        "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+        "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
       },
       "passed": false,
       "pixelFiles": 0,
@@ -345,9 +345,9 @@
           "source-profile:not-bound"
         ],
         "originMaster": {
-          "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+          "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
           "bound": null,
-          "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+          "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
         },
         "passed": false,
         "pixelFiles": 0,
@@ -437,6 +437,46 @@
         "symlinkComponentsRejected": true,
         "taskId": "PLAY-081"
       },
+      "pipelineOutputIsolation": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "direction": "west",
+        "errors": [],
+        "exactLexicalIdentitiesRequired": true,
+        "normalizerInvocations": 0,
+        "passed": true,
+        "paths": {
+          "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01",
+          "launchBound.frozenInputManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/FROZEN-INPUT-MANIFEST.json",
+          "launchBound.guardReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LAUNCH-GUARD-RECEIPT.json",
+          "launchBound.outputRootIsolationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+          "launchBound.packet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-LAUNCH-BOUND-V2.json",
+          "postSource.assemblyRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
+          "postSource.canonicalRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/validation/canonical-rgba",
+          "postSource.normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+          "postSource.normalizationRun1Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+          "postSource.normalizationRun2Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+          "postSource.parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+          "postSource.reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
+          "postSource.reviewRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+          "postSource.sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+          "rejections": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/REJECTIONS.json",
+          "review.contactSheet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/CONTACT-SHEET.png",
+          "review.literal192Color": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-COLOR.png",
+          "review.literal192Grayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-GRAYSCALE.png",
+          "review.native2xColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-COLOR.png",
+          "review.native2xGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-GRAYSCALE.png",
+          "review.registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REGISTRATION.png",
+          "review.sourceColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-COLOR.png",
+          "review.sourceGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-GRAYSCALE.png",
+          "validation.sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json"
+        },
+        "pixelFiles": 0,
+        "schemaVersion": 1,
+        "symlinkComponentsRejected": true,
+        "taskId": "PLAY-081"
+      },
       "pixelFiles": 0,
       "reasonCodes": [
         "appearance-lock:missing",
@@ -465,9 +505,9 @@
           "source-profile:not-bound"
         ],
         "originMaster": {
-          "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+          "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
           "bound": null,
-          "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+          "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
         },
         "passed": false,
         "pixelFiles": 0,
@@ -557,6 +597,46 @@
         "symlinkComponentsRejected": true,
         "taskId": "PLAY-081"
       },
+      "pipelineOutputIsolation": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "direction": "west",
+        "errors": [],
+        "exactLexicalIdentitiesRequired": true,
+        "normalizerInvocations": 0,
+        "passed": true,
+        "paths": {
+          "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01",
+          "launchBound.frozenInputManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/FROZEN-INPUT-MANIFEST.json",
+          "launchBound.guardReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LAUNCH-GUARD-RECEIPT.json",
+          "launchBound.outputRootIsolationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+          "launchBound.packet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-LAUNCH-BOUND-V2.json",
+          "postSource.assemblyRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
+          "postSource.canonicalRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/validation/canonical-rgba",
+          "postSource.normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+          "postSource.normalizationRun1Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+          "postSource.normalizationRun2Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+          "postSource.parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+          "postSource.reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
+          "postSource.reviewRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+          "postSource.sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+          "rejections": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/REJECTIONS.json",
+          "review.contactSheet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/CONTACT-SHEET.png",
+          "review.literal192Color": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-COLOR.png",
+          "review.literal192Grayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-GRAYSCALE.png",
+          "review.native2xColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-COLOR.png",
+          "review.native2xGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-GRAYSCALE.png",
+          "review.registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REGISTRATION.png",
+          "review.sourceColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-COLOR.png",
+          "review.sourceGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-GRAYSCALE.png",
+          "validation.sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json"
+        },
+        "pixelFiles": 0,
+        "schemaVersion": 1,
+        "symlinkComponentsRejected": true,
+        "taskId": "PLAY-081"
+      },
       "pixelFiles": 0,
       "reasonCodes": [
         "appearance-lock:missing",
@@ -585,9 +665,9 @@
           "source-profile:not-bound"
         ],
         "originMaster": {
-          "actual": "2dda057725a81f394c46bfbd041813c89c25654e",
+          "actual": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
           "bound": null,
-          "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d"
+          "head": "0bc3bda9527e8cf53174e96d369c0ae013168093"
         },
         "passed": false,
         "pixelFiles": 0,
@@ -677,6 +757,46 @@
         "symlinkComponentsRejected": true,
         "taskId": "PLAY-081"
       },
+      "pipelineOutputIsolation": {
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "contactSheetInvocations": 0,
+        "direction": "west",
+        "errors": [],
+        "exactLexicalIdentitiesRequired": true,
+        "normalizerInvocations": 0,
+        "passed": true,
+        "paths": {
+          "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01",
+          "launchBound.frozenInputManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/FROZEN-INPUT-MANIFEST.json",
+          "launchBound.guardReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LAUNCH-GUARD-RECEIPT.json",
+          "launchBound.outputRootIsolationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+          "launchBound.packet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-LAUNCH-BOUND-V2.json",
+          "postSource.assemblyRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
+          "postSource.canonicalRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/validation/canonical-rgba",
+          "postSource.normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+          "postSource.normalizationRun1Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+          "postSource.normalizationRun2Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+          "postSource.parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+          "postSource.reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
+          "postSource.reviewRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+          "postSource.sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+          "rejections": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/REJECTIONS.json",
+          "review.contactSheet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/CONTACT-SHEET.png",
+          "review.literal192Color": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-COLOR.png",
+          "review.literal192Grayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-GRAYSCALE.png",
+          "review.native2xColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-COLOR.png",
+          "review.native2xGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-GRAYSCALE.png",
+          "review.registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REGISTRATION.png",
+          "review.sourceColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-COLOR.png",
+          "review.sourceGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-GRAYSCALE.png",
+          "validation.sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json"
+        },
+        "pixelFiles": 0,
+        "schemaVersion": 1,
+        "symlinkComponentsRejected": true,
+        "taskId": "PLAY-081"
+      },
       "pixelFiles": 0,
       "reasonCodes": [
         "appearance-lock:missing",
@@ -692,7 +812,7 @@
       "taskId": "PLAY-081"
     }
   },
-  "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d",
+  "head": "0bc3bda9527e8cf53174e96d369c0ae013168093",
   "integrationAdmitted": false,
   "invocations": {
     "blenderProcessLaunches": 0,
@@ -809,6 +929,238 @@
       "pixelFiles": 0
     },
     "passed": true,
+    "pipelineRedirects": {
+      "allRedirectTargetsUnwritten": true,
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "contactSheetInvocations": 0,
+      "fixtureOnly": true,
+      "normalizerInvocations": 0,
+      "passed": true,
+      "pixelFiles": 0,
+      "testCount": 10,
+      "tests": [
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "launchBound.guardReceipt",
+          "kind": "leaf",
+          "layoutErrors": [
+            "launchBound.guardReceipt:SYMLINK_COMPONENT"
+          ],
+          "name": "launch-bound-receipt-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [
+            "redirected-output.bin"
+          ],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LAUNCH-GUARD-RECEIPT.json",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": true,
+          "identity": "launchBound.packet",
+          "kind": "leaf",
+          "layoutErrors": [
+            "launchBound.packet:SYMLINK_COMPONENT"
+          ],
+          "name": "launch-bound-packet-dangling-leaf",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-LAUNCH-BOUND-V2.json",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "postSource.normalizationRun1Root",
+          "kind": "root",
+          "layoutErrors": [
+            "postSource.normalizationRun1Root:SYMLINK_COMPONENT"
+          ],
+          "name": "normalization-run-1-shared-root-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "postSource.normalizationRun2Root",
+          "kind": "root",
+          "layoutErrors": [
+            "postSource.normalizationRun2Root:SYMLINK_COMPONENT"
+          ],
+          "name": "normalization-run-2-outside-root-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "postSource.reviewRoot",
+          "kind": "root",
+          "layoutErrors": [
+            "postSource.reviewManifest:SYMLINK_COMPONENT",
+            "postSource.reviewRoot:SYMLINK_COMPONENT",
+            "review.contactSheet:SYMLINK_COMPONENT",
+            "review.literal192Color:SYMLINK_COMPONENT",
+            "review.literal192Grayscale:SYMLINK_COMPONENT",
+            "review.native2xColor:SYMLINK_COMPONENT",
+            "review.native2xGrayscale:SYMLINK_COMPONENT",
+            "review.registration:SYMLINK_COMPONENT",
+            "review.sourceColor:SYMLINK_COMPONENT",
+            "review.sourceGrayscale:SYMLINK_COMPONENT"
+          ],
+          "name": "review-root-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "postSource.normalizationRepeatReceipt",
+          "kind": "leaf",
+          "layoutErrors": [
+            "postSource.normalizationRepeatReceipt:SYMLINK_COMPONENT"
+          ],
+          "name": "normalization-repeat-receipt-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [
+            "redirected-output.bin"
+          ],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": true,
+          "identity": "postSource.parallelExecutionReceipt",
+          "kind": "leaf",
+          "layoutErrors": [
+            "postSource.parallelExecutionReceipt:SYMLINK_COMPONENT"
+          ],
+          "name": "parallel-receipt-dangling-leaf",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "postSource.sourceCandidatePacket",
+          "kind": "leaf",
+          "layoutErrors": [
+            "postSource.sourceCandidatePacket:SYMLINK_COMPONENT"
+          ],
+          "name": "source-candidate-packet-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [
+            "redirected-output.bin"
+          ],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "validation.sourceValidation",
+          "kind": "leaf",
+          "layoutErrors": [
+            "validation.sourceValidation:SYMLINK_COMPONENT"
+          ],
+          "name": "source-validation-output-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [
+            "redirected-output.bin"
+          ],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
+          "writesToRedirectTarget": 0
+        },
+        {
+          "blenderProcessLaunches": 0,
+          "blenderRenderApiCalls": 0,
+          "contactSheetInvocations": 0,
+          "danglingLeaf": false,
+          "identity": "rejections",
+          "kind": "leaf",
+          "layoutErrors": [
+            "rejections:SYMLINK_COMPONENT"
+          ],
+          "name": "rejection-inventory-redirect",
+          "normalizerInvocations": 0,
+          "passed": true,
+          "pixelFiles": 0,
+          "redirectEntries": [
+            "redirected-output.bin"
+          ],
+          "redirectTargetUnchanged": true,
+          "rejectedByLayout": true,
+          "writerError": "SYMLINK_COMPONENT:docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/REJECTIONS.json",
+          "writesToRedirectTarget": 0
+        }
+      ]
+    },
     "testCount": 9,
     "tests": [
       {
@@ -1184,6 +1536,46 @@
         "rejectedBeforeLaunch": true
       }
     ]
+  },
+  "pipelineOutputIsolation": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "direction": "west",
+    "errors": [],
+    "exactLexicalIdentitiesRequired": true,
+    "normalizerInvocations": 0,
+    "passed": true,
+    "paths": {
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01",
+      "launchBound.frozenInputManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/FROZEN-INPUT-MANIFEST.json",
+      "launchBound.guardReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/LAUNCH-GUARD-RECEIPT.json",
+      "launchBound.outputRootIsolationReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/OUTPUT-ROOT-ISOLATION-RECEIPT.json",
+      "launchBound.packet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-LAUNCH-BOUND-V2.json",
+      "postSource.assemblyRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
+      "postSource.canonicalRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/validation/canonical-rgba",
+      "postSource.normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+      "postSource.normalizationRun1Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
+      "postSource.normalizationRun2Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+      "postSource.parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
+      "postSource.reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
+      "postSource.reviewRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+      "postSource.sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "rejections": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/REJECTIONS.json",
+      "review.contactSheet": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/CONTACT-SHEET.png",
+      "review.literal192Color": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-COLOR.png",
+      "review.literal192Grayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/EXACT-192X128-GRAYSCALE.png",
+      "review.native2xColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-COLOR.png",
+      "review.native2xGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/NATIVE-2X-GRAYSCALE.png",
+      "review.registration": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REGISTRATION.png",
+      "review.sourceColor": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-COLOR.png",
+      "review.sourceGrayscale": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/SOURCE-GRAYSCALE.png",
+      "validation.sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json"
+    },
+    "pixelFiles": 0,
+    "schemaVersion": 1,
+    "symlinkComponentsRejected": true,
+    "taskId": "PLAY-081"
   },
   "pixelFiles": [],
   "postSourceBlockers": [

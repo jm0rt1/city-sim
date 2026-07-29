@@ -16,7 +16,11 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from west_path_safety import validate_process_layout
+from west_path_safety import (
+    PathSafetyError,
+    lexical_repository_path,
+    validate_process_layout,
+)
 
 
 HEX_40 = re.compile(r"^[0-9a-f]{40}$")
@@ -53,16 +57,10 @@ def sha256(path: Path) -> str:
 
 
 def repository_path(root: Path, relative: Any) -> Path:
-    if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
-        raise AuthorityError(f"INVALID_REPOSITORY_PATH:{relative!r}")
-    if any(part in {".", ".."} for part in relative.split("/")):
-        raise AuthorityError(f"PATH_TRAVERSAL:{relative}")
-    resolved = (root / relative).resolve()
     try:
-        resolved.relative_to(root)
-    except ValueError as error:
-        raise AuthorityError(f"PATH_OUTSIDE_REPOSITORY:{relative}") from error
-    return resolved
+        return lexical_repository_path(root, relative)
+    except PathSafetyError as error:
+        raise AuthorityError(str(error)) from error
 
 
 def load_json(path: Path) -> dict[str, Any]:

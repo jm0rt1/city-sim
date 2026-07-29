@@ -29,6 +29,7 @@ from west_path_safety import (  # noqa: E402
     PathSafetyError,
     expected_process_paths,
     lexical_repository_path,
+    validate_pipeline_layout,
     validate_process_layout,
 )
 
@@ -189,6 +190,12 @@ def main() -> int:
         raise RuntimeError(
             "unsafe A/B/C output layout before Blender API use: "
             + ",".join(layout["errors"])
+        )
+    pipeline_layout = validate_pipeline_layout(root, runner)
+    if not pipeline_layout["passed"]:
+        raise RuntimeError(
+            "unsafe pipeline output layout before Blender API use: "
+            + ",".join(pipeline_layout["errors"])
         )
     expected = expected_process_paths(args.process_id)
     try:

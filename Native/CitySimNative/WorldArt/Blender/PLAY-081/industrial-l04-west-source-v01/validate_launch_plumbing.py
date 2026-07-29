@@ -35,8 +35,11 @@ from west_launch_authority import (
 from west_path_safety import (
     DEFAULT_VALIDATION_OUTPUT,
     PathSafetyError,
+    pipeline_relative,
     validate_exact_output,
+    validate_pipeline_layout,
     validate_process_layout,
+    write_exact_bytes_no_overwrite,
     write_exact_json,
 )
 
@@ -283,6 +286,158 @@ def rejection_result(
     }
 
 
+def pipeline_redirect_dynamic_tests(
+    fixture: Path,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Prove every downstream writer class rejects symlink redirects."""
+    cases = (
+        (
+            "launch-bound-receipt-redirect",
+            "launchBound.guardReceipt",
+            "leaf",
+            False,
+        ),
+        (
+            "launch-bound-packet-dangling-leaf",
+            "launchBound.packet",
+            "leaf",
+            True,
+        ),
+        (
+            "normalization-run-1-shared-root-redirect",
+            "postSource.normalizationRun1Root",
+            "root",
+            False,
+        ),
+        (
+            "normalization-run-2-outside-root-redirect",
+            "postSource.normalizationRun2Root",
+            "root",
+            False,
+        ),
+        (
+            "review-root-redirect",
+            "postSource.reviewRoot",
+            "root",
+            False,
+        ),
+        (
+            "normalization-repeat-receipt-redirect",
+            "postSource.normalizationRepeatReceipt",
+            "leaf",
+            False,
+        ),
+        (
+            "parallel-receipt-dangling-leaf",
+            "postSource.parallelExecutionReceipt",
+            "leaf",
+            True,
+        ),
+        (
+            "source-candidate-packet-redirect",
+            "postSource.sourceCandidatePacket",
+            "leaf",
+            False,
+        ),
+        (
+            "source-validation-output-redirect",
+            "validation.sourceValidation",
+            "leaf",
+            False,
+        ),
+        (
+            "rejection-inventory-redirect",
+            "rejections",
+            "leaf",
+            False,
+        ),
+    )
+    tests: list[dict[str, Any]] = []
+    for index, (name, identity, kind, dangling) in enumerate(cases):
+        repository = fixture / f"pipeline-{index:02d}-repository"
+        repository.mkdir()
+        relative = pipeline_relative(contract, identity)
+        redirect = fixture / f"pipeline-{index:02d}-redirect"
+        redirect.mkdir()
+        exact = repository.joinpath(*relative.split("/"))
+        exact.parent.mkdir(parents=True)
+        target_file = redirect / "redirected-output.bin"
+        sentinel = b"PLAY-081-REDIRECT-SENTINEL\n"
+        if kind == "root":
+            exact.symlink_to(redirect, target_is_directory=True)
+            attempted_relative = f"{relative}/probe-output.bin"
+        else:
+            if not dangling:
+                target_file.write_bytes(sentinel)
+            exact.symlink_to(target_file)
+            attempted_relative = relative
+        layout = validate_pipeline_layout(repository, copy.deepcopy(contract))
+        error = None
+        try:
+            write_exact_bytes_no_overwrite(
+                repository,
+                attempted_relative,
+                b"MUST-NOT-WRITE",
+                expected=attempted_relative,
+            )
+        except PathSafetyError as exception:
+            error = str(exception)
+        target_unchanged = (
+            not target_file.exists()
+            if dangling or kind == "root"
+            else target_file.read_bytes() == sentinel
+        )
+        redirect_entries = sorted(
+            str(path.relative_to(redirect)) for path in redirect.rglob("*")
+        )
+        expected_entries = (
+            [] if dangling or kind == "root" else ["redirected-output.bin"]
+        )
+        tests.append(
+            {
+                "name": name,
+                "identity": identity,
+                "kind": kind,
+                "danglingLeaf": dangling,
+                "rejectedByLayout": not layout["passed"],
+                "layoutErrors": layout["errors"],
+                "writerError": error,
+                "redirectEntries": redirect_entries,
+                "redirectTargetUnchanged": target_unchanged,
+                "writesToRedirectTarget": 0,
+                "blenderProcessLaunches": 0,
+                "blenderRenderApiCalls": 0,
+                "normalizerInvocations": 0,
+                "contactSheetInvocations": 0,
+                "pixelFiles": 0,
+                "passed": (
+                    not layout["passed"]
+                    and error is not None
+                    and "SYMLINK_COMPONENT" in error
+                    and target_unchanged
+                    and redirect_entries == expected_entries
+                ),
+            }
+        )
+    return {
+        "fixtureOnly": True,
+        "tests": tests,
+        "testCount": len(tests),
+        "allRedirectTargetsUnwritten": all(
+            test["writesToRedirectTarget"] == 0
+            and test["redirectTargetUnchanged"]
+            for test in tests
+        ),
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "normalizerInvocations": 0,
+        "contactSheetInvocations": 0,
+        "pixelFiles": 0,
+        "passed": all(test["passed"] for test in tests),
+    }
+
+
 def path_safety_dynamic_tests(contract: dict[str, Any]) -> dict[str, Any]:
     """Exercise exact/shared/outside/symlink paths in disposable repositories."""
     tests: list[dict[str, Any]] = []
@@ -526,6 +681,10 @@ def path_safety_dynamic_tests(contract: dict[str, Any]) -> dict[str, Any]:
                 ),
             }
         )
+        pipeline_redirects = pipeline_redirect_dynamic_tests(
+            fixture,
+            contract,
+        )
     return {
         "fixtureOnly": True,
         "tests": tests,
@@ -542,7 +701,11 @@ def path_safety_dynamic_tests(contract: dict[str, Any]) -> dict[str, Any]:
             "contactSheetInvocations": 0,
             "pixelFiles": 0,
         },
-        "passed": all(test["passed"] for test in tests),
+        "pipelineRedirects": pipeline_redirects,
+        "passed": (
+            all(test["passed"] for test in tests)
+            and pipeline_redirects["passed"]
+        ),
     }
 
 
@@ -598,6 +761,9 @@ def main() -> int:
     )
     if not isolation["passed"]:
         failures.append("output-root-isolation")
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    if not pipeline_layout["passed"]:
+        failures.append("pipeline-output-isolation")
     path_safety = path_safety_dynamic_tests(contract)
     if not path_safety["passed"]:
         failures.append("path-safety-dynamic-tests")
@@ -732,6 +898,7 @@ def main() -> int:
         "actualMissingAuthorityRejection": actual_authority,
         "guardResults": guard_results,
         "outputRootIsolation": isolation,
+        "pipelineOutputIsolation": pipeline_layout,
         "pathSafetyDynamicTests": path_safety,
         "launchBoundProductionAttempt": assemble_result,
         "postSourceBlockers": post_errors,

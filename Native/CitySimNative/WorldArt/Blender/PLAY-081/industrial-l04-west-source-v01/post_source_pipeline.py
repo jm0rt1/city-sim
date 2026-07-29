@@ -38,9 +38,14 @@ from west_launch_authority import (
 )
 from west_path_safety import (
     PathSafetyError,
+    exact_pipeline_path,
     expected_process_paths,
     lexical_repository_path,
+    pipeline_relative,
+    validate_pipeline_layout,
     validate_process_layout,
+    write_exact_bytes_no_overwrite,
+    write_exact_json_no_overwrite,
 )
 
 
@@ -60,6 +65,16 @@ REVIEW_FILES = (
     "REGISTRATION.png",
     "CONTACT-SHEET.png",
 )
+REVIEW_IDENTITIES = {
+    "SOURCE-COLOR.png": "review.sourceColor",
+    "SOURCE-GRAYSCALE.png": "review.sourceGrayscale",
+    "NATIVE-2X-COLOR.png": "review.native2xColor",
+    "NATIVE-2X-GRAYSCALE.png": "review.native2xGrayscale",
+    "EXACT-192X128-COLOR.png": "review.literal192Color",
+    "EXACT-192X128-GRAYSCALE.png": "review.literal192Grayscale",
+    "REGISTRATION.png": "review.registration",
+    "CONTACT-SHEET.png": "review.contactSheet",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -129,11 +144,16 @@ def preflight(
 ) -> tuple[dict[str, dict[str, Path]], list[str]]:
     authority = validate_future_authorities(root, contract)
     layout = validate_process_layout(root, contract, require_absent=False)
-    if not layout["passed"]:
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    if not layout["passed"] or not pipeline_layout["passed"]:
         return {}, sorted(
             set(
                 authority["errors"]
                 + [f"output-layout:{error}" for error in layout["errors"]]
+                + [
+                    f"pipeline-output:{error}"
+                    for error in pipeline_layout["errors"]
+                ]
             )
         )
     files, errors = required_process_files(root, contract)
@@ -256,16 +276,45 @@ def grayscale(rgba: bytes) -> bytes:
     return bytes(output)
 
 
-def no_overwrite_file(path: Path, data: bytes) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("xb") as handle:
-        handle.write(data)
+def pipeline_output(
+    root: Path,
+    contract: dict[str, Any],
+    identity: str,
+    *,
+    leaf: str | None = None,
+) -> tuple[str, Path]:
+    base = pipeline_relative(contract, identity)
+    exact_pipeline_path(root, contract, identity)
+    relative = base if leaf is None else f"{base}/{leaf}"
+    return (
+        relative,
+        lexical_repository_path(root, relative, expected=relative),
+    )
 
 
-def no_overwrite_json(path: Path, value: dict[str, Any]) -> None:
-    no_overwrite_file(
-        path,
-        (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8"),
+def no_overwrite_file(
+    root: Path,
+    relative: str,
+    data: bytes,
+) -> Path:
+    return write_exact_bytes_no_overwrite(
+        root,
+        relative,
+        data,
+        expected=relative,
+    )
+
+
+def no_overwrite_json(
+    root: Path,
+    relative: str,
+    value: dict[str, Any],
+) -> Path:
+    return write_exact_json_no_overwrite(
+        root,
+        relative,
+        value,
+        expected=relative,
     )
 
 
@@ -276,9 +325,9 @@ def normalize(
     files: dict[str, dict[str, Path]],
 ) -> dict[str, Any]:
     root_key = f"normalizationRun{run_number}Root"
-    relative_root = contract["outputInventory"]["postSource"][root_key]
-    output_root = repository_path(root, relative_root)
-    if output_root.exists():
+    identity = f"postSource.{root_key}"
+    relative_root, output_root = pipeline_output(root, contract, identity)
+    if output_root.exists() or output_root.is_symlink():
         raise ValueError(f"NO_OVERWRITE:{relative_root}")
     source_size, source = decode_rgba_png(files["A"]["raw"])
     if source_size != (1536, 1024):
@@ -289,9 +338,14 @@ def normalize(
             normalized[index : index + 3] = b"\x00\x00\x00"
     normalized_bytes = bytes(normalized)
     outputs: dict[str, Any] = {}
-    source_path = output_root / "source.png"
+    source_relative, source_path = pipeline_output(
+        root,
+        contract,
+        identity,
+        leaf="source.png",
+    )
     source_data = encode_rgba_png(source_size, normalized_bytes)
-    no_overwrite_file(source_path, source_data)
+    no_overwrite_file(root, source_relative, source_data)
     outputs["source"] = {
         "path": str(source_path.relative_to(root)),
         "sha256": hashlib.sha256(source_data).hexdigest(),
@@ -300,9 +354,14 @@ def normalize(
     }
     for lod, size in LOD_DIMENSIONS.items():
         pixels = bilinear_resize(source_size, normalized_bytes, size)
-        path = output_root / f"{lod}.png"
+        relative, path = pipeline_output(
+            root,
+            contract,
+            identity,
+            leaf=f"{lod}.png",
+        )
         data = encode_rgba_png(size, pixels)
-        no_overwrite_file(path, data)
+        no_overwrite_file(root, relative, data)
         outputs[lod] = {
             "path": str(path.relative_to(root)),
             "sha256": hashlib.sha256(data).hexdigest(),
@@ -325,14 +384,27 @@ def normalize(
         "productionSelected": False,
         "passed": True,
     }
-    no_overwrite_json(output_root / "receipt.json", receipt)
+    receipt_relative, _ = pipeline_output(
+        root,
+        contract,
+        identity,
+        leaf="receipt.json",
+    )
+    no_overwrite_json(root, receipt_relative, receipt)
     return receipt
 
 
 def validate_repeat(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
-    post = contract["outputInventory"]["postSource"]
-    run1 = repository_path(root, post["normalizationRun1Root"])
-    run2 = repository_path(root, post["normalizationRun2Root"])
+    _, run1 = pipeline_output(
+        root,
+        contract,
+        "postSource.normalizationRun1Root",
+    )
+    _, run2 = pipeline_output(
+        root,
+        contract,
+        "postSource.normalizationRun2Root",
+    )
     receipts = [load_json(path / "receipt.json") for path in (run1, run2)]
     comparisons: dict[str, bool] = {}
     for name in ("source", "block", "neighborhood", "city"):
@@ -352,11 +424,12 @@ def validate_repeat(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         "passed": all(comparisons.values()),
         "productionSelected": False,
     }
-    output = repository_path(
+    output_relative, _ = pipeline_output(
         root,
-        f"{EVIDENCE_ROOT}/NORMALIZATION-REPEAT-IDENTITY.json",
+        contract,
+        "postSource.normalizationRepeatReceipt",
     )
-    no_overwrite_json(output, result)
+    no_overwrite_json(root, output_relative, result)
     return result
 
 
@@ -381,10 +454,13 @@ def paste(
 
 
 def build_review(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
-    post = contract["outputInventory"]["postSource"]
-    run1 = repository_path(root, post["normalizationRun1Root"])
-    review = repository_path(root, post["reviewRoot"])
-    if review.exists():
+    _, run1 = pipeline_output(
+        root,
+        contract,
+        "postSource.normalizationRun1Root",
+    )
+    _, review = pipeline_output(root, contract, "postSource.reviewRoot")
+    if review.exists() or review.is_symlink():
         raise ValueError(f"NO_OVERWRITE:{review.relative_to(root)}")
     source_size, source = decode_rgba_png(run1 / "source.png")
     block_size, block = decode_rgba_png(run1 / "block.png")
@@ -400,7 +476,12 @@ def build_review(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         ("REGISTRATION.png", literal_size, literal),
     )
     for name, size, pixels in outputs:
-        no_overwrite_file(review / name, encode_rgba_png(size, pixels))
+        relative, _ = pipeline_output(
+            root,
+            contract,
+            REVIEW_IDENTITIES[name],
+        )
+        no_overwrite_file(root, relative, encode_rgba_png(size, pixels))
     cell_size = (384, 256)
     cells = [
         bilinear_resize(size, pixels, cell_size)
@@ -416,8 +497,14 @@ def build_review(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
             cell_size,
             ((index % 3) * cell_size[0], (index // 3) * cell_size[1]),
         )
+    contact_relative, _ = pipeline_output(
+        root,
+        contract,
+        REVIEW_IDENTITIES["CONTACT-SHEET.png"],
+    )
     no_overwrite_file(
-        review / "CONTACT-SHEET.png",
+        root,
+        contact_relative,
         encode_rgba_png(sheet_size, bytes(sheet)),
     )
     return {
@@ -433,13 +520,14 @@ def build_review(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
 
 
 def review_manifest(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
-    review = repository_path(
-        root,
-        contract["outputInventory"]["postSource"]["reviewRoot"],
-    )
+    _, review = pipeline_output(root, contract, "postSource.reviewRoot")
     records: dict[str, Any] = {}
     for name in REVIEW_FILES:
-        path = review / name
+        _, path = pipeline_output(
+            root,
+            contract,
+            REVIEW_IDENTITIES[name],
+        )
         if not path.is_file():
             raise ValueError(f"missing review file: {name}")
         size, pixels = decode_rgba_png(path)
@@ -460,7 +548,12 @@ def review_manifest(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         "candidateReadyForIndependentReview": False,
         "productionSelected": False,
     }
-    no_overwrite_json(review / "REVIEW-MANIFEST.json", manifest)
+    manifest_relative, _ = pipeline_output(
+        root,
+        contract,
+        "postSource.reviewManifest",
+    )
+    no_overwrite_json(root, manifest_relative, manifest)
     return manifest
 
 
@@ -531,11 +624,12 @@ def parallel_receipt(
         "productionSelected": False,
         "passed": maximum_overlap <= 2,
     }
-    output = repository_path(
+    output_relative, _ = pipeline_output(
         root,
-        f"{EVIDENCE_ROOT}/PARALLEL-EXECUTION-RECEIPT.json",
+        contract,
+        "postSource.parallelExecutionReceipt",
     )
-    no_overwrite_json(output, receipt)
+    no_overwrite_json(root, output_relative, receipt)
     return receipt
 
 
@@ -627,42 +721,52 @@ def assemble_source(
     files: dict[str, dict[str, Path]],
 ) -> dict[str, Any]:
     post = contract["outputInventory"]["postSource"]
-    packet_path = repository_path(root, post["sourceCandidatePacket"])
-    if packet_path.exists():
+    packet_relative, packet_path = pipeline_output(
+        root,
+        contract,
+        "postSource.sourceCandidatePacket",
+    )
+    if packet_path.exists() or packet_path.is_symlink():
         raise ValueError(f"NO_OVERWRITE:{post['sourceCandidatePacket']}")
     launch_packet = load_json(
-        repository_path(
+        exact_pipeline_path(
             root,
-            contract["outputInventory"]["launchBound"]["packet"],
+            contract,
+            "launchBound.packet",
         )
     )
     if launch_packet.get("stage") != "launch_bound":
         raise ValueError("launch-bound packet is missing")
-    validation_path = repository_path(
+    validation_path = exact_pipeline_path(
         root,
-        contract["outputInventory"]["validation"]["sourceValidation"],
+        contract,
+        "validation.sourceValidation",
     )
     validation = load_json(validation_path)
     if validation.get("passed") is not True:
         raise ValueError("source validation has not passed")
-    repeat_path = repository_path(
+    repeat_path = exact_pipeline_path(
         root,
-        f"{EVIDENCE_ROOT}/NORMALIZATION-REPEAT-IDENTITY.json",
+        contract,
+        "postSource.normalizationRepeatReceipt",
     )
     repeat = load_json(repeat_path)
     if repeat.get("passed") is not True:
         raise ValueError("normalization repeat has not passed")
-    review_path = repository_path(
+    review_path = exact_pipeline_path(
         root,
-        f"{post['reviewRoot']}/REVIEW-MANIFEST.json",
+        contract,
+        "postSource.reviewManifest",
     )
-    parallel_path = repository_path(
+    parallel_path = exact_pipeline_path(
         root,
-        f"{EVIDENCE_ROOT}/PARALLEL-EXECUTION-RECEIPT.json",
+        contract,
+        "postSource.parallelExecutionReceipt",
     )
-    rejections_path = repository_path(
+    rejections_path = exact_pipeline_path(
         root,
-        contract["outputInventory"]["rejections"],
+        contract,
+        "rejections",
     )
     if not rejections_path.is_file():
         raise ValueError("rejected-attempt inventory is missing")
@@ -687,7 +791,11 @@ def assemble_source(
                 "sha256": sha256(paths["provenance"]),
             },
         }
-    run1 = repository_path(root, post["normalizationRun1Root"])
+    run1 = exact_pipeline_path(
+        root,
+        contract,
+        "postSource.normalizationRun1Root",
+    )
     lods: dict[str, Any] = {}
     for lod, dimensions in LOD_DIMENSIONS.items():
         record = raster_record(root, run1 / f"{lod}.png")
@@ -785,7 +893,7 @@ def assemble_source(
             f"source packet structural rejection {list(error.path)}: "
             f"{error.message}"
         )
-    no_overwrite_json(packet_path, packet)
+    no_overwrite_json(root, packet_relative, packet)
     return {
         "schemaVersion": 1,
         "taskId": "PLAY-081",

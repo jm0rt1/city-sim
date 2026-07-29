@@ -26,6 +26,7 @@ from west_path_safety import (
     PathSafetyError,
     expected_process_paths,
     lexical_repository_path,
+    validate_pipeline_layout,
 )
 
 
@@ -604,6 +605,10 @@ def evaluate_render_guard(
         require_absent=True,
     )
     errors.extend(isolation_report["errors"])
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    errors.extend(
+        f"pipeline-output:{error}" for error in pipeline_layout["errors"]
+    )
 
     return {
         "schemaVersion": 1,
@@ -615,6 +620,7 @@ def evaluate_render_guard(
         "reasonCodes": sorted(set(errors)),
         "authorityValidation": authority_report,
         "outputRootIsolation": isolation_report,
+        "pipelineOutputIsolation": pipeline_layout,
         "blenderProcessLaunches": 0,
         "blenderRenderApiCalls": 0,
         "imageGenInvocations": 0,
@@ -686,6 +692,12 @@ def launch_blender(
     if not layout["passed"]:
         raise ContractError(
             "unsafe output layout: " + ",".join(layout["errors"])
+        )
+    pipeline_layout = validate_pipeline_layout(root, contract)
+    if not pipeline_layout["passed"]:
+        raise ContractError(
+            "unsafe pipeline output layout: "
+            + ",".join(pipeline_layout["errors"])
         )
     expected = expected_process_paths(mode)
     try:

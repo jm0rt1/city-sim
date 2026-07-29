@@ -27,6 +27,13 @@ from west_launch_authority import (
     validate_future_authorities,
     validate_output_root_isolation,
 )
+from west_path_safety import (
+    PathSafetyError,
+    exact_pipeline_path,
+    pipeline_relative,
+    validate_pipeline_layout,
+    write_exact_bytes_no_overwrite,
+)
 
 
 SOURCE_ROOT = (
@@ -77,12 +84,6 @@ def json_bytes(value: dict[str, Any]) -> bytes:
 
 def bytes_sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
-
-
-def no_overwrite_write(path: Path, value: bytes) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("xb") as handle:
-        handle.write(value)
 
 
 def authority_packet(contract: dict[str, Any]) -> dict[str, Any]:
@@ -200,6 +201,7 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         contract,
         require_absent=True,
     )
+    pipeline_layout = validate_pipeline_layout(root, contract)
     return {
         "schemaVersion": 1,
         "taskId": "PLAY-081",
@@ -208,6 +210,7 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         "futurePacketStage": "launch_bound",
         "authority": authority,
         "outputRootIsolation": isolation,
+        "pipelineOutputIsolation": pipeline_layout,
         "packetWritten": False,
         "blenderProcessLaunches": 0,
         "blenderRenderApiCalls": 0,
@@ -230,8 +233,17 @@ def assemble(
         contract,
         require_absent=True,
     )
+    pipeline_layout = validate_pipeline_layout(root, contract)
     errors = sorted(
-        set(frozen_errors + authority["errors"] + isolation["errors"])
+        set(
+            frozen_errors
+            + authority["errors"]
+            + isolation["errors"]
+            + [
+                f"pipeline-output:{error}"
+                for error in pipeline_layout["errors"]
+            ]
+        )
     )
     if errors:
         return 3, {
@@ -249,14 +261,25 @@ def assemble(
         }
 
     launch_bound = contract["outputInventory"]["launchBound"]
-    guard_path = repository_path(root, launch_bound["guardReceipt"])
-    isolation_path = repository_path(
-        root,
-        launch_bound["outputRootIsolationReceipt"],
+    guard_relative = pipeline_relative(contract, "launchBound.guardReceipt")
+    isolation_relative = pipeline_relative(
+        contract,
+        "launchBound.outputRootIsolationReceipt",
     )
-    packet_path = repository_path(root, launch_bound["packet"])
+    packet_relative = pipeline_relative(contract, "launchBound.packet")
+    guard_path = exact_pipeline_path(
+        root,
+        contract,
+        "launchBound.guardReceipt",
+    )
+    isolation_path = exact_pipeline_path(
+        root,
+        contract,
+        "launchBound.outputRootIsolationReceipt",
+    )
+    packet_path = exact_pipeline_path(root, contract, "launchBound.packet")
     for path in (guard_path, isolation_path, packet_path):
-        if path.exists():
+        if path.exists() or path.is_symlink():
             return 3, {
                 "schemaVersion": 1,
                 "taskId": "PLAY-081",
@@ -325,9 +348,24 @@ def assemble(
             f"{error.message}"
         )
     packet_data = json_bytes(packet)
-    no_overwrite_write(guard_path, guard_data)
-    no_overwrite_write(isolation_path, isolation_data)
-    no_overwrite_write(packet_path, packet_data)
+    write_exact_bytes_no_overwrite(
+        root,
+        guard_relative,
+        guard_data,
+        expected=guard_relative,
+    )
+    write_exact_bytes_no_overwrite(
+        root,
+        isolation_relative,
+        isolation_data,
+        expected=isolation_relative,
+    )
+    write_exact_bytes_no_overwrite(
+        root,
+        packet_relative,
+        packet_data,
+        expected=packet_relative,
+    )
     return 0, {
         "schemaVersion": 1,
         "taskId": "PLAY-081",
@@ -355,7 +393,23 @@ def main() -> int:
         result = describe(root, contract)
         code = 0
     else:
-        code, result = assemble(root, args.contract, contract)
+        try:
+            code, result = assemble(root, args.contract, contract)
+        except PathSafetyError as error:
+            code = 3
+            result = {
+                "schemaVersion": 1,
+                "taskId": "PLAY-081",
+                "direction": "west",
+                "mode": "assemble",
+                "decision": "BLOCKED",
+                "rejectionStage": "before_output_write",
+                "errors": [f"PATH_SAFETY:{error}"],
+                "packetWritten": False,
+                "blenderProcessLaunches": 0,
+                "blenderRenderApiCalls": 0,
+                "pixelFiles": 0,
+            }
     print(json.dumps(result, indent=2, sort_keys=True))
     return code
 

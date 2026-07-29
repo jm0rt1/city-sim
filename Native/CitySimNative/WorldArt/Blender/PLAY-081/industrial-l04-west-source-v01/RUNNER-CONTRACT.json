@@ -456,8 +456,11 @@
     "postSource": {
       "normalizationRun1Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-1",
       "normalizationRun2Root": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/normalization-repeat/run-2",
+      "normalizationRepeatReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/NORMALIZATION-REPEAT-IDENTITY.json",
+      "parallelExecutionReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PARALLEL-EXECUTION-RECEIPT.json",
       "canonicalRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/validation/canonical-rgba",
       "reviewRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review",
+      "reviewManifest": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/review/REVIEW-MANIFEST.json",
       "assemblyRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/assembly",
       "sourceCandidatePacket": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json"
     },

@@ -2,9 +2,10 @@
 """Lexical, symlink-safe path boundaries for PLAY-081 West.
 
 This module uses only the Python standard library and performs no subprocess,
-pixel, Blender, or file writes except through ``write_exact_json``.  Every
-production output path is compared with its exact task-owned lexical identity
-before any existing path component is inspected for symlinks.
+pixel, or Blender work. Every production output path is compared with its
+exact task-owned lexical identity before any existing path component is
+inspected for symlinks, then written descriptor-relative with no-follow and
+no-overwrite semantics.
 """
 
 from __future__ import annotations
@@ -22,6 +23,48 @@ DEFAULT_VALIDATION_OUTPUT = (
     f"{EVIDENCE_ROOT}/PRELOCK-LAUNCH-PLUMBING-VALIDATION.json"
 )
 PROCESS_IDS = ("A", "B", "C")
+PIPELINE_PATH_IDENTITIES = {
+    "evidenceRoot": EVIDENCE_ROOT,
+    "launchBound.frozenInputManifest": f"{EVIDENCE_ROOT}/FROZEN-INPUT-MANIFEST.json",
+    "launchBound.guardReceipt": f"{EVIDENCE_ROOT}/LAUNCH-GUARD-RECEIPT.json",
+    "launchBound.outputRootIsolationReceipt": (
+        f"{EVIDENCE_ROOT}/OUTPUT-ROOT-ISOLATION-RECEIPT.json"
+    ),
+    "launchBound.packet": f"{EVIDENCE_ROOT}/SOURCE-STAGE-LAUNCH-BOUND-V2.json",
+    "postSource.assemblyRoot": f"{EVIDENCE_ROOT}/assembly",
+    "postSource.canonicalRoot": f"{EVIDENCE_ROOT}/validation/canonical-rgba",
+    "postSource.normalizationRun1Root": (
+        f"{EVIDENCE_ROOT}/normalization-repeat/run-1"
+    ),
+    "postSource.normalizationRun2Root": (
+        f"{EVIDENCE_ROOT}/normalization-repeat/run-2"
+    ),
+    "postSource.normalizationRepeatReceipt": (
+        f"{EVIDENCE_ROOT}/NORMALIZATION-REPEAT-IDENTITY.json"
+    ),
+    "postSource.parallelExecutionReceipt": (
+        f"{EVIDENCE_ROOT}/PARALLEL-EXECUTION-RECEIPT.json"
+    ),
+    "postSource.reviewManifest": f"{EVIDENCE_ROOT}/review/REVIEW-MANIFEST.json",
+    "postSource.reviewRoot": f"{EVIDENCE_ROOT}/review",
+    "postSource.sourceCandidatePacket": (
+        f"{EVIDENCE_ROOT}/SOURCE-STAGE-HANDOFF-V2.json"
+    ),
+    "review.contactSheet": f"{EVIDENCE_ROOT}/review/CONTACT-SHEET.png",
+    "review.literal192Color": f"{EVIDENCE_ROOT}/review/EXACT-192X128-COLOR.png",
+    "review.literal192Grayscale": (
+        f"{EVIDENCE_ROOT}/review/EXACT-192X128-GRAYSCALE.png"
+    ),
+    "review.native2xColor": f"{EVIDENCE_ROOT}/review/NATIVE-2X-COLOR.png",
+    "review.native2xGrayscale": (
+        f"{EVIDENCE_ROOT}/review/NATIVE-2X-GRAYSCALE.png"
+    ),
+    "review.registration": f"{EVIDENCE_ROOT}/review/REGISTRATION.png",
+    "review.sourceColor": f"{EVIDENCE_ROOT}/review/SOURCE-COLOR.png",
+    "review.sourceGrayscale": f"{EVIDENCE_ROOT}/review/SOURCE-GRAYSCALE.png",
+    "validation.sourceValidation": f"{EVIDENCE_ROOT}/SOURCE-VALIDATION.json",
+    "rejections": f"{EVIDENCE_ROOT}/REJECTIONS.json",
+}
 
 
 class PathSafetyError(ValueError):
@@ -89,6 +132,142 @@ def validate_exact_output(
     return lexical_repository_path(root, supplied, expected=expected)
 
 
+def _contract_pipeline_value(
+    contract: dict[str, Any],
+    identity: str,
+) -> Any:
+    inventory = contract.get("outputInventory", {})
+    if identity == "evidenceRoot":
+        return inventory.get("evidenceRoot")
+    if identity == "rejections":
+        return inventory.get("rejections")
+    section, key = identity.split(".", 1)
+    value = inventory.get(section, {})
+    return value.get(key) if isinstance(value, dict) else None
+
+
+def pipeline_relative(
+    contract: dict[str, Any],
+    identity: str,
+) -> str:
+    """Return one exact contract-bound downstream PLAY-081 path."""
+    if identity not in PIPELINE_PATH_IDENTITIES:
+        raise PathSafetyError(f"UNKNOWN_PIPELINE_IDENTITY:{identity}")
+    expected = PIPELINE_PATH_IDENTITIES[identity]
+    supplied = _contract_pipeline_value(contract, identity)
+    if supplied != expected:
+        raise PathSafetyError(
+            f"PIPELINE_IDENTITY_MISMATCH:{identity}:{supplied!r}!={expected!r}"
+        )
+    return expected
+
+
+def exact_pipeline_path(
+    root: Path,
+    contract: dict[str, Any],
+    identity: str,
+) -> Path:
+    relative = pipeline_relative(contract, identity)
+    return lexical_repository_path(root, relative, expected=relative)
+
+
+def validate_pipeline_layout(
+    root: Path,
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate every declared launch/downstream identity and symlink component."""
+    errors: list[str] = []
+    paths: dict[str, str] = {}
+    for identity in PIPELINE_PATH_IDENTITIES:
+        try:
+            relative = pipeline_relative(contract, identity)
+            lexical_repository_path(root, relative, expected=relative)
+            paths[identity] = relative
+        except PathSafetyError as error:
+            errors.append(f"{identity}:{str(error).split(':', 1)[0]}")
+    return {
+        "schemaVersion": 1,
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "paths": paths,
+        "errors": sorted(set(errors)),
+        "exactLexicalIdentitiesRequired": True,
+        "symlinkComponentsRejected": True,
+        "passed": not errors,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "normalizerInvocations": 0,
+        "contactSheetInvocations": 0,
+        "pixelFiles": 0,
+    }
+
+
+def _open_parent_no_follow(root: Path, relative: str) -> int:
+    """Open/create a relative parent chain without following symlinks."""
+    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY"):
+        raise PathSafetyError("NO_FOLLOW_DIRECTORY_API_UNAVAILABLE")
+    parts = relative.split("/")[:-1]
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    current = os.open(root.resolve(), flags)
+    try:
+        for part in parts:
+            try:
+                child = os.open(part, flags, dir_fd=current)
+            except FileNotFoundError:
+                try:
+                    os.mkdir(part, 0o755, dir_fd=current)
+                except FileExistsError:
+                    pass
+                try:
+                    child = os.open(part, flags, dir_fd=current)
+                except OSError as error:
+                    raise PathSafetyError(
+                        f"NO_FOLLOW_PARENT:{relative}"
+                    ) from error
+            except OSError as error:
+                raise PathSafetyError(
+                    f"NO_FOLLOW_PARENT:{relative}"
+                ) from error
+            os.close(current)
+            current = child
+        return current
+    except BaseException:
+        os.close(current)
+        raise
+
+
+def _write_exact_bytes(
+    root: Path,
+    supplied: Any,
+    value: bytes,
+    *,
+    expected: str,
+    no_overwrite: bool,
+) -> Path:
+    path = lexical_repository_path(root, supplied, expected=expected)
+    parent_descriptor = _open_parent_no_follow(root, expected)
+    try:
+        path = lexical_repository_path(root, supplied, expected=expected)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_NOFOLLOW
+        flags |= os.O_EXCL if no_overwrite else os.O_TRUNC
+        try:
+            descriptor = os.open(
+                expected.rsplit("/", 1)[-1],
+                flags,
+                0o644,
+                dir_fd=parent_descriptor,
+            )
+        except FileExistsError as error:
+            raise PathSafetyError(f"NO_OVERWRITE:{expected}") from error
+        except OSError as error:
+            raise PathSafetyError(f"NO_FOLLOW_WRITE:{expected}") from error
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(value)
+    finally:
+        os.close(parent_descriptor)
+    return path
+
+
 def write_exact_json(
     root: Path,
     supplied: Any,
@@ -97,16 +276,45 @@ def write_exact_json(
     expected: str = DEFAULT_VALIDATION_OUTPUT,
 ) -> Path:
     """Write JSON only after the exact output path passes twice."""
-    path = validate_exact_output(root, supplied, expected=expected)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path = validate_exact_output(root, supplied, expected=expected)
-    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
-    if hasattr(os, "O_NOFOLLOW"):
-        flags |= os.O_NOFOLLOW
-    descriptor = os.open(path, flags, 0o644)
-    with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-        handle.write(json.dumps(value, indent=2, sort_keys=True) + "\n")
-    return path
+    return _write_exact_bytes(
+        root,
+        supplied,
+        (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8"),
+        expected=expected,
+        no_overwrite=False,
+    )
+
+
+def write_exact_bytes_no_overwrite(
+    root: Path,
+    supplied: Any,
+    value: bytes,
+    *,
+    expected: str,
+) -> Path:
+    """Write one exact output with O_NOFOLLOW and O_EXCL after final recheck."""
+    return _write_exact_bytes(
+        root,
+        supplied,
+        value,
+        expected=expected,
+        no_overwrite=True,
+    )
+
+
+def write_exact_json_no_overwrite(
+    root: Path,
+    supplied: Any,
+    value: dict[str, Any],
+    *,
+    expected: str,
+) -> Path:
+    return write_exact_bytes_no_overwrite(
+        root,
+        supplied,
+        (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8"),
+        expected=expected,
+    )
 
 
 def validate_process_layout(

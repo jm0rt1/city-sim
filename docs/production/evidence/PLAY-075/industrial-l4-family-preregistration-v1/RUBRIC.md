@@ -11,7 +11,11 @@ All twelve `N/E/S/W x City/Neighborhood/Block` runtime identities must use the
 exact accepted L4 source for the real sole-adjacent-road frontage. They must
 read as one premium Industrial L4 family without mirror, rotation, recolor,
 alias, fallback, direction substitution, wrong-road entrance, or camera-based
-selection. Four requires complete source/pack/runtime identity and
+selection. Each runtime direction must bind the exact
+`citysim_source_pixels_v1` socket in the accepted bridge mapping: North
+`[896,704]`, East `[896,832]`, South `[640,832]`, and West `[640,704]`.
+Blender-native coordinates and DCC world labels are never QA direction
+identities. Four requires complete bridge/source/pack/runtime identity and
 materially coherent direction-to-direction massing, material, value, light,
 shadow, outline, and scale.
 
@@ -70,6 +74,11 @@ capture hashes must bind one exact candidate. Four requires:
 Return regardless of score for:
 
 - fewer than four exact accepted directions in one candidate;
+- bridge source authority other than `3e01ca6738d7574718f9aeff4b66771eee109feb`,
+  mapping SHA-256 other than
+  `5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7`,
+  source order other than `[0,1,2,3]`, any per-direction transform, or any
+  runtime-direction/source-pixel-socket mismatch;
 - separate QA production acceptance requested for a direction cell;
 - ambiguous commit, fixture, executable, resource, manifest, PID, window,
   camera, target, defaults, or data-root identity;

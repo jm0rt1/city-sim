@@ -1,6 +1,24 @@
 {
   "authority_commit": "c08a0aa7b0a461c1dfcd6c50dfe149db5ff766a3",
   "candidate_neutral": true,
+  "direction_bridge": {
+    "accepted_source_authority": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "canonical_citysim_sockets": {
+      "east": [28, 0, 0],
+      "north": [0, 0, -28],
+      "south": [0, 0, 28],
+      "west": [-28, 0, 0]
+    },
+    "coordinate_system": "citysim_source_pixels_v1",
+    "mapping_contract_path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mapping_contract_sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "mapping_contract_production_selected": false,
+    "mapping_contract_source_authority": false,
+    "per_direction_transforms": false,
+    "published_acceptance_authority": "aa20d5963c356eee812f66bafff8582215293bbb",
+    "source_order": [0, 1, 2, 3],
+    "source_pixel_pivot": [768, 896]
+  },
   "fixture_file": "industrial-l03-directional-mature-city-v1.json",
   "fixture_sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
   "fixture_set": "PLAY-075 candidate-neutral Industrial L3 directional mature-city fixture v1",
@@ -22,6 +40,7 @@
         "x": 10,
         "y": 9
       },
+      "source_pixel_socket": [896, 704],
       "state_coordinate": {
         "x": 10,
         "y": 10
@@ -42,6 +61,7 @@
         "x": 4,
         "y": 9
       },
+      "source_pixel_socket": [896, 832],
       "state_coordinate": {
         "x": 3,
         "y": 9
@@ -62,6 +82,7 @@
         "x": 4,
         "y": 9
       },
+      "source_pixel_socket": [640, 832],
       "state_coordinate": {
         "x": 4,
         "y": 8
@@ -82,6 +103,7 @@
         "x": 16,
         "y": 11
       },
+      "source_pixel_socket": [640, 704],
       "state_coordinate": {
         "x": 17,
         "y": 11

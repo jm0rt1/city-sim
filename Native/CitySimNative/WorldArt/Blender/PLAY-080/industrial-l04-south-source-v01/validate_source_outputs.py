@@ -200,6 +200,8 @@ def literal_metrics_pass(provenance: dict[str, Any], contract: dict[str, Any]) -
 
 def main() -> int:
     args = parse_args()
+    contract = load_json(args.contract)
+    bridge = contract.get("coordinateBridge", {})
     checks = [
         "fresh-process provenance",
         "decoded raw RGBA A/B/C identity",
@@ -217,10 +219,14 @@ def main() -> int:
                     "schema": "citysim.play-080.source-output-validator-description.v1",
                     "taskId": "PLAY-080",
                     "direction": "south",
-                    "coordinateBridgeRevalidation": "pending_v06",
-                    "canonicalCitySimSouthSocket": [0, 0, 28],
-                    "sourceSocketPixels": [640, 832],
-                    "blenderNativeDirectionalSocket": None,
+                    "coordinateBridgeRevalidation": bridge.get("state"),
+                    "canonicalCitySimSouthSocket": bridge.get(
+                        "canonicalCitySimSouthSocket"
+                    ),
+                    "sourceSocketPixels": bridge.get("sourceSocketPixels"),
+                    "blenderNativeDirectionalSocket": bridge.get(
+                        "blenderNativeDirectionalSocket"
+                    ),
                     "checks": checks,
                     "rgba": "not_run",
                     "literal192": "not_run",
@@ -235,8 +241,6 @@ def main() -> int:
 
     if args.non_alias_inventory is None or args.output is None:
         raise SystemExit("--mode validate requires --non-alias-inventory and --output")
-    contract = load_json(args.contract)
-    bridge = contract.get("coordinateBridge", {})
     if bridge.get("state") != "v06_revalidated":
         raise SystemExit("pixel validation blocked pending v06 coordinate-bridge revalidation")
     raw_results: dict[str, dict[str, Any]] = {}

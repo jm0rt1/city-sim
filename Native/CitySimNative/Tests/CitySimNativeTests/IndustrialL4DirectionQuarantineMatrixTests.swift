@@ -209,6 +209,22 @@ final class IndustrialL4DirectionQuarantineMatrixTests: XCTestCase {
         )
         assertRejected(wrongLock, as: .appearanceLockDrift, validator: validator)
 
+        let staleBridge = IndustrialL4DirectionPacketFactory.replacing(
+            north,
+            directionBridge: IndustrialL4DirectionBridge(
+                documentPath: north.directionBridge.documentPath,
+                commit: "b8f85934563376727be70fee34fcf88c780b5d9f",
+                documentSha256: north.directionBridge.documentSha256,
+                canonicalMappingSha256: north.directionBridge.canonicalMappingSha256,
+                coordinateSystem: north.directionBridge.coordinateSystem
+            )
+        )
+        assertRejected(
+            staleBridge,
+            as: .directionBridgeDrift,
+            validator: validator
+        )
+
         let wrongBridge = IndustrialL4DirectionPacketFactory.replacing(
             north,
             directionBridge: IndustrialL4DirectionBridge(

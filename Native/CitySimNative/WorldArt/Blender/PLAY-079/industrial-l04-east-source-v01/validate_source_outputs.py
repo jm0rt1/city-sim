@@ -252,7 +252,8 @@ def validate_provenance(
         "taskId": "PLAY-079",
         "direction": "east",
         "processId": process_id,
-        "sceneSha256": bridge["projectionAdapterSha256"],
+        "sceneSha256": contract["acceptedPredesign"]["scene"]["sha256"],
+        "coordinateMappingSha256": bridge["mappingContractSha256"],
         "contractSha256": sha256_bytes(CONTRACT_PATH.read_bytes()),
         "factoryStartup": True,
         "autoexecDisabled": True,
@@ -281,7 +282,7 @@ def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
     if any(
         bridge.get(key) is None
         for key in (
-            "projectionAdapterSha256",
+            "mappingContractSha256",
             "blenderNativeDirectionalSocket",
             "blenderNativeGroundPivot",
             "blenderNativeFootprintCorners",
@@ -327,7 +328,7 @@ def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
         "blenderNativeFootprintCorners": bridge["blenderNativeFootprintCorners"],
         "blenderContactCornerOrder": bridge["blenderContactCornerOrder"],
         "tolerance": contract["invariants"]["registration"]["sourcePixelTolerance"],
-        "projectionAdapterSha256": bridge["projectionAdapterSha256"],
+        "coordinateMappingSha256": bridge["mappingContractSha256"],
         "result": "PASS",
     }
     return {

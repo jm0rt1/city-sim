@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "candidate": "industrial-l04-north-v07-asymmetric-roofless-hammerhead",
+  "authorityBase": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "synchronizationMerge": "7a404d191b71c24603ace68c497d12136163d707",
+  "initialDesignCheckpoint": "f81db1e60933259e86a0b613de54582eec083308",
+  "finalDesignCheckpoint": "6811a287d614f03d29e383d8abad5ad402c0f572",
+  "selfContainedRepairParent": "f1e588af2b69077e59e7eb51f152360dd5c2bee3",
+  "inputs": {
+    "sceneSHA256": "bf9ce7f6405f5c21777d12c73aa9f312da092d79d64bce743f3ca3ee05ffb488",
+    "artContractSHA256": "37275e8f023efc676fa1d9ba9861dd7d1e7ceab9949efc5010fb0831fb244a97",
+    "staticValidationSHA256": "69a78c896318d526cc4cebc2fbc5baa4586a27b1be4e6f49b7a8a0682be64667",
+    "staticValidatorSHA256": "71571122ba03f1aecf4c36402d633324357c1f70b347a75e9f16c33aa05d1a68",
+    "actualCameraProofToolSHA256": "42befeea211f8657b68af0fa69b3fe80d23fd9f73a54a0d86cbb20743be4258e",
+    "materialLibraryFile": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/MATERIALS.json",
+    "materialLibrarySHA256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "actualCameraResult": {
+    "reportSHA256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2",
+    "validationPassed": true,
+    "registrationMaximumAbsoluteDeltaSourcePixels": 0.00018310546897737368,
+    "courtSocketDistanceCompactPixels": 0,
+    "courtSocketComponentVisiblePixels": 190,
+    "openThroatCompactBounds": [
+      15,
+      23
+    ],
+    "openThroatVisiblePixels": 280,
+    "visibleRevealCount": 3,
+    "freightRecessVisiblePixels": {
+      "a": 23,
+      "b": 14,
+      "c": 32
+    },
+    "staffEntryCompactBounds": [
+      4,
+      10
+    ],
+    "visibleMonitorCount": 4,
+    "heightBreakCount": 13,
+    "occupiedCompactBounds": [
+      64,
+      58
+    ]
+  },
+  "disposition": "PENDING_INDEPENDENT_PREPIXEL_REVIEW",
+  "rawProcessCount": 0,
+  "blenderRenderProcessCount": 0,
+  "normalizerProcessCount": 0,
+  "imageGenProcessCount": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

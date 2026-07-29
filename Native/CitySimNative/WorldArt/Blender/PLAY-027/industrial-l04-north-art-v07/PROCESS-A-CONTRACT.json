@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "authority": "b8a779ad2a25e60aec1b9c6f765027b2ad904db2",
+  "direction": "north",
+  "process": "A",
+  "scene": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/SCENE.json",
+    "sha256": "bf9ce7f6405f5c21777d12c73aa9f312da092d79d64bce743f3ca3ee05ffb488"
+  },
+  "materials": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/MATERIALS.json",
+    "sha256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab"
+  },
+  "bridge": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "bridgeHelper": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/prove_actual_camera.py",
+    "sha256": "42befeea211f8657b68af0fa69b3fe80d23fd9f73a54a0d86cbb20743be4258e"
+  },
+  "acceptedProof": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v07/run-i/ACTUAL-CAMERA-PROOF.json",
+    "sha256": "d668e9ea247a1e866627aba7d327b5ddd989fd7c32dc42ecdf681eaaeb1a05c2"
+  },
+  "runner": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/render_process_a.py",
+    "sha256": "4ddd628f3b08fddbc433ebe22fbf4b95f8cb460456804f86ad061671423974d4"
+  },
+  "normalizer": {
+    "file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/Tools/NormalizeOfflineSource.swift",
+    "sha256": "c37012ca5dbf958f8b5c37df8ec712535865c1ddc769385e432792214dfb67ed",
+    "strictChromaContract": "play027-zero-nonzero-alpha-chroma-premultiplied-v1"
+  },
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7"
+  },
+  "cycles": {
+    "device": "CPU",
+    "threads": 1,
+    "seed": 2704,
+    "samples": 64,
+    "adaptiveSampling": false,
+    "denoising": false,
+    "motionBlur": false,
+    "transparentFilm": true,
+    "resolution": [
+      1536,
+      1024
+    ],
+    "resolutionPercentage": 100,
+    "pixelAspect": [
+      1,
+      1
+    ],
+    "worldStrength": 0.28,
+    "northwestSunEnergy": 1.4,
+    "northwestSunAngleRadians": 0.08,
+    "maxBounces": 4,
+    "colorManagement": {
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "None",
+      "exposure": 0,
+      "gamma": 1
+    }
+  },
+  "processLimits": {
+    "processA": 1,
+    "processB": 0,
+    "processC": 0,
+    "siblings": 0,
+    "imageGen": 0
+  },
+  "sourceAuthority": false,
+  "productionSelected": false
+}

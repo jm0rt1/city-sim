@@ -16,6 +16,12 @@ Industrial L4 product behavior.
 
 - Published baseline authority:
   `c08a0aa7b0a461c1dfcd6c50dfe149db5ff766a3`.
+- Published bridge follow-up authority:
+  `aa20d5963c356eee812f66bafff8582215293bbb`.
+- Accepted directional bridge source authority:
+  `3e01ca6738d7574718f9aeff4b66771eee109feb`.
+- Directional mapping contract SHA-256:
+  `5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7`.
 - The exact save-model, fingerprint, save-service, and accepted source-fixture
   bytes used to materialize this fixture are byte-identical between the QA
   carrier and `c08a0aa7`.
@@ -45,12 +51,20 @@ Each completed, maintained Industrial L3 lot has exactly one cardinally
 adjacent road. The ordinary production frontage rule therefore selects the
 declared asset without a fixture direction field:
 
-| Direction | State coordinate | Player block | Sole adjacent road | Logical identity |
-|---|---:|---:|---:|---|
-| North | `(10,10)` | `11,11` | `(10,9)` | `industrial_l03_v0_north` |
-| East | `(3,9)` | `4,10` | `(4,9)` | `industrial_l03_v0_east` |
-| South | `(4,8)` | `5,9` | `(4,9)` | `industrial_l03_v0_south` |
-| West | `(17,11)` | `18,12` | `(16,11)` | `industrial_l03_v0_west` |
+| Runtime direction | State coordinate | Player block | Sole adjacent road | Logical identity | Source-pixel socket |
+|---|---:|---:|---:|---|---:|
+| North | `(10,10)` | `11,11` | `(10,9)` | `industrial_l03_v0_north` | `[896,704]` |
+| East | `(3,9)` | `4,10` | `(4,9)` | `industrial_l03_v0_east` | `[896,832]` |
+| South | `(4,8)` | `5,9` | `(4,9)` | `industrial_l03_v0_south` | `[640,832]` |
+| West | `(17,11)` | `18,12` | `(16,11)` | `industrial_l03_v0_west` | `[640,704]` |
+
+The runtime direction and source-pixel socket are the QA identity. The
+fixture does not consume Blender-native coordinates or DCC world labels.
+The accepted bridge uses canonical CitySim sockets North `[0,0,-28]`, East
+`[28,0,0]`, South `[0,0,28]`, and West `[-28,0,0]`, source order
+`[0,1,2,3]`, source-pixel pivot `[768,896]`, and no per-direction transforms.
+These bindings are evidence metadata only; the derived fixture bytes and state
+digest remain unchanged.
 
 No road tile changed. The four original job-bearing lots were cleared and the
 same total job occupancy (`356`) was redistributed as four `89`-worker L3
@@ -81,6 +95,11 @@ The validation also established:
 - preserved job occupancy `356`, aggregate jobs `357`, tick, seed, and playing
   state;
 - no serialized direction, camera, renderer, asset, fallback, or LOD override.
+
+The future Industrial L4 gate is atomic: all four runtime directions must be
+present in the same exact renderer candidate and must bind the source-pixel
+sockets above. One-, two-, or three-direction assemblies remain `BLOCK` and
+cannot receive a partial app disposition.
 
 ## Use boundary
 

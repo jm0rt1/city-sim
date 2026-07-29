@@ -1,0 +1,195 @@
+{
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "blenderBuildHash": "84afd5f785f7",
+  "blenderProcessLaunches": 1,
+  "blenderRenderApiCalls": 0,
+  "blenderVersion": "4.5.12 LTS",
+  "camera": {
+    "blenderOrthographicScale": 237.5878601074218,
+    "blenderPosition": [
+      96,
+      96,
+      101.24557426726288
+    ],
+    "blenderTarget": [
+      0,
+      0,
+      22.861902498201186
+    ],
+    "citySimPosition": [
+      96,
+      101.24557426726288,
+      96
+    ],
+    "citySimTarget": [
+      0,
+      22.861902498201186,
+      0
+    ],
+    "postProjectionOffsetPixels": [
+      0,
+      128
+    ],
+    "renderViewportPixels": [
+      1536,
+      1024
+    ],
+    "sceneKitOrthographicScale": 79.1959533691406,
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "sourceGroundCenter": [
+      768,
+      768
+    ]
+  },
+  "checks": [
+    {
+      "details": {
+        "actual": [
+          [
+            768.0,
+            640.0001831054688
+          ],
+          [
+            1024.0000305175781,
+            768.0001373291016
+          ],
+          [
+            768.0,
+            896.0001220703125
+          ],
+          [
+            512.0000152587891,
+            768.0001678466797
+          ]
+        ],
+        "expected": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "maximumDeltaSourcePixels": 0.00018310546875,
+        "sourceOrder": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "toleranceSourcePixels": 0.001
+      },
+      "name": "actual-camera-unpermuted-footprint",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          768.0,
+          768.0001525878906
+        ],
+        "expected": [
+          768,
+          768
+        ],
+        "maximumDeltaSourcePixels": 0.000152587890625,
+        "toleranceSourcePixels": 0.001
+      },
+      "name": "actual-camera-origin",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          768.0,
+          896.0001220703125
+        ],
+        "expected": [
+          768,
+          896
+        ],
+        "maximumDeltaSourcePixels": 0.0001220703125,
+        "toleranceSourcePixels": 0.001
+      },
+      "name": "actual-camera-pivot",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          640.0000305175781,
+          832.0001525878906
+        ],
+        "expected": [
+          640,
+          832
+        ],
+        "maximumDeltaSourcePixels": 0.000152587890625,
+        "toleranceSourcePixels": 0.001
+      },
+      "name": "actual-camera-south-socket",
+      "pass": true
+    },
+    {
+      "details": {
+        "actual": [
+          [
+            768.0,
+            896.0001220703125
+          ],
+          [
+            512.0000152587891,
+            768.0001678466797
+          ]
+        ],
+        "expected": [
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "maximumDeltaSourcePixels": 0.0001678466796875,
+        "toleranceSourcePixels": 0.001
+      },
+      "name": "actual-camera-south-frontage",
+      "pass": true
+    }
+  ],
+  "contactSheetInvocations": 0,
+  "direction": "south",
+  "imageGenInvocations": 0,
+  "inputs": {
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+    "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
+    "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_bridge_adoption.py",
+    "validatorSha256": "f9bcddec4cdcb5e3135fd82019de0e19650b3a2ddcb51794ff52ac5dba065ec8"
+  },
+  "mode": "blender-actual-camera-zero-pixel",
+  "normalizerInvocations": 0,
+  "pixelFiles": 0,
+  "processA": "not_run",
+  "processB": "not_run",
+  "processC": "not_run",
+  "pythonVersion": "3.11.11",
+  "renderInvocations": 0,
+  "result": "PASS",
+  "schema": "citysim.play-080.south-bridge-adoption-proof.v1",
+  "taskId": "PLAY-080"
+}

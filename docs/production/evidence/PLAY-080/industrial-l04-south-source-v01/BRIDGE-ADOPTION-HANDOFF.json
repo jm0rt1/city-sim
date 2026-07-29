@@ -1,0 +1,87 @@
+{
+  "schema": "citysim.play-080.south-bridge-adoption-handoff.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "publishedBaseline": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineMergeCommit": "88512b0f26200c47d92921b12fe000d738a1eae1",
+  "bridgeAdoptionCommit": "7f734101b62bb80aa714e2497a6fd9845ec95cbe",
+  "acceptedBridge": {
+    "candidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "integratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+    "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "sourceOrder": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "south": {
+      "citySimSocket": [
+        0,
+        0,
+        28
+      ],
+      "blenderSocket": [
+        28,
+        0,
+        0
+      ],
+      "sourceSocket": [
+        640,
+        832
+      ]
+    }
+  },
+  "versionedIntegrationSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
+    "sha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951",
+    "validatedHandoffPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-RUNNER-HANDOFF.json",
+    "validatedHandoffSha256": "77c3231b3d80c63ba96afd65a1bb1a82a498a5ddb1abc9e9705ea4cfd513c092",
+    "result": "PASS"
+  },
+  "runner": {
+    "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
+    "driverSha256": "ae72158658626094ead41d6dd32b88a9e674f712a8d03ec0c4627c0ea05d5cad",
+    "bridgeValidatorSha256": "f9bcddec4cdcb5e3135fd82019de0e19650b3a2ddcb51794ff52ac5dba065ec8"
+  },
+  "proofs": {
+    "static": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/BRIDGE-ADOPTION-STATIC-PROOF.json",
+      "sha256": "7c802af73343724eb2959ce6ade6505ed1468850c7e00957266d4efa152f32bf",
+      "result": "PASS",
+      "passed": 6,
+      "failed": 0
+    },
+    "actualCamera": {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/BRIDGE-ADOPTION-ACTUAL-CAMERA-PROOF.json",
+      "sha256": "d184b51884677867e0f5ca6ac2f19cb4a39faa75dbb8befc48c06c9cd0ea67af",
+      "result": "PASS",
+      "passed": 5,
+      "failed": 0,
+      "maximumDeltaSourcePixels": 0.00018310546875,
+      "toleranceSourcePixels": 0.001
+    }
+  },
+  "invocations": {
+    "blenderCameraProofProcesses": 1,
+    "blenderRenderApiCalls": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFiles": 0
+  },
+  "pixelValidation": {
+    "rgba": "not_run",
+    "literal192": "not_run",
+    "abcIdentity": "not_run",
+    "normalization": "not_run"
+  },
+  "disposition": "bridge_adopted_prelock_runner_ready",
+  "sourceReady": false,
+  "productionSelected": false,
+  "selfAccepted": false
+}

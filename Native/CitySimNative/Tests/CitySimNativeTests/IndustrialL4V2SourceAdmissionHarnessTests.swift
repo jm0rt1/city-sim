@@ -678,6 +678,10 @@ private struct L4V2AtomicAdmissionLedger: Codable, Equatable {
 private struct L4V2AtomicAssemblyHarness {
     let claimedRoot: URL
 
+    private var canonicalClaimedRoot: URL {
+        canonicalURLForContainment(claimedRoot)
+    }
+
     func assemble(
         manifestURL: URL,
         manifestSha256: String
@@ -712,7 +716,7 @@ private struct L4V2AtomicAssemblyHarness {
         }
 
         let directionHarness = L4V2SourceAdmissionHarness(
-            claimedRoot: claimedRoot
+            claimedRoot: canonicalClaimedRoot
         )
         var admitted: [L4V2AdmittedPacket] = []
         var ledgerDirections: [L4V2AtomicDirectionLedger] = []
@@ -799,15 +803,14 @@ private struct L4V2AtomicAssemblyHarness {
         _ url: URL,
         expectedSha256: String
     ) throws -> Data {
-        let rootPath = claimedRoot.standardizedFileURL.path
-        let path = url.standardizedFileURL.path
-        guard path.hasPrefix(rootPath + "/") else {
-            throw L4V2HarnessError.outsideClaimedRoot(path)
-        }
+        let canonicalURL = try containedURL(url)
+        let path = canonicalURL.path
         guard FileManager.default.fileExists(atPath: path) else {
-            throw L4V2HarnessError.missingFile(url.lastPathComponent)
+            throw L4V2HarnessError.missingFile(
+                canonicalURL.lastPathComponent
+            )
         }
-        let data = try Data(contentsOf: url)
+        let data = try Data(contentsOf: canonicalURL)
         guard L4V2SourceAdmissionHarness.sha256(data) ==
                 expectedSha256
         else {
@@ -822,7 +825,57 @@ private struct L4V2AtomicAssemblyHarness {
         else {
             throw L4V2HarnessError.outsideClaimedRoot(path)
         }
-        return claimedRoot.appending(path: path).standardizedFileURL
+        return try containedURL(
+            canonicalClaimedRoot.appending(path: path)
+        )
+    }
+
+    func canonicalEvidenceOutputURL(_ outputURL: URL) throws -> URL {
+        let evidenceRoot = try containedURL(
+            canonicalClaimedRoot.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+        )
+        let canonicalOutput = try containedURL(outputURL)
+        guard canonicalOutput.path.hasPrefix(evidenceRoot.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(
+                canonicalOutput.path
+            )
+        }
+        return canonicalOutput
+    }
+
+    private func containedURL(_ url: URL) throws -> URL {
+        let root = canonicalClaimedRoot
+        let canonicalURL = canonicalURLForContainment(url)
+        let path = canonicalURL.path
+        guard path.hasPrefix(root.path + "/") else {
+            throw L4V2HarnessError.outsideClaimedRoot(path)
+        }
+        return canonicalURL
+    }
+
+    private func canonicalURLForContainment(_ url: URL) -> URL {
+        var existingAncestor = url.standardizedFileURL
+        var unresolvedComponents: [String] = []
+        while !FileManager.default.fileExists(
+            atPath: existingAncestor.path
+        ) {
+            let parent = existingAncestor.deletingLastPathComponent()
+            guard parent.path != existingAncestor.path else {
+                break
+            }
+            unresolvedComponents.insert(
+                existingAncestor.lastPathComponent,
+                at: 0
+            )
+            existingAncestor = parent
+        }
+        var canonicalURL = existingAncestor.resolvingSymlinksInPath()
+        for component in unresolvedComponents {
+            canonicalURL.append(path: component)
+        }
+        return canonicalURL.standardizedFileURL
     }
 
     private func validateCommit(_ value: String) throws {
@@ -944,23 +997,20 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
                 "CITYSIM_L4_CLAIMED_ROOT",
                 environment: environment
             )
-        ).standardizedFileURL
-        let outputURL = resolve(
-            try requiredEnvironment(
-                "CITYSIM_L4_ATOMIC_LEDGER_OUTPUT",
-                environment: environment
-            ),
-            beneath: root
-        )
-        let evidenceRoot = root.appending(
-            path: "docs/production/evidence/PLAY-073"
-        ).standardizedFileURL.path
-        guard outputURL.path.hasPrefix(evidenceRoot + "/") else {
-            throw L4V2HarnessError.outsideClaimedRoot(outputURL.path)
-        }
-        let ledger = try L4V2AtomicAssemblyHarness(
+        ).standardizedFileURL.resolvingSymlinksInPath()
+        let harness = L4V2AtomicAssemblyHarness(
             claimedRoot: root
-        ).assemble(
+        )
+        let outputURL = try harness.canonicalEvidenceOutputURL(
+            resolve(
+                try requiredEnvironment(
+                    "CITYSIM_L4_ATOMIC_LEDGER_OUTPUT",
+                    environment: environment
+                ),
+                beneath: root
+            )
+        )
+        let ledger = try harness.assemble(
             manifestURL: resolve(manifestPath, beneath: root),
             manifestSha256: try requiredEnvironment(
                 "CITYSIM_L4_ASSEMBLY_MANIFEST_SHA256",
@@ -1073,6 +1123,115 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
                 )
             ) {
                 XCTAssertEqual($0 as? L4V2HarnessError, .hashMismatch)
+            }
+        }
+    }
+
+    func testAtomicAssemblyRejectsInputLocatorSymlinkEscape() throws {
+        try withRoot { root in
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path: "play073-l4-v2-external-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let input = try makeAssemblyInput(root: root)
+            let escapedData = Data("escaped-raw-locator".utf8)
+            let escapedURL = externalRoot.appending(path: "raw.png")
+            let escapedHash = try writeBytes(
+                escapedData,
+                to: escapedURL
+            )
+            let symlinkURL = root.appending(
+                path: "locators/n/escaped-raw.png"
+            )
+            try FileManager.default.createDirectory(
+                at: symlinkURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            try FileManager.default.createSymbolicLink(
+                at: symlinkURL,
+                withDestinationURL: escapedURL
+            )
+
+            var manifest = try jsonObject(
+                try Data(contentsOf: input.url)
+            )
+            var directions = try XCTUnwrap(
+                manifest["directions"] as? [[String: Any]]
+            )
+            var north = directions[0]
+            var locators = try XCTUnwrap(
+                north["locators"] as? [String: Any]
+            )
+            locators["raw"] = [
+                "path": try relativePath(symlinkURL, root: root),
+                "sha256": escapedHash,
+            ]
+            north["locators"] = locators
+            directions[0] = north
+            manifest["directions"] = directions
+            let manifestHash = try write(manifest, to: input.url)
+
+            XCTAssertThrowsError(
+                try L4V2AtomicAssemblyHarness(
+                    claimedRoot: root
+                ).assemble(
+                    manifestURL: input.url,
+                    manifestSha256: manifestHash
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .outsideClaimedRoot(
+                        escapedURL.resolvingSymlinksInPath().path
+                    )
+                )
+            }
+        }
+    }
+
+    func testAtomicAssemblyRejectsLedgerOutputSymlinkEscape() throws {
+        try withRoot { root in
+            let externalRoot = FileManager.default.temporaryDirectory
+                .appending(
+                    path: "play073-l4-v2-ledger-\(UUID().uuidString)"
+                )
+            try FileManager.default.createDirectory(
+                at: externalRoot,
+                withIntermediateDirectories: true
+            )
+            defer { try? FileManager.default.removeItem(at: externalRoot) }
+
+            let evidenceRoot = root.appending(
+                path: "docs/production/evidence/PLAY-073"
+            )
+            try FileManager.default.createDirectory(
+                at: evidenceRoot,
+                withIntermediateDirectories: true
+            )
+            let symlinkURL = evidenceRoot.appending(path: "escaped")
+            try FileManager.default.createSymbolicLink(
+                at: symlinkURL,
+                withDestinationURL: externalRoot
+            )
+            let outputURL = symlinkURL.appending(path: "ledger.json")
+
+            XCTAssertThrowsError(
+                try L4V2AtomicAssemblyHarness(
+                    claimedRoot: root
+                ).canonicalEvidenceOutputURL(outputURL)
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .outsideClaimedRoot(
+                        externalRoot.appending(path: "ledger.json").path
+                    )
+                )
             }
         }
     }

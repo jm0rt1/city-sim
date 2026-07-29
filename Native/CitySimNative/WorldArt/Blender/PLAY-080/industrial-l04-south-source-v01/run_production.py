@@ -124,7 +124,7 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "baselineCommit": "af6b661b79e0802386123537aaeddce5c9d385f2",
+        "baselineCommit": "0186066bb88d78dc8dab4be03296d418ea2e259a",
         "sourceReady": False,
         "productionSelected": False,
     }

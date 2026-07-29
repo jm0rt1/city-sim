@@ -107,7 +107,7 @@
     "processC": "not_run",
     "reviewManifest": "not_run"
   },
-  "publishedBaseline": "af6b661b79e0802386123537aaeddce5c9d385f2",
+  "publishedBaseline": "0186066bb88d78dc8dab4be03296d418ea2e259a",
   "result": "PASS",
   "schema": "citysim.play-080.prelock-latency-validation.v1",
   "selfAccepted": false,

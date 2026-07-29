@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-29T04:20:54Z",
+  "updatedAt": "2026-07-29T04:34:58Z",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
@@ -19,7 +19,7 @@
     "exact_candidate_qa",
     "integrated"
   ],
-  "batchState": "prelock_active",
+  "batchState": "appearance_lock_pending",
   "serializedAuthorities": [
     "family_contract_publication",
     "shared_toolchain_changes",
@@ -43,11 +43,11 @@
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "claim": "PLAY-027",
       "publishedBase": "6034d28b87324f148952d951b14ada30ad28e0b1",
-      "head": "3e01ca6738d7574718f9aeff4b66771eee109feb",
-      "state": "prelock_active",
-      "blocker": "corrected_north_architecture_and_appearance_review",
-      "nextAction": "author_and_prove_corrected_north_zero_pixel_architecture",
-      "updatedAt": "2026-07-29T04:03:41Z"
+      "head": "ea0fe6004c130353038a0c37cb9f936c2910ae48",
+      "state": "appearance_lock_pending",
+      "blocker": "north_process_a_independent_appearance_review",
+      "nextAction": "produce_exactly_one_north_process_a_candidate",
+      "updatedAt": "2026-07-29T04:34:58Z"
     },
     {
       "lane": "world_art",

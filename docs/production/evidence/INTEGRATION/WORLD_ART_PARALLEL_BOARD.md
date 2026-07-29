@@ -10,7 +10,7 @@
 
 | Cell | Branch / claim | Current state | Next release boundary |
 |---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | v06 global coordinate bridge accepted from `3e01ca67`; corrected North zero-pixel architecture is released | independent appearance review releases North B/C and sibling A/B/C |
+| North | `codex/citysim-world-art` / `PLAY-027` | self-contained v07 pre-pixel architecture accepted from `ea0fe600`; one process-A appearance candidate released | independent A review releases North B/C and sibling A/B/C |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | v06 adopted; stale CONTRACT-020 hash repaired; zero-pixel runner/handoff passes with no pixel processes | North appearance lock releases A/B/C |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | v06 adopted; static 6/6 and actual-camera 5/5 pass at `0.000183105469` px maximum delta | North appearance lock releases A/B/C |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | v06 adopted; two fresh actual-camera proofs are byte-identical with no pixel processes | North appearance lock releases A/B/C |

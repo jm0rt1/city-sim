@@ -1,14 +1,14 @@
 {
   "schema": 2,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-29T07:22:52Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0722Z.json",
+  "updatedAt": "2026-07-29T08:35:53Z",
+  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0835Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "e9e9ed38bd2abbd720cce9e337b77547494f6ea8",
-    "technicalHeadBeforeLedger": "e9e9ed38bd2abbd720cce9e337b77547494f6ea8"
+    "publishedBase": "1b0d1a0b760ee1a7e9a76123d0c011d638ac993d",
+    "technicalHeadBeforeLedger": "1b0d1a0b760ee1a7e9a76123d0c011d638ac993d"
   },
   "stateMachine": [
     "contract_pending",
@@ -54,7 +54,7 @@
     "northProcessAAuthority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V09-PROCESS-A-AUTHORITY.md",
       "sha256": "c27937305414cfef52bf3fe534be0d98166fc782fa596741fb2a093732f4eb82",
-      "status": "authorized_exactly_one_north_process_a"
+      "status": "completed_rejected_at_4255b021f743281b60cfdf8cff896235d405be23"
     },
     "appearanceLock": {
       "path": null,
@@ -100,17 +100,17 @@
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "claim": "PLAY-027",
       "publishedBase": "9b9673c545e3c2af4809d340e4e25741a7e6c42c",
-      "head": "94981f22a52c13c79f2d238e9957cae8d6a2ad12",
-      "state": "predesign",
+      "head": "4255b021f743281b60cfdf8cff896235d405be23",
+      "state": "returned",
       "dispatchState": "working",
-      "acknowledgedAt": "2026-07-29T07:10:30Z",
+      "acknowledgedAt": "2026-07-29T08:35:53Z",
       "claimRevision": "bbc7951e5c8b1561ba2763929ebe014682545eee450957099ead10b65576c862",
-      "cleanState": "clean_exact_prepixel_candidate",
-      "blocker": "appearance_lock_requires_real_north_process_a_review",
-      "nextAction": "run_exactly_one_fresh_north_process_a_and_stop",
-      "boundedDeliverable": "one_durable_north_process_a_raw_semantic_provenance_and_literal_scale_review_packet",
-      "stopCondition": "no_process_b_or_c_no_sibling_pixels_no_appearance_lock_or_source_admission",
-      "updatedAt": "2026-07-29T07:22:52Z"
+      "cleanState": "clean_rejected_north_v09_process_a",
+      "blocker": "north_v09_process_a_failed_portal_and_freight_frame_literal_scale_gates",
+      "nextAction": "return_read_only_v07_v08_v09_causal_comparison_and_smallest_v10_zero_pixel_authority_proposal",
+      "boundedDeliverable": "one_read_only_v10_zero_pixel_repair_authority_proposal_bound_to_retained_rejection_evidence",
+      "stopCondition": "no_edit_sync_merge_render_process_b_or_c_sibling_pixels_commit_push_or_self_authorization",
+      "updatedAt": "2026-07-29T08:35:53Z"
     },
     {
       "lane": "world_art",
@@ -120,17 +120,17 @@
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
       "claim": "PLAY-079",
       "publishedBase": "8214ba39d88ec30a28597e65a10f1b0bc5e1759e",
-      "head": "2f90d30de9221fa39d117055064551a5ac5e6701",
+      "head": "08817608f59e02a1b7bde9e67cd6486c46a91635",
       "state": "predesign",
-      "dispatchState": "review_pending",
-      "acknowledgedAt": "2026-07-29T07:10:30Z",
+      "dispatchState": "working",
+      "acknowledgedAt": "2026-07-29T08:35:53Z",
       "claimRevision": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab",
-      "cleanState": "clean_exact_locator_inventory_candidate",
+      "cleanState": "clean_blocked_renderer_proposal_adapter_candidate",
       "blocker": "appearance_lock_and_source_profile_intentionally_absent",
-      "nextAction": "independent_review_of_east_locator_inventory",
-      "boundedDeliverable": "read_only_comparison_to_renderer_proposal_while_exact_candidate_is_frozen",
-      "stopCondition": "no_candidate_mutation_shared_schema_invention_blender_or_pixels",
-      "updatedAt": "2026-07-29T07:22:52Z"
+      "nextAction": "return_read_only_integration_portability_disposition_for_exact_east_candidate",
+      "boundedDeliverable": "one_approve_or_return_portability_audit_with_exact_import_sequence_and_stale_binding_risks",
+      "stopCondition": "no_mutation_sync_merge_dcc_pixels_commit_push_or_self_admission",
+      "updatedAt": "2026-07-29T08:35:53Z"
     },
     {
       "lane": "world_art",
@@ -140,17 +140,17 @@
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
       "claim": "PLAY-080",
       "publishedBase": "0186066bb88d78dc8dab4be03296d418ea2e259a",
-      "head": "a4f0827e1a84108772a068daefdc0b098297355d",
+      "head": "779cf5141a4735d6b7c84a0372f08c9ab111d358",
       "state": "predesign",
       "dispatchState": "working",
-      "acknowledgedAt": "2026-07-29T07:10:30Z",
+      "acknowledgedAt": "2026-07-29T08:35:53Z",
       "claimRevision": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
-      "cleanState": "clean_accepted_worker_candidate_before_sync",
+      "cleanState": "clean_integration_portable_locator_validator_candidate",
       "blocker": "appearance_lock_and_source_profile_intentionally_absent",
-      "nextAction": "sync_published_e9e9ed38_and_publish_south_renderer_locator_inventory",
-      "boundedDeliverable": "one_fail_closed_south_locator_inventory_without_pixels",
-      "stopCondition": "stop_on_sync_conflict_and_no_shared_schema_invention_blender_or_pixels",
-      "updatedAt": "2026-07-29T07:22:52Z"
+      "nextAction": "return_read_only_portability_disposition_and_minimal_import_sequence_for_south_repair",
+      "boundedDeliverable": "one_approve_or_return_audit_proving_no_worker_only_runtime_ancestry_dependency",
+      "stopCondition": "no_mutation_sync_merge_dcc_pixels_commit_push_or_self_admission",
+      "updatedAt": "2026-07-29T08:35:53Z"
     },
     {
       "lane": "world_art",
@@ -160,17 +160,17 @@
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
       "claim": "PLAY-081",
       "publishedBase": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
-      "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d",
+      "head": "0bc3bda9527e8cf53174e96d369c0ae013168093",
       "state": "returned",
       "dispatchState": "working",
-      "acknowledgedAt": "2026-07-29T07:10:30Z",
+      "acknowledgedAt": "2026-07-29T08:35:53Z",
       "claimRevision": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8",
-      "cleanState": "clean_returned_candidate_at_dispatch",
-      "blocker": "arbitrary_validator_output_and_in_repo_process_root_symlink_escape",
-      "nextAction": "bind_exact_task_output_and_reject_all_symlinked_abc_root_components",
-      "boundedDeliverable": "one_focused_path_safety_repair_with_shared_outside_and_symlink_redirect_tests",
-      "stopCondition": "no_blender_pixels_normalization_sync_push_or_unrelated_changes",
-      "updatedAt": "2026-07-29T07:22:52Z"
+      "cleanState": "clean_path_boundary_repair_candidate",
+      "blocker": "integration_must_independently_accept_repair_of_arbitrary_output_and_symlink_escape_defects",
+      "nextAction": "return_read_only_path_safety_disposition_and_minimal_portable_commit_sequence",
+      "boundedDeliverable": "one_approve_or_return_audit_covering_task_shared_outside_and_symlinked_process_roots",
+      "stopCondition": "no_mutation_sync_merge_dcc_pixels_commit_push_or_self_admission",
+      "updatedAt": "2026-07-29T08:35:53Z"
     },
     {
       "lane": "world_rendering",
@@ -180,17 +180,17 @@
       "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
       "claim": "PLAY-073",
       "publishedBase": "8214ba39d88ec30a28597e65a10f1b0bc5e1759e",
-      "head": "babee695bd849dbee44ff489fbc3e721c5a6b1d9",
-      "state": "intake_preparing",
+      "head": "270eb7515c1cc950f3bfe4b6687fd3ee788122c3",
+      "state": "intake_ready",
       "dispatchState": "working",
-      "acknowledgedAt": "2026-07-29T07:16:45Z",
+      "acknowledgedAt": "2026-07-29T08:35:53Z",
       "claimRevision": "4199f9da2f7955e85db4a3173e67ce2d8487fc9150266de34b4198f847afddf1",
-      "cleanState": "clean_in_progress_repair_checkpoint",
-      "blocker": "file_backed_assembler_path_containment_does_not_resolve_symlinks",
-      "nextAction": "repair_canonical_path_containment_and_add_input_and_output_symlink_escape_tests",
-      "boundedDeliverable": "one_narrow_descendant_repair_plus_refreshed_focused_nonshipping_proof",
-      "stopCondition": "no_app_runtime_resource_atlas_package_fixture_activation_or_shared_authority_publication",
-      "updatedAt": "2026-07-29T07:22:52Z"
+      "cleanState": "clean_integrated_nonshipping_atomic_assembly_harness_candidate",
+      "blocker": "appearance_lock_and_exact_integration_admitted_direction_receipts_are_absent",
+      "nextAction": "return_read_only_smallest_remaining_prelock_intake_ahead_claim_proposal",
+      "boundedDeliverable": "one_gap_audit_covering_admission_adapters_quarantine_join_fixture_and_immediate_assembly_trigger",
+      "stopCondition": "no_mutation_sync_merge_runtime_activation_resource_atlas_commit_or_push",
+      "updatedAt": "2026-07-29T08:35:53Z"
     },
     {
       "lane": "playtest_quality",
@@ -200,17 +200,17 @@
       "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
       "claim": "PLAY-075",
       "publishedBase": "b36bb1b1c680978328208716ca4a59caf8729f39",
-      "head": "7e6bd4c6c2980faf204e69ada38478a1b3455bff",
+      "head": "00ed0a68965199e3eb82129f1a16b41e95d7ba08",
       "state": "preregistered",
-      "dispatchState": "review_pending",
-      "acknowledgedAt": "2026-07-29T07:10:30Z",
+      "dispatchState": "working",
+      "acknowledgedAt": "2026-07-29T08:35:53Z",
       "claimRevision": "6e8df744fe19a0aade9ea24d455bc84976e8ba21552436b92be4932d495ac74f",
-      "cleanState": "clean_exact_execution_plan_candidate",
+      "cleanState": "clean_fixture_camera_preflight_candidate",
       "blocker": "exact_4of4_renderer_candidate_not_yet_available",
-      "nextAction": "independent_review_of_candidate_neutral_qa_execution_plan",
-      "boundedDeliverable": "read_only_evidence_root_and_join_dependency_inventory_while_candidate_is_frozen",
-      "stopCondition": "no_candidate_mutation_app_launch_pixels_measurement_scoring_or_disposition",
-      "updatedAt": "2026-07-29T07:22:52Z"
+      "nextAction": "return_read_only_portability_and_completeness_disposition_for_candidate_neutral_preflight",
+      "boundedDeliverable": "one_approve_or_return_audit_covering_fixture_cameras_layouts_rubric_stops_evidence_and_baseline_rehearsal",
+      "stopCondition": "no_mutation_sync_merge_app_launch_measurement_scoring_commit_push_or_disposition",
+      "updatedAt": "2026-07-29T08:35:53Z"
     }
   ]
 }

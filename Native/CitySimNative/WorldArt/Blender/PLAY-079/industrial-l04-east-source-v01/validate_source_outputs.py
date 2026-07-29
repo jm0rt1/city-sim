@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import pathlib
 import struct
@@ -22,6 +23,14 @@ from typing import Any
 SOURCE_ROOT = pathlib.Path(__file__).resolve().parent
 REPOSITORY_ROOT = SOURCE_ROOT.parents[5]
 CONTRACT_PATH = SOURCE_ROOT / "RUNNER-CONTRACT.json"
+SHARED_NON_ALIAS_LOADER_PATH = (
+    REPOSITORY_ROOT
+    / "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py"
+)
+SHARED_NON_ALIAS_LOADER_SHA256 = (
+    "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+)
+FORBIDDEN_SET_SHA256 = "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 
@@ -273,7 +282,41 @@ def resolve_output_paths(contract: dict[str, Any], process_id: str) -> dict[str,
     }
 
 
-def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
+def load_forbidden_decoded_rgba_hashes() -> tuple[set[str], dict[str, Any]]:
+    loader_digest = sha256_bytes(SHARED_NON_ALIAS_LOADER_PATH.read_bytes())
+    if loader_digest != SHARED_NON_ALIAS_LOADER_SHA256:
+        raise ValueError(
+            "shared non-alias loader hash mismatch: "
+            f"expected {SHARED_NON_ALIAS_LOADER_SHA256}, got {loader_digest}"
+        )
+    spec = importlib.util.spec_from_file_location(
+        "citysim_output_non_alias_v1",
+        SHARED_NON_ALIAS_LOADER_PATH,
+    )
+    if spec is None or spec.loader is None:
+        raise ValueError("could not load the shared non-alias loader")
+    loader = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = loader
+    spec.loader.exec_module(loader)
+    hashes = loader.load_forbidden_decoded_rgba(REPOSITORY_ROOT)
+    payload = "".join(f"{value}\n" for value in sorted(hashes)).encode("ascii")
+    actual_set_digest = sha256_bytes(payload)
+    if actual_set_digest != FORBIDDEN_SET_SHA256:
+        raise ValueError(
+            f"non-alias forbidden-set hash mismatch: {actual_set_digest}"
+        )
+    return set(hashes), {
+        "result": "PASS",
+        "loaderPath": str(SHARED_NON_ALIAS_LOADER_PATH.relative_to(REPOSITORY_ROOT)),
+        "loaderSha256": loader_digest,
+        "forbiddenDecodedRgbaSha256Count": 44,
+        "forbiddenSetSha256": actual_set_digest,
+        "candidatePixelsRead": 0,
+    }
+
+
+def pixel_validation() -> dict[str, Any]:
+    forbidden_hashes, non_alias_input = load_forbidden_decoded_rgba_hashes()
     contract = load_json(CONTRACT_PATH)
     coordinate_bridge = contract["invariants"]["coordinateBridge"]
     if coordinate_bridge["state"] != "validated_v06":
@@ -355,6 +398,7 @@ def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
         "nonAliasing": {
             "result": "PASS",
             "forbiddenHashCount": len(forbidden_hashes),
+            "input": non_alias_input,
         },
         "abcEquality": "PASS",
         "normalization": "not_run",
@@ -364,9 +408,9 @@ def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=("prelock", "pixels"), required=True)
-    parser.add_argument("--forbidden-decoded-rgba-sha256", action="append", default=[])
     args = parser.parse_args()
     if args.mode == "prelock":
+        _forbidden_hashes, non_alias_input = load_forbidden_decoded_rgba_hashes()
         result = {
             "schema": "citysim.world-art.direction-output-validation.v1",
             "taskId": "PLAY-079",
@@ -379,12 +423,15 @@ def main() -> int:
             "occupiedBounds": "not_run",
             "registration": "not_run",
             "literal192": "not_run",
-            "nonAliasing": "not_run",
+            "nonAliasing": {
+                "pixelComparison": "not_run",
+                "inputValidation": non_alias_input,
+            },
             "abcEquality": "not_run",
             "normalization": "not_run",
         }
     else:
-        result = pixel_validation(set(args.forbidden_decoded_rgba_sha256))
+        result = pixel_validation()
     sys.stdout.buffer.write(canonical_bytes(result))
     return 0
 

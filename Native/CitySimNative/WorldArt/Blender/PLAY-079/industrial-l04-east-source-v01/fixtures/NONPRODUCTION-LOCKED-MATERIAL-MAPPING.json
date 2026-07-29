@@ -1,0 +1,12 @@
+{
+  "schema": "citysim.world-art.nonproduction-material-mapping-fixture.v1",
+  "nonProductionFixture": true,
+  "materialRoleMapping": {
+    "dark-painted-steel": "#34383b",
+    "formed-concrete": "#7f7b70",
+    "hot-process": "#d15c31",
+    "portal-void": "#101010",
+    "safety-oxide": "#a94427",
+    "warm-weathered-masonry": "#8d6146"
+  }
+}

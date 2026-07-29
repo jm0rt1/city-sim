@@ -7,13 +7,22 @@
   "sourceReady": false,
   "productionSelected": false,
   "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "shipping": false,
   "authority": {
-    "publishedMaster": "2f218104cf924c5cb2e80f9a07501dd3755612bf",
-    "publishedMasterMerge": "7cac96b258359d053682ce6b38073a75f07ad457",
+    "publishedMaster": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+    "publishedMasterMerge": "7d15f884fd19e654342872850d0f21b99239b28a",
     "preservedWestAncestor": "c4a8b8f5bac5b864eb4595514a983f54a273aef3",
     "claimPath": "docs/production/claims/PLAY-081.world-art-west.md",
     "claimSha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8",
-    "implementationCommit": "3fe844fdbdfb88d668935707cb478b1ee074bc32"
+    "implementationCommit": "37909b6896d026b5fa52505b895c88340b79aaf7",
+    "frozenDesign": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+      "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
+      "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
+      "status": "DESIGN_FROZEN_IMPLEMENTATION_AND_INDEPENDENT_AUDIT_REQUIRED",
+      "productionAuthority": false
+    }
   },
   "inputs": {
     "runnerContract": {
@@ -22,27 +31,27 @@
     },
     "executionContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-      "sha256": "8d227ee3c76ff978b2a201b00673448408f73f3aa4cce3e59fc4d64ed681c2f9"
+      "sha256": "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0"
     },
     "implementation": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
-      "sha256": "06289cc40ce9689aeae54920f5596f5293d361cd3c4de01493c032e4c2595dab"
+      "sha256": "bfdb959206c802bea0f31733028cadc55fc0a8aae7d6ac9f4a83a19a0f4df70a"
     },
     "tests": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_west_execution_orchestration_v2.py",
-      "sha256": "d9aedd7c3216e12f7f9c8961b06fb8a238e53d20d8305778bcc325c4d95127b8"
+      "sha256": "80a052f6aabadc1d1cac1dd3b65b06c4aa82fb7183b7574ef0f6f9185844e48b"
     }
   },
   "commands": [
     {
       "command": "python3 -B -m unittest Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_west_execution_orchestration_v2.py",
       "exitCode": 0,
-      "result": "23 tests passed"
+      "result": "32 tests passed"
     },
     {
       "command": "python3 -B Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py --repository-root \"$PWD\" --mode self-test",
       "exitCode": 0,
-      "result": "parallel cap2 overlap and sequential cap1 non-overlap fixtures passed"
+      "result": "non-authoritative parallel trace passed; fake sequential exception rejected; no global cap or overlap authority claimed"
     },
     {
       "command": "python3 -B Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py --repository-root \"$PWD\" --mode describe",
@@ -71,7 +80,7 @@
     }
   ],
   "proof": {
-    "focusedTestCount": 23,
+    "focusedTestCount": 32,
     "queueJobCount": 11,
     "westQueueOrdinals": {
       "A": 4,
@@ -80,21 +89,32 @@
     },
     "parallelTwoSlot": {
       "maximumConcurrentDccProcesses": 2,
-      "maximumObservedConcurrency": 2,
-      "actualOverlap": true,
-      "overlapRequired": true,
-      "passed": true
+      "syntheticMaximumActive": 2,
+      "syntheticOverlap": true,
+      "syntheticTraceIsAuthority": false,
+      "integrationMustDeriveGlobalConcurrency": true,
+      "syntheticGuardPassed": true
     },
     "sequentialException": {
       "maximumConcurrentDccProcesses": 1,
-      "maximumObservedConcurrency": 1,
-      "actualOverlap": false,
+      "publishedExceptionAvailable": false,
+      "productionValidation": "not_run",
+      "committedDryFixtureValidation": "passed",
+      "fakePathCommitAndShaValidation": "rejected",
       "overlapForbidden": true,
       "integrationExceptionRequired": true,
-      "passed": true
+      "productionReady": false,
+      "guardValidationPassed": true
     },
     "validatedProperties": [
       "exact queue order and allocation ordinals",
+      "stable no-follow capture with device inode size mtime and ctime recheck",
+      "regular Git blob mode at the named authority commit",
+      "exact working-tree hash and git-show content identity",
+      "authority commit ancestry to candidate HEAD",
+      "contract-bound appearance lock material mapping production profile and A/B/C launch grants",
+      "strict duplicate-key and non-finite JSON rejection",
+      "sequential exception path commit hash content and queue binding",
       "monotonic event sequence and end-before-start simultaneous-boundary tie rule",
       "distinct exact lexical A/B/C raw semantic and evidence roots",
       "exactly-one invocation shape for each granted West process",
@@ -103,10 +123,20 @@
       "direction-local failure and cancellation isolation",
       "immutable append-only retry revision and retry roots",
       "FIFO start order after authorized cancellations",
-      "global cap proof and mode-specific overlap rule"
+      "mode-specific synthetic cap and overlap modeling without a West global claim"
     ],
     "negativeCoverage": [
       "missing future Integration authorities",
+      "nonexistent authority file",
+      "wrong caller path or SHA-256",
+      "working-tree hash and content drift",
+      "symlinked authority path",
+      "Git symlink mode instead of a regular blob",
+      "non-ancestral authority commit",
+      "git-show publication content mismatch",
+      "duplicate JSON keys and non-finite JSON values",
+      "fake or content-mismatched sequential exception",
+      "caller-supplied or symlink-redirected launch grant",
       "wrong direction ordinal root slot and invocation count",
       "FIFO reorder and missing invocation",
       "non-monotonic events and invalid simultaneous-boundary order",
@@ -123,10 +153,12 @@
   "blockers": [
     "Integration schedule schema is not published or bound",
     "Integration schedule authority is not published or bound",
+    "Integration A/B/C launch grants are not published or bound",
     "North appearance lock is not published or bound",
     "locked material mapping is not published or bound",
     "source production profile is not published or bound",
     "global strict execution receipt is not published or bound",
+    "Integration executable schemas strict validator and independent approval are not published",
     "production execution remains disabled",
     "production receipt emission remains disabled"
   ],

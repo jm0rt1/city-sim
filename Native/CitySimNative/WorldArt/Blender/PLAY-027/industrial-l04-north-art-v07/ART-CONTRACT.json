@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "artID": "industrial-l04-north-art-v07-prepixel",
+  "baseAuthority": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "acceptedBridge": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "scene": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/SCENE.json",
+    "sha256": "5b99b59d61992e3e1bbafbb3f08da986f70d88beb8f5a459af82120fc11eea8d"
+  },
+  "materials": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/MATERIALS.json",
+    "sha256": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "role": "immutable-returned-North-L4-family-identity-input"
+  },
+  "staticValidator": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/validate_predesign.py",
+    "sha256": "200efbed100bbfaf962b148dc50cd18d5f44f391e0ee3e3f82b994adc4eb54e1"
+  },
+  "actualCameraProofTool": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/prove_actual_camera.py",
+    "sha256": "406e8e2499df3fec24a73139cba2456f377f44de4efd3fdd064f0f476a2f56c9"
+  },
+  "staticValidation": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/STATIC-VALIDATION.json",
+    "sha256": "9f4f186ea4e46f2d090a37c117f8a5a61d815eeec7d54c453d0ebe96c8fd0818"
+  },
+  "architecture": {
+    "concept": "roofless-hammerhead-split-wing-foundry",
+    "canonicalNorthRoadEdge": "z=-28",
+    "canonicalNorthSocketCitySim": [0,0,-28],
+    "canonicalNorthSocketSource": [896,704],
+    "coordinateBasis": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "descriptorOrder": [0,1,2,3]
+  },
+  "pixelProduction": "not_produced",
+  "processes": {
+    "A": "not_produced",
+    "B": "not_produced",
+    "C": "not_produced"
+  },
+  "sourceAuthority": false,
+  "productionSelected": false
+}

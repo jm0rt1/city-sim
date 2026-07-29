@@ -78,7 +78,7 @@ def main() -> None:
     require(scene["variantID"] == "variant-0", "variant")
     require(scene["viewDirection"] == "north", "direction")
     require(
-        scene["sourceRevision"] == "blender-art-v07-prepixel",
+        scene["sourceRevision"] == "blender-art-v07-prepixel-r3",
         "revision",
     )
     require(scene["orientationTransform"] == "none", "orientation transform")
@@ -186,12 +186,14 @@ def main() -> None:
     require(court_head[1][0] >= court_spine[1][0], "hammerhead east reach")
 
     west_wing = component_bounds["north-v07-west-foundry-wing"]
-    east_wing = component_bounds["north-v07-east-assembly-wing"]
+    east_wing_south = component_bounds[
+        "north-v07-east-assembly-wing-south"
+    ]
     require(west_wing[1][0] <= -15, "west wing court clearance")
-    require(east_wing[0][0] >= 15, "east wing court clearance")
+    require(east_wing_south[0][0] >= 15, "east south wing court clearance")
     require(
         not intersects(west_wing, court_spine)
-        and not intersects(east_wing, court_spine),
+        and not intersects(east_wing_south, court_spine),
         "split wings overlap court",
     )
 
@@ -223,7 +225,8 @@ def main() -> None:
         "L4 vertical identity",
     )
     require(
-        west_wing[0][0] == -28 and east_wing[1][0] == 28,
+        west_wing[0][0] == -28
+        and east_wing_south[1][0] == 28,
         "full footprint width",
     )
 

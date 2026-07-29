@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "artID": "industrial-l04-north-art-v07-prepixel",
+  "artID": "industrial-l04-north-art-v07-prepixel-r3",
   "baseAuthority": "aa20d5963c356eee812f66bafff8582215293bbb",
   "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
   "acceptedBridge": {
@@ -10,7 +10,7 @@
   },
   "scene": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/SCENE.json",
-    "sha256": "5b99b59d61992e3e1bbafbb3f08da986f70d88beb8f5a459af82120fc11eea8d"
+    "sha256": "010ceee7aa1917e767ffb93faea6de1cdc1c31f85513b105de7efce16c7dde25"
   },
   "materials": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v03/MATERIALS.json",
@@ -19,15 +19,15 @@
   },
   "staticValidator": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/validate_predesign.py",
-    "sha256": "200efbed100bbfaf962b148dc50cd18d5f44f391e0ee3e3f82b994adc4eb54e1"
+    "sha256": "71571122ba03f1aecf4c36402d633324357c1f70b347a75e9f16c33aa05d1a68"
   },
   "actualCameraProofTool": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/prove_actual_camera.py",
-    "sha256": "406e8e2499df3fec24a73139cba2456f377f44de4efd3fdd064f0f476a2f56c9"
+    "sha256": "42befeea211f8657b68af0fa69b3fe80d23fd9f73a54a0d86cbb20743be4258e"
   },
   "staticValidation": {
     "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v07/STATIC-VALIDATION.json",
-    "sha256": "9f4f186ea4e46f2d090a37c117f8a5a61d815eeec7d54c453d0ebe96c8fd0818"
+    "sha256": "43689c4263bd88c8826fa51aae10fb9fa010c29b1951e4088415845e65100cdf"
   },
   "architecture": {
     "concept": "roofless-hammerhead-split-wing-foundry",

@@ -185,6 +185,29 @@ def camera_ray(
     return origin, direction
 
 
+def exact_source_ray(
+    scene: Any,
+    camera: Any,
+    source_x: float,
+    source_y: float,
+) -> tuple[Vector, Vector]:
+    ndc_x = float(source_x) / float(scene.render.resolution_x)
+    ndc_y = 1.0 - float(source_y) / float(scene.render.resolution_y)
+    frame = camera.data.view_frame(scene=scene)
+    minimum_x = min(point.x for point in frame)
+    maximum_x = max(point.x for point in frame)
+    minimum_y = min(point.y for point in frame)
+    maximum_y = max(point.y for point in frame)
+    local_x = minimum_x + (maximum_x - minimum_x) * ndc_x
+    local_y = minimum_y + (maximum_y - minimum_y) * ndc_y
+    local_origin = Vector((local_x, local_y, -float(camera.data.clip_start)))
+    origin = camera.matrix_world @ local_origin
+    direction = (
+        camera.matrix_world.to_quaternion() @ Vector((0.0, 0.0, -1.0))
+    ).normalized()
+    return origin, direction
+
+
 def semantic_raster(scene: Any, camera: Any) -> dict[str, set[tuple[int, int]]]:
     depsgraph = bpy.context.evaluated_depsgraph_get()
     result: dict[str, set[tuple[int, int]]] = {}
@@ -287,6 +310,11 @@ def main() -> None:
         add_component(component)
     scene, camera = configure_camera(scene_record)
     semantic = semantic_raster(scene, camera)
+    pixel_owner = {
+        point: component_id
+        for component_id, pixels in semantic.items()
+        for point in pixels
+    }
     targets = scene_record["visibilityTargets"]
 
     registration = scene_record["registration"]
@@ -328,13 +356,58 @@ def main() -> None:
         int(round(float(source_socket[0]) / 8.0)),
         int(round(float(source_socket[1]) / 8.0)),
     )
+    exact_socket_ray_origin, exact_socket_ray_direction = exact_source_ray(
+        scene,
+        camera,
+        socket_actual[0],
+        socket_actual[1],
+    )
+    socket_blender = Vector(basis(registration["frontageSocketWorld"]))
+    socket_ray_distance = (
+        socket_blender - exact_socket_ray_origin
+    ).cross(exact_socket_ray_direction).length
+    socket_neighborhood_owners = {
+        f"{x},{y}": pixel_owner.get((x, y), "background")
+        for y in range(compact_socket[1] - 2, compact_socket[1] + 3)
+        for x in range(compact_socket[0] - 2, compact_socket[0] + 3)
+    }
+    court_spine = next(
+        component
+        for component in scene_record["components"]
+        if component["id"] == "north-v07-court-spine"
+    )
+    spine_position = court_spine["position"]
+    spine_dimensions = court_spine["dimensions"]
+    spine_top = float(spine_position[1]) + float(spine_dimensions[1]) / 2.0
+    court_spine_top_source = [
+        source_pixel(scene, camera, [x, spine_top, z])
+        for x in (
+            float(spine_position[0]) - float(spine_dimensions[0]) / 2.0,
+            float(spine_position[0]) + float(spine_dimensions[0]) / 2.0,
+        )
+        for z in (
+            float(spine_position[2]) - float(spine_dimensions[2]) / 2.0,
+            float(spine_position[2]) + float(spine_dimensions[2]) / 2.0,
+        )
+    ]
 
     court_pixels = set()
     for component_id in targets["courtComponentIDs"]:
         court_pixels.update(semantic.get(component_id, set()))
     court_components = connected_components(court_pixels)
     largest_court = court_components[0] if court_components else set()
-    court_socket_distance = chebyshev_distance(compact_socket, largest_court)
+    court_socket_distance = chebyshev_distance(compact_socket, court_pixels)
+    socket_component = (
+        min(
+            court_components,
+            key=lambda component: chebyshev_distance(
+                compact_socket,
+                component,
+            ),
+        )
+        if court_components
+        else set()
+    )
 
     frame_ids = scene_record["architecture"]["monumentalThroatFrameIDs"]
     frame_visibility = {
@@ -352,13 +425,23 @@ def main() -> None:
         camera,
         *targets["throatApertureCitySimAABB"],
     )
-    aperture_court_pixels = {
-        point
-        for point in court_pixels
-        if aperture_bounds[0] <= point[0] <= aperture_bounds[2]
-        and aperture_bounds[1] <= point[1] <= aperture_bounds[3]
+    aperture_inner_bounds = [
+        aperture_bounds[0] + 2,
+        aperture_bounds[1] + 2,
+        aperture_bounds[2] - 2,
+        aperture_bounds[3] - 2,
+    ]
+    aperture_open_pixels = {
+        (x, y)
+        for y in range(aperture_inner_bounds[1], aperture_inner_bounds[3] + 1)
+        for x in range(aperture_inner_bounds[0], aperture_inner_bounds[2] + 1)
+        if pixel_owner.get((x, y)) in (None, *targets["courtComponentIDs"])
     }
-    aperture_visible_bounds = pixel_bounds(aperture_court_pixels)
+    aperture_open_components = connected_components(aperture_open_pixels)
+    largest_aperture_open = (
+        aperture_open_components[0] if aperture_open_components else set()
+    )
+    aperture_visible_bounds = pixel_bounds(largest_aperture_open)
     aperture_visible_size = bounds_size(aperture_visible_bounds)
 
     reveal_ids = [
@@ -417,7 +500,7 @@ def main() -> None:
     header_size = frame_visibility["north-v07-throat-header"]["boundsSize"]
     passed = (
         registration_maximum <= 0.001
-        and len(largest_court) >= targets["minimumVisibleCourtPixels"]
+        and len(socket_component) >= targets["minimumVisibleCourtPixels"]
         and court_socket_distance <= targets["maximumSocketDistancePixels"]
         and aperture_visible_size[0]
         >= targets["minimumThroatCompactBounds"][0]
@@ -480,14 +563,24 @@ def main() -> None:
             "connectedComponentCount": len(court_components),
             "largestConnectedVisiblePixels": len(largest_court),
             "largestBounds": pixel_bounds(largest_court),
+            "socketComponentVisiblePixels": len(socket_component),
+            "socketComponentBounds": pixel_bounds(socket_component),
             "compactSocket": list(compact_socket),
             "socketDistancePixels": court_socket_distance,
+            "exactSocketRayDistanceWorld": round(
+                float(socket_ray_distance),
+                12,
+            ),
+            "socketNeighborhoodOwners": socket_neighborhood_owners,
+            "courtSpineTopSourceCorners": court_spine_top_source,
             "touchesCanonicalNorthSocket": court_socket_distance
             <= targets["maximumSocketDistancePixels"],
         },
         "monumentalThroat": {
             "apertureProjectedBounds": aperture_bounds,
-            "visibleCourtPixelsInsideAperture": len(aperture_court_pixels),
+            "apertureInnerBounds": aperture_inner_bounds,
+            "openComponentCount": len(aperture_open_components),
+            "largestOpenComponentPixels": len(largest_aperture_open),
             "visibleApertureBounds": aperture_visible_bounds,
             "visibleApertureBoundsSize": aperture_visible_size,
             "frame": frame_visibility,

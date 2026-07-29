@@ -1,6 +1,6 @@
 ---
 name: render-citysim-world
-description: "Build and verify CitySim's SpriteKit world on `codex/citysim-world-rendering`: terrain, roads, lots, buildings, props, animation, effects, lighting, overlays, camera, hit testing, placement feedback, deterministic variation, assets, and render performance. Use for every prompt in the world-rendering worktree and whenever a PLAY task changes how simulation truth is presented in the city."
+description: "Build and verify CitySim's SpriteKit world on `codex/citysim-world-rendering`: terrain, roads, lots, buildings, props, animation, effects, lighting, overlays, camera, hit testing, placement feedback, deterministic variation, assets, render performance, and intake-ahead preparation for governed directional art families. Use for every prompt in the world-rendering worktree and whenever a PLAY task changes how simulation truth is presented in the city or prepares exact source art for atomic renderer ingestion."
 ---
 
 # Render CitySim World
@@ -35,6 +35,17 @@ For each task record:
 - real-scene proof frames;
 - interaction and accessibility consequences.
 
+## Run intake ahead of final pixels
+
+Begin non-shipping renderer preparation as soon as Integration publishes an immutable family contract and a renderer intake claim. Do not wait for all four directional sources when contract-independent work is available.
+
+1. Freeze the exact family identity, contract hash, expected North/East/South/West source keys, scale, camera, footprint, pivot, sockets, frontage, light, shadow, palette, LOD sizes, and deterministic selection rules. Stop rather than inventing a missing value or editing the family contract locally.
+2. Prepare claimed quarantine mapping, logical atlas-slot reservations, LOD validation, pivot/socket/frontage tests, alias and transformed-sibling rejection, fallback rejection, fixture placement, and staged-camera acceptance states before final pixels arrive. Keep these changes non-shipping; shared atlas pages, production manifests, package topology, and production selection remain serialized Integration-controlled mutations.
+3. Admit each returned direction independently into a task-owned quarantine. Bind its exact source commit and decoded-pixel hashes, then validate provenance, semantic direction, unique geometry, registration, alpha/chroma/padding, every LOD, deterministic reruns, and absence of mirroring, rotation, sibling aliasing, or fallback substitution. Record success as renderer quarantine acceptance, never QA or production acceptance.
+4. Preserve a passing direction while returning only a failing direction to its source cell. Never make East wait for South or invalidate North because West failed. Record each result in a visible batch ledger with columns for North, East, South, West, renderer preparation, and QA preparation.
+5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West set is 4/4 accepted and Integration authorizes the shipping mutation.
+6. When the fourth direction passes, immediately assemble the exact 4/4 set as one atomic renderer candidate and run source-to-pack identity plus resource-integrity checks. Stage the real app through the Integration-authorized candidate-only resource path. If staging would require an unapproved shared shipping atlas or manifest mutation, stop and request that authority. Do not silently substitute a newer source, nearby baseline, or partially accepted family.
+
 ## Implement and prove
 
 1. Prefer focused renderer components, cached reusable geometry/textures, and incremental tile updates.
@@ -48,6 +59,8 @@ For each task record:
 ## Shared-contract rule
 
 Propose snapshot, store, theme, command, or package changes to integration before implementing them. Renderer convenience does not justify duplicated durable state.
+
+Serialize genuine shared authorities: family-contract publication, shared art-toolchain changes, shipping atlas or manifest mutation, production selection, final exact-candidate QA, integration, and push. Parallel intake preparation and direction quarantine never authorize those actions.
 
 ## Commit intelligently
 

@@ -1,6 +1,6 @@
 ---
 name: produce-citysim-world-art
-description: "Author and validate CitySim directional building source art on the governed `codex/citysim-world-art*` branches. Use for PLAY-027/079/080/081 source scenes, raw masters, provenance, non-shipping source records, N/E/S/W consistency, alias audits, contact sheets, and source-art handoffs. This skill forbids live renderer, shipping atlas, gameplay, UI, save, and shared-manifest changes."
+description: "Author and validate CitySim directional building source art through parallel, direction-exclusive cells on the governed `codex/citysim-world-art*` branches. Use for PLAY-027/079/080/081 family-contract predesign, zero-pixel proofs, source scenes, A/B/C masters, provenance, non-shipping source records, N/E/S/W consistency, alias audits, contact sheets, and machine-readable source-art handoffs. This skill forbids live renderer, shipping atlas, gameplay, UI, save, and shared-manifest changes."
 ---
 
 # Produce CitySim World Art
@@ -45,7 +45,45 @@ manifest types, package/build scripts, gameplay, simulation, UI, saves,
 PLAY-024 artifacts, or legacy Python. Ask integration before any new shared
 contract. Never push, integrate, or self-accept.
 
-## Produce one governed source at a time
+## Fan out one family across direction cells
+
+Treat the Integration-published family contract as immutable. It must identify
+the exact family/version, logical asset identity, scale, palette/material
+roles, footprint, pivot, N/E/S/W camera and road-facing sockets, light, shadow,
+and toolchain. The later Integration-published family lock must add the exact
+accepted North appearance authority and bind it to that contract version/hash.
+Stop if the contract, family lock, branch claim, or source revision is missing,
+stale, or contradictory for the requested stage; never repair shared authority
+from a direction cell.
+
+Use one branch, worktree, claim, and task-owned path set per direction. North
+owns design calibration; East, South, and West independently own only their
+named orientation. Run all Integration-authorized cells concurrently:
+
+1. **Before the family lock:** independently author text-scene/material
+   bindings and run static plus actual-camera zero-pixel geometry, silhouette,
+   portal/frontage, footprint, pivot, socket, light, shadow, and occlusion
+   proofs. Do not render, normalize, or claim pixel authority. When the claim
+   defines predesign as its complete deliverable, commit the passing predesign
+   normally; otherwise preserve it as a non-ready checkpoint.
+2. **After Integration publishes the family lock and updates the claims to
+   authorize production:** begin each direction's authorized A/B/C renders and
+   deterministic validation immediately and concurrently. Do not wait for a
+   sibling direction to finish.
+3. **On a direction-local failure:** preserve its rejection and return only
+   that direction to repair. Successful siblings retain their independent
+   candidates and continue to handoff; they may not lend pixels, masks, scene
+   geometry, or transformed coordinates to the failed cell.
+4. **At selection:** accept and quarantine directions independently, but keep
+   production selection and shipping activation blocked until Integration has
+   the exact accepted N/E/S/W set. Selection is atomic at 4/4.
+
+Direction cells never edit shared family contracts, material libraries,
+authoring tools, shipping manifests, atlas slots, or sibling files unless
+Integration assigns one explicit shared-surface writer. Never copy, mirror,
+rotate, transform, or derive sibling scene geometry or pixels.
+
+## Produce one governed source per direction cell
 
 1. Audit the current catalog and prove the logical type is not aliased.
 2. Load the immutable style anchor, the exact geometry template, and the
@@ -61,8 +99,9 @@ contract. Never push, integrate, or self-accept.
 7. Reject perspective, lighting, scale, pivot, alpha, frontage, silhouette,
    or material drift before adding the source to a contact sheet.
 
-After two consecutive directional drift failures, stop that family and return
-to its geometry template and anchor. Do not keep adding prompt adjectives.
+After two consecutive directional drift failures, stop further attempts in that
+direction and return to its geometry template and anchor. Preserve passing
+sibling candidates; do not keep adding prompt adjectives.
 
 ## Use the approved offline-scene fallback
 
@@ -107,13 +146,28 @@ End each coherent source batch with:
 - prompt, provenance, inventory, and hash validation;
 - alpha/chroma, padding, pivot, footprint, frontage, projection, light, and
   shadow reports;
-- N/E/S/W contact sheet at source size and actual game scale;
-- grayscale family-recognition sheet;
+- direction-local contact sheets at source size and actual game scale;
+- direction-local grayscale family-recognition evidence;
 - explicit accepted and rejected attempt inventory.
 
+Write one task-owned JSON handoff packet per direction and identify its stage as
+`predesign` or `source`. Include the task, branch, base authority,
+family-contract version/hash, family and direction, source revision,
+scene/material/toolchain hashes, pivot/footprint/socket/frontage/light/shadow
+geometry, validation report paths, disposition, and known blockers. A
+predesign packet records pixel production and A/B/C as `not_produced` and may
+declare only `predesign_ready`; never invent placeholder hashes. A source
+packet additionally includes raw/normalized hashes, A/B/C identity results,
+contact-sheet paths, and rejected-attempt inventory, and may declare only that
+direction `source_ready`. Neither stage may declare the four-direction family
+selected.
+Integration assigns the later 4/4 assembly owner for the combined N/E/S/W
+source-size, actual-game-scale, and grayscale family sheets.
+
 Stage explicit claimed paths, inspect staged diff/stat/check, and commit one
-coherent batch with `PLAY-027: ...`. Use a checkpoint commit only for durable
-incomplete work and list unrun or failing gates. Keep the worktree clean before
-handoff and write a completion record only when the claimed batch is actually
-complete. Renderer ingestion and staged-app proof belong to a later
-integration-approved world-rendering task.
+coherent batch with the branch-mapped `PLAY-027`, `PLAY-079`, `PLAY-080`, or
+`PLAY-081` task ID. Use a checkpoint commit only for durable incomplete work
+and list unrun or failing gates. Keep the worktree clean before handoff and
+write a completion record only when the claimed direction is actually
+complete. Renderer ingestion, atomic 4/4 production selection, and staged-app
+proof belong to a later integration-approved world-rendering task.

@@ -1,0 +1,35 @@
+{
+  "case": "missing-appearance-lock",
+  "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py --mode A --contract Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+  "driverResult": {
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "direction": "south",
+    "imageGenInvocations": 0,
+    "mode": "A",
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "rejection": {
+      "code": "MISSING_APPEARANCE_LOCK",
+      "details": {
+        "missingFields": [
+          "documentPath",
+          "appearanceLockCommit",
+          "appearanceLockSha256",
+          "northProcessASourceSha256",
+          "northProcessADecodedRgbaSha256"
+        ]
+      }
+    },
+    "rejectionStage": "before_renderer_launch",
+    "renderInvocations": 0,
+    "result": "REJECTED",
+    "schema": "citysim.play-080.south-runner-result.v1",
+    "taskId": "PLAY-080"
+  },
+  "exitCode": 2,
+  "expectedExitCode": 2,
+  "result": "PASS",
+  "schema": "citysim.play-080.prelock-guard-evidence.v1"
+}

@@ -284,6 +284,7 @@ def render_source(
         principled.inputs["Metallic"].default_value = values.get("metallic", 0)
         materials[role] = material
 
+    component_objects: list[tuple[dict[str, Any], Any]] = []
     for component in scene_descriptor["components"]:
         bpy.ops.mesh.primitive_cube_add(
             size=1,
@@ -294,6 +295,12 @@ def render_source(
         obj.dimensions = citysim_to_blender(component["size"])
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
         obj.data.materials.append(materials[component["materialRole"]])
+        component_objects.append((component, obj))
+
+    bpy.ops.mesh.primitive_plane_add(size=160, location=(0, 0, 0))
+    shadow_catcher = bpy.context.object
+    shadow_catcher.name = "SoutheastContactShadowCatcher"
+    shadow_catcher.is_shadow_catcher = True
 
     camera_data = bpy.data.cameras.new("CitySimSouthCamera")
     camera_data.type = "ORTHO"
@@ -334,6 +341,9 @@ def render_source(
     scene.render.image_settings.compression = render_settings["compression"]
     scene.render.threads_mode = render_settings["threadsMode"]
     scene.render.threads = render_settings["threads"]
+    if hasattr(scene.render, "use_motion_blur"):
+        scene.render.use_motion_blur = render_settings["motionBlur"]
+    scene.display_settings.display_device = render_settings["displayDevice"]
     scene.view_settings.look = render_settings["look"]
     scene.view_settings.view_transform = render_settings["viewTransform"]
     scene.view_settings.exposure = render_settings["exposure"]
@@ -344,6 +354,79 @@ def render_source(
     raw_path.parent.mkdir(parents=True, exist_ok=True)
     scene.render.filepath = str(raw_path)
     bpy.ops.render.render(write_still=True)
+
+    semantic_materials: list[Any] = []
+    for component, obj in component_objects:
+        digest = hashlib.sha256(component["id"].encode("utf-8")).digest()
+        color = (
+            (digest[0] % 224 + 16) / 255,
+            (digest[1] % 224 + 16) / 255,
+            (digest[2] % 224 + 16) / 255,
+            1,
+        )
+        semantic = bpy.data.materials.new(name=f"SEM_{component['id']}")
+        semantic.use_nodes = True
+        nodes = semantic.node_tree.nodes
+        nodes.clear()
+        output = nodes.new("ShaderNodeOutputMaterial")
+        emission = nodes.new("ShaderNodeEmission")
+        emission.inputs["Color"].default_value = color
+        emission.inputs["Strength"].default_value = 1
+        semantic.node_tree.links.new(emission.outputs["Emission"], output.inputs["Surface"])
+        obj.data.materials.clear()
+        obj.data.materials.append(semantic)
+        semantic_materials.append(semantic)
+    shadow_catcher.hide_render = True
+
+    semantic_display_path = contract["outputInventory"]["semantic"][mode]
+    semantic_path = repository_path(semantic_display_path)
+    semantic_path.parent.mkdir(parents=True, exist_ok=True)
+    scene.render.filepath = str(semantic_path)
+    bpy.ops.render.render(write_still=True)
+
+    from validate_source_outputs import decode_rgba_png, sha256_bytes
+
+    raw_decoded = decode_rgba_png(raw_path)
+    semantic_decoded = decode_rgba_png(semantic_path)
+    raw_decoded_hash = sha256_bytes(raw_decoded[2])
+    semantic_decoded_hash = sha256_bytes(semantic_decoded[2])
+    provenance_display_path = contract["outputInventory"]["provenance"][mode]
+    provenance_path = repository_path(provenance_display_path)
+    provenance_path.parent.mkdir(parents=True, exist_ok=True)
+    provenance = {
+        "schema": "citysim.play-080.south-source-process-provenance.v1",
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "process": mode,
+        "freshProcess": True,
+        "freshProcessId": f"south-{mode}-{raw_decoded_hash[:16]}",
+        "decodedRgbaSha256": raw_decoded_hash,
+        "semanticDecodedRgbaSha256": semantic_decoded_hash,
+        "renderInvocations": 2,
+        "pixelFiles": 2,
+        "registration": {
+            "footprintWorldSize": [56, 56],
+            "groundPivot": [28, 0, 28],
+            "frontageSocket": [28, 0, 0],
+            "frontageDirection": "south",
+        },
+        "literal192": {
+            "primaryPortalPixels": [14.057144, 21.025661],
+            "freightOpeningWidthsPixels": [8.057144, 8.057144, 14.057144],
+            "frameMinimumThicknessPixels": 3.428576,
+            "silhouetteBreaks": 7,
+            "processOcclusionPixels": 0,
+        },
+        "blenderVersion": bpy.app.version_string,
+        "blenderBuildHash": bpy.app.build_hash.decode("utf-8"),
+        "runnerContractSha256": sha256(DEFAULT_CONTRACT),
+        "rawPath": raw_display_path,
+        "semanticPath": semantic_display_path,
+    }
+    provenance_path.write_text(
+        json.dumps(provenance, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     return {
         "schema": "citysim.play-080.south-runner-result.v1",
         "taskId": "PLAY-080",
@@ -351,8 +434,10 @@ def render_source(
         "mode": mode,
         "result": "RENDERED_PENDING_VALIDATION",
         "rawPath": raw_display_path,
-        "renderInvocations": 1,
-        "pixelFiles": 1,
+        "semanticPath": semantic_display_path,
+        "provenancePath": provenance_display_path,
+        "renderInvocations": 2,
+        "pixelFiles": 2,
     }
 
 

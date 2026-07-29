@@ -7,7 +7,7 @@
   "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
   "schemaSha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951",
   "handoffPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PRELOCK-RUNNER-HANDOFF.json",
-  "handoffSha256": "d959a935013fbdb6532d10ef52f817cc48d1101cd122a1cbaa231cd793c4b4f6",
+  "handoffSha256": "8bff0e6ea7459348a3b304f1232e67ac119de3ac76bbe25d80b3ecd620265e82",
   "runnerFileCount": 4,
   "renderInvocations": 0,
   "pixelFiles": 0

@@ -8,9 +8,10 @@
   "static": {
     "result": "PASS",
     "topLevelBpyImports": 0,
-    "workerAppearanceGuardLine": 400,
-    "workerBpyImportLine": 403,
-    "guardPrecedesBpyImport": true,
+    "workerAppearanceGuardLine": 485,
+    "workerCoordinateBridgeGuardLine": 486,
+    "workerBpyImportLine": 489,
+    "bothGuardsPrecedeBpyImport": true,
     "guardedFutureRenderApiReferences": 2,
     "repeatIdentityPass": true,
     "frozenInputCount": 10
@@ -26,6 +27,25 @@
     "result": "REJECTED",
     "stage": "before_renderer_launch",
     "code": "unpublished_or_wrong_appearance_lock"
+  },
+  "coordinateBridge": {
+    "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/COORDINATE-BRIDGE-V06-BLOCKER.json",
+    "sha256": "04eba93689707b66e4d39db85dab239c4ad1391fc54f68201cce605ef7d320b5",
+    "state": "pending_v06_revalidation",
+    "result": "REJECTED",
+    "stage": "before_renderer_launch",
+    "code": "coordinate_bridge_pending_v06",
+    "canonicalCitySimEastSocket": [
+      28.0,
+      0.0,
+      0.0
+    ],
+    "sourcePixelEastSocket": [
+      896.0,
+      832.0
+    ],
+    "blenderNativeDirectionalSocket": null,
+    "historicalPredesignProjectionAdapterFutureSourceAuthority": false
   },
   "invocations": {
     "blenderProcessLaunches": 0,
@@ -46,9 +66,9 @@
     "normalization": "not_run"
   },
   "runnerHashes": {
-    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json": "cf62ccac71194a6da0f585d3689367dcff62bc31675812ab7b1136d83c08230d",
-    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/run_production.py": "ca1982f13240cd8fd8878f275fd9a0f86b163cc04e72e365cb0ab9467d88d163",
-    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_prelock.py": "25a6b2ff75227c9584009a9bd92cad3d5e01fe4228bbab53b491f093c6000bfb",
-    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_source_outputs.py": "23f216ef4914e9e1d6e2604b0dd322c05fff3e1b07a14f3f274b24056a2b4822"
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json": "4abc6229d62babc9d0e9a496499dbc798d6df6b4dab1448ec4fd7cfafb2dc4fb",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/run_production.py": "6b7a3ed76ced4dc12da41cc11c7d2856285338c60013b42c987b68998df6e77d",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_prelock.py": "72d1b9d6a8f1ee71351306540ca7ebf3045f7d8596639e93b11f8a2cc7ecb6f0",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_source_outputs.py": "2458d5f3ce68deb783d490d8f4dad96e5ef3a83ba1b4a6ae46f5e76d48be866f"
   }
 }

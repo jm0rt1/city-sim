@@ -247,11 +247,12 @@ def validate_provenance(
     path: pathlib.Path,
 ) -> dict[str, Any]:
     value = load_json(path)
+    bridge = contract["invariants"]["coordinateBridge"]["v06"]
     expected = {
         "taskId": "PLAY-079",
         "direction": "east",
         "processId": process_id,
-        "sceneSha256": contract["acceptedPredesign"]["scene"]["sha256"],
+        "sceneSha256": bridge["projectionAdapterSha256"],
         "contractSha256": sha256_bytes(CONTRACT_PATH.read_bytes()),
         "factoryStartup": True,
         "autoexecDisabled": True,
@@ -273,6 +274,21 @@ def resolve_output_paths(contract: dict[str, Any], process_id: str) -> dict[str,
 
 def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
     contract = load_json(CONTRACT_PATH)
+    coordinate_bridge = contract["invariants"]["coordinateBridge"]
+    if coordinate_bridge["state"] != "validated_v06":
+        raise ValueError("pixel validation blocked pending v06 coordinate-bridge revalidation")
+    bridge = coordinate_bridge["v06"]
+    if any(
+        bridge.get(key) is None
+        for key in (
+            "projectionAdapterSha256",
+            "blenderNativeDirectionalSocket",
+            "blenderNativeGroundPivot",
+            "blenderNativeFootprintCorners",
+            "blenderContactCornerOrder",
+        )
+    ):
+        raise ValueError("pixel validation blocked by incomplete v06 coordinate bridge")
     decoded: dict[str, dict[str, tuple[int, int, bytes]]] = {}
     provenance: dict[str, dict[str, Any]] = {}
     for process_id in ("A", "B", "C"):
@@ -304,12 +320,14 @@ def pixel_validation(forbidden_hashes: set[str]) -> dict[str, Any]:
     bounds = occupied_bounds(width, height, raw_rgba)
     compact = literal192_proof(width, height, semantic_rgba, contract)
     registration = {
-        "sourcePixelPivot": contract["invariants"]["registration"]["sourcePixelPivot"],
-        "sourcePixelSocket": contract["invariants"]["registration"]["sourcePixelSocket"],
+        "canonicalCitySimEastSocket": coordinate_bridge["canonicalCitySimEastSocket"],
+        "sourcePixelEastSocket": coordinate_bridge["sourcePixelEastSocket"],
+        "blenderNativeDirectionalSocket": bridge["blenderNativeDirectionalSocket"],
+        "blenderNativeGroundPivot": bridge["blenderNativeGroundPivot"],
+        "blenderNativeFootprintCorners": bridge["blenderNativeFootprintCorners"],
+        "blenderContactCornerOrder": bridge["blenderContactCornerOrder"],
         "tolerance": contract["invariants"]["registration"]["sourcePixelTolerance"],
-        "frozenActualCameraProofSha256": contract["acceptedPredesign"]["actualCameraProof"][
-            "sha256"
-        ],
+        "projectionAdapterSha256": bridge["projectionAdapterSha256"],
         "result": "PASS",
     }
     return {

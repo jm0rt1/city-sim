@@ -102,12 +102,49 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         raise GuardRejected("process_mode_contract_mismatch", str(contract.get("processModes")))
 
     invariants = contract["invariants"]
-    if invariants["registration"]["frontage"] != "east":
-        raise GuardRejected("frontage_mismatch", str(invariants["registration"]["frontage"]))
-    if invariants["registration"]["groundPivot"] != [28.0, -28.0, 0.0]:
-        raise GuardRejected("pivot_mismatch", str(invariants["registration"]["groundPivot"]))
-    if invariants["registration"]["frontageSocket"] != [28.0, 0.0, 0.0]:
-        raise GuardRejected("socket_mismatch", str(invariants["registration"]["frontageSocket"]))
+    registration = invariants["registration"]
+    if registration["canonicalCitySimDirection"] != "east":
+        raise GuardRejected(
+            "canonical_direction_mismatch",
+            str(registration["canonicalCitySimDirection"]),
+        )
+    if registration["canonicalCitySimFrontageSocket"] != [28.0, 0.0, 0.0]:
+        raise GuardRejected(
+            "canonical_citysim_socket_mismatch",
+            str(registration["canonicalCitySimFrontageSocket"]),
+        )
+    if registration["sourcePixelFrontageSocket"] != [896.0, 832.0]:
+        raise GuardRejected(
+            "source_pixel_socket_mismatch",
+            str(registration["sourcePixelFrontageSocket"]),
+        )
+    bridge = invariants["coordinateBridge"]
+    if bridge["canonicalCitySimEastSocket"] != [28.0, 0.0, 0.0]:
+        raise GuardRejected(
+            "coordinate_bridge_citysim_socket_mismatch",
+            str(bridge["canonicalCitySimEastSocket"]),
+        )
+    if bridge["sourcePixelEastSocket"] != [896.0, 832.0]:
+        raise GuardRejected(
+            "coordinate_bridge_source_socket_mismatch",
+            str(bridge["sourcePixelEastSocket"]),
+        )
+    historical = bridge["historicalPredesignProjectionAdapter"]
+    if historical["path"] != contract["acceptedPredesign"]["scene"]["path"]:
+        raise GuardRejected(
+            "historical_projection_adapter_path_mismatch",
+            str(historical["path"]),
+        )
+    if historical["sha256"] != contract["acceptedPredesign"]["scene"]["sha256"]:
+        raise GuardRejected(
+            "historical_projection_adapter_hash_mismatch",
+            str(historical["sha256"]),
+        )
+    if historical["futureSourceAuthority"] is not False:
+        raise GuardRejected(
+            "historical_projection_adapter_promoted",
+            "accepted predesign projection adapter is not future source authority",
+        )
     cycles = invariants["cycles"]
     expected_cycles = {
         "engine": "CYCLES",
@@ -193,6 +230,53 @@ def validate_appearance_lock(
     return lock
 
 
+def validate_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
+    bridge = contract["invariants"]["coordinateBridge"]
+    if bridge["state"] != "validated_v06":
+        raise GuardRejected(
+            "coordinate_bridge_pending_v06",
+            "direction projection and Blender coordinate bridge require v06 revalidation",
+        )
+    binding = bridge["v06"]
+    required = (
+        "authorityPath",
+        "commit",
+        "documentSha256",
+        "projectionAdapterPath",
+        "projectionAdapterSha256",
+        "blenderNativeDirectionalSocket",
+        "blenderNativeGroundPivot",
+        "blenderNativeFootprintCorners",
+        "blenderContactCornerOrder",
+    )
+    if any(binding.get(key) is None for key in required):
+        raise GuardRejected(
+            "coordinate_bridge_incomplete",
+            "v06 coordinate-bridge binding is incomplete",
+        )
+    adapter_path = repository_path(binding["projectionAdapterPath"])
+    try:
+        adapter_digest = sha256_bytes(adapter_path.read_bytes())
+    except OSError as error:
+        raise GuardRejected("coordinate_bridge_adapter_missing", str(adapter_path)) from error
+    if adapter_digest != binding["projectionAdapterSha256"]:
+        raise GuardRejected(
+            "coordinate_bridge_adapter_hash_mismatch",
+            f"expected {binding['projectionAdapterSha256']}, got {adapter_digest}",
+        )
+    authority_path = repository_path(binding["authorityPath"])
+    try:
+        authority_digest = sha256_bytes(authority_path.read_bytes())
+    except OSError as error:
+        raise GuardRejected("coordinate_bridge_authority_missing", str(authority_path)) from error
+    if authority_digest != binding["documentSha256"]:
+        raise GuardRejected(
+            "coordinate_bridge_authority_hash_mismatch",
+            f"expected {binding['documentSha256']}, got {authority_digest}",
+        )
+    return binding
+
+
 def output_paths(contract: dict[str, Any], process_id: str) -> dict[str, pathlib.Path]:
     inventory = contract["outputInventory"]
     root = repository_path(inventory["root"])
@@ -242,6 +326,7 @@ def execute(
             "pixelFiles": 0,
         }
     lock = validate_appearance_lock(contract, appearance_lock_path)
+    validate_coordinate_bridge(contract)
     if appearance_lock_path is None:
         raise AssertionError("appearance lock guard returned without a path")
     returncode = launcher(contract, mode, appearance_lock_path)
@@ -398,12 +483,13 @@ def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
     contract = load_json(CONTRACT_PATH)
     validate_contract(contract)
     lock = validate_appearance_lock(contract, appearance_lock_path)
+    bridge = validate_coordinate_bridge(contract)
 
-    # The hard guard above must complete before this process imports bpy.
+    # Both hard guards above must complete before this process imports bpy.
     import bpy  # type: ignore
     from mathutils import Vector  # type: ignore
 
-    scene_data = load_json(repository_path(contract["acceptedPredesign"]["scene"]["path"]))
+    scene_data = load_json(repository_path(bridge["projectionAdapterPath"]))
     scene, built = build_blender_scene(
         bpy,
         Vector,
@@ -425,7 +511,7 @@ def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
         "direction": "east",
         "processId": mode,
         "appearanceLockCommit": lock["commit"],
-        "sceneSha256": contract["acceptedPredesign"]["scene"]["sha256"],
+        "sceneSha256": bridge["projectionAdapterSha256"],
         "contractSha256": sha256_bytes(CONTRACT_PATH.read_bytes()),
         "blenderVersion": bpy.app.version_string,
         "blenderBuildHash": bpy.app.build_hash.decode("utf-8"),

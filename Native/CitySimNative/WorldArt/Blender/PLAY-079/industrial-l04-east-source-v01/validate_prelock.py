@@ -58,7 +58,8 @@ def static_driver_proof(driver: Any) -> dict[str, Any]:
     source = DRIVER_PATH.read_text(encoding="utf-8")
     tree = ast.parse(source)
     top_level_bpy_imports = 0
-    worker_guard_line: int | None = None
+    worker_appearance_guard_line: int | None = None
+    worker_bridge_guard_line: int | None = None
     worker_bpy_import_line: int | None = None
     for node in tree.body:
         if isinstance(node, (ast.Import, ast.ImportFrom)):
@@ -68,7 +69,9 @@ def static_driver_proof(driver: Any) -> dict[str, Any]:
             for child in ast.walk(node):
                 if isinstance(child, ast.Call) and isinstance(child.func, ast.Name):
                     if child.func.id == "validate_appearance_lock":
-                        worker_guard_line = child.lineno
+                        worker_appearance_guard_line = child.lineno
+                    if child.func.id == "validate_coordinate_bridge":
+                        worker_bridge_guard_line = child.lineno
                 if isinstance(child, (ast.Import, ast.ImportFrom)):
                     names = [alias.name for alias in child.names]
                     if any(name == "bpy" or name.startswith("bpy.") for name in names):
@@ -76,10 +79,14 @@ def static_driver_proof(driver: Any) -> dict[str, Any]:
     render_references = source.count("bpy.ops.render.render(")
     if top_level_bpy_imports != 0:
         raise RuntimeError("bpy must not be imported before the render guard")
-    if worker_guard_line is None or worker_bpy_import_line is None:
+    if (
+        worker_appearance_guard_line is None
+        or worker_bridge_guard_line is None
+        or worker_bpy_import_line is None
+    ):
         raise RuntimeError("worker guard/import ordering could not be proved")
-    if worker_guard_line >= worker_bpy_import_line:
-        raise RuntimeError("worker imports bpy before validating the appearance lock")
+    if max(worker_appearance_guard_line, worker_bridge_guard_line) >= worker_bpy_import_line:
+        raise RuntimeError("worker imports bpy before validating both hard guards")
     if render_references != 2:
         raise RuntimeError(f"expected two guarded future render references, found {render_references}")
 
@@ -91,9 +98,10 @@ def static_driver_proof(driver: Any) -> dict[str, Any]:
     return {
         "result": "PASS",
         "topLevelBpyImports": top_level_bpy_imports,
-        "workerAppearanceGuardLine": worker_guard_line,
+        "workerAppearanceGuardLine": worker_appearance_guard_line,
+        "workerCoordinateBridgeGuardLine": worker_bridge_guard_line,
         "workerBpyImportLine": worker_bpy_import_line,
-        "guardPrecedesBpyImport": True,
+        "bothGuardsPrecedeBpyImport": True,
         "guardedFutureRenderApiReferences": render_references,
         "repeatIdentityPass": True,
         "frozenInputCount": len(first["frozenHashes"]),
@@ -128,6 +136,32 @@ def guard_rejection(driver: Any, appearance_lock: pathlib.Path | None) -> dict[s
         raise RuntimeError("render guard did not reject")
     if launches != 0:
         raise RuntimeError("Blender launcher was reached")
+    return result
+
+
+def coordinate_bridge_rejection(driver: Any) -> dict[str, Any]:
+    contract = driver.load_json(CONTRACT_PATH)
+    driver.validate_contract(contract)
+    try:
+        driver.validate_coordinate_bridge(contract)
+    except driver.GuardRejected as rejection:
+        result = {
+            "result": "REJECTED",
+            "stage": "before_renderer_launch",
+            "code": rejection.code,
+            "detail": rejection.detail,
+            "blenderNativeDirectionalSocket": contract["invariants"]["coordinateBridge"]["v06"][
+                "blenderNativeDirectionalSocket"
+            ],
+            "blenderProcessLaunches": 0,
+            "blenderRenderApiCalls": 0,
+            "renderInvocations": 0,
+            "pixelFiles": 0,
+        }
+    else:
+        raise RuntimeError("pending coordinate bridge did not reject")
+    if result["code"] != "coordinate_bridge_pending_v06":
+        raise RuntimeError(f"unexpected coordinate-bridge code: {result['code']}")
     return result
 
 
@@ -178,6 +212,7 @@ def build_proof(handoff_path: pathlib.Path | None) -> dict[str, Any]:
         wrong_path = pathlib.Path(temporary) / "WRONG-LOCK.json"
         wrong_path.write_text('{"not":"an appearance lock"}\\n', encoding="utf-8")
         wrong = guard_rejection(driver, wrong_path)
+    coordinate_bridge = coordinate_bridge_rejection(driver)
     if missing["code"] != "missing_appearance_lock":
         raise RuntimeError(f"unexpected missing-lock code: {missing['code']}")
     if wrong["code"] != "unpublished_or_wrong_appearance_lock":
@@ -196,6 +231,7 @@ def build_proof(handoff_path: pathlib.Path | None) -> dict[str, Any]:
         "static": static,
         "missingLock": missing,
         "wrongLock": wrong,
+        "coordinateBridge": coordinate_bridge,
         "invocations": {
             "blenderProcessLaunches": 0,
             "blenderRenderApiCalls": 0,

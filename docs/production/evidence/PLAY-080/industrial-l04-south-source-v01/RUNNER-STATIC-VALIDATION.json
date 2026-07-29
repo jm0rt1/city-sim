@@ -1,12 +1,12 @@
 {
-  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
   "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-  "contractSha256": "c7910537187aad6161588dc35f6bf4e3a45e9a3d18d11b8d3de9632206805e0c",
+  "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
   "coordinateBridgeBlocker": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/COORDINATE-BRIDGE-V06-BLOCKER.json",
-  "coordinateBridgeRevalidation": "pending_v06",
+  "coordinateBridgeRevalidation": "v06_revalidated",
   "direction": "south",
   "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
-  "driverSha256": "0fbca6b5ed57005fd8d4ef29717aabeb4665cf352474bb8b66ba87577c5741a3",
+  "driverSha256": "ae72158658626094ead41d6dd32b88a9e674f712a8d03ec0c4627c0ea05d5cad",
   "guardEvidenceExecution": "retained-no-A-B-C-invocation",
   "pixelValidations": {
     "abcIdentity": "not_run",

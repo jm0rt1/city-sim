@@ -22,6 +22,8 @@
     }
   },
   "acceptedPredesign": {
+    "authorityScope": "historical-zero-pixel-predesign-only",
+    "projectionAdapterSourceAuthority": false,
     "handoff": {
       "path": "docs/production/evidence/PLAY-080/PREDESIGN-HANDOFF.json",
       "sha256": "ec3cc2f758e3191d6cf76d5db0686d5481e09a3d42fd3033789f8a85d189bd42"
@@ -68,8 +70,28 @@
     "commit": null,
     "sha256": null
   },
+  "coordinateBridge": {
+    "state": "pending_v06_revalidation",
+    "authorityPath": null,
+    "authorityCommit": null,
+    "authoritySha256": null,
+    "citysimToBlenderAxisOrder": null,
+    "citysimToBlenderAxisSigns": null,
+    "blenderNativeDirectionalSocket": null,
+    "canonicalCitySimSouthSocket": [
+      0,
+      0,
+      28
+    ],
+    "sourceSocketPixels": [
+      640,
+      832
+    ],
+    "historicalPredesignProjectionAdapterSourceAuthority": false
+  },
   "invariants": {
     "camera": {
+      "authorityStatus": "historical-predesign-observation-pending-v06-revalidation",
       "type": "ORTHO",
       "citysimPosition": [
         100,
@@ -111,18 +133,25 @@
         0,
         28
       ],
-      "frontageSocket": {
+      "canonicalCitySimFrontage": {
         "direction": "south",
-        "position": [
-          28,
+        "socket": [
           0,
-          0
+          0,
+          28
         ],
         "outwardVector": [
-          1,
           0,
-          0
+          0,
+          1
         ]
+      },
+      "sourceProjectionObservation": {
+        "socketPixels": [
+          640,
+          832
+        ],
+        "status": "retained-historical-observation-pending-v06-revalidation"
       }
     },
     "lighting": {

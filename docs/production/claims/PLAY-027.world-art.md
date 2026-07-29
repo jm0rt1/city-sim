@@ -9,16 +9,15 @@
 - **Planned surfaces:** `Native/CitySimNative/WorldArt/ImageGen/`, task-owned non-shipping source catalog records, source validators, contact sheets, and `docs/production/evidence/PLAY-027/`
 - **Dependencies:** CONTRACT-006, CONTRACT-010, CONTRACT-011, CONTRACT-018, frozen generated-v4 style/family anchors; shipping ingestion waits for accepted PLAY-024
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North remains active under CONTRACT-019 after independent review accepted the matte diagnosis but returned v17 gameplay-scale portal presentation.
-- **Latest L4 disposition:** CONTRACT-020 R3 is integrated at `f63a504e` and
-  calibration capability remains accepted. North v02 A candidate `3ff0b641`
-  is technically clean and materially stronger than v01, but independent
-  visual review returned the appearance lock: at literal 192 its apron runs
-  away from the governed North socket, the staff/control entrance disappears
-  in grayscale, and the portal merges with the dark facade. The v03 authority
-  preserves the accepted foundry massing and permits only frontage
-  alignment/value repair plus one new A render. B/C, sibling pixels,
-  normalization, ingestion, shipping, and production selection remain blocked.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North is active under CONTRACT-020 and CONTRACT-021 revision 2.
+- **Latest L4 disposition:** North v03 at `ba2c4127` passes raw technical
+  intake, compact staff visibility, portal hierarchy, and analytic
+  portal-to-socket connectivity, but literal review returns it because the
+  socket-side connector is occluded and the visible apron still extends away
+  from the governed North socket. The v04 authority permits one focused,
+  exterior visible-road-court repair and one new A render. A passing A releases
+  a non-production appearance lock; North B/C and sibling A/B/C remain blocked
+  until that exact independent review boundary.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

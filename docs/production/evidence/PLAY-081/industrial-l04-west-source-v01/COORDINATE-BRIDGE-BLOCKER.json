@@ -65,6 +65,7 @@
     "normalization": "not_run"
   },
   "blenderProcessLaunches": 0,
+  "blenderProjectionProcessLaunches": 2,
   "blenderRenderApiCalls": 0,
   "imageGenInvocations": 0,
   "normalizerInvocations": 0,

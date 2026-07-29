@@ -1,0 +1,291 @@
+{
+  "acceptanceSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
+  "acceptedBridgeCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+  "adapterSha256": "006416b8b08903b5c0c970c86b7c6cfe72f667ecdd3f23cdca354e629861c3f6",
+  "authoritySha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4",
+  "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+  "camera": {
+    "blenderOrthographicScale": 237.587860107422,
+    "blenderPosition": [
+      96.0,
+      96.0,
+      101.245574951172
+    ],
+    "blenderTarget": [
+      0,
+      0,
+      22.861902498201186
+    ],
+    "citySimPosition": [
+      96,
+      101.24557426726288,
+      96
+    ],
+    "citySimTarget": [
+      0,
+      22.861902498201186,
+      0
+    ],
+    "renderViewportPixels": [
+      1536,
+      1024
+    ],
+    "shiftX": 0.0,
+    "shiftY": 0.083333335817
+  },
+  "checks": {
+    "acceptedCandidate": true,
+    "basisFormula": true,
+    "mappingContractSha256": true,
+    "noPerDirectionTransform": true,
+    "noWindingChange": true,
+    "pixelFiles": 0,
+    "projectionWithinTolerance": true,
+    "renderApiCalls": 0,
+    "sourceOrder": true,
+    "westSocketBlender": true,
+    "westSocketCitySim": true,
+    "westSocketIsFrontageMidpoint": true,
+    "westSocketSource": true
+  },
+  "direction": "west",
+  "invocations": {
+    "blenderProjectionProcesses": 1,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0
+  },
+  "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+  "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "maximumAbsoluteDeltaSourcePixels": 0.000183105469,
+  "passed": true,
+  "productionSelected": false,
+  "proof": "V06_ACTUAL_CAMERA_ZERO_PIXEL",
+  "proofToolSha256": "787572f4ab50da2cbe36360857ae451aaff801c47e0e0b7867b87f10cc846d29",
+  "registration": {
+    "contactPolygonBlenderXYZ": [
+      [
+        -28.0,
+        -28.0,
+        0.0
+      ],
+      [
+        -28.0,
+        28.0,
+        0.0
+      ],
+      [
+        28.0,
+        28.0,
+        0.0
+      ],
+      [
+        28.0,
+        -28.0,
+        0.0
+      ]
+    ],
+    "contactPolygonCitySimXYZ": [
+      [
+        -28,
+        0,
+        -28
+      ],
+      [
+        28,
+        0,
+        -28
+      ],
+      [
+        28,
+        0,
+        28
+      ],
+      [
+        -28,
+        0,
+        28
+      ]
+    ],
+    "footprintAbsoluteDeltaSourcePixels": [
+      [
+        0.0,
+        0.000183105469
+      ],
+      [
+        3.0517578e-05,
+        0.000137329102
+      ],
+      [
+        0.0,
+        0.000122070312
+      ],
+      [
+        1.5258789e-05,
+        0.00016784668
+      ]
+    ],
+    "footprintActualSource": [
+      [
+        768.0,
+        640.000183105469
+      ],
+      [
+        1024.000030517578,
+        768.000137329102
+      ],
+      [
+        768.0,
+        896.000122070312
+      ],
+      [
+        512.000015258789,
+        768.00016784668
+      ]
+    ],
+    "footprintExpectedSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "originAbsoluteDeltaSourcePixels": [
+      0.0,
+      0.000152587891
+    ],
+    "originActualSource": [
+      768.0,
+      768.000152587891
+    ],
+    "originExpectedSource": [
+      768,
+      768
+    ],
+    "pivotAbsoluteDeltaSourcePixels": [
+      0.0,
+      0.000122070312
+    ],
+    "pivotActualSource": [
+      768.0,
+      896.000122070312
+    ],
+    "pivotExpectedSource": [
+      768,
+      896
+    ]
+  },
+  "runnerContractSha256": "6000a0f70daa240e803e975684965d2364ceacb7d33c7b8ae0c4fae488542cf9",
+  "schemaVersion": 1,
+  "sourceOrder": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "sourceReady": false,
+  "taskId": "PLAY-081",
+  "toleranceSourcePixels": 0.001,
+  "west": {
+    "frontageAbsoluteDeltaSourcePixels": [
+      [
+        1.5258789e-05,
+        0.00016784668
+      ],
+      [
+        0.0,
+        0.000183105469
+      ]
+    ],
+    "frontageActualSource": [
+      [
+        512.000015258789,
+        768.00016784668
+      ],
+      [
+        768.0,
+        640.000183105469
+      ]
+    ],
+    "frontageBlender": [
+      [
+        28.0,
+        -28.0,
+        0.0
+      ],
+      [
+        -28.0,
+        -28.0,
+        0.0
+      ]
+    ],
+    "frontageCitySim": [
+      [
+        -28,
+        0,
+        28
+      ],
+      [
+        -28,
+        0,
+        -28
+      ]
+    ],
+    "frontageExpectedSource": [
+      [
+        512,
+        768
+      ],
+      [
+        768,
+        640
+      ]
+    ],
+    "outwardBlender": [
+      0.0,
+      -1.0,
+      0.0
+    ],
+    "outwardCitySim": [
+      -1,
+      0,
+      0
+    ],
+    "socketAbsoluteDeltaSourcePixels": [
+      3.0517578e-05,
+      0.000152587891
+    ],
+    "socketActualSource": [
+      640.000030517578,
+      704.000152587891
+    ],
+    "socketBlender": [
+      0.0,
+      -28.0,
+      0.0
+    ],
+    "socketCitySim": [
+      -28,
+      0,
+      0
+    ],
+    "socketExpectedSource": [
+      640,
+      704
+    ]
+  }
+}

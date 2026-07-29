@@ -36,6 +36,12 @@ from west_launch_authority import (
     sha256,
     validate_future_authorities,
 )
+from west_path_safety import (
+    PathSafetyError,
+    expected_process_paths,
+    lexical_repository_path,
+    validate_process_layout,
+)
 
 
 DEFAULT_CONTRACT = f"{SOURCE_ROOT}/RUNNER-CONTRACT.json"
@@ -90,6 +96,7 @@ def required_process_files(
     errors: list[str] = []
     for process_id in ("A", "B", "C"):
         inventory = contract["outputInventory"]["processes"][process_id]
+        expected = expected_process_paths(process_id)
         files[process_id] = {}
         for name in (
             "raw",
@@ -99,7 +106,17 @@ def required_process_files(
             "objectMapping",
             "freshInvocationReceipt",
         ):
-            path = repository_path(root, inventory[name])
+            try:
+                path = lexical_repository_path(
+                    root,
+                    inventory[name],
+                    expected=expected[name],
+                )
+            except PathSafetyError as error:
+                errors.append(
+                    f"process-{process_id}:{name}:unsafe:{error}"
+                )
+                continue
             files[process_id][name] = path
             if not path.is_file():
                 errors.append(f"process-{process_id}:missing-{name}")
@@ -111,6 +128,14 @@ def preflight(
     contract: dict[str, Any],
 ) -> tuple[dict[str, dict[str, Path]], list[str]]:
     authority = validate_future_authorities(root, contract)
+    layout = validate_process_layout(root, contract, require_absent=False)
+    if not layout["passed"]:
+        return {}, sorted(
+            set(
+                authority["errors"]
+                + [f"output-layout:{error}" for error in layout["errors"]]
+            )
+        )
     files, errors = required_process_files(root, contract)
     errors.extend(authority["errors"])
     if not errors:

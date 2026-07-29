@@ -22,6 +22,11 @@ from west_launch_authority import (
     validate_future_authorities,
     validate_output_root_isolation,
 )
+from west_path_safety import (
+    PathSafetyError,
+    expected_process_paths,
+    lexical_repository_path,
+)
 
 
 DEFAULT_CONTRACT = (
@@ -380,6 +385,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     for name, key in (
         ("blender-script", "blenderScriptPath"),
         ("launch-authority-validator", "launchAuthorityValidatorPath"),
+        ("path-safety", "pathSafetyPath"),
         ("launch-bound-assembler", "launchBoundAssemblerPath"),
         ("post-source-pipeline", "postSourcePipelinePath"),
     ):
@@ -672,13 +678,39 @@ def launch_blender(
     )
     mapping = repository_path(root, contract["lockedMaterialMapping"]["path"])
     process = contract["outputInventory"]["processes"][mode]
-    process_root = repository_path(root, process["directory"])
-    raw_root = repository_path(root, process["rawRoot"])
-    semantic_root = repository_path(root, process["semanticRoot"])
-    evidence_root = repository_path(root, process["evidenceRoot"])
-    for output in (process_root, raw_root, semantic_root, evidence_root):
-        if output.exists():
-            raise ContractError(f"refusing to overwrite existing output: {output}")
+    layout = validate_output_root_isolation(
+        root,
+        contract,
+        require_absent=True,
+    )
+    if not layout["passed"]:
+        raise ContractError(
+            "unsafe output layout: " + ",".join(layout["errors"])
+        )
+    expected = expected_process_paths(mode)
+    try:
+        process_root = lexical_repository_path(
+            root,
+            process["directory"],
+            expected=expected["directory"],
+        )
+        raw_root = lexical_repository_path(
+            root,
+            process["rawRoot"],
+            expected=expected["rawRoot"],
+        )
+        semantic_root = lexical_repository_path(
+            root,
+            process["semanticRoot"],
+            expected=expected["semanticRoot"],
+        )
+        evidence_root = lexical_repository_path(
+            root,
+            process["evidenceRoot"],
+            expected=expected["evidenceRoot"],
+        )
+    except PathSafetyError as error:
+        raise ContractError(f"unsafe process output: {error}") from error
     command = [
         str(executable),
         *pipeline["startupArguments"],

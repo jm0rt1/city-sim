@@ -32,12 +32,19 @@ from west_launch_authority import (
     validate_future_authorities,
     validate_output_root_isolation,
 )
+from west_path_safety import (
+    DEFAULT_VALIDATION_OUTPUT,
+    PathSafetyError,
+    validate_exact_output,
+    validate_process_layout,
+    write_exact_json,
+)
 
 
 PUBLISHED_MERGE = "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b"
 APPROVED_CANDIDATE = "135805d9b092d44ea28ff8421cbc70bddd1ac38a"
 FIXTURE_ROOT = f"{EVIDENCE_ROOT}/dry-fixtures"
-DEFAULT_OUTPUT = f"{EVIDENCE_ROOT}/PRELOCK-LAUNCH-PLUMBING-VALIDATION.json"
+DEFAULT_OUTPUT = DEFAULT_VALIDATION_OUTPUT
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr"}
 
 
@@ -246,9 +253,323 @@ def command_guard_matrix(root: Path) -> dict[str, dict[str, Any]]:
     return matrix
 
 
+def rejection_result(
+    name: str,
+    operation: Any,
+    *,
+    target: Path,
+) -> dict[str, Any]:
+    error = None
+    try:
+        operation()
+    except PathSafetyError as exception:
+        error = str(exception)
+    return {
+        "name": name,
+        "rejected": error is not None,
+        "error": error,
+        "targetExists": target.exists() or target.is_symlink(),
+        "writesToTarget": 1 if target.exists() or target.is_symlink() else 0,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "normalizerInvocations": 0,
+        "contactSheetInvocations": 0,
+        "pixelFiles": 0,
+        "passed": (
+            error is not None
+            and not target.exists()
+            and not target.is_symlink()
+        ),
+    }
+
+
+def path_safety_dynamic_tests(contract: dict[str, Any]) -> dict[str, Any]:
+    """Exercise exact/shared/outside/symlink paths in disposable repositories."""
+    tests: list[dict[str, Any]] = []
+    with tempfile.TemporaryDirectory(prefix="play081-path-safety-") as temp:
+        fixture = Path(temp)
+
+        exact_root = fixture / "exact-repository"
+        exact_root.mkdir()
+        exact_path = write_exact_json(
+            exact_root,
+            DEFAULT_OUTPUT,
+            {"fixtureOnly": True},
+        )
+        tests.append(
+            {
+                "name": "exact-task-owned-validator-output",
+                "accepted": exact_path.is_file(),
+                "path": DEFAULT_OUTPUT,
+                "fixtureWrites": 1,
+                "productionWrites": 0,
+                "blenderProcessLaunches": 0,
+                "pixelFiles": 0,
+                "passed": exact_path.is_file(),
+            }
+        )
+
+        shared_root = fixture / "shared-output-repository"
+        shared_root.mkdir()
+        shared_relative = (
+            "docs/production/evidence/INTEGRATION/"
+            "PLAY-081-WEST-SHOULD-NOT-EXIST.json"
+        )
+        shared_target = shared_root / shared_relative
+        shared_result = rejection_result(
+            "shared-validator-output",
+            lambda: write_exact_json(
+                shared_root,
+                shared_relative,
+                {"mustNotWrite": True},
+            ),
+            target=shared_target,
+        )
+        shared_result["directoriesCreated"] = int(
+            shared_target.parent.exists()
+        )
+        shared_result["passed"] = (
+            shared_result["passed"]
+            and shared_result["directoriesCreated"] == 0
+        )
+        tests.append(shared_result)
+
+        outside_root = fixture / "outside-output-repository"
+        outside_root.mkdir()
+        outside_target = Path(
+            "/private/tmp/"
+            "PLAY-081-WEST-PATH-SAFETY-REJECTION-PROBE-DO-NOT-CREATE.json"
+        )
+        tests.append(
+            rejection_result(
+                "outside-validator-output",
+                lambda: write_exact_json(
+                    outside_root,
+                    str(outside_target),
+                    {"mustNotWrite": True},
+                ),
+                target=outside_target,
+            )
+        )
+
+        symlink_output_root = fixture / "symlink-output-repository"
+        symlink_output_root.mkdir()
+        symlink_target = fixture / "symlink-output-target"
+        symlink_target.mkdir()
+        symlink_parent = symlink_output_root / "docs/production/evidence"
+        symlink_parent.mkdir(parents=True)
+        (symlink_parent / "PLAY-081").symlink_to(
+            symlink_target,
+            target_is_directory=True,
+        )
+        redirected_output = (
+            symlink_target
+            / "industrial-l04-west-source-v01"
+            / "PRELOCK-LAUNCH-PLUMBING-VALIDATION.json"
+        )
+        symlink_result = rejection_result(
+            "symlink-validator-output",
+            lambda: write_exact_json(
+                symlink_output_root,
+                DEFAULT_OUTPUT,
+                {"mustNotWrite": True},
+            ),
+            target=redirected_output,
+        )
+        symlink_result["directoriesCreatedInRedirect"] = int(
+            redirected_output.parent.exists()
+        )
+        symlink_result["passed"] = (
+            symlink_result["passed"]
+            and symlink_result["directoriesCreatedInRedirect"] == 0
+        )
+        tests.append(symlink_result)
+
+        exact_layout_root = fixture / "exact-layout-repository"
+        exact_layout_root.mkdir()
+        exact_layout = validate_process_layout(
+            exact_layout_root,
+            copy.deepcopy(contract),
+            require_absent=True,
+        )
+        tests.append(
+            {
+                "name": "exact-abc-layout",
+                "accepted": exact_layout["passed"],
+                "errors": exact_layout["errors"],
+                "productionWrites": 0,
+                "blenderProcessLaunches": 0,
+                "pixelFiles": 0,
+                "passed": exact_layout["passed"],
+            }
+        )
+
+        for name, process_id, target_kind in (
+            ("shared-root-redirect", "A", "shared"),
+            ("outside-root-redirect", "B", "outside"),
+            ("leaf-root-redirect", "C", "leaf"),
+        ):
+            repository = fixture / f"{name}-repository"
+            repository.mkdir()
+            if target_kind == "shared":
+                redirect_target = (
+                    repository
+                    / "docs/production/evidence/INTEGRATION/shared-target"
+                )
+            else:
+                redirect_target = fixture / f"{name}-target"
+            redirect_target.mkdir(parents=True)
+            process_directory = (
+                repository
+                / "docs/production/evidence/PLAY-081"
+                / f"industrial-l04-west-source-v01/process-{process_id}"
+            )
+            process_directory.parent.mkdir(parents=True)
+            if target_kind == "leaf":
+                process_directory.mkdir()
+                (process_directory / "raw").symlink_to(
+                    redirect_target,
+                    target_is_directory=True,
+                )
+            else:
+                process_directory.symlink_to(
+                    redirect_target,
+                    target_is_directory=True,
+                )
+            layout = validate_process_layout(
+                repository,
+                copy.deepcopy(contract),
+                require_absent=True,
+            )
+            downstream = validate_process_layout(
+                repository,
+                copy.deepcopy(contract),
+                require_absent=False,
+            )
+            guard = evaluate_render_guard(
+                repository,
+                copy.deepcopy(contract),
+                process_id,
+            )
+            _, downstream_preflight_errors = post_source_preflight(
+                repository,
+                copy.deepcopy(contract),
+            )
+            redirected_entries = list(redirect_target.rglob("*"))
+            tests.append(
+                {
+                    "name": name,
+                    "rejectedBeforeLaunch": not layout["passed"],
+                    "rejectedDownstream": not downstream["passed"],
+                    "outerGuardDecision": guard["decision"],
+                    "outerGuardReasonCodes": guard["reasonCodes"],
+                    "downstreamPreflightErrors": downstream_preflight_errors,
+                    "errors": layout["errors"],
+                    "downstreamErrors": downstream["errors"],
+                    "writesToRedirectTarget": len(redirected_entries),
+                    "blenderProcessLaunches": guard["blenderProcessLaunches"],
+                    "blenderRenderApiCalls": guard["blenderRenderApiCalls"],
+                    "normalizerInvocations": guard["normalizerInvocations"],
+                    "contactSheetInvocations": guard[
+                        "contactSheetInvocations"
+                    ],
+                    "pixelFiles": guard["pixelFiles"],
+                    "passed": (
+                        not layout["passed"]
+                        and not downstream["passed"]
+                        and guard["decision"] == "reject"
+                        and guard["blenderProcessLaunches"] == 0
+                        and guard["blenderRenderApiCalls"] == 0
+                        and guard["normalizerInvocations"] == 0
+                        and guard["contactSheetInvocations"] == 0
+                        and guard["pixelFiles"] == 0
+                        and any(
+                            "SYMLINK_COMPONENT" in error
+                            for error in guard["reasonCodes"]
+                        )
+                        and any(
+                            "SYMLINK_COMPONENT" in error
+                            for error in downstream_preflight_errors
+                        )
+                        and not redirected_entries
+                        and any(
+                            "SYMLINK_COMPONENT" in error
+                            for error in layout["errors"]
+                        )
+                    ),
+                }
+            )
+
+        mismatch_contract = copy.deepcopy(contract)
+        mismatch_contract["outputInventory"]["processes"]["A"]["rawRoot"] = (
+            "docs/production/evidence/INTEGRATION/raw"
+        )
+        mismatch_root = fixture / "lexical-mismatch-repository"
+        mismatch_root.mkdir()
+        mismatch = validate_process_layout(
+            mismatch_root,
+            mismatch_contract,
+            require_absent=True,
+        )
+        tests.append(
+            {
+                "name": "lexical-abc-identity-mismatch",
+                "rejectedBeforeLaunch": not mismatch["passed"],
+                "errors": mismatch["errors"],
+                "productionWrites": 0,
+                "blenderProcessLaunches": 0,
+                "pixelFiles": 0,
+                "passed": (
+                    not mismatch["passed"]
+                    and "process-A:rawRoot:lexical-identity"
+                    in mismatch["errors"]
+                ),
+            }
+        )
+    return {
+        "fixtureOnly": True,
+        "tests": tests,
+        "testCount": len(tests),
+        "allRejectedTargetsUnwritten": all(
+            test.get("writesToTarget", 0) == 0
+            and test.get("writesToRedirectTarget", 0) == 0
+            for test in tests
+        ),
+        "invocations": {
+            "blenderProcessLaunches": 0,
+            "blenderRenderApiCalls": 0,
+            "normalizerInvocations": 0,
+            "contactSheetInvocations": 0,
+            "pixelFiles": 0,
+        },
+        "passed": all(test["passed"] for test in tests),
+    }
+
+
 def main() -> int:
     args = parse_args()
     root = Path(args.repository_root).resolve()
+    try:
+        validate_exact_output(root, args.output)
+    except PathSafetyError as error:
+        result = {
+            "schemaVersion": 1,
+            "taskId": "PLAY-081",
+            "direction": "west",
+            "decision": "reject",
+            "rejectionStage": "before_output_write",
+            "error": str(error),
+            "requestedOutput": args.output,
+            "outputWritten": False,
+            "blenderProcessLaunches": 0,
+            "blenderRenderApiCalls": 0,
+            "normalizerInvocations": 0,
+            "contactSheetInvocations": 0,
+            "pixelFiles": 0,
+            "passed": False,
+        }
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 3
     contract = load_json(repository_path(root, args.contract))
     failures: list[str] = []
 
@@ -277,6 +598,9 @@ def main() -> int:
     )
     if not isolation["passed"]:
         failures.append("output-root-isolation")
+    path_safety = path_safety_dynamic_tests(contract)
+    if not path_safety["passed"]:
+        failures.append("path-safety-dynamic-tests")
 
     guard_results = {
         process_id: evaluate_render_guard(root, contract, process_id)
@@ -408,6 +732,7 @@ def main() -> int:
         "actualMissingAuthorityRejection": actual_authority,
         "guardResults": guard_results,
         "outputRootIsolation": isolation,
+        "pathSafetyDynamicTests": path_safety,
         "launchBoundProductionAttempt": assemble_result,
         "postSourceBlockers": post_errors,
         "commandGuardMatrix": commands,
@@ -439,9 +764,7 @@ def main() -> int:
         "failures": failures,
         "passed": not failures,
     }
-    output = repository_path(root, args.output)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    write_exact_json(root, args.output, result)
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if not failures else 1
 

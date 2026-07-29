@@ -16,6 +16,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from west_path_safety import validate_process_layout
+
 
 HEX_40 = re.compile(r"^[0-9a-f]{40}$")
 HEX_64 = re.compile(r"^[0-9a-f]{64}$")
@@ -412,51 +414,23 @@ def validate_output_root_isolation(
     *,
     require_absent: bool,
 ) -> dict[str, Any]:
-    """Validate the immutable A/B/C raw, semantic, and evidence roots."""
-    root = root.resolve()
-    inventory = contract.get("outputInventory", {}).get("processes", {})
-    errors: list[str] = []
-    roots: dict[str, dict[str, str]] = {}
-    resolved: list[Path] = []
-    for process_id in ("A", "B", "C"):
-        process = inventory.get(process_id)
-        if not isinstance(process, dict):
-            errors.append(f"process-{process_id}:missing")
-            continue
-        roots[process_id] = {}
-        for kind in ("rawRoot", "semanticRoot", "evidenceRoot"):
-            relative = process.get(kind)
-            if not isinstance(relative, str):
-                errors.append(f"process-{process_id}:{kind}:missing")
-                continue
-            try:
-                path = repository_path(root, relative)
-            except AuthorityError:
-                errors.append(f"process-{process_id}:{kind}:invalid")
-                continue
-            expected_prefix = (
-                f"docs/production/evidence/PLAY-081/"
-                f"industrial-l04-west-source-v01/process-{process_id}/"
-            )
-            if not relative.startswith(expected_prefix):
-                errors.append(f"process-{process_id}:{kind}:outside-process-root")
-            if require_absent and path.exists():
-                errors.append(f"process-{process_id}:{kind}:already-exists")
-            roots[process_id][kind] = relative
-            resolved.append(path)
-    if len(resolved) != 9 or len(set(resolved)) != 9:
-        errors.append("output-roots:not-nine-distinct-roots")
+    """Validate exact immutable A/B/C paths without following symlinks."""
+    report = validate_process_layout(
+        root,
+        contract,
+        require_absent=require_absent,
+    )
     return {
-        "schemaVersion": 1,
-        "taskId": "PLAY-081",
-        "direction": "west",
-        "roots": roots,
-        "allOutputRootsDistinct": len(resolved) == 9 and len(set(resolved)) == 9,
-        "noExistingOutputRoots": not any(path.exists() for path in resolved),
-        "noOverwrite": True,
-        "errors": sorted(set(errors)),
-        "passed": not errors,
-        "blenderProcessLaunches": 0,
-        "blenderRenderApiCalls": 0,
-        "pixelFiles": 0,
+        **report,
+        "roots": {
+            process_id: {
+                kind: values[kind]
+                for kind in ("rawRoot", "semanticRoot", "evidenceRoot")
+            }
+            for process_id, values in report["paths"].items()
+        },
+        "noExistingOutputRoots": not any(
+            path.endswith(("/raw", "/semantic", "/evidence"))
+            for path in report["existingOutputPaths"]
+        ),
     }

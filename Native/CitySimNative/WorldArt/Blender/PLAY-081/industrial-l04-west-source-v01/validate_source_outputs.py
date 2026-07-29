@@ -20,6 +20,12 @@ from typing import Any
 import jsonschema
 
 from stdlib_png_rgba import decode_rgba_png, self_test as decoder_self_test
+from west_path_safety import (
+    PathSafetyError,
+    expected_process_paths,
+    lexical_repository_path,
+    validate_process_layout,
+)
 
 
 DEFAULT_CONTRACT = (
@@ -299,6 +305,12 @@ def validate_pixels(
 ) -> dict[str, Any]:
     if contract.get("state") != "ready_for_source_render":
         raise ValueError("pixel validation blocked pending post-lock production authority")
+    layout = validate_process_layout(root, contract, require_absent=False)
+    if not layout["passed"]:
+        raise ValueError(
+            "unsafe A/B/C output layout before pixel read: "
+            + ",".join(layout["errors"])
+        )
     failures: list[str] = []
     processes: dict[str, Any] = {}
     raw_hashes: dict[str, str] = {}
@@ -308,16 +320,26 @@ def validate_pixels(
 
     for process_id in ("A", "B", "C"):
         inventory = contract["outputInventory"]["processes"][process_id]
-        required = {
-            name: repository_path(root, inventory[name])
-            for name in (
-                "raw",
-                "semantic",
-                "provenance",
-                "objectMapping",
-                "registration",
-            )
-        }
+        expected = expected_process_paths(process_id)
+        try:
+            required = {
+                name: lexical_repository_path(
+                    root,
+                    inventory[name],
+                    expected=expected[name],
+                )
+                for name in (
+                    "raw",
+                    "semantic",
+                    "provenance",
+                    "objectMapping",
+                    "registration",
+                )
+            }
+        except PathSafetyError as error:
+            raise ValueError(
+                f"unsafe process-{process_id} output before pixel read: {error}"
+            ) from error
         missing = sorted(name for name, path in required.items() if not path.is_file())
         if missing:
             failures.append(f"process-{process_id}:missing:{','.join(missing)}")

@@ -21,6 +21,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
+SCRIPT_ROOT = Path(__file__).resolve().parent
+if str(SCRIPT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_ROOT))
+
+from west_path_safety import (  # noqa: E402
+    PathSafetyError,
+    expected_process_paths,
+    lexical_repository_path,
+    validate_process_layout,
+)
+
 import bpy
 from mathutils import Vector
 
@@ -172,10 +183,34 @@ def main() -> int:
     root = Path(args.repository_root).resolve()
     runner_path = repository_path(root, args.runner_contract)
     materials_path = repository_path(root, args.locked_materials)
-    raw_root = repository_path(root, args.raw_root)
-    semantic_root = repository_path(root, args.semantic_root)
-    evidence_root = repository_path(root, args.evidence_root)
     runner = load_json(runner_path)
+    layout = validate_process_layout(root, runner, require_absent=True)
+    if not layout["passed"]:
+        raise RuntimeError(
+            "unsafe A/B/C output layout before Blender API use: "
+            + ",".join(layout["errors"])
+        )
+    expected = expected_process_paths(args.process_id)
+    try:
+        raw_root = lexical_repository_path(
+            root,
+            args.raw_root,
+            expected=expected["rawRoot"],
+        )
+        semantic_root = lexical_repository_path(
+            root,
+            args.semantic_root,
+            expected=expected["semanticRoot"],
+        )
+        evidence_root = lexical_repository_path(
+            root,
+            args.evidence_root,
+            expected=expected["evidenceRoot"],
+        )
+    except PathSafetyError as error:
+        raise RuntimeError(
+            f"unsafe process output before Blender API use: {error}"
+        ) from error
     predesign_path = repository_path(
         root, runner["acceptedPredesign"]["scene"]["path"]
     )

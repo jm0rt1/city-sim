@@ -201,6 +201,7 @@
     "coordinateBridgeProofPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prove_west_bridge_v06.py",
     "sourceValidatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
     "launchAuthorityValidatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_launch_authority.py",
+    "pathSafetyPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
     "launchBoundAssemblerPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prepare_launch_bound.py",
     "postSourcePipelinePath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
     "pngDecoderPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
@@ -399,6 +400,9 @@
       "north-process-a-hashes",
       "locked-material-mapping-presence-and-hash",
       "locked-material-role-completeness",
+      "exact-task-owned-validator-output",
+      "exact-abc-directory-root-and-leaf-identities",
+      "no-symlink-output-components",
       "deterministic-output-path"
     ],
     "renderApiMayLoadAfterGuardOnly": true

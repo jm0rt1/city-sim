@@ -1,0 +1,72 @@
+{
+  "schema": "citysim.world-art.material-bindings.v1",
+  "task": "PLAY-080",
+  "revision": "south-predesign-v01",
+  "family": "industrial-l04-turbine-works",
+  "direction": "south",
+  "provisional": true,
+  "familyMaterialLock": {
+    "status": "pending-integration-north-lock",
+    "pixelRenderBlocked": true,
+    "roleNamesMayPersist": true,
+    "numericValuesRequireReconciliation": true
+  },
+  "colorSpace": "linear-srgb-role-intent",
+  "roles": {
+    "weathered-brick": {
+      "rgba": [0.38, 0.18, 0.11, 1],
+      "roughness": 0.82,
+      "intent": "warm weathered masonry midtone"
+    },
+    "charcoal-structural-steel": {
+      "rgba": [0.08, 0.14, 0.15, 1],
+      "roughness": 0.58,
+      "intent": "dark blue-green structural frame"
+    },
+    "oxidized-machinery": {
+      "rgba": [0.42, 0.22, 0.09, 1],
+      "roughness": 0.7,
+      "intent": "oxidized heavy process machinery"
+    },
+    "restrained-green": {
+      "rgba": [0.13, 0.25, 0.2, 1],
+      "roughness": 0.65,
+      "intent": "subordinate control and process accent"
+    },
+    "orange-heat": {
+      "rgba": [0.95, 0.24, 0.04, 1],
+      "roughness": 0.45,
+      "intent": "contained hot-process cue"
+    },
+    "clerestory-glazing": {
+      "rgba": [0.2, 0.34, 0.36, 1],
+      "roughness": 0.34,
+      "intent": "credible mid-value industrial glazing"
+    },
+    "control-glazing": {
+      "rgba": [0.16, 0.29, 0.31, 1],
+      "roughness": 0.3,
+      "intent": "human-scale control entrance glazing"
+    },
+    "roof-mid": {
+      "rgba": [0.24, 0.27, 0.25, 1],
+      "roughness": 0.72,
+      "intent": "mid-value roof that avoids white-plane dominance"
+    },
+    "portal-void": {
+      "rgba": [0.018, 0.022, 0.021, 1],
+      "roughness": 0.9,
+      "intent": "contiguous deep freight recess"
+    },
+    "deep-service-shadow": {
+      "rgba": [0.035, 0.045, 0.043, 1],
+      "roughness": 0.88,
+      "intent": "secondary freight recesses"
+    },
+    "concrete-apron": {
+      "rgba": [0.27, 0.25, 0.22, 1],
+      "roughness": 0.94,
+      "intent": "small light contact and connected South apron"
+    }
+  }
+}

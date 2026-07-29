@@ -1,0 +1,36 @@
+{
+  "schema": "citysim.play-080.predesign-iteration-inventory.v1",
+  "task": "PLAY-080",
+  "direction": "south",
+  "pixelAttempts": 0,
+  "accepted": [
+    {
+      "revision": "south-predesign-v01",
+      "stage": "predesign",
+      "disposition": "predesign_ready",
+      "staticProof": "PASS",
+      "actualCameraProof": "PASS",
+      "renderInvocations": 0,
+      "imageOutputs": 0
+    }
+  ],
+  "rejected": [
+    {
+      "revision": "south-predesign-v01-draft-a",
+      "retention": "uncommitted coordinate draft; no source pixels existed",
+      "reason": "Actual-camera proof measured a 12.914291-pixel portal width against 14, 3.657143-pixel secondary freight widths against 8, and one rear gantry leg intersecting the portal projection.",
+      "repair": "Broadened all freight recesses, redistributed the South frontage, and moved the rear gantry fully outside the portal projection."
+    },
+    {
+      "revision": "south-predesign-v01-draft-b",
+      "retention": "uncommitted coordinate draft; no source pixels existed",
+      "reason": "Actual-camera proof measured each secondary freight opening at 7.942858 literal pixels against the governed minimum of 8.",
+      "repair": "Increased each secondary recess to 13.7 world units and maintained non-overlap with the staff vestibule and monumental portal."
+    }
+  ],
+  "generation": {
+    "imageGenCalls": 0,
+    "wholeBuildingGeneration": "not_used",
+    "prompt": "not_applicable_to_zero_pixel_blender_predesign"
+  }
+}

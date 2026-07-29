@@ -1,0 +1,283 @@
+{
+  "schema": "citysim.world-art.blender-predesign.v1",
+  "task": "PLAY-080",
+  "logicalBuildingID": "industrial-l04",
+  "variant": "variant-0",
+  "revision": "south-predesign-v01",
+  "sourceKey": "industrial-l04/variant-0/south/south-predesign-v01",
+  "direction": "south",
+  "orientationTransform": "none",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderAuthorized": false,
+  "coordinateSystem": {
+    "source": "CitySim x-right, y-up, z-east",
+    "blenderMapping": "[x, z, y]",
+    "southFrontagePlane": "x=28",
+    "groundPlane": "y=0"
+  },
+  "authorship": {
+    "method": "independent-south-text-scene",
+    "siblingSceneOpened": false,
+    "siblingSceneCopied": false,
+    "siblingGeometryConsumed": false,
+    "publishedInputs": [
+      "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md",
+      "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+      "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+      "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-TURBINE-WORKS-TRANSLATION-AUTHORITY-3e10a56.md",
+      "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-REGISTRATION-R3-AUTHORITY.md",
+      "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V02-AUTHORITY.md"
+    ]
+  },
+  "registration": {
+    "tileBasisWorldPoints": [72, 36],
+    "footprintWorld": {
+      "size": [56, 56],
+      "corners": [
+        [-28, 0, -28],
+        [-28, 0, 28],
+        [28, 0, 28],
+        [28, 0, -28]
+      ]
+    },
+    "groundOrigin": [0, 0, 0],
+    "groundPivot": [28, 0, 28],
+    "frontageSocket": {
+      "direction": "south",
+      "position": [28, 0, 0],
+      "outwardVector": [1, 0, 0]
+    },
+    "contactPolygon": [
+      [16, 0, -24],
+      [28, 0, -24],
+      [28, 0, 24],
+      [16, 0, 24]
+    ]
+  },
+  "camera": {
+    "tool": "Blender",
+    "type": "ORTHO",
+    "citysimPosition": [100, 104.511627, 100],
+    "citysimTarget": [0, 22.861969, 0],
+    "orthoScale": 237.5878601074218,
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "renderViewportPixels": [1536, 1024],
+    "pixelAspect": [1, 1],
+    "literalViewportPixels": [192, 128],
+    "projectionTargets": {
+      "footprint": [
+        [768, 640],
+        [1024, 768],
+        [768, 896],
+        [512, 768]
+      ],
+      "groundOrigin": [768, 768],
+      "groundPivot": [768, 896],
+      "frontageSocket": [640, 832],
+      "toleranceSourcePixels": 1
+    }
+  },
+  "lighting": {
+    "keySourceDirection": [-1, 2, -1],
+    "keyDirectionToScene": [1, -2, 1],
+    "contactShadowVector": [1, 0, 1],
+    "keyLabel": "northwest",
+    "contactLabel": "southeast"
+  },
+  "family": {
+    "identity": "turbine-works",
+    "materialLockStatus": "pending-integration-north-lock",
+    "massing": "wide-grounded-high-bay-with-asymmetric-rear-process-spine",
+    "roadFacingOpenings": 3,
+    "separateStaffEntrance": true,
+    "silhouetteLanguage": "low-control-wing, broad-hall, staggered-monitor-roof, rear-process-bay, singular-offset-stack"
+  },
+  "literal192Targets": {
+    "primaryPortalMinimumPixels": [14, 12],
+    "frameMinimumThicknessPixels": 2,
+    "minimumSilhouetteBreaks": 3,
+    "maximumProcessOcclusionPixels": 0,
+    "freightOpeningMinimumWidthPixels": 8
+  },
+  "components": [
+    {
+      "id": "south-contact-apron",
+      "geometry": "box",
+      "center": [22, 0.15, 0],
+      "size": [12, 0.3, 48],
+      "materialRole": "concrete-apron",
+      "tags": ["contact", "frontage-apron"]
+    },
+    {
+      "id": "high-bay-core",
+      "geometry": "box",
+      "center": [-1, 11, 7],
+      "size": [42, 22, 38],
+      "materialRole": "weathered-brick",
+      "tags": ["primary-mass", "silhouette-break"]
+    },
+    {
+      "id": "south-control-wing",
+      "geometry": "box",
+      "center": [10, 5, -18],
+      "size": [28, 10, 16],
+      "materialRole": "weathered-brick",
+      "tags": ["control-wing", "silhouette-break"]
+    },
+    {
+      "id": "staff-vestibule",
+      "geometry": "box",
+      "center": [26, 4, -26.6],
+      "size": [4, 8, 2.2],
+      "materialRole": "restrained-green",
+      "tags": ["staff-entrance-mass", "silhouette-break"]
+    },
+    {
+      "id": "staff-door",
+      "geometry": "box",
+      "center": [27.9, 3.8, -26.6],
+      "size": [0.2, 7.6, 1.4],
+      "materialRole": "control-glazing",
+      "tags": ["staff-entrance", "south-frontage"]
+    },
+    {
+      "id": "secondary-freight-west-inset",
+      "geometry": "box",
+      "center": [24.2, 5.5, -18.5],
+      "size": [0.4, 11, 13.7],
+      "materialRole": "deep-service-shadow",
+      "tags": ["freight-opening", "south-frontage"]
+    },
+    {
+      "id": "secondary-freight-center-inset",
+      "geometry": "box",
+      "center": [24.2, 5.5, -4.85],
+      "size": [0.4, 11, 13.7],
+      "materialRole": "deep-service-shadow",
+      "tags": ["freight-opening", "south-frontage"]
+    },
+    {
+      "id": "monumental-portal-inset",
+      "geometry": "box",
+      "center": [20.3, 10, 14],
+      "size": [0.6, 20, 24],
+      "materialRole": "portal-void",
+      "tags": ["freight-opening", "primary-freight-portal", "portal-inset", "south-frontage"]
+    },
+    {
+      "id": "monumental-portal-west-jamb",
+      "geometry": "box",
+      "center": [22, 10, 1],
+      "size": [4, 20, 2],
+      "materialRole": "charcoal-structural-steel",
+      "tags": ["portal-frame", "portal-jamb", "south-frontage"]
+    },
+    {
+      "id": "monumental-portal-east-jamb",
+      "geometry": "box",
+      "center": [22, 10, 27],
+      "size": [4, 20, 2],
+      "materialRole": "charcoal-structural-steel",
+      "tags": ["portal-frame", "portal-jamb", "south-frontage"]
+    },
+    {
+      "id": "monumental-portal-header",
+      "geometry": "box",
+      "center": [22, 21.5, 14],
+      "size": [4, 3, 28],
+      "materialRole": "charcoal-structural-steel",
+      "tags": ["portal-frame", "portal-header", "south-frontage"]
+    },
+    {
+      "id": "portal-inner-reveal",
+      "geometry": "box",
+      "center": [21.2, 18.5, 14],
+      "size": [1.2, 2, 24],
+      "materialRole": "oxidized-machinery",
+      "tags": ["portal-reveal", "south-frontage"]
+    },
+    {
+      "id": "monitor-roof-west",
+      "geometry": "box",
+      "center": [-2, 24, -5],
+      "size": [34, 4, 5],
+      "materialRole": "roof-mid",
+      "tags": ["monitor-roof", "silhouette-break"]
+    },
+    {
+      "id": "monitor-roof-center",
+      "geometry": "box",
+      "center": [-2, 27, 4],
+      "size": [32, 10, 5],
+      "materialRole": "clerestory-glazing",
+      "tags": ["monitor-roof", "silhouette-break"]
+    },
+    {
+      "id": "monitor-roof-east",
+      "geometry": "box",
+      "center": [-2, 25, 13],
+      "size": [30, 6, 5],
+      "materialRole": "roof-mid",
+      "tags": ["monitor-roof", "silhouette-break"]
+    },
+    {
+      "id": "rear-process-bay",
+      "geometry": "box",
+      "center": [-14, 15, 13],
+      "size": [14, 30, 16],
+      "materialRole": "restrained-green",
+      "tags": ["rear-third", "process", "process-occluder", "silhouette-break"]
+    },
+    {
+      "id": "offset-foundry-stack",
+      "geometry": "box",
+      "center": [-18, 23, -18],
+      "size": [6, 46, 6],
+      "materialRole": "oxidized-machinery",
+      "tags": ["rear-third", "process", "process-occluder", "singular-stack", "silhouette-break"]
+    },
+    {
+      "id": "rear-gantry-beam",
+      "geometry": "box",
+      "center": [-8, 22, -24.5],
+      "size": [28, 4, 3],
+      "materialRole": "charcoal-structural-steel",
+      "tags": ["gantry", "process", "process-occluder", "silhouette-break"]
+    },
+    {
+      "id": "rear-gantry-leg-a",
+      "geometry": "box",
+      "center": [4, 11, -24.5],
+      "size": [3, 22, 3],
+      "materialRole": "charcoal-structural-steel",
+      "tags": ["gantry", "process", "process-occluder"]
+    },
+    {
+      "id": "rear-gantry-leg-b",
+      "geometry": "box",
+      "center": [-20, 11, -24.5],
+      "size": [3, 22, 3],
+      "materialRole": "charcoal-structural-steel",
+      "tags": ["gantry", "process", "process-occluder"]
+    },
+    {
+      "id": "turbine-housing",
+      "geometry": "box",
+      "center": [-10, 6, -17],
+      "size": [10, 12, 8],
+      "materialRole": "oxidized-machinery",
+      "tags": ["process", "process-occluder", "turbine"]
+    },
+    {
+      "id": "contained-heat-cue",
+      "geometry": "box",
+      "center": [-9, 11, -17],
+      "size": [4, 4, 4],
+      "materialRole": "orange-heat",
+      "tags": ["process", "process-occluder", "hot-process"]
+    }
+  ]
+}

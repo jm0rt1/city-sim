@@ -10,14 +10,14 @@
 - **Dependencies:** CONTRACT-006, CONTRACT-010, CONTRACT-011, CONTRACT-018, frozen generated-v4 style/family anchors; shipping ingestion waits for accepted PLAY-024
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
 - **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North is active under CONTRACT-020 and CONTRACT-021 revision 2.
-- **Latest L4 disposition:** North v03 at `ba2c4127` passes raw technical
-  intake, compact staff visibility, portal hierarchy, and analytic
-  portal-to-socket connectivity, but literal review returns it because the
-  socket-side connector is occluded and the visible apron still extends away
-  from the governed North socket. The v04 authority permits one focused,
-  exterior visible-road-court repair and one new A render. A passing A releases
-  a non-production appearance lock; North B/C and sibling A/B/C remain blocked
-  until that exact independent review boundary.
+- **Latest L4 disposition:** North v04 stopped correctly before pixels at
+  `84be90eb`. Actual-camera proof shows the retained `+X` freight-portal plane
+  cannot visibly reach the governed `X = -28` North socket: its closest legal
+  exterior court remains `16.272240` compact pixels away against the two-pixel
+  limit. The v05 authority permits one socket-facing portal relocation,
+  zero-pixel proof, and one new A render. A passing A releases a non-production
+  appearance lock; North B/C and sibling A/B/C remain blocked until that exact
+  independent review boundary.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

@@ -1,8 +1,9 @@
 {
   "schema": 1,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-29T05:05:55Z",
+  "updatedAt": "2026-07-29T05:27:14Z",
   "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0505Z.json",
+  "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
@@ -103,8 +104,8 @@
       "head": "04b89455d1e71f9341c9528c8cf5789bcb00d309",
       "state": "prelock_active",
       "blocker": "accepted_direction_sources_not_yet_available",
-      "nextAction": "integration_review_arrival_gate_candidate",
-      "updatedAt": "2026-07-29T04:57:05Z"
+      "nextAction": "repair_strict_unknown_top_level_and_nested_field_rejection",
+      "updatedAt": "2026-07-29T05:27:14Z"
     },
     {
       "lane": "playtest_quality",
@@ -117,8 +118,8 @@
       "head": "552016f12b87d593a24b2ef3e93b192fc973c3a8",
       "state": "prelock_active",
       "blocker": "exact_4of4_renderer_candidate_not_yet_available",
-      "nextAction": "integration_review_fixture_materializer_candidate",
-      "updatedAt": "2026-07-29T04:57:05Z"
+      "nextAction": "bind_candidate_mode_to_external_integration_admission_manifest",
+      "updatedAt": "2026-07-29T05:27:14Z"
     }
   ]
 }

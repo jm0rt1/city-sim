@@ -1,4 +1,4 @@
 interface:
   display_name: "CitySim Playtest Quality"
-  short_description: "Verify real CitySim player journeys"
-  default_prompt: "Use $verify-citysim-playability to run the claimed CitySim player journey and retain actionable evidence."
+  short_description: "Preregister and verify exact player journeys"
+  default_prompt: "Use $verify-citysim-playability to preregister a candidate-neutral journey and independently verify the exact staged candidate."

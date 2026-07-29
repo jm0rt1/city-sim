@@ -36,6 +36,56 @@ For each candidate define:
 
 Do not rewrite the journey after seeing the result merely to make the candidate pass.
 
+## Preregister before the candidate arrives
+
+When Integration dispatches QA-ahead preparation, freeze the candidate-neutral
+acceptance contract while implementation or art production continues:
+
+- exact fixture identifier, version, state hash, and mature-city placement;
+- exact camera state, zoom, rotation, focus, and any deterministic scene seed;
+- regular and compact window dimensions and the required pointer, keyboard,
+  accessibility, and reduced-motion variants;
+- allowed fresh-player knowledge, critical journey, rubric, stop conditions,
+  capture names, and evidence destinations;
+- quantitative visual, interaction, performance, persistence, and accessibility
+  thresholds that apply to the claimed player outcome.
+
+Commit the preregistration as its own QA checkpoint before inspecting the final
+candidate. It may be exercised against the accepted baseline to prove that the
+fixture and harness work, but that rehearsal is not candidate evidence. Do not
+encode author hints, hidden shortcuts, expected control locations, or
+candidate-specific coaching into the journey. If the candidate legitimately
+changes a preregistered contract, preserve the original record and obtain an
+Integration-approved revision before testing; never silently relax the rubric
+after seeing a result.
+
+For a directional art family, preregister one family-level staged-app gate.
+North, East, South, and West cells retain their own source determinism and
+geometry evidence, but they do not request separate production acceptance from
+QA. QA admits only the atomic renderer candidate containing all four exact
+accepted directions. A returned direction may continue independently without
+invalidating successful sibling source evidence; the final app journey remains
+blocked until the renderer presents a complete 4/4 family.
+
+## Admit one exact candidate
+
+Before the final journey:
+
+1. Record the exact candidate commit and verify its ancestry, clean source
+   worktree, and completion record.
+2. Build or stage in an isolated candidate-bound checkout and retain the
+   source, executable, resource, manifest, and fixture identities needed to
+   prove that the operated app is that candidate.
+3. Reject or stop on candidate drift, mixed resources, a rebuilt different
+   commit, missing 4/4 family inputs, or an author-requested coaching change.
+4. Execute one independent final staged-app gate from a fresh app state using
+   the preregistered journey. Do not ask the feature or art author for help
+   during the journey and do not substitute their screenshots or testimony.
+
+Candidate-neutral fixture checks, camera proof, harness validation, and rubric
+review should run ahead in parallel. The final exact-candidate real-app journey
+is deliberately serialized and is the only QA production-acceptance gate.
+
 ## Execute
 
 1. Run the candidate's automated validation independently.

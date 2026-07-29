@@ -1,0 +1,19 @@
+{
+  "direction": "east",
+  "evidenceRoot": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/source-review-preregistration-v1/slots/east/",
+  "integrationSourceAdmissionReceipt": null,
+  "logicalID": "industrial_l04_v0_east",
+  "productionAcceptance": false,
+  "qaRecommendation": null,
+  "schemaVersion": 1,
+  "sourceBranch": "codex/citysim-world-art-east",
+  "sourceCandidatePacket": null,
+  "sourcePixelSocket": [
+    896,
+    832
+  ],
+  "sourceTask": "PLAY-079",
+  "stagedAppEvidence": false,
+  "status": "PREREGISTERED_NO_SOURCE_CANDIDATE",
+  "writeOwner": "PLAY-075_QA_ASSEMBLER"
+}

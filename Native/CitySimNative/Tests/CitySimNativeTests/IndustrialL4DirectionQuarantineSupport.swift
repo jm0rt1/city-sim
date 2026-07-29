@@ -135,6 +135,48 @@ enum IndustrialL4DirectionPacketValidationError: Error, Equatable {
     case sourceNotReady
     case productionSelected
     case invalidDisposition
+    case duplicateDirection(String)
+    case sourceAlias(String)
+    case lodAlias
+    case transformedSibling(String, String)
+    case missingDirections([String])
+}
+
+enum IndustrialL4QuarantineStatus: String, Codable, Equatable {
+    case inactive
+    case quarantinedIncomplete = "quarantined_incomplete"
+    case readyForAtomicAssembly = "ready_for_atomic_assembly"
+}
+
+struct IndustrialL4QuarantineResult: Codable, Equatable {
+    let status: IndustrialL4QuarantineStatus
+    let acceptedDirections: [IndustrialL4PacketDirection]
+    let missingDirections: [IndustrialL4PacketDirection]
+}
+
+struct IndustrialL4DirectionQuarantine: Equatable {
+    private(set) var packets: [IndustrialL4PacketDirection: IndustrialL4DirectionPacket] = [:]
+
+    func admitting(
+        _ packet: IndustrialL4DirectionPacket,
+        validator: IndustrialL4DirectionPacketValidator
+    ) throws -> IndustrialL4DirectionQuarantine {
+        guard packets[packet.direction] == nil else {
+            throw IndustrialL4DirectionPacketValidationError.duplicateDirection(
+                packet.direction.rawValue
+            )
+        }
+        var updated = packets
+        updated[packet.direction] = packet
+        _ = try validator.validateBatch(Array(updated.values))
+        return IndustrialL4DirectionQuarantine(packets: updated)
+    }
+
+    func result(
+        validator: IndustrialL4DirectionPacketValidator
+    ) throws -> IndustrialL4QuarantineResult {
+        try validator.validateBatch(Array(packets.values))
+    }
 }
 
 struct IndustrialL4DirectionPacketValidator {
@@ -234,6 +276,92 @@ struct IndustrialL4DirectionPacketValidator {
         }
     }
 
+    func validateBatch(
+        _ packets: [IndustrialL4DirectionPacket]
+    ) throws -> IndustrialL4QuarantineResult {
+        for packet in packets {
+            try validate(packet)
+        }
+
+        let directions = packets.map(\.direction)
+        guard Set(directions).count == directions.count else {
+            let duplicate = IndustrialL4PacketDirection.allCases.first { candidate in
+                directions.filter { $0 == candidate }.count > 1
+            } ?? directions[0]
+            throw IndustrialL4DirectionPacketValidationError.duplicateDirection(
+                duplicate.rawValue
+            )
+        }
+        try rejectDuplicates(
+            packets.map(\.logicalID),
+            error: .sourceAlias("logicalID")
+        )
+        try rejectDuplicates(
+            packets.map(\.source.sourceKey),
+            error: .sourceAlias("sourceKey")
+        )
+        try rejectDuplicates(
+            packets.map(\.source.decodedRgbaSha256),
+            error: .sourceAlias("decodedRgbaSha256")
+        )
+        try rejectDuplicates(
+            packets.map(\.source.authoredGeometrySha256),
+            error: .sourceAlias("authoredGeometrySha256")
+        )
+        try rejectDuplicates(
+            packets.map(\.source.componentManifestSha256),
+            error: .sourceAlias("componentManifestSha256")
+        )
+        let lodHashes = packets.flatMap { $0.lods.map(\.normalizedRgbaSha256) }
+        try rejectDuplicates(lodHashes, error: .lodAlias)
+
+        for packet in packets {
+            for sibling in packets where sibling.direction != packet.direction {
+                if packet.transformFingerprints.transformed.contains(
+                    sibling.source.decodedRgbaSha256
+                ) {
+                    throw IndustrialL4DirectionPacketValidationError.transformedSibling(
+                        packet.direction.rawValue,
+                        sibling.direction.rawValue
+                    )
+                }
+            }
+        }
+
+        let accepted = IndustrialL4PacketDirection.allCases.filter {
+            directions.contains($0)
+        }
+        let missing = IndustrialL4PacketDirection.allCases.filter {
+            !directions.contains($0)
+        }
+        let status: IndustrialL4QuarantineStatus
+        switch accepted.count {
+        case 0:
+            status = .inactive
+        case 4:
+            status = .readyForAtomicAssembly
+        default:
+            status = .quarantinedIncomplete
+        }
+        return IndustrialL4QuarantineResult(
+            status: status,
+            acceptedDirections: accepted,
+            missingDirections: missing
+        )
+    }
+
+    func requireReadyForAtomicAssembly(
+        _ packets: [IndustrialL4DirectionPacket]
+    ) throws -> IndustrialL4QuarantineResult {
+        let result = try validateBatch(packets)
+        guard result.status == .readyForAtomicAssembly else {
+            throw IndustrialL4DirectionPacketValidationError.missingDirections(
+                result.missingDirections.map(\.rawValue)
+            )
+        }
+        return result
+    }
+
     private func validateRegistration(_ packet: IndustrialL4DirectionPacket) throws {
         let registration = packet.registration
         let expectedSockets: [IndustrialL4PacketDirection: [Double]] = [
@@ -299,6 +427,15 @@ struct IndustrialL4DirectionPacketValidator {
     private func validateCommit(_ value: String, field: String) throws {
         guard value.count == 40, value.allSatisfy(\.isLowercaseHexDigit) else {
             throw IndustrialL4DirectionPacketValidationError.invalidField(field)
+        }
+    }
+
+    private func rejectDuplicates(
+        _ values: [String],
+        error: IndustrialL4DirectionPacketValidationError
+    ) throws {
+        guard Set(values).count == values.count else {
+            throw error
         }
     }
 }
@@ -411,6 +548,39 @@ enum IndustrialL4DirectionPacketFactory {
             sourceReady: true,
             productionSelected: false,
             quarantineDisposition: "accepted_direction_quarantine"
+        )
+    }
+
+    static func replacing(
+        _ packet: IndustrialL4DirectionPacket,
+        governingContract: IndustrialL4ContractBinding? = nil,
+        appearanceLock: IndustrialL4AppearanceLock? = nil,
+        source: IndustrialL4SourceBinding? = nil,
+        lods: [IndustrialL4LODIdentity]? = nil,
+        provenance: IndustrialL4Provenance? = nil,
+        registration: IndustrialL4Registration? = nil,
+        transformFingerprints: IndustrialL4TransformFingerprints? = nil,
+        sourceReady: Bool? = nil,
+        productionSelected: Bool? = nil,
+        quarantineDisposition: String? = nil
+    ) -> IndustrialL4DirectionPacket {
+        IndustrialL4DirectionPacket(
+            schemaVersion: packet.schemaVersion,
+            family: packet.family,
+            level: packet.level,
+            variant: packet.variant,
+            direction: packet.direction,
+            logicalID: packet.logicalID,
+            governingContract: governingContract ?? packet.governingContract,
+            appearanceLock: appearanceLock ?? packet.appearanceLock,
+            source: source ?? packet.source,
+            lods: lods ?? packet.lods,
+            provenance: provenance ?? packet.provenance,
+            registration: registration ?? packet.registration,
+            transformFingerprints: transformFingerprints ?? packet.transformFingerprints,
+            sourceReady: sourceReady ?? packet.sourceReady,
+            productionSelected: productionSelected ?? packet.productionSelected,
+            quarantineDisposition: quarantineDisposition ?? packet.quarantineDisposition
         )
     }
 

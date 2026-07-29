@@ -17,7 +17,7 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. Integration independently replayed and now authorizes exactly one v12 North zero-pixel compound-pier implementation under `INDUSTRIAL-L04-NORTH-V12-ZERO-PIXEL-AUTHORITY.md`. No source pixels, DCC, appearance lock, sibling release, admission, or shipping are authorized.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. North v12 zero-pixel compound-pier implementation, replay identity, and mechanical internal-face proof are integrated through `aef61b2c27ec295a3f088f41031f35e20bc13bc9`. Integration now authorizes only a task-local, pure-data `blender-lowering-v01` implementation plus exactly two sequential no-render static Blender imports under `INDUSTRIAL-L04-NORTH-V12-BLENDER-LOWERING-AUTHORITY.md`. No rendered/Cycles/appearance/source compatibility claim, source pixels, Process A/B/C, appearance lock, sibling release, admission, or shipping are authorized.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -33,10 +33,13 @@
   widened the west jamb outward and passed every gate except eroded-core
   topology; its retained replay A is `bd6a460024b8b6ebffde4b5894d69063100d3d9b`.
   The first Z-only v12 proposal was rejected in memory. The separately reviewed
-  compound-pier v12 topology is now authorized for North-only zero-pixel
-  implementation and two sequential analytic replays. The unchanged v10
-  emission value is not luma proof and must be re-proved in a later separately
-  authorized Process A.
+  compound-pier v12 topology, two sequential analytic replays, and mechanical
+  removal of six internal same-owner face fragments are now integrated. The
+  next bounded slice may author only a North/v12-local canonical mesh IR and a
+  thin static Blender importer, then execute exactly two sequential no-render
+  static imports under the published lowering authority.
+  The unchanged v10 emission value is not luma proof and must be re-proved in a
+  later separately authorized Process A.
   North Process A/B/C, sibling source pixels, appearance-lock publication,
   source admission, Renderer activation, and shipping remain blocked.
 

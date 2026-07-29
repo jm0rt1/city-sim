@@ -1,0 +1,75 @@
+{
+  "schema": "citysim.play-080.strict-parallel-negative-fixtures.v1",
+  "baseReceipt": "fixtures/PASS-OVERLAPPED.json",
+  "cases": [
+    {
+      "id": "invocation-count",
+      "operation": "replace",
+      "pointer": "/processes/B/invocationCount",
+      "value": 2,
+      "expectedCode": "SCHEMA_INVALID"
+    },
+    {
+      "id": "root-ancestor-alias",
+      "operation": "replace",
+      "pointer": "/processes/B/outputRoot",
+      "value": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/nested/",
+      "expectedCode": "ROOT_ISOLATION_FAILURE"
+    },
+    {
+      "id": "false-overlap-pair",
+      "operation": "replace",
+      "pointer": "/execution/overlapPairs",
+      "value": [
+        [
+          "A",
+          "C"
+        ]
+      ],
+      "expectedCode": "OVERLAP_PAIR_MISMATCH"
+    },
+    {
+      "id": "dependency-race",
+      "operation": "replace",
+      "pointer": "/jobs/3/startedAtUtc",
+      "value": "2026-07-29T10:05:29Z",
+      "expectedCode": "DEPENDENCY_BARRIER_VIOLATION"
+    },
+    {
+      "id": "second-assembler",
+      "operation": "replace",
+      "pointer": "/jobs/8/kind",
+      "value": "packet_assembly",
+      "expectedCode": "ASSEMBLER_COUNT_MISMATCH"
+    },
+    {
+      "id": "frozen-input-drift",
+      "operation": "replace",
+      "pointer": "/frozenInputs/scene/sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expectedCode": "FROZEN_INPUT_SHA_MISMATCH"
+    },
+    {
+      "id": "invented-global-schedule-substitute",
+      "operation": "replace",
+      "pointer": "/globalScheduleReceipt/path",
+      "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FAKE-GLOBAL-SCHEDULE.json",
+      "expectedCode": "SCHEMA_INVALID"
+    },
+    {
+      "id": "unsupported-global-cap-claim",
+      "operation": "replace",
+      "pointer": "/globalScheduleReceipt/globalCapProven",
+      "value": true,
+      "expectedCode": "SCHEMA_INVALID"
+    },
+    {
+      "id": "sequential-without-exception",
+      "baseReceipt": "fixtures/PASS-SEQUENTIAL-EXCEPTION.json",
+      "operation": "replace",
+      "pointer": "/execution/resourceException",
+      "value": null,
+      "expectedCode": "SCHEMA_INVALID"
+    }
+  ]
+}

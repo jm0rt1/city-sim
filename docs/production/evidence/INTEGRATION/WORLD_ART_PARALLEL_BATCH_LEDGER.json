@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-29T06:40:11Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0640Z.json",
+  "updatedAt": "2026-07-29T06:52:53Z",
+  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0652Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "af6b661b79e0802386123537aaeddce5c9d385f2",
-    "technicalHeadBeforeLedger": "af6b661b79e0802386123537aaeddce5c9d385f2"
+    "publishedBase": "02fd3434f0467864700db798ad2078035262ad7b",
+    "technicalHeadBeforeLedger": "02fd3434f0467864700db798ad2078035262ad7b"
   },
   "stateMachine": [
     "contract_pending",
@@ -50,11 +50,11 @@
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "claim": "PLAY-027",
       "publishedBase": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
-      "head": "c5187b90fc99372d71ff94156bfa5ba1b3f62f81",
+      "head": "d9a2f768a558c3ffa6bf380a34b7f5639ac2758e",
       "state": "prelock_active",
-      "blocker": "process_a_not_yet_returned_for_independent_review",
-      "nextAction": "complete_exactly_one_authorized_v08_process_a_and_commit_review_packet",
-      "updatedAt": "2026-07-29T06:40:11Z"
+      "blocker": "v08_process_a_returned_literal_scale_appearance_gate",
+      "nextAction": "author_v09_zero_pixel_monumentality_portal_and_value_redesign",
+      "updatedAt": "2026-07-29T06:52:53Z"
     },
     {
       "lane": "world_art",
@@ -64,11 +64,11 @@
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
       "claim": "PLAY-079",
       "publishedBase": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
-      "head": "3ca37996953230b7255f6a22ac1f977c99e56e03",
+      "head": "aec7f8fe0a23deee446dc9108b22e6929b54922f",
       "state": "prelock_active",
       "blocker": "appearance_lock_and_source_profile_intentionally_absent",
-      "nextAction": "complete_fail_closed_launch_bound_cli_plumbing_without_pixels",
-      "updatedAt": "2026-07-29T06:40:11Z"
+      "nextAction": "complete_independent_review_of_fail_closed_launch_bound_cli",
+      "updatedAt": "2026-07-29T06:52:53Z"
     },
     {
       "lane": "world_art",
@@ -78,11 +78,11 @@
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
       "claim": "PLAY-080",
       "publishedBase": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
-      "head": "148261e482b4faea468dffcebd2d96ca3dfdec19",
+      "head": "68f42a4aa587b11807738a0e77f96c4e5c370ccd",
       "state": "prelock_active",
       "blocker": "appearance_lock_and_source_profile_intentionally_absent",
       "nextAction": "complete_immutable_abc_roots_and_launch_bound_assembler_without_pixels",
-      "updatedAt": "2026-07-29T06:40:11Z"
+      "updatedAt": "2026-07-29T06:52:53Z"
     },
     {
       "lane": "world_art",
@@ -92,11 +92,11 @@
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
       "claim": "PLAY-081",
       "publishedBase": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
-      "head": "135805d9b092d44ea28ff8421cbc70bddd1ac38a",
+      "head": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
       "state": "prelock_active",
-      "blocker": "independent_prelock_review_and_appearance_lock_pending",
-      "nextAction": "complete_read_only_launch_readiness_audit_then_repair_any_zero_pixel_plumbing_gap",
-      "updatedAt": "2026-07-29T06:40:11Z"
+      "blocker": "appearance_lock_and_source_profile_intentionally_absent",
+      "nextAction": "complete_west_launch_bound_and_immutable_abc_plumbing_without_pixels",
+      "updatedAt": "2026-07-29T06:52:53Z"
     },
     {
       "lane": "world_rendering",
@@ -109,8 +109,8 @@
       "head": "d4789ef8ca880d410eaf46fde4f3dc8e79abd14e",
       "state": "prelock_active",
       "blocker": "integration_admitted_direction_sources_not_yet_available",
-      "nextAction": "sync_accepted_harness_from_af6b661b_then_prepare_receipt_consumption_wrappers",
-      "updatedAt": "2026-07-29T06:40:11Z"
+      "nextAction": "audit_exact_4of4_atomic_assembly_dependencies_on_integrated_caller_path",
+      "updatedAt": "2026-07-29T06:52:53Z"
     },
     {
       "lane": "playtest_quality",
@@ -120,11 +120,11 @@
       "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
       "claim": "PLAY-075",
       "publishedBase": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
-      "head": "2eb88890d414d4fffd48b892e7f9a8e04445d9b2",
+      "head": "d0b79769d1a75c4103fb3a9799c3dfb9dca38d3a",
       "state": "prelock_active",
-      "blocker": "narrow_gate_contract_hash_binding_repair_active_then_exact_4of4_pending",
-      "nextAction": "bind_materializer_validator_and_receipt_hashes_then_return_repaired_preregistration",
-      "updatedAt": "2026-07-29T06:40:11Z"
+      "blocker": "exact_4of4_renderer_candidate_not_yet_available",
+      "nextAction": "preregister_additive_production_quality_rubric_v2",
+      "updatedAt": "2026-07-29T06:52:53Z"
     }
   ]
 }

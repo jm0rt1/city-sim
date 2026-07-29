@@ -9,6 +9,24 @@ private enum L4AdapterDirection: String, Codable, CaseIterable {
     case west
 }
 
+private enum L4AdapterQuarantineDirection: String, Codable, CaseIterable {
+    case north
+    case east
+    case south
+    case west
+
+    init(_ direction: L4AdapterDirection) {
+        switch direction {
+        case .east:
+            self = .east
+        case .south:
+            self = .south
+        case .west:
+            self = .west
+        }
+    }
+}
+
 private struct L4AdapterArtifact: Codable, Equatable {
     let path: String
     let sha256: String
@@ -224,6 +242,112 @@ private struct L4AdapterRendererPacket: Codable, Equatable {
     let productionSelected: Bool
 }
 
+private struct L4AdapterQuarantineIdentity: Codable, Equatable {
+    let family: String
+    let level: Int
+    let variant: Int
+    let direction: L4AdapterQuarantineDirection
+    let logicalID: String
+}
+
+private struct L4AdapterQuarantineRegistration: Codable, Equatable {
+    let footprintTiles: [Int]
+    let canvasPixels: [Int]
+    let groundPivotSource: [Int]
+    let frontageSocketSource: [Int]
+    let frontageEdge: L4AdapterQuarantineDirection
+    let supportedOrientation: String
+    let occupiedBounds: L4AdapterBounds
+    let groundContactPolygonWorld: [[Double]]
+    let contactDeclaration: String
+    let shadowDirection: String
+    let alpha: L4AdapterAlpha
+}
+
+private struct L4AdapterQuarantinePacket: Codable, Equatable {
+    let schemaVersion: Int
+    let identity: L4AdapterQuarantineIdentity
+    let governingContract: L4AdapterContract
+    let directionBridge: L4AdapterBridge
+    let appearanceLock: L4AdapterAppearance
+    let sourceStage: L4AdapterSourceStageBinding
+    let workerState: L4AdapterWorkerState
+    let source: L4AdapterPacketSource
+    let lods: [L4AdapterPacketLOD]
+    let provenance: L4AdapterProvenance
+    let registration: L4AdapterQuarantineRegistration
+    let transformFingerprints: [String: String]
+    let productionSelected: Bool
+
+    init(adapterPacket packet: L4AdapterRendererPacket) {
+        let direction = L4AdapterQuarantineDirection(packet.direction)
+        schemaVersion = packet.schemaVersion
+        identity = L4AdapterQuarantineIdentity(
+            family: packet.family,
+            level: packet.level,
+            variant: packet.variant,
+            direction: direction,
+            logicalID: packet.logicalID
+        )
+        governingContract = packet.governingContract
+        directionBridge = packet.directionBridge
+        appearanceLock = packet.appearanceLock
+        sourceStage = packet.sourceStage
+        workerState = packet.workerState
+        source = packet.source
+        lods = packet.lods
+        provenance = packet.provenance
+        registration = L4AdapterQuarantineRegistration(
+            footprintTiles: packet.registration.footprintTiles,
+            canvasPixels: packet.registration.canvasPixels,
+            groundPivotSource: packet.registration.groundPivotSource,
+            frontageSocketSource:
+                packet.registration.frontageSocketSource,
+            frontageEdge: direction,
+            supportedOrientation:
+                packet.registration.supportedOrientation,
+            occupiedBounds: packet.registration.occupiedBounds,
+            groundContactPolygonWorld:
+                packet.registration.groundContactPolygonWorld,
+            contactDeclaration: packet.registration.contactDeclaration,
+            shadowDirection: packet.registration.shadowDirection,
+            alpha: packet.registration.alpha
+        )
+        transformFingerprints = packet.transformFingerprints
+        productionSelected = packet.productionSelected
+    }
+
+    init(
+        schemaVersion: Int,
+        identity: L4AdapterQuarantineIdentity,
+        governingContract: L4AdapterContract,
+        directionBridge: L4AdapterBridge,
+        appearanceLock: L4AdapterAppearance,
+        sourceStage: L4AdapterSourceStageBinding,
+        workerState: L4AdapterWorkerState,
+        source: L4AdapterPacketSource,
+        lods: [L4AdapterPacketLOD],
+        provenance: L4AdapterProvenance,
+        registration: L4AdapterQuarantineRegistration,
+        transformFingerprints: [String: String],
+        productionSelected: Bool
+    ) {
+        self.schemaVersion = schemaVersion
+        self.identity = identity
+        self.governingContract = governingContract
+        self.directionBridge = directionBridge
+        self.appearanceLock = appearanceLock
+        self.sourceStage = sourceStage
+        self.workerState = workerState
+        self.source = source
+        self.lods = lods
+        self.provenance = provenance
+        self.registration = registration
+        self.transformFingerprints = transformFingerprints
+        self.productionSelected = productionSelected
+    }
+}
+
 private struct L4AdapterBatchState: Equatable {
     let packets: [L4AdapterDirection: Data]
     let failures: [L4AdapterDirection: L4AdapterPrototypeError]
@@ -238,7 +362,7 @@ private struct L4AdapterSyntheticAdmission: Codable, Equatable {
     let schemaVersion: Int
     let disposition: String
     let integrationCommit: String
-    let direction: L4AdapterDirection
+    let direction: L4AdapterQuarantineDirection
     let logicalID: String
     let workerPacket: L4AdapterArtifact
     let contentCommit: String
@@ -262,7 +386,7 @@ private struct L4AdapterSyntheticQuarantineReceipt: Codable, Equatable {
     let packetSha256: String
     let sourceAdmissionSha256: String
     let logicalID: String
-    let direction: L4AdapterDirection
+    let direction: L4AdapterQuarantineDirection
     let decodedRgbaSha256: String
     let validationResult: String
     let quarantineStatus: L4AdapterSyntheticQuarantineStatus
@@ -273,7 +397,7 @@ private struct L4AdapterSyntheticQuarantineReceipt: Codable, Equatable {
 }
 
 private struct L4AdapterSyntheticAdmittedPacket: Equatable {
-    let packet: L4AdapterRendererPacket
+    let packet: L4AdapterQuarantinePacket
     let packetSha256: String
     let admission: L4AdapterSyntheticAdmission
     let admissionSha256: String
@@ -281,7 +405,7 @@ private struct L4AdapterSyntheticAdmittedPacket: Equatable {
 
 private struct L4AdapterSyntheticQuarantineResult: Equatable {
     let status: L4AdapterSyntheticQuarantineStatus
-    let acceptedDirections: [L4AdapterDirection]
+    let acceptedDirections: [L4AdapterQuarantineDirection]
     let missingDirections: [String]
 }
 
@@ -322,7 +446,7 @@ private struct L4AdapterSyntheticQuarantineHarness {
         )
         try Self.validatePacketShape(packetData)
         let packet = try JSONDecoder().decode(
-            L4AdapterRendererPacket.self,
+            L4AdapterQuarantinePacket.self,
             from: packetData
         )
         try Self.validatePacket(packet)
@@ -354,8 +478,8 @@ private struct L4AdapterSyntheticQuarantineHarness {
             schemaVersion: 1,
             packetSha256: input.packetSha256,
             sourceAdmissionSha256: input.admissionSha256,
-            logicalID: packet.logicalID,
-            direction: packet.direction,
+            logicalID: packet.identity.logicalID,
+            direction: packet.identity.direction,
             decodedRgbaSha256: packet.source.decodedRgbaSha256,
             validationResult: "accepted_direction_quarantine",
             quarantineStatus: result.status,
@@ -375,8 +499,25 @@ private struct L4AdapterSyntheticQuarantineHarness {
         _ admitted: [L4AdapterSyntheticAdmittedPacket]
     ) throws -> L4AdapterSyntheticQuarantineResult {
         let packets = admitted.map(\.packet)
-        try unique(packets.map { $0.direction.rawValue }, field: "direction")
-        try unique(packets.map(\.logicalID), field: "logicalID")
+        for admittedPacket in admitted {
+            try validatePacket(admittedPacket.packet)
+            try validateAdmission(
+                admittedPacket.admission,
+                packet: admittedPacket.packet,
+                packetPath: admittedPacket.admission.workerPacket.path,
+                packetSha256: admittedPacket.packetSha256
+            )
+        }
+        try unique(admitted.map(\.packetSha256), field: "packetSha256")
+        try unique(
+            admitted.map(\.admissionSha256),
+            field: "admissionSha256"
+        )
+        try unique(
+            packets.map { $0.identity.direction.rawValue },
+            field: "direction"
+        )
+        try unique(packets.map(\.identity.logicalID), field: "logicalID")
         try unique(packets.map(\.source.sourceKey), field: "sourceKey")
         try unique(
             packets.map(\.source.decodedRgbaSha256),
@@ -394,13 +535,27 @@ private struct L4AdapterSyntheticQuarantineHarness {
             packets.flatMap { $0.lods.map(\.normalizedRgbaSha256) },
             field: "lods"
         )
+        try unique(
+            packets.flatMap { $0.transformFingerprints.values },
+            field: "transformFingerprints"
+        )
+        if let appearanceLock = packets.first?.appearanceLock {
+            guard packets.allSatisfy({
+                $0.appearanceLock == appearanceLock
+            }) else {
+                throw L4AdapterSyntheticQuarantineError.packetDrift(
+                    "appearanceLock"
+                )
+            }
+        }
         for packet in packets {
             let transformed = Set(
                 packet.transformFingerprints
                     .filter { $0.key != "identity" }
                     .map(\.value)
             )
-            for sibling in packets where sibling.direction != packet.direction {
+            for sibling in packets
+            where sibling.identity.direction != packet.identity.direction {
                 guard !transformed.contains(
                     sibling.source.decodedRgbaSha256
                 ) else {
@@ -409,12 +564,12 @@ private struct L4AdapterSyntheticQuarantineHarness {
             }
         }
 
-        let accepted = L4AdapterDirection.allCases.filter {
-            packets.map(\.direction).contains($0)
+        let accepted = L4AdapterQuarantineDirection.allCases.filter {
+            packets.map(\.identity.direction).contains($0)
         }
-        let missing = ["north", "east", "south", "west"].filter {
-            !accepted.map(\.rawValue).contains($0)
-        }
+        let missing = L4AdapterQuarantineDirection.allCases
+            .map(\.rawValue)
+            .filter { !accepted.map(\.rawValue).contains($0) }
         let status: L4AdapterSyntheticQuarantineStatus
         switch packets.count {
         case 0:
@@ -444,14 +599,14 @@ private struct L4AdapterSyntheticQuarantineHarness {
     }
 
     private static func validatePacket(
-        _ packet: L4AdapterRendererPacket
+        _ packet: L4AdapterQuarantinePacket
     ) throws {
         guard packet.schemaVersion == 2,
-              packet.family == "industrial",
-              packet.level == 4,
-              packet.variant == 0,
-              packet.logicalID ==
-                "industrial_l04_v0_\(packet.direction.rawValue)",
+              packet.identity.family == "industrial",
+              packet.identity.level == 4,
+              packet.identity.variant == 0,
+              packet.identity.logicalID ==
+                "industrial_l04_v0_\(packet.identity.direction.rawValue)",
               packet.governingContract == L4AdapterPrototype.contract,
               packet.directionBridge == L4AdapterPrototype.directionBridge,
               packet.sourceStage == L4AdapterPrototype.sourceStage,
@@ -461,7 +616,25 @@ private struct L4AdapterSyntheticQuarantineHarness {
               !packet.workerState.integrationAdmitted,
               !packet.workerState.rendererQuarantined,
               packet.source.fallbackSourceKey == nil,
-              !packet.productionSelected
+              !packet.productionSelected,
+              packet.registration.footprintTiles == [1, 1],
+              packet.registration.canvasPixels == [1536, 1024],
+              packet.registration.groundPivotSource == [768, 896],
+              packet.registration.frontageSocketSource ==
+                L4AdapterPrototype.quarantineSockets[
+                    packet.identity.direction
+                ],
+              packet.registration.frontageEdge ==
+                packet.identity.direction,
+              packet.registration.supportedOrientation ==
+                "\(packet.identity.direction.rawValue)-facing-authored",
+              packet.registration.contactDeclaration ==
+                "registered_ground_pivot",
+              packet.registration.shadowDirection == "southeast",
+              packet.registration.alpha.nonzeroPixelCount > 0,
+              packet.registration.alpha.hiddenRgbPixelCount == 0,
+              packet.registration.alpha.nearChromaPixelCount == 0,
+              isCommit(packet.source.candidateCommit)
         else {
             throw L4AdapterSyntheticQuarantineError.packetDrift("authority")
         }
@@ -491,14 +664,14 @@ private struct L4AdapterSyntheticQuarantineHarness {
 
     private static func validateAdmission(
         _ admission: L4AdapterSyntheticAdmission,
-        packet: L4AdapterRendererPacket,
+        packet: L4AdapterQuarantinePacket,
         packetPath: String,
         packetSha256: String
     ) throws {
         guard admission.schemaVersion == 1,
               admission.disposition == "integration_source_admitted",
-              admission.direction == packet.direction,
-              admission.logicalID == packet.logicalID,
+              admission.direction == packet.identity.direction,
+              admission.logicalID == packet.identity.logicalID,
               admission.workerPacket ==
                 L4AdapterArtifact(path: packetPath, sha256: packetSha256),
               admission.contentCommit == packet.source.candidateCommit,
@@ -564,12 +737,16 @@ private struct L4AdapterSyntheticQuarantineHarness {
         try exactKeys(
             root,
             [
-                "schemaVersion", "family", "level", "variant", "direction",
-                "logicalID", "governingContract", "directionBridge",
-                "appearanceLock", "sourceStage", "workerState", "source",
-                "lods", "provenance", "registration",
-                "transformFingerprints", "productionSelected",
+                "schemaVersion", "identity", "governingContract",
+                "directionBridge", "appearanceLock", "sourceStage",
+                "workerState", "source", "lods", "provenance",
+                "registration", "transformFingerprints",
+                "productionSelected",
             ]
+        )
+        try exactKeys(
+            try child(root, "identity"),
+            ["family", "level", "variant", "direction", "logicalID"]
         )
         try exactKeys(
             try child(root, "workerState"),
@@ -743,6 +920,12 @@ private struct L4AdapterPrototype {
         coordinateSystem: "citysim_source_pixels_v1"
     )
     static let sockets: [L4AdapterDirection: [Int]] = [
+        .east: [896, 832],
+        .south: [640, 832],
+        .west: [640, 704],
+    ]
+    static let quarantineSockets: [L4AdapterQuarantineDirection: [Int]] = [
+        .north: [896, 704],
         .east: [896, 832],
         .south: [640, 832],
         .west: [640, 704],
@@ -1440,6 +1623,143 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
         }
     }
 
+    func testAcceptedPrelockNorthCompletesAtomicFourDirectionQuarantine()
+        throws
+    {
+        try withSyntheticInputs { root, authorityData, hashes in
+            let adapter = try L4AdapterPrototype(
+                root: root,
+                authorityData: authorityData
+            )
+            let adapted = adapter.adaptIndependently(hashes: hashes)
+            XCTAssertTrue(adapted.failures.isEmpty)
+
+            var admitted: [L4AdapterSyntheticAdmittedPacket] = []
+            var receiptBytes: [Data] = []
+            for direction in L4AdapterDirection.allCases {
+                let pair = try makeQuarantineInput(
+                    root: root,
+                    direction: direction,
+                    packetData: try XCTUnwrap(adapted.packets[direction])
+                )
+                let output = try pair.harness.inspect(
+                    pair.input,
+                    existingPackets: admitted
+                )
+                admitted.append(output.admittedPacket)
+                receiptBytes.append(output.receiptData)
+            }
+
+            let incomplete =
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(admitted)
+            XCTAssertEqual(incomplete.status, .quarantinedIncomplete)
+            XCTAssertEqual(
+                incomplete.acceptedDirections,
+                [.east, .south, .west]
+            )
+            XCTAssertEqual(incomplete.missingDirections, ["north"])
+            let siblingsBefore = admitted
+            let receiptsBefore = receiptBytes
+
+            let appearanceLock = try XCTUnwrap(
+                admitted.first?.packet.appearanceLock
+            )
+            let north = syntheticPrelockNorthPacket(
+                appearanceLock: appearanceLock
+            )
+            let rejected = try makeQuarantineInput(
+                root: root,
+                packet: north,
+                admittedDecodedRgbaSha256: String(repeating: "0", count: 64)
+            )
+            XCTAssertThrowsError(
+                try rejected.harness.inspect(
+                    rejected.input,
+                    existingPackets: admitted
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4AdapterSyntheticQuarantineError,
+                    .admissionDrift("candidateBinding")
+                )
+            }
+            XCTAssertEqual(admitted, siblingsBefore)
+            XCTAssertEqual(receiptBytes, receiptsBefore)
+            XCTAssertEqual(
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(
+                    admitted
+                ),
+                incomplete
+            )
+
+            let corrected = try makeQuarantineInput(
+                root: root,
+                packet: north
+            )
+            let first = try corrected.harness.inspect(
+                corrected.input,
+                existingPackets: admitted
+            )
+            let second = try corrected.harness.inspect(
+                corrected.input,
+                existingPackets: admitted
+            )
+            XCTAssertEqual(first, second)
+            XCTAssertEqual(first.receiptData, second.receiptData)
+            XCTAssertEqual(first.receipt.direction, .north)
+            XCTAssertEqual(
+                first.receipt.quarantineStatus,
+                .readyForAtomicAssembly
+            )
+            XCTAssertTrue(first.receipt.rendererQuarantined)
+            XCTAssertFalse(first.receipt.productionSelected)
+            XCTAssertFalse(first.receipt.runtimeMappingMutated)
+            XCTAssertFalse(first.receipt.shippingResourcesMutated)
+
+            admitted.append(first.admittedPacket)
+            receiptBytes.append(first.receiptData)
+            let ready =
+                try L4AdapterSyntheticQuarantineHarness.validateBatch(admitted)
+            XCTAssertEqual(ready.status, .readyForAtomicAssembly)
+            XCTAssertEqual(
+                ready.acceptedDirections,
+                L4AdapterQuarantineDirection.allCases
+            )
+            XCTAssertTrue(ready.missingDirections.isEmpty)
+            XCTAssertEqual(
+                try L4AdapterSyntheticQuarantineHarness
+                    .requireReadyForAtomicAssembly(admitted),
+                ready
+            )
+            XCTAssertEqual(
+                Set(
+                    admitted.flatMap {
+                        $0.packet.lods.map(\.normalizedRgbaSha256)
+                    }
+                ).count,
+                12
+            )
+            XCTAssertEqual(
+                Set(
+                    admitted.flatMap {
+                        $0.packet.transformFingerprints.values
+                    }
+                ).count,
+                32
+            )
+            XCTAssertTrue(
+                admitted.allSatisfy {
+                    !$0.packet.workerState.integrationAdmitted
+                        && !$0.packet.workerState.rendererQuarantined
+                        && !$0.packet.productionSelected
+                        && !$0.admission.rendererQuarantined
+                        && !$0.admission.productionSelected
+                }
+            )
+            XCTAssertEqual(Set(receiptBytes).count, 4)
+        }
+    }
+
     private func makeQuarantineInput(
         root: URL,
         direction: L4AdapterDirection,
@@ -1449,17 +1769,142 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
         harness: L4AdapterSyntheticQuarantineHarness,
         input: L4AdapterSyntheticFileInput
     ) {
-        let packet = try JSONDecoder().decode(
+        let adapterPacket = try JSONDecoder().decode(
             L4AdapterRendererPacket.self,
             from: packetData
         )
-        XCTAssertEqual(packet.direction.rawValue, direction.rawValue)
+        XCTAssertEqual(adapterPacket.direction, direction)
+        let packet = L4AdapterQuarantinePacket(
+            adapterPacket: adapterPacket
+        )
+        return try makeQuarantineInput(
+            root: root,
+            packet: packet,
+            admittedDecodedRgbaSha256: admittedDecodedRgbaSha256
+        )
+    }
+
+    private func syntheticPrelockNorthPacket(
+        appearanceLock: L4AdapterAppearance
+    ) -> L4AdapterQuarantinePacket {
+        let direction = L4AdapterQuarantineDirection.north
+        let hash: (String) -> String = {
+            L4AdapterPrototype.sha256(
+                Data("north-prelock-\($0)".utf8)
+            )
+        }
+        var transformFingerprints = Dictionary(
+            uniqueKeysWithValues:
+                L4AdapterPrototype.transformKeys.sorted().map {
+                    ($0, hash("transform-\($0)"))
+                }
+        )
+        transformFingerprints["identity"] =
+            appearanceLock.northProcessADecodedRgbaSha256
+
+        return L4AdapterQuarantinePacket(
+            schemaVersion: 2,
+            identity: L4AdapterQuarantineIdentity(
+                family: "industrial",
+                level: 4,
+                variant: 0,
+                direction: direction,
+                logicalID: "industrial_l04_v0_north"
+            ),
+            governingContract: L4AdapterPrototype.contract,
+            directionBridge: L4AdapterPrototype.directionBridge,
+            appearanceLock: appearanceLock,
+            sourceStage: L4AdapterPrototype.sourceStage,
+            workerState: L4AdapterWorkerState(
+                stage: "source_candidate",
+                candidateReadyForIndependentReview: true,
+                sourceReady: false,
+                integrationAdmitted: false,
+                rendererQuarantined: false
+            ),
+            source: L4AdapterPacketSource(
+                candidateCommit: String(hash("content").prefix(40)),
+                sourceKey:
+                    "industrial_l04/variant-0/north/source-v-prelock",
+                decodedRgbaSha256:
+                    appearanceLock.northProcessADecodedRgbaSha256,
+                authoredGeometrySha256: hash("geometry"),
+                componentManifestSha256: hash("components"),
+                fallbackSourceKey: nil
+            ),
+            lods: L4AdapterPrototype.lodOrder.map { detail in
+                L4AdapterPacketLOD(
+                    detail: detail,
+                    normalizedRgbaSha256: hash("\(detail)-rgba"),
+                    canvasPixels: L4AdapterPrototype.lodSizes[detail]!
+                )
+            },
+            provenance: L4AdapterProvenance(
+                sourceManifest: L4AdapterArtifact(
+                    path:
+                        "docs/production/evidence/PLAY-027/"
+                        + "synthetic-north-prelock/SOURCE-STAGE-HANDOFF.json",
+                    sha256: hash("source-manifest")
+                ),
+                toolchain: L4AdapterArtifact(
+                    path:
+                        "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+                        + "synthetic-north-prelock/RUNNER-CONTRACT.json",
+                    sha256: hash("toolchain")
+                ),
+                normalizationReceipt: L4AdapterArtifact(
+                    path:
+                        "docs/production/evidence/PLAY-027/"
+                        + "synthetic-north-prelock/NORMALIZATION-RECEIPT.json",
+                    sha256: hash("normalization")
+                )
+            ),
+            registration: L4AdapterQuarantineRegistration(
+                footprintTiles: [1, 1],
+                canvasPixels: [1536, 1024],
+                groundPivotSource: [768, 896],
+                frontageSocketSource:
+                    L4AdapterPrototype.quarantineSockets[direction]!,
+                frontageEdge: direction,
+                supportedOrientation: "north-facing-authored",
+                occupiedBounds: L4AdapterBounds(
+                    minX: 384,
+                    minY: 256,
+                    maxX: 1152,
+                    maxY: 896
+                ),
+                groundContactPolygonWorld: [
+                    [0, 13.5], [27, 0], [0, -13.5], [-27, 0],
+                ],
+                contactDeclaration: "registered_ground_pivot",
+                shadowDirection: "southeast",
+                alpha: L4AdapterAlpha(
+                    nonzeroPixelCount: 100_000,
+                    hiddenRgbPixelCount: 0,
+                    nearChromaPixelCount: 0
+                )
+            ),
+            transformFingerprints: transformFingerprints,
+            productionSelected: false
+        )
+    }
+
+    private func makeQuarantineInput(
+        root: URL,
+        packet: L4AdapterQuarantinePacket,
+        admittedDecodedRgbaSha256: String? = nil
+    ) throws -> (
+        harness: L4AdapterSyntheticQuarantineHarness,
+        input: L4AdapterSyntheticFileInput
+    ) {
+        let direction = packet.identity.direction
+        let quarantinePacketData = try L4AdapterPrototype.sortedData(packet)
 
         let packetPath =
             "renderer-candidate/\(direction.rawValue)-direction-packet-v2.json"
         let packetURL = root.appending(path: packetPath)
-        try writeData(packetData, to: packetURL)
-        let packetSha256 = L4AdapterPrototype.sha256(packetData)
+        try writeData(quarantinePacketData, to: packetURL)
+        let packetSha256 = L4AdapterPrototype.sha256(quarantinePacketData)
 
         let admission = L4AdapterSyntheticAdmission(
             schemaVersion: 1,
@@ -1472,8 +1917,8 @@ final class IndustrialL4SourceStageAdapterPrototypeTests: XCTestCase {
                     )
                 ).prefix(40)
             ),
-            direction: packet.direction,
-            logicalID: packet.logicalID,
+            direction: packet.identity.direction,
+            logicalID: packet.identity.logicalID,
             workerPacket: L4AdapterArtifact(
                 path: packetPath,
                 sha256: packetSha256

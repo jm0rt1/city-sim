@@ -11,11 +11,11 @@
 | Cell | Branch / claim | Current state | Next release boundary |
 |---|---|---|---|
 | North | `codex/citysim-world-art` / `PLAY-027` | v06 global coordinate bridge accepted from `3e01ca67`; corrected North zero-pixel architecture is released | independent appearance review releases North B/C and sibling A/B/C |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | runner integrated, but independent replay found a stale CONTRACT-020 hash; v06 adoption and narrow hash refresh dispatched | passing bridge replay plus appearance lock releases A/B/C |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | runner independently passes; v06 adoption and bridge replay released | passing bridge replay plus appearance lock releases A/B/C |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | runner and handoff independently pass; v06 adoption and bridge replay released | passing bridge replay plus appearance lock releases A/B/C |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | fail-closed packet schema and 0–4 quarantine matrix accepted; focused Integration replay passes 7/7 | quarantine each accepted direction; activate only after exact 4/4 |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | deterministic mature-city directional fixture and atomic L4 rubric are published on master at `184e6e5b`; live rehearsal remains deferred while the Mac is locked | one fresh independent final app gate after renderer assembly |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | v06 adopted; stale CONTRACT-020 hash repaired; zero-pixel runner/handoff passes with no pixel processes | North appearance lock releases A/B/C |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | v06 adopted; static 6/6 and actual-camera 5/5 pass at `0.000183105469` px maximum delta | North appearance lock releases A/B/C |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | v06 adopted; two fresh actual-camera proofs are byte-identical with no pixel processes | North appearance lock releases A/B/C |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | accepted bridge identities bound into fail-closed packet schema; stale/mismatched packets reject; focused Integration replay passes 7/7 | quarantine each accepted direction; activate only after exact 4/4 |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | canonical runtime directions and exact 4/4 gate bound to the unchanged mature-city fixture | one fresh independent final app gate after renderer assembly |
 
 ## Dispatch invariant
 

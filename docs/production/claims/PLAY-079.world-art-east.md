@@ -18,10 +18,8 @@
 - **Accepted bridge dependency:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Status:** Predesign accepted and integrated at `3575d6ac`. Direction-local
-  zero-pixel production-runner preparation is active under
-  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`. East is authorized to
-  adopt the accepted v06 bridge, refresh only stale authority hashes, and
-  revalidate its canonical CitySim/source projection. Pixel rendering remains
+  zero-pixel runner and handoff now pass against accepted v06 at candidate
+  `22e15b06`; the stale CONTRACT-020 hash is repaired. Pixel rendering remains
   blocked until Integration publishes the exact appearance lock and post-lock
   production authority.
 - **Validation/proof:** Independent East geometry; East road-facing portal and

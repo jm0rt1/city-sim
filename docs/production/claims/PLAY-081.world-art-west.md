@@ -18,11 +18,10 @@
 - **Accepted bridge dependency:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Status:** Predesign accepted and integrated at `8a889f2a`. Direction-local
-  zero-pixel production-runner preparation is active under
-  `INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md`. West is authorized to
-  adopt the accepted v06 bridge and revalidate its canonical CitySim/source
-  projection. Pixel rendering remains blocked until Integration publishes the
-  exact appearance lock and post-lock production authority.
+  v06 bridge adoption and handoff pass at candidate `03bc2402`; two fresh
+  actual-camera proofs are byte-identical. Pixel rendering remains blocked
+  until Integration publishes the exact appearance lock and post-lock
+  production authority.
 - **Validation/proof:** Independent West geometry; West road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias

@@ -15,10 +15,11 @@ all of these gates pass first:
    validate together, and remain byte-identical at the publication commit;
 2. the candidate binds the exact PLAY-080 South task, branch, roots, reserved
    path, and committed content ancestor;
-3. the Integration-owned source-stage-v2 semantic validator passes the
-   external candidate packet;
-4. the task-owned strict parallel-receipt validator passes the exact receipt
-   referenced by the candidate; and
+3. the Integration-owned source-stage-v2 semantic validator passes a private
+   validation copy made only from the writer's already captured candidate
+   bytes;
+4. the task-owned strict parallel-receipt validator passes bytes read through
+   a nofollow descriptor at the exact reserved South receipt path; and
 5. every existing destination component is a real directory, the final path
    is absent, and the eventual create uses an opened parent directory plus
    `O_CREAT|O_EXCL|O_NOFOLLOW`.

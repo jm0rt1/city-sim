@@ -16,6 +16,7 @@ import re
 import stat
 import subprocess
 import sys
+import tempfile
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable
 
@@ -82,7 +83,8 @@ STRICT_VALIDATOR_PATH = (
 )
 HEX_40 = re.compile(r"^[0-9a-f]{40}$")
 
-ValidationRunner = Callable[[Path, dict[str, Any]], dict[str, Any]]
+SourceValidationRunner = Callable[[bytes, dict[str, Any]], dict[str, Any]]
+StrictValidationRunner = Callable[[Path, dict[str, Any]], dict[str, Any]]
 
 
 class PacketWriterRejected(RuntimeError):
@@ -394,30 +396,47 @@ def validate_candidate_identity(
 
 def run_source_stage_validation(
     repo: Path,
-    candidate_path: Path,
+    candidate_bytes: bytes,
     candidate: dict[str, Any],
 ) -> dict[str, Any]:
     del candidate
-    command = [
-        sys.executable,
-        str(repo / SOURCE_STAGE_VALIDATOR_PATH),
-        str(candidate_path),
-        "--repo-root",
-        str(repo),
-        "--schema",
-        str(repo / SOURCE_STAGE_SCHEMA_PATH),
-        "--expected-schema-sha256",
-        SOURCE_STAGE_SCHEMA_SHA256,
-    ]
-    environment = dict(os.environ)
-    environment["PYTHONDONTWRITEBYTECODE"] = "1"
-    result = subprocess.run(
-        command,
-        check=False,
-        capture_output=True,
-        text=True,
-        env=environment,
-    )
+    captured_sha = sha256_bytes(candidate_bytes)
+    with tempfile.TemporaryDirectory(
+        prefix="play-080-source-stage-captured-"
+    ) as temporary:
+        captured_path = Path(temporary) / "SOURCE-STAGE-HANDOFF-V2.json"
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(captured_path, flags, 0o600)
+        with os.fdopen(descriptor, "wb", closefd=True) as handle:
+            handle.write(candidate_bytes)
+            handle.flush()
+            os.fsync(handle.fileno())
+        if sha256_file(captured_path) != captured_sha:
+            reject("SOURCE_STAGE_CAPTURE_MISMATCH", str(captured_path))
+
+        command = [
+            sys.executable,
+            str(repo / SOURCE_STAGE_VALIDATOR_PATH),
+            str(captured_path),
+            "--repo-root",
+            str(repo),
+            "--schema",
+            str(repo / SOURCE_STAGE_SCHEMA_PATH),
+            "--expected-schema-sha256",
+            SOURCE_STAGE_SCHEMA_SHA256,
+        ]
+        environment = dict(os.environ)
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        result = subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+            env=environment,
+        )
+        if sha256_file(captured_path) != captured_sha:
+            reject("SOURCE_STAGE_CAPTURE_REPLACED", str(captured_path))
     try:
         payload = strict_json_bytes(result.stdout.encode("utf-8"), "sourceStageResult")
     except PacketWriterRejected:
@@ -441,7 +460,123 @@ def run_source_stage_validation(
                 "stderr": result.stderr.strip(),
             },
         )
+    payload["validatedCandidateSha256"] = captured_sha
+    payload["validationInput"] = "captured_candidate_bytes"
     return payload
+
+
+def capture_strict_receipt(
+    repo: Path,
+    receipt_path: Path,
+) -> tuple[bytes, dict[str, Any]]:
+    expected = Path(os.path.abspath(repo / STRICT_RECEIPT_PATH))
+    supplied_parts = receipt_path.parts
+    if any(part in {".", ".."} for part in supplied_parts):
+        reject("STRICT_RECEIPT_PATH_MISMATCH", str(receipt_path))
+    supplied = (
+        receipt_path
+        if receipt_path.is_absolute()
+        else repo.joinpath(*receipt_path.parts)
+    )
+    supplied = Path(os.path.abspath(supplied))
+    if supplied != expected:
+        reject(
+            "STRICT_RECEIPT_PATH_MISMATCH",
+            {"expected": str(expected), "actual": str(supplied)},
+        )
+
+    evidence_root = Path(os.path.abspath(repo / EVIDENCE_ROOT))
+    if supplied.parent != evidence_root:
+        reject(
+            "STRICT_RECEIPT_ROOT_MISMATCH",
+            {"expected": str(evidence_root), "actual": str(supplied.parent)},
+        )
+    try:
+        relative = supplied.relative_to(repo)
+    except ValueError:
+        reject("STRICT_RECEIPT_ROOT_MISMATCH", str(supplied))
+    if relative.as_posix() != STRICT_RECEIPT_PATH:
+        reject(
+            "STRICT_RECEIPT_PATH_MISMATCH",
+            {"expected": STRICT_RECEIPT_PATH, "actual": relative.as_posix()},
+        )
+
+    current = repo
+    for part in relative.parts[:-1]:
+        current = current / part
+        try:
+            metadata = os.lstat(current)
+        except FileNotFoundError:
+            reject("STRICT_RECEIPT_MISSING", str(current))
+        if stat.S_ISLNK(metadata.st_mode):
+            reject("STRICT_RECEIPT_SYMLINK", str(current))
+        if not stat.S_ISDIR(metadata.st_mode):
+            reject("STRICT_RECEIPT_ROOT_NOT_DIRECTORY", str(current))
+
+    try:
+        receipt_lstat = os.lstat(supplied)
+    except FileNotFoundError:
+        reject("STRICT_RECEIPT_MISSING", str(supplied))
+    if stat.S_ISLNK(receipt_lstat.st_mode):
+        reject("STRICT_RECEIPT_SYMLINK", str(supplied))
+    if not stat.S_ISREG(receipt_lstat.st_mode):
+        reject("STRICT_RECEIPT_NOT_REGULAR", str(supplied))
+
+    resolved_evidence_root = evidence_root.resolve(strict=True)
+    resolved_receipt = supplied.resolve(strict=True)
+    if resolved_receipt.parent != resolved_evidence_root or resolved_receipt != (
+        resolved_evidence_root / Path(STRICT_RECEIPT_PATH).name
+    ):
+        reject(
+            "STRICT_RECEIPT_RESOLVED_PATH_MISMATCH",
+            {
+                "expected": str(resolved_evidence_root / supplied.name),
+                "actual": str(resolved_receipt),
+            },
+        )
+
+    directory_flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    directory_flags |= getattr(os, "O_NOFOLLOW", 0)
+    parent_fd = os.open(evidence_root, directory_flags)
+    try:
+        file_flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            receipt_fd = os.open(supplied.name, file_flags, dir_fd=parent_fd)
+        except OSError as error:
+            reject("STRICT_RECEIPT_NOFOLLOW_OPEN_FAILED", str(error))
+        try:
+            opened = os.fstat(receipt_fd)
+            if not stat.S_ISREG(opened.st_mode):
+                reject("STRICT_RECEIPT_NOT_REGULAR", str(supplied))
+            if (
+                opened.st_dev != receipt_lstat.st_dev
+                or opened.st_ino != receipt_lstat.st_ino
+            ):
+                reject("STRICT_RECEIPT_REPLACED", str(supplied))
+            chunks: list[bytes] = []
+            while True:
+                chunk = os.read(receipt_fd, 1024 * 1024)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+            receipt_bytes = b"".join(chunks)
+        finally:
+            os.close(receipt_fd)
+    finally:
+        os.close(parent_fd)
+
+    return receipt_bytes, {
+        "result": "PASS",
+        "path": STRICT_RECEIPT_PATH,
+        "resolvedPath": str(resolved_receipt),
+        "evidenceRoot": EVIDENCE_ROOT,
+        "regularFile": True,
+        "symlink": False,
+        "device": receipt_lstat.st_dev,
+        "inode": receipt_lstat.st_ino,
+        "sha256": sha256_bytes(receipt_bytes),
+        "validationInput": "captured_receipt_bytes",
+    }
 
 
 def run_strict_receipt_validation(
@@ -450,10 +585,8 @@ def run_strict_receipt_validation(
     candidate: dict[str, Any],
 ) -> dict[str, Any]:
     expected = candidate["completion"]["parallelExecutionReceipt"]
-    try:
-        actual_sha = sha256_file(receipt_path)
-    except PacketWriterRejected:
-        reject("STRICT_PARALLEL_RECEIPT_REJECTED", str(receipt_path))
+    receipt_bytes, path_proof = capture_strict_receipt(repo, receipt_path)
+    actual_sha = sha256_bytes(receipt_bytes)
     if expected.get("sha256") != actual_sha:
         reject(
             "STRICT_PARALLEL_RECEIPT_REJECTED",
@@ -465,23 +598,27 @@ def run_strict_receipt_validation(
         "--schema",
         str(repo / STRICT_SCHEMA_PATH),
         "--receipt",
-        str(receipt_path),
+        "-",
     ]
     environment = dict(os.environ)
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
     result = subprocess.run(
         command,
+        input=receipt_bytes,
         check=False,
         capture_output=True,
-        text=True,
         env=environment,
     )
     try:
-        payload = strict_json_bytes(result.stdout.encode("utf-8"), "strictReceiptResult")
+        payload = strict_json_bytes(result.stdout, "strictReceiptResult")
     except PacketWriterRejected:
         reject(
             "STRICT_PARALLEL_RECEIPT_REJECTED",
-            {"returnCode": result.returncode, "stdout": result.stdout, "stderr": result.stderr},
+            {
+                "returnCode": result.returncode,
+                "stdout": result.stdout.decode("utf-8", errors="replace"),
+                "stderr": result.stderr.decode("utf-8", errors="replace"),
+            },
         )
     if (
         result.returncode != 0
@@ -495,9 +632,11 @@ def run_strict_receipt_validation(
             {
                 "returnCode": result.returncode,
                 "result": payload,
-                "stderr": result.stderr.strip(),
+                "stderr": result.stderr.decode("utf-8", errors="replace").strip(),
             },
         )
+    payload["validatedReceiptSha256"] = actual_sha
+    payload["receiptPathProof"] = path_proof
     return payload
 
 
@@ -589,14 +728,13 @@ def write_exclusive_nofollow(
 def evaluate(
     *,
     repo: Path,
-    candidate_path: Path,
     candidate_bytes: bytes,
     content_commit: str,
     strict_receipt_path: Path,
     destination: str = RESERVED_PACKET_PATH,
     write: bool = False,
-    source_stage_runner: ValidationRunner | None = None,
-    strict_runner: ValidationRunner | None = None,
+    source_stage_runner: SourceValidationRunner | None = None,
+    strict_runner: StrictValidationRunner | None = None,
 ) -> dict[str, Any]:
     authority = load_locator_authority(repo)
     candidate = strict_json_bytes(candidate_bytes, "candidatePacket")
@@ -610,12 +748,13 @@ def evaluate(
         reject("ACTUAL_BRANCH_MISMATCH", {"expected": BRANCH, "actual": actual_branch})
 
     source_runner = source_stage_runner or (
-        lambda path, value: run_source_stage_validation(repo, path, value)
+        lambda captured, value: run_source_stage_validation(repo, captured, value)
     )
     receipt_runner = strict_runner or (
         lambda path, value: run_strict_receipt_validation(repo, path, value)
     )
-    source_stage_result = source_runner(candidate_path, candidate)
+    candidate_sha = sha256_bytes(candidate_bytes)
+    source_stage_result = source_runner(candidate_bytes, candidate)
     if (
         not isinstance(source_stage_result, dict)
         or source_stage_result.get("result") != "PASS"
@@ -625,6 +764,14 @@ def evaluate(
         or source_stage_result.get("contentCommit") != content
     ):
         reject("SOURCE_STAGE_V2_REJECTED", source_stage_result)
+    if source_stage_result.get("validatedCandidateSha256") != candidate_sha:
+        reject(
+            "SOURCE_STAGE_CANDIDATE_BYTES_MISMATCH",
+            {
+                "expected": candidate_sha,
+                "actual": source_stage_result.get("validatedCandidateSha256"),
+            },
+        )
 
     strict_result = receipt_runner(strict_receipt_path, candidate)
     if (
@@ -645,14 +792,14 @@ def evaluate(
         packet_written = True
 
     return {
-        "schema": "citysim.play-080.source-candidate-packet-writer-boundary.v1",
+        "schema": "citysim.play-080.source-candidate-packet-writer-boundary.v2",
         "result": "PASS",
         "mode": "write" if write else "dry_run",
         "taskId": TASK_ID,
         "direction": DIRECTION,
         "branch": BRANCH,
         "contentCommit": content,
-        "candidatePacketSha256": sha256_bytes(candidate_bytes),
+        "candidatePacketSha256": candidate_sha,
         "locatorAuthority": {
             "commit": LOCATOR_AUTHORITY_COMMIT,
             "schemaPath": LOCATOR_SCHEMA_PATH,
@@ -713,14 +860,13 @@ def main() -> int:
         candidate_bytes = candidate_path.read_bytes()
         result = evaluate(
             repo=REPOSITORY_ROOT,
-            candidate_path=candidate_path,
             candidate_bytes=candidate_bytes,
             content_commit=arguments.content_commit,
-            strict_receipt_path=strict_path.resolve(),
+            strict_receipt_path=strict_path,
             destination=arguments.destination,
             write=arguments.write,
-            source_stage_runner=lambda path, candidate: run_source_stage_validation(
-                REPOSITORY_ROOT, path, candidate
+            source_stage_runner=lambda captured, candidate: run_source_stage_validation(
+                REPOSITORY_ROOT, captured, candidate
             ),
             strict_runner=lambda path, candidate: run_strict_receipt_validation(
                 REPOSITORY_ROOT, path, candidate

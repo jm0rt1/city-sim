@@ -54,21 +54,25 @@ def canonical(value: dict[str, Any]) -> bytes:
 
 def source_stage_pass(
     content_commit: str,
-) -> Callable[[Path, dict[str, Any]], dict[str, Any]]:
-    def run(_: Path, __: dict[str, Any]) -> dict[str, Any]:
+) -> Callable[[bytes, dict[str, Any]], dict[str, Any]]:
+    def run(captured: bytes, _: dict[str, Any]) -> dict[str, Any]:
         return {
             "result": "PASS",
             "stage": "source_candidate",
             "taskId": writer.TASK_ID,
             "direction": writer.DIRECTION,
             "contentCommit": content_commit,
+            "validatedCandidateSha256": writer.sha256_bytes(captured),
             "fixtureOnly": True,
         }
 
     return run
 
 
-def strict_pass(_: Path, __: dict[str, Any]) -> dict[str, Any]:
+def strict_pass(path: Path, _: dict[str, Any]) -> dict[str, Any]:
+    expected = REPOSITORY_ROOT / writer.STRICT_RECEIPT_PATH
+    if path != expected:
+        raise AssertionError(f"strict fixture received alternate path: {path}")
     return {
         "result": "PASS",
         "taskId": writer.TASK_ID,
@@ -105,17 +109,14 @@ def evaluate_fixture(
     content_commit: str,
     *,
     destination: str = writer.RESERVED_PACKET_PATH,
-    source_runner: Callable[[Path, dict[str, Any]], dict[str, Any]] | None = None,
+    source_runner: Callable[[bytes, dict[str, Any]], dict[str, Any]] | None = None,
     strict_runner: Callable[[Path, dict[str, Any]], dict[str, Any]] = strict_pass,
 ) -> dict[str, Any]:
     return writer.evaluate(
         repo=REPOSITORY_ROOT,
-        candidate_path=Path("/private/tmp/PLAY-080-SOURCE-STAGE-HANDOFF-V2.json"),
         candidate_bytes=canonical(value),
         content_commit=content_commit,
-        strict_receipt_path=Path(
-            "/private/tmp/PLAY-080-FUTURE-SOURCE-PARALLEL-EXECUTION-RECEIPT.json"
-        ),
+        strict_receipt_path=REPOSITORY_ROOT / writer.STRICT_RECEIPT_PATH,
         destination=destination,
         write=False,
         source_stage_runner=source_runner or source_stage_pass(content_commit),
@@ -143,6 +144,74 @@ def path_fixture(kind: str) -> Callable[[], Any]:
     return run
 
 
+def strict_receipt_fixture(kind: str) -> Callable[[], Any]:
+    def run() -> Any:
+        with tempfile.TemporaryDirectory(
+            prefix=f"play-080-strict-receipt-{kind}-"
+        ) as temporary:
+            repo = Path(temporary)
+            parent = repo / writer.EVIDENCE_ROOT
+            parent.mkdir(parents=True)
+            target = repo / writer.STRICT_RECEIPT_PATH
+            if kind == "alternate":
+                alternate = repo / "alternate-receipt.json"
+                alternate.write_text("{}\n", encoding="utf-8")
+                return writer.run_strict_receipt_validation(
+                    repo,
+                    alternate,
+                    {
+                        "completion": {
+                            "parallelExecutionReceipt": {"sha256": "0" * 64}
+                        }
+                    },
+                )
+            if kind == "symlink":
+                redirect = repo / "redirect-receipt.json"
+                redirect.write_text("{}\n", encoding="utf-8")
+                os.symlink(redirect, target)
+                return writer.run_strict_receipt_validation(
+                    repo,
+                    target,
+                    {
+                        "completion": {
+                            "parallelExecutionReceipt": {"sha256": "0" * 64}
+                        }
+                    },
+                )
+            raise AssertionError(kind)
+
+    return run
+
+
+def strict_receipt_positive() -> dict[str, Any]:
+    with tempfile.TemporaryDirectory(
+        prefix="play-080-strict-receipt-positive-"
+    ) as temporary:
+        repo = Path(temporary)
+        target = repo / writer.STRICT_RECEIPT_PATH
+        target.parent.mkdir(parents=True)
+        expected_bytes = b'{"fixture":"strict-receipt-path"}\n'
+        target.write_bytes(expected_bytes)
+        captured, proof = writer.capture_strict_receipt(repo, target)
+        if captured != expected_bytes:
+            raise AssertionError("strict receipt capture changed bytes")
+        if (
+            proof["path"] != writer.STRICT_RECEIPT_PATH
+            or not proof["regularFile"]
+            or proof["symlink"]
+        ):
+            raise AssertionError(f"invalid strict receipt path proof: {proof}")
+        return {
+            "result": proof["result"],
+            "path": proof["path"],
+            "evidenceRoot": proof["evidenceRoot"],
+            "regularFile": proof["regularFile"],
+            "symlink": proof["symlink"],
+            "sha256": proof["sha256"],
+            "validationInput": proof["validationInput"],
+        }
+
+
 def main() -> int:
     head = git("rev-parse", "HEAD")
     base = candidate(head)
@@ -152,6 +221,7 @@ def main() -> int:
         raise AssertionError("positive dry-run result is not deterministic")
     if first["packetWritten"] or first["mode"] != "dry_run":
         raise AssertionError("positive fixture crossed the dry-run boundary")
+    strict_path_proof = strict_receipt_positive()
 
     negatives: list[dict[str, Any]] = []
     with tempfile.TemporaryDirectory(prefix="play-080-authority-") as temporary:
@@ -299,11 +369,52 @@ def main() -> int:
             ),
         )
     )
-    if len(negatives) != 12:
-        raise AssertionError(f"expected 12 negative cases, got {len(negatives)}")
+    negatives.append(
+        expect_rejection(
+            "alternate-strict-receipt-path",
+            "STRICT_RECEIPT_PATH_MISMATCH",
+            strict_receipt_fixture("alternate"),
+        )
+    )
+    negatives.append(
+        expect_rejection(
+            "symlink-strict-receipt",
+            "STRICT_RECEIPT_SYMLINK",
+            strict_receipt_fixture("symlink"),
+        )
+    )
+    replacement_bytes = canonical(
+        {
+            **base,
+            "replacementMarker": "candidate path changed after writer capture",
+        }
+    )
+    negatives.append(
+        expect_rejection(
+            "source-stage-candidate-bytes-replacement",
+            "SOURCE_STAGE_CANDIDATE_BYTES_MISMATCH",
+            lambda: evaluate_fixture(
+                base,
+                head,
+                source_runner=lambda _captured, _candidate: {
+                    "result": "PASS",
+                    "stage": "source_candidate",
+                    "taskId": writer.TASK_ID,
+                    "direction": writer.DIRECTION,
+                    "contentCommit": head,
+                    "validatedCandidateSha256": writer.sha256_bytes(
+                        replacement_bytes
+                    ),
+                    "fixtureOnly": True,
+                },
+            ),
+        )
+    )
+    if len(negatives) != 15:
+        raise AssertionError(f"expected 15 negative cases, got {len(negatives)}")
 
     report = {
-        "schema": "citysim.play-080.source-candidate-packet-writer-test.v1",
+        "schema": "citysim.play-080.source-candidate-packet-writer-test.v2",
         "result": "PASS",
         "taskId": writer.TASK_ID,
         "direction": writer.DIRECTION,
@@ -315,11 +426,14 @@ def main() -> int:
             "reservedPacketPath": writer.RESERVED_PACKET_PATH,
         },
         "negativeCases": negatives,
+        "strictReceiptPathProof": strict_path_proof,
         "authorityBindings": first["locatorAuthority"],
         "validationBoundary": {
             "sourceStageV2FixtureOnly": True,
             "strictParallelReceiptFixtureOnly": True,
             "liveValidatorsRequiredForWrite": True,
+            "candidateBytesCapturedOnce": True,
+            "strictReceiptBytesCapturedNoFollow": True,
             "globalCapProven": False,
             "productionReady": False,
         },

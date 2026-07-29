@@ -6,21 +6,21 @@
     "branch": "codex/citysim-world-rendering",
     "publishedAuthority": "fa66b5605deca987685c058a072613e89a0d8be9",
     "syncMerge": "b1d63864d51471609ea436d524a2e17f940e0a74",
-    "rendererTestCommit": "8a79db646af3e8db8871cfac62bbe965778fda17",
+    "rendererTestCommit": "25db1b5a7c4357a5fd24babf41067295dc526a23",
     "priorProposalCommit": "9caec31ea731599bc68796db54ddcad9939c4ece"
   },
   "artifacts": [
     {
       "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4ReservedLocatorAuthorityTests.swift",
-      "sha256": "30a3fb26826088cc065fa36a999d3fb7abac865528b6ba620e3b3e970f0f18ff"
+      "sha256": "9434d32fe5b897676f92359cc792a7e88b2306f9a741bb7d624684b0ce899450"
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-reserved-locator-intake-v1/RESERVATION-MAPPING.json",
-      "sha256": "f02eba004670b71c56d91fc6942d35fa9f629980f2ebb81149441e1d54d50c31"
+      "sha256": "d9eecffc5b2477190ba72d255334254c58445815c3d050ceb98eb673abb44f42"
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-reserved-locator-intake-v1/HANDOFF.md",
-      "sha256": "46f779d2c0606a3ea1da405074b0b57a28959080a8b386b1bb11670e18b02ea3"
+      "sha256": "c69548b9c4a951bec5ac762b2fab72c1d0447a0d2291edf7a24a786cad6b680a"
     }
   ],
   "focusedNewSuite": {
@@ -51,6 +51,8 @@
     "strictSchemaShape": "PASS",
     "strictInstanceShape": "PASS",
     "publishedSchemaAndInstanceHashes": "PASS",
+    "wrongGoverningAuthority": "REJECTED",
+    "unknownNestedField": "REJECTED",
     "eastSouthWestExactPaths": "PASS",
     "deterministicSyntheticReceipts": "PASS",
     "directionLocalNegativeIsolation": "PASS",

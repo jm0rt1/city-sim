@@ -1,0 +1,261 @@
+{
+  "schema": "citysim.world-art.prelock-runner-contract.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "state": "awaiting_appearance_lock",
+  "sourceReady": false,
+  "productionSelected": false,
+  "appearanceLockCommit": null,
+  "appearanceLockSha256": null,
+  "lockedMaterialMappingSha256": null,
+  "appearanceLock": {
+    "documentPath": null,
+    "commit": null,
+    "documentSha256": null,
+    "northProcessASourceSha256": null,
+    "northProcessADecodedRgbaSha256": null
+  },
+  "authorities": {
+    "contract020": {
+      "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+      "sha256": "4b932c236e38816911fe065cc24d07380369fa6c45ef46db1e54b8c0766669c0"
+    },
+    "contract021": {
+      "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+      "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+    },
+    "prelockRunner": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
+      "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
+    },
+    "handoffSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
+      "sha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951"
+    }
+  },
+  "acceptedPredesign": {
+    "handoff": {
+      "path": "docs/production/evidence/PLAY-079/PLAY-079-EAST-PREDESIGN-HANDOFF.json",
+      "sha256": "bb8b2a00b4bf3ffa99112947d08e11cc92cae8d1ea7709e3fa79a4c58f40f390"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/validate_predesign.py",
+      "sha256": "86dd6b3fad5502c6c9f898d802c9fc5eb4da57e7864c981494ad5ad9f75dde33"
+    },
+    "staticProof": {
+      "path": "docs/production/evidence/PLAY-079/STATIC-PREDESIGN-PROOF.json",
+      "sha256": "9d804fd9780f8404c5127d915140f94820a2c84ffb19c6c4e9da95100b7726f6"
+    },
+    "actualCameraProof": {
+      "path": "docs/production/evidence/PLAY-079/ACTUAL-CAMERA-PREDESIGN-PROOF.json",
+      "sha256": "2f50758068b2ce39c6e4cbeb4828e35481740830a35048ffe233a90ab84b0738"
+    },
+    "orientationTransform": "none",
+    "siblingInputs": []
+  },
+  "invariants": {
+    "camera": {
+      "projection": "orthographic",
+      "view": "southeast-looking-northwest",
+      "yawDegrees": 45.0,
+      "elevationDegrees": 30.0,
+      "target": [
+        0.0,
+        0.0,
+        22.861902498201186
+      ],
+      "distance": 420.0,
+      "orthoScale": 237.5878601074218,
+      "shiftX": 0.0,
+      "shiftY": 0.08333333333333333,
+      "resolution": [
+        1536,
+        1024
+      ],
+      "literalResolution": [
+        192,
+        128
+      ],
+      "pixelAspect": [
+        1.0,
+        1.0
+      ]
+    },
+    "registration": {
+      "citySimTileBasis": [
+        72.0,
+        36.0
+      ],
+      "citySimFootprint": [
+        72.0,
+        72.0
+      ],
+      "dccFootprint": [
+        56.0,
+        56.0
+      ],
+      "groundPivot": [
+        28.0,
+        -28.0,
+        0.0
+      ],
+      "frontage": "east",
+      "frontageSocket": [
+        28.0,
+        0.0,
+        0.0
+      ],
+      "sourcePixelPivot": [
+        768.0,
+        896.0
+      ],
+      "sourcePixelSocket": [
+        896.0,
+        832.0
+      ],
+      "sourcePixelTolerance": 0.5
+    },
+    "light": {
+      "semantic": "northwest-key-southeast-contact",
+      "keyOrigin": [
+        -120.0,
+        120.0,
+        180.0
+      ],
+      "shadowVector": [
+        14.0,
+        -14.0,
+        0.0
+      ]
+    },
+    "cycles": {
+      "engine": "CYCLES",
+      "device": "CPU",
+      "threads": 1,
+      "seed": 2704,
+      "samples": 64,
+      "adaptiveSampling": false,
+      "denoising": false,
+      "motionBlur": false,
+      "transparentFilm": true,
+      "maxBounces": 4
+    },
+    "color": {
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "None",
+      "exposure": 0.0,
+      "gamma": 1.0,
+      "outputFormat": "PNG",
+      "colorMode": "RGBA",
+      "colorDepth": "8",
+      "alphaMode": "STRAIGHT"
+    },
+    "pixelValidation": {
+      "chromaKey": "#ff00ff",
+      "visibleChromaSpillPixelsMaximum": 0,
+      "hiddenRgbNonzeroChannelsMaximum": 0,
+      "edgeContactPixelsMaximum": 0,
+      "minimumPaddingPixels": 4,
+      "literal192PortalInsetMinimum": [
+        14,
+        12
+      ],
+      "literal192FrameMinimumPixels": 2,
+      "literal192SilhouetteBreaksMinimum": 3,
+      "literal192ProcessOccludersMaximum": 0
+    },
+    "semanticPalette": {
+      "warm-weathered-masonry": "#b06040",
+      "formed-concrete": "#808080",
+      "dark-painted-steel": "#304050",
+      "roof-edge-metal": "#607080",
+      "glazing-louver": "#206080",
+      "portal-void": "#101010",
+      "safety-oxide": "#d06020",
+      "hot-process": "#ff8020",
+      "contact-shadow": "#403830"
+    }
+  },
+  "toolchain": {
+    "application": "Blender",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "requiredArguments": [
+      "--background",
+      "--factory-startup",
+      "--disable-autoexec",
+      "--threads",
+      "1",
+      "--python-exit-code",
+      "1"
+    ],
+    "externalAddons": false,
+    "networkAssets": false
+  },
+  "processModes": [
+    "validate",
+    "A",
+    "B",
+    "C"
+  ],
+  "outputInventory": {
+    "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/",
+    "processes": {
+      "A": {
+        "raw": "renders/process-a/raw/industrial-l04-east-a.png",
+        "semantic": "renders/process-a/semantic/industrial-l04-east-a-semantic.png",
+        "provenance": "renders/process-a/provenance.json"
+      },
+      "B": {
+        "raw": "renders/process-b/raw/industrial-l04-east-b.png",
+        "semantic": "renders/process-b/semantic/industrial-l04-east-b-semantic.png",
+        "provenance": "renders/process-b/provenance.json"
+      },
+      "C": {
+        "raw": "renders/process-c/raw/industrial-l04-east-c.png",
+        "semantic": "renders/process-c/semantic/industrial-l04-east-c-semantic.png",
+        "provenance": "renders/process-c/provenance.json"
+      }
+    },
+    "color": {
+      "source": "review/color/source.png",
+      "native2x": "review/color/native-2x.png",
+      "literal192": "review/color/literal-192.png"
+    },
+    "grayscale": {
+      "source": "review/grayscale/source.png",
+      "native2x": "review/grayscale/native-2x.png",
+      "literal192": "review/grayscale/literal-192.png"
+    },
+    "registration": "validation/REGISTRATION.json",
+    "rgbaIdentity": "validation/RGBA-IDENTITY.json",
+    "alphaChromaHiddenRgb": "validation/ALPHA-CHROMA-HIDDEN-RGB.json",
+    "occupiedBounds": "validation/OCCUPIED-BOUNDS.json",
+    "literal192": "validation/LITERAL-192.json",
+    "nonAliasing": "validation/NON-ALIASING.json",
+    "abcEquality": "validation/ABC-EQUALITY.json",
+    "contactSheet": "review/CONTACT-SHEET.png",
+    "rejections": "rejections/REJECTION-INVENTORY.json",
+    "handoff": "PRELOCK-RUNNER-HANDOFF.json"
+  },
+  "pixelValidationState": {
+    "rgba": "not_run",
+    "literal192": "not_run",
+    "abcIdentity": "not_run",
+    "normalization": "not_run"
+  }
+}

@@ -10,12 +10,12 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `4255b021f743281b60cfdf8cff896235d405be23` | execute the published v10 zero-pixel hypothesis; emission luma stays pending actual Process A |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `414c200e7a99933f5aa5aa202598e94bf4106fb8` | execute the published v10 zero-pixel hypothesis; emission luma stays pending actual Process A |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `649ce1eb7ac4d76c89e0a7da9074f0dad3b91f23` | harden every future East output writer against redirects and symlink components |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `779cf5141a4735d6b7c84a0372f08c9ab111d358` | build a task-owned executable parallel-execution receipt prototype |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `returned` | `ee95296f4fa0e266e374bef561c966e354b8edeb` | freeze the repaired candidate for independent path-safety and portability review |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `0f3a600abee6bb092dea2342b07252b4e2338a96` | propose the smallest mixed-direction quarantine and immediate-assembly rehearsal |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `ada459cb48f271859b10a9c8dcec98a0c7fc886e` | author the exact upstream early/recovered lifecycle-save requirements packet |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `0f3a600abee6bb092dea2342b07252b4e2338a96` | implement the approved mixed-direction isolation and exactly-once assembly rehearsal |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `bdd75ad3caafc966082eaa2676a2990da2b9ad5b` | freeze the exact lifecycle-save request for independent review and Simulation dispatch |
 
 ## Dispatch invariant
 

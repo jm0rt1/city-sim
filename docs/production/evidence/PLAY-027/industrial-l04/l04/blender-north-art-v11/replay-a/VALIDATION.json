@@ -1,0 +1,211 @@
+{
+  "analyticEmissionConsumed": false,
+  "analyticHierarchy": {
+    "grayscaleTierGaps": [
+      39,
+      24
+    ],
+    "grayscaleTiers": {
+      "equipmentProcess": 133,
+      "primaryFacade": 70,
+      "roofHighBay": 109
+    },
+    "hotProcessMedianLuma": 133,
+    "hotProcessMinusPrimaryMass": 63,
+    "note": "The frozen v09 analytic model ignores emissionStrength; freight-frame Cycles luma remains unproved.",
+    "primaryMassMedianLuma": 70
+  },
+  "analyticOnly": true,
+  "apertureOverlapViolations": [],
+  "authorityCommit": "ce9a8c633dd07148d6439ca42248890a3fa62a01",
+  "authorizedGeometry": {
+    "eastJambInnerFaceX": 24.0,
+    "headerXBounds": [
+      3.5,
+      27.0
+    ],
+    "mainHallPositiveX": 1.8000000000000007,
+    "minimumHallClearance": 1.6999999999999993,
+    "westJambXBounds": [
+      3.5,
+      9.5
+    ]
+  },
+  "clearApertureWorldUnits": 14.5,
+  "effectiveEmptyApertureAABB": [
+    [
+      9.5,
+      1.2,
+      -12.8
+    ],
+    [
+      24.0,
+      17.0,
+      -10.4
+    ]
+  ],
+  "emissionHypothesis": {
+    "cyclesLumaProof": "PENDING_ACTUAL_PROCESS_A",
+    "emissionStrength": 0.3,
+    "materialID": "v10-freight-frame",
+    "pendingActualTargets": {
+      "freightFrameMedian": [
+        62,
+        78
+      ],
+      "freightFrameMinusPrimaryMassMinimum": 18,
+      "hotProcessMinusFreightFrameMinimum": 35,
+      "nonNeonAppearance": "PENDING_ACTUAL_PROCESS_A"
+    }
+  },
+  "frozenInputHashes": {
+    "manifest": "93a6e4a19c5cbec956a970df9529608d65ffa76f39a249cc0fa4766c8458edc6",
+    "v09Builder": "b09bd1e809e55ae360eee14b5b96a8e85c168a83a1fbd78b90295e0d00ab50b0",
+    "v09Materials": "243b1bd05b9db036f5350d0f2efab311d6f627702a3fda501959dfac6a7590a0",
+    "v09Preview": "f8f0ea0cf01264731ceef5271789615809a51a0b9d3419301b6330d088ac3ecb",
+    "v09Scene": "50db925c32c442d5c30ee17d4cb74f50c4623c060354d45cf99500f0feb96a87",
+    "v10Materials": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+    "v10Preview": "4555aad01bb3cba86f7a26f16c12bf8165463cfe70a6c4553b3f3aa423c2c235",
+    "v10Scene": "0f572b80ec8d17f23e8569816e9a1f17502b114c1a4e361ea582d4ca388f8459"
+  },
+  "frozenInputSourceCommits": [
+    "7042f0934903ca54e360725251a96205a347af4e",
+    "94981f22a52c13c79f2d238e9957cae8d6a2ad12"
+  ],
+  "gates": {
+    "allGrayscaleTierGapsAtLeast15": true,
+    "clearApertureExactly14Point5": true,
+    "compactEnvelopeAtMost64x60": true,
+    "eastInnerFaceExact": true,
+    "eastJambNoRegression": true,
+    "emptyThenInsetRayOrder": true,
+    "footprintExact": true,
+    "headerBoundsExact": true,
+    "headerNoRegression": true,
+    "hotProcessMinusPrimaryAtLeast60": true,
+    "insetNoRegression": true,
+    "mainHallClearanceAtLeast1Point7": true,
+    "pivotExact": true,
+    "pixelProductionFrozen": true,
+    "socketExact": true,
+    "structuralValidation": true,
+    "v09SilhouetteIoUAtLeast0Point98": true,
+    "westInnerFaceExact": true,
+    "westJambBoundsAtLeast3x4": true,
+    "westJambBoundsExact": true,
+    "westJambOnePixelErodedCoreAtLeast8": false,
+    "westJambUnErodedCoreAtLeast12": true,
+    "zeroExactChroma": true,
+    "zeroHiddenRGB": true,
+    "zeroNearChroma": true,
+    "zeroSolidApertureOverlap": true
+  },
+  "hardEnvelope": {
+    "combinedWallSeconds": 120,
+    "maximumConcurrency": 1,
+    "peakMemoryMiB": 512
+  },
+  "materialsSHA256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+  "occupied": {
+    "bounds": [
+      64,
+      53,
+      128,
+      112
+    ],
+    "pixels": 2277,
+    "size": [
+      64,
+      59
+    ]
+  },
+  "pixelSafety": {
+    "exactChromaAtNonzeroAlpha": 0,
+    "hiddenRGB": 0,
+    "nearChromaAtNonzeroAlpha": 0
+  },
+  "portal": {
+    "eastJamb": {
+      "bounds": [
+        117,
+        86,
+        120,
+        99
+      ],
+      "exactSemanticCorePixels": 38
+    },
+    "header": {
+      "bounds": [
+        108,
+        78,
+        120,
+        87
+      ],
+      "exactSemanticCorePixels": 46
+    },
+    "inset": {
+      "bounds": [
+        106,
+        83,
+        116,
+        99
+      ],
+      "exactSemanticCorePixels": 95
+    },
+    "westJamb": {
+      "bounds": [
+        105,
+        82,
+        110,
+        88
+      ],
+      "exactSemanticCorePixels": 13,
+      "onePixelErodedCorePixels": 0
+    }
+  },
+  "processCounts": {
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "analytic": 1,
+    "blender": 0,
+    "cycles": 0,
+    "imageGen": 0,
+    "metal": 0,
+    "normalizer": 0,
+    "sceneKit": 0,
+    "siblings": 0
+  },
+  "productionSelected": false,
+  "rejectedParent": "7042f0934903ca54e360725251a96205a347af4e",
+  "replayID": "a",
+  "roadToInsetRayHits": [
+    {
+      "componentID": "north-v09-portal-inset",
+      "entryZ": -10.4,
+      "exitZ": -9.9
+    },
+    {
+      "componentID": "north-v09-rear-process-hall",
+      "entryZ": 8.200000000000001,
+      "exitZ": 27.0
+    }
+  ],
+  "sceneSHA256": "814d9c2c86a740f04622f4ac47718c14d8f92d090fb127d921270e96ef1921c3",
+  "schema": 1,
+  "silhouette": {
+    "intersectionPixels": 2277,
+    "iouAgainstV09": 1.0,
+    "unionPixels": 2277
+  },
+  "sourceAuthority": false,
+  "stage": "north-v11-zero-pixel",
+  "structuralValidation": {
+    "coincidentVisiblePlanes": [],
+    "footprintViolations": [],
+    "passed": true,
+    "primaryVolumeOverlaps": []
+  },
+  "task": "PLAY-027",
+  "validationPassed": false
+}

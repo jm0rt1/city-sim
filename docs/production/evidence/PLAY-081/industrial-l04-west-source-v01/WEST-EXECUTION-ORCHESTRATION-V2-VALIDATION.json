@@ -10,12 +10,18 @@
   "rendererQuarantined": false,
   "shipping": false,
   "authority": {
-    "publishedMaster": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
-    "publishedMasterMerge": "7d15f884fd19e654342872850d0f21b99239b28a",
+    "publishedMaster": "54658b2e4ef159185153ae3daa788f6f248d1e6e",
+    "publishedMasterMerge": "93066899c6d44d3b3f68386dd47ea2688296dcdc",
     "preservedWestAncestor": "c4a8b8f5bac5b864eb4595514a983f54a273aef3",
+    "preservedFocusedAncestors": [
+      "3fe844fdbdfb88d668935707cb478b1ee074bc32",
+      "6232b2a43b15a571eff64d286fac2778174422fc",
+      "37909b6896d026b5fa52505b895c88340b79aaf7",
+      "47e46ecceb75b6ba8f4b7db9587a8713ba184796"
+    ],
     "claimPath": "docs/production/claims/PLAY-081.world-art-west.md",
     "claimSha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8",
-    "implementationCommit": "37909b6896d026b5fa52505b895c88340b79aaf7",
+    "implementationCommit": "4cacc0f218a83549f145d696b0ab7bb74f81cbc0",
     "frozenDesign": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
       "commit": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
@@ -35,11 +41,11 @@
     },
     "implementation": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
-      "sha256": "bfdb959206c802bea0f31733028cadc55fc0a8aae7d6ac9f4a83a19a0f4df70a"
+      "sha256": "0e81f7bfa77636bdbbf6d8e2fb086a9c7be0fc0b6b3782a02c7282e0445bb9c4"
     },
     "tests": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_west_execution_orchestration_v2.py",
-      "sha256": "80a052f6aabadc1d1cac1dd3b65b06c4aa82fb7183b7574ef0f6f9185844e48b"
+      "sha256": "3b284873a60e6e04cdfb635490bf648a7f9f5bc03aed38c6ae276362eeb9fccd"
     }
   },
   "commands": [
@@ -100,6 +106,7 @@
       "publishedExceptionAvailable": false,
       "productionValidation": "not_run",
       "committedDryFixtureValidation": "passed",
+      "committedDryFixtureFullReceiptValidation": "passed",
       "fakePathCommitAndShaValidation": "rejected",
       "overlapForbidden": true,
       "integrationExceptionRequired": true,
@@ -115,6 +122,7 @@
       "contract-bound appearance lock material mapping production profile and A/B/C launch grants",
       "strict duplicate-key and non-finite JSON rejection",
       "sequential exception path commit hash content and queue binding",
+      "complete sequential receipt reuses the same repository-root dereference proof",
       "monotonic event sequence and end-before-start simultaneous-boundary tie rule",
       "distinct exact lexical A/B/C raw semantic and evidence roots",
       "exactly-one invocation shape for each granted West process",

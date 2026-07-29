@@ -6,13 +6,13 @@
     "branch": "codex/citysim-world-rendering",
     "publishedAuthority": "fa66b5605deca987685c058a072613e89a0d8be9",
     "syncMerge": "b1d63864d51471609ea436d524a2e17f940e0a74",
-    "rendererTestCommit": "25db1b5a7c4357a5fd24babf41067295dc526a23",
+    "rendererTestCommit": "bc999ea7db271d15bb54ee895b4cf9e79c82a3ba",
     "priorProposalCommit": "9caec31ea731599bc68796db54ddcad9939c4ece"
   },
   "artifacts": [
     {
       "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4ReservedLocatorAuthorityTests.swift",
-      "sha256": "9434d32fe5b897676f92359cc792a7e88b2306f9a741bb7d624684b0ce899450"
+      "sha256": "42f14ae56b8b36dfe2a5dd3cb644910b2979a3279656ede7d9e22f803c92ed96"
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-reserved-locator-intake-v1/RESERVATION-MAPPING.json",
@@ -20,7 +20,7 @@
     },
     {
       "path": "docs/production/evidence/PLAY-073/industrial-l04-reserved-locator-intake-v1/HANDOFF.md",
-      "sha256": "c69548b9c4a951bec5ac762b2fab72c1d0447a0d2291edf7a24a786cad6b680a"
+      "sha256": "7f8dc42c9b56da70b3324debd2ecda3ba388c70e85a3f7ff45dec10b5d77d7d7"
     }
   ],
   "focusedNewSuite": {
@@ -40,6 +40,29 @@
       "caller-supplied atomic assembly manifest absent by design",
       "caller-supplied direction packet absent by design"
     ]
+  },
+  "integrationPortabilityReplay": {
+    "base": "80975d472bb61cc7f99e885285e4d970b728823f",
+    "disposableReplayCommit": "e8e32858f3ddd7bade2e5a31cc4a2e231489b90e",
+    "repairCommit": "bc999ea7db271d15bb54ee895b4cf9e79c82a3ba",
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/play073-portability-replay.dGa71g/clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-portability-replay.dGa71g/swiftpm-cache swift test --package-path Native/CitySimNative --scratch-path /private/tmp/play073-portability-replay.dGa71g/build --filter IndustrialL4",
+    "result": "PASS",
+    "executed": 27,
+    "passed": 25,
+    "skipped": 2,
+    "failed": 0,
+    "dependencyAudit": {
+      "unintegratedValidatorReferences": 0,
+      "submittedTestCompilesOnIntegrationCandidate": true,
+      "historicalBranchOnlyTestDelta": 7,
+      "historicalBranchOnlyTestsWereImported": false,
+      "countExplanation": [
+        "IndustrialL4DirectionPacketFileHarnessTests: 3",
+        "IndustrialL4IntakeTests: 2",
+        "IndustrialL4DirectionPacketSchemaTests source-admission case: 1",
+        "IndustrialL4DirectionQuarantineMatrixTests exact-join case: 1"
+      ]
+    }
   },
   "compileRepairDisclosure": {
     "initialResult": "FAILED_TO_COMPILE_NEW_TEST",

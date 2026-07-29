@@ -8,6 +8,11 @@ the schema and instance hashes, validates their closed semantic shape, and
 maps each exact absent packet path to a deterministic nonshipping reservation
 receipt.
 
+The portability repair at `bc999ea7` removes the test's dependency on the
+branch-only `IndustrialL4DirectionPacketValidator.sourceStage` helper. The
+test now binds the published contract and source-stage schema values locally,
+then hashes the canonical published source-stage schema file directly.
+
 No source packet was created or inspected. North remains pending its separate
 authority.
 
@@ -21,6 +26,23 @@ failed direction leaves previously passing sibling receipt values unchanged.
 Receipts keep source admission, Renderer quarantine, runtime activation,
 shipping mutation, and production selection false. They are synthetic
 intake-preparation evidence only.
+
+## Integration replay
+
+The submitted locator sequence already exists on exact Integration candidate
+`80975d472bb61cc7f99e885285e4d970b728823f`. Cherry-picking only the focused
+portability repair into a disposable clone produced replay commit
+`e8e32858f3ddd7bade2e5a31cc4a2e231489b90e` and passed
+`swift test --filter IndustrialL4` with 27 executed,
+2 skipped, and 0 failures.
+
+The prior 34-test branch result is also green, but seven of those tests belong
+to retained Renderer history that is absent from `80975d47`: three file-harness
+tests, two intake tests, one source-admission-schema test, and one exact-join
+test. They are not prerequisites of this submitted locator slice and must not
+be imported to manufacture the old count. The repaired submitted test compiles
+and passes on the accepted Integration surface with no remaining reference to
+an unintegrated Renderer helper.
 
 ## Exact paths
 
@@ -38,7 +60,9 @@ intake-preparation evidence only.
 3. Initial evidence commit `81fd09f0c992266eb2b34a27a346590f68ff589f`.
 4. Explicit authority-drift proof
    `25db1b5a7c4357a5fd24babf41067295dc526a23`.
-5. Final refreshed evidence commit.
+5. Final refreshed evidence commit `692af6d68ad88b8080ddcb1ea8f7917ed7abd321`.
+6. Portability repair `bc999ea7db271d15bb54ee895b4cf9e79c82a3ba`.
+7. This portability evidence addendum.
 
 Import only these focused descendants; do not merge the older renderer branch
 range. A future source packet must still pass source-stage-v2, independent

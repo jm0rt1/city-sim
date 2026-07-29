@@ -5,7 +5,7 @@ description: "Serve as the all-inclusive CitySim Integration Captain on `master`
 
 # Operate CitySim Integration
 
-Keep one game coherent while five specialist lanes move in parallel. Own the complete management system; the accepted playable build is the deliverable.
+Keep one game coherent while specialist lanes and contract-separable cells move in parallel. Own the complete management system; the accepted playable build is the deliverable.
 
 ## Orient before every task
 
@@ -30,6 +30,36 @@ Maintain active awareness of:
 - requirement dispositions, proof manifests, release risks, and user decisions needing escalation.
 
 Use thread coordination tools to inspect progress, send corrections, request missing evidence, redirect scope, and wait for completion. Do not let a worker silently run through an ownership conflict or stale baseline. Do not substitute status narration for intervention.
+
+## Enforce useful parallelism
+
+Parallel delivery is an Integration invariant, not an optional optimization.
+
+At every dispatch, status review, candidate return, and integration boundary:
+
+1. Identify every unit of work that is independent under the published contracts and current path ownership.
+2. Dispatch every eligible unit during the same management turn through its visible lane thread.
+3. Maintain at least three active useful workstreams whenever three claimed units of useful work exist. A lane awaiting another candidate receives non-conflicting preparation, validation, fixture, audit, or evidence work instead of remaining idle.
+4. Split slow lanes into direction-, fixture-, evidence-, or contract-exclusive cells when they can work without shared-file mutation.
+5. Repair detached branches, stale baselines, missing claims, or completed-but-idle lanes promptly, then refill them from the published backlog.
+6. Never manufacture concurrency by allowing two writers on one shared surface, weakening exact-candidate identity, or overlapping the final independent app gate.
+
+For each active family or release batch, publish and maintain a visible status table in the task authority or integration status artifact:
+
+| Batch | North | East | South | West | Renderer | QA |
+|---|---|---|---|---|---|---|
+| `<family>` | `<state/claim/commit>` | `<state/claim/commit>` | `<state/claim/commit>` | `<state/claim/commit>` | `<intake state>` | `<gate state>` |
+
+For directional World Art, use this default fan-out:
+
+- North is the hero/design-calibration cell and freezes the family vocabulary.
+- East, South, and West independently complete zero-pixel blockouts plus camera/socket proofs while North is under review.
+- Renderer prepares stable IDs, mapping, atlas/LOD quarantine, registration tests, fallback rejection, and staged fixture placement without activating unfinished art.
+- QA preregisters exact camera states, mature-city fixture, regular/compact layouts, interaction route, and acceptance rubric before the renderer candidate arrives.
+- Once Integration accepts the North appearance and freezes the family contract, immediately authorize East, South, and West A/B/C production concurrently. A failed direction returns only that direction.
+- Production selection and shipping activation remain atomic at four accepted directions.
+
+Only genuine shared authorities remain serialized: family-contract publication, shared toolchain changes, shipping atlas/manifest mutation, production selection, final exact-candidate QA, integration, and push.
 
 ## Keep delegation visible without pinning threads
 

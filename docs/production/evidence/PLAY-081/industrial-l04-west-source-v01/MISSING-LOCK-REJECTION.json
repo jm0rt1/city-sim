@@ -1,12 +1,12 @@
 {
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
   "contactSheetInvocations": 0,
   "coordinateBridgeState": "validated_v06",
   "direction": "west",
-  "driverSha256": "bb10409354d34d59a2f2807cab2c1ea5c0aadf0d99ee105600835dfbfe144d05",
+  "driverSha256": "be88c6ae9b4acd29bbdb874a453db436b856a22d187d243b300ee1d1f4970c54",
   "imageGenInvocations": 0,
   "missingAppearanceLockFields": [
     "appearanceLock.documentPath",
@@ -31,7 +31,8 @@
       "normalizerInvocations": 0,
       "pixelFiles": 0,
       "reasonCodes": [
-        "appearance-lock:missing"
+        "appearance-lock:missing",
+        "source-stage-schema:pending-v2"
       ],
       "rejectionStage": "before_renderer_launch",
       "renderInvocations": 0,
@@ -49,7 +50,8 @@
       "normalizerInvocations": 0,
       "pixelFiles": 0,
       "reasonCodes": [
-        "appearance-lock:missing"
+        "appearance-lock:missing",
+        "source-stage-schema:pending-v2"
       ],
       "rejectionStage": "before_renderer_launch",
       "renderInvocations": 0,
@@ -67,7 +69,8 @@
       "normalizerInvocations": 0,
       "pixelFiles": 0,
       "reasonCodes": [
-        "appearance-lock:missing"
+        "appearance-lock:missing",
+        "source-stage-schema:pending-v2"
       ],
       "rejectionStage": "before_renderer_launch",
       "renderInvocations": 0,
@@ -80,9 +83,12 @@
   "pixelFiles": 0,
   "proof": "MISSING_APPEARANCE_LOCK_REJECTION",
   "rejectionStage": "before_renderer_launch",
-  "remainingBlocker": "North process-A appearance lock is not published",
+  "remainingBlockers": [
+    "Integration source-stage schema v2 is not published",
+    "North process-A appearance lock is not published"
+  ],
   "renderInvocations": 0,
-  "runnerContractSha256": "6000a0f70daa240e803e975684965d2364ceacb7d33c7b8ae0c4fae488542cf9",
+  "runnerContractSha256": "a3d279f7be15f07f95c3b3e7732a2988b80e69820daca6f071305162b9c2c4e2",
   "schemaVersion": 1,
   "taskId": "PLAY-081"
 }

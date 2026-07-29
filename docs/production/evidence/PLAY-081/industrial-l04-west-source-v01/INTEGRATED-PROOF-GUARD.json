@@ -20,8 +20,9 @@
       "normalizerInvocations": 0,
       "pixelFiles": 0,
       "reasonCodes": [
-        "appearance-lock:document-sha256-mismatch",
-        "locked-materials:sha256-mismatch",
+        "appearance-lock:missing",
+        "coordinate-bridge:integrated-proof-execution-authority",
+        "coordinate-bridge:integrated-proof-not-ancestor",
         "source-stage-schema:pending-v2"
       ],
       "rejectionStage": "before_renderer_launch",
@@ -40,8 +41,9 @@
       "normalizerInvocations": 0,
       "pixelFiles": 0,
       "reasonCodes": [
-        "appearance-lock:document-sha256-mismatch",
-        "locked-materials:sha256-mismatch",
+        "appearance-lock:missing",
+        "coordinate-bridge:integrated-proof-execution-authority",
+        "coordinate-bridge:integrated-proof-not-ancestor",
         "source-stage-schema:pending-v2"
       ],
       "rejectionStage": "before_renderer_launch",
@@ -60,8 +62,9 @@
       "normalizerInvocations": 0,
       "pixelFiles": 0,
       "reasonCodes": [
-        "appearance-lock:document-sha256-mismatch",
-        "locked-materials:sha256-mismatch",
+        "appearance-lock:missing",
+        "coordinate-bridge:integrated-proof-execution-authority",
+        "coordinate-bridge:integrated-proof-not-ancestor",
         "source-stage-schema:pending-v2"
       ],
       "rejectionStage": "before_renderer_launch",
@@ -73,19 +76,13 @@
   "normalizerInvocations": 0,
   "passed": true,
   "pixelFiles": 0,
-  "proof": "WRONG_APPEARANCE_LOCK_REJECTION",
+  "proof": "INTEGRATED_V06_PROOF_EXECUTION_GUARD",
   "rejectionStage": "before_renderer_launch",
-  "remainingBlockers": [
-    "Integration source-stage schema v2 is not published",
-    "North process-A appearance lock is not published"
-  ],
   "renderInvocations": 0,
+  "requiredIntegratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
   "runnerContractSha256": "a3d279f7be15f07f95c3b3e7732a2988b80e69820daca6f071305162b9c2c4e2",
   "schemaVersion": 1,
+  "sourceCandidateProvenanceCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
   "taskId": "PLAY-081",
-  "testBinding": {
-    "deliberatelyWrongDocumentSha256": "0000000000000000000000000000000000000000000000000000000000000000",
-    "deliberatelyWrongMaterialSha256": "3333333333333333333333333333333333333333333333333333333333333333",
-    "documentPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md"
-  }
+  "testMutation": "substitute source candidate for integrated proof"
 }

@@ -1,0 +1,81 @@
+{
+  "abcIdentity": "not_run",
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "contactSheetInvocations": 0,
+  "direction": "west",
+  "futureChecks": [
+    "fresh-process provenance",
+    "decoded raw and semantic RGBA A/B/C identity",
+    "alpha, chroma, hidden-RGB, bounds, and registration",
+    "literal-192 survival",
+    "candidate decoded-RGBA rejection against canonical 44-master set"
+  ],
+  "imageGenInvocations": 0,
+  "literal192": "not_run",
+  "mode": "describe",
+  "nonAliasInput": {
+    "acceptedSourceOnlyFamily": "industrial_l03",
+    "acceptedSourceOnlyMasters": 4,
+    "authorityArtifacts": {
+      "derivedInventory": "9a5f561327ba5ed3a5178c03caae19d79204401b9b7dfd5c53ac716d2e6ab3af",
+      "generator": "46b00bf09d10fe049cb34e036d8feed545ace8374680ca0a962ed3a7f86746b6",
+      "industrial-l03-acceptance": "a1eb992cce474524c2fc7b38e2b93785df53561791d38fe72830b7ce87a59eec",
+      "industrial-l03-manifest": "78fef5beed40229d0637ba74e85737c939bbaa460f42a17b49f24769e92704a1",
+      "shippingManifest": "1f4e9961ecb8ade54d2bb169721d11ca337e2f61053c72078a5e6bf71d59480b"
+    },
+    "candidatePixelFilesRead": 0,
+    "disposition": "derived-validation-input",
+    "forbiddenDecodedRgbaSha256Count": 44,
+    "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
+    "logicalIdOrder": "ascii-ascending",
+    "passed": true,
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+    "schema": "citysim.integration.accepted-building-non-alias-input.v1",
+    "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+    "shippingDirectionalMasters": 40
+  },
+  "normalization": "not_run",
+  "normalizerInvocations": 0,
+  "passed": true,
+  "pixelFilesRead": 0,
+  "pngDecoder": {
+    "decodedRgbaSha256": "7801e753ce6e84a044afa9035e2d427e647c2d9aa307511271ae2ce9d3ed936a",
+    "filtersExercised": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "fixtureSize": [
+      2,
+      5
+    ],
+    "implementation": "python-standard-library",
+    "modules": [
+      "hashlib",
+      "struct",
+      "zlib"
+    ],
+    "passed": true,
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
+    "pillowImported": false,
+    "sha256": "7694ef89cf4d16fdde256095b1c3bb6fb3e811cc3cef74e6fde365afe13ed84c",
+    "supportedFormat": "non-interlaced-8-bit-rgba-png"
+  },
+  "productionSelected": false,
+  "renderInvocations": 0,
+  "rgba": "not_run",
+  "schemaVersion": 1,
+  "sourceReady": false,
+  "sourceStageSchema": {
+    "candidatePacketValidation": "not_run",
+    "passed": null,
+    "path": null,
+    "placeholderHashesUsed": false,
+    "sha256": null,
+    "state": "pending_integration_v2"
+  },
+  "taskId": "PLAY-081"
+}

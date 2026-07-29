@@ -9,6 +9,9 @@ import copy
 import hashlib
 import importlib.util
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -156,6 +159,49 @@ def main() -> int:
     control_flow = static_control_flow_checks(driver_path)
     pixel_count, pixel_paths = count_pixel_files(root)
     modes = ("A", "B", "C")
+    source_validator_path = repository_path(
+        root,
+        contract["runnerImplementation"]["sourceValidatorPath"],
+    )
+    describe_process = subprocess.run(
+        [
+            sys.executable,
+            str(source_validator_path),
+            "--repository-root",
+            str(root),
+            "--contract",
+            str(contract_path.relative_to(root)),
+            "--mode",
+            "describe",
+        ],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+    )
+    try:
+        describe_report = json.loads(describe_process.stdout)
+    except json.JSONDecodeError:
+        describe_report = {
+            "passed": False,
+            "parseError": describe_process.stdout,
+            "stderr": describe_process.stderr,
+        }
+    describe_pass = (
+        describe_process.returncode == 0
+        and describe_report.get("passed") is True
+        and describe_report.get("pixelFilesRead") == 0
+        and describe_report.get("nonAliasInput", {}).get(
+            "forbiddenDecodedRgbaSha256Count"
+        )
+        == 44
+        and describe_report.get("pngDecoder", {}).get("pillowImported") is False
+        and describe_report.get("sourceStageSchema", {}).get("state")
+        == "pending_integration_v2"
+        and describe_report.get("sourceStageSchema", {}).get("path") is None
+        and describe_report.get("sourceStageSchema", {}).get("sha256") is None
+    )
 
     missing_decisions = {
         mode: runner.evaluate_render_guard(root, contract, mode)
@@ -207,6 +253,29 @@ def main() -> int:
         for decision in wrong_decisions.values()
     )
 
+    stale_bridge_contract = copy.deepcopy(contract)
+    stale_bridge_contract["coordinateBridge"]["v06"]["integratedProofCommit"] = (
+        stale_bridge_contract["coordinateBridge"]["v06"]["sourceCandidateCommit"]
+    )
+    stale_bridge_decisions = {
+        mode: runner.evaluate_render_guard(root, stale_bridge_contract, mode)
+        for mode in modes
+    }
+    integrated_proof_guard_pass = all(
+        decision["decision"] == "reject"
+        and decision["rejectionStage"] == "before_renderer_launch"
+        and "coordinate-bridge:integrated-proof-execution-authority"
+        in decision["reasonCodes"]
+        and all(
+            value == 0
+            for key, value in decision.items()
+            if key.endswith("Invocations")
+            or key.endswith("Calls")
+            or key == "pixelFiles"
+        )
+        for decision in stale_bridge_decisions.values()
+    )
+
     coordinate_bridge = contract["coordinateBridge"]
     canonical = coordinate_bridge["canonicalCitySim"]
     historical = coordinate_bridge["historicalProjectionAdapter"]
@@ -221,6 +290,14 @@ def main() -> int:
         and historical["authorityScope"] == "retained-predesign-proof-only"
         and bridge_v06["authorityCommit"]
         == "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        and bridge_v06["sourceCandidateCommit"]
+        == "3e01ca6738d7574718f9aeff4b66771eee109feb"
+        and bridge_v06["integratedProofCommit"]
+        == "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e"
+        and runner._commit_is_ancestor(
+            root,
+            bridge_v06["integratedProofCommit"],
+        )
         and bridge_v06["mappingContractSha256"]
         == "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
         and bridge_v06["basisFormula"]
@@ -253,7 +330,7 @@ def main() -> int:
         name: (
             record.get("passed") is True
             and record.get("acceptedBridgeCandidate")
-            == bridge_v06["authorityCommit"]
+            == bridge_v06["sourceCandidateCommit"]
             and record.get("mappingContractSha256")
             == bridge_v06["mappingContractSha256"]
             and record.get("basisFormula") == bridge_v06["basisFormula"]
@@ -332,7 +409,10 @@ def main() -> int:
                 "actualCameraProofScript" in blender_script_source
                 or "load_accepted_builder" in blender_script_source
             ),
-            "acceptedCandidate": bridge_v06["authorityCommit"],
+            "sourceCandidateProvenance": bridge_v06["sourceCandidateCommit"],
+            "integratedProofExecutionAuthority": bridge_v06[
+                "integratedProofCommit"
+            ],
             "mappingContractSha256": bridge_v06["mappingContractSha256"],
             "canonicalWestSocketBlenderXYZ": bridge_v06[
                 "frontageSocketBlenderXYZ"
@@ -344,6 +424,24 @@ def main() -> int:
             ],
             "passed": coordinate_bridge_pass,
         },
+        "sourceValidatorDescribe": {
+            "returnCode": describe_process.returncode,
+            "nonAliasMasterCount": describe_report.get(
+                "nonAliasInput",
+                {},
+            ).get("forbiddenDecodedRgbaSha256Count"),
+            "pngDecoder": describe_report.get("pngDecoder"),
+            "sourceStageSchema": describe_report.get("sourceStageSchema"),
+            "passed": describe_pass,
+        },
+        "integratedProofExecutionGuard": {
+            "requiredCommit": bridge_v06["integratedProofCommit"],
+            "sourceCandidateProvenance": bridge_v06[
+                "sourceCandidateCommit"
+            ],
+            "sourceCandidateSubstitutionRejected": integrated_proof_guard_pass,
+            "passed": integrated_proof_guard_pass,
+        },
     }
     static_pass = (
         not frozen_errors
@@ -352,6 +450,8 @@ def main() -> int:
         and blender_script_path.is_file()
         and coordinate_bridge_pass
         and bridge_repeat_pass
+        and describe_pass
+        and integrated_proof_guard_pass
     )
     common = {
         "schemaVersion": 1,
@@ -372,6 +472,11 @@ def main() -> int:
         "checks": static_checks,
         "validation": {
             "runnerStatic": "pass" if static_pass else "fail",
+            "sourceValidatorDescribe": "pass" if describe_pass else "fail",
+            "integratedProofGuard": (
+                "pass" if integrated_proof_guard_pass else "fail"
+            ),
+            "sourceStageSchema": "not_run_pending_integration_v2",
             "rgba": "not_run",
             "literal192": "not_run",
             "abcIdentity": "not_run",
@@ -395,7 +500,10 @@ def main() -> int:
             "lockedMaterialMapping.sha256",
         ],
         "coordinateBridgeState": "validated_v06",
-        "remainingBlocker": "North process-A appearance lock is not published",
+        "remainingBlockers": [
+            "Integration source-stage schema v2 is not published",
+            "North process-A appearance lock is not published"
+        ],
         "passed": missing_pass,
     }
     wrong_report = {
@@ -411,21 +519,67 @@ def main() -> int:
             ]["sha256"],
         },
         "coordinateBridgeState": "validated_v06",
-        "remainingBlocker": "North process-A appearance lock is not published",
+        "remainingBlockers": [
+            "Integration source-stage schema v2 is not published",
+            "North process-A appearance lock is not published"
+        ],
         "modes": wrong_decisions,
         "passed": wrong_pass,
+    }
+    integrated_proof_guard_report = {
+        **common,
+        "proof": "INTEGRATED_V06_PROOF_EXECUTION_GUARD",
+        "requiredIntegratedProofCommit": bridge_v06["integratedProofCommit"],
+        "sourceCandidateProvenanceCommit": bridge_v06[
+            "sourceCandidateCommit"
+        ],
+        "testMutation": "substitute source candidate for integrated proof",
+        "modes": stale_bridge_decisions,
+        "passed": integrated_proof_guard_pass,
+    }
+    source_stage_schema_gate = {
+        **common,
+        "proof": "SOURCE_STAGE_SCHEMA_HOLD",
+        "state": "not_run_pending_integration_v2",
+        "binding": contract["sourceStage"]["handoffSchema"],
+        "v1FinalBindingDeclared": False,
+        "candidatePacketValidation": "not_run",
+        "placeholderHashesUsed": False,
+        "renderModesRemainClosed": True,
+        "passed": (
+            contract["sourceStage"]["handoffSchema"]
+            == {
+                "state": "pending_integration_v2",
+                "path": None,
+                "sha256": None,
+            }
+        ),
     }
     reports = {
         "RUNNER-STATIC-VALIDATION.json": static_report,
         "MISSING-LOCK-REJECTION.json": missing_report,
         "WRONG-LOCK-REJECTION.json": wrong_report,
         "BRIDGE-REPEAT-IDENTITY.json": bridge_repeat_report,
+        "SOURCE-VALIDATOR-DESCRIBE.json": describe_report,
+        "INTEGRATED-PROOF-GUARD.json": integrated_proof_guard_report,
+        "SOURCE-STAGE-SCHEMA-GATE.json": source_stage_schema_gate,
     }
     for name, report in reports.items():
         (output / name).write_text(
             json.dumps(report, indent=2, sort_keys=True) + "\n"
         )
-    return 0 if static_pass and missing_pass and wrong_pass else 1
+    return (
+        0
+        if (
+            static_pass
+            and missing_pass
+            and wrong_pass
+            and integrated_proof_guard_pass
+            and describe_pass
+            and source_stage_schema_gate["passed"]
+        )
+        else 1
+    )
 
 
 if __name__ == "__main__":

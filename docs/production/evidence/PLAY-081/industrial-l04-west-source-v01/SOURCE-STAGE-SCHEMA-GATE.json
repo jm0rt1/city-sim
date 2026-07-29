@@ -1,0 +1,30 @@
+{
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "binding": {
+    "path": null,
+    "sha256": null,
+    "state": "pending_integration_v2"
+  },
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
+  "candidatePacketValidation": "not_run",
+  "contactSheetInvocations": 0,
+  "coordinateBridgeState": "validated_v06",
+  "direction": "west",
+  "driverSha256": "be88c6ae9b4acd29bbdb874a453db436b856a22d187d243b300ee1d1f4970c54",
+  "imageGenInvocations": 0,
+  "normalizerInvocations": 0,
+  "passed": true,
+  "pixelFiles": 0,
+  "placeholderHashesUsed": false,
+  "proof": "SOURCE_STAGE_SCHEMA_HOLD",
+  "rejectionStage": "before_renderer_launch",
+  "renderInvocations": 0,
+  "renderModesRemainClosed": true,
+  "runnerContractSha256": "a3d279f7be15f07f95c3b3e7732a2988b80e69820daca6f071305162b9c2c4e2",
+  "schemaVersion": 1,
+  "state": "not_run_pending_integration_v2",
+  "taskId": "PLAY-081",
+  "v1FinalBindingDeclared": false
+}

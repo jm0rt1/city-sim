@@ -1,5 +1,5 @@
 {
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
   "blenderProcessLaunches": 0,
   "blenderRenderApiCalls": 0,
   "blenderScriptSha256": "c1f37bb73a2d69211ec95a88d61b5f72b3a60c3088378213100d9cc598b6c38d",
@@ -10,21 +10,20 @@
     "controlFlow": {
       "driverImportsBpy": false,
       "evaluateGuardLines": [
-        602
+        680
       ],
       "guardTextPrecedesLaunchText": true,
       "launchBlenderLines": [
-        607
+        685
       ],
       "passed": true,
       "subprocessRunLines": [
-        510,
-        519,
-        569
+        574,
+        583,
+        647
       ]
     },
     "coordinateBridgeAdoption": {
-      "acceptedCandidate": "3e01ca6738d7574718f9aeff4b66771eee109feb",
       "actualCameraProofs": {
         "runA": true,
         "runB": true
@@ -47,8 +46,10 @@
       "historicalAdapterFutureSourceAuthority": false,
       "historicalAdapterLoadedByBlenderScript": false,
       "holdIsStop": false,
+      "integratedProofExecutionAuthority": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
       "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
       "passed": true,
+      "sourceCandidateProvenance": "3e01ca6738d7574718f9aeff4b66771eee109feb",
       "sourceOrder": [
         0,
         1,
@@ -59,13 +60,57 @@
     },
     "frozenInputErrors": [],
     "frozenInputHashes": true,
+    "integratedProofExecutionGuard": {
+      "passed": true,
+      "requiredCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+      "sourceCandidateProvenance": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "sourceCandidateSubstitutionRejected": true
+    },
     "pixelFiles": 0,
-    "sourceAndEvidencePixelFiles": []
+    "sourceAndEvidencePixelFiles": [],
+    "sourceValidatorDescribe": {
+      "nonAliasMasterCount": 44,
+      "passed": true,
+      "pngDecoder": {
+        "decodedRgbaSha256": "7801e753ce6e84a044afa9035e2d427e647c2d9aa307511271ae2ce9d3ed936a",
+        "filtersExercised": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "fixtureSize": [
+          2,
+          5
+        ],
+        "implementation": "python-standard-library",
+        "modules": [
+          "hashlib",
+          "struct",
+          "zlib"
+        ],
+        "passed": true,
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
+        "pillowImported": false,
+        "sha256": "7694ef89cf4d16fdde256095b1c3bb6fb3e811cc3cef74e6fde365afe13ed84c",
+        "supportedFormat": "non-interlaced-8-bit-rgba-png"
+      },
+      "returnCode": 0,
+      "sourceStageSchema": {
+        "candidatePacketValidation": "not_run",
+        "passed": null,
+        "path": null,
+        "placeholderHashesUsed": false,
+        "sha256": null,
+        "state": "pending_integration_v2"
+      }
+    }
   },
   "contactSheetInvocations": 0,
   "coordinateBridgeState": "validated_v06",
   "direction": "west",
-  "driverSha256": "bb10409354d34d59a2f2807cab2c1ea5c0aadf0d99ee105600835dfbfe144d05",
+  "driverSha256": "be88c6ae9b4acd29bbdb874a453db436b856a22d187d243b300ee1d1f4970c54",
   "imageGenInvocations": 0,
   "normalizerInvocations": 0,
   "passed": true,
@@ -73,14 +118,17 @@
   "proof": "PRELOCK_RUNNER_STATIC",
   "rejectionStage": "before_renderer_launch",
   "renderInvocations": 0,
-  "runnerContractSha256": "6000a0f70daa240e803e975684965d2364ceacb7d33c7b8ae0c4fae488542cf9",
+  "runnerContractSha256": "a3d279f7be15f07f95c3b3e7732a2988b80e69820daca6f071305162b9c2c4e2",
   "schemaVersion": 1,
   "taskId": "PLAY-081",
   "validation": {
     "abcIdentity": "not_run",
+    "integratedProofGuard": "pass",
     "literal192": "not_run",
     "normalization": "not_run",
     "rgba": "not_run",
-    "runnerStatic": "pass"
+    "runnerStatic": "pass",
+    "sourceStageSchema": "not_run_pending_integration_v2",
+    "sourceValidatorDescribe": "pass"
   }
 }

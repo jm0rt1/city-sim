@@ -85,7 +85,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "taskId": "PLAY-081",
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
-        "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+        "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -93,7 +93,12 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         if contract.get(key) != expected:
             errors.append(f"contract:{key}")
 
-    for name in ("authority", "handoffSchema", "governingContract"):
+    for name in (
+        "authority",
+        "repairAuthority",
+        "handoffSchema",
+        "governingContract",
+    ):
         value = contract.get(name)
         if not isinstance(value, dict):
             errors.append(f"{name}:missing-binding")
@@ -205,7 +210,17 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         (
             bridge_v06.get("authorityCommit"),
             "3e01ca6738d7574718f9aeff4b66771eee109feb",
-            "accepted-candidate",
+            "legacy-source-candidate-alias",
+        ),
+        (
+            bridge_v06.get("sourceCandidateCommit"),
+            "3e01ca6738d7574718f9aeff4b66771eee109feb",
+            "source-candidate-provenance",
+        ),
+        (
+            bridge_v06.get("integratedProofCommit"),
+            "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+            "integrated-proof-execution-authority",
         ),
         (
             bridge_v06.get("mappingContractSha256"),
@@ -285,6 +300,42 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     except (ContractError, KeyError, OSError, json.JSONDecodeError):
         errors.append("coordinate-bridge:mapping-invalid")
 
+    source_stage = contract.get("sourceStage", {})
+    schema_binding = source_stage.get("handoffSchema", {})
+    if (
+        schema_binding.get("state") != "pending_integration_v2"
+        or schema_binding.get("path") is not None
+        or schema_binding.get("sha256") is not None
+    ):
+        errors.append("source-stage-schema:pending-v2-binding")
+    for name in ("nonAliasInput", "pngDecoder"):
+        binding = source_stage.get(name)
+        if not isinstance(binding, dict):
+            errors.append(f"source-stage:{name}:missing-binding")
+        else:
+            errors.extend(
+                hash_binding_errors(root, f"source-stage.{name}", binding)
+            )
+    non_alias = source_stage.get("nonAliasInput", {})
+    if (
+        non_alias.get("acceptedMasterCount") != 44
+        or non_alias.get("forbiddenSetSha256")
+        != "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+    ):
+        errors.append("source-stage:non-alias-contract")
+    try:
+        non_alias_document = load_json(
+            repository_path(root, non_alias["path"])
+        )
+        if (
+            non_alias_document.get("forbiddenDecodedRgbaSha256Count") != 44
+            or non_alias_document.get("forbiddenSetSha256")
+            != non_alias.get("forbiddenSetSha256")
+        ):
+            errors.append("source-stage:non-alias-content")
+    except (ContractError, KeyError, OSError, json.JSONDecodeError):
+        errors.append("source-stage:non-alias-invalid")
+
     implementation = contract.get("runnerImplementation", {})
     blender_script = implementation.get("blenderScriptPath")
     if not isinstance(blender_script, str):
@@ -362,6 +413,13 @@ def evaluate_render_guard(
 ) -> dict[str, Any]:
     """Return a deterministic pre-launch decision without launching Blender."""
     errors = frozen_input_errors(root, contract)
+    if (
+        contract.get("sourceStage", {})
+        .get("handoffSchema", {})
+        .get("state")
+        != "bound_integration_v2"
+    ):
+        errors.append("source-stage-schema:pending-v2")
     bridge = contract.get("coordinateBridge")
     bridge_v06: dict[str, Any] = {}
     if not isinstance(bridge, dict):
@@ -374,7 +432,8 @@ def evaluate_render_guard(
             "acceptancePath",
             "acceptanceSha256",
             "authorityPath",
-            "authorityCommit",
+            "sourceCandidateCommit",
+            "integratedProofCommit",
             "authoritySha256",
             "mappingContractPath",
             "mappingContractSha256",
@@ -415,6 +474,11 @@ def evaluate_render_guard(
                         )
             except (ContractError, OSError):
                 errors.append("coordinate-bridge:v06-binding-invalid")
+            if not _commit_is_ancestor(
+                root,
+                bridge_v06["integratedProofCommit"],
+            ):
+                errors.append("coordinate-bridge:integrated-proof-not-ancestor")
     appearance = contract.get("appearanceLock")
     if not isinstance(appearance, dict):
         errors.append("appearance-lock:missing-object")
@@ -506,7 +570,7 @@ def evaluate_render_guard(
     }
 
 
-def _verify_lock_commit_ancestry(root: Path, commit: str) -> None:
+def _commit_is_ancestor(root: Path, commit: str) -> bool:
     object_check = subprocess.run(
         ["git", "cat-file", "-e", f"{commit}^{{commit}}"],
         cwd=root,
@@ -515,7 +579,7 @@ def _verify_lock_commit_ancestry(root: Path, commit: str) -> None:
         stderr=subprocess.DEVNULL,
     )
     if object_check.returncode:
-        raise ContractError("appearance-lock commit is not a local commit")
+        return False
     ancestry = subprocess.run(
         ["git", "merge-base", "--is-ancestor", commit, "HEAD"],
         cwd=root,
@@ -523,8 +587,16 @@ def _verify_lock_commit_ancestry(root: Path, commit: str) -> None:
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
-    if ancestry.returncode:
-        raise ContractError("appearance-lock commit is not an ancestor of HEAD")
+    return ancestry.returncode == 0
+
+
+def _verify_lock_commit_ancestry(
+    root: Path,
+    commit: str,
+    name: str,
+) -> None:
+    if not _commit_is_ancestor(root, commit):
+        raise ContractError(f"{name} commit is not an ancestor of HEAD")
 
 
 def launch_blender(
@@ -533,9 +605,15 @@ def launch_blender(
     """Launch Blender only after ``evaluate_render_guard`` returned allow."""
     appearance = contract["appearanceLock"]
     _verify_lock_commit_ancestry(
-        root, contract["coordinateBridge"]["v06"]["authorityCommit"]
+        root,
+        contract["coordinateBridge"]["v06"]["integratedProofCommit"],
+        "integrated v06 proof",
     )
-    _verify_lock_commit_ancestry(root, appearance["commit"])
+    _verify_lock_commit_ancestry(
+        root,
+        appearance["commit"],
+        "appearance lock",
+    )
     pipeline = contract["invariants"]["renderPipeline"]
     executable = Path(pipeline["blenderExecutable"])
     if not executable.is_file() or sha256(executable) != pipeline["blenderExecutableSha256"]:

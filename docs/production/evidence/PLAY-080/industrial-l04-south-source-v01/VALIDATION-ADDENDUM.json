@@ -1,6 +1,6 @@
 {
   "coordinateBridgeBlocker": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/COORDINATE-BRIDGE-V06-BLOCKER.json",
-  "coordinateBridgeRevalidation": "pending_v06",
+  "coordinateBridgeRevalidation": "v06_revalidated",
   "direction": "south",
   "guardEvidence": {
     "blenderProcessLaunches": 0,

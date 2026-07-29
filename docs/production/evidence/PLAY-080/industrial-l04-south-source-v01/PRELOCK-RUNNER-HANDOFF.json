@@ -3,7 +3,7 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "30af21b5a3cbabb26c415f76d8ce35934dcc5082",
+  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
   "governingContract": {
     "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
     "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
@@ -19,12 +19,13 @@
   },
   "runner": {
     "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-    "contractSha256": "c7910537187aad6161588dc35f6bf4e3a45e9a3d18d11b8d3de9632206805e0c",
+    "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
     "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
-    "driverSha256": "0fbca6b5ed57005fd8d4ef29717aabeb4665cf352474bb8b66ba87577c5741a3",
+    "driverSha256": "ae72158658626094ead41d6dd32b88a9e674f712a8d03ec0c4627c0ea05d5cad",
     "validatorHashes": {
-      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_runner.py": "f1314a8cccbbfd1d56c11396a4e631640cb86188bf1c01c234cd9c39734181a7",
-      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py": "8392b79d76417708ac909007c90eb724e218dc1b40937107583a18a9cbb8aa96"
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_runner.py": "dda18dea19e2b22c3defdf211b99c90b1a1043af819fc8a839e602faab60be4e",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py": "295fa0cc66ed0329d1d0e7db9310d84079cdeb2c7d2a0dd006f28e9c0516497a",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_bridge_adoption.py": "f9bcddec4cdcb5e3135fd82019de0e19650b3a2ddcb51794ff52ac5dba065ec8"
     },
     "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
     "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"

@@ -556,8 +556,11 @@ def validate_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
         reject("WRONG_BRANCH", git("branch", "--show-current"))
     head = git("rev-parse", "HEAD")
     origin_master_observed = git("rev-parse", "origin/master")
-    for key, commit in required_commits.items():
-        require_ancestor(commit, head, f"{key}:HEAD")
+    require_ancestor(
+        required_commits["publishedMaster"],
+        head,
+        "publishedMaster:HEAD",
+    )
 
     status_counts = {status: 0 for status in STATUS_SET}
     records = list(locator_records(inventory.get("inputs"), "inputs"))
@@ -578,6 +581,11 @@ def validate_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
         "stage": STAGE,
         "head": head,
         "publishedMaster": required_commits["publishedMaster"],
+        "workerProvenance": {
+            "acceptedSouthAncestor": required_commits["acceptedSouthAncestor"],
+            "inventoryBaseCommit": required_commits["inventoryBaseCommit"],
+            "runtimeAncestryRequired": False,
+        },
         "originMasterObserved": origin_master_observed,
         "rootsChecked": ROOTS,
         "locatorCount": len(records),

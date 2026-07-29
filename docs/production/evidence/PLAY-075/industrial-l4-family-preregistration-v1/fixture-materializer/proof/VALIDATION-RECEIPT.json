@@ -1,0 +1,75 @@
+{
+  "appRunOrScored": false,
+  "disposition": "FIXTURE_MATERIALIZER_PREPARATION_VALID",
+  "fixtureFilesCreated": [],
+  "negativeGates": [
+    {
+      "case": "1-direction-input",
+      "code": "ATOMIC_4_OF_4_REQUIRED",
+      "status": "REJECTED"
+    },
+    {
+      "case": "2-direction-input",
+      "code": "ATOMIC_4_OF_4_REQUIRED",
+      "status": "REJECTED"
+    },
+    {
+      "case": "3-direction-input",
+      "code": "ATOMIC_4_OF_4_REQUIRED",
+      "status": "REJECTED"
+    },
+    {
+      "case": "outside-output-root",
+      "code": "OUTPUT_OUTSIDE_TASK_ROOT",
+      "status": "REJECTED"
+    },
+    {
+      "case": "stale-candidate",
+      "code": "STALE_CANDIDATE",
+      "status": "REJECTED"
+    },
+    {
+      "case": "admitted-candidate-mismatch",
+      "code": "STALE_CANDIDATE",
+      "status": "REJECTED"
+    },
+    {
+      "case": "unbound-packet-hash",
+      "code": "UNBOUND_PACKET_HASH",
+      "status": "REJECTED"
+    },
+    {
+      "case": "runtime-socket-mismatch",
+      "code": "RUNTIME_SOCKET_MISMATCH",
+      "status": "REJECTED"
+    },
+    {
+      "case": "dcc-direction-label",
+      "code": "DCC_LABEL_INPUT",
+      "status": "REJECTED"
+    },
+    {
+      "case": "per-direction-transform",
+      "code": "PER_DIRECTION_TRANSFORM",
+      "status": "REJECTED"
+    },
+    {
+      "case": "alias-input",
+      "code": "ALIAS_OR_FALLBACK",
+      "status": "REJECTED"
+    },
+    {
+      "case": "mutable-candidate-default",
+      "code": "MUTABLE_OR_INEXACT_IDENTITY",
+      "status": "REJECTED"
+    }
+  ],
+  "productOrResourcesMutated": false,
+  "qaDispositionDeclared": false,
+  "repeatReceiptSha256": "4eb0e91c0456f1e88a0ceb7161eb23b923a3ca6ec3d1a6dde3f97571d3a56f27",
+  "repeatReceiptsByteIdentical": true,
+  "requestCanonicalSha256": "55632ac7718073a051d45a27c0bbec53b6035d68e0ff8cf16268b2c3d8b3a80c",
+  "runA": "industrial-l4-family-preregistration-v1/fixture-materializer/proof/run-a/FIXTURE-MATERIALIZATION-RECEIPT.json",
+  "runB": "industrial-l4-family-preregistration-v1/fixture-materializer/proof/run-b/FIXTURE-MATERIALIZATION-RECEIPT.json",
+  "schemaVersion": 1
+}

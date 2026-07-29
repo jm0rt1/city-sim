@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "baseFixture": {
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "stateDigest",
+        "immutable"
+      ],
+      "type": "object"
+    },
+    "directionBridge": {
+      "additionalProperties": false,
+      "required": [
+        "acceptedSourceAuthority",
+        "mappingSha256",
+        "coordinateSystem",
+        "sourceOrder",
+        "perDirectionTransforms",
+        "dccLabelsUsed"
+      ],
+      "type": "object"
+    },
+    "mode": {
+      "enum": [
+        "candidate_bound",
+        "contract_rehearsal"
+      ]
+    },
+    "packets": {
+      "items": {
+        "additionalProperties": false,
+        "required": [
+          "direction",
+          "packetCommit",
+          "packetSha256",
+          "boundPacketSha256",
+          "rendererCandidateCommit",
+          "coordinateLabelSystem",
+          "sourcePixelSocket",
+          "aliasOf",
+          "fallback",
+          "perDirectionTransform"
+        ],
+        "type": "object"
+      },
+      "maxItems": 4,
+      "minItems": 4,
+      "type": "array"
+    },
+    "rendererCandidate": {
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "admittedCommit",
+        "admissionAuthorityCommit",
+        "clean",
+        "exact",
+        "stale"
+      ],
+      "type": "object"
+    },
+    "requestId": {
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": 1
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "mode",
+    "requestId",
+    "baseFixture",
+    "rendererCandidate",
+    "directionBridge",
+    "packets"
+  ],
+  "title": "PLAY-075 Industrial L4 fixture-materialization request",
+  "type": "object"
+}

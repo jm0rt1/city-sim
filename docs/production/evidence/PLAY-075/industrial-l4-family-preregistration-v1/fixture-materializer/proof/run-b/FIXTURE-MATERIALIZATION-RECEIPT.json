@@ -1,0 +1,370 @@
+{
+  "atomicDirectionGate": {
+    "oneThroughThreeDirectionsAccepted": false,
+    "packets": [
+      {
+        "coordinateLabelSystem": "runtime_cardinal",
+        "direction": "north",
+        "packetCommit": "1111111111111111111111111111111111111111",
+        "packetSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+        "sourcePixelSocket": [
+          896,
+          704
+        ]
+      },
+      {
+        "coordinateLabelSystem": "runtime_cardinal",
+        "direction": "east",
+        "packetCommit": "2222222222222222222222222222222222222222",
+        "packetSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+        "sourcePixelSocket": [
+          896,
+          832
+        ]
+      },
+      {
+        "coordinateLabelSystem": "runtime_cardinal",
+        "direction": "south",
+        "packetCommit": "3333333333333333333333333333333333333333",
+        "packetSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+        "sourcePixelSocket": [
+          640,
+          832
+        ]
+      },
+      {
+        "coordinateLabelSystem": "runtime_cardinal",
+        "direction": "west",
+        "packetCommit": "4444444444444444444444444444444444444444",
+        "packetSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+        "sourcePixelSocket": [
+          640,
+          704
+        ]
+      }
+    ],
+    "receivedDirections": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "requiredDirections": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "status": "INPUT_IDENTITIES_BOUND_4_OF_4"
+  },
+  "authority": {
+    "arrivalGateAuthority": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md",
+    "claim": "PLAY-075",
+    "publishedMaster": "72a4c15f7ca747e4c6bc3c7fcf80b0e865b7ccc4"
+  },
+  "baseFixture": {
+    "immutable": true,
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+    "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+    "stateDigest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f"
+  },
+  "canonicalPayloadSha256": "896814a27a9ddbb636329d976fa87425e71de2f08218e21df5d99fb71c1a5060",
+  "derivativePlans": [
+    {
+      "actualFixtureIdentity": "NOT_MATERIALIZED",
+      "additionalChange": null,
+      "baseFixtureSha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+      "bindingSha256": "761e099a3d74bd6da3f51799cee7851bbcbdf4dee6226bf2f6a4b363af61e39c",
+      "levelChanges": [
+        {
+          "direction": "north",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 10,
+            "y": 10
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "east",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 3,
+            "y": 9
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "south",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 4,
+            "y": 8
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "west",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 17,
+            "y": 11
+          },
+          "toLevel": 4
+        }
+      ],
+      "name": "completed",
+      "packetSha256ByDirection": {
+        "east": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "north": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "south": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "west": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      },
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "saveBytesCreated": false
+    },
+    {
+      "actualFixtureIdentity": "NOT_MATERIALIZED",
+      "additionalChange": {
+        "direction": "north",
+        "field": "constructionProgress",
+        "value": 0.5
+      },
+      "baseFixtureSha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+      "bindingSha256": "d01d1edd71cc87f0c7522c09c6d5f62057433b27bce8fd0ca21081e2d513891d",
+      "levelChanges": [
+        {
+          "direction": "north",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 10,
+            "y": 10
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "east",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 3,
+            "y": 9
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "south",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 4,
+            "y": 8
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "west",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 17,
+            "y": 11
+          },
+          "toLevel": 4
+        }
+      ],
+      "name": "construction",
+      "packetSha256ByDirection": {
+        "east": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "north": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "south": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "west": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      },
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "saveBytesCreated": false
+    },
+    {
+      "actualFixtureIdentity": "NOT_MATERIALIZED",
+      "additionalChange": {
+        "direction": "west",
+        "field": "condition",
+        "value": 0.3
+      },
+      "baseFixtureSha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+      "bindingSha256": "c41cca86dca0ab39e0bcbed4c68cf36865e2894b759e42aed82bfaee3dcde598",
+      "levelChanges": [
+        {
+          "direction": "north",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 10,
+            "y": 10
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "east",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 3,
+            "y": 9
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "south",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 4,
+            "y": 8
+          },
+          "toLevel": 4
+        },
+        {
+          "direction": "west",
+          "fromLevel": 3,
+          "stateCoordinate": {
+            "x": 17,
+            "y": 11
+          },
+          "toLevel": 4
+        }
+      ],
+      "name": "condition",
+      "packetSha256ByDirection": {
+        "east": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "north": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "south": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "west": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      },
+      "rendererCandidateCommit": "9999999999999999999999999999999999999999",
+      "saveBytesCreated": false
+    }
+  ],
+  "directionBridge": {
+    "acceptedSourceAuthority": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "coordinateSystem": "citysim_source_pixels_v1",
+    "dccLabelsUsed": false,
+    "mappingSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "perDirectionTransforms": false,
+    "sourceOrder": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "disposition": "PREPARATION_RECEIPT_ONLY",
+  "expectedCaptureTree": [
+    "live/regular/north/city-color.png",
+    "live/regular/north/city-grayscale.png",
+    "live/regular/north/neighborhood-color.png",
+    "live/regular/north/neighborhood-grayscale.png",
+    "live/regular/north/block-color.png",
+    "live/regular/north/block-grayscale.png",
+    "live/regular/north/selected-pointer.png",
+    "live/regular/north/selected-keyboard.png",
+    "live/regular/north/details.ax.txt",
+    "live/regular/east/city-color.png",
+    "live/regular/east/city-grayscale.png",
+    "live/regular/east/neighborhood-color.png",
+    "live/regular/east/neighborhood-grayscale.png",
+    "live/regular/east/block-color.png",
+    "live/regular/east/block-grayscale.png",
+    "live/regular/east/selected-pointer.png",
+    "live/regular/east/selected-keyboard.png",
+    "live/regular/east/details.ax.txt",
+    "live/regular/south/city-color.png",
+    "live/regular/south/city-grayscale.png",
+    "live/regular/south/neighborhood-color.png",
+    "live/regular/south/neighborhood-grayscale.png",
+    "live/regular/south/block-color.png",
+    "live/regular/south/block-grayscale.png",
+    "live/regular/south/selected-pointer.png",
+    "live/regular/south/selected-keyboard.png",
+    "live/regular/south/details.ax.txt",
+    "live/regular/west/city-color.png",
+    "live/regular/west/city-grayscale.png",
+    "live/regular/west/neighborhood-color.png",
+    "live/regular/west/neighborhood-grayscale.png",
+    "live/regular/west/block-color.png",
+    "live/regular/west/block-grayscale.png",
+    "live/regular/west/selected-pointer.png",
+    "live/regular/west/selected-keyboard.png",
+    "live/regular/west/details.ax.txt",
+    "live/compact/north/city-color.png",
+    "live/compact/north/city-grayscale.png",
+    "live/compact/north/neighborhood-color.png",
+    "live/compact/north/neighborhood-grayscale.png",
+    "live/compact/north/block-color.png",
+    "live/compact/north/block-grayscale.png",
+    "live/compact/north/selected-pointer.png",
+    "live/compact/north/selected-keyboard.png",
+    "live/compact/north/details.ax.txt",
+    "live/compact/east/city-color.png",
+    "live/compact/east/city-grayscale.png",
+    "live/compact/east/neighborhood-color.png",
+    "live/compact/east/neighborhood-grayscale.png",
+    "live/compact/east/block-color.png",
+    "live/compact/east/block-grayscale.png",
+    "live/compact/east/selected-pointer.png",
+    "live/compact/east/selected-keyboard.png",
+    "live/compact/east/details.ax.txt",
+    "live/compact/south/city-color.png",
+    "live/compact/south/city-grayscale.png",
+    "live/compact/south/neighborhood-color.png",
+    "live/compact/south/neighborhood-grayscale.png",
+    "live/compact/south/block-color.png",
+    "live/compact/south/block-grayscale.png",
+    "live/compact/south/selected-pointer.png",
+    "live/compact/south/selected-keyboard.png",
+    "live/compact/south/details.ax.txt",
+    "live/compact/west/city-color.png",
+    "live/compact/west/city-grayscale.png",
+    "live/compact/west/neighborhood-color.png",
+    "live/compact/west/neighborhood-grayscale.png",
+    "live/compact/west/block-color.png",
+    "live/compact/west/block-grayscale.png",
+    "live/compact/west/selected-pointer.png",
+    "live/compact/west/selected-keyboard.png",
+    "live/compact/west/details.ax.txt",
+    "live/regular/family-city.png",
+    "live/compact/family-city.png",
+    "live/regular/construction-north.png",
+    "live/compact/construction-north.png",
+    "live/regular/condition-west.png",
+    "live/compact/condition-west.png",
+    "live/regular/demolished.png",
+    "live/regular/undo-restored.png",
+    "live/reduce-motion/compact-three-lods.png",
+    "live/accessibility/fka.png",
+    "live/accessibility/voiceover.txt",
+    "live/comparison/l3-vs-l4-regular.png",
+    "live/comparison/l3-vs-l4-compact.png",
+    "live/comparison/l3-vs-l4-grayscale.png"
+  ],
+  "mode": "contract_rehearsal",
+  "receiptType": "PLAY-075_CANDIDATE_NEUTRAL_FIXTURE_MATERIALIZATION_PLAN",
+  "rendererCandidate": {
+    "admissionAuthorityCommit": "8888888888888888888888888888888888888888",
+    "admittedCommit": "9999999999999999999999999999999999999999",
+    "candidateOrPacketExistenceVerified": false,
+    "commit": "9999999999999999999999999999999999999999",
+    "declaredInputSyntacticallyExactAndNonStale": true,
+    "eligibleForFutureFixtureMaterialization": false,
+    "gitOrProductInspectionPerformed": false
+  },
+  "request": {
+    "canonicalSha256": "55632ac7718073a051d45a27c0bbec53b6035d68e0ff8cf16268b2c3d8b3a80c",
+    "requestId": "candidate-neutral-contract-rehearsal-v1"
+  },
+  "schemaVersion": 1,
+  "sideEffects": {
+    "appBuiltStagedRunOrScored": false,
+    "fixtureFilesWritten": [],
+    "productOrResourcesMutated": false,
+    "qaDispositionDeclared": false,
+    "sourceFixtureMutated": false
+  }
+}

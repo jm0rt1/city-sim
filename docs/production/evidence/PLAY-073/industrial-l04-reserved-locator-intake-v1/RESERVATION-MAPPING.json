@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY_073_INDUSTRIAL_L04_RESERVED_LOCATOR_MAPPING",
+  "disposition": "VALIDATED_NONSHIPPING_RESERVATIONS",
+  "authority": {
+    "publishedCommit": "fa66b5605deca987685c058a072613e89a0d8be9",
+    "locatorInstance": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+      "sha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+    },
+    "locatorSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+      "sha256": "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    }
+  },
+  "rendererTestCommit": "8a79db646af3e8db8871cfac62bbe965778fda17",
+  "directions": [
+    {
+      "direction": "east",
+      "taskId": "PLAY-079",
+      "branch": "codex/citysim-world-art-east",
+      "packetPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+      "packetPresent": false,
+      "syntheticReceiptDisposition": "renderer_reserved_locator_nonshipping"
+    },
+    {
+      "direction": "south",
+      "taskId": "PLAY-080",
+      "branch": "codex/citysim-world-art-south",
+      "packetPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "packetPresent": false,
+      "syntheticReceiptDisposition": "renderer_reserved_locator_nonshipping"
+    },
+    {
+      "direction": "west",
+      "taskId": "PLAY-081",
+      "branch": "codex/citysim-world-art-west",
+      "packetPath": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "packetPresent": false,
+      "syntheticReceiptDisposition": "renderer_reserved_locator_nonshipping"
+    }
+  ],
+  "north": {
+    "status": "PENDING_SEPARATE_AUTHORITY",
+    "mappedByThisSlice": false
+  },
+  "strictValidation": {
+    "schemaHashPinned": true,
+    "instanceHashPinned": true,
+    "unknownTopLevelRejected": true,
+    "unknownNestedRejected": true,
+    "directionOrder": [
+      "east",
+      "south",
+      "west"
+    ],
+    "creationPolicy": "exclusive_no_overwrite_nofollow",
+    "canonicalRootContainment": true,
+    "symlinkComponentsRejected": true,
+    "preexistingPacketRejected": true
+  },
+  "negativeMatrix": [
+    {
+      "case": "wrong_authority_hash",
+      "result": "REJECTED"
+    },
+    {
+      "case": "unknown_schema_or_instance_field",
+      "result": "REJECTED"
+    },
+    {
+      "case": "wrong_packet_path",
+      "result": "REJECTED_DIRECTION_LOCAL"
+    },
+    {
+      "case": "wrong_direction",
+      "result": "REJECTED_DIRECTION_LOCAL"
+    },
+    {
+      "case": "sibling_packet_or_root_alias",
+      "result": "REJECTED_DIRECTION_LOCAL"
+    },
+    {
+      "case": "packet_path_symlink",
+      "result": "REJECTED_PER_DIRECTION_WITH_SIBLINGS_UNCHANGED"
+    },
+    {
+      "case": "preexisting_packet",
+      "result": "REJECTED_PER_DIRECTION_WITH_SIBLINGS_UNCHANGED"
+    }
+  ],
+  "grants": {
+    "sourcePacketCreated": false,
+    "sourceAdmission": false,
+    "rendererQuarantine": false,
+    "runtimeActivation": false,
+    "shippingMutation": false,
+    "productionSelection": false
+  }
+}

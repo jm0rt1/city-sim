@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY_073_INDUSTRIAL_L04_RESERVED_LOCATOR_VALIDATION",
+  "result": "PASS",
+  "candidate": {
+    "branch": "codex/citysim-world-rendering",
+    "publishedAuthority": "fa66b5605deca987685c058a072613e89a0d8be9",
+    "syncMerge": "b1d63864d51471609ea436d524a2e17f940e0a74",
+    "rendererTestCommit": "8a79db646af3e8db8871cfac62bbe965778fda17",
+    "priorProposalCommit": "9caec31ea731599bc68796db54ddcad9939c4ece"
+  },
+  "artifacts": [
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4ReservedLocatorAuthorityTests.swift",
+      "sha256": "30a3fb26826088cc065fa36a999d3fb7abac865528b6ba620e3b3e970f0f18ff"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-reserved-locator-intake-v1/RESERVATION-MAPPING.json",
+      "sha256": "f02eba004670b71c56d91fc6942d35fa9f629980f2ebb81149441e1d54d50c31"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-reserved-locator-intake-v1/HANDOFF.md",
+      "sha256": "46f779d2c0606a3ea1da405074b0b57a28959080a8b386b1bb11670e18b02ea3"
+    }
+  ],
+  "focusedNewSuite": {
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/citysim-play073-adapter-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/citysim-play073-adapter-swiftpm-cache swift test --package-path Native/CitySimNative --scratch-path /private/tmp/citysim-play073-adapter-build --filter IndustrialL4ReservedLocatorAuthorityTests",
+    "result": "PASS",
+    "executed": 4,
+    "failed": 0
+  },
+  "focusedRendererSuite": {
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/citysim-play073-adapter-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/citysim-play073-adapter-swiftpm-cache swift test --package-path Native/CitySimNative --scratch-path /private/tmp/citysim-play073-adapter-build --filter IndustrialL4",
+    "result": "PASS",
+    "executed": 34,
+    "passed": 32,
+    "skipped": 2,
+    "failed": 0,
+    "skips": [
+      "caller-supplied atomic assembly manifest absent by design",
+      "caller-supplied direction packet absent by design"
+    ]
+  },
+  "compileRepairDisclosure": {
+    "initialResult": "FAILED_TO_COMPILE_NEW_TEST",
+    "failure": "Swift 6 required explicit self capture in three test mutation closures",
+    "repair": "Added explicit self only; no validator, receipt, authority, or acceptance behavior changed",
+    "rerunResult": "PASS"
+  },
+  "proof": {
+    "strictSchemaShape": "PASS",
+    "strictInstanceShape": "PASS",
+    "publishedSchemaAndInstanceHashes": "PASS",
+    "eastSouthWestExactPaths": "PASS",
+    "deterministicSyntheticReceipts": "PASS",
+    "directionLocalNegativeIsolation": "PASS",
+    "symlinkAndPreexistingRejection": "PASS",
+    "northPendingSeparateAuthority": true
+  },
+  "scope": {
+    "sourcePacketsCreated": 0,
+    "sourcePixelsInspected": false,
+    "sourceAdmissionsGranted": 0,
+    "rendererDirectionsQuarantined": 0,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "atlasOrManifestMutated": false,
+    "packageMutated": false,
+    "appLaunched": false,
+    "pushed": false,
+    "selfAccepted": false
+  }
+}

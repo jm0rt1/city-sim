@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import pathlib
 import subprocess
@@ -60,6 +61,26 @@ def repository_path(relative: str) -> pathlib.Path:
     return path
 
 
+def load_frozen_shared_module(
+    record: dict[str, str],
+    module_name: str,
+) -> Any:
+    path = repository_path(record["path"])
+    digest = sha256_bytes(path.read_bytes())
+    if digest != record["sha256"]:
+        raise GuardRejected(
+            "shared_tool_hash_mismatch",
+            f"{record['path']}: expected {record['sha256']}, got {digest}",
+        )
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise GuardRejected("shared_tool_load_failed", record["path"])
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def validate_frozen_inputs(contract: dict[str, Any]) -> dict[str, str]:
     records: list[dict[str, str]] = []
     records.extend(contract["authorities"].values())
@@ -93,7 +114,7 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         raise GuardRejected("contract_direction_mismatch", str(contract.get("direction")))
     if contract.get("branch") != "codex/citysim-world-art-east":
         raise GuardRejected("contract_branch_mismatch", str(contract.get("branch")))
-    if contract.get("baselineCommit") != "aa20d5963c356eee812f66bafff8582215293bbb":
+    if contract.get("baselineCommit") != "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8":
         raise GuardRejected("contract_baseline_mismatch", str(contract.get("baselineCommit")))
     if contract.get("sourceReady") or contract.get("productionSelected"):
         raise GuardRejected("unauthorized_disposition", "pre-lock runner cannot claim source/production")
@@ -159,11 +180,159 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
     }
     if cycles != expected_cycles:
         raise GuardRejected("cycles_invariant_mismatch", str(cycles))
+    source_stage = validate_source_stage_binding(contract)
     return {
         "taskId": contract["taskId"],
         "direction": contract["direction"],
         "baselineCommit": contract["baselineCommit"],
         "frozenHashes": validate_frozen_inputs(contract),
+        "sourceStage": source_stage,
+    }
+
+
+def validate_artifact_record(record: dict[str, Any], code: str) -> str:
+    path = repository_path(record["path"])
+    try:
+        digest = sha256_bytes(path.read_bytes())
+    except OSError as error:
+        raise GuardRejected(f"{code}_missing", str(path)) from error
+    if digest != record["sha256"]:
+        raise GuardRejected(
+            f"{code}_hash_mismatch",
+            f"{record['path']}: expected {record['sha256']}, got {digest}",
+        )
+    return digest
+
+
+def validate_non_alias_input(contract: dict[str, Any]) -> dict[str, Any]:
+    source_stage = contract["sourceStage"]
+    binding = source_stage["nonAliasInput"]
+    if binding != {
+        "path": "docs/production/evidence/INTEGRATION/"
+        "industrial-l04-accepted-master-non-alias-input-v1.json",
+        "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+        "acceptedMasterCount": 44,
+        "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
+    }:
+        raise GuardRejected("non_alias_binding_mismatch", str(binding))
+    loader = load_frozen_shared_module(
+        contract["authorities"]["nonAliasLoader"],
+        "citysim_shared_non_alias_v1",
+    )
+    try:
+        forbidden = loader.load_forbidden_decoded_rgba(REPOSITORY_ROOT)
+    except Exception as error:
+        raise GuardRejected("shared_non_alias_loader_rejected", str(error)) from error
+    if len(forbidden) != binding["acceptedMasterCount"]:
+        raise GuardRejected("non_alias_forbidden_count_mismatch", str(len(forbidden)))
+    forbidden_digest = sha256_bytes(
+        "".join(f"{value}\n" for value in sorted(forbidden)).encode("ascii")
+    )
+    if forbidden_digest != binding["forbiddenSetSha256"]:
+        raise GuardRejected(
+            "non_alias_forbidden_set_hash_mismatch",
+            f"expected {binding['forbiddenSetSha256']}, got {forbidden_digest}",
+        )
+    return {
+        "result": "PASS",
+        "path": binding["path"],
+        "sha256": binding["sha256"],
+        "acceptedMasterCount": 44,
+        "forbiddenDecodedRgbaSha256Count": 44,
+        "forbiddenSetSha256": forbidden_digest,
+        "loaderPath": contract["authorities"]["nonAliasLoader"]["path"],
+        "loaderSha256": contract["authorities"]["nonAliasLoader"]["sha256"],
+        "sourceAcceptance": False,
+        "rendererAdmission": False,
+        "shippingActivation": False,
+        "productionSelection": False,
+    }
+
+
+def validate_source_stage_binding(contract: dict[str, Any]) -> dict[str, Any]:
+    source_stage = contract["sourceStage"]
+    schema_binding = source_stage["schema"]
+    expected_identity = {
+        "taskId": "PLAY-079",
+        "direction": "east",
+        "branch": "codex/citysim-world-art-east",
+        "family": "industrial",
+        "level": 4,
+        "variant": 0,
+        "logicalID": "industrial_l04_v0_east",
+        "sourceKey": "industrial_l04/variant-0/east/source-v01",
+        "sourceRoot": (
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/"
+        ),
+        "evidenceRoot": (
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
+        ),
+        "orientationTransform": "none",
+        "fallbackSourceKey": None,
+    }
+    if source_stage.get("stage") != "launch_bound":
+        raise GuardRejected("source_stage_mismatch", str(source_stage.get("stage")))
+    if source_stage.get("identity") != expected_identity:
+        raise GuardRejected("source_stage_identity_mismatch", str(source_stage.get("identity")))
+    expected_schema = {
+        "state": "BOUND_IMMUTABLE_V2",
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-source-stage-handoff-schema-v2.json"
+        ),
+        "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+        "authorityCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+    }
+    if schema_binding != expected_schema:
+        raise GuardRejected("source_stage_schema_v2_binding_mismatch", str(schema_binding))
+    if {
+        "path": schema_binding["path"],
+        "sha256": schema_binding["sha256"],
+    } != contract["authorities"]["sourceStageSchemaV2"]:
+        raise GuardRejected("source_stage_schema_v2_authority_mismatch", str(schema_binding))
+    validate_artifact_record(contract["authorities"]["sourceStageSchemaV2"], "source_stage_schema_v2")
+    schema = load_json(repository_path(schema_binding["path"]))
+    if schema.get("$id") != "citysim://integration/industrial-l04-source-stage-handoff-v2":
+        raise GuardRejected("source_stage_schema_v2_id_mismatch", str(schema.get("$id")))
+    if source_stage["nonAliasInput"]["path"] != contract["authorities"]["nonAliasInput"]["path"]:
+        raise GuardRejected(
+            "source_stage_non_alias_path_mismatch",
+            str(source_stage["nonAliasInput"]),
+        )
+    if source_stage["nonAliasInput"]["sha256"] != contract["authorities"]["nonAliasInput"]["sha256"]:
+        raise GuardRejected(
+            "source_stage_non_alias_hash_mismatch",
+            str(source_stage["nonAliasInput"]),
+        )
+    if source_stage["frozenInputManifest"] != contract["authorities"][
+        "sourceStageFrozenInputManifest"
+    ]:
+        raise GuardRejected(
+            "source_stage_frozen_manifest_mismatch",
+            str(source_stage["frozenInputManifest"]),
+        )
+    if source_stage["handoffOutputPath"] != (
+        "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
+        "SOURCE-STAGE-HANDOFF.json"
+    ):
+        raise GuardRejected(
+            "source_stage_output_path_mismatch",
+            str(source_stage["handoffOutputPath"]),
+        )
+    return {
+        "result": "PASS",
+        "stage": "launch_bound",
+        "schemaState": "BOUND_IMMUTABLE_V2",
+        "schemaPath": schema_binding["path"],
+        "schemaSha256": schema_binding["sha256"],
+        "schemaAuthorityCommit": schema_binding["authorityCommit"],
+        "handoffOutputPath": source_stage["handoffOutputPath"],
+        "handoffEmission": "blocked_missing_source_production_profile",
+        "identity": expected_identity,
+        "nonAlias": validate_non_alias_input(contract),
+        "sourceReady": False,
+        "productionSelected": False,
     }
 
 
@@ -227,6 +396,204 @@ def validate_appearance_lock(
     if sha256_bytes(canonical_bytes(mapping)) != mapping_digest:
         raise GuardRejected("wrong_material_mapping_hash", "locked material mapping differs")
     return lock
+
+
+def validate_source_production_profile(contract: dict[str, Any]) -> dict[str, Any]:
+    binding = contract["sourceStage"]["sourceProductionProfile"]
+    if binding.get("state") == "missing":
+        raise GuardRejected(
+            "missing_source_production_profile",
+            "Integration has not published the Industrial L4 source-production profile",
+        )
+    if binding.get("state") != "bound":
+        raise GuardRejected("stale_source_production_profile", str(binding.get("state")))
+    record = {key: binding.get(key) for key in ("path", "commit", "sha256")}
+    if any(record[key] is None for key in record):
+        raise GuardRejected("stale_source_production_profile", str(binding))
+    if not str(record["path"]).startswith("docs/production/evidence/INTEGRATION/"):
+        raise GuardRejected("wrong_source_production_profile_path", str(record["path"]))
+    validate_artifact_record(
+        {"path": str(record["path"]), "sha256": str(record["sha256"])},
+        "source_production_profile",
+    )
+    profile = load_json(repository_path(str(record["path"])))
+    if profile.get("schema") != "citysim.integration.world-art-source-production-profile.v1":
+        raise GuardRejected("source_production_profile_schema_mismatch", str(profile.get("schema")))
+    return {
+        "path": str(record["path"]),
+        "commit": str(record["commit"]),
+        "sha256": str(record["sha256"]),
+        "profile": profile,
+    }
+
+
+def validate_appearance_authority(
+    contract: dict[str, Any],
+    appearance_lock_path: pathlib.Path | None,
+) -> dict[str, Any]:
+    source_stage = contract["sourceStage"]
+    authority = source_stage["appearanceAuthority"]
+    if appearance_lock_path is None:
+        raise GuardRejected(
+            "missing_appearance_authority",
+            "no Integration-published appearance authority was supplied",
+        )
+    if authority.get("state") != "bound":
+        raise GuardRejected(
+            "stale_appearance_authority",
+            "runner is not bound to a current Integration-published appearance authority",
+        )
+    if authority.get("publishedBaseline") != contract["baselineCommit"]:
+        raise GuardRejected(
+            "stale_appearance_authority",
+            "appearance authority baseline differs from the runner baseline",
+        )
+    locked_mapping = authority.get("lockedMaterialMapping")
+    post_lock = authority.get("postLockProductionAuthority")
+    if not isinstance(locked_mapping, dict) or not isinstance(post_lock, dict):
+        raise GuardRejected(
+            "stale_appearance_authority",
+            "locked material mapping or post-lock production authority is absent",
+        )
+    validate_artifact_record(locked_mapping, "locked_material_mapping")
+    validate_artifact_record(post_lock, "post_lock_production_authority")
+    lock = validate_appearance_lock(contract, appearance_lock_path)
+    return {
+        "appearanceLock": lock,
+        "lockedMaterialMapping": locked_mapping,
+        "postLockProductionAuthority": post_lock,
+    }
+
+
+def validate_source_stage_authority(
+    contract: dict[str, Any],
+    appearance_lock_path: pathlib.Path | None,
+) -> dict[str, Any]:
+    profile = validate_source_production_profile(contract)
+    appearance = validate_appearance_authority(contract, appearance_lock_path)
+    return {
+        **appearance,
+        "sourceProductionProfile": profile,
+    }
+
+
+def build_source_stage_handoff(
+    contract: dict[str, Any],
+    appearance_lock_path: pathlib.Path | None,
+    guard_receipt_path: pathlib.Path,
+    cell_candidate_commit: str,
+) -> dict[str, Any]:
+    """Build, but do not write, the future immutable-v2 launch-bound packet."""
+
+    if contract["sourceStage"]["schema"].get("state") != "BOUND_IMMUTABLE_V2":
+        raise GuardRejected(
+            "source_stage_schema_v2_pending",
+            "immutable source-stage schema v2 path/hash/authority commit are not published",
+        )
+    if len(cell_candidate_commit) != 40 or any(
+        character not in "0123456789abcdef" for character in cell_candidate_commit
+    ):
+        raise GuardRejected("invalid_cell_candidate_commit", cell_candidate_commit)
+    source_stage = validate_source_stage_binding(contract)
+    authority = validate_source_stage_authority(contract, appearance_lock_path)
+    expected_receipt = repository_path(contract["sourceStage"]["guardReceiptPath"])
+    if guard_receipt_path.resolve() != expected_receipt:
+        raise GuardRejected(
+            "wrong_source_stage_guard_receipt_path",
+            f"expected {expected_receipt}, got {guard_receipt_path.resolve()}",
+        )
+    receipt = load_json(expected_receipt)
+    if (
+        receipt.get("schema") != "citysim.world-art.source-stage-launch-guard.v1"
+        or receipt.get("result") != "PASS"
+        or receipt.get("appearanceAuthorityResult") != "PASS"
+        or receipt.get("schemaValidationResult") != "PASS"
+        or receipt.get("nonAliasInputResult") != "PASS"
+    ):
+        raise GuardRejected("source_stage_guard_receipt_failed", str(receipt.get("result")))
+    if receipt.get("sourceReady") is not False or receipt.get("productionSelected") is not False:
+        raise GuardRejected("source_stage_guard_receipt_disposition", str(receipt))
+
+    receipt_record = {
+        "path": str(expected_receipt.relative_to(REPOSITORY_ROOT)),
+        "sha256": sha256_bytes(expected_receipt.read_bytes()),
+    }
+    bridge = contract["invariants"]["coordinateBridge"]["v06"]
+    launch_root = contract["outputInventory"]["root"]
+    prelaunch_path = repository_path(contract["sourceStage"]["prelaunchHandoff"]["path"])
+    prelaunch_record = {
+        "path": str(prelaunch_path.relative_to(REPOSITORY_ROOT)),
+        "sha256": sha256_bytes(prelaunch_path.read_bytes()),
+    }
+    packet = {
+        "schemaVersion": 2,
+        "stage": "launch_bound",
+        "identity": source_stage["identity"],
+        "lineage": {
+            "publishedBaseline": contract["baselineCommit"],
+            "cellContentCommit": cell_candidate_commit,
+        },
+        "authorities": {
+            "contract010": contract["authorities"]["contract010"],
+            "contract021": {
+                **contract["authorities"]["contract021"],
+                "revision": 2,
+            },
+            "directionBridge": {
+                "documentPath": contract["authorities"]["bridgeV06Acceptance"]["path"],
+                "sourceCandidate": bridge["commit"],
+                "integratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
+                "documentSha256": contract["authorities"]["bridgeV06Acceptance"]["sha256"],
+                "mappingContractSha256": bridge["mappingContractSha256"],
+                "coordinateSystem": "citysim_source_pixels_v1",
+            },
+            "appearanceLock": contract["appearanceLock"],
+            "lockedMaterialMapping": authority["lockedMaterialMapping"],
+            "sourceProductionProfile": {
+                key: authority["sourceProductionProfile"][key]
+                for key in ("path", "commit", "sha256")
+            },
+            "nonAliasInput": {
+                "path": contract["sourceStage"]["nonAliasInput"]["path"],
+                "sha256": contract["sourceStage"]["nonAliasInput"]["sha256"],
+                "forbiddenDecodedRgbaSha256Count": 44,
+                "forbiddenSetSha256": contract["sourceStage"]["nonAliasInput"][
+                    "forbiddenSetSha256"
+                ],
+            },
+            "nonAliasLoader": contract["authorities"]["nonAliasLoader"],
+            "semanticValidator": contract["authorities"]["sourceStageSemanticValidator"],
+            "canonicalDecoder": contract["authorities"]["canonicalDecoder"],
+        },
+        "inputs": {
+            "prelaunchHandoff": prelaunch_record,
+            "frozenInputManifest": contract["sourceStage"]["frozenInputManifest"],
+            "runnerContract": {
+                "path": str(CONTRACT_PATH.relative_to(REPOSITORY_ROOT)),
+                "sha256": sha256_bytes(CONTRACT_PATH.read_bytes()),
+            },
+            "outputRoot": launch_root,
+        },
+        "launch": {
+            "guardReceipt": receipt_record,
+            "result": "PASS",
+            "authorizedProcesses": ["A", "B", "C"],
+            "isolatedOutputRoots": {
+                "A": f"{launch_root}renders/process-a/",
+                "B": f"{launch_root}renders/process-b/",
+                "C": f"{launch_root}renders/process-c/",
+            },
+            "allOutputRootsDistinct": True,
+            "outputRootIsolationReceipt": receipt_record,
+        },
+        "completion": None,
+        "candidateReadyForIndependentReview": False,
+        "sourceReady": False,
+        "integrationAdmitted": False,
+        "rendererQuarantined": False,
+        "productionSelected": False,
+    }
+    return packet
 
 
 def validate_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
@@ -363,7 +730,7 @@ def execute(
             "blenderRenderApiCalls": 0,
             "pixelFiles": 0,
         }
-    lock = validate_appearance_lock(contract, appearance_lock_path)
+    authority = validate_source_stage_authority(contract, appearance_lock_path)
     validate_coordinate_bridge(contract)
     if appearance_lock_path is None:
         raise AssertionError("appearance lock guard returned without a path")
@@ -373,7 +740,7 @@ def execute(
     return {
         "result": "PASS",
         "mode": mode,
-        "appearanceLockCommit": lock["commit"],
+        "appearanceLockCommit": authority["appearanceLock"]["commit"],
         "blenderProcessLaunches": 1,
     }
 
@@ -541,7 +908,8 @@ def build_blender_scene(
 def blender_worker(mode: str, appearance_lock_path: pathlib.Path) -> int:
     contract = load_json(CONTRACT_PATH)
     validate_contract(contract)
-    lock = validate_appearance_lock(contract, appearance_lock_path)
+    authority = validate_source_stage_authority(contract, appearance_lock_path)
+    lock = authority["appearanceLock"]
     bridge_result = validate_coordinate_bridge(contract)
     bridge = bridge_result["binding"]
     coordinate_mapping = bridge_result["mapping"]

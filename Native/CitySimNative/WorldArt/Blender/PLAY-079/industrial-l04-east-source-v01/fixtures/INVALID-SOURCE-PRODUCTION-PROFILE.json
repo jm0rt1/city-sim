@@ -1,0 +1,5 @@
+{
+  "schema": "citysim.integration.world-art-source-production-profile.v1",
+  "nonProductionFixture": true,
+  "reason": "Intentionally missing all required binding fields for fail-closed schema testing."
+}

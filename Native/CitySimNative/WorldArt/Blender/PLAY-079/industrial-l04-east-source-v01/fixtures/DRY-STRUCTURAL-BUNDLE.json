@@ -1,0 +1,18 @@
+{
+  "schema": "citysim.world-art.launch-bound-dry-structural-bundle.v1",
+  "nonProductionFixture": true,
+  "appearanceLockPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/NONPRODUCTION-APPEARANCE-LOCK.json",
+  "lockedMaterialMappingPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/NONPRODUCTION-LOCKED-MATERIAL-MAPPING.json",
+  "sourceProductionProfilePath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/fixtures/NONPRODUCTION-SOURCE-PRODUCTION-PROFILE.json",
+  "northProcessA": {
+    "northProcessASourceSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "northProcessADecodedRgbaSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "grants": {
+    "productionAuthority": false,
+    "pixelAuthority": false,
+    "sourceAcceptance": false,
+    "rendererAdmission": false,
+    "shippingActivation": false
+  }
+}

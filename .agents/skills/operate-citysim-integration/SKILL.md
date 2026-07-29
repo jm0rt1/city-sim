@@ -59,6 +59,19 @@ action, and update time. Reserve the intended renderer-ingestion window and
 independent-QA window in the same ledger so completed sources do not enter an
 undefined queue.
 
+Before reporting status, dispatching work, admitting a source, or integrating a
+candidate, compare every recorded cell against its live visible-thread status
+and exact worktree branch, `HEAD`, and clean/dirty state. A stale ledger is a
+hard management stop: mark stale rows explicitly, refresh them in the same
+Integration checkpoint, and do not describe a sent, completed, blocked, dirty,
+or mismatched row as active. Each row must also record `dispatchState`,
+`acknowledgedAt`, `claimRevision`, `cleanState`, `boundedDeliverable`, and
+`stopCondition`. The batch artifact must bind the immutable family contract,
+appearance-lock state and hash, source-production-profile state and hash, and
+Integration semantic-validator state and hash. Use explicit `null` plus a
+blocking status when an authority does not yet exist; never imply it from a
+nearby artifact.
+
 Advance each batch through this explicit state machine:
 
 `contract_pending → prelock_active → appearance_lock_pending → abc_active →
@@ -72,8 +85,21 @@ gate and do not leave useful capacity dormant.
 
 Track each direction separately inside the batch:
 
-`predesign → source_candidate → integration_admitted|returned →
-renderer_quarantined`
+`predesign → source_candidate`
+
+`source_candidate → returned | integration_admitted`
+
+`returned → predesign | source_candidate`
+
+`integration_admitted → returned | renderer_quarantined`
+
+Track Renderer separately:
+
+`intake_preparing → intake_ready → quarantining → 4of4_assembled`
+
+Track QA separately:
+
+`preregistering → preregistered → exact_candidate_active → passed | returned`
 
 Keep the batch at `abc_active` while only some directions have advanced.
 Derive `4of4_ready` only when the exact North, East, South, and West packet

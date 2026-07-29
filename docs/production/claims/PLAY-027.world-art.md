@@ -17,16 +17,17 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v07 process A was returned at the independent appearance gate. North v08 candidate `e694987a` passed independent pre-pixel review and is released for exactly one fresh Process A calibration under `INDUSTRIAL-L04-NORTH-V08-PROCESS-A-AUTHORITY.md`.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v08 Process A candidate `d9a2f768` passed technical production checks but failed independent literal-scale appearance review. Only a North v09 zero-pixel redesign is released under `INDUSTRIAL-L04-NORTH-V09-REDESIGN-AUTHORITY.md`.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
-  source socket is `[896,704]`. North v08 freezes scene SHA
-  `08050bd6…` and material SHA `ad736d50…`; it may create exactly one fresh
-  North Process A after completing its current v2 binding checkpoint. No North
-  B/C or sibling source pixels are authorized until Integration independently
-  accepts that Process A and publishes the appearance lock plus source-
-  production profile.
+  source socket is `[896,704]`. North v08 Process A is durably preserved at
+  `d9a2f768` but returned because literal L4 progression, full portal
+  readability, freight-frontage contrast, hot-process presence, and grayscale
+  hierarchy are insufficient. North may now create only the v09 zero-pixel
+  scene/material redesign and analytic packet. No North Process A/B/C or
+  sibling source pixels are authorized until Integration accepts a stronger
+  pre-pixel candidate and then a new Process A.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
 commercial, and industrial levels 1–4, each authored separately for north,

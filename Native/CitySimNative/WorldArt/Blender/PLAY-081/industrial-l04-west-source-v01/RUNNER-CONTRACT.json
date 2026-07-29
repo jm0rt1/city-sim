@@ -3,10 +3,14 @@
   "taskId": "PLAY-081",
   "direction": "west",
   "branch": "codex/citysim-world-art-west",
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
   "authority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
     "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
+  },
+  "repairAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md",
+    "sha256": "a92268f4118db7458343d4967c002200af98a8e338b1189aae9423ae2e299412"
   },
   "handoffSchema": {
     "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
@@ -195,6 +199,8 @@
     "blenderScriptPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/blender_render_west.py",
     "coordinateBridgeAdapterPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/coordinate_bridge_v06.py",
     "coordinateBridgeProofPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/prove_west_bridge_v06.py",
+    "sourceValidatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
+    "pngDecoderPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
     "modes": [
       "validate",
       "A",
@@ -228,6 +234,8 @@
       "acceptanceSha256": "9765d88191d8a555de41dcccfb83b3da16d8f1423d534d66312ffa98a4615208",
       "authorityPath": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",
       "authorityCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "sourceCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "integratedProofCommit": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
       "authoritySha256": "5b8cbe06a430b48cd955ba0ec722873ec4c739b7919e22ddac2776561d2910b4",
       "mappingContractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
       "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
@@ -260,6 +268,50 @@
       "windingChange": false
     }
   },
+  "sourceStage": {
+    "schemaAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-STAGE-SCHEMA-V2-AUTHORITY.md",
+      "sha256": "330c9fd7ee4f4d5e3664ae0c155813b83d15a249f46a77aff4b5908e73f8005e"
+    },
+    "handoffSchema": {
+      "state": "bound_integration_v2",
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+      "schemaId": "citysim://integration/industrial-l04-source-stage-handoff-v2"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+      "forbiddenDecodedRgbaSha256Count": 44,
+      "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+    },
+    "semanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "canonicalDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    },
+    "pngDecoder": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
+      "sha256": "7694ef89cf4d16fdde256095b1c3bb6fb3e811cc3cef74e6fde365afe13ed84c",
+      "implementation": "python-standard-library",
+      "supportedFormat": "non-interlaced-8-bit-rgba-png",
+      "pillowRequired": false
+    },
+    "sourceProductionProfile": {
+      "state": "not_published",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "state": "schema_v2_bound_source_production_profile_pending"
+  },
   "appearanceLock": {
     "documentPath": null,
     "commit": null,
@@ -287,6 +339,13 @@
     "requiredChecksInOrder": [
       "frozen-input-hashes",
       "v06-coordinate-bridge-authority-and-proofs",
+      "integrated-v06-proof-commit-ancestry",
+      "common-44-master-non-alias-input",
+      "source-stage-schema-v2-binding",
+      "shared-non-alias-loader-binding",
+      "shared-semantic-validator-binding",
+      "canonical-decoder-binding",
+      "source-production-profile-presence-hash-and-ancestry",
       "appearance-lock-fields",
       "appearance-lock-document-hash",
       "appearance-lock-commit-ancestry",
@@ -334,6 +393,13 @@
       "bridgeActualCameraRunA": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-ACTUAL-CAMERA-RUN-A.json",
       "bridgeActualCameraRunB": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-ACTUAL-CAMERA-RUN-B.json",
       "bridgeRepeatIdentity": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BRIDGE-REPEAT-IDENTITY.json",
+      "sourceValidatorDescribe": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATOR-DESCRIBE.json",
+      "integratedProofGuard": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/INTEGRATED-PROOF-GUARD.json",
+      "sourceStageSchemaGate": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-STAGE-SCHEMA-GATE.json",
+      "missingSourceProductionProfileRejection": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json",
+      "blockoutCameraSocketV2": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/BLOCKOUT-CAMERA-SOCKET-V2-PROOF.json",
+      "zeroPixelV2Handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V2-HANDOFF.json",
+      "zeroPixelV2HandoffValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V2-HANDOFF-VALIDATION.json",
       "sourceValidation": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/SOURCE-VALIDATION.json",
       "handoff": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/PRELOCK-RUNNER-HANDOFF.json"
     },

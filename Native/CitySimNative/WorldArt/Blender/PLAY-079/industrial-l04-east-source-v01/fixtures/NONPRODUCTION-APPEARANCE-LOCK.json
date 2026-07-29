@@ -1,0 +1,17 @@
+{
+  "schema": "citysim.world-art.nonproduction-appearance-lock-fixture.v1",
+  "nonProductionFixture": true,
+  "commit": "3ca37996953230b7255f6a22ac1f977c99e56e03",
+  "northProcessA": {
+    "sourceSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "decodedRgbaSha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "materialRoleMapping": {
+    "dark-painted-steel": "#34383b",
+    "formed-concrete": "#7f7b70",
+    "hot-process": "#d15c31",
+    "portal-void": "#101010",
+    "safety-oxide": "#a94427",
+    "warm-weathered-masonry": "#8d6146"
+  }
+}

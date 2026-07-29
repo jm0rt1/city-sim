@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "task": "PLAY-073",
+  "disposition": "caller_path_prepared_nonshipping",
+  "publishedAuthority": "af6b661b79e0802386123537aaeddce5c9d385f2",
+  "synchronizationMerge": "2639ba33d5ba9f2c2e36ce080295b51d631d29a0",
+  "callerPathCheckpoint": "a66b245b6b822e3b03a17fd96a1e7ab3f6960c0e",
+  "inputs": {
+    "packetPath": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/fixtures/north-source-candidate.json",
+    "packetSha256": "284b1c960cbd6635c1b0956e8beb619720f73a57ae770e8aad7d4b073df61b68",
+    "admissionPath": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/fixtures/north-integration-admission.json",
+    "admissionSha256": "9f5b715abe865f4646202e92337f9c2b070a52bbf9261e20cff4f9f62748e553",
+    "receiptPath": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/fixtures/north-renderer-quarantine-receipt.json",
+    "receiptSha256": "3bc7636f98afed07cc8b0b5f5fc0302d032be107acbb6e69af950459789173d4",
+    "wrapperPath": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/tools/quarantine_direction_packet.sh",
+    "wrapperSha256": "be0b978ee520b07fc3d37c9304befe9b7478afce7ab9d520952bf54cea67ac68",
+    "harnessSha256": "c5781e0ace7b289b4dd9f86475997f013e64f4f9ee75b4c1fa7a2f6683b18426"
+  },
+  "validation": [
+    {
+      "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
+      "result": "4_passed_1_skipped_0_failed",
+      "testElapsedSeconds": 0.014,
+      "buildSeconds": 1.68
+    },
+    {
+      "command": "quarantine_direction_packet.sh synthetic-north run-a",
+      "result": "1_passed_0_failed",
+      "testElapsedSeconds": 0.002,
+      "receiptSha256": "3bc7636f98afed07cc8b0b5f5fc0302d032be107acbb6e69af950459789173d4"
+    },
+    {
+      "command": "quarantine_direction_packet.sh synthetic-north run-b",
+      "result": "1_passed_0_failed",
+      "testElapsedSeconds": 0.001,
+      "receiptSha256": "3bc7636f98afed07cc8b0b5f5fc0302d032be107acbb6e69af950459789173d4"
+    }
+  ],
+  "boundaries": {
+    "syntheticPacketOnly": true,
+    "syntheticAdmissionOnly": true,
+    "actualSourcePixelsInspected": false,
+    "actualDirectionPacketsAccepted": 0,
+    "readyForAtomicAssembly": false,
+    "productionSelected": false,
+    "runtimeMappingChanged": false,
+    "shippingResourcesChanged": false,
+    "atlasOrManifestChanged": false,
+    "fixtureBytesChanged": false,
+    "packageChanged": false,
+    "fullSuiteRun": false,
+    "stagedAppRun": false
+  }
+}

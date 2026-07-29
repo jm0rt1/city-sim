@@ -7,6 +7,34 @@
     "revision": 2,
     "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
   },
+  "coordinateBoundary": {
+    "coordinateSystem": "citysim_source_pixels_v1",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "canonicalFrontageSockets": {
+      "north": [
+        896,
+        704
+      ],
+      "east": [
+        896,
+        832
+      ],
+      "south": [
+        640,
+        832
+      ],
+      "west": [
+        640,
+        704
+      ]
+    },
+    "futureDirectionBridgeAuthorityRequired": true,
+    "sourcePacketWorldMappingAccepted": false,
+    "dccNativeCoordinatesAccepted": false
+  },
   "matrix": [
     {
       "acceptedCount": 0,
@@ -89,8 +117,9 @@
     "mirror_or_rotation_transform_sibling",
     "incomplete_provenance",
     "contract_drift",
+    "direction_bridge_drift",
     "appearance_lock_drift",
-    "registration_or_frontage_drift",
+    "registration_frontage_or_canonical_source_socket_drift",
     "fallback_reference",
     "source_not_ready",
     "production_selected"

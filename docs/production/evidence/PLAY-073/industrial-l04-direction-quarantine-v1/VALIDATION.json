@@ -5,13 +5,14 @@
   "synchronizationMerge": "183d9fe6456ea8d53398415fd64315b6d1a44db2",
   "schemaCommit": "56444245f555d2ac50afed995a65c34a95618f8c",
   "matrixCommit": "f4c0dcda7a1f2d84d2587ff3cb4e298ce13cd3a4",
+  "coordinateBridgeCommit": "4e71720f4dc4a724030b51ca19c4edf69d28dfeb",
   "inputs": {
     "contract021Revision2Sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c",
     "existingL4IntakeSha256": "048e225ddbd5097ba6283418e3b27c198722eb913bd278b3cf351df51bae018c",
-    "directionPacketSchemaSha256": "51126753b17edf9992bb4df55336bcdca3974a10a92498f93543cf6d62254779",
-    "validatorSupportSha256": "506397e47ad33eac5c0799030c77bd23434f6590dd3cf0275b851643b70a940b",
-    "schemaTestsSha256": "05f88769d1b9200c0540be5ab17cae7285a606404a4a2f6ef846961dfaff5a3a",
-    "matrixTestsSha256": "81a648d71f245c612f4c354debe99579a689a067b846b8432b447472784505cb"
+    "directionPacketSchemaSha256": "00b118a5e6317bb80354a26aae5485f831e681b9190be52c60ba49a83a76716f",
+    "validatorSupportSha256": "0c4e5f044236944b7e055a4bfb5bac1e7b0175c76098c5953a9959ac3b6133ac",
+    "schemaTestsSha256": "882c9027d0ba1335f6240cd70aade56eae5edd36a085b2480cc333e0241e7f24",
+    "matrixTestsSha256": "0f515ce3c78596a34f4de1371af30845c99264b2e74adbebcab7c4b3bd7ea52b"
   },
   "validation": [
     {
@@ -25,8 +26,8 @@
     },
     {
       "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4",
-      "result": "7_passed_0_failed",
-      "elapsedSeconds": 0.042
+      "result": "9_passed_0_failed",
+      "elapsedSeconds": 0.070
     },
     {
       "command": "git diff --check",
@@ -47,6 +48,12 @@
     "packageChanged": false,
     "qaFixtureChanged": false,
     "stagedAppRun": false
+  },
+  "coordinateBoundary": {
+    "directionBridgeAuthorityRequired": true,
+    "canonicalCoordinateSystem": "citysim_source_pixels_v1",
+    "sourcePacketWorldMappingTrusted": false,
+    "dccNativeCoordinatesEncoded": false
   },
   "disposition": "prep_complete_awaiting_integration_review"
 }

@@ -18,6 +18,8 @@ assembly, staging, QA, or production authority.
   `56444245f555d2ac50afed995a65c34a95618f8c`.
 - Deterministic mutation matrix and rejection coverage:
   `f4c0dcda7a1f2d84d2587ff3cb4e298ce13cd3a4`.
+- Canonical source-pixel socket and future direction-bridge boundary:
+  `4e71720f4dc4a724030b51ca19c4edf69d28dfeb`.
 - Preserved R2 product/evidence prerequisites remain ancestors:
   `25d291a7373833a797dc3bb3ba36658e18eccc06` and
   `de6805092478c97d85f0230c93f7f10edcb257e6`.
@@ -31,17 +33,39 @@ The machine-readable direction packet binds:
 
 - Industrial L4 family, level, variant, logical direction and logical ID;
 - CONTRACT-021 revision 2 and exact contract hash;
+- a future Integration-published direction-bridge document, commit, document
+  hash and canonical-mapping hash;
 - future Integration-published appearance-lock document, commit, document
   hash, North process-A source hash and decoded-RGBA hash;
 - exact source candidate commit/key/decoded-RGBA hash;
 - unique authored-geometry, component-manifest and City/Neighborhood/Block LOD
   hashes;
 - source-manifest, toolchain and normalization provenance paths and hashes;
-- footprint, canvas, pivot, occupied bounds, contact polygon, southeast
-  shadow, alpha/chroma/hidden-RGB evidence, frontage and socket; and
+- footprint, canvas, source-pixel pivot, occupied bounds, contact polygon,
+  southeast shadow, alpha/chroma/hidden-RGB evidence, frontage and canonical
+  CitySim source-pixel socket; and
 - all eight D4 pixel fingerprints. Alias, mirror, rotation and other
-  transformed-sibling rejection is computed from those content fingerprints,
-  not accepted from a trusted boolean.
+transformed-sibling rejection is computed from those content fingerprints,
+not accepted from a trusted boolean.
+
+## Coordinate boundary
+
+Quarantine packets use only the canonical CitySim source coordinate system
+`citysim_source_pixels_v1`:
+
+| Direction | Canonical source-pixel socket |
+|---|---:|
+| North | `[896,704]` |
+| East | `[896,832]` |
+| South | `[640,832]` |
+| West | `[640,704]` |
+
+All four retain source-pixel pivot `[768,896]`. No Blender-native, DCC-native
+or packet-claimed world-coordinate mapping is encoded or trusted. A packet
+cannot decode without the direction-bridge record, and admission rejects any
+bridge document/commit/hash/mapping mismatch. The bridge values used by the
+synthetic tests are fixtures only; actual quarantine remains blocked until
+Integration publishes the accepted bridge authority and exact hashes.
 
 The pure test-only quarantine accumulator proves:
 
@@ -66,8 +90,9 @@ SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-swift-cache \
 swift test --package-path Native/CitySimNative --filter IndustrialL4
 ```
 
-Result: **7 passed, 0 failed**. This includes the two pre-existing fail-closed
-L4 intake tests, one packet-schema test and four matrix/rejection tests.
+Result: **9 passed, 0 failed**. This includes the two pre-existing fail-closed
+L4 intake tests, three packet/schema/coordinate tests and four
+matrix/rejection tests.
 
 The schema parses with `jq`; `git diff --check` passes. No full suite or staged
 app was run because this task changes only non-shipping test/evidence surfaces,
@@ -78,10 +103,11 @@ and the dispatch explicitly forbids staging.
 The validator fails closed on duplicate/missing assembly directions, source or
 LOD aliasing, any sibling identity equal to a packet's mirror/rotation
 fingerprint, incomplete provenance, CONTRACT-021 or appearance-lock drift,
-registration/frontage drift, fallback references, non-ready sources and any
-production-selected packet.
+direction-bridge drift, registration/frontage/canonical-source-socket drift,
+fallback references, non-ready sources and any production-selected packet.
 
-Actual direction quarantine remains blocked until World Art returns an
-independently accepted, Integration-authorized exact source packet. Synthetic
-packet hashes in the tests are validator fixtures only and must never be
-copied into an actual source handoff.
+Actual direction quarantine remains blocked until Integration publishes the
+exact direction bridge and World Art returns an independently accepted,
+Integration-authorized exact source packet. Synthetic packet, bridge and lock
+hashes in the tests are validator fixtures only and must never be copied into
+an actual source handoff.

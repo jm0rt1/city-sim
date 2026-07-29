@@ -3,7 +3,7 @@
   "taskId": "PLAY-081",
   "direction": "west",
   "branch": "codex/citysim-world-art-west",
-  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "baselineCommit": "f9cb5fbae1be459ba297a8605347c4174f912ba0",
   "governingContract": {
     "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
     "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
@@ -23,13 +23,14 @@
   },
   "runner": {
     "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
-    "contractSha256": "5767db5a12db008e6238f711b65cbb820e10152d9fb33b268f8c6407e29d9e0f",
+    "contractSha256": "7f8701eeb173426a2a4b8b0587f80584c3141b7d9e4ef7a9f5e19fcda3f87b8c",
     "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
-    "driverSha256": "248d1d723ffc75b33fb99d508b304f0c5136163c013d577ec6a059804bc3b104",
+    "driverSha256": "33cdd8cd92f954776dba6924cc25f8797c603721e806223bf220e5fd6e261b8b",
     "validatorHashes": {
-      "validate_prelock_runner.py": "d22cf1df111e3959de5511b76a480024ae63f0b64163ad315cf268cadf74216b",
+      "validate_prelock_runner.py": "91026c38e0cf594c4f30cea28d49d3f12ffbc38bfd13de7339a2c7cf614e6736",
       "validate_source_outputs.py": "022452c2e6ef0945102b1180988444a38535a45755e0205e68715721afdca31f",
-      "validate_prelock_handoff.py": "48891c1faabf188d8fb2186a71c7d6a938fde65aba7037792d511e17b97c024e",
+      "validate_prelock_handoff.py": "ec071f878702e5c5e6432514fa72bbf4940aaeae5a70b50b4701126b73d24a40",
+      "validate_zero_pixel_v2_handoff.py": "5d7cb74594be1a63bec3139517e1add3039e5b25e2774ad1bbb5bbaecef1b0b4",
       "stdlib_png_rgba.py": "7694ef89cf4d16fdde256095b1c3bb6fb3e811cc3cef74e6fde365afe13ed84c"
     },
     "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/",

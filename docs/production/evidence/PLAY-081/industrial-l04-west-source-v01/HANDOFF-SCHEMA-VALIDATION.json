@@ -5,7 +5,7 @@
   "direction": "west",
   "failures": [],
   "generatedCaches": [],
-  "handoffSha256": "95700d880538c0e7d9dfbba710764d979efb44fc7125672b09baeb0e0ec60b07",
+  "handoffSha256": "e5204541a3b9d15a6180118c8c49d25b130dbc345e4b9214c069a3c3a9aff2ad",
   "integratedProofExecutionAuthority": "3d76fab8a45807c34198a6d8bb1dd1eeff7be51e",
   "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
   "passed": true,

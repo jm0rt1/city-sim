@@ -1,0 +1,257 @@
+{
+  "allNegativeTestsPassed": true,
+  "authorityCommit": "1bdf858181f720a0d30aacf142a219c79a3425f9",
+  "bundleInventory": {
+    "analytic/build_prepixel.py": "b09bd1e809e55ae360eee14b5b96a8e85c168a83a1fbd78b90295e0d00ab50b0",
+    "v11/EXACT-192-COLOR.png": "c5c2679d4d88c67c6809016cb13443f6aac2fcd4958f1755534b992a43b36897",
+    "v11/MATERIALS.json": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+    "v11/SCENE.json": "814d9c2c86a740f04622f4ac47718c14d8f92d090fb127d921270e96ef1921c3"
+  },
+  "bundleManifestSHA256": "6971bb3abe5d84e6bb351f47ddc2f18cd0f211c5f0784172557659e30e71dd8e",
+  "candidateReadyForIndependentReview": false,
+  "disposition": "V12_STATIC_PORTABILITY_PREFLIGHT_PASSED",
+  "frozenHead": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+  "materialsSHA256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+  "negativeTestCount": 33,
+  "negativeTests": [
+    {
+      "case": "builder-copy:arbitrary-leaf",
+      "error": "output leaf is not whitelisted: not-whitelisted.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-copy:outside-leaf",
+      "error": "output leaf is not whitelisted: ../outside.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-copy:preexisting-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-copy-preexisting/builder-copy.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-copy:shared-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-copy-shared/builder-copy.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-copy:dangling-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-copy-dangling/builder-copy.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-copy:symlink-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/builder-copy-redirect-root",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-copy:dangling-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/builder-copy-dangling-parent",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:arbitrary-leaf",
+      "error": "output leaf is not whitelisted: not-whitelisted.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:outside-leaf",
+      "error": "output leaf is not whitelisted: ../outside.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:preexisting-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-json-preexisting/builder-json.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:shared-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-json-shared/builder-json.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:dangling-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-json-dangling/builder-json.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:symlink-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/builder-json-redirect-root",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-json:dangling-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/builder-json-dangling-parent",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:arbitrary-leaf",
+      "error": "output leaf is not whitelisted: not-whitelisted.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:outside-leaf",
+      "error": "output leaf is not whitelisted: ../outside.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:preexisting-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-png-preexisting/builder-png.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:shared-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-png-shared/builder-png.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:dangling-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/builder-png-dangling/builder-png.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:symlink-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/builder-png-redirect-root",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "builder-png:dangling-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/builder-png-dangling-parent",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:arbitrary-leaf",
+      "error": "output leaf is not whitelisted: not-whitelisted.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:outside-leaf",
+      "error": "output leaf is not whitelisted: ../outside.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:preexisting-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/assembler-json-preexisting/assembler-json.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:shared-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/assembler-json-shared/assembler-json.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:dangling-symlink-leaf",
+      "error": "output leaf must be absent: <DISPOSABLE_ROOT>/assembler-json-dangling/assembler-json.out",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:symlink-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/assembler-json-redirect-root",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "assembler-json:dangling-parent",
+      "error": "symlink path component forbidden: <DISPOSABLE_ROOT>/assembler-json-dangling-parent",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "root:arbitrary",
+      "error": "output root must have exact lexical identity: expected <DISPOSABLE_ROOT>/repository/evidence/replay-a, got <DISPOSABLE_ROOT>/repository/evidence/arbitrary",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "root:outside",
+      "error": "output root must have exact lexical identity: expected <DISPOSABLE_ROOT>/repository/evidence/replay-a, got <DISPOSABLE_ROOT>/outside",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "root:preexisting",
+      "error": "authorized output directory must be absent: <DISPOSABLE_ROOT>/repository/evidence/replay-a",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "root:shared-symlink",
+      "error": "authorized output directory must be absent: <DISPOSABLE_ROOT>/repository/evidence/replay-a",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "root:dangling-symlink",
+      "error": "authorized output directory must be absent: <DISPOSABLE_ROOT>/repository/evidence/replay-a",
+      "result": "PASS_REJECTED"
+    }
+  ],
+  "newProcessCounts": {
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "analytic": 0,
+    "blender": 0,
+    "cycles": 0,
+    "imageGen": 0,
+    "metal": 0,
+    "normalizer": 0,
+    "sceneKit": 0,
+    "siblings": 0
+  },
+  "pathPolicy": {
+    "descriptorRelativeParents": true,
+    "immediatePreWriteRecheck": true,
+    "leafOpenFlags": [
+      "O_CREAT",
+      "O_EXCL",
+      "O_NOFOLLOW"
+    ],
+    "lexicalIdentity": true,
+    "parentOpenFlags": [
+      "O_DIRECTORY",
+      "O_NOFOLLOW"
+    ],
+    "symlinkAndDanglingComponentsRejected": true
+  },
+  "productionSelected": false,
+  "sceneSHA256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2",
+  "schema": 1,
+  "sourceAuthority": false,
+  "sourceObjectVerification": [
+    {
+      "bundleSHA256": "b09bd1e809e55ae360eee14b5b96a8e85c168a83a1fbd78b90295e0d00ab50b0",
+      "equal": true,
+      "path": "analytic/build_prepixel.py",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "sourceObjectSHA256": "b09bd1e809e55ae360eee14b5b96a8e85c168a83a1fbd78b90295e0d00ab50b0",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v09/build_prepixel.py"
+    },
+    {
+      "bundleSHA256": "c5c2679d4d88c67c6809016cb13443f6aac2fcd4958f1755534b992a43b36897",
+      "equal": true,
+      "path": "v11/EXACT-192-COLOR.png",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "sourceObjectSHA256": "c5c2679d4d88c67c6809016cb13443f6aac2fcd4958f1755534b992a43b36897",
+      "sourcePath": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v11/replay-a/EXACT-192-COLOR.png"
+    },
+    {
+      "bundleSHA256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+      "equal": true,
+      "path": "v11/MATERIALS.json",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "sourceObjectSHA256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v11/MATERIALS.json"
+    },
+    {
+      "bundleSHA256": "814d9c2c86a740f04622f4ac47718c14d8f92d090fb127d921270e96ef1921c3",
+      "equal": true,
+      "path": "v11/SCENE.json",
+      "sourceCommit": "10df430ca1f6c0f26eb2082766791c39f9a18eab",
+      "sourceObjectSHA256": "814d9c2c86a740f04622f4ac47718c14d8f92d090fb127d921270e96ef1921c3",
+      "sourcePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v11/SCENE.json"
+    }
+  ],
+  "stage": "north-v12-portability-path-proof",
+  "task": "PLAY-027",
+  "writerClasses": [
+    "builder-copy",
+    "builder-json",
+    "builder-png",
+    "assembler-json"
+  ]
+}

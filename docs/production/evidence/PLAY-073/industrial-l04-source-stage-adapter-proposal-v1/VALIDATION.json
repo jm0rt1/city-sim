@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY_073_INDUSTRIAL_L04_SOURCE_STAGE_ADAPTER_PROPOSAL_VALIDATION",
+  "result": "PASS",
+  "candidate": {
+    "branch": "codex/citysim-world-rendering",
+    "preparedAgainstCommit": "60b340e9a9330a4f4b3f2c7eb9d2c23ad6dd23a6",
+    "publishedMasterAncestor": "f5cc6592fd14dee9860aeeca03b3a099cc1a50fc",
+    "frozenPriorCandidateAncestor": "1bb850ae52fe585940393bb53be58520ecc0cfdc"
+  },
+  "artifacts": [
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-proposal-v1/PROPOSAL.json",
+      "sha256": "4588b77ef043e4ee8ee063b3e106a1e16ef77bcc0189204c73b09f2825eb3342"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-source-stage-adapter-proposal-v1/CONTRACT-NOTE.md",
+      "sha256": "8327b2f22b0182d88e08ade16a736d45cf9c8593249fbbcd741e4159eabe5d1d"
+    }
+  ],
+  "jsonAndContainment": {
+    "command": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -c <proposal JSON, artifact SHA-256, canonical root containment, regular-file and prohibited-outcome assertions>",
+    "result": "PASS",
+    "artifactBindingsVerified": 7,
+    "canonicalPathContainment": "PASS",
+    "artifactSha256Bindings": "PASS",
+    "prohibitedOutcomes": "all_false"
+  },
+  "focusedRendererSuite": {
+    "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/citysim-play073-adapter-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/citysim-play073-adapter-swiftpm-cache swift test --package-path Native/CitySimNative --scratch-path /private/tmp/citysim-play073-adapter-build --filter IndustrialL4",
+    "result": "PASS",
+    "executed": 30,
+    "passed": 28,
+    "skipped": 2,
+    "failed": 0,
+    "skips": [
+      "caller-supplied atomic assembly manifest absent by design",
+      "caller-supplied direction packet absent by design"
+    ]
+  },
+  "sandboxRetryDisclosure": [
+    {
+      "attempt": 1,
+      "result": "BLOCKED_BEFORE_TEST_DISCOVERY",
+      "reason": "default Swift module cache under the sandboxed home cache was not writable"
+    },
+    {
+      "attempt": 2,
+      "result": "BLOCKED_BEFORE_TEST_DISCOVERY",
+      "reason": "nested SwiftPM sandbox-exec was denied despite writable task-specific cache paths"
+    },
+    {
+      "attempt": 3,
+      "result": "PASS",
+      "reason": "same filter and thresholds run with task-specific writable caches outside the nested sandbox"
+    }
+  ],
+  "scope": {
+    "taskOwnedEvidenceOnly": true,
+    "sharedContractOrSchemaEdited": false,
+    "productPixelsInspectedOrMutated": false,
+    "runtimeOrShippingMutated": false,
+    "atlasOrManifestMutated": false,
+    "packageMutated": false,
+    "appLaunched": false,
+    "sourceAdmissionGranted": false,
+    "selfAccepted": false
+  }
+}

@@ -205,6 +205,23 @@ final class IndustrialL4DirectionQuarantineMatrixTests: XCTestCase {
         )
         assertRejected(wrongLock, as: .appearanceLockDrift, validator: validator)
 
+        let wrongBridge = IndustrialL4DirectionPacketFactory.replacing(
+            north,
+            directionBridge: IndustrialL4DirectionBridge(
+                documentPath: north.directionBridge.documentPath,
+                commit: north.directionBridge.commit,
+                documentSha256: north.directionBridge.documentSha256,
+                canonicalMappingSha256:
+                    IndustrialL4DirectionPacketFactory.sha("wrong-direction-map"),
+                coordinateSystem: north.directionBridge.coordinateSystem
+            )
+        )
+        assertRejected(
+            wrongBridge,
+            as: .directionBridgeDrift,
+            validator: validator
+        )
+
         let incompleteProvenance = IndustrialL4DirectionPacketFactory.replacing(
             north,
             provenance: IndustrialL4Provenance(
@@ -228,7 +245,7 @@ final class IndustrialL4DirectionQuarantineMatrixTests: XCTestCase {
                 footprintTiles: north.registration.footprintTiles,
                 canvasPixels: north.registration.canvasPixels,
                 groundPivotSource: north.registration.groundPivotSource,
-                entranceSocketWorld: north.registration.entranceSocketWorld,
+                frontageSocketSource: [640, 832],
                 frontageEdge: "south",
                 supportedOrientation: north.registration.supportedOrientation,
                 occupiedBounds: north.registration.occupiedBounds,
@@ -278,7 +295,8 @@ final class IndustrialL4DirectionQuarantineMatrixTests: XCTestCase {
 
     private func makeValidator() -> IndustrialL4DirectionPacketValidator {
         IndustrialL4DirectionPacketValidator(
-            appearanceLock: IndustrialL4DirectionPacketFactory.appearanceLock
+            appearanceLock: IndustrialL4DirectionPacketFactory.appearanceLock,
+            directionBridge: IndustrialL4DirectionPacketFactory.directionBridge
         )
     }
 

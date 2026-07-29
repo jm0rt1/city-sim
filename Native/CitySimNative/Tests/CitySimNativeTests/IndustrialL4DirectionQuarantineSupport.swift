@@ -16,6 +16,7 @@ struct IndustrialL4DirectionPacket: Codable, Equatable {
     let direction: IndustrialL4PacketDirection
     let logicalID: String
     let governingContract: IndustrialL4ContractBinding
+    let directionBridge: IndustrialL4DirectionBridge
     let appearanceLock: IndustrialL4AppearanceLock
     let source: IndustrialL4SourceBinding
     let lods: [IndustrialL4LODIdentity]
@@ -31,6 +32,14 @@ struct IndustrialL4ContractBinding: Codable, Equatable {
     let path: String
     let revision: Int
     let sha256: String
+}
+
+struct IndustrialL4DirectionBridge: Codable, Equatable {
+    let documentPath: String
+    let commit: String
+    let documentSha256: String
+    let canonicalMappingSha256: String
+    let coordinateSystem: String
 }
 
 struct IndustrialL4AppearanceLock: Codable, Equatable {
@@ -71,7 +80,7 @@ struct IndustrialL4Registration: Codable, Equatable {
     let footprintTiles: [Int]
     let canvasPixels: [Int]
     let groundPivotSource: [Int]
-    let entranceSocketWorld: [Double]
+    let frontageSocketSource: [Int]
     let frontageEdge: String
     let supportedOrientation: String
     let occupiedBounds: IndustrialL4PixelBounds
@@ -125,6 +134,7 @@ struct IndustrialL4TransformFingerprints: Codable, Equatable {
 enum IndustrialL4DirectionPacketValidationError: Error, Equatable {
     case invalidField(String)
     case contractDrift
+    case directionBridgeDrift
     case appearanceLockDrift
     case incompleteProvenance(String)
     case registrationDrift(String)
@@ -187,6 +197,7 @@ struct IndustrialL4DirectionPacketValidator {
     )
 
     let appearanceLock: IndustrialL4AppearanceLock
+    let directionBridge: IndustrialL4DirectionBridge
 
     func validate(_ packet: IndustrialL4DirectionPacket) throws {
         guard packet.schemaVersion == 1 else {
@@ -201,6 +212,10 @@ struct IndustrialL4DirectionPacketValidator {
         guard packet.governingContract == Self.contract else {
             throw IndustrialL4DirectionPacketValidationError.contractDrift
         }
+        guard packet.directionBridge == directionBridge else {
+            throw IndustrialL4DirectionPacketValidationError.directionBridgeDrift
+        }
+        try validateDirectionBridge()
         guard packet.appearanceLock == appearanceLock else {
             throw IndustrialL4DirectionPacketValidationError.appearanceLockDrift
         }
@@ -364,16 +379,16 @@ struct IndustrialL4DirectionPacketValidator {
 
     private func validateRegistration(_ packet: IndustrialL4DirectionPacket) throws {
         let registration = packet.registration
-        let expectedSockets: [IndustrialL4PacketDirection: [Double]] = [
-            .north: [18, 9],
-            .east: [18, -9],
-            .south: [-18, -9],
-            .west: [-18, 9],
+        let expectedSockets: [IndustrialL4PacketDirection: [Int]] = [
+            .north: [896, 704],
+            .east: [896, 832],
+            .south: [640, 832],
+            .west: [640, 704],
         ]
         guard registration.footprintTiles == [1, 1],
               registration.canvasPixels == [1536, 1024],
               registration.groundPivotSource == [768, 896],
-              registration.entranceSocketWorld == expectedSockets[packet.direction],
+              registration.frontageSocketSource == expectedSockets[packet.direction],
               registration.frontageEdge == packet.direction.rawValue,
               registration.supportedOrientation ==
                 "\(packet.direction.rawValue)-facing-authored",
@@ -418,6 +433,27 @@ struct IndustrialL4DirectionPacketValidator {
         }
     }
 
+    private func validateDirectionBridge() throws {
+        do {
+            guard !directionBridge.documentPath.isEmpty,
+                  directionBridge.coordinateSystem == "citysim_source_pixels_v1"
+            else {
+                throw IndustrialL4DirectionPacketValidationError.directionBridgeDrift
+            }
+            try validateCommit(directionBridge.commit, field: "directionBridge.commit")
+            try validateSHA(
+                directionBridge.documentSha256,
+                field: "directionBridge.documentSha256"
+            )
+            try validateSHA(
+                directionBridge.canonicalMappingSha256,
+                field: "directionBridge.canonicalMappingSha256"
+            )
+        } catch {
+            throw IndustrialL4DirectionPacketValidationError.directionBridgeDrift
+        }
+    }
+
     private func validateSHA(_ value: String, field: String) throws {
         guard value.count == 64, value.allSatisfy(\.isLowercaseHexDigit) else {
             throw IndustrialL4DirectionPacketValidationError.invalidField(field)
@@ -441,6 +477,15 @@ struct IndustrialL4DirectionPacketValidator {
 }
 
 enum IndustrialL4DirectionPacketFactory {
+    static let directionBridge = IndustrialL4DirectionBridge(
+        documentPath:
+            "docs/production/evidence/INTEGRATION/future-industrial-l04-direction-bridge.md",
+        commit: commit("direction-bridge-authority"),
+        documentSha256: sha("direction-bridge-document"),
+        canonicalMappingSha256: sha("direction-bridge-canonical-mapping"),
+        coordinateSystem: "citysim_source_pixels_v1"
+    )
+
     static let appearanceLock = IndustrialL4AppearanceLock(
         documentPath: "docs/production/evidence/INTEGRATION/future-industrial-l04-lock.md",
         commit: commit("appearance-lock"),
@@ -454,11 +499,11 @@ enum IndustrialL4DirectionPacketFactory {
     ) -> IndustrialL4DirectionPacket {
         let root = "synthetic-\(direction.rawValue)"
         let decoded = sha("\(root)-decoded-rgba")
-        let sockets: [IndustrialL4PacketDirection: [Double]] = [
-            .north: [18, 9],
-            .east: [18, -9],
-            .south: [-18, -9],
-            .west: [-18, 9],
+        let sockets: [IndustrialL4PacketDirection: [Int]] = [
+            .north: [896, 704],
+            .east: [896, 832],
+            .south: [640, 832],
+            .west: [640, 704],
         ]
         return IndustrialL4DirectionPacket(
             schemaVersion: 1,
@@ -468,6 +513,7 @@ enum IndustrialL4DirectionPacketFactory {
             direction: direction,
             logicalID: "industrial_l04_v0_\(direction.rawValue)",
             governingContract: IndustrialL4DirectionPacketValidator.contract,
+            directionBridge: directionBridge,
             appearanceLock: appearanceLock,
             source: IndustrialL4SourceBinding(
                 candidateCommit: commit("\(root)-commit"),
@@ -512,7 +558,7 @@ enum IndustrialL4DirectionPacketFactory {
                 footprintTiles: [1, 1],
                 canvasPixels: [1536, 1024],
                 groundPivotSource: [768, 896],
-                entranceSocketWorld: sockets[direction]!,
+                frontageSocketSource: sockets[direction]!,
                 frontageEdge: direction.rawValue,
                 supportedOrientation: "\(direction.rawValue)-facing-authored",
                 occupiedBounds: IndustrialL4PixelBounds(
@@ -554,6 +600,7 @@ enum IndustrialL4DirectionPacketFactory {
     static func replacing(
         _ packet: IndustrialL4DirectionPacket,
         governingContract: IndustrialL4ContractBinding? = nil,
+        directionBridge: IndustrialL4DirectionBridge? = nil,
         appearanceLock: IndustrialL4AppearanceLock? = nil,
         source: IndustrialL4SourceBinding? = nil,
         lods: [IndustrialL4LODIdentity]? = nil,
@@ -572,6 +619,7 @@ enum IndustrialL4DirectionPacketFactory {
             direction: packet.direction,
             logicalID: packet.logicalID,
             governingContract: governingContract ?? packet.governingContract,
+            directionBridge: directionBridge ?? packet.directionBridge,
             appearanceLock: appearanceLock ?? packet.appearanceLock,
             source: source ?? packet.source,
             lods: lods ?? packet.lods,

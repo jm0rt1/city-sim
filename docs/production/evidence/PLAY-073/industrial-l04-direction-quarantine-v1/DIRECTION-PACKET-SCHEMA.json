@@ -12,6 +12,7 @@
     "direction",
     "logicalID",
     "governingContract",
+    "directionBridge",
     "appearanceLock",
     "source",
     "lods",
@@ -64,6 +65,35 @@
         },
         "sha256": {
           "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "directionBridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documentPath",
+        "commit",
+        "documentSha256",
+        "canonicalMappingSha256",
+        "coordinateSystem"
+      ],
+      "properties": {
+        "documentPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "documentSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonicalMappingSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "coordinateSystem": {
+          "const": "citysim_source_pixels_v1"
         }
       }
     },
@@ -185,7 +215,7 @@
         "footprintTiles",
         "canvasPixels",
         "groundPivotSource",
-        "entranceSocketWorld",
+        "frontageSocketSource",
         "frontageEdge",
         "supportedOrientation",
         "occupiedBounds",
@@ -234,8 +264,8 @@
           "minItems": 2,
           "maxItems": 2
         },
-        "entranceSocketWorld": {
-          "$ref": "#/$defs/numberPair"
+        "frontageSocketSource": {
+          "$ref": "#/$defs/pixelPair"
         },
         "frontageEdge": {
           "enum": [

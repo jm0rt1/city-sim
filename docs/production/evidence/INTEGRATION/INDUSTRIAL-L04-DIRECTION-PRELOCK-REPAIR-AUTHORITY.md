@@ -21,9 +21,12 @@ production acceptance.
 ## East — PLAY-079
 
 East may bind its existing zero-pixel runner and future source handoff writer
-to `industrial-l04-source-stage-handoff-schema-v1.json`, add a schema
-validation command/receipt, and prove missing/stale appearance authority fails
-before any renderer launch. No pixels or A/B/C process may run.
+to `industrial-l04-source-stage-handoff-schema-v2.json` at SHA-256
+`93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7`,
+add structural and semantic validation commands/receipts, and prove
+missing/stale appearance authority fails before any renderer launch. V1 is
+retained rejected contract evidence and must not be consumed. No pixels or
+A/B/C process may run.
 
 ## South — PLAY-080
 
@@ -35,7 +38,7 @@ South may:
 - replace the literal-192 placeholder with deterministic measurement from the
   direction-local semantic proof so the existing five-field validator can
   actually pass;
-- bind the common source-stage schema and non-alias input; and
+- bind source-stage schema v2 and the common non-alias input; and
 - rerun static/describe/guard/schema gates only.
 
 No Blender render, ImageGen, normalization, contact-sheet, or A/B/C process is
@@ -50,7 +53,7 @@ West may:
   `3e01ca6738d7574718f9aeff4b66771eee109feb` as source-candidate provenance;
 - replace the unprovisioned Pillow dependency in the task-owned validator with
   a direction-local standard-library PNG decoder;
-- bind the common source-stage schema and non-alias input; and
+- bind source-stage schema v2 and the common non-alias input; and
 - rerun static/describe/guard/schema gates only.
 
 No Blender render, ImageGen, normalization, contact-sheet, or A/B/C process is

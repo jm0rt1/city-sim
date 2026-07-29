@@ -22,7 +22,9 @@
   `22e15b06`; the stale CONTRACT-020 hash is repaired. Pixel rendering remains
   blocked until Integration publishes the exact appearance lock and post-lock
   production authority. While North v08 is redesigned, East may bind its
-  zero-pixel runner/handoff to the shared source-stage schema and common
+  zero-pixel runner/handoff to source-stage schema v2 SHA-256
+  `93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7`
+  and the common
   44-master non-alias input and prove the prelaunch guard fails closed, under
   `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`.
 - **Validation/proof:** Independent East geometry; East road-facing portal and

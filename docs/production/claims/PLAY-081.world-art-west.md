@@ -24,7 +24,9 @@
   production authority. While North v08 is redesigned, West may correct its
   execution ancestry guard, replace its unprovisioned Pillow validator
   dependency with a task-owned standard-library decoder, bind the shared
-  source-stage schema and common 44-master non-alias input, and rerun only
+  source-stage schema v2 SHA-256
+  `93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7`
+  and the common 44-master non-alias input, and rerun only
   zero-pixel/static/guard/schema gates under
   `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`.
 - **Validation/proof:** Independent West geometry; West road-facing portal and

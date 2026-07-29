@@ -76,6 +76,12 @@ The pure test-only quarantine accumulator proves:
 - every state remains `productionSelected = false` with no shipping resource
   or runtime lookup mutation.
 
+The catalog guard is candidate-neutral: it compares the maximum accepted
+Industrial level before and after the mutation matrix instead of requiring a
+particular baseline level. It therefore proves the same non-mutation invariant
+on accepted master, where Industrial L2 is current, and on the preserved
+replacement-R2 branch, where Industrial L3 is present.
+
 `ready_for_atomic_assembly` is only an intake disposition. Integration must
 still authorize exact 4/4 atomic assembly, candidate-only staging, PLAY-075,
 shipping ingestion and production selection separately.
@@ -87,12 +93,13 @@ Final focused command:
 ```bash
 CLANG_MODULE_CACHE_PATH=/private/tmp/play073-l4-clang-cache \
 SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-swift-cache \
-swift test --package-path Native/CitySimNative --filter IndustrialL4
+swift test --package-path Native/CitySimNative --filter IndustrialL4Direction
 ```
 
-Result: **9 passed, 0 failed**. This includes the two pre-existing fail-closed
-L4 intake tests, three packet/schema/coordinate tests and four
-matrix/rejection tests.
+The exact `IndustrialL4Direction` filter passed **7 tests, 0 failed** after the
+candidate-neutral catalog repair. The broader previously recorded
+`IndustrialL4` result remains **9 passed, 0 failed** and was not rerun for this
+test/evidence-only descendant.
 
 The schema parses with `jq`; `git diff --check` passes. No full suite or staged
 app was run because this task changes only non-shipping test/evidence surfaces,

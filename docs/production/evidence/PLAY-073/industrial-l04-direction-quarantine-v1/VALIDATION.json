@@ -12,7 +12,7 @@
     "directionPacketSchemaSha256": "00b118a5e6317bb80354a26aae5485f831e681b9190be52c60ba49a83a76716f",
     "validatorSupportSha256": "0c4e5f044236944b7e055a4bfb5bac1e7b0175c76098c5953a9959ac3b6133ac",
     "schemaTestsSha256": "882c9027d0ba1335f6240cd70aade56eae5edd36a085b2480cc333e0241e7f24",
-    "matrixTestsSha256": "0f515ce3c78596a34f4de1371af30845c99264b2e74adbebcab7c4b3bd7ea52b"
+    "matrixTestsSha256": "8c8fdd99317809cff54ae28ca33fb52a291cf4ad7b98525fddf0bed6c0cc6ca3"
   },
   "validation": [
     {
@@ -21,8 +21,8 @@
     },
     {
       "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4Direction",
-      "result": "5_passed_0_failed",
-      "elapsedSeconds": 0.035
+      "result": "7_passed_0_failed",
+      "elapsedSeconds": 0.269
     },
     {
       "command": "swift test --package-path Native/CitySimNative --filter IndustrialL4",
@@ -48,6 +48,12 @@
     "packageChanged": false,
     "qaFixtureChanged": false,
     "stagedAppRun": false
+  },
+  "catalogCompatibility": {
+    "acceptedIndustrialLevelHardCoded": false,
+    "assertion": "maximum accepted Industrial level is unchanged before versus after the 0-4 packet mutation matrix",
+    "acceptedMasterLevel2Compatible": true,
+    "replacementR2Level3Compatible": true
   },
   "coordinateBoundary": {
     "directionBridgeAuthorityRequired": true,

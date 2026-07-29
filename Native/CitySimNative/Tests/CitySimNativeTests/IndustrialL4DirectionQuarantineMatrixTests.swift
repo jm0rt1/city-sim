@@ -10,6 +10,10 @@ final class IndustrialL4DirectionQuarantineMatrixTests: XCTestCase {
         var quarantine = IndustrialL4DirectionQuarantine()
         var preserved: [IndustrialL4PacketDirection: IndustrialL4DirectionPacket] = [:]
         let catalogBefore = WorldAssetCatalog()
+        let maxAcceptedIndustrialLevelBefore = catalogBefore.generatedManifest?.assets
+            .filter { $0.family == "industrial" }
+            .compactMap(\.level)
+            .max()
 
         let zero = try quarantine.result(validator: validator)
         XCTAssertEqual(zero.status, .inactive)
@@ -76,11 +80,11 @@ final class IndustrialL4DirectionQuarantineMatrixTests: XCTestCase {
             catalogAfter.generatedManifest?.assets.map(\.logicalID)
         )
         XCTAssertEqual(
-            catalogBefore.generatedManifest?.assets
+            catalogAfter.generatedManifest?.assets
                 .filter { $0.family == "industrial" }
                 .compactMap(\.level)
                 .max(),
-            3
+            maxAcceptedIndustrialLevelBefore
         )
     }
 

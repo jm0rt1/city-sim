@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-075_FIXTURE_CAMERA_PREFLIGHT_VALIDATION",
+  "status": "PASS_CANDIDATE_NEUTRAL_STATIC_LIVE_GATE_BLOCKED",
+  "authority": {
+    "claim": "PLAY-075",
+    "lane": "codex/citysim-playtest-quality",
+    "publishedMaster": "95d496fa06be87cae4fdc2abb58952d83ecac0f0",
+    "qaMergeCarrier": "d6e834b7d1a2482e242f0c27946d440a5557e371"
+  },
+  "validatedPreflight": {
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/FIXTURE-CAMERA-PREFLIGHT.json",
+    "sha256": "d8cf5a73c4f23e13aa6be939eedda303627856f4c202cf1e38ac81f9a24ac985"
+  },
+  "checks": [
+    {
+      "id": "json_syntax",
+      "result": "PASS"
+    },
+    {
+      "id": "published_authority_identity",
+      "result": "PASS",
+      "actual": "95d496fa06be87cae4fdc2abb58952d83ecac0f0"
+    },
+    {
+      "id": "frozen_and_save_byte_identity",
+      "result": "PASS",
+      "actual": {
+        "frozenInputsVerified": "9_OF_9",
+        "publishedSourceSavesVerified": "5_OF_5",
+        "totalSHA256Matches": "14_OF_14"
+      }
+    },
+    {
+      "id": "visible_city_manifest_binding",
+      "result": "PASS",
+      "actual": {
+        "stateEntriesMatched": "5_OF_5",
+        "fieldsMatched": [
+          "id",
+          "file_sha256",
+          "expected_state_digest",
+          "tick",
+          "status"
+        ]
+      }
+    },
+    {
+      "id": "mature_city_state_readiness",
+      "result": "PASS_WITH_DECLARED_PREREQUISITES",
+      "actual": {
+        "requiredStates": 5,
+        "publishedSourceSaveBytesExisting": 5,
+        "exactSemanticBindingsExisting": 3,
+        "missingExactSemanticBindings": [
+          "early",
+          "recovered"
+        ],
+        "candidateBoundL4DirectionalStateFixturesExisting": 0,
+        "candidateBoundFixtureStatus": "AUTHORITY_BLOCKED"
+      }
+    },
+    {
+      "id": "camera_and_window_contract",
+      "result": "PASS",
+      "actual": {
+        "views": "6_OF_6",
+        "widths": [
+          "regular",
+          "compact"
+        ],
+        "decoratedRegular": [
+          1278,
+          768
+        ],
+        "decoratedCompact": [
+          900,
+          652
+        ],
+        "compactContent": [
+          900,
+          600
+        ],
+        "lodScales": {
+          "city": 0.74,
+          "neighborhood": 0.66,
+          "block": 0.5
+        },
+        "regularContentPixelsStatus": "DERIVED",
+        "numericCameraCenterStatus": "DERIVED",
+        "liveDerivationStatus": "AUTHORITY_BLOCKED"
+      }
+    },
+    {
+      "id": "state_view_cell_identity",
+      "result": "PASS",
+      "actual": {
+        "required": 30,
+        "listed": 30,
+        "unique": 30,
+        "matchesExecutionPlan": true
+      }
+    },
+    {
+      "id": "accessibility_binding_identity",
+      "result": "PASS",
+      "actual": {
+        "required": 10,
+        "listed": 10,
+        "unique": 10,
+        "fieldsPerBinding": 5,
+        "matchesExecutionPlan": true
+      }
+    },
+    {
+      "id": "fail_closed_live_gate",
+      "result": "PASS",
+      "actual": {
+        "rendererCandidate": null,
+        "guard": "BLOCKED",
+        "liveAcquisitionAllowed": false,
+        "measurementAllowed": false,
+        "scoringAllowed": false,
+        "failureResult": "BLOCK_NO_LIVE_ACQUISITION_OR_SCORE"
+      }
+    },
+    {
+      "id": "scope",
+      "result": "PASS",
+      "actual": {
+        "appLaunches": 0,
+        "captures": 0,
+        "pixelsInspected": false,
+        "measurements": 0,
+        "scores": 0,
+        "fixtureFilesChanged": 0,
+        "productFilesChanged": 0,
+        "runtimeFilesChanged": 0,
+        "sharedAuthorityFilesChanged": 0,
+        "dispositionAvailable": false
+      }
+    }
+  ],
+  "result": {
+    "preflightValidated": true,
+    "candidateNeutral": true,
+    "existingMissingDerivedAndAuthorityBlockedPrerequisitesReported": true,
+    "liveGateRemainsBlocked": true,
+    "productBehavior": "UNVERIFIED",
+    "finalDisposition": "UNAVAILABLE"
+  }
+}

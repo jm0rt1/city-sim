@@ -119,6 +119,31 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
 
     authorities = contract.get("authorities", {})
     predesign = contract.get("acceptedPredesign", {})
+    if (
+        predesign.get("authorityScope") != "historical-zero-pixel-predesign-only"
+        or predesign.get("projectionAdapterSourceAuthority") is not False
+    ):
+        raise GuardRejected(
+            "PREDESIGN_AUTHORITY_SCOPE_MISMATCH",
+            {
+                "authorityScope": predesign.get("authorityScope"),
+                "projectionAdapterSourceAuthority": predesign.get(
+                    "projectionAdapterSourceAuthority"
+                ),
+            },
+        )
+    bridge = contract.get("coordinateBridge", {})
+    if (
+        bridge.get("state") not in {"pending_v06_revalidation", "v06_revalidated"}
+        or bridge.get("canonicalCitySimSouthSocket") != [0, 0, 28]
+        or bridge.get("sourceSocketPixels") != [640, 832]
+        or bridge.get("historicalPredesignProjectionAdapterSourceAuthority") is not False
+        or (
+            bridge.get("state") == "pending_v06_revalidation"
+            and bridge.get("blenderNativeDirectionalSocket") is not None
+        )
+    ):
+        raise GuardRejected("COORDINATE_BRIDGE_HOLD_MISMATCH", bridge)
     required_records = {
         "governingContract": authorities.get("governingContract"),
         "prelockRunnerAuthority": authorities.get("prelockRunnerAuthority"),
@@ -202,6 +227,46 @@ def require_lock(contract: dict[str, Any]) -> dict[str, Any]:
     return material_mapping
 
 
+def require_coordinate_bridge(contract: dict[str, Any]) -> dict[str, Any]:
+    bridge = contract.get("coordinateBridge", {})
+    required = (
+        "authorityPath",
+        "authorityCommit",
+        "authoritySha256",
+        "citysimToBlenderAxisOrder",
+        "citysimToBlenderAxisSigns",
+        "blenderNativeDirectionalSocket",
+    )
+    missing = [field for field in required if bridge.get(field) is None]
+    if missing:
+        raise GuardRejected(
+            "MISSING_V06_COORDINATE_BRIDGE",
+            {"missingFields": missing, "state": bridge.get("state")},
+        )
+    if bridge.get("state") != "v06_revalidated":
+        raise GuardRejected(
+            "COORDINATE_BRIDGE_NOT_REVALIDATED", {"state": bridge.get("state")}
+        )
+    require_sha(
+        {"path": bridge["authorityPath"], "sha256": bridge["authoritySha256"]},
+        "coordinateBridge",
+    )
+    axis_order = bridge["citysimToBlenderAxisOrder"]
+    axis_signs = bridge["citysimToBlenderAxisSigns"]
+    if (
+        sorted(axis_order) != [0, 1, 2]
+        or len(axis_signs) != 3
+        or any(sign not in (-1, 1) for sign in axis_signs)
+        or axis_order[2] != 1
+        or axis_signs[2] != 1
+    ):
+        raise GuardRejected(
+            "INVALID_V06_COORDINATE_BRIDGE",
+            {"axisOrder": axis_order, "axisSigns": axis_signs},
+        )
+    return bridge
+
+
 def result_payload(
     mode: str,
     result: str,
@@ -238,8 +303,19 @@ def write_report(path: Path | None, payload: dict[str, Any]) -> None:
     print(json.dumps({"result": payload["result"], "report": str(path)}))
 
 
-def citysim_to_blender(point: list[float]) -> tuple[float, float, float]:
-    return (point[0], point[2], point[1])
+def bridge_citysim_point(
+    point: list[float], bridge: dict[str, Any]
+) -> tuple[float, float, float]:
+    order = bridge["citysimToBlenderAxisOrder"]
+    signs = bridge["citysimToBlenderAxisSigns"]
+    return tuple(point[order[index]] * signs[index] for index in range(3))
+
+
+def bridge_citysim_size(
+    size: list[float], bridge: dict[str, Any]
+) -> tuple[float, float, float]:
+    order = bridge["citysimToBlenderAxisOrder"]
+    return tuple(size[order[index]] for index in range(3))
 
 
 def aim_camera(camera: Any, target: tuple[float, float, float]) -> None:
@@ -250,7 +326,10 @@ def aim_camera(camera: Any, target: tuple[float, float, float]) -> None:
 
 
 def render_source(
-    contract: dict[str, Any], material_mapping: dict[str, Any], mode: str
+    contract: dict[str, Any],
+    material_mapping: dict[str, Any],
+    coordinate_bridge: dict[str, Any],
+    mode: str,
 ) -> dict[str, Any]:
     """Render only after all guards pass. bpy is deliberately imported here."""
 
@@ -288,11 +367,11 @@ def render_source(
     for component in scene_descriptor["components"]:
         bpy.ops.mesh.primitive_cube_add(
             size=1,
-            location=citysim_to_blender(component["center"]),
+            location=bridge_citysim_point(component["center"], coordinate_bridge),
         )
         obj = bpy.context.object
         obj.name = component["id"]
-        obj.dimensions = citysim_to_blender(component["size"])
+        obj.dimensions = bridge_citysim_size(component["size"], coordinate_bridge)
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
         obj.data.materials.append(materials[component["materialRole"]])
         component_objects.append((component, obj))
@@ -309,8 +388,13 @@ def render_source(
     camera_data.shift_y = camera_settings["shiftY"]
     camera = bpy.data.objects.new("CitySimSouthCamera", camera_data)
     bpy.context.collection.objects.link(camera)
-    camera.location = citysim_to_blender(camera_settings["citysimPosition"])
-    aim_camera(camera, citysim_to_blender(camera_settings["citysimTarget"]))
+    camera.location = bridge_citysim_point(
+        camera_settings["citysimPosition"], coordinate_bridge
+    )
+    aim_camera(
+        camera,
+        bridge_citysim_point(camera_settings["citysimTarget"], coordinate_bridge),
+    )
     bpy.context.scene.camera = camera
 
     key_data = bpy.data.lights.new("NorthwestKey", type="AREA")
@@ -319,8 +403,8 @@ def render_source(
     key_data.size = material_mapping.get("keyLightSize", 10)
     key = bpy.data.objects.new("NorthwestKey", key_data)
     bpy.context.collection.objects.link(key)
-    key.location = (-80, -80, 120)
-    aim_camera(key, (0, 0, 12))
+    key.location = bridge_citysim_point([-80, 160, -80], coordinate_bridge)
+    aim_camera(key, bridge_citysim_point([0, 12, 0], coordinate_bridge))
 
     scene = bpy.context.scene
     scene.render.engine = render_settings["engine"]
@@ -407,15 +491,20 @@ def render_source(
         "registration": {
             "footprintWorldSize": [56, 56],
             "groundPivot": [28, 0, 28],
-            "frontageSocket": [28, 0, 0],
+            "canonicalCitySimFrontageSocket": [0, 0, 28],
+            "sourceSocketPixels": [640, 832],
+            "blenderNativeDirectionalSocket": coordinate_bridge[
+                "blenderNativeDirectionalSocket"
+            ],
             "frontageDirection": "south",
         },
         "literal192": {
-            "primaryPortalPixels": [14.057144, 21.025661],
-            "freightOpeningWidthsPixels": [8.057144, 8.057144, 14.057144],
-            "frameMinimumThicknessPixels": 3.428576,
-            "silhouetteBreaks": 7,
-            "processOcclusionPixels": 0,
+            "state": "requires-post-render-v06-measurement"
+        },
+        "coordinateBridgeAuthority": {
+            "path": coordinate_bridge["authorityPath"],
+            "commit": coordinate_bridge["authorityCommit"],
+            "sha256": coordinate_bridge["authoritySha256"],
         },
         "blenderVersion": bpy.app.version_string,
         "blenderBuildHash": bpy.app.build_hash.decode("utf-8"),
@@ -450,11 +539,12 @@ def main() -> int:
             write_report(args.report, result_payload(args.mode, "PASS"))
             return 0
         material_mapping = require_lock(contract)
+        coordinate_bridge = require_coordinate_bridge(contract)
     except GuardRejected as rejection:
         write_report(args.report, result_payload(args.mode, "REJECTED", rejection=rejection))
         return 2
 
-    payload = render_source(contract, material_mapping, args.mode)
+    payload = render_source(contract, material_mapping, coordinate_bridge, args.mode)
     write_report(args.report, payload)
     return 0
 

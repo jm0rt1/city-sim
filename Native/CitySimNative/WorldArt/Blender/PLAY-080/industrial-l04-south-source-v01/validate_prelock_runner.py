@@ -31,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
     parser.add_argument("--driver", type=Path, default=DEFAULT_DRIVER)
     parser.add_argument("--evidence-root", type=Path, default=DEFAULT_EVIDENCE_ROOT)
+    parser.add_argument("--hold-static-only", action="store_true")
     return parser.parse_args()
 
 
@@ -114,6 +115,7 @@ def inspect_driver(driver: Path) -> dict[str, Any]:
     render_source_text = ast.get_source_segment(driver_text, render_function) or ""
     main_text = ast.get_source_segment(driver_text, main_function) or ""
     require_lock_index = main_text.find("require_lock(contract)")
+    require_bridge_index = main_text.find("require_coordinate_bridge(contract)")
     render_index = main_text.find("render_source(contract")
     checks = {
         "noTopLevelBpyImport": not top_level_bpy_imports,
@@ -131,7 +133,16 @@ def inspect_driver(driver: Path) -> dict[str, Any]:
             and 'contract["outputInventory"]["provenance"][mode]' in render_source_text
         ),
         "guardPrecedesRenderFunctionCall": (
-            require_lock_index >= 0 and render_index > require_lock_index
+            require_lock_index >= 0
+            and require_bridge_index > require_lock_index
+            and render_index > require_bridge_index
+        ),
+        "canonicalSouthSocketRetained": (
+            '"canonicalCitySimFrontageSocket": [0, 0, 28]' in driver_text
+            and '"sourceSocketPixels": [640, 832]' in driver_text
+        ),
+        "noHardCodedBlenderDirectionalSocket": (
+            '"blenderNativeDirectionalSocket": coordinate_bridge[' in driver_text
         ),
         "separateModes": all(
             f'"{mode}"' in driver_text for mode in ("validate", "A", "B", "C")
@@ -175,31 +186,47 @@ def main() -> int:
     static_inspection = inspect_driver(args.driver)
     validate_one = run_driver(args.driver, args.contract, "validate")
     validate_two = run_driver(args.driver, args.contract, "validate")
-    missing_one = run_driver(args.driver, args.contract, "A")
-    missing_two = run_driver(args.driver, args.contract, "A")
 
     contract_display = args.contract.resolve().relative_to(REPOSITORY_ROOT).as_posix()
     runner_hash = sha256(args.contract)
-    wrong_contract = copy.deepcopy(contract)
-    wrong_contract["appearanceLock"] = {
-        "documentPath": contract_display,
-        "appearanceLockCommit": "0" * 40,
-        "appearanceLockSha256": runner_hash,
-        "northProcessASourceSha256": "1" * 64,
-        "northProcessADecodedRgbaSha256": "2" * 64,
-    }
-    wrong_contract["lockedMaterialMapping"]["path"] = contract_display
-    wrong_contract["lockedMaterialMapping"]["sha256"] = runner_hash
-    wrong_contract["postLockProductionAuthority"] = {
-        "path": contract_display,
-        "commit": "3" * 40,
-        "sha256": runner_hash,
-    }
-    with tempfile.TemporaryDirectory(prefix="play080-prelock-") as temporary:
-        wrong_path = Path(temporary) / "wrong-lock-contract.json"
-        write_json(wrong_path, wrong_contract)
-        wrong_one = run_driver(args.driver, wrong_path, "A")
-        wrong_two = run_driver(args.driver, wrong_path, "A")
+    if args.hold_static_only:
+        retained_missing = load_json(evidence_root / "MISSING-LOCK-REJECTION.json")
+        retained_wrong = load_json(evidence_root / "WRONG-LOCK-REJECTION.json")
+        missing_one = (
+            retained_missing["exitCode"],
+            retained_missing["driverResult"],
+            retained_missing["command"],
+        )
+        missing_two = missing_one
+        wrong_one = (
+            retained_wrong["exitCode"],
+            retained_wrong["driverResult"],
+            retained_wrong["command"],
+        )
+        wrong_two = wrong_one
+    else:
+        missing_one = run_driver(args.driver, args.contract, "A")
+        missing_two = run_driver(args.driver, args.contract, "A")
+        wrong_contract = copy.deepcopy(contract)
+        wrong_contract["appearanceLock"] = {
+            "documentPath": contract_display,
+            "appearanceLockCommit": "0" * 40,
+            "appearanceLockSha256": runner_hash,
+            "northProcessASourceSha256": "1" * 64,
+            "northProcessADecodedRgbaSha256": "2" * 64,
+        }
+        wrong_contract["lockedMaterialMapping"]["path"] = contract_display
+        wrong_contract["lockedMaterialMapping"]["sha256"] = runner_hash
+        wrong_contract["postLockProductionAuthority"] = {
+            "path": contract_display,
+            "commit": "3" * 40,
+            "sha256": runner_hash,
+        }
+        with tempfile.TemporaryDirectory(prefix="play080-prelock-") as temporary:
+            wrong_path = Path(temporary) / "wrong-lock-contract.json"
+            write_json(wrong_path, wrong_contract)
+            wrong_one = run_driver(args.driver, wrong_path, "A")
+            wrong_two = run_driver(args.driver, wrong_path, "A")
 
     validate_ok = (
         validate_one[0] == 0
@@ -267,6 +294,14 @@ def main() -> int:
             "driverResult": validate_one[1],
         },
         "repeatIdentityPass": repeat_ok,
+        "coordinateBridgeRevalidation": "pending_v06",
+        "coordinateBridgeBlocker": (
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
+            "COORDINATE-BRIDGE-V06-BLOCKER.json"
+        ),
+        "guardEvidenceExecution": (
+            "retained-no-A-B-C-invocation" if args.hold_static_only else "fresh"
+        ),
         "pixelValidations": {
             "rgba": "not_run",
             "literal192": "not_run",
@@ -296,6 +331,14 @@ def main() -> int:
         "runnerStaticPass": static_inspection["result"] == "PASS" and validate_ok,
         "guardPass": missing_ok and wrong_ok,
         "repeatIdentityPass": repeat_ok,
+        "coordinateBridgeRevalidation": "pending_v06",
+        "coordinateBridgeBlocker": (
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
+            "COORDINATE-BRIDGE-V06-BLOCKER.json"
+        ),
+        "guardEvidenceExecution": (
+            "retained-no-A-B-C-invocation" if args.hold_static_only else "fresh"
+        ),
         "guardEvidence": {
             "missingLockRejected": missing_ok,
             "wrongLockRejected": wrong_ok,

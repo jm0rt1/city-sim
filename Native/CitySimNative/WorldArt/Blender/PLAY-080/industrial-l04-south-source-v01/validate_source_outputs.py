@@ -217,6 +217,10 @@ def main() -> int:
                     "schema": "citysim.play-080.source-output-validator-description.v1",
                     "taskId": "PLAY-080",
                     "direction": "south",
+                    "coordinateBridgeRevalidation": "pending_v06",
+                    "canonicalCitySimSouthSocket": [0, 0, 28],
+                    "sourceSocketPixels": [640, 832],
+                    "blenderNativeDirectionalSocket": None,
                     "checks": checks,
                     "rgba": "not_run",
                     "literal192": "not_run",
@@ -232,6 +236,9 @@ def main() -> int:
     if args.non_alias_inventory is None or args.output is None:
         raise SystemExit("--mode validate requires --non-alias-inventory and --output")
     contract = load_json(args.contract)
+    bridge = contract.get("coordinateBridge", {})
+    if bridge.get("state") != "v06_revalidated":
+        raise SystemExit("pixel validation blocked pending v06 coordinate-bridge revalidation")
     raw_results: dict[str, dict[str, Any]] = {}
     semantic_results: dict[str, dict[str, Any]] = {}
     raw_hashes: dict[str, str] = {}
@@ -274,7 +281,9 @@ def main() -> int:
     registration = provenance_a.get("registration") == {
         "footprintWorldSize": [56, 56],
         "groundPivot": [28, 0, 28],
-        "frontageSocket": [28, 0, 0],
+        "canonicalCitySimFrontageSocket": [0, 0, 28],
+        "sourceSocketPixels": [640, 832],
+        "blenderNativeDirectionalSocket": bridge["blenderNativeDirectionalSocket"],
         "frontageDirection": "south",
     }
     literal192 = literal_metrics_pass(provenance_a, contract)

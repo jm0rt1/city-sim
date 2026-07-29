@@ -3,11 +3,15 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
   "authorities": {
+    "artContract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
     "governingContract": {
       "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
       "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
@@ -20,9 +24,17 @@
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SIBLING-PRELOCK-RUNNER-AUTHORITY.md",
       "sha256": "0fdeb2124e8cb52629c6bf424c67ad0c5439016826256ccdb3355b1b37f3fb53"
     },
+    "prelockRepairAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md",
+      "sha256": "5ecea802faf9bda1e742d12a6a65bca1fe2bceb219a84be8b6a1f68ff51769c6"
+    },
     "handoffSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-prelock-runner-handoff-schema-v1.json",
       "sha256": "05a4a5027a677536ed3370c51ccfcb0a9435c6c4cac5c47bf193377cc5af4951"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
     }
   },
   "acceptedPredesign": {
@@ -193,7 +205,7 @@
     "render": {
       "blenderVersion": "4.5.12 LTS",
       "blenderBuildHash": "84afd5f785f7",
-      "blenderExecutableSha256": "8485107307b16bd0899f3c259261494ab0c80e383db239c04e2c9fcd14d305fb4",
+      "blenderExecutableSha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
       "engine": "CYCLES",
       "device": "CPU",
       "threadsMode": "FIXED",
@@ -254,6 +266,7 @@
     "grayscale": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/grayscale.json",
     "native2x": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/native-2x.json",
     "literal192": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/literal-192.json",
+    "literal192SemanticProof": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
     "registration": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/validation/registration.json",
     "contactSheet": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/contact-sheet/industrial-l04-south-source-v01.png",
     "rejections": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/rejections/",

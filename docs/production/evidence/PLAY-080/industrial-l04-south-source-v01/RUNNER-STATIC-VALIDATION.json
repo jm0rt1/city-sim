@@ -1,12 +1,12 @@
 {
-  "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
   "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-  "contractSha256": "1e6aac5e9fb89a3cb5d9a11ca9c714707a9ee12aa3ccf26634370436ac146083",
+  "contractSha256": "da5420b4997c19b413f180eb8917369ec0a0e038056f50935d2e1110d7ccd430",
   "coordinateBridgeBlocker": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/COORDINATE-BRIDGE-V06-BLOCKER.json",
   "coordinateBridgeRevalidation": "v06_revalidated",
   "direction": "south",
   "driverPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
-  "driverSha256": "ae72158658626094ead41d6dd32b88a9e674f712a8d03ec0c4627c0ea05d5cad",
+  "driverSha256": "9fcc1af40520ef568261278a26baadcf7a8dfef2c1cf1dc32bd56dce26f137e9",
   "guardEvidenceExecution": "retained-no-A-B-C-invocation",
   "pixelValidations": {
     "abcIdentity": "not_run",
@@ -20,6 +20,8 @@
     "checks": {
       "bpyImportIsRenderLocal": true,
       "canonicalSouthSocketRetained": true,
+      "commonNonAliasGuardBound": true,
+      "deterministicLiteral192SemanticProofBound": true,
       "driverCannotLaunchBlenderProcess": true,
       "guardPrecedesRenderFunctionCall": true,
       "noHardCodedBlenderDirectionalSocket": true,

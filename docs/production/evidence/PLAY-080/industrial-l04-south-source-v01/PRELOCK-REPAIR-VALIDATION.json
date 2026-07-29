@@ -1,0 +1,102 @@
+{
+  "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "contactSheetInvocations": 0,
+  "describe": {
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_source_outputs.py --mode describe --contract Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+    "exitCode": 0,
+    "payload": {
+      "abcIdentity": "not_run",
+      "blenderNativeDirectionalSocket": [
+        28,
+        0,
+        0
+      ],
+      "canonicalCitySimSouthSocket": [
+        0,
+        0,
+        28
+      ],
+      "checks": [
+        "fresh-process provenance",
+        "decoded raw RGBA A/B/C identity",
+        "decoded semantic RGBA A/B/C identity",
+        "alpha, chroma, and hidden-RGB cleanliness",
+        "occupied-bounds identity",
+        "footprint, pivot, and South socket registration",
+        "literal-192 portal, freight, frame, silhouette, and occlusion survival",
+        "logical and directional non-aliasing"
+      ],
+      "coordinateBridgeRevalidation": "v06_revalidated",
+      "direction": "south",
+      "literal192": "not_run",
+      "literal192FiveFieldValidator": [
+        "primaryPortalPixels",
+        "freightOpeningWidthsPixels",
+        "frameMinimumThicknessPixels",
+        "silhouetteBreaks",
+        "processOcclusionPixels"
+      ],
+      "literal192Measurement": "analytic-v06-camera-semantic-cells-v1",
+      "nonAliasInput": {
+        "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+        "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+      },
+      "normalization": "not_run",
+      "rgba": "not_run",
+      "schema": "citysim.play-080.source-output-validator-description.v1",
+      "sourceSocketPixels": [
+        640,
+        832
+      ],
+      "taskId": "PLAY-080"
+    },
+    "result": "PASS"
+  },
+  "direction": "south",
+  "guard": {
+    "execution": "direct-function-no-A-B-C-mode",
+    "missingAppearanceLockRejection": "MISSING_APPEARANCE_LOCK",
+    "rejectionStage": "before_renderer_launch",
+    "result": "PASS",
+    "wrongAppearanceLockRejection": "WRONG_APPEARANCE_LOCK"
+  },
+  "imageGenInvocations": 0,
+  "normalizerInvocations": 0,
+  "pixelFilesAfter": [],
+  "pixelFilesBefore": [],
+  "pixelValidations": {
+    "abcIdentity": "not_run",
+    "literal192": "not_run",
+    "normalization": "not_run",
+    "rgba": "not_run"
+  },
+  "processA": "not_run",
+  "processB": "not_run",
+  "processC": "not_run",
+  "productionSelected": false,
+  "renderInvocations": 0,
+  "result": "PASS",
+  "schema": "citysim.play-080.prelock-repair-validation.v1",
+  "schemaGate": {
+    "result": "BLOCKED",
+    "sourceSchemaV1FinalBinding": false,
+    "sourceSchemaV1Validation": "not_run",
+    "state": "awaiting_integration_source_stage_schema_v2"
+  },
+  "selfAccepted": false,
+  "sourceReady": false,
+  "static": {
+    "checks": {
+      "acceptedBlenderFingerprint": true,
+      "common44MasterNonAliasInputBound": true,
+      "deterministicFiveFieldSemanticProofBound": true,
+      "literalPlaceholderRemoved": true,
+      "runnerContractShapeAndFrozenInputs": true,
+      "sourceSchemaV1FinalBindingAbsent": true
+    },
+    "result": "PASS"
+  },
+  "taskId": "PLAY-080"
+}

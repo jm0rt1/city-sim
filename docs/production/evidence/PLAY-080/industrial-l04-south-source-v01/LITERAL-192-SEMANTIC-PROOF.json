@@ -1,0 +1,127 @@
+{
+  "blenderProcessLaunches": 0,
+  "blenderRenderApiCalls": 0,
+  "contactSheetInvocations": 0,
+  "direction": "south",
+  "imageGenInvocations": 0,
+  "inputs": {
+    "acceptedSouthScene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "coordinateBridgeMapping": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+      "sha256": "da5420b4997c19b413f180eb8917369ec0a0e038056f50935d2e1110d7ccd430"
+    }
+  },
+  "metrics": {
+    "frameMinimumThicknessPixels": 3.428572,
+    "freightOpeningWidthsPixels": [
+      8.057143,
+      8.057143,
+      14.057144
+    ],
+    "measurementMethod": "analytic-v06-camera-semantic-cells-v1",
+    "primaryPortalPixels": [
+      14.057144,
+      21.025657
+    ],
+    "processOcclusionPixels": 0,
+    "semanticEvidence": {
+      "distinctSilhouetteRowsAtLeastTwoPixelsApart": [
+        53.520989,
+        69.917783,
+        74.176092,
+        79.546938,
+        82.317492,
+        86.715743,
+        90.229737
+      ],
+      "freightOpeningIds": [
+        "secondary-freight-west-inset",
+        "secondary-freight-center-inset",
+        "monumental-portal-inset"
+      ],
+      "headerProjectedHeightPixels": 11.242421,
+      "jambProjectedWidthsPixels": [
+        3.428572,
+        3.428572
+      ],
+      "literalViewportPixels": [
+        192,
+        128
+      ],
+      "processOccluderCount": 7,
+      "silhouetteRows": [
+        {
+          "id": "high-bay-core",
+          "literalRow": 82.317492
+        },
+        {
+          "id": "south-control-wing",
+          "literalRow": 86.715743
+        },
+        {
+          "id": "staff-vestibule",
+          "literalRow": 90.229737
+        },
+        {
+          "id": "monitor-roof-west",
+          "literalRow": 75.803789
+        },
+        {
+          "id": "monitor-roof-center",
+          "literalRow": 74.176092
+        },
+        {
+          "id": "monitor-roof-east",
+          "literalRow": 79.546938
+        },
+        {
+          "id": "rear-process-bay",
+          "literalRow": 74.718658
+        },
+        {
+          "id": "offset-foundry-stack",
+          "literalRow": 53.520989
+        },
+        {
+          "id": "rear-gantry-beam",
+          "literalRow": 69.917783
+        }
+      ],
+      "virtualSemanticCellSamples": 24576
+    },
+    "silhouetteBreaks": 7
+  },
+  "mode": "analytic-zero-pixel",
+  "normalizerInvocations": 0,
+  "pixelFiles": 0,
+  "processA": "not_run",
+  "processB": "not_run",
+  "processC": "not_run",
+  "productionSelected": false,
+  "renderInvocations": 0,
+  "result": "PASS",
+  "schema": "citysim.play-080.literal-192-semantic-proof.v1",
+  "sourceReady": false,
+  "taskId": "PLAY-080",
+  "thresholds": {
+    "backgroundChroma": "#ff00ff",
+    "decodedRgbaIdentityAcrossABC": true,
+    "literal192FrameMinimumThicknessPixels": 2,
+    "literal192FreightOpeningMinimumWidthPixels": 8,
+    "literal192PrimaryPortalMinimumPixels": [
+      14,
+      12
+    ],
+    "maximumProcessOcclusionPixels": 0,
+    "minimumSilhouetteBreaks": 3,
+    "visibleChromaSpillPixels": 0,
+    "zeroHiddenRgb": true
+  }
+}

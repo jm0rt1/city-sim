@@ -43,6 +43,10 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def repository_path(display_path: str) -> Path:
     path = (REPOSITORY_ROOT / display_path).resolve()
     path.relative_to(REPOSITORY_ROOT)
@@ -198,6 +202,45 @@ def literal_metrics_pass(provenance: dict[str, Any], contract: dict[str, Any]) -
     )
 
 
+def forbidden_decoded_rgba_hashes(
+    common_input_path: Path, contract: dict[str, Any]
+) -> set[str]:
+    common_record = contract["authorities"]["nonAliasInput"]
+    if common_input_path.resolve() != repository_path(common_record["path"]):
+        raise ValueError("non-alias input path does not match the runner contract")
+    if sha256_file(common_input_path) != common_record["sha256"]:
+        raise ValueError("non-alias input hash does not match the runner contract")
+    common_input = load_json(common_input_path)
+    derived = common_input["authorityInputs"]["derivedInventory"]
+    derived_path = repository_path(derived["path"])
+    if sha256_file(derived_path) != derived["sha256"]:
+        raise ValueError("derived non-alias inventory hash mismatch")
+    masters = load_json(derived_path).get("masters", [])
+    hashes = [master["decodedRGBASHA256"] for master in masters]
+    hashes_are_canonical = all(
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+        for value in hashes
+    )
+    canonical = (
+        "".join(f"{value}\n" for value in sorted(hashes))
+        if hashes_are_canonical
+        else ""
+    )
+    actual_set_sha = sha256_bytes(canonical.encode("ascii"))
+    if (
+        common_input.get("counts", {}).get("total") != 44
+        or common_input.get("forbiddenDecodedRgbaSha256Count") != 44
+        or len(hashes) != 44
+        or len(set(hashes)) != 44
+        or not hashes_are_canonical
+        or actual_set_sha != common_input.get("forbiddenSetSha256")
+    ):
+        raise ValueError("common non-alias input does not resolve to canonical 44")
+    return set(hashes)
+
+
 def main() -> int:
     args = parse_args()
     contract = load_json(args.contract)
@@ -226,6 +269,19 @@ def main() -> int:
                     "sourceSocketPixels": bridge.get("sourceSocketPixels"),
                     "blenderNativeDirectionalSocket": bridge.get(
                         "blenderNativeDirectionalSocket"
+                    ),
+                    "literal192Measurement": (
+                        "analytic-v06-camera-semantic-cells-v1"
+                    ),
+                    "literal192FiveFieldValidator": [
+                        "primaryPortalPixels",
+                        "freightOpeningWidthsPixels",
+                        "frameMinimumThicknessPixels",
+                        "silhouetteBreaks",
+                        "processOcclusionPixels",
+                    ],
+                    "nonAliasInput": contract.get("authorities", {}).get(
+                        "nonAliasInput"
                     ),
                     "checks": checks,
                     "rgba": "not_run",
@@ -271,8 +327,9 @@ def main() -> int:
     provenance_a = load_json(
         repository_path(contract["outputInventory"]["provenance"]["A"])
     )
-    non_alias_inventory = load_json(args.non_alias_inventory)
-    forbidden_hashes = set(non_alias_inventory.get("forbiddenDecodedRgbaSha256", []))
+    forbidden_hashes = forbidden_decoded_rgba_hashes(
+        args.non_alias_inventory, contract
+    )
     raw_identity = len(set(raw_hashes.values())) == 1
     semantic_identity = len(set(semantic_hashes.values())) == 1
     bounds_identity = len(

@@ -68,6 +68,57 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def require_non_alias_input(contract: dict[str, Any]) -> None:
+    record = contract["authorities"]["nonAliasInput"]
+    require_sha(record, "nonAliasInput")
+    common_input = load_json(repository_path(record["path"]))
+    derived = common_input.get("authorityInputs", {}).get("derivedInventory", {})
+    if not isinstance(derived, dict):
+        raise GuardRejected("NON_ALIAS_INPUT_MALFORMED", {"derivedInventory": derived})
+    require_sha(derived, "nonAliasDerivedInventory")
+    inventory = load_json(repository_path(derived["path"]))
+    masters = inventory.get("masters", [])
+    hashes = [
+        master.get("decodedRGBASHA256")
+        for master in masters
+        if isinstance(master, dict)
+    ]
+    expected_count = common_input.get("forbiddenDecodedRgbaSha256Count")
+    hashes_are_canonical = all(
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+        for value in hashes
+    )
+    canonical = (
+        "".join(f"{value}\n" for value in sorted(hashes))
+        if hashes_are_canonical
+        else ""
+    )
+    actual_set_sha = hashlib.sha256(canonical.encode("ascii")).hexdigest()
+    if (
+        common_input.get("counts", {}).get("total") != 44
+        or expected_count != 44
+        or len(masters) != 44
+        or len(set(hashes)) != 44
+        or not hashes_are_canonical
+        or actual_set_sha != common_input.get("forbiddenSetSha256")
+    ):
+        raise GuardRejected(
+            "NON_ALIAS_INPUT_MALFORMED",
+            {
+                "declaredTotal": common_input.get("counts", {}).get("total"),
+                "declaredForbiddenCount": expected_count,
+                "derivedMasterCount": len(masters),
+                "uniqueDecodedRgbaCount": len(set(hashes)),
+                "expectedForbiddenSetSha256": common_input.get(
+                    "forbiddenSetSha256"
+                ),
+                "actualForbiddenSetSha256": actual_set_sha,
+            },
+        )
+
+
 def repository_path(display_path: str) -> Path:
     path = (REPOSITORY_ROOT / display_path).resolve()
     try:
@@ -95,7 +146,7 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "baselineCommit": "aa20d5963c356eee812f66bafff8582215293bbb",
+        "baselineCommit": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -150,10 +201,13 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
     ):
         raise GuardRejected("COORDINATE_BRIDGE_HOLD_MISMATCH", bridge)
     required_records = {
+        "artContract": authorities.get("artContract"),
         "governingContract": authorities.get("governingContract"),
         "dccContract": authorities.get("dccContract"),
         "prelockRunnerAuthority": authorities.get("prelockRunnerAuthority"),
+        "prelockRepairAuthority": authorities.get("prelockRepairAuthority"),
         "handoffSchema": authorities.get("handoffSchema"),
+        "nonAliasInput": authorities.get("nonAliasInput"),
         "acceptedPredesign.handoff": predesign.get("handoff"),
         "acceptedPredesign.scene": predesign.get("scene"),
         "acceptedPredesign.materials": predesign.get("materials"),
@@ -170,6 +224,22 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         raise GuardRejected("RUNNER_CONTRACT_MALFORMED", {"records": malformed})
     for label, record in required_records.items():
         require_sha(record, label)
+    render = contract.get("invariants", {}).get("render", {})
+    accepted_blender_sha = (
+        "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4"
+    )
+    if (
+        render.get("blenderExecutableSha256") != accepted_blender_sha
+        or len(render.get("blenderExecutableSha256", "")) != 64
+    ):
+        raise GuardRejected(
+            "BLENDER_FINGERPRINT_MISMATCH",
+            {
+                "expected": accepted_blender_sha,
+                "actual": render.get("blenderExecutableSha256"),
+            },
+        )
+    require_non_alias_input(contract)
 
 
 def require_lock(contract: dict[str, Any]) -> dict[str, Any]:
@@ -375,6 +445,11 @@ def render_source(
 
     scene_record = contract["acceptedPredesign"]["scene"]
     scene_descriptor = load_json(repository_path(scene_record["path"]))
+    from literal192_semantic_proof import measure_literal192_semantic_proof
+
+    literal192_metrics = measure_literal192_semantic_proof(
+        scene_descriptor, contract
+    )
     render_settings = contract["invariants"]["render"]
     camera_settings = contract["invariants"]["camera"]
 
@@ -536,9 +611,7 @@ def render_source(
             ],
             "frontageDirection": "south",
         },
-        "literal192": {
-            "state": "requires-post-render-v06-measurement"
-        },
+        "literal192": literal192_metrics,
         "coordinateBridgeAuthority": {
             "path": coordinate_bridge["authorityPath"],
             "commit": coordinate_bridge["authorityCommit"],

@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v10-zero-pixel",
+  "authorityCommit": "9e5b4a59f7346cd89e7b9e9cd3bbc65643d66a24",
+  "authorityFileSHA256": "9422a068cd6f6c136758442a31b2e44040940f1259dd37cd46368aaba036c016",
+  "rejectedParent": "4255b021f743281b60cfdf8cff896235d405be23",
+  "requiredReplayCount": 2,
+  "executedReplayCount": 1,
+  "maximumConcurrency": 1,
+  "processOrder": [
+    "replay-a",
+    "replay-b-not-run"
+  ],
+  "replayA": {
+    "command": "/usr/bin/time -lp python3 -B /Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v10/build_zero_pixel.py --repository-root /Users/James/.codex/worktrees/0648/city-sim --output-root /Users/James/.codex/worktrees/0648/city-sim/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v10/replay-a --replay-id a",
+    "exitCode": 1,
+    "wallSeconds": 0.11,
+    "peakRSSBytes": null,
+    "peakRSSMeasurement": "UNAVAILABLE_AFTER_TIME_TOOL_SYSCTL_PERMISSION_ERROR",
+    "inventory": {
+      "EXACT-192-COLOR.png": "4555aad01bb3cba86f7a26f16c12bf8165463cfe70a6c4553b3f3aa423c2c235",
+      "EXACT-192-GRAYSCALE.png": "e81ccae7c45711d8f0c3054b5be9152c21a0527617d4a6a0a495d50e4cf6a87b",
+      "EXACT-192-SEMANTIC.png": "924b0b22d011360abb6e6ec264531d1e3d9fa2ec46baf6a0217e11e7427ce3f2",
+      "FIELD-DIFF.json": "de5c974ad74fd373ee6d99d93e4baadc5a2f59ec4b14f3651eb3a292db32755e",
+      "MATERIALS.json": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+      "SCENE.json": "0f572b80ec8d17f23e8569816e9a1f17502b114c1a4e361ea582d4ca388f8459",
+      "V08-V09-V10-COMPARISON.png": "14af06a0ec75bcc6a6273f8a2099a529f9091b06ee291c406aca81082a77135e",
+      "VALIDATION.json": "c733cbb8e0c6dc01247bff272bc9fcc21eefe36767ce0d57f33926fb043379eb"
+    },
+    "failedGates": [
+      "westJambUnErodedCoreAtLeast12",
+      "westJambOnePixelErodedCoreAtLeast8",
+      "westJambBoundsAtLeast3x4"
+    ]
+  },
+  "replayB": {
+    "status": "NOT_RUN_FIRST_HYPOTHESIS_FAILURE",
+    "outputRootExists": false
+  },
+  "perFileEquality": "NOT_EVALUATED",
+  "aggregateEquality": "NOT_EVALUATED",
+  "combinedWallSeconds": 0.11,
+  "hardWallSeconds": 120,
+  "hardPeakMemoryBytes": 536870912,
+  "memoryEnvelopeDisposition": "NOT_REACHED_AFTER_FIRST_SEMANTIC_FAILURE",
+  "builderSHA256": "adf59249e41a825b0501c962da2f87f7e070f83a990ee5362f676a3b68144e50",
+  "assemblerSHA256": "c6488f62be534707ee1ff6be93743729378fe825f9cce739d37fe069c4123db2",
+  "analyticOnly": true,
+  "analyticEmissionConsumed": false,
+  "processCounts": {
+    "analytic": 1,
+    "blender": 0,
+    "cycles": 0,
+    "sceneKit": 0,
+    "metal": 0,
+    "imageGen": 0,
+    "normalizer": 0,
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "siblings": 0
+  },
+  "disposition": "REJECTED_FIRST_ZERO_PIXEL_HYPOTHESIS",
+  "sourceAuthority": false,
+  "productionSelected": false
+}

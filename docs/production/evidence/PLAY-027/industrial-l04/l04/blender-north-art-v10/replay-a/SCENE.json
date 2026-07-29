@@ -1,0 +1,203 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "contract": "CONTRACT-020-directional-spatial-bridge-v06",
+  "logicalBuildingID": "industrial_l04",
+  "variantID": "variant-0",
+  "viewDirection": "north",
+  "sourceRevision": "blender-art-v10-prepixel",
+  "sceneGeometryID": "industrial-l04-north-v10-local-portal-repair",
+  "orientationTransform": "none",
+  "authoredIndependently": true,
+  "coordinateBridge": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "descriptorOrder": [0,1,2,3]
+  },
+  "materialLibrary": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v10/MATERIALS.json",
+    "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+  },
+  "camera": {
+    "projection": "orthographic-2-to-1",
+    "positionWorld": [96,101.24557426726288,96],
+    "targetWorld": [0,22.861902498201186,0],
+    "orthographicScale": 79.1959533691406,
+    "renderViewportPixels": [1536,1024],
+    "postProjectionOffsetPixels": [0,128],
+    "sourceGroundCenter": [768,768]
+  },
+  "registration": {
+    "sceneFootprintUnits": [72,72],
+    "tileBasisPoints": [72,36],
+    "contactPolygonWorld": [[-28,-28],[28,-28],[28,28],[-28,28]],
+    "footprintPolygonSource": [[768,640],[1024,768],[768,896],[512,768]],
+    "groundPivotWorld": [28,0,28],
+    "groundPivotSource": [768,896],
+    "frontageSocketWorld": [0,0,-28],
+    "frontageSocketSource": [896,704],
+    "frontageWorld": {
+      "roadEdgeZ": -28,
+      "outwardNormal": [0,0,-1],
+      "courtMinimum": [1,-28],
+      "courtMaximum": [19,18],
+      "portalFacing": "negative-z",
+      "entranceKind": "integrated-operating-foundry-court"
+    },
+    "presentationEnvelopeSource": [256,64,1280,896]
+  },
+  "architecture": {
+    "concept": "monumental-high-bay-operating-foundry",
+    "description": "A broad warm-masonry foundry hall rises through a continuous blue-green high-bay plenum and three integrated monitor masses. A fully exposed monumental portal frames the North operating court, three deliberate freight recesses form one road-facing logistics rhythm, and a thick hot-process band anchors the oxidized furnace without allowing the subordinate stack to define the silhouette.",
+    "primaryMassComponentIDs": [
+      "north-v09-main-foundry-hall",
+      "north-v09-rear-process-hall",
+      "north-v09-rear-loading-link",
+      "north-v09-east-assembly-return",
+      "north-v09-raised-high-bay"
+    ],
+    "courtComponentIDs": [
+      "north-v09-court-spine",
+      "north-v09-court-head"
+    ],
+    "portalFrameComponentIDs": [
+      "north-v09-portal-jamb-west",
+      "north-v09-portal-jamb-east",
+      "north-v09-portal-header",
+      "north-v09-portal-inset"
+    ],
+    "freightRecessIDs": [
+      "north-v09-freight-recess-a",
+      "north-v09-freight-recess-b",
+      "north-v09-freight-recess-c"
+    ],
+    "staffEntryIDs": [
+      "north-v09-staff-door",
+      "north-v09-staff-header",
+      "north-v09-staff-canopy"
+    ],
+    "hotProcessComponentIDs": [
+      "north-v09-furnace-body",
+      "north-v09-furnace-shoulder",
+      "north-v09-furnace-mouth",
+      "north-v09-furnace-heat-band"
+    ],
+    "gantryComponentIDs": [
+      "north-v09-gantry-pier-west",
+      "north-v09-gantry-pier-east",
+      "north-v09-gantry-girder-a",
+      "north-v09-gantry-girder-b",
+      "north-v09-gantry-trolley"
+    ]
+  },
+  "components": [
+    {"id":"north-v09-foundation","shape":"box","group":"foundation","dimensions":[56,0.6,56],"position":[0,0.3,0],"materialID":"v09-grounded-foundation","bevel":0.10},
+    {"id":"north-v09-court-spine","shape":"box","group":"operating-court","dimensions":[25,0.2,28],"position":[15.5,0.72,-14],"materialID":"v09-operating-apron","bevel":0.03},
+    {"id":"north-v09-court-head","shape":"box","group":"operating-court","dimensions":[26,0.2,18],"position":[8,0.72,9],"materialID":"v09-operating-apron","bevel":0.03},
+    {"id":"north-v09-main-foundry-hall","shape":"box","group":"primary-mass","dimensions":[29.8,24,43],"position":[-13.1,13,5.5],"materialID":"v09-warm-foundry-masonry","bevel":0.34},
+    {"id":"north-v09-rear-process-hall","shape":"box","group":"primary-mass","dimensions":[9.6,24,18.8],"position":[13,13,17.6],"materialID":"v09-warm-foundry-masonry","bevel":0.34},
+    {"id":"north-v09-rear-loading-link","shape":"box","group":"primary-mass","dimensions":[6,18,18],"position":[5,10,18],"materialID":"v09-warm-foundry-masonry","bevel":0.28},
+    {"id":"north-v09-east-assembly-return","shape":"box","group":"primary-mass","dimensions":[9.6,20,23],"position":[23.2,11,15.9],"materialID":"v09-warm-foundry-masonry","bevel":0.30},
+    {"id":"north-v09-raised-high-bay","shape":"box","group":"primary-mass","dimensions":[44,17.3,30],"position":[-6,33.85,7],"materialID":"v09-bluegreen-roof","bevel":0.26},
+    {"id":"north-v09-high-bay-cap","shape":"box","group":"roof-edge","dimensions":[43.6,1.2,29.6],"position":[-6,43.2,7],"materialID":"v09-roof-edge","bevel":0.12},
+    {"id":"north-v09-process-hall-cap","shape":"box","group":"roof-edge","dimensions":[9.2,1.2,18.4],"position":[13,29.8,17.6],"materialID":"v09-roof-edge","bevel":0.12},
+    {"id":"north-v09-loading-link-cap","shape":"box","group":"roof-edge","dimensions":[5.6,1.0,17.6],"position":[5,19.7,18],"materialID":"v09-roof-edge","bevel":0.10},
+    {"id":"north-v09-east-return-cap","shape":"box","group":"roof-edge","dimensions":[9.2,1.0,22.6],"position":[23.2,21.7,15.9],"materialID":"v09-roof-edge","bevel":0.10},
+    {"id":"north-v09-monitor-a","shape":"box","group":"roof-equipment","dimensions":[10,4,10],"position":[-22,45.9,-1],"materialID":"v09-oxidized-machinery","bevel":0.18},
+    {"id":"north-v09-monitor-b","shape":"box","group":"roof-equipment","dimensions":[10,4,10],"position":[-10,45.9,7],"materialID":"v09-oxidized-machinery","bevel":0.18},
+    {"id":"north-v09-monitor-c","shape":"box","group":"roof-equipment","dimensions":[10,4,10],"position":[2,45.9,15],"materialID":"v09-oxidized-machinery","bevel":0.18},
+    {"id":"north-v09-clerestory-west","shape":"box","group":"facade-articulation","dimensions":[0.25,8,20],"position":[16.15,37,7],"materialID":"v09-warm-glazing","bevel":0.04},
+    {"id":"north-v09-clerestory-south","shape":"box","group":"facade-articulation","dimensions":[32,8,0.25],"position":[-6,37,-8.1],"materialID":"v09-warm-glazing","bevel":0.04},
+    {"id":"north-v09-portal-jamb-west","shape":"box","group":"integrated-portal","dimensions":[3,18,3],"position":[8.0,10,-14.3],"materialID":"v10-freight-frame","bevel":0.18},
+    {"id":"north-v09-portal-jamb-east","shape":"box","group":"integrated-portal","dimensions":[3,18,3],"position":[25.5,10,-14.3],"materialID":"v10-freight-frame","bevel":0.18},
+    {"id":"north-v09-portal-header","shape":"box","group":"integrated-portal","dimensions":[22,4,3],"position":[16,21,-14.3],"materialID":"v10-freight-frame","bevel":0.20},
+    {"id":"north-v09-portal-inset","shape":"box","group":"integrated-portal","dimensions":[16.5,16,0.5],"position":[16,9,-10.15],"materialID":"v09-deep-freight-void","bevel":0.03},
+    {"id":"north-v09-freight-recess-a","shape":"box","group":"freight-recess","dimensions":[6,12,0.2],"position":[-8,7,27.2],"materialID":"v09-deep-freight-void","bevel":0.03},
+    {"id":"north-v09-freight-recess-b","shape":"box","group":"freight-recess","dimensions":[6,12,0.2],"position":[-1,7,27.2],"materialID":"v09-deep-freight-void","bevel":0.03},
+    {"id":"north-v09-freight-recess-c","shape":"box","group":"freight-recess","dimensions":[6,12,0.2],"position":[6,7,27.2],"materialID":"v09-deep-freight-void","bevel":0.03},
+    {"id":"north-v09-freight-header-a","shape":"box","group":"freight-frame","dimensions":[6.6,2,0.4],"position":[-8,14.2,27.65],"materialID":"v10-freight-frame","bevel":0.06},
+    {"id":"north-v09-freight-header-b","shape":"box","group":"freight-frame","dimensions":[6.6,2,0.4],"position":[-1,14.2,27.65],"materialID":"v10-freight-frame","bevel":0.06},
+    {"id":"north-v09-freight-header-c","shape":"box","group":"freight-frame","dimensions":[6.6,2,0.4],"position":[6,14.2,27.65],"materialID":"v10-freight-frame","bevel":0.06},
+    {"id":"north-v09-freight-post-a","shape":"box","group":"freight-frame","dimensions":[0.6,14,0.4],"position":[-11.3,7.2,27.65],"materialID":"v09-masonry-edge","bevel":0.05},
+    {"id":"north-v09-freight-post-b","shape":"box","group":"freight-frame","dimensions":[0.6,14,0.4],"position":[-4.5,7.2,27.65],"materialID":"v09-masonry-edge","bevel":0.05},
+    {"id":"north-v09-freight-post-c","shape":"box","group":"freight-frame","dimensions":[0.6,14,0.4],"position":[2.5,7.2,27.65],"materialID":"v09-masonry-edge","bevel":0.05},
+    {"id":"north-v09-freight-post-d","shape":"box","group":"freight-frame","dimensions":[0.6,14,0.4],"position":[9.3,7.2,27.65],"materialID":"v09-masonry-edge","bevel":0.05},
+    {"id":"north-v09-gantry-pier-west","shape":"box","group":"subordinate-gantry","dimensions":[1,20,2],"position":[2.45,11,4],"materialID":"v09-charcoal-steel","bevel":0.14},
+    {"id":"north-v09-gantry-pier-east","shape":"box","group":"subordinate-gantry","dimensions":[1,20,2],"position":[17.55,11,4],"materialID":"v09-charcoal-steel","bevel":0.14},
+    {"id":"north-v09-gantry-girder-a","shape":"box","group":"subordinate-gantry","dimensions":[16.1,2,1],"position":[10,22,3.2],"materialID":"v09-charcoal-steel","bevel":0.14},
+    {"id":"north-v09-gantry-girder-b","shape":"box","group":"subordinate-gantry","dimensions":[16.1,2,1],"position":[10,22,4.8],"materialID":"v09-bluegreen-roof","bevel":0.14},
+    {"id":"north-v09-gantry-trolley","shape":"box","group":"subordinate-gantry","dimensions":[4,2.5,3],"position":[7,19.7,4],"materialID":"v09-oxidized-machinery","bevel":0.18},
+    {"id":"north-v09-furnace-body","shape":"octagonal-prism","group":"hot-process","dimensions":[8,12,8],"position":[13,36.5,18],"materialID":"v09-oxidized-machinery","bevel":0.10},
+    {"id":"north-v09-furnace-shoulder","shape":"octagonal-prism","group":"hot-process","dimensions":[10,3,10],"position":[13,44.2,18],"materialID":"v09-oxidized-machinery","bevel":0.08},
+    {"id":"north-v09-furnace-mouth","shape":"octagonal-prism","group":"hot-process","dimensions":[7,2.5,7],"position":[13,47.2,18],"materialID":"v09-charcoal-steel","bevel":0.06},
+    {"id":"north-v09-furnace-heat-band","shape":"octagonal-prism","group":"hot-process","dimensions":[10,7,10],"position":[13,39,18],"materialID":"v09-hot-process","bevel":0.06},
+    {"id":"north-v09-boiler-block","shape":"box","group":"stack-and-boiler","dimensions":[9,7,10],"position":[-21,38.2,19],"materialID":"v09-charcoal-steel","bevel":0.22},
+    {"id":"north-v09-subordinate-stack","shape":"octagonal-prism","group":"stack-and-boiler","dimensions":[5,18,5],"position":[-21,51,19],"materialID":"v09-charcoal-steel","bevel":0.07},
+    {"id":"north-v09-staff-door","shape":"box","group":"staff-entry","dimensions":[5,10,0.2],"position":[23,6,27.6],"materialID":"v09-staff-door","bevel":0.05},
+    {"id":"north-v09-staff-header","shape":"box","group":"staff-entry","dimensions":[7,2,0.2],"position":[23,12.2,27.6],"materialID":"v09-masonry-edge","bevel":0.06},
+    {"id":"north-v09-staff-canopy","shape":"box","group":"staff-entry","dimensions":[8,0.8,3],"position":[23,14,26],"materialID":"v09-charcoal-steel","bevel":0.10},
+    {"id":"north-v09-staff-glazing","shape":"box","group":"staff-entry","dimensions":[3,4,0.2],"position":[19,8.5,27.6],"materialID":"v09-warm-glazing","bevel":0.04},
+    {"id":"north-v09-east-louver","shape":"box","group":"facade-articulation","dimensions":[6,5,0.2],"position":[25,15,27.6],"materialID":"v09-service-panel","bevel":0.04}
+  ],
+  "visibilityTargets": {
+    "compactPixels": [192,128],
+    "courtComponentIDs": ["north-v09-court-spine","north-v09-court-head"],
+    "minimumVisibleCourtPixels": 32,
+    "maximumSocketDistancePixels": 2,
+    "portalApertureCitySimAABB": [[9.5,1.2,-16],[24,19,-10]],
+    "minimumPortalCompactBounds": [12,14],
+    "minimumPortalJambSemanticCorePixels": 8,
+    "minimumVisibleFreightRecessCount": 3,
+    "minimumFreightFrameLumaOverFacade": 15,
+    "minimumHotProcessCompactBounds": [7,5],
+    "minimumHotProcessLumaOverSurround": 30,
+    "minimumGrayscaleMassTiers": 3,
+    "staffEntryComponentID": "north-v09-staff-door",
+    "minimumStaffCompactBounds": [3,6],
+    "minimumOccupiedCompactBounds": [64,58],
+    "maximumOccupiedCompactBounds": [64,60],
+    "minimumPrimaryMassVisibleShare": 0.36,
+    "maximumGantryVisibleShare": 0.16,
+    "minimumDistinctValueGroups": 6
+  },
+  "light": {
+    "keyOrigin": [-80,120,-80],
+    "shadowVectorSource": [2,1],
+    "shadowDirection": "southeast"
+  },
+  "shadow": {
+    "id": "north-v09-authored-southeast-contact",
+    "polygonWorldXZ": [[-25,-18],[25,-18],[25,25],[-25,25]],
+    "offsetWorldXZ": [3.5,1.75],
+    "opacity": 0.07
+  },
+  "cycles": {
+    "device": "CPU",
+    "threads": 1,
+    "seed": 2704,
+    "samples": 64,
+    "adaptiveSampling": false,
+    "denoising": false,
+    "motionBlur": false,
+    "transparentFilm": true,
+    "resolution": [1536,1024],
+    "resolutionPercentage": 100,
+    "pixelAspect": [1,1],
+    "worldStrength": 0.28,
+    "northwestSunEnergy": 1.4,
+    "northwestSunAngleRadians": 0.08,
+    "maxBounces": 4,
+    "colorManagement": {
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "None",
+      "exposure": 0,
+      "gamma": 1
+    }
+  },
+  "pixelProduction": "not_produced",
+  "processes": {"A":"not_produced","B":"not_produced","C":"not_produced"},
+  "sourceAuthority": false,
+  "productionSelected": false
+}

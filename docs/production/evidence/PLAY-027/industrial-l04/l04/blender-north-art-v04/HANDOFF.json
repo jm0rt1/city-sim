@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "stage": "predesign",
+  "task": "PLAY-027",
+  "branch": "codex/citysim-world-art",
+  "baseAuthority": "fd5fe7b956b645acb9a7599cb8780df4873ee628",
+  "familyContract": {
+    "version": "industrial-l04-blender-north-art-v04",
+    "file": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-BLENDER-NORTH-ART-V04-AUTHORITY.md",
+    "sha256": "cd6c61ffd9c0dacbc579b80ed4f4c7b0bb089909167f09bbf47c8ce5879c62ef"
+  },
+  "family": "industrial-l04-variant-0",
+  "direction": "north",
+  "sourceRevision": "blender-art-v04-plane-audit",
+  "returnedCandidate": "ba2c41270092263367ef2b259c70518317dc8deb",
+  "hashes": {
+    "preservedV03Scene": "e333caca586c78aa5f1cf7f10d8c962a130b887e9cbafdd1465753f1405254f0",
+    "preservedV03Materials": "474952f3f28a880d5517bab4e964c8bcdd6d773ffa5349c515b1831f58e92fab",
+    "proofContract": "eb98134a950cab5f7c431a2e9d4f8a88bb272a3735d78e0e6aa2181c398734c3",
+    "proofTool": "976405c5bf0e0c121d3d08f8efa3fd95c678bd8a28eaf0250b63203abade7f29"
+  },
+  "geometry": {
+    "footprintWorldXZ": [[-28,-28],[28,-28],[28,28],[-28,28]],
+    "pivotSource": [768,896],
+    "socketSource": [896,704],
+    "socketWorld": [-28,0,0],
+    "portalFacing": "positive-x",
+    "mostPermissiveExteriorCourtMinimumX": 16,
+    "light": "northwest",
+    "shadow": "southeast"
+  },
+  "validationReports": [
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v04/prepixel/PROOF-MANIFEST.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v04/prepixel/proof/PORTAL-PLANE-PROOF.json",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v04/prepixel/proof/PORTAL-PLANE-SOCKET.png",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v04/prepixel/proof/DISPOSITION.md"
+  ],
+  "pixelProduction": "not_produced",
+  "processes": {
+    "A": "not_produced",
+    "B": "not_produced",
+    "C": "not_produced"
+  },
+  "disposition": "STOP_PORTAL_PLANE_CONTRADICTION",
+  "knownBlockers": [
+    "The preserved +X portal exterior half-plane begins at X=16, while the governed North socket is at X=-28",
+    "The continuous exact minimum over the legal exterior court is 16.272240 compact pixels from the socket, exceeding the 2-pixel gate",
+    "Hidden connectors are not final rendered player-visible apron material; under-building connectors lie outside the legal visible X>=16 exterior-court support",
+    "The contradiction requires separate portal-plane relocation authority and cannot be cured by concealed geometry",
+    "A/B/C and all sibling pixels remain blocked pending separate portal-plane relocation authority"
+  ],
+  "sourceAuthority": false,
+  "productionSelected": false
+}

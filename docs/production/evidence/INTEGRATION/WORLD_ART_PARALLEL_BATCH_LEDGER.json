@@ -1,14 +1,14 @@
 {
   "schema": 2,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-29T07:16:45Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0716Z.json",
+  "updatedAt": "2026-07-29T07:22:52Z",
+  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-29T0722Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1",
-    "technicalHeadBeforeLedger": "b8c7725cd9df3ac58af1d2bc6446c4ae00cdb0b1"
+    "publishedBase": "e9e9ed38bd2abbd720cce9e337b77547494f6ea8",
+    "technicalHeadBeforeLedger": "e9e9ed38bd2abbd720cce9e337b77547494f6ea8"
   },
   "stateMachine": [
     "contract_pending",
@@ -50,6 +50,11 @@
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V09-REDESIGN-AUTHORITY.md",
       "sha256": "907a608ddd61efa98fb3f932e0388f2619185b5febd78c744b0b28d839ba156f",
       "status": "published_zero_pixel_only"
+    },
+    "northProcessAAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V09-PROCESS-A-AUTHORITY.md",
+      "sha256": "c27937305414cfef52bf3fe534be0d98166fc782fa596741fb2a093732f4eb82",
+      "status": "authorized_exactly_one_north_process_a"
     },
     "appearanceLock": {
       "path": null,
@@ -95,17 +100,17 @@
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "claim": "PLAY-027",
       "publishedBase": "9b9673c545e3c2af4809d340e4e25741a7e6c42c",
-      "head": "c794d72c2fdd33b6c51d03690432a5cb3d5be7e7",
+      "head": "94981f22a52c13c79f2d238e9957cae8d6a2ad12",
       "state": "predesign",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-29T07:10:30Z",
       "claimRevision": "bbc7951e5c8b1561ba2763929ebe014682545eee450957099ead10b65576c862",
-      "cleanState": "dirty_task_owned_untracked_v09_and_generated_pycache",
-      "blocker": "v08_process_a_returned_literal_scale_appearance_gate",
-      "nextAction": "finish_validate_and_commit_v09_zero_pixel_redesign_excluding_pycache",
-      "boundedDeliverable": "one_validated_v09_zero_pixel_checkpoint_with_monumentality_portal_and_value_proofs",
-      "stopCondition": "no_dcc_or_pixels_and_stop_on_shared_surface_or_authority_drift",
-      "updatedAt": "2026-07-29T07:13:49Z"
+      "cleanState": "clean_exact_prepixel_candidate",
+      "blocker": "appearance_lock_requires_real_north_process_a_review",
+      "nextAction": "run_exactly_one_fresh_north_process_a_and_stop",
+      "boundedDeliverable": "one_durable_north_process_a_raw_semantic_provenance_and_literal_scale_review_packet",
+      "stopCondition": "no_process_b_or_c_no_sibling_pixels_no_appearance_lock_or_source_admission",
+      "updatedAt": "2026-07-29T07:22:52Z"
     },
     {
       "lane": "world_art",
@@ -115,17 +120,17 @@
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
       "claim": "PLAY-079",
       "publishedBase": "8214ba39d88ec30a28597e65a10f1b0bc5e1759e",
-      "head": "83a256cff555ecbf1f16d3b80a13a6c774f2cc20",
+      "head": "2f90d30de9221fa39d117055064551a5ac5e6701",
       "state": "predesign",
-      "dispatchState": "working",
+      "dispatchState": "review_pending",
       "acknowledgedAt": "2026-07-29T07:10:30Z",
       "claimRevision": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab",
-      "cleanState": "clean_at_dispatch",
+      "cleanState": "clean_exact_locator_inventory_candidate",
       "blocker": "appearance_lock_and_source_profile_intentionally_absent",
-      "nextAction": "publish_east_owned_machine_readable_renderer_locator_inventory",
-      "boundedDeliverable": "one_fail_closed_locator_inventory_for_existing_reserved_inline_derived_and_unassigned_east_inputs",
-      "stopCondition": "no_shared_schema_invention_no_blender_no_pixels_and_stop_on_root_escape",
-      "updatedAt": "2026-07-29T07:10:30Z"
+      "nextAction": "independent_review_of_east_locator_inventory",
+      "boundedDeliverable": "read_only_comparison_to_renderer_proposal_while_exact_candidate_is_frozen",
+      "stopCondition": "no_candidate_mutation_shared_schema_invention_blender_or_pixels",
+      "updatedAt": "2026-07-29T07:22:52Z"
     },
     {
       "lane": "world_art",
@@ -135,17 +140,17 @@
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
       "claim": "PLAY-080",
       "publishedBase": "0186066bb88d78dc8dab4be03296d418ea2e259a",
-      "head": "f3744cb0e9277979b6cc714b28afdf3e48adf684",
-      "state": "returned",
+      "head": "a4f0827e1a84108772a068daefdc0b098297355d",
+      "state": "predesign",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-29T07:10:30Z",
       "claimRevision": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
-      "cleanState": "clean_exact_candidate_frozen",
-      "blocker": "early_guard_rejection_can_write_caller_supplied_report_path_before_profile_lock_validation",
-      "nextAction": "repair_fail_closed_abc_prelock_rejection_and_prove_zero_file_creation",
-      "boundedDeliverable": "one_linear_repair_commit_descending_from_f3744cb0_with_abc_subprocess_no_write_proofs",
-      "stopCondition": "no_pixels_blender_normalization_sync_push_or_unrelated_contract_changes",
-      "updatedAt": "2026-07-29T07:10:30Z"
+      "cleanState": "clean_accepted_worker_candidate_before_sync",
+      "blocker": "appearance_lock_and_source_profile_intentionally_absent",
+      "nextAction": "sync_published_e9e9ed38_and_publish_south_renderer_locator_inventory",
+      "boundedDeliverable": "one_fail_closed_south_locator_inventory_without_pixels",
+      "stopCondition": "stop_on_sync_conflict_and_no_shared_schema_invention_blender_or_pixels",
+      "updatedAt": "2026-07-29T07:22:52Z"
     },
     {
       "lane": "world_art",
@@ -155,17 +160,17 @@
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
       "claim": "PLAY-081",
       "publishedBase": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
-      "head": "662bc89d0ad8d1856aabd4a37c9b24b57e34f32b",
-      "state": "predesign",
+      "head": "8ed32d56e5a468d4602832186575eb3aba72ff0d",
+      "state": "returned",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-29T07:10:30Z",
       "claimRevision": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8",
-      "cleanState": "dirty_task_owned_launch_plumbing",
-      "blocker": "appearance_lock_and_source_profile_intentionally_absent",
-      "nextAction": "finish_validate_and_commit_one_focused_west_launch_plumbing_checkpoint",
-      "boundedDeliverable": "one_fail_closed_launch_bound_and_immutable_abc_checkpoint_without_pixels",
-      "stopCondition": "no_sync_cleanup_blender_pixels_or_shared_surface_edits_before_commit",
-      "updatedAt": "2026-07-29T07:10:30Z"
+      "cleanState": "clean_returned_candidate_at_dispatch",
+      "blocker": "arbitrary_validator_output_and_in_repo_process_root_symlink_escape",
+      "nextAction": "bind_exact_task_output_and_reject_all_symlinked_abc_root_components",
+      "boundedDeliverable": "one_focused_path_safety_repair_with_shared_outside_and_symlink_redirect_tests",
+      "stopCondition": "no_blender_pixels_normalization_sync_push_or_unrelated_changes",
+      "updatedAt": "2026-07-29T07:22:52Z"
     },
     {
       "lane": "world_rendering",
@@ -175,17 +180,17 @@
       "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
       "claim": "PLAY-073",
       "publishedBase": "8214ba39d88ec30a28597e65a10f1b0bc5e1759e",
-      "head": "375a2290e62f2a43f3230241282dc3a3d69b9cb4",
+      "head": "babee695bd849dbee44ff489fbc3e721c5a6b1d9",
       "state": "intake_preparing",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-29T07:16:45Z",
       "claimRevision": "4199f9da2f7955e85db4a3173e67ce2d8487fc9150266de34b4198f847afddf1",
-      "cleanState": "clean_exact_candidate_frozen",
+      "cleanState": "clean_in_progress_repair_checkpoint",
       "blocker": "file_backed_assembler_path_containment_does_not_resolve_symlinks",
       "nextAction": "repair_canonical_path_containment_and_add_input_and_output_symlink_escape_tests",
       "boundedDeliverable": "one_narrow_descendant_repair_plus_refreshed_focused_nonshipping_proof",
       "stopCondition": "no_app_runtime_resource_atlas_package_fixture_activation_or_shared_authority_publication",
-      "updatedAt": "2026-07-29T07:16:45Z"
+      "updatedAt": "2026-07-29T07:22:52Z"
     },
     {
       "lane": "playtest_quality",
@@ -195,17 +200,17 @@
       "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
       "claim": "PLAY-075",
       "publishedBase": "b36bb1b1c680978328208716ca4a59caf8729f39",
-      "head": "916cb4325135d0f445240a7bfdc84303721a95a0",
+      "head": "7e6bd4c6c2980faf204e69ada38478a1b3455bff",
       "state": "preregistered",
-      "dispatchState": "working",
+      "dispatchState": "review_pending",
       "acknowledgedAt": "2026-07-29T07:10:30Z",
       "claimRevision": "6e8df744fe19a0aade9ea24d455bc84976e8ba21552436b92be4932d495ac74f",
-      "cleanState": "clean_at_dispatch",
+      "cleanState": "clean_exact_execution_plan_candidate",
       "blocker": "exact_4of4_renderer_candidate_not_yet_available",
-      "nextAction": "publish_candidate_neutral_machine_readable_qa_execution_plan",
-      "boundedDeliverable": "one_serialized_acquisition_and_parallel_post_capture_analysis_dag",
-      "stopCondition": "no_app_launch_live_measurement_scoring_or_final_disposition_before_exact_4of4_authority",
-      "updatedAt": "2026-07-29T07:10:30Z"
+      "nextAction": "independent_review_of_candidate_neutral_qa_execution_plan",
+      "boundedDeliverable": "read_only_evidence_root_and_join_dependency_inventory_while_candidate_is_frozen",
+      "stopCondition": "no_candidate_mutation_app_launch_pixels_measurement_scoring_or_disposition",
+      "updatedAt": "2026-07-29T07:22:52Z"
     }
   ]
 }

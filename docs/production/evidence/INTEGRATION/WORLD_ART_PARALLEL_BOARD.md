@@ -14,8 +14,8 @@
 | East | `codex/citysim-world-art-east` / `PLAY-079` | v06 zero-pixel runner passes; shared source-schema/non-alias binding released | fail-closed launch-bound packet, no pixels |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | v06 proof accepted; fingerprint and literal-192 runner repairs released | corrected zero-pixel runner and launch-bound packet |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | v06 proof accepted; ancestry and stdlib PNG validation repairs released | corrected zero-pixel runner and launch-bound packet |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | bridge quarantine passes 7/7; file-backed packet and neutral 5d fixture prep dispatched | return intake-ahead harness; no source ingestion |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | family gate preregistered; candidate-neutral fixture materializer dispatched | return deterministic receipt; no candidate scoring |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | file-backed preparation returned because JSONDecoder accepted unknown schema fields; strict shape repair acknowledged | reject unknown top-level/nested fields, rerun focused gates |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | materializer preparation returned because a synthetic mode flip could declare eligibility; admission-manifest repair acknowledged | reject unverified candidate/packet identities, rerun receipt gates |
 
 ## Dispatch invariant
 

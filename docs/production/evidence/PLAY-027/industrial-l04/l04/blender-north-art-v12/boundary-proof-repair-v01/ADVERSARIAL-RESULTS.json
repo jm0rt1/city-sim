@@ -1,0 +1,41 @@
+{
+  "allAdversarialCasesRejected": true,
+  "caseCount": 6,
+  "cases": [
+    {
+      "case": "forged-true-with-missing-reveal-face",
+      "error": "authorized triangular-prism mesh/order drift",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "unauthorized-prism-face-order-reversal",
+      "error": "authorized triangular-prism mesh/order drift",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "reveal-plane-gap",
+      "error": "authorized triangular-prism mesh/order drift",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "semantic-owner-split",
+      "error": "west-pier-exterior-camera-reveal: second semantic owner drift",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "inset-interface-gap",
+      "error": "portal-inset-east-west-lower: exactly one interface face per component required",
+      "result": "PASS_REJECTED"
+    },
+    {
+      "case": "high-bay-interface-gap",
+      "error": "raised-high-bay-main-east-upper: exactly one interface face per component required",
+      "result": "PASS_REJECTED"
+    }
+  ],
+  "literalTrueCannotPass": true,
+  "passed": true,
+  "schema": 1,
+  "stage": "north-v12-compound-mesh-adversarial-proof",
+  "task": "PLAY-027"
+}

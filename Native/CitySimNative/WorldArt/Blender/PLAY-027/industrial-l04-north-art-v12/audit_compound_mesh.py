@@ -286,6 +286,7 @@ def audit_interface(scene: dict[str, Any], specification: dict[str, Any]) -> dic
     if second["semanticOwnerID"] != specification["semanticOwnerID"]:
         raise RuntimeError(f"{specification['name']}: second semantic owner drift")
     low, high, shared_area = shared_rectangle(first, second, specification["axis"])
+    shared_area = round(shared_area, 6)
     if abs(shared_area - specification["expectedSharedArea"]) > 0.000001:
         raise RuntimeError(
             f"{specification['name']}: expected shared area "
@@ -321,7 +322,7 @@ def audit_interface(scene: dict[str, Any], specification: dict[str, Any]) -> dic
             "cancel-both-coplanar-same-owner-face-fragments-by-geometric-occupancy"
         ),
         "removedFaceFragmentCount": 2,
-        "removedInternalFaceArea": 2.0 * shared_area,
+        "removedInternalFaceArea": round(2.0 * shared_area, 6),
         "remainingInternalFaceArea": 0.0,
         "passed": True,
     }
@@ -337,9 +338,12 @@ def audit_scene(scene: dict[str, Any]) -> dict[str, Any]:
         for item in scene["components"]
         for face in mesh_faces(item)
     ]
-    input_area = sum(face["area"] for face in all_faces)
+    input_area = round(sum(face["area"] for face in all_faces), 6)
     interfaces = [audit_interface(scene, specification) for specification in INTERFACES]
-    removed_area = sum(item["removedInternalFaceArea"] for item in interfaces)
+    removed_area = round(
+        sum(item["removedInternalFaceArea"] for item in interfaces),
+        6,
+    )
 
     exterior = component(scene, "v12-west-pier-exterior")
     header = component(scene, "north-v09-portal-header")
@@ -371,7 +375,7 @@ def audit_scene(scene: dict[str, Any]) -> dict[str, Any]:
             item["removedFaceFragmentCount"] for item in interfaces
         ),
         "removedInternalFaceArea": removed_area,
-        "compoundBoundarySurfaceArea": input_area - removed_area,
+        "compoundBoundarySurfaceArea": round(input_area - removed_area, 6),
         "remainingInternalFaceArea": sum(
             item["remainingInternalFaceArea"] for item in interfaces
         ),

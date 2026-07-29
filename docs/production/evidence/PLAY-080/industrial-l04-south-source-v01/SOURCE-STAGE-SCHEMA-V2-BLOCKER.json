@@ -4,17 +4,19 @@
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
   "publishedBaseline": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
-  "state": "awaiting_integration_source_stage_schema_v2",
+  "state": "resolved_by_published_source_stage_schema_v2",
   "sharedV1Path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v1.json",
   "sharedV1FinalBinding": false,
   "sharedV1Validation": "not_run",
   "sharedV1Mutation": false,
   "reason": "Integration held v1 because its additionalProperties:false raster composition prevents valid source-candidate LOD records and it under-binds direction, socket, and sourceKey relationships.",
   "resumeRequirement": {
-    "immutableV2Path": null,
-    "immutableV2Sha256": null,
-    "authorityCommit": null
+    "immutableV2Path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "immutableV2Sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+    "authorityCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8"
   },
+  "resolved": true,
+  "sourceProductionProfilePending": true,
   "nonSchemaRepairMayContinue": true,
   "pixelProductionAuthorized": false,
   "processA": "not_run",

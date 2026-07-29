@@ -3,9 +3,9 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "publishedBaseline": "21b666dae9a7a0ffc0029213bc2f3a91844db4c1",
-  "baselineMergeCommit": "8cdbe6d1e5d822842e883e7eb6de4fd838b31251",
-  "preservedCandidateAncestor": "a8fa0f51c3baa5b79bc3671e1a8fe75c9ad1f874",
+  "publishedBaseline": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "baselineMergeCommit": "ec16ce119627b7f8213c280cffcb901c317f34fd",
+  "preservedCandidateAncestor": "37c9845be39acc349cc80c6a90b2462a534ff01b",
   "repair": {
     "blenderExecutableSha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
     "blenderFingerprintLength": 64,
@@ -31,35 +31,58 @@
   "proofs": {
     "literal192Semantic": {
       "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-SEMANTIC-PROOF.json",
-      "sha256": "19e9e72aa8959a59e52c644e2426093ac8e81ed3a6c101766fed598bde2c9edb",
+      "sha256": "53f6121066d0b0578d0967ed5742fc8a25b33aa443b0d401e7f02b2546fd6855",
       "result": "PASS"
     },
     "prelockRepair": {
       "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-REPAIR-VALIDATION.json",
-      "sha256": "8cb2a8fed294e3b2b9fd37e650417df0aff1eacf9ca0547d3d894ac384ae07d6",
+      "sha256": "a0f9ff7eb55aead7dca0883768bf2c24fd31f9e301e0591aba92c69c08a4d44c",
       "static": "PASS",
       "describe": "PASS",
       "guard": "PASS"
     },
     "runnerStatic": {
       "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/RUNNER-STATIC-VALIDATION.json",
-      "sha256": "ed8c3b8d059d61c0771dcd173dc33f508b36da5f30a61d4cd2a9683eb3d7c833",
+      "sha256": "c6ced09c71d90c14251625e24c7297eb9d7d159ecce3c9e2c834032474da9dae",
       "result": "PASS"
     },
     "prelockHandoff": {
       "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-RUNNER-HANDOFF.json",
-      "sha256": "c134c9e5bcab8f35e05d3e86cb8906935aef67973d75ab302f6cd47145547e43",
+      "sha256": "08c1e2f00c64ed31a2065958cb85efab1a2aac8622cd49b63589e61969724f56",
       "schemaReceiptPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/HANDOFF-SCHEMA-VALIDATION.json",
-      "schemaReceiptSha256": "bcefc277e7c300c1507d9429453691fabe39b196936c99a2a1e3e9054962aa32",
+      "schemaReceiptSha256": "74b2d026d03f9b4b27c726415e0ec208267d1a890fc6f17c950c9c1338362757",
       "result": "PASS"
     }
   },
   "sourceStageSchema": {
-    "state": "awaiting_integration_source_stage_schema_v2",
+    "state": "source_stage_schema_v2_bound_profile_pending",
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
     "v1FinalBinding": false,
     "v1Validation": "not_run",
-    "blockerPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-SCHEMA-V2-BLOCKER.json",
-    "blockerSha256": "95fab389ebd4b6b8c69a50f32414aa8a228f064653cdd04cbf4ced10c5e1da31"
+    "v2SchemaDocumentValidation": "PASS",
+    "v2LaunchBoundInstanceValidation": "not_run_missing_source_production_profile",
+    "bindingReceiptPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-V2-SCHEMA-BINDING.json",
+    "bindingReceiptSha256": "a701c7518c8b768555971168a77f36e38c268aa922aa6acbb9cfdd2b7fb0255a",
+    "formerBlockerPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-SCHEMA-V2-BLOCKER.json",
+    "formerBlockerSha256": "aaf49b37736ef59f1af9d26f9a60f6dfadf8459a344799f9d82da57ee011e2e5",
+    "sourceProductionProfile": null,
+    "missingProfileRejection": "MISSING_SOURCE_PRODUCTION_PROFILE",
+    "missingProfileRejectionStage": "before_renderer_launch",
+    "sharedTools": {
+      "nonAliasLoader": {
+        "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+        "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+      },
+      "semanticValidator": {
+        "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+        "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+      },
+      "canonicalDecoder": {
+        "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+        "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+      }
+    }
   },
   "invocations": {
     "blenderProcessLaunches": 0,
@@ -76,5 +99,5 @@
   "sourceReady": false,
   "productionSelected": false,
   "selfAccepted": false,
-  "disposition": "non_schema_prelock_repair_ready_schema_v2_blocked"
+  "disposition": "source_stage_v2_bound_profile_pending_zero_pixel"
 }

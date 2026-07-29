@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import copy
 import hashlib
 import json
@@ -145,11 +146,14 @@ def validate_missing_authority_cli() -> dict[str, Any]:
             raise RuntimeError(f"{command}: code={code}, stderr={stderr!r}")
         if payload.get("code") != "missing_future_integration_authorities":
             raise RuntimeError(f"{command}: {payload}")
+        if set(payload.get("detail", [])) != set(orchestrator.PRODUCTION_ARGUMENTS):
+            raise RuntimeError(f"{command}: incomplete mandatory authority set: {payload}")
         assert_zero_activity(payload)
     return {
         "result": "PASS",
         "commands": ["preflight", "launch", "finalize"],
         "expectedCode": "missing_future_integration_authorities",
+        "mandatoryArguments": list(orchestrator.PRODUCTION_ARGUMENTS),
     }
 
 
@@ -228,6 +232,265 @@ def validate_safe_write_order() -> dict[str, Any]:
     }
 
 
+def git_command(root: pathlib.Path, *arguments: str) -> str:
+    completed = subprocess.run(
+        ["git", *arguments],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if completed.returncode:
+        raise RuntimeError(
+            f"git {' '.join(arguments)} failed: {completed.stderr.strip()}"
+        )
+    return completed.stdout.strip()
+
+
+def validate_authority_trust_boundary() -> dict[str, Any]:
+    with tempfile.TemporaryDirectory(prefix="play079-authority-trust-") as temporary:
+        root = pathlib.Path(temporary)
+        git_command(root, "init", "-q")
+        git_command(root, "config", "user.name", "PLAY-079 Fixture")
+        git_command(root, "config", "user.email", "play079@example.invalid")
+        base_path = root / "BASE.txt"
+        base_path.write_text("base\n", encoding="utf-8")
+        git_command(root, "add", "BASE.txt")
+        git_command(root, "commit", "-q", "-m", "fixture base")
+        base_commit = git_command(root, "rev-parse", "HEAD")
+
+        integration = root / "docs/production/evidence/INTEGRATION"
+        integration.mkdir(parents=True)
+        regular_relative = "docs/production/evidence/INTEGRATION/AUTHORITY.json"
+        regular_bytes = b'{"authority":"fixture"}\n'
+        regular_path = root / regular_relative
+        regular_path.write_bytes(regular_bytes)
+        symlink_relative = "docs/production/evidence/INTEGRATION/SYMLINK.json"
+        symlink_path = root / symlink_relative
+        symlink_path.symlink_to("AUTHORITY.json")
+        tree_path = integration / "TREE"
+        tree_path.mkdir()
+        (tree_path / "child.json").write_text("{}\n", encoding="utf-8")
+        outside_relative = "docs/production/evidence/PLAY-079/FOREIGN.json"
+        outside_path = root / outside_relative
+        outside_path.parent.mkdir(parents=True)
+        outside_bytes = b'{"authority":"wrong-root"}\n'
+        outside_path.write_bytes(outside_bytes)
+        git_command(root, "add", "docs")
+        git_command(root, "commit", "-q", "-m", "fixture authorities")
+        authority_commit = git_command(root, "rev-parse", "HEAD")
+
+        regular_sha = hashlib.sha256(regular_bytes).hexdigest()
+        outside_sha = hashlib.sha256(outside_bytes).hexdigest()
+        symlink_blob_sha = hashlib.sha256(b"AUTHORITY.json").hexdigest()
+        original_root = orchestrator.REPOSITORY_ROOT
+        orchestrator.REPOSITORY_ROOT = root
+        try:
+            positive = orchestrator.validate_committed_artifact(
+                regular_relative,
+                authority_commit,
+                regular_sha,
+                "fixtureAuthority",
+                allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                content_commit=authority_commit,
+            )
+            cases = [
+                {
+                    "id": "absolute-in-repository-path",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            str(regular_path),
+                            authority_commit,
+                            regular_sha,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "authority_path_not_repo_relative",
+                    ),
+                },
+                {
+                    "id": "wrong-governed-root",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            outside_relative,
+                            authority_commit,
+                            outside_sha,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "authority_path_outside_governed_root",
+                    ),
+                },
+                {
+                    "id": "local-symlink-authority",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            symlink_relative,
+                            authority_commit,
+                            regular_sha,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "symlink_component",
+                    ),
+                },
+                {
+                    "id": "git-tree-not-blob",
+                    **expect_code(
+                        lambda: orchestrator.git_blob_identity(
+                            authority_commit,
+                            "docs/production/evidence/INTEGRATION/TREE",
+                            "0" * 64,
+                            "fixtureAuthority",
+                        ),
+                        "authority_not_regular_git_blob",
+                    ),
+                },
+                {
+                    "id": "nonexistent-authority-commit",
+                    **expect_code(
+                        lambda: orchestrator.git_blob_identity(
+                            "f" * 40,
+                            regular_relative,
+                            regular_sha,
+                            "fixtureAuthority",
+                        ),
+                        "authority_not_regular_git_blob",
+                    ),
+                },
+                {
+                    "id": "malformed-authority-commit",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            regular_relative,
+                            None,
+                            regular_sha,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "invalid_authority_identity",
+                    ),
+                },
+                {
+                    "id": "sha256-mismatch",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            regular_relative,
+                            authority_commit,
+                            "0" * 64,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "authority_sha256_mismatch",
+                    ),
+                },
+                {
+                    "id": "non-ancestral-authority",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            regular_relative,
+                            authority_commit,
+                            regular_sha,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=base_commit,
+                        ),
+                        "authority_commit_not_in_content_ancestry",
+                    ),
+                },
+            ]
+
+            symlink_path.unlink()
+            symlink_path.write_bytes(b"AUTHORITY.json")
+            cases.append(
+                {
+                    "id": "git-symlink-mode",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            symlink_relative,
+                            authority_commit,
+                            symlink_blob_sha,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "authority_not_regular_git_blob",
+                    ),
+                }
+            )
+
+            changed_bytes = b'{"authority":"working-tree-only"}\n'
+            regular_path.write_bytes(changed_bytes)
+            cases.append(
+                {
+                    "id": "commit-content-mismatch",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            regular_relative,
+                            authority_commit,
+                            hashlib.sha256(changed_bytes).hexdigest(),
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "authority_commit_bytes_mismatch",
+                    ),
+                }
+            )
+            cases.append(
+                {
+                    "id": "nonexistent-shape-only-authority",
+                    **expect_code(
+                        lambda: orchestrator.validate_committed_artifact(
+                            "docs/production/evidence/INTEGRATION/MISSING.json",
+                            authority_commit,
+                            "0" * 64,
+                            "fixtureAuthority",
+                            allowed_prefixes=(orchestrator.INTEGRATION_PREFIX,),
+                            content_commit=authority_commit,
+                        ),
+                        "missing_future_authority",
+                    ),
+                }
+            )
+            partial = argparse.Namespace(
+                sequential_exception=regular_relative,
+                sequential_exception_commit=None,
+                sequential_exception_sha256=None,
+            )
+            cases.append(
+                {
+                    "id": "caller-shape-only-sequential-exception",
+                    **expect_code(
+                        lambda: orchestrator.validate_optional_authority_presence(
+                            partial
+                        ),
+                        "incomplete_sequential_exception_authority",
+                    ),
+                }
+            )
+        finally:
+            orchestrator.REPOSITORY_ROOT = original_root
+    return {
+        "result": "PASS",
+        "positiveExactGitBlob": {
+            "path": positive["path"],
+            "sha256": positive["sha256"],
+            "commitContentAndAncestry": "PASS",
+        },
+        "negativeCases": cases,
+        "negativeCount": len(cases),
+        "productionSubprocessInvocations": 0,
+        "dccInvocations": 0,
+        "pixelFiles": 0,
+    }
+
+
 def pixel_inventory() -> list[str]:
     return sorted(
         str(path.relative_to(REPOSITORY_ROOT))
@@ -249,6 +512,7 @@ def main() -> int:
         "missingProductionAuthorities": validate_missing_authority_cli(),
         "exactlyOnce": validate_exactly_once_tracker(),
         "safeWriteOrder": validate_safe_write_order(),
+        "authorityTrust": validate_authority_trust_boundary(),
         "implementationSha256": hashlib.sha256(SCRIPT_PATH.read_bytes()).hexdigest(),
         "invocations": {
             "productionSubprocessInvocations": 0,

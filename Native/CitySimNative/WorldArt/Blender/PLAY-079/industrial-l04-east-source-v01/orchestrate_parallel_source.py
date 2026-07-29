@@ -47,6 +47,9 @@ PARALLEL_DESIGN_SHA256 = (
 )
 INTEGRATION_PREFIX = pathlib.PurePosixPath("docs/production/evidence/INTEGRATION")
 SHARED_PREFIX = pathlib.PurePosixPath("Native/CitySimNative/WorldArt/Shared")
+EAST_EVIDENCE_PREFIX = pathlib.PurePosixPath(
+    "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01"
+)
 PIXEL_EXTENSIONS = {
     ".bmp",
     ".exr",
@@ -61,10 +64,15 @@ PIXEL_EXTENSIONS = {
 
 PRODUCTION_ARGUMENTS = (
     "launch_handoff",
+    "launch_handoff_commit",
+    "launch_handoff_sha256",
     "cell_content_commit",
     "appearance_lock",
     "appearance_lock_commit",
     "appearance_lock_sha256",
+    "material_mapping",
+    "material_mapping_commit",
+    "material_mapping_sha256",
     "source_production_profile",
     "source_profile_commit",
     "source_profile_sha256",
@@ -77,10 +85,18 @@ PRODUCTION_ARGUMENTS = (
     "global_schedule_schema",
     "global_schedule_schema_commit",
     "global_schedule_schema_sha256",
-    "global_schedule_receipt",
+    "global_schedule",
     "global_schedule_commit",
     "global_schedule_sha256",
+    "launch_grant",
+    "launch_grant_commit",
+    "launch_grant_sha256",
     "claim_sha256",
+)
+OPTIONAL_AUTHORITY_ARGUMENTS = (
+    "sequential_exception",
+    "sequential_exception_commit",
+    "sequential_exception_sha256",
 )
 
 
@@ -123,8 +139,12 @@ def load_json(path: pathlib.Path, code: str) -> dict[str, Any]:
     return value
 
 
-def require_hex(value: str, length: int, label: str) -> str:
-    if len(value) != length or any(character not in "0123456789abcdef" for character in value):
+def require_hex(value: Any, length: int, label: str) -> str:
+    if (
+        not isinstance(value, str)
+        or len(value) != length
+        or any(character not in "0123456789abcdef" for character in value)
+    ):
         raise OrchestrationRejected("invalid_authority_identity", f"{label}: {value}")
     return value
 
@@ -146,6 +166,24 @@ def strict_relative(path: pathlib.Path, label: str) -> tuple[str, pathlib.Path]:
     ):
         raise OrchestrationRejected("unsafe_path_component", f"{label}: {relative}")
     return relative, candidate
+
+
+def strict_authority_relative(path: str, label: str) -> tuple[str, pathlib.Path]:
+    if (
+        not isinstance(path, str)
+        or not path
+        or path.startswith("/")
+        or "\\" in path
+        or "\x00" in path
+    ):
+        raise OrchestrationRejected("authority_path_not_repo_relative", f"{label}: {path!r}")
+    pure = pathlib.PurePosixPath(path)
+    if (
+        pure.as_posix() != path
+        or any(part in {"", ".", ".."} for part in pure.parts)
+    ):
+        raise OrchestrationRejected("unsafe_authority_path_component", f"{label}: {path!r}")
+    return path, REPOSITORY_ROOT / pure
 
 
 def reject_symlink_components(relative: str, label: str) -> None:
@@ -199,16 +237,30 @@ def git_blob_identity(
     ):
         raise OrchestrationRejected("unsafe_git_blob_path", f"{label}: {relative}")
     tree = subprocess.run(
-        ["git", "-C", str(REPOSITORY_ROOT), "ls-tree", commit, "--", relative],
+        ["git", "-C", str(REPOSITORY_ROOT), "ls-tree", "-z", commit, "--", relative],
         check=False,
         capture_output=True,
-        text=True,
     )
-    fields = tree.stdout.strip().split(None, 3)
-    if tree.returncode or len(fields) != 4 or fields[0] not in {"100644", "100755"} or fields[1] != "blob":
+    entries = tree.stdout.split(b"\0")
+    entry = entries[0] if len(entries) == 2 and entries[1] == b"" else b""
+    metadata, separator, encoded_path = entry.partition(b"\t")
+    fields = metadata.split()
+    if (
+        tree.returncode
+        or separator != b"\t"
+        or len(fields) != 3
+        or fields[0] not in {b"100644", b"100755"}
+        or fields[1] != b"blob"
+        or encoded_path != relative.encode("utf-8")
+    ):
         raise OrchestrationRejected(
             "authority_not_regular_git_blob",
-            {"label": label, "commit": commit, "path": relative, "tree": tree.stdout.strip()},
+            {
+                "label": label,
+                "commit": commit,
+                "path": relative,
+                "tree": tree.stdout.decode("utf-8", errors="replace"),
+            },
         )
     committed = subprocess.run(
         ["git", "-C", str(REPOSITORY_ROOT), "show", f"{commit}:{relative}"],
@@ -258,7 +310,9 @@ def capture_regular_file_no_follow(relative: str, label: str) -> bytes:
             post = os.stat(pure.name, dir_fd=directory_fd, follow_symlinks=False)
         finally:
             os.close(file_fd)
-    except (FileNotFoundError, NotADirectoryError, OSError) as error:
+    except FileNotFoundError as error:
+        raise OrchestrationRejected("missing_future_authority", f"{label}: {relative}") from error
+    except (NotADirectoryError, OSError) as error:
         raise OrchestrationRejected("authority_capture_failed", f"{label}: {error}") from error
     finally:
         os.close(directory_fd)
@@ -277,7 +331,7 @@ def capture_regular_file_no_follow(relative: str, label: str) -> bytes:
 
 
 def validate_committed_artifact(
-    path: pathlib.Path,
+    path: str,
     commit: str,
     expected_sha256: str,
     label: str,
@@ -287,12 +341,11 @@ def validate_committed_artifact(
 ) -> dict[str, str]:
     commit = require_hex(commit, 40, f"{label}.commit")
     expected_sha256 = require_hex(expected_sha256, 64, f"{label}.sha256")
-    relative, absolute = strict_relative(path, label)
+    content_commit = require_hex(content_commit, 40, "cellContentCommit")
+    relative, _absolute = strict_authority_relative(path, label)
     if not any(is_under(relative, prefix) for prefix in allowed_prefixes):
         raise OrchestrationRejected("authority_path_outside_governed_root", f"{label}: {relative}")
     reject_symlink_components(relative, label)
-    if not absolute.is_file():
-        raise OrchestrationRejected("missing_future_authority", f"{label}: {relative}")
     captured = capture_regular_file_no_follow(relative, label)
     observed = sha256_bytes(captured)
     if observed != expected_sha256:
@@ -307,8 +360,27 @@ def validate_committed_artifact(
         stderr=subprocess.DEVNULL,
     )
     if ancestor.returncode:
-        raise OrchestrationRejected("authority_commit_not_published", f"{label}: {commit}")
+        raise OrchestrationRejected(
+            "authority_commit_not_in_content_ancestry",
+            {"label": label, "authorityCommit": commit, "contentCommit": content_commit},
+        )
     return git_blob_identity(commit, relative, expected_sha256, label)
+
+
+def validate_optional_authority_presence(args: argparse.Namespace) -> bool:
+    present = [
+        getattr(args, name, None) not in {None, ""}
+        for name in OPTIONAL_AUTHORITY_ARGUMENTS
+    ]
+    if any(present) and not all(present):
+        raise OrchestrationRejected(
+            "incomplete_sequential_exception_authority",
+            {
+                name: getattr(args, name, None)
+                for name in OPTIONAL_AUTHORITY_ARGUMENTS
+            },
+        )
+    return all(present)
 
 
 def expected_roots() -> dict[str, dict[str, str]]:
@@ -528,11 +600,14 @@ def validate_dry_fixture(path: pathlib.Path) -> dict[str, Any]:
     authorities = fixture.get("authorities")
     if not isinstance(authorities, dict) or set(authorities) != {
         "appearanceLock",
+        "materialMapping",
         "sourceProductionProfile",
         "strictReceiptSchema",
         "strictReceiptValidator",
         "globalScheduleSchema",
-        "globalScheduleReceipt",
+        "globalSchedule",
+        "sequentialException",
+        "launchGrant",
     }:
         raise OrchestrationRejected("dry_fixture_authority_set_mismatch", authorities)
     for name, record in authorities.items():
@@ -654,6 +729,7 @@ def validate_production_config(args: argparse.Namespace) -> dict[str, Any]:
     missing = missing_production_arguments(args)
     if missing:
         raise OrchestrationRejected("missing_future_integration_authorities", missing)
+    has_sequential_exception = validate_optional_authority_presence(args)
     branch = git_output(["branch", "--show-current"], "branch_identity_unavailable")
     if branch != "codex/citysim-world-art-east":
         raise OrchestrationRejected("branch_identity_mismatch", branch)
@@ -699,23 +775,39 @@ def validate_production_config(args: argparse.Namespace) -> dict[str, Any]:
             "prelock_claim_does_not_authorize_production",
             claim_sha,
         )
-    launch_relative, launch_path = strict_relative(args.launch_handoff, "launchHandoff")
+    launch_relative, _launch_path = strict_authority_relative(
+        args.launch_handoff,
+        "launchHandoff",
+    )
     expected_handoff = (
         "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
         "SOURCE-STAGE-HANDOFF.json"
     )
     if launch_relative != expected_handoff:
         raise OrchestrationRejected("launch_handoff_path_mismatch", launch_relative)
-    reject_symlink_components(launch_relative, "launchHandoff")
-    if not launch_path.is_file():
-        raise OrchestrationRejected("missing_launch_bound_handoff", launch_relative)
 
     authority = {
+        "launchHandoff": validate_committed_artifact(
+            args.launch_handoff,
+            args.launch_handoff_commit,
+            args.launch_handoff_sha256,
+            "launchHandoff",
+            allowed_prefixes=(EAST_EVIDENCE_PREFIX,),
+            content_commit=head,
+        ),
         "appearanceLock": validate_committed_artifact(
             args.appearance_lock,
             args.appearance_lock_commit,
             args.appearance_lock_sha256,
             "appearanceLock",
+            allowed_prefixes=(INTEGRATION_PREFIX,),
+            content_commit=head,
+        ),
+        "materialMapping": validate_committed_artifact(
+            args.material_mapping,
+            args.material_mapping_commit,
+            args.material_mapping_sha256,
+            "materialMapping",
             allowed_prefixes=(INTEGRATION_PREFIX,),
             content_commit=head,
         ),
@@ -751,15 +843,35 @@ def validate_production_config(args: argparse.Namespace) -> dict[str, Any]:
             allowed_prefixes=(INTEGRATION_PREFIX,),
             content_commit=head,
         ),
-        "globalScheduleReceipt": validate_committed_artifact(
-            args.global_schedule_receipt,
+        "globalSchedule": validate_committed_artifact(
+            args.global_schedule,
             args.global_schedule_commit,
             args.global_schedule_sha256,
-            "globalScheduleReceipt",
+            "globalSchedule",
+            allowed_prefixes=(INTEGRATION_PREFIX,),
+            content_commit=head,
+        ),
+        "launchGrant": validate_committed_artifact(
+            args.launch_grant,
+            args.launch_grant_commit,
+            args.launch_grant_sha256,
+            "launchGrant",
             allowed_prefixes=(INTEGRATION_PREFIX,),
             content_commit=head,
         ),
     }
+    authority["sequentialException"] = (
+        validate_committed_artifact(
+            args.sequential_exception,
+            args.sequential_exception_commit,
+            args.sequential_exception_sha256,
+            "sequentialException",
+            allowed_prefixes=(INTEGRATION_PREFIX,),
+            content_commit=head,
+        )
+        if has_sequential_exception
+        else None
+    )
     raise OrchestrationRejected(
         "future_integration_validator_interface_not_published",
         {
@@ -784,26 +896,37 @@ def write_invocation_receipt(path: pathlib.Path, payload: dict[str, Any]) -> str
 
 
 def add_production_arguments(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--launch-handoff", type=pathlib.Path)
+    parser.add_argument("--launch-handoff")
+    parser.add_argument("--launch-handoff-commit")
+    parser.add_argument("--launch-handoff-sha256")
     parser.add_argument("--cell-content-commit")
-    parser.add_argument("--appearance-lock", type=pathlib.Path)
+    parser.add_argument("--appearance-lock")
     parser.add_argument("--appearance-lock-commit")
     parser.add_argument("--appearance-lock-sha256")
-    parser.add_argument("--source-production-profile", type=pathlib.Path)
+    parser.add_argument("--material-mapping")
+    parser.add_argument("--material-mapping-commit")
+    parser.add_argument("--material-mapping-sha256")
+    parser.add_argument("--source-production-profile")
     parser.add_argument("--source-profile-commit")
     parser.add_argument("--source-profile-sha256")
-    parser.add_argument("--strict-receipt-schema", type=pathlib.Path)
+    parser.add_argument("--strict-receipt-schema")
     parser.add_argument("--strict-receipt-schema-commit")
     parser.add_argument("--strict-receipt-schema-sha256")
-    parser.add_argument("--strict-receipt-validator", type=pathlib.Path)
+    parser.add_argument("--strict-receipt-validator")
     parser.add_argument("--strict-receipt-validator-commit")
     parser.add_argument("--strict-receipt-validator-sha256")
-    parser.add_argument("--global-schedule-schema", type=pathlib.Path)
+    parser.add_argument("--global-schedule-schema")
     parser.add_argument("--global-schedule-schema-commit")
     parser.add_argument("--global-schedule-schema-sha256")
-    parser.add_argument("--global-schedule-receipt", type=pathlib.Path)
+    parser.add_argument("--global-schedule")
     parser.add_argument("--global-schedule-commit")
     parser.add_argument("--global-schedule-sha256")
+    parser.add_argument("--sequential-exception")
+    parser.add_argument("--sequential-exception-commit")
+    parser.add_argument("--sequential-exception-sha256")
+    parser.add_argument("--launch-grant")
+    parser.add_argument("--launch-grant-commit")
+    parser.add_argument("--launch-grant-sha256")
     parser.add_argument("--claim-sha256")
 
 

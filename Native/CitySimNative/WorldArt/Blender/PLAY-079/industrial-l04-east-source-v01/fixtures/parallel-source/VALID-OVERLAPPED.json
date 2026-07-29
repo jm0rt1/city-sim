@@ -21,6 +21,12 @@
       "commit": null,
       "sha256": null
     },
+    "materialMapping": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
     "sourceProductionProfile": {
       "state": "synthetic_nonproduction_absent",
       "path": null,
@@ -45,7 +51,19 @@
       "commit": null,
       "sha256": null
     },
-    "globalScheduleReceipt": {
+    "globalSchedule": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "sequentialException": {
+      "state": "synthetic_nonproduction_absent",
+      "path": null,
+      "commit": null,
+      "sha256": null
+    },
+    "launchGrant": {
       "state": "synthetic_nonproduction_absent",
       "path": null,
       "commit": null,

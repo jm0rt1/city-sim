@@ -38,7 +38,7 @@
     },
     "frozenInputManifest": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
-      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
+      "sha256": "8b3e7c826d7ea35ae9ac17e068df6415584b8159b22717e514303363be1b7bf3"
     },
     "handoffOutputPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
     "prelockReceiptPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-PRELOCK-RECEIPT.json",
@@ -125,7 +125,7 @@
     },
     "parallelSourceOrchestrator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
-      "sha256": "fe32ad8fb6948c26cf884aec8b0096f2743aa16a73d63a43aa361f83a03c59c0"
+      "sha256": "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c"
     },
     "canonicalDecoder": {
       "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
@@ -141,7 +141,7 @@
     },
     "sourceStageFrozenInputManifest": {
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
-      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
+      "sha256": "8b3e7c826d7ea35ae9ac17e068df6415584b8159b22717e514303363be1b7bf3"
     },
     "bridgeV06Authority": {
       "path": "docs/production/evidence/PLAY-027/INDUSTRIAL-L04-DIRECTIONAL-COORDINATE-BRIDGE-V06-AUTHORITY.md",

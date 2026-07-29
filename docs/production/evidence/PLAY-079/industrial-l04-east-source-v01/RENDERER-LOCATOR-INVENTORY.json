@@ -53,7 +53,7 @@
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
       "status": "existing",
       "existsAtInventoryBase": true,
-      "sha256": "d062be34d48d3a55db7e01bb3a08de43a86baadc5283543a7abe8e9e503636e1"
+      "sha256": "5302750257a0bc158f6b460f78a48dccd22c2194f169deb8e46e5c61f1204da8"
     },
     "acceptedPredesignDescriptor": {
       "locatorType": "file",
@@ -126,7 +126,7 @@
       "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-FROZEN-INPUT-MANIFEST.json",
       "status": "existing",
       "existsAtInventoryBase": true,
-      "sha256": "49020c537c2ec51cc75bf365e760b6ae91d56eec5ace15b1405108607e75a464"
+      "sha256": "8b3e7c826d7ea35ae9ac17e068df6415584b8159b22717e514303363be1b7bf3"
     },
     "appearanceLock": {
       "locatorType": "file",
@@ -472,7 +472,7 @@
         "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/PRELOCK-RUNNER-HANDOFF.json",
         "status": "existing",
         "existsAtInventoryBase": true,
-        "sha256": "4edab75431120d4f77733910d6a803aea6fdaacf5cb381faa4567ad6e1dee0c7"
+        "sha256": "d8f3f0232f6826e1e43e18ca1f7bd67dd1e6ab76fe5ea81194d0bf108e0f26fb"
       },
       "sourceStagePrelockReceipt": {
         "locatorType": "file",

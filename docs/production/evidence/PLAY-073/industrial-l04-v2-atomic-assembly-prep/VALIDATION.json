@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task": "PLAY-073",
+  "disposition": "atomic_assembly_input_prepared_nonshipping",
+  "publishedAuthority": "8214ba39d88ec30a28597e65a10f1b0bc5e1759e",
+  "synchronizationCommit": "043e495301febac7e6d8494d16e76bf1768874c2",
+  "acceptedCallerPathAncestors": [
+    "e177be62",
+    "02fd3434"
+  ],
+  "proposalCommit": "b9240646",
+  "harnessCommit": "fd05ec462517d5c802f4918f65af4515ea7f3c09",
+  "surfaceHashes": {
+    "proposal": "ec2e293fbbfa1df900dc50479331d9849da8ed7f1863179c9dd448a9f93c7e1c",
+    "harness": "f9e5368082d47bd990c8d74fbd42b8d426acd271a9abd28e39d0bc2800dab2ab",
+    "wrapper": "f5a4c672a76b005385fb66fbcf87a55b71477b9cd67f59a63ae313371cf8a5ab"
+  },
+  "focusedValidation": {
+    "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/play073-l4-assembly-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-assembly-swift-cache swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
+    "executed": 8,
+    "passed": 6,
+    "skipped": 2,
+    "failed": 0,
+    "elapsedSeconds": 0.057,
+    "skips": [
+      "caller-supplied direction input absent",
+      "caller-supplied assembly manifest absent"
+    ]
+  },
+  "checks": {
+    "syntheticFileBackedReplayByteIdentical": true,
+    "fourDirectionJoin": "ready_for_atomic_assembly_nonshipping",
+    "lodIdentityCount": 12,
+    "d4IdentityCount": 32,
+    "missingDirectionRejected": true,
+    "extraDirectionRejected": true,
+    "locatorHashDriftRejected": true,
+    "fallbackRejectedByExistingJoin": true,
+    "aliasRejectedByExistingJoin": true,
+    "transformRejectedByExistingJoin": true,
+    "registrationDriftRejectedByExistingJoin": true,
+    "quarantineReceiptReopenedAndCompared": true,
+    "bashSyntax": "pass",
+    "gitDiffCheck": "pass"
+  },
+  "authorityBoundary": {
+    "actualSourcePixelsInspected": false,
+    "actualDirectionPacketAdmitted": false,
+    "sharedSchemaModified": false,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false,
+    "packageModified": false,
+    "stagedAppRun": false,
+    "fullSuiteRun": false
+  },
+  "nonPassingAttempt": {
+    "scope": "pre-compilation environment only",
+    "result": "SwiftPM could not write the default user module cache inside the outer sandbox",
+    "resolution": "reran the identical focused command with the approved private-tmp module caches outside the outer sandbox"
+  }
+}

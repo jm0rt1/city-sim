@@ -118,10 +118,24 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def safe_repo_path(repo: Path, value: str, label: str, *, must_exist: bool) -> Path:
+def strict_repo_path(value: str, label: str) -> PurePosixPath:
+    if not isinstance(value, str) or not value:
+        reject("UNSAFE_ROOT_PATH_COMPONENT", f"{label}: {value!r}")
+    if value.startswith("/") or "\\" in value or "\x00" in value:
+        reject("UNSAFE_ROOT_PATH_COMPONENT", f"{label}: {value}")
+    components = value.split("/")
+    if components[-1] == "":
+        components = components[:-1]
+    if not components or any(component in {"", ".", ".."} for component in components):
+        reject("UNSAFE_ROOT_PATH_COMPONENT", f"{label}: {value}")
     pure = PurePosixPath(value)
-    if pure.is_absolute() or not pure.parts or any(part in {"", ".", ".."} for part in pure.parts):
-        reject("UNSAFE_REPOSITORY_PATH", f"{label}: {value}")
+    if pure.is_absolute():
+        reject("UNSAFE_ROOT_PATH_COMPONENT", f"{label}: {value}")
+    return pure
+
+
+def safe_repo_path(repo: Path, value: str, label: str, *, must_exist: bool) -> Path:
+    pure = strict_repo_path(value, label)
     resolved = repo.joinpath(*pure.parts).resolve()
     try:
         resolved.relative_to(repo.resolve())
@@ -138,7 +152,7 @@ def is_within(value: str, root: PurePosixPath) -> bool:
 
 
 def require_owned_root(value: str, label: str) -> PurePosixPath:
-    pure = PurePosixPath(value)
+    pure = strict_repo_path(value, label)
     if not (is_within(value, SOURCE_ROOT) or is_within(value, EVIDENCE_ROOT)):
         reject("ROOT_OUTSIDE_PLAY_080_OWNERSHIP", f"{label}: {value}")
     if pure == SOURCE_ROOT or pure == EVIDENCE_ROOT:

@@ -1,0 +1,198 @@
+{
+  "schema": "citysim.play-080.source-candidate-packet-writer-validation.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "stage": "zero_pixel_source_candidate_writer_boundary",
+  "result": "PASS",
+  "checkpoints": {
+    "locatorAuthorityMerge": {
+      "commit": "18a7e65561f9009255c059a71d82f398343d0b63",
+      "parents": [
+        "0a4ce275a1cbfdf507f4723bb8245e801e8068c4",
+        "fa66b5605deca987685c058a072613e89a0d8be9"
+      ],
+      "conflicts": 0
+    },
+    "writerBoundary": "a3f0c434a946b1fac8a3d127061dd5cbeb7df74f"
+  },
+  "locatorAuthority": {
+    "publicationCommit": "fa66b5605deca987685c058a072613e89a0d8be9",
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+      "sha256": "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+    },
+    "instance": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+      "sha256": "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+    },
+    "sourceStageV2": {
+      "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "schemaSha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+      "semanticValidatorPath": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "semanticValidatorSha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "southReservation": {
+      "taskId": "PLAY-080",
+      "direction": "south",
+      "branch": "codex/citysim-world-art-south",
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01",
+      "packetPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "status": "reserved",
+      "writer": "direction_cell",
+      "creationPolicy": "exclusive_no_overwrite_nofollow"
+    }
+  },
+  "implementation": [
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/source_candidate_packet_writer.py",
+      "sha256": "d9e7fdeca948f13d10a9da0e23e5777934ab441c75651cc438ec1f3397622431"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_source_candidate_packet_writer.py",
+      "sha256": "578305f4bc46d0d15b19cafb351b5b3acebc96c8920d3e3a3b7836f88adc1b29"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/SOURCE-CANDIDATE-PACKET-WRITER.md",
+      "sha256": "8d981106b9b54671260da9edd7ae92c178a1dcf72350596f6aa9aa4655ecb779"
+    }
+  ],
+  "validations": {
+    "writerBoundary": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_source_candidate_packet_writer.py",
+      "result": "PASS",
+      "headUnderTest": "a3f0c434a946b1fac8a3d127061dd5cbeb7df74f",
+      "positiveDryRuns": 2,
+      "positiveRepeatByteIdentical": true,
+      "packetWritten": false,
+      "negativeCases": [
+        {
+          "case": "null-authority",
+          "code": "NULL_LOCATOR_AUTHORITY",
+          "packetWritten": false
+        },
+        {
+          "case": "mismatched-authority",
+          "code": "AUTHORITY_INSTANCE_SHA_MISMATCH",
+          "packetWritten": false
+        },
+        {
+          "case": "wrong-packet-path",
+          "code": "WRONG_PACKET_PATH",
+          "packetWritten": false
+        },
+        {
+          "case": "wrong-direction",
+          "code": "WRONG_DIRECTION",
+          "packetWritten": false
+        },
+        {
+          "case": "wrong-branch",
+          "code": "WRONG_BRANCH",
+          "packetWritten": false
+        },
+        {
+          "case": "sibling-substitution",
+          "code": "SIBLING_SUBSTITUTION",
+          "packetWritten": false
+        },
+        {
+          "case": "unsafe-root",
+          "code": "UNSAFE_ROOT",
+          "packetWritten": false
+        },
+        {
+          "case": "preexisting-file",
+          "code": "PREEXISTING_PACKET",
+          "packetWritten": false
+        },
+        {
+          "case": "symlink-redirect",
+          "code": "SYMLINK_REDIRECT",
+          "packetWritten": false
+        },
+        {
+          "case": "content-commit-mismatch",
+          "code": "CONTENT_COMMIT_MISMATCH",
+          "packetWritten": false
+        },
+        {
+          "case": "source-stage-v2-rejection",
+          "code": "SOURCE_STAGE_V2_REJECTED",
+          "packetWritten": false
+        },
+        {
+          "case": "strict-parallel-receipt-rejection",
+          "code": "STRICT_PARALLEL_RECEIPT_REJECTED",
+          "packetWritten": false
+        }
+      ]
+    },
+    "strictParallelReceiptPrototype": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/strict-parallel-receipt-prototype-v01/test_strict_parallel_receipt_fixture.py",
+      "result": "PASS",
+      "positiveCases": 2,
+      "failClosedCases": 12,
+      "overlappedRepeatSha256": "b9dccb42bdd1d7e5c19ffe53838b2be142e81fae509888eb4d921321d1c39476",
+      "sequentialExceptionRepeatSha256": "a3a0f9fbb61f213b885c687cf86de157a7c72a565f7e8db53f625195a969c4cf",
+      "globalCapProven": false,
+      "productionReady": false
+    },
+    "rendererLocatorInventory": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_renderer_locator_inventory.py",
+      "result": "PASS",
+      "locatorCount": 62,
+      "existing": 13,
+      "inline": 2,
+      "reserved": 41,
+      "unassigned": 6,
+      "derived": 0
+    },
+    "rendererLocatorRootSelfTest": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_renderer_locator_inventory.py --self-test-roots",
+      "result": "PASS",
+      "failClosedCases": 5
+    },
+    "rendererLocatorPortability": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_renderer_locator_inventory.py",
+      "result": "PASS",
+      "tests": 1
+    },
+    "liveSourceStageV2CandidateValidation": {
+      "result": "not_run",
+      "reason": "No post-lock South content commit, A/B/C products, or complete source-stage-v2 candidate exists. The production CLI requires the live Integration semantic validator to return PASS before path proof or write."
+    },
+    "reservedPacketAbsence": {
+      "command": "test ! -e docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SOURCE-STAGE-HANDOFF-V2.json",
+      "result": "PASS",
+      "packetCreated": false
+    }
+  },
+  "futureWriteOrder": [
+    "verify exact locator schema and instance hashes and fa66b560 commit content",
+    "verify exact South identity, reserved path, and content commit ancestry",
+    "run live Integration source-stage-v2 semantic validation",
+    "run live task-owned strict parallel-receipt validation",
+    "prove every destination component nofollow and target absent",
+    "recheck clean worktree",
+    "create only with opened parent directory and O_CREAT|O_EXCL|O_NOFOLLOW"
+  ],
+  "zeroActivity": {
+    "dccProcessInvocations": 0,
+    "blenderProcessInvocations": 0,
+    "renderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizationInvocations": 0,
+    "contactSheetInvocations": 0,
+    "pixelFilesCreated": 0,
+    "packetFilesCreated": 0
+  },
+  "authorityBoundary": {
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "shipping": false,
+    "selfAccepted": false
+  }
+}

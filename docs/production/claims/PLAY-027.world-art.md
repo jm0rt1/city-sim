@@ -17,7 +17,7 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v09 Process A is durably rejected at exact candidate `4255b021f743281b60cfdf8cff896235d405be23`: the west portal jamb and freight-frame value gates failed. Integration now authorizes exactly one v10 North zero-pixel hypothesis under `INDUSTRIAL-L04-NORTH-V10-ZERO-PIXEL-AUTHORITY.md`. No source pixels, DCC, appearance lock, sibling release, admission, or shipping are authorized.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v10 is durably rejected and portably preserved on master at `7042f0934903ca54e360725251a96205a347af4e`: its west portal jamb retained only 7 un-eroded pixels, 0 eroded pixels, and `3x3` bounds. Integration now authorizes exactly one v11 North zero-pixel geometry hypothesis under `INDUSTRIAL-L04-NORTH-V11-ZERO-PIXEL-AUTHORITY.md`. No source pixels, DCC, appearance lock, sibling release, admission, or shipping are authorized.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -27,9 +27,13 @@
   hierarchy are insufficient. North v09 replaced that design and passed both
   independent pre-pixel gates at exact candidate `94981f22`, but its one
   authorized Process A at exact `4255b021` then failed the literal west-jamb
-  and freight-frame value gates. Integration authorizes only the finite v10
-  zero-pixel geometry/material-binding hypothesis. Its emission value is not
-  luma proof and must be re-proved in a later separately authorized Process A.
+  and freight-frame value gates. V10's zero-pixel repair remained below all
+  three west-jamb gates and is retained with portable frozen inputs and sealed
+  writers at master `7042f0934903ca54e360725251a96205a347af4e`.
+  Integration authorizes only the finite v11
+  outward-thickened west-jamb/header zero-pixel hypothesis. The unchanged v10
+  emission value is not luma proof and must be re-proved in a later separately
+  authorized Process A.
   North Process A/B/C, sibling source pixels, appearance-lock publication,
   source admission, Renderer activation, and shipping remain blocked.
 

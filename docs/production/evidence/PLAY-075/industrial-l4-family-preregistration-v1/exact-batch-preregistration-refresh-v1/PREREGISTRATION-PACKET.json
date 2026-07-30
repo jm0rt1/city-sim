@@ -1,0 +1,452 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-075_INDUSTRIAL_L04_EXACT_BATCH_PREREGISTRATION",
+  "status": "blocked",
+  "task": "PLAY-075",
+  "claim": {
+    "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+    "sha256": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168"
+  },
+  "lane": {
+    "branch": "codex/citysim-playtest-quality",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+    "archiveBranchConsumed": false
+  },
+  "family": {
+    "batch": "industrial_l04_directional_family",
+    "stage": "candidate_neutral_preregistration_refresh",
+    "contract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "runtimeDirectionOrder": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "logicalKeys": {
+      "north": "industrial_l04_v0_north",
+      "east": "industrial_l04_v0_east",
+      "south": "industrial_l04_v0_south",
+      "west": "industrial_l04_v0_west"
+    },
+    "atomic4Of4Required": true,
+    "directionCellsMayReceiveQAProductionAcceptance": false
+  },
+  "integrationLedger": {
+    "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+    "requiredRevision": null,
+    "requiredSha256": null,
+    "status": "awaiting_integration_refreshed_ledger_and_acknowledgement",
+    "observedStaleRevision": {
+      "sha256": "022bd11ea05dd6efe608ab774ea4a1f01bb9b789ef81f4acf991d56dcf4eb28e",
+      "gitBlob": "0d52cca5661cc2164a15bb78519ab17201c575a6",
+      "lastChangeCommit": "bcf52b99eff45de874f39404a016b7dc3eb82c1e",
+      "schema": 3,
+      "updatedAt": "2026-07-30T15:04:25Z",
+      "batchState": "appearance_lock_pending",
+      "lastDispatch": {
+        "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T1504Z.json",
+        "sha256": "4da6f818f1cc162c2da4e720716dc82b595c8f93271933c237874fe2a73c8217",
+        "authorityCommit": "8f2520aec2723320c7cb7d286b878c3f32a04a3d"
+      },
+      "staleReason": "The QA row still names the superseded L3-exclusive blocker, an old QA head, and a null preregistration packet after the L3 gate became terminal."
+    },
+    "packetAcknowledgedByIntegration": false
+  },
+  "rendererIntake": {
+    "plan": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-renderer-intake-plan-v1.json",
+      "sha256": "ca6c31bbafe0afcf537d1b58093c11c8485d3af734ac1e9a041438c271e68abe",
+      "disposition": "candidate_neutral_renderer_intake_prepared",
+      "atomicAssemblyState": "template_only_unbound"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-renderer-intake-plan-schema-v1.json",
+      "sha256": "a2f7fe762f3f79ea95286284224161dbaddf152e8af174ead6365fda3da060fa"
+    },
+    "currentMasterRefresh": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md",
+      "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c",
+      "commit": "f00822d6c27ebbe39d97d2ed95be9da4a8ba9bba"
+    },
+    "rendererRev7Receipt": {
+      "path": null,
+      "sha256": null,
+      "status": "returned_for_schema_repair_not_published_or_acknowledged"
+    },
+    "allTwelvePacketAdmissionQuarantineBindingsPresent": false
+  },
+  "rendererCandidateReceipt": null,
+  "frozenFixture": {
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+    "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+    "version": 1,
+    "fingerprintVersion": 1,
+    "stateDigest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f",
+    "seed": 10481999410520546993,
+    "tick": 844,
+    "manifest": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-manifest-v1.json",
+      "sha256": "48b23638572993f76c087c95113475b2c0e3d59e89525a12fcb7ee38005f2a2d"
+    },
+    "placements": [
+      {
+        "direction": "north",
+        "playerBlock": [11, 11],
+        "stateCoordinate": [10, 10],
+        "roadCoordinate": [10, 9],
+        "sourcePixelSocket": [896, 704]
+      },
+      {
+        "direction": "east",
+        "playerBlock": [4, 10],
+        "stateCoordinate": [3, 9],
+        "roadCoordinate": [4, 9],
+        "sourcePixelSocket": [896, 832]
+      },
+      {
+        "direction": "south",
+        "playerBlock": [5, 9],
+        "stateCoordinate": [4, 8],
+        "roadCoordinate": [4, 9],
+        "sourcePixelSocket": [640, 832]
+      },
+      {
+        "direction": "west",
+        "playerBlock": [18, 12],
+        "stateCoordinate": [17, 11],
+        "roadCoordinate": [16, 11],
+        "sourcePixelSocket": [640, 704]
+      }
+    ]
+  },
+  "lifecycleBindings": {
+    "acceptance": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-LIFECYCLE-SAVE-BINDING-ACCEPTANCE.json",
+      "sha256": "b7722a9d686b8aa2c61fc8350b29f580a2e441bd38de943f5b1bf1d948da87db",
+      "disposition": "APPROVED_FOR_CANDIDATE_NEUTRAL_QA_REHEARSAL"
+    },
+    "early": {
+      "semanticMapping": "early_to_active",
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-industrial-active-district-v3.json",
+      "fileSha256": "48a45a4f3901eee09fca2bcf10315381e421dbc605ffa050e13fbee5dc17fdc3",
+      "stateDigest": "1a47eeb6c6a20b742c121f4b8f1e39a8682df54a8ede1528e8715f99885126ca"
+    },
+    "recovered": {
+      "semanticMapping": "recovered_to_recovering",
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-industrial-recovering-district-v3.json",
+      "fileSha256": "5a278e43873f364c986545a856eec6a8ba4315b712b843028dcc5d8e602720f4",
+      "stateDigest": "a1525b36f38fc0fb2dfbd042d8fd8748088cbc57f9f3f1549be1e3f88653ad7d"
+    },
+    "oldPreflightMissingMappingBlockerIsSuperseded": true,
+    "candidateBoundL4DerivativesExist": false
+  },
+  "cameraState": {
+    "source": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/FIXTURE-CAMERA-PREFLIGHT.json",
+      "sha256": "d8cf5a73c4f23e13aa6be939eedda303627856f4c202cf1e38ac81f9a24ac985"
+    },
+    "canonicalSectionSha256": "9b5f48231c6eba2ad43264411db4c0ffceb894fd2332749b9d0e9a6e9b80551e",
+    "common": {
+      "overlay": "City",
+      "focusCity": false,
+      "details": "closed_before_capture",
+      "rotationDegrees": 0,
+      "cameraPanAllowed": false,
+      "selectionMayRecenter": false,
+      "resetKey": "0",
+      "resetCommand": "Frame Developed City"
+    },
+    "views": [
+      {"id": "regular-city", "contentPixels": [1278, 768], "semanticLOD": "city", "canonicalScale": 0.74},
+      {"id": "regular-neighborhood", "contentPixels": [1278, 768], "semanticLOD": "neighborhood", "canonicalScale": 0.66},
+      {"id": "regular-block", "contentPixels": [1278, 768], "semanticLOD": "block", "canonicalScale": 0.5},
+      {"id": "compact-city", "contentPixels": [900, 600], "decoratedCapturePixels": [900, 652], "semanticLOD": "city", "canonicalScale": 0.74},
+      {"id": "compact-neighborhood", "contentPixels": [900, 600], "decoratedCapturePixels": [900, 652], "semanticLOD": "neighborhood", "canonicalScale": 0.66},
+      {"id": "compact-block", "contentPixels": [900, 600], "decoratedCapturePixels": [900, 652], "semanticLOD": "block", "canonicalScale": 0.5}
+    ],
+    "numericCameraCenters": null,
+    "numericCameraCenterStatus": "blocked_live_derived_after_exact_candidate_admission",
+    "regularContentRectangle": null,
+    "regularContentRectangleStatus": "blocked_live_derived_after_exact_candidate_admission"
+  },
+  "rubric": {
+    "familyRubric": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/RUBRIC.md",
+      "sha256": "3807edfe7ea7cd5263723b4b045562f445ba5f727ec9a3adeccc395ffdbfa692"
+    },
+    "productionQualityRubricV2": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/RUBRIC-CONTRACT.json",
+      "sha256": "4fda22ccc76c2cf5548858524bf72226c462f0ebc1103e06b730a9c274274aba",
+      "observedValues": "UNMEASURED",
+      "scoringAllowed": false
+    },
+    "executionPlan": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/EXECUTION-PLAN.json",
+      "sha256": "16a83c5be545eb3ba72bbd1ed5023fdcb9c1703c15cf4cbe74b1dc5d878ec0e4",
+      "serializedJourneySectionSha256": "cbff716cc260368413988da01f164487d398efda782ada91091267beadd61af2"
+    },
+    "stateViewCells": {
+      "count": 30,
+      "canonicalSectionSha256": "590dc9891cae210005c4aba8156ed7ee78abd5e5bd19fa70e98111db6504937a"
+    },
+    "accessibilityBindings": {
+      "count": 10,
+      "canonicalSectionSha256": "0e554887c048d7172f7f67136c614bcaafc416738836a33f47cc50e41ac4fe45",
+      "requiredPerBinding": [
+        "pointer_keyboard_target_parity",
+        "full_keyboard_access",
+        "ax_identity",
+        "voiceover_identity",
+        "reduce_motion_meaning"
+      ]
+    },
+    "interactionSegments": [
+      "pointer_hover_and_selection",
+      "keyboard_same_lot_selection",
+      "construction_and_condition",
+      "demolition_and_exact_undo",
+      "full_keyboard_access",
+      "voiceover_and_ax",
+      "escape_and_layering",
+      "reduce_motion",
+      "performance_and_resource_capture"
+    ],
+    "performanceBoundaries": {
+      "maximumActiveAtlasPages": 4,
+      "atlasPagePixels": [2048, 2048],
+      "maximumActivePlusNextDecodedBytes": 50331648,
+      "maximumColdWorldUpdateMs": 6.03,
+      "maximumUnchangedPulseMs": 2.1,
+      "lodTransitionP95MsExclusive": 16.7,
+      "lodTransitionMaximumMsExclusive": 33.3,
+      "maximumSettledFootprintMiB": 333.8,
+      "maximumUnexplainedRegressionPercent": 20,
+      "lodCyclesBeforeSettle": 3,
+      "settleSeconds": 60,
+      "continuingGrowthAllowed": false
+    }
+  },
+  "captureContract": {
+    "source": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/EVIDENCE-PLAN.md",
+      "sha256": "0f66f3fa43361b60fd03b1970314195c245bea1eb6bbb38dbdb87cf691d68d0c"
+    },
+    "requiredNames": [
+      "live/<width>/<direction>/hover-unselected.png",
+      "live/<width>/<direction>/selected-pointer.png",
+      "live/<width>/<direction>/selected-keyboard.png",
+      "live/accessibility/fka.png",
+      "live/accessibility/voiceover.txt",
+      "interaction/pointer-keyboard.csv",
+      "performance/frame-and-lod.json",
+      "performance/rss-footprint.csv",
+      "performance/node-drawable-action.csv",
+      "performance/process-termination.txt"
+    ],
+    "hoverAdditionReason": "The accepted rubric requires hover coverage and unobscured frontage; the legacy evidence plan did not name a hover-only capture.",
+    "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-075/industrial-l4-directional-family-final-gate-v1/",
+    "evidenceRootMustBeEmptyBeforeExclusiveAttempt": true
+  },
+  "candidateNeutralHarness": {
+    "fixtureMaterializer": {
+      "tool": {
+        "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/tools/materialize_fixture_receipt.py",
+        "sha256": "e7022a61d5501fc48c10ed6f0fbc1351262636ad7087ea8b59b991600b55be6d"
+      },
+      "validator": {
+        "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/tools/validate_fixture_materializer.py",
+        "sha256": "1daff37147af1afc0f16dcaa9a42c47e62fdd94b9483a2a3dd3ee962e7ed32d3"
+      },
+      "validationReceipt": {
+        "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixture-materializer/proof/VALIDATION-RECEIPT.json",
+        "sha256": "05c23a602e211aa87d8545d929edb6d31ef6d5ba64f839c4b98425c23c6db745",
+        "repeatReceiptSha256": "96cdd6633a8ac856a260dfbe58ab04fbd9c2d75b42c642bf855fdea743f0f3e3",
+        "negativeGateCount": 16,
+        "rerunResult": "FIXTURE_MATERIALIZER_PREPARATION_VALID",
+        "historicalToolPublishedMaster": "72a4c15f7ca747e4c6bc3c7fcf80b0e865b7ccc4",
+        "currentCandidateReceipt": false
+      }
+    },
+    "acceptedL3ReusableEvidence": {
+      "status": "PARTIAL_REUSABLE_IMMUTABLE_ACCEPTED_L3_EVIDENCE",
+      "candidateCommit": "472ffa85cd35639a675c1c2e4ede748c94446a7f",
+      "processResource": {
+        "path": "docs/production/evidence/PLAY-075/r2-industrial-l3-472ffa85/PROCESS-RESOURCE.json",
+        "sha256": "c4e4ac83c9c990c4fea39ef5a36fda9161a06bbccd41b81eea90a101965eaa7b"
+      },
+      "validation": {
+        "path": "docs/production/evidence/PLAY-075/r2-industrial-l3-472ffa85/VALIDATION.md",
+        "sha256": "c6ba6ab0709d2d69835dce281ed8e9a26e62a7d8a07809c4d24570345b550694"
+      },
+      "proves": [
+        "same_fixture_regular_and_exact_900x600_route",
+        "four_runtime_directions",
+        "three_lods",
+        "pointer_keyboard_ax_reduce_motion_and_exact_undo_route_viability"
+      ],
+      "doesNotProve": [
+        "industrial_l4_candidate_behavior",
+        "six_numeric_camera_centers",
+        "final_atomic_4_of_4_gate",
+        "production_acceptance"
+      ]
+    }
+  },
+  "legacyPreservation": {
+    "existingBytesModified": false,
+    "legacyFinalGate": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/final-staged-app-gate-v1/GATE-CONTRACT.json",
+      "sha256": "90ab775234c736e538286dd49f84cdc6175d4a2b97600a298fb9d9b2d5738d51",
+      "status": "preserved_stale_not_activating",
+      "staleReason": "Its frozen source-stage-v2 SHA is 93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7 while the current intake plan binds 85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec. It also claims candidate-bound fixture eligibility despite having no admitted Renderer candidate."
+    },
+    "legacyCameraPreflight": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/FIXTURE-CAMERA-PREFLIGHT.json",
+      "sha256": "d8cf5a73c4f23e13aa6be939eedda303627856f4c202cf1e38ac81f9a24ac985",
+      "status": "preserved_with_early_recovered_mapping_section_superseded_by_published_acceptance"
+    }
+  },
+  "activationGuard": {
+    "liveBuildStageLaunchCaptureMeasurementOrScoreAllowed": false,
+    "requiresAll": [
+      "integration_publishes_and_acknowledges_a_refreshed_shared_ledger_revision_binding_this_exact_packet",
+      "integration_publishes_and_acknowledges_the_repaired_renderer_rev7_receipt",
+      "one_exact_clean_attached_atomic_4_of_4_renderer_candidate_and_product_commit",
+      "four_exact_runtime_canonical_source_candidate_packets_and_integration_admission_receipts",
+      "one_exact_candidate_bound_fixture_admission_and_materializer_receipt",
+      "one_integration_issued_exclusive_gate_lease_with_attemptCount_1",
+      "empty_exclusive_evidence_root",
+      "source_pack_runtime_and_staged_process_identity",
+      "numeric_camera_centers_and_regular_content_rectangle_recorded_only_during_the_admitted_player_visible_route"
+    ],
+    "failClosedOn": [
+      "one_through_three_directions",
+      "stale_missing_returned_unpublished_or_unacknowledged_authority",
+      "candidate_packet_resource_fixture_camera_or_threshold_drift",
+      "dcc_labels_alias_mirror_rotation_recolor_transform_or_fallback",
+      "existing_output_or_second_gate_start",
+      "multiple_citysim_processes",
+      "author_coaching",
+      "measurement_or_score_before_activation"
+    ]
+  },
+  "blockers": [
+    {
+      "id": "integration_ledger_refresh",
+      "status": "OPEN",
+      "requiredEvidence": "one Integration-published ledger path/revision/SHA that binds and acknowledges this exact packet"
+    },
+    {
+      "id": "renderer_rev7_receipt_schema_repair",
+      "status": "OPEN",
+      "requiredEvidence": "one Integration-published and acknowledged repaired Renderer receipt path/SHA"
+    },
+    {
+      "id": "exact_atomic_renderer_candidate",
+      "status": "OPEN",
+      "requiredEvidence": "one exact 4-of-4 Renderer candidate receipt, product commit, manifests, and exclusive gate lease"
+    },
+    {
+      "id": "numeric_camera_centers",
+      "status": "OPEN_LIVE_DERIVED",
+      "requiredEvidence": "six numeric centers captured only through the admitted player-visible Frame Developed City route"
+    },
+    {
+      "id": "regular_content_rectangle",
+      "status": "OPEN_LIVE_DERIVED",
+      "requiredEvidence": "one numeric regular content rectangle captured only through the admitted player-visible route"
+    }
+  ],
+  "executionAccounting": {
+    "directionBinding": "industrial_l04_directional_family",
+    "stage": "candidate_neutral_preregistration_refresh",
+    "readyNow": [
+      "startup_identity_and_hash_admission_complete",
+      "fixture_materializer_determinism_and_16_negative_gates_passed",
+      "fixture_placement_camera_layout_rubric_interaction_ax_reduce_motion_capture_and_evidence_root_audits_joined",
+      "machine_packet_assembled"
+    ],
+    "running": [],
+    "waitingOnJoin": [
+      "integration_refreshed_shared_ledger_and_packet_acknowledgement",
+      "integration_published_repaired_renderer_rev7_receipt",
+      "future_exact_atomic_4_of_4_renderer_candidate_and_exclusive_gate_lease"
+    ],
+    "serializedAuthority": {
+      "visibleWorktreeWriter": "PLAY-075_QA_ASSEMBLER",
+      "gitWriterCount": 1,
+      "governedEvidenceWriterCount": 1,
+      "futureStagedAppJourneyConcurrency": 1
+    },
+    "nextRefill": "Integration publishes the refreshed ledger acknowledgement and repaired Renderer receipt; the final gate remains dormant until an exact atomic 4-of-4 candidate lease exists.",
+    "capacity": {
+      "availableSlots": 4,
+      "usedSlots": 4,
+      "unusedSlots": 0,
+      "perSlotUnusedReasons": []
+    },
+    "launchedJobs": [
+      {
+        "id": "root-assembler",
+        "mode": "single_visible_writer",
+        "result": "packet_assembled"
+      },
+      {
+        "id": "fixture_camera_audit",
+        "mode": "read_only",
+        "result": "joined"
+      },
+      {
+        "id": "rubric_accessibility_audit",
+        "mode": "read_only",
+        "result": "joined"
+      },
+      {
+        "id": "authority_join_audit",
+        "mode": "read_only",
+        "result": "joined"
+      }
+    ],
+    "overlap": {
+      "status": "actual_concurrent_read_only_audits_with_single_writer_assembly",
+      "concurrentJobsObserved": [
+        "fixture_camera_audit",
+        "rubric_accessibility_audit",
+        "authority_join_audit"
+      ],
+      "sharedVisibleWorktreeWritesByHelpers": 0
+    },
+    "join": {
+      "state": "complete",
+      "requiredJobs": [
+        "fixture_camera_audit",
+        "rubric_accessibility_audit",
+        "authority_join_audit"
+      ],
+      "completedJobs": [
+        "fixture_camera_audit",
+        "rubric_accessibility_audit",
+        "authority_join_audit"
+      ]
+    }
+  },
+  "currentResult": {
+    "candidateNeutral": true,
+    "rendererCandidate": null,
+    "productCommit": null,
+    "appLaunchesPerformed": 0,
+    "capturesCreated": 0,
+    "pixelsInspected": false,
+    "liveMeasurementsCreated": false,
+    "scoresCreated": 0,
+    "productOrResourcesMutated": false,
+    "sharedLedgerMutated": false,
+    "claimMutated": false,
+    "productBehavior": "UNVERIFIED",
+    "finalDisposition": "UNAVAILABLE"
+  }
+}

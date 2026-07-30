@@ -1,4 +1,4 @@
 interface:
   display_name: "Produce CitySim World Art"
   short_description: "Fan out governed directional CitySim art"
-  default_prompt: "Use $produce-citysim-world-art to run the claimed direction cell from zero-pixel proof through an exact source handoff."
+  default_prompt: "Use $produce-citysim-world-art to run and internally fan out the claimed direction cell from zero-pixel proof through an exact source handoff."

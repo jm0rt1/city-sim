@@ -68,6 +68,7 @@ class ParallelStateFixture:
             branch, claim, _ = validator.CELL_BINDINGS[cell]
             rows.append(
                 {
+                    "batch": "industrial_l04_directional_family",
                     "lane": validator.LANE_BINDINGS[cell],
                     "direction": cell,
                     "threadId": f"thread-{cell}",
@@ -121,6 +122,15 @@ class ParallelStateFixture:
                 "sourceProductionProfile": {
                     "path": None,
                     "sha256": None,
+                    "status": "pending",
+                },
+                "parallelExecutionSchedule": {
+                    "path": None,
+                    "sha256": None,
+                    "schemaPath": None,
+                    "schemaSha256": None,
+                    "validatorPath": None,
+                    "validatorSha256": None,
                     "status": "pending",
                 },
                 "semanticValidator": {
@@ -303,6 +313,47 @@ class ParallelStateValidatorTests(unittest.TestCase):
     def test_dispatch_requires_exact_ledger_hash(self) -> None:
         del self.fixture.receipt["ledgerSha256"]
         self.assertIn("RECEIPT_LEDGER_HASH_MISSING", self.fixture.codes())
+
+    def test_active_row_requires_exact_acknowledgement_evidence(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            collection[0]["dispatchState"] = "working"
+        self.fixture.refresh_hash()
+        self.assertIn("ACTIVE_ACK_EVIDENCE_MISSING", self.fixture.codes())
+
+    def test_row_cannot_count_unrelated_batch_work(self) -> None:
+        self.fixture.ledger["cells"][4]["batch"] = "renderer_r4a"
+        self.fixture.receipt["rows"][4]["batch"] = "renderer_r4a"
+        self.fixture.refresh_hash()
+        self.assertIn("ROW_BATCH_MISMATCH", self.fixture.codes())
+
+    def test_abc_requires_validated_parallel_schedule(self) -> None:
+        self.fixture.ledger["batchState"] = "abc_active"
+        for field in ("appearanceLock", "sourceProductionProfile"):
+            self.fixture.ledger["familyAuthority"][field] = copy.deepcopy(
+                self.fixture.ledger["familyAuthority"]["familyContract"]
+            )
+        self.fixture.refresh_hash()
+        self.assertIn(
+            "BATCH_SOURCE_AUTHORITY_PRECONDITION",
+            self.fixture.codes(),
+        )
+
+    def test_fourth_quarantine_requires_same_turn_assembly_dispatch(self) -> None:
+        for index in range(4):
+            for collection in (
+                self.fixture.ledger["cells"],
+                self.fixture.receipt["rows"],
+            ):
+                collection[index]["state"] = "renderer_quarantined"
+        self.fixture.board = self.fixture._board(self.fixture.ledger["cells"])
+        self.fixture.refresh_hash()
+        self.assertIn(
+            "ALL4_QUARANTINED_REQUIRES_ASSEMBLY_DISPATCH",
+            self.fixture.codes(),
+        )
 
     def test_row_requires_canonical_lane_thread_and_base(self) -> None:
         for collection in (

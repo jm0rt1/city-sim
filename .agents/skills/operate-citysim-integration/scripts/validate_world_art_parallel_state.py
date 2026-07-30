@@ -107,6 +107,11 @@ AUTHORITY_REQUIRED_PAIRS = {
     "parallelCellsContract": (("path", "sha256"),),
     "appearanceLock": (("path", "sha256"),),
     "sourceProductionProfile": (("path", "sha256"),),
+    "parallelExecutionSchedule": (
+        ("path", "sha256"),
+        ("schemaPath", "schemaSha256"),
+        ("validatorPath", "validatorSha256"),
+    ),
     "semanticValidator": (("path", "sha256"),),
     "sourceAdmissionReceipt": (
         ("schemaPath", "schemaSha256"),
@@ -198,6 +203,7 @@ class Validator:
             ledger.get("cells"), "ledger.cells", require_exact_six=True
         )
         self._validate_timestamp(ledger.get("updatedAt"), "ledger.updatedAt")
+        self._validate_batch_bindings(ledger, ledger_rows)
         self._validate_state_machines(ledger, ledger_rows)
         self._validate_family_authority(ledger.get("familyAuthority"))
         integration_writer = ledger.get("integrationWriter")
@@ -392,6 +398,7 @@ class Validator:
                     location,
                     "active work must name a concrete stop condition",
                 )
+            self._validate_active_acknowledgement(row, location)
             return
 
         if state in PENDING_DISPATCH_STATES:
@@ -439,6 +446,7 @@ class Validator:
         self, row: Mapping[str, Any], location: str
     ) -> None:
         for field in (
+            "batch",
             "lane",
             "threadId",
             "branch",
@@ -519,6 +527,72 @@ class Validator:
             self._validate_timestamp(
                 acknowledged_at, f"{location}.acknowledgedAt"
             )
+
+    def _validate_batch_bindings(
+        self,
+        ledger: Mapping[str, Any],
+        rows: Mapping[str, Mapping[str, Any]],
+    ) -> None:
+        batch = ledger.get("batch")
+        if not _concrete_text(batch):
+            self.error(
+                "BATCH_BINDING_MISSING",
+                "ledger.batch",
+                "must name the exact active family or release batch",
+            )
+            return
+        for cell, row in rows.items():
+            if row.get("batch") != batch:
+                self.error(
+                    "ROW_BATCH_MISMATCH",
+                    f"ledger.cells.{cell}.batch",
+                    f"must bind the ledger batch {batch!r}",
+                )
+
+    def _validate_active_acknowledgement(
+        self, row: Mapping[str, Any], location: str
+    ) -> None:
+        acknowledgement = row.get("authorityAcknowledgement")
+        acknowledgement_location = f"{location}.authorityAcknowledgement"
+        if not isinstance(acknowledgement, Mapping):
+            self.error(
+                "ACTIVE_ACK_EVIDENCE_MISSING",
+                acknowledgement_location,
+                "active work must bind exact visible-thread acknowledgement evidence",
+            )
+            return
+        for field in (
+            "threadId",
+            "authorityCommit",
+            "claimRevision",
+            "acknowledgedAt",
+            "evidenceId",
+            "boundedDeliverable",
+            "stopCondition",
+        ):
+            if not _concrete_text(acknowledgement.get(field)):
+                self.error(
+                    "ACTIVE_ACK_EVIDENCE_FIELD",
+                    f"{acknowledgement_location}.{field}",
+                    "must be concrete",
+                )
+        for field in (
+            "threadId",
+            "claimRevision",
+            "acknowledgedAt",
+            "boundedDeliverable",
+            "stopCondition",
+        ):
+            if acknowledgement.get(field) != row.get(field):
+                self.error(
+                    "ACTIVE_ACK_EVIDENCE_MISMATCH",
+                    f"{acknowledgement_location}.{field}",
+                    f"must exactly match row {field}",
+                )
+        self._validate_timestamp(
+            acknowledgement.get("acknowledgedAt"),
+            f"{acknowledgement_location}.acknowledgedAt",
+        )
 
     def _validate_cell_binding(
         self, cell: str, row: Mapping[str, Any], location: str
@@ -704,17 +778,21 @@ class Validator:
         profile_ready = self._authority_is_concrete(
             family_authority, "sourceProductionProfile"
         )
+        schedule_ready = self._authority_is_concrete(
+            family_authority, "parallelExecutionSchedule"
+        )
         if batch_state in {
             "abc_active",
             "4of4_ready",
             "exact_candidate_qa",
             "integrated",
-        } and not (appearance_ready and profile_ready):
+        } and not (appearance_ready and profile_ready and schedule_ready):
             self.error(
                 "BATCH_SOURCE_AUTHORITY_PRECONDITION",
                 "ledger.batchState",
                 "abc_active and later require concrete appearance lock and "
-                "source production profile authorities",
+                "source production profile plus validated parallel execution "
+                "schedule authorities",
             )
 
         for cell, state in direction_states.items():
@@ -723,12 +801,13 @@ class Validator:
                 "source_candidate",
                 "integration_admitted",
                 "renderer_quarantined",
-            } and not (appearance_ready and profile_ready):
+            } and not (appearance_ready and profile_ready and schedule_ready):
                 self.error(
                     "DIRECTION_SOURCE_AUTHORITY_PRECONDITION",
                     f"ledger.cells.{cell}.state",
                     "source_candidate and later require concrete appearance "
-                    "lock and source production profile authorities",
+                    "lock, source production profile, and validated parallel "
+                    "execution schedule authorities",
                 )
             if state in {"integration_admitted", "renderer_quarantined"}:
                 self._validate_row_artifact(
@@ -742,6 +821,44 @@ class Validator:
                     "rendererQuarantinePacket",
                     f"ledger.cells.{cell}.rendererQuarantinePacket",
                 )
+
+        if all_quarantined and renderer_state not in {
+            "quarantining",
+            "4of4_assembled",
+        }:
+            self.error(
+                "ALL4_QUARANTINED_REQUIRES_ASSEMBLY_DISPATCH",
+                "ledger.cells.renderer.state",
+                "the fourth quarantined direction must trigger same-turn "
+                "Renderer assembly dispatch",
+            )
+        renderer_row = rows.get("renderer", {})
+        if all_quarantined and renderer_state == "quarantining":
+            self._validate_row_artifact(
+                renderer_row,
+                "assemblyManifest",
+                "ledger.cells.renderer.assemblyManifest",
+            )
+        if renderer_state == "4of4_assembled":
+            self._validate_row_artifact(
+                renderer_row,
+                "rendererCandidateReceipt",
+                "ledger.cells.renderer.rendererCandidateReceipt",
+            )
+
+        qa_row = rows.get("qa", {})
+        if qa_state == "exact_candidate_active":
+            self._validate_row_artifact(
+                qa_row,
+                "qaGateLease",
+                "ledger.cells.qa.qaGateLease",
+            )
+        elif qa_state == "passed":
+            self._validate_row_artifact(
+                qa_row,
+                "qaGateResult",
+                "ledger.cells.qa.qaGateResult",
+            )
 
         if batch_state == "4of4_ready":
             if renderer_state != "4of4_assembled":
@@ -802,6 +919,7 @@ class Validator:
             "parallelCellsContract",
             "appearanceLock",
             "sourceProductionProfile",
+            "parallelExecutionSchedule",
             "semanticValidator",
             "sourceAdmissionReceipt",
         ):

@@ -1,8 +1,8 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `73300af6f2ae6e31c4f818c078f82cc73ce4c70b`
+- **Parallel operating authority:** `836ae23e8f9e10bd35b75ddd208c13d72c9fa5e9`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-29
+- **Updated:** 2026-07-30
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,12 +10,12 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `81d51486fb2086e26ab08dd200221c5eb8d79edb` | static-B failed closed on RSS sampling interval; exact failure preserved, no retry |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `c9d3e754447d4c87ea4d8123c54baad5259d549f` | static-B v03 clean success returned; independent disposition active |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `bcb5cba1495aade19009f4e4407cd55b7bf03c39` | zero-pixel A/B/C orchestration prep integrated; wait for post-lock release |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `d8332051c8665410f90684ba8f034fd2a1846a53` | zero-pixel validation fan-out prep integrated; wait for post-lock release |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `76386c7dba4c3f9b86c6662361cc670ef1e6ed1f` | zero-pixel review assembly prep integrated; wait for post-lock release |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `0ad167ae3b9c709ac17165d7bdce8a5388467523` | R4-A pixel baseline frozen; renderer-only authored-opening iteration active |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `exact_candidate_active` | `8e68cf11c6a943ab44d83232659585134c17f260` | run one same-SHA `472ffa85…` gate when Computer Use lock check resolves |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `aed682f61d2593209740da0a1fd14577bd445e6c` | L4 intake ready; unrelated R4-A candidate returned for independent review |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `8e68cf11c6a943ab44d83232659585134c17f260` | L4 preregistration complete; unrelated L3 gate remains externally blocked |
 
 ## Dispatch invariant
 
@@ -24,31 +24,30 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `04:19Z` acknowledgement refresh, Industrial L3 remains integrated at exact candidate
-`472ffa85cd35639a675c1c2e4ede748c94446a7f`; its complete technical gate is
-green and QA owns the sole same-SHA player-facing gate. East, South, and West
-zero-pixel execution, validation, and review-assembly preparations are
-independently approved and integrated. Renderer has completed the L4 intake
-prerequisite audit.
+At the `05:16Z` refresh, North has returned the single-child static-B v03
+result cleanly and Integration is independently reviewing it. East, South,
+and West have exhausted every claim-authorized zero-pixel preparation and
+remain blocked from pixels until North process A is independently accepted and
+Integration publishes the appearance lock, source-production profile, strict
+parallel schedule, and per-process launch grants.
 
-North correctly returned v01 before mutation because its INPUT-BINDINGS
-byte-identity rule conflicted with the required new claim and contract hashes.
-Corrected authority `73300af6…` now leases exactly one `static-b` child after
-a committed v02 prelaunch. Five run-neutral files must be byte-identical;
-INPUT-BINDINGS permits exactly the claim and contract hash pointers to differ.
-Process A/B/C and every East/South/West DCC or pixel process remain closed.
+North v03 consumed exactly one static-B child and reported exact A/B static
+comparison plus bounded wait4/resource evidence at `c9d3e754…`. Process A/B/C
+and every East/South/West DCC or pixel process remain closed until that result
+is independently disposed and the missing post-lock authorities are published.
 
-Renderer's canonical direction source-admission harness is integrated.
-Renderer has acknowledged the parallel R4-A authored-opening slice and is
-freezing exact regular/compact rendered-pixel baseline masks before product
-mutation. It may use only worktree-local artifacts while the L3 same-SHA QA
-gate remains open and may not consume a live L4 source or activate shipping.
+Renderer's canonical direction source-admission harness remains ready with
+zero live L4 receipts. Its separate R4-A candidate is clean at `aed682f6…` and
+under independent review; that work does not count as active Industrial L4
+assembly. QA's L4 family preregistration is complete, while the exclusive QA
+lane remains occupied by a separate L3 lock-state gate; that L3 work likewise
+does not count as active L4 QA.
 
-North, Renderer, and QA are three acknowledged disjoint workstreams. QA remains
-externally waiting only on the Computer Use lock-state approval for the
-unchanged exact L3 candidate. The compute envelope assigns one exclusive
-North `static-b` DCC slot; Renderer is CPU/worktree-local and QA may continue
-without DCC overlap.
+No row is mislabeled active. The current L4 art stage has exhausted safe
+sibling prelock work; its next legal transition is North result disposition
+and then one Process-A calibration. Outside this family ledger, published
+PLAY-084 UI and PLAY-085 Gameplay work are independently dispatched so overall
+delivery remains parallel without weakening the art gate.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

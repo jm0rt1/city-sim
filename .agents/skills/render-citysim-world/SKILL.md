@@ -54,6 +54,14 @@ assembly in the same acknowledged worker turn; if assembly cannot start, emit
 a blocking receipt naming the exact missing Integration authority or
 shared-surface decision rather than entering an undefined queue.
 
+The same Integration receipt that records the fourth quarantine must bind the
+atomic assembly manifest and an acknowledged batch-local Renderer assignment.
+Do not let unrelated renderer feature work count as the family assembler. A
+completed 4/4 assembly must return one exact candidate receipt binding the
+input ledger/manifest, product commit, all source/LOD/pack/runtime hashes,
+catalog/atlas/manifest hashes, two-build identity, full-suite result, build
+verification, and non-interactive resource smoke.
+
 A worker-authored source packet is an independent-review candidate, not
 `integration_admitted` authority. Before marking a direction renderer-quarantined,
 require the exact Integration source-admission receipt that binds the packet,

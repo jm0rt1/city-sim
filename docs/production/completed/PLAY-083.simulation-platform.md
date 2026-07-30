@@ -112,3 +112,16 @@ one separate receipt binding both mappings to the exact request, candidate,
 paths, blobs, hashes, and digests. Only that Integration-published authority
 may unlock the candidate-neutral QA rehearsal. This worker does not
 self-authorize, self-accept, push, or integrate the mappings.
+
+## Integration acceptance
+
+Integration independently accepted and published both lifecycle mappings at
+`1008eadf553a445f01f9405558d260e0c779674b`.
+
+- Receipt:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-LIFECYCLE-SAVE-BINDING-ACCEPTANCE.json`
+- Receipt SHA-256:
+  `b7722a9d686b8aa2c61fc8350b29f580a2e441bd38de943f5b1bf1d948da87db`
+
+PLAY-083 is closed. Downstream Renderer candidate launch and QA scoring remain
+owned by their separate claims and do not reopen this simulation proof.

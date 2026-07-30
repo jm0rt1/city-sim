@@ -24,9 +24,9 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R3.json"
+    "REVISION-7-FINAL-AUTHORITY-ZERO-CHILD-READINESS-R4.json"
 )
-TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
+TRUSTED_MASTER_COMMIT = "22144bffacbf255f04952d28ccdc9683227b535f"
 
 
 def arguments() -> argparse.Namespace:

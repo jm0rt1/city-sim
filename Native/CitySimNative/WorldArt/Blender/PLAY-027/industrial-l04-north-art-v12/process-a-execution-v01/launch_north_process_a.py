@@ -528,8 +528,8 @@ def validate_execution_contract(
         "process": "A",
         "phase": "prelock_north_a",
         "branch": "codex/citysim-world-art",
-        "authorityBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
-        "publicationCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+        "authorityBaseCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
+        "publicationCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
         "processOutputRoot": (
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
@@ -556,7 +556,7 @@ def validate_execution_contract(
         contract["integrationTrust"]
         == {
             "remoteRef": "refs/remotes/origin/master",
-            "minimumAuthorityCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+            "minimumAuthorityCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
         },
         "Integration trust-root policy drift",
     )
@@ -648,7 +648,7 @@ def validate_execution_contract(
     expected_bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",
-            "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+            "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
         ),
         "prelaunchAuthority": (
             "docs/production/evidence/INTEGRATION/"

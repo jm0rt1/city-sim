@@ -67,6 +67,31 @@ capacity, and the exact ownership or dependency reason for every intentionally
 unused slot. Require actual start/end or overlap evidence in the worker's
 machine-readable return; optimistic labels and future plans do not count.
 
+Project that return into each ledger/receipt row as one exact
+`executionAccounting` object containing the five plan fields above plus
+`capacity {helperSlots,dccSlots}`, `launchedJobs`, `unusedCapacityReasons`,
+`overlap {status,jobIds,startedAt,endedAt,reason}`, and
+`join {state,requiredJobs,completedJobs}`. The parallel-state validator must
+reject missing fields, fabricated overlap, unknown jobs, unexplained active
+capacity, or a join that does not match `waitingOnJoin`.
+
+`serializedAuthority` is an object binding the row's exact visible
+`threadId`, `branch`, and `worktree`, with that same thread as the sole
+`gitIndexWriter` and `governedEvidenceWriter`. Each `launchedJobs` entry binds
+its ID to the exact batch, claim, published base, head, visible thread, branch,
+worktree, resource class, mutation class, exclusive root, process/slot when
+DCC-backed, state, start/end timestamps, and evidence ID. Running job IDs must
+resolve to those entries and fit their resource-class capacity. Observed
+overlap is derived from the bound per-job intervals, not asserted by prose.
+Evidence IDs bind the exact visible thread/turn/item. Mutating roots must be
+claim-owned direction roots or claim-token-bound isolated temporary roots,
+disjoint across all rows and forbidden from overlapping any canonical
+worktree or broad filesystem/home/temp root.
+`unusedCapacityReasons` accounts for exactly one helper or DCC slot per entry,
+so every intentionally unused slot has its own reason; DCC capacity and jobs
+must match the dispatch receipt's published compute envelope and assigned
+slots.
+
 Allocate scarce concurrency to the current critical path. Use internal helpers
 for bounded read-only review or isolated temporary roots outside the visible
 worker's worktree when useful, but keep all worktree mutation authority and

@@ -122,6 +122,14 @@ join results, and reasons for unused capacity. A single long serial validation
 run does not satisfy intake-ahead behavior when independent direction or
 fixture jobs were ready.
 
+Return `executionAccounting` in the exact Integration schema: every launched
+job binds the batch, claim revision, base, head, visible Renderer thread,
+branch, worktree, resource/mutation class, exclusive root, state, interval,
+optional DCC slot/process, and exact visible-thread item evidence. Running IDs
+must equal the running job objects; every intentionally unused slot gets its
+own reason. The visible Renderer thread remains the sole Git and governed-
+evidence writer.
+
 The Renderer row in Integration's shared ledger may advance only through
 `intake_preparing → intake_ready → quarantining → 4of4_assembled`. Renderer
 reports its task-owned evidence and proposed state; Integration remains the

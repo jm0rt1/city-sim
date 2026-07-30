@@ -1,8 +1,8 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `7e21babafb5aa491894136c7f1c1d4c58444ef31`
+- **Parallel operating authority:** `a8b30be4a4a12515d934b035b63946af82247b1f`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-30 09:56Z
+- **Updated:** 2026-07-30 12:32Z
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,11 +10,11 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `2ffac16e5d22a9174aaf49c9835b0ad12df05fc6` | security repair complete; sync `60bff5ff…` and independent review next |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `edc1741456cd1b32781d10b491a55b5a2d0cae18` | revision-6 zero-DCC execution closure planned |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `9d81095a9845d39c1b3aaf45bef6516d204f5c6b` | revision-6 zero-DCC execution closure planned |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `73cd3d408ff6cb65e8137f26f8d25c1f42f7a81d` | revision-6 zero-DCC execution closure planned |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `4d8322a75d9f5167a687b80e3eaa3f350ae5c948` + authorized evidence WIP | persistent final evidence run active and undisturbed |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `73940b56e2b10dba76bae80449b7db8ff59669ee` | closure-v1 prelaunch independently approved; live Process-A authority next |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `e7d526246232e5e39ba2c8975372e086e2d7c85b` | closure-v1 prelock candidate independently approved |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `41bc192bfbe047c81e157df6e1cf38172c11ab88` | closure-v1 prelock candidate independently approved |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `17fa71db0f3b4fe0aacf57ed57e3deb9a2d1ff16` | closure-v1 prelock candidate independently approved |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `7c2ee61d4f62a8836edc6bc74dd2ddb0daf5999e` | current-master accounting repair complete; independent review active |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistering` | `8e68cf11c6a943ab44d83232659585134c17f260` | exact-batch machine packet repair queued behind the non-overlapping L3 gate |
 
 ## Dispatch invariant
@@ -96,6 +96,20 @@ but must sync the new published master and pass independent review before
 Process A. Renderer continues its separate persistent final proof without
 interruption. No live art lease, source child, render, or pixel authority exists
 in this wave.
+
+At the `12:32Z` refresh, Integration has published enforceable intra-lane
+execution accounting. Every ledger row now binds one visible writer, exact
+jobs, capacity, overlap, joins, isolated roots, compute slots, and
+thread-item evidence; the 62-case fail-closed suite and independent review
+both pass. North, East, South, and West each hold clean independently reviewed
+prelock candidates. North is the only remaining design-calibration gate before
+the postlock three-direction A/B/C fan-out. Renderer returned one clean
+candidate with honest UI-contract and preparation-ceiling misses; its
+current-master/accounting repair and the UI-owned assertion repair are running
+as independent workstreams. QA remains serialized behind its separate exact
+candidate gate. This snapshot authorizes zero DCC processes and zero new
+pixels; the next dispatch will publish one exact North Process-A lease rather
+than reopening the department-wide mutex.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

@@ -204,6 +204,12 @@ distinct roots; start/end timestamps; exactly-one-invocation assertions;
 actual overlap; join results; validation-job roots; and the final assembler
 identity. Also record ready-job count, maximum available DCC and helper
 capacity, launched-job count, unused-capacity reasons, and each required join.
+Its `executionAccounting` projection must use the exact Integration schema:
+one bound job object per launch with batch, claim revision, base, head, visible
+thread, branch, worktree, resource/mutation class, exclusive root, state,
+interval, DCC slot/process when applicable, and exact visible-thread item
+evidence. Bind the visible cell as sole Git/evidence writer, list every running
+job exactly once, and give each unused helper or DCC slot its own reason.
 If Integration's compute envelope requires a sequential render wave, record
 the resource exception and queue order. Claim overlap only when the timestamps
 prove it, and never exceed the published global DCC cap.

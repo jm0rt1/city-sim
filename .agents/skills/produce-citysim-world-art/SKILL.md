@@ -117,6 +117,15 @@ that grant or remain non-invocable directly. Do not begin A/B/C while the
 parallel schedule schema, strict validator, adversarial tests, or launch grant
 is missing, proposed, stale, or unvalidated.
 
+For Industrial L4, validate the exact Integration schedule with
+`.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`.
+Treat
+`docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json`
+as the wire contract and
+`docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md`
+as the operating authority. Direction-local adapters and runners may consume
+those shared files read-only; they never edit them.
+
 ### Parallelize inside each direction cell
 
 Scene and material authoring remain single-writer until the exact

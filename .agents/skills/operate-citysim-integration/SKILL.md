@@ -95,6 +95,22 @@ when an authority does not yet exist; never imply it from a nearby artifact.
 `abc_active` is illegal until the post-lock schedule and per-process
 launch-grant validator are published.
 
+The canonical executable schedule controls are:
+
+- schema:
+  `docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json`;
+- semantic validator:
+  `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`;
+- no-DCC adversarial tests:
+  `.agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_parallel_execution_schedule_v1.py`; and
+- authority:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md`.
+
+Run the semantic validator on every proposed schedule before publication and
+again before describing any process grant as active. A pre-lock schedule may
+grant only North A. A post-lock schedule must grant North B/C plus
+East/South/West A/B/C with at least three DCC slots.
+
 Advance each batch through this explicit state machine:
 
 `contract_pending → prelock_active → appearance_lock_pending → abc_active →

@@ -2,7 +2,7 @@
 
 - **Parallel operating authority:** `7e21babafb5aa491894136c7f1c1d4c58444ef31`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-30
+- **Updated:** 2026-07-30 06:57Z
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,11 +10,11 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `cc51161cc7b21540025730bc77645f48c794539d` | schedule adapter accepted; working on zero-child Process-A orchestrator prelaunch |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `cc51161cc7b21540025730bc77645f48c794539d` + authorized WIP | zero-child Process-A prelaunch under repair after parallel review caught child-capability and terminal-accounting defects |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `6524934f764862768bce7d27eccffb279604b55f` | zero-child A/B/C schedule adapter accepted and integrated |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `092d7b5938125f66c24bf0a759825da195baea04` | real post-lock CLI adapter repaired, accepted, and integrated |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `0d18aae990d5691d89e02426dc50e36262d4efb1` | zero-child A/B/C schedule adapter accepted and integrated |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `9cc307aca522ada00e291fe254c46cff7de6d81b` | L4 intake remains ready with zero admitted sources |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `0a86c2eaceff2579938c1c8a216864ffc3a63d4d` | exact `2b2c0653…` synchronized; measurement/cold-path checkpoint active before product mutation |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `8e68cf11c6a943ab44d83232659585134c17f260` | L4 preregistration complete; unrelated L3 gate remains externally blocked |
 
 ## Dispatch invariant
@@ -51,6 +51,18 @@ North advances the design-calibration path. A returned cell was repaired
 without canceling or invalidating successful siblings. Outside this family
 ledger, published PLAY-084 UI and PLAY-085 Gameplay work remain independently
 active.
+
+At the `06:57Z` refresh, Integration also forced parallelism inside the two
+active implementation lanes. North is using read-only child-boundary,
+frozen-hash, and adversarial-coverage reviews alongside its single writer; the
+early review returned a forgeable child capability and incomplete terminal
+accounting before handoff. Renderer used read-only cold-path,
+measurement-integrity, and evidence-inventory reviews alongside its single
+writer, then synchronized exact published master `2b2c0653…` before authoring
+the measurement boundary. East, South, and West are not labeled active filler
+work: their complete pre-lock
+preparation is clean and their next legal operation is the already scheduled
+post-lock A/B/C fan-out.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

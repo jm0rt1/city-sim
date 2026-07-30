@@ -1,0 +1,110 @@
+{
+  "schema": "citysim.play-079.east-schedule-consumer-adapter.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "claimRevision": 5,
+  "claimSha256": "f1f3df8bc66fbe82ff536a7ed68235bd0c33997a5df6559a028458b5d635d79e",
+  "publishedBase": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+  "authorityDeclaredBase": "be524831885fc240742f61be7357ea515a78da32",
+  "disposition": "ZERO_CHILD_READINESS_ONLY",
+  "bindings": {
+    "claim": {
+      "path": "docs/production/claims/PLAY-079.world-art-east.md",
+      "sha256": "f1f3df8bc66fbe82ff536a7ed68235bd0c33997a5df6559a028458b5d635d79e"
+    },
+    "adapterAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
+      "sha256": "3638f960a9394f9c4c0c09e3aa75ba842ec4d093eada04762eb51f0b1c57dd34"
+    },
+    "scheduleSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",
+      "sha256": "6eba2291f9cb548a8ddd08961bdffe3a18c9546b293a08f094711b38aa0840c6"
+    },
+    "scheduleSemanticValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py",
+      "sha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04"
+    },
+    "highLevelOrchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
+      "sha256": "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c"
+    },
+    "processPreparation": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/parallel-process-prep-v01/PROCESS-ORCHESTRATION-PREP-CONTRACT.json",
+      "sha256": "cc6b0c2653af9e563ad60e27bfe8cde3d3f3e67d74153533ca06eef7ad08aaf6"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    }
+  },
+  "futureSchedule": {
+    "state": "missing",
+    "path": null,
+    "commit": null,
+    "sha256": null,
+    "requiredPhase": "postlock_abc"
+  },
+  "futureAppearanceLock": {
+    "state": "missing",
+    "path": null,
+    "sha256": null
+  },
+  "futureSourceProductionProfile": {
+    "state": "missing",
+    "path": null,
+    "sha256": null
+  },
+  "targetGrant": {
+    "direction": "east",
+    "claim": "PLAY-079",
+    "branch": "codex/citysim-world-art-east",
+    "claimRevision": 5,
+    "claimSha256": "f1f3df8bc66fbe82ff536a7ed68235bd0c33997a5df6559a028458b5d635d79e",
+    "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+    "processes": ["A", "B", "C"],
+    "maximumChildStartsPerProcess": 1,
+    "orchestratorOnly": true,
+    "directLowLevelInvocationAllowed": false
+  },
+  "exclusiveRoots": [
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/",
+    "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
+  ],
+  "processRoots": {
+    "A": {
+      "outputRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-a/"
+    },
+    "B": {
+      "outputRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-b/"
+    },
+    "C": {
+      "outputRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-c/"
+    }
+  },
+  "queuePolicy": {
+    "requiredTokens": ["east:A", "east:B", "east:C"],
+    "requiredRelativeOrder": ["east:A", "east:B", "east:C"]
+  },
+  "readiness": {
+    "scheduleValidated": false,
+    "grantValidated": false,
+    "launchReady": false,
+    "sourceReady": false,
+    "production": false,
+    "childStarts": 0,
+    "blenderChildStarts": 0,
+    "dccChildStarts": 0,
+    "renderInvocations": 0,
+    "pixelFilesCreated": 0
+  },
+  "readinessPacket": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/ZERO-CHILD-READINESS.json"
+}

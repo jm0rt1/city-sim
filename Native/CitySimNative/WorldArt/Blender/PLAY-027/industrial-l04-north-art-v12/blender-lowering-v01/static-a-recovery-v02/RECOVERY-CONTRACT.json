@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "branch": "codex/citysim-world-art",
+  "direction": "north",
+  "stage": "industrial-l04-north-v12-blender-lowering-v01",
+  "publishedBase": "4d3428ddc62aec439859d4121814bc02928cfda6",
+  "authorityCommit": "8f6f7e0daf4a39cf1ea7b6f3b975882013563bd6",
+  "claim": {
+    "file": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d"
+  },
+  "authority": {
+    "file": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-BLENDER-LOWERING-AUTHORITY.md",
+    "sha256": "e90f676ca76d65ec7a351ff7e09eeb278c58173a92a8f5036fb9ac18647d66c9"
+  },
+  "scene": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+    "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+  },
+  "materials": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+    "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+  },
+  "bridge": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "determinant": 1
+  },
+  "compoundAuditTool": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/audit_compound_mesh.py",
+    "sha256": "eba59bae87676c80d7271897cd3ff478e8ca771bc1f8a9ad322d264985d534c8"
+  },
+  "analyticReplayIdentity": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/REPLAY-IDENTITY.json",
+    "sha256": "791cdaef240baed03a7a8a380b8fddb50f4039f375a1022ce7eaa7003a28c99e"
+  },
+  "compoundAudit": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/COMPOUND-MESH-AUDIT.json",
+    "sha256": "03f6e9f1460c87251e525b977d9684a2e92b4e80eb8145563be0a5fb4f39266e"
+  },
+  "compoundAdversaries": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/ADVERSARIAL-RESULTS.json",
+    "sha256": "9315b8e778d130ad1a31d3fe30727e6eafce6ba4dffbe66154853f64ef9f5d6c"
+  },
+  "compoundDisposition": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/DISPOSITION.json",
+    "sha256": "8725454f888b3d0c299c4d6bb0bb8fbb46d1bd313b27e2e3cb1826ecb1828c88"
+  },
+  "replayPreservation": {
+    "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/REPLAY-PRESERVATION.json",
+    "sha256": "e9818cd8b4e3349c83f6438448582faf1adcdec59318c75202bd5945dd7cc1dd"
+  },
+  "expected": {
+    "logicalBuildingID": "industrial_l04",
+    "variantID": "variant-0",
+    "viewDirection": "north",
+    "sourceRevision": "blender-art-v12-prepixel",
+    "sceneGeometryID": "industrial-l04-north-v12-compound-west-pier",
+    "orientationTransform": "none",
+    "physicalComponentCount": 50,
+    "semanticObjectCount": 47,
+    "shapeCounts": {
+      "box": 44,
+      "octagonal-prism": 5,
+      "triangular-prism": 1
+    },
+    "materialCount": 14,
+    "sourceFaceCount": 319,
+    "removedInternalFaceFragmentCount": 6,
+    "removedInternalFaceArea": 1023.0,
+    "remainingInternalFaceArea": 0.0,
+    "compoundBoundarySurfaceArea": 35103.094623,
+    "differentOwnerContactArea": 18.0,
+    "maximumRegistrationErrorSourcePixels": 0.001,
+    "bevelModifierCount": 0,
+    "renderInvocationCount": 0
+  },
+  "compoundInterfaces": [
+    {
+      "name": "west-pier-exterior-camera-reveal",
+      "semanticOwnerID": "v12-west-portal-pier",
+      "components": [
+        "v12-west-pier-exterior",
+        "v12-west-pier-camera-reveal"
+      ],
+      "axis": 2,
+      "plane": -12.8,
+      "removedArea": 216.0
+    },
+    {
+      "name": "portal-inset-east-west-lower",
+      "semanticOwnerID": "v12-portal-inset",
+      "components": [
+        "v12-portal-inset-east",
+        "v12-portal-inset-west-lower"
+      ],
+      "axis": 0,
+      "plane": 14.0,
+      "removedArea": 9.0
+    },
+    {
+      "name": "raised-high-bay-main-east-upper",
+      "semanticOwnerID": "north-v09-raised-high-bay",
+      "components": [
+        "v12-raised-high-bay-main",
+        "v12-raised-high-bay-east-upper"
+      ],
+      "axis": 0,
+      "plane": 12.0,
+      "removedArea": 798.0
+    }
+  ],
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "lockFile": "/private/tmp/citysim-play027-industrial-l04-north-v12-static.lock",
+    "perProcessTimeoutSeconds": 120,
+    "combinedTimeoutSeconds": 240,
+    "maximumProcessGroupRSSMiB": 1024,
+    "maximumConcurrency": 1
+  },
+  "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-a-recovery-v02",
+  "recovery": {
+    "authorityCommit": "03f320554951ef79bb8e200c844b3ad168fb3d10",
+    "authorityFile": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-STATIC-A-MODULE-BOOTSTRAP-RECOVERY-V02-AUTHORITY.md",
+    "authoritySHA256": "89dbecb8aaf491238c09a09f6fcd2c4c716b6be7d2a51373ec5045355306c84c",
+    "dispatchCommit": "8a3954160b28d580439db3df0aa5fae780d833e5",
+    "dispatchFile": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T0309Z.json",
+    "integrationBaseline": "ccb3d67eb2cd7095589249ac316ac48f105e76dd",
+    "requiredWorkerAncestors": [
+      "56e4f484ac07ca3fcf11e72f69a7fb56170d9792"
+    ],
+    "priorFailures": [
+      {
+        "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-a/FAILURE.json",
+        "sha256": "aa9e71684dffcd501cbdb6f664787de6e7cb6d33602f46aa928f09a062d4ebd3"
+      },
+      {
+        "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-a-recovery-v01/static-a/FAILURE.json",
+        "sha256": "d68b922bb93ea57449e69fd5ee5d177e697d0b19cc02860c95db11d56ab2f5a6"
+      }
+    ],
+    "moduleBootstrap": {
+      "directory": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01",
+      "module": "lower_v12_scene",
+      "file": "lower_v12_scene.py",
+      "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42",
+      "insertionIndex": 0
+    },
+    "allowedProcessID": "static-a",
+    "maximumChildStarts": 1
+  },
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false
+}

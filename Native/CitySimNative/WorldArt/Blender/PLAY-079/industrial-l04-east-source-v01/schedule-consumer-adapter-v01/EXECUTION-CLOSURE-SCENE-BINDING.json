@@ -1,0 +1,11 @@
+{
+  "schema": "citysim.play-079.east-execution-scene-binding.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "acceptedScene": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+    "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+  },
+  "orientationTransform": "none",
+  "siblingInputs": []
+}

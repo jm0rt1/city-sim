@@ -1,10 +1,12 @@
 # PLAY-027 Claim
 
+- **Claim revision:** 7
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
 - **Worktree:** Integration-provisioned Codex worktree
-- **Base commit:** Published integration authority containing CONTRACT-010 and this claim
+- **Base authority:** Published master containing current-master authority
+  refresh `f00822d6` and this claim
 - **Claimed:** July 24, 2026
 - **Planned surfaces:** `Native/CitySimNative/WorldArt/ImageGen/`,
   task-owned `Native/CitySimNative/WorldArt/Blender/PLAY-027/` DCC inputs and
@@ -17,7 +19,15 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is integrated and production selection remains pending its exact independent QA. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. North v12 zero-pixel compound-pier implementation, replay identity, and mechanical internal-face proof are integrated through `aef61b2c27ec295a3f088f41031f35e20bc13bc9`. The task-local lowering and recovered `static-a` result are integrated through `28103902a75c8232644a998a34dcaf33ca643a63`. Static-B v03 is independently accepted and integrated through `7f58674fbc2f1b1a64d511315a3f7fb17a08953d`; it proves exact static A/B identity and the bounded one-child resource envelope without creating source pixels. The North schedule consumer and its fresh-root deterministic zero-child evidence are independently accepted and integrated through `ffb3db1a35aec5067a07a5405ee721ff379ecd51`. The next bounded slice is still zero-child: author the actual North v12 Process-A high-level orchestrator, Blender child entrypoint, immutable execution contract, adversarial tests, and prelaunch evidence under `INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md`. After independent prelaunch acceptance, Integration may publish a validator-passing `prelock_north_a` schedule and a separate one-process execution authority without another claim revision. No Blender child, rendered/Cycles process, source pixel, Process A execution, B/C, appearance lock, sibling release, admission, or shipping is authorized by the prelaunch slice.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1,
+  and Industrial L2 have accepted source and shipping outcomes. Industrial L3
+  source authority is complete; replacement-R2 renderer ingestion is integrated
+  and production selection remains pending its exact independent QA.
+  Industrial L4 North v12 prelaunch closure and its synchronized parallel-art
+  epoch are independently reviewed and integrated. Revision 7 authorizes only
+  the zero-child current-authority replay below. Process A remains blocked
+  until Integration separately publishes its exact schedule, one-process
+  lease, secret, and compute slot.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -35,13 +45,13 @@
   The first Z-only v12 proposal was rejected in memory. The separately reviewed
   compound-pier v12 topology, two sequential analytic replays, and mechanical
   removal of six internal same-owner face fragments and accepted static-B v03
-  result and fresh-root deterministic Process-A schedule consumer are now
-  integrated. The next bounded slice may author only the task-owned North v12
-  Process-A high-level orchestrator, Blender child entrypoint, immutable
-  execution contract, adversarial no-DCC tests, and zero-child prelaunch
-  evidence. V02 remains rejected and immutable; it may not be reclassified as
-  passing. The unchanged v10 emission value is not luma proof and must be
-  re-proved in the later separately granted Process A.
+  result, fresh-root deterministic Process-A schedule consumer, high-level
+  orchestrator, child entrypoint, immutable execution contract, and adversarial
+  zero-child prelaunch evidence are now integrated. Revision 7 replays that
+  existing boundary against current authority; it does not reopen prelaunch
+  design or grant execution. V02 remains rejected and immutable; it may not be
+  reclassified as passing. The unchanged v10 emission value is not luma proof
+  and must be re-proved in the later separately granted Process A.
   North Process A/B/C, sibling source pixels, appearance-lock publication,
   source admission, Renderer activation, and shipping remain blocked.
 
@@ -61,3 +71,29 @@ Do not edit `Rendering/`, shipping atlas pages, production selection,
 `Package.swift`, gameplay/simulation/UI code, shared manifests, build scripts,
 or the active PLAY-024 claim/completion/evidence. Do not mirror, rotate, recolor
 into a fake variant, alias building types, push, integrate, or self-accept.
+
+## Revision-7 current-authority replay
+
+Consume read-only:
+
+- current-master authority refresh
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md`;
+- source-stage schema v2 SHA-256
+  `85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec`;
+- non-alias input SHA-256
+  `d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044`;
+- non-alias loader SHA-256
+  `83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d`.
+
+Own only current North task-root runner/orchestrator contracts, validators, and
+new prospective replay evidence under the existing PLAY-027 exclusive roots.
+Preserve accepted art, rejected attempts, historical receipts, frozen inputs,
+and every sibling path byte-for-byte.
+
+Return one clean deterministic zero-child current-authority closure packet.
+This revision authorizes no live lease, DCC child, Blender render, source
+pixel, normalization, Process A, B/C, appearance lock, source admission,
+Renderer activation, production selection, shipping, push, integration, or
+self-acceptance. Integration will publish the exact North Process-A schedule,
+one-process lease, secret, and compute slot separately after this replay is
+accepted.

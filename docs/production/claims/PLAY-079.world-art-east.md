@@ -1,12 +1,12 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 6
+- **Claim revision:** 7
 - **Title:** Close the Industrial L4 East execution boundary in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
 - **Worktree:** `/Users/James/.codex/worktrees/92c2/city-sim`
-- **Base authority:** Published master containing execution-closure authority
-  commit `f609460f0b8fffa3d4db2ee2b5b1b3396be85244` and this claim
+- **Base authority:** Published master containing current-master authority
+  refresh `f00822d6` and this claim
 - **Planned surfaces:** East-only task-owned Blender text scene/tools under
   `Native/CitySimNative/WorldArt/Blender/PLAY-079/` and
   `docs/production/evidence/PLAY-079/`
@@ -24,7 +24,7 @@
   blocked until Integration publishes the exact appearance lock and post-lock
   production authority. While North v08 is redesigned, East may bind its
   zero-pixel runner/handoff to source-stage schema v2 SHA-256
-  `93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7`
+  `85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec`
   and the common
   44-master non-alias input and prove the prelaunch guard fails closed, under
   `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`. That preparation is
@@ -35,8 +35,8 @@
   `INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md`.
   Current-master replay is clean at
   `edc1741456cd1b32781d10b491a55b5a2d0cae18` and proves the adapter still
-  stops at `future_integration_validator_interface_not_published`. Revision 6
-  authorizes zero-DCC execution closure only.
+  stops at `future_integration_validator_interface_not_published`. Revision 7
+  authorizes only current-authority zero-DCC rebinding and replay.
 - **Validation/proof:** Independent East geometry; East road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
@@ -71,3 +71,17 @@ children. Stop after one clean deterministic zero-DCC closure packet. This
 claim authorizes no live lease, child, Blender/DCC, render, pixel,
 normalization, source packet, admission, quarantine, selection, shipping,
 push, integration, or self-acceptance.
+
+## Revision-7 current-authority replay
+
+Consume read-only source-stage schema v2
+`85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec`,
+non-alias input
+`d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044`,
+and non-alias loader
+`83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d`.
+Update only current East task-root orchestrator/runner contracts, validators,
+and new prospective replay evidence; preserve historical packets and accepted
+predesign. Return one clean deterministic zero-child closure. A/B/C remains
+blocked until the exact North Process-A appearance lock and post-lock
+production grant.

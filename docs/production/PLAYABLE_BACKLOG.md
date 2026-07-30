@@ -752,6 +752,10 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Proof:** Exact topology/frontage ledger, balance ledger, strategy/recovery/progression matrix, regular/compact color and grayscale frames, staged identity, performance observation, additive fixture-adoption packet, and independent combined renderer disposition under `docs/production/evidence/PLAY-076/`.
 - **Stop conditions:** A second starting Commercial/Industrial/park/utility becomes necessary; either strategy or recovery path becomes nonviable or dominant; scarcity disappears; forecast population enters demand; generic upgrade guards or starting statistics must change; a public/save/schema/global-economy change is required; fixture history must be rewritten; the town remains visually sparse after truthful expansion; or any renderer/UI/art surface would need gameplay-local mutation.
 - **Claim:** `docs/production/claims/PLAY-076.gameplay-loop.md`.
+- **Integrated status:** Product accepted at patch-equivalent
+  `a2e984a57db0cb83e00d3be515df32d0cea438e8`; worker evidence/completion
+  integrated at `70448c79` and `c2213f69`. Independent combined Day 1/11
+  regular and exact-compact renderer closeout remains required.
 
 ### [x] PLAY-077: Keep command chrome from targeting the map
 
@@ -920,8 +924,11 @@ This is the authoritative first-wave task source. The shared target is one coher
   behavior, clipped compact layout, or selection/camera/focus regression
   becomes necessary.
 - **Claim:** `docs/production/claims/PLAY-082.ui-input.md`.
+- **Integrated status:** Product/evidence integrated through `89340edc`;
+  independent exact-master staged pointer/keyboard/accessibility acceptance
+  and an Integration receipt remain required.
 
-### [ ] PLAY-083: Prove exact lifecycle save bindings without relabeling history
+### [x] PLAY-083: Prove exact lifecycle save bindings without relabeling history
 
 - **Player outcome:** Industrial L4 visual QA can compare truthful early and
   recovered city states without invented fixtures or ambiguous semantic
@@ -955,3 +962,6 @@ This is the authoritative first-wave task source. The shared target is one coher
   round trip differs; a negative gate does not fail; or product/visual
   behavior would need mutation.
 - **Claim:** `docs/production/claims/PLAY-083.simulation-platform.md`.
+- **Accepted integration:** Final lifecycle mapping receipt published at
+  `1008eadf553a445f01f9405558d260e0c779674b`:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-LIFECYCLE-SAVE-BINDING-ACCEPTANCE.json`.

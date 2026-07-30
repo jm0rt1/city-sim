@@ -20,9 +20,11 @@
   invariants; two-run materialization identity; fingerprint, replay, load,
   pause, save/load, backup-only recovery, and round-trip identity; all 22
   fail-closed negatives
-- **Status:** Active after publication. Preferred scope is a read-only semantic
-  proof for explicit `early → active` and `recovered → recovering` mappings.
-  Additive or rewritten fixtures are not authorized.
+- **Status:** Accepted and closed by Integration at
+  `1008eadf553a445f01f9405558d260e0c779674b`. Final mapping receipt:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-LIFECYCLE-SAVE-BINDING-ACCEPTANCE.json`
+  at SHA-256
+  `b7722a9d686b8aa2c61fc8350b29f580a2e441bd38de943f5b1bf1d948da87db`.
 
 Reproduce every gate in the accepted PLAY-075 request against the exact
 published VisibleCityStates v3 manifest and the existing

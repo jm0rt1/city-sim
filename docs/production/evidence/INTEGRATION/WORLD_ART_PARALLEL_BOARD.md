@@ -2,7 +2,7 @@
 
 - **Parallel operating authority:** `7e21babafb5aa491894136c7f1c1d4c58444ef31`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-30 06:57Z
+- **Updated:** 2026-07-30 07:14Z
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,11 +10,11 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `cc51161cc7b21540025730bc77645f48c794539d` + authorized WIP | zero-child Process-A prelaunch under repair after parallel review caught child-capability and terminal-accounting defects |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `9b50357fdd0888fc47ff36d1f916466875ae0124` | zero-child prelaunch source/evidence committed; final audit active after 32/32 cases and two-root identity |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `6524934f764862768bce7d27eccffb279604b55f` | zero-child A/B/C schedule adapter accepted and integrated |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `092d7b5938125f66c24bf0a759825da195baea04` | real post-lock CLI adapter repaired, accepted, and integrated |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `0d18aae990d5691d89e02426dc50e36262d4efb1` | zero-child A/B/C schedule adapter accepted and integrated |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `0a86c2eaceff2579938c1c8a216864ffc3a63d4d` | exact `2b2c0653…` synchronized; measurement/cold-path checkpoint active before product mutation |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `fa3a768785dc3d09ee0bb8c54a39c095323c0a02` + authorized evidence WIP | governed measurement checkpoint committed; durable cold series shows the real path remains over budget |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `8e68cf11c6a943ab44d83232659585134c17f260` | L4 preregistration complete; unrelated L3 gate remains externally blocked |
 
 ## Dispatch invariant

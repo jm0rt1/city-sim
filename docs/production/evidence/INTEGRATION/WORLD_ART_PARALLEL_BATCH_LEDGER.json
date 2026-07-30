@@ -1,7 +1,7 @@
 {
   "schema": 3,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-30T06:57:14Z",
+  "updatedAt": "2026-07-30T07:14:10Z",
   "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T0652Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
@@ -206,12 +206,12 @@
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "claim": "PLAY-027",
       "publishedBase": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
-      "head": "cc51161cc7b21540025730bc77645f48c794539d",
+      "head": "9b50357fdd0888fc47ff36d1f916466875ae0124",
       "state": "predesign",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-30T06:42:00Z",
       "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
-      "cleanState": "dirty_authorized_process_a_prelaunch_implementation_in_progress",
+      "cleanState": "clean_process_a_prelaunch_checkpoints_under_final_audit",
       "blocker": "process_a_execution_requires_independent_prelaunch_acceptance_then_a_validator_passing_schedule_and_separate_one_process_authority",
       "nextAction": "author_and_test_the_zero_child_north_process_a_high_level_orchestrator_and_blender_entrypoint",
       "boundedDeliverable": "one_north_v12_process_a_execution_contract_orchestrator_child_entrypoint_tests_and_two_root_zero_child_prelaunch_packet",
@@ -225,7 +225,7 @@
         "boundedDeliverable": "one_north_v12_process_a_execution_contract_orchestrator_child_entrypoint_tests_and_two_root_zero_child_prelaunch_packet",
         "stopCondition": "stop_clean_after_zero_child_prelaunch_checkpoint_with_no_child_blender_dcc_render_pixels_process_a_b_c_sibling_admission_shipping_push_or_self_acceptance"
       },
-      "updatedAt": "2026-07-30T06:57:14Z"
+      "updatedAt": "2026-07-30T07:14:10Z"
     },
     {
       "batch": "industrial_l04_directional_family",
@@ -299,12 +299,12 @@
       "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
       "claim": "PLAY-073",
       "publishedBase": "2b2c06533e8f6d8caef899accc2a4bd7e9b6193f",
-      "head": "0a86c2eaceff2579938c1c8a216864ffc3a63d4d",
+      "head": "fa3a768785dc3d09ee0bb8c54a39c095323c0a02",
       "state": "intake_ready",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-30T06:56:27Z",
       "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
-      "cleanState": "clean_after_exact_master_sync_before_measurement_repair_mutation",
+      "cleanState": "dirty_authorized_measurement_evidence_series_in_progress",
       "blocker": "r4a_requires_truthful_cold_path_measurement_under_6_03ms_or_exact_contract_conflict_and_l4_has_zero_admitted_source_receipts",
       "nextAction": "commit_the_versioned_measurement_definition_and_durable_fresh_process_cold_path_plus_unchanged_baseline_evidence_before_product_mutation",
       "boundedDeliverable": "one_measurement_definition_checkpoint_with_fresh_process_cold_path_receipts_and_low_frequency_baseline_evidence",
@@ -318,7 +318,7 @@
         "boundedDeliverable": "one_measurement_definition_checkpoint_with_fresh_process_cold_path_receipts_and_low_frequency_baseline_evidence",
         "stopCondition": "stop_before_product_mutation_if_cold_path_cannot_meet_6_03ms_without_hidden_or_player_visible_deferral_and_no_live_l4_source_shipping_push_or_self_acceptance"
       },
-      "updatedAt": "2026-07-30T06:57:14Z"
+      "updatedAt": "2026-07-30T07:14:10Z"
     },
     {
       "batch": "industrial_l04_directional_family",

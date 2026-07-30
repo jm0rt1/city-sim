@@ -96,7 +96,9 @@ def verify_binding(
 
 def git_check(repository_root: Path, arguments: list[str]) -> str:
     require(
-        arguments and arguments[0] in {"branch", "cat-file", "merge-base", "status"},
+        arguments
+        and arguments[0]
+        in {"branch", "cat-file", "merge-base", "rev-parse", "status"},
         "unapproved Git prelaunch operation",
     )
     result = subprocess.run(
@@ -131,14 +133,55 @@ def git_bytes(repository_root: Path, arguments: list[str]) -> bytes:
     return result.stdout
 
 
-def require_ancestor(repository_root: Path, commit: str, label: str) -> None:
+def require_commit(repository_root: Path, commit: str, label: str) -> None:
     require(
         len(commit) == 40
         and all(character in "0123456789abcdef" for character in commit),
         f"{label} must be a full commit",
     )
     git_check(repository_root, ["cat-file", "-e", f"{commit}^{{commit}}"])
+
+
+def require_ancestor_of(
+    repository_root: Path,
+    commit: str,
+    descendant: str,
+    label: str,
+) -> None:
+    require_commit(repository_root, commit, label)
+    require_commit(repository_root, descendant, f"{label}Descendant")
+    git_check(repository_root, ["merge-base", "--is-ancestor", commit, descendant])
+
+
+def require_ancestor(repository_root: Path, commit: str, label: str) -> None:
+    require_commit(repository_root, commit, label)
     git_check(repository_root, ["merge-base", "--is-ancestor", commit, "HEAD"])
+
+
+def verify_trusted_integration_head(
+    repository_root: Path,
+    contract: dict[str, Any],
+    trusted_integration_head: str,
+) -> dict[str, str]:
+    require_commit(repository_root, trusted_integration_head, "trustedIntegrationHead")
+    trust = contract["integrationTrust"]
+    remote_ref = trust["remoteRef"]
+    actual = git_check(repository_root, ["rev-parse", "--verify", remote_ref])
+    require(
+        actual == trusted_integration_head,
+        "trusted Integration head does not match fetched origin/master",
+    )
+    require_ancestor_of(
+        repository_root,
+        trust["minimumAuthorityCommit"],
+        trusted_integration_head,
+        "minimumIntegrationAuthority",
+    )
+    git_check(
+        repository_root,
+        ["merge-base", "--is-ancestor", trusted_integration_head, "HEAD"],
+    )
+    return {"remoteRef": remote_ref, "commit": trusted_integration_head}
 
 
 def normalize_repository_file(
@@ -164,12 +207,18 @@ def verify_integration_publication(
     repository_root: Path,
     path: Path,
     publication_commit: str,
+    trusted_integration_head: str,
     label: str,
 ) -> dict[str, str]:
     resolved = normalize_repository_file(repository_root, path, label)
     integration_root = (repository_root / INTEGRATION_ROOT).resolve(strict=True)
     require(resolved.is_relative_to(integration_root), f"{label} is outside Integration root")
-    require_ancestor(repository_root, publication_commit, f"{label}PublicationCommit")
+    require_ancestor_of(
+        repository_root,
+        publication_commit,
+        trusted_integration_head,
+        f"{label}PublicationCommit",
+    )
     relative = resolved.relative_to(repository_root)
     status = git_check(
         repository_root,
@@ -209,12 +258,26 @@ def validate_execution_authority(
     schedule_publication_commit: str,
     output_root: Path,
     authorization_secret: bytes,
+    trusted_integration_head: str,
 ) -> dict[str, Any]:
+    integration_trust = verify_trusted_integration_head(
+        repository_root,
+        contract,
+        trusted_integration_head,
+    )
     authority_binding = verify_integration_publication(
         repository_root,
         authority_path,
         authority_publication_commit,
+        trusted_integration_head,
         "executionAuthority",
+    )
+    schedule_binding = verify_integration_publication(
+        repository_root,
+        schedule_path,
+        schedule_publication_commit,
+        trusted_integration_head,
+        "schedule",
     )
     authority = load_json(
         repository_root / authority_binding["path"]
@@ -280,6 +343,11 @@ def validate_execution_authority(
     }
     require(authority["schedule"] == expected_schedule, "execution authority schedule drift")
     require(
+        schedule_binding
+        == {"path": expected_schedule["path"], "sha256": expected_schedule["sha256"]},
+        "trusted schedule publication drift",
+    )
+    require(
         authority["executionContract"]
         == {"path": str(CONTRACT_RELATIVE), "sha256": sha256(repository_root / CONTRACT_RELATIVE)},
         "execution authority contract drift",
@@ -306,16 +374,6 @@ def validate_execution_authority(
         == Path(contract["processOutputRoot"]).parent / "attempt-consumption-v01",
         "execution authority attempt record path drift",
     )
-    require_ancestor(
-        repository_root,
-        authority_publication_commit,
-        "executionAuthorityPublicationCommit",
-    )
-    require_ancestor(
-        repository_root,
-        schedule_publication_commit,
-        "schedulePublicationCommit",
-    )
     require(
         git_check(repository_root, ["status", "--porcelain=v1"]) == "",
         "execution requires a clean worktree",
@@ -325,6 +383,7 @@ def validate_execution_authority(
         "path": authority_binding["path"],
         "sha256": authority_binding["sha256"],
         "publicationCommit": authority_publication_commit,
+        "trustedIntegrationHead": integration_trust,
     }
 
 
@@ -355,6 +414,7 @@ def validate_execution_contract(
         "branch",
         "authorityBaseCommit",
         "publicationCommit",
+        "integrationTrust",
         "claim",
         "prelaunchAuthority",
         "familyContract",
@@ -407,6 +467,16 @@ def validate_execution_contract(
             "stopAfterProcessA": True,
         },
         "pre-lock Process-A policy drift",
+    )
+    require(
+        contract["integrationTrust"]
+        == {
+            "remoteRef": "refs/remotes/origin/master",
+            "minimumAuthorityCommit": (
+                "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed"
+            ),
+        },
+        "Integration trust-root policy drift",
     )
     root_map = contract["directionRootMap"]
     require(
@@ -833,6 +903,39 @@ def open_parent_directory(repository_root: Path, relative: Path) -> tuple[int, s
     )
 
 
+def open_or_create_directory_chain(repository_root: Path, relative: Path) -> int:
+    """Open a repository-relative directory, securely creating missing members."""
+    require(
+        not relative.is_absolute() and ".." not in relative.parts,
+        "directory path drift",
+    )
+    descriptor = os.open(
+        repository_root,
+        os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+    )
+    try:
+        for component in relative.parts:
+            try:
+                next_descriptor = os.open(
+                    component,
+                    os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+                    dir_fd=descriptor,
+                )
+            except FileNotFoundError:
+                os.mkdir(component, 0o755, dir_fd=descriptor)
+                next_descriptor = os.open(
+                    component,
+                    os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+                    dir_fd=descriptor,
+                )
+            os.close(descriptor)
+            descriptor = next_descriptor
+        return descriptor
+    except BaseException:
+        os.close(descriptor)
+        raise
+
+
 def write_exclusive_at(directory_fd: int, name: str, value: Any) -> None:
     require("/" not in name and name not in {"", ".", ".."}, "leaf name drift")
     descriptor = os.open(
@@ -857,9 +960,10 @@ def write_exclusive_at(directory_fd: int, name: str, value: Any) -> None:
 def create_attempt_record(
     repository_root: Path,
     authority: dict[str, Any],
-) -> dict[str, Any]:
+) -> tuple[int, dict[str, Any]]:
     relative = Path(authority["attemptRecordPath"])
-    parent_fd, leaf = open_parent_directory(repository_root, relative)
+    parent_fd = open_or_create_directory_chain(repository_root, relative.parent)
+    leaf = relative.name
     try:
         record = {
             "schema": 1,
@@ -880,11 +984,35 @@ def create_attempt_record(
             "productionSelected": False,
         }
         write_exclusive_at(parent_fd, leaf, record)
-        return record
+        return parent_fd, record
     except FileExistsError as error:
-        raise LaunchError("Integration-bound Process-A attempt was already consumed") from error
-    finally:
         os.close(parent_fd)
+        raise LaunchError("Integration-bound Process-A attempt was already consumed") from error
+
+
+def write_attempt_terminal(
+    attempt_directory_fd: int,
+    authority: dict[str, Any],
+    *,
+    output_root_created: bool,
+    terminal_receipt: dict[str, Any],
+    process_receipt: dict[str, str] | None,
+) -> dict[str, Any]:
+    value = {
+        "schema": 1,
+        "task": "PLAY-027",
+        "direction": "north",
+        "process": "A",
+        "grantId": authority["grantId"],
+        "attemptId": authority["attemptId"],
+        "outputRootCreated": output_root_created,
+        "terminalReceipt": terminal_receipt,
+        "processReceipt": process_receipt,
+        "sourceAuthority": False,
+        "productionSelected": False,
+    }
+    write_exclusive_at(attempt_directory_fd, "north-A.TERMINAL.json", value)
+    return value
 
 
 def create_output_root(
@@ -965,6 +1093,7 @@ def run_one_child(
     schedule_publication_commit: str,
     execution_authority_path: Path,
     execution_authority_publication_commit: str,
+    trusted_integration_head: str,
     authorization_secret_fd: int,
     output_root: Path,
     *,
@@ -991,6 +1120,7 @@ def run_one_child(
         schedule_publication_commit,
         output_root,
         authorization_secret,
+        trusted_integration_head,
     )
     adapter_path = repository_root / contract["scheduleAdapter"]["consumer"]["path"]
     adapter = load_module(adapter_path, "play027_process_a_schedule_adapter")
@@ -1023,13 +1153,39 @@ def run_one_child(
     verify_blender_executable(contract)
     require(sys.platform == "darwin", "Process-A child launch requires Darwin")
     fault("lease")
-    attempt_record = create_attempt_record(repository_root, authority)
-    fault("root")
-    output_root_fd, output_identity = create_output_root(
+    attempt_directory_fd, attempt_record = create_attempt_record(
         repository_root,
-        contract,
-        output_root,
+        authority,
     )
+    output_root_fd = -1
+    output_identity: dict[str, int] = {}
+    try:
+        fault("root")
+        output_root_fd, output_identity = create_output_root(
+            repository_root,
+            contract,
+            output_root,
+        )
+    except BaseException as error:
+        disposition = terminal_disposition(
+            child_pid=None,
+            return_code=None,
+            termination_reason=f"launcher-exception:{type(error).__name__}",
+            launcher_exception=f"{type(error).__name__}: {error}",
+            sampled_peak_rss_kib=0,
+            terminal_peak_rss_kib=0,
+            observed_extra_members=set(),
+            remaining_members=[],
+        )
+        write_attempt_terminal(
+            attempt_directory_fd,
+            authority,
+            output_root_created=False,
+            terminal_receipt=disposition,
+            process_receipt=None,
+        )
+        os.close(attempt_directory_fd)
+        return 1
     capability_read_fd = -1
     capability_write_fd = -1
     session_secret = b""
@@ -1269,11 +1425,36 @@ def run_one_child(
         "sourceAuthority": False,
         "productionSelected": False,
     }
+    process_receipt_binding: dict[str, str] | None = None
     try:
         write_exclusive_at(output_root_fd, "PROCESS-RECEIPT.json", receipt)
         receipt_written = True
+        process_receipt_binding = {
+            "path": str(Path(contract["processOutputRoot"]) / "PROCESS-RECEIPT.json"),
+            "sha256": sha256_bytes(canonical_bytes(receipt)),
+        }
     finally:
-        os.close(output_root_fd)
+        try:
+            write_attempt_terminal(
+                attempt_directory_fd,
+                authority,
+                output_root_created=True,
+                terminal_receipt=terminal_disposition(
+                    child_pid=process_pid,
+                    return_code=return_code,
+                    termination_reason=violation
+                    or ("success" if return_code == 0 else "child-nonzero-exit"),
+                    launcher_exception=launcher_exception,
+                    sampled_peak_rss_kib=sampled_peak_rss_kib,
+                    terminal_peak_rss_kib=terminal_peak_rss_kib,
+                    observed_extra_members=observed_extra_members,
+                    remaining_members=remaining_members,
+                ),
+                process_receipt=process_receipt_binding,
+            )
+        finally:
+            os.close(attempt_directory_fd)
+            os.close(output_root_fd)
     require(receipt_written, "terminal Process-A receipt was not written")
     if violation is not None or return_code != 0:
         return 1
@@ -1288,6 +1469,7 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--schedule-publication-commit", required=True)
     parser.add_argument("--execution-authority", required=True)
     parser.add_argument("--execution-authority-publication-commit", required=True)
+    parser.add_argument("--trusted-integration-head", required=True)
     parser.add_argument("--authorization-secret-fd", required=True, type=int)
     parser.add_argument("--output-root", required=True)
     return parser.parse_args()
@@ -1302,6 +1484,7 @@ def main() -> int:
         options.schedule_publication_commit,
         Path(options.execution_authority),
         options.execution_authority_publication_commit,
+        options.trusted_integration_head,
         options.authorization_secret_fd,
         Path(options.output_root),
     )

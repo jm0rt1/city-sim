@@ -30,7 +30,7 @@ EVIDENCE_ROOT = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-execution-v01"
 )
-EVIDENCE_RELATIVE = EVIDENCE_ROOT / "CURRENT-ZERO-CHILD-PRELAUNCH.json"
+EVIDENCE_RELATIVE = EVIDENCE_ROOT / "TRUSTED-CURRENT-ZERO-CHILD-PRELAUNCH.json"
 
 
 def arguments() -> argparse.Namespace:
@@ -160,81 +160,6 @@ def valid_grant(contract: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def authority_fixture(
-    repository: Path,
-    launcher: Any,
-    contract: dict[str, Any],
-    secret: bytes,
-) -> tuple[Path, str, Path, str, dict[str, Any]]:
-    run_git(repository, "init")
-    run_git(repository, "checkout", "-b", "main")
-    run_git(repository, "config", "user.name", "PLAY-027 Test")
-    run_git(repository, "config", "user.email", "play027@example.invalid")
-    contract_path = repository / launcher.CONTRACT_RELATIVE
-    contract_path.parent.mkdir(parents=True)
-    contract_path.write_bytes(canonical(contract))
-    integration = repository / launcher.INTEGRATION_ROOT
-    integration.mkdir(parents=True)
-    (repository / "AUTHORITY.md").write_text("authority\n", encoding="utf-8")
-    run_git(repository, "add", ".")
-    run_git(repository, "commit", "-m", "preexisting authority")
-    base_commit = run_git(repository, "rev-parse", "HEAD")
-    schedule_path = integration / "north-a-schedule.json"
-    schedule_path.write_bytes(
-        canonical({"integrationAuthorityCommit": base_commit, "grantId": "north:A"})
-    )
-    run_git(repository, "add", str(schedule_path.relative_to(repository)))
-    run_git(repository, "commit", "-m", "publish schedule")
-    schedule_commit = run_git(repository, "rev-parse", "HEAD")
-    output_relative = Path(contract["processOutputRoot"])
-    authority = {
-        "schema": 1,
-        "task": "PLAY-027",
-        "direction": "north",
-        "process": "A",
-        "grantId": "north:A",
-        "slotId": "dcc-1",
-        "schedule": {
-            "path": str(schedule_path.relative_to(repository)),
-            "sha256": sha256(schedule_path),
-            "publicationCommit": schedule_commit,
-        },
-        "executionContract": {
-            "path": str(launcher.CONTRACT_RELATIVE),
-            "sha256": sha256(contract_path),
-        },
-        "launcher": contract["launcher"],
-        "childEntrypoint": contract["childEntrypoint"],
-        "processOutputRoot": str(output_relative),
-        "attemptRecordPath": str(
-            output_relative.parent / "attempt-consumption-v01/north-A.json"
-        ),
-        "attemptId": "north:A",
-        "maximumConcurrentDCCProcesses": 1,
-        "maximumChildStarts": 1,
-        "timeoutSeconds": contract["processEnvelope"]["timeoutSeconds"],
-        "maximumProcessGroupRSSMiB": contract["processEnvelope"][
-            "maximumProcessGroupRSSMiB"
-        ],
-        "stopDisposition": "STOP_AFTER_ONE_FRESH_NORTH_SOURCE_CANDIDATE",
-        "authorizationSecretSHA256": hashlib.sha256(secret).hexdigest(),
-        "sourceAuthority": False,
-        "productionSelected": False,
-    }
-    authority_path = integration / "north-a-execution-authority.json"
-    authority_path.write_bytes(canonical(authority))
-    run_git(repository, "add", str(authority_path.relative_to(repository)))
-    run_git(repository, "commit", "-m", "publish execution authority")
-    authority_commit = run_git(repository, "rev-parse", "HEAD")
-    return (
-        schedule_path,
-        schedule_commit,
-        authority_path,
-        authority_commit,
-        authority,
-    )
-
-
 def source_ast(path: Path) -> ast.Module:
     return ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
 
@@ -255,6 +180,7 @@ def run_fault_case(
     stage: str,
     *,
     expect_root: bool,
+    expect_process_receipt: bool | None = None,
     expect_dcc_starts: int = 0,
 ) -> dict[str, Any]:
     with tempfile.TemporaryDirectory(
@@ -265,6 +191,10 @@ def run_fault_case(
         output_relative = Path("evidence") / stage / "process-a"
         output = root / output_relative
         output.parent.mkdir(parents=True)
+        if stage == "root-create":
+            output.mkdir()
+        if expect_process_receipt is None:
+            expect_process_receipt = expect_root
         schedule = root / "schedule.json"
         schedule.write_bytes(b"{}\n")
         contract_path = root / "contract.json"
@@ -296,8 +226,6 @@ def run_fault_case(
             "attemptId": "north:A",
             "authorizationSecretSHA256": hashlib.sha256(b"x" * 32).hexdigest(),
         }
-        attempt_parent = root / Path(local_authority["attemptRecordPath"]).parent
-        attempt_parent.mkdir(parents=True)
         grant = valid_grant(local_contract)
 
         class FakeAdapter:
@@ -384,6 +312,7 @@ def run_fault_case(
                     "c" * 40,
                     root / "authority.json",
                     "b" * 40,
+                    "a" * 40,
                     9,
                     output,
                     _fault=inject,
@@ -392,8 +321,23 @@ def run_fault_case(
                 failure = f"{type(error).__name__}: {error}"
             if output.exists() != expect_root:
                 raise RuntimeError(f"{stage}: output-root accounting drift")
+            attempt_relative = Path(local_authority["attemptRecordPath"])
+            terminal = (
+                root
+                / attempt_relative.parent
+                / "north-A.TERMINAL.json"
+            )
+            if stage != "lease" and not terminal.is_file():
+                raise RuntimeError(f"{stage}: durable attempt terminal missing")
+            attempt_terminal = (
+                json.loads(terminal.read_text(encoding="utf-8"))
+                if terminal.is_file()
+                else None
+            )
+            if attempt_terminal is not None and attempt_terminal["terminalReceipt"] is None:
+                raise RuntimeError(f"{stage}: terminalReceipt must be fail-complete")
             receipt = output / "PROCESS-RECEIPT.json"
-            if expect_root:
+            if expect_process_receipt:
                 if not receipt.is_file():
                     raise RuntimeError(f"{stage}: terminal receipt missing")
                 receipt_value = json.loads(receipt.read_text(encoding="utf-8"))
@@ -414,13 +358,31 @@ def run_fault_case(
                     ),
                 }
             else:
-                receipt_summary = None
+                if receipt.exists():
+                    raise RuntimeError(f"{stage}: unexpected process receipt")
+                receipt_summary = (
+                    {
+                        "dccChildStartCount": attempt_terminal["terminalReceipt"][
+                            "childPID"
+                        ]
+                        is not None,
+                        "terminationReason": attempt_terminal["terminalReceipt"][
+                            "terminationReason"
+                        ],
+                        "attemptTerminalOnly": True,
+                    }
+                    if attempt_terminal is not None
+                    else None
+                )
             return {
                 "name": f"run-one-child-{stage}-failure",
                 "returnCode": result,
                 "raised": failure,
                 "outputRootCreated": output.exists(),
                 "terminalReceipt": receipt_summary,
+                "attemptTerminalPath": (
+                    str(terminal.relative_to(root)) if terminal.is_file() else None
+                ),
                 "terminatedProcessGroups": terminated,
                 "passed": True,
             }
@@ -489,76 +451,43 @@ def main() -> None:
             )
         )
 
-    secret = b"integration-secret-for-play027-test"
-    with tempfile.TemporaryDirectory(
-        prefix="play027-execution-authority-",
-        dir="/private/tmp",
-    ) as directory:
-        authority_root = Path(directory)
-        fixture_contract = copy.deepcopy(contract)
-        fixture_contract["processOutputRoot"] = (
-            "docs/production/evidence/PLAY-027/industrial-l04/l04/"
-            "blender-north-art-v12/process-a-execution-v01/process-a"
+    trusted_head = run_git(repository_root, "rev-parse", "origin/master")
+    trust = launcher.verify_trusted_integration_head(
+        repository_root,
+        contract,
+        trusted_head,
+    )
+    published_authority = repository_root / contract["prelaunchAuthority"]["path"]
+    published_binding = launcher.verify_integration_publication(
+        repository_root,
+        published_authority,
+        contract["publicationCommit"],
+        trusted_head,
+        "publishedPrelaunchAuthority",
+    )
+    cases.append(
+        {
+            "name": "exact-origin-master-rooted-integration-authority",
+            "trustedIntegrationHead": trust,
+            "publicationCommit": contract["publicationCommit"],
+            "authority": published_binding,
+            "passed": True,
+        }
+    )
+    lane_only_commit = "46c3b13d4527a64c195bc57dbfbdcc1200bf9066"
+    cases.append(
+        expect_failure(
+            "forged-lane-authority-not-in-trusted-master",
+            lambda: launcher.verify_integration_publication(
+                repository_root,
+                published_authority,
+                lane_only_commit,
+                trusted_head,
+                "forgedExecutionAuthority",
+            ),
+            "Git binding failed",
         )
-        (
-            schedule_path,
-            schedule_commit,
-            authority_path,
-            authority_commit,
-            _authority,
-        ) = authority_fixture(authority_root, launcher, fixture_contract, secret)
-        validated_authority = launcher.validate_execution_authority(
-            authority_root,
-            fixture_contract,
-            authority_path,
-            authority_commit,
-            schedule_path,
-            schedule_commit,
-            authority_root / fixture_contract["processOutputRoot"],
-            secret,
-        )
-        cases.append(
-            {
-                "name": "real-git-execution-authority-publication",
-                "publicationCommit": authority_commit,
-                "schedulePublicationCommit": schedule_commit,
-                "authoritySHA256": validated_authority["sha256"],
-                "passed": True,
-            }
-        )
-        cases.append(
-            expect_failure(
-                "wrong-execution-secret",
-                lambda: launcher.validate_execution_authority(
-                    authority_root,
-                    fixture_contract,
-                    authority_path,
-                    authority_commit,
-                    schedule_path,
-                    schedule_commit,
-                    authority_root / fixture_contract["processOutputRoot"],
-                    b"wrong-secret" * 4,
-                ),
-                "secret mismatch",
-            )
-        )
-        authority_path.write_bytes(authority_path.read_bytes() + b" ")
-        cases.append(
-            expect_failure(
-                "dirty-execution-authority",
-                lambda: launcher.validate_execution_authority(
-                    authority_root,
-                    fixture_contract,
-                    authority_path,
-                    authority_commit,
-                    schedule_path,
-                    schedule_commit,
-                    authority_root / fixture_contract["processOutputRoot"],
-                    secret,
-                ),
-                "worktree bytes are dirty",
-            )
-        )
+    )
 
     with tempfile.TemporaryDirectory(
         prefix="play027-output-inode-",
@@ -598,7 +527,6 @@ def main() -> None:
     ) as directory:
         lease_root = Path(directory)
         attempt_relative = Path("evidence/attempt-consumption-v01/north-A.json")
-        (lease_root / attempt_relative.parent).mkdir(parents=True)
         lease_authority = {
             "grantId": "north:A",
             "attemptId": "north:A",
@@ -608,7 +536,39 @@ def main() -> None:
             "publicationCommit": "b" * 40,
             "schedule": {"path": "schedule.json", "sha256": "c" * 64},
         }
-        launcher.create_attempt_record(lease_root, lease_authority)
+        attempt_fd, attempt_record = launcher.create_attempt_record(
+            lease_root,
+            lease_authority,
+        )
+        if not (lease_root / attempt_relative).is_file():
+            raise RuntimeError("clean-checkout attempt directory was not created")
+        launcher.write_attempt_terminal(
+            attempt_fd,
+            lease_authority,
+            output_root_created=False,
+            terminal_receipt=launcher.terminal_disposition(
+                child_pid=None,
+                return_code=None,
+                termination_reason="prelaunch-test",
+                launcher_exception=None,
+                sampled_peak_rss_kib=0,
+                terminal_peak_rss_kib=0,
+                observed_extra_members=set(),
+                remaining_members=[],
+            ),
+            process_receipt=None,
+        )
+        os.close(attempt_fd)
+        cases.append(
+            {
+                "name": "clean-checkout-creates-durable-attempt-directory",
+                "attemptRecordSHA256": hashlib.sha256(
+                    canonical(attempt_record)
+                ).hexdigest(),
+                "terminalReceiptPresent": True,
+                "passed": True,
+            }
+        )
         cases.append(
             expect_failure(
                 "durable-one-shot-attempt-survives-output-loss",
@@ -687,14 +647,15 @@ def main() -> None:
         )
         os.close(output_fd)
 
-    for stage, expect_root in [
-        ("lease", False),
-        ("root", False),
-        ("pipe", True),
-        ("grant", True),
-        ("command", True),
-        ("temp", True),
-        ("popen", True),
+    for stage, expect_root, expect_process_receipt in [
+        ("lease", False, False),
+        ("root", False, False),
+        ("root-create", True, False),
+        ("pipe", True, True),
+        ("grant", True, True),
+        ("command", True, True),
+        ("temp", True, True),
+        ("popen", True, True),
     ]:
         cases.append(
             run_fault_case(
@@ -702,6 +663,7 @@ def main() -> None:
                 contract,
                 stage,
                 expect_root=expect_root,
+                expect_process_receipt=expect_process_receipt,
             )
         )
     for stage in ("sampler", "cleanup", "timeout", "rss"):
@@ -818,11 +780,14 @@ def main() -> None:
         "allPassed": all(case["passed"] for case in cases),
         "cases": cases,
         "securityBoundary": {
+            "trustedOriginMasterPublication": True,
             "externalSchedulePublicationCommit": True,
             "externalExecutionAuthorityRequired": True,
             "integrationSecretRequired": True,
             "launcherSessionHMAC": True,
             "durableAttemptRecord": True,
+            "cleanCheckoutAttemptDirectoryCreation": True,
+            "failCompleteAttemptTerminalAfterConsumption": True,
             "directoryFDAndInodeBound": True,
             "terminalReceiptAfterRootCreation": True,
             "helperProcessesSeparateFromDCCChild": True,

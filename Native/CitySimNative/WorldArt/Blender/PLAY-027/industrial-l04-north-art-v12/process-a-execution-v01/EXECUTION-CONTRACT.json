@@ -15,6 +15,10 @@
   "branch": "codex/citysim-world-art",
   "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
   "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+  "integrationTrust": {
+    "remoteRef": "refs/remotes/origin/master",
+    "minimumAuthorityCommit": "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed"
+  },
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
     "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
@@ -69,7 +73,7 @@
   },
   "launcher": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "f457466b8148ac82bb36ba3d1aebf1ddcac38675d1a1f40deef9bc8cb8bd5ca2"
+    "sha256": "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d"
   },
   "childEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
@@ -77,7 +81,7 @@
   },
   "tests": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
-    "sha256": "180db952a2b2713016663833669c2392fc795896d7e5c42c13cb6abffe0db6f5"
+    "sha256": "bca890dbb5ea15fa162d4edad2ee97d449adee1ce665e399a71a0f94dfadf78a"
   },
   "blender": {
     "executable": "/Applications/Blender.app/Contents/MacOS/Blender",

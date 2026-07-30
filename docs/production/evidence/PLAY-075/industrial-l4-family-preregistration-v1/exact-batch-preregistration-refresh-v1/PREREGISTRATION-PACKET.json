@@ -13,6 +13,19 @@
     "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
     "archiveBranchConsumed": false
   },
+  "sharedTaskAuthoritySemanticStatus": {
+    "status": "semantically_stale_awaiting_integration_refresh",
+    "publishedIndustrialL3Pass": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+    "claim": {
+      "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+      "sha256": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168"
+    },
+    "backlog": {
+      "path": "docs/production/PLAYABLE_BACKLOG.md",
+      "sha256": "a4e54ff9e75c01163814aa2a5b5aace0fee1c900c8258d2bc55ece448ff4f59a"
+    },
+    "reason": "The shared claim and backlog still describe the repaired Industrial L3 focused slot as pending even though its PASS is published at the bound base. QA records the mismatch without editing shared authority; Integration must refresh it before final preregistration acceptance."
+  },
   "family": {
     "batch": "industrial_l04_directional_family",
     "stage": "candidate_neutral_preregistration_refresh",
@@ -72,11 +85,8 @@
       "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c",
       "commit": "f00822d6c27ebbe39d97d2ed95be9da4a8ba9bba"
     },
-    "rendererRev7Receipt": {
-      "path": null,
-      "sha256": null,
-      "status": "returned_for_schema_repair_not_published_or_acknowledged"
-    },
+    "candidateNeutralPreparationSufficient": true,
+    "separateRendererRev7ReceiptRepairIsQAPreregistrationBlocker": false,
     "allTwelvePacketAdmissionQuarantineBindingsPresent": false
   },
   "rendererCandidateReceipt": null,
@@ -161,9 +171,9 @@
       "resetCommand": "Frame Developed City"
     },
     "views": [
-      {"id": "regular-city", "contentPixels": [1278, 768], "semanticLOD": "city", "canonicalScale": 0.74},
-      {"id": "regular-neighborhood", "contentPixels": [1278, 768], "semanticLOD": "neighborhood", "canonicalScale": 0.66},
-      {"id": "regular-block", "contentPixels": [1278, 768], "semanticLOD": "block", "canonicalScale": 0.5},
+      {"id": "regular-city", "decoratedCapturePixels": [1278, 768], "contentPixels": null, "semanticLOD": "city", "canonicalScale": 0.74},
+      {"id": "regular-neighborhood", "decoratedCapturePixels": [1278, 768], "contentPixels": null, "semanticLOD": "neighborhood", "canonicalScale": 0.66},
+      {"id": "regular-block", "decoratedCapturePixels": [1278, 768], "contentPixels": null, "semanticLOD": "block", "canonicalScale": 0.5},
       {"id": "compact-city", "contentPixels": [900, 600], "decoratedCapturePixels": [900, 652], "semanticLOD": "city", "canonicalScale": 0.74},
       {"id": "compact-neighborhood", "contentPixels": [900, 600], "decoratedCapturePixels": [900, 652], "semanticLOD": "neighborhood", "canonicalScale": 0.66},
       {"id": "compact-block", "contentPixels": [900, 600], "decoratedCapturePixels": [900, 652], "semanticLOD": "block", "canonicalScale": 0.5}
@@ -314,7 +324,7 @@
     "liveBuildStageLaunchCaptureMeasurementOrScoreAllowed": false,
     "requiresAll": [
       "integration_publishes_and_acknowledges_a_refreshed_shared_ledger_revision_binding_this_exact_packet",
-      "integration_publishes_and_acknowledges_the_repaired_renderer_rev7_receipt",
+      "integration_refreshes_the_semantically_stale_play_075_claim_and_backlog_after_the_published_l3_pass",
       "one_exact_clean_attached_atomic_4_of_4_renderer_candidate_and_product_commit",
       "four_exact_runtime_canonical_source_candidate_packets_and_integration_admission_receipts",
       "one_exact_candidate_bound_fixture_admission_and_materializer_receipt",
@@ -334,17 +344,19 @@
       "measurement_or_score_before_activation"
     ]
   },
-  "blockers": [
+  "preregistrationBlockers": [
     {
       "id": "integration_ledger_refresh",
       "status": "OPEN",
       "requiredEvidence": "one Integration-published ledger path/revision/SHA that binds and acknowledges this exact packet"
     },
     {
-      "id": "renderer_rev7_receipt_schema_repair",
+      "id": "shared_task_authority_semantic_refresh",
       "status": "OPEN",
-      "requiredEvidence": "one Integration-published and acknowledged repaired Renderer receipt path/SHA"
-    },
+      "requiredEvidence": "Integration-published PLAY-075 claim and backlog wording that recognizes the Industrial L3 PASS at fcccf2bce4a31ee096bfd40580af30e6f90c51cc"
+    }
+  ],
+  "futureFinalGateBlockers": [
     {
       "id": "exact_atomic_renderer_candidate",
       "status": "OPEN",
@@ -362,8 +374,6 @@
     }
   ],
   "executionAccounting": {
-    "directionBinding": "industrial_l04_directional_family",
-    "stage": "candidate_neutral_preregistration_refresh",
     "readyNow": [
       "startup_identity_and_hash_admission_complete",
       "fixture_materializer_determinism_and_16_negative_gates_passed",
@@ -371,57 +381,132 @@
       "machine_packet_assembled"
     ],
     "running": [],
-    "waitingOnJoin": [
-      "integration_refreshed_shared_ledger_and_packet_acknowledgement",
-      "integration_published_repaired_renderer_rev7_receipt",
-      "future_exact_atomic_4_of_4_renderer_candidate_and_exclusive_gate_lease"
-    ],
+    "waitingOnJoin": [],
     "serializedAuthority": {
-      "visibleWorktreeWriter": "PLAY-075_QA_ASSEMBLER",
-      "gitWriterCount": 1,
-      "governedEvidenceWriterCount": 1,
-      "futureStagedAppJourneyConcurrency": 1
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "branch": "codex/citysim-playtest-quality",
+      "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+      "gitIndexWriter": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "governedEvidenceWriter": "019f9a0a-35fa-75b1-92c4-73c182390a25"
     },
-    "nextRefill": "Integration publishes the refreshed ledger acknowledgement and repaired Renderer receipt; the final gate remains dormant until an exact atomic 4-of-4 candidate lease exists.",
+    "nextRefill": "integration_publish_first_refreshed_preregistering_ledger_revision_acknowledging_this_exact_packet",
     "capacity": {
-      "availableSlots": 4,
-      "usedSlots": 4,
-      "unusedSlots": 0,
-      "perSlotUnusedReasons": []
+      "helperSlots": 3,
+      "dccSlots": 0
     },
     "launchedJobs": [
       {
-        "id": "root-assembler",
-        "mode": "single_visible_writer",
-        "result": "packet_assembled"
-      },
-      {
         "id": "fixture_camera_audit",
-        "mode": "read_only",
-        "result": "joined"
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-075",
+        "claimRevision": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168",
+        "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "head": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+        "branch": "codex/citysim-playtest-quality",
+        "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T15:59:31.099Z",
+        "endedAt": "2026-07-30T16:03:48.927Z",
+        "evidenceId": "thread:019f9a0a-35fa-75b1-92c4-73c182390a25/turn:019fb3c0-9717-7511-b38b-f9c902bfd946/item:msg_0ade8810cb91775a016a6b75c703588190b627bfd2ddfefb5e",
+        "dccSlot": null,
+        "processId": null
       },
       {
         "id": "rubric_accessibility_audit",
-        "mode": "read_only",
-        "result": "joined"
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-075",
+        "claimRevision": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168",
+        "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "head": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+        "branch": "codex/citysim-playtest-quality",
+        "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T15:59:35.984Z",
+        "endedAt": "2026-07-30T16:03:52.683Z",
+        "evidenceId": "thread:019f9a0a-35fa-75b1-92c4-73c182390a25/turn:019fb3c0-aa2c-7453-8acc-de815dee8731/item:msg_09df71d1c5c0b526016a6b75d0cbc481948803854a938f65ef",
+        "dccSlot": null,
+        "processId": null
       },
       {
         "id": "authority_join_audit",
-        "mode": "read_only",
-        "result": "joined"
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-075",
+        "claimRevision": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168",
+        "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "head": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+        "branch": "codex/citysim-playtest-quality",
+        "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T15:59:42.649Z",
+        "endedAt": "2026-07-30T16:03:16.473Z",
+        "evidenceId": "thread:019f9a0a-35fa-75b1-92c4-73c182390a25/turn:019fb3c0-c435-70a3-b9d6-28fbab684baa/item:msg_0fb7e2b0658170f5016a6b75a663cc81949b4d5e7268a41575",
+        "dccSlot": null,
+        "processId": null
+      }
+    ],
+    "unusedCapacityReasons": [
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+          "sha256": "022bd11ea05dd6efe608ab774ea4a1f01bb9b789ef81f4acf991d56dcf4eb28e"
+        },
+        "resumptionEvent": "Helper slot 1 becomes useful when Integration publishes the first refreshed preregistering ledger revision acknowledging this exact packet.",
+        "nextRefillJob": "integration_publish_first_refreshed_preregistering_ledger_revision_acknowledging_this_exact_packet"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+          "sha256": "022bd11ea05dd6efe608ab774ea4a1f01bb9b789ef81f4acf991d56dcf4eb28e"
+        },
+        "resumptionEvent": "Helper slot 2 becomes useful when Integration publishes the first refreshed preregistering ledger revision acknowledging this exact packet.",
+        "nextRefillJob": "integration_publish_first_refreshed_preregistering_ledger_revision_acknowledging_this_exact_packet"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+          "sha256": "022bd11ea05dd6efe608ab774ea4a1f01bb9b789ef81f4acf991d56dcf4eb28e"
+        },
+        "resumptionEvent": "Helper slot 3 becomes useful when Integration publishes the first refreshed preregistering ledger revision acknowledging this exact packet.",
+        "nextRefillJob": "integration_publish_first_refreshed_preregistering_ledger_revision_acknowledging_this_exact_packet"
       }
     ],
     "overlap": {
-      "status": "actual_concurrent_read_only_audits_with_single_writer_assembly",
-      "concurrentJobsObserved": [
+      "status": "observed",
+      "jobIds": [
         "fixture_camera_audit",
         "rubric_accessibility_audit",
         "authority_join_audit"
       ],
-      "sharedVisibleWorktreeWritesByHelpers": 0
+      "startedAt": "2026-07-30T15:59:42.649Z",
+      "endedAt": "2026-07-30T16:03:16.473Z",
+      "reason": "All three disjoint QA preparation audits ran concurrently while the visible lane owner remained the sole worktree and Git writer."
     },
     "join": {
-      "state": "complete",
+      "state": "joined",
       "requiredJobs": [
         "fixture_camera_audit",
         "rubric_accessibility_audit",

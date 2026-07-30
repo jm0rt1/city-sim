@@ -4,7 +4,7 @@
   "status": "PASS_FAIL_CLOSED_BLOCKED_PACKET",
   "validatedPacket": {
     "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-batch-preregistration-refresh-v1/PREREGISTRATION-PACKET.json",
-    "sha256": "a75bd033ef275bae9e5b5bb3c7f2acc5e2f80419fd41b5e9c0bbc7691453ec66",
+    "sha256": "efd3b67d56f375a62abfece6f04a2341fd8c6ade4ae3044228fca657c6763937",
     "disposition": "blocked"
   },
   "checks": [
@@ -33,8 +33,8 @@
       "result": "PASS",
       "actual": {
         "jsonParsed": true,
-        "pathShaBindingsChecked": 21,
-        "pathShaBindingsMatched": 21,
+        "pathShaBindingsChecked": 22,
+        "pathShaBindingsMatched": 22,
         "lifecycleSourceFilesMatched": 2,
         "referenceHashFailures": 0
       }
@@ -60,7 +60,8 @@
         "logicalKeys": "4_OF_4_UNIQUE",
         "placements": "4_OF_4_UNIQUE",
         "cameraViews": "6_OF_6_UNIQUE",
-        "regularContentPixels": [1278, 768],
+        "regularDecoratedCapturePixels": [1278, 768],
+        "regularContentPixels": null,
         "compactContentPixels": [900, 600],
         "numericCameraCenters": "BLOCKED_LIVE_DERIVED",
         "regularContentRectangle": "BLOCKED_LIVE_DERIVED"
@@ -103,11 +104,24 @@
       }
     },
     {
+      "id": "shared_task_authority_semantic_status",
+      "result": "PASS_FAIL_CLOSED",
+      "actual": {
+        "publishedIndustrialL3Pass": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+        "claimSha256": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168",
+        "backlogSha256": "a4e54ff9e75c01163814aa2a5b5aace0fee1c900c8258d2bc55ece448ff4f59a",
+        "status": "SEMANTICALLY_STALE_AWAITING_INTEGRATION_REFRESH",
+        "qaEditedSharedAuthority": false
+      }
+    },
+    {
       "id": "fail_closed_activation",
       "result": "PASS",
       "actual": {
         "packetStatus": "blocked",
         "rendererCandidateReceipt": null,
+        "rendererIntakePlanSufficientForCandidateNeutralPreparation": true,
+        "rendererRev7ReceiptRepairIsQAPreregistrationBlocker": false,
         "rendererCandidate": null,
         "allTwelvePacketAdmissionQuarantineBindingsPresent": false,
         "integrationLedgerAcknowledged": false,
@@ -120,13 +134,18 @@
       "id": "parallel_execution_accounting",
       "result": "PASS",
       "actual": {
-        "capacity": 4,
-        "used": 4,
-        "unused": 0,
+        "helperSlots": 3,
+        "dccSlots": 0,
+        "runningHelperSlots": 0,
+        "unusedHelperSlots": 3,
+        "perSlotUnusedCapacityRecords": 3,
         "readOnlyHelperJobs": 3,
+        "canonicalJobRecords": "3_OF_3",
         "visibleWorktreeWriters": 1,
         "joinedHelperJobs": "3_OF_3",
-        "actualOverlap": true
+        "actualOverlap": true,
+        "overlapStartedAt": "2026-07-30T15:59:42.649Z",
+        "overlapEndedAt": "2026-07-30T16:03:16.473Z"
       }
     },
     {
@@ -146,7 +165,7 @@
   ],
   "remainingActivationBlockers": [
     "integration_refreshed_shared_ledger_revision_and_exact_packet_acknowledgement",
-    "integration_published_and_acknowledged_repaired_renderer_rev7_receipt",
+    "integration_refreshed_shared_play_075_claim_and_backlog_semantics_after_published_l3_pass",
     "one_exact_atomic_4_of_4_renderer_candidate_and_exclusive_attempt_lease",
     "six_live_derived_numeric_camera_centers",
     "one_live_derived_regular_content_rectangle"

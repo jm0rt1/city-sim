@@ -80,6 +80,13 @@ Use one branch, worktree, claim, and task-owned path set per direction. North
 owns design calibration; East, South, and West independently own only their
 named orientation. Run all Integration-authorized cells concurrently:
 
+Freeze one immutable direction binding per cell:
+`{familyContractPath/hash, direction, branch, worktree, claimPath/hash,
+publishedBase, sourceRoot, evidenceRoot}`. The binding must be unique across
+North/East/South/West and must not change during the claimed stage. Reject a
+missing, duplicated, cross-direction, or drifted binding; only Integration may
+publish a replacement family contract or claim revision.
+
 1. **Before the family lock:** East, South, and West independently author
    text-scene/material bindings and run static plus actual-camera zero-pixel
    geometry, silhouette, portal/frontage, footprint, pivot, socket, light,
@@ -112,6 +119,13 @@ shared authoring tools, shipping manifests, atlas slots, or sibling files.
 Shared changes return to Integration or a separately claimed non-direction
 shared-toolchain writer. Never copy, mirror, rotate, transform, or derive
 sibling scene geometry or pixels.
+
+Before every checkpoint, audit the complete changed-path range from the
+claimed base through `HEAD`. Fail if any changed path is outside the
+direction's claim-owned roots or if the cell consumed a sibling scene,
+geometry, raster, mask, coordinate set, or evidence packet. Record the
+changed-path inventory and `siblingInputsConsumed: []` in the machine-readable
+handoff.
 
 A post-lock production claim and dispatch authority must bind the exact claim
 revision and published base; appearance-lock and source-production-profile
@@ -344,6 +358,17 @@ Use this direction-local commit sequence unless the claim narrows it further:
 2. A/B/C source plus deterministic validation checkpoint after production is
    authorized;
 3. machine-readable handoff and completion checkpoint.
+
+These are three direction-local, independently reviewable commit boundaries.
+The zero-pixel commit must predate every render grant; the A/B/C commit must
+bind three distinct fresh-process roots and their deterministic validation;
+the handoff commit must add only the schema-valid machine-readable packet and
+completion evidence. No combined, cross-direction, or sibling commit satisfies
+another direction's gate. A returned direction advances only through a new
+direction-owned revision; passing siblings remain unchanged. Integration may
+select production only from one atomic manifest binding the exact independently
+admitted and Renderer-quarantined North/East/South/West packet paths, hashes,
+and content commits; fewer than four is a hard stop.
 
 When the claim explicitly defines predesign as its complete deliverable, the
 passing zero-pixel and predesign-handoff commits complete that claim stage

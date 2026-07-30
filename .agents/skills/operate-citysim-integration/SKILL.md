@@ -103,6 +103,16 @@ when an authority does not yet exist; never imply it from a nearby artifact.
 `abc_active` is illegal until the post-lock schedule and per-process
 launch-grant validator are published.
 
+Schedule validation alone is never `launch_ready`. Before a direction can be
+described as launch-ready, an independently reviewed, Integration-owned
+execution-closure contract must prove that the exact trusted-master-published
+schedule and one-attempt process authority reach the direction's approved
+high-level orchestrator and runner validation boundary. The proof must reject
+forged worker authority, replay, wrong claim/base/direction/process/slot/root,
+direct low-level invocation, and unauthenticated delegation with zero child,
+DCC, render, normalizer, or pixel activity. Keep the cell at `predesign` and
+name the missing closure explicitly until that proof is accepted.
+
 The canonical executable schedule controls are:
 
 - schema:

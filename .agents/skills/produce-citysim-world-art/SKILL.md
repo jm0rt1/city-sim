@@ -11,12 +11,17 @@ The output is a reviewed source batch, not a shipping renderer change.
 ## Start every turn
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
-2. Require one exact governed branch and claim:
+2. Require one exact governed branch and one Integration-issued active claim
+   whose task, batch, branch, direction, path roots, and published base match
+   the current shared ledger. The current Industrial L4 profile uses:
    - `codex/citysim-world-art` → `PLAY-027.world-art.md`;
    - `codex/citysim-world-art-east` → `PLAY-079.world-art-east.md`;
    - `codex/citysim-world-art-south` → `PLAY-080.world-art-south.md`;
    - `codex/citysim-world-art-west` → `PLAY-081.world-art-west.md`.
-   Stop on any other branch or claim mismatch.
+   A later family may use different `PLAY-*` claims only when Integration
+   publishes those exact mappings in its family ledger. Never reuse an
+   Industrial L4 claim for another family. Stop on any branch, direction,
+   batch, or claim mismatch.
 3. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`,
    `docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md`,
    `docs/production/decisions/CONTRACT-010-directional-building-art.md`,
@@ -41,8 +46,8 @@ Own only:
   records under the exact direction-exclusive ImageGen subroots named by the
   claim;
 - task-owned non-shipping source records and source validators;
-- task-owned PLAY-027/079/080/081 contact sheets, geometry reports, and
-  evidence.
+- task-owned contact sheets, geometry reports, and evidence under the exact
+  active claim's `PLAY-*` roots.
 
 Direction cells additionally own only the exact direction named by their
 claim. They may consume the published family/material/camera contract but may
@@ -144,12 +149,22 @@ as the wire contract and
 as the operating authority. Direction-local adapters and runners may consume
 those shared files read-only; they never edit them.
 
+For any other family, resolve the schedule schema, validator, adversarial
+tests, and operating authority from that family's exact Integration ledger and
+contract. Fail closed if family-specific controls do not exist; never point a
+new family at the Industrial L4 profile merely to obtain a passing validator.
+
 ### Parallelize inside each direction cell
 
 Scene and material authoring remain single-writer until the exact
 direction-local scene revision is frozen. After that freeze and only within
 the stage authorized by the claim:
 
+- publish a compact direction-local job plan before launching work. List every
+  job's frozen inputs, exclusive output root, dependency, execution owner,
+  state (`ready`, `running`, `joined`, or `blocked`), and join condition.
+  Separate DCC/render capacity from CPU/helper capacity so a full render queue
+  does not hide idle validation or evidence work;
 - enqueue every authorized A, B, and C fresh process immediately, each writing
   only to its own immutable output directory. Integration's global scheduler
   keeps every available DCC slot occupied up to the published compute cap;
@@ -165,6 +180,17 @@ the stage authorized by the claim:
 - assign exactly one direction-local assembler to validate the complete packet
   and write the final handoff after all required jobs settle.
 
+Use available internal helpers or parallel tool calls for bounded read-only
+inspection and jobs writing only to isolated temporary roots outside the
+direction worktree. The direction's visible worker remains the sole
+scene/material writer before freeze and the sole worktree, Git index, governed
+evidence packet, handoff, and commit writer throughout; it alone may validate
+and adopt temporary outputs. Helpers may not mutate a shared scene, consume
+unfinished inputs, stage or commit, relax a validator, or claim direction
+completion. When safe eligible jobs outnumber launched jobs, record the
+concrete capacity limit or ownership conflict; "working sequentially" is not
+an explanation.
+
 Follow this dependency graph; concurrency does not authorize consumers to race
 unfinished inputs:
 
@@ -176,9 +202,11 @@ Emit one machine-readable parallel-execution receipt containing the frozen
 scene, material, schema, toolchain, and authority hashes; process IDs and
 distinct roots; start/end timestamps; exactly-one-invocation assertions;
 actual overlap; join results; validation-job roots; and the final assembler
-identity. If Integration's compute envelope requires a sequential render wave,
-record the resource exception and queue order. Claim overlap only when the
-timestamps prove it, and never exceed the published global DCC cap.
+identity. Also record ready-job count, maximum available DCC and helper
+capacity, launched-job count, unused-capacity reasons, and each required join.
+If Integration's compute envelope requires a sequential render wave, record
+the resource exception and queue order. Claim overlap only when the timestamps
+prove it, and never exceed the published global DCC cap.
 
 Treat the compute slot as a lease, not a department lock. A queued or failed
 DCC process blocks only its own exclusive output root. Continue every
@@ -320,9 +348,11 @@ Do not collapse these boundaries when doing so would hide a rejected attempt,
 an unrun gate, or a change in source authority.
 
 Stage explicit claimed paths, inspect staged diff/stat/check, and commit one
-coherent batch with the branch-mapped `PLAY-027`, `PLAY-079`, `PLAY-080`, or
-`PLAY-081` task ID. Use a checkpoint commit only for durable incomplete work
-and list unrun or failing gates. Keep the worktree clean before handoff and
-write a completion record only when the claimed direction is actually
-complete. Renderer ingestion, atomic 4/4 production selection, and staged-app
-proof belong to a later integration-approved world-rendering task.
+coherent batch with the exact active claim's `PLAY-*` task ID. For the current
+Industrial L4 profile those are `PLAY-027`, `PLAY-079`, `PLAY-080`, and
+`PLAY-081`; do not carry them into a later family without new Integration
+authority. Use a checkpoint commit only for durable incomplete work and list
+unrun or failing gates. Keep the worktree clean before handoff and write a
+completion record only when the claimed direction is actually complete.
+Renderer ingestion, atomic 4/4 production selection, and staged-app proof
+belong to a later integration-approved world-rendering task.

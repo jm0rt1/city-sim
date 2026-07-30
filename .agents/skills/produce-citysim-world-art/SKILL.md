@@ -144,6 +144,12 @@ identity. If Integration's compute envelope requires a sequential render wave,
 record the resource exception and queue order. Claim overlap only when the
 timestamps prove it, and never exceed the published global DCC cap.
 
+Treat the compute slot as a lease, not a department lock. A queued or failed
+DCC process blocks only its own exclusive output root. Continue every
+direction-local CPU-only provenance, validator, review-sheet, inventory, and
+packet task whose inputs are closed, while sibling cells do the same. Never
+cancel passing sibling work merely because one direction or process fails.
+
 North's pre-lock process-A appearance calibration remains a one-process gate.
 The internal A/B/C fan-out begins for North only after Integration publishes
 the appearance lock and explicitly releases B/C. East, South, and West may
@@ -240,6 +246,12 @@ literal-scale reviews pass. Neither stage may declare the four-direction
 family selected.
 Integration assigns the later 4/4 assembly owner for the combined N/E/S/W
 source-size, actual-game-scale, and grayscale family sheets.
+
+The standard source handoff is immutable once returned. Integration hashes and
+admits that exact packet in a separate canonical source-admission receipt;
+Renderer consumes that receipt and may not reinterpret a worker readiness
+field as admission. If Integration returns the packet, create a new source
+revision and handoff rather than editing the returned packet in place.
 
 Validate every packet against the exact versioned JSON schema published by
 Integration and then run the Integration-owned semantic validator. Record the

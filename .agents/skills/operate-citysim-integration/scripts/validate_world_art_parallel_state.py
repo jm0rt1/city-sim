@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import re
@@ -30,6 +31,94 @@ CELL_LABELS = {
     "renderer": "Renderer",
     "qa": "QA",
 }
+
+CELL_BINDINGS = {
+    "north": (
+        "codex/citysim-world-art",
+        "PLAY-027",
+        Path("docs/production/claims/PLAY-027.world-art.md"),
+    ),
+    "east": (
+        "codex/citysim-world-art-east",
+        "PLAY-079",
+        Path("docs/production/claims/PLAY-079.world-art-east.md"),
+    ),
+    "south": (
+        "codex/citysim-world-art-south",
+        "PLAY-080",
+        Path("docs/production/claims/PLAY-080.world-art-south.md"),
+    ),
+    "west": (
+        "codex/citysim-world-art-west",
+        "PLAY-081",
+        Path("docs/production/claims/PLAY-081.world-art-west.md"),
+    ),
+    "renderer": (
+        "codex/citysim-world-rendering",
+        "PLAY-073",
+        Path("docs/production/claims/PLAY-073.world-rendering.md"),
+    ),
+    "qa": (
+        "codex/citysim-playtest-quality",
+        "PLAY-075",
+        Path("docs/production/claims/PLAY-075.playtest-quality.md"),
+    ),
+}
+LANE_BINDINGS = {
+    "north": "world_art",
+    "east": "world_art",
+    "south": "world_art",
+    "west": "world_art",
+    "renderer": "world_rendering",
+    "qa": "playtest_quality",
+}
+
+BATCH_STATE_MACHINE = (
+    "contract_pending",
+    "prelock_active",
+    "appearance_lock_pending",
+    "abc_active",
+    "4of4_ready",
+    "exact_candidate_qa",
+    "integrated",
+)
+DIRECTION_STATE_MACHINE = {
+    "predesign": ("source_candidate",),
+    "source_candidate": ("returned", "integration_admitted"),
+    "returned": ("predesign", "source_candidate"),
+    "integration_admitted": ("returned", "renderer_quarantined"),
+    "renderer_quarantined": (),
+}
+RENDERER_STATE_MACHINE = (
+    "intake_preparing",
+    "intake_ready",
+    "quarantining",
+    "4of4_assembled",
+)
+QA_STATE_MACHINE = (
+    "preregistering",
+    "preregistered",
+    "exact_candidate_active",
+    "passed",
+    "returned",
+)
+AUTHORITY_REQUIRED_PAIRS = {
+    "familyContract": (("path", "sha256"),),
+    "parallelCellsContract": (("path", "sha256"),),
+    "appearanceLock": (("path", "sha256"),),
+    "sourceProductionProfile": (("path", "sha256"),),
+    "semanticValidator": (("path", "sha256"),),
+    "sourceAdmissionReceipt": (
+        ("schemaPath", "schemaSha256"),
+        ("validatorPath", "validatorSha256"),
+    ),
+}
+REQUIRED_RESOURCE_ASSUMPTIONS = (
+    "machine",
+    "dcc",
+    "rendererHarness",
+    "qa",
+)
 
 ACTIVE_DISPATCH_STATES = frozenset(
     {"acknowledged", "working", "active", "in_progress"}
@@ -108,6 +197,9 @@ class Validator:
         ledger_rows = self._canonical_rows(
             ledger.get("cells"), "ledger.cells", require_exact_six=True
         )
+        self._validate_timestamp(ledger.get("updatedAt"), "ledger.updatedAt")
+        self._validate_state_machines(ledger, ledger_rows)
+        self._validate_family_authority(ledger.get("familyAuthority"))
         integration_writer = ledger.get("integrationWriter")
         if isinstance(integration_writer, Mapping):
             self._validate_live_git(
@@ -123,6 +215,9 @@ class Validator:
         for cell in EXPECTED_CELLS:
             ledger_row = ledger_rows.get(cell)
             if ledger_row is not None:
+                self._validate_cell_binding(
+                    cell, ledger_row, f"ledger.cells.{cell}"
+                )
                 self._validate_required_row_fields(
                     ledger_row, f"ledger.cells.{cell}"
                 )
@@ -131,6 +226,9 @@ class Validator:
 
             receipt_row = receipt_rows.get(cell)
             if receipt_row is not None:
+                self._validate_cell_binding(
+                    cell, receipt_row, f"receipt.rows.{cell}"
+                )
                 self._validate_required_row_fields(
                     receipt_row, f"receipt.rows.{cell}"
                 )
@@ -146,6 +244,8 @@ class Validator:
             if ledger_row is not None and receipt_row is not None:
                 self._validate_row_binding(cell, ledger_row, receipt_row)
 
+        self._validate_timestamp(receipt.get("sentAt"), "receipt.sentAt")
+        self._validate_compute_envelope(receipt.get("computeEnvelope"))
         self._validate_board(board_text, board_path, ledger_rows)
         self._validate_receipt_binding(
             ledger,
@@ -339,12 +439,15 @@ class Validator:
         self, row: Mapping[str, Any], location: str
     ) -> None:
         for field in (
+            "lane",
+            "threadId",
             "branch",
             "worktree",
             "claim",
             "head",
             "cleanState",
             "dispatchState",
+            "state",
         ):
             value = row.get(field)
             if not isinstance(value, str) or not value.strip():
@@ -353,6 +456,14 @@ class Validator:
                     f"{location}.{field}",
                     "must be present and non-empty",
                 )
+
+        base_value = row.get("publishedBase", row.get("base"))
+        if not isinstance(base_value, str) or not SHA40_RE.fullmatch(base_value):
+            self.error(
+                "ROW_BASE_INVALID",
+                f"{location}.publishedBase",
+                "must carry publishedBase/base as a full lowercase Git SHA",
+            )
 
         for field in (
             "boundedDeliverable",
@@ -395,6 +506,66 @@ class Validator:
                 location,
                 "must record a live observation timestamp",
             )
+        else:
+            timestamp = next(
+                row.get(name)
+                for name in ("liveObservationAt", "observedAt", "updatedAt")
+                if _concrete_text(row.get(name))
+            )
+            self._validate_timestamp(timestamp, f"{location}.observation")
+
+        acknowledged_at = row.get("acknowledgedAt")
+        if acknowledged_at is not None:
+            self._validate_timestamp(
+                acknowledged_at, f"{location}.acknowledgedAt"
+            )
+
+    def _validate_cell_binding(
+        self, cell: str, row: Mapping[str, Any], location: str
+    ) -> None:
+        expected_branch, expected_claim, claim_path = CELL_BINDINGS[cell]
+        expected_lane = LANE_BINDINGS[cell]
+        if row.get("lane") != expected_lane:
+            self.error(
+                "CELL_LANE_BINDING",
+                f"{location}.lane",
+                f"{CELL_LABELS[cell]} must use lane {expected_lane!r}",
+            )
+        if row.get("branch") != expected_branch:
+            self.error(
+                "CELL_BRANCH_BINDING",
+                f"{location}.branch",
+                f"{CELL_LABELS[cell]} must use {expected_branch!r}",
+            )
+        if row.get("claim") != expected_claim:
+            self.error(
+                "CELL_CLAIM_BINDING",
+                f"{location}.claim",
+                f"{CELL_LABELS[cell]} must use {expected_claim!r}",
+            )
+        if not _concrete_text(row.get("threadId")):
+            self.error(
+                "CELL_THREAD_BINDING",
+                f"{location}.threadId",
+                "must bind a concrete visible thread identifier",
+            )
+
+        absolute_claim = self.repo_root / claim_path
+        try:
+            actual_revision = hashlib.sha256(absolute_claim.read_bytes()).hexdigest()
+        except OSError as exc:
+            self.error(
+                "CLAIM_FILE_UNREADABLE",
+                f"{location}.claimRevision",
+                f"could not read {claim_path}: {exc}",
+            )
+            return
+        if row.get("claimRevision") != actual_revision:
+            self.error(
+                "CLAIM_REVISION_STALE",
+                f"{location}.claimRevision",
+                f"recorded={row.get('claimRevision')!r}; actual={actual_revision}",
+            )
 
     def _validate_optional_true_flags(
         self,
@@ -416,32 +587,537 @@ class Validator:
         ledger_row: Mapping[str, Any],
         receipt_row: Mapping[str, Any],
     ) -> None:
-        aliases = (("publishedBase", "base"),)
+        aliases = {"publishedBase": "base"}
+        for ledger_field, ledger_value in ledger_row.items():
+            receipt_field = aliases.get(ledger_field, ledger_field)
+            if receipt_field not in receipt_row:
+                self.error(
+                    "RECEIPT_LEDGER_ROW_FIELD_MISSING",
+                    f"receipt.rows.{cell}.{receipt_field}",
+                    f"must project ledger field {ledger_field!r}",
+                )
+                continue
+            if receipt_row[receipt_field] != ledger_value:
+                self.error(
+                    "RECEIPT_LEDGER_ROW_MISMATCH",
+                    f"receipt.rows.{cell}.{receipt_field}",
+                    f"{receipt_row[receipt_field]!r} does not match ledger "
+                    f"{ledger_field} {ledger_value!r}",
+                )
+        expected_fields = {
+            aliases.get(field, field) for field in ledger_row
+        } | {"changedThisTurn"}
+        extras = sorted(set(receipt_row) - expected_fields)
+        if extras:
+            self.error(
+                "RECEIPT_LEDGER_ROW_EXTRA",
+                f"receipt.rows.{cell}",
+                "contains non-projection fields: " + ", ".join(extras),
+            )
+
+    def _validate_state_machines(
+        self,
+        ledger: Mapping[str, Any],
+        rows: Mapping[str, Mapping[str, Any]],
+    ) -> None:
+        expected_documents = (
+            ("stateMachine", list(BATCH_STATE_MACHINE)),
+            (
+                "directionStateMachine",
+                {key: list(value) for key, value in DIRECTION_STATE_MACHINE.items()},
+            ),
+            ("rendererStateMachine", list(RENDERER_STATE_MACHINE)),
+            ("qaStateMachine", list(QA_STATE_MACHINE)),
+        )
+        for field, expected in expected_documents:
+            if ledger.get(field) != expected:
+                self.error(
+                    "STATE_MACHINE_DRIFT",
+                    f"ledger.{field}",
+                    "must exactly match the governed parallel state machine",
+                )
+
+        batch_state = ledger.get("batchState")
+        if batch_state not in BATCH_STATE_MACHINE:
+            self.error(
+                "BATCH_STATE_INVALID",
+                "ledger.batchState",
+                f"unsupported batch state {batch_state!r}",
+            )
+
+        direction_states: dict[str, Any] = {}
+        for cell in ("north", "east", "south", "west"):
+            row = rows.get(cell)
+            if row is None:
+                continue
+            state = row.get("state")
+            direction_states[cell] = state
+            if state not in DIRECTION_STATE_MACHINE:
+                self.error(
+                    "DIRECTION_STATE_INVALID",
+                    f"ledger.cells.{cell}.state",
+                    f"unsupported direction state {state!r}",
+                )
+
+        renderer_state = rows.get("renderer", {}).get("state")
+        if renderer_state not in RENDERER_STATE_MACHINE:
+            self.error(
+                "RENDERER_STATE_INVALID",
+                "ledger.cells.renderer.state",
+                f"unsupported renderer state {renderer_state!r}",
+            )
+        qa_state = rows.get("qa", {}).get("state")
+        if qa_state not in QA_STATE_MACHINE:
+            self.error(
+                "QA_STATE_INVALID",
+                "ledger.cells.qa.state",
+                f"unsupported QA state {qa_state!r}",
+            )
+
+        all_quarantined = (
+            len(direction_states) == 4
+            and all(
+                state == "renderer_quarantined"
+                for state in direction_states.values()
+            )
+        )
+        if batch_state in {"4of4_ready", "exact_candidate_qa", "integrated"}:
+            if not all_quarantined:
+                self.error(
+                    "BATCH_4OF4_PRECONDITION",
+                    "ledger.batchState",
+                    "4of4_ready and later require all four directions "
+                    "renderer_quarantined",
+                )
+        if renderer_state == "4of4_assembled" and not all_quarantined:
+            self.error(
+                "RENDERER_4OF4_PRECONDITION",
+                "ledger.cells.renderer.state",
+                "4of4_assembled requires all four directions "
+                "renderer_quarantined",
+            )
+
+        family_authority = ledger.get("familyAuthority")
+        appearance_ready = self._authority_is_concrete(
+            family_authority, "appearanceLock"
+        )
+        profile_ready = self._authority_is_concrete(
+            family_authority, "sourceProductionProfile"
+        )
+        if batch_state in {
+            "abc_active",
+            "4of4_ready",
+            "exact_candidate_qa",
+            "integrated",
+        } and not (appearance_ready and profile_ready):
+            self.error(
+                "BATCH_SOURCE_AUTHORITY_PRECONDITION",
+                "ledger.batchState",
+                "abc_active and later require concrete appearance lock and "
+                "source production profile authorities",
+            )
+
+        for cell, state in direction_states.items():
+            row = rows[cell]
+            if state in {
+                "source_candidate",
+                "integration_admitted",
+                "renderer_quarantined",
+            } and not (appearance_ready and profile_ready):
+                self.error(
+                    "DIRECTION_SOURCE_AUTHORITY_PRECONDITION",
+                    f"ledger.cells.{cell}.state",
+                    "source_candidate and later require concrete appearance "
+                    "lock and source production profile authorities",
+                )
+            if state in {"integration_admitted", "renderer_quarantined"}:
+                self._validate_row_artifact(
+                    row,
+                    "sourceAdmissionReceipt",
+                    f"ledger.cells.{cell}.sourceAdmissionReceipt",
+                )
+            if state == "renderer_quarantined":
+                self._validate_row_artifact(
+                    row,
+                    "rendererQuarantinePacket",
+                    f"ledger.cells.{cell}.rendererQuarantinePacket",
+                )
+
+        if batch_state == "4of4_ready":
+            if renderer_state != "4of4_assembled":
+                self.error(
+                    "BATCH_RENDERER_PRECONDITION",
+                    "ledger.batchState",
+                    "4of4_ready requires Renderer 4of4_assembled",
+                )
+            if qa_state not in {
+                "preregistered",
+                "exact_candidate_active",
+                "passed",
+            }:
+                self.error(
+                    "BATCH_QA_PRECONDITION",
+                    "ledger.batchState",
+                    "4of4_ready requires QA preregistered or later",
+                )
+        elif batch_state == "exact_candidate_qa":
+            if renderer_state != "4of4_assembled":
+                self.error(
+                    "BATCH_RENDERER_PRECONDITION",
+                    "ledger.batchState",
+                    "exact_candidate_qa requires Renderer 4of4_assembled",
+                )
+            if qa_state not in {"exact_candidate_active", "passed"}:
+                self.error(
+                    "BATCH_QA_PRECONDITION",
+                    "ledger.batchState",
+                    "exact_candidate_qa requires QA exact_candidate_active "
+                    "or passed",
+                )
+        elif batch_state == "integrated":
+            if renderer_state != "4of4_assembled":
+                self.error(
+                    "BATCH_RENDERER_PRECONDITION",
+                    "ledger.batchState",
+                    "integrated requires Renderer 4of4_assembled",
+                )
+            if qa_state != "passed":
+                self.error(
+                    "BATCH_QA_PRECONDITION",
+                    "ledger.batchState",
+                    "integrated requires QA passed",
+                )
+
+    def _validate_family_authority(self, value: Any) -> None:
+        location = "ledger.familyAuthority"
+        if not isinstance(value, Mapping):
+            self.error(
+                "FAMILY_AUTHORITY_TYPE",
+                location,
+                "must be an object",
+            )
+            return
         for field in (
-            "branch",
-            "worktree",
-            "claim",
-            "claimRevision",
-            "head",
-            "dispatchState",
+            "familyContract",
+            "parallelCellsContract",
+            "appearanceLock",
+            "sourceProductionProfile",
+            "semanticValidator",
+            "sourceAdmissionReceipt",
         ):
-            if field in ledger_row and field in receipt_row:
-                if ledger_row[field] != receipt_row[field]:
+            if field not in value:
+                self.error(
+                    "FAMILY_AUTHORITY_MISSING",
+                    f"{location}.{field}",
+                    "required authority binding is absent",
+                )
+                continue
+            self._validate_required_authority_descriptor(
+                field, value[field], f"{location}.{field}"
+            )
+        self._validate_authority_hashes(value, location)
+
+    def _validate_required_authority_descriptor(
+        self, field: str, value: Any, location: str
+    ) -> None:
+        if not isinstance(value, Mapping):
+            self.error(
+                "AUTHORITY_DESCRIPTOR_TYPE",
+                location,
+                "must be an object",
+            )
+            return
+        status = value.get("status")
+        if not isinstance(status, str) or not status.strip():
+            self.error(
+                "AUTHORITY_STATUS_MISSING",
+                f"{location}.status",
+                "must be a concrete status",
+            )
+            return
+        token = _normalize_token(status)
+        pending = "pending" in token or "absent" in token
+        pairs = AUTHORITY_REQUIRED_PAIRS[field]
+        for path_key, hash_key in pairs:
+            if path_key not in value or hash_key not in value:
+                self.error(
+                    "AUTHORITY_BINDING_MISSING",
+                    location,
+                    f"must contain {path_key}/{hash_key}",
+                )
+                continue
+            raw_path = value.get(path_key)
+            raw_hash = value.get(hash_key)
+            if pending:
+                if raw_path is not None or raw_hash is not None:
                     self.error(
-                        "RECEIPT_LEDGER_ROW_MISMATCH",
-                        f"receipt.rows.{cell}.{field}",
-                        f"{receipt_row[field]!r} does not match ledger value "
-                        f"{ledger_row[field]!r}",
+                        "AUTHORITY_PENDING_CONCRETE",
+                        location,
+                        "pending/absent authority must use null path and hash",
                     )
-        for ledger_field, receipt_field in aliases:
-            if ledger_field in ledger_row and receipt_field in receipt_row:
-                if ledger_row[ledger_field] != receipt_row[receipt_field]:
+            elif raw_path is None or raw_hash is None:
+                self.error(
+                    "AUTHORITY_PUBLISHED_NULL",
+                    location,
+                    "non-pending authority must bind concrete path and hash",
+                )
+
+    @staticmethod
+    def _authority_is_concrete(value: Any, field: str) -> bool:
+        if not isinstance(value, Mapping):
+            return False
+        descriptor = value.get(field)
+        if not isinstance(descriptor, Mapping):
+            return False
+        status = descriptor.get("status")
+        if not isinstance(status, str):
+            return False
+        token = _normalize_token(status)
+        if "pending" in token or "absent" in token:
+            return False
+        return (
+            isinstance(descriptor.get("path"), str)
+            and bool(descriptor.get("path"))
+            and isinstance(descriptor.get("sha256"), str)
+            and bool(SHA256_RE.fullmatch(descriptor["sha256"]))
+        )
+
+    def _validate_row_artifact(
+        self, row: Mapping[str, Any], field: str, location: str
+    ) -> None:
+        descriptor = row.get(field)
+        if not isinstance(descriptor, Mapping):
+            self.error(
+                "DIRECTION_ARTIFACT_MISSING",
+                location,
+                "must bind an exact path/hash descriptor",
+            )
+            return
+        self._validate_authority_hashes(descriptor, location)
+        raw_path = descriptor.get("path")
+        raw_hash = descriptor.get("sha256")
+        if (
+            not isinstance(raw_path, str)
+            or not raw_path
+            or not isinstance(raw_hash, str)
+            or not SHA256_RE.fullmatch(raw_hash)
+        ):
+            self.error(
+                "DIRECTION_ARTIFACT_INVALID",
+                location,
+                "must bind concrete path and SHA-256",
+            )
+
+    def _validate_authority_hashes(self, value: Any, location: str) -> None:
+        if isinstance(value, Mapping):
+            pairs = (
+                ("path", "sha256"),
+                ("schemaPath", "schemaSha256"),
+                ("validatorPath", "validatorSha256"),
+            )
+            for path_key, hash_key in pairs:
+                if path_key not in value and hash_key not in value:
+                    continue
+                raw_path = value.get(path_key)
+                raw_hash = value.get(hash_key)
+                if raw_path is None and raw_hash is None:
+                    continue
+                if not isinstance(raw_path, str) or not raw_path:
                     self.error(
-                        "RECEIPT_LEDGER_ROW_MISMATCH",
-                        f"receipt.rows.{cell}.{receipt_field}",
-                        f"{receipt_row[receipt_field]!r} does not match ledger "
-                        f"{ledger_field} {ledger_row[ledger_field]!r}",
+                        "AUTHORITY_PATH_INVALID",
+                        f"{location}.{path_key}",
+                        "path and hash must both be concrete or both be null",
                     )
+                    continue
+                if not isinstance(raw_hash, str) or not SHA256_RE.fullmatch(raw_hash):
+                    self.error(
+                        "AUTHORITY_HASH_INVALID",
+                        f"{location}.{hash_key}",
+                        "must be a lowercase 64-character SHA-256",
+                    )
+                    continue
+                authority_path = _path_from_argument(self.repo_root, raw_path)
+                try:
+                    actual_hash = hashlib.sha256(authority_path.read_bytes()).hexdigest()
+                except OSError as exc:
+                    self.error(
+                        "AUTHORITY_FILE_UNREADABLE",
+                        f"{location}.{path_key}",
+                        f"could not read {raw_path}: {exc}",
+                    )
+                    continue
+                if actual_hash != raw_hash:
+                    self.error(
+                        "AUTHORITY_HASH_STALE",
+                        f"{location}.{hash_key}",
+                        f"recorded={raw_hash}; actual={actual_hash}",
+                    )
+            for key, item in value.items():
+                self._validate_authority_hashes(item, f"{location}.{key}")
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                self._validate_authority_hashes(item, f"{location}[{index}]")
+
+    def _validate_compute_envelope(self, value: Any) -> None:
+        location = "receipt.computeEnvelope"
+        if not isinstance(value, Mapping):
+            self.error(
+                "COMPUTE_ENVELOPE_TYPE",
+                location,
+                "must be an object",
+            )
+            return
+        maximum = value.get("maximumSimultaneousDCCProcesses")
+        if not isinstance(maximum, int) or isinstance(maximum, bool) or maximum < 0:
+            self.error(
+                "COMPUTE_CAP_INVALID",
+                f"{location}.maximumSimultaneousDCCProcesses",
+                "must be a non-negative integer",
+            )
+            maximum = 0
+        slots = value.get("assignedSlots")
+        if not isinstance(slots, list):
+            self.error(
+                "COMPUTE_SLOTS_TYPE",
+                f"{location}.assignedSlots",
+                "must be an array",
+            )
+            slots = []
+        if len(slots) > maximum:
+            self.error(
+                "COMPUTE_OVERSUBSCRIBED",
+                f"{location}.assignedSlots",
+                f"{len(slots)} simultaneous slots exceed cap {maximum}",
+            )
+
+        identifiers: list[str] = []
+        slot_names: set[str] = set()
+        for index, slot in enumerate(slots):
+            slot_location = f"{location}.assignedSlots[{index}]"
+            if not isinstance(slot, Mapping):
+                self.error("COMPUTE_SLOT_TYPE", slot_location, "must be an object")
+                continue
+            direction = _normalize_cell(slot.get("direction"))
+            if direction not in {"north", "east", "south", "west"}:
+                self.error(
+                    "COMPUTE_SLOT_DIRECTION",
+                    f"{slot_location}.direction",
+                    "must name one World Art direction",
+                )
+            expected_claim = CELL_BINDINGS.get(direction, ("", "", Path()))[1]
+            if slot.get("claim") != expected_claim:
+                self.error(
+                    "COMPUTE_SLOT_CLAIM",
+                    f"{slot_location}.claim",
+                    f"must bind {expected_claim!r} for {direction!r}",
+                )
+            slot_name = slot.get("slot")
+            if not isinstance(slot_name, str) or not slot_name.strip():
+                self.error(
+                    "COMPUTE_SLOT_NAME",
+                    f"{slot_location}.slot",
+                    "must be a non-empty string",
+                )
+            elif slot_name in slot_names:
+                self.error(
+                    "COMPUTE_SLOT_DUPLICATE",
+                    f"{slot_location}.slot",
+                    f"duplicate slot {slot_name!r}",
+                )
+            else:
+                slot_names.add(slot_name)
+            attempt_id = slot.get("attemptID")
+            process_id = slot.get("processID")
+            if not _concrete_text(attempt_id) or not _concrete_text(process_id):
+                self.error(
+                    "COMPUTE_SLOT_WORK_MISSING",
+                    slot_location,
+                    "must bind concrete attemptID and processID",
+                )
+            else:
+                identifiers.append(f"{direction}:{attempt_id}:{process_id}")
+            starts = slot.get("maximumChildStarts")
+            if not isinstance(starts, int) or isinstance(starts, bool) or starts < 1:
+                self.error(
+                    "COMPUTE_SLOT_CHILD_CAP",
+                    f"{slot_location}.maximumChildStarts",
+                    "must be a positive integer",
+                )
+
+        queue = value.get("queueOrder")
+        if not isinstance(queue, list) or not all(
+            isinstance(item, str) and item for item in queue
+        ):
+            self.error(
+                "COMPUTE_QUEUE_INVALID",
+                f"{location}.queueOrder",
+                "must be an array of concrete queue identifiers",
+            )
+        elif len(queue) != len(set(queue)):
+            self.error(
+                "COMPUTE_QUEUE_DUPLICATE",
+                f"{location}.queueOrder",
+                "must not contain duplicate work",
+            )
+        elif any(identifier not in queue for identifier in identifiers):
+            self.error(
+                "COMPUTE_QUEUE_SLOT_MISSING",
+                f"{location}.queueOrder",
+                "must contain every assigned slot identifier",
+            )
+
+        assumptions = value.get("resourceAssumptions")
+        if not isinstance(assumptions, Mapping) or not assumptions:
+            self.error(
+                "COMPUTE_ASSUMPTIONS_MISSING",
+                f"{location}.resourceAssumptions",
+                "must name machine and resource assumptions",
+            )
+        else:
+            for field in REQUIRED_RESOURCE_ASSUMPTIONS:
+                if not _concrete_text(assumptions.get(field)):
+                    self.error(
+                        "COMPUTE_ASSUMPTION_FIELD_MISSING",
+                        f"{location}.resourceAssumptions.{field}",
+                        "must be a concrete resource assumption",
+                    )
+        prohibited = value.get("prohibited")
+        if not isinstance(prohibited, list) or not prohibited or not all(
+            _concrete_text(item) for item in prohibited
+        ):
+            self.error(
+                "COMPUTE_PROHIBITIONS_MISSING",
+                f"{location}.prohibited",
+                "must contain concrete prohibited work",
+            )
+        for field in ("exceptionOwner", "reason"):
+            if not _concrete_text(value.get(field)):
+                self.error(
+                    "COMPUTE_FIELD_MISSING",
+                    f"{location}.{field}",
+                    "must be concrete",
+                )
+
+    def _validate_timestamp(self, value: Any, location: str) -> None:
+        if not isinstance(value, str) or not value:
+            self.error("TIMESTAMP_MISSING", location, "must be an ISO-8601 timestamp")
+            return
+        candidate = value[:-1] + "+00:00" if value.endswith("Z") else value
+        try:
+            parsed = datetime.fromisoformat(candidate)
+        except ValueError:
+            self.error(
+                "TIMESTAMP_INVALID",
+                location,
+                f"not ISO-8601: {value!r}",
+            )
+            return
+        if parsed.tzinfo is None:
+            self.error(
+                "TIMESTAMP_TIMEZONE_MISSING",
+                location,
+                "must include a timezone",
+            )
 
     def _validate_git_sha_fields(self, value: Any, location: str) -> None:
         if isinstance(value, Mapping):
@@ -787,6 +1463,12 @@ class Validator:
                 )
 
         actual_hash = hashlib.sha256(ledger_bytes).hexdigest()
+        if "ledgerSha256" not in receipt:
+            self.error(
+                "RECEIPT_LEDGER_HASH_MISSING",
+                "receipt.ledgerSha256",
+                "must bind the exact canonical ledger bytes",
+            )
         for field in ("ledgerSha256", "ledgerHash"):
             if field not in receipt:
                 continue

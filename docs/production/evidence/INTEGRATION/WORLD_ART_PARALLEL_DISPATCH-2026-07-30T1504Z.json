@@ -1,213 +1,55 @@
 {
-  "schema": 3,
+  "schema": 5,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-30T15:04:25Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T1504Z.json",
-  "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
-  "integrationWriter": {
-    "branch": "master",
-    "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "8f2520aec2723320c7cb7d286b878c3f32a04a3d",
-    "technicalHeadBeforeLedger": "8f2520aec2723320c7cb7d286b878c3f32a04a3d"
-  },
-  "stateMachine": [
-    "contract_pending",
-    "prelock_active",
-    "appearance_lock_pending",
-    "abc_active",
-    "4of4_ready",
-    "exact_candidate_qa",
-    "integrated"
-  ],
-  "directionStateMachine": {
-    "predesign": [
-      "source_candidate"
+  "sentAt": "2026-07-30T15:04:25Z",
+  "authorityCommit": "8f2520aec2723320c7cb7d286b878c3f32a04a3d",
+  "ledger": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+  "ledgerSha256": "022bd11ea05dd6efe608ab774ea4a1f01bb9b789ef81f4acf991d56dcf4eb28e",
+  "supersedes": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T1232Z.json",
+  "computeEnvelope": {
+    "maximumSimultaneousDCCProcesses": 0,
+    "assignedSlots": [],
+    "queueOrder": [],
+    "resourceAssumptions": {
+      "machine": "single_local_macos_host",
+      "dcc": "North Process A and all postlock direction pixels remain closed until Integration publishes exact live authorities",
+      "rendererHarness": "candidate-neutral intake validation is accepted; source quarantine still requires Integration source-admission receipts",
+      "qa": "exclusive QA lane remains occupied by a separate exact-candidate gate"
+    },
+    "prohibited": [
+      "North Process A without the exact live schedule, grant, lease, secret, and compute slot",
+      "East, South, or West pixels before the accepted appearance lock and postlock grants",
+      "Industrial L4 source quarantine without Integration source-admission receipts",
+      "live runtime, atlas, manifest, shipping selection, or final candidate QA"
     ],
-    "source_candidate": [
-      "returned",
-      "integration_admitted"
-    ],
-    "returned": [
-      "predesign",
-      "source_candidate"
-    ],
-    "integration_admitted": [
-      "returned",
-      "renderer_quarantined"
-    ],
-    "renderer_quarantined": []
+    "exceptionOwner": "integration",
+    "reason": "publish the accepted synchronized execution epoch before repairing shared source authority and releasing one exact North Process-A slot"
   },
-  "rendererStateMachine": [
-    "intake_preparing",
-    "intake_ready",
-    "quarantining",
-    "4of4_assembled"
-  ],
-  "qaStateMachine": [
-    "preregistering",
-    "preregistered",
-    "exact_candidate_active",
-    "passed",
-    "returned"
-  ],
-  "batchState": "appearance_lock_pending",
-  "familyAuthority": {
-    "familyContract": {
-      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
-      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af",
-      "status": "published"
-    },
-    "parallelCellsContract": {
-      "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
-      "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c",
-      "status": "published"
-    },
-    "northRedesignAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-ZERO-PIXEL-AUTHORITY.md",
-      "sha256": "9fe208800078421303165087cbc0cd638bf870a8c0434e3ef374df1220c621fc",
-      "status": "completed_zero_pixel_topology_integrated_through_aef61b2c27ec295a3f088f41031f35e20bc13bc9"
-    },
-    "northLoweringAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-BLENDER-LOWERING-AUTHORITY.md",
-      "sha256": "e90f676ca76d65ec7a351ff7e09eeb278c58173a92a8f5036fb9ac18647d66c9",
-      "authorityCommit": "8f6f7e0daf4a39cf1ea7b6f3b975882013563bd6",
-      "claimSha256": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d",
-      "status": "published_and_acknowledged_for_single_serial_static_dcc_slot"
-    },
-    "northStaticARecoveryAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-STATIC-A-RECOVERY-V01-AUTHORITY.md",
-      "sha256": "b171b8d05296c8f6808188c2f31cd5e6be43b4a16cd5123424eb5ba085211b4a",
-      "authorityCommit": "10b0dacf1440b1c7a351e99cca29ac95e62e40c4",
-      "claimSha256": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d",
-      "originalAuthoritySha256": "e90f676ca76d65ec7a351ff7e09eeb278c58173a92a8f5036fb9ac18647d66c9",
-      "consumedFailureCommit": "12bcb1a2c740d30cebdc975c2f0882f63de6b6cf",
-      "consumedFailureSha256": "aa9e71684dffcd501cbdb6f664787de6e7cb6d33602f46aa928f09a062d4ebd3",
-      "status": "published_for_one_replacement_static_a_only"
-    },
-    "northStaticAModuleBootstrapRecoveryAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-STATIC-A-MODULE-BOOTSTRAP-RECOVERY-V02-AUTHORITY.md",
-      "sha256": "89dbecb8aaf491238c09a09f6fcd2c4c716b6be7d2a51373ec5045355306c84c",
-      "authorityCommit": "03f320554951ef79bb8e200c844b3ad168fb3d10",
-      "claimSha256": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d",
-      "consumedFailureCommit": "56e4f484ac07ca3fcf11e72f69a7fb56170d9792",
-      "consumedFailureSha256": "d68b922bb93ea57449e69fd5ee5d177e697d0b19cc02860c95db11d56ab2f5a6",
-      "status": "published_for_one_module_bootstrap_static_a_only"
-    },
-    "northStaticBConfirmationAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-STATIC-B-CONFIRMATION-V01-AUTHORITY.md",
-      "sha256": "e06a790442763f99b21ea310caaadd8321a01ade196db4dbb3fbdf1621b507b0",
-      "authorityCommit": "dae73ec40d48376aa74a1041e86fc1047ecac539",
-      "claimSha256": "0682813bda079ddb291f3966d76fa83ef31998bfe5abdf9df4e3a849272c3f36",
-      "status": "superseded_before_mutation_by_v02_input_binding_repair"
-    },
-    "northStaticBConfirmationV02Authority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-STATIC-B-CONFIRMATION-V02-AUTHORITY.md",
-      "sha256": "fdb36c1ab9061490724b04b9a351d711bd81ec13ec3edda9c42c455316d1162a",
-      "authorityCommit": "73300af6f2ae6e31c4f818c078f82cc73ce4c70b",
-      "claimSha256": "154abc8a6f2360421b4fa4a7367290342b78cc9f4e10b69e2bceafb547ee3a86",
-      "status": "consumed_and_rejected_as_resource_envelope_proof_at_81d51486fb2086e26ab08dd200221c5eb8d79edb"
-    },
-    "northStaticBConfirmationV03Authority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-STATIC-B-CONFIRMATION-V03-AUTHORITY.md",
-      "sha256": "a98127463947994c6c9e42517f1ed407b47d3bf6cf7790fc7ee2a461bfc4db3d",
-      "authorityCommit": "fcfad4602aef55d2decd8eb2153401a8e5ef1b3c",
-      "claimSha256": "21495a4a19918ae68f14da1a90f33145a09b94942f9a9ea54f6475fb484d2890",
-      "status": "published_and_acknowledged_for_one_static_b_child"
-    },
-    "rendererR4AAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-A-AUTHORITY.md",
-      "sha256": "cbbc75c1f8672e980f03413a8b2810e7f34c7108365811bfba20313c65ffd3a3",
-      "authorityCommit": "dae73ec40d48376aa74a1041e86fc1047ecac539",
-      "claimSha256": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
-      "status": "published_and_acknowledged_for_worktree_isolated_r4a"
-    },
-    "parallelExecutionDesign": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
-      "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36",
-      "status": "design_frozen_executable_schema_validator_and_schedule_still_absent"
-    },
-    "parallelExecutionScheduleTooling": {
-      "authorityPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md",
-      "authoritySha256": "87e3e05b461abf8beac862d20804a73f033dc23795f409813ca2c0f79a3d952d",
-      "authorityCommit": "be524831885fc240742f61be7357ea515a78da32",
-      "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",
-      "schemaSha256": "6eba2291f9cb548a8ddd08961bdffe3a18c9546b293a08f094711b38aa0840c6",
-      "validatorPath": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py",
-      "validatorSha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04",
-      "testsPath": ".agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_parallel_execution_schedule_v1.py",
-      "status": "published_and_direction_adapters_dispatched"
-    },
-    "directionScheduleAdapterAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
-      "sha256": "3638f960a9394f9c4c0c09e3aa75ba842ec4d093eada04762eb51f0b1c57dd34",
-      "authorityCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
-      "status": "published_with_all_four_zero_child_adapters_independently_accepted_and_integrated"
-    },
-    "northProcessAPrelaunchAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
-      "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e",
-      "authorityCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
-      "claimSha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
-      "status": "published_and_acknowledged_for_zero_child_prelaunch_implementation"
-    },
-    "northProcessAAuthority": {
-      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V09-PROCESS-A-AUTHORITY.md",
-      "sha256": "c27937305414cfef52bf3fe534be0d98166fc782fa596741fb2a093732f4eb82",
-      "status": "completed_rejected_at_4255b021f743281b60cfdf8cff896235d405be23"
-    },
-    "appearanceLock": {
-      "path": null,
-      "sha256": null,
-      "status": "pending_revised_north_topology_then_independent_process_a_acceptance"
-    },
-    "sourceProductionProfile": {
-      "path": null,
-      "sha256": null,
-      "status": "intentionally_absent_until_appearance_lock"
-    },
-    "parallelExecutionSchedule": {
-      "path": null,
-      "sha256": null,
-      "schemaPath": null,
-      "schemaSha256": null,
-      "validatorPath": null,
-      "validatorSha256": null,
-      "status": "pending_post_lock_orchestrator_schedule_and_launch_grant_validator"
-    },
-    "sourceStageSchema": {
-      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
-      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
-      "status": "published"
-    },
-    "semanticValidator": {
-      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
-      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340",
-      "status": "published"
-    },
-    "sourceAdmissionReceipt": {
-      "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-source-admission-receipt-schema-v1.json",
-      "schemaSha256": "08ad183eb90dc8eb14567a432c00841b010f90f8d8e4d359b60d4735c4ca4f66",
-      "validatorPath": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_source_admission_receipt_v1.py",
-      "validatorSha256": "497f4e696cb6da3740e9dd60877cd25ea631268df1124513b1468ad6d51158cf",
-      "authorityCommit": "806b21d99a6624a47cee9b70a4cba1cab9db3b5b",
-      "status": "published_zero_live_receipts"
-    }
+  "parallelismProof": {
+    "requiredConcurrentCells": 3,
+    "eligibleCells": [
+      "south",
+      "west",
+      "renderer"
+    ],
+    "jobRefs": [
+      {
+        "cell": "south",
+        "jobId": "south-camera-frontage-587668d8"
+      },
+      {
+        "cell": "west",
+        "jobId": "west-fresh-root-reproducibility"
+      },
+      {
+        "cell": "renderer",
+        "jobId": "epoch-receipt-authority-audit"
+      }
+    ],
+    "startedAt": "2026-07-30T14:19:55.446Z",
+    "endedAt": "2026-07-30T14:21:03Z"
   },
-  "serializedAuthorities": [
-    "family_contract_publication",
-    "shared_toolchain_changes",
-    "shipping_atlas_or_manifest_mutation",
-    "production_selection",
-    "final_exact_candidate_qa",
-    "integration",
-    "push"
-  ],
-  "reservedWindows": {
-    "rendererIngestion": "immediately_after_exact_integration_admitted_receipt_publication",
-    "atomicAssembly": "immediately_after_exact_4of4_renderer_quarantine",
-    "independentQA": "one_fresh_gate_on_exact_atomic_renderer_candidate"
-  },
-  "cells": [
+  "rows": [
     {
       "acknowledgedAt": "2026-07-30T14:18:34Z",
       "batch": "industrial_l04_directional_family",
@@ -413,13 +255,14 @@
           "rule": "North completed current-authority zero-child trust, schedule-adapter, prelaunch, closure, and attached fresh-root verification and cannot start Process A without Integration's exact live North-A authorities"
         }
       },
-      "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
       "state": "predesign",
       "stopCondition": "stop_clean_with_no_live_grant_lease_secret_child_blender_dcc_render_pixels_normalization_sibling_shared_surface_push_or_self_acceptance",
       "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
       "updatedAt": "2026-07-30T15:04:25Z",
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-      "observedHead": "675f02de3905c97e3813602f4b7a4472890652e6"
+      "observedHead": "675f02de3905c97e3813602f4b7a4472890652e6",
+      "base": "587668d85ad8f706087223881030047dd054dd7d",
+      "changedThisTurn": true
     },
     {
       "direction": "east",
@@ -430,7 +273,6 @@
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
       "claim": "PLAY-079",
       "claimRevision": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-      "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
       "head": "2511d24cc132cf16466fa13235ec4964589d8efc",
       "cleanState": "clean_receipt_candidate_independently_approved",
       "dispatchState": "completed",
@@ -653,7 +495,9 @@
           ]
         }
       },
-      "observedHead": "a65334a1b3bdbc18c279a5962d658c83e95ebfdc"
+      "observedHead": "a65334a1b3bdbc18c279a5962d658c83e95ebfdc",
+      "base": "587668d85ad8f706087223881030047dd054dd7d",
+      "changedThisTurn": true
     },
     {
       "batch": "industrial_l04_directional_family",
@@ -663,7 +507,6 @@
       "branch": "codex/citysim-world-art-south",
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
       "claim": "PLAY-080",
-      "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
       "head": "8db7b8daf4d40c85963ccac261202bde4fc53937",
       "state": "predesign",
       "dispatchState": "completed",
@@ -833,7 +676,9 @@
         "resumptionEvent": "Integration publishes the accepted North appearance lock, source-production profile, postlock schedule, and exact South A/B/C grants",
         "nextRefillJob": "after_the_appearance_lock_sync_published_master_and_launch_south_a_b_c_into_disjoint_roots"
       },
-      "observedHead": "c94f172d0bc3e65a425bba8a989d03942f2083e0"
+      "observedHead": "c94f172d0bc3e65a425bba8a989d03942f2083e0",
+      "base": "587668d85ad8f706087223881030047dd054dd7d",
+      "changedThisTurn": true
     },
     {
       "batch": "industrial_l04_directional_family",
@@ -843,7 +688,6 @@
       "branch": "codex/citysim-world-art-west",
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
       "claim": "PLAY-081",
-      "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
       "head": "baa8bac1d955a78d348bcb36b556fe196966f162",
       "state": "predesign",
       "dispatchState": "completed",
@@ -1013,7 +857,9 @@
         "resumptionEvent": "Integration publishes the accepted North appearance lock, source-production profile, postlock schedule, and exact West grants",
         "nextRefillJob": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots"
       },
-      "observedHead": "244c14aea2e59b3154837f8739b9d38f99825172"
+      "observedHead": "244c14aea2e59b3154837f8739b9d38f99825172",
+      "base": "587668d85ad8f706087223881030047dd054dd7d",
+      "changedThisTurn": true
     },
     {
       "batch": "industrial_l04_directional_family",
@@ -1023,7 +869,6 @@
       "branch": "codex/citysim-world-rendering",
       "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
       "claim": "PLAY-073",
-      "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
       "head": "9506bf5aafd93725574f51b114ca177709b7aaec",
       "state": "intake_ready",
       "dispatchState": "completed",
@@ -1279,7 +1124,9 @@
         },
         "resumptionEvent": "Integration publishes the first exact Industrial L4 source-admission receipt",
         "nextRefillJob": "await_integration_exact_industrial_l04_source_admission_receipts_then_run_direction_local_renderer_quarantine"
-      }
+      },
+      "base": "587668d85ad8f706087223881030047dd054dd7d",
+      "changedThisTurn": true
     },
     {
       "batch": "industrial_l04_directional_family",
@@ -1289,7 +1136,6 @@
       "branch": "codex/citysim-playtest-quality",
       "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
       "claim": "PLAY-075",
-      "publishedBase": "1008eadf553a445f01f9405558d260e0c779674b",
       "head": "8e68cf11c6a943ab44d83232659585134c17f260",
       "state": "preregistering",
       "dispatchState": "blocked",
@@ -1353,31 +1199,9 @@
         },
         "resumptionEvent": "the active L3 exact-candidate QA gate reaches a terminal Integration disposition",
         "nextRefillJob": "after the L3 disposition, sync published master and produce the exact Industrial L4 machine preregistration packet"
-      }
+      },
+      "base": "1008eadf553a445f01f9405558d260e0c779674b",
+      "changedThisTurn": true
     }
-  ],
-  "parallelismProof": {
-    "requiredConcurrentCells": 3,
-    "eligibleCells": [
-      "south",
-      "west",
-      "renderer"
-    ],
-    "jobRefs": [
-      {
-        "cell": "south",
-        "jobId": "south-camera-frontage-587668d8"
-      },
-      {
-        "cell": "west",
-        "jobId": "west-fresh-root-reproducibility"
-      },
-      {
-        "cell": "renderer",
-        "jobId": "epoch-receipt-authority-audit"
-      }
-    ],
-    "startedAt": "2026-07-30T14:19:55.446Z",
-    "endedAt": "2026-07-30T14:21:03Z"
-  }
+  ]
 }

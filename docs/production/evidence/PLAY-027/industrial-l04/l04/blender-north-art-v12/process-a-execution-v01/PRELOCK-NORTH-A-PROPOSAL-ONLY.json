@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "proposalOnly": true,
+  "liveScheduleCreated": false,
+  "liveExecutionAuthorityCreated": false,
+  "liveGrantCreated": false,
+  "liveLeaseCreated": false,
+  "childStartAuthorized": false,
+  "validatedSourceCommit": "1680332e07c1dff7172015a77a08616513267a0f",
+  "trustedIntegrationMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+  "scheduleInputs": {
+    "schema": 1,
+    "batch": "industrial_l04_directional_family",
+    "phase": "prelock_north_a",
+    "issuedAt": null,
+    "integrationAuthorityCommit": null,
+    "schedulePublicationCommit": null,
+    "familyContract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "appearanceLock": null,
+    "sourceProductionProfile": null,
+    "computeEnvelope": {
+      "maximumSimultaneousDCCProcesses": 1,
+      "slotIds": [
+        "dcc-1"
+      ],
+      "queueOrder": [
+        "north:A"
+      ]
+    },
+    "northDirectionGrant": {
+      "direction": "north",
+      "claim": "PLAY-027",
+      "branch": "codex/citysim-world-art",
+      "claimSha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+      "baseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+        "sha256": "6fc7d1d0ab5adcf5b29780b1cced0db5d9b99424aa33a84ffeaca404d9d3a512"
+      },
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12",
+        "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12"
+      ],
+      "processes": [
+        {
+          "grantId": "north:A",
+          "process": "A",
+          "state": "granted",
+          "slotId": "dcc-1",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "north:B",
+          "process": "B",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "north:C",
+          "process": "C",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        }
+      ]
+    },
+    "integrationMustSupplyOtherDirectionGrants": true
+  },
+  "closureInputs": {
+    "grantId": "north:A",
+    "process": "A",
+    "queueId": "north:A",
+    "slotId": "dcc-1",
+    "maximumChildStarts": 1,
+    "exactlyOneInvocation": true,
+    "orchestratorOnly": true,
+    "directLowLevelInvocationAllowed": false,
+    "timeoutSeconds": 120,
+    "maximumRSSBytes": 1073741824,
+    "cpuThreadLimit": 1,
+    "startNewProcessGroup": true,
+    "killProcessGroupOnLimit": true,
+    "postReapProcessGroupExhaustionRequired": true,
+    "networkAllowed": false,
+    "leaseMustBeFresh": true,
+    "replayAllowed": false,
+    "integrationOwnedUnknowns": [
+      "issuedAt",
+      "schedulePath",
+      "scheduleSHA256",
+      "schedulePublicationCommit",
+      "executionAuthorityPath",
+      "executionAuthoritySHA256",
+      "executionAuthorityPublicationCommit",
+      "authorizationSecretSHA256",
+      "childCapabilityId",
+      "childCapabilityPayloadSHA256",
+      "childCapabilityMACSHA256",
+      "leasePath"
+    ]
+  },
+  "exactProcessARoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
+  "executionRoots": {
+    "output": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
+    "evidence": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/evidence/process-a",
+    "attempt": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/attempts/north-A",
+    "terminal": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/terminals/north-A"
+  },
+  "artifactBindings": {
+    "executionContractSHA256": "ffda9d0939b084af9fc8dc0537b2e83828e4c6f8e3ab28874294de335b98a7c7",
+    "runnerContractSHA256": "32d3b27a793c8d315ba38c82bea878c428238fd132cd207e9e44c00c003f3379",
+    "launcherSHA256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce",
+    "childEntrypointSHA256": "72cde879a4d8cc2060fbcc2ee0ee65e6ae23f32e8e7508bc693a9ccee880f994",
+    "sceneSHA256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2",
+    "materialsSHA256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+    "loweringContractSHA256": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8",
+    "claimSHA256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+  },
+  "literalScaleReviewPrerequisites": [
+    "exact Process-A raw and semantic provenance",
+    "source-scale color and literal grayscale",
+    "native-2x and literal-192 review",
+    "registration, alpha, chroma, padding, and zero-hidden-RGB checks",
+    "portal, frontage, hot-process, and three-tier grayscale legibility",
+    "accepted-L3 comparison",
+    "independent Renderer and QA appearance disposition"
+  ],
+  "stopConditions": [
+    "missing or stale Integration-published schedule or execution authority",
+    "wrong claim, base, grant, slot, queue, root, artifact, timeout, RSS, secret, capability, or lease binding",
+    "dirty or unexpected branch or trusted-master ancestry",
+    "existing attempt, terminal, output, or evidence root",
+    "any request for Process B, Process C, sibling, normalizer, renderer, shipping, runtime, or shared mutation",
+    "any child, DCC, render, or pixel start before the live one-attempt authority is published and consumed"
+  ],
+  "remainingAuthorityOwner": "Integration",
+  "processAReady": false,
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": true,
+  "productionSelected": false
+}

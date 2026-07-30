@@ -1,78 +1,188 @@
 {
-  "schema": 2,
+  "schema": 3,
   "task": "PLAY-027",
   "direction": "north",
   "process": "A",
-  "trustedIntegrationMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
-  "validatedSourceCommit": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+  "trustedIntegrationMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+  "validatedSourceCommit": "1680332e07c1dff7172015a77a08616513267a0f",
   "trustedMasterIsAncestor": true,
+  "preservedApprovedCandidate": "73940b56e2b10dba76bae80449b7db8ff59669ee",
   "orderedCommits": [
     {
-      "commit": "e7804342ba15cb37df6a10dfeb441df5ee78082b",
-      "purpose": "bind-high-level-launcher-and-runner-to-shared-closure-v1"
+      "commit": "f2a7be9b2601e6365055d81d14f65c6b2450a2f1",
+      "purpose": "normal-merge-exact-published-master"
     },
     {
-      "commit": "dabe2e4d7f67424f6627457ca86379843d9cb576",
-      "purpose": "make-shared-schedule-fixtures-fresh-root-portable"
+      "commit": "1680332e07c1dff7172015a77a08616513267a0f",
+      "purpose": "rebind-north-closure-tests-to-current-master"
     },
     {
-      "commit": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
-      "purpose": "retain-sibling-fixtures-through-full-adversarial-proof"
+      "commit": "3515c1f6b4cfaeca9bb63b80d5e3e741146eb424",
+      "purpose": "retain-current-master-adapter-replay"
+    },
+    {
+      "commit": "dd4c98750316b5a04ea2ea7c6aa5955d443a1628",
+      "purpose": "retain-current-master-prelaunch-replay"
     }
   ],
+  "publishedAuthorityBindings": {
+    "claimPath": "docs/production/claims/PLAY-027.world-art.md",
+    "claimSHA256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+    "parallelLedgerPath": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+    "parallelLedgerSHA256": "f325c7bf3b1241dc599d33ad66630c852cbfb9c72f51348985e86d8c266aba87",
+    "parallelBoardPath": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md",
+    "parallelBoardSHA256": "574b60dd3647b806938d8eef702b96282285f2a02e09058438d43213d6a0d463",
+    "dispatchPath": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T1232Z.json",
+    "dispatchSHA256": "190c20c708335562332a8b328e9839ee9ebc9b7c7a2c90d8a535a716292e477c"
+  },
   "sharedClosureV1": {
     "authoritySHA256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54",
     "schemaSHA256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491",
     "validatorSHA256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae",
     "validatorTestsSHA256": "0be62c7886a2106c81e7e05d56eb3ec3c0756365e416686489f8ffe8c76b2520",
     "validatorTestsPassed": 33,
+    "executionAccountingAndLedgerTestsPassed": 62,
     "highLevelOrchestratorInvokesSharedValidator": true,
     "runnerRevalidatesSharedClosure": true,
     "legacyNorthAuthorityRejected": true
   },
   "sourceBindings": {
-    "executionContractSHA256": "bef334a64bc150934b1d9ecb1aca82a2933628676e7a0853d1b671d359bcb817",
+    "executionContractSHA256": "ffda9d0939b084af9fc8dc0537b2e83828e4c6f8e3ab28874294de335b98a7c7",
     "runnerContractSHA256": "32d3b27a793c8d315ba38c82bea878c428238fd132cd207e9e44c00c003f3379",
     "launcherSHA256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce",
     "childEntrypointSHA256": "72cde879a4d8cc2060fbcc2ee0ee65e6ae23f32e8e7508bc693a9ccee880f994",
-    "prelaunchTestSHA256": "ec4c973801bbd06dbbbaae24d41ccbfe4c78c069d7a1b7446b599b683d7d2972",
+    "prelaunchTestSHA256": "b1b14dbf2c1245f247a14db0c541ce27202842d87899f401c9442e1fb6e49a10",
     "adapterContractSHA256": "e96f902bcea59936777201d5f24ef50089529e4b95611eda6ecdbcb6b492709a",
     "adapterConsumerSHA256": "6fc7d1d0ab5adcf5b29780b1cced0db5d9b99424aa33a84ffeaca404d9d3a512",
-    "adapterTestSHA256": "7e041e2f891d1e2a018555988c7319a5da98b76938b9acdd8950f71da0f1a2f2"
+    "adapterTestSHA256": "caa58899b40c22f1b5f5c8eedf43b1d8cb9316c4ad2f7534932a1506080ae79e"
+  },
+  "durableCurrentMasterReceipts": {
+    "adapter": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/TRUSTED-CURRENT-ZERO-CHILD-READINESS.json",
+      "sha256": "71a350b01528bc260c51ea497acefd2346df481b5aec7cc2b2b4892f8c26ed8a",
+      "adversariesPassed": 26
+    },
+    "prelaunch": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/TRUSTED-CURRENT-ZERO-CHILD-PRELAUNCH.json",
+      "sha256": "c212c0aae7db63b7bd30bc564dba83532b86004a0fba10bf887f3849f6d081a8",
+      "adversariesPassed": 29
+    }
   },
   "freshRoots": [
     {
       "id": "fresh-root-a",
-      "head": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
-      "trustedOriginMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
-      "adapterEvidenceSHA256": "9b5a89b88c542ffdfe5b3eecac3e3cab6738f6c4c445a190a0fe617619a52285",
+      "head": "1680332e07c1dff7172015a77a08616513267a0f",
+      "trustedOriginMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+      "adapterEvidenceSHA256": "71a350b01528bc260c51ea497acefd2346df481b5aec7cc2b2b4892f8c26ed8a",
       "adapterAdversariesPassed": 26,
-      "prelaunchEvidenceSHA256": "9e1696a761b27da256c601916686c8eef73128c0604cc53dcd194596717dc532",
+      "prelaunchEvidenceSHA256": "d09609b194486152aa064d4d89b40798ad137b453753c712b8e6923a56824472",
       "prelaunchAdversariesPassed": 29
     },
     {
       "id": "fresh-root-b",
-      "head": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
-      "trustedOriginMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
-      "adapterEvidenceSHA256": "9b5a89b88c542ffdfe5b3eecac3e3cab6738f6c4c445a190a0fe617619a52285",
+      "head": "1680332e07c1dff7172015a77a08616513267a0f",
+      "trustedOriginMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+      "adapterEvidenceSHA256": "71a350b01528bc260c51ea497acefd2346df481b5aec7cc2b2b4892f8c26ed8a",
       "adapterAdversariesPassed": 26,
-      "prelaunchEvidenceSHA256": "9e1696a761b27da256c601916686c8eef73128c0604cc53dcd194596717dc532",
+      "prelaunchEvidenceSHA256": "d09609b194486152aa064d4d89b40798ad137b453753c712b8e6923a56824472",
       "prelaunchAdversariesPassed": 29
     }
   ],
   "freshRootEvidenceByteIdentical": true,
-  "parallelExecution": {
-    "mode": "four-disjoint-zero-child-jobs",
-    "adapterRootAWallSeconds": 1.814022625,
-    "adapterRootBWallSeconds": 1.783363875,
-    "prelaunchRootAWallSeconds": 1.357000708,
-    "prelaunchRootBWallSeconds": 1.335271375,
-    "maximumObservedJobWallSeconds": 1.814022625,
-    "sumObservedJobWallSeconds": 6.289658583,
-    "overlapObserved": true,
-    "visibleWorktreeWriterCount": 1
-  },
   "executionAccounting": {
+    "readyNow": [],
+    "running": [],
+    "waitingOnJoin": [],
+    "serializedAuthority": {
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a"
+    },
+    "nextRefill": "integration_publish_the_exact_live_closure_instance_and_one_process_a_compute_grant_then_dispatch_north_only",
+    "capacity": {
+      "helperSlots": 3,
+      "dccSlots": 0
+    },
+    "launchedJobs": [
+      {
+        "id": "north-adapter-root-a",
+        "resourceClass": "helper",
+        "mutation": "isolated_temp",
+        "exclusiveRoot": "/private/tmp/play027-d4f-identity-a.U7Nvvu/repo/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01",
+        "state": "completed",
+        "startedAt": "2026-07-30T13:01:47.684Z",
+        "endedAt": "2026-07-30T13:01:54.628Z"
+      },
+      {
+        "id": "north-prelaunch-root-a",
+        "resourceClass": "helper",
+        "mutation": "isolated_temp",
+        "exclusiveRoot": "/private/tmp/play027-d4f-identity-a.U7Nvvu/repo/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01",
+        "state": "completed",
+        "startedAt": "2026-07-30T13:01:47.687Z",
+        "endedAt": "2026-07-30T13:01:54.897Z"
+      },
+      {
+        "id": "north-adapter-root-b",
+        "resourceClass": "helper",
+        "mutation": "isolated_temp",
+        "exclusiveRoot": "/private/tmp/play027-d4f-identity-b.vxsphh/repo/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01",
+        "state": "completed",
+        "startedAt": "2026-07-30T13:01:47.687Z",
+        "endedAt": "2026-07-30T13:01:54.355Z"
+      },
+      {
+        "id": "north-prelaunch-root-b",
+        "resourceClass": "helper",
+        "mutation": "isolated_temp",
+        "exclusiveRoot": "/private/tmp/play027-d4f-identity-b.vxsphh/repo/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01",
+        "state": "completed",
+        "startedAt": "2026-07-30T13:01:47.687Z",
+        "endedAt": "2026-07-30T13:01:53.752Z"
+      }
+    ],
+    "unusedCapacityReasons": [
+      "dcc capacity is zero because Integration has not published or consumed a live closure, grant, secret, lease, or compute slot",
+      "sibling, renderer, normalizer, shipping, and runtime jobs are outside PLAY-027 North zero-child scope",
+      "already exact proof was not duplicated merely to occupy capacity"
+    ],
+    "overlap": {
+      "status": "observed",
+      "jobIds": [
+        "north-adapter-root-a",
+        "north-prelaunch-root-a",
+        "north-adapter-root-b",
+        "north-prelaunch-root-b"
+      ],
+      "startedAt": "2026-07-30T13:01:47.687Z",
+      "endedAt": "2026-07-30T13:01:53.752Z",
+      "reason": "four disjoint zero-child validation outputs overlapped while the visible lane owner remained the sole worktree and Git writer"
+    },
+    "join": {
+      "state": "completed",
+      "requiredJobs": [
+        "north-adapter-root-a",
+        "north-prelaunch-root-a",
+        "north-adapter-root-b",
+        "north-prelaunch-root-b"
+      ],
+      "completedJobs": [
+        "north-adapter-root-a",
+        "north-prelaunch-root-a",
+        "north-adapter-root-b",
+        "north-prelaunch-root-b"
+      ]
+    }
+  },
+  "executionAccountingScope": {
+    "adoptsPublishedFieldModel": true,
+    "integrationLedgerMutationAuthorized": false,
+    "visibleWorktreeWriterCount": 1,
+    "helperEvidenceIsInformationalUntilIntegrationPublishesItsOwnThreadBoundLedgerItems": true
+  },
+  "processCounts": {
     "helperValidationProcesses": 4,
     "blenderChildStarts": 0,
     "dccProcesses": 0,
@@ -84,7 +194,7 @@
   "liveGrantPresent": false,
   "processAReady": false,
   "remainingAuthorityOwner": "Integration",
-  "remainingAuthority": "publish one exact closure-v1 instance, schedule, one-attempt grant, secret, and compute slot",
+  "remainingAuthority": "publish one exact closure-v1 instance, schedule publication, one-attempt grant, secret, lease, and dcc-1 compute slot",
   "sourceAuthority": false,
   "candidateReadyForIndependentReview": true,
   "productionSelected": false,

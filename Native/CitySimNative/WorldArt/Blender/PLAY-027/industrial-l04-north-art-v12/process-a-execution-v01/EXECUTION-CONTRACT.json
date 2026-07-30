@@ -34,11 +34,11 @@
   "scheduleAdapter": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
-      "sha256": "faf2f30ff6be2fc6a6f36203099ae8f30478af3a44bfea94c785997340aeefac"
+      "sha256": "b1af5c2c2d14f357b5c967691206a7aa1cdebaa77315dfa1b137c31934f173bd"
     },
     "consumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
-      "sha256": "47f61ede101f9aeb7efb0ba1a6d8887f1cf25f8f4d6d2e76bc545cfb54618401"
+      "sha256": "6ca5c8fc698965b7011718214a9b21215c6d5a62a5c637b367e9625c2f7314ee"
     },
     "acceptedReadiness": {
       "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",

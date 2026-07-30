@@ -233,7 +233,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
             "launch_north_process_a.py",
-            "f457466b8148ac82bb36ba3d1aebf1ddcac38675d1a1f40deef9bc8cb8bd5ca2",
+            "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"

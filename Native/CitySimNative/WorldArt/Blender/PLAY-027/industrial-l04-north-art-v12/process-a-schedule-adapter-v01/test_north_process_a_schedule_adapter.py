@@ -23,7 +23,7 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "CURRENT-ZERO-CHILD-READINESS.json"
+    "TRUSTED-CURRENT-ZERO-CHILD-READINESS.json"
 )
 
 

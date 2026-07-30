@@ -50,6 +50,31 @@ At every dispatch, status review, candidate return, and integration boundary:
 5. Repair detached branches, stale baselines, missing claims, or completed-but-idle lanes promptly, then refill them from the published backlog.
 6. Never manufacture concurrency by allowing two writers on one shared surface, weakening exact-candidate identity, or overlapping the final independent app gate.
 
+Operate two levels of concurrency deliberately:
+
+- **Across lanes/cells:** keep every contract-independent visible worktree moving
+  through its canonical user-visible thread.
+- **Inside a lane/cell:** require the worker to expose its dependency graph and
+  fan out independent process, read-only review, validation, fixture, evidence,
+  and comparison jobs after their inputs freeze. One coordinator remains the
+  only Git index, shared-file, packet-assembly, and final-commit writer.
+
+Do not treat one active agent per lane as sufficient parallelism. Every dispatch
+message must ask for a compact execution plan listing `readyNow`, `running`,
+`waitingOnJoin`, `serializedAuthority`, and `nextRefill` work. It must also name
+the available worker/process capacity, the safe jobs launched against that
+capacity, and the exact ownership or dependency reason for every intentionally
+unused slot. Require actual start/end or overlap evidence in the worker's
+machine-readable return; optimistic labels and future plans do not count.
+
+Allocate scarce concurrency to the current critical path. Use internal helpers
+for bounded read-only review or isolated temporary roots outside the visible
+worker's worktree when useful, but keep all worktree mutation authority and
+user-visible responsibility in the canonical lane thread. The visible worker
+alone may adopt validated temporary outputs into governed evidence. A helper
+never stages, commits, rewrites shared authority, performs the final app gate,
+or substitutes for the visible worker.
+
 For each active family or release batch, publish and maintain a visible status table in the task authority or integration status artifact:
 
 | Batch | North | East | South | West | Renderer | QA |
@@ -113,7 +138,12 @@ direct low-level invocation, and unauthenticated delegation with zero child,
 DCC, render, normalizer, or pixel activity. Keep the cell at `predesign` and
 name the missing closure explicitly until that proof is accepted.
 
-The canonical executable schedule controls are:
+Resolve the executable schedule controls from the exact batch ledger and family
+contract. Every family must bind its own versioned schedule schema, semantic
+validator, adversarial tests, and operating authority. Never validate a new
+family against a prior family's conveniently nearby controls.
+
+The current Industrial L4 profile binds:
 
 - schema:
   `docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json`;
@@ -124,9 +154,9 @@ The canonical executable schedule controls are:
 - authority:
   `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md`.
 
-Run the semantic validator on every proposed schedule before publication and
-again before describing any process grant as active. A pre-lock schedule may
-grant only North A. A post-lock schedule must grant North B/C plus
+Run the exact family-bound semantic validator on every proposed schedule before
+publication and again before describing any process grant as active. A pre-lock
+schedule may grant only North A. A post-lock schedule must grant North B/C plus
 East/South/West A/B/C with at least three DCC slots.
 
 Advance each batch through this explicit state machine:
@@ -201,22 +231,29 @@ stage prohibition, owner, resumption event, and why no non-conflicting
 preparation exists. `planned`, `sent`, `review_pending`, or an unacknowledged
 assignment does not satisfy this gate.
 
-Run
-`python3 .agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py`
-before committing a directional World Art management checkpoint. Treat any
-stale, partial, non-resolving, or contradictory control-surface result as a
-hard stop.
+Run the exact parallel-state validator path and hash bound by the family ledger
+before committing a directional World Art management checkpoint. For the
+current Industrial L4 profile this is:
 
-The validator is the executable parallelism gate. It must fail closed on the
-canonical direction/lane/thread/branch/claim/base mapping, exact claim-file
-hashes, governed batch and cross-cell states, authority file hashes,
+`python3 .agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py`
+
+That current script's built-in cell bindings are Industrial L4-specific. A
+later family must publish and bind either a family-specific validator or a
+newer generalized validator whose adversarial tests prove its exact
+task/claim/thread/branch/worktree mapping. Never run the Industrial L4 binding
+against a later family. Treat a missing family-bound validator, or any stale,
+partial, non-resolving, or contradictory result, as a hard stop.
+
+The family-bound validator is the executable parallelism gate. It must fail
+closed on the canonical direction/lane/thread/branch/claim/base mapping, exact
+claim-file hashes, governed batch and cross-cell states, authority file hashes,
 timezone-bearing observations, exact dispatch-to-ledger row projection,
 mandatory `ledgerSha256`, and the published compute envelope. A direction
 recorded as `integration_admitted` must bind its exact
 `sourceAdmissionReceipt`; a direction recorded as `renderer_quarantined` must
 also bind its exact `rendererQuarantinePacket`. Do not waive a failure in
-prose. Repair the canonical ledger or receipt, rerun focused validator tests,
-and publish one new coherent management checkpoint.
+prose. Repair the canonical ledger or receipt, rerun the exact validator's
+focused adversarial tests, and publish one new coherent management checkpoint.
 
 Every compute envelope declares the simultaneous DCC cap, exclusive slot
 owners, queue identities, machine/resource assumptions, prohibited work, and

@@ -1,19 +1,72 @@
 {
+  "admittedRaw": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04/north/raw.png",
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "appearanceLock": {
+    "commit": "dddddddddddddddddddddddddddddddddddddddd",
+    "documentPath": "docs/production/evidence/INTEGRATION/industrial-l04-appearance-lock.json",
+    "documentSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+    "northProcessADecodedRgbaSha256": "4444444444444444444444444444444444444444444444444444444444444444",
+    "northProcessASourceSha256": "5555555555555555555555555555555555555555555555555555555555555555"
+  },
   "contentCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "decodedRgbaSha256": "1111111111111111111111111111111111111111111111111111111111111111",
   "direction": "north",
   "disposition": "integration_source_admitted",
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "6666666666666666666666666666666666666666666666666666666666666666"
+  },
   "independentTechnicalDisposition": "ACCEPT",
+  "independentTechnicalReview": {
+    "disposition": "ACCEPT",
+    "path": "docs/production/evidence/INTEGRATION/reviews/north-technical.json",
+    "sha256": "7777777777777777777777777777777777777777777777777777777777777777"
+  },
   "integrationCommit": "cccccccccccccccccccccccccccccccccccccccc",
   "literalScaleDisposition": "ACCEPT",
+  "literalScaleReview": {
+    "disposition": "ACCEPT",
+    "path": "docs/production/evidence/INTEGRATION/reviews/north-literal.json",
+    "sha256": "8888888888888888888888888888888888888888888888888888888888888888"
+  },
   "logicalID": "industrial_l04_v0_north",
   "productionSelected": false,
   "rendererQuarantined": false,
   "schemaVersion": 1,
+  "semanticValidationReceipt": {
+    "disposition": "PASS",
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-semantic-validations-v2/north.json",
+    "sha256": "9999999999999999999999999999999999999999999999999999999999999999"
+  },
   "semanticValidationResult": "PASS",
   "semanticValidator": {
     "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
     "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+  },
+  "sharedLedgerRevision": {
+    "batch": "industrial_l04_directional_family",
+    "commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "directionState": "integration_admitted",
+    "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "shippingActivated": false,
+  "sourceContext": {
+    "branch": "codex/citysim-world-art",
+    "cleanState": "clean",
+    "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "sourceProductionProfile": {
+    "commit": "ffffffffffffffffffffffffffffffffffffffff",
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-production-profile.json",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "sourceStageSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+    "version": 2
   },
   "workerPacket": {
     "path": "docs/production/evidence/PLAY-073/industrial-l04-v2-source-admission-prep/fixtures/north-source-candidate.json",

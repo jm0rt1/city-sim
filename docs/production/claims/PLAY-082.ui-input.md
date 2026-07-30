@@ -17,7 +17,10 @@
   selection/camera/focus preservation; unchanged 64-point rail and map
   aperture; regular/compact City/Pollution pointer, Return, FKA, AX, Escape,
   and Reduce Motion proof; full native and staged verification
-- **Status:** Active
+- **Status:** Product and evidence integrated through
+  `89340edce77c3e2014012b2c1cf898f393cc37e4`. Independent Integration staged-app
+  pointer, Return, Full Keyboard Access, AX press, Escape, Reduce Motion, and
+  regular/exact-compact acceptance remains pending; the claim is not closed.
 
 Do not edit `ContentView`, `CityScene`, renderer selection art, store or command
 contracts, objectives, alerts, simulation/gameplay/persistence, shared theme

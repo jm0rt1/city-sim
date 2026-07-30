@@ -1,0 +1,398 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://integration/industrial-l04-source-admission-receipt-v1",
+  "title": "Industrial L4 Integration source-admission receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "disposition",
+    "integrationCommit",
+    "sourceContext",
+    "direction",
+    "logicalID",
+    "familyContract",
+    "appearanceLock",
+    "sourceProductionProfile",
+    "sourceStageSchema",
+    "workerPacket",
+    "contentCommit",
+    "admittedRaw",
+    "decodedRgbaSha256",
+    "semanticValidator",
+    "semanticValidationReceipt",
+    "semanticValidationResult",
+    "independentTechnicalReview",
+    "independentTechnicalDisposition",
+    "literalScaleReview",
+    "literalScaleDisposition",
+    "sharedLedgerRevision",
+    "rendererQuarantined",
+    "productionSelected",
+    "shippingActivated"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "disposition": {
+      "const": "integration_source_admitted"
+    },
+    "integrationCommit": {
+      "$ref": "#/$defs/commit"
+    },
+    "sourceContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branch",
+        "head",
+        "cleanState"
+      ],
+      "properties": {
+        "branch": {
+          "enum": [
+            "codex/citysim-world-art",
+            "codex/citysim-world-art-east",
+            "codex/citysim-world-art-south",
+            "codex/citysim-world-art-west"
+          ]
+        },
+        "head": {
+          "$ref": "#/$defs/commit"
+        },
+        "cleanState": {
+          "const": "clean"
+        }
+      }
+    },
+    "direction": {
+      "$ref": "#/$defs/direction"
+    },
+    "logicalID": {
+      "type": "string",
+      "pattern": "^industrial_l04_v0_(north|east|south|west)$"
+    },
+    "familyContract": {
+      "$ref": "#/$defs/artifact"
+    },
+    "appearanceLock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documentPath",
+        "commit",
+        "documentSha256",
+        "northProcessASourceSha256",
+        "northProcessADecodedRgbaSha256"
+      ],
+      "properties": {
+        "documentPath": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "documentSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "northProcessASourceSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "northProcessADecodedRgbaSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "sourceProductionProfile": {
+      "$ref": "#/$defs/committedArtifact"
+    },
+    "sourceStageSchema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "version": {
+          "const": 2
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "workerPacket": {
+      "$ref": "#/$defs/artifact"
+    },
+    "contentCommit": {
+      "$ref": "#/$defs/commit"
+    },
+    "admittedRaw": {
+      "$ref": "#/$defs/artifact"
+    },
+    "decodedRgbaSha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "semanticValidator": {
+      "$ref": "#/$defs/artifact"
+    },
+    "semanticValidationReceipt": {
+      "$ref": "#/$defs/integrationSemanticReceipt"
+    },
+    "semanticValidationResult": {
+      "const": "PASS"
+    },
+    "independentTechnicalReview": {
+      "$ref": "#/$defs/reviewArtifact"
+    },
+    "independentTechnicalDisposition": {
+      "const": "ACCEPT"
+    },
+    "literalScaleReview": {
+      "$ref": "#/$defs/reviewArtifact"
+    },
+    "literalScaleDisposition": {
+      "const": "ACCEPT"
+    },
+    "sharedLedgerRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "commit",
+        "sha256",
+        "batch",
+        "directionState"
+      ],
+      "properties": {
+        "path": {
+          "const": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json"
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "batch": {
+          "const": "industrial_l04_directional_family"
+        },
+        "directionState": {
+          "const": "integration_admitted"
+        }
+      }
+    },
+    "rendererQuarantined": {
+      "const": false
+    },
+    "productionSelected": {
+      "const": false
+    },
+    "shippingActivated": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "direction": {
+            "const": "north"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+            "logicalID": {
+              "const": "industrial_l04_v0_north"
+            },
+            "sourceContext": {
+              "properties": {
+                "branch": {
+                  "const": "codex/citysim-world-art"
+                }
+              }
+            }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "direction": {
+            "const": "east"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+            "logicalID": {
+              "const": "industrial_l04_v0_east"
+            },
+            "sourceContext": {
+              "properties": {
+                "branch": {
+                  "const": "codex/citysim-world-art-east"
+                }
+              }
+            }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "direction": {
+            "const": "south"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+            "logicalID": {
+              "const": "industrial_l04_v0_south"
+            },
+            "sourceContext": {
+              "properties": {
+                "branch": {
+                  "const": "codex/citysim-world-art-south"
+                }
+              }
+            }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "direction": {
+            "const": "west"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+            "logicalID": {
+              "const": "industrial_l04_v0_west"
+            },
+            "sourceContext": {
+              "properties": {
+                "branch": {
+                  "const": "codex/citysim-world-art-west"
+                }
+              }
+            }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "direction": {
+      "enum": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*//)(?:Native/CitySimNative/WorldArt|docs/production/(?:decisions|evidence))/(?:[^/]+/)*[^/]+$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "committedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "commit",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "reviewArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "disposition"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "disposition": {
+          "enum": [
+            "PASS",
+            "ACCEPT"
+          ]
+        }
+      }
+    },
+    "integrationSemanticReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "disposition"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^docs/production/evidence/INTEGRATION/industrial-l04-semantic-validations-v2/(?:[^/]+/)*[^/]+\\.json$"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "disposition": {
+          "const": "PASS"
+        }
+      }
+    }
+  }
+}

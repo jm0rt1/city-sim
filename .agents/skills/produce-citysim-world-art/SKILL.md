@@ -108,6 +108,15 @@ and evidence roots; source revision; compute-slot and queue policy; bounded
 deliverable; and stop condition. A prelock claim or an appearance lock by
 itself never authorizes pixels.
 
+Launch production only through the Integration-approved orchestrator and an
+exact validated per-process launch grant. The grant must bind the global
+schedule, compute lease, direction, claim revision, published base, frozen
+scene/material/toolchain hashes, process ID, exclusive input/output/evidence
+roots, and exactly-one child start. A low-level direction runner must verify
+that grant or remain non-invocable directly. Do not begin A/B/C while the
+parallel schedule schema, strict validator, adversarial tests, or launch grant
+is missing, proposed, stale, or unvalidated.
+
 ### Parallelize inside each direction cell
 
 Scene and material authoring remain single-writer until the exact
@@ -143,6 +152,12 @@ actual overlap; join results; validation-job roots; and the final assembler
 identity. If Integration's compute envelope requires a sequential render wave,
 record the resource exception and queue order. Claim overlap only when the
 timestamps prove it, and never exceed the published global DCC cap.
+
+Treat the compute slot as a lease, not a department lock. A queued or failed
+DCC process blocks only its own exclusive output root. Continue every
+direction-local CPU-only provenance, validator, review-sheet, inventory, and
+packet task whose inputs are closed, while sibling cells do the same. Never
+cancel passing sibling work merely because one direction or process fails.
 
 North's pre-lock process-A appearance calibration remains a one-process gate.
 The internal A/B/C fan-out begins for North only after Integration publishes
@@ -241,6 +256,12 @@ family selected.
 Integration assigns the later 4/4 assembly owner for the combined N/E/S/W
 source-size, actual-game-scale, and grayscale family sheets.
 
+The standard source handoff is immutable once returned. Integration hashes and
+admits that exact packet in a separate canonical source-admission receipt;
+Renderer consumes that receipt and may not reinterpret a worker readiness
+field as admission. If Integration returns the packet, create a new source
+revision and handoff rather than editing the returned packet in place.
+
 Validate every packet against the exact versioned JSON schema published by
 Integration and then run the Integration-owned semantic validator. Record the
 schema path/hash, semantic-validator path/hash, common accepted-master
@@ -256,6 +277,11 @@ Use this direction-local commit sequence unless the claim narrows it further:
 2. A/B/C source plus deterministic validation checkpoint after production is
    authorized;
 3. machine-readable handoff and completion checkpoint.
+
+When the claim explicitly defines predesign as its complete deliverable, the
+passing zero-pixel and predesign-handoff commits complete that claim stage
+normally; they do not imply directional source completion. Use incomplete
+checkpoint wording only when a required gate remains failing or unrun.
 
 Do not collapse these boundaries when doing so would hide a rejected attempt,
 an unrun gate, or a change in source authority.

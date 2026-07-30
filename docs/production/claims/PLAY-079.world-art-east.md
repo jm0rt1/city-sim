@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 4
+- **Claim revision:** 5
 - **Title:** Predesign the Industrial L4 East source in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -26,7 +26,12 @@
   `93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7`
   and the common
   44-master non-alias input and prove the prelaunch guard fails closed, under
-  `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`.
+  `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`. That preparation is
+  complete. The next bounded slice is zero-pixel launch readiness only: adapt
+  the East orchestrator to consume and fail closed against the exact
+  Integration-published schedule and per-process grant, with adversarial no-DCC
+  tests and zero-child evidence under
+  `INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md`.
 - **Validation/proof:** Independent East geometry; East road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias

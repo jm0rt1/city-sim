@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 4
+- **Claim revision:** 5
 - **Title:** Predesign the Industrial L4 West source in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -28,7 +28,12 @@
   `93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7`
   and the common 44-master non-alias input, and rerun only
   zero-pixel/static/guard/schema gates under
-  `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`.
+  `INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md`. That preparation is
+  complete. The next bounded slice is zero-pixel launch readiness only: adapt
+  the West orchestrator to consume and fail closed against the exact
+  Integration-published schedule and per-process grant, with adversarial no-DCC
+  tests and zero-child evidence under
+  `INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md`.
 - **Validation/proof:** Independent West geometry; West road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias

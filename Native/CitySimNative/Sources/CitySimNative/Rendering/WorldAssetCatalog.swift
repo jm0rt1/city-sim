@@ -287,33 +287,33 @@ final class WorldAssetCatalog {
             $0.family == "industrial" && $0.viewDirection != nil
         }
         let expectedIndustrialIdentities = Set(
-            (1...2).flatMap { level in
+            (1...3).flatMap { level in
                 ["north", "east", "south", "west"].map {
                     "industrial_l\(String(format: "%02d", level))_v0_\($0)"
                 }
             }
         )
         if Set(industrial.map(\.logicalID)) != expectedIndustrialIdentities {
-            issues.append("industrial production selection is not the exact L1-L2 N/E/S/W matrix")
+            issues.append("industrial production selection is not the exact L1-L3 N/E/S/W matrix")
         }
-        if Set(industrial.compactMap(\.sourceKey)).count != 8
-            || Set(industrial.compactMap(\.sourceSHA256)).count != 8 {
-            issues.append("industrial L1-L2 production sources are missing or aliased")
+        if Set(industrial.compactMap(\.sourceKey)).count != 12
+            || Set(industrial.compactMap(\.sourceSHA256)).count != 12 {
+            issues.append("industrial L1-L3 production sources are missing or aliased")
         }
         let normalizedIndustrialHashes = industrial.flatMap { asset in
             CameraDetailLevel.allCases.compactMap {
                 asset.lods[$0.assetSuffix]?.normalizedSHA256
             }
         }
-        if Set(normalizedIndustrialHashes).count != 24 {
-            issues.append("industrial L1-L2 normalized LODs are missing or aliased")
+        if Set(normalizedIndustrialHashes).count != 36 {
+            issues.append("industrial L1-L3 normalized LODs are missing or aliased")
         }
         for asset in industrial {
             guard let direction = asset.viewDirection else {
                 issues.append("\(asset.logicalID) is missing view direction")
                 continue
             }
-            if !(1...2).contains(asset.level)
+            if !(1...3).contains(asset.level)
                 || asset.frontageEdge != direction
                 || asset.supportedOrientation != "\(direction)-facing-authored"
                 || asset.provenanceFile == nil

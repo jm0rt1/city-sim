@@ -1,0 +1,2530 @@
+{
+  "allPhysicalComponentsMapped": true,
+  "duplicatePhysicalIDs": [],
+  "entries": [
+    {
+      "canonicalFaceKey": "1ec9c788074e7e6cdc0ecdb8858a89d2de9dee269e8efae59e0464f86047610e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-boiler-block",
+      "physicalComponentID": "north-v09-boiler-block",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "3e6870cd1344fcf0f2967e3ebf0e4087f85502a17559933c250adb3094af992d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-boiler-block",
+      "physicalComponentID": "north-v09-boiler-block",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "9209c112accfe31be3ff6b3cf1b8d3f5e1deae69aa426244a4eead6dc0a11576",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-boiler-block",
+      "physicalComponentID": "north-v09-boiler-block",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "cb449be2e3a83f685cb7d9bb42e504ba078a14603989ece3fa5be35ec42312b0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-boiler-block",
+      "physicalComponentID": "north-v09-boiler-block",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "d61b2ad058bf3059cf1e09c6c5bffa3af2436f39f94a87b2126d9a596b7d8370",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-boiler-block",
+      "physicalComponentID": "north-v09-boiler-block",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "e829c469602cf2c6f8712bf89ca36c2a4474346e9669a2ad6d06012287527ce9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-boiler-block",
+      "physicalComponentID": "north-v09-boiler-block",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "48eb56c933fcece99863ac053611467cb0ea5a654675c011d160defa6c712bf8",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-south",
+      "physicalComponentID": "north-v09-clerestory-south",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "772fe6a61b46f9c5900753971fc3c3bfe07757bf012d4ef19e1441cd7290c55f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-south",
+      "physicalComponentID": "north-v09-clerestory-south",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "949d0933150a53e51a8ea8ad8ff8cb7627609d8efd807694144a277a1ea24efd",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-south",
+      "physicalComponentID": "north-v09-clerestory-south",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "a72f9e41f1598d795c30779ea435db0e3b3849dd3973ee84768c72170f2fd782",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-south",
+      "physicalComponentID": "north-v09-clerestory-south",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "b79a6402d2ea8549b77a7b2198b575bf247223fbf792d3ebfd106c6ad63e2ef2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-south",
+      "physicalComponentID": "north-v09-clerestory-south",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "da92a5435d5c6eabc649041f829ad55d7cdc00c8a97d110b4b87b0ec9a813e9f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-south",
+      "physicalComponentID": "north-v09-clerestory-south",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "398bd92b0e1cf372f089492a6186896d690d7b8d9711fba59c32888168320453",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-west",
+      "physicalComponentID": "north-v09-clerestory-west",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "81f73eda3ba4c63ee8ffdbac1ad5ce2a8854d049c78767b76e471c6f2cf20d9d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-west",
+      "physicalComponentID": "north-v09-clerestory-west",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "94a2e4f34ba9df55df02c6429651424088f96923feb682c22d3ec1a252ad308c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-west",
+      "physicalComponentID": "north-v09-clerestory-west",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "b7ea19b9d99d0f1276dedea403d890b5a452a390363d3dfde1c36b0974753a1a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-west",
+      "physicalComponentID": "north-v09-clerestory-west",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "c9c68051a3457513cb1e4c1b9c41815c0282d3b4591f9c3b484c112d8db686da",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-west",
+      "physicalComponentID": "north-v09-clerestory-west",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "e7cbe369f1e80038c0a9937141d695d1845c2d50c1013c3f46c02a19d1898745",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-clerestory-west",
+      "physicalComponentID": "north-v09-clerestory-west",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "5d315c22d35616662d791f6e86742f26c28e0b0b11627814247e1705b0366f4f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-head",
+      "physicalComponentID": "north-v09-court-head",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "5d3ef7544fba8da0937e5e98f25be685ce6b4da71ce12bc0e4f82b1802b297d7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-head",
+      "physicalComponentID": "north-v09-court-head",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "9fc336aee5b630b58f35d163327da9fc8e4ccaf1d105175362ab09558dae359f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-head",
+      "physicalComponentID": "north-v09-court-head",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "a80545f42d13ebafbdafa23729443b332ab74b153a9cb13b0978eabbecc6c4c5",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-head",
+      "physicalComponentID": "north-v09-court-head",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "c92305903a9fb914ce09fa2088f20e3bda0c7e789679eabadf86e3c71c96aa9f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-head",
+      "physicalComponentID": "north-v09-court-head",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "dac076ae0b1718e24e1787187cdcb46d9df713768310df174a82af416f3e0d36",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-head",
+      "physicalComponentID": "north-v09-court-head",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "0600d8f940fd033ab97899f6b174764851bf778bf30aa89f0b9b4a42b140439a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-spine",
+      "physicalComponentID": "north-v09-court-spine",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "0957848aabff8737854e4ff12c704ce72076d3450f0a95e2c28f3650eb7fde48",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-spine",
+      "physicalComponentID": "north-v09-court-spine",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "4ba0fc24a504d57acbaabd46174c35d33802f90098106e66ca9bbcfd78d5dea8",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-spine",
+      "physicalComponentID": "north-v09-court-spine",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "66cc135b425d1abdcee4d4e9814153c99d5d6c4a3aa1fde732822b9fb425c758",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-spine",
+      "physicalComponentID": "north-v09-court-spine",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "d02c4b2fe6ec093ff4c31a40a55d8a8adff910fcde2900e1215b623147e1f0b0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-spine",
+      "physicalComponentID": "north-v09-court-spine",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "ebebf5b1fb50bf92b1001022cb094268cdd10a8f69b1ddab219281241b8e3a07",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-court-spine",
+      "physicalComponentID": "north-v09-court-spine",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "00e5b08749b246acc8fa30e8e1b6c0e73c9259a7766ac9e5512c1a7d2e80f9d7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-east-louver",
+      "physicalComponentID": "north-v09-east-louver",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "13538028a783aacb8c4d0f66736e293850ea26b96e45f4a368d5d97afeb68a5c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-east-louver",
+      "physicalComponentID": "north-v09-east-louver",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "1425b8c4e0ab0c0ef0e135da154f1a44004b2cde83b77e5d3e29dc540c6ed285",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-east-louver",
+      "physicalComponentID": "north-v09-east-louver",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "53997303c206dd579b628faefad169c395b29ebca5f5a2dd4f0b01e5682da0f6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-east-louver",
+      "physicalComponentID": "north-v09-east-louver",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "6479e9d76402fa57d633d8415e9851ae358f5fc2278b0506fe2dc038274296bf",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-east-louver",
+      "physicalComponentID": "north-v09-east-louver",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "db130329b22947497c25f249ed7f66694d0ebfd1ab190ea3ce6c2598f3417093",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-east-louver",
+      "physicalComponentID": "north-v09-east-louver",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "1e2315b43a05b682ea7ff674a1dd70ad3d6129f6bbcffd4239b41586aa26fe69",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-foundation",
+      "physicalComponentID": "north-v09-foundation",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "1e2af918f948e9f52c77ce67f501463e45eced6e6b7d02da2aeb853fb5ff1cf2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-foundation",
+      "physicalComponentID": "north-v09-foundation",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "3d53d565ec0b913fca2b35e544f72bc367e53d4f8ceb54705dde2f01288aea52",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-foundation",
+      "physicalComponentID": "north-v09-foundation",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "468fdac797e0d45ba226e02a3ff8add2cc0e41dc676dba677ae02e4027bbac9a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-foundation",
+      "physicalComponentID": "north-v09-foundation",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "61d99e2fcd81789bc5ebc6de9cfb5abb720725fca8f25a6ed8ccd98c06ec0367",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-foundation",
+      "physicalComponentID": "north-v09-foundation",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "e8409e6c069fbe877a7a3992f172960c6a7be80509124757c60fad6869dd7de6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-foundation",
+      "physicalComponentID": "north-v09-foundation",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "0066f1a3b2cf4312a879e82d506a22a5790e2104fdb5b666c437003d50626f1e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-a",
+      "physicalComponentID": "north-v09-freight-header-a",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "0a0ef4b66f5d0654576b5162113b2c0661defa5924cdb2704416032db416aa57",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-a",
+      "physicalComponentID": "north-v09-freight-header-a",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "246cc3578f52eb62b5da5527eb6fdf7e2baaf42b3edf10758ea5aae3c2aa53fb",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-a",
+      "physicalComponentID": "north-v09-freight-header-a",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "76e50e8fe3f1fa430d1cd0ba35cdc3c47d59fe00208957350b8b038bb1e9aa6f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-a",
+      "physicalComponentID": "north-v09-freight-header-a",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "c7989831b210e7bb28bbe722fe7ff16fbaf51b7329b97b2d42c4c26da79415fc",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-a",
+      "physicalComponentID": "north-v09-freight-header-a",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "e72e0fa01f4398bf908de86c5b4851c60e9dc860e4e2a73a02cdd11122fbc899",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-a",
+      "physicalComponentID": "north-v09-freight-header-a",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "28cefdb8b014216d5b60ae24b15e769116edd3d5d42f9adac36e6ed4782c678e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-b",
+      "physicalComponentID": "north-v09-freight-header-b",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "29b0ec7fa9b993f65650f967f98c6927590ce60a87840c658ad8565b925cf099",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-b",
+      "physicalComponentID": "north-v09-freight-header-b",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "8420d370f799cb38bc6b7f800df123ff55c4308ecfc5c100c8d4c7b18fc30e9a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-b",
+      "physicalComponentID": "north-v09-freight-header-b",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "97eb6363ad796f44dee2acccc876007a927e3af116ccb8f3dac850bb3b4b4d21",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-b",
+      "physicalComponentID": "north-v09-freight-header-b",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "a12549fb1fb8182473c2c2e30f1fa37fadf8a5f023e457250dd68ada2e6f9fbd",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-b",
+      "physicalComponentID": "north-v09-freight-header-b",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "f03b0f9492e49d5684e5e0655b586ea850576826e125cc39ada66b62a4221cdf",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-b",
+      "physicalComponentID": "north-v09-freight-header-b",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "3530e3240a28adfbeb34d80786aa3e026a3f59d74c00a0cdb9ce7caf0376089a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-c",
+      "physicalComponentID": "north-v09-freight-header-c",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "3ee8b5887d5d3a351583a24986d24614639d504a7b46c4effe9c87e8e1a4fe7f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-c",
+      "physicalComponentID": "north-v09-freight-header-c",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "49572ddf51c40c09b04f26e96f1a1014398cc00ef24d64d9a05f2b766f5cc054",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-c",
+      "physicalComponentID": "north-v09-freight-header-c",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "74107057054abac71b4658a103c1d4ecb558854145fadbb21a5dcbacb15e969b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-c",
+      "physicalComponentID": "north-v09-freight-header-c",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "cb54a2655e238bf44fd7b8b1a11a875fd0c749b0837badc1f3887f55c78fbfc5",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-c",
+      "physicalComponentID": "north-v09-freight-header-c",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "f1407be8c9bc92b9468f379d3af2fdb58af0dd8a6b9c2f5908b1580a5fc3a514",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-header-c",
+      "physicalComponentID": "north-v09-freight-header-c",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "2025e3e15972485c2a92bd752689f9ddefa8c53a25894334b348d34d78590c2d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-a",
+      "physicalComponentID": "north-v09-freight-post-a",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "284e27fe69586e6258a718b27e9628216d5a0ccb3d7c4c5e56015c449fc953d3",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-a",
+      "physicalComponentID": "north-v09-freight-post-a",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "2d280d062db3098c35d5f6dc2b2fc44fa33653db537d09721dd879d687cb0dfa",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-a",
+      "physicalComponentID": "north-v09-freight-post-a",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "7ac34f41adab7b4a70afc5f07f0aa489c3960bef65b9bc94aba1caf5c866706d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-a",
+      "physicalComponentID": "north-v09-freight-post-a",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "884e3c0d683f28758185e2153f03afabd4024a6f2cc25d6969e31512df415185",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-a",
+      "physicalComponentID": "north-v09-freight-post-a",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "910e349af7afcd3a0f7e0de065317f430adb812355e8f1a245b07590bd26113a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-a",
+      "physicalComponentID": "north-v09-freight-post-a",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "511b365535d1631b4aac17e11b3ff9d82eac1a0c30746d0774a80466fca2eaf1",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-b",
+      "physicalComponentID": "north-v09-freight-post-b",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "8dba476db53f9cae6e22568326fd180f48fde71b5bf0d45a8bb5208653dea350",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-b",
+      "physicalComponentID": "north-v09-freight-post-b",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "cf1e188ed3d040d5df110d6c78dfea1f2f8f73dc9c775c6b072918f804cc6cbc",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-b",
+      "physicalComponentID": "north-v09-freight-post-b",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "d940da1f68c914099170b562debea0dcd04a1c9b0db2a22baf8e51958a8df81c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-b",
+      "physicalComponentID": "north-v09-freight-post-b",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "db2db24f0838e5615e11344d95a6343a00ce060a4ceed15b26df9a2b2333e2d2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-b",
+      "physicalComponentID": "north-v09-freight-post-b",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "dc27c73e68d9d6b053cd722f9ddb657d3a03b90ae1544a318a76da8c77dca8be",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-b",
+      "physicalComponentID": "north-v09-freight-post-b",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "1b979ab8e152bf4ae3052960b9e7f32009328cc5c5900395acc4e615a0f1691d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-c",
+      "physicalComponentID": "north-v09-freight-post-c",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "2b6be5b10f4d2d74989398fa5061a2df75c5b3a25d431151be8e11cb3f8c4787",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-c",
+      "physicalComponentID": "north-v09-freight-post-c",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "3a76ba389123332fb5b9e798365a073b43d29f3c85b4362431dada77dc21ec1c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-c",
+      "physicalComponentID": "north-v09-freight-post-c",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "5c61085fdcf2ef2753970d4903870447eb81bff41ebec872633a4619e1ec11e9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-c",
+      "physicalComponentID": "north-v09-freight-post-c",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "77790118dbba56d9722ffdb5feb5197f189fbe364190b0e0ca49eee9131f647c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-c",
+      "physicalComponentID": "north-v09-freight-post-c",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "d781c6233fb5511db6791f5fc747818ea658164a6adc48e843448428f4125586",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-c",
+      "physicalComponentID": "north-v09-freight-post-c",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "14776e83afc14ea2ae458c820a20bd85d21496301f4d39f7881e47566eebb281",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-d",
+      "physicalComponentID": "north-v09-freight-post-d",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "480809a6f9e38688666c759f3ea8bb80b5412324e19585bd3e2761e2ff5cd81b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-d",
+      "physicalComponentID": "north-v09-freight-post-d",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "5681b00db68af1271e3daeb13994f0dd7beeb6e990febdccfdddd55c8e708a14",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-d",
+      "physicalComponentID": "north-v09-freight-post-d",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "9e020ac6857b85776fbce1c047237c84b128c06332c105cee8f75bf7c72f7d8a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-d",
+      "physicalComponentID": "north-v09-freight-post-d",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "dfb4d801e56c601f8331b38501c457c22dcf8032c76e37eb8ed343f1093dee2d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-d",
+      "physicalComponentID": "north-v09-freight-post-d",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "f89246836576cf3457859b3445bb2d6910e5b195f74a957fee5c17a3ab903522",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-post-d",
+      "physicalComponentID": "north-v09-freight-post-d",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "088da4736fe048f1ce7e732d0229c3b7a5edfc8860eb9f4c2f287febe28613f8",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-a",
+      "physicalComponentID": "north-v09-freight-recess-a",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "11e64da2ed3d5ef3b2adbebf4bc4705875403ff15f76045a49f9968e4abefbff",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-a",
+      "physicalComponentID": "north-v09-freight-recess-a",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "4c6ef00104c7c5d21ac0e505d1eacd4ae97b7237350e0483b62d8daca3631e5e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-a",
+      "physicalComponentID": "north-v09-freight-recess-a",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "7568126b3f662b0bbe00c95989579bf2839b9b51f44868de10ad71c5061e296b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-a",
+      "physicalComponentID": "north-v09-freight-recess-a",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "84ff0b0d98e681f5ad8c51f527c65b654b22122e46491148a0d04a7f452a56f6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-a",
+      "physicalComponentID": "north-v09-freight-recess-a",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "a16df530155eb5603467020b7c54434c4a594934f1a579c53158d9f0cee8d2aa",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-a",
+      "physicalComponentID": "north-v09-freight-recess-a",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "140e8a5b7924c8c09f081c362acb846e9c0a06c118e879e0c57b5bbe2359f4c7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-b",
+      "physicalComponentID": "north-v09-freight-recess-b",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "6a79142065e49d58c991e261b4aa2c6eced2850d9419ad58fe10135ab34530c6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-b",
+      "physicalComponentID": "north-v09-freight-recess-b",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "7a219ee95a58ee9c92c9c7097544d345fadcb190ac095ae1ad1366151f206985",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-b",
+      "physicalComponentID": "north-v09-freight-recess-b",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "8b84b97ae0ced12cbf5416e0ffadfd79697f350918bb7677a2ee0be122185cb1",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-b",
+      "physicalComponentID": "north-v09-freight-recess-b",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "e3726e20ef5101c709bb71c7f2acbcb278da966a6153afdaf42da26523dadec0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-b",
+      "physicalComponentID": "north-v09-freight-recess-b",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "efdd3023f132bd4ec261cda00a9c687d82fe41b34ffc476d6e54f8e660ef6ff2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-b",
+      "physicalComponentID": "north-v09-freight-recess-b",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "10ae8b259ea31326692fcb59debd123430fedf58852aab0a96f6b70c59879e7c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-c",
+      "physicalComponentID": "north-v09-freight-recess-c",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "189fefb92ac9a98a2c6755dd10c58e14f07ab91d6e13cdd338544c201db787cd",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-c",
+      "physicalComponentID": "north-v09-freight-recess-c",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "1c3bf33ca0096249dd8b30838474b6006e70eece88c4f052ceeab4a0e634beba",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-c",
+      "physicalComponentID": "north-v09-freight-recess-c",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "acb82dce1579a5decdf4670b2c7b4bbd270554f7efcbdc8888cd837e5b84c5f7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-c",
+      "physicalComponentID": "north-v09-freight-recess-c",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "be39b6d05cdd878ef1a5cdb5b895268dd0d4645050d6c7f668677db1ff157c35",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-c",
+      "physicalComponentID": "north-v09-freight-recess-c",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "c90d38079566981870b3d7d4311ade4611d94c81c71d3455833e9f0b225cacb3",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-freight-recess-c",
+      "physicalComponentID": "north-v09-freight-recess-c",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "178e533db8fa7d5e2446ec2b9247fe89b484622ba7b41d847fc1d31bcb91d03f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "1de6bd2074e6d1953efc3a31b581683095d3a639c328e9926c69991e517e099e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "3305aad98a7b477c7448923d1d4b44ea1e8ad3aeacf516717eca7faea009bc54",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 8
+    },
+    {
+      "canonicalFaceKey": "3bb26b1c9c81cca6bad5d0413f82da08635785f4aa7b03281231aa9ad6c10a7d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "4a08a3f8fa4d71c8b156b4e44477a65c8113bafa25347704cd99339bc71fe0be",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 7
+    },
+    {
+      "canonicalFaceKey": "51d2837fef1f9644d17efc076d168f4da83826d273d70980c4891759f59dce98",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 6
+    },
+    {
+      "canonicalFaceKey": "7f6216925f638c1eece7ef54d1f47fdfdddf29c2422c6b08fe8f89f5da29e7fd",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "a0f335833e394e7eca60bb913da11c044a2c5b8d5a13ade3825d65b5445e393f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "afc620842a1a118785f895fff4ad7a820b585ca336b2d58c0a7030152d8fd9d5",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 9
+    },
+    {
+      "canonicalFaceKey": "c04c5a996778cdcd13ea471d90e3ce7a8767512bf40069bb28aaf5e023fe24ac",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-body",
+      "physicalComponentID": "north-v09-furnace-body",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "11f95573e035a535595cc7009962ac0f4598cd65dad34b3bf6111a306ac6a3d4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "14730d9939322775ac1961d1810167d086f740e270808175a1b2a91fbb627606",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 9
+    },
+    {
+      "canonicalFaceKey": "3b6c592ca03fb2331cdb18cff6db376088613c67a630e944e05d006ab49ee37d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 8
+    },
+    {
+      "canonicalFaceKey": "4aa12429f5a3343410e6b381301b952548392621d945df23aa6493873ddb3f89",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 7
+    },
+    {
+      "canonicalFaceKey": "6e9ccbc25235f826c3c2a63ba95a86e1c4410e483a48dc3e503d3ba5b800d3d4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "76a14dfbd12db24926bda1476eff02bcfcf19ba72a2716459efbdb97f95c3ab0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 6
+    },
+    {
+      "canonicalFaceKey": "9ed48ac0c41169ad28fac2f1334dc55d1cc3b3fe69e025f17499d39815b9e37e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "aa6858398ddd463b428ba0b7e67e7246e5df8c8641112765218f706bb296bc7c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "d0abed7ec4c998e5c4a14b5b01a7ece53161f881a206298b1f0b45479f0abc2c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "f4734b91fa629c6dba3ad82dbef4e9e55a34c6f715d59e1e00166c58f30d4a67",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-heat-band",
+      "physicalComponentID": "north-v09-furnace-heat-band",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "0a5bab725b93a0be8e295fdeea650502041b094f3a99b674831783d2718be372",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 8
+    },
+    {
+      "canonicalFaceKey": "124d97d80b7f6fe3610e5320b985cc4e72b76cca5d5fa3ea21355aabdaef8216",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "2863c2735c6fd9c7391157a9608feb9e4ecabe4b725edff22c89130f62cc5287",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "3476ae84cbc1de592b609179f62d4e7229566af7fe6766ea36c80cf7007f4ad6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "7b9a22261c2613ba6a85ec56b7f3b99dc7ab9a0a6dc516a3422975e76b0b27b7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "8ba42c1cf41aa7c401caac7b988d17bebb75dcc6f96c87ccc207ff23bceb5ad7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 7
+    },
+    {
+      "canonicalFaceKey": "907fc4e91ab0635207e8ca07dc9a627748adaded7a7a4a3d8361c1a92858211a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "98031699ee1c3aae3aaf8a0c685203c34cb1fc031ba94665fc192abc2c9ae611",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "b50e9a9caa8bd47ecfaf89b1a73f9973c758871008f4d242286fa399e8eb2a0d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 6
+    },
+    {
+      "canonicalFaceKey": "cfc81430f4526652c8a220efeca66d7b27f99a4ebad002f79ccd2bdf4883aca4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-mouth",
+      "physicalComponentID": "north-v09-furnace-mouth",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 9
+    },
+    {
+      "canonicalFaceKey": "0a326b6f127ea05be4f0ed7bf531a969b0a523bc511dda18306c234742656910",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "1fc453776aee4226601c5f432d568dbefbf4b9696471c0c33c998d2e9deb4462",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 6
+    },
+    {
+      "canonicalFaceKey": "4ca78bfb912da7dd01c61793f5e65e4f937e6725bfe1f424e9726d806fb923e7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 9
+    },
+    {
+      "canonicalFaceKey": "7ad514d0739d3d61439292a3e400e1b7b9bd7237ca99c49f302385dc1f9487f7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "9ddd2ca26c1405c829154aa02e922a25ba62b0f370185106c54a56a775bd9fea",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "a1baa02ba615c3de36ccf509851b3397e5d508e3b81423037a581faf414c1b16",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "ab5cc856feab14e3be8034dc2c36c0e68f0312afe40788e991648e86a7f48870",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 7
+    },
+    {
+      "canonicalFaceKey": "d1a0fd2cb739d38a48954fd383e852fb2475a5ed78539cd78d851149f65f4204",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 8
+    },
+    {
+      "canonicalFaceKey": "f516d56690ea19903eecd049a6371d0b4bb32681ec81b098fb79dd47ffb70d3b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "fd7e8671bfe19657900cbba2f785d13b47a2b7d18c804c8ccd6a384f06df14a2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-furnace-shoulder",
+      "physicalComponentID": "north-v09-furnace-shoulder",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "095d6bd36569f5d5bdab502ffe76924d3f3f5bda5873b944d3b4c3de296b2e89",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-girder-b",
+      "physicalComponentID": "north-v09-gantry-girder-b",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "3fb7c4ca3207e974e665b46feeb6c260211c12e98b68838e454b9d720f28a839",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-girder-b",
+      "physicalComponentID": "north-v09-gantry-girder-b",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "8be4e29a44b12404dbbff1195d24cfea4573a4f2977eb46b9da9a1174ce278ce",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-girder-b",
+      "physicalComponentID": "north-v09-gantry-girder-b",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "b4c3449e9093931e8b270cd6bb84aab253c6df7ff4731d7a72b0f7607ab8e625",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-girder-b",
+      "physicalComponentID": "north-v09-gantry-girder-b",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "b62d9ee5587e56d134c1b751d0c9db0ff47ad933e6d56d883895c9fcd0ea7b81",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-girder-b",
+      "physicalComponentID": "north-v09-gantry-girder-b",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "b96b1c84ad38e54b0a5a8bbbd0dfba10dec9f8b3aa391bbb8b2c1ea2cf74c233",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-girder-b",
+      "physicalComponentID": "north-v09-gantry-girder-b",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "34767e6a67129e8adb48bf4c4507911435d7c5342456b517979b6d084221c90b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-pier-west",
+      "physicalComponentID": "north-v09-gantry-pier-west",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "3ca665301ea5ac8889fb3c93206379f610050322ffc880c2417475f54152eb9d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-pier-west",
+      "physicalComponentID": "north-v09-gantry-pier-west",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "ae92859a55c45f0b83197fe89173b55a0044758038ae4115e6c92428651578e4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-pier-west",
+      "physicalComponentID": "north-v09-gantry-pier-west",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "bac1f6f460b3e55bb574cf1a10e92eaf95492cb057c70fc1804a4686b090dcd9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-pier-west",
+      "physicalComponentID": "north-v09-gantry-pier-west",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "d2c73568f6e93df0e9e1d9a000d07aa062ebb358ab835e98269a9146039fba2d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-pier-west",
+      "physicalComponentID": "north-v09-gantry-pier-west",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "fe1aad54c81806fb6a4dca054b82109cd0ec064d66ccc16900d724b47b2aa185",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-pier-west",
+      "physicalComponentID": "north-v09-gantry-pier-west",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "20877b573df0a05be0bc1e32422502ae872acb8cfdb30f0e977e83c5b2e89a6c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-trolley",
+      "physicalComponentID": "north-v09-gantry-trolley",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "4a57b4353980443f8763f822b8bd299286ca98a634c7ba166c6bd7aaa2aee0aa",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-trolley",
+      "physicalComponentID": "north-v09-gantry-trolley",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "976787440c82854a4760b6f7cc01caa48c805a51a2e2f856decc7e217199d154",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-trolley",
+      "physicalComponentID": "north-v09-gantry-trolley",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "a2fec925bcfa9fe21fbe808bcd14b008bd1b5429e9cbaec971f9ced07225742a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-trolley",
+      "physicalComponentID": "north-v09-gantry-trolley",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "abccd1fdb59d8baf6a1ce165d2d0be28ed9f1a9c0bdea6958f056ec8ad1fae2b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-trolley",
+      "physicalComponentID": "north-v09-gantry-trolley",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "c191eede8337e89d6202790be6a504411e52adeb1f298ca513a12318581a6230",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-gantry-trolley",
+      "physicalComponentID": "north-v09-gantry-trolley",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "0b550b108440afcc411d47e20c4f5a42ec6c6ed904248888b15609d98b1a5ab0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-high-bay-cap",
+      "physicalComponentID": "north-v09-high-bay-cap",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "30b7127a94c5fe7ec4d8435c6e4a1825179f3089efa498d9a34ab8971ed2c216",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-high-bay-cap",
+      "physicalComponentID": "north-v09-high-bay-cap",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "9ce09417b49739f9d67ce9de487a2b3c704b93e15978f6931cd53665628a591c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-high-bay-cap",
+      "physicalComponentID": "north-v09-high-bay-cap",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "b6fa7b0850a17ca143f1e42788394ce66cc3b58c0d093696bd4d3b3103f4473f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-high-bay-cap",
+      "physicalComponentID": "north-v09-high-bay-cap",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "b9ae59f9d830d50c4ae5881ba9b9735ad26341b0b7f0d30dae864e4f8575285e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-high-bay-cap",
+      "physicalComponentID": "north-v09-high-bay-cap",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "fd17e4e3cbc839adfadb1fbe31f01ebe2004e9cfb1fb936ade5c0f642206e194",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-high-bay-cap",
+      "physicalComponentID": "north-v09-high-bay-cap",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "12a7b8f75a97397e515205c55a272bbbff5e23e72e905aa9c5e22c14e4f96aef",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-loading-link-cap",
+      "physicalComponentID": "north-v09-loading-link-cap",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "3140dd64ae26157d2a626551cfd416c360b32939ffb7a26a99239efffd7a51a0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-loading-link-cap",
+      "physicalComponentID": "north-v09-loading-link-cap",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "9330daf1e1ddf97755c9c41f37ec2af569798ddcfbe3ce90bde62df5b69a257d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-loading-link-cap",
+      "physicalComponentID": "north-v09-loading-link-cap",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "c0ea74bc1f378d114445470baf66242e8101419e44c5c2a5aab2d169d51c25ae",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-loading-link-cap",
+      "physicalComponentID": "north-v09-loading-link-cap",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "dfc93e867863a9b308ca90955ecea78ea59681716252ead82845e220631f8eb1",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-loading-link-cap",
+      "physicalComponentID": "north-v09-loading-link-cap",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "fe53192af6646227b8f2783af14c08109003aa24081c48abc142aa9ae39237c0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-loading-link-cap",
+      "physicalComponentID": "north-v09-loading-link-cap",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "3aa56a53d1ef81da74e749d7183f2faea4b695d809eeae1e44aa145f4866a43a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-main-foundry-hall",
+      "physicalComponentID": "north-v09-main-foundry-hall",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "6e7a4cf13590bfcad3dde54cc9b17bbb0cf3c872c1be831040c169cb676aa8e8",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-main-foundry-hall",
+      "physicalComponentID": "north-v09-main-foundry-hall",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "ab1631fab6e6d442c34fbc44f132aed43635b50753fa31a2eac9870b518d6bd0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-main-foundry-hall",
+      "physicalComponentID": "north-v09-main-foundry-hall",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "c490d2fc80f9259a23b516380b62f0ac6d2efb81d77201245f29707ee615bab6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-main-foundry-hall",
+      "physicalComponentID": "north-v09-main-foundry-hall",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "dd253b9bb07873a2ce65a84ae6690de0343fc5a149bc8055e5d722298a34ee47",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-main-foundry-hall",
+      "physicalComponentID": "north-v09-main-foundry-hall",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "f70255ab7bb9d92ec436db552fe99bd090d31916dd6b06a162fcef9b1858030a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-main-foundry-hall",
+      "physicalComponentID": "north-v09-main-foundry-hall",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "b50281017d683b3b93313d1390cf8ccff6f65ef1c11a116342f3fc5719f87dff",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-a",
+      "physicalComponentID": "north-v09-monitor-a",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "b977c44c05ce4e6a28357b102d4516ca6e9a49c55c8ac51faa64cad82a2285a2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-a",
+      "physicalComponentID": "north-v09-monitor-a",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "e4b4143c9c1d5724c70476589003ae36dbc90bc5edeaafff673f655db6576060",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-a",
+      "physicalComponentID": "north-v09-monitor-a",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "e7668e2073747425c9b46da3dc5cf8aa755bb168261785f3ecd6db8a97547976",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-a",
+      "physicalComponentID": "north-v09-monitor-a",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "efb771f38906e2a11f97616a70a10d89add0bc05ad366b842fd56d6d15ac59fa",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-a",
+      "physicalComponentID": "north-v09-monitor-a",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "f55dc480c0a77078817ed7c9e3f9858369ff7fdb50a0a4aaeac924fa9c9811e6",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-a",
+      "physicalComponentID": "north-v09-monitor-a",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "40497dbd97b6c1cee45d8ad19de0264991cafe7f5068e710897f7058b51d5630",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-b",
+      "physicalComponentID": "north-v09-monitor-b",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "79b68d7d593e63faf4de1698a1cb77ba251307f9ed478f7d62d7330691758159",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-b",
+      "physicalComponentID": "north-v09-monitor-b",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "99a2756a1aea1c16a34616a7f7d5ea2f414dc4b088827f802177c9effd92612b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-b",
+      "physicalComponentID": "north-v09-monitor-b",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "b9191d67ffe636004f37045cdf1756dde11c9e12eb1d4c3d610143f347d5f9b8",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-b",
+      "physicalComponentID": "north-v09-monitor-b",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "be68c46e68e613bf08cc10f02eac8031bbbd4e56edb7728415f674e145caac20",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-b",
+      "physicalComponentID": "north-v09-monitor-b",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "c837f2e4f03113cae47e02ba21da608e9ddac71af57a136182053c87c679dede",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-b",
+      "physicalComponentID": "north-v09-monitor-b",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "0750b6cfe37e76417d42e4707c8e4029aaaad6bc71f0ea0f02bda3095d569d77",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-c",
+      "physicalComponentID": "north-v09-monitor-c",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "12069622d722331c77c60762a97098df9cf76ebcc16bc7b2716c7739abc531c9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-c",
+      "physicalComponentID": "north-v09-monitor-c",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "1b8c1537530d3ae98a7de11bd81697ea18c42f56e8488d90dc9f2fdc568312b9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-c",
+      "physicalComponentID": "north-v09-monitor-c",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "32633220dd79c85337260ee35aa2d54e218ae0625ac4b6ff42b550da65022c72",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-c",
+      "physicalComponentID": "north-v09-monitor-c",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "42cec2b75cd862ea67fb98550bc605528345507fcbfdb581e5cd96e576b57932",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-c",
+      "physicalComponentID": "north-v09-monitor-c",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "ab3c782e4527dc603168fcb6ef1d41436868ba3ec6e2a718280132e1ff4bf231",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-monitor-c",
+      "physicalComponentID": "north-v09-monitor-c",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "2e75377f1cbbcb25fda333056317e313a3863e710b6b3a40361ed3619da9c525",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-header",
+      "physicalComponentID": "north-v09-portal-header",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "4c5db1e6bd0dc44e6f93bdd8a59379402276c1d6d625f23b0082d2b1cbe6f443",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-header",
+      "physicalComponentID": "north-v09-portal-header",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "4f29d427e322a064c2039cdddfd2c70ef7d4a33b739ec9d61098c6a39187b38b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-header",
+      "physicalComponentID": "north-v09-portal-header",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "5ed3096434e9ce920e33568d24f2f45d2353831e77cf532babf9fa9bdcca6d65",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-header",
+      "physicalComponentID": "north-v09-portal-header",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "a5dd883f51c0856c712b162d8c95104953a4c1e288837e6e224758dda8ba74b0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-header",
+      "physicalComponentID": "north-v09-portal-header",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "c0ef911aee0487fcd9eb3792dcb530b1e7e49a31f3144cfde48ae8523ccb0e8d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-header",
+      "physicalComponentID": "north-v09-portal-header",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "293f839b89354554ae25ccc08af54b887b78abca6427abbc1695c13eee059903",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-jamb-east",
+      "physicalComponentID": "north-v09-portal-jamb-east",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "43295fce93c6104be5e549dd78118912936b798421a98aea32a255e3ca1fb788",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-jamb-east",
+      "physicalComponentID": "north-v09-portal-jamb-east",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "45b9968c354454d66d16cb86f9f393c73c2f320ff49d97b0e69e1ab7e6745b9c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-jamb-east",
+      "physicalComponentID": "north-v09-portal-jamb-east",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "5b765545364924684ebd0302c798688d539f93d9a91410a576b8507908677a87",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-jamb-east",
+      "physicalComponentID": "north-v09-portal-jamb-east",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "66b108d6291052c47267f3328870982539e3bae2ec797868da6dea497c3a2219",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-jamb-east",
+      "physicalComponentID": "north-v09-portal-jamb-east",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "87a0c4c12be176fe04da8ccf5a8250a1b726963a07d62c1654fa4ed56f8ac00f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-portal-jamb-east",
+      "physicalComponentID": "north-v09-portal-jamb-east",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "21f0ac273ffb11a94a6975704824d621fe78bf6b8fade8923b3131d793c49af3",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-process-hall-cap",
+      "physicalComponentID": "north-v09-process-hall-cap",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "2dbf0bb63d172e63fd437a26c2a1c331894d7b53c7ac9533cddaf4de64709f1f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-process-hall-cap",
+      "physicalComponentID": "north-v09-process-hall-cap",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "5c99ae455a230892a79c8127797d33e3f8d1ea0417711cfe4e6ada858007a266",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-process-hall-cap",
+      "physicalComponentID": "north-v09-process-hall-cap",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "8836f55486d755585f0d8def50c8c971594db897bca0c62153a0ed44696b0c5e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-process-hall-cap",
+      "physicalComponentID": "north-v09-process-hall-cap",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "a815459415465c4379b5a5b1bd5b44cf596d3d4c48e6ce92b22ab2b0c2432cb8",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-process-hall-cap",
+      "physicalComponentID": "north-v09-process-hall-cap",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "e1f4da8262af8aa3097da26fb84e802352465094c398fe556cf45d620b0e0509",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-process-hall-cap",
+      "physicalComponentID": "north-v09-process-hall-cap",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "1891f9051d8f2da0359f203ec281f802fd7e68d9e35c480304dc9f889a086ea4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-east-upper",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "38f680e459acb57321d22a5c533286df366f706287d64e138e705483d2f037aa",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-main",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "506e62044bb02b007736263529ec78ef4e744cb130cdaec06fa23a7b971d2892",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-main",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "555928142e9a12baa8af1f7b7918f186e37a89b788cd2f58044ef3d96c9dfb39",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-main",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "6c175c7eefe02cdc2d9cc1912163a6c5342424e6956e62d2437fd34e3b7f33d4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-main",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "71487a0e356de4be693893411ec3a0af1cce2c933142d7e54ca403d21b2fa06c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-east-upper",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "81994d59fb5ff33f439bd150d980b257cafd1554cc18d166951de0b6e5066032",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-east-upper",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "960f56cc37d6c39ab3e3c30c6f11f64d12e88f05086a0004298c00f7c94323a3",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-east-upper",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "98fcbf302c78b8e8bf24a147f0f9fdbee5999de3306b46b55a3561132000d789",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-main",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "9b4e528aebb968339dad7073b751ff548f890bb3cba12ee57bb160c2838b5f88",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-east-upper",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "cc950f4459be2bb9358d4e6f1af01641ea7c0a8a6ca2800a4c2136aeee50beeb",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-raised-high-bay",
+      "physicalComponentID": "v12-raised-high-bay-main",
+      "polygonIndex": 10,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "022569fdb72f920bd48a524c55293242a6b2c65b37086e793e360912b0437ac9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-loading-link",
+      "physicalComponentID": "north-v09-rear-loading-link",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "39dbac28794145035ebf22916e912743fe07e59276e8912dec9d83dffac8aa7b",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-loading-link",
+      "physicalComponentID": "north-v09-rear-loading-link",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "6cb1d58e2aa04aa67208c19093c65215443eb7d4af3119c7de2c76b662f89e0c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-loading-link",
+      "physicalComponentID": "north-v09-rear-loading-link",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "8a061352f3d0b34a6abd85471da76e6261fc5bac255379e99eff1d6236ade83c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-loading-link",
+      "physicalComponentID": "north-v09-rear-loading-link",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "e3477c1aeb949f6678baf24f60967cbf5f6cef9373ffa2547ef866c15329fb36",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-loading-link",
+      "physicalComponentID": "north-v09-rear-loading-link",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "ff3156e7f2318cc69e124c142b309b4c8f1a6fdf96044b9e4c44ec2310515d1e",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-loading-link",
+      "physicalComponentID": "north-v09-rear-loading-link",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "5a2113954eaa29af84aab3b60290970a580ad48c1840db3c124bfea24830a6ae",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-process-hall",
+      "physicalComponentID": "north-v09-rear-process-hall",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "6ad92e899ebf82c437c1afce2ed23b312ad671eb541077e659e45c723c45beb9",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-process-hall",
+      "physicalComponentID": "north-v09-rear-process-hall",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "71e7a7bf1bb438e535bc65ce783946ed5e45d763b59040137b81c23b5ce3669a",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-process-hall",
+      "physicalComponentID": "north-v09-rear-process-hall",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "771353833b6014ef8d129506dac74948aa88a32ad8253c78692be7437db3e756",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-process-hall",
+      "physicalComponentID": "north-v09-rear-process-hall",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "7d1c4179a3a22264d5de00d415b5991038cb43fdd05911fc84e9918a3f505217",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-process-hall",
+      "physicalComponentID": "north-v09-rear-process-hall",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "9c95cd35d4c3cd72b8fb43197cfc35de42a6f3b8e7e7fa84ee900d04760fe37c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-rear-process-hall",
+      "physicalComponentID": "north-v09-rear-process-hall",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "122ac43721d4f2f830672afd5f2abef60dba78562940e4cc09fd14777e7df75f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-canopy",
+      "physicalComponentID": "north-v09-staff-canopy",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "17972a553eb9b62a2524b3686e62dca8b9b4b85c7dae391db0eac566e2e7a6cd",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-canopy",
+      "physicalComponentID": "north-v09-staff-canopy",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "4a73f20243deddc66e948098e54b9f78df71d332b1ee63ecd72283a97bbe2bd0",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-canopy",
+      "physicalComponentID": "north-v09-staff-canopy",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "6dbe2c1279da111106cc1473cd79bd252581ec89e29662595ad3a95623ba1968",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-canopy",
+      "physicalComponentID": "north-v09-staff-canopy",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "c0c8e509ac2fc865874d644d95eeac79f440e54cdd062f7d271b6f13d01f6038",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-canopy",
+      "physicalComponentID": "north-v09-staff-canopy",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "f5853d1817c5aa4b5213950328139a0331604e7412021c6e0cecc55b3bbc0be2",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-canopy",
+      "physicalComponentID": "north-v09-staff-canopy",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "4938d220168e83811674791d44f510394864398ae3dab4e5b0d45862066d1bec",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-door",
+      "physicalComponentID": "north-v09-staff-door",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "6289a2ae732020026ecc54ac501456d15a6dca69ecdffd15adf848bc1fdbcb3f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-door",
+      "physicalComponentID": "north-v09-staff-door",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "6403cabf12517456f85785c42ab14c7311dfbd68e39974968b337ea95758f093",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-door",
+      "physicalComponentID": "north-v09-staff-door",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "ca20eda01ef8244b1e964c26a0ed8a918eac998f0e80a09ef66fa54413fe4ec4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-door",
+      "physicalComponentID": "north-v09-staff-door",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "cae41b01d3a982acdf68c25de57187b66124aa287b9ed3a28cd3a6987d06ff15",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-door",
+      "physicalComponentID": "north-v09-staff-door",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "ebb63be67c1eee0e3ec39fe1ff02d80cf38ee414ca7612612bfb3d8deac2c42f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-door",
+      "physicalComponentID": "north-v09-staff-door",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "44633528d6935b64c3cfb96873939442c58804e87deaba0ed3671372ecc0d030",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-glazing",
+      "physicalComponentID": "north-v09-staff-glazing",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "4e1db170ab75b94641ecabf72939ee65652b7a66018a6d433461271da18bd383",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-glazing",
+      "physicalComponentID": "north-v09-staff-glazing",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "a4bbd537eed8349473e0a29c97dfe5babec31083268e1b81d5315994fbb95807",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-glazing",
+      "physicalComponentID": "north-v09-staff-glazing",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "b2789c57392c7251cddfa59850dbb3c342821fedd0a24c9f6d7d715cda4e09f4",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-glazing",
+      "physicalComponentID": "north-v09-staff-glazing",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "ca7c64ed6d3df48c78b864405c5cc6c1660692b60d0a5d794d0a8ec51c2ae8f3",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-glazing",
+      "physicalComponentID": "north-v09-staff-glazing",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "f493a5076401bc5835faf6ea745702c2f55d4804e6e37b719601128acd1d1166",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-glazing",
+      "physicalComponentID": "north-v09-staff-glazing",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "4d3e06f67697760942455dc73ed3093f77d2cf2beb4d60e4fde742f594b49bc7",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-header",
+      "physicalComponentID": "north-v09-staff-header",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "8dcb8b9835c78e85b8c362c67b60dcb7c1215e8f1120e5066393484a2dc09fe5",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-header",
+      "physicalComponentID": "north-v09-staff-header",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "9f1ca99656eff6c45bba6c1cbd999c5aae41f26d434ab070bcec49dcb877a292",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-header",
+      "physicalComponentID": "north-v09-staff-header",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "a3cd1fed68b479c299ad8f73ee709e6e1871f5fa6de85de0148731e3b50e061c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-header",
+      "physicalComponentID": "north-v09-staff-header",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "caa38af8848bbd35ade6810acd6dc9a07c0b6d4389e7897820ee8e3f818bf60c",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-header",
+      "physicalComponentID": "north-v09-staff-header",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "df437281245c6ba65d08deb7978bfac416d2ab95d310eb36fd7fa34d1bfded63",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-staff-header",
+      "physicalComponentID": "north-v09-staff-header",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "44bcd1c514081f6738426baf334a435ba752413d9064306c8231041f23a49246",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "5cb7fb50249ddd723fbecdb57a57bae45c4993a0a154dba1fe0a898c98192945",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 9
+    },
+    {
+      "canonicalFaceKey": "9b4227f28f0b14e6ff5e5bc9f21ea14b3b8c253cd6b13b6f2b7d9d01d9932c87",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "9cd5a8961f4f6c04f3b768496bd57b34bf45940a984d74a6b3b09047bc50e936",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "a50c78870231bb15bb86ae26171fff3ae23d37a7d65da506783b8736ef5bc92d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 8
+    },
+    {
+      "canonicalFaceKey": "afb63af58eb629cc9e8e9ac7a1a2273e14f20558ebdae538a6b94787d6c87945",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 7
+    },
+    {
+      "canonicalFaceKey": "b446a795625ada731c7331dd7c402c0743160525ab4a79d4d1ff0815f5161264",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "ced5e128a6df7625436a9fe863160a40b120b37d0861c54b957bfadef6293776",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "d1d56ce0638bad304fc71a60bb5e496928d8e1f0cf7ac85b73c3e94954d68d1f",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 6
+    },
+    {
+      "canonicalFaceKey": "f552a8928d5f59e38db40a3b9f65f45ce06e0fbc72c939042122f3fe0c50d02d",
+      "fragmentIndex": 0,
+      "objectName": "north-v09-subordinate-stack",
+      "physicalComponentID": "north-v09-subordinate-stack",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "37f15ffda4a04df31425a1fd01623199f33ea1d7c3fb39ba26527e3def8777bc",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-assembly-return",
+      "physicalComponentID": "v12-east-assembly-return",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "7a459ef1c2469cae4b5961bd20dfe82862ab5a029860d35581ad06fc01ec96a2",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-assembly-return",
+      "physicalComponentID": "v12-east-assembly-return",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "7e03f249a23edc5241cac646aed6b4ffb35f1a96e9ebcc46f73119d49d3b6188",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-assembly-return",
+      "physicalComponentID": "v12-east-assembly-return",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "877ef3a1342493d8520905ee19fc24656f8b7e6357bf3370d59840117c55f3cb",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-assembly-return",
+      "physicalComponentID": "v12-east-assembly-return",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "b5802d74930a566ee75fc0b690be7788b25a6065b795b29c49e3449618b9a4c6",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-assembly-return",
+      "physicalComponentID": "v12-east-assembly-return",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "fea6c4e3f92b1280d015ea4b85855543fb7d07dea148666608facb5ab2ae1853",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-assembly-return",
+      "physicalComponentID": "v12-east-assembly-return",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "5bec0309daf5699937399556a38fbf2ed76d776bf8a1efb46ab0c4e77ddc036a",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-return-cap",
+      "physicalComponentID": "v12-east-return-cap",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "6819cc056d014b15beeca00412a742b4e80d5ff66b6f3fce8ca7574c80dfdf36",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-return-cap",
+      "physicalComponentID": "v12-east-return-cap",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "76d9b4d4310eebac36b1b542b5683b9d435d00c142784d32daafdeba43e236e8",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-return-cap",
+      "physicalComponentID": "v12-east-return-cap",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "9dadf6b71c6241438e6d92a7fcd7ae671f76d0a07b9b446414489e949eb3f4a5",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-return-cap",
+      "physicalComponentID": "v12-east-return-cap",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "c5ace559843b104f335974c1fe0e1d9f0d77c9cfa7a535e59b8f73b8249e7092",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-return-cap",
+      "physicalComponentID": "v12-east-return-cap",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "d7b9a50607213be001c3f790ea10d1f8fbf3df69d1dfb169681852bfbe78aab8",
+      "fragmentIndex": 0,
+      "objectName": "v12-east-return-cap",
+      "physicalComponentID": "v12-east-return-cap",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "567eb81e6a8c15602b203b36c7c550cca62bf15aa00c4439a6f894804e0e73eb",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-girder-a",
+      "physicalComponentID": "v12-gantry-girder-a",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "89bdf5753bae3bfbe8b4f329c2cc5f8fde759abb181f4a793b9fc1b2580d9218",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-girder-a",
+      "physicalComponentID": "v12-gantry-girder-a",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "8e881f21d041e0b738c6c4bd120ff4f7ba52475c6f67268c8bc0fee2f64b520c",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-girder-a",
+      "physicalComponentID": "v12-gantry-girder-a",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "95e569acdf387f2c3f31ab6e467939f252087b98a7d622148bec5ece7cb98dd0",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-girder-a",
+      "physicalComponentID": "v12-gantry-girder-a",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "d81e39e9ab3771f2bd6805389b23e84ba5cbf66b597459a4e842b05973f3b84b",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-girder-a",
+      "physicalComponentID": "v12-gantry-girder-a",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "f596316e40621ef83e5c93b09f23f8d9f3aec9b28feafa7ad05421e6c4cea5e9",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-girder-a",
+      "physicalComponentID": "v12-gantry-girder-a",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "1a4a2a968dfeda9bf6e5475f4c5fdd7efff5917bec1fac1fab58857027313a73",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-pier-east",
+      "physicalComponentID": "v12-gantry-pier-east",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "4a6fefb95bb843d62502dfac837077d9b2b7cc6ba7c8ece24357ddcc26993b93",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-pier-east",
+      "physicalComponentID": "v12-gantry-pier-east",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "9b62e3aa306f71ff344626392247c62793b11a60dc089175bad8fc39c1fcaf3d",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-pier-east",
+      "physicalComponentID": "v12-gantry-pier-east",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "c671d2fa9f68a846de8f3adf7b2a5a15bef47a58898a645a019b118d6017a166",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-pier-east",
+      "physicalComponentID": "v12-gantry-pier-east",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "c90d940c2c5938f28fbfa4efc077aa0a873432d42c9216992ea7cc7d17a75b96",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-pier-east",
+      "physicalComponentID": "v12-gantry-pier-east",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "d1006b1007c4ff57b1414922ae44ad6b27247bb81d98b4a51365e1b3a5ce122c",
+      "fragmentIndex": 0,
+      "objectName": "v12-gantry-pier-east",
+      "physicalComponentID": "v12-gantry-pier-east",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "06ce81757d3259378c3769ba623eab0ef167a165577f92ee857845bcf8339d5c",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-west-lower",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "1413148c8bf0a109c0b941fc1823a8b1eed818505ace1aa987f47fce5b064da3",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-east",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 4
+    },
+    {
+      "canonicalFaceKey": "2da8a3b3a4933e7c555dd454d682e6012e10d4435b1f8821e62191b551837ced",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-east",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "3f044d69b4a5916d5417090d01134771cdde23998eee294a81ead8ff32779593",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-west-lower",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "4eb29753820e9360ab83aaf74f1fddbea239b3398264fff33fb0a2d6ad3fde2a",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-west-lower",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "545ee511a2ac305349adfa1cac5b4771417cd88ee27733ff9fb97405abfe2c3a",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-east",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "a2cf1db1c08da3e06ad09b745cd5f79455acdb51fda2f4b15a51074507fede49",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-west-lower",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "a9875f6860d272cc0720842e2c541fe4254b5d11c5eaf35552cee4fadbe6a78f",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-west-lower",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "aecccef4fb4dd1920375d2e938aded56d4f6fb706d7c99d4fb6ce4de23b3c597",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-east",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "d3001cd3b8ffe3557b1839e397affe52f209754a2ca54f32c9998d3462c03e9a",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-east",
+      "polygonIndex": 9,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "db85dbc429f6c6068aa8ac62903015e18927a3325ef4049b1e2c30f66a86ca96",
+      "fragmentIndex": 0,
+      "objectName": "v12-portal-inset",
+      "physicalComponentID": "v12-portal-inset-east",
+      "polygonIndex": 10,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "0ca43f38395d63d10961aae363b124b252195495fe55ee271a9586bc03a5042b",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-camera-reveal",
+      "polygonIndex": 0,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "126f086e54270adfc2f85af0b466514fab02f4aee027725fd5be8c47ac578e5d",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-camera-reveal",
+      "polygonIndex": 1,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "1db24bc6f05da977e6e921541c9f383ecc6d5d34faab15b15a5db5bb68474919",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-exterior",
+      "polygonIndex": 2,
+      "sourceFaceIndex": 3
+    },
+    {
+      "canonicalFaceKey": "34aaaa81240bbeba18b7a9a13f6fc82f38a4682aba98f4ecab40f6e47c8fe99b",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-exterior",
+      "polygonIndex": 3,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "37054fb5ff97af2c62b79b80c577d95d6608617ff7f5408019bef17c70a1407d",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-exterior",
+      "polygonIndex": 4,
+      "sourceFaceIndex": 0
+    },
+    {
+      "canonicalFaceKey": "a8a5351b1b776ea72d833a40859fa253809aebe662024c7d4a4faa37807ec501",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-camera-reveal",
+      "polygonIndex": 5,
+      "sourceFaceIndex": 1
+    },
+    {
+      "canonicalFaceKey": "aa4b2bceb26075d07d0d00d5d43a5efd80a21822f4a66b2e4f38ae89182482a2",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-camera-reveal",
+      "polygonIndex": 6,
+      "sourceFaceIndex": 2
+    },
+    {
+      "canonicalFaceKey": "d56300b7c48195d7db801bf268e2d1e65956f76c486e2719f32fd9ffe2d71948",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-exterior",
+      "polygonIndex": 7,
+      "sourceFaceIndex": 5
+    },
+    {
+      "canonicalFaceKey": "e861e2d4eae0a5f0d026c856a40ed57f8b58399b5b901b16d3e7447f88c79de5",
+      "fragmentIndex": 0,
+      "objectName": "v12-west-portal-pier",
+      "physicalComponentID": "v12-west-pier-exterior",
+      "polygonIndex": 8,
+      "sourceFaceIndex": 2
+    }
+  ],
+  "physicalComponentCount": 50,
+  "schema": 1,
+  "semanticObjectCount": 47,
+  "task": "PLAY-027"
+}

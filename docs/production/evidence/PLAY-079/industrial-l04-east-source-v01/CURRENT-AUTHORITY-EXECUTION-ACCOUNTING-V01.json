@@ -121,22 +121,50 @@
       {
         "resourceClass": "helper",
         "slots": 1,
-        "reason": "slot_1_is_idle_after_all_four_authorized_validation_jobs_joined"
+        "reasonCode": "completed_before_observation",
+        "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "dependencyAuthority": {
+          "path": "docs/production/claims/PLAY-079.world-art-east.md",
+          "sha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+        },
+        "resumptionEvent": "integration_publishes_the_exact_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments",
+        "nextRefillJob": "await_integration_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments_before_any_east_a_b_c_launch"
       },
       {
         "resourceClass": "helper",
         "slots": 1,
-        "reason": "slot_2_is_idle_after_all_four_authorized_validation_jobs_joined"
+        "reasonCode": "completed_before_observation",
+        "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "dependencyAuthority": {
+          "path": "docs/production/claims/PLAY-079.world-art-east.md",
+          "sha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+        },
+        "resumptionEvent": "integration_publishes_the_exact_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments",
+        "nextRefillJob": "await_integration_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments_before_any_east_a_b_c_launch"
       },
       {
         "resourceClass": "helper",
         "slots": 1,
-        "reason": "slot_3_is_idle_after_all_four_authorized_validation_jobs_joined"
+        "reasonCode": "completed_before_observation",
+        "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "dependencyAuthority": {
+          "path": "docs/production/claims/PLAY-079.world-art-east.md",
+          "sha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+        },
+        "resumptionEvent": "integration_publishes_the_exact_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments",
+        "nextRefillJob": "await_integration_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments_before_any_east_a_b_c_launch"
       },
       {
         "resourceClass": "helper",
         "slots": 1,
-        "reason": "slot_4_is_idle_after_all_four_authorized_validation_jobs_joined"
+        "reasonCode": "completed_before_observation",
+        "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "dependencyAuthority": {
+          "path": "docs/production/claims/PLAY-079.world-art-east.md",
+          "sha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+        },
+        "resumptionEvent": "integration_publishes_the_exact_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments",
+        "nextRefillJob": "await_integration_appearance_lock_source_profile_postlock_schedule_one_attempt_grants_and_dcc_slot_assignments_before_any_east_a_b_c_launch"
       }
     ],
     "overlap": {

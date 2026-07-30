@@ -51,13 +51,13 @@ POSTLOCK_FIXTURE_PROFILE_PATH = (
 POSTLOCK_FIXTURE_RUNNER_PATH = f"{FIXTURE_ROOT}POSTLOCK-RUNNER-CONTRACT.json"
 POSTLOCK_FIXTURE_SCHEDULE_PATH = f"{FIXTURE_ROOT}POSTLOCK-SCHEDULE.json"
 BRANCH = "codex/citysim-world-art-south"
-REVISION_6_BASE = "cda04083bd50df3a0cd99923c8ad571afd62509b"
-REVISION_6_CLAIM_SHA256 = (
-    "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+REVISION_7_BASE = "aaee294718a8176b70a4688b738b517f216dd3a7"
+REVISION_7_CLAIM_SHA256 = (
+    "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e"
 )
-INTEGRATION_AUTHORITY = REVISION_6_BASE
-INTEGRATION_TREE = "b1a5bbea9e401a601d4d8e0f6cb9e84fc259af91"
-CLAIM_SHA256 = REVISION_6_CLAIM_SHA256
+INTEGRATION_AUTHORITY = REVISION_7_BASE
+INTEGRATION_TREE = "7ee544ea6616be88d1e035eb4c618ce73805525c"
+CLAIM_SHA256 = REVISION_7_CLAIM_SHA256
 EXECUTION_SCHEMA = {
     "path": (
         "docs/production/evidence/INTEGRATION/"
@@ -81,9 +81,9 @@ EXECUTION_AUTHORITY = {
 }
 EXECUTION_CLOSURE_CONTRACT = {
     "mode": "validation_only",
-    "publishedBaseCommit": REVISION_6_BASE,
-    "claimRevision": 6,
-    "claimSha256": REVISION_6_CLAIM_SHA256,
+    "publishedBaseCommit": REVISION_7_BASE,
+    "claimRevision": 7,
+    "claimSha256": REVISION_7_CLAIM_SHA256,
     "schema": EXECUTION_SCHEMA,
     "semanticValidator": EXECUTION_VALIDATOR,
     "operatingAuthority": EXECUTION_AUTHORITY,
@@ -96,9 +96,9 @@ EXECUTION_CLOSURE_CONTRACT = {
 }
 
 CLAIM = {
-    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
+    "blobOid": "bbff05a8840376bb061271f7a63e1b4ef8744362",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "revision": 6,
+    "revision": 7,
     "sha256": CLAIM_SHA256,
 }
 AUTHORITIES = {
@@ -133,19 +133,19 @@ AUTHORITIES = {
     },
 }
 ORCHESTRATOR = {
-    "blobOid": "92155d1cf68efa78e3d2396c8cfe7c4794c9662c",
+    "blobOid": "d157277bf859f1ccdf0adecac63c440c52b867d4",
     "path": f"{SOURCE_ROOT}prepare_launch_binding.py",
-    "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9",
+    "sha256": "f33852d82f0d9707f0b20aff899302d708955fe68b85eb36dbacba0d006edd57",
 }
 LOW_LEVEL_RUNNER = {
-    "blobOid": "51d220d89de07e9550a03c4f849a2dd699238353",
+    "blobOid": "8ab0ea5f743b40c35c7723a576883f7233248474",
     "path": f"{SOURCE_ROOT}run_production.py",
-    "sha256": "80ac231be0b312d69eb55f10a8acee5ef2617a723570ca243d89c419718d5b27",
+    "sha256": "43a1338f6e4293820609e7e887f9dddaaa8607a8a21d483ec58d9aaa7d1202ca",
 }
 RUNNER_CONTRACT = {
-    "blobOid": "bde316b55999a03b63316e89b02cdd8443b0bc33",
+    "blobOid": "970b604ee1b4fb7d60ad383b8853f6597e8fcfb1",
     "path": f"{SOURCE_ROOT}runner-contract.json",
-    "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2",
+    "sha256": "e8327aab984ca7b73cdc843cb1f5477d61215784fa86ea1a7ee9d8f9ae47afd7",
 }
 NONPRODUCTION_POSTLOCK_FIXTURE = {
     "appearanceLock": {
@@ -158,7 +158,7 @@ NONPRODUCTION_POSTLOCK_FIXTURE = {
     },
     "schedule": {
         "path": POSTLOCK_FIXTURE_SCHEDULE_PATH,
-        "sha256": "b0691abda2d50c742bd92e0b15667caff91e231bba4bdd40988f5a099d763772",
+        "sha256": "307d1920671316e2c959e9dbd940b805e86b2a127e694e7c72da3fc5a10cd686",
     },
     "sourceProductionProfile": {
         "path": POSTLOCK_FIXTURE_PROFILE_PATH,
@@ -215,7 +215,7 @@ PROCESS_EVIDENCE_ROOTS = {
 }
 TARGET = {
     "baseCommit": INTEGRATION_AUTHORITY,
-    "claimRevision": 6,
+    "claimRevision": 7,
     "claimSha256": CLAIM_SHA256,
     "exclusiveRoots": [SOURCE_EXCLUSIVE_ROOT, EVIDENCE_EXCLUSIVE_ROOT],
     "phase": "postlock_abc",
@@ -548,7 +548,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
     if contract.get("currentInputs") != CURRENT_INPUTS:
         reject("CURRENT_INPUT_STATE_MISMATCH")
     if contract.get("target") != TARGET:
-        if contract.get("target", {}).get("claimRevision") != 5:
+        if contract.get("target", {}).get("claimRevision") != 7:
             reject("WRONG_CLAIM_REVISION")
         reject("TARGET_BINDING_MISMATCH")
     expected_orchestration = {
@@ -841,7 +841,7 @@ def validate_schedule_core(
 ) -> dict[str, Any]:
     if schedule is None:
         reject("MISSING_SCHEDULE")
-    if contract.get("target", {}).get("claimRevision") != 6:
+    if contract.get("target", {}).get("claimRevision") != 7:
         reject("WRONG_CLAIM_REVISION")
     if schedule.get("phase") != "postlock_abc":
         reject("WRONG_PHASE", schedule.get("phase"))
@@ -1224,9 +1224,9 @@ def consume_execution_authority(
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": BRANCH,
-        "claimRevision": 6,
-        "claimSha256": REVISION_6_CLAIM_SHA256,
-        "publishedBaseCommit": REVISION_6_BASE,
+        "claimRevision": 7,
+        "claimSha256": REVISION_7_CLAIM_SHA256,
+        "publishedBaseCommit": REVISION_7_BASE,
     }
     mismatches = {
         key: {"expected": value, "actual": task.get(key)}
@@ -1234,7 +1234,7 @@ def consume_execution_authority(
         if task.get(key) != value
     }
     if mismatches:
-        reject("REVISION_6_AUTHORITY_MISMATCH", mismatches)
+        reject("REVISION_7_AUTHORITY_MISMATCH", mismatches)
     authority["_validated"] = {
         key: shared_receipt[key]
         for key in (

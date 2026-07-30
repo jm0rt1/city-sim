@@ -3,7 +3,7 @@
   "taskId": "PLAY-080",
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
-  "baselineCommit": "0186066bb88d78dc8dab4be03296d418ea2e259a",
+  "baselineCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
@@ -34,7 +34,7 @@
     },
     "nonAliasInput": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
-      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
     },
     "sourceStageSchemaAuthority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-STAGE-SCHEMA-V2-AUTHORITY.md",
@@ -42,11 +42,11 @@
     },
     "sourceStageHandoffSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
-      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
     },
     "nonAliasLoader": {
       "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
-      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
     },
     "semanticValidator": {
       "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",

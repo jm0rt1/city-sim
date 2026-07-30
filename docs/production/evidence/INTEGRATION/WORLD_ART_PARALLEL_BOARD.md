@@ -1,8 +1,8 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `836ae23e8f9e10bd35b75ddd208c13d72c9fa5e9`
+- **Parallel operating authority:** `7e21babafb5aa491894136c7f1c1d4c58444ef31`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-30
+- **Updated:** 2026-07-30 08:05Z
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,12 +10,12 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `c9d3e754447d4c87ea4d8123c54baad5259d549f` | static-B v03 clean success returned; independent disposition active |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `bcb5cba1495aade19009f4e4407cd55b7bf03c39` | zero-pixel A/B/C orchestration prep integrated; wait for post-lock release |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `d8332051c8665410f90684ba8f034fd2a1846a53` | zero-pixel validation fan-out prep integrated; wait for post-lock release |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `76386c7dba4c3f9b86c6662361cc670ef1e6ed1f` | zero-pixel review assembly prep integrated; wait for post-lock release |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `aed682f61d2593209740da0a1fd14577bd445e6c` | L4 intake ready; unrelated R4-A candidate returned for independent review |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `8e68cf11c6a943ab44d83232659585134c17f260` | L4 preregistration complete; unrelated L3 gate remains externally blocked |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `9b50357fdd0888fc47ff36d1f916466875ae0124` + authorized repair WIP | independent review returned schedule-publication, execution-authority, capability, replay, TOCTOU and terminal-accounting defects |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `6524934f764862768bce7d27eccffb279604b55f` | zero-child A/B/C schedule adapter accepted and integrated |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `092d7b5938125f66c24bf0a759825da195baea04` | real post-lock CLI adapter repaired, accepted, and integrated |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `0d18aae990d5691d89e02426dc50e36262d4efb1` | zero-child A/B/C schedule adapter accepted and integrated |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `1ed9dd49d9bcc8444de8178e54de7d993c53e3d7` + authorized repair WIP | exact `6eca22ed…` synchronized; real performance and authored-district product repair active |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistering` | `8e68cf11c6a943ab44d83232659585134c17f260` | exact-batch machine packet repair queued behind the non-overlapping L3 gate |
 
 ## Dispatch invariant
 
@@ -24,17 +24,19 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `05:16Z` refresh, North has returned the single-child static-B v03
-result cleanly and Integration is independently reviewing it. East, South,
-and West have exhausted every claim-authorized zero-pixel preparation and
-remain blocked from pixels until North process A is independently accepted and
-Integration publishes the appearance lock, source-production profile, strict
-parallel schedule, and per-process launch grants.
+At the `06:43Z` refresh, all four direction-local schedule adapters are
+independently accepted and integrated. East and West passed on their first
+independent reviews. North repaired fresh-root evidence determinism; South
+repaired a real-CLI post-lock contradiction that synthetic tests had hidden.
 
-North v03 consumed exactly one static-B child and reported exact A/B static
-comparison plus bounded wait4/resource evidence at `c9d3e754…`. Process A/B/C
-and every East/South/West DCC or pixel process remain closed until that result
-is independently disposed and the missing post-lock authorities are published.
+Every blocked grant starts zero children and no adapter exposes a low-level
+DCC bypass. North has been refilled immediately with the next zero-child slice:
+author the real high-level Process-A orchestrator and Blender entrypoint for
+independent prelaunch review. North Process A remains closed until that review,
+a validator-passing `prelock_north_a` schedule, and a separate one-process
+authority. Sibling A/B/C remain closed until North A passes appearance review
+and Integration publishes the lock, source profile, and `postlock_abc`
+schedule.
 
 Renderer's canonical direction source-admission harness remains ready with
 zero live L4 receipts. Its separate R4-A candidate is clean at `aed682f6…` and
@@ -43,11 +45,27 @@ assembly. QA's L4 family preregistration is complete, while the exclusive QA
 lane remains occupied by a separate L3 lock-state gate; that L3 work likewise
 does not count as active L4 QA.
 
-No row is mislabeled active. The current L4 art stage has exhausted safe
-sibling prelock work; its next legal transition is North result disposition
-and then one Process-A calibration. Outside this family ledger, published
-PLAY-084 UI and PLAY-085 Gameplay work are independently dispatched so overall
-delivery remains parallel without weakening the art gate.
+No unrelated Renderer or QA work is counted as an active L4 source. The three
+completed sibling cells retain accepted independent launch boundaries while
+North advances the design-calibration path. A returned cell was repaired
+without canceling or invalidating successful siblings. Outside this family
+ledger, published PLAY-084 UI and PLAY-085 Gameplay work remain independently
+active.
+
+At the `07:26Z` refresh, North is repairing an independently returned launch
+boundary without starting any DCC process. Two separate reviews proved the
+candidate could not publish a real schedule and that its anonymous-pipe child
+capability remained forgeable; the repair also covers durable one-attempt
+leases, output identity, helper-process accounting, and fail-complete receipts.
+Renderer has completed the truthful measurement boundary, proving a 22.022 ms
+median first-grid update and 74.26% plain component, and is now implementing
+the actual architecture plus authored-district repair. East, South, and West
+remain clean and fully prepared for the post-lock A/B/C fan-out; they are not
+counted as artificial filler work. QA's existing human-readable L4 gate is
+preserved, but the new skill authority deliberately demotes the row to
+`preregistering` until one exact-batch machine packet binds its claim, family
+contract, ledger, Renderer intake plan, fixture, camera, rubric, evidence root,
+and null candidate receipt.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

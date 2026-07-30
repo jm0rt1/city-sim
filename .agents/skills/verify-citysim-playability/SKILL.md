@@ -64,6 +64,17 @@ camera/capture coordinates, regular/compact variants, rubric, stop conditions,
 and evidence destinations have been exercised against the accepted baseline
 or fail closed with a named blocker. Baseline rehearsal is harness proof only.
 
+Before reporting `preregistered`, write one task-owned machine-readable
+preregistration packet bound to the exact family batch. It must include task
+and claim path/hash, batch ID, published base, family-contract path/hash,
+expected North/East/South/West logical keys, Integration ledger path/revision,
+Renderer intake-plan path/hash, fixture/version/state hash, camera-state hash,
+rubric hash, exact evidence root, and `rendererCandidateReceipt: null`.
+The packet may report only `preregistered` or a fail-closed `blocked` state.
+Integration must acknowledge that exact packet before counting QA as an active
+or completed family row; a generic, prior-family, or unbound preregistration
+never satisfies the current batch.
+
 For a directional art family, preregister one family-level staged-app gate.
 North, East, South, and West cells retain their own source determinism and
 geometry evidence, but they do not request separate production acceptance from

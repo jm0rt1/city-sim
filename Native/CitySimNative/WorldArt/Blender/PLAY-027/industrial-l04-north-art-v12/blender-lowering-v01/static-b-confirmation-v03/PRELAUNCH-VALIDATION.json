@@ -1,0 +1,424 @@
+{
+  "adversarialCaseCount": 33,
+  "adversaries": [
+    {
+      "actualFailure": "static-B v03 authority binding drift",
+      "expectedFailure": "static-B v03 authority binding drift",
+      "name": "wrong-authority",
+      "passed": true
+    },
+    {
+      "actualFailure": "static-B v03 authority binding drift",
+      "expectedFailure": "static-B v03 authority binding drift",
+      "name": "multiple-child-starts",
+      "passed": true
+    },
+    {
+      "actualFailure": "static-B v03 authority binding drift",
+      "expectedFailure": "static-B v03 authority binding drift",
+      "name": "wrong-terminal-rss-unit",
+      "passed": true
+    },
+    {
+      "actualFailure": "Darwin terminal-rusage contract required",
+      "expectedFailure": "Darwin terminal-rusage contract required",
+      "name": "wrong-platform",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal wait4 PID mismatch",
+      "expectedFailure": "terminal wait4 PID mismatch",
+      "name": "wrong-terminal-pid",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal rusage consumed more than once",
+      "expectedFailure": "terminal rusage consumed more than once",
+      "name": "twice-consumed-terminal-rusage",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal ru_maxrss must be positive bytes",
+      "expectedFailure": "terminal ru_maxrss must be positive bytes",
+      "name": "zero-terminal-rusage",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal ru_maxrss must be positive bytes",
+      "expectedFailure": "terminal ru_maxrss must be positive bytes",
+      "name": "negative-terminal-rusage",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal ru_maxrss malformed",
+      "expectedFailure": "terminal ru_maxrss malformed",
+      "name": "malformed-terminal-rusage",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal resource measurement unavailable",
+      "expectedFailure": "terminal resource measurement unavailable",
+      "name": "missing-terminal-measurement",
+      "passed": true
+    },
+    {
+      "actualFailure": null,
+      "cadence": {
+        "gapCountAboveWarning": 1,
+        "maximumObserverGapSeconds": 0.15,
+        "requestedSleepSeconds": 0.01,
+        "sampleCount": 4,
+        "totalGapDurationAboveWarningSeconds": 0.15,
+        "totalGapExcessAboveWarningSeconds": 0.1,
+        "warningOnly": true,
+        "warningThresholdSeconds": 0.05
+      },
+      "enforcedPeakRSSKiB": 32,
+      "expectedFailure": null,
+      "name": "150ms-observer-gap-low-rss-warning-only",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal-enforced-rss-limit",
+      "expectedFailure": "terminal-enforced-rss-limit",
+      "name": "hidden-terminal-child-tree-rss",
+      "passed": true
+    },
+    {
+      "actualFailure": "terminal-per-process-timeout",
+      "expectedFailure": "terminal-per-process-timeout",
+      "name": "terminal-timeout-after-observer-gap",
+      "passed": true
+    },
+    {
+      "actualFailure": "process-group-rss-limit",
+      "expectedFailure": "process-group-rss-limit",
+      "name": "online-aggregate-rss-limit",
+      "passed": true
+    },
+    {
+      "actualFailure": "child-nonzero-exit",
+      "expectedFailure": "child-nonzero-exit",
+      "name": "nonzero-child-status",
+      "passed": true
+    },
+    {
+      "actualFailure": "child-signaled",
+      "expectedFailure": "child-signaled",
+      "name": "signaled-child-status",
+      "passed": true
+    },
+    {
+      "actualFailure": "observed-extra-process-group-member",
+      "expectedFailure": "observed-extra-process-group-member",
+      "name": "sampled-extra-process-group-member",
+      "passed": true
+    },
+    {
+      "actualFailure": "post-reap-process-group-not-exhausted",
+      "expectedFailure": "post-reap-process-group-not-exhausted",
+      "name": "post-reap-surviving-descendant",
+      "passed": true
+    },
+    {
+      "actualFailure": "fixed static-B v03 child argv drift",
+      "expectedFailure": "fixed static-B v03 child argv drift",
+      "name": "changed-bootstrap-expression",
+      "passed": true
+    },
+    {
+      "actualFailure": "fixed static-B v03 child argv drift",
+      "expectedFailure": "fixed static-B v03 child argv drift",
+      "name": "changed-child-process",
+      "passed": true
+    },
+    {
+      "actualFailure": "hash drift: /Users/James/.codex/worktrees/0648/city-sim/docs/production/claims/PLAY-027.world-art.md",
+      "expectedFailure": "hash drift",
+      "name": "claim-hash-drift",
+      "passed": true
+    },
+    {
+      "actualFailure": "hash drift: /Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "expectedFailure": "hash drift",
+      "name": "scene-hash-drift",
+      "passed": true
+    },
+    {
+      "actualFailure": "INPUT-BINDINGS differs outside the two-pointer allowlist",
+      "expectedFailure": "INPUT-BINDINGS differs outside the two-pointer allowlist",
+      "name": "input-bindings-extra-value-difference",
+      "passed": true
+    },
+    {
+      "actualFailure": "INPUT-BINDINGS differs outside the two-pointer allowlist",
+      "expectedFailure": "INPUT-BINDINGS differs outside the two-pointer allowlist",
+      "name": "input-bindings-extra-key",
+      "passed": true
+    },
+    {
+      "actualFailure": "recovery output root must be absent",
+      "expectedFailure": "recovery output root must be absent",
+      "name": "reused-output-root",
+      "passed": true
+    },
+    {
+      "actualFailure": "recovery output root must be absent",
+      "expectedFailure": "recovery output root must be absent",
+      "name": "second-child-start",
+      "passed": true
+    },
+    {
+      "actualFailure": "recovery output root must be absent",
+      "expectedFailure": "recovery output root must be absent",
+      "name": "symlink-output-root",
+      "passed": true
+    },
+    {
+      "actualFailure": "static Blender concurrency lock is busy",
+      "expectedFailure": "concurrency lock is busy",
+      "name": "lock-contention",
+      "passed": true
+    },
+    {
+      "actualFailure": "static child inventory drift: []",
+      "expectedFailure": "static child inventory drift",
+      "name": "missing-child-files",
+      "passed": true
+    },
+    {
+      "actualFailure": "prohibited static output: ['raw.png']",
+      "expectedFailure": "prohibited static output",
+      "name": "pixel-output",
+      "passed": true
+    },
+    {
+      "actualFailure": "prohibited static output: ['scene.blend']",
+      "expectedFailure": "prohibited static output",
+      "name": "blend-output",
+      "passed": true
+    },
+    {
+      "actualFailure": "repository mutation outside output root: [' M Native/CitySimNative/Rendering/CityScene.swift']",
+      "expectedFailure": "repository mutation outside output root",
+      "name": "repository-mutation",
+      "passed": true
+    },
+    {
+      "actual": {
+        "blendFiles": [],
+        "childStartCount": 1,
+        "pixelFiles": [],
+        "renderInvocationCount": 0,
+        "staticBInvocationCount": 1
+      },
+      "expected": {
+        "blendFiles": [],
+        "childStartCount": 1,
+        "pixelFiles": [],
+        "renderInvocationCount": 0,
+        "staticBInvocationCount": 1
+      },
+      "name": "one-child-static-b-process-truth",
+      "passed": true
+    }
+  ],
+  "allAdversariesRejectedOrBounded": true,
+  "attemptID": "industrial-l04-north-v12-static-b-confirmation-v03",
+  "authorityCommit": "fcfad4602aef55d2decd8eb2153401a8e5ef1b3c",
+  "authoritySHA256": "a98127463947994c6c9e42517f1ed407b47d3bf6cf7790fc7ee2a461bfc4db3d",
+  "blendFiles": [],
+  "blenderChildStartCount": 0,
+  "candidateReadyForIndependentReview": false,
+  "claimSHA256": "21495a4a19918ae68f14da1a90f33145a09b94942f9a9ea54f6475fb484d2890",
+  "confirmationSourceFiles": {
+    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/launch_static_b_confirmation.py": "2ff70f1828356be7147ac820061bfd3c8834aa7d0bb69dea09615219979b703f",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/test_static_b_confirmation.py": "93621245caa1dda5cdcaeac0815004c0b7654e4826960435faf7c769adca92c9"
+  },
+  "contractCanonicalSHA256": "135012a99d7d8eaaecf538355e9d7b07f17181b2f0fa57b37849b778a300800f",
+  "contractDifference": {
+    "allowedBindings": [
+      "claim",
+      "evidenceRoot",
+      "confirmationAuthority"
+    ],
+    "normalizesExactlyToFrozenV02Contract": true
+  },
+  "contractFileSHA256": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f",
+  "darwinWait4Model": {
+    "aggregatePeakCoverage": "sampled_with_terminal_child_tree_high_water",
+    "disclosedAggregateTransientMemberLimitation": "ru_maxrss_is_not_maximum_simultaneous_process_group_sum;a_short_lived_unobserved_extra_member_below_the_individual_cap_may_escape",
+    "platform": "darwin",
+    "terminalRSSNormalization": "(ru_maxrssBytes+1023)//1024",
+    "terminalRSSUnit": "bytes",
+    "terminalResourceMeasurementRequired": true,
+    "terminalWaitPrimitive": "os.wait4",
+    "wait4IsSoleReapingAuthority": true
+  },
+  "dependencyScan": {
+    "files": [
+      {
+        "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+        "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+      },
+      {
+        "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+        "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+      },
+      {
+        "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v02/launch_static_b_confirmation.py",
+        "sha256": "fdf8e0dcd34634f6a749018de3a987594f252b4ef71ccc05d09c7618f4a09910"
+      },
+      {
+        "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/launch_static_b_confirmation.py",
+        "sha256": "2ff70f1828356be7147ac820061bfd3c8834aa7d0bb69dea09615219979b703f"
+      },
+      {
+        "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/test_static_b_confirmation.py",
+        "sha256": "93621245caa1dda5cdcaeac0815004c0b7654e4826960435faf7c769adca92c9"
+      }
+    ],
+    "forbiddenFindings": [],
+    "passed": true
+  },
+  "fixedChildArgv": [
+    "/Applications/Blender.app/Contents/MacOS/Blender",
+    "--background",
+    "--factory-startup",
+    "--disable-autoexec",
+    "--threads",
+    "1",
+    "--python-exit-code",
+    "1",
+    "--python-expr",
+    "import hashlib,importlib.util,pathlib,sys;d=pathlib.Path('/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01').resolve(strict=True);m=(d/'lower_v12_scene.py').resolve(strict=True);bad=[p for p in sys.path if p and pathlib.Path(p).exists() and pathlib.Path(p).resolve()==d];hashlib.sha256(m.read_bytes()).hexdigest()=='7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42' or (_ for _ in ()).throw(RuntimeError('lowerer hash drift'));not bad or (_ for _ in ()).throw(RuntimeError('unexpected existing bootstrap directory'));sys.path.insert(0,str(d));s=importlib.util.find_spec('lower_v12_scene');s is not None or (_ for _ in ()).throw(RuntimeError('lowerer module not found'));pathlib.Path(s.origin).resolve(strict=True)==m or (_ for _ in ()).throw(RuntimeError('lowerer module origin drift'))",
+    "--python",
+    "/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+    "--",
+    "--repository-root",
+    "/Users/James/.codex/worktrees/0648/city-sim",
+    "--contract",
+    "/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+    "--output-root",
+    "/Users/James/.codex/worktrees/0648/city-sim/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/static-b",
+    "--process-id",
+    "static-b"
+  ],
+  "frozenInputHashes": {
+    "acceptedStaticA:BLENDER-OBJECT-MANIFEST.json": "213ab497191808992b70459dcae25aa3ebd9a902c094a6fc225a24e57b0a5d69",
+    "acceptedStaticA:INPUT-BINDINGS.json": "ee3691ffc5a8a817d35913e4359a66f0efb12042ab505f1f95b2b2c9c7bd3e1c",
+    "acceptedStaticA:MATERIAL-MANIFEST.json": "c66bc0796c57581dc4dac629b6947b0d5ab4a515213165b8c8d5fcc992d80e88",
+    "acceptedStaticA:PROJECTION.json": "b5e1d6d88e03b940fb20725ddb8b18dce9ce52a6b72f332975f76f8bed79c11e",
+    "acceptedStaticA:TOPOLOGY.json": "8ad251808663f3daac85af7a0df388306f790af017e4e6d9b93ee3f7e9e51c8f",
+    "acceptedStaticA:VALIDATION.json": "9250eb7a26659e9c91c3a0debb9ad6de8be78d104e1cbd15ebfba6d3ed755ff2",
+    "acceptedStaticAContract": "af55da8df7b5152c361c9e23ca9c3c5ad5b2231c62609add8b1b10712b30daef",
+    "acceptedStaticALauncher": "375b1ad679a99c683fd06e50227737fb48198f1899ea6a8f0d269eda9f289f3e",
+    "analyticReplayIdentity": "791cdaef240baed03a7a8a380b8fddb50f4039f375a1022ce7eaa7003a28c99e",
+    "authority": "e90f676ca76d65ec7a351ff7e09eeb278c58173a92a8f5036fb9ac18647d66c9",
+    "authorityFile": "b171b8d05296c8f6808188c2f31cd5e6be43b4a16cd5123424eb5ba085211b4a",
+    "blenderExecutable": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "bridge": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "claim": "21495a4a19918ae68f14da1a90f33145a09b94942f9a9ea54f6475fb484d2890",
+    "compoundAdversaries": "9315b8e778d130ad1a31d3fe30727e6eafce6ba4dffbe66154853f64ef9f5d6c",
+    "compoundAudit": "03f6e9f1460c87251e525b977d9684a2e92b4e80eb8145563be0a5fb4f39266e",
+    "compoundAuditTool": "eba59bae87676c80d7271897cd3ff478e8ca771bc1f8a9ad322d264985d534c8",
+    "compoundDisposition": "8725454f888b3d0c299c4d6bb0bb8fbb46d1bd313b27e2e3cb1826ecb1828c88",
+    "frozenImporter": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988",
+    "frozenLowerer": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42",
+    "frozenV02Contract": "61207d78d9106cd0b3b0b954ca3ef8c56f00171d6809b671b0b386d988a1e438",
+    "frozenV02Failure": "34c454159295426cdfe3cee4c92247e0432646947e2487e45464d5ff984144b2",
+    "frozenV02Launcher": "fdf8e0dcd34634f6a749018de3a987594f252b4ef71ccc05d09c7618f4a09910",
+    "frozenV02Prelaunch": "96f92149867820d9b515baf36c010919d104a952c5ce1bf5037d17b39b1c55d2",
+    "importer": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988",
+    "lowerer": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42",
+    "materials": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+    "originalContract": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8",
+    "originalFailure": "aa9e71684dffcd501cbdb6f664787de6e7cb6d33602f46aa928f09a062d4ebd3",
+    "replayPreservation": "e9818cd8b4e3349c83f6438448582faf1adcdec59318c75202bd5945dd7cc1dd",
+    "scene": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2",
+    "staticBConfirmationV03Authority": "a98127463947994c6c9e42517f1ed407b47d3bf6cf7790fc7ee2a461bfc4db3d"
+  },
+  "moduleBootstrap": {
+    "importerImmediatelyFollowsBootstrap": true,
+    "importerSHA256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988",
+    "lowererSHA256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42",
+    "pythonExpr": "import hashlib,importlib.util,pathlib,sys;d=pathlib.Path('/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01').resolve(strict=True);m=(d/'lower_v12_scene.py').resolve(strict=True);bad=[p for p in sys.path if p and pathlib.Path(p).exists() and pathlib.Path(p).resolve()==d];hashlib.sha256(m.read_bytes()).hexdigest()=='7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42' or (_ for _ in ()).throw(RuntimeError('lowerer hash drift'));not bad or (_ for _ in ()).throw(RuntimeError('unexpected existing bootstrap directory'));sys.path.insert(0,str(d));s=importlib.util.find_spec('lower_v12_scene');s is not None or (_ for _ in ()).throw(RuntimeError('lowerer module not found'));pathlib.Path(s.origin).resolve(strict=True)==m or (_ for _ in ()).throw(RuntimeError('lowerer module origin drift'))",
+    "pythonExprCount": 1,
+    "pythonPathEnvironmentUsed": false
+  },
+  "pixelFiles": [],
+  "processID": "static-b",
+  "productionSelected": false,
+  "renderInvocationCount": 0,
+  "repositoryContext": {
+    "authorizedPendingPaths": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/PRELAUNCH-VALIDATION.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/launch_static_b_confirmation.py",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/test_static_b_confirmation.py"
+    ],
+    "branch": "codex/citysim-world-art",
+    "cleanOutsideAuthorizedV03Paths": true,
+    "head": "be30fac8167b4de82605addccd7d7d483c49482d",
+    "passed": true,
+    "requiredAncestors": [
+      "fcfad4602aef55d2decd8eb2153401a8e5ef1b3c",
+      "81d51486fb2086e26ab08dd200221c5eb8d79edb",
+      "28103902a75c8232644a998a34dcaf33ca643a63"
+    ],
+    "statusEntries": [
+      "?? Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+      "?? Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/launch_static_b_confirmation.py",
+      "?? Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/test_static_b_confirmation.py"
+    ],
+    "unexpectedStatusEntries": []
+  },
+  "runtimeEnvelope": {
+    "maximumChildStarts": 1,
+    "maximumConcurrency": 1,
+    "maximumProcessGroupRSSMiB": 1024,
+    "observerGapWarningSeconds": 0.05,
+    "observerSleepSeconds": 0.01,
+    "outputTailMaximumBytes": 65536,
+    "slot": "dcc-1",
+    "timeoutSeconds": 120
+  },
+  "runtimeEvidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-b-confirmation-v03",
+  "runtimeEvidenceRootAbsent": true,
+  "runtimeOutputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/static-b",
+  "schema": 1,
+  "sourceAuthority": false,
+  "staticAComparisonContract": {
+    "fiveRunNeutralFiles": {
+      "BLENDER-OBJECT-MANIFEST.json": "213ab497191808992b70459dcae25aa3ebd9a902c094a6fc225a24e57b0a5d69",
+      "MATERIAL-MANIFEST.json": "c66bc0796c57581dc4dac629b6947b0d5ab4a515213165b8c8d5fcc992d80e88",
+      "PROJECTION.json": "b5e1d6d88e03b940fb20725ddb8b18dce9ce52a6b72f332975f76f8bed79c11e",
+      "TOPOLOGY.json": "8ad251808663f3daac85af7a0df388306f790af017e4e6d9b93ee3f7e9e51c8f",
+      "VALIDATION.json": "9250eb7a26659e9c91c3a0debb9ad6de8be78d104e1cbd15ebfba6d3ed755ff2"
+    },
+    "inputBindings": {
+      "allowedPointers": [
+        "/bindings/claim/sha256",
+        "/contractSHA256"
+      ],
+      "differences": [
+        {
+          "acceptedStaticA": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d",
+          "pointer": "/bindings/claim/sha256",
+          "staticB": "21495a4a19918ae68f14da1a90f33145a09b94942f9a9ea54f6475fb484d2890"
+        },
+        {
+          "acceptedStaticA": "c3cf003c8c123d2fdcad1d2c04f4ae0f450b41ab80f4dcb4b5e056f6835df6e7",
+          "pointer": "/contractSHA256",
+          "staticB": "135012a99d7d8eaaecf538355e9d7b07f17181b2f0fa57b37849b778a300800f"
+        }
+      ],
+      "passed": true,
+      "strictRecursiveEqualityAfterSubstitution": true
+    }
+  },
+  "staticBInvocationCount": 0,
+  "task": "PLAY-027",
+  "validationPassed": true
+}

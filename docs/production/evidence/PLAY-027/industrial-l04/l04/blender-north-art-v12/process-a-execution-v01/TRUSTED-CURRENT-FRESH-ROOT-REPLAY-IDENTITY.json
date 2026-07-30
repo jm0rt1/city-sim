@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "process": "A",
+  "validatedSourceCommit": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
+  "orderedCommits": [
+    {
+      "commit": "f79991f0349f2c0d5658c8b2c6e31d671f6fda5d",
+      "purpose": "merge-current-origin-master"
+    },
+    {
+      "commit": "1023e327c7da70babd6a0fcb778418c353cffc06",
+      "purpose": "anchor-trusted-publication-and-fail-complete-lease"
+    },
+    {
+      "commit": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
+      "purpose": "rebind-current-adapter-and-zero-child-evidence"
+    }
+  ],
+  "ancestry": {
+    "returnedCandidate": "46c3b13d4527a64c195bc57dbfbdcc1200bf9066",
+    "trustedIntegrationMaster": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+    "minimumSkillAuthority": "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed",
+    "allAreAncestors": true
+  },
+  "sourceBindings": {
+    "executionContractSHA256": "a7d28703a7323f0aeaeb592e4066cf94152c55a79bac9c722602af459956b960",
+    "launcherSHA256": "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d",
+    "prelaunchTestSHA256": "bca890dbb5ea15fa162d4edad2ee97d449adee1ce665e399a71a0f94dfadf78a",
+    "adapterContractSHA256": "b1af5c2c2d14f357b5c967691206a7aa1cdebaa77315dfa1b137c31934f173bd",
+    "adapterConsumerSHA256": "6ca5c8fc698965b7011718214a9b21215c6d5a62a5c637b367e9625c2f7314ee",
+    "adapterTestSHA256": "096a96ed01f08df1f1ac8e719def7ddbdee85aecc7cfb53a34ce9f600731ace8"
+  },
+  "freshRoots": [
+    {
+      "id": "fresh-root-a",
+      "head": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
+      "trustedOriginMaster": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+      "adapterEvidenceSHA256": "6babf855dd0a12c1c81fd0bf7829d6cd0dcd68d4c3a1305fca80e973a10070fd",
+      "prelaunchEvidenceSHA256": "a9bf4132e58122de89740ecf480a7a43b166908ad6b5ffb204e3d45a948c6942",
+      "adapterAdversariesPassed": 26,
+      "sharedScheduleValidatorTestsPassed": 8,
+      "prelaunchAdversariesPassed": 27
+    },
+    {
+      "id": "fresh-root-b",
+      "head": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
+      "trustedOriginMaster": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+      "adapterEvidenceSHA256": "6babf855dd0a12c1c81fd0bf7829d6cd0dcd68d4c3a1305fca80e973a10070fd",
+      "prelaunchEvidenceSHA256": "a9bf4132e58122de89740ecf480a7a43b166908ad6b5ffb204e3d45a948c6942",
+      "adapterAdversariesPassed": 26,
+      "sharedScheduleValidatorTestsPassed": 8,
+      "prelaunchAdversariesPassed": 27
+    }
+  ],
+  "freshRootEvidenceByteIdentical": true,
+  "explicitBlockerRepairs": {
+    "forgedLaneAuthorityRejected": true,
+    "exactPublishedMasterAuthorityAccepted": true,
+    "cleanCheckoutCreatesAttemptConsumptionDirectory": true,
+    "oneShotAttemptSurvivesOutputRootRemoval": true,
+    "postConsumptionOutputRootFailureHasTerminalReceipt": true,
+    "allPostConsumptionFaultsHaveTerminalReceipt": true
+  },
+  "executionCounts": {
+    "blenderChildStarts": 0,
+    "dccProcesses": 0,
+    "renderInvocations": 0,
+    "sourcePixelProcesses": 0,
+    "normalizerProcesses": 0,
+    "siblingProcesses": 0
+  },
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false,
+  "validationPassed": true
+}

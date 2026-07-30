@@ -347,7 +347,11 @@ def main() -> None:
                 / "docs/production/evidence/INTEGRATION/"
                 "industrial-l04-prelock-north-a-schedule-v1.json",
             ),
-            "No such file",
+            (
+                "MISSING_PUBLISHED_SCHEDULE: "
+                "docs/production/evidence/INTEGRATION/"
+                "industrial-l04-prelock-north-a-schedule-v1.json"
+            ),
         )
     )
 
@@ -459,11 +463,7 @@ def main() -> None:
         "process": contract["process"],
         "phase": contract["phase"],
         "branch": contract["branch"],
-        "head": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"],
-            cwd=repository_root,
-            text=True,
-        ).strip(),
+        "authorityBaseCommit": contract["publishedBaseCommit"],
         "publishedAuthorityCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
         "claimSHA256": contract["claim"]["sha256"],
         "scheduleSchema": contract["scheduleSchema"],

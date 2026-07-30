@@ -94,7 +94,6 @@ def fixture(
     adapter: Any,
     contract: dict[str, Any],
 ) -> dict[str, Any]:
-    adapter_path = repository_root / adapter.ADAPTER_RELATIVE
     directions = {
         "north": ("PLAY-027", "codex/citysim-world-art"),
         "east": ("PLAY-079", "codex/citysim-world-art-east"),
@@ -136,10 +135,7 @@ def fixture(
                     else hashlib.sha256(direction.encode()).hexdigest()
                 ),
                 "baseCommit": contract["publishedBaseCommit"],
-                "orchestrator": {
-                    "path": str(adapter.ADAPTER_RELATIVE),
-                    "sha256": sha256(adapter_path),
-                },
+                "orchestrator": contract["processAOrchestrator"],
                 "exclusiveRoots": roots,
                 "processes": processes,
             }
@@ -445,6 +441,14 @@ def main() -> None:
     allowed_prefixes = {
         str(SOURCE_ROOT),
         str(EVIDENCE_RELATIVE.parent),
+        (
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+            "industrial-l04-north-art-v12/process-a-execution-v01"
+        ),
+        (
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+            "blender-north-art-v12/process-a-execution-v01"
+        ),
     }
     unexpected = [
         line
@@ -464,8 +468,10 @@ def main() -> None:
         "phase": contract["phase"],
         "branch": contract["branch"],
         "authorityBaseCommit": contract["publishedBaseCommit"],
-        "publishedAuthorityCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+        "publishedAuthorityCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
         "claimSHA256": contract["claim"]["sha256"],
+        "processAPrelaunchAuthority": contract["processAPrelaunchAuthority"],
+        "processAOrchestrator": contract["processAOrchestrator"],
         "scheduleSchema": contract["scheduleSchema"],
         "scheduleValidator": contract["scheduleValidator"],
         "adapterAuthority": contract["adapterAuthority"],

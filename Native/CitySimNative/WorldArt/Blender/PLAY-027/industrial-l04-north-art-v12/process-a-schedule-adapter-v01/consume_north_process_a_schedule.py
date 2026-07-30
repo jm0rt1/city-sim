@@ -32,6 +32,8 @@ EXPECTED_CONTRACT_FIELDS = {
     "branch",
     "publishedBaseCommit",
     "claim",
+    "processAPrelaunchAuthority",
+    "processAOrchestrator",
     "adapterAuthority",
     "scheduleSchema",
     "scheduleValidator",
@@ -174,7 +176,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
         "process": "A",
         "phase": "prelock_north_a",
         "branch": "codex/citysim-world-art",
-        "publishedBaseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+        "publishedBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
         "expectedSlotId": "dcc-1",
         "expectedQueue": ["north:A"],
         "maximumChildStarts": 1,
@@ -202,7 +204,18 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
     bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",
-            "618ea95ffac855aa28e29f8cf09cb6529ec0774e685e6761a8e2985ecb9e1335",
+            "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+        ),
+        "processAPrelaunchAuthority": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+            "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e",
+        ),
+        "processAOrchestrator": (
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+            "industrial-l04-north-art-v12/process-a-execution-v01/"
+            "launch_north_process_a.py",
+            "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -276,8 +289,6 @@ def validate_north_grant(
     repository_root: Path,
     contract: dict[str, Any],
     schedule: dict[str, Any],
-    *,
-    adapter_relative: Path = ADAPTER_RELATIVE,
 ) -> dict[str, Any]:
     require(schedule["phase"] == contract["phase"], "wrong schedule phase")
     require(schedule["batch"] == contract["batch"], "wrong schedule batch")
@@ -304,11 +315,12 @@ def validate_north_grant(
         direction["exclusiveRoots"] == contract["expectedExclusiveRoots"],
         "exclusive roots drift",
     )
-    adapter_path = resolve_regular(repository_root, str(adapter_relative), "North orchestrator")
-    expected_orchestrator = {
-        "path": str(adapter_relative),
-        "sha256": sha256(adapter_path),
-    }
+    verify_file_binding(
+        repository_root,
+        contract["processAOrchestrator"],
+        "processAOrchestrator",
+    )
+    expected_orchestrator = contract["processAOrchestrator"]
     require(direction["orchestrator"] == expected_orchestrator, "orchestrator binding drift")
     grant = process_grant(direction, contract["process"])
     require(grant["state"] == "granted", "North Process A grant is blocked")

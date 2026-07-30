@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "branch": "codex/citysim-world-art",
+  "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
+  "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+  },
+  "prelaunchAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+    "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+  },
+  "scheduleAdapter": {
+    "contract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
+      "sha256": "cef776ba2574a3de44a3b7f20d546700ff9a226eb1531dfeb579e1a2a86ce2c0"
+    },
+    "consumer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+      "sha256": "c15f7932be2f6db88dc665252111a992612061871c538c345e4e718a39ff3ea1"
+    },
+    "acceptedReadiness": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",
+      "sha256": "df412064bb5499b7c72b1a087580e8a26d19adef54495fa24923c81f39a4dd8d"
+    }
+  },
+  "frozenNorthV12Inputs": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+    },
+    "loweringContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/LOWERING-CONTRACT.json",
+      "sha256": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8"
+    },
+    "lowerer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+      "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+    },
+    "importer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+      "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+    },
+    "acceptedStaticBContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+      "sha256": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f"
+    }
+  },
+  "launcher": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+    "sha256": "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93"
+  },
+  "childEntrypoint": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
+    "sha256": "29134b674a8a014e2a5b1c395b42f5e27089694715ce9c0880719d1a6fb4024a"
+  },
+  "tests": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+    "sha256": "1b2432b258b346080456b96d92f3c400aedddc528b1d2d6758a18f46e9fe0693"
+  },
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "factoryStartup": true,
+    "autoexecDisabled": true,
+    "pythonExitCode": 1
+  },
+  "cycles": {
+    "device": "CPU",
+    "threads": 1,
+    "seed": 2704,
+    "samples": 64,
+    "adaptiveSampling": false,
+    "denoising": false,
+    "motionBlur": false,
+    "transparentFilm": true,
+    "resolution": [
+      1536,
+      1024
+    ],
+    "resolutionPercentage": 100,
+    "pixelAspect": [
+      1,
+      1
+    ],
+    "worldStrength": 0.28,
+    "northwestSunEnergy": 1.4,
+    "northwestSunAngleRadians": 0.08,
+    "maxBounces": 4,
+    "colorManagement": {
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "None",
+      "exposure": 0,
+      "gamma": 1
+    }
+  },
+  "processEnvelope": {
+    "maximumChildStarts": 1,
+    "maximumConcurrentDCCProcesses": 1,
+    "timeoutSeconds": 120,
+    "maximumProcessGroupRSSMiB": 1024,
+    "newProcessGroup": true,
+    "killProcessGroupOnViolation": true
+  },
+  "processOutputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+  "capabilityChannel": {
+    "type": "inherited-anonymous-pipe",
+    "oneUse": true,
+    "parentPIDBound": true,
+    "payloadMaximumBytes": 8192,
+    "hashAlgorithm": "SHA-256"
+  },
+  "allowedProcessOutputs": [
+    "CHILD-GRANT.json",
+    "GROUND-PROJECTION.json",
+    "INPUT-BINDINGS.json",
+    "OBJECT-MANIFEST.json",
+    "PROCESS-RECEIPT.json",
+    "provenance.json",
+    "raw.png",
+    "semantic.png"
+  ],
+  "prohibitedSurfaces": [
+    "Process B",
+    "Process C",
+    "sibling directions",
+    "ImageGen",
+    "normalization",
+    "renderer",
+    "shipping atlas",
+    "runtime",
+    "Package.swift",
+    "shared schedule controls"
+  ],
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false
+}

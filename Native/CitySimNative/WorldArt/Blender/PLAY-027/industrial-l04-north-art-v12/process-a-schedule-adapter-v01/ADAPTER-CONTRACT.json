@@ -6,10 +6,18 @@
   "process": "A",
   "phase": "prelock_north_a",
   "branch": "codex/citysim-world-art",
-  "publishedBaseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+  "publishedBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
-    "sha256": "618ea95ffac855aa28e29f8cf09cb6529ec0774e685e6761a8e2985ecb9e1335"
+    "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+  },
+  "processAPrelaunchAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+    "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e"
+  },
+  "processAOrchestrator": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+    "sha256": "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93"
   },
   "adapterAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",

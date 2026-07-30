@@ -151,6 +151,24 @@ def assert_commit_ancestor(repository_root: Path, commit: str, label: str) -> No
     git_output(repository_root, ["merge-base", "--is-ancestor", commit, "HEAD"])
 
 
+def assert_commit_ancestor_of(
+    repository_root: Path,
+    ancestor: str,
+    descendant: str,
+    label: str,
+) -> None:
+    assert_commit_ancestor(repository_root, ancestor, f"{label}.ancestor")
+    require(
+        len(descendant) == 40
+        and all(character in "0123456789abcdef" for character in descendant),
+        f"{label}.descendant must be a full commit",
+    )
+    git_output(repository_root, ["cat-file", "-e", f"{descendant}^{{commit}}"])
+    git_output(repository_root, ["merge-base", "--is-ancestor", descendant, "HEAD"])
+    require(ancestor != descendant, f"{label} requires a preexisting authority commit")
+    git_output(repository_root, ["merge-base", "--is-ancestor", ancestor, descendant])
+
+
 def load_shared_validator(repository_root: Path, path: Path) -> Any:
     spec = importlib.util.spec_from_file_location(
         "play027_integration_schedule_validator",
@@ -215,7 +233,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
             "launch_north_process_a.py",
-            "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93",
+            "b7185215d9d784c76b95bef33367d5893b02a095547bc5b6a4cad09cd28c8ce3",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -372,6 +390,7 @@ def verify_published_schedule(
     repository_root: Path,
     schedule_path: Path,
     schedule: dict[str, Any],
+    schedule_publication_commit: str,
 ) -> None:
     integration_root = (repository_root / INTEGRATION_SCHEDULE_ROOT).resolve(strict=True)
     lexical = schedule_path.absolute()
@@ -383,6 +402,12 @@ def verify_published_schedule(
     resolved = lexical.resolve(strict=True)
     require(resolved.is_relative_to(integration_root), "schedule is outside Integration authority root")
     relative = resolved.relative_to(repository_root)
+    assert_commit_ancestor_of(
+        repository_root,
+        schedule["integrationAuthorityCommit"],
+        schedule_publication_commit,
+        "schedulePublication",
+    )
     status = git_output(
         repository_root,
         ["status", "--porcelain=v1", "--", str(relative)],
@@ -390,15 +415,16 @@ def verify_published_schedule(
     require(not status, "published schedule worktree bytes are dirty")
     tracked = git_bytes(
         repository_root,
-        ["show", f"{schedule['integrationAuthorityCommit']}:{relative}"],
+        ["show", f"{schedule_publication_commit}:{relative}"],
     )
-    require(tracked == resolved.read_bytes(), "schedule bytes are not frozen at authority commit")
+    require(tracked == resolved.read_bytes(), "schedule bytes are not frozen at publication commit")
 
 
 def consume_published_schedule(
     repository_root: Path,
     contract_path: Path,
     schedule_path: Path,
+    schedule_publication_commit: str,
 ) -> dict[str, Any]:
     repository_root = repository_root.resolve(strict=True)
     contract = validate_contract(repository_root, contract_path)
@@ -421,7 +447,12 @@ def consume_published_schedule(
     )
     validator = load_shared_validator(repository_root, validator_path)
     validator.validate(repository_root, schedule_path)
-    verify_published_schedule(repository_root, schedule_path, schedule)
+    verify_published_schedule(
+        repository_root,
+        schedule_path,
+        schedule,
+        schedule_publication_commit,
+    )
     return validate_north_grant(repository_root, contract, schedule)
 
 
@@ -430,6 +461,7 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", required=True)
     parser.add_argument("--schedule", required=True)
+    parser.add_argument("--schedule-publication-commit", required=True)
     return parser.parse_args()
 
 
@@ -440,6 +472,7 @@ def main() -> int:
             Path(options.repository_root),
             Path(options.contract),
             Path(options.schedule),
+            options.schedule_publication_commit,
         )
     except (OSError, json.JSONDecodeError, AdapterError, ValueError) as error:
         print(

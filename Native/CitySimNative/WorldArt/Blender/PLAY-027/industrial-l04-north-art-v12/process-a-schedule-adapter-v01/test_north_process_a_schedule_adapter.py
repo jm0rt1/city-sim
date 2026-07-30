@@ -23,7 +23,7 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "ZERO-CHILD-READINESS.json"
+    "CURRENT-ZERO-CHILD-READINESS.json"
 )
 
 
@@ -47,8 +47,31 @@ def load_module(path: Path, name: str) -> Any:
     return module
 
 
+def git(repository: Path, *arguments: str) -> str:
+    environment = os.environ.copy()
+    environment.update(
+        {
+            "GIT_AUTHOR_DATE": "2001-01-01T00:00:00Z",
+            "GIT_COMMITTER_DATE": "2001-01-01T00:00:00Z",
+        }
+    )
+    result = subprocess.run(
+        ["git", *arguments],
+        cwd=repository,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"temporary Git command failed: {' '.join(arguments)}")
+    return result.stdout.strip()
+
+
 def write_exclusive(path: Path, value: Any, canonical: Callable[[Any], bytes]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=False)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.parent.is_symlink():
+        raise RuntimeError("readiness output parent must not be a symlink")
     descriptor = os.open(
         path,
         os.O_WRONLY
@@ -107,7 +130,11 @@ def fixture(
             granted = direction == "north" and process == "A"
             processes.append(
                 {
-                    "grantId": f"fixture-{direction}-{process}",
+                    "grantId": (
+                        "north:A"
+                        if direction == "north" and process == "A"
+                        else f"fixture-{direction}-{process}"
+                    ),
                     "process": process,
                     "state": "granted" if granted else "blocked",
                     "slotId": "dcc-1" if granted else None,
@@ -192,8 +219,8 @@ def main() -> None:
     expected_output = (repository_root / EVIDENCE_RELATIVE).absolute()
     if output != expected_output:
         raise RuntimeError("exact zero-child readiness output required")
-    if output.exists() or output.is_symlink() or output.parent.exists():
-        raise RuntimeError("zero-child readiness root must be absent")
+    if output.exists() or output.is_symlink():
+        raise RuntimeError("zero-child readiness output must be absent")
     source_root = repository_root / SOURCE_ROOT
     adapter_path = source_root / "consume_north_process_a_schedule.py"
     contract_path = source_root / "ADAPTER-CONTRACT.json"
@@ -342,6 +369,7 @@ def main() -> None:
                 repository_root
                 / "docs/production/evidence/INTEGRATION/"
                 "industrial-l04-prelock-north-a-schedule-v1.json",
+                contract["publishedBaseCommit"],
             ),
             (
                 "MISSING_PUBLISHED_SCHEDULE: "
@@ -350,6 +378,108 @@ def main() -> None:
             ),
         )
     )
+
+    with tempfile.TemporaryDirectory(
+        prefix="play027-schedule-publication-",
+        dir="/private/tmp",
+    ) as publication_directory:
+        publication_root = Path(publication_directory)
+        git(publication_root, "init")
+        git(publication_root, "checkout", "-b", "main")
+        git(publication_root, "config", "user.name", "PLAY-027 Test")
+        git(publication_root, "config", "user.email", "play027@example.invalid")
+        (publication_root / "README.md").write_text(
+            "temporary publication fixture\n",
+            encoding="utf-8",
+        )
+        git(publication_root, "add", "README.md")
+        git(publication_root, "commit", "-m", "authority")
+        authority_commit = git(publication_root, "rev-parse", "HEAD")
+        schedule_relative = Path(
+            "docs/production/evidence/INTEGRATION/"
+            "temporary-prelock-north-a-schedule.json"
+        )
+        schedule_path = publication_root / schedule_relative
+        schedule_path.parent.mkdir(parents=True)
+        schedule_value = {"integrationAuthorityCommit": authority_commit}
+        schedule_path.write_bytes(adapter.canonical_bytes(schedule_value))
+        git(publication_root, "add", str(schedule_relative))
+        git(publication_root, "commit", "-m", "publish schedule")
+        publication_commit = git(publication_root, "rev-parse", "HEAD")
+        adapter.verify_published_schedule(
+            publication_root,
+            schedule_path,
+            schedule_value,
+            publication_commit,
+        )
+        cases.append(
+            {
+                "name": "real-git-schedule-publication",
+                "authorityPreexistsPublication": True,
+                "publicationCommitContainsExactBytes": True,
+                "passed": True,
+            }
+        )
+        cases.append(
+            expect_failure(
+                "wrong-publication-commit",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    schedule_path,
+                    schedule_value,
+                    authority_commit,
+                ),
+                "requires a preexisting authority commit",
+            )
+        )
+        git(publication_root, "checkout", "-b", "side", authority_commit)
+        (publication_root / "SIDE.md").write_text("side\n", encoding="utf-8")
+        git(publication_root, "add", "SIDE.md")
+        git(publication_root, "commit", "-m", "nonancestor")
+        nonancestor_commit = git(publication_root, "rev-parse", "HEAD")
+        git(publication_root, "checkout", "main")
+        cases.append(
+            expect_failure(
+                "nonancestor-publication-commit",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    schedule_path,
+                    schedule_value,
+                    nonancestor_commit,
+                ),
+                "Git check failed",
+            )
+        )
+        changed_schedule = {"integrationAuthorityCommit": authority_commit, "stale": True}
+        schedule_path.write_bytes(adapter.canonical_bytes(changed_schedule))
+        git(publication_root, "add", str(schedule_relative))
+        git(publication_root, "commit", "-m", "stale schedule bytes")
+        cases.append(
+            expect_failure(
+                "stale-published-schedule-bytes",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    schedule_path,
+                    changed_schedule,
+                    publication_commit,
+                ),
+                "schedule bytes are not frozen at publication commit",
+            )
+        )
+        untracked_path = schedule_path.with_name("untracked-schedule.json")
+        untracked_path.write_bytes(adapter.canonical_bytes(schedule_value))
+        cases.append(
+            expect_failure(
+                "untracked-published-schedule",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    untracked_path,
+                    schedule_value,
+                    publication_commit,
+                ),
+                "published schedule worktree bytes are dirty",
+            )
+        )
 
     with tempfile.NamedTemporaryFile(
         mode="w",
@@ -368,6 +498,7 @@ def main() -> None:
                     repository_root,
                     contract_path,
                     unpublished,
+                    contract["publishedBaseCommit"],
                 ),
                 "schedule path escapes repository",
             )

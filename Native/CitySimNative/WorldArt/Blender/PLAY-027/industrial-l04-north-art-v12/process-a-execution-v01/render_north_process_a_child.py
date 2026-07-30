@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
+import hmac
 import importlib.util
 import json
 import os
@@ -58,8 +60,8 @@ def arguments(values: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", required=True)
-    parser.add_argument("--output-root", required=True)
-    parser.add_argument("--child-grant", required=True)
+    parser.add_argument("--output-root-fd", required=True, type=int)
+    parser.add_argument("--child-grant-name", required=True)
     parser.add_argument("--capability-fd", required=True, type=int)
     return parser.parse_args(values)
 
@@ -87,42 +89,67 @@ def read_one_use_capability(descriptor: int) -> dict[str, Any]:
     return value
 
 
+def load_json_at(directory_fd: int, name: str) -> dict[str, Any]:
+    require("/" not in name and name not in {"", ".", ".."}, "child grant leaf drift")
+    descriptor = os.open(
+        name,
+        os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0),
+        dir_fd=directory_fd,
+    )
+    try:
+        payload = b""
+        while True:
+            block = os.read(descriptor, 65536)
+            if not block:
+                break
+            payload += block
+    finally:
+        os.close(descriptor)
+    value = json.loads(payload.decode("utf-8"))
+    require(isinstance(value, dict), "child grant must be an object")
+    return value
+
+
 def verify_capability(
     repository_root: Path,
     contract: dict[str, Any],
     contract_path: Path,
-    output_root: Path,
-    child_grant_path: Path,
+    output_root_fd: int,
+    child_grant_name: str,
     capability_payload: dict[str, Any],
 ) -> dict[str, Any]:
     require(
         set(capability_payload)
         == {
-            "capability",
+            "schema",
+            "authorizationSecret",
+            "sessionSecret",
+            "hmacSHA256",
             "grantId",
             "launcherPID",
             "launcherSHA256",
             "scheduleSHA256",
+            "schedulePublicationCommit",
+            "executionAuthoritySHA256",
+            "executionAuthorityPublicationCommit",
+            "outputRootDevice",
+            "outputRootInode",
         },
         "launcher capability payload fields drift",
     )
-    capability = capability_payload["capability"]
-    require(
-        isinstance(capability, str) and len(capability) == 64,
-        "launcher capability missing",
-    )
+    require(capability_payload["schema"] == 2, "launcher capability schema drift")
     require(
         capability_payload["launcherPID"] == os.getppid(),
         "launcher parent PID mismatch",
     )
-    expected_output = (repository_root / contract["processOutputRoot"]).absolute()
-    require(output_root.absolute() == expected_output, "child output root drift")
-    require(output_root.is_dir() and not output_root.is_symlink(), "launcher-created output root required")
+    require(output_root_fd >= 3, "launcher output-root fd missing")
+    output_stat = os.fstat(output_root_fd)
+    require(stat.S_ISDIR(output_stat.st_mode), "launcher output-root fd is not a directory")
     require(
-        child_grant_path.absolute() == output_root / "CHILD-GRANT.json",
-        "exact child grant path required",
+        child_grant_name == "CHILD-GRANT.json",
+        "exact child grant leaf required",
     )
-    grant = load_json(child_grant_path)
+    grant = load_json_at(output_root_fd, child_grant_name)
     require(
         set(grant)
         == {
@@ -134,32 +161,76 @@ def verify_capability(
             "slotId",
             "schedulePath",
             "scheduleSHA256",
+            "schedulePublicationCommit",
+            "executionAuthorityPath",
+            "executionAuthoritySHA256",
+            "executionAuthorityPublicationCommit",
             "contractSHA256",
             "launcherSHA256",
             "launcherPID",
             "childEntrypointSHA256",
             "outputRoot",
-            "capabilitySHA256",
-            "childStartCount",
+            "outputRootDevice",
+            "outputRootInode",
+            "authorizationSecretSHA256",
+            "sessionSecretSHA256",
+            "attemptRecordPath",
+            "attemptRecordSHA256",
+            "maximumDCCChildStarts",
         },
         "child grant fields drift",
     )
+    require(grant["schema"] == 2, "child grant schema drift")
     require(grant["task"] == "PLAY-027", "child grant task drift")
     require(grant["direction"] == "north", "child grant direction drift")
     require(grant["process"] == "A", "child grant process drift")
     require(grant["slotId"] == "dcc-1", "child grant slot drift")
     require(grant["launcherPID"] == os.getppid(), "child grant parent PID drift")
-    require(grant["childStartCount"] == 1, "child grant start count drift")
+    require(grant["maximumDCCChildStarts"] == 1, "child grant start count drift")
     require(grant["outputRoot"] == contract["processOutputRoot"], "child grant output drift")
+    require(
+        grant["outputRootDevice"] == output_stat.st_dev
+        and grant["outputRootInode"] == output_stat.st_ino,
+        "child output-root inode identity drift",
+    )
     require(grant["contractSHA256"] == sha256(contract_path), "child contract hash drift")
     require(grant["launcherSHA256"] == contract["launcher"]["sha256"], "child launcher hash drift")
     require(
         grant["childEntrypointSHA256"] == contract["childEntrypoint"]["sha256"],
         "child entrypoint hash drift",
     )
+    try:
+        authorization_secret = base64.b64decode(
+            capability_payload["authorizationSecret"],
+            validate=True,
+        )
+        session_secret = base64.b64decode(
+            capability_payload["sessionSecret"],
+            validate=True,
+        )
+    except (ValueError, TypeError) as error:
+        raise RuntimeError("launcher capability secret encoding invalid") from error
     require(
-        grant["capabilitySHA256"] == sha256_bytes(capability.encode("utf-8")),
-        "launcher capability mismatch",
+        sha256_bytes(authorization_secret) == grant["authorizationSecretSHA256"],
+        "Integration authorization secret mismatch",
+    )
+    require(
+        sha256_bytes(session_secret) == grant["sessionSecretSHA256"],
+        "launcher session secret mismatch",
+    )
+    signed = {
+        key: value
+        for key, value in capability_payload.items()
+        if key != "hmacSHA256"
+    }
+    expected_mac = hmac.new(
+        authorization_secret,
+        canonical_bytes(signed),
+        hashlib.sha256,
+    ).hexdigest()
+    require(
+        hmac.compare_digest(expected_mac, capability_payload["hmacSHA256"]),
+        "launcher capability HMAC mismatch",
     )
     require(
         capability_payload["grantId"] == grant["grantId"],
@@ -170,8 +241,41 @@ def verify_capability(
         "launcher capability schedule drift",
     )
     require(
+        capability_payload["schedulePublicationCommit"]
+        == grant["schedulePublicationCommit"],
+        "launcher capability schedule publication drift",
+    )
+    require(
         capability_payload["launcherSHA256"] == grant["launcherSHA256"],
         "launcher capability source drift",
+    )
+    require(
+        capability_payload["executionAuthoritySHA256"]
+        == grant["executionAuthoritySHA256"],
+        "launcher capability execution authority drift",
+    )
+    require(
+        capability_payload["executionAuthorityPublicationCommit"]
+        == grant["executionAuthorityPublicationCommit"],
+        "launcher capability authority publication drift",
+    )
+    require(
+        capability_payload["outputRootDevice"] == output_stat.st_dev
+        and capability_payload["outputRootInode"] == output_stat.st_ino,
+        "launcher capability output-root identity drift",
+    )
+    authority_path = repository_root / grant["executionAuthorityPath"]
+    require(
+        authority_path.is_file()
+        and not authority_path.is_symlink()
+        and sha256(authority_path) == grant["executionAuthoritySHA256"],
+        "child execution authority bytes drift",
+    )
+    authority = load_json(authority_path)
+    require(
+        authority["authorizationSecretSHA256"]
+        == grant["authorizationSecretSHA256"],
+        "child execution authority secret binding drift",
     )
     schedule_relative = grant["schedulePath"]
     require(
@@ -190,27 +294,28 @@ def verify_capability(
         repository_root,
         repository_root / contract["scheduleAdapter"]["contract"]["path"],
         schedule_path,
+        grant["schedulePublicationCommit"],
     )
     require(schedule_grant["grantId"] == grant["grantId"], "child schedule grantId drift")
     require(
         schedule_grant["orchestrator"] == contract["launcher"],
         "child schedule launcher binding drift",
     )
-    existing = {path.name for path in output_root.iterdir()}
+    existing = set(os.listdir(output_root_fd))
     require(existing == {"CHILD-GRANT.json"}, "child output root was reused")
     return grant
 
 
-def write_exclusive(root: Path, name: str, value: Any) -> None:
+def write_exclusive(root_fd: int, name: str, value: Any) -> None:
     require(name in ALLOWED_CHILD_OUTPUTS, f"unapproved child output: {name}")
-    path = root / name
     descriptor = os.open(
-        path,
+        name,
         os.O_WRONLY
         | os.O_CREAT
         | os.O_EXCL
         | (os.O_NOFOLLOW if hasattr(os, "O_NOFOLLOW") else 0),
         0o644,
+        dir_fd=root_fd,
     )
     try:
         payload = canonical_bytes(value)
@@ -300,8 +405,8 @@ def main() -> None:
     options = arguments()
     repository_root = Path(options.repository_root).resolve(strict=True)
     contract_path = Path(options.contract).resolve(strict=True)
-    output_root = Path(options.output_root).absolute()
-    child_grant_path = Path(options.child_grant).absolute()
+    output_root_fd = options.output_root_fd
+    output_root = Path(f"/dev/fd/{output_root_fd}")
     capability_payload = read_one_use_capability(options.capability_fd)
     execution_root = Path(__file__).resolve().parent
     launcher = load_module(
@@ -313,8 +418,8 @@ def main() -> None:
         repository_root,
         contract,
         contract_path,
-        output_root,
-        child_grant_path,
+        output_root_fd,
+        options.child_grant_name,
         capability_payload,
     )
     require(
@@ -390,9 +495,9 @@ def main() -> None:
         "launcher": contract["launcher"],
         "childEntrypoint": contract["childEntrypoint"],
     }
-    write_exclusive(output_root, "OBJECT-MANIFEST.json", object_manifest)
-    write_exclusive(output_root, "GROUND-PROJECTION.json", projection)
-    write_exclusive(output_root, "INPUT-BINDINGS.json", input_bindings)
+    write_exclusive(output_root_fd, "OBJECT-MANIFEST.json", object_manifest)
+    write_exclusive(output_root_fd, "GROUND-PROJECTION.json", projection)
+    write_exclusive(output_root_fd, "INPUT-BINDINGS.json", input_bindings)
     bpy.ops.render.render(write_still=True)
     raw_path = output_root / "raw.png"
     require(raw_path.is_file(), "raw render missing")
@@ -436,7 +541,7 @@ def main() -> None:
         "candidateReadyForIndependentReview": False,
         "productionSelected": False,
     }
-    write_exclusive(output_root, "provenance.json", provenance)
+    write_exclusive(output_root_fd, "provenance.json", provenance)
 
 
 if __name__ == "__main__":

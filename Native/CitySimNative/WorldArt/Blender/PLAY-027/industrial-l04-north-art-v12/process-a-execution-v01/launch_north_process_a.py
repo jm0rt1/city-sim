@@ -4,13 +4,16 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
+import hmac
 import importlib.util
 import json
 import os
 import platform
 import secrets
 import signal
+import stat
 import subprocess
 import sys
 import tempfile
@@ -25,6 +28,8 @@ SOURCE_ROOT = Path(
 )
 CONTRACT_RELATIVE = SOURCE_ROOT / "EXECUTION-CONTRACT.json"
 LAUNCHER_RELATIVE = SOURCE_ROOT / "launch_north_process_a.py"
+INTEGRATION_ROOT = Path("docs/production/evidence/INTEGRATION")
+HELPER_PROCESS_AUDIT: list[dict[str, Any]] = []
 
 
 class LaunchError(ValueError):
@@ -91,7 +96,7 @@ def verify_binding(
 
 def git_check(repository_root: Path, arguments: list[str]) -> str:
     require(
-        arguments and arguments[0] in {"branch", "cat-file", "merge-base"},
+        arguments and arguments[0] in {"branch", "cat-file", "merge-base", "status"},
         "unapproved Git prelaunch operation",
     )
     result = subprocess.run(
@@ -101,8 +106,29 @@ def git_check(repository_root: Path, arguments: list[str]) -> str:
         text=True,
         check=False,
     )
+    HELPER_PROCESS_AUDIT.append(
+        {"class": "git-read-only", "argv": ["git", *arguments]}
+    )
     require(result.returncode == 0, f"Git binding failed: {' '.join(arguments)}")
     return result.stdout.strip()
+
+
+def git_bytes(repository_root: Path, arguments: list[str]) -> bytes:
+    require(
+        arguments and arguments[0] == "show",
+        "unapproved binary Git prelaunch operation",
+    )
+    result = subprocess.run(
+        ["git", *arguments],
+        cwd=repository_root,
+        capture_output=True,
+        check=False,
+    )
+    HELPER_PROCESS_AUDIT.append(
+        {"class": "git-read-only", "argv": ["git", *arguments]}
+    )
+    require(result.returncode == 0, f"Git binding failed: {' '.join(arguments)}")
+    return result.stdout
 
 
 def require_ancestor(repository_root: Path, commit: str, label: str) -> None:
@@ -113,6 +139,193 @@ def require_ancestor(repository_root: Path, commit: str, label: str) -> None:
     )
     git_check(repository_root, ["cat-file", "-e", f"{commit}^{{commit}}"])
     git_check(repository_root, ["merge-base", "--is-ancestor", commit, "HEAD"])
+
+
+def normalize_repository_file(
+    repository_root: Path,
+    supplied: Path,
+    label: str,
+) -> Path:
+    lexical = supplied if supplied.is_absolute() else repository_root / supplied
+    lexical = lexical.absolute()
+    require(lexical.is_relative_to(repository_root), f"{label} escapes repository")
+    relative = lexical.relative_to(repository_root)
+    current = repository_root
+    for component in relative.parts:
+        current = current / component
+        require(not current.is_symlink(), f"{label} path contains a symlink")
+    resolved = lexical.resolve(strict=True)
+    require(resolved.is_relative_to(repository_root), f"{label} escapes repository")
+    require(resolved.is_file(), f"{label} must be a regular file")
+    return resolved
+
+
+def verify_integration_publication(
+    repository_root: Path,
+    path: Path,
+    publication_commit: str,
+    label: str,
+) -> dict[str, str]:
+    resolved = normalize_repository_file(repository_root, path, label)
+    integration_root = (repository_root / INTEGRATION_ROOT).resolve(strict=True)
+    require(resolved.is_relative_to(integration_root), f"{label} is outside Integration root")
+    require_ancestor(repository_root, publication_commit, f"{label}PublicationCommit")
+    relative = resolved.relative_to(repository_root)
+    status = git_check(
+        repository_root,
+        ["status", "--porcelain=v1", "--", str(relative)],
+    )
+    require(not status, f"{label} worktree bytes are dirty")
+    published = git_bytes(
+        repository_root,
+        ["show", f"{publication_commit}:{relative}"],
+    )
+    require(published == resolved.read_bytes(), f"{label} bytes are stale")
+    return {"path": str(relative), "sha256": sha256(resolved)}
+
+
+def read_authorization_secret(descriptor: int) -> bytes:
+    require(descriptor >= 3, "Integration authorization secret fd missing")
+    try:
+        descriptor_stat = os.fstat(descriptor)
+    except OSError as error:
+        raise LaunchError("Integration authorization secret fd missing") from error
+    require(
+        stat.S_ISFIFO(descriptor_stat.st_mode),
+        "Integration authorization secret must arrive through an anonymous pipe",
+    )
+    with os.fdopen(descriptor, "rb", closefd=True) as handle:
+        secret = handle.read(257)
+    require(32 <= len(secret) <= 256, "Integration authorization secret size invalid")
+    return secret
+
+
+def validate_execution_authority(
+    repository_root: Path,
+    contract: dict[str, Any],
+    authority_path: Path,
+    authority_publication_commit: str,
+    schedule_path: Path,
+    schedule_publication_commit: str,
+    output_root: Path,
+    authorization_secret: bytes,
+) -> dict[str, Any]:
+    authority_binding = verify_integration_publication(
+        repository_root,
+        authority_path,
+        authority_publication_commit,
+        "executionAuthority",
+    )
+    authority = load_json(
+        repository_root / authority_binding["path"]
+    )
+    expected_fields = {
+        "schema",
+        "task",
+        "direction",
+        "process",
+        "grantId",
+        "slotId",
+        "schedule",
+        "executionContract",
+        "launcher",
+        "childEntrypoint",
+        "processOutputRoot",
+        "attemptRecordPath",
+        "attemptId",
+        "maximumConcurrentDCCProcesses",
+        "maximumChildStarts",
+        "timeoutSeconds",
+        "maximumProcessGroupRSSMiB",
+        "stopDisposition",
+        "authorizationSecretSHA256",
+        "sourceAuthority",
+        "productionSelected",
+    }
+    require(set(authority) == expected_fields, "execution authority fields drift")
+    exact = {
+        "schema": 1,
+        "task": "PLAY-027",
+        "direction": "north",
+        "process": "A",
+        "grantId": "north:A",
+        "slotId": "dcc-1",
+        "processOutputRoot": contract["processOutputRoot"],
+        "maximumConcurrentDCCProcesses": 1,
+        "maximumChildStarts": 1,
+        "timeoutSeconds": contract["processEnvelope"]["timeoutSeconds"],
+        "maximumProcessGroupRSSMiB": contract["processEnvelope"][
+            "maximumProcessGroupRSSMiB"
+        ],
+        "stopDisposition": "STOP_AFTER_ONE_FRESH_NORTH_SOURCE_CANDIDATE",
+        "sourceAuthority": False,
+        "productionSelected": False,
+    }
+    for field, value in exact.items():
+        require(authority.get(field) == value, f"execution authority drift: {field}")
+    require(
+        isinstance(authority["attemptId"], str)
+        and authority["attemptId"] == "north:A",
+        "execution authority attemptId drift",
+    )
+    normalized_schedule = normalize_repository_file(
+        repository_root,
+        schedule_path,
+        "schedule",
+    )
+    expected_schedule = {
+        "path": str(normalized_schedule.relative_to(repository_root)),
+        "sha256": sha256(normalized_schedule),
+        "publicationCommit": schedule_publication_commit,
+    }
+    require(authority["schedule"] == expected_schedule, "execution authority schedule drift")
+    require(
+        authority["executionContract"]
+        == {"path": str(CONTRACT_RELATIVE), "sha256": sha256(repository_root / CONTRACT_RELATIVE)},
+        "execution authority contract drift",
+    )
+    require(authority["launcher"] == contract["launcher"], "execution authority launcher drift")
+    require(
+        authority["childEntrypoint"] == contract["childEntrypoint"],
+        "execution authority child drift",
+    )
+    require(
+        authority["authorizationSecretSHA256"] == sha256_bytes(authorization_secret),
+        "execution authority secret mismatch",
+    )
+    requested = output_root.absolute()
+    require(
+        requested == (repository_root / authority["processOutputRoot"]).absolute(),
+        "execution authority output root drift",
+    )
+    attempt_path = Path(authority["attemptRecordPath"])
+    require(
+        not attempt_path.is_absolute()
+        and attempt_path.name == "north-A.json"
+        and attempt_path.parent
+        == Path(contract["processOutputRoot"]).parent / "attempt-consumption-v01",
+        "execution authority attempt record path drift",
+    )
+    require_ancestor(
+        repository_root,
+        authority_publication_commit,
+        "executionAuthorityPublicationCommit",
+    )
+    require_ancestor(
+        repository_root,
+        schedule_publication_commit,
+        "schedulePublicationCommit",
+    )
+    require(
+        git_check(repository_root, ["status", "--porcelain=v1"]) == "",
+        "execution requires a clean worktree",
+    )
+    return {
+        **authority,
+        "path": authority_binding["path"],
+        "sha256": authority_binding["sha256"],
+        "publicationCommit": authority_publication_commit,
+    }
 
 
 def load_module(path: Path, name: str) -> Any:
@@ -268,11 +481,15 @@ def validate_execution_contract(
     require(
         contract["capabilityChannel"]
         == {
-            "type": "inherited-anonymous-pipe",
+            "type": "integration-secret-plus-launcher-session-hmac",
             "oneUse": True,
             "parentPIDBound": True,
+            "executionAuthorityBound": True,
+            "outputDirectoryFDBound": True,
+            "durableAttemptRecordBound": True,
+            "secretTransport": "inherited-anonymous-pipe-only",
             "payloadMaximumBytes": 8192,
-            "hashAlgorithm": "SHA-256",
+            "hashAlgorithm": "HMAC-SHA-256",
         },
         "launcher capability channel drift",
     )
@@ -333,6 +550,7 @@ def validate_grant_plan(
     require(grant.get("batch") == contract["batch"], "grant batch drift")
     require(grant.get("phase") == contract["phase"], "grant phase drift")
     require(grant.get("direction") == contract["direction"], "grant direction drift")
+    require(grant.get("grantId") == "north:A", "grantId drift")
     require(requested_process == contract["process"], "only North Process A is supported")
     require(grant.get("process") == requested_process, "grant process drift")
     require(grant.get("slotId") == "dcc-1", "grant slot drift")
@@ -375,8 +593,7 @@ def build_child_command(
     repository_root: Path,
     contract_path: Path,
     contract: dict[str, Any],
-    output_root: Path,
-    child_grant_path: Path,
+    output_root_fd: int,
     capability_read_fd: int,
 ) -> list[str]:
     return [
@@ -395,16 +612,22 @@ def build_child_command(
         str(repository_root),
         "--contract",
         str(contract_path),
-        "--output-root",
-        str(output_root),
-        "--child-grant",
-        str(child_grant_path),
+        "--output-root-fd",
+        str(output_root_fd),
+        "--child-grant-name",
+        "CHILD-GRANT.json",
         "--capability-fd",
         str(capability_read_fd),
     ]
 
 
 def process_group_snapshot(process_group_id: int) -> list[dict[str, int]]:
+    HELPER_PROCESS_AUDIT.append(
+        {
+            "class": "process-observer",
+            "argv": ["/bin/ps", "-axo", "pid=,pgid=,rss="],
+        }
+    )
     result = subprocess.run(
         ["/bin/ps", "-axo", "pid=,pgid=,rss="],
         capture_output=True,
@@ -493,6 +716,139 @@ def write_exclusive(path: Path, value: Any) -> None:
         os.close(descriptor)
 
 
+def open_directory_chain(
+    repository_root: Path,
+    relative: Path,
+    *,
+    create_leaf: bool,
+) -> int:
+    require(not relative.is_absolute() and ".." not in relative.parts, "directory path drift")
+    descriptor = os.open(
+        repository_root,
+        os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+    )
+    try:
+        for index, component in enumerate(relative.parts):
+            is_leaf = index == len(relative.parts) - 1
+            if is_leaf and create_leaf:
+                os.mkdir(component, 0o755, dir_fd=descriptor)
+            next_descriptor = os.open(
+                component,
+                os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+                dir_fd=descriptor,
+            )
+            os.close(descriptor)
+            descriptor = next_descriptor
+        return descriptor
+    except BaseException:
+        os.close(descriptor)
+        raise
+
+
+def open_parent_directory(repository_root: Path, relative: Path) -> tuple[int, str]:
+    require(relative.name and relative.parent != Path("."), "file path requires a parent")
+    return (
+        open_directory_chain(repository_root, relative.parent, create_leaf=False),
+        relative.name,
+    )
+
+
+def write_exclusive_at(directory_fd: int, name: str, value: Any) -> None:
+    require("/" not in name and name not in {"", ".", ".."}, "leaf name drift")
+    descriptor = os.open(
+        name,
+        os.O_WRONLY
+        | os.O_CREAT
+        | os.O_EXCL
+        | getattr(os, "O_NOFOLLOW", 0),
+        0o644,
+        dir_fd=directory_fd,
+    )
+    try:
+        payload = canonical_bytes(value)
+        offset = 0
+        while offset < len(payload):
+            offset += os.write(descriptor, payload[offset:])
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def create_attempt_record(
+    repository_root: Path,
+    authority: dict[str, Any],
+) -> dict[str, Any]:
+    relative = Path(authority["attemptRecordPath"])
+    parent_fd, leaf = open_parent_directory(repository_root, relative)
+    try:
+        record = {
+            "schema": 1,
+            "task": "PLAY-027",
+            "direction": "north",
+            "process": "A",
+            "grantId": authority["grantId"],
+            "attemptId": authority["attemptId"],
+            "executionAuthority": {
+                "path": authority["path"],
+                "sha256": authority["sha256"],
+                "publicationCommit": authority["publicationCommit"],
+            },
+            "schedule": authority["schedule"],
+            "consumed": True,
+            "maximumDCCChildStarts": 1,
+            "sourceAuthority": False,
+            "productionSelected": False,
+        }
+        write_exclusive_at(parent_fd, leaf, record)
+        return record
+    except FileExistsError as error:
+        raise LaunchError("Integration-bound Process-A attempt was already consumed") from error
+    finally:
+        os.close(parent_fd)
+
+
+def create_output_root(
+    repository_root: Path,
+    contract: dict[str, Any],
+    requested: Path,
+) -> tuple[int, dict[str, int]]:
+    relative = Path(contract["processOutputRoot"])
+    require(requested.absolute() == (repository_root / relative).absolute(), "output root drift")
+    parent_fd, leaf = open_parent_directory(repository_root, relative)
+    try:
+        os.mkdir(leaf, 0o755, dir_fd=parent_fd)
+        root_fd = os.open(
+            leaf,
+            os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+            dir_fd=parent_fd,
+        )
+    except FileExistsError as error:
+        raise LaunchError("Process-A output root already exists") from error
+    finally:
+        os.close(parent_fd)
+    root_stat = os.fstat(root_fd)
+    return root_fd, {"device": root_stat.st_dev, "inode": root_stat.st_ino}
+
+
+def capability_message(
+    authority_secret: bytes,
+    *,
+    session_secret: bytes,
+    public_payload: dict[str, Any],
+) -> dict[str, Any]:
+    signed = {
+        **public_payload,
+        "authorizationSecret": base64.b64encode(authority_secret).decode("ascii"),
+        "sessionSecret": base64.b64encode(session_secret).decode("ascii"),
+    }
+    signature = hmac.new(
+        authority_secret,
+        canonical_bytes(signed),
+        hashlib.sha256,
+    ).hexdigest()
+    return {**signed, "hmacSHA256": signature}
+
+
 def terminal_disposition(
     *,
     child_pid: int | None,
@@ -526,49 +882,78 @@ def run_one_child(
     repository_root: Path,
     contract_path: Path,
     schedule_path: Path,
+    schedule_publication_commit: str,
+    execution_authority_path: Path,
+    execution_authority_publication_commit: str,
+    authorization_secret_fd: int,
     output_root: Path,
+    *,
+    _fault: Callable[[str], None] | None = None,
 ) -> int:
+    def fault(stage: str) -> None:
+        if _fault is not None:
+            _fault(stage)
+
+    HELPER_PROCESS_AUDIT.clear()
     contract = validate_execution_contract(repository_root, contract_path)
+    normalized_schedule = normalize_repository_file(
+        repository_root,
+        schedule_path,
+        "schedule",
+    )
+    authorization_secret = read_authorization_secret(authorization_secret_fd)
+    authority = validate_execution_authority(
+        repository_root,
+        contract,
+        execution_authority_path,
+        execution_authority_publication_commit,
+        normalized_schedule,
+        schedule_publication_commit,
+        output_root,
+        authorization_secret,
+    )
     adapter_path = repository_root / contract["scheduleAdapter"]["consumer"]["path"]
     adapter = load_module(adapter_path, "play027_process_a_schedule_adapter")
+    original_adapter_git_output = adapter.git_output
+    original_adapter_git_bytes = adapter.git_bytes
+
+    def audited_adapter_git_output(root: Path, arguments: list[str]) -> str:
+        HELPER_PROCESS_AUDIT.append(
+            {"class": "git-read-only", "argv": ["git", *arguments]}
+        )
+        return original_adapter_git_output(root, arguments)
+
+    def audited_adapter_git_bytes(root: Path, arguments: list[str]) -> bytes:
+        HELPER_PROCESS_AUDIT.append(
+            {"class": "git-read-only", "argv": ["git", *arguments]}
+        )
+        return original_adapter_git_bytes(root, arguments)
+
+    adapter.git_output = audited_adapter_git_output
+    adapter.git_bytes = audited_adapter_git_bytes
     grant = adapter.consume_published_schedule(
         repository_root,
         repository_root / contract["scheduleAdapter"]["contract"]["path"],
-        schedule_path,
+        normalized_schedule,
+        schedule_publication_commit,
     )
     plan = validate_grant_plan(contract, grant, output_root, repository_root)
+    require(grant["grantId"] == authority["grantId"], "execution authority grant drift")
+    require(grant["slotId"] == authority["slotId"], "execution authority slot drift")
     verify_blender_executable(contract)
     require(sys.platform == "darwin", "Process-A child launch requires Darwin")
-    output_root.mkdir(parents=True, exist_ok=False)
-    capability = secrets.token_hex(32)
-    capability_read_fd, capability_write_fd = os.pipe()
-    child_grant_path = output_root / "CHILD-GRANT.json"
-    child_grant = {
-        "schema": 1,
-        "task": contract["task"],
-        "direction": contract["direction"],
-        "process": contract["process"],
-        "grantId": grant["grantId"],
-        "slotId": grant["slotId"],
-        "schedulePath": str(schedule_path.relative_to(repository_root)),
-        "scheduleSHA256": sha256(schedule_path),
-        "contractSHA256": sha256(contract_path),
-        "launcherSHA256": contract["launcher"]["sha256"],
-        "launcherPID": os.getpid(),
-        "childEntrypointSHA256": contract["childEntrypoint"]["sha256"],
-        "outputRoot": plan["outputRoot"],
-        "capabilitySHA256": sha256_bytes(capability.encode("utf-8")),
-        "childStartCount": 1,
-    }
-    write_exclusive(child_grant_path, child_grant)
-    command = build_child_command(
+    fault("lease")
+    attempt_record = create_attempt_record(repository_root, authority)
+    fault("root")
+    output_root_fd, output_identity = create_output_root(
         repository_root,
-        contract_path,
         contract,
         output_root,
-        child_grant_path,
-        capability_read_fd,
     )
+    capability_read_fd = -1
+    capability_write_fd = -1
+    session_secret = b""
+    command: list[str] = []
     environment = os.environ.copy()
     environment.update(
         {
@@ -591,8 +976,55 @@ def run_one_child(
     stderr = b""
     remaining_members: list[dict[str, int]] = []
     launcher_exception: str | None = None
-    with tempfile.TemporaryFile() as stdout_file, tempfile.TemporaryFile() as stderr_file:
+    dcc_child_start_count = 0
+    receipt_written = False
+    stdout_file: Any = None
+    stderr_file: Any = None
+    try:
+        fault("pipe")
+        session_secret = secrets.token_bytes(32)
+        capability_read_fd, capability_write_fd = os.pipe()
+        child_grant = {
+            "schema": 2,
+            "task": contract["task"],
+            "direction": contract["direction"],
+            "process": contract["process"],
+            "grantId": grant["grantId"],
+            "slotId": grant["slotId"],
+            "schedulePath": str(normalized_schedule.relative_to(repository_root)),
+            "scheduleSHA256": sha256(normalized_schedule),
+            "schedulePublicationCommit": schedule_publication_commit,
+            "executionAuthorityPath": authority["path"],
+            "executionAuthoritySHA256": authority["sha256"],
+            "executionAuthorityPublicationCommit": authority["publicationCommit"],
+            "contractSHA256": sha256(contract_path),
+            "launcherSHA256": contract["launcher"]["sha256"],
+            "launcherPID": os.getpid(),
+            "childEntrypointSHA256": contract["childEntrypoint"]["sha256"],
+            "outputRoot": plan["outputRoot"],
+            "outputRootDevice": output_identity["device"],
+            "outputRootInode": output_identity["inode"],
+            "authorizationSecretSHA256": authority["authorizationSecretSHA256"],
+            "sessionSecretSHA256": sha256_bytes(session_secret),
+            "attemptRecordPath": authority["attemptRecordPath"],
+            "attemptRecordSHA256": sha256_bytes(canonical_bytes(attempt_record)),
+            "maximumDCCChildStarts": 1,
+        }
+        fault("grant")
+        write_exclusive_at(output_root_fd, "CHILD-GRANT.json", child_grant)
+        fault("command")
+        command = build_child_command(
+            repository_root,
+            contract_path,
+            contract,
+            output_root_fd,
+            capability_read_fd,
+        )
+        fault("temp")
+        stdout_file = tempfile.TemporaryFile()
+        stderr_file = tempfile.TemporaryFile()
         try:
+            fault("popen")
             process = subprocess.Popen(
                 command,
                 cwd=repository_root,
@@ -600,23 +1032,34 @@ def run_one_child(
                 stdout=stdout_file,
                 stderr=stderr_file,
                 start_new_session=True,
-                pass_fds=(capability_read_fd,),
+                pass_fds=(capability_read_fd, output_root_fd),
                 close_fds=True,
             )
             process_pid = process.pid
+            dcc_child_start_count = 1
             os.close(capability_read_fd)
             capability_read_fd = -1
-            capability_payload = {
-                "capability": capability,
+            capability_payload = capability_message(
+                authorization_secret,
+                session_secret=session_secret,
+                public_payload={
+                "schema": 2,
                 "grantId": grant["grantId"],
                 "launcherPID": os.getpid(),
                 "launcherSHA256": contract["launcher"]["sha256"],
-                "scheduleSHA256": sha256(schedule_path),
-            }
+                "scheduleSHA256": sha256(normalized_schedule),
+                "schedulePublicationCommit": schedule_publication_commit,
+                "executionAuthoritySHA256": authority["sha256"],
+                "executionAuthorityPublicationCommit": authority["publicationCommit"],
+                "outputRootDevice": output_identity["device"],
+                "outputRootInode": output_identity["inode"],
+                },
+            )
             os.write(capability_write_fd, canonical_bytes(capability_payload))
             os.close(capability_write_fd)
             capability_write_fd = -1
             while terminal_status is None:
+                fault("sampler")
                 members = process_group_snapshot(process.pid)
                 sampled_peak_rss_kib = max(
                     sampled_peak_rss_kib,
@@ -672,6 +1115,7 @@ def run_one_child(
                 violation = "post-reap-process-group-not-empty"
                 terminate_group(process.pid)
             return_code = process.returncode
+            fault("cleanup")
         except BaseException as error:
             launcher_exception = f"{type(error).__name__}: {error}"
             violation = f"launcher-exception:{type(error).__name__}"
@@ -688,24 +1132,43 @@ def run_one_child(
                     remaining_members = process_group_snapshot(process.pid)
                 except LaunchError:
                     remaining_members = []
-        finally:
-            for descriptor in (capability_read_fd, capability_write_fd):
-                if descriptor >= 0:
-                    try:
-                        os.close(descriptor)
-                    except OSError:
-                        pass
+    except BaseException as error:
+        if launcher_exception is None:
+            launcher_exception = f"{type(error).__name__}: {error}"
+            violation = f"launcher-exception:{type(error).__name__}"
+    finally:
+        for descriptor in (capability_read_fd, capability_write_fd):
+            if descriptor >= 0:
+                try:
+                    os.close(descriptor)
+                except OSError:
+                    pass
+        if stdout_file is not None:
             stdout_file.seek(0)
-            stderr_file.seek(0)
             stdout = stdout_file.read()
+            stdout_file.close()
+        if stderr_file is not None:
+            stderr_file.seek(0)
             stderr = stderr_file.read()
+            stderr_file.close()
     elapsed = time.monotonic() - started
     receipt = {
-        "schema": 1,
+        "schema": 2,
         "task": contract["task"],
         "direction": contract["direction"],
         "process": contract["process"],
-        "childStartCount": 1,
+        "grantId": grant["grantId"],
+        "attemptRecordPath": authority["attemptRecordPath"],
+        "attemptRecordSHA256": sha256_bytes(canonical_bytes(attempt_record)),
+        "executionAuthority": {
+            "path": authority["path"],
+            "sha256": authority["sha256"],
+            "publicationCommit": authority["publicationCommit"],
+        },
+        "dccChildStartCount": dcc_child_start_count,
+        "maximumDCCChildStarts": 1,
+        "helperProcessCount": len(HELPER_PROCESS_AUDIT),
+        "helperProcessInvocations": HELPER_PROCESS_AUDIT,
         "childArgv": command,
         "newProcessGroup": True,
         "elapsedSeconds": round(elapsed, 6),
@@ -726,7 +1189,12 @@ def run_one_child(
         "sourceAuthority": False,
         "productionSelected": False,
     }
-    write_exclusive(output_root / "PROCESS-RECEIPT.json", receipt)
+    try:
+        write_exclusive_at(output_root_fd, "PROCESS-RECEIPT.json", receipt)
+        receipt_written = True
+    finally:
+        os.close(output_root_fd)
+    require(receipt_written, "terminal Process-A receipt was not written")
     if violation is not None or return_code != 0:
         return 1
     return 0
@@ -737,6 +1205,10 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", required=True)
     parser.add_argument("--schedule", required=True)
+    parser.add_argument("--schedule-publication-commit", required=True)
+    parser.add_argument("--execution-authority", required=True)
+    parser.add_argument("--execution-authority-publication-commit", required=True)
+    parser.add_argument("--authorization-secret-fd", required=True, type=int)
     parser.add_argument("--output-root", required=True)
     return parser.parse_args()
 
@@ -747,6 +1219,10 @@ def main() -> int:
         Path(options.repository_root).resolve(strict=True),
         Path(options.contract),
         Path(options.schedule),
+        options.schedule_publication_commit,
+        Path(options.execution_authority),
+        options.execution_authority_publication_commit,
+        options.authorization_secret_fd,
         Path(options.output_root),
     )
 

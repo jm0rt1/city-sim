@@ -23,11 +23,11 @@
   "scheduleAdapter": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
-      "sha256": "cef776ba2574a3de44a3b7f20d546700ff9a226eb1531dfeb579e1a2a86ce2c0"
+      "sha256": "24b07e2be94aaf31214f9d91892cef264bca4d026d6a90511816d7b6c3c42d6c"
     },
     "consumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
-      "sha256": "c15f7932be2f6db88dc665252111a992612061871c538c345e4e718a39ff3ea1"
+      "sha256": "c6433f70e114e1b315187bf69301fea67dd8ebee4492b7321d6f08cbdf763ee6"
     },
     "acceptedReadiness": {
       "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",
@@ -62,15 +62,15 @@
   },
   "launcher": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93"
+    "sha256": "b7185215d9d784c76b95bef33367d5893b02a095547bc5b6a4cad09cd28c8ce3"
   },
   "childEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
-    "sha256": "29134b674a8a014e2a5b1c395b42f5e27089694715ce9c0880719d1a6fb4024a"
+    "sha256": "aea36e46168af84687e202634908599398b928e2310fd791d08cd6e56cea221e"
   },
   "tests": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
-    "sha256": "1b2432b258b346080456b96d92f3c400aedddc528b1d2d6758a18f46e9fe0693"
+    "sha256": "e1f2b5658c00a9d2b52c75b0d9bcce3fb1bbcefa9e99b119c1af1ff0bcdbd387"
   },
   "blender": {
     "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
@@ -121,11 +121,15 @@
   },
   "processOutputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
   "capabilityChannel": {
-    "type": "inherited-anonymous-pipe",
+    "type": "integration-secret-plus-launcher-session-hmac",
     "oneUse": true,
     "parentPIDBound": true,
+    "executionAuthorityBound": true,
+    "outputDirectoryFDBound": true,
+    "durableAttemptRecordBound": true,
+    "secretTransport": "inherited-anonymous-pipe-only",
     "payloadMaximumBytes": 8192,
-    "hashAlgorithm": "SHA-256"
+    "hashAlgorithm": "HMAC-SHA-256"
   },
   "allowedProcessOutputs": [
     "CHILD-GRANT.json",

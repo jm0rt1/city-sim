@@ -278,3 +278,102 @@ authority instance was consumed in the visible worktree. `sourceReady`,
 `integrationAdmitted`, `rendererQuarantined`, `productionSelected`, and
 `shippingAuthorized` remain false. Integration review and acceptance remain
 required.
+
+---
+
+## Candidate revision 7 — frozen runner binding repair
+
+**Disposition:** `VALIDATION_ONLY_CANDIDATE_RETURNED_FOR_INDEPENDENT_REVIEW`
+
+Integration returned exact rev7 candidate
+`7cd17116af2fc21c18aca5aea33130b71fa41188` because
+`RUNNER-CONTRACT.json` still bound the predecessor
+`orchestrate_parallel_source.py` SHA-256 `5004521437...`, while the exact
+candidate orchestrator SHA-256 was
+`16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c`.
+The repair changes only East-owned frozen-input and validation-closure
+surfaces. It preserves every predecessor and accepted predesign byte.
+
+### Exact ordered repair commits and evidence head
+
+1. `6e81572b71bfe2c96222e414c1a7151c8a5ac26d` —
+   `PLAY-079: Bind frozen East closure inputs`;
+2. `973a6628a7facc8ba5286656ae73d105ea38c4ad` —
+   `PLAY-079: Record frozen East closure proof`.
+
+The exact repair evidence head bound by this record is
+`973a6628a7facc8ba5286656ae73d105ea38c4ad`. This completion update is a
+focused descendant and cannot bind its own Git commit without a
+self-referential hash.
+
+### Exact v3 evidence and repaired hashes
+
+- evidence:
+  `docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/EXECUTION-CLOSURE-VALIDATION-V03.json`
+- evidence SHA-256:
+  `c15dac86738a7319a7199b95bded64b433691d3362c7cf51a317eff15671dcfe`
+- schema: `citysim.play-079.east-execution-closure-proof.v3`
+- result: `PASS_ZERO_CHILD`
+- `RUNNER-CONTRACT.json`:
+  `93b1e27781540e1d007e1558e3320a2244b858d6c3b844b1858d9c1032fac690`
+- `orchestrate_parallel_source.py`:
+  `16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c`
+- `run_production.py`:
+  `54d68adcf925c013fce1cc10560fb260ca6240e1b3889df243497b452738a555`
+- `validate_execution_closure_v1.py`:
+  `7932901ce454446c3eb78a0e2c3d5267df0ad97fb036c2a6a98e95133b80c2c3`
+- `test_validate_execution_closure_v1.py`:
+  `8723de4e12a6cc0bc47070bc842114e5da8c16d284fc6873738d2dfa53eb7cc9`
+
+The zero-child runner boundary now explicitly validates all 29 frozen inputs
+before consuming the authenticated closure. The proof binds the exact
+orchestrator digest and rejects the stale predecessor digest with
+`frozen_hash_mismatch`.
+
+### Exact validation and parallel execution accounting
+
+Four independent CPU-only jobs were launched after implementation commit
+`6e81572b` froze the repair inputs:
+
+- shared execution-authority suite: `33/33` passed;
+- schedule-consumer suite: `6/6` passed;
+- closure packet generation A: passed;
+- closure packet generation B: passed byte-for-byte identically to A.
+
+Measured four-job overlap began at `2026-07-30T12:09:33.172Z`. Both packet
+jobs joined at `2026-07-30T12:09:47.486Z`; the shared suite joined last at
+`2026-07-30T12:09:52.082Z`. Ready jobs: `4`; helper/process capacity: `4`;
+launched: `4`; unused capacity: `0`. Evidence adoption and Git remained
+serialized to the visible East lane owner.
+
+The v3 proof also establishes:
+
+- two distinct fresh interpreters consumed the same authority/capability/lease:
+  first `PASS_DURABLY_CLAIMED`, second
+  `REJECTED_REPLAYED_CAPABILITY`;
+- a disposable fresh interpreter exited immediately after the atomic attempt
+  directory claim, before marker completion;
+- a subsequent fresh interpreter rejected that directory-only consumed
+  attempt as `replayed_capability`;
+- two fresh-root positive validations were byte-identical;
+- all `16/16` adversaries rejected before source child, DCC, render, or pixel
+  activity.
+
+### Preserved zero-pixel boundary
+
+- accepted scene SHA-256:
+  `e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7`;
+- accepted materials SHA-256:
+  `1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9`;
+- Blender/DCC starts: `0`;
+- source child starts: `0`;
+- render API calls: `0`;
+- pixels created: `0`;
+- normalization runs: `0`;
+- source packets and live leases: `0`;
+- shared, sibling, runtime, and shipping edits: `0`.
+
+The five attempt roots and four completed markers were created only in
+disposable temporary Git fixtures. No live authority or governed visible-tree
+attempt was consumed. Source readiness, admission, quarantine, production
+selection, shipping, integration, push, and self-acceptance remain false.

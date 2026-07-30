@@ -186,7 +186,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** `Rendering/`, shipping atlas pages or production selection, shared manifest implementation, simulation/gameplay/UI changes, lifecycle composition, package/build scripts, and self-acceptance.
 - **Acceptance:** The CONTRACT-011 residential L1 N/E/S/W calibration set passes before batch expansion; every accepted logical building type has its own non-aliased source identity; every accepted variant has four separately authored views; direction pairs preserve footprint, pivot, frontage socket, vertical envelope, scale, northwest light, southeast shadow, and material identity within CONTRACT-010 tolerances; R/C/I remain recognizable in unlabeled grayscale; all scene/tool/source/provenance/normalization/geometry validators pass; independent art review approves each batch before renderer ingestion.
 - **Stop conditions:** Reuse across building types, recolor-only variants, runtime mirroring/rotation, perspective or light drift, invented roads or ground truth, geometry/pivot/frontage mismatch, missing provenance, direct edits to live renderer/shipping selection, or generation continuing after two rejected direction siblings without anchor review.
-- **Current disposition:** Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North is active under CONTRACT-020 and CONTRACT-021 revision 2.
+- **Current disposition:** Residential L1–L4, Commercial L1–L4, Industrial L1,
+  Industrial L2, and Industrial L3 have accepted source and shipping outcomes.
+  Exact Industrial L3 renderer candidate
+  `472ffa85cd35639a675c1c2e4ede748c94446a7f` passed its focused independent
+  same-SHA PLAY-075 gate, published at
+  `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`; this does not close the final
+  20/20 release gate. Industrial L4 remains in the prelock/appearance-
+  calibration stage under CONTRACT-020 and CONTRACT-021 revision 2; source
+  admission, Renderer activation, and production selection remain atomic at
+  exact N/E/S/W 4-of-4, followed by one independent exact-candidate PLAY-075
+  gate.
 - **Latest L4 gate:** North v03 at `ba2c4127` preserves the materially stronger
   foundry and passes technical intake, but its analytically connected
   socket-side apron is occluded; the visible road court still points away from
@@ -694,13 +704,17 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** The Wave 009 same-state matrix proves dominant developed-city composition, coherent color/grayscale language, zero seams/overlap/fallback/repetition failures, exact interactions, and bounded resources at both widths and all LODs.
 - **Claim:** `docs/production/claims/PLAY-073.world-rendering.md`.
 - **Art-first queue:** Wave 010 R1 Industrial L2 is accepted at exact renderer
-  product `d41c2c68` with focused PLAY-075 approval `74f2164`. Exact R2
-  candidate `b4191d98ee7c526bc08a6fe272521588572e27fd` remains preserved and passed
-  271/271 integration tests, but integration returned it before publication
-  under the mixed-fidelity stop. The next renderer mutation is one replacement
-  R2 ingestion window after independent source review accepts a cohesive
-  PLAY-027 Industrial L3 N/E/S/W repair. Broader composition and R3 remain
-  paused.
+  product `d41c2c68d5584c990e271af06c0b93ab50722f5e` with focused PLAY-075
+  approval `74f2164`. Replacement R2 Industrial L3 is accepted at exact
+  renderer product `472ffa85cd35639a675c1c2e4ede748c94446a7f`, with the focused
+  independent same-SHA PLAY-075 PASS published at
+  `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`; returned candidate
+  `b4191d98ee7c526bc08a6fe272521588572e27fd` remains preserved as historical
+  no-score evidence. Industrial L4 Renderer work remains candidate-neutral
+  intake preparation only: admit and quarantine each exact direction
+  independently, assemble and activate only exact N/E/S/W 4-of-4, then hand
+  one immutable renderer candidate to the independent PLAY-075 staged-app gate
+  before publication.
 
 ### [x] PLAY-074: Make building and recovery obvious on the map
 

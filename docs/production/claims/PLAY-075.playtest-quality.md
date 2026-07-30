@@ -12,20 +12,26 @@
   `776cc9b7dfd9532bbf9eee09aca3359373b875a7`; clean PLAY-071/072/073/074
   handoffs; exact integration-provided candidate
 - **Validation/proof:** every requirement and automatic reject in `WAVE-009-CITY-NOT-BOARD.md`
-- **Status:** Wave 010 R1 Industrial L2 received focused independent approval
-  at evidence commit `74f2164`. The repaired Industrial L3 renderer candidate
+- **Status:** Wave 010 R1 Industrial L2 renderer candidate
+  `d41c2c68d5584c990e271af06c0b93ab50722f5e` received focused independent
+  approval at evidence commit `74f2164`; this does not pre-score the final
+  release. Original R2 candidate
+  `b4191d98ee7c526bc08a6fe272521588572e27fd` remains preserved as returned
+  before an independent live disposition and carries no PLAY-075 score. The
+  repaired Industrial L3 renderer candidate
   `472ffa85cd35639a675c1c2e4ede748c94446a7f` then passed its exact focused
   gate at evidence commit `85df0e8aee1e1e45c6da01dc02def3ade7bf1e5a`
   and was integrated and published at
-  `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`; Industrial L3 is no longer a
-  PLAY-075 blocker. The active focused slot is now the exact Industrial L4
-  N/E/S/W family. Candidate-neutral preparation is preserved in the
-  fail-closed packet under
+  `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`; the focused R2 slot is closed.
+  The active focused slot is now the exact Industrial L4 N/E/S/W family.
+  Candidate-neutral preparation is preserved in the fail-closed packet under
   `docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/`,
   but it remains `preregistering` until Integration publishes and acknowledges
-  the refreshed six-cell ledger. Its renderer candidate receipt is null, so no
-  launch, scoring, disposition, or PLAY-075 acceptance is implied. The final
-  20/20 Wave 009 release gate remains open.
+  a successor packet bound to the refreshed six-cell ledger and this claim
+  revision. Its renderer candidate receipt is null, so no launch, scoring,
+  disposition, or PLAY-075 acceptance is implied. Final activation requires
+  one exact atomic N/E/S/W 4-of-4 renderer candidate and one Integration-issued
+  exclusive QA gate lease. The final 20/20 Wave 009 release gate remains open.
 
 Independently prove or reject the city-not-board release. Acceptance requires
 20/20, every category 4/4, zero P0/P1, zero automatic rejects, and material

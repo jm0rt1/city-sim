@@ -116,7 +116,7 @@ def validate_contract(contract: dict[str, Any]) -> dict[str, Any]:
         raise GuardRejected("contract_direction_mismatch", str(contract.get("direction")))
     if contract.get("branch") != "codex/citysim-world-art-east":
         raise GuardRejected("contract_branch_mismatch", str(contract.get("branch")))
-    if contract.get("baselineCommit") != "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8":
+    if contract.get("baselineCommit") != "aaee294718a8176b70a4688b738b517f216dd3a7":
         raise GuardRejected("contract_baseline_mismatch", str(contract.get("baselineCommit")))
     if contract.get("sourceReady") or contract.get("productionSelected"):
         raise GuardRejected("unauthorized_disposition", "pre-lock runner cannot claim source/production")
@@ -212,7 +212,7 @@ def validate_non_alias_input(contract: dict[str, Any]) -> dict[str, Any]:
     if binding != {
         "path": "docs/production/evidence/INTEGRATION/"
         "industrial-l04-accepted-master-non-alias-input-v1.json",
-        "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+        "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
         "acceptedMasterCount": 44,
         "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
     }:
@@ -283,8 +283,8 @@ def validate_source_stage_binding(contract: dict[str, Any]) -> dict[str, Any]:
             "docs/production/evidence/INTEGRATION/"
             "industrial-l04-source-stage-handoff-schema-v2.json"
         ),
-        "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
-        "authorityCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+        "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+        "authorityCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     }
     if schema_binding != expected_schema:
         raise GuardRejected("source_stage_schema_v2_binding_mismatch", str(schema_binding))

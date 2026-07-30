@@ -6,9 +6,9 @@
     "direction": "east",
     "branch": "codex/citysim-world-art-east",
     "claimPath": "docs/production/claims/PLAY-079.world-art-east.md",
-    "claimRevision": 6,
-    "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-    "publishedBaseCommit": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+    "claimRevision": 7,
+    "claimSha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+    "publishedBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7"
   },
   "sharedAuthority": {
     "authority": {

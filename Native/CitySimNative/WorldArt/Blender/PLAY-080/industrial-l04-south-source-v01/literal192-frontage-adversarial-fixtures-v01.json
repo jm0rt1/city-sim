@@ -67,8 +67,76 @@
         "path": "/toolchainFingerprint/blenderExecutableSha256",
         "value": "8485107307b16bd0899f3c259261494b"
       }
+    },
+    {
+      "expectedRejection": "CLAIM_AUTHORITY_MISMATCH",
+      "id": "claim-authority-substitution",
+      "mutation": {
+        "path": "/authorities/claim/sha256",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "expectedRejection": "PUBLISHED_BASE_AUTHORITY_MISMATCH",
+      "id": "published-base-substitution",
+      "mutation": {
+        "path": "/authorities/publishedMaster/commit",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "expectedRejection": "INPUT_ROLE_BINDING_MISMATCH",
+      "id": "input-role-substitution",
+      "mutation": {
+        "path": "/inputBindings/0/role",
+        "value": "acceptedSouthMaterials"
+      }
+    },
+    {
+      "expectedRejection": "FIXTURE_PATH_MISMATCH",
+      "id": "fixture-path-substitution",
+      "mutation": {
+        "path": "/paths/fixture",
+        "value": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/substituted-fixtures.json"
+      }
+    },
+    {
+      "expectedRejection": "OUTPUT_PATH_MISMATCH",
+      "id": "output-path-substitution",
+      "mutation": {
+        "path": "/paths/output",
+        "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/substituted-validation.json"
+      }
     }
   ],
+  "authorities": {
+    "acceptedSouthMaterials": {
+      "authorityCommit": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+      "blobOid": "3a11708434c1df4e85e699b84bcf7a88fbf439e9",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "role": "acceptedSouthMaterials",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb"
+    },
+    "acceptedSouthScene": {
+      "authorityCommit": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+      "blobOid": "d04d7630436430907caaeb4eaa9c2d04304190ad",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "role": "acceptedSouthScene",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "claim": {
+      "authorityCommit": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+      "blobOid": "f58988aeeba6f034cc74b4a13a3336782eedaacb",
+      "path": "docs/production/claims/PLAY-080.world-art-south.md",
+      "role": "claim",
+      "sha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973"
+    },
+    "publishedMaster": {
+      "commit": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+      "role": "publishedMaster",
+      "treeOid": "36aa7551607689e2193783e4ac14a0fc1c0424ff"
+    }
+  },
   "baseline": {
     "boundary": {
       "blenderProcessLaunches": 0,
@@ -180,7 +248,6 @@
       "transparentFilm": true
     }
   },
-  "claimSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
   "direction": "south",
   "inputBindings": [
     {
@@ -210,7 +277,10 @@
     }
   ],
   "mode": "pure-data-zero-pixel",
-  "publishedBase": "94ae73a99abe64f59bb052582fcaba1d9725319d",
-  "schema": "citysim.play-080.literal192-frontage-adversarial-fixtures.v1",
+  "paths": {
+    "fixture": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/literal192-frontage-adversarial-fixtures-v01.json",
+    "output": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/LITERAL-192-FRONTAGE-REPLAY-SAFETY-VALIDATION.json"
+  },
+  "schema": "citysim.play-080.literal192-frontage-adversarial-fixtures.v2",
   "taskId": "PLAY-080"
 }

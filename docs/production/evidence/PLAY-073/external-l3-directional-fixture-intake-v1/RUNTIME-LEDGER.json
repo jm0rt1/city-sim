@@ -1,0 +1,90 @@
+{
+  "disposition": "renderer_intake_pass_non_shipping",
+  "validation_base": "f52c6d169575e8fca187b5eece38ee836501f65b",
+  "published_authority": "184e6e5b83b405b217f1908bf331605c8aa0c912",
+  "replacement_r2_product": "25d291a7373833a797dc3bb3ba36658e18eccc06",
+  "replacement_r2_evidence": "de6805092478c97d85f0230c93f7f10edcb257e6",
+  "fixture": {
+    "owner": "PLAY-075",
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+    "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+    "byte_count": 133925,
+    "schema_version": 1,
+    "fingerprint_version": 1,
+    "state_digest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f",
+    "tick": 844,
+    "seed": 10481999410520546993,
+    "runtime_override": false
+  },
+  "generated_v4": {
+    "manifest_sha256": "317802265010fc758b232bea9198f18ec0ca4d75b5ceb6f759206238717cec92",
+    "directions": [
+      {
+        "direction": "north",
+        "state_coordinate": [10, 10],
+        "sole_road_coordinate": [10, 9],
+        "logical_id": "industrial_l03_v0_north",
+        "source_revision": "source-v06",
+        "source_sha256": "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+        "lod_sha256": {
+          "city": "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500",
+          "neighborhood": "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1",
+          "block": "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500"
+        }
+      },
+      {
+        "direction": "east",
+        "state_coordinate": [3, 9],
+        "sole_road_coordinate": [4, 9],
+        "logical_id": "industrial_l03_v0_east",
+        "source_revision": "source-v04",
+        "source_sha256": "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
+        "lod_sha256": {
+          "city": "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e",
+          "neighborhood": "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342",
+          "block": "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba"
+        }
+      },
+      {
+        "direction": "south",
+        "state_coordinate": [4, 8],
+        "sole_road_coordinate": [4, 9],
+        "logical_id": "industrial_l03_v0_south",
+        "source_revision": "source-v04",
+        "source_sha256": "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
+        "lod_sha256": {
+          "city": "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e",
+          "neighborhood": "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1",
+          "block": "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c"
+        }
+      },
+      {
+        "direction": "west",
+        "state_coordinate": [17, 11],
+        "sole_road_coordinate": [16, 11],
+        "logical_id": "industrial_l03_v0_west",
+        "source_revision": "source-v06",
+        "source_sha256": "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4",
+        "lod_sha256": {
+          "city": "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a",
+          "neighborhood": "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5",
+          "block": "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8"
+        }
+      }
+    ]
+  },
+  "runtime_validation": {
+    "layouts": [[1278, 768], [900, 600]],
+    "lods": ["city", "neighborhood", "block"],
+    "distinct_logical_ids": 4,
+    "distinct_source_keys": 4,
+    "distinct_source_hashes": 4,
+    "distinct_normalized_hashes": 12,
+    "fallback_delta": 0,
+    "alias": false,
+    "mirror": false,
+    "rotation": false,
+    "recolor": false,
+    "direction_substitution": false
+  }
+}

@@ -730,9 +730,13 @@ This is the authoritative first-wave task source. The shared target is one coher
   disposition for each Wave 010 art ingestion. These narrow passes do not
   replace or pre-score the final 20/20 release gate. R1 exact candidate
   `d41c2c68` was approved at focused evidence commit `74f2164`. R2 candidate
-  `b4191d9` was returned by integration before independent live disposition;
-  its preregistration/admission evidence is preserved, and no score is implied.
-  PLAY-075 now awaits a repaired integration-supplied Industrial L3 candidate.
+  `b4191d9` was returned before independent live disposition, and its evidence
+  remains preserved without a score. Repaired Industrial L3 exact candidate
+  `472ffa85` subsequently passed at evidence commit `85df0e8a` and was
+  integrated at `fcccf2bc`. PLAY-075 now preregisters the exact Industrial L4
+  N/E/S/W family against Integration's refreshed six-cell ledger; its
+  renderer-candidate receipt remains null until atomic 4/4 assembly, and only
+  that exact candidate may enter the focused staged-app gate.
 
 ### [ ] PLAY-076: Grow the opening into a believable starter town
 

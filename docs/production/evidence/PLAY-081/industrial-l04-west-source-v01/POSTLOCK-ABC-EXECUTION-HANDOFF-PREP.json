@@ -1,0 +1,327 @@
+{
+  "activity": {
+    "blenderProcesses": 0,
+    "childStarts": 0,
+    "contactSheetInvocations": 0,
+    "dccStarts": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "productionReceipts": 0,
+    "renders": 0,
+    "sourceCandidatePackets": 0
+  },
+  "assemblerJoin": {
+    "contract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/REVIEW-ASSEMBLY-PREP-CONTRACT.json",
+      "sha256": "bd280eabb97332c8e1fddff16a127b0fb565d4cb4407234f0c2b9b3533927059"
+    },
+    "currentValidation": {
+      "errors": [
+        "binding:claim:content",
+        "binding:executionContract:content"
+      ],
+      "passedTests": 6,
+      "state": "blocked_stale_task_owned_bindings",
+      "testsRun": 8
+    },
+    "entrypoint": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_review_assembly_prep.py",
+      "sha256": "da0dce31202e1ef72e6a26991d79ccf2397b9373e9846513d42228acd8a3c564"
+    },
+    "requiredSettledGates": [
+      "appearanceLockBound",
+      "sourceProductionProfileBound",
+      "processASettled",
+      "processBSettled",
+      "processCSettled",
+      "abcDecodedIdentityPassed",
+      "normalizationRun1Settled",
+      "normalizationRun2Settled",
+      "normalizationRepeatPassed",
+      "reviewArtifactsComplete",
+      "rejectedAttemptInventorySealed",
+      "sourceValidationPassed",
+      "parallelExecutionReceiptPassed"
+    ],
+    "singleWriter": "play-081-west-direction-review-assembler-v1",
+    "startRule": "run_once_only_after_every_required_settled_gate_is_true"
+  },
+  "blockers": [
+    "appearance lock is not published or bound",
+    "locked material mapping is not published or bound",
+    "source-production profile is not published or bound",
+    "current production schedule instance and authority are not published or bound",
+    "West process A launch grant is not published or bound",
+    "West process B launch grant is not published or bound",
+    "West process C launch grant is not published or bound",
+    "live execution-authority instance and lease are not published",
+    "production execution and production receipt emission remain disabled",
+    "review-assembly contract still binds the revision-4 claim and pre-closure execution-contract hashes"
+  ],
+  "branch": "codex/citysim-world-art-west",
+  "claim": {
+    "path": "docs/production/claims/PLAY-081.world-art-west.md",
+    "revision": 6,
+    "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+  },
+  "deterministicValidatorEntrypoints": {
+    "directionExecutionAuthority": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "directionScheduleConsumer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
+      "sha256": "65eca83d2709d8082bd72b6bca794f0e7e4109f123b801e724b934c351e34492"
+    },
+    "highLevelOrchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
+      "sha256": "ac1d5de2350fc195a734ace7429bdd2b9a72d5cd1ca9ffa56b50152402925a73"
+    },
+    "lowLevelRunnerValidationBoundary": {
+      "directInvocationAllowed": false,
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+      "sha256": "4c77e5b66d325aef46ddfc368145ced007255900e9d2bba4c32ea01d315780e9"
+    },
+    "parallelSchedule": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py",
+      "sha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04"
+    },
+    "postSourceAssembler": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/post_source_pipeline.py",
+      "sha256": "a652d6dfed934e0ceebcdcda275693702961fd706fdefc8e218a662af7c847a9"
+    },
+    "sourceStageSemantic": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "westSourceOutputs": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
+      "sha256": "9f48110b02df134f14531156ab452d9421fc72054d35a4a02af73f8abff144cc"
+    }
+  },
+  "executionAccounting": {
+    "actualOverlapEvidence": {
+      "observed": true,
+      "phase1": {
+        "joinedWhileFreshRootReplayRunning": [
+          {
+            "job": "root-path-fresh-absence",
+            "result": "PASS_3_PROCESSES_9_ROOTS_10_RECEIPTS_ABSENT"
+          },
+          {
+            "durationSeconds": 2.358,
+            "job": "west-orchestration",
+            "result": "PASS_32_OF_32"
+          }
+        ],
+        "launchedTogether": [
+          "root-path-fresh-absence",
+          "west-orchestration",
+          "fresh-root-execution-closure"
+        ]
+      },
+      "phase2": {
+        "freshRootReplayStillRunning": true,
+        "launchedIntoFreedSlots": [
+          {
+            "durationSeconds": 0.023,
+            "job": "schedule-consumer",
+            "result": "PASS_8_OF_8"
+          },
+          {
+            "durationSeconds": 0.656,
+            "job": "review-assembly",
+            "result": "RETURN_6_OF_8"
+          }
+        ]
+      },
+      "phase3": {
+        "durationSeconds": 79.967,
+        "job": "fresh-root-execution-closure",
+        "result": "PASS_5_OF_5"
+      }
+    },
+    "availableCapacity": {
+      "dccProcessesAuthorizedNow": 0,
+      "helperOrCpuJobs": 3,
+      "visibleLaneOwners": 1
+    },
+    "nextRefill": [
+      "Integration publishes exact appearance lock and locked material mapping",
+      "Integration publishes source-production profile, production schedule, per-process grants, authority instance, and lease",
+      "Integration grants a focused repair for the stale review-assembly contract and validator bindings"
+    ],
+    "readyNow": [],
+    "running": [],
+    "safeJobsActuallyLaunched": 5,
+    "serializedAuthority": [
+      "visible West lane owner is sole governed handoff and Git writer",
+      "future direction-local assembler is the sole final packet writer",
+      "Integration remains sole shared-authority publisher"
+    ],
+    "unusedCapacityReasons": [
+      "no DCC capacity is authorized before post-lock authority publication",
+      "after the final fresh-root replay joined there were no remaining eligible independent checks",
+      "governed handoff assembly and Git operations are single-writer"
+    ],
+    "waitingOnJoin": []
+  },
+  "frozenBindings": {
+    "acceptedMaterials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/MATERIAL-ROLE-BINDING.json",
+      "sha256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463"
+    },
+    "acceptedScene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",
+      "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
+    },
+    "closureEvidence": {
+      "packetSha256": "5177015549c0cd160b08bae03afcd1eadde3d34d49e28ced4085b6c9bb1042f5",
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
+      "sha256": "5acb90c58b860d211a4afe93237f13834f67deead51fbe902352b896857e46fd"
+    },
+    "executionContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
+      "sha256": "005d6c980232a212b5566f33ffeab0d293e001c1e98de754819ba550c6caf56e"
+    },
+    "pathSafety": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
+      "sha256": "d8b742e90e562d2da97c342d9c79c1674134b086a9df8d47b3bbe9ec689e6f1a"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+    },
+    "scheduleConsumerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/WEST-SCHEDULE-CONSUMER-CONTRACT-V1.json",
+      "sha256": "82bb1ab81cea52b04c75d93a75a595e60fca439dcbf86a8dbcf04a6ad61129d9"
+    }
+  },
+  "grantConsumptionBoundary": {
+    "authenticatedOneAttemptRequired": true,
+    "directLowLevelRunnerInvocationAllowed": false,
+    "maximumChildStartsPerGrantedProcess": 1,
+    "now": {
+      "childStartsAuthorized": 0,
+      "state": "blocked_missing_postlock_authorities"
+    },
+    "order": [
+      "validate exact Integration schedule schema, instance, authority commit, hash, ancestry, phase, queue, and slot",
+      "validate exact direction-execution authority and authenticated one-attempt grant",
+      "high-level West orchestrator validates process, ordinal, roots, slot, claim, base, and exactly-one invocation",
+      "low-level West runner is reachable only through the validated high-level boundary",
+      "write the process schedule-job receipt no-follow and no-overwrite only after the future child settles"
+    ]
+  },
+  "head": {
+    "currentPublishedMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+    "preparedAt": "81211bf47def632b19f094d756ae0a7078646331",
+    "publishedMasterIsAncestor": true
+  },
+  "jobGraph": {
+    "directionJoin": {
+      "receiptOrder": [
+        [
+          "process-A.scheduleJobReceipt",
+          "process-B.scheduleJobReceipt",
+          "process-C.scheduleJobReceipt"
+        ],
+        [
+          "normalizationRun1Receipt",
+          "normalizationRun2Receipt"
+        ],
+        [
+          "normalizationRepeatReceipt"
+        ],
+        [
+          "reviewManifest"
+        ],
+        [
+          "sourceValidation"
+        ],
+        [
+          "parallelExecutionReceipt"
+        ],
+        [
+          "sourceCandidatePacket"
+        ]
+      ],
+      "state": "blocked_until_all_required_jobs_settle"
+    },
+    "processes": {
+      "A": {
+        "dependencies": [
+          "appearanceLock",
+          "sourceProductionProfile",
+          "productionSchedule",
+          "launchGrantA",
+          "freshExclusiveRoots"
+        ],
+        "jobId": "W-A",
+        "ordinal": 4,
+        "roots": {
+          "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
+          "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+          "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic"
+        },
+        "scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence/schedule-job-receipt.json",
+        "state": "blocked_missing_postlock_authorities"
+      },
+      "B": {
+        "dependencies": [
+          "appearanceLock",
+          "sourceProductionProfile",
+          "productionSchedule",
+          "launchGrantB",
+          "freshExclusiveRoots"
+        ],
+        "jobId": "W-B",
+        "ordinal": 8,
+        "roots": {
+          "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
+          "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+          "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic"
+        },
+        "scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence/schedule-job-receipt.json",
+        "state": "blocked_missing_postlock_authorities"
+      },
+      "C": {
+        "dependencies": [
+          "appearanceLock",
+          "sourceProductionProfile",
+          "productionSchedule",
+          "launchGrantC",
+          "freshExclusiveRoots"
+        ],
+        "jobId": "W-C",
+        "ordinal": 11,
+        "roots": {
+          "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
+          "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+          "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic"
+        },
+        "scheduleJobReceipt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence/schedule-job-receipt.json",
+        "state": "blocked_missing_postlock_authorities"
+      }
+    }
+  },
+  "launchReady": false,
+  "outputSafety": {
+    "allExpectedProductionOutputsAbsent": true,
+    "exactTaskOwnedPathsOnly": true,
+    "freshInvocationReceiptsAbsent": true,
+    "noFollowRequired": true,
+    "noOverwriteRequired": true,
+    "pairwiseDistinctProcessRoots": true,
+    "processCount": 3,
+    "rootCount": 9,
+    "symlinkComponentsRejected": true
+  },
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "schema": "citysim.play-081.west-postlock-abc-execution-handoff-prep.v1",
+  "sourceReady": false,
+  "stage": "prelock_postlock_execution_preparation",
+  "taskId": "PLAY-081"
+}

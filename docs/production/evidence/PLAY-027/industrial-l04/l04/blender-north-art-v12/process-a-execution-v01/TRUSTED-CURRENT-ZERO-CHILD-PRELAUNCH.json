@@ -1,13 +1,13 @@
 {
   "adapterCurrentTest": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/test_north_process_a_schedule_adapter.py",
-    "sha256": "7e041e2f891d1e2a018555988c7319a5da98b76938b9acdd8950f71da0f1a2f2"
+    "sha256": "caa58899b40c22f1b5f5c8eedf43b1d8cb9316c4ad2f7534932a1506080ae79e"
   },
   "adversarialCaseCount": 29,
   "allPassed": true,
   "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
   "blenderChildStartCount": 0,
-  "candidateHead": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+  "candidateHead": "3515c1f6b4cfaeca9bb63b80d5e3e741146eb424",
   "candidateReadyForIndependentReview": false,
   "cases": [
     {
@@ -72,12 +72,12 @@
       "passed": true,
       "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
       "trustedIntegrationHead": {
-        "commit": "5d86e804be679c765c2465c60ceaee72f3702c48",
+        "commit": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
         "remoteRef": "refs/remotes/origin/master"
       }
     },
     {
-      "actualFailure": "Git binding failed: merge-base --is-ancestor 46c3b13d4527a64c195bc57dbfbdcc1200bf9066 5d86e804be679c765c2465c60ceaee72f3702c48",
+      "actualFailure": "Git binding failed: merge-base --is-ancestor 46c3b13d4527a64c195bc57dbfbdcc1200bf9066 d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
       "expectedFailure": "Git binding failed",
       "name": "forged-lane-authority-not-in-trusted-master",
       "passed": true
@@ -361,7 +361,7 @@
   },
   "executionContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/EXECUTION-CONTRACT.json",
-    "sha256": "bef334a64bc150934b1d9ecb1aca82a2933628676e7a0853d1b671d359bcb817"
+    "sha256": "ffda9d0939b084af9fc8dc0537b2e83828e4c6f8e3ab28874294de335b98a7c7"
   },
   "futureDirectionHandoff": {
     "currentState": "not_produced",
@@ -519,7 +519,7 @@
   "sourceAuthority": false,
   "sourcePixelCount": 0,
   "task": "PLAY-027",
-  "trustedIntegrationMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+  "trustedIntegrationMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
   "trustedMasterIsAncestor": true,
   "validationPassed": true
 }

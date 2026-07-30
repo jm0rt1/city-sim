@@ -24,9 +24,9 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "TRUSTED-CURRENT-ZERO-CHILD-READINESS.json"
+    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS.json"
 )
-TRUSTED_MASTER_COMMIT = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
 
 
 def arguments() -> argparse.Namespace:
@@ -587,6 +587,19 @@ def main() -> None:
             "expected hash drift",
         )
     )
+    for label in ("sourceStageSchema", "nonAliasInput", "nonAliasLoader"):
+        changed = copy.deepcopy(contract["currentAuthorityReplay"])
+        changed[label]["sha256"] = "0" * 64
+        cases.append(
+            expect_failure(
+                f"current-authority-{label}-hash-drift",
+                lambda value=changed: adapter.validate_current_authority_replay(
+                    repository_root,
+                    value,
+                ),
+                "current authority replay binding drift",
+            )
+        )
 
     syntax = ast.parse(adapter_path.read_text(encoding="utf-8"))
     forbidden_names = {"Popen", "system", "execv", "execve", "spawnl", "spawnv"}
@@ -661,8 +674,9 @@ def main() -> None:
         "candidateHead": candidate_head,
         "trustedMasterIsAncestor": True,
         "authorityBaseCommit": contract["publishedBaseCommit"],
-        "publishedAuthorityCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+        "publishedAuthorityCommit": TRUSTED_MASTER_COMMIT,
         "claimSHA256": contract["claim"]["sha256"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
         "processAPrelaunchAuthority": contract["processAPrelaunchAuthority"],
         "processAOrchestrator": contract["processAOrchestrator"],
         "scheduleSchema": contract["scheduleSchema"],

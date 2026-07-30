@@ -32,6 +32,7 @@ EXPECTED_CONTRACT_FIELDS = {
     "branch",
     "publishedBaseCommit",
     "claim",
+    "currentAuthorityReplay",
     "processAPrelaunchAuthority",
     "directionScheduleAdapter",
     "processAOrchestrator",
@@ -54,6 +55,38 @@ EXPECTED_CONTRACT_FIELDS = {
     "sourceAuthority",
     "candidateReadyForIndependentReview",
     "productionSelected",
+}
+EXPECTED_CURRENT_AUTHORITY_REPLAY = {
+    "refreshAuthority": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md"
+        ),
+        "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c",
+    },
+    "sourceStageSchema": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-source-stage-handoff-schema-v2.json"
+        ),
+        "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+    },
+    "nonAliasInput": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-accepted-master-non-alias-input-v1.json"
+        ),
+        "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
+    },
+    "nonAliasLoader": {
+        "path": (
+            "Native/CitySimNative/WorldArt/Shared/"
+            "accepted_master_non_alias_v1.py"
+        ),
+        "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d",
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
 }
 
 
@@ -182,6 +215,51 @@ def load_shared_validator(repository_root: Path, path: Path) -> Any:
     return module
 
 
+def validate_current_authority_replay(
+    repository_root: Path,
+    value: Any,
+) -> dict[str, Any]:
+    require(
+        value == EXPECTED_CURRENT_AUTHORITY_REPLAY,
+        "current authority replay binding drift",
+    )
+    for label in (
+        "refreshAuthority",
+        "sourceStageSchema",
+        "nonAliasInput",
+        "nonAliasLoader",
+    ):
+        verify_file_binding(
+            repository_root,
+            value[label],
+            f"currentAuthorityReplay.{label}",
+            expected_path=EXPECTED_CURRENT_AUTHORITY_REPLAY[label]["path"],
+            expected_sha256=EXPECTED_CURRENT_AUTHORITY_REPLAY[label]["sha256"],
+        )
+    loader_path = repository_root / value["nonAliasLoader"]["path"]
+    spec = importlib.util.spec_from_file_location(
+        "play027_current_non_alias_loader",
+        loader_path,
+    )
+    require(spec is not None and spec.loader is not None, "non-alias loader import failed")
+    loader = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(loader)
+    require(
+        callable(getattr(loader, "load_forbidden_decoded_rgba", None)),
+        "non-alias loader entrypoint missing",
+    )
+    require(
+        getattr(loader, "INPUT_SHA256", None) == value["nonAliasInput"]["sha256"],
+        "non-alias loader input binding drift",
+    )
+    require(
+        getattr(loader, "FORBIDDEN_SET_SHA256", None)
+        == value["forbiddenSetSHA256"],
+        "non-alias loader forbidden-set binding drift",
+    )
+    return value
+
+
 def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, Any]:
     expected = (repository_root / CONTRACT_RELATIVE).resolve(strict=True)
     require(contract_path.resolve(strict=True) == expected, "exact adapter contract required")
@@ -195,7 +273,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
         "process": "A",
         "phase": "prelock_north_a",
         "branch": "codex/citysim-world-art",
-        "publishedBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
+        "publishedBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
         "expectedSlotId": "dcc-1",
         "expectedQueue": ["north:A"],
         "maximumChildStarts": 1,
@@ -223,7 +301,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
     bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",
-            "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+            "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
         ),
         "processAPrelaunchAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -234,7 +312,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
             "launch_north_process_a.py",
-            "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce",
+            "6638182ea6dc033777aea25273363d621a41cbe15f7048a8af162970dc5b86f6",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -264,6 +342,10 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             expected_path=path,
             expected_sha256=digest,
         )
+    validate_current_authority_replay(
+        repository_root,
+        contract["currentAuthorityReplay"],
+    )
     verify_file_binding(
         repository_root,
         contract["directionScheduleAdapter"],
@@ -381,6 +463,7 @@ def validate_north_grant(
         "integrationAuthorityCommit": schedule["integrationAuthorityCommit"],
         "publishedBaseCommit": direction["baseCommit"],
         "claimSHA256": direction["claimSha256"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
         "frozenNorthV12Inputs": contract["frozenNorthV12Inputs"],
         "adapterMode": contract["adapterMode"],
         "directLowLevelInvocationAllowed": False,

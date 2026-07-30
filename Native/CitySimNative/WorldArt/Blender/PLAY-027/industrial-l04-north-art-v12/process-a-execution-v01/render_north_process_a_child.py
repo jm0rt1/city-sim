@@ -74,6 +74,76 @@ def load_module(path: Path, name: str) -> Any:
     return module
 
 
+def verify_current_authority_replay(
+    repository_root: Path,
+    value: Any,
+) -> None:
+    expected = {
+        "refreshAuthority": {
+            "path": (
+                "docs/production/evidence/INTEGRATION/"
+                "INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md"
+            ),
+            "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c",
+        },
+        "sourceStageSchema": {
+            "path": (
+                "docs/production/evidence/INTEGRATION/"
+                "industrial-l04-source-stage-handoff-schema-v2.json"
+            ),
+            "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+        },
+        "nonAliasInput": {
+            "path": (
+                "docs/production/evidence/INTEGRATION/"
+                "industrial-l04-accepted-master-non-alias-input-v1.json"
+            ),
+            "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
+        },
+        "nonAliasLoader": {
+            "path": (
+                "Native/CitySimNative/WorldArt/Shared/"
+                "accepted_master_non_alias_v1.py"
+            ),
+            "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d",
+        },
+        "acceptedMasterCount": 44,
+        "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
+    }
+    require(value == expected, "child current-authority replay binding drift")
+    for label in (
+        "refreshAuthority",
+        "sourceStageSchema",
+        "nonAliasInput",
+        "nonAliasLoader",
+    ):
+        binding = value[label]
+        path = repository_root / binding["path"]
+        require(
+            path.is_file()
+            and not path.is_symlink()
+            and sha256(path) == binding["sha256"],
+            f"child current-authority {label} bytes drift",
+        )
+    loader = load_module(
+        repository_root / value["nonAliasLoader"]["path"],
+        "play027_child_non_alias_loader",
+    )
+    require(
+        callable(getattr(loader, "load_forbidden_decoded_rgba", None)),
+        "child non-alias loader entrypoint missing",
+    )
+    require(
+        getattr(loader, "INPUT_SHA256", None) == value["nonAliasInput"]["sha256"],
+        "child non-alias loader input binding drift",
+    )
+    require(
+        getattr(loader, "FORBIDDEN_SET_SHA256", None)
+        == value["forbiddenSetSHA256"],
+        "child non-alias loader forbidden-set binding drift",
+    )
+
+
 def read_one_use_capability(descriptor: int) -> dict[str, Any]:
     require(descriptor >= 3, "inherited launcher capability fd missing")
     try:
@@ -136,6 +206,7 @@ def verify_capability(
             "workerHead",
             "executionClosureValidatorSHA256",
             "runnerContractSHA256",
+            "currentAuthorityReplay",
             "outputRootDevice",
             "outputRootInode",
         },
@@ -185,6 +256,7 @@ def verify_capability(
             "attemptRecordPath",
             "attemptRecordSHA256",
             "maximumDCCChildStarts",
+            "currentAuthorityReplay",
         },
         "child grant fields drift",
     )
@@ -217,6 +289,17 @@ def verify_capability(
         and not runner_contract_path.is_symlink()
         and sha256(runner_contract_path) == contract["runnerContract"]["sha256"],
         "child runner contract bytes drift",
+    )
+    runner_contract = load_json(runner_contract_path)
+    require(
+        runner_contract["currentAuthorityReplay"]
+        == contract["currentAuthorityReplay"]
+        == grant["currentAuthorityReplay"],
+        "child runner current-authority replay drift",
+    )
+    verify_current_authority_replay(
+        repository_root,
+        contract["currentAuthorityReplay"],
     )
     require(
         grant["executionClosureValidatorSHA256"]
@@ -288,6 +371,7 @@ def verify_capability(
         "workerHead",
         "executionClosureValidatorSHA256",
         "runnerContractSHA256",
+        "currentAuthorityReplay",
     ):
         require(
             capability_payload[field] == grant[field],
@@ -559,6 +643,7 @@ def main() -> None:
         "importer": contract["frozenNorthV12Inputs"]["importer"],
         "launcher": contract["launcher"],
         "childEntrypoint": contract["childEntrypoint"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
     }
     write_exclusive(output_root_fd, "OBJECT-MANIFEST.json", object_manifest)
     write_exclusive(output_root_fd, "GROUND-PROJECTION.json", projection)

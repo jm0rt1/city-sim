@@ -13,15 +13,35 @@
     "stopAfterProcessA": true
   },
   "branch": "codex/citysim-world-art",
-  "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
-  "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+  "authorityBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+  "publicationCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
   "integrationTrust": {
     "remoteRef": "refs/remotes/origin/master",
-    "minimumAuthorityCommit": "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed"
+    "minimumAuthorityCommit": "aaee294718a8176b70a4688b738b517f216dd3a7"
   },
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
-    "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+    "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+  },
+  "currentAuthorityReplay": {
+    "refreshAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md",
+      "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
   },
   "prelaunchAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
@@ -34,15 +54,15 @@
   "scheduleAdapter": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
-      "sha256": "e96f902bcea59936777201d5f24ef50089529e4b95611eda6ecdbcb6b492709a"
+      "sha256": "ae0f0e093bcc1f28c52c539b09e25eb4f414cff53ffba2a64109969f6c4e78db"
     },
     "consumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
-      "sha256": "6fc7d1d0ab5adcf5b29780b1cced0db5d9b99424aa33a84ffeaca404d9d3a512"
+      "sha256": "7991c97236562bf5aef9115d1b4db4453ab32c383bae504d1ce8b2b379c3a3d5"
     },
     "acceptedReadiness": {
-      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",
-      "sha256": "df412064bb5499b7c72b1a087580e8a26d19adef54495fa24923c81f39a4dd8d"
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS.json",
+      "sha256": "d2507c04e88626212194dc783f932fb0905ce1cfa61ae1927b59704e5f83d7b0"
     }
   },
   "executionClosure": {
@@ -65,7 +85,7 @@
   },
   "runnerContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/RUNNER-CONTRACT.json",
-    "sha256": "32d3b27a793c8d315ba38c82bea878c428238fd132cd207e9e44c00c003f3379"
+    "sha256": "5ef480a373194402f71a386b1aedf9768d5ef1ff3f2682aac85ad15bdb573a43"
   },
   "frozenNorthV12Inputs": {
     "scene": {
@@ -95,15 +115,15 @@
   },
   "launcher": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce"
+    "sha256": "6638182ea6dc033777aea25273363d621a41cbe15f7048a8af162970dc5b86f6"
   },
   "childEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
-    "sha256": "72cde879a4d8cc2060fbcc2ee0ee65e6ae23f32e8e7508bc693a9ccee880f994"
+    "sha256": "bf6ce386b27db6130d75da647233c7b06d0231d21b75453cc6cfa73414127fa8"
   },
   "tests": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
-    "sha256": "b1b14dbf2c1245f247a14db0c541ce27202842d87899f401c9442e1fb6e49a10"
+    "sha256": "c3bf3d84059567a5b5d72ac48b6bb771f34153c5ff5baac243c4c6d5f79f3a45"
   },
   "blender": {
     "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
@@ -172,7 +192,7 @@
     "currentState": "not_produced",
     "requiredClaimBinding": {
       "path": "docs/production/claims/PLAY-027.world-art.md",
-      "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+      "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
     },
     "requiredBindings": [
       "exact-scene-hash",

@@ -30,6 +30,38 @@ CONTRACT_RELATIVE = SOURCE_ROOT / "EXECUTION-CONTRACT.json"
 LAUNCHER_RELATIVE = SOURCE_ROOT / "launch_north_process_a.py"
 INTEGRATION_ROOT = Path("docs/production/evidence/INTEGRATION")
 HELPER_PROCESS_AUDIT: list[dict[str, Any]] = []
+EXPECTED_CURRENT_AUTHORITY_REPLAY = {
+    "refreshAuthority": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md"
+        ),
+        "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c",
+    },
+    "sourceStageSchema": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-source-stage-handoff-schema-v2.json"
+        ),
+        "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+    },
+    "nonAliasInput": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-accepted-master-non-alias-input-v1.json"
+        ),
+        "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
+    },
+    "nonAliasLoader": {
+        "path": (
+            "Native/CitySimNative/WorldArt/Shared/"
+            "accepted_master_non_alias_v1.py"
+        ),
+        "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d",
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
+}
 
 
 class LaunchError(ValueError):
@@ -396,6 +428,47 @@ def load_module(path: Path, name: str) -> Any:
     return module
 
 
+def validate_current_authority_replay(
+    repository_root: Path,
+    value: Any,
+) -> dict[str, Any]:
+    require(
+        value == EXPECTED_CURRENT_AUTHORITY_REPLAY,
+        "current authority replay binding drift",
+    )
+    for label in (
+        "refreshAuthority",
+        "sourceStageSchema",
+        "nonAliasInput",
+        "nonAliasLoader",
+    ):
+        verify_binding(
+            repository_root,
+            value[label],
+            f"currentAuthorityReplay.{label}",
+            expected_path=EXPECTED_CURRENT_AUTHORITY_REPLAY[label]["path"],
+            expected_sha256=EXPECTED_CURRENT_AUTHORITY_REPLAY[label]["sha256"],
+        )
+    loader = load_module(
+        repository_root / value["nonAliasLoader"]["path"],
+        "play027_current_non_alias_loader",
+    )
+    require(
+        callable(getattr(loader, "load_forbidden_decoded_rgba", None)),
+        "non-alias loader entrypoint missing",
+    )
+    require(
+        getattr(loader, "INPUT_SHA256", None) == value["nonAliasInput"]["sha256"],
+        "non-alias loader input binding drift",
+    )
+    require(
+        getattr(loader, "FORBIDDEN_SET_SHA256", None)
+        == value["forbiddenSetSHA256"],
+        "non-alias loader forbidden-set binding drift",
+    )
+    return value
+
+
 def validate_execution_contract(
     repository_root: Path,
     contract_path: Path,
@@ -417,6 +490,7 @@ def validate_execution_contract(
         "publicationCommit",
         "integrationTrust",
         "claim",
+        "currentAuthorityReplay",
         "prelaunchAuthority",
         "familyContract",
         "scheduleAdapter",
@@ -449,8 +523,8 @@ def validate_execution_contract(
         "process": "A",
         "phase": "prelock_north_a",
         "branch": "codex/citysim-world-art",
-        "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
-        "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+        "authorityBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+        "publicationCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
         "processOutputRoot": (
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
@@ -477,9 +551,7 @@ def validate_execution_contract(
         contract["integrationTrust"]
         == {
             "remoteRef": "refs/remotes/origin/master",
-            "minimumAuthorityCommit": (
-                "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed"
-            ),
+            "minimumAuthorityCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
         },
         "Integration trust-root policy drift",
     )
@@ -571,7 +643,7 @@ def validate_execution_contract(
     expected_bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",
-            "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+            "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
         ),
         "prelaunchAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -591,6 +663,10 @@ def validate_execution_contract(
             expected_path=path,
             expected_sha256=digest,
         )
+    validate_current_authority_replay(
+        repository_root,
+        contract["currentAuthorityReplay"],
+    )
     adapter = contract["scheduleAdapter"]
     require(
         isinstance(adapter, dict)
@@ -785,6 +861,10 @@ def validate_grant_plan(
     require(
         grant.get("frozenNorthV12Inputs") == contract["frozenNorthV12Inputs"],
         "grant frozen-input drift",
+    )
+    require(
+        grant.get("currentAuthorityReplay") == contract["currentAuthorityReplay"],
+        "grant current-authority replay drift",
     )
     output_root = validate_output_root(
         repository_root,
@@ -1369,6 +1449,7 @@ def run_one_child(
             "attemptRecordPath": authority["attemptRecordPath"],
             "attemptRecordSHA256": sha256_bytes(canonical_bytes(attempt_record)),
             "maximumDCCChildStarts": 1,
+            "currentAuthorityReplay": contract["currentAuthorityReplay"],
         }
         fault("grant")
         write_exclusive_at(output_root_fd, "CHILD-GRANT.json", child_grant)
@@ -1419,6 +1500,7 @@ def run_one_child(
                     "validator"
                 ]["sha256"],
                 "runnerContractSHA256": contract["runnerContract"]["sha256"],
+                "currentAuthorityReplay": contract["currentAuthorityReplay"],
                 "outputRootDevice": output_identity["device"],
                 "outputRootInode": output_identity["inode"],
                 },

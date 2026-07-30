@@ -31,8 +31,10 @@ EVIDENCE_ROOT = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-execution-v01"
 )
-EVIDENCE_RELATIVE = EVIDENCE_ROOT / "TRUSTED-CURRENT-ZERO-CHILD-PRELAUNCH.json"
-TRUSTED_MASTER_COMMIT = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+EVIDENCE_RELATIVE = (
+    EVIDENCE_ROOT / "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-PRELAUNCH.json"
+)
+TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
 
 
 def arguments() -> argparse.Namespace:
@@ -147,6 +149,7 @@ def valid_grant(contract: dict[str, Any]) -> dict[str, Any]:
         "integrationAuthorityCommit": contract["publicationCommit"],
         "publishedBaseCommit": contract["authorityBaseCommit"],
         "claimSHA256": contract["claim"]["sha256"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
         "frozenNorthV12Inputs": contract["frozenNorthV12Inputs"],
         "adapterMode": "validate-and-return-grant-plan-only",
         "directLowLevelInvocationAllowed": False,
@@ -337,7 +340,7 @@ def exercise_shared_closure(
                 "direction": "north",
                 "branch": contract["branch"],
                 "claimPath": claim_path,
-                "claimRevision": 1,
+                "claimRevision": 7,
                 "claimSha256": contract["claim"]["sha256"],
                 "publishedBaseCommit": base,
             },
@@ -795,6 +798,23 @@ def main() -> None:
             )
         )
 
+    for label in ("sourceStageSchema", "nonAliasInput", "nonAliasLoader"):
+        changed = copy.deepcopy(grant)
+        changed["currentAuthorityReplay"][label]["sha256"] = "0" * 64
+        cases.append(
+            expect_failure(
+                f"grant-current-authority-{label}-drift",
+                lambda changed=changed: launcher.validate_grant_plan(
+                    contract,
+                    changed,
+                    requested_output,
+                    repository_root,
+                    output_exists=lambda _: False,
+                ),
+                "grant current-authority replay drift",
+            )
+        )
+
     trusted_head = run_git(repository_root, "rev-parse", "origin/master")
     trust = launcher.verify_trusted_integration_head(
         repository_root,
@@ -959,6 +979,7 @@ def main() -> None:
             "attemptRecordPath": "attempt.json",
             "attemptRecordSHA256": "e" * 64,
             "maximumDCCChildStarts": 1,
+            "currentAuthorityReplay": contract["currentAuthorityReplay"],
         }
         launcher.write_exclusive_at(output_fd, "CHILD-GRANT.json", fake_grant)
         read_fd, write_fd = os.pipe()
@@ -980,6 +1001,7 @@ def main() -> None:
                     "validator"
                 ]["sha256"],
                 "runnerContractSHA256": contract["runnerContract"]["sha256"],
+                "currentAuthorityReplay": contract["currentAuthorityReplay"],
                 "outputRootDevice": os.fstat(output_fd).st_dev,
                 "outputRootInode": os.fstat(output_fd).st_ino,
             },
@@ -1132,6 +1154,7 @@ def main() -> None:
         "prelockProcessPolicy": contract["prelockProcessPolicy"],
         "directionRootMap": contract["directionRootMap"],
         "futureDirectionHandoff": contract["futureDirectionHandoff"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
         "adapterCurrentTest": {
             "path": str(adapter_test.relative_to(repository_root)),
             "sha256": sha256(adapter_test),

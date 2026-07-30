@@ -1,0 +1,71 @@
+{
+  "schema": "citysim.play-079.east-execution-closure-consumer.v1",
+  "schemaVersion": 1,
+  "task": {
+    "taskId": "PLAY-079",
+    "direction": "east",
+    "branch": "codex/citysim-world-art-east",
+    "claimPath": "docs/production/claims/PLAY-079.world-art-east.md",
+    "claimRevision": 6,
+    "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
+    "publishedBaseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b"
+  },
+  "sharedAuthority": {
+    "authority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "validator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    }
+  },
+  "artifactPaths": {
+    "executionContract": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-CONTRACT.json",
+    "directionScheduleAdapter": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/validate_execution_closure_v1.py",
+    "highLevelOrchestrator": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
+    "runnerContract": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
+    "runnerEntrypoint": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/run_production.py",
+    "scene": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-SCENE-BINDING.json",
+    "materials": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-MATERIALS-BINDING.json",
+    "toolchain": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-TOOLCHAIN-BINDING.json"
+  },
+  "authentication": {
+    "secretTransport": "anonymous_pipe",
+    "secretLengthBytes": 32,
+    "algorithm": "HMAC-SHA256",
+    "canonicalJson": {
+      "sortKeys": true,
+      "separators": [
+        ",",
+        ":"
+      ],
+      "ensureAscii": true,
+      "finalLf": true
+    },
+    "oneTime": true,
+    "replayAllowed": false,
+    "rawSecretPersisted": false
+  },
+  "runnerBoundary": {
+    "mode": "validation_only",
+    "directLowLevelInvocationAllowed": false,
+    "maximumChildStarts": 1,
+    "actualChildStarts": 0
+  },
+  "disposition": {
+    "validationOnly": true,
+    "liveLeaseAuthorized": false,
+    "childStartAuthorized": false,
+    "dccExecutionAuthorized": false,
+    "renderAuthorized": false,
+    "pixelAuthorized": false,
+    "sourceCandidateReady": false,
+    "productionSelected": false,
+    "shippingAuthorized": false
+  }
+}

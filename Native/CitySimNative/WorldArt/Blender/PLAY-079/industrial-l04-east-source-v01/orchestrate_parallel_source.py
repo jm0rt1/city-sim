@@ -35,7 +35,13 @@ RUNNER_CONTRACT_PATH = SOURCE_ROOT / "RUNNER-CONTRACT.json"
 CLAIM_PATH = REPOSITORY_ROOT / "docs/production/claims/PLAY-079.world-art-east.md"
 PROCESS_IDS = ("A", "B", "C")
 EXPECTED_CLAIM_SHA256 = (
-    "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab"
+    "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+)
+EXECUTION_CLOSURE_VERSION_ROOT = (
+    SOURCE_ROOT / "schedule-consumer-adapter-v01"
+)
+EXECUTION_CLOSURE_CONTRACT_PATH = (
+    EXECUTION_CLOSURE_VERSION_ROOT / "EXECUTION-CLOSURE-CONTRACT.json"
 )
 PARALLEL_DESIGN_PATH = (
     "docs/production/evidence/INTEGRATION/"
@@ -895,6 +901,72 @@ def write_invocation_receipt(path: pathlib.Path, payload: dict[str, Any]) -> str
     )
 
 
+def validate_execution_closure(
+    args: argparse.Namespace,
+    *,
+    repository_root: pathlib.Path = REPOSITORY_ROOT,
+    contract: dict[str, Any] | None = None,
+    shared_validator: Any | None = None,
+    fixture_contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    required = (
+        "execution_authority",
+        "trusted_head",
+        "worker_head",
+        "authority_publication_commit",
+        "secret_fd",
+    )
+    missing = [name for name in required if getattr(args, name, None) is None]
+    if missing:
+        raise OrchestrationRejected("missing_execution_closure_inputs", missing)
+    if str(EXECUTION_CLOSURE_VERSION_ROOT) not in sys.path:
+        sys.path.insert(0, str(EXECUTION_CLOSURE_VERSION_ROOT))
+    import validate_execution_closure_v1 as closure  # type: ignore
+    import run_production as runner
+
+    try:
+        authenticated = closure.authenticate(
+            repository_root=repository_root,
+            authority_path=pathlib.Path(args.execution_authority),
+            trusted_head=args.trusted_head,
+            worker_head=args.worker_head,
+            authority_publication_commit=args.authority_publication_commit,
+            secret_fd=args.secret_fd,
+            contract=contract,
+            shared_validator=shared_validator,
+        )
+        result = runner.validate_execution_closure_boundary(
+            authenticated,
+            fixture_contract=fixture_contract,
+        )
+    except closure.ClosureRejected as error:
+        raise OrchestrationRejected(error.code, error.detail) from error
+    except runner.GuardRejected as error:
+        raise OrchestrationRejected(error.code, error.detail) from error
+    return {
+        "schema": "citysim.play-079.east-execution-closure-validation.v1",
+        "taskId": "PLAY-079",
+        "direction": "east",
+        "result": "PASS",
+        "authority": {
+            "path": pathlib.Path(args.execution_authority).as_posix(),
+            "publicationCommit": args.authority_publication_commit,
+            "trustedHead": args.trusted_head,
+            "workerHead": args.worker_head,
+        },
+        "runnerBoundary": result,
+        "sourceReady": False,
+        "productionSelected": False,
+        "liveLeaseCreated": False,
+        "sourceChildStarts": 0,
+        "dccInvocations": 0,
+        "blenderProcessInvocations": 0,
+        "renderApiCalls": 0,
+        "pixelFilesCreated": 0,
+        "repositoryWrites": 0,
+    }
+
+
 def add_production_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--launch-handoff")
     parser.add_argument("--launch-handoff-commit")
@@ -935,6 +1007,12 @@ def parse_arguments(argv: Iterable[str]) -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest="command", required=True)
     dry = subparsers.add_parser("dry-structural")
     dry.add_argument("--fixture", type=pathlib.Path, required=True)
+    closure = subparsers.add_parser("validate-closure")
+    closure.add_argument("--execution-authority")
+    closure.add_argument("--trusted-head")
+    closure.add_argument("--worker-head")
+    closure.add_argument("--authority-publication-commit")
+    closure.add_argument("--secret-fd", type=int)
     for command in ("preflight", "launch", "finalize"):
         child = subparsers.add_parser(command)
         add_production_arguments(child)
@@ -949,6 +1027,8 @@ def main(argv: Iterable[str] | None = None) -> int:
     try:
         if args.command == "dry-structural":
             result = validate_dry_fixture(args.fixture)
+        elif args.command == "validate-closure":
+            result = validate_execution_closure(args)
         else:
             result = validate_production_config(args)
             raise AssertionError(f"unexpected production validation result: {result}")
@@ -971,6 +1051,7 @@ def main(argv: Iterable[str] | None = None) -> int:
             "code": error.code,
             "detail": error.detail,
             "subprocessInvocations": 0,
+            "sourceChildStarts": 0,
             "dccInvocations": 0,
             "blenderProcessInvocations": 0,
             "renderApiCalls": 0,

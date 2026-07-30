@@ -756,6 +756,103 @@ def execute(
     }
 
 
+def validate_execution_closure_boundary(
+    authenticated_closure: object,
+    *,
+    fixture_contract: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Validate an authenticated rev-6 handoff without launching a child.
+
+    This boundary is intentionally unavailable as a CLI mode. The only
+    production caller is the high-level East orchestrator after the shared
+    authority validator and anonymous-pipe HMAC checks have succeeded.
+    """
+
+    adapter_root = SOURCE_ROOT / "schedule-consumer-adapter-v01"
+    if str(adapter_root) not in sys.path:
+        sys.path.insert(0, str(adapter_root))
+    import validate_execution_closure_v1 as closure  # type: ignore
+
+    if not isinstance(authenticated_closure, closure.AuthenticatedExecutionClosure):
+        raise GuardRejected(
+            "unauthenticated_runner_input",
+            "runner validation boundary requires an authenticated closure object",
+        )
+    if fixture_contract is not None and fixture_contract.get("_testFixture") is not True:
+        raise GuardRejected(
+            "fixture_contract_not_explicit",
+            "only disposable validation fixtures may override the fixed contract",
+        )
+    expected = (
+        fixture_contract
+        if fixture_contract is not None
+        else load_json(adapter_root / "EXECUTION-CLOSURE-CONTRACT.json")
+    )
+    try:
+        authority, shared_result = authenticated_closure.consume_for_runner()
+    except closure.ClosureRejected as error:
+        raise GuardRejected(error.code, error.detail) from error
+    if authority.get("task") != expected["task"]:
+        raise GuardRejected(
+            "runner_task_binding_mismatch",
+            str(authority.get("task")),
+        )
+    observed_paths = {
+        name: binding.get("path")
+        for name, binding in authority.get("artifacts", {}).items()
+        if isinstance(binding, dict)
+    }
+    if observed_paths != expected["artifactPaths"]:
+        raise GuardRejected(
+            "runner_artifact_binding_mismatch",
+            str(observed_paths),
+        )
+    grant = authority["grant"]
+    if (
+        shared_result.get("direction") != "east"
+        or shared_result.get("taskId") != "PLAY-079"
+        or shared_result.get("process") != grant["process"]
+        or shared_result.get("grantId") != grant["grantId"]
+        or shared_result.get("queueId") != grant["queueId"]
+        or shared_result.get("slotId") != grant["slotId"]
+    ):
+        raise GuardRejected(
+            "runner_shared_result_mismatch",
+            str(shared_result),
+        )
+    if (
+        authority.get("mode") != "validation_only"
+        or authority["disposition"].get("validationOnly") is not True
+        or any(
+            authority["disposition"].get(field) is not False
+            for field in authority["disposition"]
+            if field != "validationOnly"
+        )
+    ):
+        raise GuardRejected(
+            "runner_live_disposition_forbidden",
+            str(authority.get("disposition")),
+        )
+    return {
+        "result": "PASS",
+        "boundary": "run_production.validation_only",
+        "taskId": "PLAY-079",
+        "direction": "east",
+        "process": grant["process"],
+        "grantId": grant["grantId"],
+        "queueId": grant["queueId"],
+        "slotId": grant["slotId"],
+        "exactlyOneInvocationValidated": True,
+        "validationOnly": True,
+        "liveLeaseCreated": False,
+        "childStarts": 0,
+        "blenderProcessLaunches": 0,
+        "blenderRenderApiCalls": 0,
+        "pixelFiles": 0,
+        "repositoryWrites": 0,
+    }
+
+
 def hex_rgba(value: str) -> tuple[float, float, float, float]:
     raw = value.removeprefix("#")
     if len(raw) != 6:

@@ -1,0 +1,11 @@
+{
+  "schema": "citysim.play-079.east-execution-toolchain-binding.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "application": "Blender",
+  "version": "4.5.12 LTS",
+  "buildHash": "84afd5f785f7",
+  "executableSha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+  "validationOnly": true,
+  "executableInvocations": 0
+}

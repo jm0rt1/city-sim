@@ -1,0 +1,66 @@
+{
+  "schema": "citysim.play-081.west-zero-pixel-successor-cases.v3",
+  "schemaVersion": 3,
+  "cases": [
+    {
+      "name": "stale-runner-hash",
+      "mutationPath": "bindings.runnerContract.sha256",
+      "value": "7f8701eeb173426a2a4b8b0587f80584c3141b7d9e4ef7a9f5e19fcda3f87b8c",
+      "expectedError": "binding:runnerContract:sha256"
+    },
+    {
+      "name": "old-published-master",
+      "mutationPath": "lineage.publishedMaster",
+      "value": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+      "expectedError": "lineage:publishedMaster"
+    },
+    {
+      "name": "wrong-claim-hash",
+      "mutationPath": "bindings.claim.sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expectedError": "binding:claim:sha256"
+    },
+    {
+      "name": "wrong-bridge-integrated-proof",
+      "mutationPath": "bridgeAuthority.integratedProofCommit",
+      "value": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+      "expectedError": "bridge:integratedProofCommit"
+    },
+    {
+      "name": "wrong-bridge-mapping-hash",
+      "mutationPath": "bridgeAuthority.mappingSha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expectedError": "bridge:mappingSha256"
+    },
+    {
+      "name": "sibling-scene-path",
+      "mutationPath": "bindings.acceptedScene.path",
+      "value": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/SIBLING-SCENE.json",
+      "expectedError": "binding:acceptedScene:path"
+    },
+    {
+      "name": "orientation-transform-not-none",
+      "mutationPath": "identity.orientationTransform",
+      "value": "rotate_y_180",
+      "expectedError": "identity:orientationTransform"
+    },
+    {
+      "name": "unsafe-output-shared-root",
+      "mutationPath": "outputRoots.review",
+      "value": "docs/production/evidence/INTEGRATION/review",
+      "expectedError": "output:review"
+    },
+    {
+      "name": "unsafe-output-traversal",
+      "mutationPath": "outputRoots.assembly",
+      "value": "../outside/assembly",
+      "expectedError": "output:assembly"
+    },
+    {
+      "name": "unsafe-output-alias",
+      "mutationPath": "outputRoots.processB",
+      "value": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A",
+      "expectedError": "output:processB"
+    }
+  ]
+}

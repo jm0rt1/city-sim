@@ -12,6 +12,7 @@ import sys
 import unittest
 
 import consume_schedule_v01 as adapter
+import jsonschema
 
 
 class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
@@ -49,9 +50,86 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
 
     def test_all_adversaries_fail_closed_with_zero_children(self) -> None:
         results = adapter.run_adversaries(self.contract)
-        self.assertEqual(19, len(results))
+        self.assertEqual(21, len(results))
         self.assertTrue(
             all(case["result"] == "PASS_ZERO_CHILD_FAIL_CLOSED" for case in results)
+        )
+
+    def test_real_cli_consumes_schema_and_semantic_passing_postlock_fixture_zero_child(
+        self,
+    ) -> None:
+        schema = json.loads(
+            (
+                adapter.REPOSITORY_ROOT
+                / adapter.AUTHORITIES["scheduleSchema"]["path"]
+            ).read_text()
+        )
+        schedule = json.loads(
+            (
+                adapter.REPOSITORY_ROOT / adapter.POSTLOCK_FIXTURE_SCHEDULE_PATH
+            ).read_text()
+        )
+        jsonschema.Draft202012Validator(
+            schema,
+            format_checker=jsonschema.FormatChecker(),
+        ).validate(schedule)
+        command = [
+            sys.executable,
+            str(adapter.REPOSITORY_ROOT / adapter.ADAPTER_PATH),
+            "--consume",
+            "--schedule",
+            adapter.POSTLOCK_FIXTURE_SCHEDULE_PATH,
+            "--nonproduction-postlock-fixture",
+        ]
+        result = subprocess.run(
+            command,
+            cwd=adapter.REPOSITORY_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(
+            "VALIDATED_FOR_HIGH_LEVEL_ORCHESTRATOR", payload["result"]
+        )
+        self.assertTrue(payload["nonproductionFixture"])
+        self.assertEqual(
+            "appearance_lock_bound", payload["runner"]["stage"]
+        )
+        self.assertEqual(
+            "PASS",
+            payload["schedule"]["sharedSemanticValidation"]["result"],
+        )
+        self.assertEqual(0, payload["childrenStarted"])
+        self.assertEqual(0, payload["activity"]["childStarts"])
+        self.assertEqual(0, payload["activity"]["dccProcessLaunches"])
+        self.assertEqual(0, payload["activity"]["pixelFiles"])
+        self.assertFalse(payload["directLowLevelInvocationAllowed"])
+        self.assertFalse(payload["reportWritten"])
+
+    def test_prelock_and_stale_runner_adversaries_fail_closed(self) -> None:
+        schedule = adapter.synthetic_postlock_schedule()
+        prelock_runner = adapter.load_json_bytes(
+            adapter.capture_file(
+                adapter.RUNNER_CONTRACT["path"], "RUNNER_CONTRACT_UNSAFE"
+            ).raw,
+            adapter.RUNNER_CONTRACT["path"],
+        )
+        with self.assertRaises(adapter.AdapterRejected) as prelock:
+            adapter.validate_schedule_core(
+                schedule, self.contract, prelock_runner
+            )
+        self.assertEqual("RUNNER_NOT_POSTLOCK_BOUND", prelock.exception.code)
+
+        stale_runner = adapter.future_runner(schedule)
+        stale_runner["acceptedPredesign"]["scene"]["sha256"] = "f" * 64
+        with self.assertRaises(adapter.AdapterRejected) as stale:
+            adapter.validate_schedule_core(
+                schedule, self.contract, stale_runner
+            )
+        self.assertEqual(
+            "STALE_RUNNER_IMMUTABLE_BINDING", stale.exception.code
         )
 
     def test_direct_low_level_and_wrong_child_limit_reject(self) -> None:
@@ -191,6 +269,23 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
             (
                 ["--consume", "--schedule", f"{adapter.SOURCE_ROOT}runner-contract.json"],
                 "SCHEDULE_PATH_NOT_INTEGRATION_OWNED",
+            ),
+            (
+                [
+                    "--consume",
+                    "--schedule",
+                    adapter.POSTLOCK_FIXTURE_SCHEDULE_PATH,
+                ],
+                "SCHEDULE_PATH_NOT_INTEGRATION_OWNED",
+            ),
+            (
+                [
+                    "--consume",
+                    "--schedule",
+                    f"{adapter.MODEL_ROOT}CONTRACT.json",
+                    "--nonproduction-postlock-fixture",
+                ],
+                "FIXTURE_SCHEDULE_PATH_MISMATCH",
             ),
         )
         for arguments, expected in cases:

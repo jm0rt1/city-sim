@@ -76,6 +76,29 @@ Stop if the contract, family lock, branch claim, or source revision is missing,
 stale, or contradictory for the requested stage; never repair shared authority
 from a direction cell.
 
+### Start the direction cell immediately
+
+The first work update after a valid dispatch must publish the cell's compact
+execution declaration:
+
+`{directionBinding, stage, readyNow, running, waitingOnJoin,
+serializedAuthority, nextRefill, capacity, unusedCapacityReasons}`
+
+Then start every stage-legal job whose frozen inputs and exclusive roots are
+ready. Do not return a plan while leaving ready work unstarted. During prelock,
+that normally means direction-local scene/material authoring followed by
+static and actual-camera zero-pixel proofs; during postlock production, it
+means all granted A/B/C processes up to the published DCC cap plus any
+independent CPU validation whose inputs are already closed. A sibling's
+review, failure, queue position, or unfinished output is never a blocker for
+direction-local work that does not consume it.
+
+When the current cell has exhausted its stage-legal mutations, continue with
+claim-owned inventory, provenance, validator, review-sheet, packet, or
+rejection-preservation work when possible. Report idle only with the exact
+prohibition, its authority owner, the resumption event, and why no such
+preparation remains.
+
 Use one branch, worktree, claim, and task-owned path set per direction. North
 owns design calibration; East, South, and West independently own only their
 named orientation. Run all Integration-authorized cells concurrently:

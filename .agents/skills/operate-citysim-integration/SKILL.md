@@ -72,6 +72,14 @@ thread as an active family workstream. Every active row must carry a structured
 commit, claim revision, acknowledgement time, bounded deliverable, and stop
 condition, plus the visible thread turn/item identifier used as evidence.
 
+A QA row may reach `preregistered` only after Integration acknowledges one
+task-owned machine-readable preregistration packet bound to the exact batch,
+claim hash, published base, family-contract hash, expected N/E/S/W logical
+keys, current ledger revision, Renderer intake-plan hash, fixture/camera/rubric
+hashes, and exclusive evidence root, with
+`rendererCandidateReceipt: null`. Record that packet path/hash in the QA row.
+A generic, prior-family, or prose-only QA plan does not satisfy the row.
+
 For directional World Art, the canonical control surfaces are
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json`,
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md`, and one

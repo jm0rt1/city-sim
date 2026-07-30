@@ -1,7 +1,7 @@
 {
   "adapter": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
-    "sha256": "44384b0b9983b91312f87bef6d2302a5c2dec5bb3153103fea01e4ad48ca3451"
+    "sha256": "4c72d5bf1b7c9d8decbe538f6926fd1ef40eb55362172235f1e62e68ec749414"
   },
   "adapterAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
@@ -16,8 +16,8 @@
   },
   "claim": {
     "path": "docs/production/claims/PLAY-081.world-art-west.md",
-    "revision": 6,
-    "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+    "revision": 7,
+    "sha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
   },
   "direction": "west",
   "exclusiveRoots": [
@@ -42,14 +42,14 @@
   },
   "orchestrationContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-    "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
+    "sha256": "6f4adda204c53d22f50e9ed609980ae77d32045ac5b4218446e4828e543a5774"
   },
   "orchestrator": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
-    "sha256": "ad73320de9d6b778e460a1b55c45bc60c881b5e9bd1b3435504b97909b870870"
+    "sha256": "9a1db7b18c235c8e77c5c2280e0f9f101c6d76960fd50ee9f8abd13ab46d0951"
   },
   "productionSelected": false,
-  "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+  "publishedBase": "aaee294718a8176b70a4688b738b517f216dd3a7",
   "readinessEvidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
   "releaseInputs": {
     "appearanceLock": {
@@ -85,11 +85,11 @@
   },
   "runnerContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
-    "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+    "sha256": "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5"
   },
   "runnerEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
-    "sha256": "4c77e5b66d325aef46ddfc368145ced007255900e9d2bba4c32ea01d315780e9"
+    "sha256": "ee7bbec81175c3277a8cc5dbb14b4166024628d0ed58f5a41fa078efadb9aa4c"
   },
   "scheduleSchema": {
     "path": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",

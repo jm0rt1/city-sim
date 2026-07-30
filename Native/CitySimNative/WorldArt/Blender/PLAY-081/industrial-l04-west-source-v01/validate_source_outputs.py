@@ -150,7 +150,7 @@ def validate_source_stage_schema(
         or west_registration["frontageSocketSource"].get("const")
         != [640, 704]
         or authorities["nonAliasLoader"]["properties"]["sha256"].get("const")
-        != "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+        != "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
         or authorities["semanticValidator"]["properties"]["sha256"].get("const")
         != "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
         or authorities["canonicalDecoder"]["properties"]["sha256"].get("const")

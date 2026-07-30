@@ -103,7 +103,7 @@
   },
   "tests": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
-    "sha256": "ec4c973801bbd06dbbbaae24d41ccbfe4c78c069d7a1b7446b599b683d7d2972"
+    "sha256": "b1b14dbf2c1245f247a14db0c541ce27202842d87899f401c9442e1fb6e49a10"
   },
   "blender": {
     "executable": "/Applications/Blender.app/Contents/MacOS/Blender",

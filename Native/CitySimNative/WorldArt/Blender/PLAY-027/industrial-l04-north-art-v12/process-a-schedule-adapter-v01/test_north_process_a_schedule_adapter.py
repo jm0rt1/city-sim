@@ -26,7 +26,7 @@ EVIDENCE_RELATIVE = Path(
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
     "TRUSTED-CURRENT-ZERO-CHILD-READINESS.json"
 )
-TRUSTED_MASTER_COMMIT = "5d86e804be679c765c2465c60ceaee72f3702c48"
+TRUSTED_MASTER_COMMIT = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
 
 
 def arguments() -> argparse.Namespace:

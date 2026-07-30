@@ -95,6 +95,7 @@
   },
   "projectionRow": {
     "batch": "industrial_l04_directional_family",
+    "lane": "world_art",
     "direction": "north",
     "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
     "branch": "codex/citysim-world-art",
@@ -107,7 +108,11 @@
     "acknowledgedAt": "2026-07-30T14:02:00Z",
     "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
     "updatedAt": "2026-07-30T14:03:36Z",
+    "cleanState": "clean_current_remote_trust_epoch_receipt_candidate",
+    "boundedDeliverable": "one_current_remote_trust_cross_row_epoch_receipt_with_69_closure_adapter_prelaunch_fresh_root_and_exact_accounting_projection",
+    "blocker": "process_a_remains_closed_until_integration_publishes_the_exact_live_north_a_authority_schedule_grant_lease_secret_and_compute_slot",
     "nextAction": "integration_publish_the_exact_live_closure_instance_and_one_process_a_compute_grant_then_dispatch_north_only",
+    "stopCondition": "stop_clean_with_no_live_grant_child_blender_dcc_render_pixels_normalization_sibling_shared_surface_push_or_self_acceptance",
     "executionAccounting": {
       "readyNow": [],
       "running": [],

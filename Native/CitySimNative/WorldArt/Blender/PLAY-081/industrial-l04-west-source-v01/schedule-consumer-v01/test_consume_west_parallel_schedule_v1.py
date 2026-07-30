@@ -90,7 +90,7 @@ class WestScheduleConsumerV1Tests(unittest.TestCase):
             if direction == "west":
                 claim_sha = contract["claim"]["sha256"]
                 base = contract["publishedBase"]
-                orchestrator = copy.deepcopy(contract["orchestrator"])
+                orchestrator = copy.deepcopy(contract["adapter"])
                 roots = copy.deepcopy(contract["exclusiveRoots"])
             else:
                 claim_sha = direction[0] * 64
@@ -363,7 +363,7 @@ class WestScheduleConsumerV1Tests(unittest.TestCase):
     def test_contract_adversaries_fail_closed(self) -> None:
         cases = {
             "wrong-claim-revision": (
-                lambda value: value["claim"].update(revision=4),
+                lambda value: value["claim"].update(revision=5),
                 "claim:revision",
             ),
             "wrong-claim-hash": (

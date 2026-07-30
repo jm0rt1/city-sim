@@ -1,0 +1,10 @@
+{
+  "authorityScope": "validation-only-execution-closure",
+  "orientationTransform": "none",
+  "scene": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",
+    "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
+  },
+  "sourceReady": false,
+  "taskId": "PLAY-081"
+}

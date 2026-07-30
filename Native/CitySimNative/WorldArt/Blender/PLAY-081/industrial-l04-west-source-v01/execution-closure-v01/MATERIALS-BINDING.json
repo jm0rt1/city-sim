@@ -1,0 +1,9 @@
+{
+  "authorityScope": "validation-only-execution-closure",
+  "materials": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/MATERIAL-ROLE-BINDING.json",
+    "sha256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463"
+  },
+  "sourceReady": false,
+  "taskId": "PLAY-081"
+}

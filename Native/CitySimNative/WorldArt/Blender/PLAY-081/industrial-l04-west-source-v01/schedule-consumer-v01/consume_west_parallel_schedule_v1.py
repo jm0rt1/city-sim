@@ -175,7 +175,11 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "familyContract",
         "runnerContract",
         "orchestrator",
+        "runnerEntrypoint",
         "orchestrationContract",
+        "executionClosureSchema",
+        "executionClosureValidator",
+        "executionClosureAuthority",
         "exclusiveRoots",
         "target",
         "releaseInputs",
@@ -193,8 +197,8 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "taskId": "PLAY-081",
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
-        "stage": "parallel_zero_pixel_launch_readiness",
-        "publishedBase": "a2c9bde77233a167d60ae7afa6ea77021d39c92b",
+        "stage": "execution_closure_validation_only",
+        "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -209,7 +213,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         ),
         "claim": (
             "docs/production/claims/PLAY-081.world-art-west.md",
-            "1217b496e8b8f1645a848db5fc4c0e858a1c7341aba3cd755a6808ae67e037d3",
+            "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -235,17 +239,41 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1",
         ),
         "orchestrator": (
+            f"{SOURCE_ROOT}/west_execution_orchestration_v2.py",
+            "SELF_SHA256_FROM_CONTRACT",
+        ),
+        "runnerEntrypoint": (
             f"{SOURCE_ROOT}/run_west_source.py",
-            "c8dd97a111bf898afe4a81de5557fa94d788581ee2ed37110e4f691011ec64e9",
+            "SELF_SHA256_FROM_CONTRACT",
         ),
         "orchestrationContract": (
             f"{SOURCE_ROOT}/WEST-EXECUTION-ORCHESTRATION-V2.json",
-            "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0",
+            "SELF_SHA256_FROM_CONTRACT",
+        ),
+        "executionClosureSchema": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-direction-execution-authority-schema-v1.json",
+            "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491",
+        ),
+        "executionClosureValidator": (
+            ".agents/skills/operate-citysim-integration/scripts/"
+            "validate_industrial_l04_direction_execution_authority_v1.py",
+            "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae",
+        ),
+        "executionClosureAuthority": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+            "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54",
         ),
     }
     for name, (path, sha256) in expected_bindings.items():
         value = contract.get(name)
-        if name == "adapter":
+        if name in {
+            "adapter",
+            "orchestrator",
+            "runnerEntrypoint",
+            "orchestrationContract",
+        }:
             sha256 = (
                 value.get("sha256")
                 if isinstance(value, dict)
@@ -258,7 +286,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             if not isinstance(value, dict):
                 errors.append("claim:shape")
                 continue
-            if value.get("revision") != 5:
+            if value.get("revision") != 6:
                 errors.append("claim:revision")
             value = {
                 "path": value.get("path"),
@@ -275,7 +303,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         )
 
     claim_path = root / expected_bindings["claim"][0]
-    if claim_path.is_file() and b"**Claim revision:** 5" not in claim_path.read_bytes():
+    if claim_path.is_file() and b"**Claim revision:** 6" not in claim_path.read_bytes():
         errors.append("claim:revision-content")
 
     expected_roots = [
@@ -324,7 +352,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
 
     if contract.get("childPolicy") != {
         "adapterStartsChildren": False,
-        "adapterInvokesOrchestrator": False,
+        "adapterInvokesHighLevelOrchestratorForValidationOnly": True,
         "directLowLevelInvocationAllowed": False,
         "maximumChildStartsWhileBlocked": 0,
     }:
@@ -333,7 +361,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
     if evidence != (
         "docs/production/evidence/PLAY-081/"
         "industrial-l04-west-source-v01/schedule-consumer-v01/"
-        "ZERO-CHILD-READINESS.json"
+        "EXECUTION-CLOSURE-V1.json"
     ):
         errors.append("contract:readiness-evidence")
     return sorted(set(errors))
@@ -447,7 +475,7 @@ def direction_schedule_errors(
         "branch": "codex/citysim-world-art-west",
         "claimSha256": contract.get("claim", {}).get("sha256"),
         "baseCommit": contract.get("publishedBase"),
-        "orchestrator": contract.get("orchestrator"),
+        "orchestrator": contract.get("adapter"),
         "exclusiveRoots": contract.get("exclusiveRoots"),
     }
     for name, expected in exact.items():
@@ -521,7 +549,7 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         "taskId": "PLAY-081",
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
-        "stage": "parallel_zero_pixel_launch_readiness",
+        "stage": "execution_closure_validation_only",
         "publishedBase": contract.get("publishedBase"),
         "claimRevision": contract.get("claim", {}).get("revision"),
         "claimSha256": contract.get("claim", {}).get("sha256"),
@@ -542,7 +570,11 @@ def describe(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
                 "semanticValidator",
                 "runnerContract",
                 "orchestrator",
+                "runnerEntrypoint",
                 "orchestrationContract",
+                "executionClosureSchema",
+                "executionClosureValidator",
+                "executionClosureAuthority",
             )
         },
         "exclusiveRoots": contract.get("exclusiveRoots"),
@@ -611,13 +643,116 @@ def validate_published_schedule(
     }
 
 
+def _load_high_level_orchestrator(
+    root: Path,
+    contract: dict[str, Any],
+) -> Any:
+    binding = contract["orchestrator"]
+    path = safe_repository_file(
+        root,
+        binding["path"],
+        expected=(
+            f"{SOURCE_ROOT}/west_execution_orchestration_v2.py"
+        ),
+    )
+    if digest_bytes(path.read_bytes()) != binding["sha256"]:
+        raise ConsumerError("HIGH_LEVEL_ORCHESTRATOR_SHA256_MISMATCH")
+    spec = importlib.util.spec_from_file_location(
+        "play081_west_execution_closure_orchestrator",
+        path,
+    )
+    if spec is None or spec.loader is None:
+        raise ConsumerError("HIGH_LEVEL_ORCHESTRATOR_IMPORT_FAILED")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def validate_execution_closure(
+    root: Path,
+    contract: dict[str, Any],
+    *,
+    authority_path: str | None,
+    trusted_head: str | None,
+    worker_head: str | None,
+    authority_publication_commit: str | None,
+) -> dict[str, Any]:
+    """Route one validation-only authority through the high-level boundary."""
+    errors = contract_errors(root, contract)
+    arguments = {
+        "authority": authority_path,
+        "trustedHead": trusted_head,
+        "workerHead": worker_head,
+        "authorityPublicationCommit": authority_publication_commit,
+    }
+    for label, value in arguments.items():
+        if not isinstance(value, str) or not value:
+            errors.append(f"execution-closure:{label}:missing")
+    if errors:
+        return {
+            "schema": "citysim.play-081.west-execution-closure-consumer.v1",
+            "taskId": "PLAY-081",
+            "direction": "west",
+            "result": "BLOCKED",
+            "reasonCodes": sorted(set(errors)),
+            "consumerInvoked": True,
+            "highLevelOrchestratorInvoked": False,
+            "runnerValidationBoundaryReached": False,
+            "activity": dict(ZERO_ACTIVITY),
+        }
+    try:
+        orchestrator = _load_high_level_orchestrator(root, contract)
+        execution_contract_path = safe_repository_file(
+            root,
+            contract["orchestrationContract"]["path"],
+            expected=contract["orchestrationContract"]["path"],
+        )
+        execution_contract = decode_json(
+            execution_contract_path.read_bytes(),
+            contract["orchestrationContract"]["path"],
+        )
+        result = orchestrator.validate_execution_closure(
+            root,
+            execution_contract,
+            authority_path=authority_path,
+            trusted_head=trusted_head,
+            worker_head=worker_head,
+            authority_publication_commit=authority_publication_commit,
+        )
+    except (ConsumerError, OSError, ValueError) as error:
+        return {
+            "schema": "citysim.play-081.west-execution-closure-consumer.v1",
+            "taskId": "PLAY-081",
+            "direction": "west",
+            "result": "BLOCKED",
+            "reasonCodes": [f"execution-closure:orchestrator:{error}"],
+            "consumerInvoked": True,
+            "highLevelOrchestratorInvoked": False,
+            "runnerValidationBoundaryReached": False,
+            "activity": dict(ZERO_ACTIVITY),
+        }
+    packet = dict(result)
+    packet["consumer"] = contract["adapter"]
+    packet["consumerInvoked"] = True
+    packet["highLevelOrchestratorInvoked"] = True
+    return packet
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", default=DEFAULT_CONTRACT)
-    parser.add_argument("--mode", required=True, choices=("describe", "validate"))
+    parser.add_argument(
+        "--mode",
+        required=True,
+        choices=("describe", "validate", "validate-closure"),
+    )
     parser.add_argument("--schedule")
     parser.add_argument("--schedule-sha256")
+    parser.add_argument("--authority")
+    parser.add_argument("--trusted-head")
+    parser.add_argument("--worker-head")
+    parser.add_argument("--authority-publication-commit")
     return parser.parse_args()
 
 
@@ -634,6 +769,17 @@ def main() -> int:
         result = describe(root, contract)
         print(canonical_bytes(result).decode("utf-8"), end="")
         return 0 if result["adapterReady"] else 1
+    if args.mode == "validate-closure":
+        result = validate_execution_closure(
+            root,
+            contract,
+            authority_path=args.authority,
+            trusted_head=args.trusted_head,
+            worker_head=args.worker_head,
+            authority_publication_commit=args.authority_publication_commit,
+        )
+        print(canonical_bytes(result).decode("utf-8"), end="")
+        return 0 if result["result"] == "PASS" else 3
     result = validate_published_schedule(
         root,
         contract,

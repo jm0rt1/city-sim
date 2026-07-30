@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import hmac
 import json
 import re
 import subprocess
@@ -54,6 +55,143 @@ def sha256_bytes(value: bytes) -> str:
 
 def sha256(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
+
+
+def execution_capability_payload(authority: dict[str, Any]) -> bytes:
+    task = authority["task"]
+    grant = authority["grant"]
+    capability = authority["authentication"]["childCapability"]
+    value = {
+        "audience": capability["audience"],
+        "authorityPublicationCommit": authority["_validated"][
+            "authorityPublicationCommit"
+        ],
+        "boundGrantId": capability["boundGrantId"],
+        "capabilityId": capability["capabilityId"],
+        "direction": task["direction"],
+        "process": grant["process"],
+        "queueId": grant["queueId"],
+        "slotId": grant["slotId"],
+        "taskId": task["taskId"],
+    }
+    return json.dumps(
+        value, separators=(",", ":"), sort_keys=True
+    ).encode("utf-8")
+
+
+def validate_execution_closure(
+    authority: dict[str, Any],
+    shared_receipt: dict[str, Any],
+    secret: bytes | None,
+    seen_capabilities: set[str],
+) -> dict[str, Any]:
+    """Authenticate one validation-only attempt and enter the runner boundary."""
+
+    if not secret:
+        raise LaunchBindingRejected("MISSING_ANONYMOUS_PIPE_SECRET", None)
+    validated = authority.get("_validated", {})
+    expected_validation = {
+        key: shared_receipt.get(key)
+        for key in (
+            "authorityPublicationCommit",
+            "trustedHead",
+            "workerHead",
+        )
+    }
+    if validated != expected_validation:
+        raise LaunchBindingRejected(
+            "SHARED_VALIDATION_RECEIPT_MISMATCH",
+            {"expected": validated, "actual": expected_validation},
+        )
+    roots = authority.get("exclusiveRoots", {})
+    anchors = {
+        "output": (
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/"
+            "industrial-l04-south-source-v01/outputs/"
+        ),
+        "evidence": (
+            "docs/production/evidence/PLAY-080/"
+            "industrial-l04-south-source-v01/evidence/"
+        ),
+        "attempt": (
+            "docs/production/evidence/PLAY-080/"
+            "industrial-l04-south-source-v01/attempts/"
+        ),
+        "terminal": (
+            "docs/production/evidence/PLAY-080/"
+            "industrial-l04-south-source-v01/terminals/"
+        ),
+    }
+    if set(roots) != set(anchors) or any(
+        not isinstance(roots.get(role), str)
+        or not roots[role].startswith(anchor)
+        or any(part in {"", ".", ".."} for part in Path(roots[role]).parts)
+        for role, anchor in anchors.items()
+    ):
+        raise LaunchBindingRejected("WRONG_DIRECTION_EXCLUSIVE_ROOT", roots)
+    authentication = authority.get("authentication", {})
+    capability = authentication.get("childCapability", {})
+    if hashlib.sha256(secret).hexdigest() != authentication.get("secretSha256"):
+        raise LaunchBindingRejected("FORGED_ANONYMOUS_PIPE_SECRET", None)
+    capability_id = capability.get("capabilityId")
+    if not isinstance(capability_id, str) or not capability_id:
+        raise LaunchBindingRejected("MALFORMED_CAPABILITY_ID", capability_id)
+    if capability_id in seen_capabilities:
+        raise LaunchBindingRejected("REPLAYED_EXECUTION_CAPABILITY", capability_id)
+    payload = execution_capability_payload(authority)
+    if hashlib.sha256(payload).hexdigest() != capability.get("payloadSha256"):
+        raise LaunchBindingRejected("CAPABILITY_PAYLOAD_MISMATCH", None)
+    expected_mac = hmac.new(secret, payload, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(expected_mac, capability.get("macSha256", "")):
+        raise LaunchBindingRejected("FORGED_EXECUTION_CAPABILITY", None)
+    expected_orchestrator = (
+        DEFAULT_CONTRACT.parent / "prepare_launch_binding.py"
+    ).relative_to(REPOSITORY_ROOT).as_posix()
+    if (
+        authority.get("artifacts", {})
+        .get("highLevelOrchestrator", {})
+        .get("path")
+        != expected_orchestrator
+    ):
+        raise LaunchBindingRejected("WRONG_HIGH_LEVEL_ORCHESTRATOR", None)
+    seen_capabilities.add(capability_id)
+    runner_receipt = run_production.validate_authenticated_execution_boundary(
+        authority,
+        shared_receipt,
+        authenticated_by_orchestrator=True,
+    )
+    return {
+        "schema": "citysim.play-080.south-execution-closure.v1",
+        "result": "PASS_VALIDATION_ONLY_ZERO_CHILD",
+        "authority": {
+            "path": shared_receipt["authorityPath"],
+            "publicationCommit": shared_receipt["authorityPublicationCommit"],
+            "trustedHead": shared_receipt["trustedHead"],
+            "workerHead": shared_receipt["workerHead"],
+        },
+        "grant": {
+            key: authority["grant"][key]
+            for key in ("grantId", "process", "queueId", "slotId")
+        },
+        "exclusiveRoots": authority["exclusiveRoots"],
+        "authentication": {
+            "secretTransport": "anonymous_pipe",
+            "rawSecretPersisted": False,
+            "capabilityId": capability_id,
+            "oneTime": True,
+            "replayAllowed": False,
+        },
+        "runnerBoundary": runner_receipt,
+        "activity": {
+            "childrenStarted": 0,
+            "dccStarts": 0,
+            "renders": 0,
+            "pixels": 0,
+            "liveLeases": 0,
+        },
+        "sourceReady": False,
+        "productionSelected": False,
+    }
 
 
 def write_once(path: Path, content: bytes) -> None:

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import atexit
 import ast
 import copy
 import hashlib
@@ -199,16 +200,10 @@ def fixture(
     }
 
 
-def validate_fixture(
-    repository_root: Path,
-    adapter: Any,
-    shared: Any,
-    contract: dict[str, Any],
-    value: dict[str, Any],
-) -> dict[str, Any]:
-    fixture_paths: list[Path] = []
+def install_sibling_orchestrator_fixtures(repository_root: Path) -> Callable[[], None]:
     fixture_parent = repository_root / SOURCE_ROOT / "_test-fixtures"
     fixture_parent.mkdir(exist_ok=False)
+    fixture_paths: list[Path] = []
     for direction in ("east", "south", "west"):
         fixture_path = fixture_parent / f"{direction}-schedule-adapter.py"
         descriptor = os.open(
@@ -225,6 +220,24 @@ def validate_fixture(
         finally:
             os.close(descriptor)
         fixture_paths.append(fixture_path)
+
+    def cleanup() -> None:
+        for fixture_path in fixture_paths:
+            fixture_path.unlink(missing_ok=True)
+        if fixture_parent.exists():
+            fixture_parent.rmdir()
+
+    atexit.register(cleanup)
+    return cleanup
+
+
+def validate_fixture(
+    repository_root: Path,
+    adapter: Any,
+    shared: Any,
+    contract: dict[str, Any],
+    value: dict[str, Any],
+) -> dict[str, Any]:
     with tempfile.NamedTemporaryFile(
         mode="w",
         suffix=".json",
@@ -243,9 +256,6 @@ def validate_fixture(
         )
     finally:
         path.unlink(missing_ok=True)
-        for fixture_path in fixture_paths:
-            fixture_path.unlink(missing_ok=True)
-        fixture_parent.rmdir()
 
 
 def main() -> None:
@@ -273,6 +283,7 @@ def main() -> None:
     test_path = source_root / "test_north_process_a_schedule_adapter.py"
     adapter = load_module(adapter_path, "play027_north_schedule_adapter")
     contract = adapter.validate_contract(repository_root, contract_path)
+    cleanup_sibling_fixtures = install_sibling_orchestrator_fixtures(repository_root)
     validator_path = adapter.verify_file_binding(
         repository_root,
         contract["scheduleValidator"],
@@ -608,6 +619,8 @@ def main() -> None:
         }
     )
 
+    cleanup_sibling_fixtures()
+    atexit.unregister(cleanup_sibling_fixtures)
     status = subprocess.run(
         ["git", "status", "--porcelain=v1", "--untracked-files=all"],
         cwd=repository_root,

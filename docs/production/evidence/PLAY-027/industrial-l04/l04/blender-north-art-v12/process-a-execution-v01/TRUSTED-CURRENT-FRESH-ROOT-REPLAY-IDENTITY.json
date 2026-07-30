@@ -3,7 +3,7 @@
   "task": "PLAY-027",
   "direction": "north",
   "process": "A",
-  "validatedSourceCommit": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
+  "validatedSourceCommit": "bf334dfe33ea2ad6eea9c2dcae0913192e0a1ed0",
   "orderedCommits": [
     {
       "commit": "f79991f0349f2c0d5658c8b2c6e31d671f6fda5d",
@@ -16,11 +16,19 @@
     {
       "commit": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
       "purpose": "rebind-current-adapter-and-zero-child-evidence"
+    },
+    {
+      "commit": "ed3cadea509da018942286b5df8e4423e52d4070",
+      "purpose": "merge-latest-origin-master"
+    },
+    {
+      "commit": "bf334dfe33ea2ad6eea9c2dcae0913192e0a1ed0",
+      "purpose": "rebind-prelaunch-to-latest-master"
     }
   ],
   "ancestry": {
     "returnedCandidate": "46c3b13d4527a64c195bc57dbfbdcc1200bf9066",
-    "trustedIntegrationMaster": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+    "trustedIntegrationMaster": "f163425dcf3efa5054d71bb339ad565442656dee",
     "minimumSkillAuthority": "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed",
     "allAreAncestors": true
   },
@@ -35,20 +43,20 @@
   "freshRoots": [
     {
       "id": "fresh-root-a",
-      "head": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
-      "trustedOriginMaster": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+      "head": "bf334dfe33ea2ad6eea9c2dcae0913192e0a1ed0",
+      "trustedOriginMaster": "f163425dcf3efa5054d71bb339ad565442656dee",
       "adapterEvidenceSHA256": "6babf855dd0a12c1c81fd0bf7829d6cd0dcd68d4c3a1305fca80e973a10070fd",
-      "prelaunchEvidenceSHA256": "a9bf4132e58122de89740ecf480a7a43b166908ad6b5ffb204e3d45a948c6942",
+      "prelaunchEvidenceSHA256": "50e5892f4947176f02189540b93b4f0ecbd03c3abe63cbf5b652f4c6344bc3d6",
       "adapterAdversariesPassed": 26,
       "sharedScheduleValidatorTestsPassed": 8,
       "prelaunchAdversariesPassed": 27
     },
     {
       "id": "fresh-root-b",
-      "head": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
-      "trustedOriginMaster": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+      "head": "bf334dfe33ea2ad6eea9c2dcae0913192e0a1ed0",
+      "trustedOriginMaster": "f163425dcf3efa5054d71bb339ad565442656dee",
       "adapterEvidenceSHA256": "6babf855dd0a12c1c81fd0bf7829d6cd0dcd68d4c3a1305fca80e973a10070fd",
-      "prelaunchEvidenceSHA256": "a9bf4132e58122de89740ecf480a7a43b166908ad6b5ffb204e3d45a948c6942",
+      "prelaunchEvidenceSHA256": "50e5892f4947176f02189540b93b4f0ecbd03c3abe63cbf5b652f4c6344bc3d6",
       "adapterAdversariesPassed": 26,
       "sharedScheduleValidatorTestsPassed": 8,
       "prelaunchAdversariesPassed": 27

@@ -6,7 +6,7 @@
   "state": "predesign",
   "branch": "codex/citysim-world-art",
   "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-  "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+  "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
   "claimRevision": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
   "publishedBase": "22144bffacbf255f04952d28ccdc9683227b535f",
   "observedHead": "77afeb2ef31105b98780aecf0a27f6f5031bba40",
@@ -165,7 +165,7 @@
       "dispatchState": "completed",
       "branch": "codex/citysim-world-art",
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
       "publishedBase": "22144bffacbf255f04952d28ccdc9683227b535f",
       "observedHead": "77afeb2ef31105b98780aecf0a27f6f5031bba40",
       "acknowledgedAt": "2026-07-30T16:46:38.428603000Z",
@@ -185,11 +185,11 @@
         "waitingOnJoin": [],
         "nextRefill": "integration_publish_north_exact_one_process_a_authority",
         "serializedAuthority": {
-          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
           "branch": "codex/citysim-world-art",
           "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-          "gitIndexWriter": "019f7686-4491-7891-86a6-95a78d67e5c8",
-          "governedEvidenceWriter": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a"
         },
         "launchedJobs": [
           {
@@ -199,7 +199,7 @@
             "claimRevision": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
             "publishedBase": "22144bffacbf255f04952d28ccdc9683227b535f",
             "head": "77afeb2ef31105b98780aecf0a27f6f5031bba40",
-            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
             "branch": "codex/citysim-world-art",
             "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
             "resourceClass": "helper",
@@ -208,7 +208,7 @@
             "state": "completed",
             "startedAt": "2026-07-30T16:46:38.428605000Z",
             "endedAt": "2026-07-30T16:46:58.145018000Z",
-            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:final-authority-self-contained-closure/item:shared-closure-validator-33",
+            "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:final-authority-self-contained-closure/item:shared-closure-validator-33",
             "dccSlot": null,
             "processId": null
           },
@@ -219,7 +219,7 @@
             "claimRevision": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
             "publishedBase": "22144bffacbf255f04952d28ccdc9683227b535f",
             "head": "77afeb2ef31105b98780aecf0a27f6f5031bba40",
-            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
             "branch": "codex/citysim-world-art",
             "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
             "resourceClass": "helper",
@@ -228,7 +228,7 @@
             "state": "completed",
             "startedAt": "2026-07-30T16:46:38.428603000Z",
             "endedAt": "2026-07-30T16:46:39.447831000Z",
-            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:final-authority-self-contained-closure/item:projection-validator-77",
+            "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:final-authority-self-contained-closure/item:projection-validator-77",
             "dccSlot": null,
             "processId": null
           },
@@ -239,7 +239,7 @@
             "claimRevision": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
             "publishedBase": "22144bffacbf255f04952d28ccdc9683227b535f",
             "head": "77afeb2ef31105b98780aecf0a27f6f5031bba40",
-            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
             "branch": "codex/citysim-world-art",
             "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
             "resourceClass": "helper",
@@ -248,7 +248,7 @@
             "state": "completed",
             "startedAt": "2026-07-30T16:46:38.445837000Z",
             "endedAt": "2026-07-30T16:46:42.146541000Z",
-            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:final-authority-self-contained-closure/item:fresh-root-a",
+            "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:final-authority-self-contained-closure/item:fresh-root-a",
             "dccSlot": null,
             "processId": null
           },
@@ -259,7 +259,7 @@
             "claimRevision": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
             "publishedBase": "22144bffacbf255f04952d28ccdc9683227b535f",
             "head": "77afeb2ef31105b98780aecf0a27f6f5031bba40",
-            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
             "branch": "codex/citysim-world-art",
             "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
             "resourceClass": "helper",
@@ -268,7 +268,7 @@
             "state": "completed",
             "startedAt": "2026-07-30T16:46:38.445844000Z",
             "endedAt": "2026-07-30T16:46:42.146539000Z",
-            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:final-authority-self-contained-closure/item:fresh-root-b",
+            "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:final-authority-self-contained-closure/item:fresh-root-b",
             "dccSlot": null,
             "processId": null
           }

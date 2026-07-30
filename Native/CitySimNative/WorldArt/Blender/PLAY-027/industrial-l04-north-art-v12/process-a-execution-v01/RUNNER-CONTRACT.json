@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "entrypointMode": "high-level-orchestrator-only",
+  "directInvocationAllowed": false,
+  "maximumChildStarts": 1,
+  "currentAuthorityReplay": {
+    "refreshAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md",
+      "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+  },
+  "executionClosure": {
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "validator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "testProtocolRevision": 6,
+    "requiredAtRunner": true
+  },
+  "requiredGrantBindings": [
+    "grantId",
+    "slotId",
+    "schedulePath",
+    "scheduleSHA256",
+    "schedulePublicationCommit",
+    "executionAuthorityPath",
+    "executionAuthoritySHA256",
+    "executionAuthorityPublicationCommit",
+    "trustedIntegrationHead",
+    "workerHead",
+    "executionClosureValidatorSHA256",
+    "contractSHA256",
+    "launcherSHA256",
+    "launcherPID",
+    "runnerContractSHA256",
+    "childEntrypointSHA256",
+    "outputRoot",
+    "outputRootDevice",
+    "outputRootInode",
+    "authorizationSecretSHA256",
+    "sessionSecretSHA256",
+    "attemptRecordPath",
+    "attemptRecordSHA256",
+    "maximumDCCChildStarts",
+    "currentAuthorityReplay"
+  ],
+  "capabilityTransport": "anonymous-pipe-hmac-sha256",
+  "rawSecretPersisted": false,
+  "outputDirectoryFDBound": true,
+  "parentPIDBound": true,
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false
+}

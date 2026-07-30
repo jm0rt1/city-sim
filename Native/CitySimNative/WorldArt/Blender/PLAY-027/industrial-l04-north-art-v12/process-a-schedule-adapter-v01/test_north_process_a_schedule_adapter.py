@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import atexit
 import ast
 import copy
 import hashlib
@@ -23,8 +24,9 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "ZERO-CHILD-READINESS.json"
+    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R3.json"
 )
+TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
 
 
 def arguments() -> argparse.Namespace:
@@ -47,8 +49,31 @@ def load_module(path: Path, name: str) -> Any:
     return module
 
 
+def git(repository: Path, *arguments: str) -> str:
+    environment = os.environ.copy()
+    environment.update(
+        {
+            "GIT_AUTHOR_DATE": "2001-01-01T00:00:00Z",
+            "GIT_COMMITTER_DATE": "2001-01-01T00:00:00Z",
+        }
+    )
+    result = subprocess.run(
+        ["git", *arguments],
+        cwd=repository,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"temporary Git command failed: {' '.join(arguments)}")
+    return result.stdout.strip()
+
+
 def write_exclusive(path: Path, value: Any, canonical: Callable[[Any], bytes]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=False)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.parent.is_symlink():
+        raise RuntimeError("readiness output parent must not be a symlink")
     descriptor = os.open(
         path,
         os.O_WRONLY
@@ -94,7 +119,6 @@ def fixture(
     adapter: Any,
     contract: dict[str, Any],
 ) -> dict[str, Any]:
-    adapter_path = repository_root / adapter.ADAPTER_RELATIVE
     directions = {
         "north": ("PLAY-027", "codex/citysim-world-art"),
         "east": ("PLAY-079", "codex/citysim-world-art-east"),
@@ -108,7 +132,11 @@ def fixture(
             granted = direction == "north" and process == "A"
             processes.append(
                 {
-                    "grantId": f"fixture-{direction}-{process}",
+                    "grantId": (
+                        "north:A"
+                        if direction == "north" and process == "A"
+                        else f"fixture-{direction}-{process}"
+                    ),
                     "process": process,
                     "state": "granted" if granted else "blocked",
                     "slotId": "dcc-1" if granted else None,
@@ -136,10 +164,20 @@ def fixture(
                     else hashlib.sha256(direction.encode()).hexdigest()
                 ),
                 "baseCommit": contract["publishedBaseCommit"],
-                "orchestrator": {
-                    "path": str(adapter.ADAPTER_RELATIVE),
-                    "sha256": sha256(adapter_path),
-                },
+                "orchestrator": (
+                    contract["directionScheduleAdapter"]
+                    if direction == "north"
+                    else {
+                        "path": str(
+                            SOURCE_ROOT
+                            / "_test-fixtures"
+                            / f"{direction}-schedule-adapter.py"
+                        ),
+                        "sha256": hashlib.sha256(
+                            f"{direction}:schedule-adapter".encode()
+                        ).hexdigest(),
+                    }
+                ),
                 "exclusiveRoots": roots,
                 "processes": processes,
             }
@@ -160,6 +198,37 @@ def fixture(
         },
         "directionGrants": grants,
     }
+
+
+def install_sibling_orchestrator_fixtures(repository_root: Path) -> Callable[[], None]:
+    fixture_parent = repository_root / SOURCE_ROOT / "_test-fixtures"
+    fixture_parent.mkdir(exist_ok=False)
+    fixture_paths: list[Path] = []
+    for direction in ("east", "south", "west"):
+        fixture_path = fixture_parent / f"{direction}-schedule-adapter.py"
+        descriptor = os.open(
+            fixture_path,
+            os.O_WRONLY
+            | os.O_CREAT
+            | os.O_EXCL
+            | (os.O_NOFOLLOW if hasattr(os, "O_NOFOLLOW") else 0),
+            0o600,
+        )
+        try:
+            os.write(descriptor, f"{direction}:schedule-adapter".encode())
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        fixture_paths.append(fixture_path)
+
+    def cleanup() -> None:
+        for fixture_path in fixture_paths:
+            fixture_path.unlink(missing_ok=True)
+        if fixture_parent.exists():
+            fixture_parent.rmdir()
+
+    atexit.register(cleanup)
+    return cleanup
 
 
 def validate_fixture(
@@ -196,14 +265,25 @@ def main() -> None:
     expected_output = (repository_root / EVIDENCE_RELATIVE).absolute()
     if output != expected_output:
         raise RuntimeError("exact zero-child readiness output required")
-    if output.exists() or output.is_symlink() or output.parent.exists():
-        raise RuntimeError("zero-child readiness root must be absent")
+    if output.exists() or output.is_symlink():
+        raise RuntimeError("zero-child readiness output must be absent")
+    candidate_head = git(repository_root, "rev-parse", "HEAD")
+    if (
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", TRUSTED_MASTER_COMMIT, candidate_head],
+            cwd=repository_root,
+            check=False,
+        ).returncode
+        != 0
+    ):
+        raise RuntimeError("trusted Integration master is not an ancestor of candidate")
     source_root = repository_root / SOURCE_ROOT
     adapter_path = source_root / "consume_north_process_a_schedule.py"
     contract_path = source_root / "ADAPTER-CONTRACT.json"
     test_path = source_root / "test_north_process_a_schedule_adapter.py"
     adapter = load_module(adapter_path, "play027_north_schedule_adapter")
     contract = adapter.validate_contract(repository_root, contract_path)
+    cleanup_sibling_fixtures = install_sibling_orchestrator_fixtures(repository_root)
     validator_path = adapter.verify_file_binding(
         repository_root,
         contract["scheduleValidator"],
@@ -278,7 +358,7 @@ def main() -> None:
         lambda item: item["directionGrants"][0].update(
             orchestrator=contract["scheduleValidator"]
         ),
-        "orchestrator binding drift",
+        "direction schedule-adapter binding drift",
     )
     case(
         "prelock-appearance-lock-present",
@@ -346,6 +426,7 @@ def main() -> None:
                 repository_root
                 / "docs/production/evidence/INTEGRATION/"
                 "industrial-l04-prelock-north-a-schedule-v1.json",
+                contract["publishedBaseCommit"],
             ),
             (
                 "MISSING_PUBLISHED_SCHEDULE: "
@@ -354,6 +435,108 @@ def main() -> None:
             ),
         )
     )
+
+    with tempfile.TemporaryDirectory(
+        prefix="play027-schedule-publication-",
+        dir="/private/tmp",
+    ) as publication_directory:
+        publication_root = Path(publication_directory)
+        git(publication_root, "init")
+        git(publication_root, "checkout", "-b", "main")
+        git(publication_root, "config", "user.name", "PLAY-027 Test")
+        git(publication_root, "config", "user.email", "play027@example.invalid")
+        (publication_root / "README.md").write_text(
+            "temporary publication fixture\n",
+            encoding="utf-8",
+        )
+        git(publication_root, "add", "README.md")
+        git(publication_root, "commit", "-m", "authority")
+        authority_commit = git(publication_root, "rev-parse", "HEAD")
+        schedule_relative = Path(
+            "docs/production/evidence/INTEGRATION/"
+            "temporary-prelock-north-a-schedule.json"
+        )
+        schedule_path = publication_root / schedule_relative
+        schedule_path.parent.mkdir(parents=True)
+        schedule_value = {"integrationAuthorityCommit": authority_commit}
+        schedule_path.write_bytes(adapter.canonical_bytes(schedule_value))
+        git(publication_root, "add", str(schedule_relative))
+        git(publication_root, "commit", "-m", "publish schedule")
+        publication_commit = git(publication_root, "rev-parse", "HEAD")
+        adapter.verify_published_schedule(
+            publication_root,
+            schedule_path,
+            schedule_value,
+            publication_commit,
+        )
+        cases.append(
+            {
+                "name": "real-git-schedule-publication",
+                "authorityPreexistsPublication": True,
+                "publicationCommitContainsExactBytes": True,
+                "passed": True,
+            }
+        )
+        cases.append(
+            expect_failure(
+                "wrong-publication-commit",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    schedule_path,
+                    schedule_value,
+                    authority_commit,
+                ),
+                "requires a preexisting authority commit",
+            )
+        )
+        git(publication_root, "checkout", "-b", "side", authority_commit)
+        (publication_root / "SIDE.md").write_text("side\n", encoding="utf-8")
+        git(publication_root, "add", "SIDE.md")
+        git(publication_root, "commit", "-m", "nonancestor")
+        nonancestor_commit = git(publication_root, "rev-parse", "HEAD")
+        git(publication_root, "checkout", "main")
+        cases.append(
+            expect_failure(
+                "nonancestor-publication-commit",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    schedule_path,
+                    schedule_value,
+                    nonancestor_commit,
+                ),
+                "Git check failed",
+            )
+        )
+        changed_schedule = {"integrationAuthorityCommit": authority_commit, "stale": True}
+        schedule_path.write_bytes(adapter.canonical_bytes(changed_schedule))
+        git(publication_root, "add", str(schedule_relative))
+        git(publication_root, "commit", "-m", "stale schedule bytes")
+        cases.append(
+            expect_failure(
+                "stale-published-schedule-bytes",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    schedule_path,
+                    changed_schedule,
+                    publication_commit,
+                ),
+                "schedule bytes are not frozen at publication commit",
+            )
+        )
+        untracked_path = schedule_path.with_name("untracked-schedule.json")
+        untracked_path.write_bytes(adapter.canonical_bytes(schedule_value))
+        cases.append(
+            expect_failure(
+                "untracked-published-schedule",
+                lambda: adapter.verify_published_schedule(
+                    publication_root,
+                    untracked_path,
+                    schedule_value,
+                    publication_commit,
+                ),
+                "published schedule worktree bytes are dirty",
+            )
+        )
 
     with tempfile.NamedTemporaryFile(
         mode="w",
@@ -372,6 +555,7 @@ def main() -> None:
                     repository_root,
                     contract_path,
                     unpublished,
+                    contract["publishedBaseCommit"],
                 ),
                 "schedule path escapes repository",
             )
@@ -403,6 +587,19 @@ def main() -> None:
             "expected hash drift",
         )
     )
+    for label in ("sourceStageSchema", "nonAliasInput", "nonAliasLoader"):
+        changed = copy.deepcopy(contract["currentAuthorityReplay"])
+        changed[label]["sha256"] = "0" * 64
+        cases.append(
+            expect_failure(
+                f"current-authority-{label}-hash-drift",
+                lambda value=changed: adapter.validate_current_authority_replay(
+                    repository_root,
+                    value,
+                ),
+                "current authority replay binding drift",
+            )
+        )
 
     syntax = ast.parse(adapter_path.read_text(encoding="utf-8"))
     forbidden_names = {"Popen", "system", "execv", "execve", "spawnl", "spawnv"}
@@ -435,6 +632,8 @@ def main() -> None:
         }
     )
 
+    cleanup_sibling_fixtures()
+    atexit.unregister(cleanup_sibling_fixtures)
     status = subprocess.run(
         ["git", "status", "--porcelain=v1", "--untracked-files=all"],
         cwd=repository_root,
@@ -445,6 +644,14 @@ def main() -> None:
     allowed_prefixes = {
         str(SOURCE_ROOT),
         str(EVIDENCE_RELATIVE.parent),
+        (
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+            "industrial-l04-north-art-v12/process-a-execution-v01"
+        ),
+        (
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+            "blender-north-art-v12/process-a-execution-v01"
+        ),
     }
     unexpected = [
         line
@@ -463,9 +670,15 @@ def main() -> None:
         "process": contract["process"],
         "phase": contract["phase"],
         "branch": contract["branch"],
+        "trustedIntegrationMaster": TRUSTED_MASTER_COMMIT,
+        "authorityObservedHead": TRUSTED_MASTER_COMMIT,
+        "trustedMasterIsAncestor": True,
         "authorityBaseCommit": contract["publishedBaseCommit"],
-        "publishedAuthorityCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+        "publishedAuthorityCommit": TRUSTED_MASTER_COMMIT,
         "claimSHA256": contract["claim"]["sha256"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
+        "processAPrelaunchAuthority": contract["processAPrelaunchAuthority"],
+        "processAOrchestrator": contract["processAOrchestrator"],
         "scheduleSchema": contract["scheduleSchema"],
         "scheduleValidator": contract["scheduleValidator"],
         "adapterAuthority": contract["adapterAuthority"],

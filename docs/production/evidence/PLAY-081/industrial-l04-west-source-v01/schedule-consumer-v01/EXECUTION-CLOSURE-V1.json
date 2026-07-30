@@ -181,8 +181,8 @@
         "branch": "codex/citysim-world-art-west",
         "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
         "resourceClass": "helper",
-        "mutation": "isolated_temp",
-        "exclusiveRoot": "/private/tmp/citysim-play-081-west-fresh-root-closure",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
         "state": "completed",
         "startedAt": "2026-07-30T13:04:01Z",
         "endedAt": "2026-07-30T13:05:25Z",
@@ -229,6 +229,26 @@
         "evidenceId": "thread:019fab72-b2c9-7d60-a397-27d01d06cbbd/turn:019fb319-ef7b-72b0-8049-0aded87943c6/item:item-614",
         "dccSlot": null,
         "processId": null
+      },
+      {
+        "id": "west-deterministic-packet-capture",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-081",
+        "claimRevision": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
+        "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+        "head": "22d34f367f5856ffe3cde3ac7ceb368663a99aac",
+        "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+        "branch": "codex/citysim-world-art-west",
+        "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+        "resourceClass": "helper",
+        "mutation": "isolated_temp",
+        "exclusiveRoot": "/private/tmp/citysim-play-081-west-fresh-root-capture-d4f18ea3",
+        "state": "completed",
+        "startedAt": "2026-07-30T13:15:36Z",
+        "endedAt": "2026-07-30T13:15:47Z",
+        "evidenceId": "thread:019fab72-b2c9-7d60-a397-27d01d06cbbd/turn:019fb319-ef7b-72b0-8049-0aded87943c6/item:item-620",
+        "dccSlot": null,
+        "processId": null
       }
     ],
     "unusedCapacityReasons": [
@@ -253,13 +273,11 @@
       "jobIds": [
         "west-schedule-consumer",
         "west-orchestration",
-        "west-fresh-root-closure",
-        "west-current-authority-binding",
-        "west-review-assembler"
+        "west-fresh-root-closure"
       ],
       "startedAt": "2026-07-30T13:04:01Z",
-      "endedAt": "2026-07-30T13:04:56Z",
-      "reason": "schedule and orchestration joined while fresh-root closure ran; binding and review then occupied both freed helper slots before the closure join"
+      "endedAt": "2026-07-30T13:04:02Z",
+      "reason": "the first complete maximum-concurrency set was schedule, orchestration, and fresh-root closure; a second three-job window later reused both freed slots"
     },
     "join": {
       "state": "joined",
@@ -268,14 +286,16 @@
         "west-orchestration",
         "west-fresh-root-closure",
         "west-current-authority-binding",
-        "west-review-assembler"
+        "west-review-assembler",
+        "west-deterministic-packet-capture"
       ],
       "completedJobs": [
         "west-schedule-consumer",
         "west-orchestration",
         "west-fresh-root-closure",
         "west-current-authority-binding",
-        "west-review-assembler"
+        "west-review-assembler",
+        "west-deterministic-packet-capture"
       ]
     }
   },
@@ -380,6 +400,10 @@
     {
       "command": "read-only current-authority binding and postlock-root audit",
       "result": "PASS_BINDINGS_5_ROOTS_9"
+    },
+    {
+      "command": "task-scoped two-root deterministic packet capture under /private/tmp/citysim-play-081-west-fresh-root-capture-d4f18ea3",
+      "result": "PASS_BYTE_IDENTICAL_PACKET_A70124A9"
     }
   ]
 }

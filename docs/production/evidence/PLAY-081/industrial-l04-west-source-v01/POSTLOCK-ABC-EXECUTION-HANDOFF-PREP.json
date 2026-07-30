@@ -136,6 +136,13 @@
         "durationSeconds": 84.303,
         "job": "fresh-root-execution-closure",
         "result": "PASS_5_OF_5"
+      },
+      "phase4": {
+        "durationSeconds": 11,
+        "exclusiveRoot": "/private/tmp/citysim-play-081-west-fresh-root-capture-d4f18ea3",
+        "job": "west-deterministic-packet-capture",
+        "result": "PASS_BYTE_IDENTICAL_PACKET_A70124A9",
+        "rootRemovedAfterJoin": true
       }
     },
     "availableCapacity": {
@@ -150,7 +157,7 @@
     ],
     "readyNow": [],
     "running": [],
-    "safeJobsActuallyLaunched": 5,
+    "safeJobsActuallyLaunched": 6,
     "serializedAuthority": [
       "visible West lane owner is sole governed handoff and Git writer",
       "future direction-local assembler is the sole final packet writer",
@@ -175,7 +182,7 @@
     "closureEvidence": {
       "packetSha256": "a70124a9dfe3dc1a534be857ca8f1ca72092523aec1693550e74456f71df7a3f",
       "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
-      "sha256": "fd02f58d5ad7171af41898ff21fc91a39b86ad5b7b015432a279fb44ccf019c7"
+      "sha256": "34ac205361c7c621adb169cea298ab0970d8866318419b48531c9f8f115a444e"
     },
     "executionContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",

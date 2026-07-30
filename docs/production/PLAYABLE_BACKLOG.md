@@ -1022,22 +1022,26 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Dependencies:** PLAY-076 gameplay product integrated at patch-equivalent
   `a2e984a57db0cb83e00d3be515df32d0cea438e8`; existing `CityTile.condition`,
   deterministic event seed, utility, park, service, message, replay, save, and
-  renderer condition contracts; next published clean Integration baseline
-  containing this claim.
+  renderer condition contracts; approved CONTRACT-022 durable storm-recovery
+  ownership; next published clean Integration baseline containing this claim.
 - **In scope:** Severe Storm behavior in `CitySimulation`, deterministic
-  residential-lot weathering and healthy-operation repair, gameplay-owned
-  focused tests, and PLAY-085 evidence.
-- **Out of scope:** New state or Codable fields; event schedule/title changes;
-  generic demand/development/progression rebalance; commercial/industrial
-  strategy scars; renderer/UI/input/fixture/package/build changes; art or
-  legacy Python.
+  residential-lot weathering and healthy-operation repair, the one optional
+  internal Codable recovery-ownership field approved by CONTRACT-022,
+  gameplay-owned focused tests, and PLAY-085 evidence.
+- **Out of scope:** Any other state or public contract; save/fingerprint
+  version changes; event schedule/title changes; generic
+  demand/development/progression rebalance; commercial/industrial strategy
+  scars; renderer/UI/input/fixture/package/build changes; art or legacy Python.
 - **Work checklist:** Freeze exact current event behavior; select developed
   Residential targets in stable coordinate order; use existing utility reserve,
   parks, and service coverage to mitigate rather than erase damage; make at
   least one unmitigated lot cross the existing visible weathered threshold;
-  repair only storm-relevant Residential condition through sustained healthy
-  operation; emit truthful affected-count/remedy/recovery messages; preserve
-  the fixed seed sequence and all existing strategy scars.
+  record exact actual storm deltas and targets durably; repair only those
+  deltas through sustained healthy operation independent of message retention;
+  retire demolished/rezoned targets without healing replacements; merge
+  overlapping storms deterministically; emit truthful
+  affected-count/remedy/recovery messages; preserve the fixed seed sequence
+  and all existing strategy scars.
 - **Acceptance:** The same seed/state produces the same affected coordinates,
   reductions, messages, recovery path, fingerprints, and replay. An
   unmitigated qualifying storm visibly weathers at least one completed
@@ -1054,10 +1058,11 @@ This is the authoritative first-wave task source. The shared target is one coher
   trace, exact messages, replay/save/undo identities, and renderer-consumable
   before/damaged/recovering/recovered state inventory under
   `docs/production/evidence/PLAY-085/`.
-- **Stop conditions:** A new saved/public field, renderer mutation, generic
-  condition healing, strategy-scar regression, nondeterministic target, hidden
-  permanent damage, dominant mitigation, event cadence change, or fixture
-  rewrite becomes necessary.
+- **Stop conditions:** Any state beyond CONTRACT-022, a public/save/fingerprint
+  version change, renderer mutation, generic condition healing, replacement
+  healing, strategy-scar regression, nondeterministic target, hidden permanent
+  damage, dominant mitigation, event cadence change, or fixture rewrite
+  becomes necessary.
 - **Claim:** `docs/production/claims/PLAY-085.gameplay-loop.md`.
 
 ### [ ] PLAY-086: Gate visible cause and recovery

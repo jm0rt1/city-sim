@@ -1,0 +1,970 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://integration/industrial-l04-renderer-intake-plan-v1",
+  "title": "Industrial L4 candidate-neutral Renderer intake plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "disposition",
+    "publishedBase",
+    "schema",
+    "boundInputs",
+    "family",
+    "directionIntake",
+    "quarantineGraph",
+    "preparation",
+    "rejectionGates",
+    "atomicAssembly",
+    "grants"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "disposition": {
+      "const": "candidate_neutral_renderer_intake_prepared"
+    },
+    "publishedBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branch",
+        "commit",
+        "remoteParityRequired"
+      ],
+      "properties": {
+        "branch": {
+          "const": "master"
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "remoteParityRequired": {
+          "const": true
+        }
+      }
+    },
+    "schema": {
+      "$ref": "#/$defs/artifact"
+    },
+    "boundInputs": {
+      "type": "array",
+      "minItems": 13,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "$ref": "#/$defs/repositoryPath"
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batch",
+        "family",
+        "level",
+        "variant",
+        "directionOrder",
+        "sharedRegistration",
+        "light",
+        "runtimeDirectionSelection"
+      ],
+      "properties": {
+        "batch": {
+          "const": "industrial_l04_directional_family"
+        },
+        "family": {
+          "const": "industrial"
+        },
+        "level": {
+          "const": 4
+        },
+        "variant": {
+          "const": 0
+        },
+        "directionOrder": {
+          "$ref": "#/$defs/directionOrder"
+        },
+        "sharedRegistration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "canvasPixels",
+            "footprintTiles",
+            "groundPivotSource",
+            "contactPolygonCitySimXZ",
+            "tileBasisPoints"
+          ],
+          "properties": {
+            "canvasPixels": {
+              "const": [
+                1536,
+                1024
+              ]
+            },
+            "footprintTiles": {
+              "const": [
+                1,
+                1
+              ]
+            },
+            "groundPivotSource": {
+              "const": [
+                768,
+                896
+              ]
+            },
+            "contactPolygonCitySimXZ": {
+              "const": [
+                [
+                  -28,
+                  -28
+                ],
+                [
+                  28,
+                  -28
+                ],
+                [
+                  28,
+                  28
+                ],
+                [
+                  -28,
+                  28
+                ]
+              ]
+            },
+            "tileBasisPoints": {
+              "const": [
+                72,
+                36
+              ]
+            }
+          }
+        },
+        "light": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "key",
+            "shadow"
+          ],
+          "properties": {
+            "key": {
+              "const": "northwest"
+            },
+            "shadow": {
+              "const": "southeast"
+            }
+          }
+        },
+        "runtimeDirectionSelection": {
+          "const": "authoritative_adjacent_road_frontage_only"
+        }
+      }
+    },
+    "directionIntake": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/directionIntake"
+      }
+    },
+    "quarantineGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution",
+        "directionJobs",
+        "join"
+      ],
+      "properties": {
+        "execution": {
+          "const": "direction_local_parallel"
+        },
+        "directionJobs": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/directionJob"
+          }
+        },
+        "join": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "requires",
+            "partialDisposition",
+            "completeDisposition",
+            "activationAllowed"
+          ],
+          "properties": {
+            "requires": {
+              "const": [
+                "quarantine-north",
+                "quarantine-east",
+                "quarantine-south",
+                "quarantine-west"
+              ]
+            },
+            "partialDisposition": {
+              "const": "quarantined_incomplete"
+            },
+            "completeDisposition": {
+              "const": "ready_for_atomic_assembly_nonshipping"
+            },
+            "activationAllowed": {
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "preparation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "rendererEvidenceRoot",
+        "fixture",
+        "cameraStates",
+        "allowedWork",
+        "forbiddenWork"
+      ],
+      "properties": {
+        "mode": {
+          "const": "candidate_neutral_nonshipping"
+        },
+        "rendererEvidenceRoot": {
+          "const": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1"
+        },
+        "fixture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256",
+            "status",
+            "mutationAllowed"
+          ],
+          "properties": {
+            "path": {
+              "const": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "status": {
+              "const": "accepted_l3_read_only_reference"
+            },
+            "mutationAllowed": {
+              "const": false
+            }
+          }
+        },
+        "cameraStates": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/cameraState"
+          }
+        },
+        "allowedWork": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "prepare_direction_id_and_slot_assertions",
+              "prepare_read_only_fixture_placement_descriptors",
+              "prepare_camera_and_lod_expectations",
+              "prepare_direction_local_quarantine_invocations",
+              "prepare_nonshipping_atomic_assembler_invocation",
+              "emit_task_owned_synthetic_validation_evidence"
+            ]
+          }
+        },
+        "forbiddenWork": {
+          "type": "array",
+          "minItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "source_pixel_creation_or_edit",
+              "source_admission",
+              "shipping_atlas_mutation",
+              "shipping_manifest_mutation",
+              "runtime_mapping_mutation",
+              "package_or_build_resource_mutation",
+              "production_selection",
+              "partial_family_activation",
+              "staged_app_build_launch_capture_or_score",
+              "qa_disposition",
+              "integration_or_push"
+            ]
+          }
+        }
+      }
+    },
+    "rejectionGates": {
+      "type": "array",
+      "minItems": 13,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "missing_or_extra_direction",
+          "logical_id_or_slot_mismatch",
+          "duplicate_source_or_lod_hash",
+          "accepted_master_alias",
+          "sibling_alias",
+          "mirror_rotation_or_other_d4_transform",
+          "fallback_or_substitution",
+          "frontage_or_socket_drift",
+          "pivot_footprint_contact_or_canvas_drift",
+          "lod_count_order_or_canvas_drift",
+          "family_contract_or_bridge_drift",
+          "source_admission_or_quarantine_receipt_drift",
+          "production_selected_input",
+          "partial_family_activation",
+          "path_escape_or_symlink_escape",
+          "runtime_shipping_or_package_mutation"
+        ]
+      }
+    },
+    "atomicAssembly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "trigger",
+        "manifestTemplate",
+        "manifestTransition",
+        "assemblerAssignment",
+        "output"
+      ],
+      "properties": {
+        "state": {
+          "const": "template_only_unbound"
+        },
+        "trigger": {
+          "const": "same_turn_after_four_exact_renderer_quarantine_receipts"
+        },
+        "manifestTemplate": {
+          "$ref": "#/$defs/manifestTemplate"
+        },
+        "manifestTransition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fromDisposition",
+            "toDisposition",
+            "writer",
+            "requires",
+            "admittedManifestMayBePublishedByThisPlan"
+          ],
+          "properties": {
+            "fromDisposition": {
+              "const": "integration_assembly_input_unbound_template"
+            },
+            "toDisposition": {
+              "const": "integration_assembly_input_admitted"
+            },
+            "writer": {
+              "const": "integration"
+            },
+            "requires": {
+              "const": [
+                "north_exact_renderer_quarantine_receipt",
+                "east_exact_renderer_quarantine_receipt",
+                "south_exact_renderer_quarantine_receipt",
+                "west_exact_renderer_quarantine_receipt",
+                "integration_published_exact_path_and_sha_bindings"
+              ]
+            },
+            "admittedManifestMayBePublishedByThisPlan": {
+              "const": false
+            }
+          }
+        },
+        "assemblerAssignment": {
+          "$ref": "#/$defs/assemblerAssignment"
+        },
+        "output": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "disposition",
+            "runtimeActivated",
+            "shippingResourcesMutated",
+            "productionSelected"
+          ],
+          "properties": {
+            "schema": {
+              "const": "atomic-admission-ledger-v1"
+            },
+            "disposition": {
+              "const": "ready_for_atomic_assembly_nonshipping"
+            },
+            "runtimeActivated": {
+              "const": false
+            },
+            "shippingResourcesMutated": {
+              "const": false
+            },
+            "productionSelected": {
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "grants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidateNeutralPreparation",
+        "sourceAcceptance",
+        "rendererAdmission",
+        "runtimeActivation",
+        "shippingMutation",
+        "productionSelection",
+        "appLaunch",
+        "qaDisposition",
+        "integration",
+        "push"
+      ],
+      "properties": {
+        "candidateNeutralPreparation": {
+          "const": true
+        },
+        "sourceAcceptance": {
+          "const": false
+        },
+        "rendererAdmission": {
+          "const": false
+        },
+        "runtimeActivation": {
+          "const": false
+        },
+        "shippingMutation": {
+          "const": false
+        },
+        "productionSelection": {
+          "const": false
+        },
+        "appLaunch": {
+          "const": false
+        },
+        "qaDisposition": {
+          "const": false
+        },
+        "integration": {
+          "const": false
+        },
+        "push": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "directionOrder": {
+      "const": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ]
+    },
+    "nullableArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "status"
+      ],
+      "properties": {
+        "path": {
+          "type": "null"
+        },
+        "sha256": {
+          "type": "null"
+        },
+        "status": {
+          "const": "unbound_until_integration_admitted"
+        }
+      }
+    },
+    "lod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "detail",
+        "atlasSlot",
+        "canvasPixels"
+      ],
+      "properties": {
+        "detail": {
+          "enum": [
+            "city",
+            "neighborhood",
+            "block"
+          ]
+        },
+        "atlasSlot": {
+          "type": "string",
+          "pattern": "^industrial_l04_v0_(north|east|south|west)/(city|neighborhood|block)$"
+        },
+        "canvasPixels": {
+          "enum": [
+            [
+              256,
+              171
+            ],
+            [
+              512,
+              342
+            ],
+            [
+              1024,
+              683
+            ]
+          ]
+        }
+      }
+    },
+    "directionIntake": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direction",
+        "sourceTask",
+        "logicalID",
+        "lods",
+        "registration",
+        "futureInputs"
+      ],
+      "properties": {
+        "direction": {
+          "enum": [
+            "north",
+            "east",
+            "south",
+            "west"
+          ]
+        },
+        "sourceTask": {
+          "enum": [
+            "PLAY-027",
+            "PLAY-079",
+            "PLAY-080",
+            "PLAY-081"
+          ]
+        },
+        "logicalID": {
+          "type": "string",
+          "pattern": "^industrial_l04_v0_(north|east|south|west)$"
+        },
+        "lods": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/lod"
+          }
+        },
+        "registration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "frontageEdge",
+            "frontageSocketSource",
+            "frontageSource",
+            "socketCitySim"
+          ],
+          "properties": {
+            "frontageEdge": {
+              "enum": [
+                "north",
+                "east",
+                "south",
+                "west"
+              ]
+            },
+            "frontageSocketSource": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "integer"
+              }
+            },
+            "frontageSource": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "type": "integer"
+                }
+              }
+            },
+            "socketCitySim": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "futureInputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sourcePacket",
+            "sourceAdmission",
+            "quarantineReceipt"
+          ],
+          "properties": {
+            "sourcePacket": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "sourceAdmission": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "quarantineReceipt": {
+              "$ref": "#/$defs/nullableArtifact"
+            }
+          }
+        }
+      }
+    },
+    "directionJob": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "direction",
+        "dependsOn",
+        "state",
+        "exclusiveOutputRoot",
+        "failureIsolation",
+        "shippingMutationAllowed"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^quarantine-(north|east|south|west)$"
+        },
+        "direction": {
+          "enum": [
+            "north",
+            "east",
+            "south",
+            "west"
+          ]
+        },
+        "dependsOn": {
+          "const": [
+            "integration_source_admission_receipt"
+          ]
+        },
+        "state": {
+          "const": "prepared_blocked_waiting_source_admission"
+        },
+        "exclusiveOutputRoot": {
+          "type": "string",
+          "pattern": "^docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/(north|east|south|west)$"
+        },
+        "failureIsolation": {
+          "const": "return_this_direction_only"
+        },
+        "shippingMutationAllowed": {
+          "const": false
+        }
+      }
+    },
+    "cameraState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "width",
+        "semanticLOD",
+        "canonicalCameraScale",
+        "decoratedCapturePixels",
+        "appCaptureAuthorized"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(regular|compact)-(city|neighborhood|block)$"
+        },
+        "width": {
+          "enum": [
+            "regular",
+            "compact"
+          ]
+        },
+        "semanticLOD": {
+          "enum": [
+            "city",
+            "neighborhood",
+            "block"
+          ]
+        },
+        "canonicalCameraScale": {
+          "enum": [
+            0.74,
+            0.66,
+            0.5
+          ]
+        },
+        "decoratedCapturePixels": {
+          "enum": [
+            [
+              1278,
+              768
+            ],
+            [
+              900,
+              652
+            ]
+          ]
+        },
+        "appCaptureAuthorized": {
+          "const": false
+        }
+      }
+    },
+    "manifestDirectionTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direction",
+        "packet",
+        "sourceAdmission",
+        "quarantineReceipt",
+        "locators"
+      ],
+      "properties": {
+        "direction": {
+          "enum": [
+            "north",
+            "east",
+            "south",
+            "west"
+          ]
+        },
+        "packet": {
+          "$ref": "#/$defs/nullableArtifact"
+        },
+        "sourceAdmission": {
+          "$ref": "#/$defs/nullableArtifact"
+        },
+        "quarantineReceipt": {
+          "$ref": "#/$defs/nullableArtifact"
+        },
+        "locators": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "raw",
+            "provenance",
+            "normalization",
+            "descriptor",
+            "contact",
+            "review"
+          ],
+          "properties": {
+            "raw": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "provenance": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "normalization": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "descriptor": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "contact": {
+              "$ref": "#/$defs/nullableArtifact"
+            },
+            "review": {
+              "$ref": "#/$defs/nullableArtifact"
+            }
+          }
+        }
+      }
+    },
+    "manifestTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "disposition",
+        "acceptedL3Baseline",
+        "directions",
+        "runtimeActivated",
+        "shippingResourcesMutated",
+        "productionSelected"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "disposition": {
+          "const": "integration_assembly_input_unbound_template"
+        },
+        "acceptedL3Baseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commit",
+            "catalog",
+            "industrialL3Manifest"
+          ],
+          "properties": {
+            "commit": {
+              "$ref": "#/$defs/commit"
+            },
+            "catalog": {
+              "$ref": "#/$defs/artifact"
+            },
+            "industrialL3Manifest": {
+              "$ref": "#/$defs/artifact"
+            }
+          }
+        },
+        "directions": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/manifestDirectionTemplate"
+          }
+        },
+        "runtimeActivated": {
+          "const": false
+        },
+        "shippingResourcesMutated": {
+          "const": false
+        },
+        "productionSelected": {
+          "const": false
+        }
+      }
+    },
+    "assemblerAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jobID",
+        "threadId",
+        "branch",
+        "worktree",
+        "claim",
+        "tool",
+        "harness",
+        "inputAuthority",
+        "startCondition",
+        "singleGitIndexWriter",
+        "shippingMutationAllowed"
+      ],
+      "properties": {
+        "jobID": {
+          "const": "industrial-l04-atomic-assembler-v1"
+        },
+        "threadId": {
+          "const": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+        },
+        "branch": {
+          "const": "codex/citysim-world-rendering"
+        },
+        "worktree": {
+          "const": "/Users/James/.codex/worktrees/cac1/city-sim"
+        },
+        "claim": {
+          "const": "PLAY-073"
+        },
+        "tool": {
+          "$ref": "#/$defs/artifact"
+        },
+        "harness": {
+          "$ref": "#/$defs/artifact"
+        },
+        "inputAuthority": {
+          "const": "integration_published_exact_4of4_manifest_only"
+        },
+        "startCondition": {
+          "const": "four_exact_renderer_quarantine_receipts_and_integration_dispatch"
+        },
+        "singleGitIndexWriter": {
+          "const": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+        },
+        "shippingMutationAllowed": {
+          "const": false
+        }
+      }
+    }
+  }
+}

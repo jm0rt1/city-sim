@@ -37,12 +37,12 @@ PACKET_RELATIVE = (
     "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
     "schedule-consumer-adapter-v01/ZERO-CHILD-READINESS.json"
 )
-PUBLISHED_BASE = "401eb2ce19c5f5c932442ace72e66fbd734cfa35"
+PUBLISHED_BASE = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
 AUTHORITY_DECLARED_BASE = "be524831885fc240742f61be7357ea515a78da32"
 AUTHORED_BRANCH = "codex/citysim-world-art-east"
 ALLOWED_REPLAY_BRANCHES = {AUTHORED_BRANCH, "master"}
-CLAIM_REVISION = 5
-CLAIM_SHA256 = "f1f3df8bc66fbe82ff536a7ed68235bd0c33997a5df6559a028458b5d635d79e"
+CLAIM_REVISION = 6
+CLAIM_SHA256 = "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
 INTEGRATION_PREFIX = "docs/production/evidence/INTEGRATION/"
 EXPECTED_EXCLUSIVE_ROOTS = [
     (
@@ -160,7 +160,7 @@ EXPECTED_BINDINGS = {
             "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
             "industrial-l04-east-source-v01/orchestrate_parallel_source.py"
         ),
-        "sha256": "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c",
+        "sha256": "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c",
     },
     "processPreparation": {
         "path": (
@@ -185,6 +185,7 @@ EXPECTED_BINDINGS = {
         "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9",
     },
 }
+WORKER_HEAD_BINDINGS = {"highLevelOrchestrator"}
 
 
 def require_object(value: object, label: str) -> dict[str, Any]:
@@ -251,8 +252,19 @@ def validate_binding(
     require_equal(binding.get("path"), expected["path"], f"{name}_path_mismatch")
     require_equal(binding.get("sha256"), expected["sha256"], f"{name}_hash_mismatch")
     try:
+        binding_commit = (
+            subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=REPOSITORY_ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            if name in WORKER_HEAD_BINDINGS
+            else PUBLISHED_BASE
+        )
         blob, tree = HARDENED.git_blob(
-            PUBLISHED_BASE, expected["path"], f"scheduleAdapter.{name}"
+            binding_commit, expected["path"], f"scheduleAdapter.{name}"
         )
         working = HARDENED.capture_repository_file(
             expected["path"], f"scheduleAdapter.{name}"
@@ -268,7 +280,7 @@ def validate_binding(
     return {
         "path": expected["path"],
         "sha256": expected["sha256"],
-        "authorityCommit": PUBLISHED_BASE,
+        "authorityCommit": binding_commit,
         "gitMode": tree["mode"],
         "gitObjectId": tree["objectId"],
     }, working

@@ -1,0 +1,216 @@
+{
+  "schema": "citysim.play-079.east-current-baseline-durability.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "disposition": "BLOCKED_ZERO_PIXEL_CURRENT_BASELINE",
+  "publishedAuthority": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+  "testedMergeCommit": "ad2173665498e474902d3d197477276bce36f09d",
+  "mergeParents": [
+    "6524934f764862768bce7d27eccffb279604b55f",
+    "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda"
+  ],
+  "claim": {
+    "revision": 5,
+    "path": "docs/production/claims/PLAY-079.world-art-east.md",
+    "sha256": "f1f3df8bc66fbe82ff536a7ed68235bd0c33997a5df6559a028458b5d635d79e"
+  },
+  "fanOutSkill": {
+    "authorityCommit": "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed",
+    "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+    "sha256": "c235b1d5a08f3359cf9c9be372346c7d3ce1223240c79dda40469fc9295359e9"
+  },
+  "acceptedPredesign": {
+    "preserved": true,
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/validate_predesign.py",
+      "sha256": "86dd6b3fad5502c6c9f898d802c9fc5eb4da57e7864c981494ad5ad9f75dde33"
+    }
+  },
+  "scheduleBindings": {
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",
+      "sha256": "6eba2291f9cb548a8ddd08961bdffe3a18c9546b293a08f094711b38aa0840c6"
+    },
+    "semanticValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py",
+      "sha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04"
+    },
+    "eastAdapter": {
+      "contractSha256": "920791c5fdadf291104dda052a17d752e71ca7e9c0a87b9035291f313fc00921",
+      "implementationSha256": "e237c6cf25b19a216521d5b459d70a3cdf96238df08adf537bd618e1487da2dc",
+      "testsSha256": "40e8fde1360f9862c0d523720eef48238dd1f1f273c5822082077d6a051b9e10"
+    },
+    "highLevelOrchestratorSha256": "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c"
+  },
+  "gates": {
+    "staticPredesign": {
+      "result": "PASS",
+      "objectCount": 23,
+      "silhouetteBreakCount": 7,
+      "imagesWritten": 0,
+      "renderInvocations": 0
+    },
+    "actualCameraPredesign": {
+      "result": "PASS",
+      "blenderValidationProcesses": 1,
+      "silhouetteBreakCount": 5,
+      "portalProcessOverlapCount": 0,
+      "maximumRegistrationErrorPixels": 0.0004105720229209506,
+      "imagesWritten": 0,
+      "renderInvocations": 0,
+      "renderApiReferences": 0
+    },
+    "sourceStageRunnerValidation": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "exitCode": 2,
+      "code": "shared_non_alias_loader_rejected",
+      "stage": "before_renderer_launch",
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0,
+      "pixelFiles": 0
+    },
+    "prelockDescribeGuardSchema": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "failedCommands": [
+        "describe",
+        "guard",
+        "schema"
+      ],
+      "primaryCode": "shared_non_alias_loader_rejected"
+    },
+    "sourceOutputPrelock": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "code": "AUTHORITY_INPUT_SHA_DRIFT"
+    },
+    "launchBoundCli": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "code": "cell_content_ancestry_mismatch",
+      "staleCellContentCommit": "3ca37996953230b7255f6a22ac1f977c99e56e03",
+      "filesWritten": 0,
+      "pixelFiles": 0,
+      "blenderProcessLaunches": 0,
+      "blenderRenderApiCalls": 0
+    },
+    "legacyProcessPreparation": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "code": "claim_working_hash_mismatch",
+      "testsRun": 5,
+      "testsPassed": 1
+    },
+    "legacyPrelockSuccessor": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "code": "claim_working_hash_mismatch"
+    },
+    "immutableInputReplay": {
+      "result": "REJECTED_FAIL_CLOSED",
+      "code": "deterministic_validation_failed"
+    },
+    "outputPathSafety": {
+      "result": "PASS",
+      "writerClasses": 8,
+      "pixelFilesCreated": 0,
+      "dccInvocations": 0
+    },
+    "locatorAuthority": {
+      "result": "PASS",
+      "negativeCasesRejected": 8,
+      "reservedPacketCreated": false,
+      "pixelFilesCreated": 0,
+      "dccProcesses": 0
+    },
+    "parallelOrchestrator": {
+      "result": "PASS",
+      "authorityTrustAdversariesRejected": 12,
+      "fixtureAdversariesRejected": 10,
+      "missingPreflightResult": "REJECTED",
+      "missingLaunchResult": "REJECTED",
+      "productionSubprocessInvocations": 0,
+      "blenderProcessInvocations": 0,
+      "dccInvocations": 0,
+      "renderApiCalls": 0,
+      "pixelFilesCreated": 0,
+      "repositoryWrites": 0
+    },
+    "eastScheduleAdapter": {
+      "result": "PASS_ZERO_CHILD",
+      "unitTestsPassed": 6,
+      "adversarialCasesRejected": 18,
+      "missingScheduleCode": "missing_schedule_binding",
+      "childStarts": 0,
+      "blenderInvocations": 0,
+      "dccInvocations": 0,
+      "renderInvocations": 0,
+      "pixelFilesCreated": 0,
+      "directLowLevelInvocationPossible": false
+    },
+    "sharedScheduleValidator": {
+      "result": "PASS",
+      "testsPassed": 8
+    }
+  },
+  "blockers": [
+    {
+      "owner": "Integration",
+      "code": "AUTHORITY_INPUT_SHA_DRIFT",
+      "path": "Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated-v4-manifest.json",
+      "nonAliasInputPath": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "nonAliasInputExpectedSha256": "1f4e9961ecb8ade54d2bb169721d11ca337e2f61053c72078a5e6bf71d59480b",
+      "currentWorkingSha256": "317802265010fc758b232bea9198f18ec0ca4d75b5ceb6f759206238717cec92",
+      "requiredAction": "Integration must republish or otherwise resolve the shared non-alias authority; East must not edit it."
+    },
+    {
+      "owner": "PLAY-079-future-repair",
+      "code": "STALE_REVISION_4_CLAIM_BINDING",
+      "expectedByLegacyArtifacts": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab",
+      "currentRevision5Sha256": "f1f3df8bc66fbe82ff536a7ed68235bd0c33997a5df6559a028458b5d635d79e",
+      "affectedGates": [
+        "legacyProcessPreparation",
+        "legacyPrelockSuccessor",
+        "immutableInputReplay"
+      ]
+    },
+    {
+      "owner": "PLAY-079-future-repair",
+      "code": "STALE_LAUNCH_DRY_FIXTURE_ANCESTRY",
+      "staleCellContentCommit": "3ca37996953230b7255f6a22ac1f977c99e56e03",
+      "requiredAction": "Rebind only under a future task-owned repair authority; do not fabricate ancestry."
+    },
+    {
+      "owner": "Integration",
+      "code": "MISSING_POSTLOCK_AUTHORITIES",
+      "missing": [
+        "appearanceLock",
+        "sourceProductionProfile",
+        "postlockSchedule",
+        "eastPerProcessGrantA",
+        "eastPerProcessGrantB",
+        "eastPerProcessGrantC"
+      ]
+    }
+  ],
+  "activity": {
+    "productionChildStarts": 0,
+    "sourceAStarts": 0,
+    "sourceBStarts": 0,
+    "sourceCStarts": 0,
+    "renderInvocations": 0,
+    "renderApiCalls": 0,
+    "pixelFilesCreated": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "sourcePacketsCreated": 0,
+    "productionSelected": false,
+    "integrationAdmitted": false,
+    "selfAccepted": false
+  }
+}

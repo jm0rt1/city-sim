@@ -1,0 +1,11 @@
+{
+  "schema": "citysim.play-079.east-execution-materials-binding.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "acceptedMaterials": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+    "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+  },
+  "appearanceLockSuppliedByIntegration": false,
+  "sourceProductionProfileSuppliedByIntegration": false
+}

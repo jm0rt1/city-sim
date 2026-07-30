@@ -125,7 +125,7 @@
     },
     "parallelSourceOrchestrator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
-      "sha256": "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c"
+      "sha256": "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c"
     },
     "canonicalDecoder": {
       "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
@@ -420,6 +420,41 @@
     "B",
     "C"
   ],
+  "executionClosure": {
+    "schemaVersion": 1,
+    "claimRevision": 6,
+    "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
+    "publishedBaseCommit": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-CONTRACT.json",
+    "sharedSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "sharedValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "sharedAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "highLevelOnly": true,
+    "anonymousPipeSecretRequired": true,
+    "hmacSha256Required": true,
+    "oneAttempt": true,
+    "replayAllowed": false,
+    "durableAcrossFreshProcesses": true,
+    "attemptRootPrefix": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/attempts",
+    "atomicAttemptDirectoryClaim": true,
+    "attemptMarkerNoFollowNoOverwrite": true,
+    "crashAfterDirectoryClaimConsumesAttempt": true,
+    "validationOnly": true,
+    "liveLeaseAuthorized": false,
+    "childStartAuthorized": false,
+    "dccExecutionAuthorized": false,
+    "renderAuthorized": false,
+    "pixelAuthorized": false
+  },
   "outputInventory": {
     "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/",
     "processes": {

@@ -49,6 +49,18 @@ Begin non-shipping renderer preparation as soon as Integration publishes an immu
 5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West packets are all Integration-admitted and independently Renderer-quarantined, and Integration authorizes the shipping mutation.
 6. When the fourth exact Integration-admitted direction passes Renderer quarantine, immediately assemble the frozen 4/4 set as one atomic renderer candidate and run source-to-pack identity plus resource-integrity checks. Stage the real app through the Integration-authorized candidate-only resource path. If staging would require an unapproved shared shipping atlas or manifest mutation, stop and request that authority. Do not silently substitute a newer source, nearby baseline, or partially accepted family.
 
+The intake plan must include an executable work graph, not only reserved IDs.
+Before sources arrive, split contract-independent preparation into mapping,
+registration/LOD, alias-transform-fallback rejection, fixture/camera, and
+resource-integrity jobs. Record each job's frozen input, exclusive temporary or
+evidence root, owner, state, dependency, and join condition. Run independent
+read-only jobs or jobs writing only to isolated temporary roots outside the
+Renderer worktree concurrently. One Renderer coordinator alone edits the
+worktree, common harness, Git index, governed evidence, intake packet, shipping
+candidate, and final commit, and it alone may validate and adopt temporary
+outputs. If safe ready work remains sequential, name the actual capacity or
+ownership constraint.
+
 Treat the transition to `4of4_ready` as an immediate work trigger. Begin atomic
 assembly in the same acknowledged worker turn; if assembly cannot start, emit
 a blocking receipt naming the exact missing Integration authority or
@@ -103,6 +115,12 @@ direction jobs consume that frozen harness and may not edit it. Join the
 results only after every job completes, preserve passing directions, and
 return failing directions independently. Atomic 4/4 assembly remains a
 separate serialized mutation after all four exact packet identities pass.
+
+The Renderer return must report actual parallel execution: ready-job count,
+available helper/process capacity, launched jobs, start/end or overlap evidence,
+join results, and reasons for unused capacity. A single long serial validation
+run does not satisfy intake-ahead behavior when independent direction or
+fixture jobs were ready.
 
 The Renderer row in Integration's shared ledger may advance only through
 `intake_preparing → intake_ready → quarantining → 4of4_assembled`. Renderer

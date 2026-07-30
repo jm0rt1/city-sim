@@ -1,14 +1,14 @@
 {
   "schema": 2,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-30T01:29:40Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T0129Z.json",
+  "updatedAt": "2026-07-30T01:35:42Z",
+  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T0135Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "a0aa52118e26e80e45df19a84acd2049845a92e8",
-    "technicalHeadBeforeLedger": "a0aa52118e26e80e45df19a84acd2049845a92e8"
+    "publishedBase": "148b01af73d7a3eab0bc9ebe06e68c3f09f4c62f",
+    "technicalHeadBeforeLedger": "148b01af73d7a3eab0bc9ebe06e68c3f09f4c62f"
   },
   "stateMachine": [
     "contract_pending",
@@ -114,15 +114,15 @@
       "publishedBase": "8f6f7e0daf4a39cf1ea7b6f3b975882013563bd6",
       "head": "12bcb1a2c740d30cebdc975c2f0882f63de6b6cf",
       "state": "predesign",
-      "dispatchState": "working",
+      "dispatchState": "returned",
       "acknowledgedAt": "2026-07-30T01:25:05Z",
       "claimRevision": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d",
       "cleanState": "clean_north_static_a_failure_checkpoint",
-      "blocker": "static_a_blender_child_exited_one_and_a_new_integration_authority_is_required_before_any_retry",
-      "nextAction": "complete_the_acknowledged_read_only_recovery_contract_audit_while_integration_prepares_the_narrow_authority",
-      "boundedDeliverable": "one_read_only_exact_hash_recovery_contract_audit_with_fixed_argv_failure_inventory_tests_and_stop_conditions",
+      "blocker": "independent_review_returned_the_phase_one_chain_for_four_authority_compliance_defects_and_no_further_legal_preparation_remains",
+      "nextAction": "integration_must_publish_an_additive_launcher_and_static_a_recovery_authority_before_north_can_resume",
+      "boundedDeliverable": "one_completed_read_only_recovery_audit_and_returned_phase_one_chain_preserved_cleanly",
       "stopCondition": "no_rendered_pixels_process_a_b_c_sibling_dcc_appearance_lock_admission_renderer_shipping_push_or_self_acceptance",
-      "updatedAt": "2026-07-30T01:29:40Z"
+      "updatedAt": "2026-07-30T01:35:42Z"
     },
     {
       "lane": "world_art",
@@ -132,17 +132,17 @@
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
       "claim": "PLAY-079",
       "publishedBase": "69b62e78f6012115d5d1221cea3a34e26cae5683",
-      "head": "c14911ea13a92874e9910b69a8dd98a763db86d5",
+      "head": "bcb5cba1495aade19009f4e4407cd55b7bf03c39",
       "state": "predesign",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-30T01:25:15Z",
       "claimRevision": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab",
-      "cleanState": "dirty_east_process_orchestration_preparation_in_progress",
+      "cleanState": "clean_east_process_orchestration_preparation_final_audit",
       "blocker": "appearance_lock_and_source_production_profile_are_absent_so_only_zero_pixel_process_orchestration_preparation_is_legal",
-      "nextAction": "merge_exact_local_master_without_rewriting_east_lineage_then_commit_a_fail_closed_a_b_c_execution_orchestration_preparation",
+      "nextAction": "complete_the_final_scope_and_byte_identity_audit_then_return_the_clean_candidate",
       "boundedDeliverable": "one_task_owned_zero_pixel_east_a_b_c_execution_orchestration_contract_validator_tests_and_evidence",
       "stopCondition": "no_sync_rewrite_shared_files_dcc_pixels_sibling_reads_source_processes_admission_push_or_self_acceptance",
-      "updatedAt": "2026-07-30T01:29:40Z"
+      "updatedAt": "2026-07-30T01:35:42Z"
     },
     {
       "lane": "world_art",
@@ -152,17 +152,17 @@
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
       "claim": "PLAY-080",
       "publishedBase": "69b62e78f6012115d5d1221cea3a34e26cae5683",
-      "head": "29a102fff05e027a4379aab1b94db84351bb27e4",
+      "head": "d8332051c8665410f90684ba8f034fd2a1846a53",
       "state": "predesign",
       "dispatchState": "working",
       "acknowledgedAt": "2026-07-30T01:25:26Z",
       "claimRevision": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
-      "cleanState": "clean_south_integrated_master_merge_checkpoint",
+      "cleanState": "clean_south_validation_fan_out_preparation_final_audit",
       "blocker": "appearance_lock_and_source_production_profile_are_absent_so_only_zero_pixel_validation_fan_out_preparation_is_legal",
-      "nextAction": "merge_exact_local_master_without_rewriting_south_lineage_then_commit_a_fail_closed_post_raw_validation_fan_out_preparation",
+      "nextAction": "complete_the_fail_closed_post_raw_validation_fan_out_preparation_and_commit_evidence",
       "boundedDeliverable": "one_task_owned_zero_pixel_south_validation_fan_out_contract_validator_tests_and_evidence",
       "stopCondition": "no_sync_rewrite_shared_files_dcc_pixels_sibling_reads_source_packets_admission_push_or_self_acceptance",
-      "updatedAt": "2026-07-30T01:29:40Z"
+      "updatedAt": "2026-07-30T01:35:42Z"
     },
     {
       "lane": "world_art",
@@ -172,17 +172,17 @@
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
       "claim": "PLAY-081",
       "publishedBase": "69b62e78f6012115d5d1221cea3a34e26cae5683",
-      "head": "69b62e78f6012115d5d1221cea3a34e26cae5683",
+      "head": "76386c7dba4c3f9b86c6662361cc670ef1e6ed1f",
       "state": "predesign",
-      "dispatchState": "working",
+      "dispatchState": "review_pending",
       "acknowledgedAt": "2026-07-30T01:25:37Z",
       "claimRevision": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8",
-      "cleanState": "dirty_west_review_assembly_preparation_in_progress",
+      "cleanState": "clean_west_review_assembly_preparation_return",
       "blocker": "appearance_lock_and_source_production_profile_are_absent_so_only_zero_pixel_review_assembly_preparation_is_legal",
-      "nextAction": "fast_forward_to_exact_local_master_then_commit_a_fail_closed_review_assembly_preparation",
+      "nextAction": "complete_the_active_independent_portability_review_then_integrate_or_return_only_west",
       "boundedDeliverable": "one_task_owned_zero_pixel_west_review_assembly_contract_validator_tests_and_evidence",
       "stopCondition": "no_dcc_blender_pixels_source_processes_accepted_predesign_edits_shared_files_admission_push_or_self_acceptance",
-      "updatedAt": "2026-07-30T01:29:40Z"
+      "updatedAt": "2026-07-30T01:35:42Z"
     },
     {
       "lane": "world_rendering",
@@ -195,14 +195,14 @@
       "head": "cc3112fee68948d8f723c00810077b6abafb53db",
       "state": "intake_ready",
       "dispatchState": "working",
-      "acknowledgedAt": "2026-07-30T01:10:35Z",
+      "acknowledgedAt": "2026-07-30T01:31:57Z",
       "claimRevision": "12c901919261e18763eae50910b48b83d9c2243fb2095d223f1d38791557b380",
       "cleanState": "clean_l3_recovery_evidence_candidate_final_same_sha_check",
-      "blocker": "industrial_l04_admission_remains_closed_until_the_industrial_l03_recovery_returns_one_exact_technically_complete_candidate",
-      "nextAction": "finish_the_authorized_full_technical_gate_and_return_one_clean_exact_l3_candidate_for_independent_same_sha_qa",
-      "boundedDeliverable": "one_exact_thirteen_path_industrial_l03_recovery_candidate_with_pack_identity_full_tests_build_staging_launch_smoke_and_performance_evidence",
-      "stopCondition": "no_industrial_l04_intake_broad_composition_qa_scoring_production_selection_push_integration_or_self_acceptance",
-      "updatedAt": "2026-07-30T01:29:40Z"
+      "blocker": "industrial_l04_admission_still_requires_future_integration_owned_schemas_and_accepted_l3_visual_qa",
+      "nextAction": "return_exact_l4_harness_and_schema_decisions_without_mutating_the_frozen_l3_candidate",
+      "boundedDeliverable": "one_read_only_industrial_l04_renderer_intake_prerequisite_audit_while_the_exact_l3_candidate_remains_frozen",
+      "stopCondition": "no_edits_commits_build_app_candidate_process_l4_source_consumption_runtime_atlas_manifest_qa_scoring_push_or_self_acceptance",
+      "updatedAt": "2026-07-30T01:35:42Z"
     },
     {
       "lane": "playtest_quality",
@@ -214,15 +214,15 @@
       "publishedBase": "1008eadf553a445f01f9405558d260e0c779674b",
       "head": "8e68cf11c6a943ab44d83232659585134c17f260",
       "state": "preregistered",
-      "dispatchState": "blocked",
-      "acknowledgedAt": "2026-07-29T11:01:22Z",
+      "dispatchState": "working",
+      "acknowledgedAt": "2026-07-30T01:31:50Z",
       "claimRevision": "19ed6d3f587f7a960d2c79eabb7476bbcdcd4ac2d8cb92439d59e01eaf2ad168",
       "cleanState": "clean_preregistered_gate_waiting_on_exact_candidate",
-      "blocker": "candidate_neutral_preparation_is_exhausted_the_mac_remains_locked_and_no_exact_renderer_candidate_exists",
-      "nextAction": "resume_camera_preflight_after_unlock_then_start_one_fresh_same_sha_gate_when_renderer_returns_the_exact_l3_candidate",
-      "boundedDeliverable": "one_independent_exact_candidate_mature_city_regular_compact_visual_interaction_gate",
-      "stopCondition": "no_renderer_candidate_launch_scoring_fixture_product_mutation_push_pinning_or_self_acceptance",
-      "updatedAt": "2026-07-30T01:29:40Z"
+      "blocker": "computer_use_lock_state_approval_is_pending_and_the_visual_gate_must_wait_for_the_new_post_integration_candidate_sha",
+      "nextAction": "complete_only_the_lock_check_then_wait_for_integration_to_send_the_exact_post_integration_sha_before_any_stage_or_launch",
+      "boundedDeliverable": "one_lock_state_check_then_one_independent_post_integration_exact_candidate_gate",
+      "stopCondition": "no_candidate_stage_or_launch_before_new_sha_no_scoring_across_shas_no_renderer_mutation_push_pinning_or_self_acceptance",
+      "updatedAt": "2026-07-30T01:35:42Z"
     }
   ]
 }

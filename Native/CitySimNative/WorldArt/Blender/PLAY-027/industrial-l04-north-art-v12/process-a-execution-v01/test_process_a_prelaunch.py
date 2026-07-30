@@ -32,7 +32,7 @@ EVIDENCE_ROOT = Path(
     "blender-north-art-v12/process-a-execution-v01"
 )
 EVIDENCE_RELATIVE = (
-    EVIDENCE_ROOT / "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-PRELAUNCH.json"
+    EVIDENCE_ROOT / "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-PRELAUNCH-R2.json"
 )
 TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
 
@@ -1138,7 +1138,7 @@ def main() -> None:
         "direction": "north",
         "process": "A",
         "trustedIntegrationMaster": TRUSTED_MASTER_COMMIT,
-        "candidateHead": candidate_head,
+        "authorityObservedHead": TRUSTED_MASTER_COMMIT,
         "trustedMasterIsAncestor": True,
         "authorityBaseCommit": contract["authorityBaseCommit"],
         "publicationCommit": contract["publicationCommit"],

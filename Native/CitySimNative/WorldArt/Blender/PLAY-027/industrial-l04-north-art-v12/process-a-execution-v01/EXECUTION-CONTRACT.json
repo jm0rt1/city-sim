@@ -61,8 +61,8 @@
       "sha256": "4fa8757b7c391d5b178b9de119a976e461451b634b20081bc308508b9cc32403"
     },
     "acceptedReadiness": {
-      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R2.json",
-      "sha256": "dfa41769fbd0a39f07c4241762a03ace87ce0f3a25c565d50a36a01a7c283cc2"
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R3.json",
+      "sha256": "dc89dbc824e83d82373f980274cfadf23a9ebd25e3720a4f28c012f787cb2c79"
     }
   },
   "executionClosure": {
@@ -123,7 +123,7 @@
   },
   "tests": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
-    "sha256": "c3bf3d84059567a5b5d72ac48b6bb771f34153c5ff5baac243c4c6d5f79f3a45"
+    "sha256": "c51b4871355a916af65aaded598d95a3574b560cf7f3669517f051027ebc8123"
   },
   "blender": {
     "executable": "/Applications/Blender.app/Contents/MacOS/Blender",

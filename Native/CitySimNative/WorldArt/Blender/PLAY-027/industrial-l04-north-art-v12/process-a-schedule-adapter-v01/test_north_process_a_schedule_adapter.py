@@ -24,7 +24,7 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R2.json"
+    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R3.json"
 )
 TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
 
@@ -671,7 +671,7 @@ def main() -> None:
         "phase": contract["phase"],
         "branch": contract["branch"],
         "trustedIntegrationMaster": TRUSTED_MASTER_COMMIT,
-        "candidateHead": candidate_head,
+        "authorityObservedHead": TRUSTED_MASTER_COMMIT,
         "trustedMasterIsAncestor": True,
         "authorityBaseCommit": contract["publishedBaseCommit"],
         "publishedAuthorityCommit": TRUSTED_MASTER_COMMIT,

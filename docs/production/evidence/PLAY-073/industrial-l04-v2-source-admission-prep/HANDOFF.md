@@ -1,5 +1,67 @@
 # PLAY-073 Industrial L4 v2 source-admission prep
 
+## Canonical Integration receipt adoption
+
+Published Integration authority
+`8a3954160b28d580439db3df0aa5fae780d833e5` establishes the first canonical,
+independently approved source-admission receipt boundary. Renderer merged that
+authority without conflict at `b7dfeadf4ddedcaab9a80744c06ee86698eb3b39`
+while preserving exact L3 candidate
+`cc3112fee68948d8f723c00810077b6abafb53db` as an ancestor.
+
+The self-contained synthetic intake harness now pins:
+
+- receipt schema
+  `docs/production/evidence/INTEGRATION/industrial-l04-source-admission-receipt-schema-v1.json`,
+  SHA-256
+  `08ad183eb90dc8eb14567a432c00841b010f90f8d8e4d359b60d4735c4ca4f66`;
+- strict Integration validator
+  `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_source_admission_receipt_v1.py`,
+  SHA-256
+  `497f4e696cb6da3740e9dd60877cd25ea631268df1124513b1468ad6d51158cf`;
+- all 24 canonical top-level fields and their exact nested shapes; and
+- a source context separate from Renderer state, binding the direction-owned
+  source branch, exact source HEAD, and `clean` state.
+
+Direction-local validation rejects a source branch that does not match North,
+East, South, or West ownership, unknown nested `sourceContext` fields, missing
+canonical fields, and any Renderer/production/shipping authority escalation.
+The harness does not rerun Integration's Git/source-worktree validator or
+infer source admission; it consumes only an already-published Integration
+receipt and cross-binds its direction, logical ID, worker packet, content
+commit, decoded identity, semantic validator, and dispositions to the
+synthetic Renderer packet.
+
+Focused validation:
+
+```text
+CLANG_MODULE_CACHE_PATH=/private/tmp/play073-l4-admission-clang-cache \
+SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/play073-l4-admission-swift-cache \
+swift test --package-path Native/CitySimNative \
+  --filter IndustrialL4V2SourceAdmissionHarnessTests
+```
+
+Result: **17 executed, 15 passed, 2 expected no-live-input skips, 0 failed**
+in **0.188 seconds** after a **1.91-second** focused build.
+
+The exact synthetic North caller-path replay passed **1/1** in **0.002
+seconds** and retained deterministic sorted-JSON-plus-newline receipt SHA-256
+`1de39bbef86fbef3a9510eec69354020e4a9106c8a19ba432b319b15336d0826`.
+The published Integration validator suite separately passed **17/17** in
+**0.636 seconds**. JSON parsing, `bash -n`, and the existing path-confinement
+checks pass.
+
+Harness SHA-256:
+`5ef713433219fe9f178a346ab57b15b917be9f858157b67ed41a808037ae9bc2`.
+Synthetic canonical admission SHA-256:
+`b2e98cbca6684ce8a0b1efee0ee4a162b21d1cf0ba0d15ad9d508b81b80ba666`.
+
+There are still zero live Integration source-admission receipts. No source
+packet or pixel was consumed, no direction was actually quarantined, and no
+runtime, atlas, manifest, shipping, fixture, package, product, staged-app, or
+QA surface changed. The historical preparation below remains retained; this
+section is the current candidate-bound handoff.
+
 ## Direction-path confinement addendum
 
 The focused descendant authorized against frozen Renderer base

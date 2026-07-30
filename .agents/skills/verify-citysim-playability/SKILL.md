@@ -113,6 +113,15 @@ review should run ahead in parallel. The final exact-candidate real-app journey
 is deliberately serialized and is the mandatory QA evidence gate; Integration
 alone owns production acceptance.
 
+Count QA as active for a family only when its assignment is bound to that exact
+batch. A prior-family gate or unrelated audit does not satisfy the family's QA
+row. Before the final journey, consume one Integration-issued exclusive gate
+lease binding the exact Renderer candidate receipt, candidate/resource
+manifest, fixture-admission manifest, preregistration, output root, and
+`attemptCount: 1`. Fail closed on a second start, existing output, multiple app
+processes, identity drift, partial 4/4 art, or author coaching. Return one
+immutable APPROVE/RETURN result; do not run a duplicate acceptance journey.
+
 ## Execute
 
 1. Verify the exact candidate, build, resource, manifest, fixture, and Renderer

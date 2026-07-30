@@ -29,6 +29,9 @@ PLAY062_SELECTION = GENERATED / "catalog" / "play-062-industrial-l1-directions.j
 PLAY073_INDUSTRIAL_L2_SELECTION = (
     GENERATED / "catalog" / "play-073-industrial-l2-directions.json"
 )
+PLAY073_INDUSTRIAL_L3_SELECTION = (
+    GENERATED / "catalog" / "play-073-industrial-l3-directions.json"
+)
 RAW_CANVAS = (1536, 1024)
 GROUND_PIVOT = (768, 896)
 WORLD_POINTS_PER_RAW_PIXEL = 72 / 512
@@ -110,6 +113,44 @@ def entrance_exclusion_rect(
     ]
 
 
+def validate_explicit_source_binding(
+    selection: dict[str, object],
+    provenance_data: dict[str, object],
+    scene_data: dict[str, object],
+    logical_id: str,
+) -> None:
+    """Reject accepted explicit sources whose descriptor or provenance drifted."""
+    if selection.get("enforce_descriptor_binding") is not True:
+        return
+
+    revision = selection.get("source_revision")
+    material_file = selection.get("material_library_file")
+    material_sha256 = selection.get("material_library_sha256")
+    scene_material = scene_data.get("materialLibrary", {})
+    if not isinstance(scene_material, dict):
+        raise SystemExit(
+            f"build rejected: descriptor material binding is missing for {logical_id}"
+        )
+    if scene_data.get("sourceRevision") != revision:
+        raise SystemExit(
+            f"build rejected: descriptor source revision mismatch for {logical_id}"
+        )
+    if (
+        scene_material.get("file") != material_file
+        or scene_material.get("sha256") != material_sha256
+    ):
+        raise SystemExit(
+            f"build rejected: descriptor material binding mismatch for {logical_id}"
+        )
+    if (
+        provenance_data.get("materialLibraryFile") != material_file
+        or provenance_data.get("materialLibrarySHA256") != material_sha256
+    ):
+        raise SystemExit(
+            f"build rejected: provenance material binding mismatch for {logical_id}"
+        )
+
+
 def directional_building_assets(
     selection_path: Path,
     family: str,
@@ -187,6 +228,12 @@ def directional_building_assets(
         scene = repository_path(scene_file)
         provenance_data = json.loads(provenance.read_text(encoding="utf-8"))
         scene_data = json.loads(scene.read_text(encoding="utf-8"))
+        validate_explicit_source_binding(
+            selection,
+            provenance_data,
+            scene_data,
+            logical_id,
+        )
         if sha256(raw) != selection["raw_sha256"]:
             raise SystemExit(f"build rejected: raw digest mismatch for {logical_id}")
         if explicit_files:
@@ -234,7 +281,13 @@ def directional_building_assets(
             scene_data.get("logicalBuildingID") != source_id
             or scene_data.get("viewDirection") != direction
             or scene_data.get("level") != level
-            or (not explicit_files and scene_data.get("sourceRevision") != revision)
+            or (
+                (
+                    not explicit_files
+                    or selection.get("enforce_descriptor_binding") is True
+                )
+                and scene_data.get("sourceRevision") != revision
+            )
             or scene_data.get("productionSelected") is not False
             or derivation.get("mirror") is not False
             or derivation.get("rotationDegrees") != 0
@@ -601,6 +654,12 @@ def build(output_atlas: Path) -> None:
             "PLAY-073",
             levels=(2,),
         )
+        + directional_building_assets(
+            PLAY073_INDUSTRIAL_L3_SELECTION,
+            "industrial",
+            "PLAY-073",
+            levels=(3,),
+        )
     )
     directional_ids = {asset["logical_id"] for asset in directional_assets}
     manifest["assets"] = [
@@ -677,7 +736,7 @@ def build(output_atlas: Path) -> None:
             for mask in range(16)
         }
 
-    manifest["generator_version"] = "PLAY-073-wave-010-r1-industrial-l2-production-1"
+    manifest["generator_version"] = "PLAY-073-wave-010-r2-industrial-l3-production-1"
     manifest["pages"] = sorted(pages, key=lambda item: item["id"])
     manifest["inventory"] = [
         {

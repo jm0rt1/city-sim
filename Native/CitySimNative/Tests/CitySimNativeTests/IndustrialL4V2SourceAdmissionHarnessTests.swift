@@ -8,11 +8,64 @@ private enum L4V2Direction: String, Codable, CaseIterable, Hashable {
     case east
     case south
     case west
+
+    var sourceBranch: String {
+        switch self {
+        case .north:
+            "codex/citysim-world-art"
+        case .east:
+            "codex/citysim-world-art-east"
+        case .south:
+            "codex/citysim-world-art-south"
+        case .west:
+            "codex/citysim-world-art-west"
+        }
+    }
 }
 
 private struct L4V2Artifact: Codable, Equatable {
     let path: String
     let sha256: String
+}
+
+private struct L4V2CommittedArtifact: Codable, Equatable {
+    let path: String
+    let commit: String
+    let sha256: String
+}
+
+private struct L4V2SourceContext: Codable, Equatable {
+    let branch: String
+    let head: String
+    let cleanState: String
+}
+
+private struct L4V2AppearanceLockBinding: Codable, Equatable {
+    let documentPath: String
+    let commit: String
+    let documentSha256: String
+    let northProcessASourceSha256: String
+    let northProcessADecodedRgbaSha256: String
+}
+
+private struct L4V2SourceStageSchemaBinding: Codable, Equatable {
+    let path: String
+    let version: Int
+    let sha256: String
+}
+
+private struct L4V2ReviewArtifact: Codable, Equatable {
+    let path: String
+    let sha256: String
+    let disposition: String
+}
+
+private struct L4V2SharedLedgerRevision: Codable, Equatable {
+    let path: String
+    let commit: String
+    let sha256: String
+    let batch: String
+    let directionState: String
 }
 
 private struct L4V2WorkerState: Codable, Equatable {
@@ -84,17 +137,28 @@ private struct L4V2SourceAdmission: Codable, Equatable {
     let schemaVersion: Int
     let disposition: String
     let integrationCommit: String
+    let sourceContext: L4V2SourceContext
     let direction: L4V2Direction
     let logicalID: String
+    let familyContract: L4V2Artifact
+    let appearanceLock: L4V2AppearanceLockBinding
+    let sourceProductionProfile: L4V2CommittedArtifact
+    let sourceStageSchema: L4V2SourceStageSchemaBinding
     let workerPacket: L4V2Artifact
     let contentCommit: String
+    let admittedRaw: L4V2Artifact
     let decodedRgbaSha256: String
     let semanticValidator: L4V2Artifact
+    let semanticValidationReceipt: L4V2ReviewArtifact
     let semanticValidationResult: String
+    let independentTechnicalReview: L4V2ReviewArtifact
     let independentTechnicalDisposition: String
+    let literalScaleReview: L4V2ReviewArtifact
     let literalScaleDisposition: String
+    let sharedLedgerRevision: L4V2SharedLedgerRevision
     let rendererQuarantined: Bool
     let productionSelected: Bool
+    let shippingActivated: Bool
 }
 
 private struct L4V2RendererQuarantineReceipt: Codable, Equatable {
@@ -160,6 +224,22 @@ private struct L4V2FileInput {
 }
 
 private struct L4V2SourceAdmissionHarness {
+    static let sourceAdmissionSchema = L4V2Artifact(
+        path:
+            "docs/production/evidence/INTEGRATION/"
+            + "industrial-l04-source-admission-receipt-schema-v1.json",
+        sha256:
+            "08ad183eb90dc8eb14567a432c00841b010f90f8d8e4d359b60d4735c4ca4f66"
+    )
+
+    static let sourceAdmissionValidator = L4V2Artifact(
+        path:
+            ".agents/skills/operate-citysim-integration/scripts/"
+            + "validate_industrial_l04_source_admission_receipt_v1.py",
+        sha256:
+            "497f4e696cb6da3740e9dd60877cd25ea631268df1124513b1468ad6d51158cf"
+    )
+
     static let sourceStage = L4V2SourceStage(
         schema: L4V2Artifact(
             path:
@@ -328,7 +408,8 @@ private struct L4V2SourceAdmissionHarness {
 
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
-        let receiptData = try encoder.encode(receipt)
+        var receiptData = try encoder.encode(receipt)
+        receiptData.append(0x0A)
         try FileManager.default.createDirectory(
             at: canonicalOutput.deletingLastPathComponent(),
             withIntermediateDirectories: true
@@ -576,18 +657,63 @@ private struct L4V2SourceAdmissionHarness {
         else {
             throw L4V2HarnessError.admissionDrift("candidateBinding")
         }
+        guard admission.sourceContext.branch ==
+                packet.direction.sourceBranch,
+              admission.sourceContext.cleanState == "clean"
+        else {
+            throw L4V2HarnessError.admissionDrift("sourceContext")
+        }
         guard admission.semanticValidationResult == "PASS",
+              admission.semanticValidationReceipt.disposition == "PASS",
+              admission.independentTechnicalReview.disposition == "ACCEPT",
               admission.independentTechnicalDisposition == "ACCEPT",
+              admission.literalScaleReview.disposition == "ACCEPT",
               admission.literalScaleDisposition == "ACCEPT"
         else {
             throw L4V2HarnessError.admissionDrift("independentDisposition")
         }
         guard !admission.rendererQuarantined,
-              !admission.productionSelected
+              !admission.productionSelected,
+              !admission.shippingActivated
         else {
             throw L4V2HarnessError.admissionDrift("authorityBoundary")
         }
         try validateCommit(admission.integrationCommit)
+        try validateCommit(admission.sourceContext.head)
+        try validateCommit(admission.appearanceLock.commit)
+        try validateCommit(admission.sourceProductionProfile.commit)
+        try validateCommit(admission.sharedLedgerRevision.commit)
+        try validateArtifact(admission.familyContract)
+        try validateArtifact(admission.workerPacket)
+        try validateArtifact(admission.admittedRaw)
+        try validateArtifact(admission.semanticValidator)
+        try validateReviewArtifact(admission.semanticValidationReceipt)
+        try validateReviewArtifact(admission.independentTechnicalReview)
+        try validateReviewArtifact(admission.literalScaleReview)
+        try validateHash(admission.appearanceLock.documentSha256)
+        try validateHash(admission.appearanceLock.northProcessASourceSha256)
+        try validateHash(
+            admission.appearanceLock.northProcessADecodedRgbaSha256
+        )
+        try validateHash(admission.sourceProductionProfile.sha256)
+        try validateHash(admission.sourceStageSchema.sha256)
+        try validateHash(admission.sharedLedgerRevision.sha256)
+        guard admission.sourceStageSchema ==
+                L4V2SourceStageSchemaBinding(
+                    path: sourceStage.schema.path,
+                    version: 2,
+                    sha256: sourceStage.schema.sha256
+                ),
+              admission.sharedLedgerRevision.path ==
+                "docs/production/evidence/INTEGRATION/"
+                + "WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+              admission.sharedLedgerRevision.batch ==
+                "industrial_l04_directional_family",
+              admission.sharedLedgerRevision.directionState ==
+                "integration_admitted"
+        else {
+            throw L4V2HarnessError.admissionDrift("authorityBinding")
+        }
     }
 
     private static func validatePacketShape(_ data: Data) throws {
@@ -671,15 +797,57 @@ private struct L4V2SourceAdmissionHarness {
             root,
             [
                 "schemaVersion", "disposition", "integrationCommit",
-                "direction", "logicalID", "workerPacket", "contentCommit",
-                "decodedRgbaSha256", "semanticValidator",
-                "semanticValidationResult", "independentTechnicalDisposition",
-                "literalScaleDisposition", "rendererQuarantined",
-                "productionSelected",
+                "sourceContext", "direction", "logicalID", "familyContract",
+                "appearanceLock", "sourceProductionProfile",
+                "sourceStageSchema", "workerPacket", "contentCommit",
+                "admittedRaw", "decodedRgbaSha256", "semanticValidator",
+                "semanticValidationReceipt", "semanticValidationResult",
+                "independentTechnicalReview",
+                "independentTechnicalDisposition", "literalScaleReview",
+                "literalScaleDisposition", "sharedLedgerRevision",
+                "rendererQuarantined", "productionSelected",
+                "shippingActivated",
             ]
         )
-        try exactKeys(child(root, "workerPacket"), ["path", "sha256"])
-        try exactKeys(child(root, "semanticValidator"), ["path", "sha256"])
+        try exactKeys(
+            child(root, "sourceContext"),
+            ["branch", "head", "cleanState"]
+        )
+        for field in [
+            "familyContract", "workerPacket", "admittedRaw",
+            "semanticValidator",
+        ] {
+            try exactKeys(child(root, field), ["path", "sha256"])
+        }
+        try exactKeys(
+            child(root, "appearanceLock"),
+            [
+                "documentPath", "commit", "documentSha256",
+                "northProcessASourceSha256",
+                "northProcessADecodedRgbaSha256",
+            ]
+        )
+        try exactKeys(
+            child(root, "sourceProductionProfile"),
+            ["path", "commit", "sha256"]
+        )
+        try exactKeys(
+            child(root, "sourceStageSchema"),
+            ["path", "version", "sha256"]
+        )
+        for field in [
+            "semanticValidationReceipt", "independentTechnicalReview",
+            "literalScaleReview",
+        ] {
+            try exactKeys(
+                child(root, field),
+                ["path", "sha256", "disposition"]
+            )
+        }
+        try exactKeys(
+            child(root, "sharedLedgerRevision"),
+            ["path", "commit", "sha256", "batch", "directionState"]
+        )
     }
 
     private static func object(_ data: Data) throws -> [String: Any] {
@@ -737,6 +905,24 @@ private struct L4V2SourceAdmissionHarness {
         guard value.count == 40, value.allSatisfy(\.isLowercaseHexDigit) else {
             throw L4V2HarnessError.invalidField("commit")
         }
+    }
+
+    private static func validateArtifact(
+        _ artifact: L4V2Artifact
+    ) throws {
+        guard !artifact.path.isEmpty else {
+            throw L4V2HarnessError.invalidField("artifact.path")
+        }
+        try validateHash(artifact.sha256)
+    }
+
+    private static func validateReviewArtifact(
+        _ artifact: L4V2ReviewArtifact
+    ) throws {
+        guard !artifact.path.isEmpty else {
+            throw L4V2HarnessError.invalidField("review.path")
+        }
+        try validateHash(artifact.sha256)
     }
 
     static func sha256(_ data: Data) -> String {
@@ -1829,6 +2015,25 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         }
     }
 
+    func testCanonicalSourceAdmissionAuthorityIsPinned() throws {
+        var repositoryRoot = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 {
+            repositoryRoot.deleteLastPathComponent()
+        }
+        for authority in [
+            L4V2SourceAdmissionHarness.sourceAdmissionSchema,
+            L4V2SourceAdmissionHarness.sourceAdmissionValidator,
+        ] {
+            let data = try Data(
+                contentsOf: repositoryRoot.appending(path: authority.path)
+            )
+            XCTAssertEqual(
+                L4V2SourceAdmissionHarness.sha256(data),
+                authority.sha256
+            )
+        }
+    }
+
     func testDirectionLocalAdmissionRejectsWorkerSelfAdmissionAndShapeDrift() throws {
         try withRoot { root in
             let harness = L4V2SourceAdmissionHarness(claimedRoot: root)
@@ -1909,6 +2114,113 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
                 )
             ) {
                 XCTAssertEqual($0 as? L4V2HarnessError, .schemaDrift)
+            }
+
+            let wrongContextInput = try writeAdmission(
+                packet: packet,
+                packetURL: packetURL,
+                packetHash: packetHash,
+                root: root
+            )
+            var wrongContext = try jsonObject(
+                Data(
+                    contentsOf: try XCTUnwrap(
+                        wrongContextInput.admissionURL
+                    )
+                )
+            )
+            var sourceContext = try XCTUnwrap(
+                wrongContext["sourceContext"] as? [String: Any]
+            )
+            sourceContext["branch"] = L4V2Direction.west.sourceBranch
+            wrongContext["sourceContext"] = sourceContext
+            let wrongContextHash = try write(
+                wrongContext,
+                to: try XCTUnwrap(wrongContextInput.admissionURL)
+            )
+            XCTAssertThrowsError(
+                try harness.inspect(
+                    L4V2FileInput(
+                        packetURL: packetURL,
+                        packetSha256: packetHash,
+                        admissionURL: wrongContextInput.admissionURL,
+                        admissionSha256: wrongContextHash
+                    )
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .admissionDrift("sourceContext")
+                )
+            }
+
+            let unknownContextInput = try writeAdmission(
+                packet: packet,
+                packetURL: packetURL,
+                packetHash: packetHash,
+                root: root
+            )
+            var unknownContext = try jsonObject(
+                Data(
+                    contentsOf: try XCTUnwrap(
+                        unknownContextInput.admissionURL
+                    )
+                )
+            )
+            var expandedContext = try XCTUnwrap(
+                unknownContext["sourceContext"] as? [String: Any]
+            )
+            expandedContext["rendererOwned"] = true
+            unknownContext["sourceContext"] = expandedContext
+            let unknownContextHash = try write(
+                unknownContext,
+                to: try XCTUnwrap(unknownContextInput.admissionURL)
+            )
+            XCTAssertThrowsError(
+                try harness.inspect(
+                    L4V2FileInput(
+                        packetURL: packetURL,
+                        packetSha256: packetHash,
+                        admissionURL: unknownContextInput.admissionURL,
+                        admissionSha256: unknownContextHash
+                    )
+                )
+            ) {
+                XCTAssertEqual($0 as? L4V2HarnessError, .schemaDrift)
+            }
+
+            let escalationInput = try writeAdmission(
+                packet: packet,
+                packetURL: packetURL,
+                packetHash: packetHash,
+                root: root
+            )
+            var escalation = try jsonObject(
+                Data(
+                    contentsOf: try XCTUnwrap(
+                        escalationInput.admissionURL
+                    )
+                )
+            )
+            escalation["shippingActivated"] = true
+            let escalationHash = try write(
+                escalation,
+                to: try XCTUnwrap(escalationInput.admissionURL)
+            )
+            XCTAssertThrowsError(
+                try harness.inspect(
+                    L4V2FileInput(
+                        packetURL: packetURL,
+                        packetSha256: packetHash,
+                        admissionURL: escalationInput.admissionURL,
+                        admissionSha256: escalationHash
+                    )
+                )
+            ) {
+                XCTAssertEqual(
+                    $0 as? L4V2HarnessError,
+                    .admissionDrift("authorityBoundary")
+                )
             }
         }
     }
@@ -2140,6 +2452,7 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
                         && !$0.receipt.shippingResourcesMutated
                         && !$0.admission.rendererQuarantined
                         && !$0.admission.productionSelected
+                        && !$0.admission.shippingActivated
                         && !$0.packet.workerState.sourceReady
                         && !$0.packet.workerState.integrationAdmitted
                         && !$0.packet.workerState.rendererQuarantined
@@ -2455,20 +2768,103 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
             integrationCommit: commit(
                 "integration-\(packet.direction.rawValue)"
             ),
+            sourceContext: L4V2SourceContext(
+                branch: packet.direction.sourceBranch,
+                head: commit("source-head-\(packet.direction.rawValue)"),
+                cleanState: "clean"
+            ),
             direction: packet.direction,
             logicalID: packet.logicalID,
+            familyContract: L4V2Artifact(
+                path:
+                    "docs/production/decisions/"
+                    + "CONTRACT-010-directional-building-art.md",
+                sha256: hash("contract-010")
+            ),
+            appearanceLock: L4V2AppearanceLockBinding(
+                documentPath:
+                    "docs/production/evidence/INTEGRATION/"
+                    + "industrial-l04-appearance-lock.json",
+                commit: commit("appearance-lock"),
+                documentSha256: hash("appearance-lock-document"),
+                northProcessASourceSha256: hash("north-process-a-source"),
+                northProcessADecodedRgbaSha256:
+                    hash("north-process-a-decoded")
+            ),
+            sourceProductionProfile: L4V2CommittedArtifact(
+                path:
+                    "docs/production/evidence/INTEGRATION/"
+                    + "industrial-l04-source-production-profile.json",
+                commit: commit("source-production-profile"),
+                sha256: hash("source-production-profile")
+            ),
+            sourceStageSchema: L4V2SourceStageSchemaBinding(
+                path: packet.sourceStage.schema.path,
+                version: 2,
+                sha256: packet.sourceStage.schema.sha256
+            ),
             workerPacket: L4V2Artifact(
                 path: packetPath,
                 sha256: packetHash
             ),
             contentCommit: packet.source.contentCommit,
+            admittedRaw: L4V2Artifact(
+                path:
+                    "Native/CitySimNative/WorldArt/Blender/"
+                    + "\(packet.direction.rawValue)/raw.png",
+                sha256: hash(
+                    "admitted-raw-\(packet.direction.rawValue)"
+                )
+            ),
             decodedRgbaSha256: packet.source.decodedRgbaSha256,
             semanticValidator: packet.sourceStage.semanticValidator,
+            semanticValidationReceipt: L4V2ReviewArtifact(
+                path:
+                    "docs/production/evidence/INTEGRATION/"
+                    + "industrial-l04-semantic-validations-v2/"
+                    + "\(packet.direction.rawValue).json",
+                sha256: hash(
+                    "semantic-receipt-\(packet.direction.rawValue)"
+                ),
+                disposition: "PASS"
+            ),
             semanticValidationResult: "PASS",
+            independentTechnicalReview: L4V2ReviewArtifact(
+                path:
+                    "docs/production/evidence/INTEGRATION/reviews/"
+                    + "\(packet.direction.rawValue)-technical.json",
+                sha256: hash(
+                    "technical-review-\(packet.direction.rawValue)"
+                ),
+                disposition: "ACCEPT"
+            ),
             independentTechnicalDisposition: "ACCEPT",
+            literalScaleReview: L4V2ReviewArtifact(
+                path:
+                    "docs/production/evidence/INTEGRATION/reviews/"
+                    + "\(packet.direction.rawValue)-literal.json",
+                sha256: hash(
+                    "literal-review-\(packet.direction.rawValue)"
+                ),
+                disposition: "ACCEPT"
+            ),
             literalScaleDisposition: "ACCEPT",
+            sharedLedgerRevision: L4V2SharedLedgerRevision(
+                path:
+                    "docs/production/evidence/INTEGRATION/"
+                    + "WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+                commit: commit(
+                    "ledger-\(packet.direction.rawValue)"
+                ),
+                sha256: hash(
+                    "ledger-\(packet.direction.rawValue)"
+                ),
+                batch: "industrial_l04_directional_family",
+                directionState: "integration_admitted"
+            ),
             rendererQuarantined: false,
-            productionSelected: false
+            productionSelected: false,
+            shippingActivated: false
         )
     }
 

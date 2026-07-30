@@ -2,7 +2,7 @@
 
 - **Parallel operating authority:** `7e21babafb5aa491894136c7f1c1d4c58444ef31`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-30 08:25Z
+- **Updated:** 2026-07-30 09:56Z
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,11 +10,11 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `82be3d32666eb4c1ce5abfd0f78d400a81826fd6` | 27 zero-child adversaries pass; independent two-root replay active |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `edc1741456cd1b32781d10b491a55b5a2d0cae18` | replay complete; rev-6 high-level execution closure required |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `9d81095a9845d39c1b3aaf45bef6516d204f5c6b` | replay complete; rev-6 launch-bundle to dispatcher closure required |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `73cd3d408ff6cb65e8137f26f8d25c1f42f7a81d` | replay complete; rev-6 grant/lease to runner closure required |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `1ed9dd49d9bcc8444de8178e54de7d993c53e3d7` + authorized repair WIP | compiled product repair active; isolated signal-11 measurement crash under localization |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `2ffac16e5d22a9174aaf49c9835b0ad12df05fc6` | security repair complete; sync `60bff5ff…` and independent review next |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `edc1741456cd1b32781d10b491a55b5a2d0cae18` | revision-6 zero-DCC execution closure planned |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `9d81095a9845d39c1b3aaf45bef6516d204f5c6b` | revision-6 zero-DCC execution closure planned |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `73cd3d408ff6cb65e8137f26f8d25c1f42f7a81d` | revision-6 zero-DCC execution closure planned |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `4d8322a75d9f5167a687b80e3eaa3f350ae5c948` + authorized evidence WIP | persistent final evidence run active and undisturbed |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistering` | `8e68cf11c6a943ab44d83232659585134c17f260` | exact-batch machine packet repair queued behind the non-overlapping L3 gate |
 
 ## Dispatch invariant
@@ -85,6 +85,17 @@ accepted North Process-A appearance lock, source profile, post-lock schedule,
 and exact grants. Renderer continues separately and is localizing a fresh
 signal-11 isolated measurement crash rather than accepting stale output. QA
 remains truthfully `preregistering` behind its non-overlapping live L3 gate.
+
+At the `09:56Z` refresh, Integration has published the strict direction-neutral
+execution-closure schema, semantic validator, 33-case no-DCC adversarial suite,
+operating authority, and revision-6 East/South/West claims. The three sibling
+cells are planned to sync exact `60bff5ff…` and implement their distinct
+high-level validation boundaries concurrently. North has returned a clean
+security-repair candidate with 26 adapter and 27 prelaunch adversaries passing,
+but must sync the new published master and pass independent review before
+Process A. Renderer continues its separate persistent final proof without
+interruption. No live art lease, source child, render, or pixel authority exists
+in this wave.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

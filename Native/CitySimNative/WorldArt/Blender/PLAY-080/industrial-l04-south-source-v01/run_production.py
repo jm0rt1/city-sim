@@ -128,7 +128,7 @@ def validate_contract_shape(contract: dict[str, Any]) -> None:
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "baselineCommit": "0186066bb88d78dc8dab4be03296d418ea2e259a",
+        "baselineCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -724,11 +724,11 @@ def validate_authenticated_execution_boundary(
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": "codex/citysim-world-art-south",
-        "claimRevision": 6,
+        "claimRevision": 7,
         "claimSha256": (
-            "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+            "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e"
         ),
-        "publishedBaseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+        "publishedBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     }
     mismatches = {
         key: {"expected": value, "actual": task.get(key)}

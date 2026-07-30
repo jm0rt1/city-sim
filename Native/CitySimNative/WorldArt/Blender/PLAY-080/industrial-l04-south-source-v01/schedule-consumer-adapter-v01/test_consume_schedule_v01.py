@@ -28,12 +28,12 @@ def closure_authority(
             "taskId": "PLAY-080",
             "direction": "south",
             "branch": adapter.BRANCH,
-            "claimRevision": 6,
-            "claimSha256": adapter.REVISION_6_CLAIM_SHA256,
-            "publishedBaseCommit": adapter.REVISION_6_BASE,
+            "claimRevision": 7,
+            "claimSha256": adapter.REVISION_7_CLAIM_SHA256,
+            "publishedBaseCommit": adapter.REVISION_7_BASE,
         },
         "grant": {
-            "grantId": "grant-south-A-rev6",
+            "grantId": "grant-south-A-rev7",
             "process": "A",
             "queueId": "south:A",
             "slotId": "dcc-1",
@@ -66,9 +66,9 @@ def closure_authority(
             "rawSecretPersisted": False,
             "childCapability": {
                 "algorithm": "HMAC-SHA256",
-                "capabilityId": "cap-south-A-rev6",
+                "capabilityId": "cap-south-A-rev7",
                 "audience": "industrial-l04-direction-child",
-                "boundGrantId": "grant-south-A-rev6",
+                "boundGrantId": "grant-south-A-rev7",
                 "payloadSha256": "",
                 "macSha256": "",
                 "oneTime": True,
@@ -92,7 +92,7 @@ def closure_authority(
         },
         "_validated": {
             "authorityPublicationCommit": "3" * 40,
-            "trustedHead": adapter.REVISION_6_BASE,
+            "trustedHead": adapter.REVISION_7_BASE,
             "workerHead": "4" * 40,
         },
     }
@@ -103,12 +103,12 @@ def closure_authority(
             "PLAY-080-SOUTH-EXECUTION-AUTHORITY.json"
         ),
         "authorityPublicationCommit": "3" * 40,
-        "trustedHead": adapter.REVISION_6_BASE,
+        "trustedHead": adapter.REVISION_7_BASE,
         "workerHead": "4" * 40,
         "taskId": "PLAY-080",
         "direction": "south",
         "process": "A",
-        "grantId": "grant-south-A-rev6",
+        "grantId": "grant-south-A-rev7",
         "queueId": "south:A",
         "slotId": "dcc-1",
     }
@@ -421,7 +421,7 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
             adapter.validate_schedule_core(wrong_hash, self.contract, runner)
         self.assertEqual("WRONG_CLAIM_HASH", raised.exception.code)
 
-    def test_revision_6_authenticated_boundary_is_deterministic_across_two_fresh_roots(
+    def test_revision_7_authenticated_boundary_is_deterministic_across_two_fresh_roots(
         self,
     ) -> None:
         secret = b"play-080-nonproduction-secret"
@@ -454,7 +454,7 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
         self.assertEqual(0, first["activity"]["pixels"])
         self.assertFalse(first["runnerBoundary"]["liveLeaseAcquired"])
 
-    def test_revision_6_replay_and_authentication_fail_closed(self) -> None:
+    def test_revision_7_replay_and_authentication_fail_closed(self) -> None:
         secret = b"play-080-nonproduction-secret"
         authority, receipt = closure_authority(secret)
         seen: set[str] = set()
@@ -483,7 +483,7 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
             )
         self.assertEqual("FORGED_ANONYMOUS_PIPE_SECRET", forged.exception.code)
 
-    def test_revision_6_identity_root_slot_and_orchestrator_adversaries(self) -> None:
+    def test_revision_7_identity_root_slot_and_orchestrator_adversaries(self) -> None:
         secret = b"play-080-nonproduction-secret"
         cases = (
             ("wrong-direction", lambda a, r: a["task"].update(direction="east")),
@@ -541,7 +541,7 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
             "UNAUTHENTICATED_EXECUTION_CLOSURE", direct.exception.code
         )
 
-    def test_revision_6_shared_bindings_and_missing_instance_fail_closed(self) -> None:
+    def test_revision_7_shared_bindings_and_missing_instance_fail_closed(self) -> None:
         module = adapter.load_execution_validator()
         self.assertEqual(
             "citysim://integration/industrial-l04-direction-execution-authority-v1",

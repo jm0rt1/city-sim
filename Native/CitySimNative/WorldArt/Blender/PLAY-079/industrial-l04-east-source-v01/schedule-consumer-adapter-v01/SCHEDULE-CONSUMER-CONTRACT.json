@@ -4,15 +4,15 @@
   "taskId": "PLAY-079",
   "direction": "east",
   "branch": "codex/citysim-world-art-east",
-  "claimRevision": 6,
-  "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-  "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+  "claimRevision": 7,
+  "claimSha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+  "publishedBase": "aaee294718a8176b70a4688b738b517f216dd3a7",
   "authorityDeclaredBase": "be524831885fc240742f61be7357ea515a78da32",
   "disposition": "ZERO_CHILD_READINESS_ONLY",
   "bindings": {
     "claim": {
       "path": "docs/production/claims/PLAY-079.world-art-east.md",
-      "sha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+      "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
     },
     "adapterAuthority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
@@ -28,7 +28,7 @@
     },
     "highLevelOrchestrator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
-      "sha256": "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c"
+      "sha256": "5c9f5ffcebc2a804bb43d593a3be35d280908afeaf7f02b2860675035ad16406"
     },
     "processPreparation": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/parallel-process-prep-v01/PROCESS-ORCHESTRATION-PREP-CONTRACT.json",
@@ -64,9 +64,9 @@
     "direction": "east",
     "claim": "PLAY-079",
     "branch": "codex/citysim-world-art-east",
-    "claimRevision": 6,
-    "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-    "baseCommit": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "claimRevision": 7,
+    "claimSha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+    "baseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     "processes": ["A", "B", "C"],
     "maximumChildStartsPerProcess": 1,
     "orchestratorOnly": true,

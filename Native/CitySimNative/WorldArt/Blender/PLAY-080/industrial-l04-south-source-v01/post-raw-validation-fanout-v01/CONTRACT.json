@@ -14,10 +14,10 @@
   },
   "branch": "codex/citysim-world-art-south",
   "claim": {
-    "authorityCommit": "5d86e804be679c765c2465c60ceaee72f3702c48",
-    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
+    "authorityCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+    "blobOid": "bbff05a8840376bb061271f7a63e1b4ef8744362",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+    "sha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e"
   },
   "direction": "south",
   "disposition": "BLOCKED_MISSING_APPEARANCE_LOCK_AND_SOURCE_PRODUCTION_PROFILE",
@@ -158,9 +158,9 @@
       "sha256": "c0ac7fb514f9a6f80bac11c8f95ca41acf0b56f2d19f0c65b106080b3b06b00f"
     },
     "runner": {
-      "blobOid": "bde316b55999a03b63316e89b02cdd8443b0bc33",
+      "blobOid": "970b604ee1b4fb7d60ad383b8853f6597e8fcfb1",
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-      "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2"
+      "sha256": "e8327aab984ca7b73cdc843cb1f5477d61215784fa86ea1a7ee9d8f9ae47afd7"
     },
     "scene": {
       "blobOid": "d04d7630436430907caaeb4eaa9c2d04304190ad",
@@ -173,9 +173,9 @@
       "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
     },
     "sourceStageSchema": {
-      "blobOid": "198937fd641a9e117a4e96136052ae8607025675",
+      "blobOid": "d669d5ed5b60633e24e205e500802ab23d5be675",
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
-      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
     }
   },
   "gates": {
@@ -194,9 +194,9 @@
     "sourceReady": false
   },
   "integrationAuthority": {
-    "commit": "5d86e804be679c765c2465c60ceaee72f3702c48",
+    "commit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     "runtimeHeadPolicy": "integration-authority-is-ancestor",
-    "treeOid": "a1784f69bba2c7352093502fc4700140c4887171"
+    "treeOid": "7ee544ea6616be88d1e035eb4c618ce73805525c"
   },
   "mode": "zero-pixel-post-raw-validation-fanout-prep",
   "orientationTransform": "none",

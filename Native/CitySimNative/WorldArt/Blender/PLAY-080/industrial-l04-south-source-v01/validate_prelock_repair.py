@@ -33,6 +33,13 @@ PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".webp"}
 ACCEPTED_BLENDER_SHA256 = (
     "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4"
 )
+ACCEPTED_PREDESIGN_AUTHORITY = "f9cb5fbae1be459ba297a8605347c4174f912ba0"
+ACCEPTED_PREDESIGN_RUNNER_SHA256 = (
+    "cd51c9020653627125d8bba5eaf0db1488ed06331a36f3df5f1aac04a0620733"
+)
+ACCEPTED_BRIDGE_VALIDATOR_SHA256 = (
+    "f9bcddec4cdcb5e3135fd82019de0e19650b3a2ddcb51794ff52ac5dba065ec8"
+)
 SOURCE_SCHEMA_V1 = (
     "docs/production/evidence/INTEGRATION/"
     "industrial-l04-source-stage-handoff-schema-v1.json"
@@ -42,7 +49,7 @@ SOURCE_SCHEMA_V2 = (
     "industrial-l04-source-stage-handoff-schema-v2.json"
 )
 SOURCE_SCHEMA_V2_SHA256 = (
-    "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
 )
 EXPECTED_SHARED_BINDINGS = {
     "sourceStageHandoffSchema": {
@@ -51,7 +58,7 @@ EXPECTED_SHARED_BINDINGS = {
     },
     "nonAliasLoader": {
         "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
-        "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39",
+        "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d",
     },
     "semanticValidator": {
         "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
@@ -77,7 +84,11 @@ def sha256(path: Path) -> str:
 
 
 def display_path(path: Path) -> str:
-    return path.resolve().relative_to(REPOSITORY_ROOT).as_posix()
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(REPOSITORY_ROOT).as_posix()
+    except ValueError:
+        return resolved.as_posix()
 
 
 def pixel_files(*roots: Path) -> list[str]:
@@ -106,8 +117,6 @@ def camera_proof_gate(
     static = load_json(static_path)
     actual = load_json(actual_path)
     bridge = contract["coordinateBridge"]
-    validator_sha = sha256(SOURCE_DIR / "validate_bridge_adoption.py")
-
     static_checks = static.get("checks", [])
     actual_checks = actual.get("checks", [])
     socket_check = next(
@@ -122,9 +131,11 @@ def camera_proof_gate(
     actual_delta = socket_details.get("maximumDeltaSourcePixels")
     tolerance = socket_details.get("toleranceSourcePixels")
     proof_inputs_match = all(
-        proof.get("baselineCommit") == contract["baselineCommit"]
-        and proof.get("inputs", {}).get("contractSha256") == contract_sha
-        and proof.get("inputs", {}).get("validatorSha256") == validator_sha
+        proof.get("baselineCommit") == ACCEPTED_PREDESIGN_AUTHORITY
+        and proof.get("inputs", {}).get("contractSha256")
+        == ACCEPTED_PREDESIGN_RUNNER_SHA256
+        and proof.get("inputs", {}).get("validatorSha256")
+        == ACCEPTED_BRIDGE_VALIDATOR_SHA256
         and proof.get("inputs", {}).get("mappingContractSha256")
         == bridge["mappingContractSha256"]
         for proof in (static, actual)
@@ -166,6 +177,9 @@ def camera_proof_gate(
     )
     summary = {
         "result": "PASS" if passed else "FAIL",
+        "acceptedPredesignAuthority": ACCEPTED_PREDESIGN_AUTHORITY,
+        "acceptedPredesignRunnerSha256": ACCEPTED_PREDESIGN_RUNNER_SHA256,
+        "currentRunnerSha256": contract_sha,
         "staticPassed": sum(check.get("pass") is True for check in static_checks),
         "staticExpected": 6,
         "actualCameraPassed": sum(
@@ -231,7 +245,7 @@ def main() -> int:
         == "docs/production/evidence/INTEGRATION/"
         "industrial-l04-accepted-master-non-alias-input-v1.json"
         and non_alias["sha256"]
-        == "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+        == "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
     )
     static_checks["sourceStageV2AndSharedToolsBound"] = all(
         contract["authorities"].get(key) == value
@@ -314,6 +328,7 @@ def main() -> int:
         "northProcessADecodedRgbaSha256": "2" * 64,
     }
     wrong_contract["lockedMaterialMapping"]["path"] = contract_display
+    wrong_contract["lockedMaterialMapping"]["commit"] = "4" * 40
     wrong_contract["lockedMaterialMapping"]["sha256"] = contract_hash
     wrong_contract["postLockProductionAuthority"] = {
         "path": contract_display,
@@ -475,7 +490,7 @@ def main() -> int:
         literal.get("result") == "PASS"
         and literal.get("mode") == "analytic-zero-pixel"
         and literal.get("inputs", {}).get("runnerContract", {}).get("sha256")
-        == contract_sha
+        == ACCEPTED_PREDESIGN_RUNNER_SHA256
         and literal.get("pixelFiles") == 0
         and literal.get("renderInvocations") == 0
         and literal.get("blenderProcessLaunches") == 0

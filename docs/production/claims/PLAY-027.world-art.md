@@ -20,14 +20,16 @@
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
 - **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1,
-  and Industrial L2 have accepted source and shipping outcomes. Industrial L3
-  source authority is complete; replacement-R2 renderer ingestion is integrated
-  and production selection remains pending its exact independent QA.
-  Industrial L4 North v12 prelaunch closure and its synchronized parallel-art
-  epoch are independently reviewed and integrated. Revision 7 authorizes only
-  the zero-child current-authority replay below. Process A remains blocked
-  until Integration separately publishes its exact schedule, one-process
-  lease, secret, and compute slot.
+  Industrial L2, and Industrial L3 have accepted source and shipping outcomes.
+  Exact Industrial L3 renderer candidate
+  `472ffa85cd35639a675c1c2e4ede748c94446a7f` passed its focused independent
+  same-SHA PLAY-075 gate and was published at
+  `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`. Industrial L4 North v12
+  prelaunch closure and its synchronized parallel-art epoch are independently
+  reviewed and integrated. Revision 7 authorizes only the zero-child
+  current-authority replay below. Process A remains blocked until Integration
+  separately publishes its exact schedule, one-process lease, secret, and
+  compute slot.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North

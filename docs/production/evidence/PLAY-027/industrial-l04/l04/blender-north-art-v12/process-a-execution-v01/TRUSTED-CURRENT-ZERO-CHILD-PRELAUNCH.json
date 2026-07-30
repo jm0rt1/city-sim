@@ -1,14 +1,32 @@
 {
   "adapterCurrentTest": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/test_north_process_a_schedule_adapter.py",
-    "sha256": "096a96ed01f08df1f1ac8e719def7ddbdee85aecc7cfb53a34ce9f600731ace8"
+    "sha256": "7e041e2f891d1e2a018555988c7319a5da98b76938b9acdd8950f71da0f1a2f2"
   },
-  "adversarialCaseCount": 27,
+  "adversarialCaseCount": 29,
   "allPassed": true,
   "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
   "blenderChildStartCount": 0,
+  "candidateHead": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
   "candidateReadyForIndependentReview": false,
   "cases": [
+    {
+      "childStarts": 0,
+      "closureSchema": "citysim://integration/industrial-l04-direction-execution-authority-v1",
+      "dccStarts": 0,
+      "grantId": "north:A",
+      "name": "shared-closure-v1-reaches-high-level-orchestrator",
+      "passed": true,
+      "pixels": 0,
+      "renders": 0,
+      "validatorResult": "PASS"
+    },
+    {
+      "actualFailure": "authority fields do not match v1",
+      "expectedFailure": "authority fields do not match v1",
+      "name": "legacy-north-authority-rejected-by-shared-closure",
+      "passed": true
+    },
     {
       "actualFailure": "grantId drift",
       "expectedFailure": "grant",
@@ -54,12 +72,12 @@
       "passed": true,
       "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
       "trustedIntegrationHead": {
-        "commit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+        "commit": "5d86e804be679c765c2465c60ceaee72f3702c48",
         "remoteRef": "refs/remotes/origin/master"
       }
     },
     {
-      "actualFailure": "Git binding failed: merge-base --is-ancestor 46c3b13d4527a64c195bc57dbfbdcc1200bf9066 cda04083bd50df3a0cd99923c8ad571afd62509b",
+      "actualFailure": "Git binding failed: merge-base --is-ancestor 46c3b13d4527a64c195bc57dbfbdcc1200bf9066 5d86e804be679c765c2465c60ceaee72f3702c48",
       "expectedFailure": "Git binding failed",
       "name": "forged-lane-authority-not-in-trusted-master",
       "passed": true
@@ -99,7 +117,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/root/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/root/terminals/root/north-A.TERMINAL.json",
       "name": "run-one-child-root-failure",
       "outputRootCreated": false,
       "passed": true,
@@ -113,7 +131,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/root-create/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/root-create/terminals/root-create/north-A.TERMINAL.json",
       "name": "run-one-child-root-create-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -127,7 +145,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/pipe/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/pipe/terminals/pipe/north-A.TERMINAL.json",
       "name": "run-one-child-pipe-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -143,7 +161,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/grant/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/grant/terminals/grant/north-A.TERMINAL.json",
       "name": "run-one-child-grant-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -159,7 +177,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/command/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/command/terminals/command/north-A.TERMINAL.json",
       "name": "run-one-child-command-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -175,7 +193,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/temp/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/temp/terminals/temp/north-A.TERMINAL.json",
       "name": "run-one-child-temp-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -191,7 +209,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/popen/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/popen/terminals/popen/north-A.TERMINAL.json",
       "name": "run-one-child-popen-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -207,7 +225,7 @@
       "terminatedProcessGroups": []
     },
     {
-      "attemptTerminalPath": "evidence/sampler/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/sampler/terminals/sampler/north-A.TERMINAL.json",
       "name": "run-one-child-sampler-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -225,7 +243,7 @@
       ]
     },
     {
-      "attemptTerminalPath": "evidence/cleanup/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/cleanup/terminals/cleanup/north-A.TERMINAL.json",
       "name": "run-one-child-cleanup-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -243,7 +261,7 @@
       ]
     },
     {
-      "attemptTerminalPath": "evidence/timeout/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/timeout/terminals/timeout/north-A.TERMINAL.json",
       "name": "run-one-child-timeout-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -261,7 +279,7 @@
       ]
     },
     {
-      "attemptTerminalPath": "evidence/rss/attempt-consumption-v01/north-A.TERMINAL.json",
+      "attemptTerminalPath": "evidence/rss/terminals/rss/north-A.TERMINAL.json",
       "name": "run-one-child-rss-failure",
       "outputRootCreated": true,
       "passed": true,
@@ -310,7 +328,7 @@
   ],
   "childEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
-    "sha256": "aea36e46168af84687e202634908599398b928e2310fd791d08cd6e56cea221e"
+    "sha256": "72cde879a4d8cc2060fbcc2ee0ee65e6ae23f32e8e7508bc693a9ccee880f994"
   },
   "dccProcessCount": 0,
   "direction": "north",
@@ -318,14 +336,32 @@
     "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12",
     "handoffRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01",
     "normalizedRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01/normalized",
-    "outputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+    "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
     "processRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01",
-    "rawRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+    "rawRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
     "sceneRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12"
+  },
+  "executionClosure": {
+    "authority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "validator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "validatorTests": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "0be62c7886a2106c81e7e05d56eb3ec3c0756365e416686489f8ffe8c76b2520"
+    }
   },
   "executionContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/EXECUTION-CONTRACT.json",
-    "sha256": "a7d28703a7323f0aeaeb592e4066cf94152c55a79bac9c722602af459956b960"
+    "sha256": "bef334a64bc150934b1d9ecb1aca82a2933628676e7a0853d1b671d359bcb817"
   },
   "futureDirectionHandoff": {
     "currentState": "not_produced",
@@ -358,7 +394,7 @@
   "imageGenProcessCount": 0,
   "launcher": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d"
+    "sha256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce"
   },
   "liveSchedule": {
     "disposition": "BLOCKED_PENDING_INTEGRATION_SCHEDULE_EXECUTION_AUTHORITY_AND_SECRET",
@@ -412,7 +448,7 @@
       "maximumChildStarts": 1,
       "orchestrator": {
         "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-        "sha256": "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d"
+        "sha256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce"
       },
       "phase": "prelock_north_a",
       "process": "A",
@@ -426,7 +462,7 @@
       "sourcePixelCount": 0,
       "task": "PLAY-027"
     },
-    "outputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+    "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
     "requestedChildStarts": 1,
     "validated": true
   },
@@ -442,6 +478,10 @@
   "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
   "renderInvocationCount": 0,
   "rendererProcessCount": 0,
+  "runnerContract": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/RUNNER-CONTRACT.json",
+    "sha256": "32d3b27a793c8d315ba38c82bea878c428238fd132cd207e9e44c00c003f3379"
+  },
   "scheduleAdapter": {
     "acceptedReadiness": {
       "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",
@@ -449,11 +489,11 @@
     },
     "consumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
-      "sha256": "6ca5c8fc698965b7011718214a9b21215c6d5a62a5c637b367e9625c2f7314ee"
+      "sha256": "6fc7d1d0ab5adcf5b29780b1cced0db5d9b99424aa33a84ffeaca404d9d3a512"
     },
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
-      "sha256": "b1af5c2c2d14f357b5c967691206a7aa1cdebaa77315dfa1b137c31934f173bd"
+      "sha256": "e96f902bcea59936777201d5f24ef50089529e4b95611eda6ecdbcb6b492709a"
     }
   },
   "schema": 2,
@@ -467,6 +507,10 @@
     "helperProcessesSeparateFromDCCChild": true,
     "integrationSecretRequired": true,
     "launcherSessionHMAC": true,
+    "legacyNorthAuthorityRejected": true,
+    "sharedClosureV1InvokedByHighLevelOrchestrator": true,
+    "sharedClosureV1Required": true,
+    "sharedClosureV1RevalidatedByRunner": true,
     "terminalReceiptAfterRootCreation": true,
     "trustedOriginMasterPublication": true
   },
@@ -475,5 +519,7 @@
   "sourceAuthority": false,
   "sourcePixelCount": 0,
   "task": "PLAY-027",
+  "trustedIntegrationMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+  "trustedMasterIsAncestor": true,
   "validationPassed": true
 }

@@ -1,86 +1,79 @@
 {
-  "schema": 1,
+  "schema": 2,
   "task": "PLAY-027",
   "direction": "north",
   "process": "A",
-  "validatedSourceCommit": "faec1816ce55db6a68f8001fa015a7c40f43d2a7",
+  "trustedIntegrationMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+  "validatedSourceCommit": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+  "trustedMasterIsAncestor": true,
   "orderedCommits": [
     {
-      "commit": "f79991f0349f2c0d5658c8b2c6e31d671f6fda5d",
-      "purpose": "merge-current-origin-master"
+      "commit": "e7804342ba15cb37df6a10dfeb441df5ee78082b",
+      "purpose": "bind-high-level-launcher-and-runner-to-shared-closure-v1"
     },
     {
-      "commit": "1023e327c7da70babd6a0fcb778418c353cffc06",
-      "purpose": "anchor-trusted-publication-and-fail-complete-lease"
+      "commit": "dabe2e4d7f67424f6627457ca86379843d9cb576",
+      "purpose": "make-shared-schedule-fixtures-fresh-root-portable"
     },
     {
-      "commit": "82be3d32666eb4c1ce5abfd0f78d400a81826fd6",
-      "purpose": "rebind-current-adapter-and-zero-child-evidence"
-    },
-    {
-      "commit": "ed3cadea509da018942286b5df8e4423e52d4070",
-      "purpose": "merge-latest-origin-master"
-    },
-    {
-      "commit": "bf334dfe33ea2ad6eea9c2dcae0913192e0a1ed0",
-      "purpose": "rebind-prelaunch-to-latest-master"
-    },
-    {
-      "commit": "4fbd8ec3562b831f1dd7ae19d0f9f6c7cf67e55b",
-      "purpose": "merge-final-published-origin-master"
-    },
-    {
-      "commit": "faec1816ce55db6a68f8001fa015a7c40f43d2a7",
-      "purpose": "rebind-prelaunch-to-final-master"
+      "commit": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+      "purpose": "retain-sibling-fixtures-through-full-adversarial-proof"
     }
   ],
-  "ancestry": {
-    "priorCleanCandidate": "2ffac16e5d22a9174aaf49c9835b0ad12df05fc6",
-    "returnedCandidate": "46c3b13d4527a64c195bc57dbfbdcc1200bf9066",
-    "trustedIntegrationMaster": "cda04083bd50df3a0cd99923c8ad571afd62509b",
-    "minimumSkillAuthority": "a12f5fd71a8a3a846cd82cae7c204eacdfb539ed",
-    "allAreAncestors": true
+  "sharedClosureV1": {
+    "authoritySHA256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54",
+    "schemaSHA256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491",
+    "validatorSHA256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae",
+    "validatorTestsSHA256": "0be62c7886a2106c81e7e05d56eb3ec3c0756365e416686489f8ffe8c76b2520",
+    "validatorTestsPassed": 33,
+    "highLevelOrchestratorInvokesSharedValidator": true,
+    "runnerRevalidatesSharedClosure": true,
+    "legacyNorthAuthorityRejected": true
   },
   "sourceBindings": {
-    "executionContractSHA256": "a7d28703a7323f0aeaeb592e4066cf94152c55a79bac9c722602af459956b960",
-    "launcherSHA256": "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d",
-    "prelaunchTestSHA256": "bca890dbb5ea15fa162d4edad2ee97d449adee1ce665e399a71a0f94dfadf78a",
-    "adapterContractSHA256": "b1af5c2c2d14f357b5c967691206a7aa1cdebaa77315dfa1b137c31934f173bd",
-    "adapterConsumerSHA256": "6ca5c8fc698965b7011718214a9b21215c6d5a62a5c637b367e9625c2f7314ee",
-    "adapterTestSHA256": "096a96ed01f08df1f1ac8e719def7ddbdee85aecc7cfb53a34ce9f600731ace8"
+    "executionContractSHA256": "bef334a64bc150934b1d9ecb1aca82a2933628676e7a0853d1b671d359bcb817",
+    "runnerContractSHA256": "32d3b27a793c8d315ba38c82bea878c428238fd132cd207e9e44c00c003f3379",
+    "launcherSHA256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce",
+    "childEntrypointSHA256": "72cde879a4d8cc2060fbcc2ee0ee65e6ae23f32e8e7508bc693a9ccee880f994",
+    "prelaunchTestSHA256": "ec4c973801bbd06dbbbaae24d41ccbfe4c78c069d7a1b7446b599b683d7d2972",
+    "adapterContractSHA256": "e96f902bcea59936777201d5f24ef50089529e4b95611eda6ecdbcb6b492709a",
+    "adapterConsumerSHA256": "6fc7d1d0ab5adcf5b29780b1cced0db5d9b99424aa33a84ffeaca404d9d3a512",
+    "adapterTestSHA256": "7e041e2f891d1e2a018555988c7319a5da98b76938b9acdd8950f71da0f1a2f2"
   },
   "freshRoots": [
     {
       "id": "fresh-root-a",
-      "head": "faec1816ce55db6a68f8001fa015a7c40f43d2a7",
-      "trustedOriginMaster": "cda04083bd50df3a0cd99923c8ad571afd62509b",
-      "adapterEvidenceSHA256": "6babf855dd0a12c1c81fd0bf7829d6cd0dcd68d4c3a1305fca80e973a10070fd",
-      "prelaunchEvidenceSHA256": "40d129580fcd929a33b16d82433ef42c86f3fa007d720b2037c8c81a603d02cf",
+      "head": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+      "trustedOriginMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+      "adapterEvidenceSHA256": "9b5a89b88c542ffdfe5b3eecac3e3cab6738f6c4c445a190a0fe617619a52285",
       "adapterAdversariesPassed": 26,
-      "sharedScheduleValidatorTestsPassed": 8,
-      "prelaunchAdversariesPassed": 27
+      "prelaunchEvidenceSHA256": "9e1696a761b27da256c601916686c8eef73128c0604cc53dcd194596717dc532",
+      "prelaunchAdversariesPassed": 29
     },
     {
       "id": "fresh-root-b",
-      "head": "faec1816ce55db6a68f8001fa015a7c40f43d2a7",
-      "trustedOriginMaster": "cda04083bd50df3a0cd99923c8ad571afd62509b",
-      "adapterEvidenceSHA256": "6babf855dd0a12c1c81fd0bf7829d6cd0dcd68d4c3a1305fca80e973a10070fd",
-      "prelaunchEvidenceSHA256": "40d129580fcd929a33b16d82433ef42c86f3fa007d720b2037c8c81a603d02cf",
+      "head": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+      "trustedOriginMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+      "adapterEvidenceSHA256": "9b5a89b88c542ffdfe5b3eecac3e3cab6738f6c4c445a190a0fe617619a52285",
       "adapterAdversariesPassed": 26,
-      "sharedScheduleValidatorTestsPassed": 8,
-      "prelaunchAdversariesPassed": 27
+      "prelaunchEvidenceSHA256": "9e1696a761b27da256c601916686c8eef73128c0604cc53dcd194596717dc532",
+      "prelaunchAdversariesPassed": 29
     }
   ],
   "freshRootEvidenceByteIdentical": true,
-  "explicitBlockerRepairs": {
-    "forgedLaneAuthorityRejected": true,
-    "exactPublishedMasterAuthorityAccepted": true,
-    "cleanCheckoutCreatesAttemptConsumptionDirectory": true,
-    "oneShotAttemptSurvivesOutputRootRemoval": true,
-    "postConsumptionOutputRootFailureHasTerminalReceipt": true,
-    "allPostConsumptionFaultsHaveTerminalReceipt": true
+  "parallelExecution": {
+    "mode": "four-disjoint-zero-child-jobs",
+    "adapterRootAWallSeconds": 1.814022625,
+    "adapterRootBWallSeconds": 1.783363875,
+    "prelaunchRootAWallSeconds": 1.357000708,
+    "prelaunchRootBWallSeconds": 1.335271375,
+    "maximumObservedJobWallSeconds": 1.814022625,
+    "sumObservedJobWallSeconds": 6.289658583,
+    "overlapObserved": true,
+    "visibleWorktreeWriterCount": 1
   },
-  "executionCounts": {
+  "executionAccounting": {
+    "helperValidationProcesses": 4,
     "blenderChildStarts": 0,
     "dccProcesses": 0,
     "renderInvocations": 0,
@@ -88,8 +81,12 @@
     "normalizerProcesses": 0,
     "siblingProcesses": 0
   },
+  "liveGrantPresent": false,
+  "processAReady": false,
+  "remainingAuthorityOwner": "Integration",
+  "remainingAuthority": "publish one exact closure-v1 instance, schedule, one-attempt grant, secret, and compute slot",
   "sourceAuthority": false,
-  "candidateReadyForIndependentReview": false,
+  "candidateReadyForIndependentReview": true,
   "productionSelected": false,
   "validationPassed": true
 }

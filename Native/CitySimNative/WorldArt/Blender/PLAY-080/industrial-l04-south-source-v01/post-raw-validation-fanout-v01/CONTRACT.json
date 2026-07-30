@@ -14,10 +14,10 @@
   },
   "branch": "codex/citysim-world-art-south",
   "claim": {
-    "authorityCommit": "69b62e78f6012115d5d1221cea3a34e26cae5683",
-    "blobOid": "f58988aeeba6f034cc74b4a13a3336782eedaacb",
+    "authorityCommit": "5d86e804be679c765c2465c60ceaee72f3702c48",
+    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "sha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973"
+    "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
   },
   "direction": "south",
   "disposition": "BLOCKED_MISSING_APPEARANCE_LOCK_AND_SOURCE_PRODUCTION_PROFILE",
@@ -194,9 +194,9 @@
     "sourceReady": false
   },
   "integrationAuthority": {
-    "commit": "69b62e78f6012115d5d1221cea3a34e26cae5683",
+    "commit": "5d86e804be679c765c2465c60ceaee72f3702c48",
     "runtimeHeadPolicy": "integration-authority-is-ancestor",
-    "treeOid": "6884b4755a2389fc56a70ec2bc4019172aa5d8c4"
+    "treeOid": "a1784f69bba2c7352093502fc4700140c4887171"
   },
   "mode": "zero-pixel-post-raw-validation-fanout-prep",
   "orientationTransform": "none",

@@ -24,7 +24,7 @@ SOURCE_ROOT = Path(
 EVIDENCE_RELATIVE = Path(
     "docs/production/evidence/PLAY-027/industrial-l04/l04/"
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
-    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS.json"
+    "REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R2.json"
 )
 TRUSTED_MASTER_COMMIT = "aaee294718a8176b70a4688b738b517f216dd3a7"
 

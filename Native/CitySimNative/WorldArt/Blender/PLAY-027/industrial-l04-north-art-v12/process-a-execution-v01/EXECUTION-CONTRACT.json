@@ -54,15 +54,15 @@
   "scheduleAdapter": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
-      "sha256": "ae0f0e093bcc1f28c52c539b09e25eb4f414cff53ffba2a64109969f6c4e78db"
+      "sha256": "36965deec141967a11ea4d80ce90c82021e7426992abf9c1ffebbef90cabcef3"
     },
     "consumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
-      "sha256": "7991c97236562bf5aef9115d1b4db4453ab32c383bae504d1ce8b2b379c3a3d5"
+      "sha256": "4fa8757b7c391d5b178b9de119a976e461451b634b20081bc308508b9cc32403"
     },
     "acceptedReadiness": {
-      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS.json",
-      "sha256": "d2507c04e88626212194dc783f932fb0905ce1cfa61ae1927b59704e5f83d7b0"
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R2.json",
+      "sha256": "dfa41769fbd0a39f07c4241762a03ace87ce0f3a25c565d50a36a01a7c283cc2"
     }
   },
   "executionClosure": {
@@ -115,7 +115,7 @@
   },
   "launcher": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "6638182ea6dc033777aea25273363d621a41cbe15f7048a8af162970dc5b86f6"
+    "sha256": "64f83eb87cb7896bd7c4b5e5f703b37d63ab54c06136b7064622b5b9c5b7e7ed"
   },
   "childEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",

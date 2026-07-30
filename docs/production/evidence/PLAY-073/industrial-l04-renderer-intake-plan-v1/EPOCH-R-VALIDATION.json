@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "disposition": "PASS_EPOCH_R_CANDIDATE_NEUTRAL_NONSHIPPING",
+  "preservedRendererCandidate": "302b260cdd35e41cf74794726468e473256d810a",
+  "preservedEvidenceCommit": "ca1477b34f90e6d533c9a08157c35bd960df6bcc",
+  "publishedAuthority": "587668d85ad8f706087223881030047dd054dd7d",
+  "mergedValidationHead": "268890998d14350c837b6dd46fd48aaf416c39fb",
+  "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "ancestry": {
+    "preservedRendererCandidate": "PASS",
+    "preservedEvidenceCommit": "PASS",
+    "publishedAuthority": "PASS"
+  },
+  "directionReceipts": [
+    {
+      "direction": "north",
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/TRUSTED-REMOTE-HEAD-CROSS-ROW-EPOCH-112556E1.json",
+      "sha256": "76de4608c3c3aae760ab716a35ebee70380c78bf023c3de7edd62936f817f29c",
+      "classification": "current_authority_trust_projection_not_source_admission"
+    },
+    {
+      "direction": "east",
+      "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/CURRENT-AUTHORITY-SYNCHRONIZATION-ACCOUNTING-112556E1.json",
+      "sha256": "44b6d0fb95d040f9f6396b57f7fc5610c1bfae4ad922a81738f1d56fab7cc528",
+      "classification": "current_authority_synchronization_not_source_admission"
+    },
+    {
+      "direction": "south",
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/CURRENT-AUTHORITY-SYNCHRONIZATION-ACCOUNTING-112556E1.json",
+      "sha256": "daf62b39eb03fb9ae9a88d8594c5129d9099070d3e3b9585b69ee620d8bfa0d8",
+      "classification": "current_authority_synchronization_not_source_admission"
+    },
+    {
+      "direction": "west",
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/CURRENT-AUTHORITY-SYNCHRONIZATION-112556E1.json",
+      "sha256": "e3480603402747922bccf27b2b22b5c7f7cbd3cda295a43e857664cfcc9e9f92",
+      "classification": "current_authority_synchronization_not_source_admission"
+    }
+  ],
+  "descriptorHashes": {
+    "ATOMIC-ASSEMBLER-JOB-DESCRIPTOR.json": "c3478e85bcacf1b94c1a487ba85bc4ad21c46b79ff68884de657085fe7117d83",
+    "CAMERA-LOD-EXPECTATIONS.json": "1f60bdaedc981213ec00dc3ce5e0baff73f6d2b9d7ea4c40f152208e4c1b3ee5",
+    "WORK-GRAPH.json": "d71107768f725f5c00e7e5d76001144115548d89a09a8c27bbe4eccf013a573c",
+    "east/JOB-DESCRIPTOR.json": "194079f394b449df3151ecf2b8bb8a0761b81f75290acc99b2837314f25c0418",
+    "north/JOB-DESCRIPTOR.json": "f10d0a8a2ebeaaaaa4bd8478fe783c45aaf0647099d0d46522f98726039c4edf",
+    "south/JOB-DESCRIPTOR.json": "c141b8dd63ae1be47f47e49c3ec2f3a6e45bab1da4ee18f5ae613933d67b504f",
+    "west/JOB-DESCRIPTOR.json": "658fbfa84ee8990839ce8da96a0ae79e222466e410a5899738be81bed1f8595a"
+  },
+  "projection": {
+    "authorityEpoch": "112556e151a365cde9475927817616a867729753",
+    "boundCanonicalPlanInputs": 20,
+    "directionReceiptCount": 4,
+    "integrationSourceAdmissionReceiptCount": 0,
+    "preparedDescriptorCount": 7,
+    "directionJobCount": 4,
+    "lodSlotCount": 12,
+    "cameraStateCount": 6,
+    "canonicalDirections": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "atomicAssemblerInvoked": false,
+    "rendererQuarantineAccepted": false,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false
+  },
+  "gates": [
+    {
+      "name": "canonical_plan_schema_and_semantic_validation",
+      "command": "PYTHONPYCACHEPREFIX=/private/tmp/citysim-intake-pycache python3 .agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_renderer_intake_plan_v1.py",
+      "startedAt": "2026-07-30T14:21:30.301Z",
+      "endedAt": "2026-07-30T14:21:30.302Z",
+      "exitCode": 0,
+      "result": "PASS",
+      "boundInputs": 20,
+      "directions": 4,
+      "lodSlots": 12,
+      "quarantineJobs": 4,
+      "assemblyState": "template_only_unbound"
+    },
+    {
+      "name": "canonical_plan_adversarial_rejection_matrix",
+      "command": "PYTHONPYCACHEPREFIX=/private/tmp/citysim-intake-pycache python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_renderer_intake_plan_v1.py",
+      "startedAt": "2026-07-30T14:21:30.301Z",
+      "endedAt": "2026-07-30T14:21:31.358Z",
+      "exitCode": 0,
+      "result": "PASS",
+      "executed": 37,
+      "failures": 0
+    },
+    {
+      "name": "focused_native_direction_quarantine_and_atomic_join_harness",
+      "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/citysim-intake-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/citysim-intake-swift-cache swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
+      "sandboxAttempt": {
+        "startedAt": "2026-07-30T14:21:30.301Z",
+        "endedAt": "2026-07-30T14:21:32.032Z",
+        "exitCode": 1,
+        "classification": "managed_sandbox_manifest_compilation_block",
+        "error": "sandbox_apply: Operation not permitted"
+      },
+      "authorizedExactRerun": {
+        "startedAt": "2026-07-30T14:21:44.164Z",
+        "endedAt": "2026-07-30T14:21:44.390Z",
+        "exitCode": 0,
+        "result": "PASS",
+        "executed": 17,
+        "passed": 15,
+        "expectedSkips": 2,
+        "failures": 0
+      }
+    },
+    {
+      "name": "epoch_receipt_descriptor_projection",
+      "result": "PASS",
+      "directionReceipts": 4,
+      "preparedJsonDescriptors": 7,
+      "directionDescriptors": 4,
+      "lodSlots": 12,
+      "cameraStates": 6,
+      "liveSourceAdmissions": 0,
+      "atomicAssemblerInvoked": false
+    },
+    {
+      "name": "git_diff_check_before_evidence",
+      "result": "PASS"
+    }
+  ],
+  "expectedSkips": [
+    "testCallerSuppliedAtomicAssemblyManifest",
+    "testCallerSuppliedDirectionPacketAndAdmissionReceipt"
+  ],
+  "unrunByAuthority": [
+    "l4_source_consumption",
+    "renderer_quarantine_acceptance",
+    "atomic_assembly",
+    "shipping_or_runtime_mutation",
+    "fixture_mutation",
+    "staged_app_build_or_launch",
+    "qa_journey_or_score",
+    "product_code_mutation"
+  ]
+}

@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -31,6 +32,47 @@ class StubValidator(validator.Validator):
 
     def _commit_resolves(self, sha: str) -> bool:
         return True
+
+    def _commit_is_ancestor(self, ancestor: str, descendant: str) -> bool:
+        return True
+
+    def _commit_range_changes(
+        self,
+        ancestor: str,
+        descendant: str,
+    ) -> tuple[tuple[str, tuple[str, ...]], ...] | None:
+        return (
+            (
+                descendant,
+                ("docs/production/evidence/PLAY-027/receipt.json",),
+            ),
+        )
+
+
+class NonAncestorStubValidator(StubValidator):
+    def _commit_is_ancestor(self, ancestor: str, descendant: str) -> bool:
+        return False
+
+
+class ProductDeltaStubValidator(StubValidator):
+    def _commit_range_changes(
+        self,
+        ancestor: str,
+        descendant: str,
+    ) -> tuple[tuple[str, tuple[str, ...]], ...] | None:
+        return (
+            (
+                "c" * 40,
+                (
+                    "Native/CitySimNative/Sources/CitySimNative/Rendering/"
+                    "CityScene.swift",
+                ),
+            ),
+            (
+                descendant,
+                ("docs/production/evidence/PLAY-027/receipt.json",),
+            ),
+        )
 
 
 class ParallelStateFixture:
@@ -305,7 +347,7 @@ class ParallelStateFixture:
                     )
                 ]
         proof = {
-            "requiredConcurrentCells": 3,
+            "requiredConcurrentCells": min(3, len(cells)),
             "eligibleCells": list(cells),
             "jobRefs": [
                 {"cell": cell, "jobId": f"{cell}-parallel-job"}
@@ -333,7 +375,7 @@ class ParallelStateFixture:
             "claim": row["claim"],
             "claimRevision": row["claimRevision"],
             "publishedBase": row.get("publishedBase", row.get("base")),
-            "head": row["head"],
+            "head": row.get("observedHead", row["head"]),
             "threadId": row["threadId"],
             "branch": row["branch"],
             "worktree": row["worktree"],
@@ -364,8 +406,11 @@ class ParallelStateFixture:
             )
         return "\n".join(lines) + "\n"
 
-    def diagnostics(self) -> list[validator.Diagnostic]:
-        subject = StubValidator(self.repo)
+    def diagnostics(
+        self,
+        validator_type: type[validator.Validator] = StubValidator,
+    ) -> list[validator.Diagnostic]:
+        subject = validator_type(self.repo)
         subject.validate(
             self.ledger,
             self.ledger_path,
@@ -377,8 +422,11 @@ class ParallelStateFixture:
         )
         return sorted(subject.diagnostics)
 
-    def codes(self) -> set[str]:
-        return {item.code for item in self.diagnostics()}
+    def codes(
+        self,
+        validator_type: type[validator.Validator] = StubValidator,
+    ) -> set[str]:
+        return {item.code for item in self.diagnostics(validator_type)}
 
     def close(self) -> None:
         self.temp.cleanup()
@@ -431,38 +479,37 @@ class ParallelStateValidatorTests(unittest.TestCase):
         self.assertEqual(self.fixture.diagnostics(), [])
 
     def test_valid_active_running_job_passes(self) -> None:
+        self.fixture.activate_cells(
+            ("north",),
+            starts=("2026-07-30T03:59:00Z",),
+        )
+        self.fixture.refresh_hash()
+        self.assertEqual(self.fixture.diagnostics(), [])
+
+    def test_valid_two_cell_minimum_useful_concurrency_passes(self) -> None:
+        self.fixture.activate_cells(
+            ("north", "east"),
+            starts=(
+                "2026-07-30T03:58:00Z",
+                "2026-07-30T03:59:00Z",
+            ),
+        )
+        self.fixture.refresh_hash()
+        self.assertEqual(self.fixture.diagnostics(), [])
+
+    def test_two_eligible_cells_require_two_active_cells(self) -> None:
+        self.fixture.activate_cells(
+            ("north",),
+            starts=("2026-07-30T03:59:00Z",),
+        )
         for collection in (
             self.fixture.ledger["cells"],
             self.fixture.receipt["rows"],
         ):
-            row = collection[0]
-            row["dispatchState"] = "working"
-            row.pop("parallelismExemption")
-            row["authorityAcknowledgement"] = {
-                "threadId": row["threadId"],
-                "authorityCommit": "a" * 40,
-                "claimRevision": row["claimRevision"],
-                "acknowledgedAt": row["acknowledgedAt"],
-                "evidenceId": (
-                    f"thread:{row['threadId']}/turn:active-turn/item:active-item"
-                ),
-                "boundedDeliverable": row["boundedDeliverable"],
-                "stopCondition": row["stopCondition"],
-            }
-            accounting = row["executionAccounting"]
-            accounting["capacity"]["helperSlots"] = 1
-            accounting["running"] = ["active-helper-job"]
-            accounting["launchedJobs"] = [
-                self.fixture.job(
-                    row,
-                    "active-helper-job",
-                    state="running",
-                    started_at="2026-07-30T03:59:00Z",
-                    ended_at=None,
-                )
-            ]
+            by_cell = {row["direction"]: row for row in collection}
+            by_cell["east"].pop("parallelismExemption")
         self.fixture.refresh_hash()
-        self.assertEqual(self.fixture.diagnostics(), [])
+        self.assertIn("PARALLELISM_ACTIVE_FLOOR", self.fixture.codes())
 
     def test_valid_three_cell_cross_row_parallelism_proof_passes(self) -> None:
         self.fixture.activate_cells(
@@ -884,6 +931,203 @@ class ParallelStateValidatorTests(unittest.TestCase):
             row["executionAccounting"]["launchedJobs"] = [job]
         self.fixture.refresh_hash()
         self.assertIn("EXECUTION_JOB_BINDING_MISMATCH", self.fixture.codes())
+
+    def test_observed_head_preserves_job_snapshot_while_live_head_advances(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            row = collection[0]
+            row["observedHead"] = "b" * 40
+            accounting = row["executionAccounting"]
+            accounting["capacity"]["helperSlots"] = 1
+            accounting["unusedCapacityReasons"] = [
+                self.fixture.unused_capacity_reason(row)
+            ]
+            accounting["launchedJobs"] = [
+                self.fixture.job(
+                    row,
+                    "observed-snapshot-job",
+                    started_at="2026-07-30T03:50:00Z",
+                    ended_at="2026-07-30T03:59:00Z",
+                )
+            ]
+            accounting["join"] = {
+                "state": "joined",
+                "requiredJobs": ["observed-snapshot-job"],
+                "completedJobs": ["observed-snapshot-job"],
+            }
+        self.fixture.refresh_hash()
+        self.assertEqual(self.fixture.diagnostics(), [])
+
+    def test_observed_head_job_cannot_claim_live_receipt_head(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            row = collection[0]
+            row["observedHead"] = "b" * 40
+            accounting = row["executionAccounting"]
+            accounting["capacity"]["helperSlots"] = 1
+            accounting["unusedCapacityReasons"] = [
+                self.fixture.unused_capacity_reason(row)
+            ]
+            job = self.fixture.job(row, "forged-live-head-job")
+            job["head"] = row["head"]
+            accounting["launchedJobs"] = [job]
+            accounting["join"] = {
+                "state": "joined",
+                "requiredJobs": ["forged-live-head-job"],
+                "completedJobs": ["forged-live-head-job"],
+            }
+        self.fixture.refresh_hash()
+        self.assertIn("EXECUTION_JOB_BINDING_MISMATCH", self.fixture.codes())
+
+    def test_observed_head_must_be_ancestral(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            row = collection[0]
+            row["observedHead"] = "b" * 40
+            accounting = row["executionAccounting"]
+            accounting["launchedJobs"] = [
+                self.fixture.job(row, "nonancestral-job")
+            ]
+        self.fixture.refresh_hash()
+        self.assertIn(
+            "GIT_OBSERVED_HEAD_NOT_ANCESTOR",
+            self.fixture.codes(NonAncestorStubValidator),
+        )
+
+    def test_observed_head_range_must_be_claim_owned_evidence_only(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            row = collection[0]
+            row["observedHead"] = "b" * 40
+            accounting = row["executionAccounting"]
+            accounting["launchedJobs"] = [
+                self.fixture.job(row, "product-delta-job")
+            ]
+        self.fixture.refresh_hash()
+        self.assertIn(
+            "GIT_OBSERVED_HEAD_NON_EVIDENCE_DELTA",
+            self.fixture.codes(ProductDeltaStubValidator),
+        )
+
+    def test_observed_head_rejects_product_change_hidden_by_revert(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            repo = Path(temporary).resolve()
+
+            def git(*arguments: str) -> str:
+                result = subprocess.run(
+                    ["git", "-C", str(repo), *arguments],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                return result.stdout.strip()
+
+            git("init", "-q")
+            git("config", "user.name", "CitySim Test")
+            git("config", "user.email", "citysim-test@example.invalid")
+
+            product = (
+                repo
+                / "Native/CitySimNative/Sources/CitySimNative/Rendering/"
+                "CityScene.swift"
+            )
+            product.parent.mkdir(parents=True)
+            product.write_text("base\n", encoding="utf-8")
+            git("add", str(product.relative_to(repo)))
+            git("commit", "-q", "-m", "base")
+            observed = git("rev-parse", "HEAD")
+
+            product.write_text("hidden product mutation\n", encoding="utf-8")
+            git("add", str(product.relative_to(repo)))
+            git("commit", "-q", "-m", "mutate product")
+
+            product.write_text("base\n", encoding="utf-8")
+            git("add", str(product.relative_to(repo)))
+            git("commit", "-q", "-m", "revert product")
+
+            receipt = (
+                repo
+                / "docs/production/evidence/PLAY-027/"
+                "execution-receipt.json"
+            )
+            receipt.parent.mkdir(parents=True)
+            receipt.write_text("{}\n", encoding="utf-8")
+            git("add", str(receipt.relative_to(repo)))
+            git("commit", "-q", "-m", "record receipt")
+            head = git("rev-parse", "HEAD")
+
+            subject = validator.Validator(repo)
+            subject._validate_observed_head_binding(
+                {
+                    "claim": "PLAY-027",
+                    "observedHead": observed,
+                    "head": head,
+                    "executionAccounting": {
+                        "launchedJobs": [{"id": "observed-job"}],
+                    },
+                },
+                "row",
+            )
+            self.assertIn(
+                "GIT_OBSERVED_HEAD_NON_EVIDENCE_DELTA",
+                {diagnostic.code for diagnostic in subject.diagnostics},
+            )
+
+    def test_observed_head_rejects_empty_receipt_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            repo = Path(temporary).resolve()
+
+            def git(*arguments: str) -> str:
+                result = subprocess.run(
+                    ["git", "-C", str(repo), *arguments],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                return result.stdout.strip()
+
+            git("init", "-q")
+            git("config", "user.name", "CitySim Test")
+            git("config", "user.email", "citysim-test@example.invalid")
+
+            receipt = (
+                repo
+                / "docs/production/evidence/PLAY-027/"
+                "execution-receipt.json"
+            )
+            receipt.parent.mkdir(parents=True)
+            receipt.write_text("{}\n", encoding="utf-8")
+            git("add", str(receipt.relative_to(repo)))
+            git("commit", "-q", "-m", "base evidence")
+            observed = git("rev-parse", "HEAD")
+
+            git("commit", "--allow-empty", "-q", "-m", "empty receipt")
+            head = git("rev-parse", "HEAD")
+
+            subject = validator.Validator(repo)
+            subject._validate_observed_head_binding(
+                {
+                    "claim": "PLAY-027",
+                    "observedHead": observed,
+                    "head": head,
+                    "executionAccounting": {
+                        "launchedJobs": [{"id": "observed-job"}],
+                    },
+                },
+                "row",
+            )
+            self.assertIn(
+                "GIT_OBSERVED_HEAD_EMPTY_RANGE",
+                {diagnostic.code for diagnostic in subject.diagnostics},
+            )
 
     def test_job_evidence_must_bind_exact_visible_thread_item(self) -> None:
         for collection in (

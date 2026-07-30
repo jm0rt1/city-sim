@@ -220,7 +220,7 @@ class AdmissionFixture:
                         "industrial-l04-accepted-master-non-alias-input-v1.json"
                     ),
                     "sha256": (
-                        "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+                        "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
                     ),
                     "forbiddenDecodedRgbaSha256Count": 44,
                     "forbiddenSetSha256": (
@@ -233,7 +233,7 @@ class AdmissionFixture:
                         "accepted_master_non_alias_v1.py"
                     ),
                     "sha256": (
-                        "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+                        "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
                     ),
                 },
                 "semanticValidator": self.semantic_validator_descriptor,

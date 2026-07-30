@@ -197,13 +197,15 @@ This is the authoritative first-wave task source. The shared target is one coher
   admission, Renderer activation, and production selection remain atomic at
   exact N/E/S/W 4-of-4, followed by one independent exact-candidate PLAY-075
   gate.
-- **Latest L4 gate:** North v03 at `ba2c4127` preserves the materially stronger
-  foundry and passes technical intake, but its analytically connected
-  socket-side apron is occluded; the visible road court still points away from
-  the North socket at literal 192. V04 is authorized for one exterior,
-  player-visible road-court repair and one A-only review. A passing A publishes
-  the non-production appearance lock and releases North B/C plus
-  East/South/West A/B/C concurrently; shipping remains atomic at exact 4/4.
+- **Latest L4 gate:** The compound-pier North v12 topology and accepted
+  static-B v03 result are integrated through
+  `7f58674fbc2f1b1a64d511315a3f7fb17a08953d`. The earlier returned
+  `ba2c4127` road-court line remains preserved evidence, not current execution
+  authority. After the revision-7 current-authority zero-child closure is
+  accepted, Integration may grant exactly one North v12 Process A. A passing
+  independently reviewed Process A publishes the non-production appearance
+  lock and releases North B/C plus East/South/West A/B/C concurrently;
+  shipping remains atomic at exact 4/4.
 
 ### [x] PLAY-028: Ship the directional residential skyline
 

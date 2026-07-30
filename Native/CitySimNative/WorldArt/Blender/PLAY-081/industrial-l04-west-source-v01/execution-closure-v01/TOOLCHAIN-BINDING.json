@@ -1,0 +1,13 @@
+{
+  "authorityScope": "validation-only-execution-closure",
+  "blenderEntrypoint": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/blender_render_west.py",
+    "sha256": "a1f521de1dca44b3fca18b22447fbf80d47db5c5b1b9371c6af5e3143b43e27b"
+  },
+  "blenderInvocationsAuthorized": 0,
+  "standardLibraryPngDecoder": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/stdlib_png_rgba.py",
+    "sha256": "7694ef89cf4d16fdde256095b1c3bb6fb3e811cc3cef74e6fde365afe13ed84c"
+  },
+  "taskId": "PLAY-081"
+}

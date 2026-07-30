@@ -14,12 +14,14 @@ import argparse
 import copy
 from datetime import datetime, timedelta, timezone
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
 import re
 import stat
 import subprocess
+import sys
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -37,6 +39,23 @@ SOURCE_ROOT = (
 )
 DEFAULT_EXECUTION_CONTRACT = f"{SOURCE_ROOT}/WEST-EXECUTION-ORCHESTRATION-V2.json"
 DEFAULT_RUNNER_CONTRACT = f"{SOURCE_ROOT}/RUNNER-CONTRACT.json"
+DEFAULT_CLOSURE_CONSUMER = (
+    f"{SOURCE_ROOT}/schedule-consumer-v01/"
+    "consume_west_parallel_schedule_v1.py"
+)
+DEFAULT_HIGH_LEVEL_ORCHESTRATOR = (
+    f"{SOURCE_ROOT}/west_execution_orchestration_v2.py"
+)
+DEFAULT_LOW_LEVEL_RUNNER = f"{SOURCE_ROOT}/run_west_source.py"
+DEFAULT_CLOSURE_SCENE = (
+    f"{SOURCE_ROOT}/execution-closure-v01/SCENE-BINDING.json"
+)
+DEFAULT_CLOSURE_MATERIALS = (
+    f"{SOURCE_ROOT}/execution-closure-v01/MATERIALS-BINDING.json"
+)
+DEFAULT_CLOSURE_TOOLCHAIN = (
+    f"{SOURCE_ROOT}/execution-closure-v01/TOOLCHAIN-BINDING.json"
+)
 INTEGRATION_PREFIX = "docs/production/evidence/INTEGRATION/"
 SCHEDULE_SCHEMA = "citysim.integration.world-art-two-slot-schedule.v1"
 GLOBAL_RECEIPT_SCHEMA = (
@@ -54,6 +73,15 @@ ZERO_INVOCATIONS = {
     "pixelFiles": 0,
     "productionReceipts": 0,
     "sourceCandidatePackets": 0,
+}
+CLOSURE_ZERO_ACTIVITY = {
+    "dccStarts": 0,
+    "childStarts": 0,
+    "renders": 0,
+    "pixels": 0,
+    "normalizerInvocations": 0,
+    "sourcePackets": 0,
+    "productionReceipts": 0,
 }
 
 
@@ -176,6 +204,274 @@ def capture_regular_file_no_follow(root: Path, relative: str) -> bytes:
 def json_sha256(value: dict[str, Any]) -> str:
     data = (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
     return hashlib.sha256(data).hexdigest()
+
+
+def execution_closure_contract_errors(
+    root: Path,
+    execution_contract: dict[str, Any],
+) -> list[str]:
+    closure = execution_contract.get("executionClosureV1")
+    if not isinstance(closure, dict):
+        return ["execution-closure:missing"]
+    required = {
+        "mode",
+        "testProtocolRevision",
+        "publishedBase",
+        "claim",
+        "sharedSchema",
+        "sharedValidator",
+        "sharedAuthority",
+        "directionScheduleAdapter",
+        "highLevelOrchestrator",
+        "lowLevelRunner",
+        "frozenArtifacts",
+        "authorityInstance",
+        "zeroChildBoundary",
+    }
+    if set(closure) != required:
+        return ["execution-closure:shape"]
+    errors: list[str] = []
+    if closure.get("mode") != "validation_only":
+        errors.append("execution-closure:mode")
+    if closure.get("testProtocolRevision") != 6:
+        errors.append("execution-closure:protocol-revision")
+    if closure.get("publishedBase") != (
+        "cda04083bd50df3a0cd99923c8ad571afd62509b"
+    ):
+        errors.append("execution-closure:published-base")
+    if closure.get("claim") != {
+        "path": "docs/production/claims/PLAY-081.world-art-west.md",
+        "revision": 6,
+        "sha256": (
+            "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+        ),
+    }:
+        errors.append("execution-closure:claim")
+    expected_bindings = {
+        "sharedSchema": {
+            "path": (
+                "docs/production/evidence/INTEGRATION/"
+                "industrial-l04-direction-execution-authority-schema-v1.json"
+            ),
+            "sha256": (
+                "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+            ),
+        },
+        "sharedValidator": {
+            "path": (
+                ".agents/skills/operate-citysim-integration/scripts/"
+                "validate_industrial_l04_direction_execution_authority_v1.py"
+            ),
+            "sha256": (
+                "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+            ),
+        },
+        "sharedAuthority": {
+            "path": (
+                "docs/production/evidence/INTEGRATION/"
+                "INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md"
+            ),
+            "sha256": (
+                "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+            ),
+        },
+    }
+    for name, expected in expected_bindings.items():
+        binding = closure.get(name)
+        if binding != expected:
+            errors.append(f"execution-closure:{name}:binding")
+            continue
+        try:
+            payload = capture_regular_file_no_follow(root, expected["path"])
+        except (OSError, OrchestrationError, PathSafetyError) as error:
+            errors.append(f"execution-closure:{name}:unsafe:{error}")
+            continue
+        if hashlib.sha256(payload).hexdigest() != expected["sha256"]:
+            errors.append(f"execution-closure:{name}:working-tree-sha256")
+    if closure.get("directionScheduleAdapter") != DEFAULT_CLOSURE_CONSUMER:
+        errors.append("execution-closure:direction-schedule-adapter")
+    if closure.get("highLevelOrchestrator") != DEFAULT_HIGH_LEVEL_ORCHESTRATOR:
+        errors.append("execution-closure:high-level-orchestrator")
+    if closure.get("lowLevelRunner") != DEFAULT_LOW_LEVEL_RUNNER:
+        errors.append("execution-closure:low-level-runner")
+    if closure.get("frozenArtifacts") != {
+        "scene": DEFAULT_CLOSURE_SCENE,
+        "materials": DEFAULT_CLOSURE_MATERIALS,
+        "toolchain": DEFAULT_CLOSURE_TOOLCHAIN,
+    }:
+        errors.append("execution-closure:frozen-artifacts")
+    if closure.get("authorityInstance") != {
+        "state": "not_published",
+        "path": None,
+        "publicationCommit": None,
+        "sha256": None,
+    }:
+        errors.append("execution-closure:authority-instance")
+    if closure.get("zeroChildBoundary") != {
+        "validationOnly": True,
+        "liveLeaseAuthorized": False,
+        "childStartAuthorized": False,
+        "dccExecutionAuthorized": False,
+        "renderAuthorized": False,
+        "pixelAuthorized": False,
+    }:
+        errors.append("execution-closure:zero-child-boundary")
+    return sorted(set(errors))
+
+
+def _load_exact_module(
+    root: Path,
+    binding: dict[str, str],
+    module_name: str,
+) -> Any:
+    payload = capture_regular_file_no_follow(root, binding["path"])
+    if hashlib.sha256(payload).hexdigest() != binding["sha256"]:
+        raise OrchestrationError(f"MODULE_SHA256_MISMATCH:{module_name}")
+    path = lexical_repository_path(
+        root,
+        binding["path"],
+        expected=binding["path"],
+    )
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise OrchestrationError(f"MODULE_LOAD_FAILED:{module_name}")
+    module = importlib.util.module_from_spec(spec)
+    parent = str(path.parent)
+    inserted = parent not in sys.path
+    if inserted:
+        sys.path.insert(0, parent)
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        if inserted:
+            sys.path.remove(parent)
+    return module
+
+
+def closure_blocked(errors: list[str]) -> dict[str, Any]:
+    return {
+        "schema": "citysim.play-081.west-execution-closure.v1",
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "result": "BLOCKED",
+        "reasonCodes": sorted(set(errors)),
+        "validationOnly": True,
+        "highLevelOrchestratorReached": True,
+        "runnerValidationBoundaryReached": False,
+        "childStartAuthorized": False,
+        "activity": dict(CLOSURE_ZERO_ACTIVITY),
+    }
+
+
+def validate_execution_closure(
+    root: Path,
+    execution_contract: dict[str, Any],
+    *,
+    authority_path: str | None,
+    trusted_head: str | None,
+    worker_head: str | None,
+    authority_publication_commit: str | None,
+) -> dict[str, Any]:
+    """Validate one published authority and reach only the runner boundary."""
+    errors = execution_closure_contract_errors(root, execution_contract)
+    arguments = {
+        "authority": authority_path,
+        "trustedHead": trusted_head,
+        "workerHead": worker_head,
+        "authorityPublicationCommit": authority_publication_commit,
+    }
+    for label, value in arguments.items():
+        if not isinstance(value, str) or not value:
+            errors.append(f"execution-closure:{label}:missing")
+    if errors:
+        return closure_blocked(errors)
+
+    closure = execution_contract["executionClosureV1"]
+    try:
+        shared = _load_exact_module(
+            root,
+            closure["sharedValidator"],
+            "industrial_l04_direction_execution_authority_v1",
+        )
+        shared_result = shared.validate(
+            root,
+            lexical_repository_path(root, authority_path),
+            trusted_head=trusted_head,
+            worker_head=worker_head,
+            authority_publication_commit=authority_publication_commit,
+        )
+        authority_payload = capture_regular_file_no_follow(root, authority_path)
+        authority = decode_json_object(
+            authority_payload,
+            "direction-execution-authority",
+        )
+    except (OSError, ValueError, OrchestrationError, PathSafetyError) as error:
+        return closure_blocked([f"execution-closure:authority:{error}"])
+
+    expected_artifacts = {
+        "executionContract": DEFAULT_EXECUTION_CONTRACT,
+        "directionScheduleAdapter": DEFAULT_CLOSURE_CONSUMER,
+        "highLevelOrchestrator": DEFAULT_HIGH_LEVEL_ORCHESTRATOR,
+        "runnerContract": DEFAULT_RUNNER_CONTRACT,
+        "runnerEntrypoint": DEFAULT_LOW_LEVEL_RUNNER,
+        "scene": DEFAULT_CLOSURE_SCENE,
+        "materials": DEFAULT_CLOSURE_MATERIALS,
+        "toolchain": DEFAULT_CLOSURE_TOOLCHAIN,
+    }
+    artifact_errors: list[str] = []
+    artifacts = authority.get("artifacts", {})
+    for name, expected_path in expected_artifacts.items():
+        value = artifacts.get(name)
+        if not isinstance(value, dict) or value.get("path") != expected_path:
+            artifact_errors.append(f"execution-closure:artifact:{name}")
+    if artifact_errors:
+        return closure_blocked(artifact_errors)
+
+    runner_binding = artifacts["runnerEntrypoint"]
+    try:
+        runner = _load_exact_module(
+            root,
+            runner_binding,
+            "play081_west_low_level_validation_boundary",
+        )
+        runner_result = runner.validate_execution_closure_boundary(
+            shared_result,
+            authority,
+            direct_invocation=False,
+        )
+    except (OSError, ValueError, OrchestrationError, PathSafetyError) as error:
+        return closure_blocked([f"execution-closure:runner:{error}"])
+    if runner_result.get("result") != "PASS":
+        return closure_blocked(
+            [
+                f"execution-closure:runner:{value}"
+                for value in runner_result.get("errors", ["blocked"])
+            ]
+        )
+
+    return {
+        "schema": "citysim.play-081.west-execution-closure.v1",
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "process": shared_result["process"],
+        "grantId": shared_result["grantId"],
+        "queueId": shared_result["queueId"],
+        "slotId": shared_result["slotId"],
+        "authorityPath": shared_result["authorityPath"],
+        "authorityPublicationCommit": shared_result[
+            "authorityPublicationCommit"
+        ],
+        "trustedHead": shared_result["trustedHead"],
+        "workerHead": shared_result["workerHead"],
+        "exclusiveRoots": authority["exclusiveRoots"],
+        "artifacts": artifacts,
+        "result": "PASS",
+        "validationOnly": True,
+        "highLevelOrchestratorReached": True,
+        "runnerValidationBoundaryReached": True,
+        "childStartAuthorized": False,
+        "activity": dict(CLOSURE_ZERO_ACTIVITY),
+    }
 
 
 def parse_utc(value: Any) -> datetime:
@@ -1380,6 +1676,7 @@ def parse_args() -> argparse.Namespace:
         required=True,
         choices=(
             "describe",
+            "validate-execution-closure",
             "validate-authority",
             "validate-schedule",
             "validate-allocation",
@@ -1394,6 +1691,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--global-receipt")
     parser.add_argument("--global-receipt-sha256")
     parser.add_argument("--process-id", choices=("A", "B", "C"))
+    parser.add_argument("--authority")
+    parser.add_argument("--trusted-head")
+    parser.add_argument("--worker-head")
+    parser.add_argument("--authority-publication-commit")
     return parser.parse_args()
 
 
@@ -1435,6 +1736,17 @@ def main() -> int:
         execution_contract,
         runner_contract,
     )
+    if args.mode == "validate-execution-closure":
+        result = validate_execution_closure(
+            root,
+            execution_contract,
+            authority_path=args.authority,
+            trusted_head=args.trusted_head,
+            worker_head=args.worker_head,
+            authority_publication_commit=args.authority_publication_commit,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["result"] == "PASS" else 3
     if args.mode == "describe":
         result = {
             "schemaVersion": 1,
@@ -1445,6 +1757,7 @@ def main() -> int:
             "authorityErrors": authority_errors,
             "availableModes": [
                 "validate-authority",
+                "validate-execution-closure",
                 "validate-schedule",
                 "validate-allocation",
                 "validate-receipt",

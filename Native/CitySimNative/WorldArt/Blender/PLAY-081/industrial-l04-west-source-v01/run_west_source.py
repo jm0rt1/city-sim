@@ -43,6 +43,24 @@ REQUIRED_LOCK_FIELDS = (
     "northProcessASourceSha256",
     "northProcessADecodedRgbaSha256",
 )
+CLOSURE_ORCHESTRATOR = (
+    "Native/CitySimNative/WorldArt/Blender/PLAY-081/"
+    "industrial-l04-west-source-v01/west_execution_orchestration_v2.py"
+)
+CLOSURE_RUNNER = (
+    "Native/CitySimNative/WorldArt/Blender/PLAY-081/"
+    "industrial-l04-west-source-v01/run_west_source.py"
+)
+CLOSURE_ZERO_ACTIVITY = {
+    "dccStarts": 0,
+    "childStarts": 0,
+    "renders": 0,
+    "pixels": 0,
+    "normalizerInvocations": 0,
+    "sourcePackets": 0,
+}
+
+
 class ContractError(RuntimeError):
     """Raised when immutable runner inputs or structure are invalid."""
 
@@ -71,6 +89,104 @@ def repository_path(root: Path, relative: str) -> Path:
     except ValueError as error:
         raise ContractError(f"path escapes repository: {relative}") from error
     return resolved
+
+
+def validate_execution_closure_boundary(
+    shared_validation: dict[str, Any],
+    authority: dict[str, Any],
+    *,
+    direct_invocation: bool,
+) -> dict[str, Any]:
+    """Reach the low-level runner contract without starting any child.
+
+    Only the task-owned high-level orchestrator calls this function after the
+    Integration validator returns PASS. The public CLI always sets
+    ``direct_invocation`` and therefore remains non-invocable.
+    """
+    errors: list[str] = []
+    if direct_invocation:
+        errors.append("direct-runner:forbidden")
+    expected_shared = {
+        "result": "PASS",
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "validationOnly": True,
+        "dccStarts": 0,
+        "childStarts": 0,
+        "renders": 0,
+        "pixels": 0,
+    }
+    if not isinstance(shared_validation, dict):
+        errors.append("shared-validation:shape")
+    else:
+        for field, expected in expected_shared.items():
+            if shared_validation.get(field) != expected:
+                errors.append(f"shared-validation:{field}")
+        if shared_validation.get("process") not in {"A", "B", "C"}:
+            errors.append("shared-validation:process")
+
+    if not isinstance(authority, dict):
+        errors.append("authority:shape")
+        artifacts: dict[str, Any] = {}
+        grant: dict[str, Any] = {}
+        authentication: dict[str, Any] = {}
+        disposition: dict[str, Any] = {}
+    else:
+        artifacts = authority.get("artifacts", {})
+        grant = authority.get("grant", {})
+        authentication = authority.get("authentication", {})
+        disposition = authority.get("disposition", {})
+        if authority.get("mode") != "validation_only":
+            errors.append("authority:mode")
+        if authority.get("task", {}).get("direction") != "west":
+            errors.append("authority:direction")
+
+    high_level = artifacts.get("highLevelOrchestrator", {})
+    runner = artifacts.get("runnerEntrypoint", {})
+    if high_level.get("path") != CLOSURE_ORCHESTRATOR:
+        errors.append("authority:high-level-orchestrator")
+    if runner.get("path") != CLOSURE_RUNNER:
+        errors.append("authority:runner-entrypoint")
+    if (
+        grant.get("orchestratorOnly") is not True
+        or grant.get("directLowLevelInvocationAllowed") is not False
+        or grant.get("exactlyOneInvocation") is not True
+        or grant.get("maximumChildStarts") != 1
+    ):
+        errors.append("authority:grant-boundary")
+    if (
+        authentication.get("secretTransport") != "anonymous_pipe"
+        or authentication.get("rawSecretPersisted") is not False
+        or authentication.get("childCapability", {}).get("boundGrantId")
+        != grant.get("grantId")
+        or authentication.get("childCapability", {}).get("oneTime") is not True
+        or authentication.get("childCapability", {}).get("replayAllowed")
+        is not False
+    ):
+        errors.append("authority:authentication")
+    if disposition.get("validationOnly") is not True or any(
+        value is not False
+        for key, value in disposition.items()
+        if key != "validationOnly"
+    ):
+        errors.append("authority:disposition")
+
+    return {
+        "schema": "citysim.play-081.west-low-level-validation-boundary.v1",
+        "taskId": "PLAY-081",
+        "direction": "west",
+        "process": (
+            shared_validation.get("process")
+            if isinstance(shared_validation, dict)
+            else None
+        ),
+        "result": "PASS" if not errors else "BLOCKED",
+        "errors": sorted(set(errors)),
+        "directInvocation": direct_invocation,
+        "runnerValidationBoundaryReached": not errors,
+        "childStartAuthorized": False,
+        "activity": dict(CLOSURE_ZERO_ACTIVITY),
+    }
 
 
 def hash_binding_errors(
@@ -761,7 +877,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", default=DEFAULT_CONTRACT)
-    parser.add_argument("--mode", required=True, choices=("validate", "A", "B", "C"))
+    parser.add_argument(
+        "--mode",
+        required=True,
+        choices=("validate", "validate-execution-closure", "A", "B", "C"),
+    )
     return parser.parse_args()
 
 
@@ -770,6 +890,14 @@ def main() -> int:
     root = Path(args.repository_root).resolve()
     contract_path = repository_path(root, args.contract)
     contract = load_json(contract_path)
+    if args.mode == "validate-execution-closure":
+        result = validate_execution_closure_boundary(
+            {},
+            {},
+            direct_invocation=True,
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 3
     if args.mode == "validate":
         errors = frozen_input_errors(root, contract)
         result = {

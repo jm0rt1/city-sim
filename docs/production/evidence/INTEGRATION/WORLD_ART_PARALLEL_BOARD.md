@@ -10,10 +10,10 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `94ae73a99abe64f59bb052582fcaba1d9725319d` | sync to published authority and execute the pure lowering plus static-a/static-b no-render proofs |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `aa5f885dd579bf79b8a84855a23311ee888e7001` | repair receipt replay, immutable capture, and truthful master/East branch provenance |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `d12b5f1c8383044d5f1ab67ccd2b9be2bce92b75` | bind exact authorities, confine outputs, refuse overwrite, and add path-substitution adversaries |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `9d8e3e776eecbfb518d08d18085180ae084a6929` | author a non-rewriting current-master successor zero-pixel handoff |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `4d3428ddc62aec439859d4121814bc02928cfda6` | execute the pure lowering plus static-a/static-b no-render proofs under the acknowledged single slot |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `61b84b119d0e435500b6d2d086a8a484f4bcc8f9` | independently review the returned replay-safety repair |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `7aad53794dccd149464a33a5cb2bd25737a5c240` | independently review the returned path-safety repair |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `1dc4cf30096885c382830aa72bfa1998b7697557` | independently review the returned non-rewriting successor handoff |
 | Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `94ae73a99abe64f59bb052582fcaba1d9725319d` | resume when Integration publishes canonical admission-receipt and assembly-manifest schemas |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistered` | `8e68cf11c6a943ab44d83232659585134c17f260` | start the one fresh gate only on an exact atomic 4/4 renderer candidate |
 
@@ -24,14 +24,14 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `00:49Z` refresh, Integration has published North's independently
+At the `00:52Z` refresh, Integration has published North's independently
 approved lowering authority and West's independently approved isolation
 checkpoint. East and South were returned independently for replay-safety
 defects and have acknowledged direction-local repairs; neither return blocks
 the accepted West checkpoint. West has been preserved and re-provisioned on
 the published master and has acknowledged its versioned successor handoff.
-North is planned for
-the one legal static-DCC slot. Renderer is truthfully blocked only on two
+North has acknowledged and begun the one legal static-DCC slot. Renderer is
+truthfully blocked only on two
 Integration-owned canonical schemas; QA remains preregistered and waits for an
 exact atomic 4/4 candidate. No row may edit sibling art or shared shipping
 files. None of these tasks authorizes source pixels, admission, runtime

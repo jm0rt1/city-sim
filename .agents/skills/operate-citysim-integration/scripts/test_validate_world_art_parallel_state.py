@@ -50,6 +50,10 @@ class ParallelStateFixture:
             claim_revisions[cell] = hashlib.sha256(content).hexdigest()
 
         family = self._authority("docs/family.md", b"family\n")
+        self.family_authority = {
+            "path": family[0],
+            "sha256": family[1],
+        }
         parallel = self._authority("docs/parallel.md", b"parallel\n")
         semantic = self._authority("tools/semantic.py", b"semantic\n")
         receipt_schema = self._authority("schemas/admission.json", b"schema\n")
@@ -118,6 +122,26 @@ class ParallelStateFixture:
                             "requiredJobs": [],
                             "completedJobs": [],
                         },
+                    },
+                    "parallelismExemption": {
+                        "reasonCode": "stage_prohibited_by_authority",
+                        "stageProhibition": {
+                            "batchState": "prelock_active",
+                            "rule": "this fixture row has no remaining prelock work",
+                        },
+                        "owner": {
+                            "role": "cell",
+                            "id": f"thread-{cell}",
+                        },
+                        "dependencyAuthority": copy.deepcopy(
+                            self.family_authority
+                        ),
+                        "resumptionEvent": (
+                            "Integration publishes the next stage authority"
+                        ),
+                        "nextRefillJob": (
+                            "resume when Integration publishes the next stage"
+                        ),
                     },
                 }
             )
@@ -223,6 +247,76 @@ class ParallelStateFixture:
             self.ledger_bytes
         ).hexdigest()
 
+    def unused_capacity_reason(
+        self,
+        row: dict[str, object],
+        *,
+        resource: str = "helper",
+        reason_code: str = "completed_before_observation",
+    ) -> dict[str, object]:
+        return {
+            "resourceClass": resource,
+            "slots": 1,
+            "reasonCode": reason_code,
+            "owner": row["threadId"],
+            "dependencyAuthority": copy.deepcopy(self.family_authority),
+            "resumptionEvent": "the next bounded job becomes ready",
+            "nextRefillJob": row["executionAccounting"]["nextRefill"],
+        }
+
+    def activate_cells(
+        self,
+        cells: tuple[str, ...],
+        *,
+        starts: tuple[str, ...],
+    ) -> None:
+        for collection in (
+            self.ledger["cells"],
+            self.receipt["rows"],
+        ):
+            by_cell = {row["direction"]: row for row in collection}
+            for cell, started_at in zip(cells, starts, strict=True):
+                row = by_cell[cell]
+                row.pop("parallelismExemption", None)
+                row["dispatchState"] = "working"
+                row["authorityAcknowledgement"] = {
+                    "threadId": row["threadId"],
+                    "authorityCommit": "a" * 40,
+                    "claimRevision": row["claimRevision"],
+                    "acknowledgedAt": row["acknowledgedAt"],
+                    "evidenceId": (
+                        f"thread:{row['threadId']}/turn:parallel-turn/"
+                        f"item:{cell}-active-item"
+                    ),
+                    "boundedDeliverable": row["boundedDeliverable"],
+                    "stopCondition": row["stopCondition"],
+                }
+                accounting = row["executionAccounting"]
+                job_id = f"{cell}-parallel-job"
+                accounting["capacity"]["helperSlots"] = 1
+                accounting["running"] = [job_id]
+                accounting["launchedJobs"] = [
+                    self.job(
+                        row,
+                        job_id,
+                        state="running",
+                        started_at=started_at,
+                        ended_at=None,
+                    )
+                ]
+        proof = {
+            "requiredConcurrentCells": 3,
+            "eligibleCells": list(cells),
+            "jobRefs": [
+                {"cell": cell, "jobId": f"{cell}-parallel-job"}
+                for cell in cells
+            ],
+            "startedAt": max(starts),
+            "endedAt": "2026-07-30T04:00:00Z",
+        }
+        self.ledger["parallelismProof"] = proof
+        self.receipt["parallelismProof"] = copy.deepcopy(proof)
+
     @staticmethod
     def job(
         row: dict[str, object],
@@ -309,16 +403,8 @@ class ParallelStateValidatorTests(unittest.TestCase):
             accounting = row["executionAccounting"]
             accounting["capacity"]["helperSlots"] = 2
             accounting["unusedCapacityReasons"] = [
-                {
-                    "resourceClass": "helper",
-                    "slots": 1,
-                    "reason": "first helper completed before observation",
-                },
-                {
-                    "resourceClass": "helper",
-                    "slots": 1,
-                    "reason": "second helper completed before observation",
-                },
+                self.fixture.unused_capacity_reason(row),
+                self.fixture.unused_capacity_reason(row),
             ]
             accounting["launchedJobs"] = [
                 self.fixture.job(
@@ -351,6 +437,7 @@ class ParallelStateValidatorTests(unittest.TestCase):
         ):
             row = collection[0]
             row["dispatchState"] = "working"
+            row.pop("parallelismExemption")
             row["authorityAcknowledgement"] = {
                 "threadId": row["threadId"],
                 "authorityCommit": "a" * 40,
@@ -376,6 +463,171 @@ class ParallelStateValidatorTests(unittest.TestCase):
             ]
         self.fixture.refresh_hash()
         self.assertEqual(self.fixture.diagnostics(), [])
+
+    def test_valid_three_cell_cross_row_parallelism_proof_passes(self) -> None:
+        self.fixture.activate_cells(
+            ("north", "east", "south"),
+            starts=(
+                "2026-07-30T03:50:00Z",
+                "2026-07-30T03:51:00Z",
+                "2026-07-30T03:52:00Z",
+            ),
+        )
+        self.fixture.refresh_hash()
+        self.assertEqual(self.fixture.diagnostics(), [])
+
+    def test_valid_completed_parallel_epoch_remains_proven(self) -> None:
+        cells = ("north", "east", "south")
+        starts = (
+            "2026-07-30T03:50:00Z",
+            "2026-07-30T03:51:00Z",
+            "2026-07-30T03:52:00Z",
+        )
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            by_cell = {row["direction"]: row for row in collection}
+            for cell, started_at in zip(cells, starts, strict=True):
+                row = by_cell[cell]
+                accounting = row["executionAccounting"]
+                accounting["capacity"]["helperSlots"] = 1
+                accounting["launchedJobs"] = [
+                    self.fixture.job(
+                        row,
+                        f"{cell}-completed-epoch-job",
+                        started_at=started_at,
+                        ended_at="2026-07-30T03:59:00Z",
+                    )
+                ]
+                accounting["unusedCapacityReasons"] = [
+                    self.fixture.unused_capacity_reason(row)
+                ]
+        proof = {
+            "requiredConcurrentCells": 3,
+            "eligibleCells": list(cells),
+            "jobRefs": [
+                {"cell": cell, "jobId": f"{cell}-completed-epoch-job"}
+                for cell in cells
+            ],
+            "startedAt": "2026-07-30T03:52:00Z",
+            "endedAt": "2026-07-30T03:59:00Z",
+        }
+        self.fixture.ledger["parallelismProof"] = proof
+        self.fixture.receipt["parallelismProof"] = copy.deepcopy(proof)
+        self.fixture.refresh_hash()
+        self.assertEqual(self.fixture.diagnostics(), [])
+
+    def test_three_eligible_rows_require_three_active_acknowledged_rows(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            for row in collection[:3]:
+                row.pop("parallelismExemption")
+        self.fixture.refresh_hash()
+        codes = self.fixture.codes()
+        self.assertIn("PARALLELISM_ACTIVE_FLOOR", codes)
+        self.assertIn("PARALLELISM_PROOF_MISSING", codes)
+
+    def test_free_text_exemption_cannot_hide_eligible_row(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            for row in collection[:3]:
+                row["parallelismExemption"] = {
+                    "reason": "waiting for North",
+                }
+        self.fixture.refresh_hash()
+        codes = self.fixture.codes()
+        self.assertIn("PARALLELISM_EXEMPTION_FIELDS", codes)
+        self.assertIn("PARALLELISM_ACTIVE_FLOOR", codes)
+
+    def test_six_sequential_cross_cell_jobs_do_not_prove_parallelism(self) -> None:
+        cells = validator.EXPECTED_CELLS
+        intervals = (
+            ("2026-07-30T03:00:00Z", "2026-07-30T03:05:00Z"),
+            ("2026-07-30T03:05:00Z", "2026-07-30T03:10:00Z"),
+            ("2026-07-30T03:10:00Z", "2026-07-30T03:15:00Z"),
+            ("2026-07-30T03:15:00Z", "2026-07-30T03:20:00Z"),
+            ("2026-07-30T03:20:00Z", "2026-07-30T03:25:00Z"),
+            ("2026-07-30T03:25:00Z", "2026-07-30T03:30:00Z"),
+        )
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            by_cell = {row["direction"]: row for row in collection}
+            for cell, (started_at, ended_at) in zip(
+                cells, intervals, strict=True
+            ):
+                row = by_cell[cell]
+                row.pop("parallelismExemption")
+                accounting = row["executionAccounting"]
+                accounting["capacity"]["helperSlots"] = 1
+                accounting["launchedJobs"] = [
+                    self.fixture.job(
+                        row,
+                        f"{cell}-sequential-job",
+                        started_at=started_at,
+                        ended_at=ended_at,
+                    )
+                ]
+                accounting["unusedCapacityReasons"] = [
+                    self.fixture.unused_capacity_reason(row)
+                ]
+        proof = {
+            "requiredConcurrentCells": 3,
+            "eligibleCells": list(cells),
+            "jobRefs": [
+                {"cell": cell, "jobId": f"{cell}-sequential-job"}
+                for cell in cells
+            ],
+            "startedAt": "2026-07-30T03:25:00Z",
+            "endedAt": "2026-07-30T03:05:00Z",
+        }
+        self.fixture.ledger["parallelismProof"] = proof
+        self.fixture.receipt["parallelismProof"] = copy.deepcopy(proof)
+        self.fixture.refresh_hash()
+        self.assertIn(
+            "PARALLELISM_PROOF_INTERVAL_EMPTY",
+            self.fixture.codes(),
+        )
+
+    def test_free_text_only_unused_capacity_reason_is_rejected(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            accounting = collection[0]["executionAccounting"]
+            accounting["capacity"]["helperSlots"] = 1
+            accounting["unusedCapacityReasons"] = [
+                {
+                    "resourceClass": "helper",
+                    "slots": 1,
+                    "reason": "waiting for somebody",
+                }
+            ]
+        self.fixture.refresh_hash()
+        self.assertIn(
+            "EXECUTION_UNUSED_CAPACITY_FIELDS",
+            self.fixture.codes(),
+        )
+
+    def test_unused_capacity_authority_hash_must_be_current(self) -> None:
+        for collection in (
+            self.fixture.ledger["cells"],
+            self.fixture.receipt["rows"],
+        ):
+            row = collection[0]
+            accounting = row["executionAccounting"]
+            accounting["capacity"]["helperSlots"] = 1
+            reason = self.fixture.unused_capacity_reason(row)
+            reason["dependencyAuthority"]["sha256"] = "f" * 64
+            accounting["unusedCapacityReasons"] = [reason]
+        self.fixture.refresh_hash()
+        self.assertIn("AUTHORITY_HASH_STALE", self.fixture.codes())
 
     def test_wrong_direction_branch_is_rejected(self) -> None:
         self.fixture.ledger["cells"][1]["branch"] = (

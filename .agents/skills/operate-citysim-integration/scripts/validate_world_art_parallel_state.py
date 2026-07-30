@@ -170,6 +170,44 @@ JOB_STATES = frozenset({"running", "completed", "failed"})
 JOB_MUTATION_CLASSES = frozenset(
     {"read_only", "isolated_temp", "direction_owned"}
 )
+WORKSTREAM_EXEMPTION_CODES = frozenset(
+    {
+        "stage_prohibited_by_authority",
+        "exclusive_gate_owned_elsewhere",
+        "shared_surface_serialized",
+        "no_stage_legal_preparation_remaining",
+    }
+)
+UNUSED_CAPACITY_REASON_CODES = frozenset(
+    {
+        "authority_prohibited",
+        "dependency_blocked",
+        "serialized_writer",
+        "completed_before_observation",
+        "compute_envelope_unassigned",
+        "resource_safety_limit",
+    }
+)
+UNUSED_CAPACITY_REASON_CODES_BY_RESOURCE = {
+    "helper": frozenset(
+        {
+            "authority_prohibited",
+            "dependency_blocked",
+            "serialized_writer",
+            "completed_before_observation",
+            "resource_safety_limit",
+        }
+    ),
+    "dcc": frozenset(
+        {
+            "authority_prohibited",
+            "dependency_blocked",
+            "completed_before_observation",
+            "compute_envelope_unassigned",
+            "resource_safety_limit",
+        }
+    ),
+}
 
 GIT_SHA_KEYS = frozenset(
     {
@@ -301,6 +339,11 @@ class Validator:
         self._validate_execution_root_isolation(receipt_rows)
         self._validate_execution_observation_order(
             receipt_rows, receipt.get("sentAt")
+        )
+        self._validate_parallel_workstream_floor(
+            ledger,
+            ledger_rows,
+            receipt,
         )
         self._validate_board(board_text, board_path, ledger_rows)
         self._validate_receipt_binding(
@@ -695,6 +738,8 @@ class Validator:
         explained_unused = self._validate_unused_capacity_reasons(
             accounting.get("unusedCapacityReasons"),
             f"{accounting_location}.unusedCapacityReasons",
+            row,
+            accounting.get("nextRefill"),
         )
         for resource in JOB_RESOURCE_CLASSES:
             if explained_unused[resource] != unused_capacity[resource]:
@@ -1104,6 +1149,8 @@ class Validator:
         self,
         value: Any,
         location: str,
+        row: Mapping[str, Any],
+        next_refill: Any,
     ) -> dict[str, int]:
         totals = {resource: 0 for resource in JOB_RESOURCE_CLASSES}
         if not isinstance(value, list):
@@ -1113,7 +1160,15 @@ class Validator:
                 "must be an array of per-resource slot explanations",
             )
             return totals
-        expected_fields = {"resourceClass", "slots", "reason"}
+        expected_fields = {
+            "resourceClass",
+            "slots",
+            "reasonCode",
+            "owner",
+            "dependencyAuthority",
+            "resumptionEvent",
+            "nextRefillJob",
+        }
         for index, item in enumerate(value):
             item_location = f"{location}[{index}]"
             if not isinstance(item, Mapping):
@@ -1127,7 +1182,8 @@ class Validator:
                 self.error(
                     "EXECUTION_UNUSED_CAPACITY_FIELDS",
                     item_location,
-                    "must contain exactly resourceClass, slots, and reason",
+                    "must contain exactly resourceClass, slots, reasonCode, owner, "
+                    "dependencyAuthority, resumptionEvent, and nextRefillJob",
                 )
             resource = item.get("resourceClass")
             if resource not in JOB_RESOURCE_CLASSES:
@@ -1146,13 +1202,82 @@ class Validator:
                 )
             else:
                 totals[resource] += slots
-            if not _concrete_text(item.get("reason")):
+            reason_code = item.get("reasonCode")
+            if reason_code not in UNUSED_CAPACITY_REASON_CODES:
                 self.error(
-                    "EXECUTION_UNUSED_CAPACITY_REASON",
-                    f"{item_location}.reason",
-                    "must be concrete",
+                    "EXECUTION_UNUSED_CAPACITY_REASON_CODE",
+                    f"{item_location}.reasonCode",
+                    f"must be one of {sorted(UNUSED_CAPACITY_REASON_CODES)}",
+                )
+            elif (
+                resource in UNUSED_CAPACITY_REASON_CODES_BY_RESOURCE
+                and reason_code
+                not in UNUSED_CAPACITY_REASON_CODES_BY_RESOURCE[resource]
+            ):
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_REASON_RESOURCE",
+                    f"{item_location}.reasonCode",
+                    f"{reason_code!r} is not valid for {resource} capacity",
+                )
+            owner = item.get("owner")
+            if owner not in {row.get("threadId"), "integration"}:
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_OWNER",
+                    f"{item_location}.owner",
+                    "must name the row's visible thread or integration",
+                )
+            authority = item.get("dependencyAuthority")
+            self._validate_exact_authority_binding(
+                authority,
+                f"{item_location}.dependencyAuthority",
+                "EXECUTION_UNUSED_CAPACITY",
+            )
+            if not _concrete_text(item.get("resumptionEvent")):
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_RESUMPTION",
+                    f"{item_location}.resumptionEvent",
+                    "must name the concrete event that makes this slot useful",
+                )
+            if (
+                not _concrete_text(item.get("nextRefillJob"))
+                or item.get("nextRefillJob") != next_refill
+            ):
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_REFILL",
+                    f"{item_location}.nextRefillJob",
+                    "must exactly match executionAccounting.nextRefill",
                 )
         return totals
+
+    def _validate_exact_authority_binding(
+        self,
+        value: Any,
+        location: str,
+        code_prefix: str,
+    ) -> bool:
+        if not isinstance(value, Mapping) or set(value) != {"path", "sha256"}:
+            self.error(
+                f"{code_prefix}_AUTHORITY_FIELDS",
+                location,
+                "must contain exactly path and sha256",
+            )
+            return False
+        before = len(self.diagnostics)
+        self._validate_authority_hashes(value, location)
+        raw_path = value.get("path")
+        raw_hash = value.get("sha256")
+        if (
+            not isinstance(raw_path, str)
+            or not raw_path
+            or not isinstance(raw_hash, str)
+            or not SHA256_RE.fullmatch(raw_hash)
+        ):
+            self.error(
+                f"{code_prefix}_AUTHORITY_INVALID",
+                location,
+                "must bind one readable authority file and its exact SHA-256",
+            )
+        return len(self.diagnostics) == before
 
     def _concrete_string_list(self, value: Any, location: str) -> list[str]:
         if not isinstance(value, list):
@@ -1675,6 +1800,378 @@ class Validator:
                     f"receipt.rows.{cell}.observation",
                     "row observation must not postdate receipt.sentAt",
                 )
+
+    def _validate_parallel_workstream_floor(
+        self,
+        ledger: Mapping[str, Any],
+        ledger_rows: Mapping[str, Mapping[str, Any]],
+        receipt: Mapping[str, Any],
+    ) -> None:
+        batch_state = ledger.get("batchState")
+        eligible_cells: list[str] = []
+        active_cells: list[str] = []
+        for cell in EXPECTED_CELLS:
+            row = ledger_rows.get(cell)
+            if row is None:
+                continue
+            dispatch_state = _normalize_token(str(row.get("dispatchState", "")))
+            exemption = row.get("parallelismExemption")
+            exempt = False
+            if exemption is not None:
+                if dispatch_state in ACTIVE_DISPATCH_STATES:
+                    self.error(
+                        "PARALLELISM_ACTIVE_ROW_EXEMPT",
+                        f"ledger.cells.{cell}.parallelismExemption",
+                        "an active acknowledged row cannot also claim exemption",
+                    )
+                elif dispatch_state not in INACTIVE_DISPATCH_STATES:
+                    self.error(
+                        "PARALLELISM_EXEMPTION_STATE",
+                        f"ledger.cells.{cell}.parallelismExemption",
+                        "only an idle, returned, blocked, or completed row may "
+                        "claim a stage exemption",
+                    )
+                else:
+                    exempt = self._validate_parallelism_exemption(
+                        exemption,
+                        f"ledger.cells.{cell}.parallelismExemption",
+                        row,
+                        batch_state,
+                    )
+            if not exempt:
+                eligible_cells.append(cell)
+            if dispatch_state in ACTIVE_DISPATCH_STATES:
+                acknowledgement = row.get("authorityAcknowledgement")
+                running = (
+                    row.get("executionAccounting", {}).get("running", [])
+                    if isinstance(row.get("executionAccounting"), Mapping)
+                    else []
+                )
+                if isinstance(acknowledgement, Mapping) and running:
+                    active_cells.append(cell)
+
+        required = 3 if len(eligible_cells) >= 3 else 0
+        if required and len(active_cells) < required:
+            self.error(
+                "PARALLELISM_ACTIVE_FLOOR",
+                "ledger.cells",
+                f"{len(eligible_cells)} rows are eligible but only "
+                f"{len(active_cells)} carry acknowledged running work; "
+                "at least 3 are required",
+            )
+
+        ledger_proof = ledger.get("parallelismProof")
+        receipt_proof = receipt.get("parallelismProof")
+        if required and not isinstance(ledger_proof, Mapping):
+            self.error(
+                "PARALLELISM_PROOF_MISSING",
+                "ledger.parallelismProof",
+                "three-or-more eligible rows require a cross-row interval proof",
+            )
+        if ledger_proof is None:
+            if receipt_proof is not None:
+                self.error(
+                    "PARALLELISM_PROOF_RECEIPT_EXTRA",
+                    "receipt.parallelismProof",
+                    "receipt cannot project a proof absent from the ledger",
+                )
+            return
+        if receipt_proof != ledger_proof:
+            self.error(
+                "PARALLELISM_PROOF_RECEIPT_MISMATCH",
+                "receipt.parallelismProof",
+                "must exactly project ledger.parallelismProof",
+            )
+        self._validate_parallelism_proof(
+            ledger_proof,
+            "ledger.parallelismProof",
+            ledger_rows,
+            eligible_cells,
+            required,
+        )
+
+    def _validate_parallelism_exemption(
+        self,
+        value: Any,
+        location: str,
+        row: Mapping[str, Any],
+        batch_state: Any,
+    ) -> bool:
+        expected_fields = {
+            "reasonCode",
+            "stageProhibition",
+            "owner",
+            "dependencyAuthority",
+            "resumptionEvent",
+            "nextRefillJob",
+        }
+        if not isinstance(value, Mapping) or set(value) != expected_fields:
+            self.error(
+                "PARALLELISM_EXEMPTION_FIELDS",
+                location,
+                "must contain exactly reasonCode, stageProhibition, owner, "
+                "dependencyAuthority, resumptionEvent, and nextRefillJob",
+            )
+            return False
+        valid = True
+        if value.get("reasonCode") not in WORKSTREAM_EXEMPTION_CODES:
+            self.error(
+                "PARALLELISM_EXEMPTION_REASON_CODE",
+                f"{location}.reasonCode",
+                f"must be one of {sorted(WORKSTREAM_EXEMPTION_CODES)}",
+            )
+            valid = False
+
+        prohibition = value.get("stageProhibition")
+        if (
+            not isinstance(prohibition, Mapping)
+            or set(prohibition) != {"batchState", "rule"}
+        ):
+            self.error(
+                "PARALLELISM_EXEMPTION_PROHIBITION_FIELDS",
+                f"{location}.stageProhibition",
+                "must contain exactly batchState and rule",
+            )
+            valid = False
+        else:
+            if prohibition.get("batchState") != batch_state:
+                self.error(
+                    "PARALLELISM_EXEMPTION_BATCH_STATE",
+                    f"{location}.stageProhibition.batchState",
+                    f"must equal current ledger batchState {batch_state!r}",
+                )
+                valid = False
+            if not _concrete_text(prohibition.get("rule")):
+                self.error(
+                    "PARALLELISM_EXEMPTION_RULE",
+                    f"{location}.stageProhibition.rule",
+                    "must name the exact stage rule that prohibits useful work",
+                )
+                valid = False
+
+        owner = value.get("owner")
+        expected_owner_fields = {"role", "id"}
+        if not isinstance(owner, Mapping) or set(owner) != expected_owner_fields:
+            self.error(
+                "PARALLELISM_EXEMPTION_OWNER_FIELDS",
+                f"{location}.owner",
+                "must contain exactly role and id",
+            )
+            valid = False
+        else:
+            role = owner.get("role")
+            owner_id = owner.get("id")
+            expected_ids = {
+                "integration": "integration",
+                "cell": row.get("threadId"),
+            }
+            if role not in expected_ids or owner_id != expected_ids.get(role):
+                self.error(
+                    "PARALLELISM_EXEMPTION_OWNER",
+                    f"{location}.owner",
+                    "must bind Integration or this row's visible thread",
+                )
+                valid = False
+
+        if not self._validate_exact_authority_binding(
+            value.get("dependencyAuthority"),
+            f"{location}.dependencyAuthority",
+            "PARALLELISM_EXEMPTION",
+        ):
+            valid = False
+        if not _concrete_text(value.get("resumptionEvent")):
+            self.error(
+                "PARALLELISM_EXEMPTION_RESUMPTION",
+                f"{location}.resumptionEvent",
+                "must name the concrete authority event that resumes the row",
+            )
+            valid = False
+        accounting = row.get("executionAccounting")
+        next_refill = (
+            accounting.get("nextRefill")
+            if isinstance(accounting, Mapping)
+            else None
+        )
+        if (
+            not _concrete_text(value.get("nextRefillJob"))
+            or value.get("nextRefillJob") != next_refill
+        ):
+            self.error(
+                "PARALLELISM_EXEMPTION_REFILL",
+                f"{location}.nextRefillJob",
+                "must exactly match executionAccounting.nextRefill",
+            )
+            valid = False
+        return valid
+
+    def _validate_parallelism_proof(
+        self,
+        value: Any,
+        location: str,
+        rows: Mapping[str, Mapping[str, Any]],
+        eligible_cells: Sequence[str],
+        required: int,
+    ) -> None:
+        expected_fields = {
+            "requiredConcurrentCells",
+            "eligibleCells",
+            "jobRefs",
+            "startedAt",
+            "endedAt",
+        }
+        if not isinstance(value, Mapping) or set(value) != expected_fields:
+            self.error(
+                "PARALLELISM_PROOF_FIELDS",
+                location,
+                "must contain exactly requiredConcurrentCells, eligibleCells, "
+                "jobRefs, startedAt, and endedAt",
+            )
+            return
+        proof_required = value.get("requiredConcurrentCells")
+        expected_required = 3
+        if (
+            isinstance(proof_required, bool)
+            or not isinstance(proof_required, int)
+            or proof_required != expected_required
+        ):
+            self.error(
+                "PARALLELISM_PROOF_REQUIRED_COUNT",
+                f"{location}.requiredConcurrentCells",
+                f"must equal derived floor {expected_required}",
+            )
+
+        proof_eligible = value.get("eligibleCells")
+        if (
+            not isinstance(proof_eligible, list)
+            or not proof_eligible
+            or any(not isinstance(cell, str) for cell in proof_eligible)
+            or len(proof_eligible) != len(set(proof_eligible))
+            or any(cell not in EXPECTED_CELL_SET for cell in proof_eligible)
+        ):
+            self.error(
+                "PARALLELISM_PROOF_ELIGIBLE_CELLS",
+                f"{location}.eligibleCells",
+                "must be a non-empty unique canonical cell list",
+            )
+            proof_eligible = []
+        elif required and proof_eligible != list(eligible_cells):
+            self.error(
+                "PARALLELISM_PROOF_ELIGIBLE_CELLS",
+                f"{location}.eligibleCells",
+                f"must equal current derived eligible cells "
+                f"{list(eligible_cells)!r}",
+            )
+
+        started = self._parsed_timestamp(
+            value.get("startedAt"), f"{location}.startedAt"
+        )
+        ended = self._parsed_timestamp(
+            value.get("endedAt"), f"{location}.endedAt"
+        )
+        refs = value.get("jobRefs")
+        if not isinstance(refs, list):
+            self.error(
+                "PARALLELISM_PROOF_JOB_REFS",
+                f"{location}.jobRefs",
+                "must be an array of cross-row job references",
+            )
+            return
+
+        intervals: list[tuple[str, datetime, datetime]] = []
+        seen_cells: set[str] = set()
+        seen_refs: set[tuple[str, str]] = set()
+        for index, raw_ref in enumerate(refs):
+            ref_location = f"{location}.jobRefs[{index}]"
+            if not isinstance(raw_ref, Mapping) or set(raw_ref) != {
+                "cell",
+                "jobId",
+            }:
+                self.error(
+                    "PARALLELISM_PROOF_JOB_REF_FIELDS",
+                    ref_location,
+                    "must contain exactly cell and jobId",
+                )
+                continue
+            cell = _normalize_cell(raw_ref.get("cell"))
+            job_id = raw_ref.get("jobId")
+            if cell not in proof_eligible or not _concrete_text(job_id):
+                self.error(
+                    "PARALLELISM_PROOF_JOB_REF_INVALID",
+                    ref_location,
+                    "must bind one concrete job in a proof-eligible cell",
+                )
+                continue
+            key = (cell, str(job_id))
+            if key in seen_refs:
+                self.error(
+                    "PARALLELISM_PROOF_JOB_REF_DUPLICATE",
+                    ref_location,
+                    f"duplicates {key!r}",
+                )
+                continue
+            seen_refs.add(key)
+            row = rows.get(cell)
+            accounting = (
+                row.get("executionAccounting")
+                if isinstance(row, Mapping)
+                else None
+            )
+            jobs = (
+                accounting.get("launchedJobs")
+                if isinstance(accounting, Mapping)
+                else None
+            )
+            matching = [
+                job
+                for job in jobs or []
+                if isinstance(job, Mapping) and job.get("id") == job_id
+            ]
+            if len(matching) != 1:
+                self.error(
+                    "PARALLELISM_PROOF_JOB_UNKNOWN",
+                    ref_location,
+                    "must resolve to exactly one launchedJobs entry",
+                )
+                continue
+            job = matching[0]
+            job_start = self._parse_timestamp(job.get("startedAt"))
+            job_end = self._parse_timestamp(job.get("endedAt"))
+            if job_end is None and job.get("state") == "running" and row is not None:
+                job_end = self._row_observation_timestamp(row)
+            if job_start is None or job_end is None or job_end <= job_start:
+                self.error(
+                    "PARALLELISM_PROOF_JOB_INTERVAL",
+                    ref_location,
+                    "job must provide a positive observed interval",
+                )
+                continue
+            intervals.append((cell, job_start, job_end))
+            seen_cells.add(cell)
+
+        if proof_required and len(seen_cells) < proof_required:
+            self.error(
+                "PARALLELISM_PROOF_CELL_COUNT",
+                f"{location}.jobRefs",
+                f"must prove jobs in at least {proof_required} distinct cells",
+            )
+        if not intervals:
+            return
+        derived_start = max(item[1] for item in intervals)
+        derived_end = min(item[2] for item in intervals)
+        if derived_end <= derived_start:
+            self.error(
+                "PARALLELISM_PROOF_INTERVAL_EMPTY",
+                location,
+                "referenced cross-cell job intervals never overlap",
+            )
+            return
+        if started != derived_start or ended != derived_end:
+            self.error(
+                "PARALLELISM_PROOF_INTERVAL_MISMATCH",
+                location,
+                f"must equal derived overlap "
+                f"{derived_start.isoformat()} through {derived_end.isoformat()}",
+            )
 
     @staticmethod
     def _row_observation_timestamp(row: Mapping[str, Any]) -> datetime | None:

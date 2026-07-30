@@ -24,7 +24,7 @@ EVIDENCE_ROOT = (
 FIXTURE_ROOT = f"{SOURCE_ROOT}/fixtures/prelock-direction-isolation"
 DEFAULT_VALID = f"{FIXTURE_ROOT}/VALID-WEST.json"
 DEFAULT_CASES = f"{FIXTURE_ROOT}/FAIL-CLOSED-CASES.json"
-PUBLISHED_MASTER = "94ae73a99abe64f59bb052582fcaba1d9725319d"
+PUBLISHED_MASTER = "aaee294718a8176b70a4688b738b517f216dd3a7"
 EXPECTED_IDENTITY = {
     "taskId": "PLAY-081",
     "direction": "west",
@@ -115,13 +115,13 @@ EXPECTED_ORCHESTRATION = {
     "runnerContract": {
         "path": f"{SOURCE_ROOT}/RUNNER-CONTRACT.json",
         "sha256": (
-            "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+            "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5"
         ),
     },
     "executionContract": {
         "path": f"{SOURCE_ROOT}/WEST-EXECUTION-ORCHESTRATION-V2.json",
         "sha256": (
-            "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
+            "6f4adda204c53d22f50e9ed609980ae77d32045ac5b4218446e4828e543a5774"
         ),
     },
 }
@@ -264,7 +264,7 @@ def validate_bundle(
     claim_expected = {
         "path": "docs/production/claims/PLAY-081.world-art-west.md",
         "sha256": (
-            "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+            "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
         ),
     }
     errors.extend(

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Revision-6 West validation-only execution-closure tests."""
+"""Revision-7 West validation-only execution-closure tests."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ import consume_west_parallel_schedule_v1 as consumer  # noqa: E402
 import run_west_source as low_level_runner  # noqa: E402
 
 
-PUBLISHED_BASE = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+PUBLISHED_BASE = "aaee294718a8176b70a4688b738b517f216dd3a7"
 AUTHORITY_PATH = (
     "docs/production/evidence/INTEGRATION/"
     "INDUSTRIAL-L04-WEST-EXECUTION-CLOSURE-TEST-V1.json"
@@ -387,7 +387,7 @@ class ClosureFixture:
                 "direction": "west",
                 "branch": "codex/citysim-world-art-west",
                 "claimPath": CLAIMS["west"][2],
-                "claimRevision": 6,
+                "claimRevision": 7,
                 "claimSha256": digest(claim_payload),
                 "publishedBaseCommit": PUBLISHED_BASE,
             },

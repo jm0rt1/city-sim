@@ -6,18 +6,18 @@
   "branch": "codex/citysim-world-art-west",
   "implementationBaseline": {
     "preservedWestAncestor": "73cd3d408ff6cb65e8137f26f8d25c1f42f7a81d",
-    "publishedMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
-    "claimRevision": 6,
-    "claimSha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+    "publishedMaster": "aaee294718a8176b70a4688b738b517f216dd3a7",
+    "claimRevision": 7,
+    "claimSha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
   },
   "executionClosureV1": {
     "mode": "validation_only",
     "testProtocolRevision": 6,
-    "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "publishedBase": "aaee294718a8176b70a4688b738b517f216dd3a7",
     "claim": {
       "path": "docs/production/claims/PLAY-081.world-art-west.md",
-      "revision": 6,
-      "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+      "revision": 7,
+      "sha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
     },
     "sharedSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
@@ -65,7 +65,7 @@
   },
   "runnerContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
-    "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+    "sha256": "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5"
   },
   "productionExecutionEnabled": false,
   "productionReceiptEmissionEnabled": false,

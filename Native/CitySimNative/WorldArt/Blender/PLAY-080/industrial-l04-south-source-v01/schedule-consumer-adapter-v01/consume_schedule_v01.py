@@ -33,9 +33,18 @@ CONTRACT_PATH = f"{MODEL_ROOT}CONTRACT.json"
 ADAPTER_PATH = f"{MODEL_ROOT}consume_schedule_v01.py"
 TEST_PATH = f"{MODEL_ROOT}test_consume_schedule_v01.py"
 READINESS_PATH = (
-    f"{EVIDENCE_ROOT}SCHEDULE-CONSUMER-ZERO-CHILD-READINESS-V01.json"
+    f"{EVIDENCE_ROOT}SCHEDULE-CONSUMER-ZERO-CHILD-READINESS-V02.json"
 )
 INTEGRATION_INPUT_ROOT = "docs/production/evidence/INTEGRATION/"
+FIXTURE_ROOT = f"{MODEL_ROOT}fixtures/"
+POSTLOCK_FIXTURE_APPEARANCE_PATH = (
+    f"{FIXTURE_ROOT}POSTLOCK-APPEARANCE-LOCK.json"
+)
+POSTLOCK_FIXTURE_PROFILE_PATH = (
+    f"{FIXTURE_ROOT}POSTLOCK-SOURCE-PRODUCTION-PROFILE.json"
+)
+POSTLOCK_FIXTURE_RUNNER_PATH = f"{FIXTURE_ROOT}POSTLOCK-RUNNER-CONTRACT.json"
+POSTLOCK_FIXTURE_SCHEDULE_PATH = f"{FIXTURE_ROOT}POSTLOCK-SCHEDULE.json"
 BRANCH = "codex/citysim-world-art-south"
 INTEGRATION_AUTHORITY = "401eb2ce19c5f5c932442ace72e66fbd734cfa35"
 INTEGRATION_TREE = "c6f74e197a1882cf8df6f35a420920331edae142"
@@ -92,6 +101,25 @@ RUNNER_CONTRACT = {
     "blobOid": "bde316b55999a03b63316e89b02cdd8443b0bc33",
     "path": f"{SOURCE_ROOT}runner-contract.json",
     "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2",
+}
+NONPRODUCTION_POSTLOCK_FIXTURE = {
+    "appearanceLock": {
+        "path": POSTLOCK_FIXTURE_APPEARANCE_PATH,
+        "sha256": "20158b0b5473f7e43f2592296e7314df280d84897e1feaa2779235c1f1387c3f",
+    },
+    "runnerContract": {
+        "path": POSTLOCK_FIXTURE_RUNNER_PATH,
+        "sha256": "1efa2784708f5e509dc06cbef8520cef87e9af7b79df3c1bdd55847d26abaeba",
+    },
+    "schedule": {
+        "path": POSTLOCK_FIXTURE_SCHEDULE_PATH,
+        "sha256": "a3a94cbb35fa615bb1335cc3c1d42418b1ce1369b0ac18387d13b6e9af587960",
+    },
+    "sourceProductionProfile": {
+        "path": POSTLOCK_FIXTURE_PROFILE_PATH,
+        "sha256": "5edf57eaf42d5adb8c4ed892ed07fedff2900c935d55a883be29e6e3a662c1b8",
+    },
+    "mode": "nonproduction-zero-child-cli-proof",
 }
 PREDEISGN = {
     "materials": {
@@ -432,6 +460,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
             "gates",
             "integrationAuthority",
             "mode",
+            "nonproductionPostlockFixture",
             "orchestration",
             "orientationTransform",
             "outputs",
@@ -443,7 +472,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
         "adapterContract",
     )
     expected_scalars = {
-        "schema": "citysim.play-080.south-schedule-consumer-adapter.v1",
+        "schema": "citysim.play-080.south-schedule-consumer-adapter.v2",
         "taskId": "PLAY-080",
         "direction": "south",
         "branch": BRANCH,
@@ -468,6 +497,8 @@ def validate_contract(contract: dict[str, Any]) -> None:
         reject("ACCEPTED_PREDESIGN_BINDING_MISMATCH")
     if contract.get("runnerContract") != RUNNER_CONTRACT:
         reject("RUNNER_CONTRACT_BINDING_MISMATCH")
+    if contract.get("nonproductionPostlockFixture") != NONPRODUCTION_POSTLOCK_FIXTURE:
+        reject("NONPRODUCTION_FIXTURE_BINDING_MISMATCH")
     if contract.get("currentInputs") != CURRENT_INPUTS:
         reject("CURRENT_INPUT_STATE_MISMATCH")
     if contract.get("target") != TARGET:
@@ -492,7 +523,104 @@ def validate_contract(contract: dict[str, Any]) -> None:
         reject("OUTPUT_BINDING_MISMATCH")
 
 
-def validate_environment(contract: dict[str, Any]) -> dict[str, Any]:
+def validate_runner_immutable(runner: dict[str, Any]) -> None:
+    expected_scalars = {
+        "schema": "citysim.world-art.prelock-runner-contract.v1",
+        "taskId": "PLAY-080",
+        "branch": BRANCH,
+        "direction": "south",
+        "sourceReady": False,
+        "productionSelected": False,
+    }
+    mismatches = {
+        key: {"expected": expected, "actual": runner.get(key)}
+        for key, expected in expected_scalars.items()
+        if runner.get(key) != expected
+    }
+    expected_predesign = {
+        role: {
+            "path": PREDEISGN[role]["path"],
+            "sha256": PREDEISGN[role]["sha256"],
+        }
+        for role in ("materials", "scene")
+    }
+    actual_predesign = runner.get("acceptedPredesign", {})
+    for role, expected in expected_predesign.items():
+        if actual_predesign.get(role) != expected:
+            mismatches[f"acceptedPredesign.{role}"] = {
+                "expected": expected,
+                "actual": actual_predesign.get(role),
+            }
+    expected_bridge = {
+        "acceptedCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+        "blenderNativeDirectionalSocket": [28, 0, 0],
+        "canonicalCitySimSouthSocket": [0, 0, 28],
+        "mappingContractSha256": (
+            "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+        ),
+        "sourceSocketPixels": [640, 832],
+        "state": "v06_revalidated",
+    }
+    actual_bridge = runner.get("coordinateBridge", {})
+    for key, expected in expected_bridge.items():
+        if actual_bridge.get(key) != expected:
+            mismatches[f"coordinateBridge.{key}"] = {
+                "expected": expected,
+                "actual": actual_bridge.get(key),
+            }
+    launch_plan = runner.get("launchPlan", {})
+    expected_launch = {
+        "authorizedProcesses": ["A", "B", "C"],
+        "isolatedOutputRoots": PROCESS_OUTPUT_ROOTS,
+        "isolatedEvidenceRoots": PROCESS_EVIDENCE_ROOTS,
+        "noOverwrite": True,
+    }
+    for key, expected in expected_launch.items():
+        if launch_plan.get(key) != expected:
+            mismatches[f"launchPlan.{key}"] = {
+                "expected": expected,
+                "actual": launch_plan.get(key),
+            }
+    if mismatches:
+        reject("STALE_RUNNER_IMMUTABLE_BINDING", mismatches)
+
+
+def validate_process_roots_missing() -> None:
+    for role, path in {
+        **{f"output-{key}": value for key, value in PROCESS_OUTPUT_ROOTS.items()},
+        **{f"evidence-{key}": value for key, value in PROCESS_EVIDENCE_ROOTS.items()},
+    }.items():
+        state = inspect_path(path)
+        if state == "symlink":
+            reject("SYMLINK_PROCESS_ROOT", {"role": role, "path": path})
+        if state != "missing":
+            reject(
+                "PROCESS_ROOT_PREEXISTS",
+                {"role": role, "path": path, "state": state},
+            )
+
+
+def validate_prelock_runner(captured: CapturedFile) -> dict[str, Any]:
+    if sha256_bytes(captured.raw) != RUNNER_CONTRACT["sha256"]:
+        reject("STALE_PRELOCK_RUNNER_HASH")
+    runner = load_json_bytes(captured.raw, RUNNER_CONTRACT["path"])
+    validate_runner_immutable(runner)
+    if runner.get("state") != "awaiting_appearance_lock":
+        reject("RUNNER_STATE_NOT_PRELOCK", runner.get("state"))
+    if runner.get("appearanceLock") != MISSING_APPEARANCE_LOCK:
+        reject("APPEARANCE_LOCK_ALREADY_PRESENT")
+    if runner.get("sourceProductionProfile") != MISSING_PROFILE:
+        reject("SOURCE_PROFILE_ALREADY_PRESENT")
+    return runner
+
+
+def validate_postlock_runner(runner: dict[str, Any]) -> None:
+    validate_runner_immutable(runner)
+    if runner.get("state") != "appearance_lock_bound":
+        reject("RUNNER_NOT_POSTLOCK_BOUND", runner.get("state"))
+
+
+def validate_immutable_environment(contract: dict[str, Any]) -> dict[str, Any]:
     validate_contract(contract)
     branch = git("branch", "--show-current")
     if branch != BRANCH:
@@ -513,7 +641,6 @@ def validate_environment(contract: dict[str, Any]) -> dict[str, Any]:
         **AUTHORITIES,
         "approvedHighLevelOrchestrator": ORCHESTRATOR,
         "forbiddenLowLevelRunner": LOW_LEVEL_RUNNER,
-        "runnerContract": RUNNER_CONTRACT,
         "acceptedPredesign.materials": PREDEISGN["materials"],
         "acceptedPredesign.scene": PREDEISGN["scene"],
     }
@@ -521,53 +648,55 @@ def validate_environment(contract: dict[str, Any]) -> dict[str, Any]:
         validate_binding_at_authority(role, binding)
         for role, binding in bindings.items()
     ]
-    runner = load_json_bytes(
-        capture_file(RUNNER_CONTRACT["path"], "RUNNER_CONTRACT_UNSAFE").raw,
-        "runnerContract",
-    )
-    if runner.get("state") != "awaiting_appearance_lock":
-        reject("RUNNER_STATE_NOT_PRELOCK", runner.get("state"))
-    if runner.get("appearanceLock") != MISSING_APPEARANCE_LOCK:
-        reject("APPEARANCE_LOCK_ALREADY_PRESENT")
-    if runner.get("sourceProductionProfile") != MISSING_PROFILE:
-        reject("SOURCE_PROFILE_ALREADY_PRESENT")
-    if runner.get("sourceReady") is not False:
-        reject("RUNNER_SOURCE_READY")
-    for role, path in {
-        **{f"output-{key}": value for key, value in PROCESS_OUTPUT_ROOTS.items()},
-        **{f"evidence-{key}": value for key, value in PROCESS_EVIDENCE_ROOTS.items()},
-    }.items():
-        state = inspect_path(path)
-        if state == "symlink":
-            reject("SYMLINK_PROCESS_ROOT", {"role": role, "path": path})
-        if state != "missing":
-            reject("PROCESS_ROOT_PREEXISTS", {"role": role, "path": path, "state": state})
+    fixture_bindings = []
+    for role, binding in NONPRODUCTION_POSTLOCK_FIXTURE.items():
+        if role == "mode":
+            continue
+        captured = capture_file(binding["path"], "FIXTURE_INPUT_UNSAFE")
+        digest = sha256_bytes(captured.raw)
+        if digest != binding["sha256"]:
+            reject(
+                "NONPRODUCTION_FIXTURE_HASH_MISMATCH",
+                {"role": role, "expected": binding["sha256"], "actual": digest},
+            )
+        fixture_bindings.append(
+            {"role": role, "path": binding["path"], "sha256": digest}
+        )
+    validate_process_roots_missing()
     return {
         "branch": branch,
         "runtimeHeadPolicy": "integration-authority-is-ancestor",
         "bindings": verified,
+        "nonproductionFixtureBindings": fixture_bindings,
     }
 
 
+def validate_environment(contract: dict[str, Any]) -> dict[str, Any]:
+    environment = validate_immutable_environment(contract)
+    runner_capture = capture_file(
+        RUNNER_CONTRACT["path"], "RUNNER_CONTRACT_UNSAFE"
+    )
+    validate_prelock_runner(runner_capture)
+    return environment
+
+
 def future_runner(schedule: dict[str, Any]) -> dict[str, Any]:
-    runner = {
-        "state": "appearance_lock_bound",
-        "appearanceLock": {
-            "documentPath": schedule["appearanceLock"]["path"],
-            "appearanceLockCommit": "c" * 40,
-            "appearanceLockSha256": schedule["appearanceLock"]["sha256"],
-            "northProcessASourceSha256": "d" * 64,
-            "northProcessADecodedRgbaSha256": "e" * 64,
-        },
-        "sourceProductionProfile": {
-            "path": schedule["sourceProductionProfile"]["path"],
-            "commit": "f" * 40,
-            "sha256": schedule["sourceProductionProfile"]["sha256"],
-        },
-        "launchPlan": {
-            "isolatedOutputRoots": PROCESS_OUTPUT_ROOTS,
-            "isolatedEvidenceRoots": PROCESS_EVIDENCE_ROOTS,
-        },
+    runner = load_json_bytes(
+        capture_file(RUNNER_CONTRACT["path"], "RUNNER_CONTRACT_UNSAFE").raw,
+        RUNNER_CONTRACT["path"],
+    )
+    runner["state"] = "appearance_lock_bound"
+    runner["appearanceLock"] = {
+        "documentPath": schedule["appearanceLock"]["path"],
+        "appearanceLockCommit": "c" * 40,
+        "appearanceLockSha256": schedule["appearanceLock"]["sha256"],
+        "northProcessASourceSha256": "d" * 64,
+        "northProcessADecodedRgbaSha256": "e" * 64,
+    }
+    runner["sourceProductionProfile"] = {
+        "path": schedule["sourceProductionProfile"]["path"],
+        "commit": "f" * 40,
+        "sha256": schedule["sourceProductionProfile"]["sha256"],
     }
     return runner
 
@@ -706,8 +835,7 @@ def validate_schedule_core(
         reject("MISSING_APPEARANCE_LOCK")
     if profile is None:
         reject("MISSING_SOURCE_PRODUCTION_PROFILE")
-    if runner.get("state") != "appearance_lock_bound":
-        reject("RUNNER_NOT_POSTLOCK_BOUND")
+    validate_postlock_runner(runner)
     runner_lock = runner.get("appearanceLock", {})
     expected_appearance = {
         "path": runner_lock.get("documentPath"),
@@ -915,6 +1043,22 @@ def run_adversaries(contract: dict[str, Any]) -> list[dict[str, str]]:
         ].update(sha256="f" * 64),
     )
     mutation(
+        "prelock-runner",
+        "RUNNER_NOT_POSTLOCK_BOUND",
+        lambda _schedule, _contract, runner: runner.update(
+            state="awaiting_appearance_lock",
+            appearanceLock=copy.deepcopy(MISSING_APPEARANCE_LOCK),
+            sourceProductionProfile=copy.deepcopy(MISSING_PROFILE),
+        ),
+    )
+    mutation(
+        "stale-runner-immutable-predesign",
+        "STALE_RUNNER_IMMUTABLE_BINDING",
+        lambda _schedule, _contract, runner: runner["acceptedPredesign"][
+            "scene"
+        ].update(sha256="f" * 64),
+    )
+    mutation(
         "wrong-child-limit",
         "WRONG_CHILD_LIMIT",
         lambda schedule, _contract, _runner: south_grant(schedule)["processes"][
@@ -979,11 +1123,24 @@ def load_shared_validator() -> Any:
 def consume_schedule_path(
     schedule_path: str,
     contract: dict[str, Any],
+    nonproduction_fixture: bool = False,
 ) -> dict[str, Any]:
     pure = parse_safe_relative_path(schedule_path, "UNSAFE_SCHEDULE_PATH")
-    if not pure.as_posix().startswith(INTEGRATION_INPUT_ROOT):
+    if nonproduction_fixture:
+        if schedule_path != POSTLOCK_FIXTURE_SCHEDULE_PATH:
+            reject("FIXTURE_SCHEDULE_PATH_MISMATCH", schedule_path)
+        runner_path = POSTLOCK_FIXTURE_RUNNER_PATH
+    elif pure.as_posix().startswith(INTEGRATION_INPUT_ROOT):
+        runner_path = RUNNER_CONTRACT["path"]
+    else:
         reject("SCHEDULE_PATH_NOT_INTEGRATION_OWNED", schedule_path)
     first = capture_file(schedule_path, "SCHEDULE_INPUT_UNSAFE")
+    if nonproduction_fixture:
+        expected_schedule_hash = NONPRODUCTION_POSTLOCK_FIXTURE["schedule"][
+            "sha256"
+        ]
+        if sha256_bytes(first.raw) != expected_schedule_hash:
+            reject("NONPRODUCTION_FIXTURE_HASH_MISMATCH", "schedule")
     schedule = load_json_bytes(first.raw, schedule_path)
     shared_validator = load_shared_validator()
     absolute = REPOSITORY_ROOT.joinpath(*pure.parts)
@@ -991,16 +1148,30 @@ def consume_schedule_path(
         shared_result = shared_validator.validate(REPOSITORY_ROOT, absolute)
     except Exception as error:
         reject("SHARED_SCHEDULE_VALIDATION_FAILED", str(error))
+    if not isinstance(shared_result, dict):
+        reject("SHARED_SCHEDULE_VALIDATION_FAILED", "result-not-object")
+    shared_result = copy.deepcopy(shared_result)
+    shared_result["schedule"] = schedule_path
     second = capture_file(schedule_path, "SCHEDULE_INPUT_UNSAFE")
     if first.identity != second.identity or first.raw != second.raw:
         reject("SCHEDULE_REPLACEMENT_RACE")
-    runner = load_json_bytes(
-        capture_file(RUNNER_CONTRACT["path"], "RUNNER_CONTRACT_UNSAFE").raw,
-        "runnerContract",
-    )
+    runner_capture = capture_file(runner_path, "RUNNER_CONTRACT_UNSAFE")
+    if nonproduction_fixture:
+        expected_runner_hash = NONPRODUCTION_POSTLOCK_FIXTURE["runnerContract"][
+            "sha256"
+        ]
+        if sha256_bytes(runner_capture.raw) != expected_runner_hash:
+            reject("NONPRODUCTION_FIXTURE_HASH_MISMATCH", "runnerContract")
+    runner = load_json_bytes(runner_capture.raw, runner_path)
     result = validate_schedule_core(schedule, contract, runner)
     return {
         **result,
+        "nonproductionFixture": nonproduction_fixture,
+        "runner": {
+            "path": runner_path,
+            "sha256": sha256_bytes(runner_capture.raw),
+            "stage": runner["state"],
+        },
         "schedule": {
             "path": schedule_path,
             "sha256": sha256_bytes(first.raw),
@@ -1023,6 +1194,11 @@ def build_readiness_packet(
         captured = capture_file(path, "IMPLEMENTATION_INPUT_UNSAFE")
         implementation[role] = {"path": path, "sha256": sha256_bytes(captured.raw)}
     adversaries = run_adversaries(contract)
+    postlock_fixture_result = consume_schedule_path(
+        POSTLOCK_FIXTURE_SCHEDULE_PATH,
+        contract,
+        nonproduction_fixture=True,
+    )
     return {
         "activity": ACTIVITY,
         "adversarialCases": adversaries,
@@ -1039,8 +1215,9 @@ def build_readiness_packet(
         "gates": GATES,
         "implementation": implementation,
         "integrationAuthority": INTEGRATION_RECORD,
+        "postlockCliBoundary": postlock_fixture_result,
         "result": "PASS_ZERO_CHILD_READY",
-        "schema": "citysim.play-080.south-schedule-consumer-readiness.v1",
+        "schema": "citysim.play-080.south-schedule-consumer-readiness.v2",
         "target": TARGET,
         "taskId": "PLAY-080",
         "validation": {
@@ -1049,12 +1226,12 @@ def build_readiness_packet(
             "scheduleSemanticValidator": {
                 "path": AUTHORITIES["scheduleSemanticValidator"]["path"],
                 "sha256": AUTHORITIES["scheduleSemanticValidator"]["sha256"],
-                "status": "BOUND_NOT_RUN_NO_SCHEDULE",
+                "status": "PASS_NONPRODUCTION_POSTLOCK_FIXTURE",
             },
             "scheduleSchema": {
                 "path": AUTHORITIES["scheduleSchema"]["path"],
                 "sha256": AUTHORITIES["scheduleSchema"]["sha256"],
-                "status": "BOUND_NO_INSTANCE",
+                "status": "PASS_NONPRODUCTION_POSTLOCK_FIXTURE",
             },
             "status": "PASS",
         },
@@ -1129,6 +1306,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contract", default=CONTRACT_PATH)
     parser.add_argument("--readiness", default=READINESS_PATH)
     parser.add_argument("--schedule")
+    parser.add_argument("--nonproduction-postlock-fixture", action="store_true")
     return parser.parse_args()
 
 
@@ -1141,11 +1319,15 @@ def main() -> int:
             reject("READINESS_PATH_MISMATCH", args.readiness)
         contract_capture = capture_file(CONTRACT_PATH, "ADAPTER_CONTRACT_UNSAFE")
         contract = load_json_bytes(contract_capture.raw, CONTRACT_PATH)
-        environment = validate_environment(contract)
         if args.consume:
+            validate_immutable_environment(contract)
             if not args.schedule:
                 reject("MISSING_SCHEDULE")
-            result = consume_schedule_path(args.schedule, contract)
+            result = consume_schedule_path(
+                args.schedule,
+                contract,
+                nonproduction_fixture=args.nonproduction_postlock_fixture,
+            )
             print(
                 json.dumps(
                     {
@@ -1157,6 +1339,9 @@ def main() -> int:
                 )
             )
             return 0
+        environment = validate_environment(contract)
+        if args.nonproduction_postlock_fixture:
+            reject("FIXTURE_MODE_REQUIRES_CONSUME")
         if args.schedule is not None:
             reject("SCHEDULE_NOT_ALLOWED_IN_READINESS_MODE")
         packet = deterministic_readiness_packet()

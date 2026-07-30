@@ -1,0 +1,68 @@
+{
+  "acceptedPredesign": {
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    }
+  },
+  "appearanceLock": {
+    "appearanceLockCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+    "appearanceLockSha256": "20158b0b5473f7e43f2592296e7314df280d84897e1feaa2779235c1f1387c3f",
+    "documentPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-APPEARANCE-LOCK.json",
+    "northProcessADecodedRgbaSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "northProcessASourceSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "branch": "codex/citysim-world-art-south",
+  "coordinateBridge": {
+    "acceptedCandidateCommit": "3e01ca6738d7574718f9aeff4b66771eee109feb",
+    "blenderNativeDirectionalSocket": [
+      28,
+      0,
+      0
+    ],
+    "canonicalCitySimSouthSocket": [
+      0,
+      0,
+      28
+    ],
+    "mappingContractSha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "sourceSocketPixels": [
+      640,
+      832
+    ],
+    "state": "v06_revalidated"
+  },
+  "direction": "south",
+  "launchPlan": {
+    "authorizedProcesses": [
+      "A",
+      "B",
+      "C"
+    ],
+    "isolatedEvidenceRoots": {
+      "A": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+      "B": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+      "C": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/"
+    },
+    "isolatedOutputRoots": {
+      "A": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+      "B": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+      "C": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/"
+    },
+    "noOverwrite": true
+  },
+  "productionSelected": false,
+  "schema": "citysim.world-art.prelock-runner-contract.v1",
+  "sourceProductionProfile": {
+    "commit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SOURCE-PRODUCTION-PROFILE.json",
+    "sha256": "5edf57eaf42d5adb8c4ed892ed07fedff2900c935d55a883be29e6e3a662c1b8"
+  },
+  "sourceReady": false,
+  "state": "appearance_lock_bound",
+  "taskId": "PLAY-080"
+}

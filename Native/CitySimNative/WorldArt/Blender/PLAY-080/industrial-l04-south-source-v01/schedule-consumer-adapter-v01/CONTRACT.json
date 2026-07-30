@@ -93,6 +93,25 @@
     "treeOid": "c6f74e197a1882cf8df6f35a420920331edae142"
   },
   "mode": "zero-pixel-direction-schedule-consumer-readiness",
+  "nonproductionPostlockFixture": {
+    "appearanceLock": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-APPEARANCE-LOCK.json",
+      "sha256": "20158b0b5473f7e43f2592296e7314df280d84897e1feaa2779235c1f1387c3f"
+    },
+    "mode": "nonproduction-zero-child-cli-proof",
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-RUNNER-CONTRACT.json",
+      "sha256": "1efa2784708f5e509dc06cbef8520cef87e9af7b79df3c1bdd55847d26abaeba"
+    },
+    "schedule": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SCHEDULE.json",
+      "sha256": "a3a94cbb35fa615bb1335cc3c1d42418b1ce1369b0ac18387d13b6e9af587960"
+    },
+    "sourceProductionProfile": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SOURCE-PRODUCTION-PROFILE.json",
+      "sha256": "5edf57eaf42d5adb8c4ed892ed07fedff2900c935d55a883be29e6e3a662c1b8"
+    }
+  },
   "orchestration": {
     "approvedHighLevelOrchestrator": {
       "blobOid": "92155d1cf68efa78e3d2396c8cfe7c4794c9662c",
@@ -113,7 +132,7 @@
   "outputs": {
     "adapter": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/consume_schedule_v01.py",
     "contract": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/CONTRACT.json",
-    "readinessPacket": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SCHEDULE-CONSUMER-ZERO-CHILD-READINESS-V01.json",
+    "readinessPacket": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/SCHEDULE-CONSUMER-ZERO-CHILD-READINESS-V02.json",
     "tests": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py"
   },
   "runnerContract": {
@@ -121,7 +140,7 @@
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
     "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2"
   },
-  "schema": "citysim.play-080.south-schedule-consumer-adapter.v1",
+  "schema": "citysim.play-080.south-schedule-consumer-adapter.v2",
   "target": {
     "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
     "claimRevision": 5,

@@ -167,7 +167,11 @@ def fixture(
                     contract["directionScheduleAdapter"]
                     if direction == "north"
                     else {
-                        "path": f"{roots[0]}/schedule-adapter.py",
+                        "path": str(
+                            SOURCE_ROOT
+                            / "_test-fixtures"
+                            / f"{direction}-schedule-adapter.py"
+                        ),
                         "sha256": hashlib.sha256(
                             f"{direction}:schedule-adapter".encode()
                         ).hexdigest(),
@@ -202,6 +206,25 @@ def validate_fixture(
     contract: dict[str, Any],
     value: dict[str, Any],
 ) -> dict[str, Any]:
+    fixture_paths: list[Path] = []
+    fixture_parent = repository_root / SOURCE_ROOT / "_test-fixtures"
+    fixture_parent.mkdir(exist_ok=False)
+    for direction in ("east", "south", "west"):
+        fixture_path = fixture_parent / f"{direction}-schedule-adapter.py"
+        descriptor = os.open(
+            fixture_path,
+            os.O_WRONLY
+            | os.O_CREAT
+            | os.O_EXCL
+            | (os.O_NOFOLLOW if hasattr(os, "O_NOFOLLOW") else 0),
+            0o600,
+        )
+        try:
+            os.write(descriptor, f"{direction}:schedule-adapter".encode())
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        fixture_paths.append(fixture_path)
     with tempfile.NamedTemporaryFile(
         mode="w",
         suffix=".json",
@@ -220,6 +243,9 @@ def validate_fixture(
         )
     finally:
         path.unlink(missing_ok=True)
+        for fixture_path in fixture_paths:
+            fixture_path.unlink(missing_ok=True)
+        fixture_parent.rmdir()
 
 
 def main() -> None:

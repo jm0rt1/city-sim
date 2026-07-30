@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "disposition": "PASS_CURRENT_AUTHORITY_CANDIDATE_NEUTRAL_NONSHIPPING",
+  "publishedAuthority": "aaee294718a8176b70a4688b738b517f216dd3a7",
+  "mergedHead": "ad16f1af847308bdc9a046a5fe0e7ca859282e0b",
+  "observedHead": "bef68100ce0d4bc93c55b09e53f353daeb5d32c7",
+  "preservedCandidate": "9506bf5aafd93725574f51b114ca177709b7aaec",
+  "claim": "PLAY-073",
+  "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "authorityBindings": {
+    "refreshAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md",
+      "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+    },
+    "sourceAdmissionValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_source_admission_receipt_v1.py",
+      "sha256": "46a9af769c1d3cf291c4859c79858373c576a70e17c8ccffd62d5619db0ef731"
+    },
+    "locatorAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
+      "sha256": "ddc9c5562bc2ff9e57ba15277113e058f535afe5339efef307e310de75e8d0fe"
+    },
+    "locatorSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
+      "sha256": "3c4fa6fe4372bd7beb54a7c2fc1fa8951c3134877a643317727dcc9daf7c8395"
+    },
+    "rendererPlan": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-renderer-intake-plan-v1.json",
+      "sha256": "ca6c31bbafe0afcf537d1b58093c11c8485d3af734ac1e9a041438c271e68abe"
+    },
+    "rendererPlanValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_renderer_intake_plan_v1.py",
+      "sha256": "d8f73de53e2212ce0af30cc1801ddbbb1805a63aa3019da98444ef04dec6cadc"
+    }
+  },
+  "descriptorHashes": {
+    "ATOMIC-ASSEMBLER-JOB-DESCRIPTOR.json": "808f306649762b62568cb2954d7378bf8d7cdca527e26da80f2b219c51744fda",
+    "CAMERA-LOD-EXPECTATIONS.json": "1f60bdaedc981213ec00dc3ce5e0baff73f6d2b9d7ea4c40f152208e4c1b3ee5",
+    "WORK-GRAPH.json": "ef042670b16f1dd2a992e8ba8777cc41b069071cb1aebb040655f9a6902e6bc0",
+    "north/JOB-DESCRIPTOR.json": "f10d0a8a2ebeaaaaa4bd8478fe783c45aaf0647099d0d46522f98726039c4edf",
+    "east/JOB-DESCRIPTOR.json": "194079f394b449df3151ecf2b8bb8a0761b81f75290acc99b2837314f25c0418",
+    "south/JOB-DESCRIPTOR.json": "c141b8dd63ae1be47f47e49c3ec2f3a6e45bab1da4ee18f5ae613933d67b504f",
+    "west/JOB-DESCRIPTOR.json": "658fbfa84ee8990839ce8da96a0ae79e222466e410a5899738be81bed1f8595a"
+  },
+  "projection": {
+    "preparedDescriptors": 7,
+    "directions": 4,
+    "lodSlots": 12,
+    "cameraStates": 6,
+    "registration": {
+      "canvas": [1536, 1024],
+      "footprint": [1, 1],
+      "pivot": [768, 896],
+      "tileBasis": [72, 36]
+    },
+    "nonNullLiveDirectionInputs": 0,
+    "futureAssemblyManifestPath": null,
+    "futureAssemblyManifestSha256": null,
+    "immediateFourthDirectionTrigger": "same_turn_after_four_exact_renderer_quarantine_receipts",
+    "atomicAssemblerInvoked": false,
+    "sourceAdmitted": false,
+    "rendererQuarantineAccepted": false,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false
+  },
+  "gates": [
+    {
+      "name": "renderer_intake_plan_semantic_validation",
+      "result": "PASS",
+      "boundInputs": 20,
+      "directions": 4,
+      "lodSlots": 12,
+      "quarantineJobs": 4,
+      "assemblyState": "template_only_unbound"
+    },
+    {
+      "name": "renderer_intake_plan_rejection_matrix",
+      "result": "PASS",
+      "executed": 37,
+      "failures": 0
+    },
+    {
+      "name": "source_publication_gate",
+      "result": "PASS_PUBLICATION_ONLY",
+      "liveReceiptCount": 0,
+      "sourceAdmitted": false
+    },
+    {
+      "name": "source_admission_validator_tests",
+      "result": "PASS",
+      "executed": 17,
+      "failures": 0
+    },
+    {
+      "name": "focused_swift_locator_adapter_quarantine_join",
+      "result": "PASS",
+      "executed": 28,
+      "passed": 26,
+      "expectedSkips": 2,
+      "failures": 0
+    },
+    {
+      "name": "post_checkpoint_authority_descriptor_and_rejection_audits",
+      "result": "PASS",
+      "readOnlyAudits": 3
+    }
+  ],
+  "expectedSkips": [
+    "testCallerSuppliedAtomicAssemblyManifest",
+    "testCallerSuppliedDirectionPacketAndAdmissionReceipt"
+  ],
+  "unrunByAuthority": [
+    "real_source_admission",
+    "renderer_quarantine_acceptance",
+    "atomic_assembly",
+    "runtime_or_shipping_mutation",
+    "staged_app_build_or_launch",
+    "qa_disposition"
+  ]
+}

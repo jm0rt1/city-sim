@@ -50,10 +50,10 @@ SHARED_TEST = load_module(SHARED_TEST_PATH, "play079_shared_execution_fixture")
 SHARED_VALIDATOR = SHARED_TEST.MODULE
 SECRET = b"play079-east-validation-secret!!"
 CRASH_AFTER_CLAIM_EXIT = 86
-PUBLISHED_MASTER = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
-MERGED_BASELINE = "86b19e9f06a33a5d3139858e72a244df24a62e8c"
-PRESERVED_CANDIDATE = "e7d526246232e5e39ba2c8975372e086e2d7c85b"
-CLAIM_SHA256 = "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+PUBLISHED_MASTER = "aaee294718a8176b70a4688b738b517f216dd3a7"
+MERGED_BASELINE = "87aee7a70edc0a93b23db1252af4ffb2ab7585af"
+PRESERVED_CANDIDATE = "2511d24cc132cf16466fa13235ec4964589d8efc"
+CLAIM_SHA256 = "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
 VISIBLE_THREAD_ID = "019fab72-b2c8-76c1-b430-6c6f8431733f"
 assert len(SECRET) == 32
 
@@ -586,7 +586,7 @@ def positive_run() -> dict[str, Any]:
             or boundary["frozenInputValidation"][
                 "parallelSourceOrchestratorSha256"
             ]
-            != "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c"
+            != "5c9f5ffcebc2a804bb43d593a3be35d280908afeaf7f02b2860675035ad16406"
             or boundary["childStarts"] != 0
             or boundary["blenderProcessLaunches"] != 0
             or boundary["blenderRenderApiCalls"] != 0
@@ -812,8 +812,8 @@ def run_cases() -> dict[str, Any]:
         "schema": "citysim.play-079.east-execution-closure-proof.v4",
         "taskId": "PLAY-079",
         "direction": "east",
-        "claimRevision": 6,
-        "candidateRevision": 8,
+        "claimRevision": 7,
+        "candidateRevision": 9,
         "preservedApprovedCandidate": PRESERVED_CANDIDATE,
         "authorityBindings": current_authority_bindings(),
         "postlockABCProposal": postlock_abc_proposal(),

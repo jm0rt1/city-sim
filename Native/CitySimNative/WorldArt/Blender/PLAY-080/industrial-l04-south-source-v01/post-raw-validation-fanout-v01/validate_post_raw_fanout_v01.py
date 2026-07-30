@@ -36,14 +36,14 @@ TEST_PATH = f"{MODEL_ROOT}test_validate_post_raw_fanout_v01.py"
 PROOF_PATH = f"{EVIDENCE_ROOT}POST-RAW-VALIDATION-FANOUT-V01-PROOF.json"
 PACKET_PATH = f"{EVIDENCE_ROOT}FUTURE-SOURCE-STAGE-V2-HANDOFF.json"
 BRANCH = "codex/citysim-world-art-south"
-INTEGRATION_AUTHORITY = "5d86e804be679c765c2465c60ceaee72f3702c48"
-INTEGRATION_TREE = "a1784f69bba2c7352093502fc4700140c4887171"
+INTEGRATION_AUTHORITY = "aaee294718a8176b70a4688b738b517f216dd3a7"
+INTEGRATION_TREE = "7ee544ea6616be88d1e035eb4c618ce73805525c"
 
 CLAIM = {
     "authorityCommit": INTEGRATION_AUTHORITY,
-    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
+    "blobOid": "bbff05a8840376bb061271f7a63e1b4ef8744362",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
+    "sha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e",
 }
 FROZEN_INPUTS = {
     "bridge": {
@@ -83,9 +83,9 @@ FROZEN_INPUTS = {
         "sha256": "c0ac7fb514f9a6f80bac11c8f95ca41acf0b56f2d19f0c65b106080b3b06b00f",
     },
     "runner": {
-        "blobOid": "bde316b55999a03b63316e89b02cdd8443b0bc33",
+        "blobOid": "970b604ee1b4fb7d60ad383b8853f6597e8fcfb1",
         "path": f"{SOURCE_ROOT}runner-contract.json",
-        "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2",
+        "sha256": "e8327aab984ca7b73cdc843cb1f5477d61215784fa86ea1a7ee9d8f9ae47afd7",
     },
     "scene": {
         "blobOid": "d04d7630436430907caaeb4eaa9c2d04304190ad",
@@ -101,12 +101,12 @@ FROZEN_INPUTS = {
         "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340",
     },
     "sourceStageSchema": {
-        "blobOid": "198937fd641a9e117a4e96136052ae8607025675",
+        "blobOid": "d669d5ed5b60633e24e205e500802ab23d5be675",
         "path": (
             "docs/production/evidence/INTEGRATION/"
             "industrial-l04-source-stage-handoff-schema-v2.json"
         ),
-        "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+        "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
     },
 }
 INTEGRATION_RECORD = {
@@ -475,7 +475,10 @@ def validate_environment() -> dict[str, Any]:
                 "BOUND_INPUT_HASH_MISMATCH",
                 {"role": role, "expected": binding["sha256"], "actual": digest},
             )
-        blob = git("rev-parse", f"{INTEGRATION_AUTHORITY}:{binding['path']}")
+        if role == "runner":
+            blob = git("hash-object", binding["path"])
+        else:
+            blob = git("rev-parse", f"{INTEGRATION_AUTHORITY}:{binding['path']}")
         if blob != binding["blobOid"]:
             reject(
                 "BOUND_INPUT_BLOB_MISMATCH",

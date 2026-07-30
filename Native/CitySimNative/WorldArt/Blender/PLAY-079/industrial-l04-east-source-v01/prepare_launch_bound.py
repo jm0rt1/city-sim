@@ -31,7 +31,7 @@ SCHEMA_PATH = (
     / "docs/production/evidence/INTEGRATION/"
     "industrial-l04-source-stage-handoff-schema-v2.json"
 )
-SCHEMA_SHA256 = "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+SCHEMA_SHA256 = "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
 SEMANTIC_VALIDATOR_PATH = (
     REPOSITORY_ROOT
     / "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py"
@@ -550,7 +550,7 @@ def prepare_launch(
     profile_path = repository_path(source_profile)
     content_commit = require_commit(cell_content_commit, "cell_content")
     require_ancestor(
-        "3ca37996953230b7255f6a22ac1f977c99e56e03",
+        "aaee294718a8176b70a4688b738b517f216dd3a7",
         content_commit,
         "reviewed_candidate",
     )

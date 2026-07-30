@@ -270,7 +270,7 @@ def main() -> int:
                 "industrial-l04-source-stage-handoff-schema-v2.json"
             ),
             "sha256": (
-                "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+                "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
             ),
             "schemaId": (
                 "citysim://integration/industrial-l04-source-stage-handoff-v2"
@@ -282,7 +282,7 @@ def main() -> int:
                 "accepted_master_non_alias_v1.py"
             ),
             "sha256": (
-                "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+                "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
             ),
         },
         "semanticValidator": {

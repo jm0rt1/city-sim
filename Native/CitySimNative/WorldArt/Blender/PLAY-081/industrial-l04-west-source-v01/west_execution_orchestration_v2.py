@@ -236,14 +236,14 @@ def execution_closure_contract_errors(
     if closure.get("testProtocolRevision") != 6:
         errors.append("execution-closure:protocol-revision")
     if closure.get("publishedBase") != (
-        "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+        "aaee294718a8176b70a4688b738b517f216dd3a7"
     ):
         errors.append("execution-closure:published-base")
     if closure.get("claim") != {
         "path": "docs/production/claims/PLAY-081.world-art-west.md",
-        "revision": 6,
+        "revision": 7,
         "sha256": (
-            "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+            "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
         ),
     }:
         errors.append("execution-closure:claim")

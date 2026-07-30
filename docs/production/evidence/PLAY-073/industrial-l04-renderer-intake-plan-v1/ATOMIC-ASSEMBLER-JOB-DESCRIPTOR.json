@@ -19,7 +19,7 @@
   },
   "harness": {
     "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4V2SourceAdmissionHarnessTests.swift",
-    "sha256": "5ef713433219fe9f178a346ab57b15b917be9f858157b67ed41a808037ae9bc2"
+    "sha256": "bebe5b098a6d4603d5a680a123eded0a0b5cb5fd8dde6c2c1a5cff7b9aeffdc1"
   },
   "futureManifest": {
     "path": null,

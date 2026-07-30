@@ -198,7 +198,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
         "stage": "execution_closure_validation_only",
-        "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+        "publishedBase": "aaee294718a8176b70a4688b738b517f216dd3a7",
         "sourceReady": False,
         "productionSelected": False,
     }
@@ -213,7 +213,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         ),
         "claim": (
             "docs/production/claims/PLAY-081.world-art-west.md",
-            "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
+            "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -236,7 +236,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         ),
         "runnerContract": (
             f"{SOURCE_ROOT}/RUNNER-CONTRACT.json",
-            "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1",
+            "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5",
         ),
         "orchestrator": (
             f"{SOURCE_ROOT}/west_execution_orchestration_v2.py",
@@ -286,7 +286,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             if not isinstance(value, dict):
                 errors.append("claim:shape")
                 continue
-            if value.get("revision") != 6:
+            if value.get("revision") != 7:
                 errors.append("claim:revision")
             value = {
                 "path": value.get("path"),
@@ -303,7 +303,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         )
 
     claim_path = root / expected_bindings["claim"][0]
-    if claim_path.is_file() and b"**Claim revision:** 6" not in claim_path.read_bytes():
+    if claim_path.is_file() and b"**Claim revision:** 7" not in claim_path.read_bytes():
         errors.append("claim:revision-content")
 
     expected_roots = [

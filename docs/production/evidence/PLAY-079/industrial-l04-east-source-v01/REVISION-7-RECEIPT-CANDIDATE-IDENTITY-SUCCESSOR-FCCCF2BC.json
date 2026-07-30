@@ -1,0 +1,362 @@
+{
+  "schema": "citysim.play-079.revision-7-receipt-candidate-identity-successor.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "synchronization": {
+    "publishedAuthority": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+    "postMergeObservedHead": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+    "mergeParents": [
+      "fb62b0f1a13e60d717d58364fe6a928196261ce7",
+      "fcccf2bce4a31ee096bfd40580af30e6f90c51cc"
+    ],
+    "historyRewritten": false
+  },
+  "implementation": {
+    "implementationHead": "8f25eedf6eecbd2234f2626b1598f5fa6bb13544",
+    "approved": true,
+    "unchanged": true,
+    "ancestorOfObservedHead": true,
+    "taskOwnedFilesComparedByteForByte": 12
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-079.world-art-east.md",
+    "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+    "revision": 7
+  },
+  "preservedReturnedReceipt": {
+    "candidate": "fb62b0f1a13e60d717d58364fe6a928196261ce7",
+    "path": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-REPLAY-AAEE2947.json",
+    "sha256": "1d87c81d56b6f28c2951cd77cbc1b96fc7c0c202ca0dbeb72adfbeeb4cac1a64",
+    "preserved": true
+  },
+  "preservedPredesign": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "changed": false
+  },
+  "validatorBindings": {
+    "semanticProjectionValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+      "sha256": "9c88e08e87be6a4f8d35d9eaeb7fe5406a57942b71d9e1b5bbda0480cfbca1d3"
+    },
+    "semanticProjectionValidatorTests": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_world_art_parallel_state.py",
+      "sha256": "ce045c791f6d45e2b791be28d1beaa0c7412803b220713253c17ff9e213d5728"
+    },
+    "directionalArtReference": {
+      "path": ".agents/skills/operate-citysim-integration/references/directional-art-parallelism.md",
+      "sha256": "db9eb09b056f0fbdfa5da988d3079f35d82fc8600e65d411e13f007e853e823f"
+    }
+  },
+  "candidateProjectionRule": {
+    "candidateHeadSource": "containing_clean_receipt_commit_supplied_by_integration",
+    "storedCandidateHead": null,
+    "materializationToken": "$CONTAINING_CLEAN_RECEIPT_COMMIT",
+    "observedHead": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+    "requiredDirectParent": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+    "requiredInterveningDeltaClass": "task_owned_evidence_only",
+    "allowedRoot": "docs/production/evidence/PLAY-079/",
+    "allowedPaths": [
+      "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/REVISION-7-RECEIPT-CANDIDATE-IDENTITY-SUCCESSOR-FCCCF2BC.json"
+    ],
+    "jobHeadRule": "every launchedJobs item remains bound to observedHead and is never rewritten to the containing receipt commit",
+    "integrationMaterializationRule": "Integration resolves the exact commit containing this immutable receipt, replaces only ledgerProjectionTemplate.row.head with that commit for canonical projection, preserves observedHead and every launchedJobs item byte-for-byte, verifies the containing commit has requiredDirectParent, verifies the complete observedHead-to-candidate range changes only allowedPaths under allowedRoot, and reruns the exact semantic projection validator before publishing the live row",
+    "workerHeadIsNotStoredAsCandidateAuthority": true
+  },
+  "ledgerProjectionTemplate": {
+    "batchState": "appearance_lock_pending",
+    "row": {
+      "direction": "east",
+      "batch": "industrial_l04_directional_family",
+      "lane": "world_art",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "branch": "codex/citysim-world-art-east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "claim": "PLAY-079",
+      "claimRevision": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+      "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+      "head": "$CONTAINING_CLEAN_RECEIPT_COMMIT",
+      "observedHead": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+      "cleanState": "clean_postmerge_observed_head_before_direct_evidence_only_successor",
+      "dispatchState": "completed",
+      "state": "predesign",
+      "updatedAt": "2026-07-30T16:03:34.131Z",
+      "acknowledgedAt": "2026-07-30T16:03:18.800Z",
+      "nextAction": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator",
+      "boundedDeliverable": "one_revision_7_east_current_authority_receipt_candidate_identity_successor_with_postmerge_zero_child_replay",
+      "blocker": "east_source_production_remains_blocked_by_absent_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_authenticated_east_grants_and_dcc_slots",
+      "stopCondition": "stop_clean_after_evidence_only_identity_repair_with_no_live_lease_child_dcc_render_pixels_a_b_c_normalization_source_packet_admission_quarantine_shipping_push_or_self_acceptance",
+      "parallelismExemption": {
+        "reasonCode": "stage_prohibited_by_authority",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "play_079_revision_7_authorizes_current_authority validation only and supplies no appearance lock source profile postlock grants or dcc slots"
+        },
+        "owner": {
+          "role": "cell",
+          "id": "019fab72-b2c8-76c1-b430-6c6f8431733f"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/claims/PLAY-079.world-art-east.md",
+          "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
+        },
+        "resumptionEvent": "integration_publishes_the_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots",
+        "nextRefillJob": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator"
+      },
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "gitIndexWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "governedEvidenceWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f"
+        },
+        "nextRefill": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator",
+        "capacity": {
+          "helperSlots": 4,
+          "dccSlots": 0
+        },
+        "launchedJobs": [
+          {
+            "id": "play079-identity-schedule",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-079",
+            "claimRevision": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+            "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+            "head": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "branch": "codex/citysim-world-art-east",
+            "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+            "resourceClass": "helper",
+            "mutation": "isolated_temp",
+            "exclusiveRoot": "/private/tmp/citysim-play-079-identity-fccc-schedule",
+            "state": "completed",
+            "startedAt": "2026-07-30T16:03:18.808Z",
+            "endedAt": "2026-07-30T16:03:19.983Z",
+            "evidenceId": "thread:019fab72-b2c8-76c1-b430-6c6f8431733f/turn:receipt-candidate-identity-repair/item:schedule-160318",
+            "dccSlot": null,
+            "processId": null
+          },
+          {
+            "id": "play079-identity-packet-a",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-079",
+            "claimRevision": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+            "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+            "head": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "branch": "codex/citysim-world-art-east",
+            "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+            "resourceClass": "helper",
+            "mutation": "isolated_temp",
+            "exclusiveRoot": "/private/tmp/citysim-play-079-identity-fccc-packet-a",
+            "state": "completed",
+            "startedAt": "2026-07-30T16:03:18.902Z",
+            "endedAt": "2026-07-30T16:03:34.131Z",
+            "evidenceId": "thread:019fab72-b2c8-76c1-b430-6c6f8431733f/turn:receipt-candidate-identity-repair/item:packet-a-160318",
+            "dccSlot": null,
+            "processId": null
+          },
+          {
+            "id": "play079-identity-packet-b",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-079",
+            "claimRevision": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+            "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+            "head": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "branch": "codex/citysim-world-art-east",
+            "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+            "resourceClass": "helper",
+            "mutation": "isolated_temp",
+            "exclusiveRoot": "/private/tmp/citysim-play-079-identity-fccc-packet-b",
+            "state": "completed",
+            "startedAt": "2026-07-30T16:03:18.852Z",
+            "endedAt": "2026-07-30T16:03:34.085Z",
+            "evidenceId": "thread:019fab72-b2c8-76c1-b430-6c6f8431733f/turn:receipt-candidate-identity-repair/item:packet-b-160318",
+            "dccSlot": null,
+            "processId": null
+          },
+          {
+            "id": "play079-identity-guard",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-079",
+            "claimRevision": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+            "publishedBase": "fcccf2bce4a31ee096bfd40580af30e6f90c51cc",
+            "head": "424abf5ea3389bb2e588e2fc8801491efcb822cd",
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "branch": "codex/citysim-world-art-east",
+            "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+            "resourceClass": "helper",
+            "mutation": "isolated_temp",
+            "exclusiveRoot": "/private/tmp/citysim-play-079-identity-fccc-guard",
+            "state": "completed",
+            "startedAt": "2026-07-30T16:03:18.966Z",
+            "endedAt": "2026-07-30T16:03:21.003Z",
+            "evidenceId": "thread:019fab72-b2c8-76c1-b430-6c6f8431733f/turn:receipt-candidate-identity-repair/item:guard-160318",
+            "dccSlot": null,
+            "processId": null
+          }
+        ],
+        "unusedCapacityReasons": [
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-079.world-art-east.md",
+              "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
+            },
+            "resumptionEvent": "integration_publishes_the_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots",
+            "nextRefillJob": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator"
+          },
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-079.world-art-east.md",
+              "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
+            },
+            "resumptionEvent": "integration_publishes_the_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots",
+            "nextRefillJob": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator"
+          },
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-079.world-art-east.md",
+              "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
+            },
+            "resumptionEvent": "integration_publishes_the_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots",
+            "nextRefillJob": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator"
+          },
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-079.world-art-east.md",
+              "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
+            },
+            "resumptionEvent": "integration_publishes_the_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots",
+            "nextRefillJob": "after_integration_publishes_the_separately_accepted_north_appearance_lock_source_profile_postlock_schedule_exact_east_grants_and_dcc_slots_launch_east_a_b_c_through_the_validated_orchestrator"
+          }
+        ],
+        "overlap": {
+          "status": "observed",
+          "jobIds": [
+            "play079-identity-schedule",
+            "play079-identity-packet-a",
+            "play079-identity-packet-b",
+            "play079-identity-guard"
+          ],
+          "startedAt": "2026-07-30T16:03:18.966Z",
+          "endedAt": "2026-07-30T16:03:19.983Z",
+          "reason": "all_four_postmerge_helper_intervals_share_this_measured_common_interval"
+        },
+        "join": {
+          "state": "joined",
+          "requiredJobs": [
+            "play079-identity-schedule",
+            "play079-identity-packet-a",
+            "play079-identity-packet-b",
+            "play079-identity-guard"
+          ],
+          "completedJobs": [
+            "play079-identity-schedule",
+            "play079-identity-packet-a",
+            "play079-identity-packet-b",
+            "play079-identity-guard"
+          ]
+        }
+      }
+    }
+  },
+  "replayResults": {
+    "scheduleConsumer": {
+      "result": "PASS",
+      "testsPassed": 6,
+      "testsFailed": 0,
+      "stderrSha256": "76715a722a8d46b813b4536c2a24f88f91ea6ca9610f0790456588d8a8e20037"
+    },
+    "packetA": {
+      "result": "PASS_ZERO_CHILD",
+      "sha256": "5cf1ec5cd7eff4e1f203b9385ba0ef50c8859ee1a04017fbde9f9420576b0cb1"
+    },
+    "packetB": {
+      "result": "PASS_ZERO_CHILD",
+      "sha256": "5cf1ec5cd7eff4e1f203b9385ba0ef50c8859ee1a04017fbde9f9420576b0cb1"
+    },
+    "packetsByteIdentical": true,
+    "postMergeIdentityGuard": {
+      "result": "PASS",
+      "sha256": "7601db4050d8135a1c3d1d7878681860e9f7cc6d9e119e7d4fcbf65910cf3229",
+      "implementationBytesPreserved": 12,
+      "siblingInputsConsumed": []
+    }
+  },
+  "postCommitSemanticProjectionValidation": {
+    "state": "required_after_containing_commit_exists",
+    "materializeOnly": "ledgerProjectionTemplate.row.head",
+    "candidateHeadSource": "git rev-parse HEAD for the clean commit containing this receipt",
+    "requiredPasses": 2,
+    "byteIdenticalResultsRequired": true,
+    "validatorPath": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+    "requiredChecks": [
+      "git SHA fields",
+      "East cell binding",
+      "required row fields",
+      "observedHead ancestry and evidence-only range",
+      "executionAccounting and launched job binding",
+      "parallelism exemption",
+      "live Git branch worktree and clean candidate identity",
+      "direct parent equals observedHead",
+      "exact changed path equals this receipt"
+    ]
+  },
+  "changedPaths": [
+    "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/REVISION-7-RECEIPT-CANDIDATE-IDENTITY-SUCCESSOR-FCCCF2BC.json"
+  ],
+  "siblingInputsConsumed": [],
+  "activity": {
+    "liveLeases": 0,
+    "sourceChildStarts": 0,
+    "blenderDccStarts": 0,
+    "renderApiCalls": 0,
+    "pixelFilesCreated": 0,
+    "processAStarts": 0,
+    "processBStarts": 0,
+    "processCStarts": 0,
+    "normalizationRuns": 0,
+    "sourcePacketsCreated": 0,
+    "admissionAttempts": 0,
+    "quarantineAttempts": 0,
+    "shippingChanges": 0
+  },
+  "disposition": {
+    "status": "PRELOCK_CURRENT_AUTHORITY_VALIDATION_COMPLETE_SOURCE_NOT_READY",
+    "sourceReady": false,
+    "integrationAccepted": false,
+    "sourceAdmitted": false,
+    "rendererQuarantined": false,
+    "selfAccepted": false,
+    "pushed": false
+  }
+}

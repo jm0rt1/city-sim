@@ -461,7 +461,7 @@ def prove_blockout_camera_socket(
     )
     v2_pass = (
         contract["sourceStage"]["handoffSchema"]["sha256"]
-        == "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        == "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
         and source_profile_rejection["passed"] is True
         and source_profile_rejection["semanticResult"]["error"].startswith(
             "MISSING_REFERENCED_FILE: "
@@ -610,7 +610,7 @@ def main() -> int:
         and describe_report.get("sourceStageSchema", {}).get("state")
         == "bound_integration_v2"
         and describe_report.get("sourceStageSchema", {}).get("sha256")
-        == "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        == "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
         and describe_report.get("sharedSemanticValidator", {}).get("passed")
         is True
         and describe_report.get("canonicalDecoder", {}).get("passed") is True
@@ -1013,7 +1013,7 @@ def main() -> int:
                     "industrial-l04-source-stage-handoff-schema-v2.json"
                 ),
                 "sha256": (
-                    "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+                    "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
                 ),
                 "schemaId": (
                     "citysim://integration/"

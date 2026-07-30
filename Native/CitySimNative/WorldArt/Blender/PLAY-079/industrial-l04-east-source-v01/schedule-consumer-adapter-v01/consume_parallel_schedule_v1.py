@@ -37,12 +37,12 @@ PACKET_RELATIVE = (
     "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
     "schedule-consumer-adapter-v01/ZERO-CHILD-READINESS.json"
 )
-PUBLISHED_BASE = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+PUBLISHED_BASE = "aaee294718a8176b70a4688b738b517f216dd3a7"
 AUTHORITY_DECLARED_BASE = "be524831885fc240742f61be7357ea515a78da32"
 AUTHORED_BRANCH = "codex/citysim-world-art-east"
 ALLOWED_REPLAY_BRANCHES = {AUTHORED_BRANCH, "master"}
-CLAIM_REVISION = 6
-CLAIM_SHA256 = "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+CLAIM_REVISION = 7
+CLAIM_SHA256 = "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
 INTEGRATION_PREFIX = "docs/production/evidence/INTEGRATION/"
 EXPECTED_EXCLUSIVE_ROOTS = [
     (
@@ -160,7 +160,7 @@ EXPECTED_BINDINGS = {
             "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
             "industrial-l04-east-source-v01/orchestrate_parallel_source.py"
         ),
-        "sha256": "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c",
+        "sha256": "5c9f5ffcebc2a804bb43d593a3be35d280908afeaf7f02b2860675035ad16406",
     },
     "processPreparation": {
         "path": (

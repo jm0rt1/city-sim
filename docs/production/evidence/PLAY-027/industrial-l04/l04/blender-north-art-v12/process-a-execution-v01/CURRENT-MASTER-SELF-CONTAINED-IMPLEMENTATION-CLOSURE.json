@@ -1,0 +1,384 @@
+{
+  "schema": "citysim.play027.north.current-master-self-contained-implementation-closure.v1",
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "state": "predesign",
+  "branch": "codex/citysim-world-art",
+  "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+  "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+  "claimRevision": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+  "publishedBase": "9336c814b88717c7b934f6727ca8228873acb9f8",
+  "observedHead": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+  "acknowledgedAt": "2026-07-30T16:40:05.263746000Z",
+  "disposition": "PASS_ZERO_CHILD_SELF_CONTAINED_IMPLEMENTATION_CLOSURE_SUPERSEDED_BEFORE_FINAL_HANDOFF",
+  "supersededByPublishedMaster": "22144bff",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "appearanceLock": false,
+  "implementation": {
+    "preservedReturnedReceipt": "033f7067578ed36ad07924f39795eac88f4c2c3a",
+    "selfContainedSuccessor": "fcf6b137b2f3948b69af0862dc03839528f9f40a",
+    "successorParent": "d00ce242ea3f35328059cf7852b8c26bee9de853",
+    "postCurrentMasterMergeCheckpoint": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+    "approvedImplementationHead": "f67fdc331b86ebc14362d0475f2f853c2d2ead8e",
+    "contentMatchesApprovedImplementation": true,
+    "historicalImplementationRewritten": false,
+    "minimalDependencySet": [
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/EXECUTION-CONTRACT.json",
+        "sha256": "338db603fac9edc769a02db75809b2bed8312285b1fdcd1971be5e17838d9f9b"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/RUNNER-CONTRACT.json",
+        "sha256": "5ef480a373194402f71a386b1aedf9768d5ef1ff3f2682aac85ad15bdb573a43"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+        "sha256": "64f83eb87cb7896bd7c4b5e5f703b37d63ab54c06136b7064622b5b9c5b7e7ed"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
+        "sha256": "bf6ce386b27db6130d75da647233c7b06d0231d21b75453cc6cfa73414127fa8"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+        "sha256": "c51b4871355a916af65aaded598d95a3574b560cf7f3669517f051027ebc8123"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
+        "sha256": "36965deec141967a11ea4d80ce90c82021e7426992abf9c1ffebbef90cabcef3"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+        "sha256": "4fa8757b7c391d5b178b9de119a976e461451b634b20081bc308508b9cc32403"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/test_north_process_a_schedule_adapter.py",
+        "sha256": "7786de4a2597785dc4f88176751b473445039bc52c1dd1b305efed67a1c42631"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-CURRENT-AUTHORITY-ZERO-CHILD-READINESS-R3.json",
+        "sha256": "dc89dbc824e83d82373f980274cfadf23a9ebd25e3720a4f28c012f787cb2c79"
+      }
+    ],
+    "externalDependencies": {
+      "presentOnPublishedBaseAtBoundHashes": true,
+      "missingExternalDependencyCount": 0,
+      "boundCategories": [
+        "claim",
+        "family-contract",
+        "prelaunch-authority",
+        "current-authority-replay",
+        "non-alias-input-and-loader",
+        "shared-execution-closure",
+        "scene",
+        "materials",
+        "lowering-contract",
+        "lowerer",
+        "importer",
+        "accepted-static-b-contract"
+      ]
+    },
+    "cherryPickability": {
+      "base": "d00ce242ea3f35328059cf7852b8c26bee9de853",
+      "command": "git cherry-pick --no-commit fcf6b137b2f3948b69af0862dc03839528f9f40a",
+      "result": "PASS",
+      "diffCheck": "PASS",
+      "conflictCount": 0
+    }
+  },
+  "orderedCherryPickPlan": [
+    {
+      "order": 1,
+      "commit": "fcf6b137b2f3948b69af0862dc03839528f9f40a",
+      "purpose": "complete minimal North-owned implementation and bound readiness dependency"
+    },
+    {
+      "order": 2,
+      "commitBinding": "commit containing this receipt",
+      "candidateDiscovery": "git log -1 --format=%H -- docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/CURRENT-MASTER-SELF-CONTAINED-IMPLEMENTATION-CLOSURE.json",
+      "purpose": "direct evidence-only current-master receipt"
+    }
+  ],
+  "authority": {
+    "claim": {
+      "path": "docs/production/claims/PLAY-027.world-art.md",
+      "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+    },
+    "currentProjectionValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+      "sha256": "9c88e08e87be6a4f8d35d9eaeb7fe5406a57942b71d9e1b5bbda0480cfbca1d3"
+    },
+    "directionalClosureValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    }
+  },
+  "validation": {
+    "freshRootIdentity": {
+      "replayCount": 2,
+      "byteIdentical": true,
+      "adapterCaseCount": 29,
+      "adapterSHA256": "dc89dbc824e83d82373f980274cfadf23a9ebd25e3720a4f28c012f787cb2c79",
+      "prelaunchCaseCount": 32,
+      "prelaunchSHA256": "9b679b8d7db83df39cb5a02c5367012a6d0f86d38bb328e86387a34547ecac42",
+      "roots": [
+        "/private/tmp/citysim-play-027-final-a-20260730t1640z/repo",
+        "/private/tmp/citysim-play-027-final-b-20260730t1640z/repo"
+      ]
+    },
+    "sharedClosureValidatorTests": {
+      "caseCount": 33,
+      "result": "PASS"
+    },
+    "projectionValidatorTests": {
+      "caseCount": 77,
+      "result": "PASS"
+    },
+    "zeroChild": {
+      "blenderChildStartCount": 0,
+      "dccProcessCount": 0,
+      "renderInvocationCount": 0,
+      "sourcePixelCount": 0,
+      "liveLeaseCount": 0,
+      "processACount": 0,
+      "processBCount": 0,
+      "processCCount": 0
+    }
+  },
+  "canonicalProjection": {
+    "candidateHeadBinding": {
+      "candidateField": "head",
+      "candidateIsCommitContainingThisReceipt": true,
+      "candidateSHAEmbeddedInReceipt": false,
+      "materialization": "copy rowTemplate and add head equal to the exact commit containing this receipt",
+      "requiredDeltaRoot": "docs/production/evidence/PLAY-027/",
+      "selfReferenceSafe": true
+    },
+    "rowTemplate": {
+      "lane": "world_art",
+      "batch": "industrial_l04_directional_family",
+      "direction": "north",
+      "claim": "PLAY-027",
+      "claimRevision": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+      "state": "predesign",
+      "dispatchState": "completed",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "publishedBase": "9336c814b88717c7b934f6727ca8228873acb9f8",
+      "observedHead": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+      "acknowledgedAt": "2026-07-30T16:40:05.263746000Z",
+      "updatedAt": "2026-07-30T16:40:24.322004000Z",
+      "cleanState": "clean_post_current_master_implementation_checkpoint_with_one_evidence_only_candidate_delta",
+      "boundedDeliverable": "one_self_contained_north_implementation_successor_plus_direct_current_master_zero_child_receipt",
+      "blocker": "process_a_remains_closed_until_integration_publishes_the_exact_live_north_a_schedule_grant_lease_secret_and_compute_slot",
+      "nextAction": "integration_publish_north_exact_one_process_a_authority",
+      "stopCondition": "stop_clean_with_no_live_lease_dcc_blender_child_render_pixel_process_a_b_c_appearance_lock_admission_shipping_push_integration_or_self_acceptance",
+      "executionAccounting": {
+        "capacity": {
+          "helperSlots": 4,
+          "dccSlots": 0
+        },
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "nextRefill": "integration_publish_north_exact_one_process_a_authority",
+        "serializedAuthority": {
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "gitIndexWriter": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "governedEvidenceWriter": "019f7686-4491-7891-86a6-95a78d67e5c8"
+        },
+        "launchedJobs": [
+          {
+            "id": "shared-closure-validator-33",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-027",
+            "claimRevision": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+            "publishedBase": "9336c814b88717c7b934f6727ca8228873acb9f8",
+            "head": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "branch": "codex/citysim-world-art",
+            "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+            "resourceClass": "helper",
+            "mutation": "read_only",
+            "exclusiveRoot": null,
+            "state": "completed",
+            "startedAt": "2026-07-30T16:40:05.263748000Z",
+            "endedAt": "2026-07-30T16:40:24.322004000Z",
+            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:self-contained-implementation-closure/item:shared-closure-validator-33",
+            "dccSlot": null,
+            "processId": null
+          },
+          {
+            "id": "projection-validator-77",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-027",
+            "claimRevision": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+            "publishedBase": "9336c814b88717c7b934f6727ca8228873acb9f8",
+            "head": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "branch": "codex/citysim-world-art",
+            "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+            "resourceClass": "helper",
+            "mutation": "read_only",
+            "exclusiveRoot": null,
+            "state": "completed",
+            "startedAt": "2026-07-30T16:40:05.263746000Z",
+            "endedAt": "2026-07-30T16:40:06.359160000Z",
+            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:self-contained-implementation-closure/item:projection-validator-77",
+            "dccSlot": null,
+            "processId": null
+          },
+          {
+            "id": "fresh-root-a",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-027",
+            "claimRevision": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+            "publishedBase": "9336c814b88717c7b934f6727ca8228873acb9f8",
+            "head": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "branch": "codex/citysim-world-art",
+            "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+            "resourceClass": "helper",
+            "mutation": "isolated_temp",
+            "exclusiveRoot": "/private/tmp/citysim-play-027-final-a-20260730t1640z/repo",
+            "state": "completed",
+            "startedAt": "2026-07-30T16:40:05.278522000Z",
+            "endedAt": "2026-07-30T16:40:09.526110000Z",
+            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:self-contained-implementation-closure/item:fresh-root-a",
+            "dccSlot": null,
+            "processId": null
+          },
+          {
+            "id": "fresh-root-b",
+            "batch": "industrial_l04_directional_family",
+            "claim": "PLAY-027",
+            "claimRevision": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+            "publishedBase": "9336c814b88717c7b934f6727ca8228873acb9f8",
+            "head": "0b56854a805334e86a27278680da19d6c1f9a9a0",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "branch": "codex/citysim-world-art",
+            "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+            "resourceClass": "helper",
+            "mutation": "isolated_temp",
+            "exclusiveRoot": "/private/tmp/citysim-play-027-final-b-20260730t1640z/repo",
+            "state": "completed",
+            "startedAt": "2026-07-30T16:40:05.278540000Z",
+            "endedAt": "2026-07-30T16:40:09.526089000Z",
+            "evidenceId": "thread:019f7686-4491-7891-86a6-95a78d67e5c8/turn:self-contained-implementation-closure/item:fresh-root-b",
+            "dccSlot": null,
+            "processId": null
+          }
+        ],
+        "overlap": {
+          "status": "observed",
+          "jobIds": [
+            "shared-closure-validator-33",
+            "projection-validator-77",
+            "fresh-root-a",
+            "fresh-root-b"
+          ],
+          "startedAt": "2026-07-30T16:40:05.278540000Z",
+          "endedAt": "2026-07-30T16:40:06.359160000Z",
+          "reason": "four admitted helper jobs overlapped with disjoint read-only or isolated temporary outputs"
+        },
+        "join": {
+          "state": "joined",
+          "requiredJobs": [
+            "shared-closure-validator-33",
+            "projection-validator-77",
+            "fresh-root-a",
+            "fresh-root-b"
+          ],
+          "completedJobs": [
+            "shared-closure-validator-33",
+            "projection-validator-77",
+            "fresh-root-a",
+            "fresh-root-b"
+          ]
+        },
+        "unusedCapacityReasons": [
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "integration",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-027.world-art.md",
+              "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+            },
+            "resumptionEvent": "Integration publishes the exact one-process North Process-A authority",
+            "nextRefillJob": "integration_publish_north_exact_one_process_a_authority"
+          },
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "integration",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-027.world-art.md",
+              "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+            },
+            "resumptionEvent": "Integration publishes the exact one-process North Process-A authority",
+            "nextRefillJob": "integration_publish_north_exact_one_process_a_authority"
+          },
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "integration",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-027.world-art.md",
+              "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+            },
+            "resumptionEvent": "Integration publishes the exact one-process North Process-A authority",
+            "nextRefillJob": "integration_publish_north_exact_one_process_a_authority"
+          },
+          {
+            "resourceClass": "helper",
+            "slots": 1,
+            "reasonCode": "completed_before_observation",
+            "owner": "integration",
+            "dependencyAuthority": {
+              "path": "docs/production/claims/PLAY-027.world-art.md",
+              "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+            },
+            "resumptionEvent": "Integration publishes the exact one-process North Process-A authority",
+            "nextRefillJob": "integration_publish_north_exact_one_process_a_authority"
+          }
+        ]
+      },
+      "parallelismExemption": {
+        "reasonCode": "exclusive_gate_owned_elsewhere",
+        "owner": {
+          "id": "integration",
+          "role": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/claims/PLAY-027.world-art.md",
+          "sha256": "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0"
+        },
+        "resumptionEvent": "Integration publishes and dispatches the exact one-process North Process-A authority",
+        "nextRefillJob": "integration_publish_north_exact_one_process_a_authority",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "North completed the self-contained current-authority zero-child closure and cannot start Process A without Integration's exact live one-process authority"
+        }
+      }
+    }
+  },
+  "processCounts": {
+    "blenderChildStartCount": 0,
+    "dccProcessCount": 0,
+    "renderInvocationCount": 0,
+    "sourcePixelCount": 0,
+    "liveLeaseCount": 0,
+    "processACount": 0,
+    "processBCount": 0,
+    "processCCount": 0
+  }
+}

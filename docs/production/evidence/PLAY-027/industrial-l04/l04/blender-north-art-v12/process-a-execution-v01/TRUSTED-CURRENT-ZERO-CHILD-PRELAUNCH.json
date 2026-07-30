@@ -54,12 +54,12 @@
       "passed": true,
       "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
       "trustedIntegrationHead": {
-        "commit": "448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+        "commit": "f163425dcf3efa5054d71bb339ad565442656dee",
         "remoteRef": "refs/remotes/origin/master"
       }
     },
     {
-      "actualFailure": "Git binding failed: merge-base --is-ancestor 46c3b13d4527a64c195bc57dbfbdcc1200bf9066 448fd45c2fb07e7c6efdd4ac19764cdd04ce6cda",
+      "actualFailure": "Git binding failed: merge-base --is-ancestor 46c3b13d4527a64c195bc57dbfbdcc1200bf9066 f163425dcf3efa5054d71bb339ad565442656dee",
       "expectedFailure": "Git binding failed",
       "name": "forged-lane-authority-not-in-trusted-master",
       "passed": true

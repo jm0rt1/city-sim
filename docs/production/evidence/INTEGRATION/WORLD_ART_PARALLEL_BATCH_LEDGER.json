@@ -1,14 +1,14 @@
 {
   "schema": 2,
   "batch": "industrial_l04_directional_family",
-  "updatedAt": "2026-07-30T02:27:39Z",
-  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T0227Z.json",
+  "updatedAt": "2026-07-30T02:33:01Z",
+  "lastDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-07-30T0233Z.json",
   "supportDispatchReceipt": "docs/production/evidence/INTEGRATION/WORLD_ART_SUPPORT_DISPATCH-2026-07-29T0527Z.json",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "10b0dacf1440b1c7a351e99cca29ac95e62e40c4",
-    "technicalHeadBeforeLedger": "10b0dacf1440b1c7a351e99cca29ac95e62e40c4"
+    "publishedBase": "270c5ad30c001dbaa9ebc9beceacf19744a2f409",
+    "technicalHeadBeforeLedger": "270c5ad30c001dbaa9ebc9beceacf19744a2f409"
   },
   "stateMachine": [
     "contract_pending",
@@ -122,17 +122,17 @@
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "claim": "PLAY-027",
       "publishedBase": "10b0dacf1440b1c7a351e99cca29ac95e62e40c4",
-      "head": "12bcb1a2c740d30cebdc975c2f0882f63de6b6cf",
+      "head": "68c98430536850aa0319884a914589075fabf5e2",
       "state": "predesign",
-      "dispatchState": "sent",
-      "acknowledgedAt": null,
+      "dispatchState": "working",
+      "acknowledgedAt": "2026-07-30T02:31:00Z",
       "claimRevision": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d",
-      "cleanState": "clean_north_static_a_failure_checkpoint",
-      "blocker": "the_worker_must_fetch_and_merge_the_exact_published_recovery_authority_and_dispatch_before_any_mutation_or_child_start",
-      "nextAction": "merge_the_exact_published_authority_then_commit_prelaunch_validation_and_consume_the_single_north_static_a_recovery_slot",
+      "cleanState": "clean_north_recovery_authority_merge_before_implementation",
+      "blocker": "the_recovery_implementation_and_prelaunch_validation_must_commit_cleanly_before_the_single_child_start",
+      "nextAction": "author_and_commit_the_three_additive_recovery_files_and_prelaunch_validation_then_consume_the_single_static_a_slot",
       "boundedDeliverable": "one_additive_recovery_contract_launcher_tests_prelaunch_receipt_and_exactly_one_replacement_static_a_result",
       "stopCondition": "stop_after_one_child_start_success_or_failure_with_no_static_b_pixels_process_a_b_c_sibling_dcc_admission_shipping_push_or_self_acceptance",
-      "updatedAt": "2026-07-30T02:27:39Z"
+      "updatedAt": "2026-07-30T02:33:01Z"
     },
     {
       "lane": "world_art",

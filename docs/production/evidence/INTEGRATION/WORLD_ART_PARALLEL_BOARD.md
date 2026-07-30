@@ -1,6 +1,6 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `10b0dacf1440b1c7a351e99cca29ac95e62e40c4`
+- **Parallel operating authority:** `270c5ad30c001dbaa9ebc9beceacf19744a2f409`
 - **Batch:** Industrial L4 directional family
 - **Updated:** 2026-07-29
 - **Machine-readable ledger:**
@@ -10,7 +10,7 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `12bcb1a2c740d30cebdc975c2f0882f63de6b6cf` | sent one additive recovery authority and one replacement `static-a` slot |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `68c98430536850aa0319884a914589075fabf5e2` | authority acknowledged and merged; recovery prelaunch implementation active |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `bcb5cba1495aade19009f4e4407cd55b7bf03c39` | zero-pixel A/B/C orchestration prep integrated; wait for post-lock release |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `d8332051c8665410f90684ba8f034fd2a1846a53` | zero-pixel validation fan-out prep integrated; wait for post-lock release |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `76386c7dba4c3f9b86c6662361cc670ef1e6ed1f` | zero-pixel review assembly prep integrated; wait for post-lock release |
@@ -24,14 +24,15 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `02:27Z` refresh, Industrial L3 is integrated at exact candidate
+At the `02:33Z` refresh, Industrial L3 is integrated at exact candidate
 `472ffa85cd35639a675c1c2e4ede748c94446a7f`; its complete technical gate is
 green and QA owns the sole same-SHA player-facing gate. East, South, and West
 zero-pixel execution, validation, and review-assembly preparations are
 independently approved and integrated. Renderer has completed the L4 intake
 prerequisite audit.
 
-The compute envelope now opens exactly one North diagnostic slot for attempt
+North has acknowledged and merged the published authority without conflict.
+The compute envelope opens exactly one North diagnostic slot for attempt
 `industrial-l04-north-v12-static-a-recovery-v01`, process `static-a`, under
 authority commit `10b0dacf1440b1c7a351e99cca29ac95e62e40c4`. A child start
 consumes the slot. A second recovery child, `static-b`, North Process A/B/C,

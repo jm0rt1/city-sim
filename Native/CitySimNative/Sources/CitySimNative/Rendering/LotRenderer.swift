@@ -68,7 +68,7 @@ struct IndustrialGeneratedAssetIdentity: Equatable, Sendable {
     let logicalID: String
 
     init?(level: Int, adjacentRoads: RoadConnectionMask) {
-        guard (1...2).contains(level),
+        guard (1...3).contains(level),
               let frontage = Self.authoritativeFrontagePriority.first(
                   where: adjacentRoads.contains
               ) else {
@@ -116,7 +116,7 @@ final class LotRenderer {
         let commercialIdentity = tile.kind == .commercial
             ? CommercialGeneratedAssetIdentity(level: tile.level, adjacentRoads: adjacentRoads)
             : nil
-        let industrialIdentity = tile.kind == .industrial && (1...2).contains(tile.level)
+        let industrialIdentity = tile.kind == .industrial && (1...3).contains(tile.level)
             ? IndustrialGeneratedAssetIdentity(
                 level: tile.level,
                 adjacentRoads: adjacentRoads
@@ -247,7 +247,7 @@ final class LotRenderer {
             city.addChild(sprite)
             return true
         }
-        if tile.kind == .industrial && (1...2).contains(tile.level) {
+        if tile.kind == .industrial && (1...3).contains(tile.level) {
             guard let result = assets.generatedIndustrialPresentation(
                 level: tile.level,
                 adjacentRoads: adjacentRoads,

@@ -1,0 +1,1198 @@
+[
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
+        "payload_pixel_sha256": "ef92ec01a21cf6521dd2d22d78115b41bcaadd4a6822493311f5198fb9d98368",
+        "sha256": "81008959a70b7cdc191f91c1d385652faab81f8e5e263b01ab70b0270cd889e8"
+      },
+      "city": {
+        "normalized_sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
+        "payload_pixel_sha256": "46212661275be139655efcf5bc389eed921ae0fc10f5df88c9c3eddd584d1ee3",
+        "sha256": "772748f88fffe824589dec5a2641352bb17fde42a40a0f332c6c839223457c88"
+      },
+      "neighborhood": {
+        "normalized_sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
+        "payload_pixel_sha256": "0c6d17d5b734f7e34b2d2a2b20c67f6847ba4a40e6fdbbf69e7b33dbcae2b109",
+        "sha256": "432d9c385c36a68e45889464b074f9a035b263bcbdcc3fc2a9b0c94bf2678837"
+      }
+    },
+    "logical_id": "ambient_pedestrian_pair",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "335290e1e81bb9a46ab6b059f96ad6e7b6365c48d5e6abae55c281ae8d7ce30b"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
+        "payload_pixel_sha256": "96b1c610d174733b7b781e8a1fe672618ccd4c386f8ef992e54c5f3f73bb365d",
+        "sha256": "2125056e6fe9824aba43369048333700c56663bba8fe1c6c32694a15c1b100a4"
+      },
+      "city": {
+        "normalized_sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
+        "payload_pixel_sha256": "127cb151810fda7096f1dbcc39370792b9b40259264097f5956a61f4c998348f",
+        "sha256": "c8887cdbb54c8c22340a8ab5b38c8901c200551c18e758a18f9151f17b7b79ed"
+      },
+      "neighborhood": {
+        "normalized_sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
+        "payload_pixel_sha256": "fd670c1dc6c2646f9a9f60149e7a9e4874d5135a3a5ade91e3b5cfeed58a6178",
+        "sha256": "b35956012e509d091a3402ffcae52d62e12d41e19a9fa7df66452294ce305942"
+      }
+    },
+    "logical_id": "ambient_service_object",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "bfac1b625f79978a5e598c35e43b35a65238c68d5a950efda27b6be2ada55181"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "ff845263674d50a7aface99e00a277b9b4c0309dce34ee65aa9f3a4d2475aa35",
+        "payload_pixel_sha256": "d5410b6e4844587e5cafb6373fa53cff6a2fa2a670926302cde4b1e037f5338a",
+        "sha256": "d98a7914197039d9ae36f9ec059f4f7089cd2a8992b08762f9d3254320fe2f52"
+      },
+      "city": {
+        "normalized_sha256": "70777ab9b391e02c7aaafe90a5d3ed0c0ff657cb12f8c3936da28b62fcce1257",
+        "payload_pixel_sha256": "52f12fc00737ee8b3359bd58d8218973277bc3af489d68688b662e84893b872e",
+        "sha256": "fa75075eb4d77923d09e9a775dfbb134b82fdf9c74a563b7b6a1d61cc5065afa"
+      },
+      "neighborhood": {
+        "normalized_sha256": "452c6985590e91b441cad49427366dadb9cf9c1ba0274ef9958028fc87bc78d1",
+        "payload_pixel_sha256": "254f430f17b1bab5a87beb486d57bee6753ae0d418d9f1541b6023e5e2c5c591",
+        "sha256": "76a37d50db8d2260334d60a14bfd60a8604171b4fef6aade7fb3d51f8f2e18d3"
+      }
+    },
+    "logical_id": "ambient_vegetation_cluster",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "99a11b2cdda5b2d471bf041d920d57e70e46dd72ee63c77b62b997de378e16ca"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "9dd2e9c588519f1c113505da543bbf950f787466bf9d93e49ebeb84f3aff6a52",
+        "payload_pixel_sha256": "210a016f9e1407d9820df18e6b3fbf16a8ec62f3af0919508be4fb4033768317",
+        "sha256": "709bcd7c46da62fbb67eb3d0c3f8d5d0696ce18881b16eb6408927b8085433af"
+      },
+      "city": {
+        "normalized_sha256": "43170c48925cce3aab4a1257ae79046dc50ef6552d46fddc238067e047e288e6",
+        "payload_pixel_sha256": "749cb5ca28a630bb5ab6fd53dbfd14cb67780b90d37a0e59c8471afd844337ee",
+        "sha256": "c92f267b621bb2b2dd2f33c434597a8d1267bac55cc2f988864e338e9c9eaafa"
+      },
+      "neighborhood": {
+        "normalized_sha256": "37cfee2f85c2858d7e6f7600ffbd9a80db2a4e0e96c6308bbb060b85c00285a2",
+        "payload_pixel_sha256": "b49685f6decf6c551536c6521ff81d16815fce632a3afa7e1af335018425e2b0",
+        "sha256": "24c744198e325e2b3114dab4183637cdf215095895f180978a1b9a57959aa8a7"
+      }
+    },
+    "logical_id": "city_hall_l01",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "5f8f75a9363d891510d4839976ee71ee72a41b61cce6fd6a088d574713118d40",
+        "payload_pixel_sha256": "31b82d2d0ed8601c89cb441221aea34b50bc71c6f7922d7e9490cdfdfb250e75",
+        "sha256": "27f35e303ae7c2308790ccdf24241feae5176e224c2c5b7113b26724a11f58d9"
+      },
+      "city": {
+        "normalized_sha256": "9d992505eccf438fabc39b814cfeb1b001d99ba35065f5ceec42a602fed69f9e",
+        "payload_pixel_sha256": "ca0c7a629114d950042d66165444eb4428d1bb3eae42769b68f3628d67be476c",
+        "sha256": "11fb59278045a54ed0bedfe21d4b769b4157b27c13e4a14dad9ab118748395a0"
+      },
+      "neighborhood": {
+        "normalized_sha256": "255188495f6c77b92b0c630ebb47ed469a561698b158d77916424411efa92daf",
+        "payload_pixel_sha256": "ea76796ede777b74fd4fa57c51ed940a1d04f8e00747989c54f2616e3b2e5c35",
+        "sha256": "8f77ddc1434734aaf759f9a5bcb7f779864f46105dfbcd6876bbbba9df5ad9fa"
+      }
+    },
+    "logical_id": "commercial_l01",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "90207ec4ed651810df863e0ff21591c85eea444f8606c41c83e85060e4c1de89"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "555e813f5b24fea0bd3df70183f34caaf6defc1ca8951baf4f63092536414406",
+        "payload_pixel_sha256": "ebca50a3aac195a339e485bf2399735164988c1fe02e840464447aed75514978",
+        "sha256": "93c4c29e46bda673326ca5bea0af74cb1bf96f6cca5c0abb467bd889376368e7"
+      },
+      "city": {
+        "normalized_sha256": "2c1fd5e262d00d6333fff672fe391be52d9092a7450959c31070467a9481454f",
+        "payload_pixel_sha256": "abc378c2e185f7b9393e3f36a342cb53bd6ce26e8e75838e43c546c87b21abe4",
+        "sha256": "1947d58f2ec298a456febaf70a8130883c46838f7aec25f04550ccf62a1647b7"
+      },
+      "neighborhood": {
+        "normalized_sha256": "78958e37f17f25d651cdbf2deb21b65fdf2b898c9799071430a024f215fc9be4",
+        "payload_pixel_sha256": "1eb8cdd132753710490a03da73f87b6cae249d5f937605e5e905086f9cc8dee5",
+        "sha256": "7baef95c86e6f6b85d228c638273af18c34243e34f4115a6b4b494eddf911bb6"
+      }
+    },
+    "logical_id": "commercial_l01_v0_east",
+    "source_key": "commercial_l01/variant-0/east/source-v04",
+    "source_revision": "source-v04",
+    "source_sha256": "57db0fe3cbb696e85ac537baa63eff42c0766147eae9ea3179337da670cabda2"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "a172b049427a88e688cbcb1e21bc3ad090692fb84e45d6141ac6f1200030af9b",
+        "payload_pixel_sha256": "cbc973bcc0a243b434dadf09782db97b4b54bd6cc8b608fbef3942559f38dc06",
+        "sha256": "b224df5c1ea8f9550bba5f9735ac113046d12e57c1020abeb2390331530febfb"
+      },
+      "city": {
+        "normalized_sha256": "56f0c350208c6718e23c1aaadcf2b226cf5d3de2fdddf3f39454798273f719e6",
+        "payload_pixel_sha256": "525c4bab96d12f96e9f2f5210ec098033e6310baa8f4cabe2b8d8c49c5e57935",
+        "sha256": "e9411450b8a04207a91542b9254fa9f6d92178c974bee6ce45a02e377d8be6dc"
+      },
+      "neighborhood": {
+        "normalized_sha256": "019b3426fb453cd898a9e179b153b7272ffd96dab2f706faa8d5f62f012a2c9e",
+        "payload_pixel_sha256": "591fa0393f35b255970a1cd4455b825a7c10e1872807e211990fb4e7a5522065",
+        "sha256": "026594623cdd9707d5fbbb8324f43e208195a8e85558fe8765d736396c66a92b"
+      }
+    },
+    "logical_id": "commercial_l01_v0_north",
+    "source_key": "commercial_l01/variant-0/north/source-v04",
+    "source_revision": "source-v04",
+    "source_sha256": "a60220fc054165a0c54af70038bfcfbc16ac6768fd4f266c388ecfc27480379d"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "cbad9d06c2aaa63f19f3059e6e4f68af724a94c886938794f0bac043a3265fba",
+        "payload_pixel_sha256": "b4953b407376d58c333636a4f5f4e434b0f4608c33d8295938d2bfaf239c9f69",
+        "sha256": "756d8f4a3cdae7f495ba4d12f6b4c6417e3add8c2959e40777e4d28fc7975bf2"
+      },
+      "city": {
+        "normalized_sha256": "e4db22bd66d9e8ef1d99ed756af5a47edb7060d371cc717c3b208bd8d13fa10e",
+        "payload_pixel_sha256": "b151320495dff17277e5b9d737b1211651400c203cda8e1927522ab8788d1a16",
+        "sha256": "caa5448587b1cf12aafddc52445dab1fc403f812b2a8c57c86b33d0f4bd1c3b4"
+      },
+      "neighborhood": {
+        "normalized_sha256": "a463f34d0edc929233be590af953aab0cff4b1a822f3922b1e2fc0bed44f59af",
+        "payload_pixel_sha256": "6e08e7d3169fa61b3d14665f9cdb87b107e13557c66130f15b0b6b09a1acb5e7",
+        "sha256": "dd48aef11bbb776bf90a889ab6d2b5df98010da4eec0570bc26ce6944f4bc1b7"
+      }
+    },
+    "logical_id": "commercial_l01_v0_south",
+    "source_key": "commercial_l01/variant-0/south/source-v04",
+    "source_revision": "source-v04",
+    "source_sha256": "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "682ed34ad346ca4537898bd0a2628ff148db7ac6f71d6cec510e7c3af7626c0a",
+        "payload_pixel_sha256": "6dc8df53452829ca4de331d3b044a5985a3a4131f2a85e07de8cb5f1b445c135",
+        "sha256": "5146c6e3e91a74829f99ccb342973bc84000ab4c03d01516ae20a0e0b3247a06"
+      },
+      "city": {
+        "normalized_sha256": "39eebe14f24b38eef19db235aea63ca797b872b4955b5df4b7b959586bdfe0a9",
+        "payload_pixel_sha256": "ec2f47b47e8e4a273e947f4effc588f3cd1806c567559787720d89a5caee1ffa",
+        "sha256": "93b0a7b8693ae58f0c845e467c8d05307bd5baeaa8bfb0378dafa8867a1d320e"
+      },
+      "neighborhood": {
+        "normalized_sha256": "5a21b2fa753e419eb0fff32dc583163528223e7b4c8289637157381d5d4f327c",
+        "payload_pixel_sha256": "dfa0d59531b4b493a6f6603528f17db4871f5deffe41d7f182329540acce3892",
+        "sha256": "547f860314969f365912cb498ae9b3adeeff60a9afb7efcb71cff53efff8cc06"
+      }
+    },
+    "logical_id": "commercial_l01_v0_west",
+    "source_key": "commercial_l01/variant-0/west/source-v04",
+    "source_revision": "source-v04",
+    "source_sha256": "27bfa3228b8335d3bd9a223e0106beac32eeddb309c59e6a518ba9be72e6f58e"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "4bc301f47a59bf2da041d69c3708acdd41a5ec5c784b248037dac6bd68e17b79",
+        "payload_pixel_sha256": "ea136b47a6971b0837dae39e4e46aefa80eb9b8793b7e3956c904677dc90f2c0",
+        "sha256": "2dedf206d7955b743a39e69067334855060c6222986e87daff00c4359f21c8e5"
+      },
+      "city": {
+        "normalized_sha256": "dc001def9135a071355d76021d97d1c8e688c018901937231144ad2ba02656bb",
+        "payload_pixel_sha256": "2652a193760720837d515b37787ddce06a4beeb474f2ddc2dcb4cd7c61e761e2",
+        "sha256": "67793861482160a03dba8f6de1ba815e22f9256ab520e31326f0ccd6e091ec04"
+      },
+      "neighborhood": {
+        "normalized_sha256": "55c26bd355087e3897adcc6d828e68f8f9654e8099c5d4895544562e9a921c9f",
+        "payload_pixel_sha256": "776d80cca32423cf6248b797303f6f29746508ac1f000c4782fa3f1177c6f09b",
+        "sha256": "b40e60484d666629e16c4f86df7edcdf9bba3cad8f54ff4f56da04f2f8b20d49"
+      }
+    },
+    "logical_id": "commercial_l02_v0_east",
+    "source_key": "commercial_l02/variant-0/east/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "94fb7430bbc23efa7c081983434445bc52faa4a2dc4226fad9b1f40579e8766a"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "a08a9a22403790bdcca09a5b73ecd974d9e9dad912abecdcdb4fc0750de50658",
+        "payload_pixel_sha256": "39a866472a7ebc466fa3957cd9b01ae59477caf17698af7edf93c2be2b63fec4",
+        "sha256": "184f304993c08d242698fdfc4a3db38530dd57625c9accf893c4cf895dca751e"
+      },
+      "city": {
+        "normalized_sha256": "16021b56b438cf61c5589301617fc20f75cd05957a164d3afaf7f0f08b380234",
+        "payload_pixel_sha256": "0f579a3d1c2d3e02341c0610c6e6684f3dccf855285f225e581f3fc90e27c75b",
+        "sha256": "c08d176f25f8a4cd2c3ee64b8eafbb3b45c018e75a5d4f38e9a5a3b125cda63a"
+      },
+      "neighborhood": {
+        "normalized_sha256": "c70b7b6c2843560000713d5e1c21d1fbb7b47bf98724e65576ec7f749db9b83f",
+        "payload_pixel_sha256": "8858756890a8d9e4fd32f0c794f614a75115c4e8ed6dd581f8c38d2c1c966c20",
+        "sha256": "38194a7675fa46a7be26062997fea063bc346684a5cf1b3fccb334caefa18df1"
+      }
+    },
+    "logical_id": "commercial_l02_v0_north",
+    "source_key": "commercial_l02/variant-0/north/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "fdf75f3d40c1e4274c1153493d94e188ff24840ed2ad06cc98ce01ff9127bc47"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "f68d23e0ae65249d547f8435ec47f50d688752ad0db80aa75133d9a8b998b13d",
+        "payload_pixel_sha256": "7b13cc73cbecafc3e0be392711bf4f0d38078437ba0fb9ffcd9095052b528393",
+        "sha256": "e434ee9fb022fb7fdb0f4f875a6b82b62fbc509d54ffe5409610b13d1a7cfa1d"
+      },
+      "city": {
+        "normalized_sha256": "f2e6e479714bb913bc27ce50edad1fa6c64b19ef5f5e53aab26365c9379c3385",
+        "payload_pixel_sha256": "25dfa372783985e760472c313dc61b06e6aa7a7a7783293369bc860f44e786a4",
+        "sha256": "9d212d7ebfdb72a011c3f648fe35792eb41ac5d15d0409ba4ef4e4f6fd157f89"
+      },
+      "neighborhood": {
+        "normalized_sha256": "768035441c14f9e111c8a741c19c7592a5f0f2f0379af2dc7f057946cdcc9d9f",
+        "payload_pixel_sha256": "2745c3a9dbc88cd01954c558f512c58110fe9966db6b7e376d122284a8309dc0",
+        "sha256": "b512c14d9428555fae7fef69e7a18a48756edc9a0d5fc5d39d75b9ffff3d4cff"
+      }
+    },
+    "logical_id": "commercial_l02_v0_south",
+    "source_key": "commercial_l02/variant-0/south/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "eed9dd92f593a860abf8c24cdccaf5a7e59574c761c95628b467ac1ac1c85efa"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "658d67c49466f03def9c96364cb738e6cb7d903d01c9d7bbaba7314761c9292c",
+        "payload_pixel_sha256": "c9cec9b1e6ea0cf1f299af38d84534b16b00f6923c11b28fe5046f3ec93e92a2",
+        "sha256": "f9fd24b49c53f717eaa066bcfd8095d9b24cd3a7e9e02656a7423b6917555a43"
+      },
+      "city": {
+        "normalized_sha256": "fc35235d1f80d82b72c18b8ed56c68477cf756211ee02c7782818fea8edf5e80",
+        "payload_pixel_sha256": "5f6ce26d41c27b3dac78e1660f4885f6698b868186cc892fb89f57f583b6dd64",
+        "sha256": "ec595ad5ee26921173649830ebe85f265fc5afb5a91be2c2fa5fc9a23884714a"
+      },
+      "neighborhood": {
+        "normalized_sha256": "8a472bef7da07df3e3ad8aa334444f1190bcd3edc6eff9d57bacf02bee8646eb",
+        "payload_pixel_sha256": "13efa4ff9a19b4e7fe337270dd1ad8b074694995d19ae4375bfdca0a6ec89cf5",
+        "sha256": "24507dc08df80e679b3690274d959e4cf2b5ecefd252045773c82392cb2ae288"
+      }
+    },
+    "logical_id": "commercial_l02_v0_west",
+    "source_key": "commercial_l02/variant-0/west/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "579a656b0623c5897cd5204bef23c29be9f739b45c4c4701b70801d36d76ba4d"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "f5a5dee1f4b64eed0fef74615905e1334f6ede3125c5bb30d84eda42a422bec0",
+        "payload_pixel_sha256": "0843b9c05874f5368190da84ac7c3edb718be4bbc92d49467602ed3459c15ab9",
+        "sha256": "3092947a45fa429d299c01041c419aa273ef4599dfeba8cd5244750792a18179"
+      },
+      "city": {
+        "normalized_sha256": "8e4b9bc5420819af3206c8af02cd3d3759bb81a89acb35252bd6d51e8c0e3a68",
+        "payload_pixel_sha256": "5490bd0b521beac13bfc2853b1c43e4bf6e3430d4ee0f78fdbd3f1845ce530b4",
+        "sha256": "f2a1148970a71431b26a354755bded818b4c59791d76b62ff3cbf4f8358a4f21"
+      },
+      "neighborhood": {
+        "normalized_sha256": "5df20aa94314dab24d242cf1ee3844830690f9286f519dc26682a1da341232d1",
+        "payload_pixel_sha256": "11d0709ac9b05540026c12a2606c76c2d4a583ee6d88fa414c7a0ae09388058e",
+        "sha256": "4652161f4482307bc8623d2a7907d057dddb5d3aeef0cf2f642c628bd71678dc"
+      }
+    },
+    "logical_id": "commercial_l03_v0_east",
+    "source_key": "commercial_l03/variant-0/east/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "a29c3f2ee33410409ea482c8f15c7f05f2b6a3b227feccc9c575991258ab4363"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "42dc96ef32cfce8c1717a0e6a8019ddadfadc00385eaccb8aac6ac33599f286a",
+        "payload_pixel_sha256": "44f44038d257f7fbe6765d5e311ab8f81ae5e960597846ce7a808c5728c0f355",
+        "sha256": "20ba0fb9c8ac29186f0179db79c2fe6bbc193e03af790eb7e8eee1adfc106c68"
+      },
+      "city": {
+        "normalized_sha256": "a024f89978776286d1b28e792cbbb4e0be0a2fd1dfff9d0ae62d3f2b9c0ad2a4",
+        "payload_pixel_sha256": "daf697b8560588d98da9547465f1ebedbc4f8c2164f2809e227b980da6834966",
+        "sha256": "db16d3e6784227cc74fc939badd3db93927107d83b337082e6a8f2fefc1a43b6"
+      },
+      "neighborhood": {
+        "normalized_sha256": "ec2af484f519acc8f3486a1bb5ab1cc7947af2956dc1610d79227396bbbfe068",
+        "payload_pixel_sha256": "c2e34e3ff63766e824e5e0ebf82ad5a3b0a2eee72afe9dab4119a186e23e61ba",
+        "sha256": "442fed7f97c863b123390a517fc383b5593ca14a01d81cda0a92e1c001c31339"
+      }
+    },
+    "logical_id": "commercial_l03_v0_north",
+    "source_key": "commercial_l03/variant-0/north/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "9a81e8b710296c40ab16021c7db7fe0bed68a5e87a6dbb9dc4b07d43322a6c4e"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "62dfba7710fa045c1f1d289440f2d5d21109801d2eeade0a74affcf15e4aa5af",
+        "payload_pixel_sha256": "49f626edac940e4133f521c2911f506df6cbbe692abf362767585501f3e220a4",
+        "sha256": "437680f938c31bebe33510f86daed1c4bc63ae17f2d898ecbc29364d22e5f595"
+      },
+      "city": {
+        "normalized_sha256": "4400a77be62a99973f9f27ab6cc5235d2ac74d10e9ce4bd42786abd87100d4e0",
+        "payload_pixel_sha256": "fca776c6a679806525ed6dc90cfa3876b9e2fd5c5cc7111494ed2790d8b30f4d",
+        "sha256": "30eab9d69c5390c8cf5936ee562c76977445cf37eb0a77e3936d74076df06579"
+      },
+      "neighborhood": {
+        "normalized_sha256": "eb59e32076d49315a0fe489b3d781760dc672e51a09ad0f27f48217b3eb526ca",
+        "payload_pixel_sha256": "25967153960b32ebbeab128f9694fb1bf6bab8bd80eb21906db9c85247b8b418",
+        "sha256": "016ab86e8803a1eae41d660cde05106d53e50ad52c6ad1a0bbb9ff8dd981f20b"
+      }
+    },
+    "logical_id": "commercial_l03_v0_south",
+    "source_key": "commercial_l03/variant-0/south/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "63984ab4ec0166b2b451901a48c5b2033b3d5ba103e269a6435831b557812736"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "fbec0d8199e4d8cce55c24bf7cea26ae4b6ebf6e92a422ab01f976dc3ce18796",
+        "payload_pixel_sha256": "ac356cf4ffebecb01af2ce7483a2ed1fceff1a9e23c85d823d9a29123e90d4eb",
+        "sha256": "6afdf1631d502b0004585f8242793012adce9ed3ba9f7b649363c580f69b0ce8"
+      },
+      "city": {
+        "normalized_sha256": "725fdfe960e6147d33205fdd63cc2abbbb72e14f390f99b7a12f919d91b43f1a",
+        "payload_pixel_sha256": "32e44fd7816c786ae21df7277d079bc2cd33caf6d9abe8ff7dd9b4fef76f30f9",
+        "sha256": "3f42c0330eaa00c084ce671f23defc7f4664a45d9235812722c4d2d3107e3014"
+      },
+      "neighborhood": {
+        "normalized_sha256": "f81f1a3c60ae720ff09e27f04573647f9f143232bc53288a18274f4570813fac",
+        "payload_pixel_sha256": "d59606c5f1e74c4eb49021f986401feaef76735fb5e17b75a950d10fd8c75c75",
+        "sha256": "605c187f398c592d6cc60752b8140140df63fb7e87e4db7d8e46881e1073c0b3"
+      }
+    },
+    "logical_id": "commercial_l03_v0_west",
+    "source_key": "commercial_l03/variant-0/west/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "7fbb3fedd2bd88d612e7853106c6dd2d510e55b45597c458438005d6412610f9"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "b0f6232dbd40802320611cd93da455b193b98bcd1525bd0b7374532b22daec55",
+        "payload_pixel_sha256": "a52bb8404ba6228fd60f28d4607da0083d441299f0365506186fc7545bacf395",
+        "sha256": "1012ce66a9288ee197ee2afe57903edde31bee8f698ad922be1800d10f38e851"
+      },
+      "city": {
+        "normalized_sha256": "8f19c1ad8a94c028471d2ac637fffa6b9adf76bafdf9ed272c6df152549ab67e",
+        "payload_pixel_sha256": "2192d26353efe02320c959989c4924f161b109256ddecf5f692e6c8968cf97aa",
+        "sha256": "4bce454c9b7e0cdceff484dadc0540fb1b736c56c1a0f01d02b981dc586b6fc7"
+      },
+      "neighborhood": {
+        "normalized_sha256": "877bc0da3f4e1296e353043018e60896c7f13b3158a70a3fee277bc9d0177e2b",
+        "payload_pixel_sha256": "af3c5fbf71c00e378e861607815f9392cf842902738b1881787b1f2eb7701b9a",
+        "sha256": "a65dfc9d7a8e3d6436f77342f4c44789f0b73cb8cce423a420f52303b6c927f4"
+      }
+    },
+    "logical_id": "commercial_l04_v0_east",
+    "source_key": "commercial_l04/variant-0/east/source-v03",
+    "source_revision": "source-v03",
+    "source_sha256": "a97d881325c22217e57807a2b63b9cdbd9218de37f155c1dd097cc67a52c617c"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "2beb5b157c5615ef1b61edaa42482bc48c08de92b76ca155302e73d4eb667919",
+        "payload_pixel_sha256": "ceaf7242c8d8ff774e0c30bcae7f5b83109d06d69fbd89326bfbe89a4e02054e",
+        "sha256": "a1eeb9b29708a20f6a94d287cc9f4a9898831e7d204524947c1a992a72fe65ea"
+      },
+      "city": {
+        "normalized_sha256": "794b069bdf94e91bad6ff8afac4e0f8e58eef804d534e770afda3869761a503e",
+        "payload_pixel_sha256": "64378a93c74f976e8d7e2c35fe4205559b8cc6be1aa06f441ba3104fbfdc5625",
+        "sha256": "28514bfabdc4b1c104d4ceef761f4544828076b79abc2bfb1dbf60737830ef7c"
+      },
+      "neighborhood": {
+        "normalized_sha256": "f104659b56336b9f97fa6b70388c6d97ce364bb452b0b0ec232b458928d8128a",
+        "payload_pixel_sha256": "af786ea61424e6a4566a5f20f7399b4c296ddc4cfbc81c8ea8e325cc11666d1d",
+        "sha256": "0bb792949851d4051960317620fc90e51dc3b70e24b04b89383d40579eddda0c"
+      }
+    },
+    "logical_id": "commercial_l04_v0_north",
+    "source_key": "commercial_l04/variant-0/north/source-v03",
+    "source_revision": "source-v03",
+    "source_sha256": "9e996eb088bddc197468c5f881c111cf64ab16fa5220de7641d876d0601b4cff"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "a7c2a23c41d325f3baab2479d1a61860414347a836ab7ff72bd62a50c4eb4df7",
+        "payload_pixel_sha256": "17aea9f98e05f1117e6c00cb32cc47d8f75b880136fbc52d687e0317f67629fa",
+        "sha256": "c8005993f2b81f72841af61e306e0a3d07a9b57ebbb532934b6b9b8bd782764b"
+      },
+      "city": {
+        "normalized_sha256": "d73f52604ab233207d1637b06ac09c64474ac8a3c02b740e621424d711ce6e21",
+        "payload_pixel_sha256": "d39f49b9aa8d6059c2c54a7ab82ea1eb629a55cd2892d5e1fc7e951ccdd3c9e5",
+        "sha256": "6a02acf03b7f21fde456f8af3f626c28de5e36e864459640f4445b3bde8e2443"
+      },
+      "neighborhood": {
+        "normalized_sha256": "45ff04759a5a31b02be0c3fc24953f06fd709905301115aa35d0f52a2eaa9f29",
+        "payload_pixel_sha256": "7b73603e8b4ca99eef6f1d4a2c3042baf0580144623f936075921c3a463b0208",
+        "sha256": "8fbe5b7e51c7f935625d0d3e176145ef77576dc77a567cf007e204ca756d4ceb"
+      }
+    },
+    "logical_id": "commercial_l04_v0_south",
+    "source_key": "commercial_l04/variant-0/south/source-v03",
+    "source_revision": "source-v03",
+    "source_sha256": "985d2df5c5c852b4614609eec120bfc67e6ac4d1efb8376791ec8a5020d77122"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "f1dce124c8286d02371bdc6bf9eb4ade0a280854b08fc2d41bdae99917d458c6",
+        "payload_pixel_sha256": "2f6cce25c76f2bbf7bcca7e82a3b6c7dc0b52d0342949ed7448063fcbe39de39",
+        "sha256": "91f81af56f0c6bdba871cded94659592086418da4bef6261b46ea4aea682bded"
+      },
+      "city": {
+        "normalized_sha256": "c21c46448fa912574c5f386aee616d0fb0ba1fdec958ac7dbb4adc802f58800f",
+        "payload_pixel_sha256": "315ad9b73d4e00d9bd09af4b877d6bbca21bf4fcddc9577498829032ebfd5d41",
+        "sha256": "14d18016e7cf6472f5db18236356ba412de28bca2e4647970d19620f99f5f616"
+      },
+      "neighborhood": {
+        "normalized_sha256": "2cc90c0f34b951ad4d826fae04104ead68fde2a5ab1a87d12f805118b0a374d2",
+        "payload_pixel_sha256": "f153fb276c1889226ba418426b452f2eb1ae77d2eadea14c4c9c3b95f098307b",
+        "sha256": "d50d9e26a9b01cca24d0f5e5748f373f252db624ed372ca65c2dadd291499679"
+      }
+    },
+    "logical_id": "commercial_l04_v0_west",
+    "source_key": "commercial_l04/variant-0/west/source-v03",
+    "source_revision": "source-v03",
+    "source_sha256": "ac58ebd8c769fddd24d160f1ba4e4a5097d04f17ccab41bbb120672f5173433f"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "34d78ce12f4f78ba110a0555b35d9de45c636a434da7defe5e38bc86bcd2f848",
+        "payload_pixel_sha256": "7e0222236c169ca4d49b22e0c9a429fa57d646c6a9ef6fe4eda11b72119d853c",
+        "sha256": "0f0f9b32f27984e48f8d31dfc6a0e65017e03d0c7b2c97436e62aa7cde26ef4c"
+      },
+      "city": {
+        "normalized_sha256": "59ab2f48505b7b6e26158f92473fa977a36661ab37ffe38304523b03adc1ec8d",
+        "payload_pixel_sha256": "0e6003959ef8b43630f1861d73db63e17ae0f1d420af302fb9de3149784f9746",
+        "sha256": "82bdafd7b9050be24d37f1507689cccc50da120c0ed531ea4eccebb9af938224"
+      },
+      "neighborhood": {
+        "normalized_sha256": "fcd03ade5abb5cab8256fe96a321aece9f8a4341eee6bf6622763f423a3297ba",
+        "payload_pixel_sha256": "c2aae73e7cd65b88129a6c92e2adff0defe2b6d0f287327580238eb5513d777b",
+        "sha256": "f3507eb4f4308f931489dcebc1c3d8e239c6d58e6bb871354d1901800ce475c5"
+      }
+    },
+    "logical_id": "grass_material",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "6702e0d1755662f723cd4bcdcbf8f890afe4518d90c9a879f84b142ef195260b"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "31773d3b78ff36a8da6e8bfed16548b995c1cc6213b8dfd9e28b3a074c73c71e",
+        "payload_pixel_sha256": "0584842114b49dac3b5c6a8e015770900955be0899c8d6786fad9d69fa6f2446",
+        "sha256": "ef67da06576291dd234a6636494d80f33791ce11139b234e9aecd9c90eb1c109"
+      },
+      "city": {
+        "normalized_sha256": "9810dec8b5d8c1875ff0a253e0182d8a37fbef181e0bfc020657630d7844122a",
+        "payload_pixel_sha256": "a0a2c782a6c42f85a7d2999f6c6ae9d22e1f7041084429bd0af782c68725e510",
+        "sha256": "4b598224db6a8d4886a5cff1f6adf6afffa5daa698b62ed837981fb556be8a7a"
+      },
+      "neighborhood": {
+        "normalized_sha256": "c59758b4ba7c039eba6577c6bc688ae8a781d49af0e76ec2e1c6bab57da8c344",
+        "payload_pixel_sha256": "845773328775a9d62ac17c1dda85a8695cee8c7383934ef6e49b9b80c2daadc9",
+        "sha256": "4af0a4b86a7cc40a971f0a3ed839cc077a8c1d53a762eca0c6e4a97805ccf9c6"
+      }
+    },
+    "logical_id": "industrial_l01",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b",
+        "payload_pixel_sha256": "02243652d503b59e3e9ee1c4357187c238b5e0c10b7963e0cd74f9d9779ebed5",
+        "sha256": "eed03065d059789ace91c198cb55e010018b33dc48ed2af4be559c2afc74d9fd"
+      },
+      "city": {
+        "normalized_sha256": "a04aceca4ba2cd47b0b2fcbecb00d4dbf48fca8129c779bf6d27c825d8876d81",
+        "payload_pixel_sha256": "1c7dcc3215a3aabb76bab7446663797d0e813e3ad0c74a2dd9409b6fb2391366",
+        "sha256": "9be887bf64b445cd7221e7899d6531e5408db10ddb394b26c805bc91899aaf28"
+      },
+      "neighborhood": {
+        "normalized_sha256": "35803e7aa979aa9afecb134e457040e23fa58fdd51be18db4c4e010e3f470607",
+        "payload_pixel_sha256": "a22f56b772509741a7996f05a34c73e4938aaddd3eb3bbd4c123059ac4e8f8d0",
+        "sha256": "8582608737e60af9e3007f9944437e63c364867a8dd6cf3ff5f9b043a849eabe"
+      }
+    },
+    "logical_id": "industrial_l01_v0_east",
+    "source_key": "industrial_l01/variant-0/east/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "f20d78d6b4b43c7111250f231351166397e3444e3f7a7243f282dacd94592e4f"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "beba2ab0dbf920e0725ba7771f3c5288c02507c0b375bc8dd7940840dad8f13b",
+        "payload_pixel_sha256": "b1a78748d0ab9ad09f70d763b283da49257f5a810807f83bdcbf986154c5e1ed",
+        "sha256": "d66787c52203b16e8feb25960d768e30dbd0e855b1f1d0851e292d50f789c926"
+      },
+      "city": {
+        "normalized_sha256": "8134c56cb4ea3238fec85bf4b568eed0a2c8a0724695be16c105e057c3aa4583",
+        "payload_pixel_sha256": "7db5c41509cc175b199c34ead887387e82dcb6176075bc6ef857709a376bd444",
+        "sha256": "4d58d4f90ddba212117c8536bc98691eb52da4acffbb32b5bf6f6cfc757e5b99"
+      },
+      "neighborhood": {
+        "normalized_sha256": "d637c48c462942a6739434e3f8532291d5977bd6159da1bc9ca86a03648f3329",
+        "payload_pixel_sha256": "dfea62d6932703636eefa6beca2d32c035dc47f0787218c312ae6a5616661562",
+        "sha256": "58bbf84e93d8dabd4ff43c7d1e6682464a5bcf993f025fc362cd937bdee7331b"
+      }
+    },
+    "logical_id": "industrial_l01_v0_north",
+    "source_key": "industrial_l01/variant-0/north/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "5ca93afa57157ddf686ef5740f1907da03f513906b9c703bc556ed75e2516728"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "4c5228bdcf513c272b392e6175faa85327191b99433f81cd8c33b6e10a53020d",
+        "payload_pixel_sha256": "dae9df3e845f18d7f877da8573a087e54e84568c683d42e4a1cc6a28cc1b032c",
+        "sha256": "61ed9218c1fd41670252a3a7c339868f2891fb099dbae6a852b9e9ac35e1a7d1"
+      },
+      "city": {
+        "normalized_sha256": "4d0dcaa65bb8bbea8661f37f426441996e5d4e88de36fc2689bd28eb7ab8103d",
+        "payload_pixel_sha256": "344618e1d81509525e6ba1f269cbff6eb7722ffa4ef6a23900a656966dc0d526",
+        "sha256": "551ac9b411975fd6c61939c6d6f86e035ba91188635641b9e4c14038436d9cc2"
+      },
+      "neighborhood": {
+        "normalized_sha256": "0794afa8e0002f88ba01a4458800f7b0ae886b9a608d7064a3c7a0fc759da274",
+        "payload_pixel_sha256": "507128bd39c7550ecfe02a7a6df56e8874169f9f326538df2e58f4a956f52a59",
+        "sha256": "0fe94e6284377846ff6b1215fa46e9ff848e7fc1de6b62297e0a785c7e81a1b2"
+      }
+    },
+    "logical_id": "industrial_l01_v0_south",
+    "source_key": "industrial_l01/variant-0/south/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "04a2963a211d4b7ae5ac4fa8ddbb88c46dbe18cc7b4685bf67c9167dc8bda9da",
+        "payload_pixel_sha256": "6eea67bf1174e45cf4a877080d4b670fccadcee99498ba69baf8699426a25949",
+        "sha256": "bdf882d99f40847311a3bd2b5a8aefaad3833ba8f8a4ebc2fef8603e2468d2dc"
+      },
+      "city": {
+        "normalized_sha256": "be96b2aec303069741d625dd91620d6e29138ea6e4b6c9d3af98275cba8b6b9f",
+        "payload_pixel_sha256": "edd163f93d047a713d94f1d1858823ed16f01a1ab011acb82bcc0d49f70c73bd",
+        "sha256": "a32c28dab8e7f2f5846eaefd62fafc9a254edce3c2416ffc9da2bfe7709269f1"
+      },
+      "neighborhood": {
+        "normalized_sha256": "4fa100cfeb1abc0caecaf4cbd74ffa51abd0c521d9050a76ec2e1a4cbbf4a025",
+        "payload_pixel_sha256": "182010a4eb719c6b2df4835066cb5db46a0e75a1c0d0f27e2bafa489dd070ec5",
+        "sha256": "c8512bcbeb6a978868b73ff0d521aa212ac80d52caf9adb486866e5202d6a9c7"
+      }
+    },
+    "logical_id": "industrial_l01_v0_west",
+    "source_key": "industrial_l01/variant-0/west/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "9fa5759f88e2efd2f3eef36f66089f0e8e978dc4e052d08d919b9f1a40aa331a"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086",
+        "payload_pixel_sha256": "e7b38a15a76341a842241ec8829093d40f84c129b0b27f4efcf417a9be480e6a",
+        "sha256": "55be8d52772b8dc22c109a1a034712064244404eca158e2a42cf801327c5ea9f"
+      },
+      "city": {
+        "normalized_sha256": "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c",
+        "payload_pixel_sha256": "d3ebe0ed04b8355fb3cd131d04930d520b1bbe5f22b26a33af98a2279ce0a3e9",
+        "sha256": "82c73fadc8f4ab273cf926940af5d40ca8ac4c3f9722a7447e82b9774f32bf70"
+      },
+      "neighborhood": {
+        "normalized_sha256": "c229dfa0759fa7232786eee92fcdd6786cd1d13728fb09b8aa9b39b30d49ed93",
+        "payload_pixel_sha256": "db1fe9b94494a770b1b4707126eac10cf0c20ae080112499faed32780022c8a2",
+        "sha256": "d9cafb13e566faa3c02885dd290a42544436fd1d13e85cbc78a09130e7ca72f0"
+      }
+    },
+    "logical_id": "industrial_l02_v0_east",
+    "source_key": "industrial_l02/variant-0/east/source-v05-contract-018",
+    "source_revision": "source-v05",
+    "source_sha256": "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "c539f4478296e929fb77250ad8476572e7b8155ad96abd2ebebe3170b052debc",
+        "payload_pixel_sha256": "7cac827cc545be0b3ed90f8851fa9908ad38c9bd97ebe29a38f2e72cbc17b0b1",
+        "sha256": "cbb3a032d22d2f66ebb5d858e409672e19af307a77d736d1111bf2af72a023de"
+      },
+      "city": {
+        "normalized_sha256": "60969ffb594fee16efa1114e75edf6dcb5e57c4041c1c8019c1796d7a7ff8b0a",
+        "payload_pixel_sha256": "c6c90766ac235f94878ecc066dc2ba73197e01ba9850d70223cb88f981beade9",
+        "sha256": "2a125c6a0a2a310916fb17392a0e2b8f3c0de1b97a91c3d2ae5168e4c07e7259"
+      },
+      "neighborhood": {
+        "normalized_sha256": "76d1d302d8b1dfaa41ca799bbce5bf5ae4bee9754091e08a31eb1c0c0c6c7736",
+        "payload_pixel_sha256": "4afb1a156a9bf691ba678379c9724812debd2667b24943c108d8994510c48034",
+        "sha256": "2e8efca95ea2dc9730fcd8d7a8b5135d3fc604c6361b9b96609c07e516f41b23"
+      }
+    },
+    "logical_id": "industrial_l02_v0_north",
+    "source_key": "industrial_l02/variant-0/north/source-v07",
+    "source_revision": "source-v07",
+    "source_sha256": "095267c78f333eb43c3fd0e14c4e9bb14bb83a787188ddecfa9c94dd92ab88e3"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "c98e9b56a5705613a482b4ca249b4cb2b23a74fd6123638fc8282e7e8e5ba6f7",
+        "payload_pixel_sha256": "131de72374849bdf8e4b7bdb1a8f1320f8575e91f5156ab30d18853fd995a1e6",
+        "sha256": "784908b8146353a3a481d8e2a9283d202237aa531fc6f5539f43f70672797a56"
+      },
+      "city": {
+        "normalized_sha256": "b70085caaef5045df7289364d34f983054bc3b80d991ddb9507e9654ac1abbc3",
+        "payload_pixel_sha256": "1a941a6e3817a6126c64b42db537fc4fd95e75cf461b85d1cbcff60ee54381d4",
+        "sha256": "c1f17ec45adb5146ccd1cc77e36abd5e52178cb9369cce407d631136e489496d"
+      },
+      "neighborhood": {
+        "normalized_sha256": "976b998aa14adb1f040651616b31c5bc2e0ead77fb388054d7bf04b1d863dceb",
+        "payload_pixel_sha256": "7fe7580557f43b905ccf5f8651c98fede7701e2e2ff69d4e7f33af88e09ca4b8",
+        "sha256": "bfbc46155f214e0acc1e30fb0b0768cd480748be198d0635c3a4318926f75017"
+      }
+    },
+    "logical_id": "industrial_l02_v0_south",
+    "source_key": "industrial_l02/variant-0/south/source-v07",
+    "source_revision": "source-v07",
+    "source_sha256": "b3cafd821e29980a86a6d74f562a2ad97d5f877b4106f746aaa88bc19d9922a5"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "4c66e3d326606838bb484beef0a685cbf73d38d2e127572bd19be8e0c83077dd",
+        "payload_pixel_sha256": "01bc580a37d553b63738a0711f43cedab88d4f5bd235219c25cc7e537ee25580",
+        "sha256": "f514da89d1612d28abbd91f19206f738a9198b20ef997c6e1256a0225dbe0f14"
+      },
+      "city": {
+        "normalized_sha256": "3853833738f2d2660ad9abe01cdee98f35ce6a80aa0a21f8afcd3f837fed9f8b",
+        "payload_pixel_sha256": "da79615f117470a1520edf6f82bf5d226972064c2e8ab6eed6515eceffdceb83",
+        "sha256": "380cbbf6c84b16d90f357d26c5c114a9d11ca6d3ba63a1dc4cad2ce002db85b1"
+      },
+      "neighborhood": {
+        "normalized_sha256": "f0a3732a12672f91c023126bdc55b09c11acd2735930900b17c1106216858823",
+        "payload_pixel_sha256": "cb8bc0ac3c45c120ddfa46bbfa4b89bf77dc4297487df2a3fab6ae2c9056255b",
+        "sha256": "e43b3de5103ad276b258d95c566d2c84ce7450772aca447d80db6bbd589f7d4b"
+      }
+    },
+    "logical_id": "industrial_l02_v0_west",
+    "source_key": "industrial_l02/variant-0/west/source-v07",
+    "source_revision": "source-v07",
+    "source_sha256": "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "9dac9a615c18479320d94080520479b6e73c6020cd2daff635e1843b0e062cdc",
+        "payload_pixel_sha256": "995c110e56d602f6b2a21f67dae606364f427b6e59dbd3fe48f78c7a9b2d3008",
+        "sha256": "c1a1cbbbd6ec7d97e41fead79547ee5a60e04566456f3889bce19fd713c1b6de"
+      },
+      "city": {
+        "normalized_sha256": "061f57829807875d74ebb53e7c840fdb2752da5a83a7272acd705da2581231fd",
+        "payload_pixel_sha256": "fbb329a6744bce53f752e1836ae1830c4a3062f2d2d036afa67ce89c4cf9bacc",
+        "sha256": "165dc05080cdec15b8051f8ae1221b46ec0ad3acb61c14080f148aaf342234b5"
+      },
+      "neighborhood": {
+        "normalized_sha256": "6b851210c9c516769ec46ae8211335929cf2e8333e527e13199c24091f12a00d",
+        "payload_pixel_sha256": "e196c2f1387d2a1cece68d0a48e40edc41770f7dcd9de35bf581d22e101489da",
+        "sha256": "57e8dfb6dabbd36769f7f9f00bdcf3acd8c148a7ab97ca3f2d9c16483bac255a"
+      }
+    },
+    "logical_id": "park_l01",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "c25510524763c209e17b7db4e86adf7b76f94cc6239d00813c8212facc84b5e5",
+        "payload_pixel_sha256": "42d5513b62ae2df39c6bf73b612bcdce807b885c4b614172f2b387601906b9c3",
+        "sha256": "7c14dcd0a6dcec26251c31cfdecab939707fd7d5a00a0f189c1f49a36b290a02"
+      },
+      "city": {
+        "normalized_sha256": "23d37fe4212fc16618cdcb51c6167c0172a7a6c6941c211206dbf0bef1e51b0e",
+        "payload_pixel_sha256": "c2659a076d583ff9fe885638fda9093082c0b3a6fb32d46f924cc613626cc025",
+        "sha256": "59648dc1d1465e3ca1567a58fe6ef2bc62e19c28db9618246cbbf62e64314fe8"
+      },
+      "neighborhood": {
+        "normalized_sha256": "ce19f9688fc3170c1ae0c68a57dd7a13dee856ad18ae814bdb0cf12bf4f24377",
+        "payload_pixel_sha256": "659632857a0604f88f5054ef9379e8b9ab161794bbc20632fa71f3feaa9373b1",
+        "sha256": "6c32bc02547066e780bbc5df89f811e0ffd8067de464d8d5072d3f41ce2165de"
+      }
+    },
+    "logical_id": "residential_frontage",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "3a1afa7f250299a6c02e09beaed07a4b5cd05278835ec0bc4a29f464b3b97d44"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "9d651f9bc62ec2035227d971358b95488c7b139a73e40e91919aa6e2a1ce780a",
+        "payload_pixel_sha256": "7ceced16662cf305b63ce383edf53549bf6c4a882a9539b12360515e062ce4e8",
+        "sha256": "ae60cf00ae8b2b7032c7deae1b2b79b89c6813f0655410190454153685a02eab"
+      },
+      "city": {
+        "normalized_sha256": "fe2b3ce332203f97ced8a282d51e603b7b624a985b8279d179107871d85cff31",
+        "payload_pixel_sha256": "d453ff9842093027a8b678d274fcbe3130e53fa53e609018c63c75bd35da377b",
+        "sha256": "aa30fab269cb028efff9e34dd371cb286381485a7072f44f1a436009915f9f80"
+      },
+      "neighborhood": {
+        "normalized_sha256": "022dd4fc7f6fefa57b8dcad9d2a71bc53ffd80db79f4ced49bbcc40c5cc3ed7a",
+        "payload_pixel_sha256": "cb81a2d2d7231a792e40f9548bf00b3373f1a547c01a53e2a0bd3e15e93429c6",
+        "sha256": "be33ac55b5ef7b444a545598ac98938a27da86e85de15eb9decc154356a7d9d8"
+      }
+    },
+    "logical_id": "residential_l01",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "4c99b92ced4e36858c0bd044e20535dee9a354cc2e14048286c58f1c5ef9bfe3",
+        "payload_pixel_sha256": "4c125752fb4a2fa82ad515de9e64372234ab4e2aa2ad37d7b4e9675672f14880",
+        "sha256": "4ff53ffdaba468cbd5614c911035d1f46c73503f8b89a2d8db268f269f6f30bc"
+      },
+      "city": {
+        "normalized_sha256": "845c5a4657f9e79cdd302fb3b89a8ad03a5a40754a61bf3c2e436d476b018246",
+        "payload_pixel_sha256": "846d128bcd57623042cbb1a9e776d42974aa8334562e7330d461dad8b7c531d1",
+        "sha256": "441709bf28ebbdd60580a4e25ace707c16995740061ecdbb0429f95d99326ff9"
+      },
+      "neighborhood": {
+        "normalized_sha256": "85def9c0b2ea99e16e6f9c7cc724e839a42823993c0b013af2e3cc5a4a601ff3",
+        "payload_pixel_sha256": "3cb924d829f3756e5ffa17de949be5f75f51c29e17ead846308ae03c4a84e098",
+        "sha256": "52de44fdb0d39814eae33468da72d75d06286fe5f90524a5c630c915954531de"
+      }
+    },
+    "logical_id": "residential_l01_v0_east",
+    "source_key": "residential_l01/variant-0/east/source-v08",
+    "source_revision": "source-v08",
+    "source_sha256": "f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "d2379a6c6ef39a236241013129aea442d8751b1d480a35eb8207c8541fabb597",
+        "payload_pixel_sha256": "b5a4adcd67efa7dd3dea107935dcd18c2884708f81d1d83e75e9b88f7b3ee8e1",
+        "sha256": "242f3da61d8883feadaac1aa6808f3810607e02003545f0c9afb2bdc55acdc88"
+      },
+      "city": {
+        "normalized_sha256": "d1de08cae9cd5bb10cb834b38033b70e8a1393ebc88ceaaf4fcfc847b0945749",
+        "payload_pixel_sha256": "9a687640b939e318e815c95260027410b00903e4b3c394a63edb68b307f3edfb",
+        "sha256": "bab1904ee32a992555681e7d54605f0807d124cdd935e8285e774020bd20f3e8"
+      },
+      "neighborhood": {
+        "normalized_sha256": "3f1ccadaeed8bb155b54c616d7b3e29ec24c327d79cde1a791147528072d2149",
+        "payload_pixel_sha256": "ed0b7118c401eb84b97e6ab4f59f4f979397f3a33515941be0b89651316a4688",
+        "sha256": "693badab311c71247ad56ca9270db600db32584ee1ba53fb164c032851dff01a"
+      }
+    },
+    "logical_id": "residential_l01_v0_north",
+    "source_key": "residential_l01/variant-0/north/source-v12",
+    "source_revision": "source-v12",
+    "source_sha256": "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "70672f1d8c896d2486092a213cad34d83d0eb3330806b6978fba83fb5272f4bb",
+        "payload_pixel_sha256": "a158f2bd5734f69081d1378c48de82f92ffd205529518086ac71a39fb08bc01b",
+        "sha256": "56da661a59cecbf942d98ae591b9c02e1f7cd4407a11fbbef815ddb79ac2f1e6"
+      },
+      "city": {
+        "normalized_sha256": "8833285706686ae739f2f5b1c3b33ec71c58dc2c458c3d50f75d8c94459d82f8",
+        "payload_pixel_sha256": "24434ab8d50c338d9c0ef0a1c5ec9fc44f18f337233ded2d73d9634369a2b41d",
+        "sha256": "b9aed3f146a4deccdd0cb3c2942c6f998c78b90f47b101efaccfcd1ae1bcd9a7"
+      },
+      "neighborhood": {
+        "normalized_sha256": "52b5eec61130935bf2610767099969ffe585700271cfd26294996d1fae8d3844",
+        "payload_pixel_sha256": "b0b50399f9d2376399fba6e45719542a4dae5abf18624ba2bc68f361893883f3",
+        "sha256": "b35728072e94296fb77cbff5eea8398c5f234534da18dce403df5e99ff908d26"
+      }
+    },
+    "logical_id": "residential_l01_v0_south",
+    "source_key": "residential_l01/variant-0/south/source-v08",
+    "source_revision": "source-v08",
+    "source_sha256": "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "ab889aa1e8f7639a2f8be9b5d6c435e17e23d64d06478884070ebb6738dbe482",
+        "payload_pixel_sha256": "27795e325292dabfb8e4b581da14f220ba22d4b6dfdc52221e71e5c4fd970915",
+        "sha256": "5010462ed6417a226b5e45fd0a0ac4a115260ba5399b582b679bdea9140acf7d"
+      },
+      "city": {
+        "normalized_sha256": "a0a6d674d37189beb11e57f899e56b9e09ac637373c6c6b73f044dab95fbdd6c",
+        "payload_pixel_sha256": "3a2d83782664dee9b0606f48101cfda52069c53c7629bc6ef2f7283df2ef6192",
+        "sha256": "b1e90598f4453fc3ce500ed2608a23a991ffaca41cb9c38bc61b271687fb6dc0"
+      },
+      "neighborhood": {
+        "normalized_sha256": "054f9bfb80d2be4739bca3a0afe5c8d8f136438bef4c983439ae1086ca9aac2d",
+        "payload_pixel_sha256": "ca25f742844b637241d5cd181224f80cd4d78052bafe590ba7d34221c84d7f69",
+        "sha256": "f3db1a489bf674a578c7c535c950889030bbff6e2d25696d8c3d8f163aad5895"
+      }
+    },
+    "logical_id": "residential_l01_v0_west",
+    "source_key": "residential_l01/variant-0/west/source-v09",
+    "source_revision": "source-v09",
+    "source_sha256": "8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "908ff458a00f0ec2c61465bd82566b9dab2a525de2f45f74ed4a79dd4b097ecc",
+        "payload_pixel_sha256": "502da13bb309892c65c5800e9500068b085f2c1489eb114ced8710c82ff51438",
+        "sha256": "65dd11755f5ba01c1f7e5fa8457ff8dc3565578877a98c778225dba9fd7d2002"
+      },
+      "city": {
+        "normalized_sha256": "cf8615f0c4693f122813dce4200e120a98e82a0c5e645a817365b46dd554ee2a",
+        "payload_pixel_sha256": "e92c04a2de05da383eebdd9e8bddec07850a5fc4a91ea94d652e683777141010",
+        "sha256": "cab6d99fb60c32ed8ad82c29530b826daef57f0c41d79cfe47175d84b43099a6"
+      },
+      "neighborhood": {
+        "normalized_sha256": "6e093547fec8bede0e12fd6e7830a81dc5d7ee3988ee4e11ae54c0094dd15cc5",
+        "payload_pixel_sha256": "26e6e42056df525aabce87c9596880fb142fc5129271bc865539a74b3165fd11",
+        "sha256": "97f5669a05034693e4886d9e21a80200ce09e35a942b33c47381819a4124eb36"
+      }
+    },
+    "logical_id": "residential_l02_v0_east",
+    "source_key": "residential_l02/variant-0/east/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "d985175f7e31681343108df3e5360b11ddeb56eab6d101316f9ffd1b39591609"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "2fb4c2f41b455bf2c921c5d45876deb4d4520661537040dfbf3b71622a325607",
+        "payload_pixel_sha256": "e1ff2eb66a239046efae5ef8948c11208316fbd39ca34f5d1e7ca5fd90c5e709",
+        "sha256": "364489123507448bceaf724da40e831a74f9a673e615a2e4fbd65d137b62ce77"
+      },
+      "city": {
+        "normalized_sha256": "6cd4c35a4df1a1fd2110cacc8317680d337b2c8a66bdc5c4c002299857217ab5",
+        "payload_pixel_sha256": "4b56f7fd503de807f9245940bfcae7dbf25c035a48479b671a11e5f616459a94",
+        "sha256": "ef1596e9ddacf856b624ac9e1a7550074f2047a16263c0d39bef18114ccbdfe6"
+      },
+      "neighborhood": {
+        "normalized_sha256": "9e4ca9447055d382d6ceb98e5e13464a52104d2b9919ffdff2c9bb13af22b26e",
+        "payload_pixel_sha256": "89386f2e79daaa93aaf26e86ca4e0dda8dba450f127415a9670fa7477e144c2c",
+        "sha256": "d20bee319117f831ba26335717d66af1e7bed080011e3cf1cdf0342cf20f2a6a"
+      }
+    },
+    "logical_id": "residential_l02_v0_north",
+    "source_key": "residential_l02/variant-0/north/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "c79c5e0906c2e2b3c25682d6f79824d4e0d52e3be1821ba62f69fc6139656f6e"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "58fcebad56b97a6f90f3cdbd1e0598f671958a448b67e0909ae9598132c12942",
+        "payload_pixel_sha256": "208f608ea8ff279d99a53e3c3ad12f2030dfe0532157c2648c5d3eae0bacea81",
+        "sha256": "7a46b0780660661bda8ab256358e87db7676962821bffd0c09cceee48592c3d1"
+      },
+      "city": {
+        "normalized_sha256": "b12c25d839eb0be74462373dacc923c70d07c869215dc668a77bef8cb3b04199",
+        "payload_pixel_sha256": "ae450b5e10c338e2e9b353e92e8fe0c21f793f5cffeba7ad07b77cc16d078b97",
+        "sha256": "7f7558ac6351a646553e34e38432a520376715488dfabeeae563fdbcb7f999c7"
+      },
+      "neighborhood": {
+        "normalized_sha256": "da9c6dc42dd52d2e97ff0c3a275438a9713e3295abb3535e7f7bd191532d9474",
+        "payload_pixel_sha256": "605533007e09c2cc0dd793e9d58ca669d4d17f2ffa3c915904eed5f947ae8e02",
+        "sha256": "1213d55bbadfb45273323057e08f653118fb9cf781e07672eee78036f6989434"
+      }
+    },
+    "logical_id": "residential_l02_v0_south",
+    "source_key": "residential_l02/variant-0/south/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "f0d7efcc05bbc9361cab8259daa9f8fd52f67f50baa1699217d9b41cbb714490"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "99f918520f7d07489eb2a04988178c3b229258b212bd413ceb895715894387ca",
+        "payload_pixel_sha256": "132122e419cb7140433b3387565ef3c596a0e0bdb97a038a5b256465b0e4ef87",
+        "sha256": "4aafb93e6a9183ca2526c73aa465e208d9f72c31023a614bb704cd7b65963307"
+      },
+      "city": {
+        "normalized_sha256": "fecd9565a4d4e4450d991afc0cd7bff3cc7008a0beddf4462e8423325efdc64a",
+        "payload_pixel_sha256": "06c433d576e96ce9466aea35510565567f687adc187512307bd173c1d2098a81",
+        "sha256": "c359c0f224942180e7f62c6f67ba5fb58a97459903b31baf20950daf8e1ec43b"
+      },
+      "neighborhood": {
+        "normalized_sha256": "da96622dcc29156b96e874d995cf83e1fe0d8911d3168ce51797026d5c099a3b",
+        "payload_pixel_sha256": "fa33c337172f7f6f186b887682c9d2cdcf41f806ef1c1392e10a7261f882d18c",
+        "sha256": "52a4436e17a6d9717f439daae423bc175abda4e7127b642abbc044bcb50ce992"
+      }
+    },
+    "logical_id": "residential_l02_v0_west",
+    "source_key": "residential_l02/variant-0/west/source-v05",
+    "source_revision": "source-v05",
+    "source_sha256": "3ecb2a3892283c4b012360aa2413a47e772dd41aeaf18a71fe20c0c0c08e9521"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "9f8c3daf4ef380c504ca67b744a477d9df92f9ef5cc729f8190b32e8302a3433",
+        "payload_pixel_sha256": "c65c0c46bd4b212310ae6151c9e860a5bb188d984f21e18499d0436d9f629ba9",
+        "sha256": "5c91e246b52c231157b9ece6111aaeb1a6f77ffd2bd5697b5f827ded540ae62a"
+      },
+      "city": {
+        "normalized_sha256": "7e61e2986da58fcc5fda35919a8d232116d0472ef4222e3ca3579ccc33140c36",
+        "payload_pixel_sha256": "5e415e50b350259eb290ff21f3dc33575d3e702274a2e3e8e21e3a0590dbf241",
+        "sha256": "a29a6a0eb98e103cea31970777a2bf1c9c209945d903427fa2d5046ec0559292"
+      },
+      "neighborhood": {
+        "normalized_sha256": "dc0e37d2fd82ac8b74170458b350cd5f5a0e097c836d2028b489b64f3d248f68",
+        "payload_pixel_sha256": "b22b5829ade3a83fe48d5f73311695c59e8d7f1da7e9e252bfa88fd25c5d1998",
+        "sha256": "3c231cc62021458c75295444cea4085d9a9e5dc84331af3a0ea98f0e072b6693"
+      }
+    },
+    "logical_id": "residential_l03_v0_east",
+    "source_key": "residential_l03/variant-0/east/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "180e0cad4da66d5180b1fd3bd5df98d5e524e0924827002d3065a93811ec1e9c"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "8071307ae34113fe6c138e5afc985e0202bc2b131e8acd93618879f32676375e",
+        "payload_pixel_sha256": "d04165e9f946167835599ec09cbcd6c4df1685b92028b961d63fd029e671a865",
+        "sha256": "df584b8458bfa9d88b85695503af3a21dba411511d9359971bd399f0cbca2824"
+      },
+      "city": {
+        "normalized_sha256": "e0346e14e3093356f1bbad32e322de5590d594b2b275c5d8f0a6c8e487193148",
+        "payload_pixel_sha256": "18dd1dd2ec17be209c166828838f0a6ebf26f317cfdb7880af357c3d968cf75a",
+        "sha256": "f96f12ae04f0f9c2226987e459d509872affa99e64398d7c7e19de3d1e75b19a"
+      },
+      "neighborhood": {
+        "normalized_sha256": "eb46ddae74e3fb18417744106b2fa58b8d5d74d64ff52b3cd86cb3901788a922",
+        "payload_pixel_sha256": "8e7ca4c3b0d5d260e6ca216f968a5d86e4ead8efee31972fea9308052091c820",
+        "sha256": "758b77c773b109ebd0270cdac96af1c804fd87af16a90097235b8cadd974aabb"
+      }
+    },
+    "logical_id": "residential_l03_v0_north",
+    "source_key": "residential_l03/variant-0/north/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "9a53c7ca04e363e0d023a667a84de6ad26a7a5af2deaeb7cf2eb123ce5f7f881"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "63cab727006e75e252c4fef0b182fa6e70d1ec312b6072cc0812fc6e86f54d2d",
+        "payload_pixel_sha256": "f1d32f0bc638afe17b7ac8af81df3bee1a3aa47475f073eb84ccdfb53b1670e5",
+        "sha256": "057afad183011ff8e8502fbc30f7bc522413bdf6f001c0712fe5be8eb7402fb1"
+      },
+      "city": {
+        "normalized_sha256": "4d13738182f142fe2055f9eac7a50b1c34021e815524310bdf6373de19560ba0",
+        "payload_pixel_sha256": "d9d1147824230218bdb8809daad018700a11c2e4de038da1fabbaa63c89ed33d",
+        "sha256": "accf262912994232dbdc72c0028ce237671b72a4cbb30c763c35961651e8ab5b"
+      },
+      "neighborhood": {
+        "normalized_sha256": "c4aab469a0004387789f5e0b2c18100471f476fd27f31923b6b609ab2f13381d",
+        "payload_pixel_sha256": "9201455598ff5bebc275d7f439a90acac31982df817318d32af678bf902974b4",
+        "sha256": "ced00ffd6a6726697465bd53cb5581a4bd19e4ea810c146e337235dfb01ba607"
+      }
+    },
+    "logical_id": "residential_l03_v0_south",
+    "source_key": "residential_l03/variant-0/south/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "b6f709d0e4d56c4e13c7e69293891bc599dc706d8ceadddf87b8377c8dac105c"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "aadd5dc64b205d40f2113b05dba726f6b138f28c4ce2ce5d23e566707d527487",
+        "payload_pixel_sha256": "3bc33a92f43814deacd6d573f0c421cb08c9537d447dd73db64fcb2748f63768",
+        "sha256": "c91f1473ebbbdd0eea43f680d253acfe27c1fabfc0537096007bec91acf348a5"
+      },
+      "city": {
+        "normalized_sha256": "3983cbf3dfd8c3dbf122de4640220807d3c9fa4d40e43f341a23831f829d687a",
+        "payload_pixel_sha256": "63aa3c5c972af7bf1eb94545af647697f57df75f260a2249dcb879e73ec8c68b",
+        "sha256": "31add47422ba0ff173800b47b79e3ab33792f387e74139969caa09ea6e77805c"
+      },
+      "neighborhood": {
+        "normalized_sha256": "f78a56d8313baea8c0e0136780ea18fd375f2689cbdbac8bd466796a352522af",
+        "payload_pixel_sha256": "17217a3de06eae649324a6b0417cb3a066a6adf8b641885142722bd58c8a26d5",
+        "sha256": "117799a626d27a596f8c77ebf103809143a3834c3dc4e82aba9a4e1e869262cc"
+      }
+    },
+    "logical_id": "residential_l03_v0_west",
+    "source_key": "residential_l03/variant-0/west/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "dc5056b8cfdc9676e8db214293f15e86e1dfaf4dc3ee680c420260e2a7adce71"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "542aa6964b0aa7a624bac6f4c381054d4b9ae129a5172889df6cca74389e5acd",
+        "payload_pixel_sha256": "70aa05f0318b141853b2823edaea3ddf856a2cd3656a034fa5885478caa03e10",
+        "sha256": "05e1f40111782ab34d5b90bdf1c02cc14b1662fd82279b18d3ba3c806a91b99a"
+      },
+      "city": {
+        "normalized_sha256": "d688c1827277c1e2ea7dd749a9970e36bb85dee21b7f88ba3ec117b4de4cad6b",
+        "payload_pixel_sha256": "63a7b2e4bee3ab5fb30b376c86b771f2ff1d63dceb61e194fa342cd8fe31072c",
+        "sha256": "66a0229c14e214394e2339920cce9c1ccaf10a3c33f72270d1c57e3645bd2df8"
+      },
+      "neighborhood": {
+        "normalized_sha256": "27cfdd7f659a25970216808fb91194a46224e7bf8d06c51013de61be653362f1",
+        "payload_pixel_sha256": "c29fbb5367081507f7179dce99da9fc341df2e0bf0824d2d1feffdaf540088ef",
+        "sha256": "9856fa8fa47889b1e51fb28ea01d72d25995647956f3d7c8ab442ea350a738b7"
+      }
+    },
+    "logical_id": "residential_l04_v0_east",
+    "source_key": "residential_l04/variant-0/east/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "049ce1b85236c9e443571d925b6def3783cf4226a8b0b9794e47cc195400b5e4"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "5dd725e4e7d2251c9a104b699bf673a929f061f2ff8b05bbe6bd548ab5c1688e",
+        "payload_pixel_sha256": "baf8cd1fe11ef1de120e489798fb5aa7dab38a85f4ff2fd0826aec124c7ec1d2",
+        "sha256": "adc3246af8464d4279bdc72d7aa989748ae51398e44e53c19f48d7dc9c34c09c"
+      },
+      "city": {
+        "normalized_sha256": "9b5242edba87901626d33684148372d3e40590e05c3f3bb61a4df08fd3bbaf04",
+        "payload_pixel_sha256": "902b9f31396771670e2025a891f97c6f22b9dbe972262cfc6445041852b7c5bb",
+        "sha256": "35b634a998a7778659e9c73946f487b84ff8aabca1ea95e40153a326b808e6ce"
+      },
+      "neighborhood": {
+        "normalized_sha256": "8954a9e629f47f98bfb4f2572bbf02d9be8eabaf217eb9a8a8649c52a463e10a",
+        "payload_pixel_sha256": "bf8a6fba1a779694729dd2d11abfd777ca3f19f303f8136dde95d5c7a0bad7d4",
+        "sha256": "0a400200c738c30af318e01852bbf5182bbf0806bf23a097401846d68565a39e"
+      }
+    },
+    "logical_id": "residential_l04_v0_north",
+    "source_key": "residential_l04/variant-0/north/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "b6ed8aaf95e4600bb476934824fab0976cadffe1191f3253aeb19c96cfe2f6b1"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "f47406547e67d9022bbe38a7360897e064743c767bc4472caf58f85f689709b0",
+        "payload_pixel_sha256": "b2c50f872f8334298761e83a892b7ad0f857e107e46d02b6271b4e342ea116ee",
+        "sha256": "f31fd20805582126cf2c7730e591fdd80b68ccde3d5af4f7d37cb795bcbb03c2"
+      },
+      "city": {
+        "normalized_sha256": "6c3c367302fde4582e28abe225b854a6bd88c641d447755694763d7218dd69e8",
+        "payload_pixel_sha256": "ad883f85ebddc189d315242611941057e13a6ebcabd5600f267c4f592fe49a76",
+        "sha256": "6bfba674763c08873739a063a95e14b953481ad11c87ac973f6f2156b1cfaa0a"
+      },
+      "neighborhood": {
+        "normalized_sha256": "a0659f04bd72e37ff32c96ee4a22cff984648f4fe517e0b874d5659dcb18b44a",
+        "payload_pixel_sha256": "a614e929ed9d4a3f2df809cd45e9cc90c6dc3f5fa860c28a44dd485086725686",
+        "sha256": "b7c32dc2ed8e36eb89ffefbfe3196ff5e77b80d261690e4ac551f24709c80b91"
+      }
+    },
+    "logical_id": "residential_l04_v0_south",
+    "source_key": "residential_l04/variant-0/south/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "cae30c6975f790b05a1de850649f2735a21079bb0c9321673106778f4ca98e34"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "d4b37d449987d5910dd86f7d217a167a577e5c1606bbbbc60e4bb683a21405f5",
+        "payload_pixel_sha256": "7c23643546130d2ba2b267e6a0a7244f9313c34dab388af3447f4a57864c88eb",
+        "sha256": "0958aef1eff4ff65c2b72cc9dcb4ea5bcbb6cb12531da2bd3858e112d8575e6f"
+      },
+      "city": {
+        "normalized_sha256": "bb98a91d870eee29464cf51a050513ac33725418d15529239effbe5abb71a8f8",
+        "payload_pixel_sha256": "3cf8a2c89380364201a157af3276fb63caffe31e2aed4b17e50801439e180d23",
+        "sha256": "178f6a57f89c1b5af1b5d3d31a0466563e0bb0e0f959201bf862d976d358526c"
+      },
+      "neighborhood": {
+        "normalized_sha256": "d0a33dc53e8005cbd26baf9b9878afb092d3925f61656fc7f42e32db8e2f0069",
+        "payload_pixel_sha256": "e7f2ed67cc60fafbefd7f2d99dd64ad43239012b6e6976f13bf4f976a9e0fe5b",
+        "sha256": "2423ef4030e31e97b5a4d0cf6c4c04764c3fbe9f3fe535653fdd2ebe77f1a827"
+      }
+    },
+    "logical_id": "residential_l04_v0_west",
+    "source_key": "residential_l04/variant-0/west/source-v01",
+    "source_revision": "source-v01",
+    "source_sha256": "64b51a0bef79104132a508f53f8a1fa567de9bc87c35ecd44c19ef3cc2596646"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "fc43ddfef416abe20d866f5273244ff1c21143740ffa50b599565f22dcf1385a",
+        "payload_pixel_sha256": "07093e278765e4ab07a46b072d25bfbafed7c477489d8eee54f421c5a3cdbf3e",
+        "sha256": "71ddc5ba11fe9cdfb808840a0371ce969254c9ca0732a7c3b83bd4cbbd6c87c7"
+      },
+      "city": {
+        "normalized_sha256": "9410bad28c15ea9fc11f18eacec7980668e25c46486f5440d3b6d8f1656ad7a7",
+        "payload_pixel_sha256": "53b604e8101b25f7e9b95b88eeb366c096d8ab26a90fccc70639be58dab1a323",
+        "sha256": "99571428989d805ffbc18cf7bb1148d548978ee528571720141fb14b73371ec9"
+      },
+      "neighborhood": {
+        "normalized_sha256": "553a08659efd10efc9166b8b6be2db67eeaf40a3042dc4094a45dc3b4d1be08e",
+        "payload_pixel_sha256": "338c28a8def166b22c5fda4e084255c7482963071227e6d6ac2ffd18874a20c5",
+        "sha256": "708ed47ae7b4758b86dceb224785509247962c979f4a4aa2639ed934025ae1ee"
+      }
+    },
+    "logical_id": "road_material",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "404b0a7dde101c7247764e72292f4f57d3391ff55f66699a49f7b94fb467ff08"
+  },
+  {
+    "lods": {
+      "block": {
+        "normalized_sha256": "bace2362962239efc54673f401114072fe57aefd0d9ee273d42e3799f046eea7",
+        "payload_pixel_sha256": "485882dd0e57a7c924d3c9a580ff59acdd7797c6c4a85cd21dcfeddf86649c1d",
+        "sha256": "de7568adfa95bfe18439c383b84cdb64c58ae94058ae97c7071030b30eb116ed"
+      },
+      "city": {
+        "normalized_sha256": "a0d482b7d8b0e3eb3a5ba8faabbab4fb876031d0e74ff9c9f10f79b6a0b7a23d",
+        "payload_pixel_sha256": "7c4647bf45a9b044dc2fc0d614c106d5d0a85e3dd39e8806371cb8f4720ce066",
+        "sha256": "9db06fa39e2b879e62543db10c51421c71a08c9ad28f49091f564d0492a7ba73"
+      },
+      "neighborhood": {
+        "normalized_sha256": "783bd406431c9b2b91b012ab13ee389e5744999883240b489156f509b77c9fb7",
+        "payload_pixel_sha256": "d241d357d0a6f8f1b099bdbe1e9bb2a1af8dbc16bfc528ff17371ee851958f35",
+        "sha256": "b6adfcda9b3885a1f0dc301c07808ac060f60b0d3ecfcdcd1ef2a07a0985a4f5"
+      }
+    },
+    "logical_id": "water_tower_l01",
+    "source_key": null,
+    "source_revision": null,
+    "source_sha256": "825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2"
+  }
+]

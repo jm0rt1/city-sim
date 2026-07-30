@@ -1,0 +1,102 @@
+{
+  "schema": "citysim.play-079.current-master-replay-fixture.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "baseAuthority": "94ae73a99abe64f59bb052582fcaba1d9725319d",
+  "authority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+    "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36"
+  },
+  "immutableInputs": {
+    "claim": {
+      "path": "docs/production/claims/PLAY-079.world-art-east.md",
+      "sha256": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "5302750257a0bc158f6b460f78a48dccd22c2194f169deb8e46e5c61f1204da8"
+    }
+  },
+  "eastSocket": {
+    "citySim": [28.0, 0.0, 0.0],
+    "blenderNative": [0.0, 28.0, 0.0],
+    "sourcePixel": [896.0, 832.0]
+  },
+  "roots": {
+    "source": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/",
+    "evidence": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/",
+    "receipt": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/CURRENT-MASTER-IMMUTABLE-INPUT-REPLAY.json"
+  },
+  "adversarialCases": [
+    {
+      "id": "altered_claim",
+      "pointer": "/immutableInputs/claim/sha256",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expectedCode": "claim_hash_mismatch"
+    },
+    {
+      "id": "altered_scene_hash",
+      "pointer": "/immutableInputs/scene/sha256",
+      "value": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "expectedCode": "scene_hash_mismatch"
+    },
+    {
+      "id": "altered_material_hash",
+      "pointer": "/immutableInputs/materials/sha256",
+      "value": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "expectedCode": "materials_hash_mismatch"
+    },
+    {
+      "id": "wrong_east_socket",
+      "pointer": "/eastSocket/citySim/0",
+      "value": -28.0,
+      "expectedCode": "east_socket_mismatch"
+    },
+    {
+      "id": "altered_authority_path",
+      "pointer": "/authority/path",
+      "value": "docs/production/evidence/INTEGRATION/UNPUBLISHED-AUTHORITY.md",
+      "expectedCode": "authority_path_mismatch"
+    },
+    {
+      "id": "unsafe_authority_path",
+      "pointer": "/authority/path",
+      "value": "../INTEGRATION/AUTHORITY.md",
+      "expectedCode": "unsafe_repository_path"
+    },
+    {
+      "id": "foreign_output_root",
+      "pointer": "/roots/evidence",
+      "value": "docs/production/evidence/PLAY-999/industrial-l04-east-source-v01/",
+      "expectedCode": "output_root_mismatch"
+    },
+    {
+      "id": "sibling_output_root",
+      "pointer": "/roots/evidence",
+      "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/",
+      "expectedCode": "output_root_mismatch"
+    }
+  ],
+  "captureAdversaries": [
+    {
+      "id": "symlinked_git_blob",
+      "expectedCode": "git_symlink_mode_rejected"
+    },
+    {
+      "id": "terminal_replacement",
+      "expectedCode": "input_terminal_replaced"
+    },
+    {
+      "id": "in_place_mutation",
+      "expectedCode": "input_changed_during_read"
+    }
+  ]
+}

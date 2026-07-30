@@ -5,7 +5,7 @@
   "authorityInputs": {
     "shippingManifest": {
       "path": "Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated-v4-manifest.json",
-      "sha256": "1f4e9961ecb8ade54d2bb169721d11ca337e2f61053c72078a5e6bf71d59480b"
+      "sha256": "317802265010fc758b232bea9198f18ec0ca4d75b5ceb6f759206238717cec92"
     },
     "acceptedSourceOnlyFamilies": [
       {

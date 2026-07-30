@@ -217,6 +217,7 @@ GIT_SHA_KEYS = frozenset(
         "candidate",
         "head",
         "ledgerRevision",
+        "observedHead",
         "publishedBase",
         "technicalHeadBeforeLedger",
     }
@@ -255,6 +256,11 @@ class Validator:
         self.diagnostics: list[Diagnostic] = []
         self._git_cache: dict[Path, tuple[str, str, bool] | None] = {}
         self._resolvable_commits: dict[str, bool] = {}
+        self._ancestor_cache: dict[tuple[str, str], bool] = {}
+        self._commit_range_cache: dict[
+            tuple[str, str],
+            tuple[tuple[str, tuple[str, ...]], ...] | None,
+        ] = {}
 
     def error(self, code: str, location: str, message: str) -> None:
         self.diagnostics.append(Diagnostic(code, location, message))
@@ -301,6 +307,9 @@ class Validator:
                 self._validate_required_row_fields(
                     ledger_row, f"ledger.cells.{cell}"
                 )
+                self._validate_observed_head_binding(
+                    ledger_row, f"ledger.cells.{cell}"
+                )
                 self._validate_work_row(
                     ledger_row,
                     f"ledger.cells.{cell}",
@@ -314,6 +323,9 @@ class Validator:
                     cell, receipt_row, f"receipt.rows.{cell}"
                 )
                 self._validate_required_row_fields(
+                    receipt_row, f"receipt.rows.{cell}"
+                )
+                self._validate_observed_head_binding(
                     receipt_row, f"receipt.rows.{cell}"
                 )
                 if not isinstance(receipt_row.get("changedThisTurn"), bool):
@@ -858,7 +870,7 @@ class Validator:
             "claim": row.get("claim"),
             "claimRevision": row.get("claimRevision"),
             "publishedBase": row.get("publishedBase", row.get("base")),
-            "head": row.get("head"),
+            "head": row.get("observedHead", row.get("head")),
             "threadId": row.get("threadId"),
             "branch": row.get("branch"),
             "worktree": row.get("worktree"),
@@ -1850,14 +1862,14 @@ class Validator:
                 if isinstance(acknowledgement, Mapping) and running:
                     active_cells.append(cell)
 
-        required = 3 if len(eligible_cells) >= 3 else 0
-        if required and len(active_cells) < required:
+        required = min(3, len(eligible_cells))
+        if len(active_cells) < required:
             self.error(
                 "PARALLELISM_ACTIVE_FLOOR",
                 "ledger.cells",
                 f"{len(eligible_cells)} rows are eligible but only "
                 f"{len(active_cells)} carry acknowledged running work; "
-                "at least 3 are required",
+                f"at least {required} are required",
             )
 
         ledger_proof = ledger.get("parallelismProof")
@@ -2028,16 +2040,27 @@ class Validator:
             )
             return
         proof_required = value.get("requiredConcurrentCells")
-        expected_required = 3
+        expected_required = required if required else None
         if (
             isinstance(proof_required, bool)
             or not isinstance(proof_required, int)
-            or proof_required != expected_required
+            or (
+                expected_required is not None
+                and proof_required != expected_required
+            )
+            or (
+                expected_required is None
+                and proof_required not in {1, 2, 3}
+            )
         ):
             self.error(
                 "PARALLELISM_PROOF_REQUIRED_COUNT",
                 f"{location}.requiredConcurrentCells",
-                f"must equal derived floor {expected_required}",
+                (
+                    f"must equal derived floor {expected_required}"
+                    if expected_required is not None
+                    else "a retained historical proof must bind 1, 2, or 3 cells"
+                ),
             )
 
         proof_eligible = value.get("eligibleCells")
@@ -3060,6 +3083,187 @@ class Validator:
         elif isinstance(value, list):
             for index, item in enumerate(value):
                 self._validate_git_sha_fields(item, f"{location}[{index}]")
+
+    def _validate_observed_head_binding(
+        self,
+        row: Mapping[str, Any],
+        location: str,
+    ) -> None:
+        """Separate immutable job observation from the live receipt candidate.
+
+        A worker cannot know the commit that will contain its own receipt while
+        it is executing jobs. `observedHead` therefore binds the exact snapshot
+        those jobs tested, while `head` binds the later clean receipt candidate
+        that Integration is considering. The intervening range is admissible
+        only when it is ancestral and evidence-only for the row's PLAY claim.
+        """
+
+        observed = row.get("observedHead")
+        if observed is None:
+            return
+        head = row.get("head")
+        if (
+            not isinstance(observed, str)
+            or SHA40_RE.fullmatch(observed) is None
+            or not isinstance(head, str)
+            or SHA40_RE.fullmatch(head) is None
+        ):
+            self.error(
+                "GIT_OBSERVED_HEAD_INVALID",
+                f"{location}.observedHead",
+                "observedHead and head must both be exact 40-character Git SHAs",
+            )
+            return
+        if observed == head:
+            self.error(
+                "GIT_OBSERVED_HEAD_REDUNDANT",
+                f"{location}.observedHead",
+                "omit observedHead when jobs and the live row bind the same commit",
+            )
+            return
+
+        accounting = row.get("executionAccounting")
+        jobs = (
+            accounting.get("launchedJobs")
+            if isinstance(accounting, Mapping)
+            else None
+        )
+        if not isinstance(jobs, list) or not jobs:
+            self.error(
+                "GIT_OBSERVED_HEAD_WITHOUT_JOBS",
+                f"{location}.observedHead",
+                "is allowed only when the row retains launched job evidence",
+            )
+
+        if not self._commit_is_ancestor(observed, head):
+            self.error(
+                "GIT_OBSERVED_HEAD_NOT_ANCESTOR",
+                f"{location}.observedHead",
+                f"{observed} must be an ancestor of live receipt head {head}",
+            )
+            return
+
+        commit_changes = self._commit_range_changes(observed, head)
+        if commit_changes is None:
+            self.error(
+                "GIT_OBSERVED_HEAD_DIFF_UNREADABLE",
+                f"{location}.observedHead",
+                f"could not inspect {observed}..{head}",
+            )
+            return
+        claim = row.get("claim")
+        if not isinstance(claim, str) or re.fullmatch(r"PLAY-\d{3}", claim) is None:
+            self.error(
+                "GIT_OBSERVED_HEAD_CLAIM_INVALID",
+                f"{location}.claim",
+                "observedHead evidence admission requires one PLAY-### claim",
+            )
+            return
+        allowed_root = f"docs/production/evidence/{claim}/"
+        if not commit_changes or not any(paths for _, paths in commit_changes):
+            self.error(
+                "GIT_OBSERVED_HEAD_EMPTY_RANGE",
+                f"{location}.observedHead",
+                "the observed-to-live range must contain the receipt evidence",
+            )
+        forbidden = [
+            f"{commit}:{path}"
+            for commit, paths in commit_changes
+            for path in paths
+            if not path.startswith(allowed_root)
+        ]
+        if forbidden:
+            self.error(
+                "GIT_OBSERVED_HEAD_NON_EVIDENCE_DELTA",
+                f"{location}.observedHead",
+                "every commit and merge-parent delta in the observed-to-live "
+                "range may change only claim-owned evidence; "
+                f"found {forbidden!r}",
+            )
+
+    def _commit_is_ancestor(self, ancestor: str, descendant: str) -> bool:
+        key = (ancestor, descendant)
+        if key in self._ancestor_cache:
+            return self._ancestor_cache[key]
+        result = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.repo_root),
+                "merge-base",
+                "--is-ancestor",
+                ancestor,
+                descendant,
+            ],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        value = result.returncode == 0
+        self._ancestor_cache[key] = value
+        return value
+
+    def _commit_range_changes(
+        self,
+        ancestor: str,
+        descendant: str,
+    ) -> tuple[tuple[str, tuple[str, ...]], ...] | None:
+        key = (ancestor, descendant)
+        if key in self._commit_range_cache:
+            return self._commit_range_cache[key]
+        commits_result = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.repo_root),
+                "rev-list",
+                "--reverse",
+                f"{ancestor}..{descendant}",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if commits_result.returncode != 0:
+            self._commit_range_cache[key] = None
+            return None
+        changes: list[tuple[str, tuple[str, ...]]] = []
+        for commit in (
+            line for line in commits_result.stdout.splitlines() if line
+        ):
+            paths_result = subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    str(self.repo_root),
+                    "diff-tree",
+                    "--root",
+                    "--no-commit-id",
+                    "--name-only",
+                    "-r",
+                    "-m",
+                    commit,
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if paths_result.returncode != 0:
+                self._commit_range_cache[key] = None
+                return None
+            paths = tuple(
+                sorted(
+                    {
+                        line
+                        for line in paths_result.stdout.splitlines()
+                        if line
+                    }
+                )
+            )
+            changes.append((commit, paths))
+        result = tuple(changes)
+        self._commit_range_cache[key] = result
+        return result
 
     def _validate_live_git(
         self, row: Mapping[str, Any], location: str

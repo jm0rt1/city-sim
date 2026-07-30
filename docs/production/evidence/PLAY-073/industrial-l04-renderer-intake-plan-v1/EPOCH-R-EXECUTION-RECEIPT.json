@@ -1,0 +1,248 @@
+{
+  "batch": "industrial_l04_directional_family",
+  "lane": "world_rendering",
+  "direction": "renderer",
+  "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+  "branch": "codex/citysim-world-rendering",
+  "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+  "claim": "PLAY-073",
+  "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+  "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+  "state": "intake_ready",
+  "dispatchState": "completed",
+  "acknowledgedAt": "2026-07-30T14:18:45Z",
+  "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "cleanState": "clean_epoch_r_candidate_neutral_validation_complete",
+  "blocker": "four_epoch_projection_receipts_are_not_integration_source_admission_receipts",
+  "nextAction": "await_integration_exact_industrial_l04_source_admission_receipts_then_run_direction_local_renderer_quarantine",
+  "boundedDeliverable": "candidate_neutral_authority_projection_direction_lod_camera_socket_rejection_and_atomic_join_validation",
+  "stopCondition": "no_l4_source_admission_quarantine_acceptance_shipping_runtime_product_app_qa_push_or_self_acceptance",
+  "updatedAt": "2026-07-30T14:23:44.777755Z",
+  "executionAccounting": {
+    "readyNow": [],
+    "running": [],
+    "waitingOnJoin": [],
+    "serializedAuthority": {
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "branch": "codex/citysim-world-rendering",
+      "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+      "gitIndexWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "governedEvidenceWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+    },
+    "nextRefill": "await_integration_exact_industrial_l04_source_admission_receipts_then_run_direction_local_renderer_quarantine",
+    "capacity": {
+      "helperSlots": 3,
+      "dccSlots": 0
+    },
+    "launchedJobs": [
+      {
+        "id": "epoch-receipt-authority-audit",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T14:19:14Z",
+        "endedAt": "2026-07-30T14:21:03Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:epoch-receipt-authority-audit-final",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "semantic-plan-gate",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T14:21:30.301Z",
+        "endedAt": "2026-07-30T14:21:30.302Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:semantic-plan-gate-result",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "adversarial-rejection-matrix",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T14:21:30.301Z",
+        "endedAt": "2026-07-30T14:21:31.358Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:adversarial-rejection-matrix-result",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "focused-atomic-join-sandbox-attempt",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "failed",
+        "startedAt": "2026-07-30T14:21:30.301Z",
+        "endedAt": "2026-07-30T14:21:32.032Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:focused-atomic-join-sandbox-failure",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "focused-atomic-join-authorized-rerun",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T14:21:44.164Z",
+        "endedAt": "2026-07-30T14:21:44.390Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:focused-atomic-join-pass",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "epoch-rejection-join-audit",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T14:22:18Z",
+        "endedAt": "2026-07-30T14:22:19Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:epoch-rejection-join-audit-final",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "epoch-descriptor-binding-audit",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+        "head": "268890998d14350c837b6dd46fd48aaf416c39fb",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-07-30T14:22:42.051119Z",
+        "endedAt": "2026-07-30T14:22:42.160805Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:parallel-intake-epoch-r-20260730/item:epoch-descriptor-binding-audit-final",
+        "dccSlot": null,
+        "processId": null
+      }
+    ],
+    "unusedCapacityReasons": [
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-RENDERER-INTAKE-PLAN-V1-AUTHORITY.md",
+          "sha256": "a98aad537113666809e20d963bb6c20d58e277f0b8bad0655506133969c790da"
+        },
+        "resumptionEvent": "integration_publishes_an_exact_industrial_l04_source_admission_receipt",
+        "nextRefillJob": "await_integration_exact_industrial_l04_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-RENDERER-INTAKE-PLAN-V1-AUTHORITY.md",
+          "sha256": "a98aad537113666809e20d963bb6c20d58e277f0b8bad0655506133969c790da"
+        },
+        "resumptionEvent": "integration_publishes_an_exact_industrial_l04_source_admission_receipt",
+        "nextRefillJob": "await_integration_exact_industrial_l04_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-RENDERER-INTAKE-PLAN-V1-AUTHORITY.md",
+          "sha256": "a98aad537113666809e20d963bb6c20d58e277f0b8bad0655506133969c790da"
+        },
+        "resumptionEvent": "integration_publishes_an_exact_industrial_l04_source_admission_receipt",
+        "nextRefillJob": "await_integration_exact_industrial_l04_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      }
+    ],
+    "overlap": {
+      "status": "observed",
+      "jobIds": [
+        "semantic-plan-gate",
+        "adversarial-rejection-matrix",
+        "focused-atomic-join-sandbox-attempt"
+      ],
+      "startedAt": "2026-07-30T14:21:30.301Z",
+      "endedAt": "2026-07-30T14:21:30.302Z",
+      "reason": "three independent candidate-neutral validation processes overlapped at the measured maximum helper capacity"
+    },
+    "join": {
+      "state": "joined",
+      "requiredJobs": [
+        "epoch-receipt-authority-audit",
+        "semantic-plan-gate",
+        "adversarial-rejection-matrix",
+        "focused-atomic-join-authorized-rerun",
+        "epoch-rejection-join-audit",
+        "epoch-descriptor-binding-audit"
+      ],
+      "completedJobs": [
+        "epoch-receipt-authority-audit",
+        "semantic-plan-gate",
+        "adversarial-rejection-matrix",
+        "focused-atomic-join-authorized-rerun",
+        "epoch-rejection-join-audit",
+        "epoch-descriptor-binding-audit"
+      ]
+    }
+  }
+}

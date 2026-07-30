@@ -46,6 +46,14 @@ At every dispatch, status review, candidate return, and integration boundary:
 1. Identify every unit of work that is independent under the published contracts and current path ownership.
 2. Dispatch every eligible unit during the same management turn through its visible lane thread.
 3. Maintain at least three active useful workstreams whenever three claimed units of useful work exist. A lane awaiting another candidate receives non-conflicting preparation, validation, fixture, audit, or evidence work instead of remaining idle.
+   Define `eligibleUsefulWorkstreams` as the claimed, contract-independent
+   units that have disjoint mutation authority and one legal bounded
+   deliverable now. The minimum-useful-concurrency invariant is
+   `requiredUsefulWorkstreams = min(3, count(eligibleUsefulWorkstreams))`; a
+   management checkpoint may close only when at least that many distinct
+   canonical rows are acknowledged and executing, or each missing row carries
+   a validated structured exemption naming the exact prohibition, owner,
+   resumption event, and unavailable preparation.
 4. Split slow lanes into direction-, fixture-, evidence-, or contract-exclusive cells when they can work without shared-file mutation.
 5. Repair detached branches, stale baselines, missing claims, or completed-but-idle lanes promptly, then refill them from the published backlog.
 6. Never manufacture concurrency by allowing two writers on one shared surface, weakening exact-candidate identity, or overlapping the final independent app gate.
@@ -75,6 +83,14 @@ Project that return into each ledger/receipt row as one exact
 reject missing fields, fabricated overlap, unknown jobs, unexplained active
 capacity, or a join that does not match `waitingOnJoin`.
 
+Every ledger and dispatch receipt must also project one identical top-level
+`parallelismProof {requiredConcurrentCells, eligibleCells, jobRefs, startedAt,
+endedAt}`. Each `jobRef` must resolve to one launched job in a distinct
+canonical row; derive `startedAt` as the maximum referenced start and `endedAt`
+as the minimum referenced end, and require `startedAt < endedAt`. Completed
+historical jobs may prove measured overlap, but plans, status labels, per-row
+overlap alone, unrelated-batch jobs, and future timestamps never count.
+
 `serializedAuthority` is an object binding the row's exact visible
 `threadId`, `branch`, and `worktree`, with that same thread as the sole
 `gitIndexWriter` and `governedEvidenceWriter`. Each `launchedJobs` entry binds
@@ -91,6 +107,16 @@ worktree or broad filesystem/home/temp root.
 so every intentionally unused slot has its own reason; DCC capacity and jobs
 must match the dispatch receipt's published compute envelope and assigned
 slots.
+
+When a worker commits its receipt after the measured jobs finish, preserve the
+identity boundary explicitly: the canonical row's `head` is the clean live
+receipt-candidate commit, `observedHead` is the immutable pre-receipt commit
+against which its retained jobs actually ran, and every job's `head` must equal
+`observedHead`. `observedHead` is allowed only when it is an ancestor of
+`head` and the entire intervening diff is confined to that row's
+`docs/production/evidence/PLAY-###/` root. Never rewrite historical job heads
+to the later receipt commit. Omit `observedHead` when the live and executed
+commit are identical.
 
 Allocate scarce concurrency to the current critical path. Use internal helpers
 for bounded read-only review or isolated temporary roots outside the visible

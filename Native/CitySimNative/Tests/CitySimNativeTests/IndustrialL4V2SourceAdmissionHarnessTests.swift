@@ -237,7 +237,7 @@ private struct L4V2SourceAdmissionHarness {
             ".agents/skills/operate-citysim-integration/scripts/"
             + "validate_industrial_l04_source_admission_receipt_v1.py",
         sha256:
-            "497f4e696cb6da3740e9dd60877cd25ea631268df1124513b1468ad6d51158cf"
+            "46a9af769c1d3cf291c4859c79858373c576a70e17c8ccffd62d5619db0ef731"
     )
 
     static let sourceStage = L4V2SourceStage(
@@ -245,7 +245,7 @@ private struct L4V2SourceAdmissionHarness {
             path:
                 "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
             sha256:
-                "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+                "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
         ),
         semanticValidator: L4V2Artifact(
             path:
@@ -263,7 +263,7 @@ private struct L4V2SourceAdmissionHarness {
             path:
                 "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
             sha256:
-                "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+                "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
         )
     )
 

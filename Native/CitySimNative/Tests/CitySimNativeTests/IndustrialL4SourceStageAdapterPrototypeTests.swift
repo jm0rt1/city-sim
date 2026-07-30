@@ -875,7 +875,7 @@ private struct L4AdapterPrototype {
     static let authorityPath =
         "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json"
     static let authoritySHA =
-        "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+        "ddc9c5562bc2ff9e57ba15277113e058f535afe5339efef307e310de75e8d0fe"
     static let contract = L4AdapterContract(
         path:
             "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
@@ -888,7 +888,7 @@ private struct L4AdapterPrototype {
             path:
                 "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
             sha256:
-                "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+                "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
         ),
         semanticValidator: L4AdapterArtifact(
             path:
@@ -906,7 +906,7 @@ private struct L4AdapterPrototype {
             path:
                 "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
             sha256:
-                "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+                "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
         )
     )
     static let directionBridge = L4AdapterBridge(

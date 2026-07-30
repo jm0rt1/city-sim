@@ -5,6 +5,13 @@
   "direction": "north",
   "process": "A",
   "phase": "prelock_north_a",
+  "prelockProcessPolicy": {
+    "authorizedProcess": "A",
+    "maximumScheduledAndGrantedProcesses": 1,
+    "processB": "post-lock-only",
+    "processC": "post-lock-only",
+    "stopAfterProcessA": true
+  },
   "branch": "codex/citysim-world-art",
   "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
   "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
@@ -23,11 +30,11 @@
   "scheduleAdapter": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
-      "sha256": "24b07e2be94aaf31214f9d91892cef264bca4d026d6a90511816d7b6c3c42d6c"
+      "sha256": "faf2f30ff6be2fc6a6f36203099ae8f30478af3a44bfea94c785997340aeefac"
     },
     "consumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
-      "sha256": "c6433f70e114e1b315187bf69301fea67dd8ebee4492b7321d6f08cbdf763ee6"
+      "sha256": "47f61ede101f9aeb7efb0ba1a6d8887f1cf25f8f4d6d2e76bc545cfb54618401"
     },
     "acceptedReadiness": {
       "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",
@@ -62,7 +69,7 @@
   },
   "launcher": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "b7185215d9d784c76b95bef33367d5893b02a095547bc5b6a4cad09cd28c8ce3"
+    "sha256": "f457466b8148ac82bb36ba3d1aebf1ddcac38675d1a1f40deef9bc8cb8bd5ca2"
   },
   "childEntrypoint": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
@@ -70,7 +77,7 @@
   },
   "tests": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
-    "sha256": "e1f2b5658c00a9d2b52c75b0d9bcce3fb1bbcefa9e99b119c1af1ff0bcdbd387"
+    "sha256": "180db952a2b2713016663833669c2392fc795896d7e5c42c13cb6abffe0db6f5"
   },
   "blender": {
     "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
@@ -120,6 +127,43 @@
     "killProcessGroupOnViolation": true
   },
   "processOutputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+  "directionRootMap": {
+    "sceneRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12",
+    "rawRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+    "normalizedRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01/normalized",
+    "processRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01",
+    "outputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+    "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12",
+    "handoffRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01"
+  },
+  "futureDirectionHandoff": {
+    "currentState": "not_produced",
+    "requiredClaimBinding": {
+      "path": "docs/production/claims/PLAY-027.world-art.md",
+      "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+    },
+    "requiredBindings": [
+      "exact-scene-hash",
+      "exact-raw-hash",
+      "exact-normalized-hashes",
+      "exact-process-root",
+      "exact-output-root",
+      "exact-evidence-root",
+      "exact-handoff-root"
+    ],
+    "parallelExecutionReceipt": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01/PARALLEL-EXECUTION-RECEIPT.json",
+      "sha256RequiredAtHandoff": true,
+      "currentSHA256": null
+    },
+    "rootAssertions": {
+      "allRootsInsideNorthClaimPrefixes": true,
+      "siblingRootIntersectionAllowed": false,
+      "sharedContractRootIntersectionAllowed": false,
+      "futureProcessOutputRootsPairwiseDisjoint": true,
+      "rawRootEqualsSingleProcessAOutputRoot": true
+    }
+  },
   "capabilityChannel": {
     "type": "integration-secret-plus-launcher-session-hmac",
     "oneUse": true,

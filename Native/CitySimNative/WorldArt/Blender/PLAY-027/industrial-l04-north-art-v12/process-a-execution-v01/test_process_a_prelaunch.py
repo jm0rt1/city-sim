@@ -806,6 +806,9 @@ def main() -> None:
         "launcher": contract["launcher"],
         "childEntrypoint": contract["childEntrypoint"],
         "scheduleAdapter": contract["scheduleAdapter"],
+        "prelockProcessPolicy": contract["prelockProcessPolicy"],
+        "directionRootMap": contract["directionRootMap"],
+        "futureDirectionHandoff": contract["futureDirectionHandoff"],
         "adapterCurrentTest": {
             "path": str(adapter_test.relative_to(repository_root)),
             "sha256": sha256(adapter_test),

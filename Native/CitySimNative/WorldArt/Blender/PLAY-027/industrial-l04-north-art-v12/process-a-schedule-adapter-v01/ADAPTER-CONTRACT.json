@@ -17,7 +17,7 @@
   },
   "processAOrchestrator": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
-    "sha256": "b7185215d9d784c76b95bef33367d5893b02a095547bc5b6a4cad09cd28c8ce3"
+    "sha256": "f457466b8148ac82bb36ba3d1aebf1ddcac38675d1a1f40deef9bc8cb8bd5ca2"
   },
   "adapterAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",

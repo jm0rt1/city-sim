@@ -351,6 +351,7 @@ def validate_execution_contract(
         "direction",
         "process",
         "phase",
+        "prelockProcessPolicy",
         "branch",
         "authorityBaseCommit",
         "publicationCommit",
@@ -366,6 +367,8 @@ def validate_execution_contract(
         "cycles",
         "processEnvelope",
         "processOutputRoot",
+        "directionRootMap",
+        "futureDirectionHandoff",
         "capabilityChannel",
         "allowedProcessOutputs",
         "prohibitedSurfaces",
@@ -394,6 +397,83 @@ def validate_execution_contract(
     }
     for field, value in exact.items():
         require(contract[field] == value, f"execution contract drift: {field}")
+    require(
+        contract["prelockProcessPolicy"]
+        == {
+            "authorizedProcess": "A",
+            "maximumScheduledAndGrantedProcesses": 1,
+            "processB": "post-lock-only",
+            "processC": "post-lock-only",
+            "stopAfterProcessA": True,
+        },
+        "pre-lock Process-A policy drift",
+    )
+    root_map = contract["directionRootMap"]
+    require(
+        isinstance(root_map, dict)
+        and set(root_map)
+        == {
+            "sceneRoot",
+            "rawRoot",
+            "normalizedRoot",
+            "processRoot",
+            "outputRoot",
+            "evidenceRoot",
+            "handoffRoot",
+        },
+        "direction root-map fields drift",
+    )
+    north_source_prefix = Path(
+        "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12"
+    )
+    north_evidence_prefix = Path(
+        "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12"
+    )
+    for label, value in root_map.items():
+        path = Path(value)
+        require(not path.is_absolute() and ".." not in path.parts, f"{label} path drift")
+        expected_prefix = (
+            north_source_prefix
+            if label in {"sceneRoot", "processRoot"}
+            else north_evidence_prefix
+        )
+        require(
+            path == expected_prefix or path.is_relative_to(expected_prefix),
+            f"{label} leaves North claim roots",
+        )
+        require(
+            not any(token in path.parts for token in ("east", "south", "west")),
+            f"{label} intersects a sibling root",
+        )
+    require(
+        root_map["rawRoot"] == root_map["outputRoot"]
+        and root_map["outputRoot"] == contract["processOutputRoot"],
+        "Process-A raw/output root binding drift",
+    )
+    future_handoff = contract["futureDirectionHandoff"]
+    require(
+        future_handoff["currentState"] == "not_produced"
+        and future_handoff["requiredClaimBinding"] == contract["claim"]
+        and future_handoff["parallelExecutionReceipt"]["currentSHA256"] is None
+        and future_handoff["parallelExecutionReceipt"]["sha256RequiredAtHandoff"] is True,
+        "future direction-handoff binding drift",
+    )
+    require(
+        Path(future_handoff["parallelExecutionReceipt"]["path"]).parent
+        == Path(root_map["handoffRoot"]),
+        "parallel-execution receipt leaves handoff root",
+    )
+    require(
+        future_handoff["rootAssertions"]
+        == {
+            "allRootsInsideNorthClaimPrefixes": True,
+            "siblingRootIntersectionAllowed": False,
+            "sharedContractRootIntersectionAllowed": False,
+            "futureProcessOutputRootsPairwiseDisjoint": True,
+            "rawRootEqualsSingleProcessAOutputRoot": True,
+        },
+        "direction root disjointness assertions drift",
+    )
     expected_bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",

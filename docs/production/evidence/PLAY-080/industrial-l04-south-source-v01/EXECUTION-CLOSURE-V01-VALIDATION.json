@@ -1,0 +1,129 @@
+{
+  "activity": {
+    "blenderDccProcesses": 0,
+    "childStarts": 0,
+    "contactSheetInvocations": 0,
+    "imageGenInvocations": 0,
+    "liveLeases": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "sourcePackets": 0
+  },
+  "adversarialCoverage": [
+    "missing authority or closure input",
+    "stale shared-validation receipt",
+    "non-ancestral worker receipt substitution",
+    "replayed one-time capability",
+    "forged anonymous-pipe secret",
+    "wrong direction",
+    "wrong process",
+    "wrong direction-exclusive root",
+    "wrong slot",
+    "wrong claim",
+    "wrong published base",
+    "wrong high-level orchestrator",
+    "direct low-level runner",
+    "unauthenticated runner boundary"
+  ],
+  "authorities": {
+    "claim": {
+      "path": "docs/production/claims/PLAY-080.world-art-south.md",
+      "revision": 6,
+      "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+    },
+    "operatingAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "publishedMaster": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "semanticValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    }
+  },
+  "bindings": {
+    "adapter": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/consume_schedule_v01.py",
+      "sha256": "d2b5a2bf5348c529ced690d4bac7c72ce4140e5e15b05af1f4335ac75e608da2"
+    },
+    "adapterContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/CONTRACT.json",
+      "sha256": "341acfa5c6b6685f2efafa3566ebba2504353efa0863e53270aedd19fdae2cc6"
+    },
+    "highLevelOrchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+      "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
+    },
+    "lowLevelRunner": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
+      "sha256": "e5292949d3f9c6f4fd4005076e86f72a329f33110994fce7a59d546df84fdb3b"
+    },
+    "postlockScheduleFixture": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SCHEDULE.json",
+      "sha256": "b0691abda2d50c742bd92e0b15667caff91e231bba4bdd40988f5a099d763772"
+    },
+    "tests": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py",
+      "sha256": "ddd3e7b3d7407d17bd0e3cf8f39b1423b4908acff5dab808714e927c3a733640"
+    }
+  },
+  "determinism": {
+    "freshTemporaryRoots": 2,
+    "packetSha256": [
+      "c531c7c0b6cc22ab706ed934e1feb2fbb85a1db21275e14272488fa8e3a8e3b8",
+      "c531c7c0b6cc22ab706ed934e1feb2fbb85a1db21275e14272488fa8e3a8e3b8"
+    ],
+    "replayWithinOneAttemptSetRejected": true,
+    "result": "PASS_BYTE_IDENTICAL"
+  },
+  "disposition": {
+    "admissionAuthorized": false,
+    "childStartAuthorized": false,
+    "dccExecutionAuthorized": false,
+    "liveLeaseAuthorized": false,
+    "pixelAuthorized": false,
+    "productionSelected": false,
+    "renderAuthorized": false,
+    "selfAccepted": false,
+    "shippingAuthorized": false,
+    "sourceReady": false
+  },
+  "historicalDisclosure": {
+    "currentSliceDccProcesses": 0,
+    "priorBackgroundActualCameraBlenderProcesses": 1,
+    "priorProcessRenderedPixels": false,
+    "priorProcessWasOutsideThisRevision6ExecutionClosure": true
+  },
+  "lineage": {
+    "implementationCommit": "449ba99f8a17812a62b3c6f245cde6023bc62ef7",
+    "mergeCommit": "64c8539779fb0283af537d78bef31033970636ae",
+    "mergeParents": [
+      "9d81095a9845d39c1b3aaf45bef6516d204f5c6b",
+      "cda04083bd50df3a0cd99923c8ad571afd62509b"
+    ]
+  },
+  "preservedPredesign": {
+    "handoffSha256": "ec3cc2f758e3191d6cf76d5db0686d5481e09a3d42fd3033789f8a85d189bd42",
+    "materialsSha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb",
+    "sceneSha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+  },
+  "result": "PASS_VALIDATION_ONLY_ZERO_CHILD",
+  "schema": "citysim.play-080.south-execution-closure-validation.v1",
+  "taskId": "PLAY-080",
+  "tests": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py",
+      "repeatRuns": 2,
+      "result": "PASS_17_OF_17_EACH_RUN"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_direction_execution_authority_v1.py",
+      "result": "PASS_33_OF_33"
+    }
+  ]
+}

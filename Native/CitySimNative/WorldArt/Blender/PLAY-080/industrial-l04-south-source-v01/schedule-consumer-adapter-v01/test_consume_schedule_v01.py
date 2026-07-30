@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 
 import consume_schedule_v01 as adapter
@@ -430,12 +431,20 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
         second_authority, second_receipt = closure_authority(
             secret, root_suffix="fresh-validation-root"
         )
-        first = adapter.prepare_launch_binding.validate_execution_closure(
-            first_authority, first_receipt, secret, set()
-        )
-        second = adapter.prepare_launch_binding.validate_execution_closure(
-            second_authority, second_receipt, secret, set()
-        )
+        with tempfile.TemporaryDirectory(
+            prefix="play-080-closure-root-a-"
+        ) as first_root, tempfile.TemporaryDirectory(
+            prefix="play-080-closure-root-b-"
+        ) as second_root:
+            self.assertNotEqual(first_root, second_root)
+            self.assertEqual([], list(Path(first_root).iterdir()))
+            self.assertEqual([], list(Path(second_root).iterdir()))
+            first = adapter.prepare_launch_binding.validate_execution_closure(
+                first_authority, first_receipt, secret, set()
+            )
+            second = adapter.prepare_launch_binding.validate_execution_closure(
+                second_authority, second_receipt, secret, set()
+            )
         self.assertEqual(
             adapter.canonical_bytes(first), adapter.canonical_bytes(second)
         )

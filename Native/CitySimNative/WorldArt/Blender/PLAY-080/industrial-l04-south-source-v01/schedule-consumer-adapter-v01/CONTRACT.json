@@ -47,10 +47,10 @@
   },
   "branch": "codex/citysim-world-art-south",
   "claim": {
-    "blobOid": "aaa0086c5df8ec706f8949d42776f756a3c4bbfb",
+    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "revision": 5,
-    "sha256": "f5bb4fa75f3a6170699966a4fe6f8c2fc5656d7765983999cf11ff179656ac82"
+    "revision": 6,
+    "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
   },
   "currentInputs": {
     "appearanceLock": {
@@ -73,6 +73,30 @@
   },
   "direction": "south",
   "disposition": "ZERO_CHILD_READY_BLOCKED_PENDING_POSTLOCK_AUTHORITIES",
+  "executionClosure": {
+    "authorityInstance": null,
+    "childStartAuthorized": false,
+    "claimRevision": 6,
+    "claimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
+    "dccExecutionAuthorized": false,
+    "liveLeaseAuthorized": false,
+    "mode": "validation_only",
+    "operatingAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "pixelAuthorized": false,
+    "publishedBaseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "renderAuthorized": false,
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "semanticValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    }
+  },
   "gates": {
     "admissionAuthorized": false,
     "appearanceLockPresent": false,
@@ -88,9 +112,9 @@
     "sourceReady": false
   },
   "integrationAuthority": {
-    "commit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+    "commit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
     "runtimeHeadPolicy": "integration-authority-is-ancestor",
-    "treeOid": "c6f74e197a1882cf8df6f35a420920331edae142"
+    "treeOid": "b1a5bbea9e401a601d4d8e0f6cb9e84fc259af91"
   },
   "mode": "zero-pixel-direction-schedule-consumer-readiness",
   "nonproductionPostlockFixture": {
@@ -105,7 +129,7 @@
     },
     "schedule": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SCHEDULE.json",
-      "sha256": "a3a94cbb35fa615bb1335cc3c1d42418b1ce1369b0ac18387d13b6e9af587960"
+      "sha256": "b0691abda2d50c742bd92e0b15667caff91e231bba4bdd40988f5a099d763772"
     },
     "sourceProductionProfile": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SOURCE-PRODUCTION-PROFILE.json",
@@ -116,7 +140,7 @@
     "approvedHighLevelOrchestrator": {
       "blobOid": "92155d1cf68efa78e3d2396c8cfe7c4794c9662c",
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
-      "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+      "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
     },
     "directLowLevelInvocationAllowed": false,
     "forbiddenLowLevelRunner": {
@@ -142,9 +166,9 @@
   },
   "schema": "citysim.play-080.south-schedule-consumer-adapter.v2",
   "target": {
-    "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
-    "claimRevision": 5,
-    "claimSha256": "f5bb4fa75f3a6170699966a4fe6f8c2fc5656d7765983999cf11ff179656ac82",
+    "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "claimRevision": 6,
+    "claimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
     "exclusiveRoots": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
       "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"

@@ -5,14 +5,118 @@ from __future__ import annotations
 
 import ast
 import copy
+import hashlib
+import hmac
 import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 
 import consume_schedule_v01 as adapter
 import jsonschema
+
+
+def closure_authority(
+    secret: bytes = b"play-080-nonproduction-secret",
+    *,
+    root_suffix: str = "fresh-001",
+) -> tuple[dict, dict]:
+    authority = {
+        "task": {
+            "taskId": "PLAY-080",
+            "direction": "south",
+            "branch": adapter.BRANCH,
+            "claimRevision": 6,
+            "claimSha256": adapter.REVISION_6_CLAIM_SHA256,
+            "publishedBaseCommit": adapter.REVISION_6_BASE,
+        },
+        "grant": {
+            "grantId": "grant-south-A-rev6",
+            "process": "A",
+            "queueId": "south:A",
+            "slotId": "dcc-1",
+            "maximumChildStarts": 1,
+            "exactlyOneInvocation": True,
+            "orchestratorOnly": True,
+            "directLowLevelInvocationAllowed": False,
+        },
+        "artifacts": {
+            "highLevelOrchestrator": {
+                "path": (
+                    f"{adapter.SOURCE_ROOT}prepare_launch_binding.py"
+                ),
+                "sha256": "1" * 64,
+            },
+            "runnerEntrypoint": {
+                "path": f"{adapter.SOURCE_ROOT}run_production.py",
+                "sha256": "2" * 64,
+            },
+        },
+        "exclusiveRoots": {
+            "output": f"{adapter.SOURCE_ROOT}outputs/{root_suffix}",
+            "evidence": f"{adapter.EVIDENCE_ROOT}evidence/{root_suffix}",
+            "attempt": f"{adapter.EVIDENCE_ROOT}attempts/{root_suffix}",
+            "terminal": f"{adapter.EVIDENCE_ROOT}terminals/{root_suffix}",
+        },
+        "authentication": {
+            "secretTransport": "anonymous_pipe",
+            "secretSha256": hashlib.sha256(secret).hexdigest(),
+            "rawSecretPersisted": False,
+            "childCapability": {
+                "algorithm": "HMAC-SHA256",
+                "capabilityId": "cap-south-A-rev6",
+                "audience": "industrial-l04-direction-child",
+                "boundGrantId": "grant-south-A-rev6",
+                "payloadSha256": "",
+                "macSha256": "",
+                "oneTime": True,
+                "replayAllowed": False,
+            },
+        },
+        "disposition": {
+            "validationOnly": True,
+            "liveLeaseAuthorized": False,
+            "childStartAuthorized": False,
+            "dccExecutionAuthorized": False,
+            "renderAuthorized": False,
+            "pixelAuthorized": False,
+            "sourceCandidateReady": False,
+            "appearanceAccepted": False,
+            "sourceProfileActivated": False,
+            "integrationAdmitted": False,
+            "rendererQuarantined": False,
+            "productionSelected": False,
+            "shippingAuthorized": False,
+        },
+        "_validated": {
+            "authorityPublicationCommit": "3" * 40,
+            "trustedHead": adapter.REVISION_6_BASE,
+            "workerHead": "4" * 40,
+        },
+    }
+    receipt = {
+        "result": "PASS",
+        "authorityPath": (
+            "docs/production/evidence/INTEGRATION/"
+            "PLAY-080-SOUTH-EXECUTION-AUTHORITY.json"
+        ),
+        "authorityPublicationCommit": "3" * 40,
+        "trustedHead": adapter.REVISION_6_BASE,
+        "workerHead": "4" * 40,
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "process": "A",
+        "grantId": "grant-south-A-rev6",
+        "queueId": "south:A",
+        "slotId": "dcc-1",
+    }
+    payload = adapter.prepare_launch_binding.execution_capability_payload(authority)
+    capability = authority["authentication"]["childCapability"]
+    capability["payloadSha256"] = hashlib.sha256(payload).hexdigest()
+    capability["macSha256"] = hmac.new(secret, payload, hashlib.sha256).hexdigest()
+    return authority, receipt
 
 
 class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
@@ -316,6 +420,152 @@ class ScheduleConsumerAdapterV01Tests(unittest.TestCase):
         with self.assertRaises(adapter.AdapterRejected) as raised:
             adapter.validate_schedule_core(wrong_hash, self.contract, runner)
         self.assertEqual("WRONG_CLAIM_HASH", raised.exception.code)
+
+    def test_revision_6_authenticated_boundary_is_deterministic_across_two_fresh_roots(
+        self,
+    ) -> None:
+        secret = b"play-080-nonproduction-secret"
+        first_authority, first_receipt = closure_authority(
+            secret, root_suffix="fresh-validation-root"
+        )
+        second_authority, second_receipt = closure_authority(
+            secret, root_suffix="fresh-validation-root"
+        )
+        with tempfile.TemporaryDirectory(
+            prefix="play-080-closure-root-a-"
+        ) as first_root, tempfile.TemporaryDirectory(
+            prefix="play-080-closure-root-b-"
+        ) as second_root:
+            self.assertNotEqual(first_root, second_root)
+            self.assertEqual([], list(Path(first_root).iterdir()))
+            self.assertEqual([], list(Path(second_root).iterdir()))
+            first = adapter.prepare_launch_binding.validate_execution_closure(
+                first_authority, first_receipt, secret, set()
+            )
+            second = adapter.prepare_launch_binding.validate_execution_closure(
+                second_authority, second_receipt, secret, set()
+            )
+        self.assertEqual(
+            adapter.canonical_bytes(first), adapter.canonical_bytes(second)
+        )
+        self.assertEqual(0, first["activity"]["childrenStarted"])
+        self.assertEqual(0, first["activity"]["dccStarts"])
+        self.assertEqual(0, first["activity"]["renders"])
+        self.assertEqual(0, first["activity"]["pixels"])
+        self.assertFalse(first["runnerBoundary"]["liveLeaseAcquired"])
+
+    def test_revision_6_replay_and_authentication_fail_closed(self) -> None:
+        secret = b"play-080-nonproduction-secret"
+        authority, receipt = closure_authority(secret)
+        seen: set[str] = set()
+        adapter.prepare_launch_binding.validate_execution_closure(
+            authority, receipt, secret, seen
+        )
+        with self.assertRaises(
+            adapter.prepare_launch_binding.LaunchBindingRejected
+        ) as replay:
+            adapter.prepare_launch_binding.validate_execution_closure(
+                authority, receipt, secret, seen
+            )
+        self.assertEqual("REPLAYED_EXECUTION_CAPABILITY", replay.exception.code)
+        with self.assertRaises(
+            adapter.prepare_launch_binding.LaunchBindingRejected
+        ) as missing:
+            adapter.prepare_launch_binding.validate_execution_closure(
+                authority, receipt, None, set()
+            )
+        self.assertEqual("MISSING_ANONYMOUS_PIPE_SECRET", missing.exception.code)
+        with self.assertRaises(
+            adapter.prepare_launch_binding.LaunchBindingRejected
+        ) as forged:
+            adapter.prepare_launch_binding.validate_execution_closure(
+                authority, receipt, b"forged", set()
+            )
+        self.assertEqual("FORGED_ANONYMOUS_PIPE_SECRET", forged.exception.code)
+
+    def test_revision_6_identity_root_slot_and_orchestrator_adversaries(self) -> None:
+        secret = b"play-080-nonproduction-secret"
+        cases = (
+            ("wrong-direction", lambda a, r: a["task"].update(direction="east")),
+            ("wrong-process", lambda a, r: r.update(process="B")),
+            ("wrong-root", lambda a, r: a["exclusiveRoots"].update(
+                output="Native/CitySimNative/Rendering/escape"
+            )),
+            ("wrong-slot", lambda a, r: r.update(slotId="dcc-2")),
+            ("wrong-claim", lambda a, r: a["task"].update(taskId="PLAY-079")),
+            ("wrong-base", lambda a, r: a["task"].update(
+                publishedBaseCommit="5" * 40
+            )),
+            ("wrong-orchestrator", lambda a, r: a["artifacts"][
+                "highLevelOrchestrator"
+            ].update(path=f"{adapter.SOURCE_ROOT}run_production.py")),
+            ("stale-receipt", lambda a, r: r.update(result="STALE")),
+            ("non-ancestral-worker", lambda a, r: r.update(workerHead="6" * 40)),
+        )
+        for case_id, mutate in cases:
+            with self.subTest(case=case_id):
+                authority, receipt = closure_authority(secret)
+                mutate(authority, receipt)
+                if case_id in {
+                    "wrong-direction",
+                    "wrong-root",
+                    "wrong-claim",
+                    "wrong-base",
+                    "wrong-orchestrator",
+                }:
+                    payload = adapter.prepare_launch_binding.execution_capability_payload(
+                        authority
+                    )
+                    authority["authentication"]["childCapability"][
+                        "payloadSha256"
+                    ] = hashlib.sha256(payload).hexdigest()
+                    authority["authentication"]["childCapability"][
+                        "macSha256"
+                    ] = hmac.new(secret, payload, hashlib.sha256).hexdigest()
+                with self.assertRaises(Exception):
+                    adapter.prepare_launch_binding.validate_execution_closure(
+                        authority, receipt, secret, set()
+                    )
+
+    def test_direct_runner_boundary_is_unauthenticated_and_zero_child(self) -> None:
+        authority, receipt = closure_authority()
+        with self.assertRaises(
+            adapter.prepare_launch_binding.run_production.GuardRejected
+        ) as direct:
+            adapter.prepare_launch_binding.run_production.validate_authenticated_execution_boundary(
+                authority,
+                receipt,
+                authenticated_by_orchestrator=False,
+            )
+        self.assertEqual(
+            "UNAUTHENTICATED_EXECUTION_CLOSURE", direct.exception.code
+        )
+
+    def test_revision_6_shared_bindings_and_missing_instance_fail_closed(self) -> None:
+        module = adapter.load_execution_validator()
+        self.assertEqual(
+            "citysim://integration/industrial-l04-direction-execution-authority-v1",
+            module.SCHEMA_ID,
+        )
+        command = [
+            sys.executable,
+            str(adapter.REPOSITORY_ROOT / adapter.ADAPTER_PATH),
+            "--consume-execution-authority",
+        ]
+        result = subprocess.run(
+            command,
+            cwd=adapter.REPOSITORY_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(2, result.returncode)
+        payload = json.loads(result.stdout)
+        self.assertEqual("MISSING_EXECUTION_CLOSURE_INPUT", payload["code"])
+        self.assertEqual(0, payload["childrenStarted"])
+        self.assertEqual(0, payload["activity"]["dccProcessLaunches"])
+        self.assertEqual(0, payload["activity"]["pixelFiles"])
+        self.assertFalse(payload["reportWritten"])
 
 
 if __name__ == "__main__":

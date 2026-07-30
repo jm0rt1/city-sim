@@ -20,6 +20,11 @@ from typing import Any
 
 THIS_DIR = Path(__file__).resolve().parent
 REPOSITORY_ROOT = THIS_DIR.parents[6]
+SOURCE_DIR = THIS_DIR.parent
+if str(SOURCE_DIR) not in sys.path:
+    sys.path.insert(0, str(SOURCE_DIR))
+
+import prepare_launch_binding  # noqa: E402
 SOURCE_ROOT = (
     "Native/CitySimNative/WorldArt/Blender/PLAY-080/"
     "industrial-l04-south-source-v01/"
@@ -46,14 +51,54 @@ POSTLOCK_FIXTURE_PROFILE_PATH = (
 POSTLOCK_FIXTURE_RUNNER_PATH = f"{FIXTURE_ROOT}POSTLOCK-RUNNER-CONTRACT.json"
 POSTLOCK_FIXTURE_SCHEDULE_PATH = f"{FIXTURE_ROOT}POSTLOCK-SCHEDULE.json"
 BRANCH = "codex/citysim-world-art-south"
-INTEGRATION_AUTHORITY = "401eb2ce19c5f5c932442ace72e66fbd734cfa35"
-INTEGRATION_TREE = "c6f74e197a1882cf8df6f35a420920331edae142"
-CLAIM_SHA256 = "f5bb4fa75f3a6170699966a4fe6f8c2fc5656d7765983999cf11ff179656ac82"
+REVISION_6_BASE = "cda04083bd50df3a0cd99923c8ad571afd62509b"
+REVISION_6_CLAIM_SHA256 = (
+    "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+)
+INTEGRATION_AUTHORITY = REVISION_6_BASE
+INTEGRATION_TREE = "b1a5bbea9e401a601d4d8e0f6cb9e84fc259af91"
+CLAIM_SHA256 = REVISION_6_CLAIM_SHA256
+EXECUTION_SCHEMA = {
+    "path": (
+        "docs/production/evidence/INTEGRATION/"
+        "industrial-l04-direction-execution-authority-schema-v1.json"
+    ),
+    "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491",
+}
+EXECUTION_VALIDATOR = {
+    "path": (
+        ".agents/skills/operate-citysim-integration/scripts/"
+        "validate_industrial_l04_direction_execution_authority_v1.py"
+    ),
+    "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae",
+}
+EXECUTION_AUTHORITY = {
+    "path": (
+        "docs/production/evidence/INTEGRATION/"
+        "INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md"
+    ),
+    "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54",
+}
+EXECUTION_CLOSURE_CONTRACT = {
+    "mode": "validation_only",
+    "publishedBaseCommit": REVISION_6_BASE,
+    "claimRevision": 6,
+    "claimSha256": REVISION_6_CLAIM_SHA256,
+    "schema": EXECUTION_SCHEMA,
+    "semanticValidator": EXECUTION_VALIDATOR,
+    "operatingAuthority": EXECUTION_AUTHORITY,
+    "authorityInstance": None,
+    "liveLeaseAuthorized": False,
+    "childStartAuthorized": False,
+    "dccExecutionAuthorized": False,
+    "renderAuthorized": False,
+    "pixelAuthorized": False,
+}
 
 CLAIM = {
-    "blobOid": "aaa0086c5df8ec706f8949d42776f756a3c4bbfb",
+    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "revision": 5,
+    "revision": 6,
     "sha256": CLAIM_SHA256,
 }
 AUTHORITIES = {
@@ -90,7 +135,7 @@ AUTHORITIES = {
 ORCHESTRATOR = {
     "blobOid": "92155d1cf68efa78e3d2396c8cfe7c4794c9662c",
     "path": f"{SOURCE_ROOT}prepare_launch_binding.py",
-    "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896",
+    "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9",
 }
 LOW_LEVEL_RUNNER = {
     "blobOid": "51d220d89de07e9550a03c4f849a2dd699238353",
@@ -113,7 +158,7 @@ NONPRODUCTION_POSTLOCK_FIXTURE = {
     },
     "schedule": {
         "path": POSTLOCK_FIXTURE_SCHEDULE_PATH,
-        "sha256": "a3a94cbb35fa615bb1335cc3c1d42418b1ce1369b0ac18387d13b6e9af587960",
+        "sha256": "b0691abda2d50c742bd92e0b15667caff91e231bba4bdd40988f5a099d763772",
     },
     "sourceProductionProfile": {
         "path": POSTLOCK_FIXTURE_PROFILE_PATH,
@@ -170,7 +215,7 @@ PROCESS_EVIDENCE_ROOTS = {
 }
 TARGET = {
     "baseCommit": INTEGRATION_AUTHORITY,
-    "claimRevision": 5,
+    "claimRevision": 6,
     "claimSha256": CLAIM_SHA256,
     "exclusiveRoots": [SOURCE_EXCLUSIVE_ROOT, EVIDENCE_EXCLUSIVE_ROOT],
     "phase": "postlock_abc",
@@ -457,6 +502,7 @@ def validate_contract(contract: dict[str, Any]) -> None:
             "currentInputs",
             "direction",
             "disposition",
+            "executionClosure",
             "gates",
             "integrationAuthority",
             "mode",
@@ -521,6 +567,8 @@ def validate_contract(contract: dict[str, Any]) -> None:
         reject("GATE_STATE_MISMATCH")
     if contract.get("outputs") != OUTPUTS:
         reject("OUTPUT_BINDING_MISMATCH")
+    if contract.get("executionClosure") != EXECUTION_CLOSURE_CONTRACT:
+        reject("EXECUTION_CLOSURE_CONTRACT_MISMATCH")
 
 
 def validate_runner_immutable(runner: dict[str, Any]) -> None:
@@ -639,8 +687,6 @@ def validate_immutable_environment(contract: dict[str, Any]) -> dict[str, Any]:
     bindings = {
         "claim": CLAIM,
         **AUTHORITIES,
-        "approvedHighLevelOrchestrator": ORCHESTRATOR,
-        "forbiddenLowLevelRunner": LOW_LEVEL_RUNNER,
         "acceptedPredesign.materials": PREDEISGN["materials"],
         "acceptedPredesign.scene": PREDEISGN["scene"],
     }
@@ -795,7 +841,7 @@ def validate_schedule_core(
 ) -> dict[str, Any]:
     if schedule is None:
         reject("MISSING_SCHEDULE")
-    if contract.get("target", {}).get("claimRevision") != 5:
+    if contract.get("target", {}).get("claimRevision") != 6:
         reject("WRONG_CLAIM_REVISION")
     if schedule.get("phase") != "postlock_abc":
         reject("WRONG_PHASE", schedule.get("phase"))
@@ -1120,6 +1166,100 @@ def load_shared_validator() -> Any:
     return module
 
 
+def load_execution_validator() -> Any:
+    captured = capture_file(EXECUTION_VALIDATOR["path"], "EXECUTION_VALIDATOR_UNSAFE")
+    if sha256_bytes(captured.raw) != EXECUTION_VALIDATOR["sha256"]:
+        reject("STALE_EXECUTION_VALIDATOR")
+    schema = capture_file(EXECUTION_SCHEMA["path"], "EXECUTION_SCHEMA_UNSAFE")
+    if sha256_bytes(schema.raw) != EXECUTION_SCHEMA["sha256"]:
+        reject("STALE_EXECUTION_SCHEMA")
+    authority = capture_file(
+        EXECUTION_AUTHORITY["path"], "EXECUTION_CLOSURE_AUTHORITY_UNSAFE"
+    )
+    if sha256_bytes(authority.raw) != EXECUTION_AUTHORITY["sha256"]:
+        reject("STALE_EXECUTION_CLOSURE_AUTHORITY")
+    absolute = REPOSITORY_ROOT.joinpath(
+        *PurePosixPath(EXECUTION_VALIDATOR["path"]).parts
+    )
+    spec = importlib.util.spec_from_file_location(
+        "industrial_l04_direction_execution_validator_v1", absolute
+    )
+    if spec is None or spec.loader is None:
+        reject("EXECUTION_VALIDATOR_IMPORT_FAILED")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def consume_execution_authority(
+    authority_path: str,
+    *,
+    trusted_head: str,
+    worker_head: str,
+    authority_publication_commit: str,
+    secret: bytes | None,
+    seen_capabilities: set[str] | None = None,
+) -> dict[str, Any]:
+    pure = parse_safe_relative_path(authority_path, "UNSAFE_EXECUTION_AUTHORITY_PATH")
+    if pure.parent.as_posix() != INTEGRATION_INPUT_ROOT.rstrip("/"):
+        reject("EXECUTION_AUTHORITY_NOT_INTEGRATION_OWNED", authority_path)
+    first = capture_file(authority_path, "EXECUTION_AUTHORITY_UNSAFE")
+    authority = load_json_bytes(first.raw, authority_path)
+    validator = load_execution_validator()
+    try:
+        shared_receipt = validator.validate(
+            REPOSITORY_ROOT,
+            REPOSITORY_ROOT.joinpath(*pure.parts),
+            trusted_head=trusted_head,
+            worker_head=worker_head,
+            authority_publication_commit=authority_publication_commit,
+        )
+    except Exception as error:
+        reject("EXECUTION_AUTHORITY_REJECTED", str(error))
+    second = capture_file(authority_path, "EXECUTION_AUTHORITY_UNSAFE")
+    if first.identity != second.identity or first.raw != second.raw:
+        reject("EXECUTION_AUTHORITY_REPLACEMENT_RACE")
+    task = authority.get("task", {})
+    expected = {
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "branch": BRANCH,
+        "claimRevision": 6,
+        "claimSha256": REVISION_6_CLAIM_SHA256,
+        "publishedBaseCommit": REVISION_6_BASE,
+    }
+    mismatches = {
+        key: {"expected": value, "actual": task.get(key)}
+        for key, value in expected.items()
+        if task.get(key) != value
+    }
+    if mismatches:
+        reject("REVISION_6_AUTHORITY_MISMATCH", mismatches)
+    authority["_validated"] = {
+        key: shared_receipt[key]
+        for key in (
+            "authorityPublicationCommit",
+            "trustedHead",
+            "workerHead",
+        )
+    }
+    try:
+        return prepare_launch_binding.validate_execution_closure(
+            authority,
+            shared_receipt,
+            secret,
+            seen_capabilities if seen_capabilities is not None else set(),
+        )
+    except (
+        prepare_launch_binding.LaunchBindingRejected,
+        prepare_launch_binding.run_production.GuardRejected,
+    ) as error:
+        reject(
+            getattr(error, "code", "EXECUTION_CLOSURE_REJECTED"),
+            getattr(error, "detail", getattr(error, "details", None)),
+        )
+
+
 def consume_schedule_path(
     schedule_path: str,
     contract: dict[str, Any],
@@ -1303,10 +1443,16 @@ def parse_args() -> argparse.Namespace:
     mode.add_argument("--write-readiness", action="store_true")
     mode.add_argument("--verify-readiness", action="store_true")
     mode.add_argument("--consume", action="store_true")
+    mode.add_argument("--consume-execution-authority", action="store_true")
     parser.add_argument("--contract", default=CONTRACT_PATH)
     parser.add_argument("--readiness", default=READINESS_PATH)
     parser.add_argument("--schedule")
     parser.add_argument("--nonproduction-postlock-fixture", action="store_true")
+    parser.add_argument("--execution-authority")
+    parser.add_argument("--trusted-head")
+    parser.add_argument("--worker-head")
+    parser.add_argument("--authority-publication-commit")
+    parser.add_argument("--secret-fd", type=int)
     return parser.parse_args()
 
 
@@ -1319,6 +1465,39 @@ def main() -> int:
             reject("READINESS_PATH_MISMATCH", args.readiness)
         contract_capture = capture_file(CONTRACT_PATH, "ADAPTER_CONTRACT_UNSAFE")
         contract = load_json_bytes(contract_capture.raw, CONTRACT_PATH)
+        if args.consume_execution_authority:
+            validate_immutable_environment(contract)
+            required = {
+                "executionAuthority": args.execution_authority,
+                "trustedHead": args.trusted_head,
+                "workerHead": args.worker_head,
+                "authorityPublicationCommit": args.authority_publication_commit,
+                "secretFd": args.secret_fd,
+            }
+            missing = [key for key, value in required.items() if value is None]
+            if missing:
+                reject("MISSING_EXECUTION_CLOSURE_INPUT", missing)
+            try:
+                secret = os.read(args.secret_fd, 4096)
+            except OSError as error:
+                reject("ANONYMOUS_PIPE_SECRET_UNAVAILABLE", error.errno)
+            result = consume_execution_authority(
+                args.execution_authority,
+                trusted_head=args.trusted_head,
+                worker_head=args.worker_head,
+                authority_publication_commit=args.authority_publication_commit,
+                secret=secret,
+            )
+            print(
+                json.dumps(
+                    {
+                        **result,
+                        "reportWritten": False,
+                    },
+                    sort_keys=True,
+                )
+            )
+            return 0
         if args.consume:
             validate_immutable_environment(contract)
             if not args.schedule:

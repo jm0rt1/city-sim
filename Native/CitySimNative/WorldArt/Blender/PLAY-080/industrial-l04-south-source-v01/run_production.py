@@ -59,7 +59,11 @@ def parse_args() -> argparse.Namespace:
     else:
         argv = argv[1:]
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", required=True, choices=("validate", "A", "B", "C"))
+    parser.add_argument(
+        "--mode",
+        required=True,
+        choices=("validate", "validate-execution-closure", "A", "B", "C"),
+    )
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT)
     parser.add_argument("--report", type=Path)
     return parser.parse_args(argv)
@@ -702,6 +706,89 @@ def write_report(path: Path | None, payload: dict[str, Any]) -> None:
     print(json.dumps({"result": payload["result"], "report": str(path)}))
 
 
+def validate_authenticated_execution_boundary(
+    authority: dict[str, Any],
+    shared_receipt: dict[str, Any],
+    *,
+    authenticated_by_orchestrator: bool,
+) -> dict[str, Any]:
+    """Close the runner boundary without acquiring a lease or starting a child."""
+
+    if authenticated_by_orchestrator is not True:
+        raise GuardRejected("UNAUTHENTICATED_EXECUTION_CLOSURE", None)
+    task = authority.get("task", {})
+    grant = authority.get("grant", {})
+    artifacts = authority.get("artifacts", {})
+    disposition = authority.get("disposition", {})
+    expected = {
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "branch": "codex/citysim-world-art-south",
+        "claimRevision": 6,
+        "claimSha256": (
+            "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+        ),
+        "publishedBaseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    }
+    mismatches = {
+        key: {"expected": value, "actual": task.get(key)}
+        for key, value in expected.items()
+        if task.get(key) != value
+    }
+    if mismatches:
+        raise GuardRejected("EXECUTION_CLOSURE_TASK_MISMATCH", mismatches)
+    if shared_receipt.get("result") != "PASS":
+        raise GuardRejected("EXECUTION_AUTHORITY_NOT_VALIDATED", shared_receipt)
+    for key in ("taskId", "direction", "process", "grantId", "slotId"):
+        expected_value = (
+            task.get(key)
+            if key in {"taskId", "direction"}
+            else grant.get(key)
+        )
+        if shared_receipt.get(key) != expected_value:
+            raise GuardRejected(
+                "EXECUTION_RECEIPT_MISMATCH",
+                {
+                    "field": key,
+                    "expected": expected_value,
+                    "actual": shared_receipt.get(key),
+                },
+            )
+    runner_path = DEFAULT_CONTRACT.parent.joinpath("run_production.py")
+    runner_binding = artifacts.get("runnerEntrypoint", {})
+    if runner_binding.get("path") != runner_path.relative_to(REPOSITORY_ROOT).as_posix():
+        raise GuardRejected("WRONG_RUNNER_ENTRYPOINT", runner_binding)
+    if grant.get("maximumChildStarts") != 1:
+        raise GuardRejected("WRONG_CHILD_LIMIT", grant.get("maximumChildStarts"))
+    if (
+        grant.get("orchestratorOnly") is not True
+        or grant.get("directLowLevelInvocationAllowed") is not False
+    ):
+        raise GuardRejected("DIRECT_RUNNER_FORBIDDEN", grant)
+    if disposition.get("validationOnly") is not True or any(
+        value is not False
+        for key, value in disposition.items()
+        if key != "validationOnly"
+    ):
+        raise GuardRejected("EXECUTION_DISPOSITION_NOT_VALIDATION_ONLY", disposition)
+    return {
+        "schema": "citysim.play-080.south-runner-execution-closure.v1",
+        "result": "PASS_VALIDATION_ONLY_ZERO_CHILD",
+        "taskId": "PLAY-080",
+        "direction": "south",
+        "process": grant["process"],
+        "grantId": grant["grantId"],
+        "slotId": grant["slotId"],
+        "authenticated": True,
+        "childrenStarted": 0,
+        "dccStarts": 0,
+        "renders": 0,
+        "pixels": 0,
+        "liveLeaseAcquired": False,
+        "sourceReady": False,
+    }
+
+
 def bridge_citysim_point(
     point: list[float], bridge: dict[str, Any]
 ) -> tuple[float, float, float]:
@@ -939,6 +1026,11 @@ def main() -> int:
     try:
         contract = load_json(args.contract)
         validate_contract_shape(contract)
+        if args.mode == "validate-execution-closure":
+            raise GuardRejected(
+                "DIRECT_RUNNER_FORBIDDEN",
+                "execution closure must enter through consume_schedule_v01.py",
+            )
         if args.mode == "validate":
             write_report(args.report, result_payload(args.mode, "PASS"))
             return 0

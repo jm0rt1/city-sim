@@ -27,7 +27,7 @@
   },
   "directionGrants": [
     {
-      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
       "branch": "codex/citysim-world-art",
       "claim": "PLAY-027",
       "claimSha256": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -38,7 +38,7 @@
       ],
       "orchestrator": {
         "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
-        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+        "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
       },
       "processes": [
         {
@@ -71,7 +71,7 @@
       ]
     },
     {
-      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
       "branch": "codex/citysim-world-art-east",
       "claim": "PLAY-079",
       "claimSha256": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -82,7 +82,7 @@
       ],
       "orchestrator": {
         "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
-        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+        "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
       },
       "processes": [
         {
@@ -115,10 +115,10 @@
       ]
     },
     {
-      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
       "branch": "codex/citysim-world-art-south",
       "claim": "PLAY-080",
-      "claimSha256": "f5bb4fa75f3a6170699966a4fe6f8c2fc5656d7765983999cf11ff179656ac82",
+      "claimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
       "direction": "south",
       "exclusiveRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
@@ -126,7 +126,7 @@
       ],
       "orchestrator": {
         "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
-        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+        "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
       },
       "processes": [
         {
@@ -159,7 +159,7 @@
       ]
     },
     {
-      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
       "branch": "codex/citysim-world-art-west",
       "claim": "PLAY-081",
       "claimSha256": "0000000000000000000000000000000000000000000000000000000000000000",
@@ -170,7 +170,7 @@
       ],
       "orchestrator": {
         "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
-        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+        "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
       },
       "processes": [
         {
@@ -207,7 +207,7 @@
     "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
     "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
   },
-  "integrationAuthorityCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+  "integrationAuthorityCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
   "issuedAt": "2026-07-30T00:00:00Z",
   "phase": "postlock_abc",
   "schema": 1,

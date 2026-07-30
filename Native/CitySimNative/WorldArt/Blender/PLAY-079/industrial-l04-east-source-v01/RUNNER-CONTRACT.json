@@ -4,7 +4,7 @@
   "taskId": "PLAY-079",
   "direction": "east",
   "branch": "codex/citysim-world-art-east",
-  "baselineCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8",
+  "baselineCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
   "state": "awaiting_appearance_lock",
   "sourceReady": false,
   "productionSelected": false,
@@ -23,12 +23,12 @@
     "schema": {
       "state": "BOUND_IMMUTABLE_V2",
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
-      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
-      "authorityCommit": "9950906e8dbbc3cf48a0dc5b05e9a7d38b7a76d8"
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+      "authorityCommit": "aaee294718a8176b70a4688b738b517f216dd3a7"
     },
     "nonAliasInput": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
-      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
       "acceptedMasterCount": 44,
       "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
     },
@@ -93,7 +93,7 @@
     },
     "sourceStageSchemaV2": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
-      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
     },
     "sourceStageSchemaV2Authority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-SOURCE-STAGE-SCHEMA-V2-AUTHORITY.md",
@@ -101,7 +101,7 @@
     },
     "nonAliasLoader": {
       "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
-      "sha256": "2c44bc3a4ffe3fdfc68a477b70f3af9478122e9b796543f32a154859ac300a39"
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
     },
     "sourceStageSemanticValidator": {
       "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
@@ -109,11 +109,11 @@
     },
     "launchBoundPreparationCli": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/prepare_launch_bound.py",
-      "sha256": "939dbc2dcd41cb72a32846845f8756a66212e0dc5a5f313fedab0054288d6c60"
+      "sha256": "6e7ff5de045babcb997bebcd759883632b69cfd94c837fb32fd9b5dad891209a"
     },
     "launchBoundPreparationValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/validate_launch_bound_cli.py",
-      "sha256": "e6cefe99c1c0824d1678452a05371b8849ac63849e6c2d0824a5f7fcc71fee66"
+      "sha256": "e48285f379aad30bfa7eed95a00d9b7b782988692bed8e692889ed75bbcf7322"
     },
     "directionLocalOutputSafety": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/east_output_safety.py",
@@ -125,7 +125,7 @@
     },
     "parallelSourceOrchestrator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
-      "sha256": "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c"
+      "sha256": "5c9f5ffcebc2a804bb43d593a3be35d280908afeaf7f02b2860675035ad16406"
     },
     "canonicalDecoder": {
       "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
@@ -133,7 +133,7 @@
     },
     "nonAliasInput": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
-      "sha256": "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
     },
     "prelockRepairAuthority": {
       "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md",
@@ -422,9 +422,9 @@
   ],
   "executionClosure": {
     "schemaVersion": 1,
-    "claimRevision": 6,
-    "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-    "publishedBaseCommit": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "claimRevision": 7,
+    "claimSha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+    "publishedBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-CONTRACT.json",
     "sharedSchema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",

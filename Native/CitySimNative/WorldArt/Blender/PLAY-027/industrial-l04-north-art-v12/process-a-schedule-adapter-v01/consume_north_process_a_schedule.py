@@ -21,6 +21,7 @@ SOURCE_ROOT = Path(
 CONTRACT_RELATIVE = SOURCE_ROOT / "ADAPTER-CONTRACT.json"
 ADAPTER_RELATIVE = SOURCE_ROOT / "consume_north_process_a_schedule.py"
 INTEGRATION_SCHEDULE_ROOT = Path("docs/production/evidence/INTEGRATION")
+MISSING_SCHEDULE_REASON_CODE = "MISSING_PUBLISHED_SCHEDULE"
 EXPECTED_CONTRACT_FIELDS = {
     "schema",
     "task",
@@ -390,7 +391,17 @@ def consume_published_schedule(
     repository_root = repository_root.resolve(strict=True)
     contract = validate_contract(repository_root, contract_path)
     schedule_path = schedule_path.absolute()
-    schedule = load_json(schedule_path)
+    try:
+        schedule = load_json(schedule_path)
+    except FileNotFoundError:
+        schedule_label = (
+            schedule_path.relative_to(repository_root).as_posix()
+            if schedule_path.is_relative_to(repository_root)
+            else "<outside-repository>"
+        )
+        raise AdapterError(
+            f"{MISSING_SCHEDULE_REASON_CODE}: {schedule_label}"
+        ) from None
     validator_path = verify_file_binding(
         repository_root,
         contract["scheduleValidator"],

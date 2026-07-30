@@ -67,7 +67,7 @@ EXPECTED_BINDINGS = {
     "v4SuccessorHandoff": {
         "path": f"{EVIDENCE_ROOT}/WEST-ZERO-PIXEL-V4-SUCCESSOR-HANDOFF.json",
         "sha256": (
-            "af674cc34bb57656dc2d6e7c5be616684e6a179a8ab14e2e9a9705f6293c2201"
+            "e2b5a1b083f65a0a89ea4003f8df3a3fd294e654d94b70cc0938503a6252af92"
         ),
     },
     "v4SuccessorValidation": {

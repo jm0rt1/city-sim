@@ -28,7 +28,7 @@ EXPECTED_V3_PREDECESSORS = {
     "predecessorV3Handoff": {
         "path": f"{EVIDENCE_ROOT}/WEST-ZERO-PIXEL-V3-SUCCESSOR-HANDOFF.json",
         "sha256": (
-            "2d8e0bc96784997bb8add0da56994cc4b54bf87ed0f2a1006d8191a9993a5bbc"
+            "e118391db6a1264a13edb946ad9b210e3d926803df706352e67c1c146ae3816f"
         ),
     },
     "predecessorV3Validation": {
@@ -40,7 +40,7 @@ EXPECTED_V3_PREDECESSORS = {
     "predecessorV3Validator": {
         "path": f"{SOURCE_ROOT}/validate_zero_pixel_v3_successor.py",
         "sha256": (
-            "6241b3b11364b3db340e1d2dce5b242405d28ac8b1c58499606555af635df88e"
+            "d858197a383c495c4204b1fdb4921af8c66b8b3b5dd4eb3b0e549bac5ac7f63e"
         ),
     },
 }

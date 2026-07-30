@@ -965,3 +965,132 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Accepted integration:** Final lifecycle mapping receipt published at
   `1008eadf553a445f01f9405558d260e0c779674b`:
   `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-LIFECYCLE-SAVE-BINDING-ACCEPTANCE.json`.
+
+### [ ] PLAY-084: Make consequences land in the HUD
+
+- **Player outcome:** A build, policy, utility, pressure, or recovery change is
+  acknowledged immediately in the existing HUD metrics, so the player can
+  connect an action to treasury, jobs, happiness, and utility movement without
+  opening another panel or losing the map.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** PRD-003, PRD-004, UX-003, UX-004, UX-006, UX-009,
+  REL-001.
+- **Dependencies:** PLAY-082 product/evidence integrated and frozen through
+  `89340edce77c3e2014012b2c1cf898f393cc37e4`; next published clean Integration
+  baseline containing this claim.
+- **In scope:** `TopHUDView`, `StrategyCommandCenterView`, private UI-only
+  metric-change presentation, focused HUD tests, and PLAY-084 evidence.
+- **Out of scope:** `BuildToolbarView`, `ContentView`, store/command/public
+  contracts, new simulation truth, objectives/alerts redesign, SpriteKit,
+  persistence, shared theme tokens, package/build files, art, or legacy Python.
+- **Work checklist:** Reproduce the current weak feedback after authoritative
+  metric changes; define a deterministic coalesced presentation for material
+  positive/negative treasury, employment, happiness, power, and water changes;
+  retain current values as primary truth; provide a non-motion equivalent;
+  preserve metric actions, focus, compact layout, and map aperture; verify
+  accessible current value plus change meaning without announcing zero/noise.
+- **Acceptance:** Material changes produce one restrained, directionally
+  truthful HUD acknowledgement within one rendered update and settle without
+  accumulating stale deltas. Routine zero/format-only changes do not flash.
+  Reduced Motion exposes the same signed/static meaning without scale, travel,
+  or repeated opacity animation. Regular and exact `900 x 600` HUD heights
+  remain at or below 118/104 points; nothing clips, steals focus, duplicates a
+  command, or reduces the world aperture.
+- **Validation:** Focused presentation/coalescing/accessibility/Reduced Motion
+  tests; exact height/aperture tests; complete native suite; lane-staged verify;
+  regular/compact pointer and keyboard journeys covering build, utility
+  pressure, and recovery feedback.
+- **Proof:** Before/after metric frames, signed-delta and coalescing ledger,
+  accessibility values, Reduced Motion equivalence, HUD height/aperture
+  measurements, exact candidate identity, and staged journey record under
+  `docs/production/evidence/PLAY-084/`.
+- **Stop conditions:** A store, command, simulation, save, theme, renderer, or
+  package contract change is required; feedback fires continuously from
+  ordinary ticks; compact height grows; accessibility becomes motion- or
+  color-only; or the HUD obscures more of the world.
+- **Claim:** `docs/production/claims/PLAY-084.ui-input.md`.
+
+### [ ] PLAY-085: Make severe storms visibly damage and recover the town
+
+- **Player outcome:** A Severe Storm visibly weathers real developed homes,
+  clearly names the damage and remedy, and allows sustained healthy utilities
+  and services to restore the neighborhood, turning a treasury message into a
+  readable and recoverable world consequence.
+- **Owning lane:** Gameplay loop.
+- **Requirement IDs:** PRD-003, PRD-004, SIM-001, ECO-003, GOV-002, ENV-001,
+  ART-002, REL-001.
+- **Dependencies:** PLAY-076 gameplay product integrated at patch-equivalent
+  `a2e984a57db0cb83e00d3be515df32d0cea438e8`; existing `CityTile.condition`,
+  deterministic event seed, utility, park, service, message, replay, save, and
+  renderer condition contracts; next published clean Integration baseline
+  containing this claim.
+- **In scope:** Severe Storm behavior in `CitySimulation`, deterministic
+  residential-lot weathering and healthy-operation repair, gameplay-owned
+  focused tests, and PLAY-085 evidence.
+- **Out of scope:** New state or Codable fields; event schedule/title changes;
+  generic demand/development/progression rebalance; commercial/industrial
+  strategy scars; renderer/UI/input/fixture/package/build changes; art or
+  legacy Python.
+- **Work checklist:** Freeze exact current event behavior; select developed
+  Residential targets in stable coordinate order; use existing utility reserve,
+  parks, and service coverage to mitigate rather than erase damage; make at
+  least one unmitigated lot cross the existing visible weathered threshold;
+  repair only storm-relevant Residential condition through sustained healthy
+  operation; emit truthful affected-count/remedy/recovery messages; preserve
+  the fixed seed sequence and all existing strategy scars.
+- **Acceptance:** The same seed/state produces the same affected coordinates,
+  reductions, messages, recovery path, fingerprints, and replay. An
+  unmitigated qualifying storm visibly weathers at least one completed
+  Residential lot without bulldozing or changing kind/level/occupancy.
+  Resilience reduces damage but cannot falsely report zero harm unless the
+  governed inputs justify it. Healthy utility/service operation restores the
+  storm damage inside 12 in-game days; ignored pressure remains visible.
+  Commercial/Industrial recovery scars and all four PLAY-076 strategies remain
+  unchanged.
+- **Validation:** Focused event/condition lifecycle tests; seed/replay/undo and
+  save/load/backup round trips; four strategy/recovery scenarios; exact
+  fingerprints; full native suite; staged world proof delegated to QA.
+- **Proof:** Seed and target ledger, mitigation matrix, daily damage/recovery
+  trace, exact messages, replay/save/undo identities, and renderer-consumable
+  before/damaged/recovering/recovered state inventory under
+  `docs/production/evidence/PLAY-085/`.
+- **Stop conditions:** A new saved/public field, renderer mutation, generic
+  condition healing, strategy-scar regression, nondeterministic target, hidden
+  permanent damage, dominant mitigation, event cadence change, or fixture
+  rewrite becomes necessary.
+- **Claim:** `docs/production/claims/PLAY-085.gameplay-loop.md`.
+
+### [ ] PLAY-086: Gate visible cause and recovery
+
+- **Player outcome:** A fresh player can act, notice the HUD consequence,
+  identify the visibly weathered location, apply the advertised remedy, and
+  recognize recovery in regular and compact play without developer coaching.
+- **Owning lane:** Playtest quality.
+- **Requirement IDs:** PRD-003, PRD-004, UX-003, UX-004, UX-006, UX-009,
+  ART-002, AUD-001, REL-001.
+- **Dependencies:** PLAY-075 exact-candidate gate completed or returned; frozen
+  PLAY-084 and PLAY-085 candidates; Integration-published combined candidate.
+- **In scope:** Candidate-neutral preregistration, fixed camera/save states,
+  pointer and keyboard journeys, AX/Reduced Motion equivalence, cause/recovery
+  timing, regular/exact-compact proof, independent scoring, and PLAY-086
+  evidence.
+- **Out of scope:** Product repair, renderer/UI/gameplay mutation, coaching the
+  first journey, candidate rebasing, fixture rewriting, push, or
+  self-acceptance.
+- **Acceptance:** The no-coaching journey completes in five minutes or less;
+  the player identifies the changed metric and damaged place within ten
+  seconds of the event, reaches the advertised remedy by pointer and keyboard,
+  and recognizes the recovered state. Regular and exact `900 x 600` layouts,
+  Full Keyboard Access, AX, Escape, and Reduced Motion preserve equivalent
+  meaning. Scoring is bound to one exact combined candidate.
+- **Validation:** Fresh same-SHA staged app; pointer and keyboard journeys;
+  regular/compact color and grayscale captures; AX ledger; Reduced Motion
+  comparison; candidate/process/build identity; renderer performance smoke.
+- **Proof:** Preregistered rubric, uncoached timing trace, exact actions and
+  candidate identity, damaged/recovered camera pairs, HUD comparison, AX and
+  Reduced Motion ledgers, defects, and disposition under
+  `docs/production/evidence/PLAY-086/`.
+- **Stop conditions:** PLAY-075 remains active; candidates differ; coaching is
+  required; a product repair is necessary; staged identity is ambiguous; or
+  any critical pointer, keyboard, compact, AX, or Reduced Motion route fails.
+- **Claim:** `docs/production/claims/PLAY-086.playtest-quality.md`.

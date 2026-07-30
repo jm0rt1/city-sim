@@ -737,6 +737,9 @@ final class CityCommandCatalogTests: XCTestCase {
                 selection: nil,
                 interactionMode: .inspect
             )
+            scene.frameCity()
+            let expectedFocusScale = scene.cameraScale
+            let expectedFocusPosition = scene.camera?.position
             let coordinator = CitySceneView.Coordinator(store: store)
             coordinator.scene = scene
 
@@ -769,7 +772,6 @@ final class CityCommandCatalogTests: XCTestCase {
             store.cancelInteraction()
             XCTAssertNil(store.selectedCoordinate, "Escape cancellation leaves no active target")
             scene.configureProofCamera(detail: .block, centeredOn: GridCoordinate(x: 0, y: 0))
-            let escapedScale = scene.cameraScale
             let escapedPosition = scene.camera?.position
 
             XCTAssertTrue(store.perform(.toggleCityFocus))
@@ -779,7 +781,8 @@ final class CityCommandCatalogTests: XCTestCase {
                     selectedCoordinate: store.selectedCoordinate
                 )
             )
-            XCTAssertNotEqual(scene.cameraScale, escapedScale)
+            XCTAssertEqual(scene.cameraScale, expectedFocusScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.camera?.position, expectedFocusPosition)
             XCTAssertNotEqual(scene.camera?.position, escapedPosition)
             let framedScale = scene.cameraScale
             let framedPosition = scene.camera?.position
@@ -821,7 +824,6 @@ final class CityCommandCatalogTests: XCTestCase {
             XCTAssertEqual(store.state.treasury, treasury)
             XCTAssertNil(store.selectedCoordinate, "Undo intentionally clears the reverted build target")
             scene.configureProofCamera(detail: .block, centeredOn: buildTarget)
-            let undoScale = scene.cameraScale
             let undoPosition = scene.camera?.position
 
             XCTAssertTrue(store.perform(.toggleCityFocus))
@@ -831,7 +833,8 @@ final class CityCommandCatalogTests: XCTestCase {
                     selectedCoordinate: store.selectedCoordinate
                 )
             )
-            XCTAssertNotEqual(scene.cameraScale, undoScale)
+            XCTAssertEqual(scene.cameraScale, expectedFocusScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.camera?.position, expectedFocusPosition)
             XCTAssertNotEqual(scene.camera?.position, undoPosition)
             XCTAssertEqual(store.state.treasury, treasury)
             XCTAssertNil(store.selectedCoordinate)

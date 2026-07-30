@@ -72,6 +72,34 @@ LANE_BINDINGS = {
     "renderer": "world_rendering",
     "qa": "playtest_quality",
 }
+CLAIM_OWNED_DIRECTION_ROOTS = {
+    "north": (
+        Path("Native/CitySimNative/WorldArt/Blender/PLAY-027"),
+        Path("Native/CitySimNative/WorldArt/ImageGen"),
+        Path("docs/production/evidence/PLAY-027"),
+    ),
+    "east": (
+        Path("Native/CitySimNative/WorldArt/Blender/PLAY-079"),
+        Path("docs/production/evidence/PLAY-079"),
+    ),
+    "south": (
+        Path("Native/CitySimNative/WorldArt/Blender/PLAY-080"),
+        Path("docs/production/evidence/PLAY-080"),
+    ),
+    "west": (
+        Path("Native/CitySimNative/WorldArt/Blender/PLAY-081"),
+        Path("docs/production/evidence/PLAY-081"),
+    ),
+}
+BROAD_EXECUTION_ROOTS = frozenset(
+    {
+        Path("/"),
+        Path("/private"),
+        Path("/private/tmp"),
+        Path("/tmp"),
+        Path.home().resolve(strict=False),
+    }
+)
 
 BATCH_STATE_MACHINE = (
     "contract_pending",
@@ -134,6 +162,13 @@ INACTIVE_DISPATCH_STATES = frozenset(
 )
 KNOWN_DISPATCH_STATES = (
     ACTIVE_DISPATCH_STATES | PENDING_DISPATCH_STATES | INACTIVE_DISPATCH_STATES
+)
+OVERLAP_STATES = frozenset({"observed", "none", "not_applicable"})
+JOIN_STATES = frozenset({"no_join_required", "waiting", "joined"})
+JOB_RESOURCE_CLASSES = frozenset({"helper", "dcc"})
+JOB_STATES = frozenset({"running", "completed", "failed"})
+JOB_MUTATION_CLASSES = frozenset(
+    {"read_only", "isolated_temp", "direction_owned"}
 )
 
 GIT_SHA_KEYS = frozenset(
@@ -217,6 +252,7 @@ class Validator:
             f"receipt.{receipt_rows_key}",
             require_exact_six=True,
         )
+        receipt_authority_commit = receipt.get("authorityCommit")
 
         for cell in EXPECTED_CELLS:
             ledger_row = ledger_rows.get(cell)
@@ -227,7 +263,11 @@ class Validator:
                 self._validate_required_row_fields(
                     ledger_row, f"ledger.cells.{cell}"
                 )
-                self._validate_work_row(ledger_row, f"ledger.cells.{cell}")
+                self._validate_work_row(
+                    ledger_row,
+                    f"ledger.cells.{cell}",
+                    receipt_authority_commit,
+                )
                 self._validate_live_git(ledger_row, f"ledger.cells.{cell}")
 
             receipt_row = receipt_rows.get(cell)
@@ -244,14 +284,24 @@ class Validator:
                         f"receipt.rows.{cell}.changedThisTurn",
                         "must be present on every row and be a JSON boolean",
                     )
-                self._validate_work_row(receipt_row, f"receipt.rows.{cell}")
+                self._validate_work_row(
+                    receipt_row,
+                    f"receipt.rows.{cell}",
+                    receipt_authority_commit,
+                )
                 self._validate_live_git(receipt_row, f"receipt.rows.{cell}")
 
             if ledger_row is not None and receipt_row is not None:
                 self._validate_row_binding(cell, ledger_row, receipt_row)
 
         self._validate_timestamp(receipt.get("sentAt"), "receipt.sentAt")
-        self._validate_compute_envelope(receipt.get("computeEnvelope"))
+        compute_envelope = receipt.get("computeEnvelope")
+        self._validate_compute_envelope(compute_envelope)
+        self._validate_execution_compute_bindings(receipt_rows, compute_envelope)
+        self._validate_execution_root_isolation(receipt_rows)
+        self._validate_execution_observation_order(
+            receipt_rows, receipt.get("sentAt")
+        )
         self._validate_board(board_text, board_path, ledger_rows)
         self._validate_receipt_binding(
             ledger,
@@ -347,7 +397,10 @@ class Validator:
         return rows
 
     def _validate_work_row(
-        self, row: Mapping[str, Any], location: str
+        self,
+        row: Mapping[str, Any],
+        location: str,
+        receipt_authority_commit: Any,
     ) -> None:
         raw_state = row.get("dispatchState")
         if not isinstance(raw_state, str) or not raw_state.strip():
@@ -365,6 +418,8 @@ class Validator:
                 f"unsupported dispatch state {raw_state!r}",
             )
             return
+
+        self._validate_execution_accounting(row, location, state)
 
         deliverable = _first_concrete(
             row, ("boundedDeliverable", "firstDeliverable", "usefulWork")
@@ -398,7 +453,11 @@ class Validator:
                     location,
                     "active work must name a concrete stop condition",
                 )
-            self._validate_active_acknowledgement(row, location)
+            self._validate_active_acknowledgement(
+                row,
+                location,
+                receipt_authority_commit,
+            )
             return
 
         if state in PENDING_DISPATCH_STATES:
@@ -441,6 +500,1192 @@ class Validator:
                 "idle, returned, blocked, or completed work must name a concrete "
                 "refill action or exact stage prohibition",
             )
+
+    def _validate_execution_accounting(
+        self,
+        row: Mapping[str, Any],
+        location: str,
+        dispatch_state: str,
+    ) -> None:
+        accounting = row.get("executionAccounting")
+        accounting_location = f"{location}.executionAccounting"
+        if not isinstance(accounting, Mapping):
+            self.error(
+                "EXECUTION_ACCOUNTING_MISSING",
+                accounting_location,
+                "every row must bind exact intra-lane execution accounting",
+            )
+            return
+
+        expected_fields = {
+            "readyNow",
+            "running",
+            "waitingOnJoin",
+            "serializedAuthority",
+            "nextRefill",
+            "capacity",
+            "launchedJobs",
+            "unusedCapacityReasons",
+            "overlap",
+            "join",
+        }
+        missing = sorted(expected_fields - set(accounting))
+        extras = sorted(set(accounting) - expected_fields)
+        if missing:
+            self.error(
+                "EXECUTION_ACCOUNTING_FIELD_MISSING",
+                accounting_location,
+                "missing fields: " + ", ".join(missing),
+            )
+        if extras:
+            self.error(
+                "EXECUTION_ACCOUNTING_FIELD_EXTRA",
+                accounting_location,
+                "unsupported fields: " + ", ".join(extras),
+            )
+
+        list_values: dict[str, list[str]] = {}
+        for field in ("readyNow", "running", "waitingOnJoin"):
+            list_values[field] = self._concrete_string_list(
+                accounting.get(field),
+                f"{accounting_location}.{field}",
+            )
+
+        self._validate_serialized_authority(
+            accounting.get("serializedAuthority"),
+            f"{accounting_location}.serializedAuthority",
+            row,
+        )
+        if not _concrete_text(accounting.get("nextRefill")):
+            self.error(
+                "EXECUTION_ACCOUNTING_TEXT_INVALID",
+                f"{accounting_location}.nextRefill",
+                "must be concrete text",
+            )
+
+        row_refill = _first_concrete(
+            row,
+            ("nextRefillAction", "refillAction", "nextAction", "legalPreparation"),
+        )
+        if (
+            row_refill is not None
+            and accounting.get("nextRefill") != row_refill
+        ):
+            self.error(
+                "EXECUTION_ACCOUNTING_REFILL_MISMATCH",
+                f"{accounting_location}.nextRefill",
+                "must exactly match the row's canonical refill action",
+            )
+
+        capacity = accounting.get("capacity")
+        capacity_location = f"{accounting_location}.capacity"
+        capacity_by_resource = {resource: 0 for resource in JOB_RESOURCE_CLASSES}
+        if not isinstance(capacity, Mapping):
+            self.error(
+                "EXECUTION_CAPACITY_INVALID",
+                capacity_location,
+                "must be an object with helperSlots and dccSlots",
+            )
+        else:
+            expected_capacity_fields = {"helperSlots", "dccSlots"}
+            if set(capacity) != expected_capacity_fields:
+                self.error(
+                    "EXECUTION_CAPACITY_FIELDS",
+                    capacity_location,
+                    "must contain exactly helperSlots and dccSlots",
+                )
+            for field in expected_capacity_fields:
+                value = capacity.get(field)
+                if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                    self.error(
+                        "EXECUTION_CAPACITY_VALUE",
+                        f"{capacity_location}.{field}",
+                        "must be a non-negative integer",
+                    )
+                else:
+                    resource = "helper" if field == "helperSlots" else "dcc"
+                    capacity_by_resource[resource] = value
+
+        jobs = self._validate_execution_jobs(
+            accounting.get("launchedJobs"),
+            f"{accounting_location}.launchedJobs",
+            row,
+        )
+        if jobs and self._parse_timestamp(row.get("acknowledgedAt")) is None:
+            self.error(
+                "EXECUTION_JOBS_WITHOUT_ACKNOWLEDGEMENT",
+                f"{location}.acknowledgedAt",
+                "launched jobs require a timestamped authority acknowledgement",
+            )
+        launched_ids = list(jobs)
+        running_ids = list_values["running"]
+        ready_ids = list_values["readyNow"]
+        waiting_ids = list_values["waitingOnJoin"]
+
+        for field, identifiers in (
+            ("running", running_ids),
+            ("waitingOnJoin", waiting_ids),
+        ):
+            for index, identifier in enumerate(identifiers):
+                if identifier not in jobs:
+                    self.error(
+                        "EXECUTION_UNKNOWN_JOB",
+                        f"{accounting_location}.{field}[{index}]",
+                        "must name a job present in launchedJobs",
+                    )
+        for identifier in set(ready_ids) & set(launched_ids):
+            self.error(
+                "EXECUTION_READY_ALREADY_LAUNCHED",
+                f"{accounting_location}.readyNow",
+                f"{identifier!r} cannot be readyNow after launch",
+            )
+
+        running_by_resource = {resource: 0 for resource in JOB_RESOURCE_CLASSES}
+        for index, identifier in enumerate(running_ids):
+            job = jobs.get(identifier)
+            if job is None:
+                continue
+            if job.get("state") != "running":
+                self.error(
+                    "EXECUTION_RUNNING_STATE_MISMATCH",
+                    f"{accounting_location}.running[{index}]",
+                    "running must reference a launched job with state=running",
+                )
+            resource = job.get("resourceClass")
+            if resource in running_by_resource:
+                running_by_resource[resource] += 1
+        state_running_ids = {
+            identifier
+            for identifier, job in jobs.items()
+            if job.get("state") == "running"
+        }
+        if set(running_ids) != state_running_ids:
+            self.error(
+                "EXECUTION_RUNNING_SET_MISMATCH",
+                f"{accounting_location}.running",
+                "must equal the exact launchedJobs set whose state is running",
+            )
+        for resource in JOB_RESOURCE_CLASSES:
+            if running_by_resource[resource] > capacity_by_resource[resource]:
+                self.error(
+                    "EXECUTION_CAPACITY_EXCEEDED",
+                    f"{accounting_location}.capacity",
+                    f"{running_by_resource[resource]} running {resource} jobs exceed "
+                    f"declared capacity {capacity_by_resource[resource]}",
+                )
+            peak = self._peak_job_concurrency(
+                [
+                    job
+                    for job in jobs.values()
+                    if job.get("resourceClass") == resource
+                ]
+            )
+            if peak > capacity_by_resource[resource]:
+                self.error(
+                    "EXECUTION_HISTORICAL_CAPACITY_EXCEEDED",
+                    f"{accounting_location}.capacity",
+                    f"bound job intervals prove peak {resource} concurrency {peak}, "
+                    f"above declared capacity {capacity_by_resource[resource]}",
+                )
+
+        unused_capacity = {
+            resource: capacity_by_resource[resource] - running_by_resource[resource]
+            for resource in JOB_RESOURCE_CLASSES
+        }
+        explained_unused = self._validate_unused_capacity_reasons(
+            accounting.get("unusedCapacityReasons"),
+            f"{accounting_location}.unusedCapacityReasons",
+        )
+        for resource in JOB_RESOURCE_CLASSES:
+            if explained_unused[resource] != unused_capacity[resource]:
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_MISMATCH",
+                    f"{accounting_location}.unusedCapacityReasons",
+                    f"{resource} reasons account for {explained_unused[resource]} "
+                    f"slots; exact unused capacity is {unused_capacity[resource]}",
+                )
+
+        overlap = accounting.get("overlap")
+        self._validate_execution_overlap(
+            overlap,
+            f"{accounting_location}.overlap",
+            jobs,
+        )
+
+        join = accounting.get("join")
+        self._validate_execution_join(
+            join,
+            f"{accounting_location}.join",
+            waiting_ids,
+            jobs,
+        )
+
+        if dispatch_state in ACTIVE_DISPATCH_STATES:
+            if not running_ids:
+                self.error(
+                    "ACTIVE_EXECUTION_NOT_RUNNING",
+                    f"{accounting_location}.running",
+                    "an active row must name at least one currently running job",
+                )
+        elif running_ids:
+            self.error(
+                "INACTIVE_EXECUTION_RUNNING",
+                f"{accounting_location}.running",
+                "only an acknowledged active row may report running jobs",
+            )
+
+    def _validate_serialized_authority(
+        self,
+        value: Any,
+        location: str,
+        row: Mapping[str, Any],
+    ) -> None:
+        expected_fields = {
+            "threadId",
+            "branch",
+            "worktree",
+            "gitIndexWriter",
+            "governedEvidenceWriter",
+        }
+        if not isinstance(value, Mapping):
+            self.error(
+                "EXECUTION_SERIALIZED_AUTHORITY_INVALID",
+                location,
+                "must be an exact visible-owner binding object",
+            )
+            return
+        if set(value) != expected_fields:
+            self.error(
+                "EXECUTION_SERIALIZED_AUTHORITY_FIELDS",
+                location,
+                "must contain exactly " + ", ".join(sorted(expected_fields)),
+            )
+        expected_values = {
+            "threadId": row.get("threadId"),
+            "branch": row.get("branch"),
+            "worktree": row.get("worktree"),
+            "gitIndexWriter": row.get("threadId"),
+            "governedEvidenceWriter": row.get("threadId"),
+        }
+        for field, expected in expected_values.items():
+            if value.get(field) != expected:
+                self.error(
+                    "EXECUTION_SERIALIZED_AUTHORITY_MISMATCH",
+                    f"{location}.{field}",
+                    f"must equal the row-bound visible owner {expected!r}",
+                )
+
+    def _validate_execution_jobs(
+        self,
+        value: Any,
+        location: str,
+        row: Mapping[str, Any],
+    ) -> dict[str, Mapping[str, Any]]:
+        if not isinstance(value, list):
+            self.error(
+                "EXECUTION_JOBS_INVALID",
+                location,
+                "must be an array of exact job binding objects",
+            )
+            return {}
+        expected_fields = {
+            "id",
+            "batch",
+            "claim",
+            "claimRevision",
+            "publishedBase",
+            "head",
+            "threadId",
+            "branch",
+            "worktree",
+            "resourceClass",
+            "mutation",
+            "exclusiveRoot",
+            "state",
+            "startedAt",
+            "endedAt",
+            "evidenceId",
+            "dccSlot",
+            "processId",
+        }
+        expected_bindings = {
+            "batch": row.get("batch"),
+            "claim": row.get("claim"),
+            "claimRevision": row.get("claimRevision"),
+            "publishedBase": row.get("publishedBase", row.get("base")),
+            "head": row.get("head"),
+            "threadId": row.get("threadId"),
+            "branch": row.get("branch"),
+            "worktree": row.get("worktree"),
+        }
+        jobs: dict[str, Mapping[str, Any]] = {}
+        owned_roots: list[tuple[str, Path]] = []
+        observation_time = self._row_observation_timestamp(row)
+        acknowledged_time = self._parse_timestamp(row.get("acknowledgedAt"))
+        cell = _normalize_cell(row.get("direction"))
+        for index, raw_job in enumerate(value):
+            job_location = f"{location}[{index}]"
+            if not isinstance(raw_job, Mapping):
+                self.error("EXECUTION_JOB_TYPE", job_location, "must be an object")
+                continue
+            if set(raw_job) != expected_fields:
+                self.error(
+                    "EXECUTION_JOB_FIELDS",
+                    job_location,
+                    "must contain exactly " + ", ".join(sorted(expected_fields)),
+                )
+            job_id = raw_job.get("id")
+            if not _concrete_text(job_id):
+                self.error(
+                    "EXECUTION_JOB_ID_INVALID",
+                    f"{job_location}.id",
+                    "must be a concrete identifier",
+                )
+                continue
+            assert isinstance(job_id, str)
+            if job_id in jobs:
+                self.error(
+                    "EXECUTION_JOB_ID_DUPLICATE",
+                    f"{job_location}.id",
+                    f"duplicates {job_id!r}",
+                )
+                continue
+            jobs[job_id] = raw_job
+
+            for field, expected in expected_bindings.items():
+                if raw_job.get(field) != expected:
+                    self.error(
+                        "EXECUTION_JOB_BINDING_MISMATCH",
+                        f"{job_location}.{field}",
+                        f"must equal row binding {expected!r}",
+                    )
+
+            resource = raw_job.get("resourceClass")
+            if resource not in JOB_RESOURCE_CLASSES:
+                self.error(
+                    "EXECUTION_JOB_RESOURCE_INVALID",
+                    f"{job_location}.resourceClass",
+                    f"must be one of {sorted(JOB_RESOURCE_CLASSES)}",
+                )
+            mutation = raw_job.get("mutation")
+            if mutation not in JOB_MUTATION_CLASSES:
+                self.error(
+                    "EXECUTION_JOB_MUTATION_INVALID",
+                    f"{job_location}.mutation",
+                    f"must be one of {sorted(JOB_MUTATION_CLASSES)}",
+                )
+            state = raw_job.get("state")
+            if state not in JOB_STATES:
+                self.error(
+                    "EXECUTION_JOB_STATE_INVALID",
+                    f"{job_location}.state",
+                    f"must be one of {sorted(JOB_STATES)}",
+                )
+
+            started = self._parsed_timestamp(
+                raw_job.get("startedAt"), f"{job_location}.startedAt"
+            )
+            if (
+                observation_time is not None
+                and started is not None
+                and started > observation_time
+            ):
+                self.error(
+                    "EXECUTION_JOB_START_AFTER_OBSERVATION",
+                    f"{job_location}.startedAt",
+                    "must not be later than the row observation",
+                )
+            if (
+                acknowledged_time is not None
+                and started is not None
+                and started < acknowledged_time
+            ):
+                self.error(
+                    "EXECUTION_JOB_START_BEFORE_ACKNOWLEDGEMENT",
+                    f"{job_location}.startedAt",
+                    "must not precede the row authority acknowledgement",
+                )
+            ended_value = raw_job.get("endedAt")
+            ended = None
+            if state == "running":
+                if ended_value is not None:
+                    self.error(
+                        "EXECUTION_JOB_RUNNING_ENDED",
+                        f"{job_location}.endedAt",
+                        "running jobs must use null endedAt",
+                    )
+            else:
+                ended = self._parsed_timestamp(
+                    ended_value, f"{job_location}.endedAt"
+                )
+                if started is not None and ended is not None and ended <= started:
+                    self.error(
+                        "EXECUTION_JOB_TIME_REVERSED",
+                        f"{job_location}.endedAt",
+                        "completed/failed jobs must end after startedAt",
+                    )
+                if (
+                    observation_time is not None
+                    and ended is not None
+                    and ended > observation_time
+                ):
+                    self.error(
+                        "EXECUTION_JOB_END_AFTER_OBSERVATION",
+                        f"{job_location}.endedAt",
+                        "must not be later than the row observation",
+                    )
+            evidence_id = raw_job.get("evidenceId")
+            thread_bound = (
+                isinstance(evidence_id, str)
+                and re.fullmatch(
+                    rf"thread:{re.escape(str(row.get('threadId')))}"
+                    r"/turn:[A-Za-z0-9._:-]{8,}"
+                    r"/item:[A-Za-z0-9._:-]{8,}",
+                    evidence_id,
+                )
+                is not None
+            )
+            if not thread_bound:
+                self.error(
+                    "EXECUTION_JOB_EVIDENCE_INVALID",
+                    f"{job_location}.evidenceId",
+                    "must bind this exact visible thread turn/item",
+                )
+
+            root = raw_job.get("exclusiveRoot")
+            if mutation == "read_only":
+                if root is not None:
+                    self.error(
+                        "EXECUTION_JOB_READ_ONLY_ROOT",
+                        f"{job_location}.exclusiveRoot",
+                        "read_only jobs must use null exclusiveRoot",
+                    )
+            elif not isinstance(root, str) or not Path(root).is_absolute():
+                self.error(
+                    "EXECUTION_JOB_ROOT_INVALID",
+                    f"{job_location}.exclusiveRoot",
+                    "mutating jobs must bind an absolute exclusive root",
+                )
+            else:
+                resolved_root = Path(root).resolve(strict=False)
+                worktree = Path(str(row.get("worktree"))).resolve(strict=False)
+                if resolved_root in BROAD_EXECUTION_ROOTS:
+                    self.error(
+                        "EXECUTION_JOB_ROOT_BROAD",
+                        f"{job_location}.exclusiveRoot",
+                        "must not use a filesystem, home, or shared temp root",
+                    )
+                if resolved_root == worktree:
+                    self.error(
+                        "EXECUTION_JOB_ROOT_TOO_BROAD",
+                        f"{job_location}.exclusiveRoot",
+                        "must not equal the lane worktree",
+                    )
+                if mutation == "direction_owned":
+                    try:
+                        relative_root = resolved_root.relative_to(worktree)
+                    except ValueError:
+                        self.error(
+                            "EXECUTION_JOB_DIRECTION_ROOT_OUTSIDE_WORKTREE",
+                            f"{job_location}.exclusiveRoot",
+                            "direction_owned roots must be inside the bound worktree",
+                        )
+                    else:
+                        allowed_roots = CLAIM_OWNED_DIRECTION_ROOTS.get(cell, ())
+                        if not any(
+                            relative_root == allowed
+                            or allowed in relative_root.parents
+                            for allowed in allowed_roots
+                        ):
+                            self.error(
+                                "EXECUTION_JOB_DIRECTION_ROOT_UNCLAIMED",
+                                f"{job_location}.exclusiveRoot",
+                                "is outside the claim-owned direction roots",
+                            )
+                elif mutation == "isolated_temp":
+                    temp_base = Path("/private/tmp").resolve(strict=False)
+                    try:
+                        temp_relative = resolved_root.relative_to(temp_base)
+                    except ValueError:
+                        self.error(
+                            "EXECUTION_JOB_TEMP_ROOT_UNAPPROVED",
+                            f"{job_location}.exclusiveRoot",
+                            "isolated_temp roots must be beneath /private/tmp",
+                        )
+                    else:
+                        task_token = str(row.get("claim")).strip().lower()
+                        top_level = (
+                            temp_relative.parts[0] if temp_relative.parts else ""
+                        )
+                        if (
+                            not temp_relative.parts
+                            or re.fullmatch(
+                                r"citysim-[a-z0-9][a-z0-9._-]{2,}",
+                                top_level,
+                            )
+                            is None
+                            or re.match(
+                                rf"^citysim-{re.escape(task_token)}(?:-|$)",
+                                top_level,
+                            )
+                            is None
+                        ):
+                            self.error(
+                                "EXECUTION_JOB_TEMP_ROOT_UNSCOPED",
+                                f"{job_location}.exclusiveRoot",
+                                "isolated_temp roots require a task-specific "
+                                "citysim-* top-level directory bound to the claim",
+                            )
+                    try:
+                        resolved_root.relative_to(worktree)
+                    except ValueError:
+                        pass
+                    else:
+                        self.error(
+                            "EXECUTION_JOB_TEMP_ROOT_INSIDE_WORKTREE",
+                            f"{job_location}.exclusiveRoot",
+                            "isolated_temp roots must be outside the visible worktree",
+                        )
+                owned_roots.append((job_location, resolved_root))
+
+            if resource == "dcc":
+                for field in ("dccSlot", "processId"):
+                    if not _concrete_text(raw_job.get(field)):
+                        self.error(
+                            "EXECUTION_DCC_BINDING_MISSING",
+                            f"{job_location}.{field}",
+                            "DCC jobs must bind the published slot and process",
+                        )
+            else:
+                for field in ("dccSlot", "processId"):
+                    if raw_job.get(field) is not None:
+                        self.error(
+                            "EXECUTION_HELPER_DCC_BINDING",
+                            f"{job_location}.{field}",
+                            "helper jobs must use null DCC bindings",
+                        )
+
+        for left_index, (left_location, left_root) in enumerate(owned_roots):
+            for right_location, right_root in owned_roots[left_index + 1 :]:
+                if (
+                    left_root == right_root
+                    or left_root in right_root.parents
+                    or right_root in left_root.parents
+                ):
+                    self.error(
+                        "EXECUTION_JOB_ROOT_OVERLAP",
+                        f"{left_location}.exclusiveRoot",
+                        f"overlaps {right_location}.exclusiveRoot",
+                    )
+        return jobs
+
+    @staticmethod
+    def _peak_job_concurrency(jobs: Sequence[Mapping[str, Any]]) -> int:
+        events: list[tuple[datetime, int]] = []
+        for job in jobs:
+            start = Validator._parse_timestamp(job.get("startedAt"))
+            end = Validator._parse_timestamp(job.get("endedAt"))
+            if start is None:
+                continue
+            if end is None:
+                if job.get("state") == "running":
+                    events.append((start, 1))
+                continue
+            events.append((start, 1))
+            events.append((end, -1))
+        active = 0
+        peak = 0
+        for _, delta in sorted(events, key=lambda item: (item[0], item[1])):
+            active += delta
+            peak = max(peak, active)
+        return peak
+
+    def _validate_unused_capacity_reasons(
+        self,
+        value: Any,
+        location: str,
+    ) -> dict[str, int]:
+        totals = {resource: 0 for resource in JOB_RESOURCE_CLASSES}
+        if not isinstance(value, list):
+            self.error(
+                "EXECUTION_UNUSED_CAPACITY_INVALID",
+                location,
+                "must be an array of per-resource slot explanations",
+            )
+            return totals
+        expected_fields = {"resourceClass", "slots", "reason"}
+        for index, item in enumerate(value):
+            item_location = f"{location}[{index}]"
+            if not isinstance(item, Mapping):
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_ITEM",
+                    item_location,
+                    "must be an object",
+                )
+                continue
+            if set(item) != expected_fields:
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_FIELDS",
+                    item_location,
+                    "must contain exactly resourceClass, slots, and reason",
+                )
+            resource = item.get("resourceClass")
+            if resource not in JOB_RESOURCE_CLASSES:
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_RESOURCE",
+                    f"{item_location}.resourceClass",
+                    f"must be one of {sorted(JOB_RESOURCE_CLASSES)}",
+                )
+                continue
+            slots = item.get("slots")
+            if isinstance(slots, bool) or not isinstance(slots, int) or slots != 1:
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_SLOTS",
+                    f"{item_location}.slots",
+                    "must equal 1 so every unused slot has its own reason entry",
+                )
+            else:
+                totals[resource] += slots
+            if not _concrete_text(item.get("reason")):
+                self.error(
+                    "EXECUTION_UNUSED_CAPACITY_REASON",
+                    f"{item_location}.reason",
+                    "must be concrete",
+                )
+        return totals
+
+    def _concrete_string_list(self, value: Any, location: str) -> list[str]:
+        if not isinstance(value, list):
+            self.error(
+                "EXECUTION_LIST_INVALID",
+                location,
+                "must be an array of unique concrete strings",
+            )
+            return []
+        result: list[str] = []
+        seen: set[str] = set()
+        for index, item in enumerate(value):
+            if not _concrete_text(item):
+                self.error(
+                    "EXECUTION_LIST_ITEM_INVALID",
+                    f"{location}[{index}]",
+                    "must be concrete text",
+                )
+                continue
+            assert isinstance(item, str)
+            if item in seen:
+                self.error(
+                    "EXECUTION_LIST_DUPLICATE",
+                    f"{location}[{index}]",
+                    f"duplicates {item!r}",
+                )
+                continue
+            seen.add(item)
+            result.append(item)
+        return result
+
+    def _validate_execution_overlap(
+        self,
+        value: Any,
+        location: str,
+        launched_jobs: Mapping[str, Mapping[str, Any]],
+    ) -> None:
+        if not isinstance(value, Mapping):
+            self.error(
+                "EXECUTION_OVERLAP_INVALID",
+                location,
+                "must be an object",
+            )
+            return
+        expected_fields = {"status", "jobIds", "startedAt", "endedAt", "reason"}
+        if set(value) != expected_fields:
+            self.error(
+                "EXECUTION_OVERLAP_FIELDS",
+                location,
+                "must contain exactly status, jobIds, startedAt, endedAt, and reason",
+            )
+        status = value.get("status")
+        if status not in OVERLAP_STATES:
+            self.error(
+                "EXECUTION_OVERLAP_STATUS",
+                f"{location}.status",
+                f"must be one of {sorted(OVERLAP_STATES)}",
+            )
+        completed_intervals: dict[str, tuple[datetime, datetime]] = {}
+        for job_id, job in launched_jobs.items():
+            start = self._parse_timestamp(job.get("startedAt"))
+            end = self._parse_timestamp(job.get("endedAt"))
+            if start is not None and end is not None:
+                completed_intervals[job_id] = (start, end)
+        interval_values = list(completed_intervals.values())
+        actual_overlap_exists = any(
+            max(left[0], right[0]) < min(left[1], right[1])
+            for index, left in enumerate(interval_values)
+            for right in interval_values[index + 1 :]
+        )
+        if actual_overlap_exists and status != "observed":
+            self.error(
+                "EXECUTION_OVERLAP_OMITTED",
+                f"{location}.status",
+                "bound completed job intervals overlap and must be reported",
+            )
+        jobs = self._concrete_string_list(value.get("jobIds"), f"{location}.jobIds")
+        job_records: list[Mapping[str, Any]] = []
+        for index, job in enumerate(jobs):
+            if job not in launched_jobs:
+                self.error(
+                    "EXECUTION_OVERLAP_UNKNOWN_JOB",
+                    f"{location}.jobIds[{index}]",
+                    "must name a job present in launchedJobs",
+                )
+            else:
+                job_records.append(launched_jobs[job])
+        if not _concrete_text(value.get("reason")):
+            self.error(
+                "EXECUTION_OVERLAP_REASON",
+                f"{location}.reason",
+                "must explain the observed or absent overlap",
+            )
+        if status == "observed":
+            if len(jobs) < 2:
+                self.error(
+                    "EXECUTION_OVERLAP_INSUFFICIENT_JOBS",
+                    f"{location}.jobIds",
+                    "observed overlap requires at least two launched jobs",
+                )
+            peak_sets: list[frozenset[str]] = []
+            peak_size = 0
+            for timestamp in sorted(
+                {start for start, _ in completed_intervals.values()}
+            ):
+                active = frozenset(
+                    job_id
+                    for job_id, (start, end) in completed_intervals.items()
+                    if start <= timestamp < end
+                )
+                if len(active) > peak_size:
+                    peak_size = len(active)
+                    peak_sets = [active]
+                elif len(active) == peak_size and active not in peak_sets:
+                    peak_sets.append(active)
+            if peak_size >= 2 and frozenset(jobs) not in peak_sets:
+                self.error(
+                    "EXECUTION_OVERLAP_JOB_SET_INCOMPLETE",
+                    f"{location}.jobIds",
+                    "must name one complete maximum-concurrency job set",
+                )
+            reported_start = self._parsed_timestamp(
+                value.get("startedAt"), f"{location}.startedAt"
+            )
+            reported_end = self._parsed_timestamp(
+                value.get("endedAt"), f"{location}.endedAt"
+            )
+            if (
+                reported_start is not None
+                and reported_end is not None
+                and reported_end <= reported_start
+            ):
+                self.error(
+                    "EXECUTION_OVERLAP_TIME_REVERSED",
+                    f"{location}.endedAt",
+                    "observed overlap must end after it starts",
+                )
+            starts = [
+                self._parse_timestamp(job.get("startedAt")) for job in job_records
+            ]
+            ends = [self._parse_timestamp(job.get("endedAt")) for job in job_records]
+            if any(item is None for item in ends):
+                self.error(
+                    "EXECUTION_OVERLAP_JOB_INCOMPLETE",
+                    f"{location}.jobIds",
+                    "observed overlap requires completed bound job intervals",
+                )
+            if (
+                len(job_records) >= 2
+                and all(item is not None for item in starts)
+                and all(item is not None for item in ends)
+            ):
+                actual_start = max(item for item in starts if item is not None)
+                actual_end = min(item for item in ends if item is not None)
+                if actual_end <= actual_start:
+                    self.error(
+                        "EXECUTION_OVERLAP_NOT_OBSERVED",
+                        f"{location}.jobIds",
+                        "the bound per-job intervals do not overlap",
+                    )
+                if reported_start is not None and reported_start != actual_start:
+                    self.error(
+                        "EXECUTION_OVERLAP_START_MISMATCH",
+                        f"{location}.startedAt",
+                        "must equal the latest bound job start",
+                    )
+                if reported_end is not None and reported_end != actual_end:
+                    self.error(
+                        "EXECUTION_OVERLAP_END_MISMATCH",
+                        f"{location}.endedAt",
+                        "must equal the earliest bound job end",
+                    )
+        else:
+            if jobs:
+                self.error(
+                    "EXECUTION_OVERLAP_UNEXPECTED_JOBS",
+                    f"{location}.jobIds",
+                    "none/not_applicable overlap must not name overlapping jobs",
+                )
+            for field in ("startedAt", "endedAt"):
+                if value.get(field) is not None:
+                    self.error(
+                        "EXECUTION_OVERLAP_UNEXPECTED_TIME",
+                        f"{location}.{field}",
+                        "none/not_applicable overlap must use null timestamps",
+                    )
+
+    def _validate_execution_join(
+        self,
+        value: Any,
+        location: str,
+        waiting_on_join: Sequence[str],
+        launched_jobs: Mapping[str, Mapping[str, Any]],
+    ) -> None:
+        if not isinstance(value, Mapping):
+            self.error(
+                "EXECUTION_JOIN_INVALID",
+                location,
+                "must be an object",
+            )
+            return
+        expected_fields = {"state", "requiredJobs", "completedJobs"}
+        if set(value) != expected_fields:
+            self.error(
+                "EXECUTION_JOIN_FIELDS",
+                location,
+                "must contain exactly state, requiredJobs, and completedJobs",
+            )
+        state = value.get("state")
+        if state not in JOIN_STATES:
+            self.error(
+                "EXECUTION_JOIN_STATE",
+                f"{location}.state",
+                f"must be one of {sorted(JOIN_STATES)}",
+            )
+        required = self._concrete_string_list(
+            value.get("requiredJobs"), f"{location}.requiredJobs"
+        )
+        completed = self._concrete_string_list(
+            value.get("completedJobs"), f"{location}.completedJobs"
+        )
+        for field, jobs in (("requiredJobs", required), ("completedJobs", completed)):
+            for index, job in enumerate(jobs):
+                if job not in launched_jobs:
+                    self.error(
+                        "EXECUTION_JOIN_UNKNOWN_JOB",
+                        f"{location}.{field}[{index}]",
+                        "must name a job present in launchedJobs",
+                    )
+        for index, job in enumerate(completed):
+            record = launched_jobs.get(job)
+            if record is not None and record.get("state") != "completed":
+                self.error(
+                    "EXECUTION_JOIN_FALSE_COMPLETION",
+                    f"{location}.completedJobs[{index}]",
+                    "completedJobs must resolve to state=completed jobs",
+                )
+        for index, job in enumerate(waiting_on_join):
+            record = launched_jobs.get(job)
+            if record is not None and record.get("state") != "running":
+                self.error(
+                    "EXECUTION_JOIN_FALSE_WAIT",
+                    f"{location}.waitingOnJoin[{index}]",
+                    "waitingOnJoin must resolve to state=running jobs",
+                )
+        failed_required = [
+            job
+            for job in required
+            if launched_jobs.get(job, {}).get("state") == "failed"
+        ]
+        if failed_required:
+            self.error(
+                "EXECUTION_JOIN_FAILED_JOB",
+                f"{location}.requiredJobs",
+                "required jobs failed: " + ", ".join(failed_required),
+            )
+        if not set(completed).issubset(required):
+            self.error(
+                "EXECUTION_JOIN_COMPLETION_MISMATCH",
+                f"{location}.completedJobs",
+                "completedJobs must be a subset of requiredJobs",
+            )
+        if state == "waiting":
+            if not waiting_on_join:
+                self.error(
+                    "EXECUTION_JOIN_WAIT_MISMATCH",
+                    f"{location}.state",
+                    "waiting join state requires waitingOnJoin jobs",
+                )
+            if set(waiting_on_join) != set(required) - set(completed):
+                self.error(
+                    "EXECUTION_JOIN_WAIT_SET_MISMATCH",
+                    f"{location}.requiredJobs",
+                    "waitingOnJoin must equal requiredJobs minus completedJobs",
+                )
+        elif waiting_on_join:
+            self.error(
+                "EXECUTION_JOIN_UNEXPECTED_WAIT",
+                f"{location}.state",
+                "non-waiting join state cannot carry waitingOnJoin jobs",
+            )
+        if state == "joined":
+            if set(required) != set(completed):
+                self.error(
+                    "EXECUTION_JOIN_INCOMPLETE",
+                    f"{location}.completedJobs",
+                    "joined state requires every required job completed",
+                )
+            elif any(
+                launched_jobs.get(job, {}).get("state") != "completed"
+                for job in required
+            ):
+                self.error(
+                    "EXECUTION_JOIN_STATE_INCOMPLETE",
+                    f"{location}.completedJobs",
+                    "joined state requires state=completed for every required job",
+                )
+        if state == "no_join_required" and (required or completed):
+            self.error(
+                "EXECUTION_JOIN_UNEXPECTED_JOBS",
+                location,
+                "no_join_required must use empty required/completed jobs",
+            )
+
+    def _validate_execution_compute_bindings(
+        self,
+        rows: Mapping[str, Mapping[str, Any]],
+        envelope: Any,
+    ) -> None:
+        if not isinstance(envelope, Mapping):
+            return
+        maximum = envelope.get("maximumSimultaneousDCCProcesses")
+        if isinstance(maximum, bool) or not isinstance(maximum, int) or maximum < 0:
+            return
+        raw_slots = envelope.get("assignedSlots")
+        if not isinstance(raw_slots, list):
+            return
+        slots: dict[str, Mapping[str, Any]] = {}
+        slots_by_cell = {cell: 0 for cell in EXPECTED_CELLS}
+        for raw_slot in raw_slots:
+            if not isinstance(raw_slot, Mapping):
+                continue
+            slot_id = raw_slot.get("slot")
+            cell = _normalize_cell(raw_slot.get("direction"))
+            if isinstance(slot_id, str) and slot_id and cell in slots_by_cell:
+                slots[slot_id] = raw_slot
+                slots_by_cell[cell] += 1
+
+        running_dcc = 0
+        jobs_by_slot: dict[str, list[Mapping[str, Any]]] = {}
+        for cell, row in rows.items():
+            accounting = row.get("executionAccounting")
+            if not isinstance(accounting, Mapping):
+                continue
+            capacity = accounting.get("capacity")
+            if isinstance(capacity, Mapping):
+                declared = capacity.get("dccSlots")
+                if declared != slots_by_cell[cell]:
+                    self.error(
+                        "EXECUTION_DCC_CAPACITY_ENVELOPE_MISMATCH",
+                        f"receipt.rows.{cell}.executionAccounting.capacity.dccSlots",
+                        f"declared={declared!r}; assigned envelope slots="
+                        f"{slots_by_cell[cell]}",
+                    )
+            jobs = accounting.get("launchedJobs")
+            if not isinstance(jobs, list):
+                continue
+            for index, job in enumerate(jobs):
+                if not isinstance(job, Mapping) or job.get("resourceClass") != "dcc":
+                    continue
+                if job.get("state") == "running":
+                    running_dcc += 1
+                slot_id = job.get("dccSlot")
+                slot = slots.get(slot_id) if isinstance(slot_id, str) else None
+                location = (
+                    f"receipt.rows.{cell}.executionAccounting.launchedJobs[{index}]"
+                )
+                if slot is None:
+                    self.error(
+                        "EXECUTION_DCC_SLOT_UNASSIGNED",
+                        f"{location}.dccSlot",
+                        "must bind an assigned compute-envelope slot",
+                    )
+                    continue
+                jobs_by_slot.setdefault(slot_id, []).append(job)
+                if _normalize_cell(slot.get("direction")) != cell:
+                    self.error(
+                        "EXECUTION_DCC_SLOT_DIRECTION_MISMATCH",
+                        f"{location}.dccSlot",
+                        "slot direction does not match the row",
+                    )
+                if slot.get("claim") != row.get("claim"):
+                    self.error(
+                        "EXECUTION_DCC_SLOT_CLAIM_MISMATCH",
+                        f"{location}.dccSlot",
+                        "slot claim does not match the row",
+                    )
+                if slot.get("processID") != job.get("processId"):
+                    self.error(
+                        "EXECUTION_DCC_PROCESS_MISMATCH",
+                        f"{location}.processId",
+                        "must match the compute-envelope processID",
+                    )
+        for slot_id, slot_jobs in jobs_by_slot.items():
+            if len(slot_jobs) > 1:
+                self.error(
+                    "EXECUTION_DCC_SLOT_REUSED",
+                    "receipt.computeEnvelope.assignedSlots",
+                    f"slot {slot_id!r} is bound to {len(slot_jobs)} DCC jobs; "
+                    "one-attempt slots are exclusive",
+                )
+            if self._peak_job_concurrency(slot_jobs) > 1:
+                self.error(
+                    "EXECUTION_DCC_SLOT_OVERLAP",
+                    "receipt.computeEnvelope.assignedSlots",
+                    f"slot {slot_id!r} has overlapping DCC job intervals",
+                )
+        if running_dcc > maximum:
+            self.error(
+                "EXECUTION_DCC_GLOBAL_CAP_EXCEEDED",
+                "receipt.computeEnvelope.maximumSimultaneousDCCProcesses",
+                f"{running_dcc} running DCC jobs exceed global cap {maximum}",
+            )
+
+    def _validate_execution_root_isolation(
+        self,
+        rows: Mapping[str, Mapping[str, Any]],
+    ) -> None:
+        roots: list[tuple[str, str, str, Path, Path | None]] = []
+        worktrees = {
+            cell: Path(str(row.get("worktree"))).resolve(strict=False)
+            for cell, row in rows.items()
+        }
+        for cell, row in rows.items():
+            accounting = row.get("executionAccounting")
+            if not isinstance(accounting, Mapping):
+                continue
+            jobs = accounting.get("launchedJobs")
+            if not isinstance(jobs, list):
+                continue
+            worktree = Path(str(row.get("worktree"))).resolve(strict=False)
+            for index, job in enumerate(jobs):
+                if not isinstance(job, Mapping):
+                    continue
+                root = job.get("exclusiveRoot")
+                if not isinstance(root, str) or not Path(root).is_absolute():
+                    continue
+                resolved = Path(root).resolve(strict=False)
+                logical: Path | None = None
+                if job.get("mutation") == "direction_owned":
+                    try:
+                        logical = resolved.relative_to(worktree)
+                    except ValueError:
+                        logical = None
+                roots.append(
+                    (
+                        f"receipt.rows.{cell}.executionAccounting."
+                        f"launchedJobs[{index}].exclusiveRoot",
+                        cell,
+                        str(job.get("mutation")),
+                        resolved,
+                        logical,
+                    )
+                )
+        for location, owner_cell, mutation, root, _ in roots:
+            for worktree_cell, worktree in worktrees.items():
+                overlaps_worktree = (
+                    root == worktree
+                    or root in worktree.parents
+                    or worktree in root.parents
+                )
+                own_direction_root = (
+                    mutation == "direction_owned" and owner_cell == worktree_cell
+                )
+                if overlaps_worktree and not own_direction_root:
+                    self.error(
+                        "EXECUTION_JOB_ROOT_OVERLAPS_WORKTREE",
+                        location,
+                        f"overlaps canonical {worktree_cell} worktree {worktree}",
+                    )
+        for left_index, (
+            left_location,
+            _,
+            _,
+            left_root,
+            left_logical,
+        ) in enumerate(roots):
+            for (
+                right_location,
+                _,
+                _,
+                right_root,
+                right_logical,
+            ) in roots[left_index + 1 :]:
+                physical_overlap = (
+                    left_root == right_root
+                    or left_root in right_root.parents
+                    or right_root in left_root.parents
+                )
+                logical_overlap = (
+                    left_logical is not None
+                    and right_logical is not None
+                    and (
+                        left_logical == right_logical
+                        or left_logical in right_logical.parents
+                        or right_logical in left_logical.parents
+                    )
+                )
+                if physical_overlap or logical_overlap:
+                    self.error(
+                        "EXECUTION_CROSS_ROW_ROOT_OVERLAP",
+                        left_location,
+                        f"overlaps {right_location}",
+                    )
+
+    def _validate_execution_observation_order(
+        self,
+        rows: Mapping[str, Mapping[str, Any]],
+        sent_at_value: Any,
+    ) -> None:
+        sent_at = self._parse_timestamp(sent_at_value)
+        if sent_at is None:
+            return
+        for cell, row in rows.items():
+            observation = self._row_observation_timestamp(row)
+            acknowledged = self._parse_timestamp(row.get("acknowledgedAt"))
+            if (
+                acknowledged is not None
+                and observation is not None
+                and acknowledged > observation
+            ):
+                self.error(
+                    "ROW_ACKNOWLEDGEMENT_AFTER_OBSERVATION",
+                    f"receipt.rows.{cell}.acknowledgedAt",
+                    "authority acknowledgement must not postdate row observation",
+                )
+            if observation is not None and observation > sent_at:
+                self.error(
+                    "ROW_OBSERVATION_AFTER_DISPATCH",
+                    f"receipt.rows.{cell}.observation",
+                    "row observation must not postdate receipt.sentAt",
+                )
+
+    @staticmethod
+    def _row_observation_timestamp(row: Mapping[str, Any]) -> datetime | None:
+        present = [
+            row.get(field)
+            for field in ("liveObservationAt", "observedAt", "updatedAt")
+            if row.get(field) is not None
+        ]
+        if len(present) != 1:
+            return None
+        return Validator._parse_timestamp(present[0])
 
     def _validate_required_row_fields(
         self, row: Mapping[str, Any], location: str
@@ -506,21 +1751,29 @@ class Validator:
                 "must name the next refill action or legal preparation",
             )
 
-        if _first_concrete(
-            row, ("liveObservationAt", "observedAt", "updatedAt")
-        ) is None:
+        observation_fields = [
+            field
+            for field in ("liveObservationAt", "observedAt", "updatedAt")
+            if row.get(field) is not None
+        ]
+        if not observation_fields:
             self.error(
                 "ROW_OBSERVATION_MISSING",
                 location,
                 "must record a live observation timestamp",
             )
         else:
-            timestamp = next(
-                row.get(name)
-                for name in ("liveObservationAt", "observedAt", "updatedAt")
-                if _concrete_text(row.get(name))
-            )
-            self._validate_timestamp(timestamp, f"{location}.observation")
+            if len(observation_fields) != 1:
+                self.error(
+                    "ROW_OBSERVATION_ALIAS_COUNT",
+                    location,
+                    "must use exactly one of liveObservationAt, observedAt, or "
+                    "updatedAt",
+                )
+            for field in observation_fields:
+                self._validate_timestamp(
+                    row.get(field), f"{location}.{field}"
+                )
 
         acknowledged_at = row.get("acknowledgedAt")
         if acknowledged_at is not None:
@@ -550,7 +1803,10 @@ class Validator:
                 )
 
     def _validate_active_acknowledgement(
-        self, row: Mapping[str, Any], location: str
+        self,
+        row: Mapping[str, Any],
+        location: str,
+        receipt_authority_commit: Any,
     ) -> None:
         acknowledgement = row.get("authorityAcknowledgement")
         acknowledgement_location = f"{location}.authorityAcknowledgement"
@@ -589,6 +1845,28 @@ class Validator:
                     f"{acknowledgement_location}.{field}",
                     f"must exactly match row {field}",
                 )
+        evidence_id = acknowledgement.get("evidenceId")
+        if not (
+            isinstance(evidence_id, str)
+            and re.fullmatch(
+                rf"thread:{re.escape(str(row.get('threadId')))}"
+                r"/turn:[A-Za-z0-9._:-]{8,}"
+                r"/item:[A-Za-z0-9._:-]{8,}",
+                evidence_id,
+            )
+            is not None
+        ):
+            self.error(
+                "ACTIVE_ACK_EVIDENCE_INVALID",
+                f"{acknowledgement_location}.evidenceId",
+                "must bind this exact visible thread turn/item",
+            )
+        if acknowledgement.get("authorityCommit") != receipt_authority_commit:
+            self.error(
+                "ACTIVE_ACK_AUTHORITY_COMMIT_MISMATCH",
+                f"{acknowledgement_location}.authorityCommit",
+                "must exactly match the dispatch receipt authorityCommit",
+            )
         self._validate_timestamp(
             acknowledgement.get("acknowledgedAt"),
             f"{acknowledgement_location}.acknowledgedAt",
@@ -1109,6 +2387,7 @@ class Validator:
             )
 
         identifiers: list[str] = []
+        assigned_work: set[str] = set()
         slot_names: set[str] = set()
         for index, slot in enumerate(slots):
             slot_location = f"{location}.assignedSlots[{index}]"
@@ -1153,7 +2432,16 @@ class Validator:
                     "must bind concrete attemptID and processID",
                 )
             else:
-                identifiers.append(f"{direction}:{attempt_id}:{process_id}")
+                identifier = f"{direction}:{attempt_id}:{process_id}"
+                identifiers.append(identifier)
+                if identifier in assigned_work:
+                    self.error(
+                        "COMPUTE_SLOT_WORK_DUPLICATE",
+                        slot_location,
+                        f"duplicate assigned work identity {identifier!r}",
+                    )
+                else:
+                    assigned_work.add(identifier)
             starts = slot.get("maximumChildStarts")
             if not isinstance(starts, int) or isinstance(starts, bool) or starts < 1:
                 self.error(
@@ -1216,10 +2504,21 @@ class Validator:
                     "must be concrete",
                 )
 
-    def _validate_timestamp(self, value: Any, location: str) -> None:
+    @staticmethod
+    def _parse_timestamp(value: Any) -> datetime | None:
+        if not isinstance(value, str) or not value:
+            return None
+        candidate = value[:-1] + "+00:00" if value.endswith("Z") else value
+        try:
+            parsed = datetime.fromisoformat(candidate)
+        except ValueError:
+            return None
+        return parsed if parsed.tzinfo is not None else None
+
+    def _parsed_timestamp(self, value: Any, location: str) -> datetime | None:
         if not isinstance(value, str) or not value:
             self.error("TIMESTAMP_MISSING", location, "must be an ISO-8601 timestamp")
-            return
+            return None
         candidate = value[:-1] + "+00:00" if value.endswith("Z") else value
         try:
             parsed = datetime.fromisoformat(candidate)
@@ -1229,13 +2528,18 @@ class Validator:
                 location,
                 f"not ISO-8601: {value!r}",
             )
-            return
+            return None
         if parsed.tzinfo is None:
             self.error(
                 "TIMESTAMP_TIMEZONE_MISSING",
                 location,
                 "must include a timezone",
             )
+            return None
+        return parsed
+
+    def _validate_timestamp(self, value: Any, location: str) -> None:
+        self._parsed_timestamp(value, location)
 
     def _validate_git_sha_fields(self, value: Any, location: str) -> None:
         if isinstance(value, Mapping):

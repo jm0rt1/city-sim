@@ -28,11 +28,11 @@
   "bindings": {
     "claim": {
       "path": "docs/production/claims/PLAY-081.world-art-west.md",
-      "sha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+      "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
     },
     "currentMasterValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_current_master_prelock_bundle.py",
-      "sha256": "217b75f7750dc28e121b0ee649362a3de7ebcd1eaca0cd7d9bfd5c10876ed826"
+      "sha256": "96791287d054d4a088ac3323b91a5adcf9d7f45b8847306a400a6c2526ee9e1c"
     },
     "runnerContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
@@ -40,7 +40,7 @@
     },
     "executionContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-      "sha256": "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0"
+      "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
     },
     "acceptedScene": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",

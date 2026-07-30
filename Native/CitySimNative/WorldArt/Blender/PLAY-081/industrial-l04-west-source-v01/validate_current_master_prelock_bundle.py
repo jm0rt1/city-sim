@@ -121,7 +121,7 @@ EXPECTED_ORCHESTRATION = {
     "executionContract": {
         "path": f"{SOURCE_ROOT}/WEST-EXECUTION-ORCHESTRATION-V2.json",
         "sha256": (
-            "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0"
+            "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
         ),
     },
 }
@@ -264,7 +264,7 @@ def validate_bundle(
     claim_expected = {
         "path": "docs/production/claims/PLAY-081.world-art-west.md",
         "sha256": (
-            "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+            "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
         ),
     }
     errors.extend(

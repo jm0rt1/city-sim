@@ -28,7 +28,7 @@
     },
     "predecessorV3Handoff": {
       "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/WEST-ZERO-PIXEL-V3-SUCCESSOR-HANDOFF.json",
-      "sha256": "2d8e0bc96784997bb8add0da56994cc4b54bf87ed0f2a1006d8191a9993a5bbc",
+      "sha256": "e118391db6a1264a13edb946ad9b210e3d926803df706352e67c1c146ae3816f",
       "preservedByteForByte": true
     },
     "predecessorV3Validation": {
@@ -38,18 +38,18 @@
     },
     "predecessorV3Validator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_zero_pixel_v3_successor.py",
-      "sha256": "6241b3b11364b3db340e1d2dce5b242405d28ac8b1c58499606555af635df88e",
+      "sha256": "d858197a383c495c4204b1fdb4921af8c66b8b3b5dd4eb3b0e549bac5ac7f63e",
       "preservedByteForByte": true
     }
   },
   "bindings": {
     "claim": {
       "path": "docs/production/claims/PLAY-081.world-art-west.md",
-      "sha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+      "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
     },
     "currentMasterValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_current_master_prelock_bundle.py",
-      "sha256": "217b75f7750dc28e121b0ee649362a3de7ebcd1eaca0cd7d9bfd5c10876ed826"
+      "sha256": "96791287d054d4a088ac3323b91a5adcf9d7f45b8847306a400a6c2526ee9e1c"
     },
     "runnerContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
@@ -57,7 +57,7 @@
     },
     "executionContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-      "sha256": "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0"
+      "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
     },
     "acceptedScene": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",

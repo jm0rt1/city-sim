@@ -24,7 +24,7 @@ LODS = (
 EXPECTED_INPUTS = {
     "accepted_master_non_alias_input": (
         "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
-        "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb",
+        "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
     ),
     "arrival_gate_preparation_authority": (
         "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md",
@@ -36,7 +36,7 @@ EXPECTED_INPUTS = {
     ),
     "atomic_assembler_harness": (
         "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4V2SourceAdmissionHarnessTests.swift",
-        "5ef713433219fe9f178a346ab57b15b917be9f858157b67ed41a808037ae9bc2",
+        "bebe5b098a6d4603d5a680a123eded0a0b5cb5fd8dde6c2c1a5cff7b9aeffdc1",
     ),
     "atomic_manifest_proposal": (
         "docs/production/evidence/PLAY-073/industrial-l04-v2-atomic-assembly-prep/ASSEMBLY-INPUT-MANIFEST-V1-PROPOSAL.md",
@@ -92,11 +92,11 @@ EXPECTED_INPUTS = {
     ),
     "source_admission_receipt_validator": (
         ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_source_admission_receipt_v1.py",
-        "497f4e696cb6da3740e9dd60877cd25ea631268df1124513b1468ad6d51158cf",
+        "46a9af769c1d3cf291c4859c79858373c576a70e17c8ccffd62d5619db0ef731",
     ),
     "source_stage_schema": (
         "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
-        "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7",
+        "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
     ),
     "source_stage_semantic_validator": (
         "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",

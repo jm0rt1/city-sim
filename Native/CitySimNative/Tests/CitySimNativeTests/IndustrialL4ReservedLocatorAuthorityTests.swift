@@ -92,13 +92,13 @@ private struct L4ReservedLocatorHarness {
         path:
             "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.json",
         sha256:
-            "a2c8daf558274bed9088b6c9ab616044e919af5b19101a01c2fe3a1b89122e65"
+            "ddc9c5562bc2ff9e57ba15277113e058f535afe5339efef307e310de75e8d0fe"
     )
     static let schema = L4ReservedArtifact(
         path:
             "docs/production/evidence/INTEGRATION/industrial-l04-source-candidate-packet-locators-v1.schema.json",
         sha256:
-            "cb9716330593224bc5cbdae46052cff17cbb84a270ca9976c5452b8075308cbe"
+            "3c4fa6fe4372bd7beb54a7c2fc1fa8951c3134877a643317727dcc9daf7c8395"
     )
     static let governingContract = L4ReservedContract(
         path:
@@ -112,7 +112,7 @@ private struct L4ReservedLocatorHarness {
             "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
         version: 2,
         sha256:
-            "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+            "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
     )
 
     static let expectedEntries: [L4ReservedDirection: L4ReservedDirectionEntry] = [

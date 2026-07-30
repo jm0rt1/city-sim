@@ -26,8 +26,13 @@
   the 271-test integration gate, but integration returned it before publication
   because the L3 material/value/outline language fails the mixed-fidelity stop.
   The lane now preserves replacement R2 plus its candidate-bound external
-  fixture intake. Industrial L4 non-shipping direction-quarantine preparation
-  is separately active under
+  fixture intake. Integration's exact audit confirms that replacement R2 was
+  blocked by an incomplete independent journey, not visually rejected, and
+  authorizes one current-master reconstruction and technical proof under
+  `INDUSTRIAL-L03-R2-REPLACEMENT-RECOVERY-AUTHORITY.md`. Renderer may prepare
+  one new exact candidate; PLAY-075 remains the sole player-facing scorer.
+  Industrial L4 non-shipping direction-quarantine preparation is separately
+  active under
   `INDUSTRIAL-L04-RENDERER-QUARANTINE-PREP-AUTHORITY.md`.
   File-backed packet-intake and baseline-neutral semantic-slot preparation are
   additionally active under
@@ -99,6 +104,10 @@ Art-owned.
 For R2, run focused pack/runtime/frontage/LOD/resource checks and one staged
 candidate build. Integration owns the single full-suite and staged-identity
 gate; PLAY-075 owns the single focused independent real-app disposition.
+The replacement-recovery authority supersedes the earlier instruction to
+ingest only the historical source candidate: reconstruct only the exact
+accepted-L2-to-cohesive-replacement net delta on its enumerated paths, with new
+candidate-bound proof. Do not cherry-pick the historical product carrier.
 Industrial L4 source ingestion, runtime/shipping activation, unaccepted source
 work, gameplay changes, UI repair, and broad composition mutation are not
 authorized by this claim. The Integration-published L4 quarantine-preparation

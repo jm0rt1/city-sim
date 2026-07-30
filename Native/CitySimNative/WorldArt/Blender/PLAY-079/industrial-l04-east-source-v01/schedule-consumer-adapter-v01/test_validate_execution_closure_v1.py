@@ -49,6 +49,7 @@ def load_module(path: pathlib.Path, name: str) -> Any:
 SHARED_TEST = load_module(SHARED_TEST_PATH, "play079_shared_execution_fixture")
 SHARED_VALIDATOR = SHARED_TEST.MODULE
 SECRET = b"play079-east-validation-secret!!"
+CRASH_AFTER_CLAIM_EXIT = 86
 assert len(SECRET) == 32
 
 
@@ -229,9 +230,27 @@ def fixture_consume_cli(args: argparse.Namespace) -> int:
         return 2
 
 
+def fixture_crash_after_claim_cli(args: argparse.Namespace) -> int:
+    contract = json.loads(pathlib.Path(args.contract_path).read_text(encoding="utf-8"))
+    closure.authenticate(
+        repository_root=pathlib.Path(args.repo_root),
+        authority_path=pathlib.Path(args.execution_authority),
+        trusted_head=args.trusted_head,
+        worker_head=args.worker_head,
+        authority_publication_commit=args.authority_publication_commit,
+        secret_fd=args.secret_fd,
+        contract=contract,
+        shared_validator=SHARED_VALIDATOR,
+        test_after_directory_claim=lambda: os._exit(CRASH_AFTER_CLAIM_EXIT),
+    )
+    raise RuntimeError("crash-after-claim hook returned")
+
+
 def subprocess_consume(
     fixture: Any,
     contract_path: pathlib.Path,
+    *,
+    crash_after_claim: bool = False,
 ) -> tuple[int, dict[str, Any]]:
     read_fd, _ = pipe_with_secret()
     try:
@@ -240,7 +259,11 @@ def subprocess_consume(
                 sys.executable,
                 "-B",
                 str(pathlib.Path(__file__).resolve()),
-                "--fixture-consume",
+                (
+                    "--fixture-crash-after-claim"
+                    if crash_after_claim
+                    else "--fixture-consume"
+                ),
                 "--repo-root",
                 str(fixture.root),
                 "--contract-path",
@@ -267,6 +290,10 @@ def subprocess_consume(
         raise RuntimeError(
             f"fixture child wrote stderr: {completed.stderr.decode('utf-8', 'replace')}"
         )
+    if crash_after_claim:
+        if completed.stdout:
+            raise RuntimeError("crash-after-claim child unexpectedly wrote stdout")
+        return completed.returncode, {}
     return completed.returncode, json.loads(completed.stdout)
 
 
@@ -358,6 +385,64 @@ def cross_process_replay() -> dict[str, Any]:
         fixture.close()
 
 
+def crash_after_claim_replay() -> dict[str, Any]:
+    fixture = fresh_fixture()
+    try:
+        contract = fixture_contract(fixture)
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            prefix="play079-east-crash-contract-",
+            suffix=".json",
+        ) as contract_stream:
+            json.dump(contract, contract_stream, sort_keys=True)
+            contract_stream.flush()
+            crash_code, _ = subprocess_consume(
+                fixture,
+                pathlib.Path(contract_stream.name),
+                crash_after_claim=True,
+            )
+            replay_code, replay = subprocess_consume(
+                fixture,
+                pathlib.Path(contract_stream.name),
+            )
+        attempt_root = fixture.root / fixture.authority["exclusiveRoots"]["attempt"]
+        marker = attempt_root / "ATTEMPT-CONSUMED.json"
+        if crash_code != CRASH_AFTER_CLAIM_EXIT:
+            raise RuntimeError(
+                f"post-claim fixture did not crash at the boundary: {crash_code}"
+            )
+        if not attempt_root.is_dir() or marker.exists():
+            raise RuntimeError(
+                "crash fixture did not preserve directory-only attempt consumption"
+            )
+        if (
+            replay_code != 2
+            or replay.get("code") != "replayed_capability"
+            or replay.get("sourceChildStarts") != 0
+            or replay.get("dccStarts") != 0
+            or replay.get("renders") != 0
+            or replay.get("pixels") != 0
+        ):
+            raise RuntimeError(
+                f"fresh interpreter accepted crash-consumed attempt: {replay}"
+            )
+        return {
+            "result": "PASS",
+            "crashExitCode": CRASH_AFTER_CLAIM_EXIT,
+            "attemptDirectoryPersisted": True,
+            "markerCompleted": False,
+            "freshInterpreterReplay": "REJECTED_REPLAYED_CAPABILITY",
+            "liveLeaseCreated": False,
+            "sourceChildStarts": 0,
+            "dccStarts": 0,
+            "renders": 0,
+            "pixels": 0,
+        }
+    finally:
+        fixture.close()
+
+
 def positive_run() -> dict[str, Any]:
     fixture = fresh_fixture()
     try:
@@ -365,6 +450,11 @@ def positive_run() -> dict[str, Any]:
         boundary = result["runnerBoundary"]
         if (
             boundary["validationOnly"] is not True
+            or boundary["frozenInputValidation"]["result"] != "PASS"
+            or boundary["frozenInputValidation"][
+                "parallelSourceOrchestratorSha256"
+            ]
+            != "16b8c00a5714768a4e9c2a7c570ac4c0a41343dd456fc5670995fc229e874e5c"
             or boundary["childStarts"] != 0
             or boundary["blenderProcessLaunches"] != 0
             or boundary["blenderRenderApiCalls"] != 0
@@ -375,6 +465,7 @@ def positive_run() -> dict[str, Any]:
             "result": "PASS",
             "direction": boundary["direction"],
             "process": boundary["process"],
+            "frozenInputValidation": boundary["frozenInputValidation"],
             "validationOnly": True,
             "sourceChildStarts": 0,
             "dccStarts": 0,
@@ -406,12 +497,24 @@ def run_cases() -> dict[str, Any]:
     closure.reset_test_replay_state()
     assert_direct_runner_cli_rejected()
     cross_process = cross_process_replay()
+    crash_replay = crash_after_claim_replay()
     first = positive_run()
     second = positive_run()
     if canonical_bytes(first) != canonical_bytes(second):
         raise RuntimeError("fresh-root positive results are not deterministic")
 
     cases: list[dict[str, Any]] = []
+    stale_runner_contract = runner.load_json(runner.CONTRACT_PATH)
+    stale_runner_contract["authorities"]["parallelSourceOrchestrator"][
+        "sha256"
+    ] = "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c"
+    cases.append(
+        rejection(
+            "stale_frozen_orchestrator",
+            lambda: runner.validate_frozen_inputs(stale_runner_contract),
+            (runner.GuardRejected,),
+        )
+    )
     missing = SimpleNamespace(
         execution_authority=None,
         trusted_head=None,
@@ -569,17 +672,20 @@ def run_cases() -> dict[str, Any]:
         "direct_runner",
         "unauthenticated_regular_file",
         "unauthenticated_wrong_secret",
+        "stale_frozen_orchestrator",
     }
     if {case["id"] for case in cases} != expected:
         raise RuntimeError("adversarial case set is incomplete")
     return {
-        "schema": "citysim.play-079.east-execution-closure-proof.v2",
+        "schema": "citysim.play-079.east-execution-closure-proof.v3",
         "taskId": "PLAY-079",
         "direction": "east",
         "claimRevision": 6,
         "candidateRevision": 7,
         "result": "PASS_ZERO_CHILD",
         "crossProcessReplay": cross_process,
+        "crashAfterDirectoryClaimReplay": crash_replay,
+        "frozenInputValidation": first["frozenInputValidation"],
         "freshRootValidations": 2,
         "freshRootResultsByteIdentical": True,
         "adversarialRejectedCount": len(cases),
@@ -599,6 +705,7 @@ def run_cases() -> dict[str, Any]:
             "sourcePackets": 0,
             "governedWorktreeWrites": 0,
             "durableAttemptMarkersInDisposableFixtures": 4,
+            "durableAttemptRootsInDisposableFixtures": 5,
         },
         "disposition": {
             "validationOnly": True,
@@ -614,6 +721,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--packet", action="store_true")
     parser.add_argument("--fixture-consume", action="store_true")
+    parser.add_argument("--fixture-crash-after-claim", action="store_true")
     parser.add_argument("--repo-root")
     parser.add_argument("--contract-path")
     parser.add_argument("--execution-authority")
@@ -622,7 +730,7 @@ def main() -> int:
     parser.add_argument("--authority-publication-commit")
     parser.add_argument("--secret-fd", type=int)
     args = parser.parse_args()
-    if args.fixture_consume:
+    if args.fixture_consume or args.fixture_crash_after_claim:
         required = (
             args.repo_root,
             args.contract_path,
@@ -634,6 +742,8 @@ def main() -> int:
         )
         if any(value is None for value in required):
             raise RuntimeError("fixture-consume requires every fixture binding")
+        if args.fixture_crash_after_claim:
+            return fixture_crash_after_claim_cli(args)
         return fixture_consume_cli(args)
     packet = run_cases()
     if args.packet:

@@ -20,7 +20,7 @@ import os
 import pathlib
 import stat
 import sys
-from typing import Any, NoReturn
+from typing import Any, Callable, NoReturn
 
 
 VERSION_ROOT = pathlib.Path(__file__).resolve().parent
@@ -230,6 +230,7 @@ def claim_durable_attempt(
     worker_head: str,
     authority: dict[str, Any],
     contract: dict[str, Any],
+    test_after_directory_claim: Callable[[], None] | None = None,
 ) -> dict[str, Any]:
     relative, _absolute = normalized_attempt_root(
         repository_root,
@@ -296,6 +297,13 @@ def claim_durable_attempt(
         except OSError as error:
             raise ClosureRejected("durable_attempt_claim_failed", error) from error
         os.fsync(current_fd)
+        if test_after_directory_claim is not None:
+            if contract.get("_testFixture") is not True:
+                reject(
+                    "test_crash_hook_forbidden",
+                    "post-claim hook is restricted to disposable validation fixtures",
+                )
+            test_after_directory_claim()
         attempt_fd = _open_directory_component(
             current_fd,
             relative.name,
@@ -391,6 +399,7 @@ def authenticate(
     secret_fd: int,
     contract: dict[str, Any] | None = None,
     shared_validator: Any | None = None,
+    test_after_directory_claim: Callable[[], None] | None = None,
 ) -> AuthenticatedExecutionClosure:
     contract = contract or load_json(CONTRACT_PATH, "execution_closure_contract")
     validate_control_bindings(REPOSITORY_ROOT, contract)
@@ -453,6 +462,7 @@ def authenticate(
         worker_head=worker_head,
         authority=authority,
         contract=contract,
+        test_after_directory_claim=test_after_directory_claim,
     )
     return AuthenticatedExecutionClosure(
         authority,

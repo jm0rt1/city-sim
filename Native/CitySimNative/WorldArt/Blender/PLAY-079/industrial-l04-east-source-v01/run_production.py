@@ -783,6 +783,7 @@ def validate_execution_closure_boundary(
             "fixture_contract_not_explicit",
             "only disposable validation fixtures may override the fixed contract",
         )
+    frozen_hashes = validate_frozen_inputs(load_json(CONTRACT_PATH))
     expected = (
         fixture_contract
         if fixture_contract is not None
@@ -842,6 +843,14 @@ def validate_execution_closure_boundary(
         "grantId": grant["grantId"],
         "queueId": grant["queueId"],
         "slotId": grant["slotId"],
+        "frozenInputValidation": {
+            "result": "PASS",
+            "recordCount": len(frozen_hashes),
+            "parallelSourceOrchestratorSha256": frozen_hashes[
+                "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+                "industrial-l04-east-source-v01/orchestrate_parallel_source.py"
+            ],
+        },
         "exactlyOneInvocationValidated": True,
         "validationOnly": True,
         "liveLeaseCreated": False,

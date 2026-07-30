@@ -38,7 +38,8 @@ The output is a reviewed source batch, not a shipping renderer change.
 Own only:
 
 - ImageGen prompts, raw attempts, accepted masters, provenance, and rejection
-  records under `Native/CitySimNative/WorldArt/ImageGen/`;
+  records under the exact direction-exclusive ImageGen subroots named by the
+  claim;
 - task-owned non-shipping source records and source validators;
 - task-owned PLAY-027/079/080/081 contact sheets, geometry reports, and
   evidence.
@@ -74,10 +75,16 @@ Use one branch, worktree, claim, and task-owned path set per direction. North
 owns design calibration; East, South, and West independently own only their
 named orientation. Run all Integration-authorized cells concurrently:
 
-1. **Before the family lock:** independently author text-scene/material
-   bindings and run static plus actual-camera zero-pixel geometry, silhouette,
-   portal/frontage, footprint, pivot, socket, light, shadow, and occlusion
-   proofs. Do not render, normalize, or claim pixel authority. When the claim
+1. **Before the family lock:** East, South, and West independently author
+   text-scene/material bindings and run static plus actual-camera zero-pixel
+   geometry, silhouette, portal/frontage, footprint, pivot, socket, light,
+   shadow, and occlusion proofs. They do not render, normalize, or claim pixel
+   authority. North does the same predesign work and may additionally execute
+   exactly one Integration-scheduled and per-process-granted Process A
+   appearance calibration. That North exception authorizes no B/C, source
+   candidate, normalization, production handoff, sibling pixel authority,
+   family selection, or renderer activation. North stops after Process A for
+   independent technical and literal-scale review. When a sibling claim
    defines predesign as its complete deliverable, commit the passing predesign
    normally; otherwise preserve it as a non-ready checkpoint.
 2. **After Integration publishes the appearance lock and updates the claims to
@@ -247,9 +254,15 @@ End each coherent source batch with:
 
 Write one task-owned JSON handoff packet per direction and identify its stage as
 `predesign` or `source`. Include the task, branch, base authority,
-family-contract version/hash, family and direction, source revision,
-scene/material/toolchain hashes, pivot/footprint/socket/frontage/light/shadow
-geometry, validation report paths, disposition, and known blockers. A
+claim path/hash, family-contract version/hash, family and direction, source
+revision, scene/material/toolchain hashes, pivot/footprint/socket/frontage/light/shadow
+geometry, validation report paths, disposition, and known blockers. Include a
+`directionRootMap` with the exact scene, raw, normalized, process, output,
+evidence, and handoff roots plus the parallel-execution receipt path/hash.
+Fail before authoring, launch, or handoff unless every root is inside the
+claim-owned direction prefix, all process/output roots that must be exclusive
+are pairwise disjoint, and no root equals, contains, or is contained by a
+sibling or shared-contract root. A
 predesign packet records pixel production and A/B/C as `not_produced` and may
 declare only `predesign_ready`; never invent placeholder hashes. A source
 packet additionally includes raw/normalized hashes, A/B/C identity results,

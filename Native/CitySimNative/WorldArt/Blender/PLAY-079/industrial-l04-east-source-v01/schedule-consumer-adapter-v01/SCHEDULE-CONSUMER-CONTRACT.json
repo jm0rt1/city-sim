@@ -6,7 +6,7 @@
   "branch": "codex/citysim-world-art-east",
   "claimRevision": 6,
   "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-  "publishedBase": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+  "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
   "authorityDeclaredBase": "be524831885fc240742f61be7357ea515a78da32",
   "disposition": "ZERO_CHILD_READINESS_ONLY",
   "bindings": {
@@ -66,7 +66,7 @@
     "branch": "codex/citysim-world-art-east",
     "claimRevision": 6,
     "claimSha256": "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483",
-    "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "baseCommit": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
     "processes": ["A", "B", "C"],
     "maximumChildStartsPerProcess": 1,
     "orchestratorOnly": true,

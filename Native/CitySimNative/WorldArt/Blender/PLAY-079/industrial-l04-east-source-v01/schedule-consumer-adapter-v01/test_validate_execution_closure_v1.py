@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adversarial zero-child proof for PLAY-079 East closure candidate revision 7."""
+"""Adversarial zero-child proof for PLAY-079 East closure candidate revision 8."""
 
 from __future__ import annotations
 
@@ -50,6 +50,11 @@ SHARED_TEST = load_module(SHARED_TEST_PATH, "play079_shared_execution_fixture")
 SHARED_VALIDATOR = SHARED_TEST.MODULE
 SECRET = b"play079-east-validation-secret!!"
 CRASH_AFTER_CLAIM_EXIT = 86
+PUBLISHED_MASTER = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
+MERGED_BASELINE = "86b19e9f06a33a5d3139858e72a244df24a62e8c"
+PRESERVED_CANDIDATE = "e7d526246232e5e39ba2c8975372e086e2d7c85b"
+CLAIM_SHA256 = "8b32a70a11b636a87ffecc70bbb1eace4c5313adc3077fdd0316c15151138483"
+VISIBLE_THREAD_ID = "019fab72-b2c8-76c1-b430-6c6f8431733f"
 assert len(SECRET) == 32
 
 
@@ -58,6 +63,133 @@ def canonical_bytes(value: object) -> bytes:
         json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
         + "\n"
     ).encode("ascii")
+
+
+def artifact_binding(relative: str) -> dict[str, str]:
+    path = REPOSITORY_ROOT / relative
+    return {
+        "path": relative,
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+    }
+
+
+def current_authority_bindings() -> dict[str, Any]:
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", PUBLISHED_MASTER, "HEAD"],
+        cwd=REPOSITORY_ROOT,
+        check=False,
+        capture_output=True,
+    )
+    if ancestor.returncode:
+        raise RuntimeError("published master is not an ancestor of replay HEAD")
+    claim = artifact_binding("docs/production/claims/PLAY-079.world-art-east.md")
+    if claim["sha256"] != CLAIM_SHA256:
+        raise RuntimeError("PLAY-079 claim hash does not match current authority")
+    runner_contract = json.loads(
+        (SOURCE_ROOT / "RUNNER-CONTRACT.json").read_text(encoding="utf-8")
+    )
+    schedule_contract = json.loads(
+        (VERSION_ROOT / "SCHEDULE-CONSUMER-CONTRACT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    closure_contract = json.loads(
+        (VERSION_ROOT / "EXECUTION-CLOSURE-CONTRACT.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    if (
+        runner_contract["executionClosure"]["publishedBaseCommit"]
+        != PUBLISHED_MASTER
+        or runner_contract["executionClosure"]["claimSha256"] != CLAIM_SHA256
+        or schedule_contract["publishedBase"] != PUBLISHED_MASTER
+        or schedule_contract["targetGrant"]["baseCommit"] != PUBLISHED_MASTER
+        or schedule_contract["claimSha256"] != CLAIM_SHA256
+        or closure_contract["task"]["publishedBaseCommit"] != PUBLISHED_MASTER
+        or closure_contract["task"]["claimSha256"] != CLAIM_SHA256
+    ):
+        raise RuntimeError("East current-authority contract binding is stale")
+    return {
+        "publishedMaster": {
+            "commit": PUBLISHED_MASTER,
+            "ancestorOfReplayHead": True,
+        },
+        "mergedBaseline": {
+            "commit": MERGED_BASELINE,
+            "firstParent": PRESERVED_CANDIDATE,
+            "secondParent": PUBLISHED_MASTER,
+        },
+        "claim": claim,
+        "runnerContract": artifact_binding(
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/RUNNER-CONTRACT.json"
+        ),
+        "runnerEntrypoint": artifact_binding(
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/run_production.py"
+        ),
+        "highLevelOrchestrator": artifact_binding(
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/orchestrate_parallel_source.py"
+        ),
+        "executionClosureContract": artifact_binding(
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/schedule-consumer-adapter-v01/"
+            "EXECUTION-CLOSURE-CONTRACT.json"
+        ),
+        "scheduleConsumerContract": artifact_binding(
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/schedule-consumer-adapter-v01/"
+            "SCHEDULE-CONSUMER-CONTRACT.json"
+        ),
+    }
+
+
+def postlock_abc_proposal() -> dict[str, Any]:
+    jobs = []
+    for process in "ABC":
+        lower = process.lower()
+        jobs.append(
+            {
+                "jobId": f"east:{process}",
+                "process": process,
+                "queueToken": f"east:{process}",
+                "outputRoot": (
+                    "docs/production/evidence/PLAY-079/"
+                    "industrial-l04-east-source-v01/"
+                    f"renders/process-{lower}/"
+                ),
+                "evidenceRoot": (
+                    "docs/production/evidence/PLAY-079/"
+                    "industrial-l04-east-source-v01/"
+                    f"execution/process-{lower}/"
+                ),
+                "slotId": None,
+                "slotState": "UNASSIGNED_REQUIRES_FUTURE_INTEGRATION_GRANT",
+                "maximumChildStarts": 1,
+            }
+        )
+    return {
+        "status": "PROPOSAL_ONLY_AUTHORITY_BLOCKED",
+        "proposalOnly": True,
+        "launchAuthorized": False,
+        "dccSlotsAuthorizedByCurrentEnvelope": 0,
+        "taskExclusiveRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/"
+            "industrial-l04-east-source-v01/",
+            "docs/production/evidence/PLAY-079/"
+            "industrial-l04-east-source-v01/",
+        ],
+        "requiredRelativeOrder": ["east:A", "east:B", "east:C"],
+        "jobs": jobs,
+        "missingIntegrationAuthorities": [
+            "appearanceLock",
+            "sourceProductionProfile",
+            "postlockParallelExecutionSchedule",
+            "perProcessOneAttemptGrants",
+            "assignedDccSlots",
+        ],
+    }
 
 
 def fixture_contract(fixture: Any) -> dict[str, Any]:
@@ -677,11 +809,14 @@ def run_cases() -> dict[str, Any]:
     if {case["id"] for case in cases} != expected:
         raise RuntimeError("adversarial case set is incomplete")
     return {
-        "schema": "citysim.play-079.east-execution-closure-proof.v3",
+        "schema": "citysim.play-079.east-execution-closure-proof.v4",
         "taskId": "PLAY-079",
         "direction": "east",
         "claimRevision": 6,
-        "candidateRevision": 7,
+        "candidateRevision": 8,
+        "preservedApprovedCandidate": PRESERVED_CANDIDATE,
+        "authorityBindings": current_authority_bindings(),
+        "postlockABCProposal": postlock_abc_proposal(),
         "result": "PASS_ZERO_CHILD",
         "crossProcessReplay": cross_process,
         "crashAfterDirectoryClaimReplay": crash_replay,

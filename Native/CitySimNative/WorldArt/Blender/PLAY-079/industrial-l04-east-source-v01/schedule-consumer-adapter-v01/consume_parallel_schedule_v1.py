@@ -37,7 +37,7 @@ PACKET_RELATIVE = (
     "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/"
     "schedule-consumer-adapter-v01/ZERO-CHILD-READINESS.json"
 )
-PUBLISHED_BASE = "cda04083bd50df3a0cd99923c8ad571afd62509b"
+PUBLISHED_BASE = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
 AUTHORITY_DECLARED_BASE = "be524831885fc240742f61be7357ea515a78da32"
 AUTHORED_BRANCH = "codex/citysim-world-art-east"
 ALLOWED_REPLAY_BRANCHES = {AUTHORED_BRANCH, "master"}

@@ -58,14 +58,14 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_pedestrian_pair/generated_v4_ambient_pedestrian_pair_block.png",
           "normalized_sha256": "a9ca0fe5b3ca8e5378c362067d289a0cac375ee15394fbaf5dd02ec2db9a2e38",
           "packed_rect_pixels": [
-            352,
-            1833,
+            1885,
+            1372,
             158,
             181
           ],
           "padding_pixels": 4,
-          "page": "block-00",
-          "page_file": "pages/block/page-00.png",
+          "page": "block-01",
+          "page_file": "pages/block/page-01.png",
           "payload_pixel_sha256": "ef92ec01a21cf6521dd2d22d78115b41bcaadd4a6822493311f5198fb9d98368",
           "pixels": [
             150,
@@ -83,8 +83,8 @@
             173
           ],
           "texture_rect_pixels": [
-            356,
-            1837,
+            1889,
+            1376,
             150,
             173
           ],
@@ -110,8 +110,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_pedestrian_pair/generated_v4_ambient_pedestrian_pair_city.png",
           "normalized_sha256": "0e0423842428841b0f2b362274eabf3533049449ec681fae373b442840995ea0",
           "packed_rect_pixels": [
-            385,
-            173,
+            923,
+            235,
             48,
             53
           ],
@@ -135,8 +135,8 @@
             45
           ],
           "texture_rect_pixels": [
-            389,
-            177,
+            927,
+            239,
             40,
             45
           ],
@@ -162,8 +162,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_pedestrian_pair/generated_v4_ambient_pedestrian_pair_neighborhood.png",
           "normalized_sha256": "0c434501d8eed9894d99d791c8ac7680dd537bc834a9ef53a1606f3f94bca78a",
           "packed_rect_pixels": [
-            1002,
-            709,
+            725,
+            929,
             84,
             96
           ],
@@ -187,8 +187,8 @@
             88
           ],
           "texture_rect_pixels": [
-            1006,
-            713,
+            729,
+            933,
             76,
             88
           ],
@@ -315,8 +315,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_service_object/generated_v4_ambient_service_object_block.png",
           "normalized_sha256": "ba558e45f0a2598243dc1cb6d22026d53c8caadb6d520f8576995b5093a59891",
           "packed_rect_pixels": [
-            1150,
-            1402,
+            1154,
+            1835,
             224,
             208
           ],
@@ -340,8 +340,8 @@
             200
           ],
           "texture_rect_pixels": [
-            1154,
-            1406,
+            1158,
+            1839,
             216,
             200
           ],
@@ -367,8 +367,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_service_object/generated_v4_ambient_service_object_city.png",
           "normalized_sha256": "68fc2fd8d0c179980e956a05ad5654b50e3ddea3e4ff18d11f393978b2043dce",
           "packed_rect_pixels": [
-            398,
-            318,
+            304,
+            454,
             64,
             60
           ],
@@ -392,8 +392,8 @@
             52
           ],
           "texture_rect_pixels": [
-            402,
-            322,
+            308,
+            458,
             56,
             52
           ],
@@ -419,8 +419,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/ambient_service_object/generated_v4_ambient_service_object_neighborhood.png",
           "normalized_sha256": "3d77af2de1720073ae19c7a817a00106b4ca27024d572fdeb27aa7e9990048ca",
           "packed_rect_pixels": [
-            435,
-            773,
+            1581,
+            804,
             118,
             110
           ],
@@ -444,8 +444,8 @@
             102
           ],
           "texture_rect_pixels": [
-            439,
-            777,
+            1585,
+            808,
             110,
             102
           ],
@@ -1351,8 +1351,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/east/source-v04/generated_v4_commercial_l01_block.png",
           "normalized_sha256": "555e813f5b24fea0bd3df70183f34caaf6defc1ca8951baf4f63092536414406",
           "packed_rect_pixels": [
-            838,
-            650,
+            0,
+            952,
             286,
             258
           ],
@@ -1376,8 +1376,8 @@
             250
           ],
           "texture_rect_pixels": [
-            842,
-            654,
+            4,
+            956,
             278,
             250
           ],
@@ -1615,8 +1615,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/north/source-v04/generated_v4_commercial_l01_block.png",
           "normalized_sha256": "a172b049427a88e688cbcb1e21bc3ad090692fb84e45d6141ac6f1200030af9b",
           "packed_rect_pixels": [
-            830,
-            908,
+            0,
+            1703,
             286,
             230
           ],
@@ -1640,8 +1640,8 @@
             222
           ],
           "texture_rect_pixels": [
-            834,
-            912,
+            4,
+            1707,
             278,
             222
           ],
@@ -1667,8 +1667,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/north/source-v04/generated_v4_commercial_l01_city.png",
           "normalized_sha256": "56f0c350208c6718e23c1aaadcf2b226cf5d3de2fdddf3f39454798273f719e6",
           "packed_rect_pixels": [
-            316,
-            318,
+            745,
+            233,
             82,
             67
           ],
@@ -1692,8 +1692,8 @@
             59
           ],
           "texture_rect_pixels": [
-            320,
-            322,
+            749,
+            237,
             74,
             59
           ],
@@ -1719,8 +1719,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/north/source-v04/generated_v4_commercial_l01_neighborhood.png",
           "normalized_sha256": "019b3426fb453cd898a9e179b153b7272ffd96dab2f706faa8d5f62f012a2c9e",
           "packed_rect_pixels": [
-            1555,
-            544,
+            820,
+            709,
             150,
             122
           ],
@@ -1744,8 +1744,8 @@
             114
           ],
           "texture_rect_pixels": [
-            1559,
-            548,
+            824,
+            713,
             142,
             114
           ],
@@ -1879,8 +1879,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/south/source-v04/generated_v4_commercial_l01_block.png",
           "normalized_sha256": "cbad9d06c2aaa63f19f3059e6e4f68af724a94c886938794f0bac043a3265fba",
           "packed_rect_pixels": [
-            1124,
-            650,
+            1402,
+            901,
             286,
             258
           ],
@@ -1904,8 +1904,8 @@
             250
           ],
           "texture_rect_pixels": [
-            1128,
-            654,
+            1406,
+            905,
             278,
             250
           ],
@@ -2143,8 +2143,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/west/source-v04/generated_v4_commercial_l01_block.png",
           "normalized_sha256": "682ed34ad346ca4537898bd0a2628ff148db7ac6f71d6cec510e7c3af7626c0a",
           "packed_rect_pixels": [
-            1116,
-            908,
+            254,
+            1442,
             286,
             230
           ],
@@ -2168,8 +2168,8 @@
             222
           ],
           "texture_rect_pixels": [
-            1120,
-            912,
+            258,
+            1446,
             278,
             222
           ],
@@ -2195,8 +2195,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/west/source-v04/generated_v4_commercial_l01_city.png",
           "normalized_sha256": "39eebe14f24b38eef19db235aea63ca797b872b4955b5df4b7b959586bdfe0a9",
           "packed_rect_pixels": [
-            162,
-            344,
+            1159,
+            72,
             82,
             67
           ],
@@ -2220,8 +2220,8 @@
             59
           ],
           "texture_rect_pixels": [
-            166,
-            348,
+            1163,
+            76,
             74,
             59
           ],
@@ -2247,8 +2247,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l01/variant-0/west/source-v04/generated_v4_commercial_l01_neighborhood.png",
           "normalized_sha256": "5a21b2fa753e419eb0fff32dc583163528223e7b4c8289637157381d5d4f327c",
           "packed_rect_pixels": [
-            1705,
-            547,
+            1555,
+            682,
             150,
             122
           ],
@@ -2272,8 +2272,8 @@
             114
           ],
           "texture_rect_pixels": [
-            1709,
-            551,
+            1559,
+            686,
             142,
             114
           ],
@@ -2935,7 +2935,7 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l02/variant-0/south/source-v01/generated_v4_commercial_l02_block.png",
           "normalized_sha256": "f68d23e0ae65249d547f8435ec47f50d688752ad0db80aa75133d9a8b998b13d",
           "packed_rect_pixels": [
-            274,
+            286,
             952,
             242,
             284
@@ -2960,7 +2960,7 @@
             276
           ],
           "texture_rect_pixels": [
-            278,
+            290,
             956,
             234,
             276
@@ -3199,8 +3199,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l02/variant-0/west/source-v01/generated_v4_commercial_l02_block.png",
           "normalized_sha256": "658d67c49466f03def9c96364cb738e6cb7d903d01c9d7bbaba7314761c9292c",
           "packed_rect_pixels": [
-            0,
-            1458,
+            560,
+            1671,
             242,
             268
           ],
@@ -3224,8 +3224,8 @@
             260
           ],
           "texture_rect_pixels": [
-            4,
-            1462,
+            564,
+            1675,
             234,
             260
           ],
@@ -3251,8 +3251,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/commercial_l02/variant-0/west/source-v01/generated_v4_commercial_l02_city.png",
           "normalized_sha256": "fc35235d1f80d82b72c18b8ed56c68477cf756211ee02c7782818fea8edf5e80",
           "packed_rect_pixels": [
-            0,
-            497,
+            240,
+            344,
             68,
             74
           ],
@@ -3276,8 +3276,8 @@
             66
           ],
           "texture_rect_pixels": [
-            4,
-            501,
+            244,
+            348,
             60,
             66
           ],
@@ -5625,8 +5625,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/grass_material/generated_v4_grass_material_city.png",
           "normalized_sha256": "59ab2f48505b7b6e26158f92473fa977a36661ab37ffe38304523b03adc1ec8d",
           "packed_rect_pixels": [
-            244,
-            385,
+            827,
+            235,
             96,
             54
           ],
@@ -5650,8 +5650,8 @@
             46
           ],
           "texture_rect_pixels": [
-            248,
-            389,
+            831,
+            239,
             88,
             46
           ],
@@ -5677,8 +5677,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/grass_material/generated_v4_grass_material_neighborhood.png",
           "normalized_sha256": "fcd03ade5abb5cab8256fe96a321aece9f8a4341eee6bf6622763f423a3297ba",
           "packed_rect_pixels": [
-            1855,
-            588,
+            1849,
+            724,
             182,
             97
           ],
@@ -5702,8 +5702,8 @@
             89
           ],
           "texture_rect_pixels": [
-            1859,
-            592,
+            1853,
+            728,
             174,
             89
           ],
@@ -6091,8 +6091,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_block.png",
           "normalized_sha256": "389407f132453db7c1cc5908c4732902f55577a1f999f9985d1eb0a9b9a6f84b",
           "packed_rect_pixels": [
-            274,
-            1640,
+            814,
+            1410,
             256,
             248
           ],
@@ -6116,8 +6116,8 @@
             240
           ],
           "texture_rect_pixels": [
-            278,
-            1644,
+            818,
+            1414,
             248,
             240
           ],
@@ -6143,8 +6143,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_city.png",
           "normalized_sha256": "a04aceca4ba2cd47b0b2fcbecb00d4dbf48fca8129c779bf6d27c825d8876d81",
           "packed_rect_pixels": [
-            901,
-            235,
+            234,
+            418,
             70,
             69
           ],
@@ -6168,8 +6168,8 @@
             61
           ],
           "texture_rect_pixels": [
-            905,
-            239,
+            238,
+            422,
             62,
             61
           ],
@@ -6195,8 +6195,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/east/source-v05/generated_v4_industrial_l01_neighborhood.png",
           "normalized_sha256": "35803e7aa979aa9afecb134e457040e23fa58fdd51be18db4c4e010e3f470607",
           "packed_rect_pixels": [
-            1253,
-            810,
+            1102,
+            836,
             132,
             129
           ],
@@ -6220,8 +6220,8 @@
             121
           ],
           "texture_rect_pixels": [
-            1257,
-            814,
+            1106,
+            840,
             124,
             121
           ],
@@ -6355,8 +6355,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_block.png",
           "normalized_sha256": "beba2ab0dbf920e0725ba7771f3c5288c02507c0b375bc8dd7940840dad8f13b",
           "packed_rect_pixels": [
-            0,
-            1197,
+            528,
+            1170,
             254,
             261
           ],
@@ -6380,8 +6380,8 @@
             253
           ],
           "texture_rect_pixels": [
-            4,
-            1201,
+            532,
+            1174,
             246,
             253
           ],
@@ -6407,8 +6407,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/north/source-v05/generated_v4_industrial_l01_city.png",
           "normalized_sha256": "8134c56cb4ea3238fec85bf4b568eed0a2c8a0724695be16c105e057c3aa4583",
           "packed_rect_pixels": [
-            156,
-            411,
+            394,
+            318,
             70,
             72
           ],
@@ -6432,8 +6432,8 @@
             64
           ],
           "texture_rect_pixels": [
-            160,
-            415,
+            398,
+            322,
             62,
             64
           ],
@@ -6619,8 +6619,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_block.png",
           "normalized_sha256": "4c5228bdcf513c272b392e6175faa85327191b99433f81cd8c33b6e10a53020d",
           "packed_rect_pixels": [
-            1085,
-            1610,
+            1352,
+            1388,
             254,
             217
           ],
@@ -6644,8 +6644,8 @@
             209
           ],
           "texture_rect_pixels": [
-            1089,
-            1614,
+            1356,
+            1392,
             246,
             209
           ],
@@ -6671,8 +6671,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_city.png",
           "normalized_sha256": "4d0dcaa65bb8bbea8661f37f426441996e5d4e88de36fc2689bd28eb7ab8103d",
           "packed_rect_pixels": [
-            669,
-            318,
+            0,
+            561,
             70,
             61
           ],
@@ -6696,8 +6696,8 @@
             53
           ],
           "texture_rect_pixels": [
-            673,
-            322,
+            4,
+            565,
             62,
             53
           ],
@@ -6723,8 +6723,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/south/source-v05/generated_v4_industrial_l01_neighborhood.png",
           "normalized_sha256": "0794afa8e0002f88ba01a4458800f7b0ae886b9a608d7064a3c7a0fc759da274",
           "packed_rect_pixels": [
-            1531,
-            904,
+            966,
+            845,
             132,
             114
           ],
@@ -6748,8 +6748,8 @@
             106
           ],
           "texture_rect_pixels": [
-            1535,
-            908,
+            970,
+            849,
             124,
             106
           ],
@@ -6883,8 +6883,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_block.png",
           "normalized_sha256": "04a2963a211d4b7ae5ac4fa8ddbb88c46dbe18cc7b4685bf67c9167dc8bda9da",
           "packed_rect_pixels": [
-            1696,
-            901,
+            0,
+            1442,
             254,
             261
           ],
@@ -6908,8 +6908,8 @@
             253
           ],
           "texture_rect_pixels": [
-            1700,
-            905,
+            4,
+            1446,
             246,
             253
           ],
@@ -6935,8 +6935,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_city.png",
           "normalized_sha256": "be96b2aec303069741d625dd91620d6e29138ea6e4b6c9d3af98275cba8b6b9f",
           "packed_rect_pixels": [
-            78,
-            466,
+            394,
+            390,
             70,
             72
           ],
@@ -6960,8 +6960,8 @@
             64
           ],
           "texture_rect_pixels": [
-            82,
-            470,
+            398,
+            394,
             62,
             64
           ],
@@ -6987,8 +6987,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/industrial_l01/variant-0/west/source-v05/generated_v4_industrial_l01_neighborhood.png",
           "normalized_sha256": "4fa100cfeb1abc0caecaf4cbd74ffa51abd0c521d9050a76ec2e1a4cbbf4a025",
           "packed_rect_pixels": [
-            1399,
-            683,
+            970,
+            709,
             132,
             136
           ],
@@ -7012,8 +7012,8 @@
             128
           ],
           "texture_rect_pixels": [
-            1403,
-            687,
+            974,
+            713,
             124,
             128
           ],
@@ -7147,8 +7147,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/east/generated_v4_industrial_l02_east_source_v05_block.png",
           "normalized_sha256": "54e3e6c8f07f50af8bab56dd8d46923b8bdc70c6e7929ff45ee514d1fbea6086",
           "packed_rect_pixels": [
-            1410,
-            901,
+            0,
+            1210,
             286,
             232
           ],
@@ -7172,8 +7172,8 @@
             224
           ],
           "texture_rect_pixels": [
-            1414,
-            905,
+            4,
+            1214,
             278,
             224
           ],
@@ -7199,8 +7199,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/east/generated_v4_industrial_l02_east_source_v05_city.png",
           "normalized_sha256": "861db1d52b55f82c70f51a31c606baa063092127384c66703b89d4cdfa79372c",
           "packed_rect_pixels": [
-            1255,
-            72,
+            156,
+            417,
             78,
             64
           ],
@@ -7224,8 +7224,8 @@
             56
           ],
           "texture_rect_pixels": [
-            1259,
-            76,
+            160,
+            421,
             70,
             56
           ],
@@ -7251,8 +7251,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/east/generated_v4_industrial_l02_east_source_v05_neighborhood.png",
           "normalized_sha256": "c229dfa0759fa7232786eee92fcdd6786cd1d13728fb09b8aa9b39b30d49ed93",
           "packed_rect_pixels": [
-            1881,
-            685,
+            1246,
+            816,
             147,
             120
           ],
@@ -7276,8 +7276,8 @@
             112
           ],
           "texture_rect_pixels": [
-            1885,
-            689,
+            1250,
+            820,
             139,
             112
           ],
@@ -7411,8 +7411,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/north/generated_v4_industrial_l02_north_source_v07_block.png",
           "normalized_sha256": "c539f4478296e929fb77250ad8476572e7b8155ad96abd2ebebe3170b052debc",
           "packed_rect_pixels": [
-            606,
-            1163,
+            1329,
+            1175,
             282,
             213
           ],
@@ -7436,8 +7436,8 @@
             205
           ],
           "texture_rect_pixels": [
-            610,
-            1167,
+            1333,
+            1179,
             274,
             205
           ],
@@ -7463,8 +7463,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/north/generated_v4_industrial_l02_north_source_v07_city.png",
           "normalized_sha256": "60969ffb594fee16efa1114e75edf6dcb5e57c4041c1c8019c1796d7a7ff8b0a",
           "packed_rect_pixels": [
-            745,
-            301,
+            156,
+            481,
             78,
             60
           ],
@@ -7488,8 +7488,8 @@
             52
           ],
           "texture_rect_pixels": [
-            749,
-            305,
+            160,
+            485,
             70,
             52
           ],
@@ -7515,8 +7515,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/north/generated_v4_industrial_l02_north_source_v07_neighborhood.png",
           "normalized_sha256": "76d1d302d8b1dfaa41ca799bbce5bf5ae4bee9754091e08a31eb1c0c0c6c7736",
           "packed_rect_pixels": [
-            1531,
-            793,
+            435,
+            803,
             146,
             111
           ],
@@ -7540,8 +7540,8 @@
             103
           ],
           "texture_rect_pixels": [
-            1535,
-            797,
+            439,
+            807,
             138,
             103
           ],
@@ -7675,8 +7675,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/south/generated_v4_industrial_l02_south_source_v07_block.png",
           "normalized_sha256": "c98e9b56a5705613a482b4ca249b4cb2b23a74fd6123638fc8282e7e8e5ba6f7",
           "packed_rect_pixels": [
-            594,
-            1418,
+            1070,
+            1407,
             282,
             220
           ],
@@ -7700,8 +7700,8 @@
             212
           ],
           "texture_rect_pixels": [
-            598,
-            1422,
+            1074,
+            1411,
             274,
             212
           ],
@@ -7727,8 +7727,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/south/generated_v4_industrial_l02_south_source_v07_city.png",
           "normalized_sha256": "b70085caaef5045df7289364d34f983054bc3b80d991ddb9507e9654ac1abbc3",
           "packed_rect_pixels": [
-            1159,
-            126,
+            78,
+            469,
             78,
             62
           ],
@@ -7752,8 +7752,8 @@
             54
           ],
           "texture_rect_pixels": [
-            1163,
-            130,
+            82,
+            473,
             70,
             54
           ],
@@ -7779,8 +7779,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/south/generated_v4_industrial_l02_south_source_v07_neighborhood.png",
           "normalized_sha256": "976b998aa14adb1f040651616b31c5bc2e0ead77fb388054d7bf04b1d863dceb",
           "packed_rect_pixels": [
-            1699,
-            782,
+            820,
+            831,
             146,
             114
           ],
@@ -7804,8 +7804,8 @@
             106
           ],
           "texture_rect_pixels": [
-            1703,
-            786,
+            824,
+            835,
             138,
             106
           ],
@@ -7939,8 +7939,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/west/generated_v4_industrial_l02_west_source_v07_block.png",
           "normalized_sha256": "4c66e3d326606838bb484beef0a685cbf73d38d2e127572bd19be8e0c83077dd",
           "packed_rect_pixels": [
-            803,
-            1638,
+            1611,
+            1159,
             282,
             213
           ],
@@ -7964,8 +7964,8 @@
             205
           ],
           "texture_rect_pixels": [
-            807,
-            1642,
+            1615,
+            1163,
             274,
             205
           ],
@@ -7991,8 +7991,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/west/generated_v4_industrial_l02_west_source_v07_city.png",
           "normalized_sha256": "3853833738f2d2660ad9abe01cdee98f35ce6a80aa0a21f8afcd3f837fed9f8b",
           "packed_rect_pixels": [
-            823,
-            301,
+            78,
+            531,
             78,
             60
           ],
@@ -8016,8 +8016,8 @@
             52
           ],
           "texture_rect_pixels": [
-            827,
-            305,
+            82,
+            535,
             70,
             52
           ],
@@ -8043,8 +8043,8 @@
           "normalized_file": "docs/production/evidence/PLAY-027/industrial-l02/l02/directional-family-v07/source-completion/normalized/run-a/west/generated_v4_industrial_l02_west_source_v07_neighborhood.png",
           "normalized_sha256": "f0a3732a12672f91c023126bdc55b09c11acd2735930900b17c1106216858823",
           "packed_rect_pixels": [
-            1385,
-            819,
+            435,
+            914,
             146,
             111
           ],
@@ -8068,8 +8068,8 @@
             103
           ],
           "texture_rect_pixels": [
-            1389,
-            823,
+            439,
+            918,
             138,
             103
           ],
@@ -8138,6 +8138,1062 @@
       "source_key": "industrial_l02/variant-0/west/source-v07",
       "source_revision": "source-v07",
       "source_sha256": "6132d867c7ba6f2d9e0013c593ea75024ad45c546549d9e094b7663309ed155d",
+      "state": "maintained",
+      "supported_orientation": "west-facing-authored",
+      "variant": 0,
+      "view_direction": "west"
+    },
+    {
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.07910156,
+        18.76464844
+      ],
+      "authoring_template": "1x1",
+      "decoded_byte_estimate": 375752,
+      "depth_roles": {
+        "baked-shadow": 4.0,
+        "structure": 5.0,
+        "vegetation": 8.0
+      },
+      "entrance_socket_world": [
+        18.0,
+        -9.0
+      ],
+      "family": "industrial",
+      "filtering": "linear",
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "frontage_edge": "east",
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          13.5
+        ],
+        [
+          27.0,
+          0.0
+        ],
+        [
+          0.0,
+          -13.5
+        ],
+        [
+          -27.0,
+          0.0
+        ]
+      ],
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "level": 3,
+      "lods": {
+        "block": {
+          "anchor": [
+            0.5,
+            0.00144231
+          ],
+          "decoded_byte_estimate": 284960,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_east_block.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_block.png",
+          "normalized_sha256": "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba",
+          "packed_rect_pixels": [
+            838,
+            650,
+            282,
+            268
+          ],
+          "padding_pixels": 4,
+          "page": "block-01",
+          "page_file": "pages/block/page-01.png",
+          "payload_pixel_sha256": "2a4acda46aa8d5eb58ff39686b959da8082d67e0c2e26f1c9dbd371e6c28cdfd",
+          "pixels": [
+            274,
+            260
+          ],
+          "sha256": "0b664a01702b586441a6c4ae9d008a0285c15976899719265493404236d1a726",
+          "source_pixels": [
+            1024,
+            683
+          ],
+          "source_trim_rect_pixels": [
+            375,
+            338,
+            274,
+            260
+          ],
+          "texture_rect_pixels": [
+            842,
+            654,
+            274,
+            260
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            274,
+            260
+          ],
+          "world_size": [
+            57.796875,
+            54.84375
+          ]
+        },
+        "city": {
+          "anchor": [
+            0.5,
+            0.00144231
+          ],
+          "decoded_byte_estimate": 18480,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_east_city.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_city.png",
+          "normalized_sha256": "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e",
+          "packed_rect_pixels": [
+            0,
+            353,
+            78,
+            74
+          ],
+          "padding_pixels": 4,
+          "page": "city-00",
+          "page_file": "pages/city/page-00.png",
+          "payload_pixel_sha256": "aabd8fbdb3dd238fa662e708a68741d3d171674528d6076ac96bdd1060f6bf08",
+          "pixels": [
+            70,
+            66
+          ],
+          "sha256": "cd8d7e6b1ce5fdeebe1c67d7d565a8b30cf4ec14e1ba0b7f2daeb3f9b86c1298",
+          "source_pixels": [
+            256,
+            171
+          ],
+          "source_trim_rect_pixels": [
+            93,
+            84,
+            70,
+            66
+          ],
+          "texture_rect_pixels": [
+            4,
+            357,
+            70,
+            66
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            70,
+            66
+          ],
+          "world_size": [
+            57.796875,
+            54.84375
+          ]
+        },
+        "neighborhood": {
+          "anchor": [
+            0.5,
+            0.00144231
+          ],
+          "decoded_byte_estimate": 72312,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_east_neighborhood.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_neighborhood.png",
+          "normalized_sha256": "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342",
+          "packed_rect_pixels": [
+            1255,
+            550,
+            146,
+            139
+          ],
+          "padding_pixels": 4,
+          "page": "neighborhood-00",
+          "page_file": "pages/neighborhood/page-00.png",
+          "payload_pixel_sha256": "46d950566c3bb2506b46c9e250659a7da4ee2ab380d8171028ab061973cc122b",
+          "pixels": [
+            138,
+            131
+          ],
+          "sha256": "fa4e6eae37d375b482910ba44f6488a3584dedd8f9c564f7835ab4c104438b40",
+          "source_pixels": [
+            512,
+            342
+          ],
+          "source_trim_rect_pixels": [
+            187,
+            169,
+            138,
+            131
+          ],
+          "texture_rect_pixels": [
+            1259,
+            554,
+            138,
+            131
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            138,
+            131
+          ],
+          "world_size": [
+            57.796875,
+            54.84375
+          ]
+        }
+      },
+      "logical_id": "industrial_l03_v0_east",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "material_library_sha256": "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+      "mipmap": true,
+      "normalization_record_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/provenance.json",
+      "normalization_record_sha256": "aa0834a245bb31f41c9a727c644509fe6ea1d3cc52629d24e9db845749b57f41",
+      "opaque_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        36.76464844
+      ],
+      "padding": 24,
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "prop_exclusion_rects_world": [
+        [
+          10.65625,
+          -13.671875,
+          14.6875,
+          9.34375
+        ]
+      ],
+      "provenance_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/provenance.json",
+      "provenance_sha256": "19af3c026f180d503a0fc78806c1691de4ad3eed012dff20eea5f1add496720f",
+      "raw_source_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65"
+      ],
+      "residency_id": "generated-v4/industrial/industrial_l03_v0_east",
+      "road_setback_points": 0.0,
+      "scene_descriptor_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
+      "scene_descriptor_sha256": "047c8b86d770496b3fdcdfad11ad14db8b59694f1734231b3f2e3130f20de277",
+      "shadow_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        36.76464844
+      ],
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "source_key": "industrial_l03/variant-0/east/source-v04",
+      "source_revision": "source-v04",
+      "source_sha256": "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e",
+      "state": "maintained",
+      "supported_orientation": "east-facing-authored",
+      "variant": 0,
+      "view_direction": "east"
+    },
+    {
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.07910156,
+        18.13183594
+      ],
+      "authoring_template": "1x1",
+      "decoded_byte_estimate": 371632,
+      "depth_roles": {
+        "baked-shadow": 4.0,
+        "structure": 5.0,
+        "vegetation": 8.0
+      },
+      "entrance_socket_world": [
+        18.0,
+        9.0
+      ],
+      "family": "industrial",
+      "filtering": "linear",
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "frontage_edge": "north",
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          13.5
+        ],
+        [
+          27.0,
+          0.0
+        ],
+        [
+          0.0,
+          -13.5
+        ],
+        [
+          -27.0,
+          0.0
+        ]
+      ],
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "level": 3,
+      "lods": {
+        "block": {
+          "anchor": [
+            0.5,
+            0.00145914
+          ],
+          "decoded_byte_estimate": 281672,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_north_block.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_block.png",
+          "normalized_sha256": "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500",
+          "packed_rect_pixels": [
+            556,
+            905,
+            282,
+            265
+          ],
+          "padding_pixels": 4,
+          "page": "block-01",
+          "page_file": "pages/block/page-01.png",
+          "payload_pixel_sha256": "b197e8481144c4eb2bf5d989bbbe0701a2303482fc7947202cf1cfa1e1c849dd",
+          "pixels": [
+            274,
+            257
+          ],
+          "sha256": "fb39e3f94f89a6d6a593fd48cd126b2cdd23d1d60840c42bd304aeffc70bd624",
+          "source_pixels": [
+            1024,
+            683
+          ],
+          "source_trim_rect_pixels": [
+            375,
+            341,
+            274,
+            257
+          ],
+          "texture_rect_pixels": [
+            560,
+            909,
+            274,
+            257
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            274,
+            257
+          ],
+          "world_size": [
+            57.796875,
+            54.2109375
+          ]
+        },
+        "city": {
+          "anchor": [
+            0.5,
+            0.00145914
+          ],
+          "decoded_byte_estimate": 18200,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_north_city.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_city.png",
+          "normalized_sha256": "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500",
+          "packed_rect_pixels": [
+            162,
+            344,
+            78,
+            73
+          ],
+          "padding_pixels": 4,
+          "page": "city-00",
+          "page_file": "pages/city/page-00.png",
+          "payload_pixel_sha256": "28311d9af92e93283dde6adb83f5c8eda924bab7b218c9c1af430f79ab21522e",
+          "pixels": [
+            70,
+            65
+          ],
+          "sha256": "a89d51b3701307eef747af76f95e1b4e44f1eac3ca215073df687fccec4925d6",
+          "source_pixels": [
+            256,
+            171
+          ],
+          "source_trim_rect_pixels": [
+            93,
+            85,
+            70,
+            65
+          ],
+          "texture_rect_pixels": [
+            166,
+            348,
+            70,
+            65
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            70,
+            65
+          ],
+          "world_size": [
+            57.796875,
+            54.2109375
+          ]
+        },
+        "neighborhood": {
+          "anchor": [
+            0.5,
+            0.00145914
+          ],
+          "decoded_byte_estimate": 71760,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_north_neighborhood.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_neighborhood.png",
+          "normalized_sha256": "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1",
+          "packed_rect_pixels": [
+            1109,
+            574,
+            146,
+            138
+          ],
+          "padding_pixels": 4,
+          "page": "neighborhood-00",
+          "page_file": "pages/neighborhood/page-00.png",
+          "payload_pixel_sha256": "e0a71ce195f65f306f61919787164af3e436afe087a6055c61ac19b278ccf3ef",
+          "pixels": [
+            138,
+            130
+          ],
+          "sha256": "ba13e712c866929484e5089796617b720de3d2aeb6452a3844d526c241ebf863",
+          "source_pixels": [
+            512,
+            342
+          ],
+          "source_trim_rect_pixels": [
+            187,
+            170,
+            138,
+            130
+          ],
+          "texture_rect_pixels": [
+            1113,
+            578,
+            138,
+            130
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            138,
+            130
+          ],
+          "world_size": [
+            57.796875,
+            54.2109375
+          ]
+        }
+      },
+      "logical_id": "industrial_l03_v0_north",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "material_library_sha256": "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8",
+      "mipmap": true,
+      "normalization_record_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/provenance.json",
+      "normalization_record_sha256": "47e71fdff3a9acea88e70223c3296d74d9e52804f16a5039c7a2294fe279d167",
+      "opaque_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        36.13183594
+      ],
+      "padding": 24,
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "prop_exclusion_rects_world": [
+        [
+          10.65625,
+          4.328125,
+          14.6875,
+          9.34375
+        ]
+      ],
+      "provenance_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/provenance.json",
+      "provenance_sha256": "794654d92d20092c5b979240ad363df38182050299e55e3a243e140e260d401e",
+      "raw_source_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8"
+      ],
+      "residency_id": "generated-v4/industrial/industrial_l03_v0_north",
+      "road_setback_points": 0.0,
+      "scene_descriptor_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "scene_descriptor_sha256": "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9",
+      "shadow_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        36.13183594
+      ],
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "source_key": "industrial_l03/variant-0/north/source-v06",
+      "source_revision": "source-v06",
+      "source_sha256": "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea",
+      "state": "maintained",
+      "supported_orientation": "north-facing-authored",
+      "variant": 0,
+      "view_direction": "north"
+    },
+    {
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.07910156,
+        17.07714844
+      ],
+      "authoring_template": "1x1",
+      "decoded_byte_estimate": 364216,
+      "depth_roles": {
+        "baked-shadow": 4.0,
+        "structure": 5.0,
+        "vegetation": 8.0
+      },
+      "entrance_socket_world": [
+        -18.0,
+        -9.0
+      ],
+      "family": "industrial",
+      "filtering": "linear",
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "frontage_edge": "south",
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          13.5
+        ],
+        [
+          27.0,
+          0.0
+        ],
+        [
+          0.0,
+          -13.5
+        ],
+        [
+          -27.0,
+          0.0
+        ]
+      ],
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "level": 3,
+      "lods": {
+        "block": {
+          "anchor": [
+            0.5,
+            0.0014881
+          ],
+          "decoded_byte_estimate": 276192,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_south_block.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_block.png",
+          "normalized_sha256": "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c",
+          "packed_rect_pixels": [
+            1120,
+            915,
+            282,
+            260
+          ],
+          "padding_pixels": 4,
+          "page": "block-01",
+          "page_file": "pages/block/page-01.png",
+          "payload_pixel_sha256": "e1f6313dc8f90b5870204e1ca055ef20e2ac61be956c0caccaca06cb5527a99e",
+          "pixels": [
+            274,
+            252
+          ],
+          "sha256": "f5d21a4d5bb86aa29a8f5fad0e4198ce288459f883b3fca55d20eead750fc6df",
+          "source_pixels": [
+            1024,
+            683
+          ],
+          "source_trim_rect_pixels": [
+            375,
+            346,
+            274,
+            252
+          ],
+          "texture_rect_pixels": [
+            1124,
+            919,
+            274,
+            252
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            274,
+            252
+          ],
+          "world_size": [
+            57.796875,
+            53.15625
+          ]
+        },
+        "city": {
+          "anchor": [
+            0.5,
+            0.0014881
+          ],
+          "decoded_byte_estimate": 17920,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_south_city.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_city.png",
+          "normalized_sha256": "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e",
+          "packed_rect_pixels": [
+            0,
+            427,
+            78,
+            72
+          ],
+          "padding_pixels": 4,
+          "page": "city-00",
+          "page_file": "pages/city/page-00.png",
+          "payload_pixel_sha256": "5c70f8d4d9db0236219e05fe5a0dad32aa24773256324e5b3324742854e66925",
+          "pixels": [
+            70,
+            64
+          ],
+          "sha256": "a05ae275b90eb434c3ad987150b5edcec05ab60cc7a3f6c72e67c00ec9c3eeee",
+          "source_pixels": [
+            256,
+            171
+          ],
+          "source_trim_rect_pixels": [
+            93,
+            86,
+            70,
+            64
+          ],
+          "texture_rect_pixels": [
+            4,
+            431,
+            70,
+            64
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            70,
+            64
+          ],
+          "world_size": [
+            57.796875,
+            53.15625
+          ]
+        },
+        "neighborhood": {
+          "anchor": [
+            0.5,
+            0.0014881
+          ],
+          "decoded_byte_estimate": 70104,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_south_neighborhood.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_neighborhood.png",
+          "normalized_sha256": "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1",
+          "packed_rect_pixels": [
+            1701,
+            547,
+            146,
+            135
+          ],
+          "padding_pixels": 4,
+          "page": "neighborhood-00",
+          "page_file": "pages/neighborhood/page-00.png",
+          "payload_pixel_sha256": "96e1a773d636ad624719782bcb00cb515e44296ee00f0c894a61168b44ee8b58",
+          "pixels": [
+            138,
+            127
+          ],
+          "sha256": "c62b9de0bfa9603d630a6c30ec7fff05ded6c266aa12fe17575ef4bccd02bd02",
+          "source_pixels": [
+            512,
+            342
+          ],
+          "source_trim_rect_pixels": [
+            187,
+            173,
+            138,
+            127
+          ],
+          "texture_rect_pixels": [
+            1705,
+            551,
+            138,
+            127
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            138,
+            127
+          ],
+          "world_size": [
+            57.796875,
+            53.15625
+          ]
+        }
+      },
+      "logical_id": "industrial_l03_v0_south",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "material_library_sha256": "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65",
+      "mipmap": true,
+      "normalization_record_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/provenance.json",
+      "normalization_record_sha256": "f00d945e3433b148c0c6b4852e44ca11da44dc331a99118ba2c94267407581f4",
+      "opaque_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        35.07714844
+      ],
+      "padding": 24,
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "prop_exclusion_rects_world": [
+        [
+          -25.34375,
+          -13.671875,
+          14.6875,
+          9.34375
+        ]
+      ],
+      "provenance_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/provenance.json",
+      "provenance_sha256": "5eb777ccedf2fdc31e248f72f40a0bf8529471eb50c5003fe569d21396e8331c",
+      "raw_source_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65"
+      ],
+      "residency_id": "generated-v4/industrial/industrial_l03_v0_south",
+      "road_setback_points": 0.0,
+      "scene_descriptor_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/south/scene.json",
+      "scene_descriptor_sha256": "02545716facbd61640033c44758632fdb3d47793d51f1d3ee6b1fef8559ccf69",
+      "shadow_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        35.07714844
+      ],
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "source_key": "industrial_l03/variant-0/south/source-v04",
+      "source_revision": "source-v04",
+      "source_sha256": "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5",
+      "state": "maintained",
+      "supported_orientation": "south-facing-authored",
+      "variant": 0,
+      "view_direction": "south"
+    },
+    {
+      "allowed_overhang_world": [
+        0.0,
+        0.0,
+        0.07910156,
+        18.13183594
+      ],
+      "authoring_template": "1x1",
+      "decoded_byte_estimate": 371632,
+      "depth_roles": {
+        "baked-shadow": 4.0,
+        "structure": 5.0,
+        "vegetation": 8.0
+      },
+      "entrance_socket_world": [
+        -18.0,
+        9.0
+      ],
+      "family": "industrial",
+      "filtering": "linear",
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "frontage_edge": "west",
+      "ground_contact_polygon_world": [
+        [
+          0.0,
+          13.5
+        ],
+        [
+          27.0,
+          0.0
+        ],
+        [
+          0.0,
+          -13.5
+        ],
+        [
+          -27.0,
+          0.0
+        ]
+      ],
+      "ground_pivot_source": [
+        768,
+        896
+      ],
+      "level": 3,
+      "lods": {
+        "block": {
+          "anchor": [
+            0.5,
+            0.00145914
+          ],
+          "decoded_byte_estimate": 281672,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_west_block.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_block.png",
+          "normalized_sha256": "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8",
+          "packed_rect_pixels": [
+            1120,
+            650,
+            282,
+            265
+          ],
+          "padding_pixels": 4,
+          "page": "block-01",
+          "page_file": "pages/block/page-01.png",
+          "payload_pixel_sha256": "fbeafcf66cb1415f61471c7122ccf3957dac3cf35bb30ab846ca6851cdcfe5a0",
+          "pixels": [
+            274,
+            257
+          ],
+          "sha256": "36a82c904230003acccf5f5ccaaaff8a1011c9fae53519fb61800445ae22a132",
+          "source_pixels": [
+            1024,
+            683
+          ],
+          "source_trim_rect_pixels": [
+            375,
+            341,
+            274,
+            257
+          ],
+          "texture_rect_pixels": [
+            1124,
+            654,
+            274,
+            257
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            274,
+            257
+          ],
+          "world_size": [
+            57.796875,
+            54.2109375
+          ]
+        },
+        "city": {
+          "anchor": [
+            0.5,
+            0.00145914
+          ],
+          "decoded_byte_estimate": 18200,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_west_city.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_city.png",
+          "normalized_sha256": "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a",
+          "packed_rect_pixels": [
+            78,
+            396,
+            78,
+            73
+          ],
+          "padding_pixels": 4,
+          "page": "city-00",
+          "page_file": "pages/city/page-00.png",
+          "payload_pixel_sha256": "73b573140a24313992043ba0b3f725742801e4ad4e316902283906a72f177801",
+          "pixels": [
+            70,
+            65
+          ],
+          "sha256": "0c87ea7e345f1b3fe7c7efc2aafd3c7c93846113a51e03d290ed30e3c1adb2c8",
+          "source_pixels": [
+            256,
+            171
+          ],
+          "source_trim_rect_pixels": [
+            93,
+            85,
+            70,
+            65
+          ],
+          "texture_rect_pixels": [
+            82,
+            400,
+            70,
+            65
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            70,
+            65
+          ],
+          "world_size": [
+            57.796875,
+            54.2109375
+          ]
+        },
+        "neighborhood": {
+          "anchor": [
+            0.5,
+            0.00145914
+          ],
+          "decoded_byte_estimate": 71760,
+          "extrusion_pixels": 2,
+          "file": "generated_v4_industrial_l03_v0_west_neighborhood.png",
+          "normalized_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_neighborhood.png",
+          "normalized_sha256": "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5",
+          "packed_rect_pixels": [
+            1555,
+            544,
+            146,
+            138
+          ],
+          "padding_pixels": 4,
+          "page": "neighborhood-00",
+          "page_file": "pages/neighborhood/page-00.png",
+          "payload_pixel_sha256": "d735ba179f8c594d9b90b3fb1808e50a1db49df517c7cbfc537f1f5f4cbc2f78",
+          "pixels": [
+            138,
+            130
+          ],
+          "sha256": "cdc3c53d76ea0b7cf27a5f943c5e52d60b0ca8bc2a4832aae8d2780a02101a4f",
+          "source_pixels": [
+            512,
+            342
+          ],
+          "source_trim_rect_pixels": [
+            187,
+            170,
+            138,
+            130
+          ],
+          "texture_rect_pixels": [
+            1559,
+            548,
+            138,
+            130
+          ],
+          "trim_rect_pixels": [
+            0,
+            0,
+            138,
+            130
+          ],
+          "world_size": [
+            57.796875,
+            54.2109375
+          ]
+        }
+      },
+      "logical_id": "industrial_l03_v0_west",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "material_library_sha256": "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf",
+      "mipmap": true,
+      "normalization_record_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/provenance.json",
+      "normalization_record_sha256": "d9efb4e70f579868aaa51854dd4406a7aefdbdf4ca1f4ff42499cfafa2e453b5",
+      "opaque_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        36.13183594
+      ],
+      "padding": 24,
+      "placement_offset_world": [
+        0.0,
+        -18.0
+      ],
+      "prop_exclusion_rects_world": [
+        [
+          -25.34375,
+          4.328125,
+          14.6875,
+          9.34375
+        ]
+      ],
+      "provenance_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/provenance.json",
+      "provenance_sha256": "aec680b26f4450628d395fae13873e31f6bd7bb2dddaf5d5570a66474c8ddcd8",
+      "raw_source_file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/raw.png",
+      "reference_sha256": [
+        "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+        "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf"
+      ],
+      "residency_id": "generated-v4/industrial/industrial_l03_v0_west",
+      "road_setback_points": 0.0,
+      "scene_descriptor_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "scene_descriptor_sha256": "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f",
+      "shadow_bounds_world": [
+        -28.8984375,
+        -18.07910156,
+        28.8984375,
+        36.13183594
+      ],
+      "source_canvas_pixels": [
+        1536,
+        1024
+      ],
+      "source_footprint_tiles": [
+        1,
+        1
+      ],
+      "source_key": "industrial_l03/variant-0/west/source-v06",
+      "source_revision": "source-v06",
+      "source_sha256": "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4",
       "state": "maintained",
       "supported_orientation": "west-facing-authored",
       "variant": 0,
@@ -8461,8 +9517,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_frontage/generated_v4_residential_frontage_block.png",
           "normalized_sha256": "c25510524763c209e17b7db4e86adf7b76f94cc6239d00813c8212facc84b5e5",
           "packed_rect_pixels": [
-            242,
-            1458,
+            802,
+            1671,
             352,
             182
           ],
@@ -8486,8 +9542,8 @@
             174
           ],
           "texture_rect_pixels": [
-            246,
-            1462,
+            806,
+            1675,
             344,
             174
           ],
@@ -8513,8 +9569,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_frontage/generated_v4_residential_frontage_city.png",
           "normalized_sha256": "23d37fe4212fc16618cdcb51c6167c0172a7a6c6941c211206dbf0bef1e51b0e",
           "packed_rect_pixels": [
-            340,
-            385,
+            827,
+            289,
             96,
             54
           ],
@@ -8538,8 +9594,8 @@
             46
           ],
           "texture_rect_pixels": [
-            344,
-            389,
+            831,
+            293,
             88,
             46
           ],
@@ -8565,8 +9621,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/residential_frontage/generated_v4_residential_frontage_neighborhood.png",
           "normalized_sha256": "ce19f9688fc3170c1ae0c68a57dd7a13dee856ad18ae814bdb0cf12bf4f24377",
           "packed_rect_pixels": [
-            820,
-            709,
+            1849,
+            821,
             182,
             97
           ],
@@ -8590,8 +9646,8 @@
             89
           ],
           "texture_rect_pixels": [
-            824,
-            713,
+            1853,
+            825,
             174,
             89
           ],
@@ -8979,8 +10035,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/east/source-v08/generated_v4_residential_l01_block.png",
           "normalized_sha256": "4c99b92ced4e36858c0bd044e20535dee9a354cc2e14048286c58f1c5ef9bfe3",
           "packed_rect_pixels": [
-            1402,
-            1133,
+            286,
+            1672,
             274,
             240
           ],
@@ -9004,8 +10060,8 @@
             232
           ],
           "texture_rect_pixels": [
-            1406,
-            1137,
+            290,
+            1676,
             266,
             232
           ],
@@ -9031,8 +10087,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/east/source-v08/generated_v4_residential_l01_city.png",
           "normalized_sha256": "845c5a4657f9e79cdd302fb3b89a8ad03a5a40754a61bf3c2e436d476b018246",
           "packed_rect_pixels": [
-            78,
-            396,
+            1241,
+            72,
             78,
             70
           ],
@@ -9056,8 +10112,8 @@
             62
           ],
           "texture_rect_pixels": [
-            82,
-            400,
+            1245,
+            76,
             70,
             62
           ],
@@ -9083,8 +10139,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/east/source-v08/generated_v4_residential_l01_neighborhood.png",
           "normalized_sha256": "85def9c0b2ea99e16e6f9c7cc724e839a42823993c0b013af2e3cc5a4a601ff3",
           "packed_rect_pixels": [
-            1109,
-            574,
+            1401,
+            683,
             144,
             127
           ],
@@ -9108,8 +10164,8 @@
             119
           ],
           "texture_rect_pixels": [
-            1113,
-            578,
+            1405,
+            687,
             136,
             119
           ],
@@ -9243,8 +10299,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/north/source-v12/generated_v4_residential_l01_block.png",
           "normalized_sha256": "d2379a6c6ef39a236241013129aea442d8751b1d480a35eb8207c8541fabb597",
           "packed_rect_pixels": [
-            876,
-            1402,
+            1611,
+            1372,
             274,
             208
           ],
@@ -9268,8 +10324,8 @@
             200
           ],
           "texture_rect_pixels": [
-            880,
-            1406,
+            1615,
+            1376,
             266,
             200
           ],
@@ -9295,8 +10351,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/north/source-v12/generated_v4_residential_l01_city.png",
           "normalized_sha256": "d1de08cae9cd5bb10cb834b38033b70e8a1393ebc88ceaaf4fcfc847b0945749",
           "packed_rect_pixels": [
-            1057,
-            166,
+            0,
+            499,
             78,
             62
           ],
@@ -9320,8 +10376,8 @@
             54
           ],
           "texture_rect_pixels": [
-            1061,
-            170,
+            4,
+            503,
             70,
             54
           ],
@@ -9347,8 +10403,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/north/source-v12/generated_v4_residential_l01_neighborhood.png",
           "normalized_sha256": "3f1ccadaeed8bb155b54c616d7b3e29ec24c327d79cde1a791147528072d2149",
           "packed_rect_pixels": [
-            1845,
-            805,
+            288,
+            928,
             144,
             111
           ],
@@ -9372,8 +10428,8 @@
             103
           ],
           "texture_rect_pixels": [
-            1849,
-            809,
+            292,
+            932,
             136,
             103
           ],
@@ -9507,8 +10563,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/south/source-v08/generated_v4_residential_l01_block.png",
           "normalized_sha256": "70672f1d8c896d2486092a213cad34d83d0eb3330806b6978fba83fb5272f4bb",
           "packed_rect_pixels": [
-            1676,
-            1162,
+            540,
+            1431,
             274,
             240
           ],
@@ -9532,8 +10588,8 @@
             232
           ],
           "texture_rect_pixels": [
-            1680,
-            1166,
+            544,
+            1435,
             266,
             232
           ],
@@ -9559,8 +10615,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/south/source-v08/generated_v4_residential_l01_city.png",
           "normalized_sha256": "8833285706686ae739f2f5b1c3b33ec71c58dc2c458c3d50f75d8c94459d82f8",
           "packed_rect_pixels": [
-            0,
-            427,
+            1159,
+            139,
             78,
             70
           ],
@@ -9584,8 +10640,8 @@
             62
           ],
           "texture_rect_pixels": [
-            4,
-            431,
+            1163,
+            143,
             70,
             62
           ],
@@ -9611,8 +10667,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/south/source-v08/generated_v4_residential_l01_neighborhood.png",
           "normalized_sha256": "52b5eec61130935bf2610767099969ffe585700271cfd26294996d1fae8d3844",
           "packed_rect_pixels": [
-            1555,
-            666,
+            1255,
+            689,
             144,
             127
           ],
@@ -9636,8 +10692,8 @@
             119
           ],
           "texture_rect_pixels": [
-            1559,
-            670,
+            1259,
+            693,
             136,
             119
           ],
@@ -9771,8 +10827,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/west/source-v09/generated_v4_residential_l01_block.png",
           "normalized_sha256": "ab889aa1e8f7639a2f8be9b5d6c435e17e23d64d06478884070ebb6738dbe482",
           "packed_rect_pixels": [
-            888,
-            1138,
+            1154,
+            1627,
             274,
             208
           ],
@@ -9796,8 +10852,8 @@
             200
           ],
           "texture_rect_pixels": [
-            892,
-            1142,
+            1158,
+            1631,
             266,
             200
           ],
@@ -9823,8 +10879,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/west/source-v09/generated_v4_residential_l01_city.png",
           "normalized_sha256": "a0a6d674d37189beb11e57f899e56b9e09ac637373c6c6b73f044dab95fbdd6c",
           "packed_rect_pixels": [
-            979,
-            227,
+            308,
+            392,
             78,
             62
           ],
@@ -9848,8 +10904,8 @@
             54
           ],
           "texture_rect_pixels": [
-            983,
-            231,
+            312,
+            396,
             70,
             54
           ],
@@ -9875,8 +10931,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l01/variant-0/west/source-v09/generated_v4_residential_l01_neighborhood.png",
           "normalized_sha256": "054f9bfb80d2be4739bca3a0afe5c8d8f136438bef4c983439ae1086ca9aac2d",
           "packed_rect_pixels": [
-            1677,
-            896,
+            581,
+            929,
             144,
             111
           ],
@@ -9900,8 +10956,8 @@
             103
           ],
           "texture_rect_pixels": [
-            1681,
-            900,
+            585,
+            933,
             136,
             103
           ],
@@ -10035,8 +11091,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/east/source-v05/generated_v4_residential_l02_block.png",
           "normalized_sha256": "908ff458a00f0ec2c61465bd82566b9dab2a525de2f45f74ed4a79dd4b097ecc",
           "packed_rect_pixels": [
-            0,
-            939,
+            838,
+            918,
             274,
             258
           ],
@@ -10060,8 +11116,8 @@
             250
           ],
           "texture_rect_pixels": [
-            4,
-            943,
+            842,
+            922,
             266,
             250
           ],
@@ -10087,8 +11143,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/east/source-v05/generated_v4_residential_l02_city.png",
           "normalized_sha256": "cf8615f0c4693f122813dce4200e120a98e82a0c5e645a817365b46dd554ee2a",
           "packed_rect_pixels": [
-            0,
-            353,
+            467,
+            317,
             78,
             74
           ],
@@ -10112,8 +11168,8 @@
             66
           ],
           "texture_rect_pixels": [
-            4,
-            357,
+            471,
+            321,
             70,
             66
           ],
@@ -10299,8 +11355,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/north/source-v05/generated_v4_residential_l02_block.png",
           "normalized_sha256": "2fb4c2f41b455bf2c921c5d45876deb4d4520661537040dfbf3b71622a325607",
           "packed_rect_pixels": [
-            0,
-            1726,
+            782,
+            1176,
             274,
             234
           ],
@@ -10324,8 +11380,8 @@
             226
           ],
           "texture_rect_pixels": [
-            4,
-            1730,
+            786,
+            1180,
             266,
             226
           ],
@@ -10351,8 +11407,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/north/source-v05/generated_v4_residential_l02_city.png",
           "normalized_sha256": "6cd4c35a4df1a1fd2110cacc8317680d337b2c8a66bdc5c4c002299857217ab5",
           "packed_rect_pixels": [
-            745,
-            233,
+            1057,
+            166,
             78,
             68
           ],
@@ -10376,8 +11432,8 @@
             60
           ],
           "texture_rect_pixels": [
-            749,
-            237,
+            1061,
+            170,
             70,
             60
           ],
@@ -10403,8 +11459,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/north/source-v05/generated_v4_residential_l02_neighborhood.png",
           "normalized_sha256": "9e4ca9447055d382d6ceb98e5e13464a52104d2b9919ffdff2c9bb13af22b26e",
           "packed_rect_pixels": [
-            1253,
-            686,
+            1102,
+            712,
             144,
             124
           ],
@@ -10428,8 +11484,8 @@
             116
           ],
           "texture_rect_pixels": [
-            1257,
-            690,
+            1106,
+            716,
             136,
             116
           ],
@@ -10563,8 +11619,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/south/source-v05/generated_v4_residential_l02_block.png",
           "normalized_sha256": "58fcebad56b97a6f90f3cdbd1e0598f671958a448b67e0909ae9598132c12942",
           "packed_rect_pixels": [
-            556,
-            905,
+            1688,
+            901,
             274,
             258
           ],
@@ -10588,8 +11644,8 @@
             250
           ],
           "texture_rect_pixels": [
-            560,
-            909,
+            1692,
+            905,
             266,
             250
           ],
@@ -10615,8 +11671,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/south/source-v05/generated_v4_residential_l02_city.png",
           "normalized_sha256": "b12c25d839eb0be74462373dacc923c70d07c869215dc668a77bef8cb3b04199",
           "packed_rect_pixels": [
-            467,
-            317,
+            316,
+            318,
             78,
             74
           ],
@@ -10640,8 +11696,8 @@
             66
           ],
           "texture_rect_pixels": [
-            471,
-            321,
+            320,
+            322,
             70,
             66
           ],
@@ -10667,8 +11723,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/south/source-v05/generated_v4_residential_l02_neighborhood.png",
           "normalized_sha256": "da9c6dc42dd52d2e97ff0c3a275438a9713e3295abb3535e7f7bd191532d9474",
           "packed_rect_pixels": [
-            1255,
-            550,
+            1847,
+            588,
             144,
             136
           ],
@@ -10692,8 +11748,8 @@
             128
           ],
           "texture_rect_pixels": [
-            1259,
-            554,
+            1851,
+            592,
             136,
             128
           ],
@@ -10827,8 +11883,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/west/source-v05/generated_v4_residential_l02_block.png",
           "normalized_sha256": "99f918520f7d07489eb2a04988178c3b229258b212bd413ceb895715894387ca",
           "packed_rect_pixels": [
-            530,
-            1640,
+            1056,
+            1176,
             273,
             231
           ],
@@ -10852,8 +11908,8 @@
             223
           ],
           "texture_rect_pixels": [
-            534,
-            1644,
+            1060,
+            1180,
             265,
             223
           ],
@@ -10879,8 +11935,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/west/source-v05/generated_v4_residential_l02_city.png",
           "normalized_sha256": "fecd9565a4d4e4450d991afc0cd7bff3cc7008a0beddf4462e8423325efdc64a",
           "packed_rect_pixels": [
-            823,
-            233,
+            979,
+            227,
             78,
             68
           ],
@@ -10904,8 +11960,8 @@
             60
           ],
           "texture_rect_pixels": [
-            827,
-            237,
+            983,
+            231,
             70,
             60
           ],
@@ -10931,8 +11987,8 @@
           "normalized_file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/normalized/residential_l02/variant-0/west/source-v05/generated_v4_residential_l02_neighborhood.png",
           "normalized_sha256": "da96622dcc29156b96e874d995cf83e1fe0d8911d3168ce51797026d5c099a3b",
           "packed_rect_pixels": [
-            1109,
-            701,
+            1705,
+            724,
             144,
             123
           ],
@@ -10956,8 +12012,8 @@
             115
           ],
           "texture_rect_pixels": [
-            1113,
-            705,
+            1709,
+            728,
             136,
             115
           ],
@@ -13201,8 +14257,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/road_material/generated_v4_road_material_block.png",
           "normalized_sha256": "fc43ddfef416abe20d866f5273244ff1c21143740ffa50b599565f22dcf1385a",
           "packed_rect_pixels": [
-            254,
-            1236,
+            802,
+            1853,
             352,
             182
           ],
@@ -13226,8 +14282,8 @@
             174
           ],
           "texture_rect_pixels": [
-            258,
-            1240,
+            806,
+            1857,
             344,
             174
           ],
@@ -13253,8 +14309,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/road_material/generated_v4_road_material_city.png",
           "normalized_sha256": "9410bad28c15ea9fc11f18eacec7980668e25c46486f5440d3b6d8f1656ad7a7",
           "packed_rect_pixels": [
-            1159,
-            72,
+            669,
+            318,
             96,
             54
           ],
@@ -13278,8 +14334,8 @@
             46
           ],
           "texture_rect_pixels": [
-            1163,
-            76,
+            673,
+            322,
             88,
             46
           ],
@@ -13305,8 +14361,8 @@
           "normalized_file": "CitySimNative/WorldArt/GeneratedV4/normalized/calibration/road_material/generated_v4_road_material_neighborhood.png",
           "normalized_sha256": "553a08659efd10efc9166b8b6be2db67eeaf40a3042dc4094a45dc3b4d1be08e",
           "packed_rect_pixels": [
-            1699,
-            685,
+            1399,
+            810,
             182,
             97
           ],
@@ -13330,8 +14386,8 @@
             89
           ],
           "texture_rect_pixels": [
-            1703,
-            689,
+            1403,
+            814,
             174,
             89
           ],
@@ -14673,7 +15729,7 @@
     "source_logical_id": "road_material",
     "topology_authority": "RoadConnectionMask"
   },
-  "generator_version": "PLAY-073-wave-010-r1-industrial-l2-production-1",
+  "generator_version": "PLAY-073-wave-010-r2-industrial-l3-production-1",
   "inventory": [
     {
       "decoded_byte_estimate": 16777216,
@@ -14682,7 +15738,7 @@
         2048,
         2048
       ],
-      "sha256": "efc1abd9f91a2821e2c013736781dc12561f972c56d0bd4b1f71c860da93fd5b"
+      "sha256": "eb9231936bc9afb3cb43da5fc6ccddee7432455cd97c7adf7c0185da85e180db"
     },
     {
       "decoded_byte_estimate": 16777216,
@@ -14691,7 +15747,7 @@
         2048,
         2048
       ],
-      "sha256": "5191f34f50cddfa9e2a57b2d10089f1c4d7e4d563b36bbff28a2d495a8349566"
+      "sha256": "a71d5eaa5fa2fad2dd923ae25499c03ff13fb79796005118a2ac11fc656985ee"
     },
     {
       "decoded_byte_estimate": 8388608,
@@ -14700,7 +15756,7 @@
         2048,
         1024
       ],
-      "sha256": "29b84a3c928909bfb4511c7a821062b16e53d3ffbde4cd747510e4e03412bee9"
+      "sha256": "99f350b1ec8366ad034e6ebeb486217f03788cc969acbe6caf7aef6b183389a0"
     },
     {
       "decoded_byte_estimate": 16777216,
@@ -14709,7 +15765,7 @@
         2048,
         2048
       ],
-      "sha256": "c158f10745008365e8bab4397049e517e6e219cddaa9b67bccbdefc0ca5ccdb8"
+      "sha256": "ce6f7bee1a1810e6df3738e0bdc6bbaf1645ac72d2d77d3a3448dbfabdd9068f"
     }
   ],
   "light_direction": "northwest key, southeast shadow",
@@ -14736,7 +15792,7 @@
   "pages": [
     {
       "decoded_byte_estimate": 16777216,
-      "entry_count": 27,
+      "entry_count": 26,
       "extrusion_pixels": 2,
       "file": "pages/block/page-00.png",
       "id": "block-00",
@@ -14747,11 +15803,11 @@
         2048
       ],
       "rotation": false,
-      "sha256": "efc1abd9f91a2821e2c013736781dc12561f972c56d0bd4b1f71c860da93fd5b"
+      "sha256": "eb9231936bc9afb3cb43da5fc6ccddee7432455cd97c7adf7c0185da85e180db"
     },
     {
       "decoded_byte_estimate": 16777216,
-      "entry_count": 41,
+      "entry_count": 46,
       "extrusion_pixels": 2,
       "file": "pages/block/page-01.png",
       "id": "block-01",
@@ -14762,11 +15818,11 @@
         2048
       ],
       "rotation": false,
-      "sha256": "5191f34f50cddfa9e2a57b2d10089f1c4d7e4d563b36bbff28a2d495a8349566"
+      "sha256": "a71d5eaa5fa2fad2dd923ae25499c03ff13fb79796005118a2ac11fc656985ee"
     },
     {
       "decoded_byte_estimate": 8388608,
-      "entry_count": 68,
+      "entry_count": 72,
       "extrusion_pixels": 2,
       "file": "pages/city/page-00.png",
       "id": "city-00",
@@ -14777,11 +15833,11 @@
         1024
       ],
       "rotation": false,
-      "sha256": "29b84a3c928909bfb4511c7a821062b16e53d3ffbde4cd747510e4e03412bee9"
+      "sha256": "99f350b1ec8366ad034e6ebeb486217f03788cc969acbe6caf7aef6b183389a0"
     },
     {
       "decoded_byte_estimate": 16777216,
-      "entry_count": 68,
+      "entry_count": 72,
       "extrusion_pixels": 2,
       "file": "pages/neighborhood/page-00.png",
       "id": "neighborhood-00",
@@ -14792,7 +15848,7 @@
         2048
       ],
       "rotation": false,
-      "sha256": "c158f10745008365e8bab4397049e517e6e219cddaa9b67bccbdefc0ca5ccdb8"
+      "sha256": "ce6f7bee1a1810e6df3738e0bdc6bbaf1645ac72d2d77d3a3448dbfabdd9068f"
     }
   ],
   "production_selection": true,
@@ -15632,6 +16688,48 @@
       "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l02-east-calibration-v06/scenes/industrial_l02/variant-0/east/scene.json",
       "role": "offline-scene-descriptor",
       "sha256": "a7732ba762b4569b50a1dc19291d42b2c4030cf21509a242caad49eea339b517"
+    },
+    {
+      "bytes": 12295,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/materials/industrial-l03-cohesion-east-v01.json",
+      "role": "material-library",
+      "sha256": "f39bbf5914ba15f90f100bfed5ac65e537b5a6a62d677be82698ac89cf982b65"
+    },
+    {
+      "bytes": 16405,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-east-v01/scenes/industrial_l03/variant-0/east/scene.json",
+      "role": "offline-scene-descriptor",
+      "sha256": "047c8b86d770496b3fdcdfad11ad14db8b59694f1734231b3f2e3130f20de277"
+    },
+    {
+      "bytes": 16982,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-siblings-v01/scenes/industrial_l03/variant-0/south/scene.json",
+      "role": "offline-scene-descriptor",
+      "sha256": "02545716facbd61640033c44758632fdb3d47793d51f1d3ee6b1fef8559ccf69"
+    },
+    {
+      "bytes": 12953,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-north.json",
+      "role": "material-library",
+      "sha256": "2a9c9fa964f6135207b7ab4bbdea37f343ebd7ac0e14cc0356ece643616d3fc8"
+    },
+    {
+      "bytes": 12943,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/materials/industrial-l03-source-v06-west.json",
+      "role": "material-library",
+      "sha256": "928c5dc9963b3a67e5e4cd9e48033ec11efbc8d8aa9f32eb45f0730b8e2e3faf"
+    },
+    {
+      "bytes": 18479,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/north/scene.json",
+      "role": "offline-scene-descriptor",
+      "sha256": "adc73af1704c067d75f62b818d9a6ee7da6c7ff87637356552ef72393f8c77a9"
+    },
+    {
+      "bytes": 18461,
+      "file": "CitySimNative/WorldArt/OfflineScene/PLAY-027/art-proof/industrial-l03-cohesion-source-v06-v01/scenes/industrial_l03/variant-0/west/scene.json",
+      "role": "offline-scene-descriptor",
+      "sha256": "d4affd0773c557056cf15b56db66dfb76736658a995df68cdd86a48b84178f4f"
     },
     {
       "bytes": 4233,
@@ -17294,6 +18392,150 @@
       "file": "docs/production/evidence/PLAY-027/industrial-l02/l02/east-calibration-v05/raw-calibration/diagnostics/east-primary/raw.png",
       "role": "accepted-raw-master",
       "sha256": "a32725fd0ea0436c1f8a13d319c3c66408a7cdf44ff8f2cdb72665839dd685a8"
+    },
+    {
+      "bytes": 360512,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/provenance.json",
+      "role": "provenance",
+      "sha256": "19af3c026f180d503a0fc78806c1691de4ad3eed012dff20eea5f1add496720f"
+    },
+    {
+      "bytes": 87807,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-east-v01/raw/east-primary/raw.png",
+      "role": "accepted-raw-master",
+      "sha256": "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e"
+    },
+    {
+      "bytes": 86246,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_block.png",
+      "role": "normalized-block",
+      "sha256": "5e02d83a0b4f929584ab0a240ac9661f055ea1e1e371810d39077ad6d169e6ba"
+    },
+    {
+      "bytes": 9087,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_city.png",
+      "role": "normalized-city",
+      "sha256": "136d1a9a2e514cbcd1306d4f589f523bf75913ef7f998efdacea6fd0025e052e"
+    },
+    {
+      "bytes": 28261,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/generated_v4_industrial_l03_east_source_v04_neighborhood.png",
+      "role": "normalized-neighborhood",
+      "sha256": "36598c75d1d94bf0599062e20ad2e343ca1d076de96dfae8464a898fab9ee342"
+    },
+    {
+      "bytes": 3210,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/east/provenance.json",
+      "role": "normalization-record",
+      "sha256": "aa0834a245bb31f41c9a727c644509fe6ea1d3cc52629d24e9db845749b57f41"
+    },
+    {
+      "bytes": 100516,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_block.png",
+      "role": "normalized-block",
+      "sha256": "c0b47330aa41d7c04c19230635611eb70da534a1b5c7b0ea0fba46b4c8faba2c"
+    },
+    {
+      "bytes": 9708,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_city.png",
+      "role": "normalized-city",
+      "sha256": "05064fe4930a458f2149d196841d8405e73ebd6d6ac041bdb53df8429ac0f21e"
+    },
+    {
+      "bytes": 31819,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/generated_v4_industrial_l03_south_source_v04_neighborhood.png",
+      "role": "normalized-neighborhood",
+      "sha256": "05207da9254d605fe80b5c0084e13fcf1c7c3a3a42104cb2f30b58cedc87e5c1"
+    },
+    {
+      "bytes": 3217,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/chroma-repair-v01/normalized/run-a/south/provenance.json",
+      "role": "normalization-record",
+      "sha256": "f00d945e3433b148c0c6b4852e44ca11da44dc331a99118ba2c94267407581f4"
+    },
+    {
+      "bytes": 407710,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/provenance.json",
+      "role": "provenance",
+      "sha256": "5eb777ccedf2fdc31e248f72f40a0bf8529471eb50c5003fe569d21396e8331c"
+    },
+    {
+      "bytes": 100572,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/cohesion-a0-family-v01/raw/south-primary/raw.png",
+      "role": "accepted-raw-master",
+      "sha256": "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5"
+    },
+    {
+      "bytes": 95312,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_block.png",
+      "role": "normalized-block",
+      "sha256": "87123d62629b1ddd39a893f8043e0e45c3f533f3148e9bec40a11b18e1d13500"
+    },
+    {
+      "bytes": 8621,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_city.png",
+      "role": "normalized-city",
+      "sha256": "4854da095d10d0f2f77b3eb8ec9a468b18666081ff415d2c50b0e08f7e6ce500"
+    },
+    {
+      "bytes": 29215,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/generated_v4_industrial_l03_north_source_v06_neighborhood.png",
+      "role": "normalized-neighborhood",
+      "sha256": "4da44d259ea8e9a93a9a197f6500dabd11d0f325c4ab2c0cf6294b023860b4f1"
+    },
+    {
+      "bytes": 3240,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/north/provenance.json",
+      "role": "normalization-record",
+      "sha256": "47e71fdff3a9acea88e70223c3296d74d9e52804f16a5039c7a2294fe279d167"
+    },
+    {
+      "bytes": 93935,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_block.png",
+      "role": "normalized-block",
+      "sha256": "265bd5ccd6c9f8e72e59c2323622eba58fad9665bba250c18d8d1415e9c7cbc8"
+    },
+    {
+      "bytes": 8602,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_city.png",
+      "role": "normalized-city",
+      "sha256": "ba021d4fef6bd08238e8b2b430ae712701e0874c97d3fb58f04f9a19b6963d7a"
+    },
+    {
+      "bytes": 28530,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/generated_v4_industrial_l03_west_source_v06_neighborhood.png",
+      "role": "normalized-neighborhood",
+      "sha256": "5df4d99d472b3938975530fda174b5cecf11d7cc0f926bfe15f1cade15d666c5"
+    },
+    {
+      "bytes": 3235,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/normalized/run-a/west/provenance.json",
+      "role": "normalization-record",
+      "sha256": "d9efb4e70f579868aaa51854dd4406a7aefdbdf4ca1f4ff42499cfafa2e453b5"
+    },
+    {
+      "bytes": 435925,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/provenance.json",
+      "role": "provenance",
+      "sha256": "794654d92d20092c5b979240ad363df38182050299e55e3a243e140e260d401e"
+    },
+    {
+      "bytes": 95044,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/north/run-a/raw.png",
+      "role": "accepted-raw-master",
+      "sha256": "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea"
+    },
+    {
+      "bytes": 298427,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/provenance.json",
+      "role": "provenance",
+      "sha256": "aec680b26f4450628d395fae13873e31f6bd7bb2dddaf5d5570a66474c8ddcd8"
+    },
+    {
+      "bytes": 93817,
+      "file": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-raw-review-v01/diagnostics/raw-repeat/west/run-a/raw.png",
+      "role": "accepted-raw-master",
+      "sha256": "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4"
     }
   ],
   "world_tile_points": [

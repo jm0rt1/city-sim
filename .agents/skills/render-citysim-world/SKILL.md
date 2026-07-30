@@ -39,6 +39,26 @@ For each task record:
 
 Begin non-shipping renderer preparation as soon as Integration publishes an immutable family contract and a renderer intake claim. Do not wait for all four directional sources when contract-independent work is available.
 
+Before any source packet arrives, the Renderer intake row is operational only
+when it has durably prepared all of these contract-bound deliverables:
+
+- the exact N/E/S/W logical-ID and reserved-slot map;
+- direction-exclusive quarantine job descriptors and evidence roots;
+- LOD, pivot, socket, frontage, alpha/chroma/padding, provenance, and
+  transformed-sibling rejection gates;
+- explicit alias, fallback, missing-direction, and wrong-family rejection
+  fixtures;
+- deterministic mature-city placement plus the exact regular/compact camera
+  states that QA will consume;
+- resource-integrity and source-to-pack identity jobs; and
+- an atomic assembler descriptor whose inputs remain empty until four exact
+  Integration admission receipts exist.
+
+Prepare those jobs concurrently when their frozen inputs and roots are
+disjoint. Report `intake_ready` only when the executable work graph and its
+focused adversarial gates pass; a prose plan, reserved names alone, or an
+unexecuted fixture is still `intake_preparing`.
+
 1. Freeze the exact family identity, contract hash, expected North/East/South/West source keys, scale, camera, footprint, pivot, sockets, frontage, light, shadow, palette, LOD sizes, and deterministic selection rules. Stop rather than inventing a missing value or editing the family contract locally.
 2. Prepare claimed quarantine mapping, logical atlas-slot reservations, LOD validation, pivot/socket/frontage tests, alias and transformed-sibling rejection, fallback rejection, fixture placement, and staged-camera acceptance states before final pixels arrive. Keep these changes non-shipping; shared atlas pages, production manifests, package topology, and production selection remain serialized Integration-controlled mutations.
    Record these reservations in a renderer-owned intake plan keyed by the exact
@@ -48,6 +68,13 @@ Begin non-shipping renderer preparation as soon as Integration publishes an immu
 4. Preserve a passing direction while returning only a failing direction to its source cell. Never make East wait for South or invalidate North because West failed. Emit one task-owned, versioned quarantine packet per direction with the source handoff schema/hash, exact source commit, decoded hashes, validation result, and disposition. Integration alone updates the shared batch ledger with columns for North, East, South, West, renderer preparation, and QA preparation. Renderer owns only its claimed quarantine/intake paths and never edits World Art source roots.
 5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West packets are all Integration-admitted and independently Renderer-quarantined, and Integration authorizes the shipping mutation.
 6. When the fourth exact Integration-admitted direction passes Renderer quarantine, immediately assemble the frozen 4/4 set as one atomic renderer candidate and run source-to-pack identity plus resource-integrity checks. Stage the real app through the Integration-authorized candidate-only resource path. If staging would require an unapproved shared shipping atlas or manifest mutation, stop and request that authority. Do not silently substitute a newer source, nearby baseline, or partially accepted family.
+
+When an admitted direction arrives, launch its focused quarantine job
+immediately if the frozen harness and direction-exclusive root are ready; do
+not wait for another direction or rerun unrelated full-suite evidence. If
+several packets arrive together, launch all eligible quarantine jobs in
+parallel and join only their results. Keep every passing result immutable while
+returning only the failing direction.
 
 The intake plan must include an executable work graph, not only reserved IDs.
 Before sources arrive, split contract-independent preparation into mapping,

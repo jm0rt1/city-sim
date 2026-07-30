@@ -41,6 +41,11 @@ Use thread coordination tools to inspect progress, send corrections, request mis
 
 Parallel delivery is an Integration invariant, not an optional optimization.
 
+For any directional art family, read
+[references/directional-art-parallelism.md](references/directional-art-parallelism.md)
+completely before dispatch. Its six-cell phase matrix and same-turn dispatch
+cycle are normative operating procedure, not optional guidance.
+
 At every dispatch, status review, candidate return, and integration boundary:
 
 1. Identify every unit of work that is independent under the published contracts and current path ownership.
